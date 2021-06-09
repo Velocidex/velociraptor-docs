@@ -39,9 +39,7 @@ Still considered experimental - help us test it!
 Master/Minion model
 Outside the scope of this course but you can find more information in our blog post
 
-
 ### Deploying Velociraptor
-
 
 Run Velociraptor on your machine
 Download Velociraptor from GitHub (.msi or .exe)
