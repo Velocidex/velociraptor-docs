@@ -1,0 +1,12 @@
+baseURL: http://www.velocidex.com/
+languageCode: en-us
+title: "Velociraptor - Digging deeper!"
+
+theme: "hugo-theme-learn"
+
+menu:
+  shortcuts:
+   -  name: "<i class='fab fa-github'></i> Github repo"
+      identifier: "ds"
+      url: "https://github.com/Velocidex/velociraptor"
+      weight: 10
