@@ -44,6 +44,7 @@ Outside the scope of this course but you can find more information in our blog p
 Run Velociraptor on your machine
 Download Velociraptor from GitHub (.msi or .exe)
 
+
 ```sh
 "C:\program files\Velociraptor\Velociraptor.exe" gui
 ```
