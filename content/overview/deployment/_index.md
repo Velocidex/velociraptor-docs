@@ -1,53 +1,109 @@
 ---
-title: "Deployment"
+title: "Deployment Overview"
 date: 2021-06-09T03:52:24Z
 draft: false
 weight: 2
 ---
 
-## Deployment overview
-
-Persistent communications C&C
-Velociraptor Server
-Web based admin console
-Assets
-Admin
+Velociraptor can be deployed in a number of scenarios depending on
+need. The diagram below illustrates what a typical Velociraptor deployment looks like.
 
 ![Deployment Overview](overview.png?width=80pc&classes=shadow)
 
+The Velociraptor server is typically deployed on a cloud VM and runs a number of components as separate threads. The GUI serves the Admin UI - a Web application that can be used to control Velociraptor and orchestrate hunts and collections from the endpoints.
 
-## Typical deployments
+The endpoints themselves run the **Velociraptor Client** as a
+service. The client is simply the Velociraptor instance running on the
+endpoint.
 
-Velociraptor is very efficient and scalable:
-Server simply collects the results of queries - clients do all the heavy lifting.
-Client memory and CPU usage is controlled via throttling and active cancellations.
-Server is optimized for speed and scalability
-Concurrency control ensures stability
-Bandwidth limits ensure network stability
+Clients have a persistent connection with the server. The server is
+therefore able to issue a task to the clients immediately as soon as
+the User scheduled it (Many other solutions rely on periodic polling
+between endpoint and the server leading to latency between issuing a
+new task and receiving the results - not so with Velociraptor).
 
-## Typical deployments
+Velociraptor is distributed as a **Single Binary** for ease of
+deployment. The same binary can act as a server, client or a number of
+utility programs depending on command line flags.
 
-Current recommendations
-10k-15k clients - single server with file based data store (usually cloud VM).
-SSL load is the biggest load - TLS offloading helps a lot!
-8 GB RAM/8 cores is generous towards the top of the range.
-We recommend Ubuntu/Debian server
+Velociraptor does not use an external datastore - all data is stored
+within the server's filesystem in regular files and directories making
+backups and data lifecycle management a breeze. Therefore you do not
+need any additional infrastructure such as databases or cloud
+services. Velociraptor is compatible with distributed filesystems such
+as Amazon EFS, Google Filestore or generic NFS.
 
-## Multi-Frontend configuration
-Available since 0.5.9 - suitable for > 10k endpoints
-Still considered experimental - help us test it!
-Master/Minion model
-Outside the scope of this course but you can find more information in our blog post
+### Typical Deployment
 
-### Deploying Velociraptor
+By deployment we mean to stand up a new Velociraptor server instance. Typically this consists of a number of broad steps:
 
-Run Velociraptor on your machine
-Download Velociraptor from GitHub (.msi or .exe)
+1. Generate a configuration file for the server and clients
+2. Create a server package for deployment which includes the generated configuration file.
+3. Spin up a cloud VM for the server (If deploying in the cloud) or create a new physical server.
+4. Install the server package on the VM - this will bring the GUI and frontends up.
+5. Create client packages for target operating systems (e.g. MSI for windows).
 
+Each deployment relies on unique configuration files, which include
+information such as connection URLs, DNS names and unique
+cryptographic keys. The configuration files ensure that one
+Velociraptor deployment can not connect with another deployment since
+key material is unique to each deployment.
+
+{{% notice info %}}
+We typically use Ubuntu or Debian based VMs to deploy the server in
+production. We do not support Windows based servers at scale, although
+it is fine to install the server on windows for a demo or for a few
+endpoints.
+{{% /notice %}}
+
+
+### Resource considerations
+
+The secret behind Velociraptor's scalability lies in the use of VQL to
+query the endpoint. The server does not usually have to do much work:
+All the server does is send a VQL query to the endpoints. The VQL
+query executes on the endpoint and any results from the query (Queries
+always returns rows encoded in JSON) are sent back to the server. The
+server simply needs to write the queries into its filesystem --
+Typically the server does not need to parse or process the responses
+from the endpoint.
+
+Because the server performs minimal processing on the collected data,
+it is able to handle a very high volume of requests simultaneously.
+
+See [Performance Considerations](resources) for a discussion of
+resource sizing and scale related tuning parameters available.
+
+### Instant Velociraptor
+
+If you just want to play with Velociraptor, you do not need to deploy
+a complete server. Simply download the Velociraptor executable for
+your platform from the [GitHub project's releases page](https://github.com/Velocidex/velociraptor/releases)
+and start it with the `gui` command.
 
 ```sh
-"C:\program files\Velociraptor\Velociraptor.exe" gui
+Velociraptor.exe gui
 ```
+
+The `gui` command automatically creates a new server and client
+configuration files with the server:
+
+* Server only listening on the local loopback interface.
+* Client will connect to the server over the loopback.
+* Datastore directory is set to the user's temp folder.
+* A single administrator user is created with username `admin` and password `password`.
+* A browser is launched with those credentials to connect to the welcome screen.
+
+{{% notice tip %}} By default the `gui` command uses the temp folder
+as it's data store. Most OS's clean the temp folder periodically so if
+you frequently use the same folder you might find missing files. You
+can specify a different data store directory using the `--datastore`
+flag to work with a persistently stored data store.  {{% /notice %}}
+
+### Command deployment scenarios
+
+{{% children %}}
+
 
 #### Self Signed SSL mode
 

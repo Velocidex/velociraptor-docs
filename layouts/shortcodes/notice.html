@@ -1,0 +1,6 @@
+{{- $_hugo_config := `{ "version": 1 }` -}}
+<div class="mynotices {{ .Get 0 }}" {{ if len .Params | eq 2 }} id="{{ .Get 1 }}" {{ end }}>
+  <div>
+    {{- .Inner -}}
+  </div>
+</div>

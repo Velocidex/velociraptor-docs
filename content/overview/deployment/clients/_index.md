@@ -1,120 +1,308 @@
 ---
-title: "Clients"
-date: 2021-06-09T03:53:38Z
-draft: false
+title: Deploying Clients
 weight: 20
 ---
 
+Velociraptor endpoint agents are called `clients`. Clients connect to
+the server and wait for instructions, which mostly consist of VQL
+statements, then run any VQL queries and return the result to the
+server.
 
-Now let’s configure some clients.
+There are several ways to run clients, depending on your
+needs. Ultimately however, the same Velociraptor binary is run with
+the client configuration file generated in the previous setup steps,
+providing it with the key material and configuration.
 
-45
-Deploying clients
-We typically distribute signed MSI packages which include the client’s config file inside them.
-This makes it easier to deploy as there is only one package to install.
+This page summarizes the recommended ways to run the clients and
+discusses the pros and cons of each approach.
 
-We also change name of service/binary etc to make the service a little bit harder to stop.
+Note that all Velociraptor binaries (for a particular operating
+system) are the same. There is no distinction between the client
+binaries and server binaries. Therefore you can run the server or the
+client on each supported platform. It's simply command line options
+telling the binary to behave as a server or client.
 
-46
-Deploying clients
-It is possible to embed the config in the clients using the velociraptor config repack command (more later)
-Pros
-Only a single binary no need for an additional config file
+## Running clients interactively
 
-Cons
-You have to sign the binary again since the config alters the binary.
+This method is most suitable for testing your deployment. In a command
+shell, simply run the client using the client configuration.
 
-Resigning binaries
-After buying a code signing cert you can use a script to sign automatically.
-We recommend having a standalone isolated signing machine or VM with FDE
-47
+```shell
+$ velociraptor --config client.config.yaml client -v
+```
 
-48
-On your windows machine, Download the latest binary and the source code.
-github.com/velocidex/velociraptor/releases
+The first time the client connects it will `enroll`. The enrolment
+process requires the client to reveal basic information about itself
+to the server.
 
-49
-Velociraptor’s public directory
-It is handy to have somewhere to serve files from. Velociraptor has a public directory where files are served without any authentication requirements
+Note that this type of interactive execution will work effectively the
+same way for all versions of the client (Windows, Linux, or Mac). In
+the sections that follow, we show options for more scalable and/or
+permanent use.
 
-We can use this to distribute third party binaries
-We can serve velociraptor MSI files
-We can serve various support files (yara rules etc).
+## Installing an MSI
 
-Velociraptor’s public directory
-Select the Admin.Client.Upgrade artifact and upload the MSI to the tools setup page (We will learn about that in the next few sessions).
+An MSI is a standard Windows installer package. The advantages are
+that most enterprise system administration tools are used to deploying
+software in MSI packages. Therefore you can use SCCM or Group Policy
+to add the MSI to the assigned software group.
 
-This will now produce a random URL you can serve the MSI from.
-50
+For more information, see [How to use Group Policy to remotely install
+software in Windows Server 2008 and in Windows Server
+2003](https://support.microsoft.com/en-us/help/816102/how-to-use-group-policy-to-remotely-install-software-in-windows-server)
 
-Copy WIX source to desktop.
-51
+### Official release MSI
 
-52
-Build an MSI using Wix Toolkit
-Extract the docs/wix directory from the Velociraptor source tree.
-These are the required files to construct a new MSI
-The main file we use is custom.xml . This file will embed the config file within the MSI and deploy it to the correct directory.
+The recommended way to install Velociraptor as a client on Windows is
+via the release MSI on the [Github
+releases](https://github.com/Velocidex/velociraptor/releases) page.
 
-53
-There are many knobs to tweak here
-The name of the binary
-The location of the files
-The name of the service
-The name of the config file.
+{{% notice note %}}
 
-WIX will take the binary and config file from the Output directory, so create it and place the files there.
+One of the main benefits in using the official Velociraptor MSI is
+that the MSI and the executable are signed. Windows Defender
+aggressively quarantines unsigned binaries, so it is highly
+recommended that Velociraptor be signed.
 
-54
+{{% /notice %}}
 
-55
-The custom msi contains the client config embedded in it.
+Since the Velociraptor client requires a unique configuration file to
+identify the location of the server, we can't package the
+configuration file in the official release. Therefore, the official MSI
+does not include a configuration file.  It must be provided separately.
 
-This is the recommended way to deploy clients.
+The official release installs the Velociraptor executable into
+`C:\Program Files\Velociraptor\` then creates a new Windows service
+that points to this executable and starts automatically at boot
+time. If an existing Velociraptor service is already installed, it
+will be overwritten.
 
-56
-After installing the MSI you should be able to see it immediately in the server’s search screen.
+When the service starts, it attempts to load the configuration file
+from `C:\Program Files\Velociraptor\Velociraptor.config.yaml`. Note
+that this is a different name to the configuration file generated by
+the interactive config generator, which was `client.config.yaml`. If
+your client config file is named otherwise, simply rename it to
+`Velociraptor.config.yaml` (case insensitive) and move it into the
+`C:\Program Files\Velociraptor` folder.
 
-57
-Domain deployment
-We can deploy the MSI to the entire domain using group policy.
+If that file is not found, Velociraptor will wait and retry
+periodically to locate the configuration file. When the file is found,
+the client will be started.
 
-2 Methods
-Via scheduled tasks.
-Via assigned software.
+So to summarise, when installing from the official MSI package you
+need to:
 
-58
-Create a share to serve the MSI from.
+1. Assign the MSI via Group Policy, or use some other method to deploy
+   the official MSI installer.
 
+2. Copy the configuration file from a share to the Velociraptor
+   program directory. This can be done via Group Policy Scheduled
+   tasks or another way (see the **Group Policy** procedure outlined
+   below). As soon as the configuration file is copied, Velociraptor will begin communicating with the server.
 
-59
-Ensure everyone has read access from this share - and only administrators have write access!
+### Installing using custom MSI package
 
-60
-Use the group policy management tool create a new Group Policy Object in the domain (or OU)
+The official Velociraptor MSI does not include the configuration file
+and therefore requires further steps to deploy. In practice it is
+almost always easier to build a custom MSI which includes your own
+configuration file embedded in it.
 
-61
-Edit the new GPO
+Velociraptor already includes a Wix Framework configuration file that
+creates a proper custom MSI with embedded configuration. You can also
+customize this wix file to specify a different service name,
+destination location etc.
 
-62
+To do so, follow follow the instructions
+[here](https://github.com/Velocidex/velociraptor/tree/master/docs/wix)
 
-63
-Ensure the new scheduled task is run as system
+To summarise the process, you will need to:
 
+1. Download the Velociraptor repository to a Windows host. Specifically,
+   you need to copy the appropriate custom XML file and build batch file
+   from the `docs/wix` directory into a new working directory on your host.
 
-64
-Using scheduled tasks you can run any binary - use this method to run interactive collection if you do not have a dedicated Velociraptor server
+![Extracting Wix files](image34.png)
 
-65
-Ensure the new scheduled task is run only once
+2. Update the custom XML for your installation. The README file from
+   `docs/wix` steps you through the typical settings to customize.
 
+![Modifying the wix configuration](image36.png)
 
-66
-Method 2 - install via assigned software packages in GPO
+3. Install the [WiX application](http://wixtoolset.org/releases/) on your
+   Windows host.
 
-The main advantage here is that it is possible to upgrade or uninstall Velociraptor easily
+4. Add your custom client.config.xml file and the appropriate Velociraptor
+   executable to a subdirectory of your build directory called `output`.
 
-67
+![Copy the configuration file into the output directory](image37.png)
 
-68
-You will need to wait until group policy is updated on the endpoint or until the next reboot. The endpoint must be on the AD LAN
+5. Execute the build batch file to create the new MSI file.
+
+![Build the MSI](image38.png)
+
+## Installing the client as a service
+
+### Windows
+
+When installing using an MSI, simply run
+
+```shell
+msiexec /i velociraptor_custom.msi
+```
+
+To install the binary, create the service and start it.
+
+It is also possible to tell the executable to install itself as a
+Windows service instead of using an MSI. This option is not
+recommended because it does not use a proper package manager, and
+therefore Velociraptor can not be easily uninstalled or upgraded.
+
+Nevertheless this approach is possible to do via the Group Policy
+scheduled tasks procedure outlined below. Simply run the following
+command:
+
+```shell
+# velociraptor.exe --config client.config.yaml service install
+```
+
+This will copy the binary to the location specified in the
+configuration file under `Client.windows_installer`. You can also
+change the name of the binary and the service name if you wish.
+
+### Mac
+
+The `service install` directive can be used to install Velociraptor on
+Mac client. The following command installs binary & config to /usr/local/sbin.
+Persistence is via launchd (check with `ps -eaf | grep velo` and
+`sudo launchctl list | grep velo`)
+
+```shell
+# velociraptor --config client.config.yaml service install
+```
+
+The service can be uninstalled with the following command:
+
+```shell
+# /usr/local/sbin/velociraptor service remove --config=/usr/local/sbin/velociraptor.config.yaml
+```
+
+Confirm with `ps -eaf | grep velo` and `sudo launchctl list | grep velo`.
+
+## Agentless deployment
+
+There has been a lot of interest in "agentless hunting" especially
+using PowerShell.
+
+There are many reasons why agentless hunting is appealing - there are
+already a ton of endpoint agents and yet another one may not be
+welcome. Sometimes we need to deploy endpoint agents as part of a DFIR
+engagement and we may not want to permanently install yet another
+agent on endpoints.
+
+In the agentless deployment scenario, we simply run the binary from a
+network share using Group Policy settings. The downside to this
+approach is that the endpoint needs to be on the domain network to
+receive the Group Policy update (and have the network share
+accessible) before it can run Velociraptor.
+
+When we run in agentless mode, we are typically interested in
+collecting a bunch of artifacts via hunts and then exiting - the agent
+will not restart after a reboot. So this method is suitable for quick
+hunts on corporate (non roaming) assets.
+
+<!--
+See this [blog post](/blog/html/2019/03/02/agentless_hunting_with_velociraptor.html) for details of how to deploy Velociraptor in agentless mode.
+-->
+
+#### Create a network share
+
+The first step is to create a network share with the Velociraptor
+binary and its configuration file. We will run the binary from the
+share in this example, but for more reliability you may want to copy
+the binary into e.g. a temp folder on the end point in case the system
+becomes disconnected from the domain. For quick hunts though, it
+should be fine.
+
+We create a directory on the server. Note that in the below example,
+we're creating on a Domain Controller, but we strongly recommend using
+another location on real deployments.
+
+![Create Share](1.png)
+
+In this example we created a directory called `C:\Users\Deployment`
+and ensured that it's read-only. We shared the directory as the name
+`Deployment`.
+
+We now place the Velociraptor executable and client config file in
+that directory and verify that it can run the binary from the network
+share. The binary should be accessible via
+`\\DC\Deployment\velociraptor.exe`:
+
+![Testing Client Locally](2.png)
+
+#### Create the Group Policy object
+
+Next we create the Group Policy object, which forces all domain
+connected machines to run the Velociraptor client. We use the Group
+Policy Management Console:
+
+![Group Policy Object](3.png)
+
+Select the OU or the entire domain and click "Create New GPO":
+
+![New GPO](4.png)
+
+Now right click the GPO object and select "Edit":
+
+![Edit GPO](5.png)
+
+We will create a new scheduled task. Rather than schedule it at a
+particular time, we will select to run it immediately. This will force
+the command to run as soon as the endpoint updates its Group Policy
+settings, because we don't want to wait for the next reboot of the
+endpoint.
+
+![Scheduled Task](6.png)
+
+Next we give the task a name and a description. In order to allow
+Velociraptor to access raw devices (e.g. to collect memory or NTFS
+artifacts) we can specify that the client will run at
+`NT_AUTHORITY\SYSTEM` privileges and run without any user being logged
+on.
+
+It's also worth ticking the "hidden" checkbox here to prevent a
+console box from appearing.
+
+![7](7.png)
+
+Next click the Actions tab and add a new action. This is where we
+launch the Velociraptor client. The program will simply be launched
+from the share (i.e. `\\DC\Deployment\velociraptor.exe`) and we give
+it the arguments allowing it to read the provided configuration file
+(i.e. `--config \\DC\Deployment\client.config.yaml client -v`).
+
+![8](8.png)
+
+In the "Setting" tab we can control how long we want the client to
+run. For a quick hunt, this may be an hour or two depending on the
+network size and hunt scope. For a more comprehensive DFIR collection,
+be prepared to wait several hours or even days while user machines are
+naturally disconnected and reconnected from the network. The GPO will
+ensure the client is killed after the allotted time.
+
+![8](9.png)
+
+Once the GPO is installed it becomes active for all domain
+machines. You can now schedule any hunts you wish using the
+Velociraptor GUI. When a domain machine refreshes its Group Policy, it
+will run the client, which will enrol and immediately participate in
+any outstanding hunts - thus collecting and delivering its artifacts
+to the server.
+
+After the allotted time has passed, the client will shut down without
+having installed anything on the endpoint.
+
+You can force a Group Policy update by running the `gpupdate`
+program. Now you can verify that Velociraptor is running:
+
+![8](10.png)

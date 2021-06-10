@@ -4,6 +4,26 @@ title: "Velociraptor - Digging deeper!"
 
 theme: "hugo-theme-learn"
 
+params:
+  themeVariant: "mine"
+  disableSearch: true
+  showVisitedLinks: false
+  disableMermaid: true
+  disableBreadcrumb: true
+  disableNextPrev: true
+  disableLandingPageButton: true
+  custom_css:
+    - css/atom-one-light.css
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+  highlight:
+    noClasses: true
+    style: pygments
+
 menu:
   shortcuts:
    -  name: "<i class='fab fa-github'></i> Github repo"

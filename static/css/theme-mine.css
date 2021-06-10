@@ -1,0 +1,355 @@
+:root{
+    --MAIN-TEXT-color:#323232; /* Color of text by default */
+    --MAIN-TITLES-TEXT-color: #000; /* Color of titles h2-h3-h4-h5 */
+    --MAIN-LINK-color:#1C90F3; /* Color of links */
+    --MAIN-LINK-HOVER-color:#167ad0; /* Color of hovered links */
+    --MAIN-ANCHOR-color: #1C90F3; /* color of anchors on titles */
+
+    --MENU-HEADER-BG-color:#fff; /* Background color of menu header */
+    --MENU-HEADER-BORDER-color:#14de57; /*Color of menu header border */
+
+    --MENU-SEARCH-BG-color:#fff; /* Search field background color (by default borders + icons) */
+    --MENU-SEARCH-BOX-color: #000; /* Override search field border color */
+    --MENU-SEARCH-BOX-ICONS-color: #111; /* Override search field icons color */
+
+    --MENU-SECTIONS-ACTIVE-BG-color:#20272b; /* Background color of the active section and its childs */
+    --MENU-SECTIONS-BG-color:#252c31; /* Background color of other sections */
+    --MENU-SECTIONS-LINK-color: #ccc; /* Color of links in menu */
+    --MENU-SECTIONS-LINK-HOVER-color: #e6e6e6;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-ACTIVE-CATEGORY-color: #777; /* Color of active category text */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #fff; /* Color of background for the active category (only) */
+
+    --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
+    --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */
+
+    --CODE-SECTION-BG-color: #fafafa;
+}
+
+body {
+    color: var(--MAIN-TEXT-color) !important;
+}
+
+textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, select[multiple=multiple]:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+h2, h3, h4, h5 {
+    color: var(--MAIN-TITLES-TEXT-color) !important;
+}
+
+a {
+    color: var(--MAIN-LINK-color);
+}
+
+.anchor {
+    color: var(--MAIN-ANCHOR-color);
+}
+
+a:hover {
+    color: var(--MAIN-LINK-HOVER-color);
+}
+
+#sidebar ul li.visited > a .read-icon {
+        color: var(--MENU-VISITED-color);
+}
+
+#body a.highlight:after {
+    display: block;
+    content: "";
+    height: 1px;
+    width: 0%;
+    -webkit-transition: width 0.5s ease;
+    -moz-transition: width 0.5s ease;
+    -ms-transition: width 0.5s ease;
+    transition: width 0.5s ease;
+    background-color: var(--MAIN-LINK-HOVER-color);
+}
+
+#sidebar {
+        background-color: var(--MENU-SECTIONS-BG-color);
+}
+#sidebar #header-wrapper {
+    background: var(--MENU-HEADER-BG-color);
+    color: var(--MENU-SEARCH-BOX-color);
+    border-color: var(--MENU-HEADER-BORDER-color);
+}
+#sidebar .searchbox {
+        border-color: var(--MENU-SEARCH-BOX-color);
+    background: var(--MENU-SEARCH-BG-color);
+}
+#sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
+    background: var(--MENU-SECTIONS-ACTIVE-BG-color);
+}
+#sidebar .searchbox * {
+    color: var(--MENU-SEARCH-BOX-ICONS-color);
+}
+
+#sidebar a {
+    color: var(--MENU-SECTIONS-LINK-color);
+}
+
+#sidebar a:hover {
+    color: var(--MENU-SECTIONS-LINK-HOVER-color);
+}
+
+#sidebar ul li.active > div {
+    padding-right: 20px;
+}
+
+#sidebar ul li.active > a {
+    background: var(--MENU-SECTION-ACTIVE-CATEGORY-BG-color);
+    color: var(--MENU-SECTION-ACTIVE-CATEGORY-color) !important;
+}
+
+#sidebar hr {
+    border-color: var(--MENU-SECTION-HR-color);
+}
+
+div.section {
+    opacity: 1;
+}
+
+
+@font-face {
+    font-family: "fontastique";
+    src: url("/fonts/fontastique.ttf");
+}
+
+
+h1, h2, h3 {
+    font-family: "fontastique";
+    text-transform: none;
+}
+
+
+h1 {
+    text-transform: capitalize;
+}
+
+pre {
+    background: var(--CODE-SECTION-BG-color);
+}
+
+pre code {
+    font-size: 14px;
+}
+
+div.progress  {
+    height: auto;
+    overflow: auto;
+}
+
+#body img {
+    max-width: 50%;
+}
+
+footer.footline {
+    border-top: 1px none #183f81;
+}
+
+.calendar-year {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+.calendar-year header {
+    width: 100%;
+}
+
+.calendar-month {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    list-style-type: none;
+    padding: 0px;
+    text-align: center;
+    width: calc(100% / 4);
+    margin: 20px;
+}
+.calendar-month header {
+    width: 100%;
+}
+
+.calendar-weekdays {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    width: 100%;
+}
+.calendar-weekdays li {
+    width: calc(100% / 7);
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 40px;
+    font-size: 10px;
+    opacity: 0.6;
+}
+.calendar-weekdays li.calendar-weekday-sat, .calendar-weekdays li.calendar-weekday-sun {
+    opacity: 1;
+}
+
+.calendar-days {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+.calendar-days li {
+    width: calc(100% / 7);
+}
+
+.calendar-day {
+    line-height: 30px;
+    font-size: 11.1111111111px;
+    text-align: center;
+}
+.calendar-day.calendar-day-future {
+    opacity: 0.4;
+}
+.calendar-day.calendar-day-has-articles {
+    color: #ffffff;
+    position: relative;
+}
+.calendar-day.calendar-day-has-articles::before {
+    content: "";
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #ff6600;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    border-radius: 50%;
+}
+.calendar-day.calendar-day-has-articles a {
+    color: #ffffff;
+}
+.calendar-day.calendar-day-has-articles a em {
+    display: none;
+}
+.calendar-day.calendar-day-is-today {
+    position: relative;
+    font-weight: 800;
+    color: #ff6600;
+}
+.calendar-day.calendar-day-is-today::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 2px solid #ff6600;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    border-radius: 50%;
+}
+
+
+.copyright.angle:before{
+     height: 75px;
+}
+
+
+.vql_type {
+    font-family: sans-serif;
+    font-size: medium;
+    text-align: center;
+    color: red;
+}
+
+h4.subtitle {
+    text-align: center;
+    font-style: italic;
+}
+
+blockquote h1 {
+    font-size: 2rem;
+}
+
+
+div.mynotices {
+    margin: 2rem 0;
+    position: relative;
+}
+
+div.mynotices div {
+    padding: 15px;
+    display: block;
+    font-size: 1rem;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    color: #666;
+}
+div.mynotices div:first-child:before {
+    position: absolute;
+    top: 2px;
+    color: #fff;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f06a";
+    left: 10px;
+}
+div.mynotices.info div:first-child:after {
+    content: 'Info';
+}
+
+div.mynotices div:first-child:after {
+    position: absolute;
+    top: 2px;
+    color: #fff;
+    left: 2rem;
+}
+div.mynotices.info div {
+    border-top: 30px solid #F0B37E;
+    background: #FFF2DB;
+}
+div.mynotices.info div:first-child:after {
+    content: 'Info';
+}
+div.mynotices.warning div {
+    border-top: 30px solid rgba(217, 83, 79, 0.8);
+    background: #FAE2E2;
+}
+div.mynotices.warning div:first-child:after {
+    content: 'Warning';
+}
+div.mynotices.note div {
+    border-top: 30px solid #6AB0DE;
+    background: #E7F2FA;
+}
+div.mynotices.note div:first-child:after {
+    content: 'Note';
+}
+div.mynotices.tip div {
+    border-top: 30px solid rgba(92, 184, 92, 0.8);
+    background: #E6F9E6;
+}
+div.mynotices.tip div:first-child:after {
+    content: 'Tip';
+}
+
+#body img.shadow, #body .video-container.shadow {
+    box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
+}
+
+a[data-featherlight] img {
+   box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
+}
