@@ -5,121 +5,147 @@ draft: false
 weight: 15
 ---
 
+We have previously mentioned that Velociraptor's superpower is a
+powerful query language termed `VQL`. How do we use VQL to query the
+endpoints?
 
-96
-Velociraptor Artifacts
-Fast, Efficient, Surgical
+You might be surprised to learn that you have already been using VQL
+all this time. When clicking in the VFS interface to sync a directory
+listing or download files, the GUI was collecting artifacts behind the
+scenes.
 
-97
-Velociraptor artifacts
-Velociraptor is just a VQL engine!
+Click on the `Collected Artifacts` sidebar screen to view the
+artifacts that have been collected so far.
 
-We package VQL queries in Artifacts:
-YAML files
-Include human description
-Package related VQL queries into “Sources”
-Take parameters for customization
-Can in turn be used in VQL as well...
+![Collected Artifacts](image71.png)
 
-98
-Refreshing the VFS simply schedules new artifacts to be collected - it is just a GUI convenience.
-This also means we have a complete audit of users refreshing the VFS
-Previous collected artifacts overview
-Collected artifact details
+This screen consists of two panes - the top pane shows a list of all
+the `Artifacts` collected so far from this endpoint, while the bottom
+pane shows information about the selected artifact.
 
-Velociraptor uses expert
- knowledge to find the evidence
-A key objective of Velociraptor is encapsulating DFIR knowledge into the platform, so you don’t need to be a DFIR expert.
-We have high level questions to answer
-We know where to look for evidence of user / system activities
+We can immediately recognize that artifacts have a **Name** - in this
+case we have been collecting `System.VFS.DownloadFile` and
+`System.VFS.ListDirectory` in order to populate the VFS screen.
 
-We build artifacts to collect and analyze the evidencein order to answer our investigative questions.
-99
+Each collection of these artifacts has a unique `Flow ID` which is how
+Velociraptor refers to this collection. The collection is created at a
+certain time and starts some time later (if the client is not
+presently connected then the client will start the collection when it
+comes back online).
 
-Velociraptor's superpower:
-user specified artifacts
-An artifact is a YAML file …
-(therefore user-readable, shareable and editable)
-… that answers a question …
-… by collecting data from the endpoint …
-… and reporting on this data in a human readable way.
-Artifacts encode expert knowledge intohuman reusable components.
+Collections also take parameters - you can recognize in the above
+example that the `System.VFS.ListDirectory` artifact was used to list
+the directory "C:\\Users\\test".
 
+Finally you can see that a collection can return rows or upload
+files. This is because an artifact is simply a VQL query - and all
+queries simply return a sequence of rows.
 
+## What are Artifacts?
 
-100
+Ultimately Velociraptor is simply a VQL engine - i.e. it processes a
+VQL query producing a series of rows and then sending those rows to
+the server.
 
-101
-Artifact Description
-Artifact Search area.
-Actual VQL source
+An `Artifact` is a way for us to package one or more VQL queries in a
+human readable YAML file, provide it with a name and allow users to
+collect it. An Artifact file simply embodies the query required to
+collect or answer a specific question about the endpoint.
 
-102
-To collect a new artifact, from the Collected Artifacts screen, click Collect new artifact and search for it. Select Add to add it to this collection. When finished simply click Next.
+{{% notice note %}}
 
-103
+The whole point of Artifacts is to encapsulate a VQL query inside a
+YAML file, so that end users so not need to understand the query to be
+able to use it. This makes artifacts easier to use and facilitates
+knowledge sharing with more experienced users.
 
-Velociraptor Artifacts
-Velociraptor comes with a large number of artifact types
-Client Artifacts run on the endpoint
-Client Event artifacts monitor the endpoint
-Server Artifacts run on the server
-Server Event artifacts monitor for events on the server.
+{{% /notice %}}
 
-104
-Depending on context, the GUI artifact search screen will only show the relevant artifact types.
+### Example - collect Scheduled Tasks from endpoint.
 
-The View Artifacts page shows all types as well as details about each one.
+To illustrate how artifacts can be used, let's collect a common
+forensic artifact from our Windows endpoint. Windows allows commands
+to be scheduled in the future. These tasks are typically stored in the
+`C:\\Windows\\System32\\Tasks` directory as XML files.
 
-105
-All artifacts produce rows since they are just queries.
-Some artifacts also upload files. You can create a download zip to export all the uploaded files.
+While it is nice to know the details behind where the scheduled tasks
+are stored and how to parse them - this is completely unnecessary with
+Velociraptor, since we have a built-in artifact ready to collect these
+tasks!
 
-106
-The uploads tab shows the file's location on the server.
+Start a new collection by clicking the `New Collection` button <i class="fas fa-plus"></i>. This will open the new collection wizard as show below.
 
-You can download each one individually.
+![New Collection Wizard](image73.png)
 
-107
-As the query is running on the endpoint any log messages are sent to the server.
-Click the log tab to see if there were any errors and how many rows are expected.
+The Wizard contains a number of steps but you can skip them if they are not needed.
 
-108
-Source Selector
-Viewing the result tab shows the rows sent from every artifact and source.
+In the first step, we search for an artifact to collect the type of
+information we are after. In this case we start searching for task and
+see our `Windows.System.TaskScheduler` artifact.
 
 
+The next step allows us to tweak any of the artifact parameters.
 
-109
+![Artifact Parameters](image74.png)
 
-110
+Artifacts can take parameters and each parameter has a default value.
 
-Searching, Viewing and Modifying artifacts
-111
+In this case we will choose to also upload the raw XML files. We just
+click `Launch` to start the collection. After a short time, the
+collection will complete.
 
-View artifacts
-Artifacts are just YAML files
-The “View Artifacts” screen allows users to explore the different available artifacts.
+![Collection Complete](image75.png)
 
-While most users will just collect existing ones, we expect power users to customize and write their own artifacts from scratch.
+We can see that this collection uploaded 195 files and added 195
+rows. The VQL query parses each XML file in turn and uploads it.
+
+We can see more information about this collection in the tabs in the
+bottom pane:
+
+1. Logs - As the VQL query is executing on the endpoint, the query may
+   produce log messages. This is called the `Query Log` and it is
+   forwarded to the server. We are able to see how the query is
+   progressing based on the query log.
+
+![Query Log](image76.png)
+
+2. Uploaded Files - This tab shows all the files uploaded by this
+   query. You can download any of these files from the server by
+   simply clicking the link.
+
+![Uploaded Files](image77.png)
+
+3. The Result Tab - shows each result set in a table. A single
+   collection may collect several artifacts. In this case you can
+   choose which artifact to view by clicking the pull down menu.
+
+![Result Tab](image78.png)
 
 
-112
+## Inspecting and modifying artifacts
 
-113
-Search box
-Description and Info
-Available customization
+The `View Artifacts` screen allows you to search and find all
+artifacts loaded into Velociraptor. Search for an artifact in the
+search screen and select an artifact to view.
 
-114
-User artifacts must have the prefix “Custom.”. You can collect the original or the customized version as you please.
+The left pane shows the name of the artifact, a description and any
+parameters the artifact may take. Finally we can inspect the VQL
+source of the artifact.
 
-Customizing the dashboard
-The main server dashboard is just an artifact called Server.Monitor.Health !
+![View Artifact](image72.png)
 
-You can therefore modify it.
+You can edit any artifact by clicking the "Edit an Artifact" button <i class="fas fa-pencil-alt"></i>
 
-I usually put the name of the deployment prominently and/or links to MSI or client config files - we have so many different deployments it is hard to keep track!
-115
+![Edit Artifact](image85.png)
 
-116
+User artifacts must have the prefix “Custom.” in order to ensure that
+user artifacts do not override built in artifacts. When editing an
+existing artifact, Velociraptor will automatically add the Custom
+prefix to the artifact name and will produce a new artifact. Therefore
+both the custom and built in artifact exist in Velociraptor at the
+same time. This allows you to collect either the original or the
+customized version as you please.
+
+## Learn more
+
+To learn more about how to write your own artifacts click TODO

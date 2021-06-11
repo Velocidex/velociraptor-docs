@@ -12,17 +12,17 @@
     --MENU-SEARCH-BOX-color: #000; /* Override search field border color */
     --MENU-SEARCH-BOX-ICONS-color: #111; /* Override search field icons color */
 
-    --MENU-SECTIONS-ACTIVE-BG-color:#20272b; /* Background color of the active section and its childs */
-    --MENU-SECTIONS-BG-color:#252c31; /* Background color of other sections */
-    --MENU-SECTIONS-LINK-color: #ccc; /* Color of links in menu */
-    --MENU-SECTIONS-LINK-HOVER-color: #e6e6e6;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-ACTIVE-CATEGORY-color: #777; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #fff; /* Color of background for the active category (only) */
+    --MENU-SECTIONS-ACTIVE-BG-color:#fcfcfc; /* Background color of the active section and its childs */
+    --MENU-SECTIONS-BG-color:#eaeaea; /* Background color of other sections */
+    --MENU-SECTIONS-LINK-color: #000; /* Color of links in menu */
+    --MENU-SECTIONS-LINK-HOVER-color: #777;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-ACTIVE-CATEGORY-color: #000; /* Color of active category text */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #eaeaea; /* Color of background for the active category (only) */
 
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */
 
-    --CODE-SECTION-BG-color: #fafafa;
+    --CODE-SECTION-BG-color: #f4f4f4;
 }
 
 body {
@@ -109,19 +109,6 @@ a:hover {
 div.section {
     opacity: 1;
 }
-
-
-@font-face {
-    font-family: "fontastique";
-    src: url("/fonts/fontastique.ttf");
-}
-
-
-h1, h2, h3 {
-    font-family: "fontastique";
-    text-transform: none;
-}
-
 
 h1 {
     text-transform: capitalize;
@@ -352,4 +339,49 @@ div.mynotices.tip div:first-child:after {
 
 a[data-featherlight] img {
    box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #404040;
+    text-align: left;
+    line-height: 1.2;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h1 {
+    font-size: 34px;
+}
+
+div#header {
+    height: 166px;
+}
+
+
+ul.topics li {
+    overflow: hidden;
+    border-top: 1px solid rgba(59, 59, 59, 0.08);
+    border-bottom: 1px solid rgba(59, 59, 59, 0.08);
+}
+
+.copy-to-clipboard {
+    display: none;
+}
+
+pre:hover .copy-to-clipboard {
+    display: inline;
+    width: 45px;
+    height: 3rem;
+    border-radius: 5px;
+}
+
+code.hljs {
+    background-color: var(--CODE-SECTION-BG-color);
 }
