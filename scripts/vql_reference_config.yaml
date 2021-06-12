@@ -1,0 +1,114 @@
+content/vql_reference/basic/_index.md:
+  title: Basic VQL functions and plugins
+  linktitle: Basic VQL
+  description: |
+    VQL provides a basic set of functions and plugins allowing
+    queries to maniulate data and implement logic. This page details
+    those plugins which are considered foundational to the VQL
+    language and therefore may be useful in all types of artifacts.
+
+    {{% notice note %}}
+    VQL plugins are not the same as VQL functions. A plugin is the subject
+    of the VQL query - i.e. plugins always follow the `FROM` keyword,
+    while functions (which return a single value instead of a sequence of
+    rows) are only present in column specification (e.g. after `SELECT`)
+    or in condition clauses (i.e. after the `WHERE` keyword).
+    {{% /notice %}}
+  weight: 10
+  category: basic
+
+content/vql_reference/windows/_index.md:
+  title: Windows Specific Functionality
+  linktitle: Windows
+  description: |
+    Many VQL plugins and functions provide access to the Windows
+    APIs. The following are only available when running on Windows.
+  weight: 20
+  category: windows
+
+content/vql_reference/parsers/_index.md:
+  title: Parsers and data extractors
+  linktitle: Parsers
+  description: |
+    Many Velociraptor artifacts rely on specialized parsing of file
+    formats. This page outlines all the plugins and functions designed
+    to allow the client to parse information for various files.
+
+    Simple file formats may be parsed using regular expressions and
+    other generic rules. However some specialized file formats have
+    dedicated parsers. These dedicated parsers are exported into VQL
+    plugins so their results may be used in further queries.
+
+  weight: 30
+  category: parsers
+
+content/vql_reference/server/_index.md:
+  title: Server Side Functionality
+  linktitle: Server
+  description: |
+    Velociraptor provides complete control of the server within VQL
+    queries. On the server, the VQL engine contains the following
+    plugins and functions. You can use this functionality to manage
+    and automate the server by writing VQL queries.
+
+    To reuse server side artifacts, simply create an artifact with
+    `type: SERVER` and launch it from the "Server Artifacts" screen in
+    the GUI.
+  weight: 40
+  category: server
+
+
+content/vql_reference/plugin/_index.md:
+  title: Client Side Functionality
+  linktitle: Client
+  description: |
+    This page lists the plugins used to collect information from
+    clients.
+
+    VQL plugins are the data sources of VQL queries. While SQL queries
+    refer to static tables of data, VQL queries refer to plugins, which
+    generate data rows to be filtered by the query.
+
+    Unlike SQL, VQL plugins also receive keyword arguments. When the
+    plugin is evaluated it simply generates a sequence of rows which are
+    further filtered by the query.
+
+    This allows VQL statements to be chained naturally since plugin args
+    may also be other queries.
+
+    {{% notice note %}}
+
+    VQL plugins are not the same as VQL functions. A plugin is the subject
+    of the VQL query - i.e. plugins always follow the `FROM` keyword,
+    while functions (which return a single value instead of a sequence of
+    rows) are only present in column specification (e.g. after `SELECT`)
+    or in condition clauses (i.e. after the `WHERE` keyword).
+
+    {{% /notice %}}
+  weight: 50
+  category: plugin
+
+content/vql_reference/event/_index.md:
+  title: Event Plugins
+  description: |
+    VQL Event plugins are plugins which never terminate - but instead
+    generate rows based on events. Event plugins are useful for creating
+    client monitoring artifacts. Currently, client side monitoring
+    artifacts are specified in the `Events` section of the server
+    configuration file. When clients connect to the server, they receive a
+    list of monitoring artifacts they are to run. The client runs all
+    artifacts in parallel and their results are streamed to the server.
+
+  weight: 50
+  category: event
+
+content/vql_reference/experimental/_index.md:
+  title: Experimental Functionality
+  linktitle: Experimental
+  description: |
+    Velociraptor is evolving quickly. We sometime implement
+    functionality which may not remain in Velociraptor. This page
+    documents some of the experimental features. If you find them
+    useful, please let us know!
+  weight: 60
+  category: experimental

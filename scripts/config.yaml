@@ -1,0 +1,99 @@
+content/docs/artifacts/linux/_index.md:
+  title: Linux Artifacts
+  linktitle: Linux Artifacts
+  description: Linux Artifacts
+  prefix: Linux.
+  weight: 10
+
+content/docs/artifacts/windows_system/events/_index.md:
+  title:  Event Logs
+  linktitle:  Event Logs
+  description: These artifacts collect information related to the windows event logs.
+  prefix: Windows.EventLog
+  weight: 10
+
+content/docs/artifacts/windows_system/system/_index.md:
+  title: System
+  linktitle: System
+  description: These artifacts collect information related to the windows system itself.
+  prefix: Windows.Sys
+  weight: 20
+
+content/docs/artifacts/windows_system/registry/_index.md:
+  title: Registry
+  linktitle: Registry
+  description: These artifacts collect information related to the windows registry.
+  prefix: Windows.Registry
+  weight: 30
+
+content/docs/artifacts/windows_system/network/_index.md:
+  title:  Network
+  linktitle:  Network
+  description: These artifacts collect information related to the windows network.
+  prefix: Windows.Network
+  weight: 40
+
+content/docs/artifacts/windows_system/applications/_index.md:
+  title: Applications
+  linktitle: Applications
+  description: These artifacts collect information related to the windows applications.
+  prefix: Windows.Applications
+  weight: 50
+
+content/docs/artifacts/windows_system/triage/_index.md:
+  title: Triage Artifacts
+  linktitle: Triage
+  description: Triage artifacts simply collect various files as quickly as possible. In recent versions of Velociraptor, many of the triage artifacts have been merged into the Windows.KapeFiles.Targets artifact.
+  prefix:
+    - Windows.Triage.
+    - Windows.KapeFiles.
+    - Triage.
+    - Windows.Forensics
+    - Windows.Collectors
+    - Windows.NTFS
+  weight: 60
+
+content/docs/artifacts/windows_system/remediation/_index.md:
+  title: Remdiation
+  linktitle: Remdiation
+  description: These artifacts remediate compromizes endpoints.
+  prefix: Windows.Remediation
+  weight: 70
+
+content/docs/artifacts/windows_system/detection/_index.md:
+  title: Malware Detection
+  linktitle: Detection
+  description: These artifacts attempt to detect the presence of specific compromizes.
+  prefix:
+    - Windows.Detection
+    - Windows.Persist
+  weight: 60
+
+content/docs/artifacts/windows_system/monitoring/_index.md:
+  title: Event Monitoring
+  linktitle: Windows Monitoring
+  description: These event artifacts stream monitoring events from the endpoint. We collect these events on the server.
+  toc: true
+  prefix:
+    - Windows.Events.
+  weight: 70
+
+content/docs/artifacts/server/_index.md:
+  title: Server Artifacts
+  linktitle: Server Artifacts
+  description: These artifacts are intended to run on the server.
+  prefix:
+    - Server.
+    - System.
+    - Admin.
+  weight: 30
+
+
+content/docs/artifacts/misc/_index.md:
+  title: Miscelaneous Artifacts
+  linktitle: Miscelaneous
+  description: Various Artifacts which do not fit into other categories.
+  toc: true
+  prefix:
+    - ""
+  weight: 70

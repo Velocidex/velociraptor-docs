@@ -277,7 +277,7 @@ div.mynotices {
     position: relative;
 }
 
-div.mynotices div {
+div.mynotices > div {
     padding: 15px;
     display: block;
     font-size: 1rem;
@@ -285,7 +285,7 @@ div.mynotices div {
     margin-bottom: 0rem;
     color: #666;
 }
-div.mynotices div:first-child:before {
+div.mynotices > div:first-child:before {
     position: absolute;
     top: 2px;
     color: #fff;
@@ -294,42 +294,42 @@ div.mynotices div:first-child:before {
     content: "\f06a";
     left: 10px;
 }
-div.mynotices.info div:first-child:after {
+div.mynotices.info > div:first-child:after {
     content: 'Info';
 }
 
-div.mynotices div:first-child:after {
+div.mynotices > div:first-child:after {
     position: absolute;
     top: 2px;
     color: #fff;
     left: 2rem;
 }
-div.mynotices.info div {
+div.mynotices.info > div {
     border-top: 30px solid #F0B37E;
     background: #FFF2DB;
 }
-div.mynotices.info div:first-child:after {
+div.mynotices.info > div:first-child:after {
     content: 'Info';
 }
-div.mynotices.warning div {
+div.mynotices.warning > div {
     border-top: 30px solid rgba(217, 83, 79, 0.8);
     background: #FAE2E2;
 }
-div.mynotices.warning div:first-child:after {
+div.mynotices.warning > div:first-child:after {
     content: 'Warning';
 }
-div.mynotices.note div {
+div.mynotices.note > div {
     border-top: 30px solid #6AB0DE;
     background: #E7F2FA;
 }
-div.mynotices.note div:first-child:after {
+div.mynotices.note > div:first-child:after {
     content: 'Note';
 }
-div.mynotices.tip div {
+div.mynotices.tip > div {
     border-top: 30px solid rgba(92, 184, 92, 0.8);
     background: #E6F9E6;
 }
-div.mynotices.tip div:first-child:after {
+div.mynotices.tip > div:first-child:after {
     content: 'Tip';
 }
 
@@ -384,4 +384,56 @@ pre:hover .copy-to-clipboard {
 
 code.hljs {
     background-color: var(--CODE-SECTION-BG-color);
+}
+
+.ThemeSelector {
+    position: absolute;
+    margin-left: -40px;
+}
+
+
+.vql_type {
+    font-family: sans-serif;
+    font-size: medium;
+    text-align: center;
+    color: red;
+}
+
+.pull-right {
+    position: relative;
+    float: right;
+}
+
+.gsc-search-box td, .gsc-search-box table {
+    border: none;
+}
+
+div.gsc-adBlock {
+    display: none !important;
+}
+
+
+#sidebar {
+    font-size: 1rem;
+}
+
+code {
+    font-size: 1rem !important;
+}
+
+html, body {
+    font-size: 110% !important;
+}
+
+
+#myCarousel.carousel img {
+    max-width: 100%;
+}
+
+.carousel .content {
+    background-color: var(--CODE-SECTION-BG-color);
+}
+
+.carousel-row {
+    margin-top: 40px;
 }

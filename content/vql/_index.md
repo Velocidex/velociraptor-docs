@@ -41,189 +41,256 @@ You can read more about notebooks [here](notebooks). For the rest of
 this chapter we will assume you created a notebook and are typing VQL
 into the cell.
 
+## Basic Syntax
 
+VQL's syntax is heavily inspired by SQL with the same basic `SELECT
+.. FROM .. WHERE` sentence structure. However, VQL is much simpler
+than SQL, ignoring more complex SQL syntax such as `JOIN`, `HAVING`
+etc. Instead similar functionality is provided in VQL by way of
+plugins, and not built in syntax. This keeps the syntax simple and
+concise.
 
+Let's consider the basic syntax of a VQL query.
 
-Running VQL queries
-Velociraptor is a query engine. There are a number of ways we can evaluate queries
-Command line (velociraptor query)
-Command line via an artifact (velociraptor artifacts collect)
-Client/Server across the network (schedule artifact collection in GUI)
-Inside the notebook
-5
-SELECT * FROM info()
+![Basic syntax](vql_structure.png)
 
-Command line VQL
-The VQL query is provided directly on the command line - need to escape quotes!
+The query starts with a SELECT keyword, followed by a list of `Column
+Selectors` then the `FROM` keyword and a `VQL Plugin` potentially
+taking arguments. Finally we have a `WHERE` keyword followed by a
+filter expression.
 
-6
-Use the -v flag to log messages to console
+### Plugins
 
-Command line Artifact
-7
-Use an editor to write a local artifact file
+While VQL syntax is similar to SQL, SQL was designed to work on static
+tables in a database. In VQL, the data sources are not actually static
+tables on disk - they are provided by code that runs to generate
+rows. `VQL Plugins` are producers of rows and are positioned after the
+`FROM` clause.
 
-Client/Server artifact collection
-8
-Use the GUI to add a custom artifact. You can then collect the artifact at any time
+Like all code, VQL plugins may use parameters to customize and control
+their operations. VQL Syntax requires all arguments to be provided by
+name (these are called keyword arguments). Depending on the specific
+plugins, some arguments are required while some are optional.
 
-Client/Server artifact collection
-9
+{{% notice tip %}}
 
-The notebook - an interactive document
-10
-Notebook consist of cells. Click the cell to see its controls.
+While you can always consult the reference on VQL plugins, the best
+source of help is to type `?` in the notebook interace to view the
+list of possible completions. Completions are context sensitive so
+after the `FROM` keyword, all suggestions are for VQL plugins (since
+plugins must follow the `FROM` keyword). Similarly typing `?` inside
+the plugin arguments list shows the possible arguments expected, their
+type and if they are required or optional.
 
-11
-VQL cells evaluate the VQL into a table and write any error messages or logs under the table.
+![VQL Plugin Completions](completion.png)
 
-Completes plugin names
-12
+![VQL Plugin Completions](completion2.png)
 
-Suggests plugin args
-Type ? to show all relevant completions. It also shows documentation for each option.
-13
+{{% /notice %}}
 
-14
-Create a local server
-It is possible to use the notebook to learn and experiment with artifacts.
+### Life of a query
 
-Create a local server on your windows system.
+In order to understand how VQL works, let's follow a single row through the query.
 
-We will use this server's notebook feature to learn about windows artifacts
+![Life of a query](life_of_a_query.png)
 
-Run Velociraptor on your machine
-Download Velociraptor from GitHub (.msi or .exe)
+1. Velociraptor's VQL engine starts off by calling the plugin passing
+   any relevant arguments into it. The plugin will generate one or
+   more rows and send a row at a time into the query for further
+   processing.
 
-"C:\program files\Velociraptor\Velociraptor.exe" gui
-15
+2. The column expression in the query will now receive the
+   row. However, instead of evaluating the column expression
+   immediately, VQL wraps the column expression in a `Lazy
+   Evaluator`. Lazy evaluators allow the actual evaluation of the
+   column expression to be delayed until a later time.
 
-16
+3. Next VQL takes the lazy expressions and uses them to evaluate the
+   filter condition - which will determine if the row is to be
+   eliminated or passed on.
 
-17
-The "gui" command creates an instant temporary server/client with self signed SSL and a hard coded admin/password.
+4. In this example, the filter condition (`X=1`) must evaluate the
+   value of X and therefore will trigger the Lazy Evaluator.
 
-18
+5. Assuming X is indeed 1, the filter will return TRUE and the row
+   will be emitted from the query.
 
-19
+### Lazy Evaluation
 
-20
-Add VQL Cell
-Write Query and click Save button. GUI will autosuggest to help with the query.
-VQL queries are just tables with rows and columns.
+In the above description we can see that a lot of effort was put into
+the VQL engine in order to postpone evaluation as late as
+possible. This is a recurring theme in VQL which always tries to
+postpone evaluation. Why is this done?
 
-What is VQL?
-21
-SELECT X, Y, Z FROM plugin(arg=1) WHERE X = 1
-Column Selectors
-VQL Plugin with Args
-Filter Condition
+The main reason for delaying evaluation as much as possible is to
+avoid performing unnecessary work. There is no point in evaluating a
+column value if the entire row will be filtered out!
 
-Plugins
-Plugins are generators of rows
-Plugins accept keyword arguments
-Arguments are strongly typed.
-Some arguments are required, some are optional - check the reference to see what is available (VQL will complain!).
-Arguments can be other queries (or stored queries)
-A row is a map of keys (string) and values (objects)
-Values can have many types
-Strings, bytes, int64, float64, dicts, arrays
-22
+Understanding lazy evaluation is critical to writing efficient VQL
+queries. Let's examine how this work using a series of
+experiments. For these experiments we will use the `log()` VQL
+function, which simply produces a log message when evaluated.
 
-Life of a query
-23
-SELECT X FROM plugin(arg=1) WHERE X = 1
-Row
-Evaluate the plugin to produce a row
-Row
-Wrap the row with a lazy evaluator for each column. Place the column in the filter scope.
-X
-Row
-X
-= 1
-Evaluate the filter clause. If it is true the row will be emitted to the result set.
-{“x”: 1}
-Emit row to result set (JSON)
-Plugin
-Column Expression
-Filter
-Result Set
+```sql
+-- Case 1: One row and one log message
+SELECT OS, log(message="I Ran!") AS Log
+FROM info()
 
-Lazy Evaluators
-Since many VQL functions can be expensive or have side effects it is critical to understand when they will be evaluated (i.e. when they will run).
+-- Case 2: No rows and no log messages
+SELECT OS, log(message="I Ran!") AS Log
+FROM info()
+WHERE OS = "Unknown"
 
-A good function is the log() function which outputs a log when it gets evaluated.
-24
+-- Case 3: Log message but no rows
+SELECT OS, log(message="I Ran!") AS Log
+FROM info()
+WHERE Log AND OS = "Unknown"
 
-Exercise
-25
-Evaluating the log() function returns true and logs the message in the query log.
+-- Case 4: No rows and no log messages
+SELECT OS, log(message="I Ran!") AS Log
+FROM info()
+WHERE OS = "Unknown" AND Log
+```
 
+Let's consider case 1 above, the row will be emitted by the query and
+therefore the log function will be evaluated producing a log message.
 
-Log function is not evaluated for filtered rows
-When the Log variable is mentioned in the filter condition, it will be evaluated only if necessary!
-We can use this property to control when expensive functions are evaluated
-e.g. hash(), upload()
-26
+Case 2 adds a condition which should eliminate the row. **Because the
+row is eliminated VQL is able to skip evaluation of the log()
+function!** No log message will be produced.
 
-What is a Scope?
-A scope is a bag of names that is used to resolve variables, functions and plugins in the query.
+Cases 3 and 4 illustrate VQL's evaluation order of `AND` terms - from
+left to right with an early exit.
 
+We can use this property to control when expensive functions are
+evaluated e.g. `hash()` or `upload()`.
 
+### What is a Scope?
 
+Scope is a concept common in many languages, and it is also central in
+VQL.  A scope is a bag of names that is used to resolve symbols,
+functions and plugins in the query.
 
+For example, consider the query
 
-VQL sees “info” as a plugin and looks in the scope to get the real implementation
-27
+```sql
 SELECT OS FROM info()
-Scope
+```
 
-info: InfoPlugin()
-….
+VQL sees “info” as a plugin and looks in the scope to get the real
+implementation of the plugin.
 
-Nested Scopes
-Scopes can nest - this allows sub-scopes to mask names of parent scopes.
+Scopes can nest - this means that in different parts of the query a
+new child scope is used to evaluate the query. The child scope is
+constructed by layering a new set of names over the top of the
+previous set. When VQL tries to resolve a name, it looks up the scope
+in reverse order going from layer to layer until the symbol is
+resolved.
 
-VQL will walk the scope stack in reverse to resolve a name.
-28
-SELECT OS FROM info()
-Parent Scope
-Sub Scope + Row
-OS
+Take the following query for example,
 
-Scope exercise
-When a symbol is not found, Velociraptor will emit a warning and dump the current scope’s nesting level.
+![Scope lookup](scope.png)
 
-Depending on where in the query the lookup failed, you will get different scopes!
+VQL evaluates the `info()` plugin which emits a single row. Then VQL
+creates a child scope, with the row at the bottom level. Whe VQL tries
+to resolve the symbol OS from the column expression, it walks the
+scope stack in reverse, checking if the symbol `OS` exists in the
+lower layer. If not the next layer is checked and so on.
 
-The top level scope can be populated via the “environment” (--env flag) or artifact parameters
-29
+{{% notice warning %}}
 
-Scope exercise
-Query can refer to query environment variables. On the commandline these are injected via the --env flag.
-30
+Columns produced by a plugin are added to the child scope and
+therefore **mask** the same symbol name from parent scopes. This can
+sometimes unintentionally hide variables of the same name which are
+defined at a parent scope. If you find this happens to your query you
+can rename easlier symbol using the `AS` keyword to avoid this
+problem.  For example:
 
-31
+```sql
+SELECT Pid, Name, {
+   SELECT Name FROM pslist(pid=Ppid)
+} AS ParentName
+FROM pslist()
+```
 
-VQL Syntax
-Strings denoted by " or ' (escape special characters)
-Multiline raw string is denoted by '''  (three single quotes)
+In this query the symbol `Name` in the outer query will be resolved
+from the rows emitted by `pslist()` but the second `Name` will be
+resolved from the row emitted by `pslist(pid=Ppid)` - or in other
+words, the parent's name.
 
-Subquery delimited by {}
+{{% /notice %}}
 
-Arrays delimited by () or []
-You can use (XXX, ) to keep an array distinct from (XXX)
-32
+### String constants
 
-The foreach plugin
-VQL does not have a JOIN operator, instead we have the foreach() plugin.
+Strings denoted by `"` or `'` can escape special characters using the
+`\\`. For example, `"\\n"` means a new line. This is useful but it
+also means that backslashes need to be escaped. This is sometimes
+inconvenient, especially when dealing with Windows paths (that
+contains alot of backslashes).
 
-This plugin runs one query (given by the rows arg), then for each row emitted, it builds a new scope in which to evaluate another query (given by the query arg).
-33
+Therefore, Velociraptor also offers a Multiline raw string which is
+denoted by `'''` (three single quotes). Within this type of string no
+escaping is possible, and the all characters are treated literally -
+including new lines. You can use `'''` to denote multi line strings.
 
-34
+### Subqueries
 
-35
+VQL Subqueries can be specified as a column expression or as an
+arguments. Subqueries are delimited by `{` and `}`. Subqueries are
+also Lazily evaluated, and will only be evaluated when necessary.
+
+### Arrays
+
+An array may be defined either by `(` and `)` or `[` and `]`. Since it
+can be confusing to tell regular parenthesis from an array with a
+single element, VQL also allows a trailing comma to indicate a single
+element array. For example `(1, )` means an array with one member,
+whereas `(1)` means a single value of 1.
+
+### The scope() plugin
+
+VQL is strict about the syntax of a VQL statement. Each statement must
+have a plugin specified, however sometimes we dont really want to
+select from any plugin at all.
+
+The default noop plugin is called `scope()` and simply returns the
+current scope as a single row. If you even need to write a query but
+do not want to actually run a plugin, use `scope()` as a noop
+plugin. For example
+
+```sql
+-- Returns one row with Value=4
+SELECT 2 + 2 AS Value
+FROM scope()
+```
+
+## The Foreach plugin
+
+VQL is modeled on basic SQL since SQL is a familiar language for new
+users to pick up. However, SQL quickly becomes more complex with very
+subtle syntax that only experienced SQL users use regularly. One of
+the more complex aspects of SQL is the `JOIN` operator which typically
+comes in multiple flavors with subtle differences (INNER JOIN, OUTER
+JOIN, CROSS JOIN etc).
+
+While these make sense for SQL since they affect the way indexes are
+used in the query, VQL does not have table indexes, nor does it have
+any tables. Therefore the `JOIN` operator is meaningless for
+Velociraptor. To keep VQL simple and accessible, we specifically did
+not implement a `JOIN` operator.
+
+Instead of a `JOIN` operator, VQL has the `foreach()` plugin, which is
+probably the most commonly used plugin in VQL queries. The `foreach()`
+plugin takes two arguments:
+
+1. The `row` parameter is a subquery that provides rows
+
+2. The `query` parameter is a subquery that will be evaluated on a
+   subscope containing each row that is emitted by the `row` argument.
+
+Consider the following query.
+
+```sql
 SELECT * FROM foreach(
     row={
         SELECT Exe FROM pslist(pid=getpid())
@@ -231,356 +298,223 @@ SELECT * FROM foreach(
     query={
         SELECT ModTime, Size, FullPath FROM stat(filename=Exe)
     })
+```
 
+Note how `Exe` is resolved from the produced row since the query is
+evaluated within the nested scope.
 
-Note how “Exe” is resolved from the produced row since the query is evaluated within the nested scope.
+Foreach is useful when we want to run a query on the output of another
+query.
 
-36
-Foreach on steroids!
-Normally foreach iterates over each row one at a time.
-The foreach() plugin also takes the workers parameter. If this is larger than 1, foreach() will use multiple threads.
+### Foreach on steroids!
+
+Normally foreach iterates over each row one at a time.  The
+`foreach()` plugin also takes the workers parameter. If this is larger
+than 1, `foreach()` will use multiple threads and evaluate the `query`
+query in each worker thread.
 
 This allows to parallelize the query!
 
-Exercise: Hash all files
+For example consider the following query, which retrieves all the
+files in the System32 directory and calculates their hash.
+
+```sql
 SELECT FullPath, hash(path=FullPath)
 FROM glob(globs="C:/Windows/system32/*")
 WHERE NOT IsDir
+```
 
-37
+As each row is emitted from the `glob()` plugin with a filename of a
+file, the `hash()` function is evaluated on it and the hash is
+calculated.
 
-Faster hashing!
-38
+However this is linear, since each hash is calculated before the next
+hash is started - hence only one hash is calculated at once.
 
+This example is very suitable for parallelization because globling for
+all files is quite fast, but the slow part is hashing the
+files. Therefore, if we delegate the hashing to multiple threads, we
+can make more effective use of the CPU.
 
-Convert the previous query to a multi-threaded query using foreach.
+```sql
+SELECT * FROM foreach(
+row={
+   SELECT FullPath
+   FROM glob(globs="C:/Windows/system32/*")
+   WHERE NOT IsDir
+}, query={
+   SELECT FullPath, hash(path=FullPath)
+   FROM scope()
+}, worker=10)
 
-Solution
-39
+```
 
-40
-LET expressions
-A stored query is a lazy evaluator of a query which we can store in the scope.
-Where-ever the stored query is used it will be evaluated on demand.
+## LET expressions
 
-LET expressions are more readable
-LET myprocess = SELECT Exe FROM pslist(pid=getpid())
+We have previously seen how subqueries may be used in various parts of
+the query, such as in a column specifier or as an argument to a
+plugin. While subqueries are convenient, they can become unweildy when
+nested too deeply. VQL offers an alternative to subqueries called
+`Stored Queries`.
+
+A stored query is a lazy evaluator of a query which we can store in
+the scope.  Whereever the stored query is used it will be evaluated on
+demand. Consider the example below, where for each process, we
+evaluate the `stat()` plugin on the executable to check the
+modification time of the executable file.
+
+```sql
+LET myprocess = SELECT Exe FROM pslist()
 
 LET mystat = SELECT ModTime, Size, FullPath
         FROM stat(filename=Exe)
 
 SELECT * FROM foreach(row=myprocess, query=mystat)
+```
 
-Note these are 3 different queries sharing the same scope!
-41
+{{% notice note %}}
 
-LET expressions are lazy
-Calling pslist() by itself will return all processes.
-The foreach query will quit after 5 rows due to the limit clause
-This cancels the query as soon as we have enough rows!
-Early exit for expensive plugins
-42
+A Stored Query is simply a query that is stored into a variable. It is
+not actually evaluated at the point of definition. At the point where
+the query is referred, that is where evaluation occurs. The scope at
+which the query is evaluated is derived from the point of reference!
 
-Materialized LET expressions
-Sometimes we do not want a lazy expression! VQL calls a query that is expanded in memory materialized
+For example in the query above, `mystat` simply stores the query
+itself. Velociraptor will then re-evaluate the `mystat` query for each
+row given by `myprocess` as part of the `foreach()` plugin operation.
 
-Slow approach:
+{{% /notice %}}
 
-43
+### LET expressions are lazy
 
-Materialized LET expressions
-Materialize the query with <= operator
+We have previously seen VQL goes out of its way to do as little work
+as possible.
 
-Faster approach:
+Consider the following query
 
-All the rows are
-expanded into
-memory
+```sql
+LET myhashes = SELECT FullPath, hash(path=FullPath)
+FROM glob(globs="C:/Windows/system32/*")
 
-44
-
-Materialized LET expressions
-Memoize means to remember the results of a query in advance
-
-Fastest:
-
-45
-
-Local functions
-LET expressions can declare parameters.
-
-This is useful for refactoring functions into their own queries.
-
-The callsite still uses named args to populate the scope.
-46
-
-Protocols - VQL operators
-VQL syntax is inspired by Python :-)
-Objects within VQL are strongly typed but dynamic
-Operators interact with objects via “Protocols”
-This means that different objects may do different things for different operators - usually they make sense
-If a protocol is not found, VQL substitutes a NULL - VQL does not abort the query!
-47
-
-Protocol exercise
-Enable --trace_vql together with the -v flag to see a full analysis of the VQL query.
-48
-
-Plugin reference
-VQL is a glue language
-It is quite capable but it is not designed to be able to implement arbitrary algorithms
-It relies on VQL plugins and functions to do the heavy lifting while VQL combines high level logic
-There is a plugin reference on the web site
-Distinction between plugin and funcion
-Search for plugins
-Note required args and their types
-49
-
-50
-
-51
-Reference in machine readable YAML is in the GitHub tree.
-
-52
-Writing VQL for fun and profit!
-
-53
-Learn by example: wmi shell
-A common attacker technique is to run remote command shell.
-
-Try it yourself:
-wmic process call create cmd.exe
-
-Let's write an artifact that detects cmd.exe launched from WMI
-wmic process call create cmd.exe
-
-Start small - list processes
-54
-
-See the raw output
-55
-The Raw JSON shows us what data is available for further VQL processing.
-
-Refine - Filter by name
-56
-The regular expression match operator is =~
-SELECT * FROM pslist()
-WHERE Name =~ 'cmd.exe'
+SELECT * FROM myhashes
 LIMIT 5
+```
 
+The `myhashes` stored query hashes all files in System32 (many
+thousands of files). However, this query is used in a second query
+with a `LIMIT` clause.
 
+When the query emits 5 rows in total, the entire query is cancelled
+(since we do not need any more data) which in turn aborts the
+`myhashes` query. Therefore, VQL is able to exit early from any query
+without having to wait for the query to complete.
 
-Subquery - find parent process
-57
+This is possible because VQL queries are **asynchronous** - we do
+**not** calcaulte the entire result set of `myhashes` **before** using
+`myhashes` in another query, we simply pass the query itself and
+forward each row as needed.
 
-SELECT *, {
-   SELECT * FROM pslist(pid=Ppid)
-} As Parent
-FROM pslist()
-WHERE Name =~ 'cmd.exe'
-LIMIT 5
+### Materialized LET expressions
 
+We saw before that a stored query does not in itself evaluate the
+query. Instead whenever the query is referenced, the query will be
+evaluated afresh.
 
+Sometimes this is not what we want to do. For example consider a query
+which takes a few seconds to run, but its output is not expected to
+change quickly. In that case, we actually want to cache the results of
+the query in memory and simply access it as an array.
 
-Processes spawned by WMI
-58
+Expanding a query into an array in memory is termed `Materializing`
+the query.
 
-SELECT Name, Pid, Username, CommandLine, {
-   SELECT Name, Pid FROM pslist(pid=Ppid)
-} As Parent
-FROM pslist()
-WHERE Name =~ 'cmd.exe' AND Parent.Name =~ "Wmi"
-LIMIT 5
+For example, consider the following query that lists all sockets on
+the machine, and attempts to resolve the process id to a process name
+using the `pslist()` plugin.
 
+```sql
+LET process_lookup = SELECT Pid AS ProcessPid, Name FROM pslist()
 
+SELECT Laddr, Status, Pid, {
+   SELECT Name FROM process_lookup
+   WHERE Pid = ProcessPid
+} AS ProcessName
+FROM netstat()
+```
 
-Exercise: Enrich netstat
-Show extra information on all listening processes, including:
-Binary path on disk
-User that launched the process
-Linked DLLs
-Manufacturer if available
-Compile time
+This query will be very slow because the `process_lookup` stored query
+will be re-evaluated for each row returned from netstat (i.e. for each
+socket).
 
-59
+However we do not expect the process listing to change that quickly!
+It would make more sense to have the process listing cached in memory
+for the entire length of the query. It is not expected to change over
+the few seconds the query will run.
 
-Step 1: Identify listening processes
-60
+Therefore we wish to `Materialize` the query
 
-Step 2: Lookup the process from Pid
-61
+```sql
+LET process_lookup <= SELECT Pid AS ProcessPid, Name FROM pslist()
 
-Step 3: Lookup binary information
-LET listening = SELECT Pid,
-       format(format='%v:%v',
-              args=[Laddr.IP, Laddr.Port]) AS Laddr
-  FROM netstat() WHERE Status = 'LISTEN'
+SELECT Laddr, Status, Pid, {
+   SELECT Name FROM process_lookup
+   WHERE Pid = ProcessPid
+} AS ProcessName
+FROM netstat()
+```
 
-SELECT Username, Exe, Pid, CreateTime,
-       peinfo.VersionInformation AS VersionInformation,
-       peinfo.TimeDateStamp AS CompileTime, Laddr
-FROM foreach(row=listening, query={
-    SELECT Username, Exe, Pid, CreateTime,
-           parse_pe(file=Exe) AS peinfo,
-           Laddr
-    FROM pslist(pid=Pid)
+The only difference between this query and the previous one is that
+the `LET` clause uses `<=` instead of `=`. The `<=` is the materialize
+operator - it tells VQL to expand the query in place into an array
+which is then assigned to the variable `process_lookup`.
+
+Subsequent accesses to `process_lookup` simply access an in-memory
+array of pid and name for all processes and **do not** need to run
+`pslist()` again.
+
+## Local functions
+
+We have seen how `LET` expressions may store queries into a variable,
+and have the queries evaluated in a subscope at the point of use.
+
+A `LET` expression can also declare explicit passing of
+variables.
+
+Consider the following example which is identical to the example
+above:
+
+```sql
+LET myprocess = SELECT Exe FROM pslist()
+
+LET mystat(Exe) = SELECT ModTime, Size, FullPath
+        FROM stat(filename=Exe)
+
+SELECT * FROM foreach(row=myprocess, query={
+  SELECT * FROM mystat(Exe=Exe)
 })
-62
+```
 
-63
+This time `mystat` is declares as a `VQL Local Plugin` that
+takes arguments. Therefore we now pass it an parameter explicitly and
+it behaves as a plugin.
 
-64
-Artifacts: VQL modules
+Similarly we can define a `VQL Local Function`.
 
-Artifacts are VQL modules
-VQL is very powerful but it is hard to remember and type a query each time.
+```sql
+LET MyFunc(X) = X + 5
 
-An Artifact is a way to document and reuse VQL queries
-Artifacts are geared towards collection of a single type of information
+-- Return 11
+SELECT MyFunc(X=6) FROM scope()
+```
 
-Artifacts accept parameters with default values.
-65
+{{% notice tip %}}
 
-66
+Remember the difference between a VQL plugin and a VQL function is
+that a plugin returns multiple rows and therefore needs to appear
+between the FROM and WHERE clauses. A function simply takes several
+values and transforms them into a single value.
 
-67
-Main parts of an artifact
-Name: We can select artifacts by their name
-Description: Human readable context around the purpose
-Parameters: A set of parameters with default values which users can override (Note - All parameters are passed as strings)
-Sources: Each source represents a single result table. Artifacts may have many sources in which case sources are named.
-Query: Velociraptor runs the entire query using the same scope. The last query MUST be a SELECT and the others MUST be LET.
-
-68
-
-69
-Parameters
-Artifact parameters are sent to the client as strings
-The client automatically parses them into a VQL type depending on the parameter's type specification.
-The GUI uses type specification to render an appropriate UI
-
-
-Parameter types
-Currently these are supported:
-int, integer: The parameter is an integer
-timestamp: The parameter is a timestamp
-csv: Parameter appears as a list of dicts formatted as a CSV
-json: Parameter is a JSON encoded dict
-json_array: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
-bool: The parameter is a boolean (TRUE/YES/Y/OK)
-
-70
-
-71
-Exercise: Create an artifact
-Convert our previous VQL to an artifact. Developing artifacts is easy to do:
-Go to the View Artifacts screen
-Select Add new artifact
-Modify the template, paste your VQL in it.
-When you save the artifact the artifact will be ready for collection.
-
-
-
-72
-Make a WMI Subprocess artifact
-We generally want to make artifacts reusable:
-
-Artifacts take parameters that users can customized when collecting
-The parameters should have obvious defaults
-Artifacts have precondition queries that determine if the artifact will run on the endpoint.
-Description field is searchable so make it discoverable...
-
-73
-name: Custom.Windows.Detection.WmiSubprocess
-description: |
-   Detect processes spawned from WMI
-
-# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
-type: CLIENT
-
-parameters:
-   - name: ProcessName
-     default: cmd.exe
-
-sources:
-  - precondition:
-      SELECT OS From info() where OS = 'windows' OR OS = 'linux' OR OS = 'darwin'
-
-    query: |
-        SELECT Name, Pid, Username, CommandLine, {
-         SELECT Name, Pid FROM pslist(pid=Ppid)
-        } As Parent
-        FROM pslist()
-        WHERE Name =~ ProcessName AND Parent.Name =~ "Wmi"
-
-
-
-74
-Your artifact is ready to collect
-Let's create a hunt to find all currently running command shells from wmi across our entire deployment.
-
-Find out in seconds...
-75
-
-Artifact writing tips
-Use the notebook to write VQL on the target platform.
-Start small - one query at a time
-Inspect the result, figure out what information is available - refine
-Use LET stored queries generously.
-You can essentially comment out queries by using LET - eg.
-    LET X = SELECT * FROM pslist()
-    LET Y = SELECT * FROM netstat()
-    SELECT * FROM X
-76
-Will not run since Y is lazy
-
-Artifact writing tips
-Use the log() VQL function to provide print debugging.
-Use format(format="%T %v", args=[X, X]) to learn about a value's type and value
-77
-
-Calling artifacts from VQL
-You can call other artifacts from your own VQL using the
-“Artifact.<artifact name>” plugin notation.
-Args to the Artifact() plugin are passed as artifact parameters.
-
-78
-When calling artifacts types are not converted. Make sure you pass the expected types
-
-VQL and times
-Inside the VQL query, variables have strong types. Usually a type is a dict but sometimes it is a something else (Use format="%T")
-Timestamps are given as time.Time types. They have some common methods. VQL can call any method that does not take args:
-Unix, UnixNano - number of seconds since the epoch
-Day, Minute, Month etc - convert time to days minutes etc.
-Timestamps compare to strings...
-
-When times are serialized to JSON they get ISO format strings in UTC.
-79
-
-VQL and times
-To convert to a time type use the timestamp() VQL function
-Takes an epoch or string arg - can be a string or int - tries to do the right thing.
-
-Use the now() function to get the current epoch offset
-
-
-80
-
-Exercise: Identify recent accounts
-Write an artifact to identify local accounts logged in since February
-
-81
-Use the timestamp() function to parse times from seconds, strings, winfiletime etc.
-
-Format time
-
-
-Format time like 4 February 2021 10:23:00
-
-
-82
-
-83
+{{% /notice %}}
 
 Scope lifetime and tempfile()
 The tempfile() function creates a temporary file and automatically removes it when the scope is destroyed.

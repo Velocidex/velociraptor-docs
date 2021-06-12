@@ -1,0 +1,45 @@
+<div class="carousel-row">
+  <script>
+    function selectButton(e) {
+        $(".topic").removeClass("btn-primary");
+        $(e).removeClass("btn-secondary").addClass("btn-primary");
+    };
+  </script>
+  <div class="col-sm-3">
+    {{- range $idx, $element := .Page.Params.carousel -}}
+    {{- if eq $idx 0 -}}
+    <button type="button" class="btn btn-primary btn-lg btn-block topic"
+            data-target="#myCarousel" data-slide-to="{{$idx}}"
+            onClick="selectButton(this)"
+            >{{ $element.name }}</button>
+    {{- else -}}
+    <button type="button" class="btn btn-secondary btn-lg btn-block topic"
+            data-target="#myCarousel" data-slide-to="{{$idx}}"
+            onClick="selectButton(this)"
+            >{{ $element.name }}</button>
+    {{- end -}}
+    {{- end -}}
+  </div>
+  <div id="myCarousel" class="carousel slide col-sm-9">
+    <ol class="carousel-indicators">
+      {{- range $idx, $element := .Page.Params.carousel -}}
+      <li data-target="#myCarousel" data-slide-to="{{ $idx}}"></li>
+      {{- end -}}
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      {{- range $idx, $element := .Page.Params.carousel -}}
+      {{- if eq $idx 0 -}}
+      <div class="item active">
+        {{- else -}}
+        <div class="item">
+          {{- end -}}
+          <div class="content">
+            {{- $element.description -}}
+            <img src="{{- $element.image -}}">
+          </div>
+        </div>
+        {{- end -}}
+      </div>
+    </div>
+  </div>
+</div>

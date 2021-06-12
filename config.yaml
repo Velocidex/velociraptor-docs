@@ -14,6 +14,7 @@ params:
   disableLandingPageButton: true
   custom_css:
     - css/atom-one-light.css
+    - https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css
 
 markup:
   goldmark:
@@ -30,3 +31,5 @@ menu:
       identifier: "ds"
       url: "https://github.com/Velocidex/velociraptor"
       weight: 10
+   -  name: "<i class='fas fa-search'></i> Search"
+      url: "search"
