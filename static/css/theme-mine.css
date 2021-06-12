@@ -387,10 +387,8 @@ code.hljs {
 }
 
 .ThemeSelector {
-    position: absolute;
-    margin-left: -40px;
+    float: right;
 }
-
 
 .vql_type {
     font-family: sans-serif;
@@ -436,4 +434,27 @@ html, body {
 
 .carousel-row {
     margin-top: 40px;
+}
+
+
+div.logo-btn i {
+    float: left;
+    padding-top: 0.1em;
+}
+
+iframe.youtube {
+    height: 60vh;
+    width: 100%;
+}
+
+.carousel-choices {
+    margin-top: 10px;
+}
+
+.carousel-description {
+    height: 6rem;
+}
+
+button.topic {
+    overflow-x: hidden;
 }
