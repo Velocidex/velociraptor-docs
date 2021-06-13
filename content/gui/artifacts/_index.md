@@ -73,7 +73,9 @@ are stored and how to parse them - this is completely unnecessary with
 Velociraptor, since we have a built-in artifact ready to collect these
 tasks!
 
-Start a new collection by clicking the `New Collection` button <i class="fas fa-plus"></i>. This will open the new collection wizard as show below.
+Start a new collection by clicking the `New Collection` button <i
+class="fas fa-plus"></i>. This will open the new collection wizard as
+show below.
 
 ![New Collection Wizard](image73.png)
 

@@ -12,6 +12,7 @@ params:
   disableBreadcrumb: true
   disableNextPrev: true
   disableLandingPageButton: true
+  disableShortcutsTitle: true
   custom_css:
     - css/atom-one-light.css
     - https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css
@@ -27,9 +28,9 @@ markup:
 
 menu:
   shortcuts:
-   -  name: "<i class='fab fa-github'></i> Github repo"
+   -  name: "<i class='fab fa-github'></i>Github repo"
       identifier: "ds"
       url: "https://github.com/Velocidex/velociraptor"
       weight: 10
-   -  name: "<i class='fas fa-search'></i> Search"
+   -  name: "<i class='fas fa-search'></i>Search"
       url: "search"

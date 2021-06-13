@@ -135,126 +135,6 @@ footer.footline {
     border-top: 1px none #183f81;
 }
 
-.calendar-year {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-}
-.calendar-year header {
-    width: 100%;
-}
-
-.calendar-month {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    list-style-type: none;
-    padding: 0px;
-    text-align: center;
-    width: calc(100% / 4);
-    margin: 20px;
-}
-.calendar-month header {
-    width: 100%;
-}
-
-.calendar-weekdays {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-    width: 100%;
-}
-.calendar-weekdays li {
-    width: calc(100% / 7);
-    font-weight: 500;
-    text-transform: uppercase;
-    line-height: 40px;
-    font-size: 10px;
-    opacity: 0.6;
-}
-.calendar-weekdays li.calendar-weekday-sat, .calendar-weekdays li.calendar-weekday-sun {
-    opacity: 1;
-}
-
-.calendar-days {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-}
-.calendar-days li {
-    width: calc(100% / 7);
-}
-
-.calendar-day {
-    line-height: 30px;
-    font-size: 11.1111111111px;
-    text-align: center;
-}
-.calendar-day.calendar-day-future {
-    opacity: 0.4;
-}
-.calendar-day.calendar-day-has-articles {
-    color: #ffffff;
-    position: relative;
-}
-.calendar-day.calendar-day-has-articles::before {
-    content: "";
-    width: 22px;
-    height: 22px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background-color: #ff6600;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    border-radius: 50%;
-}
-.calendar-day.calendar-day-has-articles a {
-    color: #ffffff;
-}
-.calendar-day.calendar-day-has-articles a em {
-    display: none;
-}
-.calendar-day.calendar-day-is-today {
-    position: relative;
-    font-weight: 800;
-    color: #ff6600;
-}
-.calendar-day.calendar-day-is-today::before {
-    content: "";
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 2px solid #ff6600;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    border-radius: 50%;
-}
-
-
-.copyright.angle:before{
-     height: 75px;
-}
-
-
 .vql_type {
     font-family: sans-serif;
     font-size: medium;
@@ -457,4 +337,50 @@ iframe.youtube {
 
 button.topic {
     overflow-x: hidden;
+}
+
+li.dd-item i {
+    width: 32px;
+}
+
+#sidebar ul.topics hr {
+    margin: 10px;
+    border-bottom: none;
+}
+
+
+#shortcuts li {
+    line-height: 2rem;
+    font-size: 1.1rem;
+    overflow: hidden;
+    border-top: 1px solid rgba(59, 59, 59, 0.08);
+    border-bottom: 1px solid rgba(59, 59, 59, 0.08);
+}
+
+#shortcuts h3 {
+    display: none;
+}
+
+#shortcuts i {
+    width: 32px;
+}
+
+.footer-copyright {
+    position: fixed;
+    bottom: 0px;
+    margin-top: 40px;
+    height: 80px;
+    background: black;
+    width: 300px;
+    margin-left: -18px;
+    padding-left: 18px;
+    padding-top: 10px;
+    margin-bottom: -10px;
+    padding-bottom: 10px;
+}
+
+.rapid7 {
+    height: 16px;
+    float: right;
+    padding-right: 20px;
 }

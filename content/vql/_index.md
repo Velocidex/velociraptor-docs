@@ -516,190 +516,152 @@ values and transforms them into a single value.
 
 {{% /notice %}}
 
-Scope lifetime and tempfile()
-The tempfile() function creates a temporary file and automatically removes it when the scope is destroyed.
-Correct usage:
-84
+## VQL control structures
 
-Scope lifetime and tempfile()
-Incorrect usage:
-85
+Let's summarizes some of the more frequent VQL control structures.
 
-VQL control structures
-86
+We already met with the `foreach()` plugin before. The `row` parameter
+can also receive any iterable type (like an array).
 
-Looping over rows
-VQL does not have a JOIN operator - we use the foreach plugin
+### Looping over rows
 
+VQL does not have a JOIN operator - we use the foreach plugin to
+iterate over the results of one query and apply a second query on it.
+
+```sql
 SELECT * FROM foreach(
     row={ <sub query goes here> },
     query={ <sub query goes here >})
+```
 
-The query subquery will be run on each row emitted by the row subquery.
-87
+### Looping over arrays
 
-Looping over arrays
-Sometimes arrays are present in column data. We can iterate over these using the foreach plugin
+Sometimes arrays are present in column data. We can iterate over these
+using the foreach plugin
 
+```sql
 SELECT * FROM foreach(
     row=<An iterable type>,
     query={ <sub query goes here >})
+```
 
-if row is an array the value will be assigned to "_value" as a special placeholder.
+if row is an array the value will be assigned to `_value` as a special placeholder.
 
-88
 
-Conditional: if plugin and function
-The if() plugin and function allows branching in VQL.
+### Conditional: if plugin and function
 
+The `if()` plugin and function allows branching in VQL.
+
+```sql
 SELECT * FROM if(
     condition=<sub query or value>,
     then={ <sub query goes here >},
     else={ <sub query goes here >})
+```
 
-If the condition is a query it is true if it returns any rows. Then we evaluate the then subquery or the else subquery.
+If the condition is a query it is true if it returns any rows. Then we
+evaluate the then subquery or the else subquery. Note that as usual,
+VQL is lazy and therefore the query or expression which is not used
+will not be evaluated.
 
-89
-As usual VQL is lazy - this means that branches that are not taken are essentially free!
+### Conditional: switch plugin
 
-Conditional: switch plugin
-The switch() plugin and function allows multiple branching in VQL.
+The `switch()` plugin and function allows multiple branching in VQL.
 
+```sql
 SELECT * FROM switch(
     a={ <sub query >},
     b={ <sub query >},
     c={ <sub query >})
+```
 
-Evaluate all subqueries in order and when any of them returns rows stop.
+Evaluate all subqueries in order and when any of them returns any rows
+we stop evaluation the rest of the queries.
 
-90
-As usual VQL is lazy - this means that branches that are not taken are essentially free!
 
-Conditional: chain plugin
-The chain() plugin allows multiple queries to be combined.
+As usual VQL is lazy - this means that branches that are not taken are
+essentially free!
 
+### Conditional: chain plugin
+
+The `chain()` plugin allows multiple queries to be combined.
+
+```sql
 SELECT * FROM chain(
     a={ <sub query >},
     b={ <sub query >},
     c={ <sub query >})
+```
 
 Evaluate all subqueries in order and append all the rows together.
 
-91
+## Group by clause
 
-Aggregate functions
-92
-An aggregate VQL function is a function that keeps state between evaluations.
-State is kept in an Aggregate Context
-Aggregate functions are used to calculate values that consider multiple rows.
+A common need in VQL is to use the `GROUP BY` clause to stack all rows
+which have the same value, but what exactly does the `GROUP BY` clause
+do?
 
-Some aggregate functions
-count(), sum(), enumerate(), rate()
+As the name suggests, `GROUP BY` splits all the rows into groups
+called bins where each bin has the same value of as the target
+expression.
 
-Example: Count
-93
-The count() function keeps track of the last number in its aggregate context.
+![Group By](groupby.png)
 
-We can get the row count in that column.
+Consider the query in the example above, the `GROUP BY` clause
+specifies that rows will be grouped where each bin has the same value
+of the `X` column. Using the same table, we can see the first group
+having `X=1` contains 2 rows, while the second group having `X=2`
+contains only a single row.
 
-94
-GROUP BY clause
-The GROUP BY clause causes VQL to create groups of same value rows.
-Each group shares the same aggregate context - but this is different from other groups.
-Groups keep only the last row in that group.
+The `GROUP BY` query will therefore return two rows (one for each
+bin). Each row will contain a single value for the `X` value and one
+of the `Y` values.
 
-Aggregate functions Groups
+{{% notice warning %}}
+
+As the above diagram illustrates, it only makes sense in general to
+select the same column as is being groupped. This is because other
+columns may contain any number of values, but only a single one of
+these values will be returned.
+
+In the above example, selecting the `Y` column is not deterministic
+because the first bin contains several values for `Y`.
+
+Be careful not to rely on the order of rows in each bin.
+
+{{% /notice %}}
+
+### Aggregate functions
+
+Aggregate VQL functions are designed to work with the `GROUP BY`
+clause to operate on all the rows in each bin separately.
+
+Aggregate functions keep state between evaluations. For example
+consider the `count()` function. Each time count() is evaluated, it
+increments a number in its own state.
+
+Aggregate function State is kept in an `Aggregate Context` - a
+separate context for each `GROUP BY` bin. Therefore, the following
+query will produce a count of all the rows in each bin (because each
+bin has a separate state).
+
+```sql
 SELECT X, count() AS Count
 FROM …
 GROUP BY X
-95
-X
-Y
-1
-2
-2
-5
-1
-7
-Bins
-X=1 (Y=2, Y=7)
-X=2 (Y=5)
+```
 
-Example: Count all rows
-The count all rows of a particular value:
+Aggregate functions are used to calculate values that consider
+multiple rows.
 
-SELECT count() AS Count FROM ….
-WHERE ….
-GROUP BY 1
+Some aggregate functions:
 
-This works because it creates a single aggregate context (since 1 is always the same value for all rows) and puts all the rows in it.
-96
+* `count()` counts the total number of rows in each bin.
+* `sum()` adds up a value for an expression in each bin
+* `enumerate()` collect all the values in each bin into an in-memory array
+* `rate()` calculates a rate (first order derivative) between each
+  invocation and its previous one.
 
-Stacking
-Count the number of rows of the same value
-97
+These can be seen in the query below.
 
-98
-
-Event queries and asynchronous VQL
-99
-
-VQL: Event Queries
-Normally a VQL query returns a result set and then terminates.
-However some VQL plugins can run indefinitely or for a long time.
-These are called Event VQL plugins since they can be used to generate events.
-An Event query does not complete on its own - it simply returns partial results until cancelled.
-
-
-VQL plugin
-Query
-Rows
-Partial Result Sets
-Wait time
-Max rows
-VQL: Event Queries
-101
-
-Playing with event queries
-Selecting from clock()
-
-Click the stop button to cancel the query.
-102
-
-Client monitoring architecture
-103
-The client maintains a set of VQL Event Queries
-All run in parallel.
-When any of these produce rows, the client streams them to the server which writes them to the filestore.
-If the client is offline, these will be queued in the client’s local file buffer.
-
-Client
-Event Queries
-Server
-Monitoring Flow
-Server Filestore
-Client monitoring architecture
-104
-Server Updates client’s event queries when the GUI is updated
-Local client buffer
-Events are streamed when the client is online
-
-Example event query
-105
-Watch the System event log and then clear it. Wait for couple minutes.
-
-Conclusions
-106
-VQL is the engine behind Velociraptor!
-This module covered the language in great details
-We learned about the difference between VQL plugins and functions.
-We understood how the scope is used between the different VQL query clauses
-We learned about stored queries as a way of pre-compiling a query to be accessed on demand later.
-
-Conclusions
-107
-We saw how VQL is lazy and will perform the least amount of work necessary to evaluate the query
-We can use this property to control query cost and side effects.
-We learned about some of the most useful VQL plugins (foreach(), switch(), if())
-
-We learned about event queries and how to use asynchronous VQL queries.
+![Aggregate functions](image70.png)

@@ -41,29 +41,29 @@ sources:
 
 The Artifact contains a number of important parameters:
 
-1. Name: The artifact contains a name. By convention the name is
+1. **Name**: The artifact contains a name. By convention the name is
    segmented by dots in a hierarchy. The Name appears in the GUI and
    can be searched on.
-2. Description: Artifacts contain a human readable description. The
+2. **Description**: Artifacts contain a human readable description. The
    description field is also searchable in the GUI and so should
    contain relevant keywords that make the artifact more discoverable.
-3. Type: The type of the Artifact. Since Velociraptor uses VQL in many
+3. **Type**: The type of the Artifact. Since Velociraptor uses VQL in many
    different contexts, the type of the artifact hints to the GUI where
    the artifact is meant to run. For example, a CLIENT artifact is
    meant to be run on the endpoint, while a SERVER artifact is meant
    to be run on the server. The artifact type is only relevant for the
    GUI.
-4. Parameters: An artifact may declare parameters, in which case they
+4. **Parameters**: An artifact may declare parameters, in which case they
    may be set by the GUI user to customize the artifact collection.
-5. Sources: The artifact may define a number of VQL sources to
+5. **Sources**: The artifact may define a number of VQL sources to
    generate result tables. Each source generates a single table. If
    more than one source is given, they must all have unique names.
-6. Precondition: A source may define a precondition query. This query
+6. **Precondition**: A source may define a precondition query. This query
    will be run prior to collecting the source. If it returns no rows
    then the collection will be skipped. Preconditions make it safe to
    collect artifacts from all hosts (e.g. in a hunt), and ensure that
    only artifacts that make sense to collect are actually run.
-7. Query: The query that will be used to collect that source. Note
+7. **Query**: The query that will be used to collect that source. Note
    that since each source **must** produce a single table, the query
    should have exactly one `SELECT` clause and it must be at the end
    of the query potentially following any `LET` queries.
@@ -84,129 +84,72 @@ Prior to launching the query on the endpoint, Velociraptor will
 populate the scope with the parameters. This allows the VQL query to
 directly access the parameters.
 
-Artifact parameters are sent to the client as strings
-The client automatically parses them into a VQL type depending on the parameter's type specification.
-The GUI uses type specification to render an appropriate UI
+Artifact parameters are sent to the client as strings The client
+automatically parses them into a VQL type depending on the parameter's
+type specification.  The GUI uses type specification to render an
+appropriate UI
 
+### Parameter types
 
-Parameter types
-Currently these are supported:
-int, integer: The parameter is an integer
-timestamp: The parameter is a timestamp
-csv: Parameter appears as a list of dicts formatted as a CSV
-json: Parameter is a JSON encoded dict
-json_array: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
-bool: The parameter is a boolean (TRUE/YES/Y/OK)
+Currently the following parameter types are supported
 
-70
+* **int, integer**: The parameter is an integer
+* **timestamp**: The parameter is a timestamp
+* **csv**: Parameter appears as a list of dicts formatted as a CSV
+* **json**: Parameter is a JSON encoded dict
+* **json_array**: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
+* **bool**: The parameter is a boolean (TRUE/YES/Y/OK)
 
-71
-Exercise: Create an artifact
-Convert our previous VQL to an artifact. Developing artifacts is easy to do:
-Go to the View Artifacts screen
-Select Add new artifact
-Modify the template, paste your VQL in it.
-When you save the artifact the artifact will be ready for collection.
+### Example
 
+Let's take a look at a typical artifact `Windows.Detection.Mutants`.
 
+![Mutants](mutants.png)
 
-72
-Make a WMI Subprocess artifact
-We generally want to make artifacts reusable:
+This artifact uncovers the mutants (named mutexes) on a system, using
+two methods. First we enumerate all handles, and check which process
+is holding a handle to a mutant object. Alternatively we enumerate the
+kernel object manager to receive the same information.
 
-Artifacts take parameters that users can customized when collecting
-The parameters should have obvious defaults
-Artifacts have precondition queries that determine if the artifact will run on the endpoint.
-Description field is searchable so make it discoverable...
+Therefore this artifact contains two sources - each gets similar
+information in a different way. A user who is just interested in
+listing the Mutants on an endpoint would probably need to see both
+results.
 
-73
-name: Custom.Windows.Detection.WmiSubprocess
-description: |
-   Detect processes spawned from WMI
+We also see some parameters declared to allow a user to filter by
+process name or mutant name.
 
-# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
-type: CLIENT
+## Artifact writing tips
 
-parameters:
-   - name: ProcessName
-     default: cmd.exe
+Typically we have a new idea for a new detection. The first step is to
+develop the VQL that will detect the anomaly by writing the VQL in a
+notebook cell on the target operating system itself (usually we use
+`velociraptor gui` to start a new local server).
 
-sources:
-  - precondition:
-      SELECT OS From info() where OS = 'windows' OR OS = 'linux' OR OS = 'darwin'
+While developing the VQL, Use the `log()` VQL function librally to
+provide print debugging.
 
-    query: |
-        SELECT Name, Pid, Username, CommandLine, {
-         SELECT Name, Pid FROM pslist(pid=Ppid)
-        } As Parent
-        FROM pslist()
-        WHERE Name =~ ProcessName AND Parent.Name =~ "Wmi"
+Use format(format="%T %v", args=[X, X]) to learn about a value's type
+and value 77
 
+## Calling artifacts from VQL
 
-
-74
-Your artifact is ready to collect
-Let's create a hunt to find all currently running command shells from wmi across our entire deployment.
-
-Find out in seconds...
-75
-
-Artifact writing tips
-Use the notebook to write VQL on the target platform.
-Start small - one query at a time
-Inspect the result, figure out what information is available - refine
-Use LET stored queries generously.
-You can essentially comment out queries by using LET - eg.
-    LET X = SELECT * FROM pslist()
-    LET Y = SELECT * FROM netstat()
-    SELECT * FROM X
-76
-Will not run since Y is lazy
-
-Artifact writing tips
-Use the log() VQL function to provide print debugging.
-Use format(format="%T %v", args=[X, X]) to learn about a value's type and value
-77
-
-Calling artifacts from VQL
 You can call other artifacts from your own VQL using the
-“Artifact.<artifact name>” plugin notation.
-Args to the Artifact() plugin are passed as artifact parameters.
+`Artifact.<artifact name>` plugin notation. Args to the `Artifact()`
+plugin are passed as artifact parameters.
 
-78
-When calling artifacts types are not converted. Make sure you pass the expected types
+![Calling artifacts](calling_artifacts.png)
 
-VQL and times
-Inside the VQL query, variables have strong types. Usually a type is a dict but sometimes it is a something else (Use format="%T")
-Timestamps are given as time.Time types. They have some common methods. VQL can call any method that does not take args:
-Unix, UnixNano - number of seconds since the epoch
-Day, Minute, Month etc - convert time to days minutes etc.
-Timestamps compare to strings...
+When calling artifacts types are not converted. Make sure you pass the
+expected types
 
-When times are serialized to JSON they get ISO format strings in UTC.
-79
+{{% notice info %}}
 
-VQL and times
-To convert to a time type use the timestamp() VQL function
-Takes an epoch or string arg - can be a string or int - tries to do the right thing.
+When collecting an artifact from the client, the server **compiles**
+the artifact and it's dependencies into raw VQL statements and sends
+these to the client for evaluation. We never rely on the artifact
+definitions embedded in the client itself - instead we always send the
+compiled VQL to the client. This allows us to upgrade artifact
+definitions on the server without needing to update the client itself.
 
-Use the now() function to get the current epoch offset
-
-
-80
-
-Exercise: Identify recent accounts
-Write an artifact to identify local accounts logged in since February
-
-81
-Use the timestamp() function to parse times from seconds, strings, winfiletime etc.
-
-Format time
-
-
-Format time like 4 February 2021 10:23:00
-
-
-82
-
-83
+{{% /notice %}}
