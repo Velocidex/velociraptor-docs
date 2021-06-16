@@ -13,6 +13,7 @@ params:
   disableNextPrev: true
   disableLandingPageButton: true
   disableShortcutsTitle: true
+  editURL: https://github.com/scudette/velociraptor-docs/edit/master/content/
   custom_css:
     - css/atom-one-light.css
     - https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css

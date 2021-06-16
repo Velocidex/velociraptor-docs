@@ -100,7 +100,7 @@ you frequently use the same folder you might find missing files. You
 can specify a different data store directory using the `--datastore`
 flag to work with a persistently stored data store.  {{% /notice %}}
 
-### Command deployment scenarios
+### Common deployment scenarios
 
 {{% children %}}
 

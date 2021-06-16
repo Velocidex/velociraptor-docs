@@ -107,7 +107,7 @@ disk clusters.
 
 ### The registry accessor
 
-To accessor Uses the OS API to access the registry hives. The top
+This accessor uses the OS API to access the registry hives. The top
 level directory is a list of the common hives (e.g. `HKEY_USERS`). The
 accessor creates a registry abstraction to make it appear as a
 filesystem:
@@ -123,8 +123,8 @@ filesystem:
 
 ## Raw registry parsing
 
-In the previous section we looked for a key in the HKEY_CURRENT_USER
-hive.  Any artifacts looking in HKEY_USERS using the Windows API are
+In the previous section we looked for a key in the `HKEY_CURRENT_USER`
+hive.  Any artifacts looking in `HKEY_USERS` using the Windows API are
 limited to the set of users currently logged in! We need to parse the
 raw hive to reliably recover all users.
 
