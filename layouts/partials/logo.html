@@ -1,14 +1,38 @@
 <script>
   function darkmode() {
-      alert("Switch to dark mode");
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
   };
+  function lightmode() {
+      $("body").removeClass("dark").addClass("light");
+      document.cookie = "theme=lightmode;path=/";
+  };
+
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+    darkmode();
+  } else {
+    lightmode();
+  }
+  
 </script>
 
-<div class="btn btn-default ThemeSelector"
+<div class="btn btn-default ThemeSelector darkmode"
      onClick="darkmode()"
      >
   <i class="fas fa-moon"></i>
+  
 </div>
+
+<div class="btn btn-default ThemeSelector lightmode"
+     onClick="lightmode()"
+     >
+     <i class="fas fa-sun"></i>
+  
+</div>
+
 <a href="{{ .Site.BaseURL }}">
   <img src="{{ .Site.BaseURL }}/images/logo.svg" />
 </a>
+
+
