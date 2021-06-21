@@ -1,33 +1,10 @@
-:root{
-    --MAIN-TEXT-color:#323232; /* Color of text by default */
-    --MAIN-TITLES-TEXT-color: #000; /* Color of titles h2-h3-h4-h5 */
-    --MAIN-LINK-color:#1C90F3; /* Color of links */
-    --MAIN-LINK-HOVER-color:#167ad0; /* Color of hovered links */
-    --MAIN-ANCHOR-color: #1C90F3; /* color of anchors on titles */
 
-    --MENU-HEADER-BG-color:#fff; /* Background color of menu header */
-    --MENU-HEADER-BORDER-color:#14de57; /*Color of menu header border */
 
-    --MENU-SEARCH-BG-color:#fff; /* Search field background color (by default borders + icons) */
-    --MENU-SEARCH-BOX-color: #000; /* Override search field border color */
-    --MENU-SEARCH-BOX-ICONS-color: #111; /* Override search field icons color */
-
-    --MENU-SECTIONS-ACTIVE-BG-color:#fcfcfc; /* Background color of the active section and its childs */
-    --MENU-SECTIONS-BG-color:#eaeaea; /* Background color of other sections */
-    --MENU-SECTIONS-LINK-color: #000; /* Color of links in menu */
-    --MENU-SECTIONS-LINK-HOVER-color: #777;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-ACTIVE-CATEGORY-color: #000; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #eaeaea; /* Color of background for the active category (only) */
-
-    --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
-    --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */
-
-    --CODE-SECTION-BG-color: #f4f4f4;
-}
-
-body {
+html body {
     color: var(--MAIN-TEXT-color) !important;
+    background-color: var(--MAIN-TEXT-background-color);
 }
+
 
 textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, select[multiple=multiple]:focus {
     border-color: none;
@@ -38,8 +15,12 @@ h2, h3, h4, h5 {
     color: var(--MAIN-TITLES-TEXT-color) !important;
 }
 
-a {
+body a {
     color: var(--MAIN-LINK-color);
+}
+
+body a:hover {
+    color: var(--MAIN-LINK-HOVER-color);
 }
 
 .anchor {
@@ -65,6 +46,7 @@ a:hover {
     transition: width 0.5s ease;
     background-color: var(--MAIN-LINK-HOVER-color);
 }
+
 
 #sidebar {
         background-color: var(--MENU-SECTIONS-BG-color);
@@ -116,6 +98,7 @@ h1 {
 
 pre {
     background: var(--CODE-SECTION-BG-color);
+   
 }
 
 pre code {
@@ -125,6 +108,19 @@ pre code {
 div.progress  {
     height: auto;
     overflow: auto;
+    background-color: var(--progress);
+}
+
+body.dark span.hljs-keyword {
+    color: #00E5FF55;
+}
+
+body.light code.hljs {
+    color: black;
+}
+
+body.dark code.hljs {
+    color: white;
 }
 
 #body img {
@@ -132,14 +128,15 @@ div.progress  {
 }
 
 footer.footline {
-    border-top: 1px none #183f81;
+    border-top: 1px none;
+    border-top: var(--footer-color);
 }
 
 .vql_type {
     font-family: sans-serif;
     font-size: medium;
     text-align: center;
-    color: red;
+    color: var(--vql);
 }
 
 h4.subtitle {
@@ -163,12 +160,12 @@ div.mynotices > div {
     font-size: 1rem;
     margin-top: 0rem;
     margin-bottom: 0rem;
-    color: #666;
+    color: var(--mynotice);
 }
 div.mynotices > div:first-child:before {
     position: absolute;
     top: 2px;
-    color: #fff;
+    color: var(--mynotices-first-child);
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: "\f06a";
@@ -181,33 +178,33 @@ div.mynotices.info > div:first-child:after {
 div.mynotices > div:first-child:after {
     position: absolute;
     top: 2px;
-    color: #fff;
+    color: var(--mynotices-first-child);
     left: 2rem;
 }
 div.mynotices.info > div {
-    border-top: 30px solid #F0B37E;
-    background: #FFF2DB;
+    border-top: 30px solid var(--mynotice-info-border);
+    background: var(--mynotice-info-background);
 }
 div.mynotices.info > div:first-child:after {
     content: 'Info';
 }
 div.mynotices.warning > div {
-    border-top: 30px solid rgba(217, 83, 79, 0.8);
-    background: #FAE2E2;
+    border-top: 30px solid var(--mynotice-warning-border);
+    background: var(--mynotice-warning-background);
 }
 div.mynotices.warning > div:first-child:after {
     content: 'Warning';
 }
 div.mynotices.note > div {
-    border-top: 30px solid #6AB0DE;
-    background: #E7F2FA;
+    border-top: 30px solid var(--mynotice-note-border);
+    background: var(--mynotice-note-background);
 }
 div.mynotices.note > div:first-child:after {
     content: 'Note';
 }
 div.mynotices.tip > div {
-    border-top: 30px solid rgba(92, 184, 92, 0.8);
-    background: #E6F9E6;
+    border-top: 30px solid var(--mynotice-tip-border);
+    background: var(--mynotice-tip-background);
 }
 div.mynotices.tip > div:first-child:after {
     content: 'Tip';
@@ -225,7 +222,7 @@ a[data-featherlight] img {
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
-    color: #404040;
+    color: var(--h-num);
     text-align: left;
     line-height: 1.2;
     display: block;
@@ -247,8 +244,8 @@ div#header {
 
 ul.topics li {
     overflow: hidden;
-    border-top: 1px solid rgba(59, 59, 59, 0.08);
-    border-bottom: 1px solid rgba(59, 59, 59, 0.08);
+    border-top: 1px solid var(--topic-top);
+    border-bottom: 1px solid var(--topic-bottom);
 }
 
 .copy-to-clipboard {
@@ -264,6 +261,7 @@ pre:hover .copy-to-clipboard {
 
 code.hljs {
     background-color: var(--CODE-SECTION-BG-color);
+    color: white ;
 }
 
 .ThemeSelector {
@@ -274,7 +272,7 @@ code.hljs {
     font-family: sans-serif;
     font-size: medium;
     text-align: center;
-    color: red;
+    color: var(--vql);
 }
 
 .pull-right {
@@ -353,8 +351,8 @@ li.dd-item i {
     line-height: 2rem;
     font-size: 1.1rem;
     overflow: hidden;
-    border-top: 1px solid rgba(59, 59, 59, 0.08);
-    border-bottom: 1px solid rgba(59, 59, 59, 0.08);
+    border-top: 1px solid var(--shortcut-border-t);
+    border-bottom: 1px solid var(--shortcut-border-d);
 }
 
 #shortcuts h3 {
@@ -370,7 +368,7 @@ li.dd-item i {
     bottom: 0px;
     margin-top: 40px;
     height: 80px;
-    background: black;
+    background: var(--footer-background);
     width: 300px;
     margin-left: -18px;
     padding-left: 18px;
