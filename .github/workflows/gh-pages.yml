@@ -21,6 +21,9 @@ jobs:
           hugo-version: 'latest'
           # extended: true
 
+      - name: Prepare
+        run: python scripts/exchange_index.py
+
       - name: Build
         run: hugo --minify
 
