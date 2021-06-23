@@ -40,7 +40,7 @@ for root, dirs, files in os.walk(artifact_root_directory):
       index.append({
         "title": data["name"],
         "description": data["description"],
-        "link": os.path.join("exchange/artifacts/pages/", base_name).replace("\\", "/"),
+        "link": os.path.join("/exchange/artifacts/pages/", base_name).replace("\\", "/"),
         "tags": [],
         "author": "",
         "author_link": "",
