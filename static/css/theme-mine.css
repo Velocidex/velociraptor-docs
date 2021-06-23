@@ -329,6 +329,8 @@ iframe.youtube {
     margin-top: 10px;
 }
 
+
+
 .carousel-description {
     height: 6rem;
 }
@@ -382,3 +384,64 @@ li.dd-item i {
     float: right;
     padding-right: 20px;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+   div .border {
+      border-radius: 5px;
+      border: 30px black;
+  }
+
+  #myUL {
+    /* Remove default list styling */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #myUL li a {
+    margin-top: -1px; /* Prevent double borders */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove default text underline */
+    font-size: 18px; /* Increase the font-size */
+    display: block; /* Make it into a block element to fill the whole list */
+  }
+  
+  #myUL li a:hover:not(.header) {
+    background-color: #eee; /* Add a hover effect to all links, except for headers */
+  }
+  .linkcolour {
+      color: var(--MAIN-LINK-color);
+      word-spacing: 3px;
+  }
+  body.dark .color {
+      background-color: var(--MAIN-TEXT-background-color);
+      color: white;
+  }
+  div.search_results img.user-avatar {
+    float: right;
+    padding: 0;
+    margin: 0 !important;
+    height: 32px;
+    display: flex;
+  }
+  .space {
+    word-spacing: 3px;
+  }

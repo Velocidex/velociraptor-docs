@@ -57,3 +57,8 @@ body.dark #top-bar {
 body.dark div.btn.darkmode {
     display: none !important;
 }
+
+body.dark .carousel-choices .btn {
+    margin-top: 10px;
+    color: #212121;
+}
