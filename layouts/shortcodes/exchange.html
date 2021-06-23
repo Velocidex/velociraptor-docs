@@ -1,0 +1,228 @@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="input-group">
+  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Query Hub" aria-describedby="basic-addon2">
+  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+</div>
+<br>
+
+<!-- Single button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a onclick="Linux()"href="#">Linux</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div> 
+
+<!-- Single button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a onclick="Linux()"href="#">Linux</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div> 
+
+<!-- Single button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a onclick="Linux()"href="#">Linux</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div> 
+<br>
+<br>
+<div class="search_results"></div>
+
+<script>
+let all_data = [];
+
+$.ajax({
+  url: "/exchange/data.json",
+}).done(function( data ) {
+  console.log(data);
+  all_data = data;
+  DrawResults(data);
+});
+
+function doSearch() {
+  // Declare variables
+  let input = document.getElementById('myInput');
+  let filter = input.value.toUpperCase();
+
+  let result = [];
+  for(let i=0;i<all_data.length; i++) {
+    let item = all_data[i];
+
+    if (item.title.toUpperCase().includes(filter)) {
+      result.push(item);
+    }
+  };
+  console.log(result);
+  DrawResults(result);
+}
+
+function DrawResults(data) {
+  $(".search_results").empty();
+
+  for(let i=0;i<data.length; i++) {
+    let item = data[i];
+    let template = $(`<div class="panel panel-default color">
+  <div class="panel-heading color">
+    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+  </div>
+  <div class="panel-body color">
+<div class="border color">
+		<div class="border color">
+			<div class="idea-inner-text-main color">
+				<br>
+				<span class="user-name" href="">Submitted by <a class="user-name-link"></a>
+        <img class="user-avatar inline">
+        <p></p></span>
+                    <p class="description "></p>
+				<p class="idea-tag space">
+        </p>
+      </div>
+    </div>
+  </div>
+</div>`);
+
+    template.find(".title").append(item.title);
+    template.find(".user-name-link").append(item.author);
+    template.find(".description").append(item.description);
+    template.find(".user-name-link").attr("href", item.author_link);
+    template.find(".user-avatar").attr("src", item.author_avatar);
+    template.find(".title").attr("href", item.link);
+
+    console.log(item);
+    for (let j=0; j<item.tags.length; j++) {
+      let tag = item.tags[j];
+      console.log(tag);
+      template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
+    }
+    let new_item = $(".search_results").append(template);
+  }
+};
+
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('myInput');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myUL");
+  li = ul.getElementsByTagName('li');
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+function community() { //these are here to add quick buttons to add a phrase into the search engine
+    ;
+}
+</script>
+
+
+
+
+
+
+
+
+<!--<input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Query Exchange" aria-describedby="basic-addon2">-->
+<!--<ul id="myUL">
+  <li><div class="panel panel-default color">
+  <div class="panel-heading color">
+    <h3 class="panel-title color"><a href="" title="MacOS - List Install history from InstallHistory.plist"><h2>OSe - List Install history from <br>InstallHistory.plist</h2></h3></a>
+  </div>
+  <div class="panel-body color">
+<div class="border color">
+		<div class="border color">
+			<div class="idea-inner-text-main color">
+				<br>
+				<span class="lia-user-name">Submitted by <a href="/t5/user/viewprofilepage/user-id/59007" class="lia-user-name-link">cearl</a>  2 weeks ago <p></p></span>
+                    <p>Description: Pulls all install history from MacOS - tested on Catalina and Big Sur. What The Data Sho...</p>
+				<p class="idea-tag">
+               <a onclick="Community()"><i class="linkcolour">Community</i></a>
+               <a onclick="IT_Hygiene()"><i class="linkcolour">IT Hygiene</i></a>
+               <a onclick="Mac()"><i class="linkcolour">Mac</i></a>
+                </p>
+            </div>
+	    </div>
+  </div>
+</div></li>
+<li><div class="panel panel-default color">
+  <div class="panel-heading color">
+    <h3 class="panel-title color"><a href="https://github.com/scudette/velociraptor-docs"><h2 class="color">Velociraptor - Where can I find where <br> to edit in the website?</h2></h3></a>
+  </div>
+  <div class="panel-body color">
+<div class="border">
+		<div class="border">
+			<div class="idea-inner-text-main">
+				<br>
+				<span class="color">Submitted by <a href="https://github.com/ffh571" class="color lia-user-name-link highlight">ffh571</a><p></p></span>
+                    <p>Description: Shows us where to find github which is used to edit</p>
+				<p class="">
+               <a onclick="Community()"><i class="linkcolour">Community</i></a>
+               <a onclick="Website()"><i class="linkcolour">Website</i></a>
+               <a onclick="Github()"><i class="linkcolour">Github</i></a>
+                </p>
+            </div>
+	    </div>
+  </div>
+</div></li>
+  <li><a href="#">Billy</a></li>
+  <li><a href="#">Bob</a></li>
+
+  <li><a href="#">Calvin</a></li>
+  <li><a href="#">Christina</a></li>
+  <li><a href="#">Cindy</a></li>-->
+
+
+<!--<li><div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><a href="link" title="? - List Install history from InstallHistory.plist"><h2>OSe - List Install history from <br>InstallHistory.plist</h2></h3></a>
+  </div>
+  <div class="panel-body">
+<div class="border">
+		<div class="border">
+			<div class="idea-inner-text-main">
+				<br>
+				<span class="lia-user-name">Submitted by <a href="/t5/user/viewprofilepage/user-id/59007" class="lia-user-name-link">cearl</a>  2 weeks ago <p></p></span>
+                    <p>Description: Pulls all install history from MacOS - tested on Catalina and Big Sur. What The Data Sho...</p>
+				<p class="idea-tag">
+               <a onclick="Community()"><i class="linkcolour">Community</i></a>
+               <a onclick="IT_Hygiene()"><i class="linkcolour">IT Hygiene</i></a>
+               <a onclick="Mac()"><i class="linkcolour">Mac</i></a>
+                </p>
+            </div>
+	    </div>
+  </div>
+</div></li>-->
+
+</ul>
