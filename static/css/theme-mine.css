@@ -402,9 +402,9 @@ li.dd-item i.fa-sm {
 .dropdown {
     position: relative;
     display: inline-block;
-}
-
-.dropdown-content {
+  }
+  
+  .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -412,47 +412,44 @@ li.dd-item i.fa-sm {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 12px 16px;
     z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
+  }
+  
+  .dropdown:hover .dropdown-content {
     display: block;
-}
+  }
+  
+   div .border {
+      border-radius: 5px;
+      border: 30px black;
+  }
 
-div .border {
-    border-radius: 5px;
-    border: 30px black;
-}
-
-#myUL {
+  #myUL {
     /* Remove default list styling */
     list-style-type: none;
     padding: 0;
     margin: 0;
-}
-
-#myUL li a {
+  }
+  
+  #myUL li a {
     margin-top: -1px; /* Prevent double borders */
     padding: 12px; /* Add some padding */
     text-decoration: none; /* Remove default text underline */
     font-size: 18px; /* Increase the font-size */
     display: block; /* Make it into a block element to fill the whole list */
-}
-
-#myUL li a:hover:not(.header) {
+  }
+  
+  #myUL li a:hover:not(.header) {
     background-color: #eee; /* Add a hover effect to all links, except for headers */
-}
-
-.linkcolour {
-    color: var(--MAIN-LINK-color);
-    word-spacing: 3px;
-}
-
-body.dark .color {
-    background-color: var(--MAIN-TEXT-background-color);
-    color: white;
-}
-
-div.search_results img.user-avatar {
+  }
+  .linkcolour {
+      color: var(--MAIN-LINK-color);
+      word-spacing: 3px;
+  }
+  body.dark .color {
+      background-color: var(--MAIN-TEXT-background-color);
+      color: white;
+  }
+  div.search_results img.user-avatar {
     float: right;
     padding: 0;
     margin: 0 !important;
