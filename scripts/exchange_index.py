@@ -40,7 +40,7 @@ for root, dirs, files in os.walk(artifact_root_directory):
       index.append({
         "title": data["name"],
         "description": data["description"],
-        "link": os.path.join(artifact_root_directory, base_name).replace("\\", "/"),
+        "link": os.path.join("exchange/artifacts/pages/", base_name).replace("\\", "/"),
         "tags": [],
         "author": "",
         "author_link": "",
@@ -56,6 +56,7 @@ with open(output_data_path, "w") as fd:
   print("Writing data.json in %s" % output_data_path)
 
 
-# Remove this file so the site may be pushed correctly.
-os.remove("static/exchange/.gitignore")
-os.remove(artifact_root_directory + "/.gitignore")
+if os.getenv('CI'):
+   # Remove this file so the site may be pushed correctly.
+   os.remove("static/exchange/.gitignore")
+   os.remove(artifact_root_directory + "/.gitignore")
