@@ -54,3 +54,8 @@ for root, dirs, files in os.walk(artifact_root_directory):
 with open(output_data_path, "w") as fd:
   fd.write(json.dumps(index))
   print("Writing data.json in %s" % output_data_path)
+
+
+# Remove this file so the site may be pushed correctly.
+os.remove("static/exchange/.gitignore")
+os.remove(artifact_root_directory + "/.gitignore")
