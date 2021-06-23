@@ -35,5 +35,3 @@ menu:
       identifier: "ds"
       url: "https://github.com/Velocidex/velociraptor"
       weight: 10
-   -  name: "<i class='fas fa-search'></i>Search"
-      url: "search"

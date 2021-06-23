@@ -16,8 +16,8 @@
     --MENU-SECTIONS-BG-color:#eaeaea; /* Background color of other sections */
     --MENU-SECTIONS-LINK-color: #000; /* Color of links in menu */
     --MENU-SECTIONS-LINK-HOVER-color: #777;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-ACTIVE-CATEGORY-color: #000; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #eaeaea; /* Color of background for the active category (only) */
+    --MENU-SECTION-ACTIVE-CATEGORY-color: #fcfcfc; /* Color of active category text */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #aaaaaa; /* Color of background for the active category (only) */
 
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */

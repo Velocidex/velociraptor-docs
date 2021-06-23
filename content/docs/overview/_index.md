@@ -3,7 +3,6 @@ title = "Velociraptor Overview"
 date = 2021-06-09T02:33:37Z
 weight = 5
 chapter = false
-#pre = "<b>1. </b>"
 +++
 
 Velociraptor is a unique, advanced open-source endpoint monitoring,

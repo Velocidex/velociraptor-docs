@@ -1,5 +1,5 @@
 ---
-title: "Searching Files"
+title: "Searching Filenames"
 date: 2021-06-12T23:25:17Z
 draft: false
 weight: 20
@@ -121,168 +121,87 @@ filesystem:
 * Can escape components with `/` using quotes
 `HKEY_LOCAL_MACHINE\Microsoft\Windows\"http://www.microsoft.com/"`
 
-## Raw registry parsing
+### Raw registry parsing
 
 In the previous section we looked for a key in the `HKEY_CURRENT_USER`
 hive.  Any artifacts looking in `HKEY_USERS` using the Windows API are
 limited to the set of users currently logged in! We need to parse the
 raw hive to reliably recover all users.
 
-Raw registry parsing
-Each user’s setting is stored in:
-      C:\Users\<name>\ntuser.dat
+Each user’s setting is stored in `C:\\Users\\<name>\\ntuser.dat` which
+is a raw registry hive file format. We can parse this file using the
+`raw_reg` accessor.
 
-It is a raw registry hive file format. We need to use raw_reg accessor.
+When we need to parse a key or value using the raw registry we need to
+provide it with 3 pieces of information:
 
-The raw reg accessor uses a URL scheme to access the underlying file.
+1. The Registry hive file to parse (**path**)
+2. The Accessor to open that file (**scheme**)
+3. The Key or Value path within the registry file to open (**fragment**)
 
+Since the accessor can only receive a single string (file path), we
+pass these three pieces of information using a URL notation.
 
+{{% notice warning %}}
 
-14
+Do not attempt to build the URL using string concatenation because
+this will fail to escape properly. Always use the `url()` VQL function
+to build the URL for use by the raw_reg accessor.
 
-15
+{{% /notice %}}
 
-16
-URL notation for accessors
-Some accessors need to delegate their access to other accessors
-For example registry parser needs to open the file using another accessor. Therefore the path they receive is interpreted as a URL with three parts:
-scheme - this is the name of the underlying accessor
-path - this will be passed to the underlying accessor to get the file to parse.
-fragment - this will be interpreted as a path within the parsed file.
+![Raw Registry](raw_reg.png)
 
-17
-URL notation for accessors
-Escaping rules for urls are complex. We recommend using the url() VQL function to construct the url from its parts - especially when you dont control the filename itself.
+In the above example, we specify to the `glob()` plugin that we want
+to open the raw registry file at `C:\\Users\\Mike\\ntuser.dat` and
+glob for the pattern `/*` within it.
 
-url(scheme='file', path='C:/Users/test/ntuser.dat', fragment='/**/Run/*').String
+Note that the FullPath returned by the accessor is also in URL
+notation. This is done so that you can feed the FullPath directly to
+any plugin that uses filenames without conversion - since the raw
+registry accessor can read the urls it is producing.
+
+If you need to extract the key path within the registry hive, you can
+use the `url()` function with the `parse` argument to parse the url
+again. The `Fragment` field represents the key path.
+
+```text
+url(scheme='file', path='C:/Users/test/ntuser.dat', fragment='/**/Run/*')
 
 file:///C:/Users/test/ntuser.dat#/**/Run/*
+```
 
-Exercise: Hash Run keys for users
-Repeat the previous exercise but this time extract user’s Run keys from ntuser.dat.
-Also calculate the hash of the target binary.
-18
+#### Example: Find autorun files from ntuser.dat
 
-The ‘data’ accessor
-VQL contains many plugins that work on files.
-Sometimes we load data into memory as a string.
-It is handy to be able to use all the normal file plugins with literal string data - this is what the data accessor is for.
+Let's combine the above query to search all Run keys in all user's
+ntuser.dat files.
 
-The data accessor creates an in memory file-like object from the filename data.
-19
+```sql
+SELECT * FROM foreach(
+row={
+   SELECT FullPath AS NTUserPath FROM glob(globs="C:/Users/*/ntuser.dat")
+}, query={
+   SELECT NTUserPath, url(parse=FullPath).Fragment AS Value, Mtime, Data.value
+   FROM glob(
+       globs=url(scheme="file", path=NTUserPath,
+                 fragment="SOFTWARE/Microsoft/Windows/**/Run/*"),
+       accessor="raw_reg")
+})
+```
 
-20
+We glob for ntuser.dat files in all user's home directory, then
+foreach one of those, we search the raw registry hive for values under
+the Run or RunOnce key.
 
-21
-Using data accessor as parameter
-Sometimes we would like to give an artifact structured data to use.
-Humans like to work with CSV files.
-We can use parse_csv(accessor='data'.. ) to accept user input.
+![Raw Registry Run keys](raw_reg_run.png)
 
-22
-GlobSearch is a user provided CSV formatted string. It is easy for users to add another glob to the list.
+### The "data" accessor
 
-Artifact with csv type parameters
-If a parameter is specified with a type of CSV, Velociraptor will automatically apply the previous transformation - no need to do this by hand any more.
-23
+VQL contains many plugins that work on files. Sometimes we load data
+into memory as a string.  It is handy to be able to use all the normal
+file plugins with literal string data - this is what the `data`
+accessor is for - when the data accessor is used, it creates an
+in-memory file with the content of the file being the string that is
+passed as the filename.
 
-24
-Setting a parameter of type csv presents a GUI for the user and automatically parses it from a string.
-
-25
-Hash all files provided in the globs
-Create an artifact that hashes files found by user provided globs.
-
-Searching data
-26
-
-27
-Searching data
-A powerful DFIR technique is searching bulk data for patterns
-Searching for CC data in process memory
-Searching for URLs in process memory
-Searching binaries for malware signatures
-Searching registry for patterns
-
-Bulk searching helps to identify evidence without needing to parse file formats
-
-YARA - The swiss army knife
-YARA is a powerful keyword scanner
-Uses rules designed to identify binary patterns in bulk data
-YARA is optimized to scan for many rules simultaneously.
-Velociraptor supports YARA scanning of bulk data (via accessors) and memory.
-
-yara() and proc_yara()
-28
-
-YARA rules
-rule X {
-   strings:
-       $a = “hello” nocase
-       $b = “Goodbye” wide
-       $c = /[a-z]{5,10}[0-9]/i
-
-   condition:
-       $a and ($b or $c)
-}
-29
-
-Exercise: drive by download
-You suspect a user was compromised by a drive by download (i.e. they clicked and downloaded malware delivered by mail, ads etc).
-You think the user used the Edge browser but you have no idea of the internal structure of the browser cache/history etc.
-Write an artifact to extract potential URLs from the Edge browser directory (also where is it?)
-30
-
-Step 1: Figure out where to look
-31
-
-32
-Looks like somewhere in C:\Users\<name>\AppData\Local\Microsoft\Edge\**
-
-Step 2: Recover URLs
-We don't exactly understand how Edge stores data but we know roughly what a URL is supposed to look like!
-Yara is our sledgehammer !
-
-rule URL {
-  strings: $a = /https?:\\/\\/[a-z0-9\\/+&#:\\?.-]+/i
-  condition: any of them
-}
-33
-
-Step 3: Let’s do this!
-34
-
-35
-
-36
-
-37
-YARA best practice
-You can get yara rules from many sources (threat intel, blog posts etc)
-YARA is really a first level triage tool:
-Depending on signature  many false positives expected
-Some signatures are extremely specific so make a great signal
-Try to collect additional context around the hits to eliminate false positives.
-Yara scanning is relatively expensive! consider more targeted glob expressions and client side throttling since usually YARA scanning is not time critical.
-
-
-Uploading files
-38
-
-Collecting files
-Velociraptor can collect file data.
-Over the network
-Locally to a collection zip file.
-Driven by VQL
-
-The upload() VQL function copies a file using an accessor to the relevant container
-39
-
-Exercise
-Collect all executables in users’ home directory
-
-
-Write your own VQL by combining glob() and upload()
-40
-
-41
+This allows us to use strings in plugins like `parse_csv()`

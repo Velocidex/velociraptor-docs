@@ -1,9 +1,9 @@
 ---
-title: "Search this site"
+title: "Search"
 date: 2021-06-12T06:14:26Z
 draft: false
-hidden: true
-weight: 100
+weight: 400
+pre: "<i class='fas fa-search'></i>"
 ---
 
 
