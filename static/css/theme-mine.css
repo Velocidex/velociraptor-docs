@@ -459,25 +459,9 @@ li.dd-item i.fa-sm {
 
 .space {
     word-spacing: 3px;
-}
+  }
 
-#sidebar ul li.dd-item {
-    width: 100%;
-}
-
-#sidebar ul li.dd-item a {
-    display: inline;
-}
-
-#sidebar ul.topics > li.parent div, #sidebar ul.topics > li.active div {
-    padding-right: 0;
-}
-
-#sidebar ul li.active > div {
-    background: var(--MENU-SECTION-ACTIVE-CATEGORY-BG-color);
-    color: var(--MENU-SECTION-ACTIVE-CATEGORY-color) !important;
-}
-
-a.menu-opener.open i.fa-chevron-right, a.menu-opener.folded i.fa-chevron-down {
-    display: none;
-}
+  .right {
+      float: right;
+  }
+  
