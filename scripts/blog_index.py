@@ -65,4 +65,4 @@ with open(output_data_path, "w") as fd:
 
 if os.getenv('CI'):
    # Remove this file so the site may be pushed correctly.
-   os.remove(blog_root_directory + "/.gitignore")
+   os.remove("static/blog/.gitignore")
