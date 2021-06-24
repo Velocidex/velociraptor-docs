@@ -1,5 +1,11 @@
 ---
 title: Carving $USN journal entries
+description: The USN journal is a unique source of evidence because it can provide a timeline for when files were deleted, even if the file itself is no longer found on the system. While the USN journal is very useful, it is short lived. This post explains how to write a carver to recover deleted USN journal entries.
+tags:
+- Carving
+- USN
+- Forensics
+- Windows
 date: 2021-06-16
 ---
 

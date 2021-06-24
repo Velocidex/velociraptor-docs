@@ -1,5 +1,10 @@
 ---
 title: Verifying executables on Windows
+description: How do we know if a windows executable is a legitimate program written by the purported developer and not malware?  This post covers the basics of Authenticode signatures in windows and how to verify and query them using Velociraptor.
+tags:
+- Parsing
+- Windows
+- Security
 date: 2021-06-09
 ---
 

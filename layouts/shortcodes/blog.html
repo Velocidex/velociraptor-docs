@@ -3,7 +3,7 @@
 </script>
 
 <div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Query Hub" aria-describedby="basic-addon2">
+  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Search posts" aria-describedby="basic-addon2">
   <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
 </div>
 
@@ -11,7 +11,7 @@
 
 <div class="search_results"></div>
 
-<script> 
+<script>
 let all_data = [];
 
 $.ajax({
@@ -47,16 +47,16 @@ function DrawResults(data) {
     let template = $(`<div class="panel panel-default color">
   <div class="panel-heading color">
     <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-	<div class="date pull-right"></div>
+        <div class="date pull-right"></div>
   </div>
   <div class="panel-body color">
 <div class="border color">
-		<div class="border color">
-			<div class="idea-inner-text-main color">
+                <div class="border color">
+                        <div class="idea-inner-text-main color">
         <img class="user-avatar inline">
         <p></p></span>
                     <p class="description "></p>
-				<p class="idea-tag space">
+                                <p class="idea-tag space">
         </p>
       </div>
     </div>
@@ -89,7 +89,7 @@ function myFunction() {
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
     txtValue = a.textContent || a.innerText;
-    
+
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "";
     } else {
@@ -101,8 +101,3 @@ function community() { //these are here to add quick buttons to add a phrase int
     ;
 }
 </script>
-
-
-
-
-
