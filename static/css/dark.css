@@ -62,3 +62,7 @@ body.dark .carousel-choices .btn {
     margin-top: 10px;
     color: #212121;
 }
+
+body.dark .E {
+    background-color: var(--MAIN-TEXT-background-color);
+}
