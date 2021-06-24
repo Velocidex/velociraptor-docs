@@ -22,9 +22,9 @@ jobs:
           # extended: true
 
       - name: Prepare
-        run:
-          - python scripts/exchange_index.py
-          - python scripts/blog_index.py
+        run: |
+          python scripts/exchange_index.py
+          python scripts/blog_index.py
 
       - name: Build
         run: hugo --minify
