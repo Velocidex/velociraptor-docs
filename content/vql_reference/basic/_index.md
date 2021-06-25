@@ -1,5 +1,5 @@
 ---
-title: Basic VQL functions and plugins
+title: Basic VQL
 weight: 10
 linktitle: Basic VQL
 index: true
@@ -17,6 +17,10 @@ while functions (which return a single value instead of a sequence of
 rows) are only present in column specification (e.g. after `SELECT`)
 or in condition clauses (i.e. after the `WHERE` keyword).
 {{% /notice %}}
+
+
+<div class="vql_item"></div>
+
 
 ## array
 <span class='vql_type pull-right'>Function</span>
@@ -37,14 +41,26 @@ Will return a single row with Users being an array of names.
 
 
 
+
+<div class="vql_item"></div>
+
+
 ## atoi
 <span class='vql_type pull-right'>Function</span>
 
 Convert a string to an int.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to convert to int|Any (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## base64decode
@@ -52,9 +68,17 @@ string|A string to convert to int|Any (required)
 
 Decodes a base64 encoded string.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to decode|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## base64encode
@@ -62,9 +86,17 @@ string|A string to decode|string (required)
 
 Encodes a string into base64.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to decode|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## basename
@@ -72,16 +104,28 @@ string|A string to decode|string (required)
 
 Return the basename of the path.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|Extract directory name of path|string (required)
 sep|Separator to use (default /)|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## cache
 <span class='vql_type pull-right'>Function</span>
 
 Creates a cache object
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -91,10 +135,18 @@ key|Cache key to use.|string (required)
 period|The latest age of the cache.|int64
 
 
+
+<div class="vql_item"></div>
+
+
 ## copy
 <span class='vql_type pull-right'>Function</span>
 
 Copy a file.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -104,14 +156,26 @@ dest|The destination file to write.|string (required)
 permissions|Required permissions (e.g. 'x').|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## count
 <span class='vql_type pull-right'>Function</span>
 
 Counts the items.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 items|Not used anymore|Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## dict
@@ -120,10 +184,18 @@ items|Not used anymore|Any
 Construct a dict from arbitrary keyword args.
 
 
+
+<div class="vql_item"></div>
+
+
 ## dirname
 <span class='vql_type pull-right'>Function</span>
 
 Return the directory path.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -131,10 +203,18 @@ path|Extract directory name of path|string (required)
 sep|Separator to use (default /)|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## encode
 <span class='vql_type pull-right'>Function</span>
 
 Encodes a string as as different type. Currently supported types include 'hex', 'base64'.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -142,14 +222,26 @@ string||Any (required)
 type||string (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## enumerate
 <span class='vql_type pull-right'>Function</span>
 
 Collect all the items in each group by bin.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 items|Not used anymore|Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## environ
@@ -157,9 +249,17 @@ items|Not used anymore|Any
 
 Get an environment variable.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 var|Extract the var from the environment.|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## expand
@@ -175,9 +275,17 @@ depend on the specific user account which reads the registry value
 (different user accounts can have different environment variables).
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|A path with environment escapes|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## filter
@@ -186,10 +294,18 @@ path|A path with environment escapes|string (required)
 Filters a strings array by regex.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 list|A list of items to filter|list of string (required)
 regex|A regex to test each item|list of string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## format
@@ -197,10 +313,18 @@ regex|A regex to test each item|list of string (required)
 
 Format one or more items according to a format string.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 format|Format string to use|string (required)
 args|An array of elements to apply into the format string.|Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## get
@@ -223,6 +347,10 @@ select get(item=[dict(foo=3), 2, 3, 4], member='0.foo') AS Foo from scope()
 ```
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item||Any
@@ -231,10 +359,18 @@ field||Any
 default||Any
 
 
+
+<div class="vql_item"></div>
+
+
 ## getpid
 <span class='vql_type pull-right'>Function</span>
 
 Returns the current pid of the process.
+
+
+
+<div class="vql_item"></div>
 
 
 ## humanize
@@ -245,9 +381,17 @@ Format items in human readable way.
 Formats a byte count in human readable way (e.g. Mb, Gb etc).
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 bytes|Format bytes with units|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## if
@@ -264,6 +408,10 @@ This allows a query to cheaply branch. For example, if a parameter is
 given, then perform hash or upload to the server. See the
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 condition||Any (required)
@@ -271,14 +419,26 @@ then||LazyExpr
 else||LazyExpr
 
 
+
+<div class="vql_item"></div>
+
+
 ## items
 <span class='vql_type pull-right'>Function</span>
 
 Iterate over dict members producing _key and _value columns
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item||Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## items
@@ -286,9 +446,17 @@ item||Any
 
 Enumerate all members of the item (similar to Pythons items() method.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item|The item to enumerate.|Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## join
@@ -299,10 +467,18 @@ Join all the args on a separator.
 Joins the array into a string separated by the sep character.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 array|The array to join|list of string (required)
 sep|The separator|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## killkillkill
@@ -310,9 +486,17 @@ sep|The separator|string
 
 Kills the client and forces a restart - this is very aggresive!
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## len
@@ -320,9 +504,17 @@ client_id||string (required)
 
 Returns the length of an object.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 list|A list of items too filter|Any (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## log
@@ -330,9 +522,17 @@ list|A list of items too filter|Any (required)
 
 Log the message.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 message|Message to log.|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## lowcase
@@ -340,9 +540,17 @@ message|Message to log.|string (required)
 
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to lower|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## max
@@ -362,9 +570,17 @@ SELECT Name, max(items=Pid) as LargestPid from pslist() Where Name =~ 'bash' gro
 ```
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item||int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## memoize
@@ -372,11 +588,19 @@ item||int64 (required)
 
 Memoize a query into memory.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 query|Query to expand into memory|LazyExpr (required)
 key|The name of the column to use as a key.|string (required)
 period|The latest age of the cache.|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## min
@@ -396,9 +620,17 @@ SELECT Name, min(items=Pid) as SmallestPid from pslist() Where Name =~ 'bash' gr
 ```
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item||int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## now
@@ -406,9 +638,17 @@ item||int64 (required)
 
 Returns current time in seconds since epoch.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to convert to int|Any (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## path_join
@@ -416,10 +656,18 @@ string|A string to convert to int|Any (required)
 
 Build a path by joining all components.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 components|Path components to join.|list of string (required)
 sep|Separator to use (default /)|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## path_split
@@ -427,9 +675,17 @@ sep|Separator to use (default /)|string
 
 Split a path into components. Note this is more complex than just split() because it takes into account path escaping.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|Path to split into components.|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## query
@@ -437,9 +693,17 @@ path|Path to split into components.|string (required)
 
 Launch a subquery and materialize it into a list of rows.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 vql||StoredQuery (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## rand
@@ -447,15 +711,27 @@ vql||StoredQuery (required)
 
 Selects a random number.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 range|Selects a random number up to this range.|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## read_file
 <span class='vql_type pull-right'>Function</span>
 
 Read a file into a string.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -465,10 +741,18 @@ filename|One or more files to open.|string (required)
 accessor|An accessor to use.|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## scope
 <span class='vql_type pull-right'>Function</span>
 
 return the scope.
+
+
+
+<div class="vql_item"></div>
 
 
 ## serialize
@@ -476,10 +760,18 @@ return the scope.
 
 Encode an object as a string (csv or json).
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item|The item to encode|Any (required)
 format|Encoding format (csv,json)|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## sleep
@@ -487,9 +779,17 @@ format|Encoding format (csv,json)|string
 
 Sleep for the specified number of seconds. Always returns true.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 time|The number of seconds to sleep|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## split
@@ -497,10 +797,18 @@ time|The number of seconds to sleep|int64
 
 Splits a string into an array based on a regexp separator.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|The value to split|string (required)
 sep|The serparator that will be used to split|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## str
@@ -508,9 +816,17 @@ sep|The serparator that will be used to split|string (required)
 
 Normalize a String.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 str|The string to normalize|Any (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## strip
@@ -518,10 +834,18 @@ str|The string to normalize|Any (required)
 
 Strip a prefix from a string.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|The string to strip|string (required)
 prefix|The prefix to strip|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## tempdir
@@ -529,15 +853,27 @@ prefix|The prefix to strip|string
 
 Create a temporary directory. The directory will be removed when the query ends.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 remove_last|If set we delay removal as much as possible.|bool
+
+
+
+<div class="vql_item"></div>
 
 
 ## timestamp
 <span class='vql_type pull-right'>Function</span>
 
 Convert from different types to a time.Time.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -549,14 +885,26 @@ string|Guess a timestamp from a string|string
 us_style|US Style Month/Day/Year|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## to_dict
 <span class='vql_type pull-right'>Function</span>
 
 Construct a dict from another object.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item||Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## upcase
@@ -564,15 +912,27 @@ item||Any
 
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to lower|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## upload_sftp
 <span class='vql_type pull-right'>Function</span>
 
 Upload files to SFTP.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -586,10 +946,18 @@ endpoint|The Endpoint to use|string (required)
 hostkey|Host key to verify. Blank to disable|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## upload_webdav
 <span class='vql_type pull-right'>Function</span>
 
 Upload files to a WebDAV server.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -599,6 +967,10 @@ accessor|The accessor to use|string
 url|The WebDAV url|string (required)
 basic_auth_user|The username to use in HTTP basic auth|string
 basic_auth_password|The password to use in HTTP basic auth|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## url
@@ -628,6 +1000,10 @@ possible in the general case to simply append strings. You need to use
 the `url()` function to build the proper url.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 scheme|The scheme to use|string
@@ -637,14 +1013,26 @@ fragment|The fragment|string
 parse|A url to parse|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## utf16
 <span class='vql_type pull-right'>Function</span>
 
 Parse input from utf16.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to decode|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## utf16_encode
@@ -652,15 +1040,27 @@ string|A string to decode|string (required)
 
 Encode a string to utf16 bytes.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 string|A string to decode|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## uuid
 <span class='vql_type pull-right'>Function</span>
 
 Generate a UUID.
+
+
+
+<div class="vql_item"></div>
 
 
 ## version
@@ -684,6 +1084,10 @@ modern query based on the plugin version:
   else=LegacyQuery)
 ```
 
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----

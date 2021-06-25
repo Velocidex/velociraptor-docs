@@ -1,5 +1,5 @@
 ---
-title: Windows Specific Functionality
+title: Windows Specific
 weight: 20
 linktitle: Windows
 index: true
@@ -8,10 +8,18 @@ index: true
 Many VQL plugins and functions provide access to the Windows
 APIs. The following are only available when running on Windows.
 
+
+<div class="vql_item"></div>
+
+
 ## appcompatcache
 <span class='vql_type pull-right'>Plugin</span>
 
 Parses the appcompatcache.
+
+
+
+<div class="vql_item"></div>
 
 
 ## authenticode
@@ -24,6 +32,10 @@ Since we use the windows API this can only work with the "file"
 accessor.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 accessor|The accessor to use.|string
@@ -31,10 +43,18 @@ filename|The filename to parse.|string (required)
 verbose|Set to receive verbose information about all the certs.|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## certificates
 <span class='vql_type pull-right'>Plugin</span>
 
 Collect certificate from the system trust store.
+
+
+
+<div class="vql_item"></div>
 
 
 ## dns
@@ -60,14 +80,26 @@ from Windows Defender.
 
 
 
+
+<div class="vql_item"></div>
+
+
 ## handles
 <span class='vql_type pull-right'>Plugin</span>
 
 Enumerate process handles.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 pid|The PID to dump out.|int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## interfaces
@@ -76,14 +108,26 @@ pid|The PID to dump out.|int64 (required)
 List all active interfaces.
 
 
+
+<div class="vql_item"></div>
+
+
 ## lookupSID
 <span class='vql_type pull-right'>Function</span>
 
 Get information about the SID.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 sid|A SID to lookup using LookupAccountSid |string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## modules
@@ -91,9 +135,17 @@ sid|A SID to lookup using LookupAccountSid |string (required)
 
 Enumerate Loaded DLLs.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 pid|The PID to dump out.|int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## netstat
@@ -102,14 +154,26 @@ pid|The PID to dump out.|int64 (required)
 Collect network information.
 
 
+
+<div class="vql_item"></div>
+
+
 ## partitions
 <span class='vql_type pull-right'>Plugin</span>
 
 List all partititions
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 all|If specified list all Partitions|bool
+
+
+
+<div class="vql_item"></div>
 
 
 ## proc_dump
@@ -125,9 +189,17 @@ use the upload() plugin to upload it to the server or otherwise copy
 it.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 pid|The PID to dump out.|int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## proc_yara
@@ -144,12 +216,20 @@ Process memory access depends on having the [SeDebugPrivilege](https://support.m
 {{% /notice %}}
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 rules|Yara rules|string (required)
 pid|The pid to scan|int (required)
 context|Return this many bytes either side of a hit|int
 key|If set use this key to cache the  yara rules.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## read_reg_key
@@ -164,16 +244,28 @@ content available in the `Data` field).
 This makes it easier to access a bunch of related values at once.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 globs|Glob expressions to apply.|list of string (required)
 accessor|The accessor to use.|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## srum_lookup_id
 <span class='vql_type pull-right'>Function</span>
 
 Lookup a SRUM id.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -182,14 +274,26 @@ accessor|The accessor to use.|string
 id||int64 (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## token
 <span class='vql_type pull-right'>Function</span>
 
 Extract process token.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 pid|The PID to get the token for.|int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## users
@@ -198,14 +302,26 @@ pid|The PID to get the token for.|int64 (required)
 Display information about workstation local users. This is obtained through the NetUserEnum() API.
 
 
+
+<div class="vql_item"></div>
+
+
 ## vad
 <span class='vql_type pull-right'>Plugin</span>
 
 Enumerate process memory regions.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 pid|The PID to dump out.|int64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## winobj
@@ -213,9 +329,17 @@ pid|The PID to dump out.|int64 (required)
 
 Enumerate The Windows Object Manager namespace.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|Object namespace path.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## wmi
@@ -229,6 +353,10 @@ exact format of the returned row depends on the WMI query issued.
 This plugin creates a bridge between WMI and VQL and it is a very
 commonly used plugin for inspecting the state of windows systems.
 
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----

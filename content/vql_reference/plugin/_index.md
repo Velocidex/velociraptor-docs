@@ -1,5 +1,5 @@
 ---
-title: Client Side Functionality
+title: Client Side
 weight: 50
 linktitle: Client
 index: true
@@ -29,6 +29,10 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 
 {{% /notice %}}
 
+
+<div class="vql_item"></div>
+
+
 ## chain
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -48,10 +52,18 @@ b={ SELECT ...})
 
 
 
+
+<div class="vql_item"></div>
+
+
 ## collect
 <span class='vql_type pull-right'>Plugin</span>
 
 Collect artifacts into a local file.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -66,6 +78,10 @@ template|The name of a template artifact (i.e. one which has report of type HTML
 level|Compression level between 0 (no compression) and 9.|int64
 
 
+
+<div class="vql_item"></div>
+
+
 ## environ
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -74,9 +90,17 @@ columns. If the var parameter is provided, only those variables
 will be provided.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 vars|Extract these variables from the environment and return them one per row|list of string
+
+
+
+<div class="vql_item"></div>
 
 
 ## execve
@@ -99,11 +123,19 @@ from a share (requiring direct access to the AD domain) or download
 them using the `http_client()` plugin.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 argv|Argv to run the command with.|list of string (required)
 sep|The serparator that will be used to split the stdout into rows.|string
 length|Size of buffer to capture output per row.|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## filesystems
@@ -112,20 +144,36 @@ length|Size of buffer to capture output per row.|int64
 
 
 
+
+<div class="vql_item"></div>
+
+
 ## flatten
 <span class='vql_type pull-right'>Plugin</span>
 
 Flatten the columns in query. If any column repeats then we repeat the entire row once for each item.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
 Name||string
 
 
+
+<div class="vql_item"></div>
+
+
 ## for
 <span class='vql_type pull-right'>Plugin</span>
 
 Iterate over a list.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -134,10 +182,18 @@ foreach|The variable to iterate over.|StoredQuery (required)
 query|Run this query over the item.|StoredQuery
 
 
+
+<div class="vql_item"></div>
+
+
 ## foreach
 <span class='vql_type pull-right'>Plugin</span>
 
 Executes 'query' once for each row in the 'row' query.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -146,6 +202,10 @@ query|Run this query for each row.|StoredQuery
 async|If set we run all queries asyncronously (implies workers=1000).|bool
 workers|Total number of asyncronous workers.|int64
 column|If set we only extract the column from row.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## glob
@@ -202,6 +262,10 @@ parameter.  The `root` parameter is useful if the directory name
 itself may contain glob characters.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 globs|One or more glob patterns to apply to the filesystem.|list of string (required)
@@ -210,10 +274,18 @@ accessor|An accessor to use.|string
 nosymlink|If set we do not follow symlinks.|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## grep
 <span class='vql_type pull-right'>Function</span>
 
 Search a file for keywords.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -221,6 +293,10 @@ path|path to open.|string (required)
 accessor|An accessor to use.|string
 keywords|Keywords to search for.|list of string (required)
 context|Extract this many bytes as context around hits.|int
+
+
+
+<div class="vql_item"></div>
 
 
 ## hash
@@ -231,10 +307,18 @@ Calculate the hash of a file.
 This function calculates the MD5, SHA1 and SHA256 hashes of the file.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|Path to open and hash.|string (required)
 accessor|The accessor to use|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## http_client
@@ -290,6 +374,10 @@ SELECT Content as IP from http_client(url='http://www.myexternalip.com/raw')
 ```
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 url|The URL to fetch|string (required)
@@ -301,6 +389,10 @@ chunk_size|Read input with this chunk size and send each chunk as a row|int
 disable_ssl_security|Disable ssl certificate verifications.|bool
 tempfile_extension|If specified we write to a tempfile. The content field will contain the full path to the tempfile.|string
 remove_last|If set we delay removal as much as possible.|bool
+
+
+
+<div class="vql_item"></div>
 
 
 ## if
@@ -318,11 +410,19 @@ given, then perform hash or upload to the server. See the
 `Windows.Search.FileFinder` for an example of how `if()` is used.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 condition||Any (required)
 then||StoredQuery (required)
 else||StoredQuery
+
+
+
+<div class="vql_item"></div>
 
 
 ## info
@@ -339,14 +439,26 @@ certain OS or versions.
 
 
 
+
+<div class="vql_item"></div>
+
+
 ## int
 <span class='vql_type pull-right'>Function</span>
 
 Truncate to an integer.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 int|The integer to round|Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## ip
@@ -367,10 +479,18 @@ encoded as an array of 8 bytes which makes it easy to format using the
 ```
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 netaddr4_le|A network order IPv4 address (as little endian).|int64
 netaddr4_be|A network order IPv4 address (as big endian).|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## js_get
@@ -378,10 +498,18 @@ netaddr4_be|A network order IPv4 address (as big endian).|int64
 
 Get a variable's value from the JS VM.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 var|The variable to get from the JS VM.|string (required)
 key|If set use this key to cache the JS VM.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## js_set
@@ -389,11 +517,19 @@ key|If set use this key to cache the JS VM.|string
 
 Set a variables value in the JS VM.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 var|The variable to set inside the JS VM.|string (required)
 value|The value to set inside the VM.|Any (required)
 key|If set use this key to cache the JS VM.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## pslist
@@ -407,9 +543,17 @@ specified. Otherwise, the plugin returns all processes one on each
 row.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 pid|A process ID to list. If not provided list all processes.|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## read_file
@@ -425,12 +569,20 @@ configuration files etc.
 The returned row contains the following columns: data, offset, filename
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 chunk|length of each chunk to read from the file.|int
 max_length|Max length of the file to read.|int
 filenames|One or more files to open.|list of string (required)
 accessor|An accessor to use.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## scope
@@ -449,10 +601,18 @@ SELECT 1+1 As Two FROM scop()
 
 
 
+
+<div class="vql_item"></div>
+
+
 ## stat
 <span class='vql_type pull-right'>Plugin</span>
 
 Get file information. Unlike glob() this does not support wildcards.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -460,10 +620,18 @@ filename|One or more files to open.|list of string (required)
 accessor|An accessor to use.|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## switch
 <span class='vql_type pull-right'>Plugin</span>
 
 Executes each query. The first query to return any rows will be emitted.
+
+
+
+<div class="vql_item"></div>
 
 
 ## tempfile
@@ -474,12 +642,20 @@ Create a temporary file and write some data into it.
 The file will be automatically removed when the query completes.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 data|Data to write in the tempfile.|list of string
 extension|An extension to place in the tempfile.|string
 permissions|Required permissions (e.g. 'x').|string
 remove_last|If set we delay removal as much as possible.|bool
+
+
+
+<div class="vql_item"></div>
 
 
 ## upload
@@ -492,11 +668,19 @@ If Velociraptor is run locally the file will be copied to the
 `--dump_dir` path or added to the triage evidence container.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 file|The file to upload|string (required)
 name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## upload
@@ -512,16 +696,28 @@ This functionality is also available using the upload() function which
 might be somewhat easier to use.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 files|A list of files to upload|list of string (required)
 accessor|The accessor to use|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## upload_gcs
 <span class='vql_type pull-right'>Function</span>
 
 Upload files to GCS.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -533,10 +729,18 @@ project|The project to upload to|string (required)
 credentials|The credentials to use|string (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## upload_s3
 <span class='vql_type pull-right'>Function</span>
 
 Upload files to S3.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -552,16 +756,28 @@ serversideencryption|The server side encryption method to use|string
 noverifycert|Skip TLS Verification|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## write_csv
 <span class='vql_type pull-right'>Plugin</span>
 
 Write a query into a CSV file.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
 filename|CSV files to open|string (required)
 accessor|The accessor to use|string
 query|query to write into the file.|StoredQuery (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## yara
@@ -615,6 +831,10 @@ scanning stops after one hit is found.
 
 {{% /notice %}}
 
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----

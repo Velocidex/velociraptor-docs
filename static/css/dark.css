@@ -66,3 +66,7 @@ body.dark .carousel-choices .btn {
 body.dark .E {
     background-color: var(--MAIN-TEXT-background-color);
 }
+
+p.egg {
+    display: block;
+}
