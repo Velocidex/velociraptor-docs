@@ -23,7 +23,7 @@
     },
     {
         "name": "array",
-        "description": "Create an array with all the args.\nThis function accepts arbitrary arguments and creates an array by\nflattening the arguments. For example `array(a=1, b=2)` will return\n`[1, 2]`.\nYou can use this to flatten a subquery as well:\n```sql\nSELECT array(a1={ SELECT User FROM Artifact.Windows.System.Users() }) as Users FROM scope()\n```\nWill return a single row with Users being an array of names.\n",
+        "description": "Create an array with all the args.",
         "type": "Function",
         "args": [],
         "category": "basic"
@@ -118,7 +118,7 @@
     },
     {
         "name": "authenticode",
-        "description": "This plugin uses the Windows API to extract authenticode signature\ndetails from PE files.\nSince we use the windows API this can only work with the \"file\"\naccessor.\n",
+        "description": "This plugin uses the Windows API to extract authenticode signature\ndetails from PE files.",
         "type": "Function",
         "args": [
             {
@@ -199,7 +199,7 @@
     },
     {
         "name": "binary_parse",
-        "description": "Parse a binary string with profile based parser.\nThis plugin extract binary data from strings. It works by applying\na profile to the binary string and generating an object from\nthat. Profiles use the same syntax as Rekall or Volatility. For\nexample a profile might be:\n```json\n{\n  \"StructName\": [10, {\n     \"field1\": [2, [\"unsigned int\"]],\n     \"field2\": [6, [\"unsigned long long\"]],\n  }]\n}\n```\nThe profile is compiled and overlayed on top of the offset specified,\nthen the object is emitted with its required fields.\n",
+        "description": "Parse a binary string with profile based parser.",
         "type": "Function",
         "args": [
             {
@@ -242,7 +242,7 @@
     },
     {
         "name": "binary_parse",
-        "description": "Parse binary files using a profile.\nThis is the plugin version of the `binary_parse()` function.\n",
+        "description": "Parse binary files using a profile.",
         "type": "Plugin",
         "args": [
             {
@@ -364,7 +364,7 @@
     },
     {
         "name": "chain",
-        "description": "Chain the output of several queries into the same table. This plugin\ntakes any args and chains them.\n### Example\nThe following returns the rows from the first query then the rows from\nthe second query.\n```sql\nSELECT * FROM chain(\na={ SELECT ...},\nb={ SELECT ...})\n```\n",
+        "description": "Chain the output of several queries into the same table. This plugin\ntakes any args and chains them.",
         "type": "Plugin",
         "args": [],
         "category": "plugin"
@@ -474,7 +474,7 @@
     },
     {
         "name": "clock",
-        "description": "Generate a timestamp periodically. This is mostly useful for event\nqueries.\nThis plugin generates events periodically. The periodicity can be\ncontrolled either via the `period` or the `ms` parameter. Each row\nwill be a go [time.Time](https://golang.org/pkg/time/#Time)\nobject. You can access its unix epoch time with the Sec column.\n### Example\nThe following will generate an event every 10 seconds.\n```sql\nSELECT Sec FROM clock(period=10)\n```\nThe `start` parameter can be used to schedule the plugin to start\nat a particular time. This can be an integer (which will be\ninterpreted as seconds since the epoch), a string or a time value.\n",
+        "description": "Generate a timestamp periodically. This is mostly useful for event\nqueries.",
         "type": "Plugin",
         "args": [
             {
@@ -833,7 +833,7 @@
     },
     {
         "name": "diff",
-        "description": "Executes 'query' periodically and emit differences from the last query.\nThe `diff()` plugin runs a non-event query periodically and calculates\nthe difference between its result set from the last run.\nThis can be used to create event queries which watch for changes from\nsimpler non-event queries.\nThe `key` parameter is the name of the column which is used to\ndetermine row equivalency.\n{{% notice note %}}\nThere is only a single equivalence row specified by the `key`\nparameter, and it must be a string. If you need to watch multiple\ncolumns you need to create a new column which is the concatenation of\nother columns. For example `format(format=\"%s%d\", args=[Name, Pid])`\n{{% /notice %}}\n### Example\nThe following VQL monitors all removable drives and lists files on\nnewly inserted drives, or files that have been added to removable\ndrives.\n```sql\nLET removable_disks = SELECT Name AS Drive, Size\nFROM glob(globs=\"/*\", accessor=\"file\")\nWHERE Data.Description =~ \"Removable\"\nLET file_listing = SELECT FullPath, timestamp(epoch=Mtime.Sec) As Modified, Size\nFROM glob(globs=Drive+\"\\\\**\", accessor=\"file\") LIMIT 1000\nSELECT * FROM diff(\n  query={ SELECT * FROM foreach(row=removable_disks, query=file_listing) },\n  key=\"FullPath\",\n  period=10)\n  WHERE Diff = \"added\"\n```\n",
+        "description": "Executes 'query' periodically and emit differences from the last query.",
         "type": "Plugin",
         "args": [
             {
@@ -884,7 +884,7 @@
     },
     {
         "name": "dns",
-        "description": "Monitor dns queries.\nThis plugin opens a raw socket and monitors network traffic for\nDNS questions and answers.\n{{% notice note %}}\nWhen Velociraptor attempts to open a raw socket, sometimes Windows\nDefender treats that as suspicious behavior and quarantines the\nVelociraptor binary. This can be avoided by signing the binary which\nsignals to Windows Defender that the binary is legitimate.\nIf you do not intend to build Velociraptor from source, use the\nofficial signed Velociraptor binaries which should not trigger alerts\nfrom Windows Defender.\n{{% /notice %}}\n",
+        "description": "Monitor dns queries.",
         "type": "Plugin",
         "args": [],
         "category": "windows"
@@ -1072,7 +1072,7 @@
     },
     {
         "name": "execve",
-        "description": "This plugin launches an external command and captures its STDERR,\nSTDOUT and return code. The command's stdout is split using the `sep`\nparameter as required.\nThis plugin is mostly useful for running arbitrary code on the\nclient. If you do not want to allow arbitrary code to run, you can\ndisable this by setting the `prevent_execve` flag in the client's\nconfig file. Be aware than many artifacts require running external\ncommands to collect their output though.\nWe do not actually transfer the external program to the system\nautomatically. If you need to run programs which are not usually\ninstalled (e.g. Sysinternal's autoruns.exe) you will need to map them\nfrom a share (requiring direct access to the AD domain) or download\nthem using the `http_client()` plugin.\n",
+        "description": "This plugin launches an external command and captures its STDERR,\nSTDOUT and return code. The command's stdout is split using the `sep`\nparameter as required.",
         "type": "Plugin",
         "args": [
             {
@@ -1101,7 +1101,7 @@
     },
     {
         "name": "expand",
-        "description": "Expand the path using the environment.\nThis function expands environment variables into the path. It is\nnormally needed after using registry values of type REG_EXPAND_SZ as\nthey typically contain environment strings. Velociraptor does not\nautomatically expand such values since environment variables typically\ndepend on the specific user account which reads the registry value\n(different user accounts can have different environment variables).\n",
+        "description": "Expand the path using the environment.",
         "type": "Function",
         "args": [
             {
@@ -1116,7 +1116,7 @@
     },
     {
         "name": "fifo",
-        "description": "Executes 'query' and cache a number of rows from it. For each invocation\nwe present the set of past rows.\nThe `fifo()` plugin allows for VQL queries to apply across historical\ndata. The fifo plugin accepts another event query as parameter, then\nretains the last `max_rows` rows from it in an internal queue. Every\nsubsequent evaluation from the query will return the full set of rows\nin the queue. Older rows are expired from the queue according to the\n`max_age` parameter.\nFifos are usually used to form queries that look for specific pattern\nof behavior. For example, a successful logon followed by failed\nlogons. In this case the fifo retains the recent history of failed\nlogons in its internal queue, then when a successful logon occurs we\ncan check the recent failed ones in its queue.\n### Example\nThe following checks for 5 failed logons followed by a successful\nlogon.\n```sql\nLET failed_logon = SELECT EventData as FailedEventData,\n   System as FailedSystem\nFROM watch_evtx(filename=securityLogFile)\nWHERE System.EventID.Value = 4625\nLET last_5_events = SELECT FailedEventData, FailedSystem\n    FROM fifo(query=failed_logon,\n              max_rows=500,\n              max_age=atoi(string=failedLogonTimeWindow))\nLET success_logon = SELECT EventData as SuccessEventData,\n   System as SuccessSystem\nFROM watch_evtx(filename=securityLogFile)\nWHERE System.EventID.Value = 4624\nSELECT * FROM foreach(\n  row=success_logon,\n  query={\n   SELECT SuccessSystem.TimeCreated.SystemTime AS LogonTime,\n          SuccessSystem, SuccessEventData,\n          enumerate(items=FailedEventData) as FailedEventData,\n          FailedSystem, count(items=SuccessSystem) as Count\n   FROM last_5_events\n   WHERE FailedEventData.SubjectUserName = SuccessEventData.SubjectUserName\n   GROUP BY LogonTime\n      })  WHERE Count > atoi(string=failureCount)\n```\n",
+        "description": "Executes 'query' and cache a number of rows from it. For each invocation\nwe present the set of past rows.",
         "type": "Plugin",
         "args": [
             {
@@ -1152,7 +1152,7 @@
     },
     {
         "name": "file_store",
-        "description": "Resolves file store paths into full filesystem paths.\nThis function is only available on the server. It can be used to\nfind the backing file behind a filestore path so it can be passed\non to an external program.\nVelociraptor uses the concept of a Virtual File System to manage the\ninformation about clients etc. The VFS path is a path into the file\nstore. Of course ultimately (at least in the current implementation)\nthe file store is storing files on disk, but the disk filename is not\nnecessarily the same as the VFS path (for example non representable\ncharacters are escaped).\nYou can use the `file_store()` function to return the real file path\non disk. This probably only makes sense for VQL queries running on the\nserver which can independently open the file.\nIn future the file store may be abstracted (e.g. files may not be\nlocally stored at all) and this function may stop working.\n",
+        "description": "Resolves file store paths into full filesystem paths.",
         "type": "Function",
         "args": [
             {
@@ -1378,7 +1378,7 @@
     },
     {
         "name": "get",
-        "description": "Gets the member field from item.\nThis is useful to index an item from an array. For example:\n### Example\n```sql\nselect get(item=[dict(foo=3), 2, 3, 4], member='0.foo') AS Foo from scope()\n[\n {\n   \"Foo\": 3\n }\n]\n```\n",
+        "description": "Gets the member field from item.",
         "type": "Function",
         "args": [
             {
@@ -1435,7 +1435,7 @@
     },
     {
         "name": "glob",
-        "description": "Retrieve files based on a list of glob expressions\nThe `glob()` plugin is one of the most used plugins. It applies a glob\nexpression in order to search for files by file name. The glob\nexpression allows for wildcards, alternatives and character\nclasses. Globs support both forward and backslashes as path\nseparators. They also support quoting to delimit components.\nA glob expression consists of a sequence of components separated by\npath separators. If a separator is included within a component it is\npossible to quote the component to keep it together. For example, the\nwindows registry contains keys with forward slash in their\nnames. Therefore we may use these to prevent the glob from getting\nconfused:\n```\nHKEY_LOCAL_MACHINE\\Microsoft\\Windows\\\"Some Key With http://www.microsoft.com/\"\\Some Value\n```\nGlob expressions are case insensitive and may contain the following wild cards:\n* The `*` matches one or more characters.\n* The `?` matches a single character.\n* Alternatives are denoted by braces and comma delimited: `{a,b}`\n* Recursive search is denoted by a `**`. By default this searches 3 directories deep. If you need to increase it you can add a depth number (e.g. `**10`)\nBy default globs do not expand environment variables. If you need to\nexpand environment variables use the `expand()` function explicitly:\n```sql\nglob(globs=expand(string=\"%SystemRoot%\\System32\\Winevt\\Logs\\*\"))\n```\n### Example\nThe following searches the raw NTFS disk for event logs.\n```sql\nSELECT FullPath FROM glob(\nglobs=\"C:\\Windows\\System32\\Winevt\\Logs\\*.evtx\",\naccessor=\"ntfs\")\n```\n### The root parameter\nIf the root parameter is specified, we start globbing from this\ndirectory - i.e. the glob pattern is appended to the root\nparameter.  The `root` parameter is useful if the directory name\nitself may contain glob characters.\n",
+        "description": "Retrieve files based on a list of glob expressions",
         "type": "Plugin",
         "args": [
             {
@@ -1565,7 +1565,7 @@
     },
     {
         "name": "hash",
-        "description": "Calculate the hash of a file.\nThis function calculates the MD5, SHA1 and SHA256 hashes of the file.\n",
+        "description": "Calculate the hash of a file.",
         "type": "Function",
         "args": [
             {
@@ -1587,7 +1587,7 @@
     },
     {
         "name": "http_client",
-        "description": "Make a http request.\nThis plugin makes a HTTP connection using the specified method. The\nheaders and parameters may be specified. The plugin reads the\nspecified number of bytes per returned row.\nIf `disable_ssl_security` is specified we do not enforce SSL\nintegrity. This is required to connect to self signed ssl web\nsites. For example many API handlers are exposed over such\nconnections.\n{{% notice note %}}\nWhen connecting to the Velociraptor frontend itself, even in self\nsigned mode, we will ensure certs are properly verified. You can\ntherefore safely export files from the Frontend's public directory\nover self signed SSL. When connecting to a self signed Velociraptor\nfrontend, we ensure the self signed certificate was issued by the\nVelociraptor internal CA - i.e. we pin the Frontend's certificate in\nthe binary.\n{{% /notice %}}\nThe `http_client()` plugin allows use to interact with any web\nservices. If the web service returns a json blob, we can parse it with\nthe `parse_json()` function (or `parse_xml()` for SOAP\nendpoints). Using the parameters with a POST method we may actually\ninvoke actions from within VQL (e.g. send an SMS via an SMS gateway\nwhen a VQL event is received).So this is a very powerful plugin.\nWhen the `tempfile_extension` parameter is provided, the HTTP\nrequest body will be written to a tempfile with that\nextension. The name of this tempfile will be emitted as the\nContent column.\nThis plugin will emit rows with the following columns:\n* Url      string: The url we fetched.\n* Content  string: The body content for this chunk\n* Response int: The HTTP response code (200=success)\n### Example\nThe following VQL returns the client's external IP as seen by the\nexternalip service.\n```sql\nSELECT Content as IP from http_client(url='http://www.myexternalip.com/raw')\n```\n",
+        "description": "Make a http request.",
         "type": "Plugin",
         "args": [
             {
@@ -1658,7 +1658,7 @@
     },
     {
         "name": "humanize",
-        "description": "Format items in human readable way.\nFormats a byte count in human readable way (e.g. Mb, Gb etc).\n",
+        "description": "Format items in human readable way.",
         "type": "Function",
         "args": [
             {
@@ -1846,7 +1846,7 @@
     },
     {
         "name": "if",
-        "description": "Conditional execution of query\nThis function evaluates a condition. Note that the values used in the\n`then` or `else` clause are evaluated lazily. They may be expressions\nthat involve stored queries (i.e. queries stored using the `LET`\nkeyword). These queries will not be evaluated if they are not needed.\nThis allows a query to cheaply branch. For example, if a parameter is\ngiven, then perform hash or upload to the server. See the\n",
+        "description": "Conditional execution of query",
         "type": "Function",
         "args": [
             {
@@ -1875,7 +1875,7 @@
     },
     {
         "name": "if",
-        "description": "Conditional execution of query\nThis function evaluates a condition. Note that the values used in the\n`then` or `else` clause are evaluated lazily. They may be expressions\nthat involve stored queries (i.e. queries stored using the `LET`\nkeyword). These queries will not be evaluated if they are not needed.\nThis allows a query to cheaply branch. For example, if a parameter is\ngiven, then perform hash or upload to the server. See the\n`Windows.Search.FileFinder` for an example of how `if()` is used.\n",
+        "description": "Conditional execution of query",
         "type": "Plugin",
         "args": [
             {
@@ -1940,7 +1940,7 @@
     },
     {
         "name": "info",
-        "description": "Get information about the running host.\nThis plugin returns a single row with information about the current\nsystem. The information includes the Hostname, Uptime, OS, Platform\netc.\nThis plugin is very useful in preconditions as it restricts a query to\ncertain OS or versions.\n",
+        "description": "Get information about the running host.",
         "type": "Plugin",
         "args": [],
         "category": "plugin"
@@ -2048,7 +2048,7 @@
     },
     {
         "name": "ip",
-        "description": "Format an IP address.\nConverts an ip address encoded in various ways. If the IP address is\nencoded as 32 bit integer we can use netaddr4_le or netaddr4_be to\nprint it in a human readable way.\nThis currently does not support IPv6 addresses. Those are usually\nencoded as an array of 8 bytes which makes it easy to format using the\n`format()` function:\n```\n  format(format=\"%x:%x:%x:%x:%x:%x:%x:%x\", value)\n```\n",
+        "description": "Format an IP address.",
         "type": "Function",
         "args": [
             {
@@ -2100,7 +2100,7 @@
     },
     {
         "name": "join",
-        "description": "Join all the args on a separator.\nJoins the array into a string separated by the sep character.\n",
+        "description": "Join all the args on a separator.",
         "type": "Function",
         "args": [
             {
@@ -2371,7 +2371,7 @@
     },
     {
         "name": "max",
-        "description": "Finds the largest item in the aggregate.\nIt is only meaningful in a group by query.\n### Example\nThe following query lists all the processes and shows the largest\nbash pid of all bash processes.\n```SQL\nSELECT Name, max(items=Pid) as LargestPid from pslist() Where Name =~ 'bash' group by Name\n```\n",
+        "description": "Finds the largest item in the aggregate.",
         "type": "Function",
         "args": [
             {
@@ -2415,7 +2415,7 @@
     },
     {
         "name": "min",
-        "description": "Finds the smallest item in the aggregate.\nIt is only meaningful in a group by query.\n### Example\nThe following query lists all the processes and shows the smallest\nbash pid of all bash processes.\n```SQL\nSELECT Name, min(items=Pid) as SmallestPid from pslist() Where Name =~ 'bash' group by Name\n```\n",
+        "description": "Finds the smallest item in the aggregate.",
         "type": "Function",
         "args": [
             {
@@ -2576,7 +2576,7 @@
     },
     {
         "name": "olevba",
-        "description": "Extracts VBA Macros from Office documents.\nThis plugin parses the provided files as OLE documents in order to\nrecover VB macro code. A single document can have multiple code\nobjects, and each such code object is emitted as a row.\n",
+        "description": "Extracts VBA Macros from Office documents.",
         "type": "Plugin",
         "args": [
             {
@@ -2769,7 +2769,7 @@
     },
     {
         "name": "parse_csv",
-        "description": "Parses events from a CSV file.\nParses records from a CSV file. We expect the first row of the CSV\nfile to contain column names.  This parser specifically supports\nVelociraptor's own CSV dialect and so it is perfect for post\nprocessing already existing CSV files.\nThe types of each value in each column is deduced based on\nVelociraptor's standard encoding scheme. Therefore types are properly\npreserved when read from the CSV file.\nFor example, downloading the results of a hunt in the GUI will produce\na CSV file containing artifact rows collected from all clients.  We\ncan then use the `parse_csv()` plugin to further filter the CSV file,\nor to stack using group by.\n### Example\nThe following stacks the result from a\n`Windows.Applications.Chrome.Extensions` artifact:\n```sql\nSELECT count(items=User) As TotalUsers, Name\nFROM parse_csv(filename=\"All Windows.Applications.Chrome.Extensions.csv\")\nOrder By TotalUsers\nGroup By Name\n```\n",
+        "description": "Parses events from a CSV file.",
         "type": "Plugin",
         "args": [
             {
@@ -2834,7 +2834,7 @@
     },
     {
         "name": "parse_evtx",
-        "description": "Parses events from an EVTX file.\nThis plugin parses windows events from the Windows Event log files (EVTX).\nA windows event typically contains two columns. The `EventData`\ncontains event specific structured data while the `System` column\ncontains common data for all events - including the Event ID.\nYou should probably almost always filter by one or more event ids\n(using the `System.EventID.Value` field).\n### Example\n```sql\nSELECT System.TimeCreated.SystemTime as Timestamp,\n       System.EventID.Value as EventID,\n       EventData.ImagePath as ImagePath,\n       EventData.ServiceName as ServiceName,\n       EventData.ServiceType as Type,\n       System.Security.UserID as UserSID,\n       EventData as _EventData,\n       System as _System\nFROM watch_evtx(filename=systemLogFile) WHERE EventID = 7045\n```\n",
+        "description": "Parses events from an EVTX file.",
         "type": "Plugin",
         "args": [
             {
@@ -2878,7 +2878,7 @@
     },
     {
         "name": "parse_json",
-        "description": "Parse a JSON string into an object.\nNote that when VQL dereferences fields in a dict it returns a Null for\nthose fields that do not exist. Thus there is no error in actually\naccessing missing fields, the column will just return nil.\n",
+        "description": "Parse a JSON string into an object.",
         "type": "Function",
         "args": [
             {
@@ -2893,7 +2893,7 @@
     },
     {
         "name": "parse_json_array",
-        "description": "Parse a JSON string into an array.\nThis function is similar to `parse_json()` but works for a JSON list\ninstead of an object.\n",
+        "description": "Parse a JSON string into an array.",
         "type": "Function",
         "args": [
             {
@@ -3134,7 +3134,7 @@
     },
     {
         "name": "parse_records_with_regex",
-        "description": "Parses a file with a set of regexp and yields matches as records.  The\nfile is read into a large buffer. Then each regular expression is\napplied to the buffer, and all matches are emitted as rows.\nThe regular expressions are specified in the [Go\nsyntax](https://golang.org/pkg/regexp/syntax/). They are expected to\ncontain capture variables to name the matches extracted.\nFor example, consider a HTML file with simple links. The regular\nexpression might be:\n```\nregex='<a.+?href=\"(?P<Link>[^\"]+?)\"'\n```\nTo produce rows with a column Link.\nThe aim of this plugin is to split the file into records which can be\nfurther parsed. For example, if the file consists of multiple records,\nthis plugin can be used to extract each record, while\nparse_string_with_regex() can be used to further split each record\ninto elements. This works better than trying to write a more complex\nregex which tries to capture a lot of details in one pass.\n### Example\nHere is an example of parsing the /var/lib/dpkg/status files. These\nfiles consist of records separated by empty lines:\n```\nPackage: ubuntu-advantage-tools\nStatus: install ok installed\nPriority: important\nSection: misc\nInstalled-Size: 74\nMaintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>\nArchitecture: all\nVersion: 17\nConffiles:\n /etc/cron.daily/ubuntu-advantage-tools 36de53e7c2d968f951b11c64be101b91\n /etc/update-motd.d/80-esm 6ffbbf00021b4ea4255cff378c99c898\n /etc/update-motd.d/80-livepatch 1a3172ffaa815d12b58648f117ffb67e\nDescription: management tools for Ubuntu Advantage\n Ubuntu Advantage is the professional package of tooling, technology\n and expertise from Canonical, helping organisations around the world\n manage their Ubuntu deployments.\n .\n Subscribers to Ubuntu Advantage will find helpful tools for accessing\n services in this package.\nHomepage: https://buy.ubuntu.com\n```\nThe following query extracts the fields in two passes. The first pass\nuses parse_records_with_regex() to extract records in blocks, while\nusing parse_string_with_regex() to further break the block into\nfields.\n```sql\nSELECT parse_string_with_regex(\n   string=Record,\n   regex=['Package:\\\\s(?P<Package>.+)',\n     'Installed-Size:\\\\s(?P<InstalledSize>.+)',\n     'Version:\\\\s(?P<Version>.+)',\n     'Source:\\\\s(?P<Source>.+)',\n     'Architecture:\\\\s(?P<Architecture>.+)']) as Record\n   FROM parse_records_with_regex(\n     file=linuxDpkgStatus,\n     regex='(?sm)^(?P<Record>Package:.+?)\\\\n\\\\n')\n```\n",
+        "description": "Parses a file with a set of regexp and yields matches as records.  The\nfile is read into a large buffer. Then each regular expression is\napplied to the buffer, and all matches are emitted as rows.",
         "type": "Plugin",
         "args": [
             {
@@ -3303,7 +3303,7 @@
     },
     {
         "name": "patch",
-        "description": "Patch a JSON object with a json patch or merge.\nThe function allows for modifications of objects by way of\napplying a json patch. You can read more about JSON patching here\nhttps://github.com/evanphx/json-patch.\nI practice you can use this to update server settings - for\nexample, consider the client event monitoring state.\n```text\nSELECT get_client_monitoring() FROM scope()\n [\n  {\n   \"get_client_monitoring\": {\n    \"artifacts\": [\n     \"Generic.Client.Stats\"\n    ]\n   }\n  }\n ]\n```\nSuppose we wish to add a new artifact, we can patch it with the json:\n```json\n[{\"op\": \"add\", \"path\": \"/artifacts/0\", \"value\": \"Windows.Events.DNSQueries\"}]\n```\nThis can then be immediately pushed to `set_client_monitoring()`\nto update the monitoring state.\n```\nSELECT set_client_monitoring(value=patch(\n       item=get_client_monitoring(),\n       patch=[dict(op=\"add\", path=\"/artifacts/0\", value=\"Windows.Events.DNSQueries\")]))\nFROM scope()\n```\n",
+        "description": "Patch a JSON object with a json patch or merge.",
         "type": "Function",
         "args": [
             {
@@ -3435,7 +3435,7 @@
     },
     {
         "name": "proc_dump",
-        "description": "Dumps process memory.\nDumps a process into a crashdump. The crashdump file can be opened\nwith the windows debugger as normal. The plugin returns the filename\nof the crash dump which is a temporary file - the file will be removed\nwhen the query completes, so if you want to hold on to it, you should\nuse the upload() plugin to upload it to the server or otherwise copy\nit.\n",
+        "description": "Dumps process memory.",
         "type": "Plugin",
         "args": [
             {
@@ -3450,7 +3450,7 @@
     },
     {
         "name": "proc_yara",
-        "description": "Scan processes using yara rules.\nThis plugin uses yara's own engine to scan process memory for the signatures.\n{{% notice note %}}\nProcess memory access depends on having the [SeDebugPrivilege](https://support.microsoft.com/en-au/help/131065/how-to-obtain-a-handle-to-any-process-with-sedebugprivilege) which depends on how Velociraptor was started. Even when running as System, some processes are not accessible.\n{{% /notice %}}\n",
+        "description": "Scan processes using yara rules.",
         "type": "Plugin",
         "args": [
             {
@@ -3578,7 +3578,7 @@
     },
     {
         "name": "pslist",
-        "description": "Enumerate running processes.\nWhen specifying the pid this operation is much faster so if you are\ninterested in specific processes, the pid should be\nspecified. Otherwise, the plugin returns all processes one on each\nrow.\n",
+        "description": "Enumerate running processes.",
         "type": "Plugin",
         "args": [
             {
@@ -3674,7 +3674,7 @@
     },
     {
         "name": "rate",
-        "description": "Calculates the rate (derivative) between two quantities.\nFor example if a monitoring plugin returns an absolute value\nsampled in time (e.g. bytes transferred sampled every second) then\nthe rate() plugin can calculate the average bytes/sec.\nThis function works by remembering the values of x and y from the\nprevious row and applying the current rows values.\n",
+        "description": "Calculates the rate (derivative) between two quantities.",
         "type": "Function",
         "args": [
             {
@@ -3732,7 +3732,7 @@
     },
     {
         "name": "read_file",
-        "description": "Read files in chunks.\nThis plugin reads a file in chunks and returns each chunks as a separate row.\nIt is useful when we want to report file contents for small files like\nconfiguration files etc.\nThe returned row contains the following columns: data, offset, filename\n",
+        "description": "Read files in chunks.",
         "type": "Plugin",
         "args": [
             {
@@ -3768,7 +3768,7 @@
     },
     {
         "name": "read_reg_key",
-        "description": "This is a convenience plugin which applies the globs to the registry\naccessor to find keys. For each key the plugin then lists all the\nvalues within it, and returns a row which has the value names as\ncolumns, while the cells contain the value's stat info (and data\ncontent available in the `Data` field).\nThis makes it easier to access a bunch of related values at once.\n",
+        "description": "This is a convenience plugin which applies the globs to the registry\naccessor to find keys. For each key the plugin then lists all the\nvalues within it, and returns a row which has the value names as\ncolumns, while the cells contain the value's stat info (and data\ncontent available in the `Data` field).",
         "type": "Plugin",
         "args": [
             {
@@ -3863,7 +3863,7 @@
     },
     {
         "name": "sample",
-        "description": "Executes 'query' and samples every n'th row.\nThis is most useful on the server in order to downsample event\nartifact results.\n",
+        "description": "Executes 'query' and samples every n'th row.",
         "type": "Plugin",
         "args": [
             {
@@ -3892,7 +3892,7 @@
     },
     {
         "name": "scope",
-        "description": "The scope plugin returns the current scope as a single row.\nThe main use for this plugin is as a NOOP plugin in those cases we\ndont want to actually run anything.\n### Example\n```sql\nSELECT 1+1 As Two FROM scop()\n```\n",
+        "description": "The scope plugin returns the current scope as a single row.",
         "type": "Plugin",
         "args": [],
         "category": "plugin"
@@ -4061,7 +4061,7 @@
     },
     {
         "name": "source",
-        "description": "Retrieve rows from an artifact's source.\nThis plugin is mostly useful in reports. It attempts to do the\nright thing automatically by inferring most parameters from its\nexecution environment.\nFor example when called within a CLIENT report context, it will\nautomatically fill its flow id, client id etc. Typically this\nmeans that you only need to specify the source name (for\nmulti-source artifacts).\n",
+        "description": "Retrieve rows from an artifact's source.",
         "type": "Plugin",
         "args": [
             {
@@ -4543,7 +4543,7 @@
     },
     {
         "name": "tempfile",
-        "description": "Create a temporary file and write some data into it.\nThe file will be automatically removed when the query completes.\n",
+        "description": "Create a temporary file and write some data into it.",
         "type": "Function",
         "args": [
             {
@@ -4725,7 +4725,7 @@
     },
     {
         "name": "upload",
-        "description": "Upload a file to the upload service. For a Velociraptor client this\nwill upload the file into the flow and store it in the server's file store.\nIf Velociraptor is run locally the file will be copied to the\n`--dump_dir` path or added to the triage evidence container.\n",
+        "description": "Upload a file to the upload service. For a Velociraptor client this\nwill upload the file into the flow and store it in the server's file store.",
         "type": "Function",
         "args": [
             {
@@ -4754,7 +4754,7 @@
     },
     {
         "name": "upload",
-        "description": "Upload files to the server.\nThis plugin uploads the specified file to the server. If Velociraptor\nis run locally the file will be copied to the `--dump_dir` path or\nadded to the triage evidence container.\nThis functionality is also available using the upload() function which\nmight be somewhat easier to use.\n",
+        "description": "Upload files to the server.",
         "type": "Plugin",
         "args": [
             {
@@ -5040,7 +5040,7 @@
     },
     {
         "name": "url",
-        "description": "Construct a URL or parse one.\nThis function parses or constructs URLs. A URL may be constructed from\nscratch by providing all the components or it may be parsed from an\nexisting URL.\nThe returned object is a [golang\nURL](https://golang.org/pkg/net/url/#URL) and can be serialized again\nusing its `String` method.\nThis function is important when constructing parameters for certain\naccessors which receive a URL. For example the `zip` accessor requires\nits file names to consist of URLs. The Zip accessor interprets the URL\nin the following way:\n- The scheme is the delegate accessor to use.\n- The path is the delegate accessor's filename\n- The fragment is used by the zip accessor to retrieve the zip member itself.\nIn this case it is critical to properly escape each level - it is not\npossible in the general case to simply append strings. You need to use\nthe `url()` function to build the proper url.\n",
+        "description": "Construct a URL or parse one.",
         "type": "Function",
         "args": [
             {
@@ -5142,7 +5142,7 @@
     },
     {
         "name": "version",
-        "description": "Gets the version of a VQL plugin or function.\nThis is useful when writing portable VQL which can work with\nolder versions of Velociraptor. When Velociraptor plugins evolve\nin an incompatible way their version is incremented. It is\npossible to cater for multiple versions in the VQL using an if()\nplugin.\nFor example the following can chose from a legacy query or a\nmodern query based on the plugin version:\n```\n SELECT * FROM if(\n  condition=version(plugin=\"glob\") >= 1,\n  then=NewQuery,\n  else=LegacyQuery)\n```\n",
+        "description": "\nGets the version of a VQL plugin or function.",
         "type": "Function",
         "args": [
             {
@@ -5186,7 +5186,7 @@
     },
     {
         "name": "watch_csv",
-        "description": "Watch a CSV file and stream events from it. Note: This is an event\nplugin which does not complete.\nThis plugin is the event version of `parse_csv()`. When the CSV file\ngrows this plugin will emit the new rows.\n",
+        "description": "Watch a CSV file and stream events from it. Note: This is an event\nplugin which does not complete.",
         "type": "Plugin",
         "args": [
             {
@@ -5258,7 +5258,7 @@
     },
     {
         "name": "watch_evtx",
-        "description": "Watch an EVTX file and stream events from it.\nThis is the Event plugin version of `parse_evtx()`.\n{{% notice note %}}\nIt often takes several seconds for events to be flushed to the event\nlog and so this plugin's event may be delayed. For some applications\nthis results in a race condition with the event itself - for example,\nfiles mentioned in the event may already be removed by the time the\nevent is triggered.\n{{% /notice %}}\n",
+        "description": "Watch an EVTX file and stream events from it.",
         "type": "Plugin",
         "args": [
             {
@@ -5361,7 +5361,7 @@
     },
     {
         "name": "wmi",
-        "description": "Execute simple WMI queries synchronously.\nThis plugin issues a WMI query and returns its rows directly. The\nexact format of the returned row depends on the WMI query issued.\nThis plugin creates a bridge between WMI and VQL and it is a very\ncommonly used plugin for inspecting the state of windows systems.\n",
+        "description": "Execute simple WMI queries synchronously.",
         "type": "Plugin",
         "args": [
             {
@@ -5383,7 +5383,7 @@
     },
     {
         "name": "wmi_events",
-        "description": "Executes an evented WMI queries asynchronously.\nThis plugin sets up a [WMI event](https://docs.microsoft.com/en-us/windows/desktop/wmisdk/receiving-a-wmi-event) listener query.\n",
+        "description": "Executes an evented WMI queries asynchronously.",
         "type": "Plugin",
         "args": [
             {
@@ -5441,7 +5441,7 @@
     },
     {
         "name": "yara",
-        "description": "Scan files using yara rules.\nThe `yara()` plugin applies a signature consisting of multiple rules\nacross files. You can read more about [yara rules](https://yara.readthedocs.io/en/v3.4.0/writingrules.html). The\naccessor is used to open the various files which allows this plugin to\nwork across raw ntfs, zip members etc.\nScanning proceeds by reading a block from the file, then applying the\nyara rule on the block. This will fail if the signature is split\nacross block boundary. You can choose the block size to be\nappropriate.\nNote that because we are just scanning the file data, yara plugins\nlike the pe plugin will not work. You can emulate all the yara plugins\nwith VQL anyway (e.g. to test for pe headers)\nTypically the yara rule does not change for the life of the query, so\nwe cache it to avoid having to recompile it each time. The `key`\nvariable can be used to uniquely identify the cache key for the\nrule. If the `key` variable is not specified, we use the rule text\nitself to generate the cache key. It is recommended that the `key`\nparameter be specified because it makes it more efficient.\n### Shorthand rules\nThis plugin accepts yara rules in the `rules` parameter. But typically\nwe only search for keywords so writing a full yara syntax rule is\ntedious. Therefore we provide a shorthand way to specify the\nkeywords. For example:\n```\nwide nocase:foo,bar,baz\n```\nWhen the rule is provided in the above form, the plugin will\nautomatically generate a yara rule which matches any of the specified\nkeywords. The specification before the `:` means the same thing as the\nyara DSL and the following combinations are supported `wide`, `wide\nascii`, `wide nocase`, `wide nocase ascii`.\n{{% notice note %}}\nBy default only the first 100mb of the file are scanned and\nscanning stops after one hit is found.\n{{% /notice %}}\n",
+        "description": "Scan files using yara rules.",
         "type": "Plugin",
         "args": [
             {

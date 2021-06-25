@@ -488,3 +488,41 @@ a.menu-opener.open i.fa-chevron-right, a.menu-opener.folded i.fa-chevron-down {
 .search_results {
         margin-top: 20px;
 }
+
+.idea-tag, .searchbar {
+    margin-top: 1em;
+}
+
+.user-name {
+    font-size: 75%;
+}
+
+
+p.egg {
+    display: none;
+}
+
+.args th {
+    background: var(--MENU-SECTION-BG-color);
+    padding: 10px;
+    border: 0px;
+}
+
+.args table {
+    border: none;
+}
+
+.args td {
+    padding: 10px;
+    border-right: none;
+    border-left: none;
+}
+
+.vqlargs + table {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.vqlargs + table td, .vqlargs + table th {
+    padding: 10px;
+}

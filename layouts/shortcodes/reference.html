@@ -2,7 +2,9 @@
 </script>
 
 <div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Query Hub" aria-describedby="basic-addon2">
+  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+         placeholder="Search for VQL plugins or functions"
+         aria-describedby="basic-addon2">
   <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
 </div>
 
@@ -10,7 +12,7 @@
 
 <div class="search_results"></div>
 
-<script> 
+<script>
 let all_data = [];
 
 $.ajax({
@@ -38,23 +40,24 @@ function doSearch() {
 
 function DrawResults(data) {
   $(".search_results").empty();
-  
+
   for(let i=0;i<data.length; i++) {
     let item = data[i];
-    let template = $(`<div class="panel panel-default color">
+    let template = $(`
+<div class="panel panel-default color">
   <div class="panel-heading color">
-    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-	<div class="type vql_type pull-right"></div>
+    <a class="title link" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="type vql_type pull-right"></div>
   </div>
   <div class="panel-body color">
-<div class="border color">
-		<div class="border color">
-			<div class="idea-inner-text-main color">
-        <img class="user-avatar inline">
-        <p></p></span>
-                    <p class="description "></p>
-				<p class="idea-tag space">
-        </p>
+    <div class="border color">
+      <div class="border color">
+        <div class="idea-inner-text-main color">
+          <img class="user-avatar inline">
+          <p class="description"></p>
+          <p class="args"/>
+          <p class="idea-tag space"></p>
+        </div>
       </div>
     </div>
   </div>
@@ -62,39 +65,52 @@ function DrawResults(data) {
 
     template.find(".title").append(item.name);
     template.find(".description").append(item.description);
-    //template.find(".title").attr("href", item.link);
-	template.find(".type").append(item.type)
-/*
-    for (let j=0; j<item.tags.length; j++) {
-      let tag = item.tags[j];
-      console.log(tag);
-      template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
-    }
-	*/
+      template.find(".link").attr("href", getLink(item));
+      template.find(".type").append(item.type)
+      if (item.args.length > 0) {
+          let args_template = $(`
+<table>
+  <thead>
+   <tr>
+    <th>Arg</th>
+    <th>Description</th>
+    <th>Type</th>
+   </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+`);
+          for(let i=0;i<item.args.length; i++) {
+              let arg = item.args[i];
+              let row = $(`<tr>
+   <td class="name"></td>
+   <td class="description"></td>
+   <td class="type"></td>
+   </tr>`);
+              let type = arg.type;
+              if (arg.repeated) {
+                  type = "repeated " + type;
+              }
+
+              if (arg.required) {
+                  type += " (required) ";
+              }
+
+              row.find(".name").append(arg.name);
+              row.find(".description").append(arg.description);
+              row.find(".type").append(type);
+              args_template.find("tbody").append(row);
+          };
+          template.find(".args").append(args_template);
+      };
+
     $(".search_results").append(template);
   }
 };
 
-function myFunction() {
-  // Declare variables
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById('myInput');
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("myUL");
-  li = ul.getElementsByTagName('li');
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    txtValue = a.textContent || a.innerText;
-    
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
+function getLink(item) {
+    return "/vql_reference/" + item.category + "/#" + item.name
 }
-function community() { //these are here to add quick buttons to add a phrase into the search engine
-    ;
-}
+
 </script>

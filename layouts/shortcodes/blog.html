@@ -17,7 +17,6 @@ let all_data = [];
 $.ajax({
   url: "/blog/data.json",
 }).done(function( data ) {
-  console.log(data);
   all_data = data;
   DrawResults(data);
 });
@@ -35,7 +34,6 @@ function doSearch() {
       result.push(item);
     }
   };
-  console.log(result);
   DrawResults(result);
 }
 
@@ -47,7 +45,7 @@ function DrawResults(data) {
     let template = $(`<div class="panel panel-default color">
   <div class="panel-heading color">
     <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-        <div class="date pull-right"></div>
+    <div class="date pull-right"></div>
   </div>
   <div class="panel-body color">
 <div class="border color">
@@ -68,10 +66,8 @@ function DrawResults(data) {
     template.find(".title").attr("href", item.link);
     template.find(".date").append(item.date)
 
-    console.log(item);
     for (let j=0; j<item.tags.length; j++) {
       let tag = item.tags[j];
-      console.log(tag);
       template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
     }
     let new_item = $(".search_results").append(template);

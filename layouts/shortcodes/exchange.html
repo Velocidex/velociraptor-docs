@@ -2,76 +2,41 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
 </script>
 
-<div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Query Hub" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+<div class="row searchbar">
+  <div class="input-group col-lg-8 pull-left">
+    <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+           placeholder="Search for an artifact" aria-describedby="basic-addon2">
+    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+  </div>
+  <div class="col-lg-3 pull-right">
+    <button type="button" class="btn btn-default btn-lg pull-right"
+            data-toggle="modal" data-target="#myModal">
+      <i class="fas fa-external-link-alt"></i>
+      Share your own Artifact
+    </button>
+  </div>
 </div>
-<br>
-
-<!-- Single button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a onclick="Linux()"href="#">Linux</a></li>
-    <li><a href="#">Another action</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div> 
-
-<!-- Single button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a onclick="Linux()"href="#">Linux</a></li>
-    <li><a href="#">Another action</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div> 
-
-<!-- Single button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a onclick="Linux()"href="#">Linux</a></li>
-    <li><a href="#">Another action</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div> 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
-  Want to add Your Query
-</button>
 
 <!-- Modal -->
 <div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog E" role="document">
     <div class="modal-content E">
       <div class="modal-header E">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title E" id="myModalLabel">Info about the Query Hub</h4>
+        <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title E">Share an artifact</h4>
       </div>
       <div class="modal-body E">
-         The Query Hub
-        <br>
-        This hub is where you can find all the archives where we have stored data. 
-        This data is to help all those that are in need.
-        But saddly we can't discover everything thats where you come in.
-        With your help we can complete the archives.
-        <br>
-        <br>
-        <p style="color:white; font-style: italic;">The darkside is strong with you.</p>
+        <p class="egg">The darkside is strong with you...</p>
+        <p>
+          The artifact exchange is a central place for you to share
+          your own artifacts with the Velociraptor community and
+          search for artifacts you can use in your own work.
+        </p>
+        <p>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -122,22 +87,22 @@ function DrawResults(data) {
     let template = $(`<div class="panel panel-default color">
   <div class="panel-heading color">
     <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="date pull-right"></div>
   </div>
   <div class="panel-body color">
-<div class="border color">
-		<div class="border color">
-			<div class="idea-inner-text-main color">
-				<br>
-				<span class="user-name" href="">Submitted by <a class="user-name-link"></a>
-        <img class="user-avatar inline">
-        <p></p></span>
-                    <p class="description "></p>
-				<p class="idea-tag space">
-        </p>
+   <div class="border color">
+     <div class="border color">
+      <div class="idea-inner-text-main color">
+        <p class="description"></p>
+        <span class="user-name" href="">Contributed by <a class="user-name-link"></a>
+          <img class="user-avatar inline">
+        </span>
+
+        <p class="idea-tag space"/>
       </div>
-    </div>
-  </div>
-</div>`);
+     </div>
+   </div>
+  </div>`);
 
     template.find(".title").append(item.title);
     template.find(".user-name-link").append(item.author);
@@ -145,42 +110,13 @@ function DrawResults(data) {
     template.find(".user-name-link").attr("href", item.author_link);
     template.find(".user-avatar").attr("src", item.author_avatar);
     template.find(".title").attr("href", item.link);
+    template.find(".date").append(item.date)
 
-    console.log(item);
     for (let j=0; j<item.tags.length; j++) {
       let tag = item.tags[j];
-      console.log(tag);
       template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
     }
     let new_item = $(".search_results").append(template);
   }
 };
-
-function myFunction() {
-  // Declare variables
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById('myInput');
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("myUL");
-  li = ul.getElementsByTagName('li');
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    txtValue = a.textContent || a.innerText;
-    
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-}
-function community() { //these are here to add quick buttons to add a phrase into the search engine
-    ;
-}
 </script>
-
-
-
-
-

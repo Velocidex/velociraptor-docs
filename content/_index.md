@@ -3,6 +3,7 @@ title: "Welcome"
 date: 2021-06-12T07:11:04Z
 draft: false
 weight: 20
+no_header: true
 carousel:
  - name: '<div class="logo-btn"><i class="fas fa-laptop"></i> Collect</div>'
    image: collect.png

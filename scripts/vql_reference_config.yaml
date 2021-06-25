@@ -1,5 +1,5 @@
 content/vql_reference/basic/_index.md:
-  title: Basic VQL functions and plugins
+  title: Basic VQL
   linktitle: Basic VQL
   description: |
     VQL provides a basic set of functions and plugins allowing
@@ -18,7 +18,7 @@ content/vql_reference/basic/_index.md:
   category: basic
 
 content/vql_reference/windows/_index.md:
-  title: Windows Specific Functionality
+  title: Windows Specific
   linktitle: Windows
   description: |
     Many VQL plugins and functions provide access to the Windows
@@ -27,7 +27,7 @@ content/vql_reference/windows/_index.md:
   category: windows
 
 content/vql_reference/parsers/_index.md:
-  title: Parsers and data extractors
+  title: Parsers
   linktitle: Parsers
   description: |
     Many Velociraptor artifacts rely on specialized parsing of file
@@ -43,7 +43,7 @@ content/vql_reference/parsers/_index.md:
   category: parsers
 
 content/vql_reference/server/_index.md:
-  title: Server Side Functionality
+  title: Server Side
   linktitle: Server
   description: |
     Velociraptor provides complete control of the server within VQL
@@ -59,7 +59,7 @@ content/vql_reference/server/_index.md:
 
 
 content/vql_reference/plugin/_index.md:
-  title: Client Side Functionality
+  title: Client Side
   linktitle: Client
   description: |
     This page lists the plugins used to collect information from
@@ -103,7 +103,7 @@ content/vql_reference/event/_index.md:
   category: event
 
 content/vql_reference/experimental/_index.md:
-  title: Experimental Functionality
+  title: Experimental
   linktitle: Experimental
   description: |
     Velociraptor is evolving quickly. We sometime implement

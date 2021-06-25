@@ -1,5 +1,5 @@
 ---
-title: Server Side Functionality
+title: Server Side
 weight: 40
 linktitle: Server
 index: true
@@ -14,10 +14,18 @@ To reuse server side artifacts, simply create an artifact with
 `type: SERVER` and launch it from the "Server Artifacts" screen in
 the GUI.
 
+
+<div class="vql_item"></div>
+
+
 ## artifact_definitions
 <span class='vql_type pull-right'>Plugin</span>
 
 Dump artifact definitions.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -26,14 +34,26 @@ deps|If true includes all dependencies as well.|bool
 sanitize|If true we remove extra metadata.|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## artifact_delete
 <span class='vql_type pull-right'>Function</span>
 
 Deletes an artifact from the global repository.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 name|The Artifact to delete|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## artifact_set
@@ -41,10 +61,18 @@ name|The Artifact to delete|string
 
 Sets an artifact into the global repository.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 definition|Artifact definition in YAML|string
 prefix|Required name prefix|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## cancel_flow
@@ -52,10 +80,18 @@ prefix|Required name prefix|string
 
 Cancels the flow.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+
+
+
+<div class="vql_item"></div>
 
 
 ## client_delete
@@ -63,10 +99,18 @@ flow_id||string
 
 Delete all information related to a client. 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 really_do_it||bool
+
+
+
+<div class="vql_item"></div>
 
 
 ## client_info
@@ -74,9 +118,17 @@ really_do_it||bool
 
 Returns client info (like the fqdn) from the datastore.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## client_metadata
@@ -84,9 +136,17 @@ client_id||string (required)
 
 Returns client metadata from the datastore. Client metadata is a set of free form key/value data
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## client_set_metadata
@@ -94,15 +154,27 @@ client_id||string (required)
 
 Sets client metadata. Client metadata is a set of free form key/value data
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## clients
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the list of clients.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -112,6 +184,10 @@ count|Maximum number of clients to fetch (1000)'|uint64
 client_id||string
 
 
+
+<div class="vql_item"></div>
+
+
 ## collect_client
 <span class='vql_type pull-right'>Function</span>
 
@@ -119,6 +195,10 @@ Launch an artifact collection against a client. If the client_id
 is "server" then the collection occurs on the server itself. In
 that case the caller needs the SERVER_ADMIN permission.
 
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -132,6 +212,10 @@ max_rows|Max number of rows to fetch|uint64
 max_bytes|Max number of bytes to upload|uint64
 
 
+
+<div class="vql_item"></div>
+
+
 ## compress
 <span class='vql_type pull-right'>Function</span>
 
@@ -140,15 +224,27 @@ file is archived so it takes less space. It is still possible to see
 the file and read it but not to seek within it.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|A VFS path to compress|list of string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## create_flow_download
 <span class='vql_type pull-right'>Function</span>
 
 Creates a download pack for the flow.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -159,10 +255,18 @@ type|Type of download to create (e.g. 'report') default a full zip file.|string
 template|Report template to use (defaults to Reporting.Default).|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## create_hunt_download
 <span class='vql_type pull-right'>Function</span>
 
 Creates a download pack for a hunt.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -173,10 +277,18 @@ format|Format to export (csv,json) defaults to both.|string
 base|Base filename to write to.|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## elastic_upload
 <span class='vql_type pull-right'>Plugin</span>
 
 Upload rows to elastic.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -194,15 +306,27 @@ wait_time|Batch elastic upload this long (2 sec).|int64
 pipeline|Pipeline for uploads|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## enumerate_flow
 <span class='vql_type pull-right'>Plugin</span>
 
 Enumerate all the files that make up a flow.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+
+
+
+<div class="vql_item"></div>
 
 
 ## file_store
@@ -229,9 +353,17 @@ In future the file store may be abstracted (e.g. files may not be
 locally stored at all) and this function may stop working.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|A VFS path to convert|list of string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## file_store_delete
@@ -239,15 +371,27 @@ path|A VFS path to convert|list of string (required)
 
 Delete file store paths into full filesystem paths. 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 path|A VFS path to remove|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## flow_results
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the results of a flow.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -257,15 +401,27 @@ flow_id|The hunt id to read.|string (required)
 client_id|The client id to extract|string (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## flows
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the flows launched on each client.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+
+
+
+<div class="vql_item"></div>
 
 
 ## get_client_monitoring
@@ -274,10 +430,18 @@ flow_id||string
 Retrieve the current client monitoring state.
 
 
+
+<div class="vql_item"></div>
+
+
 ## get_server_monitoring
 <span class='vql_type pull-right'>Function</span>
 
 Retrieve the current client monitoring state.
+
+
+
+<div class="vql_item"></div>
 
 
 ## gui_users
@@ -286,10 +450,18 @@ Retrieve the current client monitoring state.
 Retrieve the list of users on the server.
 
 
+
+<div class="vql_item"></div>
+
+
 ## hunt
 <span class='vql_type pull-right'>Function</span>
 
 Launch an artifact collection against a client.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -304,10 +476,18 @@ max_bytes|Max number of bytes to upload|uint64
 pause|If specified the new hunt will be in the paused state|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## hunt_add
 <span class='vql_type pull-right'>Function</span>
 
 Assign a client to a hunt.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -315,10 +495,18 @@ ClientId||string (required)
 HuntId||string (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## hunt_flows
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the flows launched by a hunt.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -327,10 +515,18 @@ start_row|The first row to show (used for paging).|int64
 limit|Number of rows to show (used for paging).|int64
 
 
+
+<div class="vql_item"></div>
+
+
 ## hunt_results
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the results of a hunt.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -340,14 +536,26 @@ hunt_id|The hunt id to read.|string (required)
 brief|If set we return less columns.|bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## hunts
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the list of hunts.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 hunt_id|A hunt id to read, if not specified we list all of them.|string
+
+
+
+<div class="vql_item"></div>
 
 
 ## inventory
@@ -356,10 +564,18 @@ hunt_id|A hunt id to read, if not specified we list all of them.|string
 Retrieve the tools inventory.
 
 
+
+<div class="vql_item"></div>
+
+
 ## inventory_add
 <span class='vql_type pull-right'>Function</span>
 
 Add tool to ThirdParty inventory.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -372,14 +588,26 @@ file|An optional file to upload|string
 accessor|The accessor to use to read the file.|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## inventory_get
 <span class='vql_type pull-right'>Function</span>
 
 Get tool info from inventory service.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 tool||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## label
@@ -388,6 +616,10 @@ tool||string (required)
 Add the labels to the client. If op is 'remove' then remove these labels.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id|Client ID to label.|string (required)
@@ -395,10 +627,18 @@ labels|A list of labels to apply|list of string (required)
 op|An operation on the labels (set, check, remove)|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## mail
 <span class='vql_type pull-right'>Plugin</span>
 
 Send Email to a remote server.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -409,14 +649,26 @@ body|The body of the mail.|string (required)
 period|How long to wait before sending the next mail - help to throttle mails.|int64 (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## monitoring
 <span class='vql_type pull-right'>Plugin</span>
 
 Extract monitoring log from a client. If client_id is not specified we watch the global journal which contains event logs from all clients.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 artifact|The event artifact name to watch|string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## notebook_delete
@@ -424,16 +676,28 @@ artifact|The event artifact name to watch|string (required)
 
 Delete a notebook with all its cells. 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 notebook_id||string (required)
 really_do_it||bool
 
 
+
+<div class="vql_item"></div>
+
+
 ## parallelize
 <span class='vql_type pull-right'>Plugin</span>
 
 Runs query on result batches in parallel.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -450,6 +714,10 @@ notebook_cell_id|The notebook cell read from (shoud also include notebook id)|st
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 workers|Number of workers to spawn.)|int64
 batch|Number of rows in each batch.)|int64
+
+
+
+<div class="vql_item"></div>
 
 
 ## patch
@@ -494,11 +762,19 @@ FROM scope()
 ```
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 item|The item to path|Any (required)
 patch|A JSON Patch to apply|Any
 merge|A merge-patch to apply|Any
+
+
+
+<div class="vql_item"></div>
 
 
 ## rate
@@ -514,10 +790,18 @@ This function works by remembering the values of x and y from the
 previous row and applying the current rows values.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 x|The X float|float64 (required)
 y|The Y float|float64 (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## sample
@@ -529,16 +813,28 @@ This is most useful on the server in order to downsample event
 artifact results.
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 query|Source query.|StoredQuery (required)
 n|Pick every n row from query.|int64 (required)
 
 
+
+<div class="vql_item"></div>
+
+
 ## search
 <span class='vql_type pull-right'>Plugin</span>
 
 Search the server client's index.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -548,14 +844,26 @@ limit|Only return limited results|uint64
 type|The type of search (e.g. 'key')|string
 
 
+
+<div class="vql_item"></div>
+
+
 ## server_metadata
 <span class='vql_type pull-right'>Function</span>
 
 Returns client metadata from the datastore. Client metadata is a set of free form key/value data
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## server_set_metadata
@@ -563,9 +871,17 @@ client_id||string (required)
 
 Sets client metadata. Client metadata is a set of free form key/value data
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## set_client_monitoring
@@ -573,9 +889,17 @@ client_id||string (required)
 
 Sets the current client monitoring state.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 value|The Value to set|Any (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## set_server_monitoring
@@ -583,9 +907,17 @@ value|The Value to set|Any (required)
 
 Sets the current server monitoring state.
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 value|The Value to set|Any (required)
+
+
+
+<div class="vql_item"></div>
 
 
 ## source
@@ -603,6 +935,10 @@ means that you only need to specify the source name (for
 multi-source artifacts).
 
 
+
+
+<div class="vqlargs"></div>
+
 Arg | Description | Type
 ----|-------------|-----
 client_id|The client id to extract|string
@@ -619,10 +955,18 @@ start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
 
 
+
+<div class="vql_item"></div>
+
+
 ## splunk_upload
 <span class='vql_type pull-right'>Plugin</span>
 
 Upload rows to splunk.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
@@ -638,10 +982,18 @@ skip_verify|Skip SSL verification(default: False).|bool
 wait_time|Batch splunk upload this long (2 sec).|int64
 
 
+
+<div class="vql_item"></div>
+
+
 ## uploads
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve information about a flow's uploads.
+
+
+
+<div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
