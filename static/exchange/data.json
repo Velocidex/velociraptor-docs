@@ -1,1 +1,26 @@
-[{"title": "HashRunKeys", "description": "Iterate over all the run keys and locate their binary then hash it.\n\n  \n", "link": "/exchange/artifacts/pages/hash_run_keys", "tags": ["windows", "registry", "detection"], "author": "ffh571", "author_link": "https://github.com/ffh571", "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4", "date": "2021-06-23"}]
+[
+    {
+        "title": "Windows.ETW.AMSI",
+        "description": "This artifact uses the ETW provider:\n(Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}\n",
+        "link": "/exchange/artifacts/pages/amsi",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-06-25"
+    },
+    {
+        "title": "HashRunKeys",
+        "description": "Iterate over all the run keys and locate their binary then hash it.\n\n  \n",
+        "link": "/exchange/artifacts/pages/hash_run_keys",
+        "tags": [
+            "windows",
+            "registry",
+            "detection"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-06-25"
+    }
+]

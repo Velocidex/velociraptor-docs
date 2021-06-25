@@ -49,6 +49,8 @@ def getAuthor(record, yaml_filename):
   # Get commit details for this file.
   path = yaml_filename.replace("\\", "/")
   commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+  print("Checking commit for %s\n" % path)
+
   first_commit = commits[0]
   record["author"] = first_commit["author"]["login"]
   record["author_link"] = first_commit["author"]["html_url"]
@@ -87,11 +89,10 @@ for root, dirs, files in os.walk(artifact_root_directory):
          fd.write(template % (data["name"], data["description"], content))
 
 with open(output_data_path, "w") as fd:
-  fd.write(json.dumps(index))
+  fd.write(json.dumps(index, indent=4))
   print("Writing data.json in %s" % output_data_path)
 
 
 if os.getenv('CI'):
    # Remove this file so the site may be pushed correctly.
-   os.remove("static/exchange/.gitignore")
    os.remove(artifact_root_directory + "/.gitignore")
