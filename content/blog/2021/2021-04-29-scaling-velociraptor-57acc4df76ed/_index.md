@@ -1,5 +1,10 @@
 ---
 title: Scaling Velociraptor
+description: Velociraptor is an endpoint visibility tool designed to query a large number of endpoints quickly and efficiently. This post introduces the new experimental multi-server architecture that is released in the 0.5.9 release.
+tags:
+- Server
+- Scalability
+- Velociraptor
 date: 2021-04-29
 ---
 
