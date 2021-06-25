@@ -67,6 +67,6 @@ body.dark .E {
     background-color: var(--MAIN-TEXT-background-color);
 }
 
-p.egg {
+body.dark p.egg {
     display: block;
 }

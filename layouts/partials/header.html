@@ -45,6 +45,10 @@
         <section id="body">
         <div id="overlay"></div>
         <div class="padding highlightable">
+          {{ $editURL := printf "%s%s%s" .Site.Params.editURL ( replace .File.Dir "\\" "/" ) .File.LogicalName }}
+          {{ if .Params.editURL }}
+          {{ $editURL = .Params.editURL }}
+          {{ end }}
              {{ if not .Params.no_header }}
               <div>
                 <div id="top-bar">
@@ -53,7 +57,7 @@
                   {{ $Site := .Site }}
                   {{with $File.Path }}
                   <div id="top-github-link">
-                    <a class="github-link" title='{{T "Edit-this-page"}}' href="{{ $Site.Params.editURL }}{{ replace $File.Dir "\\" "/" }}{{ $File.LogicalName }}" target="blank">
+                    <a class="github-link" title='{{T "Edit-this-page"}}' href="{{ $editURL }}" target="blank">
                       <i class="fas fa-code-branch"></i>
                       <span id="top-github-link-text">{{T "Edit-this-page"}}</span>
                     </a>

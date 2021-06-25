@@ -112,3 +112,11 @@ content/vql_reference/experimental/_index.md:
     useful, please let us know!
   weight: 60
   category: experimental
+
+content/vql_reference/misc/_index.md:
+  title: Misc
+  linktitle: Misc
+  description: |
+    Miscelanueous plugins not yet categorized.
+  weight: 70
+  category: ""

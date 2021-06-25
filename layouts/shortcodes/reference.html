@@ -110,7 +110,10 @@ function DrawResults(data) {
 };
 
 function getLink(item) {
-    return "/vql_reference/" + item.category + "/#" + item.name
+    if (item.category) {
+        return "/vql_reference/" + item.category + "/#" + item.name;
+    }
+    return "/vql_reference/misc/#" + item.name;
 }
 
 </script>

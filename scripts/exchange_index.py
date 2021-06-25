@@ -9,11 +9,14 @@ commits_url = "https://api.github.com/repos/scudette/velociraptor-docs/commits"
 output_data_path = "static/exchange/data.json"
 artifact_root_directory = "content/exchange/artifacts"
 artifact_page_directory = "content/exchange/artifacts/pages"
+org = "scudette"
+project = "velociraptor-docs"
 
 # Each yaml file will be converted to a markdown if needed.
 template = """---
 title: %s
 hidden: true
+editURL: https://github.com/%s/%s/edit/master/%s
 ---
 
 %s
@@ -71,7 +74,6 @@ for root, dirs, files in os.walk(artifact_root_directory):
       content = stream.read()
       data = yaml.safe_load(content)
 
-
       base_name = os.path.splitext(yaml_filename)[0]
       base_name = os.path.relpath(base_name, artifact_root_directory)
       filename_name = os.path.join(artifact_page_directory, base_name)
@@ -86,7 +88,12 @@ for root, dirs, files in os.walk(artifact_root_directory):
 
       md_filename = filename_name + ".md"
       with open(md_filename, "w") as fd:
-         fd.write(template % (data["name"], data["description"], content))
+         fd.write(template % (data["name"], org, project,
+                              yaml_filename,
+                              data["description"], content))
+
+index = sorted(index, key=lambda x: x["date"],
+               reverse=True)
 
 with open(output_data_path, "w") as fd:
   fd.write(json.dumps(index, indent=4))

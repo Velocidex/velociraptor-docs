@@ -523,6 +523,11 @@ p.egg {
     margin-bottom: 3em;
 }
 
-.vqlargs + table td, .vqlargs + table th {
+.vqlargs + table td {
+    padding: 10px;
+}
+
+.vqlargs + table th {
+    background: var(--CODE-SECTION-BG-color);
     padding: 10px;
 }
