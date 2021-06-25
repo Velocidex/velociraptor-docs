@@ -56,6 +56,10 @@ def getAuthor(record, yaml_filename):
 
   # Commit is not yet know.
   if not commits:
+    record["author"] = ""
+    record["author_link"] = ""
+    record["author_avatar"] = ""
+    record["date"] = ""
     return record
 
   first_commit = commits[0]
