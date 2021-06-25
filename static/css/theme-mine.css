@@ -393,6 +393,28 @@ li.dd-item i.fa-sm {
     padding-bottom: 10px;
 }
 
+@media only all and (max-width: 75.938em) {
+    div.exchange-contribute {
+        width: 100%;
+    }
+    div.exchange-contribute button {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+@media only all and (max-width: 59.938em) {
+    .footer-copyright {
+        width: 230px;
+    }
+}
+
+@media only all and (max-width: 47.938em) {
+    .footer-copyright {
+        display: none;
+    }
+}
+
 .rapid7 {
     height: 16px;
     float: right;

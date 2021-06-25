@@ -52,7 +52,7 @@
              {{ if not .Params.no_header }}
               <div>
                 <div id="top-bar">
-                {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
+                {{ if and (not .Params.no_edit) (or .IsPage .IsSection) .Site.Params.editURL }}
                   {{ $File := .File }}
                   {{ $Site := .Site }}
                   {{with $File.Path }}
@@ -83,7 +83,7 @@
                  {{ end }}
                   </span>
                 </div>
-                {{ if $toc }}
+                {{ if and $toc }}
                     {{ partial "toc.html" . }}
                 {{ end }}
               </div>
