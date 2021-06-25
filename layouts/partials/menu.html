@@ -34,7 +34,7 @@
   {{- end}}
 {{- end}}
     </ul>
-
+    <hr />
     {{ $disableShortcutsTitle := .Site.Params.DisableShortcutsTitle}}
     {{with .Site.Menus.shortcuts}}
       <section id="shortcuts">
@@ -115,7 +115,7 @@
         {{- if ne $numberOfPages 0 }} haschildren{{end}}
         ">
       <div>
-        {{- if ne $numberOfPages 0 }}
+        {{- if and ( ne $numberOfPages 0 ) (not .Params.no_children)  }}
           {{- if or (.IsAncestor $mycurrentNode) (.Params.alwaysopen) }}
             <i class="fa fa-angle-down fa-sm category-icon"></i>
           {{- else -}}
@@ -128,7 +128,7 @@
 
         {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
       </div>
-      {{- if ne $numberOfPages 0 }}
+      {{- if and ( ne $numberOfPages 0) (not .Params.no_children) }}
         <ul>
           {{- .Scratch.Set "pages" .Pages }}
           {{- if .Sections}}
