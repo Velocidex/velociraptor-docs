@@ -1,5 +1,4 @@
 name: Windows.ETW.AMSI
-author: @mgreen27 - Matt Green
 description: |
     This artifact uses the ETW provider:
     (Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}
