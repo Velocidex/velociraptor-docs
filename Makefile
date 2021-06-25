@@ -4,3 +4,6 @@ references:
 
 exchange:
 	python3 scripts/exchange_index.py
+
+blog:
+	python3 scripts/blog_index.py

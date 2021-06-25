@@ -31,7 +31,15 @@ markup:
 
 menu:
   shortcuts:
-   -  name: "<i class='fab fa-github'></i>Github repo"
-      identifier: "ds"
+   -  name: "<i class='fab fa-github'></i>Github"
+      identifier: "gh"
       url: "https://github.com/Velocidex/velociraptor"
       weight: 10
+   -  name: "<i class='fab fa-discord'></i>Discord"
+      identifier: "ds"
+      url: "/discord/"
+      weight: 20
+   -  name: "<i class='fas fa-envelope'></i>Mailing List"
+      identifier: "mail"
+      url: "mailto:velociraptor-discuss@googlegroups.com"
+      weight: 30
