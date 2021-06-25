@@ -1,0 +1,100 @@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="input-group">
+  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Query Hub" aria-describedby="basic-addon2">
+  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+</div>
+
+<hr />
+
+<div class="search_results"></div>
+
+<script> 
+let all_data = [];
+
+$.ajax({
+  url: "/reference/data.json",
+}).done(function( data ) {
+  all_data = data;
+  DrawResults(data);
+});
+
+function doSearch() {
+  // Declare variables
+  let input = document.getElementById('myInput');
+  let filter = input.value.toUpperCase();
+
+  let result = [];
+  for(let i=0;i<all_data.length; i++) {
+    let item = all_data[i];
+
+    if (item.name.toUpperCase().includes(filter)) {
+      result.push(item);
+    }
+  };
+  DrawResults(result);
+}
+
+function DrawResults(data) {
+  $(".search_results").empty();
+  
+  for(let i=0;i<data.length; i++) {
+    let item = data[i];
+    let template = $(`<div class="panel panel-default color">
+  <div class="panel-heading color">
+    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+	<div class="type vql_type pull-right"></div>
+  </div>
+  <div class="panel-body color">
+<div class="border color">
+		<div class="border color">
+			<div class="idea-inner-text-main color">
+        <img class="user-avatar inline">
+        <p></p></span>
+                    <p class="description "></p>
+				<p class="idea-tag space">
+        </p>
+      </div>
+    </div>
+  </div>
+</div>`);
+
+    template.find(".title").append(item.name);
+    template.find(".description").append(item.description);
+    //template.find(".title").attr("href", item.link);
+	template.find(".type").append(item.type)
+/*
+    for (let j=0; j<item.tags.length; j++) {
+      let tag = item.tags[j];
+      console.log(tag);
+      template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
+    }
+	*/
+    $(".search_results").append(template);
+  }
+};
+
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('myInput');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myUL");
+  li = ul.getElementsByTagName('li');
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+function community() { //these are here to add quick buttons to add a phrase into the search engine
+    ;
+}
+</script>
