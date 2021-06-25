@@ -49,7 +49,7 @@ def getAuthor(record, yaml_filename):
   # Get commit details for this file.
   path = yaml_filename.replace("\\", "/")
   commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
-  print("Checking commit for %s: %s\n", path, commits)
+  print("Checking commit for %s\n" % path)
 
   first_commit = commits[0]
   record["author"] = first_commit["author"]["login"]
