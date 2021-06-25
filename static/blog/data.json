@@ -1,0 +1,7 @@
+[{
+  "title": "Carving $USN Journal Entries", 
+  "description": "One of the most important tasks in DFIR is reconstructing past filesystem activity. This is useful for example, in determining when files were introduced into the system (e.g. in a phishing campaign or drive by downloads) or when binaries were executed by way of modifications of prefetch files.\n", 
+  "link": "/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/", 
+  "tags": ["VQL", "Detection"],
+  "date": "2020-01-02"
+}] 
