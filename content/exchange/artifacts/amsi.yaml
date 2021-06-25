@@ -1,0 +1,54 @@
+name: Windows.ETW.AMSI
+author: @mgreen27 - Matt Green
+description: |
+    This artifact uses the ETW provider:
+    (Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: IocRegex
+    description: "Regex of strings to filter for"
+    default: .
+  - name: WhitelistRegex
+    description: "Regex of strings to witelist"
+  - name: AppNameRegex
+    description: "Application name Regex to enable filtering on source."
+    default: .
+
+    
+sources:
+  - query: |
+      -- collect a small cache of process information for enrichment
+      LET proc = cache(key='Pid', period=600,
+        query={
+            SELECT Pid, Name, Exe,CommandLine, Username,TokenIsElevated 
+            FROM pslist()
+        })
+ 
+      -- watch ETW provider and first round data manipulation
+      LET hits = SELECT *,
+          timestamp(epoch=timestamp(string=System.TimeStamp).unix) as EventTime,
+         System,
+         get(member="EventData") AS EventData,
+         get(item=proc, field=System.ProcessID) AS ProcInfo
+      FROM watch_etw(guid="{2A576B87-09A7-520E-C21A-4942F0271D67}")
+      WHERE EventData.appname =~ AppNameRegex
+
+      -- print rows
+      SELECT
+        EventTime,
+        System,
+        ProcInfo,
+        EventData,
+        utf16(string=
+            unhex(string=regex_replace(
+                source=EventData.Content,re='^0x',replace=''))
+        ) as Content
+      FROM hits
+      WHERE 
+        Content =~ IocRegex
+        AND if(condition= WhitelistRegex,
+            then= NOT Content =~ WhitelistRegex,
+            else= True)
+            
