@@ -90,7 +90,7 @@ for root, dirs, files in os.walk(artifact_root_directory):
       index.append(getAuthor({
         "title": data["name"],
         "description": cleanDescription(description),
-        "link": os.path.join("/exchange/artifacts/pages/", base_name).replace("\\", "/"),
+        "link": os.path.join("/exchange/artifacts/pages/", base_name.lower()).replace("\\", "/"),
         "tags": getTags(description),
       }, yaml_filename))
 
