@@ -1,5 +1,9 @@
 ---
 title: "Searching Filenames"
+description: |
+    One of the most common operations in DFIR is searching for files
+    based on their file names.
+
 date: 2021-06-12T23:25:17Z
 draft: false
 weight: 20

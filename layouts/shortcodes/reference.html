@@ -63,10 +63,14 @@ function DrawResults(data) {
   </div>
 </div>`);
 
-    template.find(".title").append(item.name);
-    template.find(".description").append(item.description);
+      template.find(".title").append(item.name);
+      template.find(".description").append(item.description);
       template.find(".link").attr("href", getLink(item));
       template.find(".type").append(item.type)
+      template.find(".idea-tag").append(
+          `<i class="linkcolour label label-success">` +
+              (item.category || "misc") + `</i>`);
+
       if (item.args.length > 0) {
           let args_template = $(`
 <table>
