@@ -5,171 +5,193 @@ draft: false
 weight: 80
 ---
 
-Windows Event Logs
+## Windows Event Logs
 
-Windows event logs
-Stored in files with extension of *.evtx typically in C:\Windows\System32\WinEVT\Logs\*.evtx
+The Windows event logs are stored in files with extension of `*.evtx`
+typically stored within `C:\Windows\System32\WinEVT\Logs\*.evtx`
 
-File format features:
-Rollover - File is divided into chunks and new chunks can overwrite older chunks
-Binary XML format provides compression
-Structured records with strong types
-30
+Unlike traditional unix style log files that consist of unstructured
+text, Windows EVTX files are stored in a binary format with several
+advantages:
 
-Parsing EVTX
-31
-The event message is actually written in XML but Velociraptor convert it into a JSON object to make it easier to filter specific fields.
+* Rollover - The EVTX file is divided into chunks and new chunks can
+  overwrite older chunks. This allows the file size to be limited, and
+  when the event log fills up, events simply rotate into the start of
+  the file overwriting older events.
+* Binary XML format provides some compression. Although not as much
+  compression as gzip or bzip, EVTX files use a binary encoding to
+  save some space over plain XML.
+* Structured records with strong types - This is perhaps the most
+  important difference with Unix style logs. Structured logs allow for
+  accurate and fast filtering of log files and obviate the need to
+  parse unstructured text.
 
+{{% notice note %}}
 
-Event significant fields
-Provider, Channel, Computer - this represents the source of the message
-Event ID - An index into the message table identifying the type of this event
-EventRecordID - The ID of this message within the evtx file.
-UserData - An application specific blob of structured data
-32
+While the EVTX file is actually XML based, Velociraptor converts it
+internally into a JSON object to make it easier to filter specific
+fields using VQL constructs.
 
-Event Messages
-Windows Event Logs architecture does NOT store the event message in the evtx file!
-This allows for event message internationalization
-Saves some small amount of space in the evtx files themselves
-But mostly makes it difficult to analyze offline
-Grabbing all the EVTX files off the system may result in loss of event messages!
-33
+{{% /notice %}}
 
-34
+Velociraptor implements a parser for EVTX files in the `parse_evtx()`
+plugin. The plugin takes an accessor and a filename to open the EVTX
+file, and produces a single row per event.
 
-35
-The event description message contains vital context about what the event actually means.
-Without the message we would need to search for the event id.
+![EVTX parser](image11.png)
 
+Each event row contains three main columns:
 
-36
-Event message search
-If you copied the event log files off the system and do not have access to the messages, you will need to figure out what does the event id mean.
+1. The `System` column is a JSON object representing the event
+   metadata that is common to all events, such as timestamp.
+2. The `EventData` or `UserData` columns are free form JSON objects
+   representing application specific information specific to the event
+   type recorded.
 
-Some common event ids are documented publicly.
+Some of the more interesting event fields include
 
-Deriving event messages
-Using the provider, channel and computer name lookup the registry key
-HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\<channel>\<provider>
-Read the value EventMessageFile.
-This will point at a DLL path, open the resource section of this dll for a Message Table resource. This will produce a formatted string. Interpolate the UserData section into the string.
-37
+* Provider, Channel, Computer:  these represents the source of the message (more below).
+* Event ID: An index into the message table identifying the type of this event
+* EventRecordID: The ID of this message within the evtx file.
 
-Deriving event messages
-Open the DLL, and locate the resource section in the PE file of this dll, searching for a Message Table resource.
+## Event Messages
 
-A MESSAGE_TABLE resource is a list of strings - the Event ID is an index into this table.
+The Windows Event Logs architecture does **NOT** store the event
+message in the evtx file! Instead, the event log refers to an
+externally provided message, and the viewer application looks up the
+message in a database in order to display it.
 
-This will produce a string with expansion directives like %1, %2 etc. Interpolate the UserData section into the string.
-38
+This scheme has a number of advantages:
 
-39
+1. Saves some small amount of space in the evtx files
+   themselves. Since the bulk of the event message is not stored in
+   the file at all, storage is saved - particularly for repetitive
+   events with large message strings.
+2. Probably the main reason for this scheme is that it allows for
+   event message internationalization - the message string can be
+   tailored for the viewer's language regarless of the language set on
+   the system that generated the event.
 
-40
-Resolving Messages
-Velociraptor can automatically follow this process when parsing event logs using the parse_evtx() plugin.
-Notice the UserData is expanded into the messages.
+The below example shows a familiar event on a Chinese language system.
 
-What could go wrong?
-If you just collect the EVTX files from one system to another you will lose access to message tables, because the messages are in DLL files scattered across the entire system.
+![Chinese message](image9.png)
 
-If an application is uninstalled, its message DLLs will be removed and earlier events are not able to be displayed any more.
-41
+The event viewer is able to show a friendly message in the local
+language, however closer inspection of the event data itself indicates
+the message is not found within the `EventData` field.
 
-Event Message databases
-The https://github.com/Velocidex/evtx-data repository contains sqlite databases of many known message tables collected from different systems.
+![Chinese message event](image8.png)
 
-The dumpevtx tool can resolve messages from these databases and the sqlite databases.
-42
+### Deriving event messages
 
-Event logs DFIR
-43
+How does the Windows event viewer resolve the messages when displaying an event?
 
-Exercise - resolve messages
-Clone the evtx-data repository to your Linux machine. Download the dumpevtx tool from the releases page.
+Using the `provider`, `channel` and `computer name`, the event viewer
+looks up the registry key
+`HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\<channel>\<provider>`
+and reads the value `EventMessageFile`.
 
-View the event log samples on your Linux machine using the dumpevtx tool. Note that no messages are present.
+The value will point at a path to a DLL. The event viewer will then
+open the DLL and search the resource section of this dll for a
+`Message Table` resource.
 
-Download the relevant sqlite message databases and resolve messages from your evtx files.
-44
+The `Message Table` is simply a table of strings. The event viewer
+will then use the Event ID as an index to this message table to
+retrieve the message string for the event.
 
-45
-The dumpevtx tool emits JSON data. You can use the jq tool to reformat the JSON data to remove un-needed fields.
+The message string is a formatted string with placeholders such as
+`%1`, `%2` etc. The event viewer will then Interpolate the UserData
+section into the full string.
 
+![Message lookup](image18.png)
 
-46
-SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
-               Message,
-               get(field='EventData') AS EventData
-FROM parse_evtx(filename=EVTX, messagedb=MSG)
+### Difficulty with the EVTX format
 
-References
-https://www.appliedincidentresponse.com/windows-event-log-analyst-reference/
+While the EVTX file format does have some advantages is falls short in
+practice on a number of levels. It is important investigator are aware
+of the pitfalls
 
-https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-logon
+> Grabbing all the EVTX files off the system may result in loss of event messages!
 
+The event description message contains vital context about what the
+event actually means.  Without the message it would be difficult to
+know what each event message represents.
 
-47
+If we upload the EVTX files themselves from the system, and attempt to
+view them offline chances are that the event message would be missing
+on our analysis system. If we are lucky, we would be able to find some
+information about the message using an internet search for the event
+id.
 
-Disabling event logs
-Event logs can be easily disabled.
+![](image21.png)
 
+If you just collect the EVTX files from one system to another you will
+lose access to message tables, because the messages are in DLL files
+scattered across the entire system.
 
-48
+Additionally, if an application is uninstalled, its message DLLs will
+be removed and earlier events are not able to be displayed any more.
 
-What is the setting?
-49
+{{% notice tip %}}
 
-Exercise: Detect disabled logs
-Write an artifact that reports the state of each log channel (enabled/disabled)
+In order to improve the state of event log messages, we started
+maintaining a set of Event Message databases in the
+https://github.com/Velocidex/evtx-data repository. This repository
+contains sqlite databases of many known message tables collected from
+different systems.
 
-Use the Microsoft-Windows-Bits-Client/Operational channel as an example
-50
+You can instruct Velociraptor to use one of those databases using the
+`message_db` parameter to `parse_evtx()`.
 
-Convert to an artifact
-51
-
-Event Tracing for Windows
-52
-
-What is ETW
-ETW is the underlying system by which event logs are generated and collected.
-https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw
-
-
-53
-
-ETW Providers
-Show all registered ETW providers
-
-
-
-Show details about each provider
+{{% /notice %}}
 
 
-54
-logman query providers
-logman query providers Microsoft-Windows-DNS-Client
+## Disabling event logs
 
-ETW for event driven logs
-ETW and event logs are just two sides of the same coin
-Log providers are just ETW providers
+Event logs can be easily disabled by simply right clicking in event
+viewer and selecting `Disable Logs`. The below example shows how I am
+disabling the `Microsoft-Windows-Bits-Client/Operational` log.
 
-In VQL watch_etw() can be used
-instead of watch_evtx()
+![Disabling logs](image25.png)
 
-See Windows.Sysinternals.SysmonLogForward
-for an example
-55
+To read the full analysis of how to detect such a registry modification, read the [blog post]({{< ref "blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/" >}}), or simply check for modifications using the `Windows.EventLogs.Modifications` artifact.
 
-Exercise - Monitor DNS queries
-Use ETW to monitor all clients' DNS queries.
+## Event Tracing for Windows (ETW)
 
-Stream queries to server
-56
+ETW is the underlying system by which event logs are [generated and collected](https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw). The following diagram illustrates an overview of ETW.
 
-Exercise - Monitor DNS queries
-57
+![ETW](image23.png)
 
-58
+ETW is essentially a broker between `Providers` and `Consumers`. A
+Provider is registered with the system using a GUID and advertises
+itself as being able to provide ETW events. A Consumer is a routine
+that registers interest in a provider (e.g. Velociraptor is a
+consumer).
+
+You can enumerate all providers on a system using the `logmand query
+providers` command which lists all the ETW providers' GUIDs.
+
+![ETW](providers.png)
+
+### Watching for events with VQL
+
+In VQL watch_etw() can be used to watch for ETW events. For example,
+consider the event provider `Microsoft-Windows-DNS-Client` with the
+GUID `{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}`
+
+![ETW](image31.png)
+
+{{% notice tip %}}
+
+ETW and event logs are just two sides of the same coin. If it possible
+to listen to events on the EWT layer before they are forwarded to the
+event log service. In this case the events are not susceptible to
+being stopped by disabling the log (as shown previously)
+
+{{% /notice %}}
+
+## Example - Use ETW to monitor to DNS queries
+
+![ETW](image32.png)
+
+![ETW](image29.png)
