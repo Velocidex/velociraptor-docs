@@ -61,3 +61,5 @@ carousel:
 
 
 {{% carousel %}}
+
+Slides for the training course can be found [here](https://drive.google.com/drive/folders/1BIMaJ4jzghIsTcFiSmDthBUmE1Ca2HnC?ths=true).
