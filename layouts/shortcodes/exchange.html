@@ -121,7 +121,7 @@ function DrawResults(data) {
 
     for (let j=0; j<item.tags.length; j++) {
       let tag = item.tags[j];
-      template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
+      template.find(".idea-tag").append(`<i class="linkcolour label label-success">` + tag + `</i>&nbsp;`);
     }
     let new_item = $(".search_results").append(template);
   }
