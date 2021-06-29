@@ -20,5 +20,5 @@ used in many different situations, visit our
 
 
 Finally check out the Velociraptor [Blog](/blog) for articles about
-using Velociraptor is different scenarios and to learn more about
+using Velociraptor in different scenarios and to learn more about
 Velociraptor's features.
