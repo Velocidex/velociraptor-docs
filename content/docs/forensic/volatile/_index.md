@@ -1,130 +1,219 @@
 ---
-title: "Volatile State"
+menutitle: "Volatile State"
+title: "Volatile machine state"
 date: 2021-06-27T04:35:23Z
 draft: false
 weight: 90
 ---
 
-Volatile machine state
+Traditional forensic analysis relies on filesystem artifacts. However,
+one of the best advantages of performing live response is the ability
+to access the live system's state and uncover volatile indicators that
+only exist briefly and might change in future.
 
-Volatile state
-So far we looked at disk based artifacts.
-Often evidence is ephemeral and will vanish quickly. The next slides focus on evidence that only exists temporarily and may disappear quickly.
-Velociraptor's unique strength is being able to quickly and efficiently capture this volatile state using automated artifacts
-60
+{{% notice note %}}
 
-61
-Windows Management Instrumentation
+Traditionally volatile evidence was acquired using a full memory dump
+of the running system, and then using a number of memory analysis
+frameworks to extract some of the types of forencis artifacts we
+discuss in this page.
 
-WMI
-A framework to export internal windows state information using a query language (WQL)
-Consists of classes (providers) and objects
-Lots of hooks into many internal system features
-Being able to inspect system state using a consistent interface allows a tool to query a wide range of services.
-62
+While memory analysis is a sometimes useful technique, it is
+notoriously unreliable due to issues such as smear, stability and
+analysis shortfalls due to changing OS and application code.
 
-63
+An important principle of volatile system analysis is to disturb the
+system as little as possible, to avoid increasing the rate at which
+the volatile evidence might change. A full memory acquisition defeats
+this requirement by causing a very large amount of data to be written
+and potentially transferred over the network. Some server class
+machines (or even high end workstations) currently contain so much
+memory that full acquisition is actually not practical (e.g. upwards
+of 64Gb of RAM is not uncommon), and produces significant amounts of
+smear.
 
-64
+Velociraptor's approach is to use the relevant APIs to acquire
+volatile artifacts as much as possible, so the acquisition can be made
+quickly, accurately and with minimal endpoint impact. Velociraptor
+tries to maintain the same names for the common plugins used by
+popular memory analysis tools like Volatility, but gets the same
+information using APIs (e.g. Velociraptor's plugins are named
+`pslist`, `vad`, `mutants` etc and parallel Volatility's plugins of
+the same name).
 
-65
+{{% /notice %}}
 
-66
-Mutants
+## Windows Management Instrumentation (WMI)
 
-Malware persistence
-Malware needs to ensure there is only a single copy of it running.
-A common method is to use a Mutant (Or named mutex)
-Create a mutant with a constant name:
-    If the named mutant already exists, then exit
+One of the earliest mechanisms for introspecting a machine's internal
+state is using WMI. WMI provides a simple query language similar to
+SQL called WQL (WMI Query Language). In WQL, a "table" is referred to
+as a "class" and Windows provides a large number of classes organized
+into namespaces.
 
-Ensures only a single copy is run.
-67
+It is most instructive to explore these using a tool such as [wmie2](https://github.com/vinaypamnani/wmie2).
 
-Exercise - Mutants
+![WMIE2](image39.png)
+
+VQL provides direct access to WMI via the `wmi()` plugin. The plugin
+simply takes a `query` parameter which is passed to WMI and the
+results are emitted from the plugin one row at a time.
+
+```sql
+SELECT * FROM wmi(query="SELECT * FROM Win32_DiskDrive")
+```
+
+There are many providers in WMI and it is possible to gather a lot of
+information about the system's current configuration and state in this
+way. Use a tool such as `wmie2` to figure out interesting providers
+and structure VQL queries around these. Note that with VQL you are
+also able to combine functions like `upload()`, `hash()` and others to
+further enrich the output from WMI providers.
+
+## Mutants
+
+Malware typically need to persist using multiple persistance
+mechanisms - in case one mechanism is detected and removed, often
+other mechanisms will re-infect the machine. This leaves a common
+problem: How to avoid multiple copies of the same malware from
+running?
+
+A common solution is using a `Mutant` or a named mutex object. A
+Mutant is a named kernel object that can only be "acquired" by one
+thread at a time. Multiple copies of the same malware will try to
+acquire the mutant, but only the first will succeed, leaving the rest
+to exit.
+
+For this reason, a mutant is frequently used as an indicator for a
+malware strain because it is easy to see if the mutant name exists on
+a system.
+
+### Exercise - Mutants
+
+For example, comsider the following powershell snippet:
+
+```powershell
 $createdNew = $False
 $mutex = New-Object -TypeName System.Threading.Mutex(
       $true, "Global\MyBadMutex", [ref]$createdNew)
 if ($createdNew) {
     echo "Acquired Mutex"
-    sleep(100)
+    sleep(1000)
 } else {
     echo "Someone else has the mutex"
 }
+```
 
-68
+The first time it is run, the mutant will be "acquired" and the
+program will simply go to sleep. Further instances of the script will
+be unable to acquire the mutant and will exist immediately.
 
-Enumerate the mutants
-69
+### Enumerate the mutants
 
-70
-Process analysis
+You can enumerate the mutant using the `Windows.Detection.Mutants`
+artifact. This artifact can be used to collect all mutants (and
+perhaps do some analysis on their names) or to check for some well
+known names using a filter (in which case a hit represents a strong
+signal that endpoint is compromised).
 
-Windows Processes
-A process is a user space task with a specific virtual memory layout
+![mutant](image35.png)
 
-A process has a Process ID (Pid), an initial binary on disk, an ACL Token, environment variables etc.
+## Process analysis
 
-Each of these properties can be inspected by Velociraptor
-71
+A process is a user space task with a specific virtual memory
+layout. A process has a name, Process ID (Pid), an initial binary on
+disk, an ACL Token, environment variables etc. All of these associated
+attributes can be used to explain why the process is launched and what
+its intentions are.
 
-Process Information
-Simple pslist() can reveal basic information about the process
+Velociraptor provides access to various process attributes using
+process specific plugins. Most of these plugins accept a `pid`
+argument to examine a specific process.
 
-Who launched the binary?
-Transfer metrics (network/disk activity)
-Is it elevated?
-Process Creation time
-72
 
-73
+### pslist
 
-74
-Process Call chain
+A simple `pslist()` can reveal basic information about the process:
 
-75
-Process traversing can be done in pure VQL by recursively calling a locally defined function.
+* Who launched the binary? (Username and SID)
+* Transfer metrics (network/disk activity)
+* Is it elevated?
+* Process Creation time
+* Executable location on disk
+* Commandline for launching the process.
 
-76
-Exercise - Find elevated command shell
+![mutant](image38.png)
+
+### Process Call chain
+
+A process call chain is useful to see which process launched which
+other process. Artifacts such as `Windows.System.Pstree` attempt to
+put processes in a parent/child relationship (i.e. Process chain) to
+try to visualize the order of process execution.
+
+![process tree](image40.png)
+
+
+{{% notice warning %}}
+
+Currently the process chain reassembly is susceptible to some
+shortfalls:
+
+1. Since the chain uses `pslist()` to populate its tree, processes who
+   are exited will break the chain (because there will be no parent
+   shown for one process in the chain).
+
+2. Windows parent/child relationship can be easily [spoofed by
+   malware](https://attack.mitre.org/techniques/T1134/004/) and can be
+   mis-reported by the pslist() plugin.
+
+{{% /notice %}}
+
+### Example - Find elevated command shell
+
 Write an artifact to find all currently running elevated command shells
 
-Report how long they have run for
+```sql
+SELECT * FROM pslist()
+WHERE TokenIsElevated
+```
 
-Mapped Memory
-When a binary runs it links many DLLs into it
+## Mapped Memory
 
-A linked DLL is a copy on write memory mapping of a file on disk into the process memory space.
+When a binary runs it links many DLLs into it in order to call
+functions from these dlls. A linked DLL is a copy on write memory
+mapping of a file on disk into the process memory space. DLLs can be
+linked when the program starts or dynamically at runtime.
 
-DLLs can be linked when the program starts or dynamically
-77
+Seeing which DLL is linked gives a clue of the type of functionality
+that a process is likely to use.
 
-The VAD plugin
-This plugin shows all the process memory regions and if the memory is mapped to file, the filename it is mapped from.
+The `vad()` plugin shows all the process memory regions and if the
+memory is mapped to file, the filename it is mapped from.
 
-DLLs and .NET assemblies are mapped into the process - so we can use this to get an idea of what the program is doing.
-78
+For interpreted languages like .net assemblies, powershell or python DLLs are mapped into the process at runtime when the script imports certain functionality. We can use this to get an idea of what the program is doing.
 
-79
+### Exercise - what is that powershell doing?
 
-80
-Exercise - look into powershell
 Without enabling powershell block logging, we can get an idea of what the script is doing by looking at its dependencies.
-Write VQL to list all the DLL modules that powershell is running.
 
-Run our previous mutex script.
-Add the following command (this is typical of C&C)
-Invoke-WebRequest -Uri "https://www.google.com" -UseBasicParsing
+Consider a powershell script that runs `Invoke-WebRequest -Uri
+"https://www.google.com" -UseBasicParsing` to download a page from the
+internet. By virtue of this command, the powershell process will link
+`winhttp.dll`.
 
+We can write VQL to list all the DLL modules that powershell is running.
 
+```sql
+LET processes = SELECT Exe, CommandLine, Pid
+FROM pslist()
+WHERE Exe =~ 'PowerShell'
 
-Dump mapped objects
-Dump the powershell process's mapped DLLs.
-The DLL winhttp.dll is responsible for making outbound http connections.
-
-If the http request is enabled, the process will link the winhttp.dll at runtime.
-This technique works on many other programs that may be subverted for example Cobalt Strike reflective DLL injection.
-81
-
-Dump mapped objects
-82
+SELECT * FROM foreach(row=processes,
+query={
+   SELECT Exe, CommandLine, Pid, MappingName
+   FROM vad(pid=Pid)
+   GROUP BY MappingName
+})
+WHERE MappingName =~ 'winhttp'
+```
