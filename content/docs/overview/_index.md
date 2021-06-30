@@ -8,34 +8,24 @@ chapter = false
 Velociraptor is a unique, advanced open-source endpoint monitoring,
 digital forensic and cyber response platform.
 
-It was originally developed by DFIR professionals who needed a
-powerful and efficient way to hunt and monitor activities across
-fleets of endpoints for specific artefacts, in a wide range of digital
-forensic and cyber incident response investigations such as:
+It was developed by Digital Forensic and Incident Response (DFIR) professionals who needed a
+powerful and efficient way to hunt for specific artifacts and monitor activities across
+fleets of endpoints. Velociraptor provides you with the ability to more effectively respond to a wide range of digital
+forensic and cyber incident response investigations and data breaches:
 
-* Responding to data breaches
-* Reconstructing attacker activities through digital forensic analysis
-* Hunting for evidence of sophisticated adversaries
-* Investigating malware outbreaks and other suspicious network activities
-* Continual monitoring for suspicious user activities, such as files
-  copies to USB devices
-* Disclosure of confidential information outside the network
-* Gathering endpoint data over time, for use in threat hunting and
-  future investigations.
+* Reconstruct attacker activities through digital forensic analysis
+* Hunt for evidence of sophisticated adversaries
+* Investigate malware outbreaks and other suspicious network activities
+* Monitory continuously for suspicious user activities, such as files
+  copied to USB devices
+* Discover whether disclosure of confidential information occurred outside the network
+* Gather endpoint data over time for use in threat hunting and
+  future investigations
 
 
 ## VQL - the Velociraptor difference
 
-Velociraptor is a unique DFIR tool, giving you power and flexibility
-through the Velociraptor Query Language (VQL) VQL is used for
-everything in Velociraptor not only in order to query the endpoint
-itself. For example, VQL can be used to create continuous monitoring
+Velociraptor's power and flexibility comes from the Velociraptor Query Language (VQL). VQL is a framework for creating highly customized **artifacts**, which allow you to collect, query, and monitor almost any aspect of an endpoint, groups of endpoints, or an entire network. It can also be used to create continuous monitoring
 rules on the endpoint, as well as automate tasks on the server.
-
-The most powerful feature of Velociraptor is its framework for
-creating highly customized **artifacts** which allow a user to
-collect, query and monitor almost any aspect of a single endpoint,
-groups of endpoints or an entire network.
-
 
 ![Rocket Velociraptor](media/image4.png)
