@@ -17,6 +17,7 @@ params:
   custom_css:
     - css/atom-one-light.css
     - css/dark.css
+    - css/syntax.css
     - css/light.css
     - https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css
 
