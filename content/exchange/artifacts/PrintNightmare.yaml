@@ -19,6 +19,7 @@ description: |
   - Time bounds to select files with a timestamp within time ranges
   - FileSize bounds
 
+  ![Sample output](PrintNightmare.png)
 
 parameters:
   - name: MFTFilename
