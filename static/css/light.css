@@ -43,6 +43,8 @@
     --shortcut-border-d:rgba(59, 59, 59, 0.08);
     --footer-background: black;
     --progress:#f5f5f5;
+
+    --BETA-color: #14de5740;
 }
 
 body.light div.btn.lightmode {
