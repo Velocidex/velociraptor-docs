@@ -62,7 +62,7 @@ def getAuthor(record, yaml_filename):
     record["date"] = ""
     return record
 
-  first_commit = commits[0]
+  first_commit = commits[-1]
   record["author"] = first_commit["author"]["login"]
   record["author_link"] = first_commit["author"]["html_url"]
   record["author_avatar"] = first_commit["author"]["avatar_url"]
