@@ -9,10 +9,10 @@ description: |
      - disabling the print spooler service.   
      HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler\Start = 4 (service disabled).   
          
-     - disable registration of the spool service.    
+     - disable remote registration of the spool service.    
      HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RegisterSpoolerRemoteRpcEndPoint = 2 (RegisterSpoolerRemoteRpcEndPoint disables).  
    
-   NOTE: ChangeServiceStartup will set to disabkle, not stop the printspool service. 
+   NOTE: ChangeServiceStartup will set to disable, not stop the printspool service. 
    Its always reccomended to use group policy to deploy these settings. This 
    artifact will disable 
    
