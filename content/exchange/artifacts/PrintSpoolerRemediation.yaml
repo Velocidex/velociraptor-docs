@@ -13,8 +13,7 @@ description: |
      HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RegisterSpoolerRemoteRpcEndPoint = 2 (RegisterSpoolerRemoteRpcEndPoint disables).  
    
    NOTE: ChangeServiceStartup will set to disable, not stop the printspool service. 
-   Its always reccomended to use group policy to deploy these settings. This 
-   artifact will disable 
+   Its always reccomended to use group policy to deploy these settings.
    
    
 type: CLIENT
