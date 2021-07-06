@@ -19,6 +19,7 @@ description: |
   - Time bounds to select files with a timestamp within time ranges
   - FileSize bounds
 
+  ![Sample output](https://github.com/mgreen27/velociraptor-docs/raw/patch-5/content/exchange/artifacts/PrintNightmare.png)
 
 parameters:
   - name: MFTFilename
