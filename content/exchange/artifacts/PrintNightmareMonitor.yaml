@@ -2,10 +2,10 @@ name: Windows.Monitoring.PrintNightmare
 author: Matt Green - @mgreen27
 description: |
   This artifact returns ETW PrintService events for potential PrintNightmare activity.  
-  CVE-2021-1675 and CVE-2021-34527
+  CVE-2021-1675 and CVE-2021-34527  
   
-  It monitors for DRIVER_ADDED events and enriches with binary informaiton for 
-  payload DataFile. Hunt for unexpected drivers with malicous DataFiles.
+  It monitors for DRIVER_ADDED events and enriches with binary information for payload 
+  DataFile. Hunt for unexpected drivers with malicious DataFiles.
   
 type: CLIENT_EVENT
 sources:
