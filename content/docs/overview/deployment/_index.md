@@ -34,7 +34,7 @@ Velociraptor does not use an external datastore - all data is stored within the 
 2. Create a server package that includes the generated configuration file.
 3. Set up a cloud VM for the server (If deploying in the cloud) or create a new physical server.
 4. Install the server package on the VM. Once installed you will be able to access the  Admin GUI and front end.
-5. Create client packages for target operating systems (e.g. MSI for windows).
+5. Create client packages for target operating systems (for example, MSI for windows).
 
 {{% notice info %}}
 We typically use Ubuntu or Debian based VMs to deploy the server in
