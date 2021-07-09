@@ -1,104 +1,125 @@
 ---
-title: "Self Signed SSL"
+title: "Self-Signed SSL"
 date: 2021-06-09T04:00:52Z
 draft: false
 weight: 5
 ---
 
-The Velociraptor deployment is secured using a self signed CA
-certificate, generated during the initial configuraion generation
-step. The client's configuraion contains the CA certificate which is
-used to verify all certificates needed during communications.
+Velociraptor deployments are secured using a self-signed Certificate Authority (CA) that is generated during the initial configuration generation step. The client’s configuration contains the signed CA, which is used to verify all certificates needed during communications.
 
-In `self signed SSL` mode, Velociraptor will issue its own server
-certificate using its internal CA. Therefore, the GUI and Frontend
-will use a self signed server certificate.
+In `self-signed SSL` mode, Velociraptor issues its own server
+certificate using its internal CA. This means the Admin GUI and front end
+also use a self-signed server certificate.
 
+**When to use this method**
 This type of deployment is most appropriate for on-premises scenarios
 where internet access is not available or egress is blocked.
 
+## Self-Signed Certificates 
+Self-signed SSL certificates trigger SSL warnings in all web
+browsers. When accessing the Admin GUI you will receive a
+certificate warning about the possibility of a MITM attack.
+
+As a precaution, Velociraptor only exports the GUI port
+on the loopback interface. You may change the `GUI.bind_address`
+setting to "0.0.0.0" to receive external connections on this
+port, but this is not recommended. Instead, you should use SSH
+tunneling to connect to the local loopback interface.
+
+Velociraptor doesn't support other self-signed SSL certificates, and we don't recommend attempting to create and upload your own internal self-signed certificate to Velociraptor. 
+
 {{% notice info %}}
 
-When using self signed mode, the client is configured to only accept a
-server certificate signed by the Velociraptor CA. This effectively
-pins the server certificate, and prevents a Man In The Middle (MITM)
-attack. It is currently **not** supported to present a **different**
-self signed server certificate.
-
-Such a situation often arises when using an SSL intercepting
-proxy. Velociraptor will refuse to connect through an SSL MITM
-proxy. You will need to add whitelist rules to allow Velociraptor to
-connect directly.
+By default, Velociraptor will not connect through an SSL intercepting proxy. While not recommended, it is possible to add allowlist rules that enable Velociraptor to connect through an SSL intercepting proxy. If you do so, you will see a certificate warning about the possibility of a MITM attack when accessing the Admin GUI.
 
 {{% /notice %}}
 
-Self signed SSL certificates trigger SSL warnings in all web
-browsers. Therefore when accessing the admin GUI you will receive a
-certificate warning about the possibility of a MITM attack.
+## Generate the configuration file
+You can generate the file using either a configuration wizard that guides you through the process, or automate this step using a script we provide. 
 
-As a precaution, Velociraptor will by default only export the GUI port
-on the loopback interface. You may change the `GUI.bind_address`
-setting to "0.0.0.0" to bind to receive external connections on this
-port but this is not recommended. Instead it is better to use SSH
-tunneling to connect to the local loopback interface.
+### Option A: Use the configuration wizard 
 
-
-### Generating configuration
-
-To generate a self signed deployment start by running the `config
-generate` command to invoke the configuration wizard
+Run the `config
+generate` command to invoke the configuration wizard.
 
 ```sh
 velociraptor config generate -i
 ```
+The configuration wizard appears. 
 
 ![Generating Self Signed Deployment](self-signed-generation.png?classes=shadow)
 
-The configuration wizard asks a number of questions and creates a
-server and client configuration.
+The configuration wizard includes a set of questions to guide you through the first step of the deployment process.
 
-* What OS will the server be deployed on? This choice will affect the
-  defaults for various options. Production deployments are typically
-  done on a Linux machine (but the configuration can be generated on
+* **What OS will the server be deployed on?** This choice will affect the
+  defaults for various options. Velociraptor is typically
+  deployed on a Linux machine (but the configuration can be generated on
   Windows).
-* Path to the datastore directory: Velociraptor uses flat files for
+* **Path to the datastore directory:** Velociraptor uses flat files for
   all storage. This path is where Velociraptor will write the
   files. You should mount any network filesystems or storage devices
   on this path.
-* The public DNS name of the Frontend: The clients will connect to the
+* **The public DNS name of the Frontend:** The clients will connect to the
   server using this DNS name so it should be publically accessible. If
-  you are using self signed SSL you may specify an IP address here,
+  you are using self-signed SSL you may specify an IP address here,
   but this not recommended because it is less flexible. If the
   server's IP address changes it will be impossible to contact the
   clients.
-* The frontend port to listen on: The frontend receives client
+* **The frontend port to listen on:** The front end receives client
   connections. You should allow inbound access to this port from
   anywhere.
-* The port for the GUI to listen on: The GUI receives browser
-  connections. As discussed above, in self signed mode the GUI will
-  only bind to the localhost.
-* GUI Username or email address to authorize: The initial set of
+* **The port for the Admin GUI to listen on:** The Admin GUI receives browser
+  connections. As discussed above, in self-signed mode the Admin GUI will
+  only bind to the local host.
+* **GUI Username or email address to authorize:** The initial set of
   administrator accounts can be stored in the configuration file. When
-  Velociraptor starts it will automatically add these accounts as
-  administrators. When using self signed SSL mode, the only
-  authentication method available is `Basic Authentication`. Therefore
-  Velociraptor will store the username and hashed passwords in the
+  Velociraptor starts, it automatically adds these accounts as
+  administrators. When using self-signed SSL mode, the only
+  authentication method available is `Basic Authentication`.
+  Velociraptor stores the username and hashed passwords in the
   datastore.
+  
+### Option B: Automate the config file generation  
 
-### Deploying to the server
+Velociraptor supports a JSON merge, which allows you to automate the generation of the configuration file.
 
-Once a server configuration file is created it is most convenient to
-create a server Debian package embedding the config file.
+```sh
+velociraptor config generate --merge
+    '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+```
 
+The service adds a new Velociraptor user to run under.
+You can now access the Velociraptor server using your browser.
+
+The first time you navigate to the SSL URL the server will obtain a
+certificate from Let's Encrypt. There will be a small pause as this
+happens.
+
+You will be redirected to Google for authentication - Velociraptor
+does not handle any credentials in this configuration. Google will
+determine if the user authenticated properly and display
+the user’s email address and avatar.
+
+## Create the server package
+
+You'll need to run a command that instructs Velociraptor to create a server Debian package using the linux binary specified. The
+package will contain the Velociraptor executable, the server
+configuration file and relevant startup scripts.
+
+Use the following command:
 ```sh
 velociraptor.exe --config server.config.yaml debian server --binary velociraptor-v0.6.0-linux-amd64
 ```
 
-The above command instructs Velociraptor to build a debian package for
-the server using the linux binary specified. The result is a deb
-package containing the velociraptor executable, the server
-configuration file and relevant startup scripts.
-
 {{% notice warning %}}
-The Deb package contains the server configuration file, which contains all required key materials. Make sure the debian file is well protected since a compromise of the file will leak private key material enabling a MITM attack against Velociraptor.
+The Debian package contains the server configuration file, which contains all required key materials. Make sure the debian file is well protected since a compromise of the file will leak private key material enabling a MITM attack against Velociraptor.
 {{% /notice %}}
+
+## Install a new server
+Push the debian package to the server using Secure Copy Protocol (SCP): 
+```scp velociraptor_server*.deb mike@123.45.67.89:/tmp/```
+
+## Install the package
+Run the following command to install the server package: 
+```sudo dpkg -i velociraptor_server*.deb```
+
