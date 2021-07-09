@@ -15,8 +15,8 @@ also use a self-signed server certificate.
 This type of deployment is most appropriate for on-premises scenarios
 where internet access is not available or egress is blocked.
 
-## Internal Self-Signed Certificates 
-Velociraptor doesn't support other self-signed SSL certificates, and we don't recommend attempting to create and upload your own internal self-signed certificate to Velociraptor. Self-signed SSL certificates trigger SSL warnings in all web
+## Self-Signed Certificates 
+Self-signed SSL certificates trigger SSL warnings in all web
 browsers. When accessing the Admin GUI you will receive a
 certificate warning about the possibility of a MITM attack.
 
@@ -26,9 +26,11 @@ setting to "0.0.0.0" to receive external connections on this
 port, but this is not recommended. Instead, you should use SSH
 tunneling to connect to the local loopback interface.
 
+Velociraptor doesn't support other self-signed SSL certificates, and we don't recommend attempting to create and upload your own internal self-signed certificate to Velociraptor. 
+
 {{% notice info %}}
 
-Velociraptor does not support any other self-signed server certificate and by default, does not connect through an SSL intercepting proxy. While not recommended, it is possible to add allowlist rules that enable Velociraptor to connect through an SSL intercepting proxy. If you do so, you will see a certificate warning about the possibility of a MITM attack when accessing the Admin GUI.
+By default, Velociraptor will not connect through an SSL intercepting proxy. While not recommended, it is possible to add allowlist rules that enable Velociraptor to connect through an SSL intercepting proxy. If you do so, you will see a certificate warning about the possibility of a MITM attack when accessing the Admin GUI.
 
 {{% /notice %}}
 
