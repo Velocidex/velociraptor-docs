@@ -34,8 +34,10 @@ By default, Velociraptor will not connect through an SSL intercepting proxy. Whi
 
 {{% /notice %}}
 
-
 ## Generate the configuration file
+You can generate the file using either a configuration wizard that guides you through the process, or automate this step using a script we provide. 
+
+### Option A: Use the configuration wizard 
 
 Run the `config
 generate` command to invoke the configuration wizard.
@@ -76,6 +78,27 @@ The configuration wizard includes a set of questions to guide you through the fi
   authentication method available is `Basic Authentication`.
   Velociraptor stores the username and hashed passwords in the
   datastore.
+  
+### Option B: Automate the config file generation  
+
+Velociraptor supports a JSON merge, which allows you to automate the generation of the configuration file.
+
+```sh
+velociraptor config generate --merge
+    '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+```
+
+The service adds a new Velociraptor user to run under.
+You can now access the Velociraptor server using your browser.
+
+The first time you navigate to the SSL URL the server will obtain a
+certificate from Let's Encrypt. There will be a small pause as this
+happens.
+
+You will be redirected to Google for authentication - Velociraptor
+does not handle any credentials in this configuration. Google will
+determine if the user authenticated properly and display
+the user’s email address and avatar.
 
 ## Create the server package
 
