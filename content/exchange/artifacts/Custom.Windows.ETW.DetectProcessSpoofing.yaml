@@ -1,0 +1,41 @@
+name: Custom.Windows.ETW.DetectProcessSpoofing
+description: |
+   Detects Process parent spoofing such as SelectMyParent.exe
+
+reference:
+  - https://blog.f-secure.com/detecting-parent-pid-spoofing/
+
+type: CLIENT_EVENT
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+      
+    query: |
+        LET RecentProcesses = SELECT * FROM fifo(query={
+           SELECT * FROM chain(
+            -- Fill the fifo with the existing process listing at the start of the query.
+            a={ SELECT CreateTime, Name, Pid FROM pslist()},
+            b={
+               SELECT System.TimeStamp AS CreateTime, 
+                      EventData.ImageName AS Name,
+                      int(int=EventData.ProcessID) AS Pid
+               FROM watch_etw(guid="{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}", any=0x10)
+               WHERE System.ID = 1   
+            })
+        }, max_rows=1000, max_age=60)
+        
+        LET _ <= SELECT * FROM RecentProcesses
+        
+        -- Resolve parent pid from the fifo - this allows us to catch fast terminating processes.
+        SELECT System.TimeStamp AS Timestamp, {
+            SELECT Name, Pid, CreateTime
+            FROM RecentProcesses
+            WHERE Pid = System.ProcessID
+          } AS RealParent, {
+            SELECT Name, Pid, CreateTime
+            FROM RecentProcesses 
+            WHERE Pid = int(int=EventData.ParentProcessID)
+          } AS ClaimedParent, System, EventData
+        FROM watch_etw(guid="{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}", any=0x10)
+        WHERE System.ID = 1 AND str(str=System.ProcessID) != EventData.ParentProcessID 
