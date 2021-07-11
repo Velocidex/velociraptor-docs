@@ -13,17 +13,76 @@ Running VQL queries on the server allows for tasks on the server to be
 automated. In this page we will see how server artifacts can be used
 to customize server behaviour.
 
-## Managing the Velociraptor server
+Before we discuss server automation we need to clarify some of the
+terms used when discussing the server.
 
-Before we
+Client
+: A Velociraptor instance running on an endpoint. This is denoted by client_id and indexed in the client index.
 
-Server concepts
-Client: A Velociraptor instance running on an endpoint. This is denoted by client_id and indexed in the client index.
-Flow: A single artifact collection instance. Can contain multiple artifacts with many sources each uploading multiple files.
-Hunt: A collection of flows from different clients. Hunt results consist of the results from all the hunt's flows
-35
+Flow
+: A single artifact collection instance. Can contain multiple artifacts with many sources each uploading multiple files.
 
-Exercise - label clients
+Hunt
+: A collection of flows from different clients. Hunt results consist of the results from all the hunt's flows
+
+## Enumerating all clients
+
+You can enumerate all clients using the `clients()` plugin. This
+plugin provides basic information about each client on the system,
+including its client id and labels assigned to it.
+
+{{% notice tip %}}
+
+If you do not provide any parameters to the `client()` plugin,
+Velociraptor will iterate over all the clients. This may result in a
+lot of rows and might be slow for large deployments. You can provide a
+`search` parameter, that uses the client index to find clients by
+label or hostname very quickly (This is the same mechanism used in the
+GUI search bar).
+
+```sql
+-- Use this
+SELECT * FROM clients(search="MyHostname")
+
+-- Rather than this
+SELECT * FROM clients()
+WHERE os_info.fqdn =~ "MyHostname"
+```
+
+{{% /notice %}}
+
+An example of a client record can be seen here
+
+```json
+  {
+    "client_id": "C.04b2307000dfdf7a",
+    "agent_information": {
+      "version": "2021-06-30T22:38:41Z",
+      "name": "velociraptor",
+    },
+    "os_info": {
+      "system": "windows",
+      "release": "Microsoft Windows 10 Enterprise Evaluation10.0.19041 Build 19041",
+      "machine": "amd64",
+      "fqdn": "DESKTOP-8B08MEV-2",
+      "install_date": 0,
+    },
+    "first_seen_at": 1625214706,
+    "last_seen_at": 1625236655282715,
+    "last_ip": "127.0.0.1:53786",
+    "last_interrogate_flow_id": "F.C3FCU0R46JK6S",
+    "labels": []
+  }
+```
+
+### Exercise - label clients
+
+Labels are using in Velociraptor to group certain hosts together. This
+is useful for example when targetting a hunt, or to specify a set of
+clients to run monitoring queries.
+
+You can change a client's label using the `label()` VQL function.
+
 Label all windows machines with a certain local username.
 
 Launch a hunt to gather all usernames from all endpoints
