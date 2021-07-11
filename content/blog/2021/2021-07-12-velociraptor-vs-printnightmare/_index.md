@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor vs Printnightmare"
 date: 2021-07-11T18:13:50Z
-draft: true
+noindex: true
 weight: 20
 ---
 

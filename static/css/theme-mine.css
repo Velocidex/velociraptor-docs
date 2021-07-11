@@ -530,6 +530,12 @@ p.egg {
     border: 0px;
 }
 
+table thead th {
+    background: var(--TABLE-HEADER-background-color);
+    color: var(--TABLE-HEADER-color);
+}
+
+
 .args table {
     border: none;
 }
@@ -571,4 +577,19 @@ body:after{
     color: #fff;
     line-height: 27px;
     transform:rotate(-45deg);
+}
+
+#body img.captioned {
+    margin-bottom: 1ex;
+}
+
+
+figcaption  {
+    display: block;
+    font-size: .875rem;
+    font-style: italic;
+    color: var(--gray-600);
+    text-align: center;
+    margin-top: .5rem;
+    margin-bottom: 2.5rem;
 }

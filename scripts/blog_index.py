@@ -27,7 +27,7 @@ for root, dirs, files in os.walk(blog_root_directory):
         continue
 
       data = yaml.safe_load(m.group(1))
-      if data.get("index_page") or data.get("draft"):
+      if data.get("index_page") or data.get("noindex"):
         continue
 
       link = yaml_filename.lstrip("contents").replace("\\", "/")
