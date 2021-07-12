@@ -1,5 +1,6 @@
 ---
 title: The Next Phase of Velociraptor
+description: Velociraptor is now part of Rapid7 - read about the transition and future plans.
 date: 2021-04-21
 ---
 

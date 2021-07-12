@@ -1,6 +1,8 @@
 ---
 title: Velociraptor and OSQuery
 description: Digging deeper together…
+tags:
+- OSQuery
 date: "2020-12-13"
 ---
 

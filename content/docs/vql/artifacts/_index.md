@@ -104,7 +104,7 @@ Currently the following parameter types are supported
 
 Let's take a look at a typical artifact `Windows.Detection.Mutants`.
 
-![Mutants](mutants.png)
+![Mutants artifact](mutants.png)
 
 This artifact uncovers the mutants (named mutexes) on a system, using
 two methods. First we enumerate all handles, and check which process
@@ -143,7 +143,7 @@ plugin are passed as artifact parameters.
 When calling artifacts types are not converted. Make sure you pass the
 expected types
 
-{{% notice info %}}
+{{% notice info "Compiling artifacts into VQL requests" %}}
 
 When collecting an artifact from the client, the server **compiles**
 the artifact and it's dependencies into raw VQL statements and sends

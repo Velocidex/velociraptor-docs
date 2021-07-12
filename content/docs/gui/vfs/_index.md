@@ -47,7 +47,7 @@ recusively sync directory button begins a recusive directory listing.
 
 ![Recursive listing](image66.png)
 
-{{% notice tip %}}
+{{% notice tip "Cancelling large VFS operations" %}}
 
 Syncing large directories and downloading many files from the endpoint
 can take a long time and tranfer large amount of data. By default

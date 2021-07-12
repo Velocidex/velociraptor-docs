@@ -1,5 +1,10 @@
 ---
 title: Digging for files with Velociraptor
+description: The post covers a number of ways to find filesystem artifacts.
+tags:
+- Forensics
+- Windows
+- Filesystems
 date: 2021-02-13
 ---
 

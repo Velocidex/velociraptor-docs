@@ -33,7 +33,7 @@ directories for files with ".exe" extension.
 SELECT * FROM glob(globs='C:\\Users\\**\\*.exe')
 ```
 
-{{% notice warning %}}
+{{% notice warning "String escaping and VQL" %}}
 
 VQL strings can include a backslash escape sequence. Since Windows
 paths often use backslashes for path separator you will need to escape
@@ -146,7 +146,7 @@ provide it with 3 pieces of information:
 Since the accessor can only receive a single string (file path), we
 pass these three pieces of information using a URL notation.
 
-{{% notice warning %}}
+{{% notice warning "URL manipulating" %}}
 
 Do not attempt to build the URL using string concatenation because
 this will fail to escape properly. Always use the `url()` VQL function

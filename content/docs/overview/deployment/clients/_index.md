@@ -57,7 +57,7 @@ The recommended way to install Velociraptor as a client on Windows is
 via the release MSI on the [Github
 releases](https://github.com/Velocidex/velociraptor/releases) page.
 
-{{% notice note %}}
+{{% notice note "The Official Velociraptor MSI package" %}}
 
 One of the main benefits in using the official Velociraptor MSI is
 that the MSI and the executable are signed. Windows Defender
@@ -273,7 +273,7 @@ on.
 It's also worth ticking the "hidden" checkbox here to prevent a
 console box from appearing.
 
-![7](7.png)
+![Adding a new task](7.png)
 
 Next click the Actions tab and add a new action. This is where we
 launch the Velociraptor client. The program will simply be launched
@@ -281,7 +281,7 @@ from the share (i.e. `\\DC\Deployment\velociraptor.exe`) and we give
 it the arguments allowing it to read the provided configuration file
 (i.e. `--config \\DC\Deployment\client.config.yaml client -v`).
 
-![8](8.png)
+![Specifying task action](8.png)
 
 In the "Setting" tab we can control how long we want the client to
 run. For a quick hunt, this may be an hour or two depending on the
@@ -290,7 +290,7 @@ be prepared to wait several hours or even days while user machines are
 naturally disconnected and reconnected from the network. The GPO will
 ensure the client is killed after the allotted time.
 
-![8](9.png)
+![Task settings](9.png)
 
 Once the GPO is installed it becomes active for all domain
 machines. You can now schedule any hunts you wish using the
@@ -305,4 +305,4 @@ having installed anything on the endpoint.
 You can force a Group Policy update by running the `gpupdate`
 program. Now you can verify that Velociraptor is running:
 
-![8](10.png)
+![Task manager output](10.png)

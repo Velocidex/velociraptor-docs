@@ -2,6 +2,9 @@
 title: The Velociraptor Query Language Pt 1
 description: Asking questions — Getting answers!
 date: '2020-06-14T00:38:44.349Z'
+tags:
+- VQL
+- Low level
 categories: []
 keywords: []
 ---

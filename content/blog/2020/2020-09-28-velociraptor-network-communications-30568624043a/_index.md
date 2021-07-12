@@ -2,6 +2,8 @@
 title: Velociraptor Communications
 description: Listen to the beast
 date: '2020-09-27T01:38:44.349Z'
+tags:
+- Internals
 categories: []
 keywords: []
 ---

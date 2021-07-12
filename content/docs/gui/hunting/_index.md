@@ -15,7 +15,7 @@ With Velociraptor, you can collect the same artifact from multiple endpoints at 
 * Keep track of which endpoints collected the
    artifact and make sure the same artifact is not collected more than
    once on any endpoint.
-   
+
 ## What is a hunt?
 
 A hunt is a logical collection of a one or more artifacts from a group
@@ -40,7 +40,7 @@ hunt from these machines.
 ![New Hunt](image89.png)
 
 
-{{% notice note %}}
+{{% notice note "Hunts and expiry" %}}
 
 Hunts do not complete - they expire! The total number of clients in
 any real network is not known in advance because new clients can
@@ -69,7 +69,7 @@ You can monitor the hunt's progress. As clients are scheduled
 they will begin their collection. After a while the results are sent
 back and the clients complete.
 
-![Start Hunt](image92.png)
+![Monitoring hunt progress](image92.png)
 
 ## Post-process a hunt
 
@@ -90,7 +90,7 @@ to post-process the results.
 ![Post Processing](image95.png)
 
 
-{{% notice warning %}}
+{{% notice warning "Managing hunt data volumes" %}}
 
 When hunting large numbers of endpoints, data grows quickly. Even
 uploading a moderatly sized file can add up very quickly. For example,

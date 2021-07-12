@@ -33,7 +33,7 @@ other systems.
 
 ![The Server Metadata editor](server_metadata.png?classes=shadow&width=80pc)
 
-{{% notice info %}}
+{{% notice tip %}}
 You can customize the Welcome screen by editing the `Server.Internal.Welcome` artifact.
 {{% /notice %}}
 
@@ -48,7 +48,7 @@ The dashboard is divided into two parts. On the left, the total memory
 and CPU used by all frontends is down over the past day. On the right,
 the total number of currently connected clients is shown.
 
-{{% notice info %}}
+{{% notice tip %}}
 
 You can customize the Server Dashboard screen by editing the
 `Server.Monitor.Health` artifact. The artifact specifies a template

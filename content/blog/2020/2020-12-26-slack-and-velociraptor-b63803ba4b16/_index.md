@@ -1,6 +1,10 @@
 ---
 title: Slack and Velociraptor
-description: Digging together…
+description: This post covers integration with Slack to provide an escalation mechanism. The Slack API is a typical REST API so the lessons in this post are directly applicable to many other systems...
+tags:
+- VQL
+- Slack
+- Integration
 date: "2020-12-26"
 ---
 

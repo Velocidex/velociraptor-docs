@@ -21,6 +21,20 @@ $.ajax({
   DrawResults(data);
 });
 
+function matchItem(filter, item) {
+    if (item.title.toUpperCase().includes(filter) ||
+        item.description.toUpperCase().includes(filter)) {
+        return true;
+    }
+    let labels = item.tags || [];
+    for(let j=0;j<labels.length;j++) {
+        if (labels[j].toUpperCase().includes(filter)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function doSearch() {
   // Declare variables
   let input = document.getElementById('myInput');
@@ -28,11 +42,10 @@ function doSearch() {
 
   let result = [];
   for(let i=0;i<all_data.length; i++) {
-    let item = all_data[i];
-
-    if (item.title.toUpperCase().includes(filter)) {
-      result.push(item);
-    }
+      let item = all_data[i];
+      if (matchItem(filter, item)) {
+          result.push(item);
+      }
   };
   DrawResults(result);
 }
@@ -48,17 +61,15 @@ function DrawResults(data) {
     <div class="date pull-right"></div>
   </div>
   <div class="panel-body color">
-<div class="border color">
-                <div class="border color">
-                        <div class="idea-inner-text-main color">
-        <img class="user-avatar inline">
-        <p></p></span>
-                    <p class="description "></p>
-                                <p class="idea-tag space">
-        </p>
-      </div>
+    <div class="border color">
+       <div class="border color">
+         <div class="idea-inner-text-main color">
+           <img class="user-avatar inline">
+           <p class="description "></p>
+           <p class="idea-tag space"></p>
+         </div>
+       </div>
     </div>
-  </div>
 </div>`);
 
     template.find(".title").append(item.title);
@@ -67,8 +78,13 @@ function DrawResults(data) {
     template.find(".date").append(item.date)
 
     for (let j=0; j<item.tags.length; j++) {
-      let tag = item.tags[j];
-      template.find(".idea-tag").append(`<a class="space">&nbsp;<i class="linkcolour label label-success">` + tag + `</i></a>`);
+        let tag = item.tags[j];
+        let link = $(`<a class="space tag"><i class="linkcolour label label-success">` +
+                     tag + `</i></a>`).click(function() {
+                         document.getElementById('myInput').value = tag;
+                         doSearch();
+                     });
+        template.find(".idea-tag").append(link);
     }
     let new_item = $(".search_results").append(template);
   }

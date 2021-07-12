@@ -13,15 +13,15 @@ as root to prevent permission problems sudo -u velociraptor ...
 
 ## Role-based Access Control
 
-Velociraptor uses a simple role-based access control framework. Certain actions require specific permissions, and users are granted roles which provide them with a set of permissions. 
+Velociraptor uses a simple role-based access control framework. Certain actions require specific permissions, and users are granted roles which provide them with a set of permissions.
 
-The following roles are provided out-of-the-box: 
+The following roles are provided out-of-the-box:
 * **Administrator:** Can do anything without limits
 * **Reader:** Can read collected data and notebooks
 * **API**: Can connect over the API (more later)
 * **Analyst:** Has reader permissions and can create bulk downloads and edit notebooks
 * **Investigator:** Has analyst permissions and can schedule new collections and hunts
-* **artifact_writer:** powerful role that allows the user to create and modify artifacts 
+* **artifact_writer:** powerful role that allows the user to create and modify artifacts
 
 ## Granting a user role
 Just because a user is authenticated by Google does not mean they have
@@ -33,14 +33,14 @@ Your Velociraptor server is ready.
 You should have a valid SSL Cert and Avatar provided by Google OAuth2
 
 
-{{% notice tip Velociraptor %}}
+{{% notice tip "Velociraptor Internals" %}}
 
-Velociraptor internals, the file store: Velociraptor uses a filestore
-abstraction to store data.  By default, we use a simple directory
-structure in the filesystem.  Having simple files simplifies data
-retention, data migration, backups etc.  Makes it easy to integrate
-with another system (use scp or rsync to just copy files around).  If
-files are deleted, Velociraptor will just recreate them - it is safe
-to just remove everything!
+Velociraptor uses a filestore abstraction to store data.  By default,
+we use a simple directory structure in the filesystem.  Having simple
+files simplifies data retention, data migration, backups etc.  Simple
+filesystem also makes it easy to integrate with another system (use
+scp or rsync to just copy files around).  If files are deleted,
+Velociraptor will just recreate them - it is safe to just remove
+everything!
 
 {{% /notice %}}

@@ -48,7 +48,7 @@ The rule consists of a `strings` section and a `condition`
 section. Strings represent a set of keywords which might include ASCII
 or UTF16 encoded strings, as well as regular expressions. You can refer to the [Yara rules reference page](https://yara.readthedocs.io/en/stable/) to learn about how to construct rules.
 
-{{% notice tip %}}
+{{% notice tip "The Yara plugin and accessors" %}}
 
 The `yara()` VQL plugin can accept an optional `accessor`
 parameter. If the accessor is specified, the plugin will read chunks
@@ -58,7 +58,7 @@ available via an accessor including raw strings (using the `data`
 accessor), registry values (using the `registry` accessor) or NTFS
 parsed data (using the `ntfs` accessor) for example.
 
-While this is convenient, it means that rules that example the entire
+While this is convenient, it means that rules that examine the entire
 file will not work as expected. For example, the YARA `pe` module
 looks at the PE header, but when the file is read in chunks, only the
 first chunk contains the PE header. Similarly YARA rules that contain

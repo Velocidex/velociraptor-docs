@@ -44,26 +44,26 @@ collects a bunch of files based on the targets specified.
 
 Start by selecting the artifact from the "New Collection" wizard
 
-![KapeFiles](image2.png)
+![The Windows.KapeFiles.Targets artifact](image2.png)
 
 Next we need to select the "Targets" in the "Configure Parameters"
 step. Many targets are simply collections of other targets. For
 example the `_BasicCollection` target automatically includes a number
 of other useful targets.
 
-![KapeFiles](image7.png)
+![Selecting recursive targets](image7.png)
 
 The `Windows.KapeFiles.Targets` artifact can transfer a large quantity
 of data from the endpoints, and take a long time to run. We therefore
 often need to update the resource control of the collection.
 
-![KapeFiles](image6.png)
+![Specifying a maximum upload limit](image6.png)
 
 Once the collection is launched, we can monitor progress in the "Artifact Collection" tab.
 
-![KapeFiles](image4.png)
+![Monitoring collection progress](image4.png)
 
-{{% notice note %}}
+{{% notice note "Note about large file collections" %}}
 
 Velociraptor is very careful about the performance and resource impact
 on endpoints. When collecting many files if it is often hard to
@@ -81,7 +81,7 @@ VM disk.
 > Note that typically $MFT is around 300-400Mb so collecting the $MFT
 > from many endpoints is going to be huge!
 
-![KapeFiles](image5.png)
+![Collections are automatically cancelled when they read the limit](image5.png)
 
 {{% /notice %}}
 
@@ -113,17 +113,17 @@ automatically collect the artifacts we need.
 Velociraptor allow us to build such a collector with the GUI using an
 intuitive process.
 
-![Offline Collector](image3.png)
+![Creating a new Offline Collector](image3.png)
 
 Select the offline collector builder from the `Server Artifacts`
 page. The artifacts selection page and the parameters page are exactly
 the same as previously shown.
 
-![Offline Collector](image16.png)
+![Offline Collector artifacts selection](image16.png)
 
 Next select the collector configuration page.
 
-![Offline Collector](offline1.png)
+![Offline Collector configuration](offline1.png)
 
 Here we get to choose what kind of collector we would like:
 
@@ -160,19 +160,19 @@ created into the collection and the file will be available for
 download from the "Uploads" tab. Simply click on the link to get the
 collector.
 
-![Offline Collector](image13.png)
+![Retreiving the Offline Collector binary](image13.png)
 
 Once the collector is run without command line arguments, the
 collection will automatically start. No need for the user to enter
 command line parameters, although they do need to be running in an
 elevated administrator shell.
 
-![Offline Collector](image14.png)
+![Running the Offline Collector in the console](image14.png)
 
 The collector creates a zip file containing the collected files as
 well as an optional reprot.
 
-![Offline Collector](image29.png)
+![Viewing the Offline Collector in the console](image29.png)
 
 ### Include third party binaries
 
@@ -194,7 +194,7 @@ network.  Simply, copy our collector binary across the network to C$
 share on the remote system and use, e.g. `wmic` to launch our binary
 on the remote host.
 
-![Offline Collector](image45.png)
+![Collecting across the network](image45.png)
 
 ## Importing collections into the GUI
 
@@ -217,9 +217,9 @@ the zip file from a path specified on the server and import it as a
 new collection (with new collection id) into either a specified client
 or a new randomly generated client.
 
-![Import Offline Collector](image48.png)
+![Importing Offline Collector collections](image48.png)
 
-{{% notice tip %}}
+{{% notice tip "Copying the collections to the server" %}}
 
 Offline collections are typically very large, this is why we do not
 have a GUI facility to upload the collection zip file into the

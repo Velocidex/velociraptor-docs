@@ -32,14 +32,14 @@ kinds of information about each file:
 * I30 attribute (contains directory listing)
 * Security attributes such as ACLs
 
-![MFT](image22.png)
+![The MFT and NTFS](image22.png)
 
 Data attributes may be compressed or sparse and contain a list of `runs` that comprize the content of the file. The data content is stored elsewhere on the disk, but the location is stored within the MFT entry.
 
 In NTFS Each file may contain two different filenames, a long and a
 short filename. Filename attributes contain their own timestamps.
 
-{{% notice warning %}}
+{{% notice info "NTFS Long and short filenames" %}}
 
 Although NTFS long and short filenames are usually closely related
 (e.g. the short filename is the first part of the long filename with a
@@ -101,7 +101,7 @@ logical device so it can be parsed.
 This means that all paths returned from the `ntfs` accessor start with
 the device name, e.g. `\\.\C:`.
 
-{{% notice tip %}}
+{{% notice tip "NTFS parsing and full disk encryption" %}}
 
 Since Velociraptor operated on the logical device it if not affected
 by full disk encryption such as Bitlocker. Velociraptor will be able
@@ -193,7 +193,7 @@ ID:
 
 The MFT ID can be take from the output of `glob()` or `parse_mft()`.
 
-{{% notice tip %}}
+{{% notice tip "What is this inode all about?" %}}
 
 In the above you will sometimes see the term `inode` referred to. This
 term traditionally comes from the Sleuthkit and is a string consisting
@@ -249,7 +249,7 @@ than the $FILENAME times.
 ![Timestomp detection](image42.png)
 
 
-{{% notice warning %}}
+{{% notice warning "Timestomping detection pitfalls" %}}
 
 Although it might appear to be a solid detection to timestomping,
 generally timestomping detections are not very reliable in

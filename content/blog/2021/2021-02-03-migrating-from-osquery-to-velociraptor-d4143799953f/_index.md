@@ -1,5 +1,8 @@
 ---
 title: Migrating from OSQuery to Velociraptor
+description: Many new Velociraptor users have existing OSQuery queries and installations and are migrating to Velociraptor for powerful and efficient endpoint visibility. This post summarises some of the differences between Velociraptor and OSQuery.
+tags:
+- OSQuery
 date: 2021-02-03
 ---
 

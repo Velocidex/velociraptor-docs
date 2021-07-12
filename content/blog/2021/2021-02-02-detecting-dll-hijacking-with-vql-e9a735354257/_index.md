@@ -1,5 +1,10 @@
 ---
 title: Detecting DLL Hijacking With VQL
+description: |
+  Let's develop some VQL to detect common DLL hijacking on Windows.
+tags:
+- Windows
+- VQL
 date: 2021-02-02
 ---
 

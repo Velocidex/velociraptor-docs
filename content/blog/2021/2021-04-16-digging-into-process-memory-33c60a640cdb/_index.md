@@ -1,5 +1,10 @@
 ---
 title: Digging into process memory
+description: Unlike traditional dead disk forensic tools, Velociraptor’s main advantage is that it is capable of directly looking at volatile system state, such as running processes, open files and currently connected sockets. This class of forensic artifacts are called Volatile Artifacts since they change rapidly as the system operates. Learn how Velociraptor collects volatile system state.
+tags:
+- Forensics
+- Memory
+- Windows
 date: 2021-04-16
 ---
 
