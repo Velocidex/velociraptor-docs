@@ -181,7 +181,7 @@ could indicate past exploitation.
 We can collect this information from the entire Velociraptor fleet in
 minutes by simply running a “hunt” over the deployment.
 
-We have uploaded our query in the form of a VQL artifact to the
+We have uploaded our query and a version to monitor print driver creation in the form of a VQL artifact to the
 Velociraptor [“Artifact Exchange”](https://docs.velociraptor.app/exchange/) - a central place for the community
 to share Velociraptor artifacts. This saves time for other
 Velociraptor users, who can simply reuse our work and quickly hunt the
