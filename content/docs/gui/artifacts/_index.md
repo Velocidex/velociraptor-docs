@@ -5,11 +5,8 @@ draft: false
 weight: 15
 ---
 
-We have previously mentioned that Velociraptor's superpower is a
-powerful query language termed `VQL`. How do we use VQL to query the
-endpoints?
-
-You might be surprised to learn that you have already been using VQL
+Velociraptor's superpower is a
+powerful query language termed `VQL`. You might be surprised to learn that you have already been using VQL
 all this time. When clicking in the VFS interface to sync a directory
 listing or download files, the GUI was collecting artifacts behind the
 scenes.
@@ -23,45 +20,41 @@ This screen consists of two panes - the top pane shows a list of all
 the `Artifacts` collected so far from this endpoint, while the bottom
 pane shows information about the selected artifact.
 
-We can immediately recognize that artifacts have a **Name** - in this
-case we have been collecting `System.VFS.DownloadFile` and
+All artifacts have a **Name**. In our example, you can see that we have been collecting `System.VFS.DownloadFile` and
 `System.VFS.ListDirectory` in order to populate the VFS screen.
 
-Each collection of these artifacts has a unique `Flow ID` which is how
-Velociraptor refers to this collection. The collection is created at a
-certain time and starts some time later (if the client is not
-presently connected then the client will start the collection when it
-comes back online).
+Each artifact collection has a unique `Flow ID`, which is how
+Velociraptor refers to a collection. The collection is created at a
+certain time and starts some time later. If the client is offline, the collection will start when it
+comes back online.
 
-Collections also take parameters - you can recognize in the above
-example that the `System.VFS.ListDirectory` artifact was used to list
+Collections also take parameters. In the previous example, the `System.VFS.ListDirectory` artifact was used to list
 the directory "C:\\Users\\test".
 
-Finally you can see that a collection can return rows or upload
-files. This is because an artifact is simply a VQL query - and all
-queries simply return a sequence of rows.
+A collection of artifacts can return rows or upload
+files. This is because an artifact is simply a VQL query and all
+queries return a sequence of rows.
 
 ## What are Artifacts?
 
-Ultimately Velociraptor is simply a VQL engine - i.e. it processes a
-VQL query producing a series of rows and then sending those rows to
-the server.
-
-An `Artifact` is a way for us to package one or more VQL queries in a
-human readable YAML file, provide it with a name and allow users to
+An `Artifact` is a way to package one or more VQL queries in a
+human readable YAML file, name it, and allow users to
 collect it. An Artifact file simply embodies the query required to
 collect or answer a specific question about the endpoint.
 
+Ultimately Velociraptor is simply a VQL engine . That is, it processes a
+VQL query producing a series of rows and sends those rows to
+the server.
+
 {{% notice note %}}
 
-The whole point of Artifacts is to encapsulate a VQL query inside a
-YAML file, so that end users so not need to understand the query to be
-able to use it. This makes artifacts easier to use and facilitates
+Artifacts encapsulate a VQL query inside a
+YAML file so that end users do not need to understand the query to use it. This makes artifacts easier to use and facilitates
 knowledge sharing with more experienced users.
 
 {{% /notice %}}
 
-### Example - collect Scheduled Tasks from endpoint.
+### Example: collect scheduled tasks from endpoint.
 
 To illustrate how artifacts can be used, let's collect a common
 forensic artifact from our Windows endpoint. Windows allows commands
@@ -81,19 +74,17 @@ show below.
 
 The Wizard contains a number of steps but you can skip them if they are not needed.
 
-In the first step, we search for an artifact to collect the type of
-information we are after. In this case we start searching for task and
+In the first step, search for an artifact to collect the type of
+information you are after. In this case we will search for `task` to
 see our `Windows.System.TaskScheduler` artifact.
 
-
-The next step allows us to tweak any of the artifact parameters.
+The next step allows us to modify artifact parameters.
 
 ![Artifact Parameters](image74.png)
 
-Artifacts can take parameters and each parameter has a default value.
+Each Artifact parameter has a default value.
 
-In this case we will choose to also upload the raw XML files. We just
-click `Launch` to start the collection. After a short time, the
+For the purposes of our example, we will upload some raw XML files. Click `Launch` to start the collection. After a short time, the
 collection will complete.
 
 ![Collection Complete](image75.png)
@@ -104,20 +95,20 @@ rows. The VQL query parses each XML file in turn and uploads it.
 We can see more information about this collection in the tabs in the
 bottom pane:
 
-1. Logs - As the VQL query is executing on the endpoint, the query may
+1. **Logs** - As the VQL query is executing on the endpoint, the query may
    produce log messages. This is called the `Query Log` and it is
    forwarded to the server. We are able to see how the query is
    progressing based on the query log.
 
 ![Query Log](image76.png)
 
-2. Uploaded Files - This tab shows all the files uploaded by this
+2. **Uploaded Files** - This tab shows all the files uploaded by this
    query. You can download any of these files from the server by
    simply clicking the link.
 
 ![Uploaded Files](image77.png)
 
-3. The Result Tab - shows each result set in a table. A single
+3. **Result Tab** - This shows each result set in a table. A single
    collection may collect several artifacts. In this case you can
    choose which artifact to view by clicking the pull down menu.
 
