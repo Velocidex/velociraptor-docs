@@ -5,18 +5,18 @@ draft: false
 weight: 5
 ---
 
-Velociraptor clients are endpoints with the Velociraptor agennt
+Velociraptor clients are endpoints with the Velociraptor agent
 running on them. Since Velociraptor maintains a persistent connection
 to the server, each endpoint is immediately available to interact
 with.
 
 Typically we begin our investigation by searching for a client,
-selecting it and interactively collecting artifacts from it.
+selecting it, and interactively collecting artifacts from it.
 
 ## Searching for a client
 
-To work with a specific client we need to search for it using the
-search bar at the top of the GUI. Clicking the Search or Show All icon
+To work with a specific client, search for it using the
+search bar at the top of the Admin GUI. Click the Search or Show All icon
 to see all the clients.
 
 ![Searching for a client](image56.png)
@@ -25,8 +25,8 @@ to see all the clients.
 You can use the following prefixes as well: `label:` to search clients with a label or `host:` to search for hostnames.
 {{% /notice %}}
 
-The search function uses a client index so it is very fast for quickly
-identifying clients by hostname in the GUI. More complex search
+The search function uses a client index so can quickly
+identify clients by hostname in the GUI. More complex search
 requirements should be done in a notebook using full VQL syntax.
 
 The results from the search are shown as a table.
@@ -34,33 +34,33 @@ The results from the search are shown as a table.
 ![Search page](search2.png)
 
 
-The table contains three columns:
+The table contains five columns:
 
-1. The online state of the host is shown as a color icon. A green dot
+1. The **online state** of the host is shown as a color icon. A green dot
    indicated that the host is currently connected to the server, a
    yellow icon indicates the host is not currently connected but was
    connected less than 24 hours ago. A red icon indicates that the
    host has not been seen for 24 hours or more.
 
-2. The client ID of the host is shown. Clients have a unique ID
-   starting with “C.”. Internally the client id is considered the most
-   accurate source of endpoint identity and Velociraptor always refers
-   to the client id rather than the hostname (hostnames can change). A
+2. The **client ID** of the host is shown. Clients have a unique ID
+   starting with “C.”. Internally, the client ID is considered the most
+   accurate source of endpoint identity. Velociraptor always refers
+   to the client ID rather than the hostname because hostnames can change. A
    client ID is derived from the client's cryptographic key and is
-   stored on the endpoint itself in the client `writeback file`.
+   stored on the endpoint in the client `writeback file`.
 
-3. The hostname reported by the host.
+3. The **hostname** reported by the host.
 
-4. The operating system version. This indicates if the host is a
+4. The **operating system version**. This indicates if the host is a
    Windows/Linux/OSX machine and its respective version.
 
-5. Any labels applied to the host.
+5. Any **labels** applied to the host.
 
 ## Labels
 
 Hosts may have labels attached to them. A label is any name associated
 with a host. Labels are useful when we need to hunt for a well defined
-group of hosts, then we can restrict the hunt to one or more labels to
+group of hosts. We can restrict the hunt to one or more labels to
 avoid collecting unnecessary data or accessing machines we should not
 be.
 
@@ -117,8 +117,7 @@ automatically.
 
 ## Selecting a client
 
-Clicking on any client in the search screen will switch the GUI to
-client mode. This will now present information relevant to the
+Click on any client in the search screen to view information relevant to the
 selected client.
 
 You can easily tell which client we are dealing with as the name of
@@ -127,7 +126,7 @@ the host, and the last time we connected with it are shown:
 ![Host View](image57.png)
 
 Velociraptor maintains some basic information about the host, such as
-its hostname, labels, last seen IP and last seen time. This is shown
+its hostname, labels, last seen IP, and last seen time. This is shown
 in the `Host View` pane. Velociraptor uses this information to make it
 possible to search for this host and target it for further
 investigation. Velociraptor gathers this information during the
@@ -188,7 +187,7 @@ using Powershell/Cmd/Bash or ad hoc VQL.
 Only Velociraptor users with the administrator role are allowed to run arbitrary shell commands on remote endpoints!
 {{% /notice %}}
 
-You can disable clients from being able to run arbitrary shell command
-by setting `Client.prevent_execve` to true. This will limits your DFIR
+You can prevent clients from running arbitrary shell command
+by setting `Client.prevent_execve` to true. This limits your DFIR
 efficacy because many artifacts depend on being able to launch
 external programs.
