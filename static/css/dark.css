@@ -25,6 +25,9 @@ body.dark {
 
     --CODE-SECTION-BG-color: #424242;
 
+    --TABLE-HEADER-background-color: #323232;
+    --TABLE-HEADER-color: #ECEFF1;
+
     --footer-color: #183f81;
     --vql: red;
     --mynotice: #EFEBE9;

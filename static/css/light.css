@@ -1,5 +1,6 @@
 :root{
     --MAIN-TEXT-color:#323232; /* Color of text by default */
+    --MAIN-TEXT-background-color: #ECEFF1;
     --MAIN-TITLES-TEXT-color: #000; /* Color of titles h2-h3-h4-h5 */
     --MAIN-LINK-color:#1C90F3; /* Color of links */
     --MAIN-LINK-HOVER-color:#167ad0; /* Color of hovered links */
@@ -21,6 +22,9 @@
 
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */
+
+    --TABLE-HEADER-background-color: #ECEFF1;
+    --TABLE-HEADER-color: #323232;
 
     --CODE-SECTION-BG-color: #f4f4f4;
 
