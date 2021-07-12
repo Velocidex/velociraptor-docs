@@ -1,5 +1,9 @@
 ---
 title:  Disabled Event Log files
+description: Windows information security techniques are heavily reliant on the availability and integrity of event logs. Many state of the art systems use event log forwarding to aggregate information from endpoints and detect malicious behavior across the enterprise. Did you know that logs can be trivially disabled? Learn how Velociraptor can help...
+tags:
+- Logs
+- Windows
 date: 2021-01-29
 ---
 

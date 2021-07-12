@@ -26,7 +26,7 @@ advantages:
   accurate and fast filtering of log files and obviate the need to
   parse unstructured text.
 
-{{% notice note %}}
+{{% notice note "EVTX filtering in JSON" %}}
 
 While the EVTX file is actually XML based, Velociraptor converts it
 internally into a JSON object to make it easier to filter specific
@@ -38,7 +38,7 @@ Velociraptor implements a parser for EVTX files in the `parse_evtx()`
 plugin. The plugin takes an accessor and a filename to open the EVTX
 file, and produces a single row per event.
 
-![EVTX parser](image11.png)
+![Parsing an EVTX file on the command line](image11.png)
 
 Each event row contains three main columns:
 
@@ -123,7 +123,7 @@ on our analysis system. If we are lucky, we would be able to find some
 information about the message using an internet search for the event
 id.
 
-![](image21.png)
+![Searching the internet for unknown event IDs](image21.png)
 
 If you just collect the EVTX files from one system to another you will
 lose access to message tables, because the messages are in DLL files
@@ -160,7 +160,7 @@ To read the full analysis of how to detect such a registry modification, read th
 
 ETW is the underlying system by which event logs are [generated and collected](https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw). The following diagram illustrates an overview of ETW.
 
-![ETW](image23.png)
+![ETW Architecture](image23.png)
 
 ETW is essentially a broker between `Providers` and `Consumers`. A
 Provider is registered with the system using a GUID and advertises
@@ -171,7 +171,7 @@ consumer).
 You can enumerate all providers on a system using the `logmand query
 providers` command which lists all the ETW providers' GUIDs.
 
-![ETW](providers.png)
+![Enumerating ETW providers](providers.png)
 
 ### Watching for events with VQL
 
@@ -179,7 +179,7 @@ In VQL watch_etw() can be used to watch for ETW events. For example,
 consider the event provider `Microsoft-Windows-DNS-Client` with the
 GUID `{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}`
 
-![ETW](image31.png)
+![Watching for ETW events in real time](image31.png)
 
 {{% notice tip %}}
 
@@ -192,6 +192,10 @@ being stopped by disabling the log (as shown previously)
 
 ## Example - Use ETW to monitor to DNS queries
 
-![ETW](image32.png)
+We can query the DNS client ETW provider for all DNS lookup events.
 
-![ETW](image29.png)
+![Monitor DNS queries via ETW](image32.png)
+
+Client event monitoring queries automatically forward events to the server.
+
+![View DNS queries from client monitoring logs](image29.png)

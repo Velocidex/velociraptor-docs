@@ -1,6 +1,10 @@
 ---
 title: The Windows USN Journal
 description: Digging up Window’s juicy secrets…
+tags:
+- Forensics
+- Windows
+- USN
 date: '2020-11-12T00:38:44.349Z'
 categories: []
 keywords: []

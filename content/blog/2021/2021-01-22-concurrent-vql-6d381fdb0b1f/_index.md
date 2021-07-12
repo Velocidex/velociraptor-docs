@@ -1,6 +1,9 @@
 ---
 title: Concurrent VQL
 description: Digging even faster…
+tags:
+- Performance
+- VQL
 date: 2021-01-22
 ---
 

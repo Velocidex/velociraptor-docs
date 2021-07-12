@@ -11,7 +11,7 @@ one of the best advantages of performing live response is the ability
 to access the live system's state and uncover volatile indicators that
 only exist briefly and might change in future.
 
-{{% notice note %}}
+{{% notice note "Memory analysis and Velociraptor" %}}
 
 Traditionally volatile evidence was acquired using a full memory dump
 of the running system, and then using a number of memory analysis
@@ -53,7 +53,7 @@ into namespaces.
 
 It is most instructive to explore these using a tool such as [wmie2](https://github.com/vinaypamnani/wmie2).
 
-![WMIE2](image39.png)
+![Exploring WMI with WMIE2](image39.png)
 
 VQL provides direct access to WMI via the `wmi()` plugin. The plugin
 simply takes a `query` parameter which is passed to WMI and the
@@ -116,7 +116,7 @@ perhaps do some analysis on their names) or to check for some well
 known names using a filter (in which case a hit represents a strong
 signal that endpoint is compromised).
 
-![mutant](image35.png)
+![Listing mutants](image35.png)
 
 ## Process analysis
 
@@ -142,7 +142,7 @@ A simple `pslist()` can reveal basic information about the process:
 * Executable location on disk
 * Commandline for launching the process.
 
-![mutant](image38.png)
+![Process listing with the pslist() plugin](image38.png)
 
 ### Process Call chain
 
@@ -151,10 +151,10 @@ other process. Artifacts such as `Windows.System.Pstree` attempt to
 put processes in a parent/child relationship (i.e. Process chain) to
 try to visualize the order of process execution.
 
-![process tree](image40.png)
+![Identifying process call chains](image40.png)
 
 
-{{% notice warning %}}
+{{% notice warning "Shortfalls of process call chain tracing" %}}
 
 Currently the process chain reassembly is susceptible to some
 shortfalls:

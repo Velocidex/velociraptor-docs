@@ -1,5 +1,15 @@
 ---
 title: "Velociraptor vs Printnightmare"
+description: |
+  This post walks through a common use case for Velociraptor’s VQL:
+  detecting exploitation of a new zero day (A newly announced
+  vulnerability without a patch available). Once a zero day has been
+  announced, time is of the essence! Defenders must scramble to
+  determine possible remediations and detect exploitation on their
+  network.
+tags:
+- Detection
+- VQL
 date: 2021-07-11T18:13:50Z
 noindex: true
 weight: 20

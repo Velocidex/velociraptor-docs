@@ -26,7 +26,7 @@ Let's create a notebook to see the feature at work.
 
 ![New Notebook](new_notebook.png)
 
-{{% notice tip %}}
+{{% notice tip "Notebook cells and focus" %}}
 
 A notebook consists of cells which may be edited. However, when not in
 focus a cell has no decorations in order to appear as a seamless part
@@ -39,7 +39,7 @@ to see it's controls.
    will be shown, from here click the `Edit Cell` <i class="fas
    fa-pencil-alt"></i> button to edit the cell contents.
 
-![New Notebook](image13.png)
+![Editing a cell](image13.png)
 
 There are two types of cells: A `Markdown` cell receives markdown text
 and renders HTML while a `VQL` cell can receive VQL queries. The cell
@@ -57,7 +57,7 @@ the cell. As you type, the GUI offest context sensitive suggestions
 about what possible completions can appear at the cursor. Typing "?"
 will show all suggestions possible.
 
-{{% notice tip %}}
+{{% notice tip "VQL suggestions are context sensitive" %}}
 
 Suggestions are context sensisive, so VQL plugins which can only
 appear after a `FROM` clause will only be suggested when the cursor
@@ -65,7 +65,7 @@ appears are FROM.
 
 {{% /notice %}}
 
-![New Notebook](add_cell.png)
+![Adding a new cell](add_cell.png)
 
 Lets type the following VQL query into the VQL cell.
 

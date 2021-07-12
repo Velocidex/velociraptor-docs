@@ -6,18 +6,18 @@ weight: 10
 With cloud deployments you can create a proper SSL certificate using the free Let's Encrypt CA. This eliminates the bad certificate browser warning seen in the Self Signed Deployment method. Velociraptor uses the Let's Encrypt protocol to obtain and manage its own certificates (and automatically rotate them when they expire).
 
 ## Before You Begin
-Note the following requirements: 
+Note the following requirements:
 * You must use a DNS name as Let's Encrypt will not issue a certificate for an IP address. The DNS name can be a Dynamic DNS name managed by Google Domains.
-* Ports 80 and 443 must publicly accessible. Let's Encrypt uses both ports to issue certificates. 
+* Ports 80 and 443 must publicly accessible. Let's Encrypt uses both ports to issue certificates.
 * You can optionally configure Authentication via SSO providers.
 
 ## Provision a Virtual Machine
-Next we provision an Ubuntu VM from any cloud provider. 
-The size of your VM depnds on the number of endpoints in your environment. 
-An 8 or 16Gb VM should be sufficient for around 5-10k clients. 
+Next we provision an Ubuntu VM from any cloud provider.
+The size of your VM depnds on the number of endpoints in your environment.
+An 8 or 16Gb VM should be sufficient for around 5-10k clients.
 Additionally you will need sufficient disk space to hold the data you collect. We recommend starting with a modest amount of storage and then back up data or increase the storage volume as needed.
 
-{{% notice warning %}}
+{{% notice warning "Network filtering requirements" %}}
 
 Our virtual machine must be able to receive connections over both ports 80 and 443. Be sure to check inbound filtering Access Control Lists to ensure that access is allowed. When using SSL, both the client communication and the Admin GUI are served over the same ports to benefit from SSL transport encryption. The Let's Encrypt protocol requires Let's Encrypt’s servers to connect to the VM on port 80 - however the Admin GUI will only be served over SSL.
 
@@ -112,7 +112,7 @@ to request information about the user (for example, the username or
 email address).
 
 
-{{% notice note %}}
+{{% notice note "What is OAuth2 used for?" %}}
 
 OAuth is an authentication protocol. This means Velociraptor can be
 pretty confident the user is who they claim they are. However, this does not
@@ -138,11 +138,11 @@ Velociraptor app, there are a few things set up
 first. Navigate to `APIs and Services` in the GCP console and select
 `Credentials` and the `OAuth Consent Screen` tab.
 
-![11](sso11.png)
+![Creating application credentials](sso11.png)
 
 Further down you need to provide an authorized domain
 
-![11](sso12.png)
+![Authorizing domains](sso12.png)
 
 In order to add an Authorized domain you need to *verify it*. Google's
 help pages explain it further:
@@ -162,14 +162,14 @@ domains which makes this step easier since it is already verified.
 We can go back to the cloud console and `Create Credentials/OAuth
 client ID`:
 
-![11](sso15.png)
+![Creating OAuth2 client ID](sso15.png)
 
 Now select `Web App` and set the `Authorized redirect URIs` to
 `https://<Your Domain Name>/auth/google/callback` -
 This is the URL that successful OAuth authentication will redirect
 to. Velociraptor accepts this redirect and uses it to log the user on.
 
-![11](sso16.png)
+![Specifying the redirect URL](sso16.png)
 
 If all goes well the Google cloud console will give us a client ID and
 a client secret.
@@ -208,7 +208,7 @@ server and client configuration.
   passwords so only the user names will be recorded.
 
 
-## Grant Access to Velociraptor 
+## Grant Access to Velociraptor
 
 The OAuth flow ensures the user's identity is correct but does not
 give them permission to log into Velociraptor. Note that having an
@@ -258,9 +258,9 @@ user using `velociraptor user grant '{}'`.
 
 ### Deploying to the server
 
-Once a server configuration file is created, you need to create a server Debian package embedding the config file. The Debian package the Velociraptor executable, the server configuration file and relevant startup scripts. 
+Once a server configuration file is created, you need to create a server Debian package embedding the config file. The Debian package the Velociraptor executable, the server configuration file and relevant startup scripts.
 
-Run the following command to create the server: 
+Run the following command to create the server:
 
 ```sh
 velociraptor.exe --config server.config.yaml debian server --binary velociraptor-v0.6.0-linux-amd64

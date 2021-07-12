@@ -1,6 +1,9 @@
 ---
 title: The Velociraptor Query Language Pt 2
 description: Scopes, Looping and joining with foreach…
+tags:
+- VQL
+- Low level
 date: '2020-06-19T00:38:44.349Z'
 categories: []
 keywords: []

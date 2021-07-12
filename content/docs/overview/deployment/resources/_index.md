@@ -122,7 +122,7 @@ of disk space available. Since Velociraptor uses a simple filesystem
 to store all its data, it is easy to manage disk space by deleting or
 archiving old data.
 
-{{% notice note %}}
+{{% notice note "Disk usage" %}}
 
  It is very easy to fill up disk space with Velociraptor because it is
  so fast and responsive. For example issuing a large triage file

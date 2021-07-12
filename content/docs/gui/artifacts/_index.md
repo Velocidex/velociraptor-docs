@@ -46,11 +46,12 @@ Ultimately Velociraptor is simply a VQL engine . That is, it processes a
 VQL query producing a series of rows and sends those rows to
 the server.
 
-{{% notice note %}}
+{{% notice note "Why does Velociraptor use Artifacts?" %}}
 
-Artifacts encapsulate a VQL query inside a
-YAML file so that end users do not need to understand the query to use it. This makes artifacts easier to use and facilitates
-knowledge sharing with more experienced users.
+Artifacts encapsulate a VQL query inside a YAML file so that end users
+do not need to understand the query to use it. This makes artifacts
+easier to use and facilitates knowledge sharing with more experienced
+users.
 
 {{% /notice %}}
 

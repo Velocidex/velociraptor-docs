@@ -1,7 +1,7 @@
 ---
 title: "Server Automation"
 date: 2021-06-30T12:31:08Z
-draft: false
+draft: true
 weight: 60
 ---
 

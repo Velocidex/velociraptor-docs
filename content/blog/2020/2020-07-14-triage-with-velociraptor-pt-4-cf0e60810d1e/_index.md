@@ -2,6 +2,9 @@
 title: Triage with Velociraptor — Pt 4
 description: Building a stand-alone collector with the GUI
 date: '2020-07-14T00:38:44.349Z'
+tags:
+- Forensics
+- Offline Collector
 categories: []
 keywords: []
 ---

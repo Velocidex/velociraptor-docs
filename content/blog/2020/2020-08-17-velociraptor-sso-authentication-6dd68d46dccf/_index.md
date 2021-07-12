@@ -2,6 +2,9 @@
 title: Velociraptor SSO Authentication
 description: Protect your Velociraptor with OAuth2
 date: '2020-08-16T01:38:44.349Z'
+tags:
+- Integration
+- Authentication
 categories: []
 keywords: []
 ---

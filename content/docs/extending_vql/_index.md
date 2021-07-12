@@ -57,7 +57,7 @@ all running processes.
 Get-Process | Select Name, Id, Path
 ```
 
-![Powershell](image8.png)
+![Powershell snippet for listing processes](image8.png)
 
 In order to run powershell code from Velociraptor we will use the
 `execve()` plugin to shell out to powershell. The `execve()` plugin
@@ -93,14 +93,14 @@ sources:
             "unrestricted", "-c", PowershellScript])
 ```
 
-![Extending with Powershell](ps1.png)
+![Extending VQL with Powershell](ps1.png)
 
 Collecting the artifact will result in the output of the powershell
 script in an Stdout column.
 
-![Extending with Powershell](ps2.png)
+![Extending VQL with Powershell - unstructured output](ps2.png)
 
-{{% notice tip %}}
+{{% notice tip "Encoding Powershell scripts" %}}
 
 In the above artifact we relied on Velociraptor to properly escape the
 powershell script to the powershell interpreter on the
@@ -108,18 +108,18 @@ commandline. For more reliable encoding, we can base64 encode the
 script:
 
 ```sql
-        SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy",
-            "unrestricted", "-EncodedCommand",
-            base64encode(string=utf16_encode(string=PowershellScript))])
+SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy",
+ "unrestricted", "-EncodedCommand",
+ base64encode(string=utf16_encode(string=PowershellScript))])
 ```
 
 Alternative, we can write the Powershell script into a temporary file
 and run it from there:
 
 ```sql
-        LET ps1 <= tempfile(extension=".ps1", data=PowershellScript)
-        SELECT * FROM execve(
-            argv=["Powershell", "-ExecutionPolicy", "unrestricted", ps1)
+LET ps1 <= tempfile(extension=".ps1", data=PowershellScript)
+SELECT * FROM execve(
+  argv=["Powershell", "-ExecutionPolicy", "unrestricted", ps1)
 ```
 {{% /notice %}}
 
@@ -158,7 +158,7 @@ properly parsing it. Therefore, we supply the `length=1000000`
 parameter indicating that Stdout will be buffered up to the specified
 length before emitting the row.
 
-![Extending with Powershell](ps3.png)
+![Extending with Powershell - structured output](ps3.png)
 
 Note how the output now appears as a regular table with rows and
 columns. This allows VQL or operate on the result set as if it was
@@ -170,7 +170,7 @@ Since our powershell script is now encapsulated, we can use it inside
 other artifacts and plain VQL.  Users of this artifact dont care what
 the PowerShell Script is or what it does - we have encapsulation!
 
-![Extending with Powershell](ps4.png)
+![Reusing an artifact from VQL](ps4.png)
 
 ## Remediation
 
@@ -181,12 +181,14 @@ interferance of the endpoint, remediation aims to modify the endpoint
 in order to actively remove threats and harden the endpoint against
 future compromise.
 
-{{% notice warning %}}
+{{% notice warning "Remediation is a risky operation" %}}
 
 Remediation is inherently risky! If a bug occurs that breaks the
 endpoints, it is possible to damage the network quickly. Always
 structure your artifacts so they show a dry run - what would have been
-modified before actually performing the remediation.
+modified before actually performing the remediation. Always test your
+remediation artifacts on selected endpoints before starting a wide
+hunt everywhere.
 
 {{% /notice %}}
 
@@ -203,7 +205,7 @@ SCHTASKS /CREATE /SC DAILY /TN "EvilTask" /TR "dir c:" /ST 20:01
 First let us find our evil task by collecting the
 `Windows.System.TaskScheduler` artifact.
 
-![TaskScheduler](scheduled_tasks.png)
+![Collecting Scheduled tasks](scheduled_tasks.png)
 
 Once we identify the malicious scheduled task we can remove it. An
 example of such a remediation artifact is in
@@ -310,20 +312,20 @@ sources:
 Let's collect the artifact. Simply click "New collection" then search
 for the autoruns artifact.
 
-![Autoruns](autoruns.png)
+![Collecting the Autoruns artifact](autoruns.png)
 
 We immediately see the tools in the artifact description. These links
 allow us to configure the tool. We can see the hash and the URL the
 tool will be fetched from. The server keeps track of the binary hash
 and requires it to match what was downloaded.
 
-![Autoruns](tools.png)
+![The Autoruns tools setup screen](tools.png)
 
 As an administrator we have the option to override the binary with our
 own copy by uploading into the GUI. We can also provide an alternative
 URL to serve the binary from.
 
-![Autoruns](autoruns2.png)
+![Autoruns artifact query logs](autoruns2.png)
 
 Once the artifact is launched we can see how it works from the query
 logs:
@@ -338,7 +340,7 @@ logs:
    the permanent cache directory.
 5. The tool is now launched and the output parsed in VQL rows.
 
-{{% notice tip %}}
+{{% notice tip "Encapsulation of artifacts" %}}
 
 You can call any artifact from your own VQL regardless of whether they
 use tools. For example, the `Windows.Sysinternals.Autoruns` artifact

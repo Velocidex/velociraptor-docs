@@ -72,7 +72,7 @@ their operations. VQL Syntax requires all arguments to be provided by
 name (these are called keyword arguments). Depending on the specific
 plugins, some arguments are required while some are optional.
 
-{{% notice tip %}}
+{{% notice tip "Using the GUI suggestions" %}}
 
 While you can always consult the reference on VQL plugins, the best
 source of help is to type `?` in the notebook interace to view the
@@ -84,7 +84,7 @@ type and if they are required or optional.
 
 ![VQL Plugin Completions](completion.png)
 
-![VQL Plugin Completions](completion2.png)
+![VQL Plugin arguments Completions](completion2.png)
 
 {{% /notice %}}
 
@@ -197,13 +197,13 @@ to resolve the symbol OS from the column expression, it walks the
 scope stack in reverse, checking if the symbol `OS` exists in the
 lower layer. If not the next layer is checked and so on.
 
-{{% notice warning %}}
+{{% notice warning "Masking variables in the scope" %}}
 
 Columns produced by a plugin are added to the child scope and
 therefore **mask** the same symbol name from parent scopes. This can
 sometimes unintentionally hide variables of the same name which are
 defined at a parent scope. If you find this happens to your query you
-can rename easlier symbol using the `AS` keyword to avoid this
+can rename earlier symbols using the `AS` keyword to avoid this
 problem.  For example:
 
 ```sql
@@ -507,7 +507,7 @@ LET MyFunc(X) = X + 5
 SELECT MyFunc(X=6) FROM scope()
 ```
 
-{{% notice tip %}}
+{{% notice tip "Differences between a VQL plugin and VQL function" %}}
 
 Remember the difference between a VQL plugin and a VQL function is
 that a plugin returns multiple rows and therefore needs to appear
@@ -617,7 +617,7 @@ The `GROUP BY` query will therefore return two rows (one for each
 bin). Each row will contain a single value for the `X` value and one
 of the `Y` values.
 
-{{% notice warning %}}
+{{% notice warning "Selecting columns with GROUP BY" %}}
 
 As the above diagram illustrates, it only makes sense in general to
 select the same column as is being groupped. This is because other

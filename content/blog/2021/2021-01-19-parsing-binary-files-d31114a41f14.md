@@ -1,6 +1,9 @@
 ---
 title: Parsing binary files
 description: Using VQL to parse binary data
+tags:
+- Parsing
+- VQL
 date: 2021-01-19
 ---
 
