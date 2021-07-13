@@ -5,49 +5,39 @@ draft: false
 weight: 30
 ---
 
-We have previously seen that VQL is a central feature in
-Velociraptor. In fact Velociraptor can be thought of as essentially a
-VQL evaluation engine, so VQL is central to understanding and
-extending Velociraptor.
+VQL is central to the design and functionality of Velociraptor, and a solid grasp of VQL is critical to understand and extend Velociraptor.
 
 
-## Why a query language?
+## Why a new query language?
 
-The need for a query language arose from our experience of previous
-DFIR frameworks. In practice, endpoint analysis tools must be very
-flexible in order to adapt to new indicators or protect against new
+Endpoint analysis tools must be
+flexible enough to adapt to new indicators of compromise (IOCs) and protect against new
 threats. While it is always possible to develop new capability in
-code, deploying a new very of the agent is not always easy and can not
-be done quickly.
+code, it's not always easy or quick to deploy a new version.
 
-A query language helps to accelerate the time from learning about a
-new IOC or thinking of a novel detection idea to wide detection across
-a large number of hosts. Typically a DFIR investigator can go from
-learning of a new type of indicator, writing relevant VQL queries,
-packaging in an artifact and hunting for the artifact across the
-entire deployment in a matter of minutes!
+A query language can accelerate the time it takes to discover an IOC, design a rule to detect it, and then deploy the detection at scale across
+a large number of hosts. Using VQL, a DFIR investigator can
+learn of a new type of indicator, write relevant VQL queries,
+package them in an artifact, and hunt for the artifact across the
+entire deployment in a matter of minutes.
 
-Additionally, the VQL artifacts may be shared with the community and
-facilitate a medium of exchange of DFIR specific knowledge of
+Additionally, VQL artifacts can be shared with the community and
+facilitate a DFIR-specific knowledge exchange of
 indicators and detection techniques.
 
 ## Running VQL queries - Notebooks
 
-When learning VQL it is best to practice in an environment that makes
-it easy to debug and iterate through the VQL, while interactively
-testing each query.
+When learning VQL, we recommend practicing in an environment where you can easily debug, iterate, and interactively
+test each query.
 
-You can read more about notebooks [here](notebooks). For the rest of
-this chapter we will assume you created a notebook and are typing VQL
+You can read more about notebooks [here](notebooks). For the purposes of this documentation, we will assume you created a notebook and are typing VQL
 into the cell.
 
 ## Basic Syntax
 
-VQL's syntax is heavily inspired by SQL with the same basic `SELECT
-.. FROM .. WHERE` sentence structure. However, VQL is much simpler
-than SQL, ignoring more complex SQL syntax such as `JOIN`, `HAVING`
-etc. Instead similar functionality is provided in VQL by way of
-plugins, and not built in syntax. This keeps the syntax simple and
+VQL's syntax is heavily inspired by SQL. It uses the same basic `SELECT
+.. FROM .. WHERE` sentence structure, but does not include the more complex SQL syntax, such as `JOIN` or `HAVING`. In VQL, similar functionality is provided through
+plugins, which keeps the syntax simple and
 concise.
 
 Let's consider the basic syntax of a VQL query.
@@ -64,23 +54,21 @@ filter expression.
 While VQL syntax is similar to SQL, SQL was designed to work on static
 tables in a database. In VQL, the data sources are not actually static
 tables on disk - they are provided by code that runs to generate
-rows. `VQL Plugins` are producers of rows and are positioned after the
+rows. `VQL Plugins` produce rows and are positioned after the
 `FROM` clause.
 
-Like all code, VQL plugins may use parameters to customize and control
+Like all code, VQL plugins use parameters to customize and control
 their operations. VQL Syntax requires all arguments to be provided by
 name (these are called keyword arguments). Depending on the specific
 plugins, some arguments are required while some are optional.
 
 {{% notice tip "Using the GUI suggestions" %}}
 
-While you can always consult the reference on VQL plugins, the best
-source of help is to type `?` in the notebook interace to view the
-list of possible completions. Completions are context sensitive so
-after the `FROM` keyword, all suggestions are for VQL plugins (since
-plugins must follow the `FROM` keyword). Similarly typing `?` inside
-the plugin arguments list shows the possible arguments expected, their
-type and if they are required or optional.
+Yuo can type `?` in the Notebook interface to view a
+list of possible completions for a keyword. Completions are context sensitive. For example, since plugins must follow the `FROM` keyword, any suggestions
+after the `FROM` keyword will be for VQL plugins. Typing `?` inside
+a plugin arguments list shows the possible arguments, their
+type, and if they are required or optional.
 
 ![VQL Plugin Completions](completion.png)
 
@@ -94,19 +82,19 @@ In order to understand how VQL works, let's follow a single row through the quer
 
 ![Life of a query](life_of_a_query.png)
 
-1. Velociraptor's VQL engine starts off by calling the plugin passing
-   any relevant arguments into it. The plugin will generate one or
+1. Velociraptor's VQL engine will call the plugin and pass
+   any relevant arguments to it. The plugin will then generate one or
    more rows and send a row at a time into the query for further
    processing.
 
-2. The column expression in the query will now receive the
+2. The column expression in the query receives the
    row. However, instead of evaluating the column expression
    immediately, VQL wraps the column expression in a `Lazy
    Evaluator`. Lazy evaluators allow the actual evaluation of the
    column expression to be delayed until a later time.
 
-3. Next VQL takes the lazy expressions and uses them to evaluate the
-   filter condition - which will determine if the row is to be
+3. Next, VQL takes the lazy evaluator and uses them to evaluate the
+   filter condition, which will determine if the row is to be
    eliminated or passed on.
 
 4. In this example, the filter condition (`X=1`) must evaluate the
@@ -117,14 +105,9 @@ In order to understand how VQL works, let's follow a single row through the quer
 
 ### Lazy Evaluation
 
-In the above description we can see that a lot of effort was put into
-the VQL engine in order to postpone evaluation as late as
-possible. This is a recurring theme in VQL which always tries to
-postpone evaluation. Why is this done?
-
-The main reason for delaying evaluation as much as possible is to
-avoid performing unnecessary work. There is no point in evaluating a
-column value if the entire row will be filtered out!
+In the previous example, the VQL engine goes through signficant effort to postpone the evaluation as much as
+possible. Delaying an evaluation is a recurring theme in VQL and it saves Velociraptor from performing unnecessary work, like evaluating a
+column value if the entire row will be filtered out.
 
 Understanding lazy evaluation is critical to writing efficient VQL
 queries. Let's examine how this work using a series of
@@ -152,12 +135,11 @@ FROM info()
 WHERE OS = "Unknown" AND Log
 ```
 
-Let's consider case 1 above, the row will be emitted by the query and
-therefore the log function will be evaluated producing a log message.
+In Case 1, a single row will be emitted by the query and the associated log function will be evaluated, producing a log message.
 
 Case 2 adds a condition which should eliminate the row. **Because the
-row is eliminated VQL is able to skip evaluation of the log()
-function!** No log message will be produced.
+row is eliminated VQL can skip evaluation of the log()
+function.** No log message will be produced.
 
 Cases 3 and 4 illustrate VQL's evaluation order of `AND` terms - from
 left to right with an early exit.
@@ -180,7 +162,7 @@ SELECT OS FROM info()
 VQL sees “info” as a plugin and looks in the scope to get the real
 implementation of the plugin.
 
-Scopes can nest - this means that in different parts of the query a
+Scopes can be nested, which means that in different parts of the query a
 new child scope is used to evaluate the query. The child scope is
 constructed by layering a new set of names over the top of the
 previous set. When VQL tries to resolve a name, it looks up the scope
@@ -191,11 +173,11 @@ Take the following query for example,
 
 ![Scope lookup](scope.png)
 
-VQL evaluates the `info()` plugin which emits a single row. Then VQL
+VQL evaluates the `info()` plugin, which emits a single row. Then VQL
 creates a child scope, with the row at the bottom level. Whe VQL tries
-to resolve the symbol OS from the column expression, it walks the
+to resolve the symbol `OS` from the column expression, it examines the
 scope stack in reverse, checking if the symbol `OS` exists in the
-lower layer. If not the next layer is checked and so on.
+lower layer. If not, VQL checks the next layer, and so on.
 
 {{% notice warning "Masking variables in the scope" %}}
 
@@ -213,7 +195,7 @@ SELECT Pid, Name, {
 FROM pslist()
 ```
 
-In this query the symbol `Name` in the outer query will be resolved
+In this query, the symbol `Name` in the outer query will be resolved
 from the rows emitted by `pslist()` but the second `Name` will be
 resolved from the row emitted by `pslist(pid=Ppid)` - or in other
 words, the parent's name.
@@ -237,7 +219,7 @@ including new lines. You can use `'''` to denote multi line strings.
 
 VQL Subqueries can be specified as a column expression or as an
 arguments. Subqueries are delimited by `{` and `}`. Subqueries are
-also Lazily evaluated, and will only be evaluated when necessary.
+also lazily evaluated, and will only be evaluated when necessary.
 
 ### Arrays
 
@@ -288,7 +270,7 @@ plugin takes two arguments:
 2. The `query` parameter is a subquery that will be evaluated on a
    subscope containing each row that is emitted by the `row` argument.
 
-Consider the following query.
+Consider the following query:
 
 ```sql
 SELECT * FROM foreach(
@@ -306,16 +288,14 @@ evaluated within the nested scope.
 Foreach is useful when we want to run a query on the output of another
 query.
 
-### Foreach on steroids!
+### Foreach on steroids
 
 Normally foreach iterates over each row one at a time.  The
 `foreach()` plugin also takes the workers parameter. If this is larger
 than 1, `foreach()` will use multiple threads and evaluate the `query`
-query in each worker thread.
+query in each worker thread. This allows the query to evaluate values in parallel.
 
-This allows to parallelize the query!
-
-For example consider the following query, which retrieves all the
+For example, the following query retrieves all the
 files in the System32 directory and calculates their hash.
 
 ```sql
@@ -325,15 +305,15 @@ WHERE NOT IsDir
 ```
 
 As each row is emitted from the `glob()` plugin with a filename of a
-file, the `hash()` function is evaluated on it and the hash is
+file, the `hash()` function is evaluated and the hash is
 calculated.
 
 However this is linear, since each hash is calculated before the next
 hash is started - hence only one hash is calculated at once.
 
-This example is very suitable for parallelization because globling for
-all files is quite fast, but the slow part is hashing the
-files. Therefore, if we delegate the hashing to multiple threads, we
+This example is very suitable for parallelization because globbing for
+all files is quite fast, but hashing the
+files can be slow. If we delegate the hashing to multiple threads, we
 can make more effective use of the CPU.
 
 ```sql
@@ -351,14 +331,14 @@ row={
 
 ## LET expressions
 
-We have previously seen how subqueries may be used in various parts of
+We know that subqueries can be used in various parts of
 the query, such as in a column specifier or as an argument to a
 plugin. While subqueries are convenient, they can become unweildy when
 nested too deeply. VQL offers an alternative to subqueries called
 `Stored Queries`.
 
-A stored query is a lazy evaluator of a query which we can store in
-the scope.  Whereever the stored query is used it will be evaluated on
+A stored query is a lazy evaluator of a query that we can store in
+the scope.  Wherever the stored query is used it will be evaluated on
 demand. Consider the example below, where for each process, we
 evaluate the `stat()` plugin on the executable to check the
 modification time of the executable file.
@@ -377,7 +357,7 @@ SELECT * FROM foreach(row=myprocess, query=mystat)
 A Stored Query is simply a query that is stored into a variable. It is
 not actually evaluated at the point of definition. At the point where
 the query is referred, that is where evaluation occurs. The scope at
-which the query is evaluated is derived from the point of reference!
+which the query is evaluated is derived from the point of reference.
 
 For example in the query above, `mystat` simply stores the query
 itself. Velociraptor will then re-evaluate the `mystat` query for each
@@ -410,15 +390,15 @@ When the query emits 5 rows in total, the entire query is cancelled
 without having to wait for the query to complete.
 
 This is possible because VQL queries are **asynchronous** - we do
-**not** calcaulte the entire result set of `myhashes` **before** using
+**not** calculate the entire result set of `myhashes` **before** using
 `myhashes` in another query, we simply pass the query itself and
 forward each row as needed.
 
 ### Materialized LET expressions
 
-We saw before that a stored query does not in itself evaluate the
-query. Instead whenever the query is referenced, the query will be
-evaluated afresh.
+A stored query does not in itself evaluate the
+query. Instead the query will be
+evaluated whenever it is referenced.
 
 Sometimes this is not what we want to do. For example consider a query
 which takes a few seconds to run, but its output is not expected to
@@ -429,7 +409,7 @@ Expanding a query into an array in memory is termed `Materializing`
 the query.
 
 For example, consider the following query that lists all sockets on
-the machine, and attempts to resolve the process id to a process name
+the machine, and attempts to resolve the process ID to a process name
 using the `pslist()` plugin.
 
 ```sql
@@ -443,15 +423,14 @@ FROM netstat()
 ```
 
 This query will be very slow because the `process_lookup` stored query
-will be re-evaluated for each row returned from netstat (i.e. for each
+will be re-evaluated for each row returned from netstat (that is, for each
 socket).
 
-However we do not expect the process listing to change that quickly!
-It would make more sense to have the process listing cached in memory
-for the entire length of the query. It is not expected to change over
-the few seconds the query will run.
+The process listing will not likely change during the few seconds it takes the query to run.
+It would be more efficient to have the process listing cached in memory
+for the entire length of the query. 
 
-Therefore we wish to `Materialize` the query
+We recommend that you `Materialize` the query:
 
 ```sql
 LET process_lookup <= SELECT Pid AS ProcessPid, Name FROM pslist()
@@ -463,9 +442,9 @@ SELECT Laddr, Status, Pid, {
 FROM netstat()
 ```
 
-The only difference between this query and the previous one is that
+The difference between this query and the previous one is that
 the `LET` clause uses `<=` instead of `=`. The `<=` is the materialize
-operator - it tells VQL to expand the query in place into an array
+operator. It tells VQL to expand the query in place into an array
 which is then assigned to the variable `process_lookup`.
 
 Subsequent accesses to `process_lookup` simply access an in-memory
@@ -474,7 +453,7 @@ array of pid and name for all processes and **do not** need to run
 
 ## Local functions
 
-We have seen how `LET` expressions may store queries into a variable,
+`LET` expressions may store queries into a variable,
 and have the queries evaluated in a subscope at the point of use.
 
 A `LET` expression can also declare explicit passing of
@@ -537,7 +516,7 @@ SELECT * FROM foreach(
 ### Looping over arrays
 
 Sometimes arrays are present in column data. We can iterate over these
-using the foreach plugin
+using the foreach plugin.
 
 ```sql
 SELECT * FROM foreach(
@@ -545,7 +524,7 @@ SELECT * FROM foreach(
     query={ <sub query goes here >})
 ```
 
-if row is an array the value will be assigned to `_value` as a special placeholder.
+If row is an array, the value will be assigned to `_value` as a special placeholder.
 
 
 ### Conditional: if plugin and function
@@ -559,10 +538,9 @@ SELECT * FROM if(
     else={ <sub query goes here >})
 ```
 
-If the condition is a query it is true if it returns any rows. Then we
-evaluate the then subquery or the else subquery. Note that as usual,
-VQL is lazy and therefore the query or expression which is not used
-will not be evaluated.
+If the condition is a query it is true if it returns any rows. Next, we'll
+evaluate the `then` subquery or the `else` subquery. Note that as usual,
+VQL is lazy and will not evaluate the unused query or expression.
 
 ### Conditional: switch plugin
 
@@ -657,8 +635,8 @@ multiple rows.
 Some aggregate functions:
 
 * `count()` counts the total number of rows in each bin.
-* `sum()` adds up a value for an expression in each bin
-* `enumerate()` collect all the values in each bin into an in-memory array
+* `sum()` adds up a value for an expression in each bin.
+* `enumerate()` collect all the values in each bin into an in-memory array.
 * `rate()` calculates a rate (first order derivative) between each
   invocation and its previous one.
 
