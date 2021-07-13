@@ -10,7 +10,8 @@ VQL is central to the design and functionality of Velociraptor, and a solid gras
 
 ## Why a new query language?
 
-Endpoint analysis tools must be
+The need for a query language arose from our experience of previous
+Digital Forensic and Incident Response (DFIR) frameworks. Endpoint analysis tools must be
 flexible enough to adapt to new indicators of compromise (IOCs) and protect against new
 threats. While it is always possible to develop new capability in
 code, it's not always easy or quick to deploy a new version.
