@@ -5,7 +5,7 @@ draft: false
 weight: 30
 ---
 
-VQL is central to the design and functionality of Velociraptor, and a solid grasp of VQL is critical to understand and extend Velociraptor.
+VQL is central to the design and functionality of Velociraptor, and a solid grasp of VQL is critical to understanding and extending Velociraptor.
 
 
 ## Why a new query language?
