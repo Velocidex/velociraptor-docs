@@ -4,14 +4,17 @@ description: |
    Use Get-InjetedThreads to detect process injections.
    Note: this query is complex powershell. Run it after a scriptblock hunt.
 
+   https://gist.github.com/jaredcatkinson/23905d34537ce4b5b1818c3e6405c1d2
+   https://gist.github.com/mgreen27/1982aaae37a7afdd047db619bf17c8a1
+
 tools:
  - name: Get-InjectedThread
-    
-sources:
-  - precondition:
+
+precondition:
       SELECT OS From info() where OS = 'windows'
 
-    query: |
+sources:
+  - query: |
       -- Get the path to the Get-InjectedThread tool
       LET script <= SELECT FullPath
             FROM Artifact.Generic.Utils.FetchBinary(
@@ -52,7 +55,7 @@ sources:
                 ]) as threads,Stdout
             FROM execve(argv=['powershell','-ExecutionPolicy','Unrestricted',script.FullPath[0]])
             WHERE Stdout
-    
+
       -- Finally output the regex results
       SELECT
             threads.ProcessName AS ProcessName,
@@ -85,7 +88,7 @@ sources:
   - name: InjectedSection
     queries:
       - |
-        SELECT 
+        SELECT
             threads.ProcessName AS ProcessName,
             threads.ProcessId AS ProcessId,
             threads.BaseAddress AS BaseAddress,
