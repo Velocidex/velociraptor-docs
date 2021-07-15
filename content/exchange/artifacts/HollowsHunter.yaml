@@ -1,11 +1,14 @@
 name: Custom.Windows.Memory.HollowsHunter
 description: |
    Use hollows_hunter to detect suspicious process injections.
-   
+
    Upload any findings to the server, including process dumps.
+
 tools:
  - name: hollows_hunter
-   url: https://github.com/hasherezade/hollows_hunter/releases/download/v0.2.7.1/hollows_hunter64.exe
+   github_project: hasherezade/hollows_hunter
+   github_asset_regex: hollows_hunter64.exe
+   serve_locally: true
 
 sources:
   - precondition:
@@ -13,14 +16,14 @@ sources:
 
     query: |
       -- Get the path to the hollows_hunter tool and a fresh temp directory.
-      LET binaries <= SELECT FullPath, tempdir() AS TempDir 
+      LET binaries <= SELECT FullPath, tempdir() AS TempDir
       FROM Artifact.Generic.Utils.FetchBinary(
          ToolName="hollows_hunter")
-      
+
       -- Run the tool and relay back the output, as well as upload all the files from the tempdir.
       SELECT * FROM chain(
       a={SELECT Stdout, NULL AS Upload
-         FROM execve(argv=[binaries[0].FullPath,"/hooks",     
+         FROM execve(argv=[binaries[0].FullPath,"/hooks",
            "/json", "/dir", binaries[0].TempDir], length=100000)},
       b={
         SELECT upload(file=FullPath) AS Upload
