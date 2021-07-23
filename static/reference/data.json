@@ -1,31 +1,26 @@
 [
     {
         "name": "amsi",
-        "description": "",
         "type": "Function",
         "args": [
             {
                 "name": "string",
-                "description": "A string to scan",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to scan",
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "appcompatcache",
         "description": "Parses the appcompatcache.",
         "type": "Plugin",
-        "args": [],
         "category": "windows"
     },
     {
         "name": "array",
         "description": "Create an array with all the args.",
         "type": "Function",
-        "args": [],
         "category": "basic"
     },
     {
@@ -35,24 +30,19 @@
         "args": [
             {
                 "name": "names",
-                "description": "Artifact definitions to dump",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "Artifact definitions to dump",
+                "repeated": true
             },
             {
                 "name": "deps",
-                "description": "If true includes all dependencies as well.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If true includes all dependencies as well."
             },
             {
                 "name": "sanitize",
-                "description": "If true we remove extra metadata.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If true we remove extra metadata."
             }
         ],
         "category": "server"
@@ -64,10 +54,8 @@
         "args": [
             {
                 "name": "name",
-                "description": "The Artifact to delete",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The Artifact to delete"
             }
         ],
         "category": "server"
@@ -79,17 +67,13 @@
         "args": [
             {
                 "name": "definition",
-                "description": "Artifact definition in YAML",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Artifact definition in YAML"
             },
             {
                 "name": "prefix",
-                "description": "Required name prefix",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Required name prefix"
             }
         ],
         "category": "server"
@@ -101,9 +85,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to convert to int",
                 "type": "Any",
-                "repeated": false,
+                "description": "A string to convert to int",
                 "required": true
             }
         ],
@@ -113,7 +96,6 @@
         "name": "audit",
         "description": "Register as an audit daemon in the kernel.",
         "type": "Plugin",
-        "args": [],
         "category": "linux"
     },
     {
@@ -123,24 +105,19 @@
         "args": [
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "filename",
-                "description": "The filename to parse.",
                 "type": "string",
-                "repeated": false,
+                "description": "The filename to parse.",
                 "required": true
             },
             {
                 "name": "verbose",
-                "description": "Set to receive verbose information about all the certs.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Set to receive verbose information about all the certs."
             }
         ],
         "category": "windows"
@@ -152,9 +129,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to decode",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to decode",
                 "required": true
             }
         ],
@@ -167,9 +143,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to decode",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to decode",
                 "required": true
             }
         ],
@@ -182,17 +157,14 @@
         "args": [
             {
                 "name": "path",
-                "description": "Extract directory name of path",
                 "type": "string",
-                "repeated": false,
+                "description": "Extract directory name of path",
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "Separator to use (default /)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Separator to use (default /)"
             }
         ],
         "category": "basic"
@@ -204,38 +176,29 @@
         "args": [
             {
                 "name": "offset",
-                "description": "Start parsing from this offset.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Start parsing from this offset."
             },
             {
                 "name": "string",
-                "description": "The string to parse.",
                 "type": "string",
-                "repeated": false,
+                "description": "The string to parse.",
                 "required": true
             },
             {
                 "name": "profile",
-                "description": "The profile to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The profile to use."
             },
             {
                 "name": "iterator",
-                "description": "An iterator to begin with.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An iterator to begin with."
             },
             {
                 "name": "target",
-                "description": "The target type to fetch.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The target type to fetch."
             }
         ],
         "category": "parsers"
@@ -247,52 +210,40 @@
         "args": [
             {
                 "name": "offset",
-                "description": "Start parsing from this offset",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Start parsing from this offset"
             },
             {
                 "name": "file",
-                "description": "Filename to parse",
                 "type": "string",
-                "repeated": false,
+                "description": "Filename to parse",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "Accessor to use (e.g. ntfs, data)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Accessor to use (e.g. ntfs, data)"
             },
             {
                 "name": "profile",
-                "description": "Profile to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Profile to use."
             },
             {
                 "name": "target",
-                "description": "The target to fetch.",
                 "type": "string",
-                "repeated": false,
+                "description": "The target to fetch.",
                 "required": true
             },
             {
                 "name": "args",
-                "description": "Args for the target class.",
                 "type": "vfilter.Any",
-                "repeated": false,
-                "required": false
+                "description": "Args for the target class."
             },
             {
                 "name": "start",
-                "description": "The initial field in the target to fetch.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The initial field in the target to fetch."
             }
         ],
         "category": "parsers"
@@ -304,31 +255,25 @@
         "args": [
             {
                 "name": "func",
-                "description": "A function to evaluate",
                 "type": "LazyExpr",
-                "repeated": false,
+                "description": "A function to evaluate",
                 "required": true
             },
             {
                 "name": "name",
-                "description": "The global name of this cache (needed when more than one)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The global name of this cache (needed when more than one)"
             },
             {
                 "name": "key",
-                "description": "Cache key to use.",
                 "type": "string",
-                "repeated": false,
+                "description": "Cache key to use.",
                 "required": true
             },
             {
                 "name": "period",
-                "description": "The latest age of the cache.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The latest age of the cache."
             }
         ],
         "category": "basic"
@@ -340,17 +285,12 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "flow_id",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "server"
@@ -359,14 +299,12 @@
         "name": "certificates",
         "description": "Collect certificate from the system trust store.",
         "type": "Plugin",
-        "args": [],
         "category": "windows"
     },
     {
         "name": "chain",
         "description": "Chain the output of several queries into the same table. This plugin\ntakes any args and chains them.",
         "type": "Plugin",
-        "args": [],
         "category": "plugin"
     },
     {
@@ -376,17 +314,12 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "really_do_it",
-                "description": "",
-                "type": "bool",
-                "repeated": false,
-                "required": false
+                "type": "bool"
             }
         ],
         "category": "server"
@@ -398,9 +331,7 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -413,9 +344,7 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -428,9 +357,7 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -443,31 +370,22 @@
         "args": [
             {
                 "name": "search",
-                "description": "Client search string. Can have the following prefixes: 'lable:', 'host:'",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Client search string. Can have the following prefixes: 'lable:', 'host:'"
             },
             {
                 "name": "start",
-                "description": "First client to fetch (0)'",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "First client to fetch (0)'"
             },
             {
                 "name": "count",
-                "description": "Maximum number of clients to fetch (1000)'",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Maximum number of clients to fetch (1000)'"
             },
             {
                 "name": "client_id",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "server"
@@ -479,24 +397,18 @@
         "args": [
             {
                 "name": "start",
-                "description": "Start at this time.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Start at this time."
             },
             {
                 "name": "period",
-                "description": "Wait this many seconds between events.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Wait this many seconds between events."
             },
             {
                 "name": "ms",
-                "description": "Wait this many ms between events.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Wait this many ms between events."
             }
         ],
         "category": "event"
@@ -508,66 +420,50 @@
         "args": [
             {
                 "name": "artifacts",
-                "description": "A list of artifacts to collect.",
                 "type": "string",
+                "description": "A list of artifacts to collect.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "output",
-                "description": "A path to write the output file on.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A path to write the output file on."
             },
             {
                 "name": "report",
-                "description": "A path to write the report on.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A path to write the report on."
             },
             {
                 "name": "args",
-                "description": "Optional parameters.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Optional parameters."
             },
             {
                 "name": "password",
-                "description": "An optional password to encrypt the collection zip.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An optional password to encrypt the collection zip."
             },
             {
                 "name": "format",
-                "description": "Output format (csv, jsonl).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Output format (csv, jsonl)."
             },
             {
                 "name": "artifact_definitions",
-                "description": "Optional additional custom artifacts.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Optional additional custom artifacts."
             },
             {
                 "name": "template",
-                "description": "The name of a template artifact (i.e. one which has report of type HTML).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of a template artifact (i.e. one which has report of type HTML)."
             },
             {
                 "name": "level",
-                "description": "Compression level between 0 (no compression) and 9.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Compression level between 0 (no compression) and 9."
             }
         ],
         "category": "plugin"
@@ -579,59 +475,46 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "The client id to schedule a collection on",
                 "type": "string",
-                "repeated": false,
+                "description": "The client id to schedule a collection on",
                 "required": true
             },
             {
                 "name": "artifacts",
-                "description": "A list of artifacts to collect",
                 "type": "string",
+                "description": "A list of artifacts to collect",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "env",
-                "description": "Parameters to apply to the artifact (an alternative to a full spec)",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Parameters to apply to the artifact (an alternative to a full spec)"
             },
             {
                 "name": "spec",
-                "description": "Parameters to apply to the artifacts",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Parameters to apply to the artifacts"
             },
             {
                 "name": "timeout",
-                "description": "Set query timeout (default 10 min)",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Set query timeout (default 10 min)"
             },
             {
                 "name": "ops_per_sec",
-                "description": "Set query ops_per_sec value",
                 "type": "float64",
-                "repeated": false,
-                "required": false
+                "description": "Set query ops_per_sec value"
             },
             {
                 "name": "max_rows",
-                "description": "Max number of rows to fetch",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Max number of rows to fetch"
             },
             {
                 "name": "max_bytes",
-                "description": "Max number of bytes to upload",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Max number of bytes to upload"
             }
         ],
         "category": "server"
@@ -643,27 +526,23 @@
         "args": [
             {
                 "name": "query",
-                "description": "This query will be run to produce the columns.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "This query will be run to produce the columns.",
                 "required": true
             },
             {
                 "name": "exclude",
-                "description": "One of more regular expressions that will exclude columns.",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "One of more regular expressions that will exclude columns.",
+                "repeated": true
             },
             {
                 "name": "include",
-                "description": "One of more regular expressions that will include columns.",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "One of more regular expressions that will include columns.",
+                "repeated": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "compress",
@@ -672,8 +551,8 @@
         "args": [
             {
                 "name": "path",
-                "description": "A VFS path to compress",
                 "type": "string",
+                "description": "A VFS path to compress",
                 "repeated": true,
                 "required": true
             }
@@ -684,7 +563,6 @@
         "name": "connections",
         "description": "List all active connections",
         "type": "Plugin",
-        "args": [],
         "category": "client"
     },
     {
@@ -694,31 +572,25 @@
         "args": [
             {
                 "name": "filename",
-                "description": "The file to copy from.",
                 "type": "string",
-                "repeated": false,
+                "description": "The file to copy from.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "dest",
-                "description": "The destination file to write.",
                 "type": "string",
-                "repeated": false,
+                "description": "The destination file to write.",
                 "required": true
             },
             {
                 "name": "permissions",
-                "description": "Required permissions (e.g. 'x').",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Required permissions (e.g. 'x')."
             }
         ],
         "category": "basic"
@@ -730,10 +602,8 @@
         "args": [
             {
                 "name": "items",
-                "description": "Not used anymore",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Not used anymore"
             }
         ],
         "category": "basic"
@@ -745,38 +615,30 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "Client ID to export.",
                 "type": "string",
-                "repeated": false,
+                "description": "Client ID to export.",
                 "required": true
             },
             {
                 "name": "flow_id",
-                "description": "The flow id to export.",
                 "type": "string",
-                "repeated": false,
+                "description": "The flow id to export.",
                 "required": true
             },
             {
                 "name": "wait",
-                "description": "If set we wait for the download to complete before returning.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we wait for the download to complete before returning."
             },
             {
                 "name": "type",
-                "description": "Type of download to create (e.g. 'report') default a full zip file.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Type of download to create (e.g. 'report') default a full zip file."
             },
             {
                 "name": "template",
-                "description": "Report template to use (defaults to Reporting.Default).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Report template to use (defaults to Reporting.Default)."
             }
         ],
         "category": "server"
@@ -788,38 +650,29 @@
         "args": [
             {
                 "name": "hunt_id",
-                "description": "Hunt ID to export.",
                 "type": "string",
-                "repeated": false,
+                "description": "Hunt ID to export.",
                 "required": true
             },
             {
                 "name": "only_combined",
-                "description": "If set we only export combined results.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we only export combined results."
             },
             {
                 "name": "wait",
-                "description": "If set we wait for the download to complete before returning.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we wait for the download to complete before returning."
             },
             {
                 "name": "format",
-                "description": "Format to export (csv,json) defaults to both.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Format to export (csv,json) defaults to both."
             },
             {
                 "name": "base",
-                "description": "Base filename to write to.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Base filename to write to."
             }
         ],
         "category": "server"
@@ -828,7 +681,6 @@
         "name": "dict",
         "description": "Construct a dict from arbitrary keyword args.",
         "type": "Function",
-        "args": [],
         "category": "basic"
     },
     {
@@ -838,24 +690,20 @@
         "args": [
             {
                 "name": "query",
-                "description": "Source for cached rows.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "Source for cached rows.",
                 "required": true
             },
             {
                 "name": "key",
-                "description": "The column to use as key.",
                 "type": "string",
-                "repeated": false,
+                "description": "The column to use as key.",
                 "required": true
             },
             {
                 "name": "period",
-                "description": "Number of seconds between evaluation of the query.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Number of seconds between evaluation of the query."
             }
         ],
         "category": "event"
@@ -867,17 +715,14 @@
         "args": [
             {
                 "name": "path",
-                "description": "Extract directory name of path",
                 "type": "string",
-                "repeated": false,
+                "description": "Extract directory name of path",
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "Separator to use (default /)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Separator to use (default /)"
             }
         ],
         "category": "basic"
@@ -886,7 +731,6 @@
         "name": "dns",
         "description": "Monitor dns queries.",
         "type": "Plugin",
-        "args": [],
         "category": "windows"
     },
     {
@@ -896,87 +740,66 @@
         "args": [
             {
                 "name": "query",
-                "description": "Source for rows to upload.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "Source for rows to upload.",
                 "required": true
             },
             {
                 "name": "threads",
-                "description": "How many threads to use.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "How many threads to use."
             },
             {
                 "name": "index",
-                "description": "The name of the index to upload to. If not specified ensure a column is named '_index'.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the index to upload to. If not specified ensure a column is named '_index'."
             },
             {
                 "name": "type",
-                "description": "The type of the index to upload to.",
                 "type": "string",
-                "repeated": false,
+                "description": "The type of the index to upload to.",
                 "required": true
             },
             {
                 "name": "chunk_size",
-                "description": "The number of rows to send at the time.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The number of rows to send at the time."
             },
             {
                 "name": "addresses",
-                "description": "A list of Elasticsearch nodes to use.",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "A list of Elasticsearch nodes to use.",
+                "repeated": true
             },
             {
                 "name": "username",
-                "description": "Username for HTTP Basic Authentication.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Username for HTTP Basic Authentication."
             },
             {
                 "name": "password",
-                "description": "Password for HTTP Basic Authentication.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Password for HTTP Basic Authentication."
             },
             {
                 "name": "cloud_id",
-                "description": "Endpoint for the Elastic Service (https://elastic.co/cloud).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Endpoint for the Elastic Service (https://elastic.co/cloud)."
             },
             {
                 "name": "api_key",
-                "description": "Base64-encoded token for authorization; if set, overrides username and password.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Base64-encoded token for authorization; if set, overrides username and password."
             },
             {
                 "name": "wait_time",
-                "description": "Batch elastic upload this long (2 sec).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Batch elastic upload this long (2 sec)."
             },
             {
                 "name": "pipeline",
-                "description": "Pipeline for uploads",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Pipeline for uploads"
             }
         ],
         "category": "server"
@@ -988,16 +811,12 @@
         "args": [
             {
                 "name": "string",
-                "description": "",
                 "type": "Any",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "type",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -1010,10 +829,8 @@
         "args": [
             {
                 "name": "items",
-                "description": "Not used anymore",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Not used anymore"
             }
         ],
         "category": "basic"
@@ -1025,17 +842,12 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "flow_id",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "server"
@@ -1047,9 +859,8 @@
         "args": [
             {
                 "name": "var",
-                "description": "Extract the var from the environment.",
                 "type": "string",
-                "repeated": false,
+                "description": "Extract the var from the environment.",
                 "required": true
             }
         ],
@@ -1062,10 +873,9 @@
         "args": [
             {
                 "name": "vars",
-                "description": "Extract these variables from the environment and return them one per row",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "Extract these variables from the environment and return them one per row",
+                "repeated": true
             }
         ],
         "category": "plugin"
@@ -1077,24 +887,20 @@
         "args": [
             {
                 "name": "argv",
-                "description": "Argv to run the command with.",
                 "type": "string",
+                "description": "Argv to run the command with.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "The serparator that will be used to split the stdout into rows.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The serparator that will be used to split the stdout into rows."
             },
             {
                 "name": "length",
-                "description": "Size of buffer to capture output per row.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Size of buffer to capture output per row."
             }
         ],
         "category": "plugin"
@@ -1106,9 +912,8 @@
         "args": [
             {
                 "name": "path",
-                "description": "A path with environment escapes",
                 "type": "string",
-                "repeated": false,
+                "description": "A path with environment escapes",
                 "required": true
             }
         ],
@@ -1121,31 +926,24 @@
         "args": [
             {
                 "name": "query",
-                "description": "Source for cached rows.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "Source for cached rows.",
                 "required": true
             },
             {
                 "name": "max_age",
-                "description": "Maximum number of seconds to hold rows in the fifo.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Maximum number of seconds to hold rows in the fifo."
             },
             {
                 "name": "max_rows",
-                "description": "Maximum number of rows to hold in the fifo.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Maximum number of rows to hold in the fifo."
             },
             {
                 "name": "flush",
-                "description": "If specified we flush all rows from cache after the call.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If specified we flush all rows from cache after the call."
             }
         ],
         "category": "event"
@@ -1157,8 +955,8 @@
         "args": [
             {
                 "name": "path",
-                "description": "A VFS path to convert",
                 "type": "string",
+                "description": "A VFS path to convert",
                 "repeated": true,
                 "required": true
             }
@@ -1172,9 +970,8 @@
         "args": [
             {
                 "name": "path",
-                "description": "A VFS path to remove",
                 "type": "string",
-                "repeated": false,
+                "description": "A VFS path to remove",
                 "required": true
             }
         ],
@@ -1182,9 +979,7 @@
     },
     {
         "name": "filesystems",
-        "description": "",
         "type": "Plugin",
-        "args": [],
         "category": "plugin"
     },
     {
@@ -1194,15 +989,15 @@
         "args": [
             {
                 "name": "list",
-                "description": "A list of items to filter",
                 "type": "string",
+                "description": "A list of items to filter",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "regex",
-                "description": "A regex to test each item",
                 "type": "string",
+                "description": "A regex to test each item",
                 "repeated": true,
                 "required": true
             }
@@ -1216,10 +1011,7 @@
         "args": [
             {
                 "name": "Name",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "plugin"
@@ -1231,30 +1023,24 @@
         "args": [
             {
                 "name": "artifact",
-                "description": "The artifact to retrieve",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The artifact to retrieve"
             },
             {
                 "name": "source",
-                "description": "An optional source within the artifact.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An optional source within the artifact."
             },
             {
                 "name": "flow_id",
-                "description": "The hunt id to read.",
                 "type": "string",
-                "repeated": false,
+                "description": "The hunt id to read.",
                 "required": true
             },
             {
                 "name": "client_id",
-                "description": "The client id to extract",
                 "type": "string",
-                "repeated": false,
+                "description": "The client id to extract",
                 "required": true
             }
         ],
@@ -1267,17 +1053,12 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "flow_id",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "server"
@@ -1289,24 +1070,20 @@
         "args": [
             {
                 "name": "var",
-                "description": "The variable to assign.",
                 "type": "string",
-                "repeated": false,
+                "description": "The variable to assign.",
                 "required": true
             },
             {
                 "name": "foreach",
-                "description": "The variable to iterate over.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "The variable to iterate over.",
                 "required": true
             },
             {
                 "name": "query",
-                "description": "Run this query over the item.",
                 "type": "StoredQuery",
-                "repeated": false,
-                "required": false
+                "description": "Run this query over the item."
             }
         ],
         "category": "plugin"
@@ -1318,38 +1095,29 @@
         "args": [
             {
                 "name": "row",
-                "description": "A query or slice which generates rows.",
                 "type": "LazyExpr",
-                "repeated": false,
+                "description": "A query or slice which generates rows.",
                 "required": true
             },
             {
                 "name": "query",
-                "description": "Run this query for each row.",
                 "type": "StoredQuery",
-                "repeated": false,
-                "required": false
+                "description": "Run this query for each row."
             },
             {
                 "name": "async",
-                "description": "If set we run all queries asyncronously (implies workers=1000).",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we run all queries asyncronously (implies workers=1000)."
             },
             {
                 "name": "workers",
-                "description": "Total number of asyncronous workers.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Total number of asyncronous workers."
             },
             {
                 "name": "column",
-                "description": "If set we only extract the column from row.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set we only extract the column from row."
             }
         ],
         "category": "plugin"
@@ -1361,17 +1129,14 @@
         "args": [
             {
                 "name": "format",
-                "description": "Format string to use",
                 "type": "string",
-                "repeated": false,
+                "description": "Format string to use",
                 "required": true
             },
             {
                 "name": "args",
-                "description": "An array of elements to apply into the format string.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "An array of elements to apply into the format string."
             }
         ],
         "category": "basic"
@@ -1383,31 +1148,19 @@
         "args": [
             {
                 "name": "item",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             },
             {
                 "name": "member",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             },
             {
                 "name": "field",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             },
             {
                 "name": "default",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             }
         ],
         "category": "basic"
@@ -1416,21 +1169,18 @@
         "name": "get_client_monitoring",
         "description": "Retrieve the current client monitoring state.",
         "type": "Function",
-        "args": [],
         "category": "server"
     },
     {
         "name": "get_server_monitoring",
         "description": "Retrieve the current client monitoring state.",
         "type": "Function",
-        "args": [],
         "category": "server"
     },
     {
         "name": "getpid",
         "description": "Returns the current pid of the process.",
         "type": "Function",
-        "args": [],
         "category": "basic"
     },
     {
@@ -1440,31 +1190,25 @@
         "args": [
             {
                 "name": "globs",
-                "description": "One or more glob patterns to apply to the filesystem.",
                 "type": "string",
+                "description": "One or more glob patterns to apply to the filesystem.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "root",
-                "description": "The root directory to glob from (default '').",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The root directory to glob from (default '')."
             },
             {
                 "name": "accessor",
-                "description": "An accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An accessor to use."
             },
             {
                 "name": "nosymlink",
-                "description": "If set we do not follow symlinks.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we do not follow symlinks."
             }
         ],
         "category": "plugin"
@@ -1476,31 +1220,26 @@
         "args": [
             {
                 "name": "path",
-                "description": "path to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "path to open.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "An accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An accessor to use."
             },
             {
                 "name": "keywords",
-                "description": "Keywords to search for.",
                 "type": "string",
+                "description": "Keywords to search for.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "context",
-                "description": "Extract this many bytes as context around hits.",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Extract this many bytes as context around hits."
             }
         ],
         "category": "plugin"
@@ -1512,31 +1251,25 @@
         "args": [
             {
                 "name": "grok",
-                "description": "Grok pattern.",
                 "type": "string",
-                "repeated": false,
+                "description": "Grok pattern.",
                 "required": true
             },
             {
                 "name": "data",
-                "description": "String to parse.",
                 "type": "string",
-                "repeated": false,
+                "description": "String to parse.",
                 "required": true
             },
             {
                 "name": "patterns",
-                "description": "Additional patterns.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Additional patterns."
             },
             {
                 "name": "all_captures",
-                "description": "Extract all captures.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Extract all captures."
             }
         ],
         "category": "parsers"
@@ -1545,7 +1278,6 @@
         "name": "gui_users",
         "description": "Retrieve the list of users on the server.",
         "type": "Plugin",
-        "args": [],
         "category": "server"
     },
     {
@@ -1555,9 +1287,8 @@
         "args": [
             {
                 "name": "pid",
-                "description": "The PID to dump out.",
                 "type": "int64",
-                "repeated": false,
+                "description": "The PID to dump out.",
                 "required": true
             }
         ],
@@ -1570,17 +1301,14 @@
         "args": [
             {
                 "name": "path",
-                "description": "Path to open and hash.",
                 "type": "string",
-                "repeated": false,
+                "description": "Path to open and hash.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             }
         ],
         "category": "plugin"
@@ -1592,66 +1320,49 @@
         "args": [
             {
                 "name": "url",
-                "description": "The URL to fetch",
                 "type": "string",
-                "repeated": false,
+                "description": "The URL to fetch",
                 "required": true
             },
             {
                 "name": "params",
-                "description": "Parameters to encode as POST or GET query strings",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Parameters to encode as POST or GET query strings"
             },
             {
                 "name": "headers",
-                "description": "A dict of headers to send.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "A dict of headers to send."
             },
             {
                 "name": "method",
-                "description": "HTTP method to use (GET, POST)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "HTTP method to use (GET, POST)"
             },
             {
                 "name": "data",
-                "description": "If specified we write this raw data into a POST request instead of encoding the params above.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If specified we write this raw data into a POST request instead of encoding the params above."
             },
             {
                 "name": "chunk_size",
-                "description": "Read input with this chunk size and send each chunk as a row",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Read input with this chunk size and send each chunk as a row"
             },
             {
                 "name": "disable_ssl_security",
-                "description": "Disable ssl certificate verifications.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Disable ssl certificate verifications."
             },
             {
                 "name": "tempfile_extension",
-                "description": "If specified we write to a tempfile. The content field will contain the full path to the tempfile.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If specified we write to a tempfile. The content field will contain the full path to the tempfile."
             },
             {
                 "name": "remove_last",
-                "description": "If set we delay removal as much as possible.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we delay removal as much as possible."
             }
         ],
         "category": "plugin"
@@ -1663,10 +1374,8 @@
         "args": [
             {
                 "name": "bytes",
-                "description": "Format bytes with units",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Format bytes with units"
             }
         ],
         "category": "basic"
@@ -1678,66 +1387,51 @@
         "args": [
             {
                 "name": "description",
-                "description": "Description of the hunt",
                 "type": "string",
-                "repeated": false,
+                "description": "Description of the hunt",
                 "required": true
             },
             {
                 "name": "artifacts",
-                "description": "A list of artifacts to collect",
                 "type": "string",
+                "description": "A list of artifacts to collect",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "expires",
-                "description": "Number of milliseconds since epoch for expiry",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Number of milliseconds since epoch for expiry"
             },
             {
                 "name": "spec",
-                "description": "Parameters to apply to the artifacts",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Parameters to apply to the artifacts"
             },
             {
                 "name": "timeout",
-                "description": "Set query timeout (default 10 min)",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Set query timeout (default 10 min)"
             },
             {
                 "name": "ops_per_sec",
-                "description": "Set query ops_per_sec value",
                 "type": "float64",
-                "repeated": false,
-                "required": false
+                "description": "Set query ops_per_sec value"
             },
             {
                 "name": "max_rows",
-                "description": "Max number of rows to fetch",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Max number of rows to fetch"
             },
             {
                 "name": "max_bytes",
-                "description": "Max number of bytes to upload",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Max number of bytes to upload"
             },
             {
                 "name": "pause",
-                "description": "If specified the new hunt will be in the paused state",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If specified the new hunt will be in the paused state"
             }
         ],
         "category": "server"
@@ -1749,16 +1443,12 @@
         "args": [
             {
                 "name": "ClientId",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "HuntId",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -1771,24 +1461,19 @@
         "args": [
             {
                 "name": "hunt_id",
-                "description": "The hunt id to inspect.",
                 "type": "string",
-                "repeated": false,
+                "description": "The hunt id to inspect.",
                 "required": true
             },
             {
                 "name": "start_row",
-                "description": "The first row to show (used for paging).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The first row to show (used for paging)."
             },
             {
                 "name": "limit",
-                "description": "Number of rows to show (used for paging).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Number of rows to show (used for paging)."
             }
         ],
         "category": "server"
@@ -1800,31 +1485,24 @@
         "args": [
             {
                 "name": "artifact",
-                "description": "The artifact to retrieve",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The artifact to retrieve"
             },
             {
                 "name": "source",
-                "description": "An optional source within the artifact.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An optional source within the artifact."
             },
             {
                 "name": "hunt_id",
-                "description": "The hunt id to read.",
                 "type": "string",
-                "repeated": false,
+                "description": "The hunt id to read.",
                 "required": true
             },
             {
                 "name": "brief",
-                "description": "If set we return less columns.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we return less columns."
             }
         ],
         "category": "server"
@@ -1836,10 +1514,8 @@
         "args": [
             {
                 "name": "hunt_id",
-                "description": "A hunt id to read, if not specified we list all of them.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A hunt id to read, if not specified we list all of them."
             }
         ],
         "category": "server"
@@ -1851,24 +1527,16 @@
         "args": [
             {
                 "name": "condition",
-                "description": "",
                 "type": "Any",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "then",
-                "description": "",
-                "type": "LazyExpr",
-                "repeated": false,
-                "required": false
+                "type": "LazyExpr"
             },
             {
                 "name": "else",
-                "description": "",
-                "type": "LazyExpr",
-                "repeated": false,
-                "required": false
+                "type": "LazyExpr"
             }
         ],
         "category": "basic"
@@ -1880,24 +1548,17 @@
         "args": [
             {
                 "name": "condition",
-                "description": "",
                 "type": "Any",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "then",
-                "description": "",
                 "type": "StoredQuery",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "else",
-                "description": "",
-                "type": "StoredQuery",
-                "repeated": false,
-                "required": false
+                "type": "StoredQuery"
             }
         ],
         "category": "plugin"
@@ -1909,40 +1570,32 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "The client id to import to. Use 'auto' to generate a new client id.",
                 "type": "string",
-                "repeated": false,
+                "description": "The client id to import to. Use 'auto' to generate a new client id.",
                 "required": true
             },
             {
                 "name": "hostname",
-                "description": "When creating a new client, set this as the hostname.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "When creating a new client, set this as the hostname."
             },
             {
                 "name": "filename",
-                "description": "Path on server to the collector zip.",
                 "type": "string",
-                "repeated": false,
+                "description": "Path on server to the collector zip.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "info",
         "description": "Get information about the running host.",
         "type": "Plugin",
-        "args": [],
         "category": "plugin"
     },
     {
@@ -1952,10 +1605,8 @@
         "args": [
             {
                 "name": "int",
-                "description": "The integer to round",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "The integer to round"
             }
         ],
         "category": "plugin"
@@ -1964,14 +1615,12 @@
         "name": "interfaces",
         "description": "List all active interfaces.",
         "type": "Plugin",
-        "args": [],
         "category": "windows"
     },
     {
         "name": "inventory",
         "description": "Retrieve the tools inventory.",
         "type": "Plugin",
-        "args": [],
         "category": "server"
     },
     {
@@ -1981,52 +1630,35 @@
         "args": [
             {
                 "name": "tool",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "serve_locally",
-                "description": "",
-                "type": "bool",
-                "repeated": false,
-                "required": false
+                "type": "bool"
             },
             {
                 "name": "url",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             },
             {
                 "name": "hash",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             },
             {
                 "name": "filename",
-                "description": "The name of the file on the endpoint",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the file on the endpoint"
             },
             {
                 "name": "file",
-                "description": "An optional file to upload",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An optional file to upload"
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use to read the file.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use to read the file."
             }
         ],
         "category": "server"
@@ -2038,9 +1670,7 @@
         "args": [
             {
                 "name": "tool",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -2053,17 +1683,13 @@
         "args": [
             {
                 "name": "netaddr4_le",
-                "description": "A network order IPv4 address (as little endian).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "A network order IPv4 address (as little endian)."
             },
             {
                 "name": "netaddr4_be",
-                "description": "A network order IPv4 address (as big endian).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "A network order IPv4 address (as big endian)."
             }
         ],
         "category": "plugin"
@@ -2075,10 +1701,7 @@
         "args": [
             {
                 "name": "item",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             }
         ],
         "category": "basic"
@@ -2090,10 +1713,8 @@
         "args": [
             {
                 "name": "item",
-                "description": "The item to enumerate.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "The item to enumerate."
             }
         ],
         "category": "basic"
@@ -2105,17 +1726,15 @@
         "args": [
             {
                 "name": "array",
-                "description": "The array to join",
                 "type": "string",
+                "description": "The array to join",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "The separator",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The separator"
             }
         ],
         "category": "basic"
@@ -2127,17 +1746,14 @@
         "args": [
             {
                 "name": "js",
-                "description": "The body of the javascript code.",
                 "type": "string",
-                "repeated": false,
+                "description": "The body of the javascript code.",
                 "required": true
             },
             {
                 "name": "key",
-                "description": "If set use this key to cache the JS VM.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set use this key to cache the JS VM."
             }
         ],
         "category": "experimental"
@@ -2149,24 +1765,19 @@
         "args": [
             {
                 "name": "func",
-                "description": "JS function to call.",
                 "type": "string",
-                "repeated": false,
+                "description": "JS function to call.",
                 "required": true
             },
             {
                 "name": "args",
-                "description": "Positional args for the function.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "Positional args for the function."
             },
             {
                 "name": "key",
-                "description": "If set use this key to cache the JS VM.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set use this key to cache the JS VM."
             }
         ],
         "category": "experimental"
@@ -2178,17 +1789,14 @@
         "args": [
             {
                 "name": "var",
-                "description": "The variable to get from the JS VM.",
                 "type": "string",
-                "repeated": false,
+                "description": "The variable to get from the JS VM.",
                 "required": true
             },
             {
                 "name": "key",
-                "description": "If set use this key to cache the JS VM.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set use this key to cache the JS VM."
             }
         ],
         "category": "plugin"
@@ -2200,24 +1808,20 @@
         "args": [
             {
                 "name": "var",
-                "description": "The variable to set inside the JS VM.",
                 "type": "string",
-                "repeated": false,
+                "description": "The variable to set inside the JS VM.",
                 "required": true
             },
             {
                 "name": "value",
-                "description": "The value to set inside the VM.",
                 "type": "Any",
-                "repeated": false,
+                "description": "The value to set inside the VM.",
                 "required": true
             },
             {
                 "name": "key",
-                "description": "If set use this key to cache the JS VM.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set use this key to cache the JS VM."
             }
         ],
         "category": "plugin"
@@ -2229,9 +1833,7 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -2244,24 +1846,21 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "Client ID to label.",
                 "type": "string",
-                "repeated": false,
+                "description": "Client ID to label.",
                 "required": true
             },
             {
                 "name": "labels",
-                "description": "A list of labels to apply",
                 "type": "string",
+                "description": "A list of labels to apply",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "op",
-                "description": "An operation on the labels (set, check, remove)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An operation on the labels (set, check, remove)"
             }
         ],
         "category": "server"
@@ -2273,9 +1872,8 @@
         "args": [
             {
                 "name": "list",
-                "description": "A list of items too filter",
                 "type": "Any",
-                "repeated": false,
+                "description": "A list of items too filter",
                 "required": true
             }
         ],
@@ -2288,9 +1886,8 @@
         "args": [
             {
                 "name": "message",
-                "description": "Message to log.",
                 "type": "string",
-                "repeated": false,
+                "description": "Message to log.",
                 "required": true
             }
         ],
@@ -2303,9 +1900,8 @@
         "args": [
             {
                 "name": "sid",
-                "description": "A SID to lookup using LookupAccountSid ",
                 "type": "string",
-                "repeated": false,
+                "description": "A SID to lookup using LookupAccountSid ",
                 "required": true
             }
         ],
@@ -2313,14 +1909,12 @@
     },
     {
         "name": "lowcase",
-        "description": "",
         "type": "Function",
         "args": [
             {
                 "name": "string",
-                "description": "A string to lower",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to lower",
                 "required": true
             }
         ],
@@ -2333,37 +1927,32 @@
         "args": [
             {
                 "name": "to",
-                "description": "Receipient of the mail",
                 "type": "string",
+                "description": "Receipient of the mail",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "cc",
-                "description": "A cc for the mail",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "A cc for the mail",
+                "repeated": true
             },
             {
                 "name": "subject",
-                "description": "The subject.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The subject."
             },
             {
                 "name": "body",
-                "description": "The body of the mail.",
                 "type": "string",
-                "repeated": false,
+                "description": "The body of the mail.",
                 "required": true
             },
             {
                 "name": "period",
-                "description": "How long to wait before sending the next mail - help to throttle mails.",
                 "type": "int64",
-                "repeated": false,
+                "description": "How long to wait before sending the next mail - help to throttle mails.",
                 "required": true
             }
         ],
@@ -2376,9 +1965,7 @@
         "args": [
             {
                 "name": "item",
-                "description": "",
                 "type": "int64",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -2391,24 +1978,20 @@
         "args": [
             {
                 "name": "query",
-                "description": "Query to expand into memory",
                 "type": "LazyExpr",
-                "repeated": false,
+                "description": "Query to expand into memory",
                 "required": true
             },
             {
                 "name": "key",
-                "description": "The name of the column to use as a key.",
                 "type": "string",
-                "repeated": false,
+                "description": "The name of the column to use as a key.",
                 "required": true
             },
             {
                 "name": "period",
-                "description": "The latest age of the cache.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The latest age of the cache."
             }
         ],
         "category": "basic"
@@ -2420,9 +2003,7 @@
         "args": [
             {
                 "name": "item",
-                "description": "",
                 "type": "int64",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -2435,30 +2016,23 @@
         "args": [
             {
                 "name": "plugin",
-                "description": "The plugin to mock",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The plugin to mock"
             },
             {
                 "name": "function",
-                "description": "The function to mock",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The function to mock"
             },
             {
                 "name": "artifact",
-                "description": "The artifact to mock",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "The artifact to mock"
             },
             {
                 "name": "results",
-                "description": "The result to return",
                 "type": "Any",
-                "repeated": false,
+                "description": "The result to return",
                 "required": true
             }
         ],
@@ -2471,31 +2045,23 @@
         "args": [
             {
                 "name": "plugin",
-                "description": "The plugin to mock",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The plugin to mock"
             },
             {
                 "name": "function",
-                "description": "The function to mock",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The function to mock"
             },
             {
                 "name": "expected_calls",
-                "description": "How many times plugin should be called",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "How many times plugin should be called"
             },
             {
                 "name": "clear",
-                "description": "This call will clear previous mocks for this plugin",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "This call will clear previous mocks for this plugin"
             }
         ],
         "category": "utils"
@@ -2507,9 +2073,8 @@
         "args": [
             {
                 "name": "pid",
-                "description": "The PID to dump out.",
                 "type": "int64",
-                "repeated": false,
+                "description": "The PID to dump out.",
                 "required": true
             }
         ],
@@ -2522,9 +2087,8 @@
         "args": [
             {
                 "name": "artifact",
-                "description": "The event artifact name to watch",
                 "type": "string",
-                "repeated": false,
+                "description": "The event artifact name to watch",
                 "required": true
             }
         ],
@@ -2534,7 +2098,6 @@
         "name": "netstat",
         "description": "Collect network information.",
         "type": "Plugin",
-        "args": [],
         "category": "windows"
     },
     {
@@ -2544,17 +2107,12 @@
         "args": [
             {
                 "name": "notebook_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "really_do_it",
-                "description": "",
-                "type": "bool",
-                "repeated": false,
-                "required": false
+                "type": "bool"
             }
         ],
         "category": "server"
@@ -2566,9 +2124,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to convert to int",
                 "type": "Any",
-                "repeated": false,
+                "description": "A string to convert to int",
                 "required": true
             }
         ],
@@ -2581,24 +2138,20 @@
         "args": [
             {
                 "name": "file",
-                "description": "A list of filenames to open as OLE files.",
                 "type": "string",
+                "description": "A list of filenames to open as OLE files.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "max_size",
-                "description": "Maximum size of file we load into memory.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Maximum size of file we load into memory."
             }
         ],
         "category": "parsers"
@@ -2610,94 +2163,69 @@
         "args": [
             {
                 "name": "query",
-                "description": "The query will be run in parallel over batches.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "The query will be run in parallel over batches.",
                 "required": true
             },
             {
                 "name": "client_id",
-                "description": "The client id to extract",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The client id to extract"
             },
             {
                 "name": "flow_id",
-                "description": "A flow ID (client or server artifacts)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A flow ID (client or server artifacts)"
             },
             {
                 "name": "hunt_id",
-                "description": "Retrieve sources from this hunt (combines all results from all clients)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Retrieve sources from this hunt (combines all results from all clients)"
             },
             {
                 "name": "artifact",
-                "description": "The name of the artifact collection to fetch",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the artifact collection to fetch"
             },
             {
                 "name": "source",
-                "description": "An optional named source within the artifact",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An optional named source within the artifact"
             },
             {
                 "name": "start_time",
-                "description": "Start return events from this date (for event sources)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Start return events from this date (for event sources)"
             },
             {
                 "name": "end_time",
-                "description": "Stop end events reach this time (event sources).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Stop end events reach this time (event sources)."
             },
             {
                 "name": "notebook_id",
-                "description": "The notebook to read from (shoud also include cell id)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The notebook to read from (shoud also include cell id)"
             },
             {
                 "name": "notebook_cell_id",
-                "description": "The notebook cell read from (shoud also include notebook id)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The notebook cell read from (shoud also include notebook id)"
             },
             {
                 "name": "notebook_cell_table",
-                "description": "A notebook cell can have multiple tables.)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "A notebook cell can have multiple tables.)"
             },
             {
                 "name": "workers",
-                "description": "Number of workers to spawn.)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Number of workers to spawn.)"
             },
             {
                 "name": "batch",
-                "description": "Number of rows in each batch.)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Number of rows in each batch.)"
             }
         ],
         "category": "server"
@@ -2709,17 +2237,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of log files to parse.",
                 "type": "string",
+                "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -2731,38 +2257,30 @@
         "args": [
             {
                 "name": "filename",
-                "description": "Binary file to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "Binary file to open.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "profile",
-                "description": "Profile to use (see https://github.com/Velocidex/vtypes).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Profile to use (see https://github.com/Velocidex/vtypes)."
             },
             {
                 "name": "struct",
-                "description": "Name of the struct in the profile to instantiate.",
                 "type": "string",
-                "repeated": false,
+                "description": "Name of the struct in the profile to instantiate.",
                 "required": true
             },
             {
                 "name": "offset",
-                "description": "Start parsing from this offset",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Start parsing from this offset"
             }
         ],
         "category": "parsers"
@@ -2774,31 +2292,25 @@
         "args": [
             {
                 "name": "filename",
-                "description": "CSV files to open",
                 "type": "string",
+                "description": "CSV files to open",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "auto_headers",
-                "description": "If unset the first row is headers",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If unset the first row is headers"
             },
             {
                 "name": "separator",
-                "description": "Comma separator",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Comma separator"
             }
         ],
         "category": "parsers"
@@ -2810,23 +2322,18 @@
         "args": [
             {
                 "name": "file",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "table",
-                "description": "A table name to dump",
                 "type": "string",
-                "repeated": false,
+                "description": "A table name to dump",
                 "required": true
             }
         ],
@@ -2839,24 +2346,20 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of event log files to parse.",
                 "type": "string",
+                "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "messagedb",
-                "description": "A Message database from https://github.com/Velocidex/evtx-data.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A Message database from https://github.com/Velocidex/evtx-data."
             }
         ],
         "category": "parsers"
@@ -2868,9 +2371,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to convert to int",
                 "type": "Any",
-                "repeated": false,
+                "description": "A string to convert to int",
                 "required": true
             }
         ],
@@ -2883,9 +2385,8 @@
         "args": [
             {
                 "name": "data",
-                "description": "Json encoded string.",
                 "type": "string",
-                "repeated": false,
+                "description": "Json encoded string.",
                 "required": true
             }
         ],
@@ -2898,9 +2399,8 @@
         "args": [
             {
                 "name": "data",
-                "description": "Json encoded string.",
                 "type": "string",
-                "repeated": false,
+                "description": "Json encoded string.",
                 "required": true
             }
         ],
@@ -2913,9 +2413,8 @@
         "args": [
             {
                 "name": "data",
-                "description": "Json encoded string.",
                 "type": "string",
-                "repeated": false,
+                "description": "Json encoded string.",
                 "required": true
             }
         ],
@@ -2928,17 +2427,14 @@
         "args": [
             {
                 "name": "filename",
-                "description": "JSON file to open",
                 "type": "string",
-                "repeated": false,
+                "description": "JSON file to open",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             }
         ],
         "category": "parsers"
@@ -2950,17 +2446,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of log files to parse.",
                 "type": "string",
+                "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -2972,17 +2466,14 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of event log files to parse.",
                 "type": "string",
-                "repeated": false,
+                "description": "A list of event log files to parse.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -2994,31 +2485,24 @@
         "args": [
             {
                 "name": "device",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "type": "string",
-                "repeated": false,
+                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "required": true
             },
             {
                 "name": "inode",
-                "description": "The MFT entry to parse in inode notation (5-144-1).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The MFT entry to parse in inode notation (5-144-1)."
             },
             {
                 "name": "mft",
-                "description": "The MFT entry to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The MFT entry to parse."
             },
             {
                 "name": "mft_offset",
-                "description": "The offset to the MFT entry to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The offset to the MFT entry to parse."
             }
         ],
         "category": "parsers"
@@ -3030,31 +2514,24 @@
         "args": [
             {
                 "name": "device",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "type": "string",
-                "repeated": false,
+                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "required": true
             },
             {
                 "name": "inode",
-                "description": "The MFT entry to parse in inode notation (5-144-1).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The MFT entry to parse in inode notation (5-144-1)."
             },
             {
                 "name": "mft",
-                "description": "The MFT entry to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The MFT entry to parse."
             },
             {
                 "name": "mft_offset",
-                "description": "The offset to the MFT entry to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The offset to the MFT entry to parse."
             }
         ],
         "category": "parsers"
@@ -3066,31 +2543,24 @@
         "args": [
             {
                 "name": "device",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "type": "string",
-                "repeated": false,
+                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "required": true
             },
             {
                 "name": "inode",
-                "description": "The MFT entry to parse in inode notation (5-144-1).",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The MFT entry to parse in inode notation (5-144-1)."
             },
             {
                 "name": "mft",
-                "description": "The MFT entry to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The MFT entry to parse."
             },
             {
                 "name": "mft_offset",
-                "description": "The offset to the MFT entry to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The offset to the MFT entry to parse."
             }
         ],
         "category": "parsers"
@@ -3102,17 +2572,14 @@
         "args": [
             {
                 "name": "file",
-                "description": "The PE file to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "The PE file to open.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -3124,13 +2591,11 @@
         "args": [
             {
                 "name": "data",
-                "description": "PKCS7 DER encoded string.",
                 "type": "string",
-                "repeated": false,
+                "description": "PKCS7 DER encoded string.",
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "parse_records_with_regex",
@@ -3139,24 +2604,22 @@
         "args": [
             {
                 "name": "file",
-                "description": "A list of files to parse.",
                 "type": "string",
+                "description": "A list of files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "regex",
-                "description": "A list of regex to apply to the file data.",
                 "type": "string",
+                "description": "A list of regex to apply to the file data.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -3168,17 +2631,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "Files to be parsed.",
                 "type": "string",
+                "description": "Files to be parsed.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -3190,15 +2651,14 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to parse.",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to parse.",
                 "required": true
             },
             {
                 "name": "regex",
-                "description": "The regex to apply.",
                 "type": "string",
+                "description": "The regex to apply.",
                 "repeated": true,
                 "required": true
             }
@@ -3212,17 +2672,14 @@
         "args": [
             {
                 "name": "device",
-                "description": "The device file to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "The device file to open.",
                 "required": true
             },
             {
                 "name": "start_offset",
-                "description": "The starting offset of the first USN record to parse.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The starting offset of the first USN record to parse."
             }
         ],
         "category": "parsers"
@@ -3234,13 +2691,11 @@
         "args": [
             {
                 "name": "data",
-                "description": "X509 DER encoded string.",
                 "type": "string",
-                "repeated": false,
+                "description": "X509 DER encoded string.",
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "parse_xml",
@@ -3249,17 +2704,14 @@
         "args": [
             {
                 "name": "file",
-                "description": "XML file to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "XML file to open.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             }
         ],
         "category": "parsers"
@@ -3271,20 +2723,16 @@
         "args": [
             {
                 "name": "filename",
-                "description": "Yaml Filename",
                 "type": "string",
-                "repeated": false,
+                "description": "Yaml Filename",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "File accessor",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "File accessor"
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "partitions",
@@ -3293,10 +2741,8 @@
         "args": [
             {
                 "name": "all",
-                "description": "If specified list all Partitions",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If specified list all Partitions"
             }
         ],
         "category": "windows"
@@ -3308,24 +2754,19 @@
         "args": [
             {
                 "name": "item",
-                "description": "The item to path",
                 "type": "Any",
-                "repeated": false,
+                "description": "The item to path",
                 "required": true
             },
             {
                 "name": "patch",
-                "description": "A JSON Patch to apply",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "A JSON Patch to apply"
             },
             {
                 "name": "merge",
-                "description": "A merge-patch to apply",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "A merge-patch to apply"
             }
         ],
         "category": "server"
@@ -3337,17 +2778,15 @@
         "args": [
             {
                 "name": "components",
-                "description": "Path components to join.",
                 "type": "string",
+                "description": "Path components to join.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "Separator to use (default /)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Separator to use (default /)"
             }
         ],
         "category": "basic"
@@ -3359,9 +2798,8 @@
         "args": [
             {
                 "name": "path",
-                "description": "Path to split into components.",
                 "type": "string",
-                "repeated": false,
+                "description": "Path to split into components.",
                 "required": true
             }
         ],
@@ -3374,17 +2812,14 @@
         "args": [
             {
                 "name": "file",
-                "description": "A list of files to parse.",
                 "type": "string",
-                "repeated": false,
+                "description": "A list of files to parse.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -3396,17 +2831,15 @@
         "args": [
             {
                 "name": "file",
-                "description": "A list of files to parse.",
                 "type": "string",
+                "description": "A list of files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -3418,17 +2851,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of event log files to parse.",
                 "type": "string",
+                "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "parsers"
@@ -3440,9 +2871,8 @@
         "args": [
             {
                 "name": "pid",
-                "description": "The PID to dump out.",
                 "type": "int64",
-                "repeated": false,
+                "description": "The PID to dump out.",
                 "required": true
             }
         ],
@@ -3455,31 +2885,25 @@
         "args": [
             {
                 "name": "rules",
-                "description": "Yara rules",
                 "type": "string",
-                "repeated": false,
+                "description": "Yara rules",
                 "required": true
             },
             {
                 "name": "pid",
-                "description": "The pid to scan",
                 "type": "int",
-                "repeated": false,
+                "description": "The pid to scan",
                 "required": true
             },
             {
                 "name": "context",
-                "description": "Return this many bytes either side of a hit",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Return this many bytes either side of a hit"
             },
             {
                 "name": "key",
-                "description": "If set use this key to cache the  yara rules.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set use this key to cache the  yara rules."
             }
         ],
         "category": "windows"
@@ -3491,87 +2915,63 @@
         "args": [
             {
                 "name": "allocs",
-                "description": "A sampling of all past memory allocations",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "A sampling of all past memory allocations"
             },
             {
                 "name": "block",
-                "description": "Stack traces that led to blocking on synchronization primitives",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Stack traces that led to blocking on synchronization primitives"
             },
             {
                 "name": "goroutine",
-                "description": "Stack traces of all current goroutines",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Stack traces of all current goroutines"
             },
             {
                 "name": "heap",
-                "description": "A sampling of memory allocations of live objects.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "A sampling of memory allocations of live objects."
             },
             {
                 "name": "mutex",
-                "description": "Stack traces of holders of contended mutexes",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Stack traces of holders of contended mutexes"
             },
             {
                 "name": "profile",
-                "description": "CPU profile.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "CPU profile."
             },
             {
                 "name": "trace",
-                "description": "CPU trace.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "CPU trace."
             },
             {
                 "name": "debug",
-                "description": "Debug level",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Debug level"
             },
             {
                 "name": "logs",
-                "description": "Recent logs",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Recent logs"
             },
             {
                 "name": "queries",
-                "description": "Recent Queries run",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Recent Queries run"
             },
             {
                 "name": "metrics",
-                "description": "Collect metrics",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Collect metrics"
             },
             {
                 "name": "duration",
-                "description": "Duration of samples (default 30 sec)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Duration of samples (default 30 sec)"
             }
         ],
         "category": "plugins"
@@ -3583,10 +2983,8 @@
         "args": [
             {
                 "name": "pid",
-                "description": "A process ID to list. If not provided list all processes.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "A process ID to list. If not provided list all processes."
             }
         ],
         "category": "plugin"
@@ -3598,9 +2996,7 @@
         "args": [
             {
                 "name": "vql",
-                "description": "",
                 "type": "vfilter.StoredQuery",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -3613,20 +3009,16 @@
         "args": [
             {
                 "name": "query",
-                "description": "A VQL Query to parse and execute.",
                 "type": "string",
-                "repeated": false,
+                "description": "A VQL Query to parse and execute.",
                 "required": true
             },
             {
                 "name": "env",
-                "description": "A dict of args to insert into the scope.",
                 "type": "Any",
-                "repeated": false,
-                "required": false
+                "description": "A dict of args to insert into the scope."
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "rand",
@@ -3635,10 +3027,8 @@
         "args": [
             {
                 "name": "range",
-                "description": "Selects a random number up to this range.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Selects a random number up to this range."
             }
         ],
         "category": "basic"
@@ -3650,27 +3040,23 @@
         "args": [
             {
                 "name": "start",
-                "description": "Start index (0 based)",
                 "type": "int64",
-                "repeated": false,
+                "description": "Start index (0 based)",
                 "required": true
             },
             {
                 "name": "end",
-                "description": "End index (0 based)",
                 "type": "int64",
-                "repeated": false,
+                "description": "End index (0 based)",
                 "required": true
             },
             {
                 "name": "step",
-                "description": "End index (0 based)",
                 "type": "int64",
-                "repeated": false,
+                "description": "End index (0 based)",
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "rate",
@@ -3679,16 +3065,14 @@
         "args": [
             {
                 "name": "x",
-                "description": "The X float",
                 "type": "float64",
-                "repeated": false,
+                "description": "The X float",
                 "required": true
             },
             {
                 "name": "y",
-                "description": "The Y float",
                 "type": "float64",
-                "repeated": false,
+                "description": "The Y float",
                 "required": true
             }
         ],
@@ -3701,31 +3085,24 @@
         "args": [
             {
                 "name": "length",
-                "description": "Max length of the file to read.",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Max length of the file to read."
             },
             {
                 "name": "offset",
-                "description": "Where to read from the file.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Where to read from the file."
             },
             {
                 "name": "filename",
-                "description": "One or more files to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "One or more files to open.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "An accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An accessor to use."
             }
         ],
         "category": "basic"
@@ -3737,31 +3114,25 @@
         "args": [
             {
                 "name": "chunk",
-                "description": "length of each chunk to read from the file.",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "length of each chunk to read from the file."
             },
             {
                 "name": "max_length",
-                "description": "Max length of the file to read.",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Max length of the file to read."
             },
             {
                 "name": "filenames",
-                "description": "One or more files to open.",
                 "type": "string",
+                "description": "One or more files to open.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "An accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An accessor to use."
             }
         ],
         "category": "plugin"
@@ -3773,17 +3144,15 @@
         "args": [
             {
                 "name": "globs",
-                "description": "Glob expressions to apply.",
                 "type": "string",
+                "description": "Glob expressions to apply.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "windows"
@@ -3795,23 +3164,20 @@
         "args": [
             {
                 "name": "source",
-                "description": "The source string to replace.",
                 "type": "string",
-                "repeated": false,
+                "description": "The source string to replace.",
                 "required": true
             },
             {
                 "name": "replace",
-                "description": "The substitute string.",
                 "type": "string",
-                "repeated": false,
+                "description": "The substitute string.",
                 "required": true
             },
             {
                 "name": "re",
-                "description": "A regex to apply",
                 "type": "string",
-                "repeated": false,
+                "description": "A regex to apply",
                 "required": true
             }
         ],
@@ -3824,27 +3190,22 @@
         "args": [
             {
                 "name": "path",
-                "description": "Extract directory name of path",
                 "type": "string",
-                "repeated": false,
+                "description": "Extract directory name of path",
                 "required": true
             },
             {
                 "name": "base",
-                "description": "The base of the path",
                 "type": "string",
-                "repeated": false,
+                "description": "The base of the path",
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "Separator to use (default native)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Separator to use (default native)"
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "rot13",
@@ -3853,10 +3214,7 @@
         "args": [
             {
                 "name": "string",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "parsers"
@@ -3868,16 +3226,14 @@
         "args": [
             {
                 "name": "query",
-                "description": "Source query.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "Source query.",
                 "required": true
             },
             {
                 "name": "n",
-                "description": "Pick every n row from query.",
                 "type": "int64",
-                "repeated": false,
+                "description": "Pick every n row from query.",
                 "required": true
             }
         ],
@@ -3887,14 +3243,12 @@
         "name": "scope",
         "description": "return the scope.",
         "type": "Function",
-        "args": [],
         "category": "basic"
     },
     {
         "name": "scope",
         "description": "The scope plugin returns the current scope as a single row.",
         "type": "Plugin",
-        "args": [],
         "category": "plugin"
     },
     {
@@ -3904,31 +3258,23 @@
         "args": [
             {
                 "name": "query",
-                "description": "The query string.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The query string."
             },
             {
                 "name": "offset",
-                "description": "Skip this many results.",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Skip this many results."
             },
             {
                 "name": "limit",
-                "description": "Only return limited results",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Only return limited results"
             },
             {
                 "name": "type",
-                "description": "The type of search (e.g. 'key')",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The type of search (e.g. 'key')"
             }
         ],
         "category": "server"
@@ -3940,17 +3286,14 @@
         "args": [
             {
                 "name": "item",
-                "description": "The item to encode",
                 "type": "Any",
-                "repeated": false,
+                "description": "The item to encode",
                 "required": true
             },
             {
                 "name": "format",
-                "description": "Encoding format (csv,json)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Encoding format (csv,json)"
             }
         ],
         "category": "basic"
@@ -3962,9 +3305,7 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -3977,9 +3318,7 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             }
         ],
@@ -3992,9 +3331,8 @@
         "args": [
             {
                 "name": "value",
-                "description": "The Value to set",
                 "type": "Any",
-                "repeated": false,
+                "description": "The Value to set",
                 "required": true
             }
         ],
@@ -4007,9 +3345,8 @@
         "args": [
             {
                 "name": "value",
-                "description": "The Value to set",
                 "type": "Any",
-                "repeated": false,
+                "description": "The Value to set",
                 "required": true
             }
         ],
@@ -4022,10 +3359,8 @@
         "args": [
             {
                 "name": "time",
-                "description": "The number of seconds to sleep",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The number of seconds to sleep"
             }
         ],
         "category": "basic"
@@ -4037,27 +3372,23 @@
         "args": [
             {
                 "name": "list",
-                "description": "A list of items to slice",
                 "type": "Any",
-                "repeated": false,
+                "description": "A list of items to slice",
                 "required": true
             },
             {
                 "name": "start",
-                "description": "Start index (0 based)",
                 "type": "uint64",
-                "repeated": false,
+                "description": "Start index (0 based)",
                 "required": true
             },
             {
                 "name": "end",
-                "description": "End index (0 based)",
                 "type": "uint64",
-                "repeated": false,
+                "description": "End index (0 based)",
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "source",
@@ -4066,87 +3397,63 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "The client id to extract",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The client id to extract"
             },
             {
                 "name": "flow_id",
-                "description": "A flow ID (client or server artifacts)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A flow ID (client or server artifacts)"
             },
             {
                 "name": "hunt_id",
-                "description": "Retrieve sources from this hunt (combines all results from all clients)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Retrieve sources from this hunt (combines all results from all clients)"
             },
             {
                 "name": "artifact",
-                "description": "The name of the artifact collection to fetch",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the artifact collection to fetch"
             },
             {
                 "name": "source",
-                "description": "An optional named source within the artifact",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An optional named source within the artifact"
             },
             {
                 "name": "start_time",
-                "description": "Start return events from this date (for event sources)",
-                "type": "int64",
-                "repeated": false,
-                "required": false
+                "type": "Any",
+                "description": "Start return events from this date (for event sources)"
             },
             {
                 "name": "end_time",
-                "description": "Stop end events reach this time (event sources).",
-                "type": "int64",
-                "repeated": false,
-                "required": false
+                "type": "Any",
+                "description": "Stop end events reach this time (event sources)."
             },
             {
                 "name": "notebook_id",
-                "description": "The notebook to read from (shoud also include cell id)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The notebook to read from (shoud also include cell id)"
             },
             {
                 "name": "notebook_cell_id",
-                "description": "The notebook cell read from (shoud also include notebook id)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The notebook cell read from (shoud also include notebook id)"
             },
             {
                 "name": "notebook_cell_table",
-                "description": "A notebook cell can have multiple tables.)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "A notebook cell can have multiple tables.)"
             },
             {
                 "name": "start_row",
-                "description": "Start reading the result set from this row",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Start reading the result set from this row"
             },
             {
                 "name": "count",
-                "description": "Maximum number of clients to fetch (default unlimited)'",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Maximum number of clients to fetch (default unlimited)'"
             }
         ],
         "category": "server"
@@ -4158,16 +3465,14 @@
         "args": [
             {
                 "name": "string",
-                "description": "The value to split",
                 "type": "string",
-                "repeated": false,
+                "description": "The value to split",
                 "required": true
             },
             {
                 "name": "sep",
-                "description": "The serparator that will be used to split",
                 "type": "string",
-                "repeated": false,
+                "description": "The serparator that will be used to split",
                 "required": true
             }
         ],
@@ -4180,45 +3485,37 @@
         "args": [
             {
                 "name": "filenames",
-                "description": "Files to parse.",
                 "type": "string",
+                "description": "Files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "regex",
-                "description": "The split regular expression (e.g. a comma)",
                 "type": "string",
-                "repeated": false,
+                "description": "The split regular expression (e.g. a comma)",
                 "required": true
             },
             {
                 "name": "columns",
-                "description": "If the first row is not the headers, this arg must provide a list of column names for each value.",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "If the first row is not the headers, this arg must provide a list of column names for each value.",
+                "repeated": true
             },
             {
                 "name": "first_row_is_headers",
-                "description": "A bool indicating if we should get column names from the first row.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "A bool indicating if we should get column names from the first row."
             },
             {
                 "name": "count",
-                "description": "Only split into this many columns if possible.",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Only split into this many columns if possible."
             }
         ],
         "category": "parsers"
@@ -4230,73 +3527,55 @@
         "args": [
             {
                 "name": "query",
-                "description": "Source for rows to upload.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "Source for rows to upload.",
                 "required": true
             },
             {
                 "name": "threads",
-                "description": "How many threads to use.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "How many threads to use."
             },
             {
                 "name": "url",
-                "description": "The Splunk Event Collector URL.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The Splunk Event Collector URL."
             },
             {
                 "name": "token",
-                "description": "Splunk HEC Token.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Splunk HEC Token."
             },
             {
                 "name": "index",
-                "description": "The name of the index to upload to.",
                 "type": "string",
-                "repeated": false,
+                "description": "The name of the index to upload to.",
                 "required": true
             },
             {
                 "name": "source",
-                "description": "The source field for splunk. If not specified this will be 'velociraptor'.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The source field for splunk. If not specified this will be 'velociraptor'."
             },
             {
                 "name": "sourcetype",
-                "description": "The sourcetype field for splunk. If not specified this will 'vql'",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The sourcetype field for splunk. If not specified this will 'vql'"
             },
             {
                 "name": "chunk_size",
-                "description": "The number of rows to send at the time.",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "The number of rows to send at the time."
             },
             {
                 "name": "skip_verify",
-                "description": "Skip SSL verification(default: False).",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Skip SSL verification(default: False)."
             },
             {
                 "name": "wait_time",
-                "description": "Batch splunk upload this long (2 sec).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Batch splunk upload this long (2 sec)."
             }
         ],
         "category": "server"
@@ -4308,48 +3587,35 @@
         "args": [
             {
                 "name": "driver",
-                "description": "sqlite, mysql,or postgres",
                 "type": "string",
-                "repeated": false,
+                "description": "sqlite, mysql,or postgres",
                 "required": true
             },
             {
                 "name": "connstring",
-                "description": "SQL Connection String",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "SQL Connection String"
             },
             {
                 "name": "file",
-                "description": "Required if using sqlite driver",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Required if using sqlite driver"
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use if using sqlite",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use if using sqlite"
             },
             {
                 "name": "query",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "args",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "sqlite",
@@ -4358,31 +3624,22 @@
         "args": [
             {
                 "name": "file",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "query",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "args",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             }
         ],
         "category": "parsers"
@@ -4394,27 +3651,44 @@
         "args": [
             {
                 "name": "file",
-                "description": "",
                 "type": "string",
-                "repeated": false,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "id",
-                "description": "",
                 "type": "int64",
-                "repeated": false,
                 "required": true
             }
         ],
         "category": "windows"
+    },
+    {
+        "name": "starl",
+        "description": "Compile a starlark code block - returns a module usable in VQL",
+        "type": "Function",
+        "args": [
+            {
+                "name": "code",
+                "type": "string",
+                "description": "The body of the starlark code.",
+                "required": true
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "description": "If set use this key to cache the Starlark code block."
+            },
+            {
+                "name": "globals",
+                "type": "Any",
+                "description": "Dictionary of values to feed into Starlark environment"
+            }
+        ]
     },
     {
         "name": "stat",
@@ -4423,17 +3697,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "One or more files to open.",
                 "type": "string",
+                "description": "One or more files to open.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "An accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An accessor to use."
             }
         ],
         "category": "plugin"
@@ -4445,9 +3717,8 @@
         "args": [
             {
                 "name": "str",
-                "description": "The string to normalize",
                 "type": "Any",
-                "repeated": false,
+                "description": "The string to normalize",
                 "required": true
             }
         ],
@@ -4460,17 +3731,14 @@
         "args": [
             {
                 "name": "string",
-                "description": "The string to strip",
                 "type": "string",
-                "repeated": false,
+                "description": "The string to strip",
                 "required": true
             },
             {
                 "name": "prefix",
-                "description": "The prefix to strip",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The prefix to strip"
             }
         ],
         "category": "basic"
@@ -4482,27 +3750,21 @@
         "args": [
             {
                 "name": "str",
-                "description": "The string to shorten",
                 "type": "string",
-                "repeated": false,
+                "description": "The string to shorten",
                 "required": true
             },
             {
                 "name": "start",
-                "description": "Beginning index of substring",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "Beginning index of substring"
             },
             {
                 "name": "end",
-                "description": "End index of substring",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "End index of substring"
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "sum",
@@ -4511,19 +3773,15 @@
         "args": [
             {
                 "name": "item",
-                "description": "",
                 "type": "int64",
-                "repeated": false,
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "switch",
         "description": "Executes each query. The first query to return any rows will be emitted.",
         "type": "Plugin",
-        "args": [],
         "category": "plugin"
     },
     {
@@ -4533,10 +3791,8 @@
         "args": [
             {
                 "name": "remove_last",
-                "description": "If set we delay removal as much as possible.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we delay removal as much as possible."
             }
         ],
         "category": "basic"
@@ -4548,34 +3804,92 @@
         "args": [
             {
                 "name": "data",
-                "description": "Data to write in the tempfile.",
                 "type": "string",
-                "repeated": true,
-                "required": false
+                "description": "Data to write in the tempfile.",
+                "repeated": true
             },
             {
                 "name": "extension",
-                "description": "An extension to place in the tempfile.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "An extension to place in the tempfile."
             },
             {
                 "name": "permissions",
-                "description": "Required permissions (e.g. 'x').",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Required permissions (e.g. 'x')."
             },
             {
                 "name": "remove_last",
-                "description": "If set we delay removal as much as possible.",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If set we delay removal as much as possible."
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "timeline",
+        "description": "Read a timeline. You can create a timeline with the timeline_add() function",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "timeline",
+                "type": "string",
+                "description": "Name of the timeline to read",
+                "required": true
+            },
+            {
+                "name": "skip",
+                "type": "string",
+                "description": "List of child components to skip",
+                "repeated": true
+            },
+            {
+                "name": "start",
+                "type": "Any",
+                "description": "First timestamp to fetch"
+            },
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The notebook ID the timeline is stored in."
+            }
+        ]
+    },
+    {
+        "name": "timeline_add",
+        "description": "Add a new query to a timeline.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "timeline",
+                "type": "string",
+                "description": "Supertimeline to add to",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of child timeline",
+                "required": true
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generate the timeline.",
+                "required": true
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "description": "The column representing the time.",
+                "required": true
+            },
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The notebook ID the timeline is stored in."
+            }
+        ]
     },
     {
         "name": "timestamp",
@@ -4584,45 +3898,30 @@
         "args": [
             {
                 "name": "epoch",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             },
             {
                 "name": "cocoatime",
-                "description": "",
-                "type": "int64",
-                "repeated": false,
-                "required": false
+                "type": "int64"
             },
             {
                 "name": "mactime",
-                "description": "HFS+",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "HFS+"
             },
             {
                 "name": "winfiletime",
-                "description": "",
-                "type": "int64",
-                "repeated": false,
-                "required": false
+                "type": "int64"
             },
             {
                 "name": "string",
-                "description": "Guess a timestamp from a string",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Guess a timestamp from a string"
             },
             {
                 "name": "us_style",
-                "description": "US Style Month/Day/Year",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "US Style Month/Day/Year"
             }
         ],
         "category": "basic"
@@ -4634,10 +3933,7 @@
         "args": [
             {
                 "name": "item",
-                "description": "",
-                "type": "Any",
-                "repeated": false,
-                "required": false
+                "type": "Any"
             }
         ],
         "category": "basic"
@@ -4649,9 +3945,8 @@
         "args": [
             {
                 "name": "pid",
-                "description": "The PID to get the token for.",
                 "type": "int64",
-                "repeated": false,
+                "description": "The PID to get the token for.",
                 "required": true
             }
         ],
@@ -4664,13 +3959,10 @@
         "args": [
             {
                 "name": "string",
-                "description": "Hex string to decode",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Hex string to decode"
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "unzip",
@@ -4679,45 +3971,36 @@
         "args": [
             {
                 "name": "filename",
-                "description": "File to unzip.",
                 "type": "string",
-                "repeated": false,
+                "description": "File to unzip.",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "filename_filter",
-                "description": "Only extract members matching this filter.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Only extract members matching this filter."
             },
             {
                 "name": "output_directory",
-                "description": "Where to unzip to",
                 "type": "string",
-                "repeated": false,
+                "description": "Where to unzip to",
                 "required": true
             }
-        ],
-        "category": ""
+        ]
     },
     {
         "name": "upcase",
-        "description": "",
         "type": "Function",
         "args": [
             {
                 "name": "string",
-                "description": "A string to lower",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to lower",
                 "required": true
             }
         ],
@@ -4730,24 +4013,24 @@
         "args": [
             {
                 "name": "file",
-                "description": "The file to upload",
                 "type": "string",
-                "repeated": false,
+                "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
-                "description": "The name of the file that should be stored on the server",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the file that should be stored on the server"
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
+            },
+            {
+                "name": "mtime",
+                "type": "Any",
+                "description": "Modified time to record"
             }
         ],
         "category": "plugin"
@@ -4759,17 +4042,20 @@
         "args": [
             {
                 "name": "files",
-                "description": "A list of files to upload",
                 "type": "string",
+                "description": "A list of files to upload",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
+            },
+            {
+                "name": "mtime",
+                "type": "Any",
+                "description": "Modified time to record"
             }
         ],
         "category": "plugin"
@@ -4781,44 +4067,36 @@
         "args": [
             {
                 "name": "file",
-                "description": "The file to upload",
                 "type": "string",
-                "repeated": false,
+                "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
-                "description": "The name of the file that should be stored on the server",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the file that should be stored on the server"
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "bucket",
-                "description": "The bucket to upload to",
                 "type": "string",
-                "repeated": false,
+                "description": "The bucket to upload to",
                 "required": true
             },
             {
                 "name": "project",
-                "description": "The project to upload to",
                 "type": "string",
-                "repeated": false,
+                "description": "The project to upload to",
                 "required": true
             },
             {
                 "name": "credentials",
-                "description": "The credentials to use",
                 "type": "string",
-                "repeated": false,
+                "description": "The credentials to use",
                 "required": true
             }
         ],
@@ -4831,73 +4109,58 @@
         "args": [
             {
                 "name": "file",
-                "description": "The file to upload",
                 "type": "string",
-                "repeated": false,
+                "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
-                "description": "The name of the file that should be stored on the server",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the file that should be stored on the server"
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "bucket",
-                "description": "The bucket to upload to",
                 "type": "string",
-                "repeated": false,
+                "description": "The bucket to upload to",
                 "required": true
             },
             {
                 "name": "region",
-                "description": "The region the bucket is in",
                 "type": "string",
-                "repeated": false,
+                "description": "The region the bucket is in",
                 "required": true
             },
             {
                 "name": "credentialskey",
-                "description": "The AWS key credentials to use",
                 "type": "string",
-                "repeated": false,
+                "description": "The AWS key credentials to use",
                 "required": true
             },
             {
                 "name": "credentialssecret",
-                "description": "The AWS secret credentials to use",
                 "type": "string",
-                "repeated": false,
+                "description": "The AWS secret credentials to use",
                 "required": true
             },
             {
                 "name": "endpoint",
-                "description": "The Endpoint to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The Endpoint to use"
             },
             {
                 "name": "serversideencryption",
-                "description": "The server side encryption method to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The server side encryption method to use"
             },
             {
                 "name": "noverifycert",
-                "description": "Skip TLS Verification",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "Skip TLS Verification"
             }
         ],
         "category": "plugin"
@@ -4909,59 +4172,48 @@
         "args": [
             {
                 "name": "file",
-                "description": "The file to upload",
                 "type": "string",
-                "repeated": false,
+                "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
-                "description": "The name of the file that should be stored on the server",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name of the file that should be stored on the server"
             },
             {
                 "name": "user",
-                "description": "The username to connect to the endpoint with",
                 "type": "string",
-                "repeated": false,
+                "description": "The username to connect to the endpoint with",
                 "required": true
             },
             {
                 "name": "path",
-                "description": "Path on server to upload file to",
                 "type": "string",
-                "repeated": false,
+                "description": "Path on server to upload file to",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "privatekey",
-                "description": "The private key to use",
                 "type": "string",
-                "repeated": false,
+                "description": "The private key to use",
                 "required": true
             },
             {
                 "name": "endpoint",
-                "description": "The Endpoint to use",
                 "type": "string",
-                "repeated": false,
+                "description": "The Endpoint to use",
                 "required": true
             },
             {
                 "name": "hostkey",
-                "description": "Host key to verify. Blank to disable",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Host key to verify. Blank to disable"
             }
         ],
         "category": "basic"
@@ -4973,45 +4225,35 @@
         "args": [
             {
                 "name": "file",
-                "description": "The file to upload",
                 "type": "string",
-                "repeated": false,
+                "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
-                "description": "The name that the file should have on the server",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The name that the file should have on the server"
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "url",
-                "description": "The WebDAV url",
                 "type": "string",
-                "repeated": false,
+                "description": "The WebDAV url",
                 "required": true
             },
             {
                 "name": "basic_auth_user",
-                "description": "The username to use in HTTP basic auth",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The username to use in HTTP basic auth"
             },
             {
                 "name": "basic_auth_password",
-                "description": "The password to use in HTTP basic auth",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The password to use in HTTP basic auth"
             }
         ],
         "category": "basic"
@@ -5023,17 +4265,13 @@
         "args": [
             {
                 "name": "client_id",
-                "description": "The client id to extract",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The client id to extract"
             },
             {
                 "name": "flow_id",
-                "description": "A flow ID (client or server artifacts)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A flow ID (client or server artifacts)"
             }
         ],
         "category": "server"
@@ -5045,38 +4283,28 @@
         "args": [
             {
                 "name": "scheme",
-                "description": "The scheme to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The scheme to use"
             },
             {
                 "name": "host",
-                "description": "The host component",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The host component"
             },
             {
                 "name": "path",
-                "description": "The path component",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The path component"
             },
             {
                 "name": "fragment",
-                "description": "The fragment",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The fragment"
             },
             {
                 "name": "parse",
-                "description": "A url to parse",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A url to parse"
             }
         ],
         "category": "basic"
@@ -5085,7 +4313,6 @@
         "name": "users",
         "description": "Display information about workstation local users. This is obtained through the NetUserEnum() API.",
         "type": "Plugin",
-        "args": [],
         "category": "windows"
     },
     {
@@ -5095,9 +4322,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to decode",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to decode",
                 "required": true
             }
         ],
@@ -5110,9 +4336,8 @@
         "args": [
             {
                 "name": "string",
-                "description": "A string to decode",
                 "type": "string",
-                "repeated": false,
+                "description": "A string to decode",
                 "required": true
             }
         ],
@@ -5122,7 +4347,6 @@
         "name": "uuid",
         "description": "Generate a UUID.",
         "type": "Function",
-        "args": [],
         "category": "basic"
     },
     {
@@ -5132,9 +4356,8 @@
         "args": [
             {
                 "name": "pid",
-                "description": "The PID to dump out.",
                 "type": "int64",
-                "repeated": false,
+                "description": "The PID to dump out.",
                 "required": true
             }
         ],
@@ -5147,17 +4370,11 @@
         "args": [
             {
                 "name": "function",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             },
             {
                 "name": "plugin",
-                "description": "",
-                "type": "string",
-                "repeated": false,
-                "required": false
+                "type": "string"
             }
         ],
         "category": "basic"
@@ -5169,17 +4386,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of log files to parse.",
                 "type": "string",
+                "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "event"
@@ -5191,31 +4406,25 @@
         "args": [
             {
                 "name": "filename",
-                "description": "CSV files to open",
                 "type": "string",
+                "description": "CSV files to open",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "auto_headers",
-                "description": "If unset the first row is headers",
                 "type": "bool",
-                "repeated": false,
-                "required": false
+                "description": "If unset the first row is headers"
             },
             {
                 "name": "separator",
-                "description": "Comma separator",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Comma separator"
             }
         ],
         "category": "event"
@@ -5226,32 +4435,30 @@
         "type": "Plugin",
         "args": [
             {
-                "name": "guid",
-                "description": "A Provider GUID to watch ",
+                "name": "name",
                 "type": "string",
-                "repeated": false,
+                "description": "A session name "
+            },
+            {
+                "name": "guid",
+                "type": "string",
+                "description": "A Provider GUID to watch ",
                 "required": true
             },
             {
                 "name": "any",
-                "description": "Any Keywords ",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Any Keywords "
             },
             {
                 "name": "all",
-                "description": "All Keywords ",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "All Keywords "
             },
             {
                 "name": "level",
-                "description": "Log level (0-5)",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Log level (0-5)"
             }
         ],
         "category": "event"
@@ -5263,24 +4470,20 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of event log files to parse.",
                 "type": "string",
+                "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             },
             {
                 "name": "messagedb",
-                "description": "A Message database from https://github.com/Velocidex/evtx-data.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "A Message database from https://github.com/Velocidex/evtx-data."
             }
         ],
         "category": "event"
@@ -5292,9 +4495,8 @@
         "args": [
             {
                 "name": "artifact",
-                "description": "The event artifact name to watch",
                 "type": "string",
-                "repeated": false,
+                "description": "The event artifact name to watch",
                 "required": true
             }
         ],
@@ -5307,17 +4509,15 @@
         "args": [
             {
                 "name": "filename",
-                "description": "A list of log files to parse.",
                 "type": "string",
+                "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use."
             }
         ],
         "category": "event"
@@ -5329,9 +4529,8 @@
         "args": [
             {
                 "name": "device",
-                "description": "The device file to open.",
                 "type": "string",
-                "repeated": false,
+                "description": "The device file to open.",
                 "required": true
             }
         ],
@@ -5340,9 +4539,7 @@
     {
         "name": "whoami",
         "description": "Returns the username that is running the query.",
-        "type": "Function",
-        "args": [],
-        "category": ""
+        "type": "Function"
     },
     {
         "name": "winobj",
@@ -5351,10 +4548,8 @@
         "args": [
             {
                 "name": "path",
-                "description": "Object namespace path.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Object namespace path."
             }
         ],
         "category": "windows"
@@ -5366,17 +4561,14 @@
         "args": [
             {
                 "name": "query",
-                "description": "The WMI query to issue.",
                 "type": "string",
-                "repeated": false,
+                "description": "The WMI query to issue.",
                 "required": true
             },
             {
                 "name": "namespace",
-                "description": "The WMI namespace to use (ROOT/CIMV2)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The WMI namespace to use (ROOT/CIMV2)"
             }
         ],
         "category": "windows"
@@ -5388,23 +4580,20 @@
         "args": [
             {
                 "name": "query",
-                "description": "WMI query to run.",
                 "type": "string",
-                "repeated": false,
+                "description": "WMI query to run.",
                 "required": true
             },
             {
                 "name": "namespace",
-                "description": "WMI namespace",
                 "type": "string",
-                "repeated": false,
+                "description": "WMI namespace",
                 "required": true
             },
             {
                 "name": "wait",
-                "description": "Wait this many seconds for events and then quit.",
                 "type": "int64",
-                "repeated": false,
+                "description": "Wait this many seconds for events and then quit.",
                 "required": true
             }
         ],
@@ -5417,27 +4606,42 @@
         "args": [
             {
                 "name": "filename",
-                "description": "CSV files to open",
                 "type": "string",
-                "repeated": false,
+                "description": "CSV files to open",
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "The accessor to use",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "The accessor to use"
             },
             {
                 "name": "query",
-                "description": "query to write into the file.",
                 "type": "StoredQuery",
-                "repeated": false,
+                "description": "query to write into the file.",
                 "required": true
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "xor",
+        "description": "Apply xor to the string and key.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "description": "String to apply Xor",
+                "required": true
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "description": "Xor key.",
+                "required": true
+            }
+        ]
     },
     {
         "name": "yara",
@@ -5446,66 +4650,51 @@
         "args": [
             {
                 "name": "rules",
-                "description": "Yara rules in the yara DSL.",
                 "type": "string",
-                "repeated": false,
+                "description": "Yara rules in the yara DSL.",
                 "required": true
             },
             {
                 "name": "files",
-                "description": "The list of files to scan.",
                 "type": "string",
+                "description": "The list of files to scan.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "accessor",
-                "description": "Accessor (e.g. NTFS)",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "Accessor (e.g. NTFS)"
             },
             {
                 "name": "context",
-                "description": "How many bytes to include around each hit",
                 "type": "int",
-                "repeated": false,
-                "required": false
+                "description": "How many bytes to include around each hit"
             },
             {
                 "name": "start",
-                "description": "The start offset to scan",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "The start offset to scan"
             },
             {
                 "name": "end",
-                "description": "End scanning at this offset (100mb)",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "End scanning at this offset (100mb)"
             },
             {
                 "name": "number",
-                "description": "Stop after this many hits (1).",
                 "type": "int64",
-                "repeated": false,
-                "required": false
+                "description": "Stop after this many hits (1)."
             },
             {
                 "name": "blocksize",
-                "description": "Blocksize for scanning (1mb).",
                 "type": "uint64",
-                "repeated": false,
-                "required": false
+                "description": "Blocksize for scanning (1mb)."
             },
             {
                 "name": "key",
-                "description": "If set use this key to cache the  yara rules.",
                 "type": "string",
-                "repeated": false,
-                "required": false
+                "description": "If set use this key to cache the  yara rules."
             }
         ],
         "category": "plugin"

@@ -18,21 +18,21 @@ parser.add_argument('--reference_data', help='Path the the reference data.json t
 def SaveDefinition(fd, item):
     fd.write("\n\n<div class=\"vql_item\"></div>\n\n");
     fd.write ("\n## %s\n<span class='vql_type pull-right'>%s</span>\n\n" % (item["name"], item["type"]))
-    fd.write ("%s\n\n" % item["description"])
-    if not item["args"]:
+    fd.write ("%s\n\n" % item.get("description", ""))
+    if not item.get("args"):
         return
 
     fd.write("\n\n<div class=\"vqlargs\"></div>\n\n");
     fd.write ("Arg | Description | Type\n----|-------------|-----\n")
     for arg in item["args"]:
         name = arg["name"]
-        description = arg["description"]
+        description = arg.get("description", "")
         type = arg["type"].replace("vfilter.", "")
         if type == "":
             type = "string"
-        if arg["repeated"] == True:
+        if arg.get("repeated"):
             type = "list of "+type
-        if arg["required"] == True:
+        if arg.get("required"):
             type = type + " (required)"
 
         fd.write("%s|%s|%s\n" % (name, description, type))
@@ -44,7 +44,7 @@ def SaveDataJson(definitions):
         item = item.copy()
 
         # Extract first paragraph
-        m = pararegex.search(item["description"])
+        m = pararegex.search(item.get("description", ""))
         if m:
             item["description"] = m.group(1)
 
@@ -70,5 +70,6 @@ if __name__ == "__main__" :
                 file_config["description"]))
 
             for definition in definitions:
-                if definition["category"] == file_config["category"]:
+                category = definition.get("category", "")
+                if category == file_config["category"]:
                     SaveDefinition(fd, definition)

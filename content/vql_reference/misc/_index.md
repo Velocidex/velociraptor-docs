@@ -227,6 +227,26 @@ args||Any
 <div class="vql_item"></div>
 
 
+## starl
+<span class='vql_type pull-right'>Function</span>
+
+Compile a starlark code block - returns a module usable in VQL
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+code|The body of the starlark code.|string (required)
+key|If set use this key to cache the Starlark code block.|string
+globals|Dictionary of values to feed into Starlark environment|Any
+
+
+
+<div class="vql_item"></div>
+
+
 ## substr
 <span class='vql_type pull-right'>Function</span>
 
@@ -259,6 +279,49 @@ Sums the items.
 Arg | Description | Type
 ----|-------------|-----
 item||int64 (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## timeline
+<span class='vql_type pull-right'>Plugin</span>
+
+Read a timeline. You can create a timeline with the timeline_add() function
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+timeline|Name of the timeline to read|string (required)
+skip|List of child components to skip|list of string
+start|First timestamp to fetch|Any
+notebook_id|The notebook ID the timeline is stored in.|string
+
+
+
+<div class="vql_item"></div>
+
+
+## timeline_add
+<span class='vql_type pull-right'>Function</span>
+
+Add a new query to a timeline.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+timeline|Supertimeline to add to|string (required)
+name|Name of child timeline|string (required)
+query|Run this query to generate the timeline.|StoredQuery (required)
+key|The column representing the time.|string (required)
+notebook_id|The notebook ID the timeline is stored in.|string
 
 
 
@@ -308,4 +371,23 @@ output_directory|Where to unzip to|string (required)
 <span class='vql_type pull-right'>Function</span>
 
 Returns the username that is running the query.
+
+
+
+<div class="vql_item"></div>
+
+
+## xor
+<span class='vql_type pull-right'>Function</span>
+
+Apply xor to the string and key.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+string|String to apply Xor|string (required)
+key|Xor key.|string (required)
 

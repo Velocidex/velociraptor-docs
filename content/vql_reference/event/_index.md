@@ -90,7 +90,7 @@ LET removable_disks = SELECT Name AS Drive, Size
 FROM glob(globs="/*", accessor="file")
 WHERE Data.Description =~ "Removable"
 
-LET file_listing = SELECT FullPath, timestamp(epoch=Mtime.Sec) As Modified, Size
+LET file_listing = SELECT FullPath, Mtime As Modified, Size
 FROM glob(globs=Drive+"\\**", accessor="file") LIMIT 1000
 
 SELECT * FROM diff(
@@ -242,6 +242,7 @@ Watch for events from an ETW provider.
 
 Arg | Description | Type
 ----|-------------|-----
+name|A session name |string
 guid|A Provider GUID to watch |string (required)
 any|Any Keywords |uint64
 all|All Keywords |uint64
