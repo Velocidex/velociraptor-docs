@@ -71,7 +71,8 @@ function DrawResults(data) {
           `<i class="linkcolour label label-success">` +
               (item.category || "misc") + `</i>`);
 
-      if (item.args.length > 0) {
+      let args = item.args || [];
+      if (args.length > 0) {
           let args_template = $(`
 <table>
   <thead>

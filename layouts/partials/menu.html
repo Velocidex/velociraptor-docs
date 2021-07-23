@@ -124,7 +124,7 @@
         {{ else }}
             <i class="fa fa-circleXX fa-sm category-icon"></i>
         {{- end}}
-        <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{.Title}}{{safeHTML .Params.Post}}</a>
+        <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{or .Params.Menutitle .Title}}{{safeHTML .Params.Post}}</a>
 
         {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
       </div>

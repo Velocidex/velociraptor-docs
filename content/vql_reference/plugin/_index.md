@@ -677,6 +677,7 @@ Arg | Description | Type
 file|The file to upload|string (required)
 name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
+mtime|Modified time to record|Any
 
 
 
@@ -704,6 +705,7 @@ Arg | Description | Type
 ----|-------------|-----
 files|A list of files to upload|list of string (required)
 accessor|The accessor to use|string
+mtime|Modified time to record|Any
 
 
 

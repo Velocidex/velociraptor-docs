@@ -946,8 +946,8 @@ flow_id|A flow ID (client or server artifacts)|string
 hunt_id|Retrieve sources from this hunt (combines all results from all clients)|string
 artifact|The name of the artifact collection to fetch|string
 source|An optional named source within the artifact|string
-start_time|Start return events from this date (for event sources)|int64
-end_time|Stop end events reach this time (event sources).|int64
+start_time|Start return events from this date (for event sources)|Any
+end_time|Stop end events reach this time (event sources).|Any
 notebook_id|The notebook to read from (shoud also include cell id)|string
 notebook_cell_id|The notebook cell read from (shoud also include notebook id)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
