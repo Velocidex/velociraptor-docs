@@ -168,7 +168,7 @@ itself as being able to provide ETW events. A Consumer is a routine
 that registers interest in a provider (e.g. Velociraptor is a
 consumer).
 
-You can enumerate all providers on a system using the `logmand query
+You can enumerate all providers on a system using the `logman query
 providers` command which lists all the ETW providers' GUIDs.
 
 ![Enumerating ETW providers](providers.png)
