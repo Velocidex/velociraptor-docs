@@ -184,7 +184,7 @@ GUID `{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}`
 {{% notice tip %}}
 
 ETW and event logs are just two sides of the same coin. If it possible
-to listen to events on the EWT layer before they are forwarded to the
+to listen to events on the ETW layer before they are forwarded to the
 event log service. In this case the events are not susceptible to
 being stopped by disabling the log (as shown previously)
 
