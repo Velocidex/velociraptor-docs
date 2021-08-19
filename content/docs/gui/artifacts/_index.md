@@ -29,7 +29,7 @@ certain time and starts some time later. If the client is offline, the collectio
 comes back online.
 
 Collections also take parameters. In the previous example, the `System.VFS.ListDirectory` artifact was used to list
-the directory "C:\\Users\\test".
+the directory "C:\Users\test".
 
 A collection of artifacts can return rows or upload
 files. This is because an artifact is simply a VQL query and all
@@ -60,7 +60,7 @@ users.
 To illustrate how artifacts can be used, let's collect a common
 forensic artifact from our Windows endpoint. Windows allows commands
 to be scheduled in the future. These tasks are typically stored in the
-`C:\\Windows\\System32\\Tasks` directory as XML files.
+`C:\Windows\System32\Tasks` directory as XML files.
 
 While it is nice to know the details behind where the scheduled tasks
 are stored and how to parse them - this is completely unnecessary with
@@ -71,13 +71,26 @@ Start a new collection by clicking the `New Collection` button <i
 class="fas fa-plus"></i>. This will open the new collection wizard as
 show below.
 
+
 ![New Collection Wizard](image73.png)
 
-The Wizard contains a number of steps but you can skip them if they are not needed.
+The Wizard contains a number of steps but you can skip them if they
+are not needed.
 
 In the first step, search for an artifact to collect the type of
 information you are after. In this case we will search for `task` to
 see our `Windows.System.TaskScheduler` artifact.
+
+{{% notice tip "Saving collections to a favorite list" %}}
+
+Many users find that they tend to collect some artifacts more commonly
+than others. In that case you can save your favorite collections by
+name and just recall them by clicking in the favorites list button.
+
+![New Collection Wizard](favorites.png)
+
+{{% /notice %}}
+
 
 The next step allows us to modify artifact parameters.
 
@@ -142,4 +155,5 @@ customized version as you please.
 
 ## Learn more
 
-To learn more about how to write your own artifacts click TODO
+To learn more about how to write your own artifacts click
+[here]({{< ref "/docs/vql/artifacts/" >}}/)

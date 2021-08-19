@@ -25,20 +25,22 @@ Parse a binary string with profile based parser.
 
 This plugin extract binary data from strings. It works by applying
 a profile to the binary string and generating an object from
-that. Profiles use the same syntax as Rekall or Volatility. For
+that. Profiles are a json structure describing the binary format. For
 example a profile might be:
 
 ```json
-{
-  "StructName": [10, {
-     "field1": [2, ["unsigned int"]],
-     "field2": [6, ["unsigned long long"]],
-  }]
-}
+[
+  ["StructName", 10, [
+     ["field1", 2, "unsigned int"],
+     ["field2", 6, "unsigned long long"],
+   ]]]
+]
 ```
 
 The profile is compiled and overlayed on top of the offset specified,
 then the object is emitted with its required fields.
+
+You can read more about profiles here https://github.com/Velocidex/vtypes
 
 
 
@@ -89,6 +91,12 @@ start|The initial field in the target to fetch.|string
 <span class='vql_type pull-right'>Function</span>
 
 Parse a string using a Grok expression.
+
+This is most useful for parsing syslog style logs (e.g. IIS, Apache logs).
+
+You can read more about GROK expressions here
+https://www.elastic.co/blog/do-you-grok-grok
+
 
 
 

@@ -12,13 +12,13 @@ Welcome to Velociraptor's Documentation site.
 
 After learning how Velociraptor's VQL artifacts can be used to gain
 unprecedented visibility into the endpoint, continue on to consulting
-the [VQL reference](/vql_reference) on this site.
+the [VQL reference]({{< ref "/vql_reference" >}}) on this site.
 
 If you are simply looking for an artifact to learn about how VQL can
 used in many different situations, visit our
-[Artifact Exchange](/exchange) to share the artifacts.
+[Artifact Exchange]({{< ref "/exchange" >}}) to share the artifacts.
 
 
-Finally check out the Velociraptor [Blog](/blog) for articles about
+Finally check out the Velociraptor [Blog]({{< ref "/blog" >}}) for articles about
 using Velociraptor in different scenarios and to learn more about
 Velociraptor's features.

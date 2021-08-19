@@ -1,6 +1,7 @@
 [
     {
         "name": "amsi",
+        "description": "AMSI is an interface on windows to scan a string for malware. This\nfunction submits the string to the AMSI system and receives a\ndetermination if it is malware.\n",
         "type": "Function",
         "args": [
             {
@@ -25,7 +26,7 @@
     },
     {
         "name": "artifact_definitions",
-        "description": "Dump artifact definitions.",
+        "description": "Dump artifact definitions from the internal repository.",
         "type": "Plugin",
         "args": [
             {
@@ -79,8 +80,31 @@
         "category": "server"
     },
     {
+        "name": "atexit",
+        "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "query",
+                "type": "Any",
+                "description": "A VQL Query to parse and execute.",
+                "required": true
+            },
+            {
+                "name": "env",
+                "type": "ordereddict.Dict",
+                "description": "A dict of args to insert into the scope."
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "How long to wait for destructors to run (default 60 seconds)."
+            }
+        ]
+    },
+    {
         "name": "atoi",
-        "description": "Convert a string to an int.",
+        "description": "Convert a string to an integer.",
         "type": "Function",
         "args": [
             {
@@ -100,7 +124,7 @@
     },
     {
         "name": "authenticode",
-        "description": "This plugin uses the Windows API to extract authenticode signature\ndetails from PE files.",
+        "description": "This plugin parses authenticode information from PE files.",
         "type": "Function",
         "args": [
             {
@@ -152,7 +176,7 @@
     },
     {
         "name": "basename",
-        "description": "Return the basename of the path.",
+        "description": "Return the basename of the path. For example basename(path=\"/foo/bar\") -> \"bar\"\n",
         "type": "Function",
         "args": [
             {
@@ -250,7 +274,7 @@
     },
     {
         "name": "cache",
-        "description": "Creates a cache object",
+        "description": "Creates a cache object.",
         "type": "Function",
         "args": [
             {
@@ -303,13 +327,13 @@
     },
     {
         "name": "chain",
-        "description": "Chain the output of several queries into the same table. This plugin\ntakes any args and chains them.",
+        "description": "Chain the output of several queries into the same table.",
         "type": "Plugin",
         "category": "plugin"
     },
     {
         "name": "client_delete",
-        "description": "Delete all information related to a client. ",
+        "description": "Delete all information related to a client from the filestore.",
         "type": "Plugin",
         "args": [
             {
@@ -339,7 +363,7 @@
     },
     {
         "name": "client_metadata",
-        "description": "Returns client metadata from the datastore. Client metadata is a set of free form key/value data",
+        "description": "Returns client metadata from the datastore.",
         "type": "Function",
         "args": [
             {
@@ -352,7 +376,7 @@
     },
     {
         "name": "client_set_metadata",
-        "description": "Sets client metadata. Client metadata is a set of free form key/value data",
+        "description": "Sets client metadata.",
         "type": "Function",
         "args": [
             {
@@ -470,7 +494,7 @@
     },
     {
         "name": "collect_client",
-        "description": "Launch an artifact collection against a client. If the client_id\nis \"server\" then the collection occurs on the server itself. In\nthat case the caller needs the SERVER_ADMIN permission.\n",
+        "description": "Launch an artifact collection against a client. If the client_id\nis \"server\" then the collection occurs on the server itself. In\nthat case the caller needs the SERVER_ADMIN permission.",
         "type": "Function",
         "args": [
             {
@@ -546,15 +570,19 @@
     },
     {
         "name": "compress",
-        "description": "Compress a file in the server's FileStore. A compressed\nfile is archived so it takes less space. It is still possible to see\nthe file and read it but not to seek within it.\n",
+        "description": "Compress a file.",
         "type": "Function",
         "args": [
             {
                 "name": "path",
                 "type": "string",
-                "description": "A VFS path to compress",
-                "repeated": true,
+                "description": "A path to compress",
                 "required": true
+            },
+            {
+                "name": "output",
+                "type": "string",
+                "description": "A path to write the output - default is the path with a .gz extension"
             }
         ],
         "category": "server"
@@ -591,6 +619,11 @@
                 "name": "permissions",
                 "type": "string",
                 "description": "Required permissions (e.g. 'x')."
+            },
+            {
+                "name": "append",
+                "type": "bool",
+                "description": "If true we append to the target file otherwise truncate it"
             }
         ],
         "category": "basic"
@@ -854,7 +887,7 @@
     },
     {
         "name": "environ",
-        "description": "Get an environment variable.",
+        "description": "Get an environment variable.\n",
         "type": "Function",
         "args": [
             {
@@ -920,6 +953,37 @@
         "category": "basic"
     },
     {
+        "name": "favorites_save",
+        "description": "Save a collection into the favorites.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "A name for this collection template.",
+                "required": true
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "A description for the template."
+            },
+            {
+                "name": "specs",
+                "type": "LazyExpr",
+                "description": "The collection request spec that will be saved. We use this to create the new collection.",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "The type of favorite.",
+                "required": true
+            }
+        ],
+        "category": "server"
+    },
+    {
         "name": "fifo",
         "description": "Executes 'query' and cache a number of rows from it. For each invocation\nwe present the set of past rows.",
         "type": "Plugin",
@@ -965,7 +1029,7 @@
     },
     {
         "name": "file_store_delete",
-        "description": "Delete file store paths into full filesystem paths. ",
+        "description": "Delete file store paths.\n",
         "type": "Function",
         "args": [
             {
@@ -979,6 +1043,7 @@
     },
     {
         "name": "filesystems",
+        "description": "Enumerates mounted filesystems.\n",
         "type": "Plugin",
         "category": "plugin"
     },
@@ -1142,6 +1207,56 @@
         "category": "basic"
     },
     {
+        "name": "gcs_pubsub_publish",
+        "description": "Publish a message to Google PubSub.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "topic",
+                "type": "string",
+                "description": "The topic to publish to",
+                "required": true
+            },
+            {
+                "name": "project_id",
+                "type": "string",
+                "description": "The project id to publish to",
+                "required": true
+            },
+            {
+                "name": "msg",
+                "type": "Any",
+                "description": "Message to publish to Pubsub",
+                "required": true
+            },
+            {
+                "name": "credentials",
+                "type": "string",
+                "description": "The credentials to use",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "geoip",
+        "description": "Lookup an IP Address using the MaxMind GeoIP database. You can get\na copy of the database from https://www.maxmind.com/. The database\nmust be locally accessible so this probably only makes sense on\nthe server.\n",
+        "type": "Function",
+        "args": [
+            {
+                "name": "ip",
+                "type": "string",
+                "description": "IP Address to lookup.",
+                "required": true
+            },
+            {
+                "name": "db",
+                "type": "string",
+                "description": "Path to the MaxMind GeoIP Database.",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "get",
         "description": "Gets the member field from item.",
         "type": "Function",
@@ -1173,13 +1288,13 @@
     },
     {
         "name": "get_server_monitoring",
-        "description": "Retrieve the current client monitoring state.",
+        "description": "Retrieve the current server monitoring state.",
         "type": "Function",
         "category": "server"
     },
     {
         "name": "getpid",
-        "description": "Returns the current pid of the process.",
+        "description": "Returns the current pid of the Velociraptor process.",
         "type": "Function",
         "category": "basic"
     },
@@ -1276,13 +1391,13 @@
     },
     {
         "name": "gui_users",
-        "description": "Retrieve the list of users on the server.",
+        "description": "Retrieve the list of users on the server.\n",
         "type": "Plugin",
         "category": "server"
     },
     {
         "name": "handles",
-        "description": "Enumerate process handles.",
+        "description": "Enumerate process handles.\n",
         "type": "Plugin",
         "args": [
             {
@@ -1382,7 +1497,7 @@
     },
     {
         "name": "hunt",
-        "description": "Launch an artifact collection against a client.",
+        "description": "Create and launch a hunt.",
         "type": "Function",
         "args": [
             {
@@ -1432,6 +1547,18 @@
                 "name": "pause",
                 "type": "bool",
                 "description": "If specified the new hunt will be in the paused state"
+            },
+            {
+                "name": "include_labels",
+                "type": "string",
+                "description": "If specified only include these labels",
+                "repeated": true
+            },
+            {
+                "name": "exclude_labels",
+                "type": "string",
+                "description": "If specified exclude these labels",
+                "repeated": true
             }
         ],
         "category": "server"
@@ -1442,14 +1569,19 @@
         "type": "Function",
         "args": [
             {
-                "name": "ClientId",
+                "name": "client_id",
                 "type": "string",
                 "required": true
             },
             {
-                "name": "HuntId",
+                "name": "hunt_id",
                 "type": "string",
                 "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string",
+                "description": "If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt."
             }
         ],
         "category": "server"
@@ -1509,7 +1641,7 @@
     },
     {
         "name": "hunts",
-        "description": "Retrieve the list of hunts.",
+        "description": "Retrieve the list of hunts.\n",
         "type": "Plugin",
         "args": [
             {
@@ -1613,7 +1745,7 @@
     },
     {
         "name": "interfaces",
-        "description": "List all active interfaces.",
+        "description": "List all active network interfaces using the API.\n",
         "type": "Plugin",
         "category": "windows"
     },
@@ -1625,7 +1757,7 @@
     },
     {
         "name": "inventory_add",
-        "description": "Add tool to ThirdParty inventory.",
+        "description": "Add or reconfigure a tool into the inventory.",
         "type": "Function",
         "args": [
             {
@@ -2086,10 +2218,64 @@
         "type": "Plugin",
         "args": [
             {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client id to extract"
+            },
+            {
+                "name": "flow_id",
+                "type": "string",
+                "description": "A flow ID (client or server artifacts)"
+            },
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "Retrieve sources from this hunt (combines all results from all clients)"
+            },
+            {
                 "name": "artifact",
                 "type": "string",
-                "description": "The event artifact name to watch",
-                "required": true
+                "description": "The name of the artifact collection to fetch"
+            },
+            {
+                "name": "source",
+                "type": "string",
+                "description": "An optional named source within the artifact"
+            },
+            {
+                "name": "start_time",
+                "type": "Any",
+                "description": "Start return events from this date (for event sources)"
+            },
+            {
+                "name": "end_time",
+                "type": "Any",
+                "description": "Stop end events reach this time (event sources)."
+            },
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The notebook to read from (shoud also include cell id)"
+            },
+            {
+                "name": "notebook_cell_id",
+                "type": "string",
+                "description": "The notebook cell read from (shoud also include notebook id)"
+            },
+            {
+                "name": "notebook_cell_table",
+                "type": "int64",
+                "description": "A notebook cell can have multiple tables.)"
+            },
+            {
+                "name": "start_row",
+                "type": "int64",
+                "description": "Start reading the result set from this row"
+            },
+            {
+                "name": "count",
+                "type": "int64",
+                "description": "Maximum number of clients to fetch (default unlimited)'"
             }
         ],
         "category": "server"
@@ -3015,7 +3201,7 @@
             },
             {
                 "name": "env",
-                "type": "Any",
+                "type": "ordereddict.Dict",
                 "description": "A dict of args to insert into the scope."
             }
         ]
@@ -3158,6 +3344,62 @@
         "category": "windows"
     },
     {
+        "name": "reg_rm_key",
+        "description": "Removes a key and all its values from the registry.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "path",
+                "type": "string",
+                "description": "Registry key path.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "reg_rm_value",
+        "description": "Removes a value in the registry.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "path",
+                "type": "string",
+                "description": "Registry value path.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "reg_set_value",
+        "description": "Set a value in the registry.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "path",
+                "type": "string",
+                "description": "Registry value path.",
+                "required": true
+            },
+            {
+                "name": "value",
+                "type": "LazyExpr",
+                "description": "Value to set",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type to set (SZ, DWORD, QWORD)",
+                "required": true
+            },
+            {
+                "name": "create",
+                "type": "bool",
+                "description": "Set to create missing intermediate keys"
+            }
+        ]
+    },
+    {
         "name": "regex_replace",
         "description": "Search and replace a string with a regexp. Note you can use $1 to replace the capture string.",
         "type": "Function",
@@ -3204,6 +3446,19 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default native)"
+            }
+        ]
+    },
+    {
+        "name": "rm",
+        "description": "Remove a file from the filesystem using the API.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "Filename to remove.",
+                "required": true
             }
         ]
     },
@@ -3278,6 +3533,25 @@
             }
         ],
         "category": "server"
+    },
+    {
+        "name": "send_event",
+        "description": "Sends an event to a server event monitoring queue.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The artifact name to send the event to.",
+                "required": true
+            },
+            {
+                "name": "row",
+                "type": "ordereddict.Dict",
+                "description": "The row to send to the artifact",
+                "required": true
+            }
+        ]
     },
     {
         "name": "serialize",
@@ -4031,6 +4305,21 @@
                 "name": "mtime",
                 "type": "Any",
                 "description": "Modified time to record"
+            },
+            {
+                "name": "atime",
+                "type": "Any",
+                "description": "Access time to record"
+            },
+            {
+                "name": "ctime",
+                "type": "Any",
+                "description": "Change time to record"
+            },
+            {
+                "name": "btime",
+                "type": "Any",
+                "description": "Birth time to record"
             }
         ],
         "category": "plugin"
@@ -4059,6 +4348,55 @@
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "upload_directory",
+        "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "file",
+                "type": "string",
+                "description": "The file to upload",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Filename to be stored within the output directory"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "output",
+                "type": "string",
+                "description": "An output directory to store files in.",
+                "required": true
+            },
+            {
+                "name": "mtime",
+                "type": "Any",
+                "description": "Modified time to set the output file."
+            },
+            {
+                "name": "atime",
+                "type": "Any",
+                "description": "Access time to set the output file."
+            },
+            {
+                "name": "ctime",
+                "type": "Any",
+                "description": "Change time to set the output file."
+            },
+            {
+                "name": "btime",
+                "type": "Any",
+                "description": "Birth time to set the output file."
+            }
+        ]
     },
     {
         "name": "upload_gcs",
@@ -4310,6 +4648,40 @@
         "category": "basic"
     },
     {
+        "name": "user_create",
+        "description": "Creates a new user from the server, or updates their permissions or reset their password.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "roles",
+                "type": "string",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "password",
+                "type": "string"
+            }
+        ]
+    },
+    {
+        "name": "user_delete",
+        "description": "Deletes a user from the server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "users",
         "description": "Display information about workstation local users. This is obtained through the NetUserEnum() API.",
         "type": "Plugin",
@@ -4496,8 +4868,7 @@
             {
                 "name": "artifact",
                 "type": "string",
-                "description": "The event artifact name to watch",
-                "required": true
+                "description": "The artifact to watch"
             }
         ],
         "category": "event"

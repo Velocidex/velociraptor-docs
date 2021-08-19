@@ -56,6 +56,14 @@ The table contains five columns:
 
 5. Any **labels** applied to the host.
 
+{{% notice tip %}}
+Once you view a particular host, the GUI will automatically remember it in a most recently used list (MRU). You can view your recent searches easily by selecting it from the gui.
+
+![Search page](mru.png)
+
+{{% /notice %}}
+
+
 ## Labels
 
 Hosts may have labels attached to them. A label is any name associated
@@ -85,6 +93,21 @@ FROM hunt_results(hunt_id=HuntId,
                   artifact="Windows.Sys.Users")
 WHERE Name =~ "mike"
 ```
+
+{{% notice tip "Using labels to control hunts and monitoring" %}}
+
+Labels applied to clients essentially form groups. Many features in
+Velociraptor apply to these groups and it is possible to move clients
+in and out of these during the course of an investigation.
+
+For example, client event monitoring queries are controlled via client
+labels. This allows you to assign a detection rule to a group of
+machines then simple add or remove machines from the group.  Similarly
+it is possible to restrict a hunt to a label group then simply add
+clients to the label group in order to automatically add them to the
+hunt.
+
+{{% /notice %}}
 
 
 ### Built-in Labels
@@ -117,8 +140,8 @@ automatically.
 
 ## Selecting a client
 
-Click on any client in the search screen to view information relevant to the
-selected client.
+Click on any client in the search screen to view information relevant
+to the selected client.
 
 You can easily tell which client we are dealing with as the name of
 the host, and the last time we connected with it are shown:
@@ -142,6 +165,31 @@ Ultimately, interrogation simply collects the `Generic.Client.Info`
 artifact from the endpoint. The `VQL Drilldown` page shows more
 information about the client, including telemetry of the client's
 footprint on the endpoint and more information about the endpoint.
+
+{{% notice tip "Quarantining a host" %}}
+
+You can quarantine a host from this screen. Quarantining a host will
+reconfigure the hosts's network stack to only allow it to communicate
+with the Velociraptor server. This allows you to continue
+investigating the host remotely while preventing the host from making
+other network connections.
+
+Quarantining is implemented using an event monitoring query which
+means it persists across client reboots. A quarantined client will
+gain the label `Quarantine` so you can easily search for all
+quarantined hosts using the label search feature above.
+
+Removing the quarantine label from a host will immediately
+unquarantine the host. Read further how to automatically apply and
+remove labels based on various events - this allows you to
+automatically quarantine a host too!
+
+{{% /notice %}}
+
+### VQL drilldown
+
+Selecting the `VQL drilldown` screen will display an overview of
+information about a host.
 
 ![VQL Drilldown](image58.png)
 
@@ -184,7 +232,10 @@ using Powershell/Cmd/Bash or ad hoc VQL.
 ![Shell command](image60.png)
 
 {{% notice note %}}
-Only Velociraptor users with the administrator role are allowed to run arbitrary shell commands on remote endpoints!
+
+Only Velociraptor users with the administrator role are allowed to run
+arbitrary shell commands on remote endpoints!
+
 {{% /notice %}}
 
 You can prevent clients from running arbitrary shell command

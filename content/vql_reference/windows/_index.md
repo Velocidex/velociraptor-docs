@@ -25,11 +25,10 @@ Parses the appcompatcache.
 ## authenticode
 <span class='vql_type pull-right'>Function</span>
 
-This plugin uses the Windows API to extract authenticode signature
-details from PE files.
+This plugin parses authenticode information from PE files.
 
-Since we use the windows API this can only work with the "file"
-accessor.
+On windows, the plugin will also use the windows API to determine
+if the binary is trusted by the system.
 
 
 
@@ -51,6 +50,11 @@ verbose|Set to receive verbose information about all the certs.|bool
 <span class='vql_type pull-right'>Plugin</span>
 
 Collect certificate from the system trust store.
+
+This plugin uses the Windows APIs to fetch the certificates. You
+migth also want to look at the `Windows.System.RootCAStore`
+artifact.
+
 
 
 
@@ -78,6 +82,9 @@ from Windows Defender.
 
 {{% /notice %}}
 
+It is generally better to use ETW for DNS monitoring than this
+plugin (see Windows.Events.DNSQueries)
+
 
 
 
@@ -88,6 +95,7 @@ from Windows Defender.
 <span class='vql_type pull-right'>Plugin</span>
 
 Enumerate process handles.
+
 
 
 
@@ -105,7 +113,8 @@ pid|The PID to dump out.|int64 (required)
 ## interfaces
 <span class='vql_type pull-right'>Plugin</span>
 
-List all active interfaces.
+List all active network interfaces using the API.
+
 
 
 
