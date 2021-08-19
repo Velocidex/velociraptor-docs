@@ -29,3 +29,13 @@ Velociraptor's power and flexibility comes from the Velociraptor Query Language 
 rules on the endpoint, as well as automate tasks on the server.
 
 ![Rocket Velociraptor](media/image4.png)
+
+## Documentation overview
+
+The site is divided into the following parts
+
+- [Deployment]({{< relref "../deployment/" >}}) where you will learn the different deployment options.
+
+- [GUI Tour]({{< relref "../gui/" >}}) provides a tour of the user interface.
+
+- [VQL Fundamentals]({{< relref "../vql/" >}}) provide a deep dive into VQL and how to write your own artifacts and queries.

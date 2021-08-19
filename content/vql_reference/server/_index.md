@@ -21,7 +21,7 @@ the GUI.
 ## artifact_definitions
 <span class='vql_type pull-right'>Plugin</span>
 
-Dump artifact definitions.
+Dump artifact definitions from the internal repository.
 
 
 
@@ -80,6 +80,11 @@ prefix|Required name prefix|string
 
 Cancels the flow.
 
+This sends the client an immediate cacnellation message and stops
+the flow. It also removes any outstanding requests for the client
+if there are any.
+
+
 
 
 <div class="vqlargs"></div>
@@ -97,7 +102,10 @@ flow_id||string
 ## client_delete
 <span class='vql_type pull-right'>Plugin</span>
 
-Delete all information related to a client. 
+Delete all information related to a client from the filestore.
+
+This required the SERVER_ADMIN permission.
+
 
 
 
@@ -118,6 +126,17 @@ really_do_it||bool
 
 Returns client info (like the fqdn) from the datastore.
 
+Velociraptor maintains basic information about the client in the
+data store, such as its hostname, OS etc.
+
+This information is refereshed each time the `Generic.Client.Info`
+artifact is collected from the endpoint so it can be out of
+date. This process is called "interrogation" of the endpoint.
+
+You can refresh the entire fleet's datastore by schduling a
+`Generic.Client.Info` hunt.
+
+
 
 
 <div class="vqlargs"></div>
@@ -134,7 +153,12 @@ client_id||string (required)
 ## client_metadata
 <span class='vql_type pull-right'>Function</span>
 
-Returns client metadata from the datastore. Client metadata is a set of free form key/value data
+Returns client metadata from the datastore.
+
+Client metadata is a set of free form key/value data. Artifacts
+may use this metdata or it may simply be used as part of your IR
+processes.
+
 
 
 
@@ -152,7 +176,11 @@ client_id||string (required)
 ## client_set_metadata
 <span class='vql_type pull-right'>Function</span>
 
-Sets client metadata. Client metadata is a set of free form key/value data
+Sets client metadata.
+
+Client metadata is a set of free form key/value data (see
+client_metadata() function).
+
 
 
 
@@ -195,6 +223,44 @@ Launch an artifact collection against a client. If the client_id
 is "server" then the collection occurs on the server itself. In
 that case the caller needs the SERVER_ADMIN permission.
 
+There are two way of specifying how to collect the artifacts. The
+simplest way is to specify the environment string using the `env`
+parameter, and a list of artifacts to collect in the `artifacts`
+parameter.
+
+In this case all artifacts will receive the the same
+parameters. For example:
+
+```vql
+SELECT collect_client(
+    client_id='C.11a3013ccaXXXXX',
+    artifacts='Windows.KapeFiles.Targets',
+    env=dict(Device ='C:', VSSAnalysis='Y', KapeTriage='Y')).request AS Flow
+FROM scope()
+```
+
+Sometimes we have a numebr of artifacts that use the same
+parameter name for different purposes. In that case we wish to
+specify precisely which artifact receives which parameter. This
+more complex way of specifying the collection using the `spec`
+parameter:
+
+```vql
+SELECT collect_client(
+    client_id='C.11a3013ccaXXXXX',
+    artifacts='Windows.KapeFiles.Targets',
+    spec=dict(`Windows.KapeFiles.Targets`=dict(
+        Device ='C:', VSSAnalysis='Y', KapeTriage='Y'))).request AS Flow
+FROM scope()
+```
+
+In this case the artifact names are repeated in the spec and the
+artifacts parameter.
+
+NOTE: When constructing the dictionaries for the spec parameter
+you will often need to specify a field name containing full
+stop. You can escape this using the backticks like the example above.
+
 
 
 
@@ -219,9 +285,10 @@ max_bytes|Max number of bytes to upload|uint64
 ## compress
 <span class='vql_type pull-right'>Function</span>
 
-Compress a file in the server's FileStore. A compressed
-file is archived so it takes less space. It is still possible to see
-the file and read it but not to seek within it.
+Compress a file.
+
+The file is compressed using gzip. You can change the location of
+the output using the output parameter.
 
 
 
@@ -230,7 +297,8 @@ the file and read it but not to seek within it.
 
 Arg | Description | Type
 ----|-------------|-----
-path|A VFS path to compress|list of string (required)
+path|A path to compress|string (required)
+output|A path to write the output - default is the path with a .gz extension|string
 
 
 
@@ -241,6 +309,14 @@ path|A VFS path to compress|list of string (required)
 <span class='vql_type pull-right'>Function</span>
 
 Creates a download pack for the flow.
+
+This function initiates the download creation process for a
+flow. It is equivalent to the GUI functionality allowing to
+"Download Results" from the Flows Overview page.
+
+Using the `wait` parameter you can wait for the download to
+complete or just kick it off asynchronously.
+
 
 
 
@@ -264,6 +340,14 @@ template|Report template to use (defaults to Reporting.Default).|string
 
 Creates a download pack for a hunt.
 
+This function initiates the download creation process for a
+hunt. It is equivalent to the GUI functionality allowing to
+"Download Results" from the Hunts Overview page.
+
+Using the `wait` parameter you can wait for the download to
+complete or just kick it off asynchronously.
+
+
 
 
 <div class="vqlargs"></div>
@@ -285,6 +369,15 @@ base|Base filename to write to.|string
 <span class='vql_type pull-right'>Plugin</span>
 
 Upload rows to elastic.
+
+This uses the Elastic bulk upload API to push arbitrary rows to
+elastic. The query specified in `query` will be run and each row
+it emits will be uploaded as a separate event to Elastic.
+
+You can either specify the elastic index explicitely using the
+`index` parameter or provide an `_index` column in the query
+itself to send the row to a different index each time.
+
 
 
 
@@ -315,6 +408,13 @@ pipeline|Pipeline for uploads|string
 
 Enumerate all the files that make up a flow.
 
+This includes the uploaded files, the result sets and the various
+metadata files that result flow state information.
+
+This plugin is mostly used for archiving or deleting a flow from
+the filestore.
+
+
 
 
 <div class="vqlargs"></div>
@@ -323,6 +423,37 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+
+
+
+<div class="vql_item"></div>
+
+
+## favorites_save
+<span class='vql_type pull-right'>Function</span>
+
+Save a collection into the favorites.
+
+Velociraptor allows the user to save a collection into their
+"Favorite" list. This allows them to quickly and easily pick a
+previously used collection.
+
+This VQL function provides an interface for this functionality.
+
+NOTE: A favorite belongs to the calling user - this function will
+update the favorite for the calling user only.
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+name|A name for this collection template.|string (required)
+description|A description for the template.|string
+specs|The collection request spec that will be saved. We use this to create the new collection.|LazyExpr (required)
+type|The type of favorite.|string (required)
 
 
 
@@ -369,7 +500,8 @@ path|A VFS path to convert|list of string (required)
 ## file_store_delete
 <span class='vql_type pull-right'>Function</span>
 
-Delete file store paths into full filesystem paths. 
+Delete file store paths.
+
 
 
 
@@ -388,6 +520,12 @@ path|A VFS path to remove|string (required)
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the results of a flow.
+
+This is similar to the source() plugin.
+
+NOTE: Since a collection can collect multiple artifacts you must
+specify the artifact you are interested in.
+
 
 
 
@@ -410,6 +548,10 @@ client_id|The client id to extract|string (required)
 
 Retrieve the flows launched on each client.
 
+Each flow record will include the creator of the flow, the request
+and metadata about the collection.
+
+
 
 
 <div class="vqlargs"></div>
@@ -429,6 +571,17 @@ flow_id||string
 
 Retrieve the current client monitoring state.
 
+The client monitoring table represent's the server configuration
+of client event queries to deploy.
+
+This function is designed to allow programmatic manipulation of
+the event query table in conjunction with set_client_monitoring()
+function.
+
+It is commonly used together with the `patch()` function to patch
+the data structure to add additional event queries.
+
+
 
 
 <div class="vql_item"></div>
@@ -437,7 +590,10 @@ Retrieve the current client monitoring state.
 ## get_server_monitoring
 <span class='vql_type pull-right'>Function</span>
 
-Retrieve the current client monitoring state.
+Retrieve the current server monitoring state.
+
+See `get_client_monitoring()`
+
 
 
 
@@ -451,13 +607,33 @@ Retrieve the list of users on the server.
 
 
 
+
 <div class="vql_item"></div>
 
 
 ## hunt
 <span class='vql_type pull-right'>Function</span>
 
-Launch an artifact collection against a client.
+Create and launch a hunt.
+
+This function will create a new hunt to collect the specified
+artifacts. The artifacts to collect are provided in the
+`artifacts` parameter. Artifact parameters are provided in the
+`spec` parameter (see example below).
+
+NOTE: In the GUI hunts are always created in the paused
+state. This is not the default state when using this function (all
+hunts are immediately active).
+
+```vql
+SELECT hunt(
+    description="A general hunt",
+    artifacts='Windows.KapeFiles.Targets',
+    spec=dict(`Windows.KapeFiles.Targets`=dict(
+        Device ='C:', VSSAnalysis='Y', KapeTriage='Y')))
+FROM scope()
+```
+
 
 
 
@@ -474,6 +650,8 @@ ops_per_sec|Set query ops_per_sec value|float64
 max_rows|Max number of rows to fetch|uint64
 max_bytes|Max number of bytes to upload|uint64
 pause|If specified the new hunt will be in the paused state|bool
+include_labels|If specified only include these labels|list of string
+exclude_labels|If specified exclude these labels|list of string
 
 
 
@@ -485,14 +663,41 @@ pause|If specified the new hunt will be in the paused state|bool
 
 Assign a client to a hunt.
 
+This function allows a client to be added to a hunt. The client
+will be immediately scheduled and the results will be added to the
+hunt. Clients are added to a hunt regardless of any hunt
+conditions, or even if the hunt is stopped.
+
+You can use this function to manually add clients to selected
+hunts for example after being triaged or post processed to
+identify the clients of interest.
+
+NOTE: An alternative method is to create a hunt that only targets
+a specific label and then just assign the label to specific
+clients.
+
+## Adding an existing flow to a hunt.
+
+If a flow_id is specified, this function will just immediately add
+the collection to the hunt, without scheduling a new
+collection. The results of this flow will be visible when post
+processing the hunt, exporting the hunt etc.
+
+This is useful to redo a collection in a hunt - for example, if
+some collections in the hunt expired or were cancelled you can
+manually re-run these collections and then when successful re-add
+them to the hunt.
+
+
 
 
 <div class="vqlargs"></div>
 
 Arg | Description | Type
 ----|-------------|-----
-ClientId||string (required)
-HuntId||string (required)
+client_id||string (required)
+hunt_id||string (required)
+flow_id|If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt.|string
 
 
 
@@ -503,6 +708,13 @@ HuntId||string (required)
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the flows launched by a hunt.
+
+A Velociraptor hunt is just a collection of related flows. This
+plugin simply enumerates all the flows as part of this hunt.
+
+You can use this to figure out if all the collections were
+successful by looking at the result of each flow object.
+
 
 
 
@@ -523,6 +735,13 @@ limit|Number of rows to show (used for paging).|int64
 <span class='vql_type pull-right'>Plugin</span>
 
 Retrieve the results of a hunt.
+
+This plugin essentially iterates over all flows in the hunt and
+reads out all collected rows for each client in the same table.
+
+It is equivalent to the source() plugin in the hunt notebook
+context.
+
 
 
 
@@ -547,6 +766,7 @@ Retrieve the list of hunts.
 
 
 
+
 <div class="vqlargs"></div>
 
 Arg | Description | Type
@@ -563,6 +783,12 @@ hunt_id|A hunt id to read, if not specified we list all of them.|string
 
 Retrieve the tools inventory.
 
+The inventory contains information about all the external tools
+Velociraptor is managing. This plugin will display this.
+
+See https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
+
+
 
 
 <div class="vql_item"></div>
@@ -571,7 +797,12 @@ Retrieve the tools inventory.
 ## inventory_add
 <span class='vql_type pull-right'>Function</span>
 
-Add tool to ThirdParty inventory.
+Add or reconfigure a tool into the inventory.
+
+Note that if you provide a file to override the tool it must be
+readable by the server (so the file must reside on the server or
+be accessible over a network share).
+
 
 
 
@@ -664,7 +895,18 @@ Extract monitoring log from a client. If client_id is not specified we watch the
 
 Arg | Description | Type
 ----|-------------|-----
-artifact|The event artifact name to watch|string (required)
+client_id|The client id to extract|string
+flow_id|A flow ID (client or server artifacts)|string
+hunt_id|Retrieve sources from this hunt (combines all results from all clients)|string
+artifact|The name of the artifact collection to fetch|string
+source|An optional named source within the artifact|string
+start_time|Start return events from this date (for event sources)|Any
+end_time|Stop end events reach this time (event sources).|Any
+notebook_id|The notebook to read from (shoud also include cell id)|string
+notebook_cell_id|The notebook cell read from (shoud also include notebook id)|string
+notebook_cell_table|A notebook cell can have multiple tables.)|int64
+start_row|Start reading the result set from this row|int64
+count|Maximum number of clients to fetch (default unlimited)'|int64
 
 
 

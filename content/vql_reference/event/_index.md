@@ -299,7 +299,7 @@ plugin will produce events from all clients.
 
 Arg | Description | Type
 ----|-------------|-----
-artifact|The event artifact name to watch|string (required)
+artifact|The artifact to watch|string
 
 
 

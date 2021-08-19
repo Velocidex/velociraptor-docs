@@ -52,14 +52,14 @@ change cells from one type to the other at any time.
 
 ![New Notebook](new_cell.png)
 
-After click the `Edit Cell` button, You can type VQL directory into
-the cell. As you type, the GUI offest context sensitive suggestions
+After clicking the `Edit Cell` button, you can type VQL directory into
+the cell. As you type, the GUI offers context sensitive suggestions
 about what possible completions can appear at the cursor. Typing "?"
 will show all suggestions possible.
 
-{{% notice tip "VQL suggestions are context sensitive" %}}
+{{% notice note "VQL suggestions are context sensitive" %}}
 
-Suggestions are context sensisive, so VQL plugins which can only
+Suggestions are context sensitive, so VQL plugins which can only
 appear after a `FROM` clause will only be suggested when the cursor
 appears are FROM.
 
@@ -74,3 +74,28 @@ SELECT * FROM info()
 ```
 
 ![Basic query](basic.png)
+
+
+{{% notice tip "Viewing the notebook in full screen" %}}
+
+The notebook may be switched into full screen to better emulate a full
+notebook. With this setting, the notebook takes up the entire width of
+the screen. You can switch back to the paned view by clicking on the
+collapse button at the top right of the screen.
+
+![Full screen notebook](fullscreen.png)
+
+{{% /notice %}}
+
+
+## Hunt and Flow notebooks
+
+Notebooks are an excellent medium to run arbitrary VQL queries. Much
+of the time, these queries are used to post process the results from
+collections or hunts.
+
+Therefore Velociraptor automatically creates a `hunt notebook` for
+each hunt and a `flow notebook` for each collection. Let's see this
+feature in action. I will collect the `Windows.Timeline.Prefetch`
+artifact that will build a timeline of the prefetch files on the
+endpoint.

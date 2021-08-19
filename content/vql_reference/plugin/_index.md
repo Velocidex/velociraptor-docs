@@ -36,8 +36,15 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 ## chain
 <span class='vql_type pull-right'>Plugin</span>
 
-Chain the output of several queries into the same table. This plugin
-takes any args and chains them.
+Chain the output of several queries into the same table.
+
+This plugin takes a number of queries and joins their output into
+the same table.
+
+You can provide the `async=TRUE` parameter to run the queries in
+parallel. This is needed when queries are event queries that never
+terminate. You can use this property to collect the output from
+multiple event plugins into the same artifact output.
 
 ### Example
 
@@ -46,8 +53,9 @@ the second query.
 
 ```sql
 SELECT * FROM chain(
-a={ SELECT ...},
-b={ SELECT ...})
+  a={ SELECT ...},
+  b={ SELECT ...},
+  async=TRUE)
 ```
 
 
@@ -60,6 +68,11 @@ b={ SELECT ...})
 <span class='vql_type pull-right'>Plugin</span>
 
 Collect artifacts into a local file.
+
+This plugin is essentially the same as the `velociraptor artifacts
+collect --output file.zip` command. It will collect the artifacts
+into a zip file.
+
 
 
 
@@ -118,9 +131,11 @@ commands to collect their output though.
 
 We do not actually transfer the external program to the system
 automatically. If you need to run programs which are not usually
-installed (e.g. Sysinternal's autoruns.exe) you will need to map them
-from a share (requiring direct access to the AD domain) or download
-them using the `http_client()` plugin.
+installed (e.g. Sysinternal's autoruns.exe) you will need to use
+Velociraptor's external tools feature to deliver and manage the
+tools on the client.
+
+https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
 
 
 
@@ -141,6 +156,7 @@ length|Size of buffer to capture output per row.|int64
 ## filesystems
 <span class='vql_type pull-right'>Plugin</span>
 
+Enumerates mounted filesystems.
 
 
 
@@ -171,6 +187,9 @@ Name||string
 
 Iterate over a list.
 
+DEPRECATED - use foreach() instead.
+
+
 
 
 <div class="vqlargs"></div>
@@ -190,6 +209,19 @@ query|Run this query over the item.|StoredQuery
 <span class='vql_type pull-right'>Plugin</span>
 
 Executes 'query' once for each row in the 'row' query.
+
+The columns in row will be stored in the scope that is used to
+evaluate the query therefore the query may refer to the results
+from the `row` query.
+
+Foreach in VQL is essentially the same as an SQL JOIN operator but
+much simpler to use.
+
+If the `workers` parameter is specified, the plugin will spawn
+this many workers and evaluate the `query` query in each worker
+concurrently if possible. It is safe to use a large number here
+(say 100) to utilize all available cores.
+
 
 
 
@@ -283,6 +315,9 @@ nosymlink|If set we do not follow symlinks.|bool
 
 Search a file for keywords.
 
+DEPRECATED: Use `yara()` instead.
+
+
 
 
 <div class="vqlargs"></div>
@@ -373,6 +408,13 @@ externalip service.
 SELECT Content as IP from http_client(url='http://www.myexternalip.com/raw')
 ```
 
+You can use this plugin to download file contents by passing the
+`tempfile_extension` parameter. In this case this plugin will
+create a new temp file with the speicfied extension, write the
+content of the HTTP request into it and then emit a row with
+`Content` being the name of the file. The file will be
+automatically removed when the query ends.
+
 
 
 
@@ -447,6 +489,9 @@ certain OS or versions.
 <span class='vql_type pull-right'>Function</span>
 
 Truncate to an integer.
+
+If provided a string, the function will try to parse it into an integer.
+
 
 
 
@@ -678,6 +723,9 @@ file|The file to upload|string (required)
 name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
 mtime|Modified time to record|Any
+atime|Access time to record|Any
+ctime|Change time to record|Any
+btime|Birth time to record|Any
 
 
 

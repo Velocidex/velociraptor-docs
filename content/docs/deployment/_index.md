@@ -2,10 +2,14 @@
 title: "Deployment"
 date: 2021-06-09T03:52:24Z
 draft: false
-weight: 2
+weight: 10
 ---
 
-You can deploy full-scale Velociraptor using either the [SSL-Self Signed](self-signed) or [Cloud Deployment](cloud) method, or set up a Velolicraptor environment on your local machine for testing environment. For more information, see [Instant Velociraptor](#instant-velociraptor).
+You can deploy full-scale Velociraptor using either the [SSL-Self
+Signed]({{< relref "self-signed" >}}) or [Cloud Deployment]({{< relref
+"cloud" >}}) method, or set up a Velolicraptor environment on your
+local machine for testing environment. For more information, see
+[Instant Velociraptor](#instant-velociraptor).
 
 ## Deployment Milestones
 

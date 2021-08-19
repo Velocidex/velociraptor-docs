@@ -48,7 +48,7 @@ Will return a single row with Users being an array of names.
 ## atoi
 <span class='vql_type pull-right'>Function</span>
 
-Convert a string to an int.
+Convert a string to an integer.
 
 
 
@@ -102,7 +102,8 @@ string|A string to decode|string (required)
 ## basename
 <span class='vql_type pull-right'>Function</span>
 
-Return the basename of the path.
+Return the basename of the path. For example basename(path="/foo/bar") -> "bar"
+
 
 
 
@@ -121,7 +122,27 @@ sep|Separator to use (default /)|string
 ## cache
 <span class='vql_type pull-right'>Function</span>
 
-Creates a cache object
+Creates a cache object.
+
+A Cache is a data structure which is used to speed up calculating
+data by keeping it's value in memory. A cache is essentially a key
+value store - when the key is accessed, the function will be
+calculated producing a value. If the key is accessed again, the
+value is returned from the cache without calculating it again.
+
+For example consider the following:
+
+```vql
+    LET get_pid_query(Lpid) =
+       SELECT Pid, Ppid, Name FROM pslist(pid=Lpid)
+
+    SELECT cache(func=get_pid_query(Lpid=Pid), key=str(str=Pid))
+    FROM ....
+```
+
+The cache will ensure that get_pid_query() is only called once per
+unique Pid by comparing the key against the internal memory store.
+
 
 
 
@@ -144,6 +165,22 @@ period|The latest age of the cache.|int64
 
 Copy a file.
 
+The source file can use any accessor - for example one can copy
+the $MFT using the ntfs accessor to a regular file. Another
+example is to extract a file from a zip file using the `zip`
+accessor into a file on disk.
+
+This function can also be used to create new files with prescribed
+content - for example:
+
+```vql
+SELECT copy(filename="Hello world", accessor="data", dest="C:/hi.txt")
+FROM scope()
+```
+
+NOTE: Sparse files are padded out
+
+
 
 
 <div class="vqlargs"></div>
@@ -154,6 +191,7 @@ filename|The file to copy from.|string (required)
 accessor|The accessor to use|string
 dest|The destination file to write.|string (required)
 permissions|Required permissions (e.g. 'x').|string
+append|If true we append to the target file otherwise truncate it|bool
 
 
 
@@ -164,6 +202,19 @@ permissions|Required permissions (e.g. 'x').|string
 <span class='vql_type pull-right'>Function</span>
 
 Counts the items.
+
+This function is an aggregation function that counts the number of
+times it is evaluated per group by context. It is useful in a
+GROUP BY clause to count the number of items in each group.
+
+You can also use it in a regular query to produce a row
+count. NOTE: When used in this way it only counts the total number
+of rows that are actually evaluated (i.e. not filtered out) due to
+the lazy evaluation property of VQL columns.
+
+For a full discussion of aggregate functions see
+https://docs.velociraptor.app/docs/vql/#aggregate-functions
+
 
 
 
@@ -183,6 +234,17 @@ items|Not used anymore|Any
 
 Construct a dict from arbitrary keyword args.
 
+This function creates a dictionary (a key/value map). NOTE: In VQL
+dictionaries always have string keys. Sometimes key names contain
+special characters like dots etc, in that case you can use
+backticks to escape the name. For example:
+
+```vql
+SELECT dict(Foo="Bar", `Name.With.Dots`="Baz")
+FROM scope()
+```
+
+
 
 
 <div class="vql_item"></div>
@@ -192,6 +254,11 @@ Construct a dict from arbitrary keyword args.
 <span class='vql_type pull-right'>Function</span>
 
 Return the directory path.
+
+For example direname(path="/usr/bin/ls") -> "/usr/bin"
+
+Related: basename()
+
 
 
 
@@ -231,6 +298,14 @@ type||string (required)
 
 Collect all the items in each group by bin.
 
+This is an aggregate function that keeps track of all elements in
+a GROUP BY group.
+
+NOTE: Use this function carefully as memory use can be large. It
+keeps a copy of every element in the group and that can be very
+large for large result sets.
+
+
 
 
 <div class="vqlargs"></div>
@@ -248,6 +323,7 @@ items|Not used anymore|Any
 <span class='vql_type pull-right'>Function</span>
 
 Get an environment variable.
+
 
 
 
@@ -273,6 +349,21 @@ they typically contain environment strings. Velociraptor does not
 automatically expand such values since environment variables typically
 depend on the specific user account which reads the registry value
 (different user accounts can have different environment variables).
+
+This function uses the Golang standard for expanding variables
+(using $varname ). On Windows, we also support using the Windows
+notation with % before and after the variable name.
+
+```vql
+SELECT expand(path="My Username is %USERNAME%")
+FROM scope()
+```
+
+NOTE: The environment strings are set per user and Velociraptor's
+own environment may not reflect any other process's
+environment. See `Windows.Forensics.ProcessInfo` for a
+forensically sound manner of obtaining the environment from any
+process.
 
 
 
@@ -313,6 +404,18 @@ regex|A regex to test each item|list of string (required)
 
 Format one or more items according to a format string.
 
+This function is essentially a wrapper around Golang's
+fmt.Sprintf() function and uses the same format specifiers.
+
+https://pkg.go.dev/fmt
+
+Of note the following are very useful:
+
+* The `% x` applied on strings will hex print the string
+* The `%T` will reveal the internal type of an object.
+* The `%v` is the general purpose stringifier and can apply to strings, ints etc.
+
+
 
 
 <div class="vqlargs"></div>
@@ -346,6 +449,12 @@ select get(item=[dict(foo=3), 2, 3, 4], member='0.foo') AS Foo from scope()
 ]
 ```
 
+Using the member parameter you can index inside a nested
+dictionary using dots to separate the layers.
+
+If you need to access a field with dots in its name, you can use
+the field parameter which simply fetches the named field.
+
 
 
 
@@ -366,7 +475,10 @@ default||Any
 ## getpid
 <span class='vql_type pull-right'>Function</span>
 
-Returns the current pid of the process.
+Returns the current pid of the Velociraptor process.
+
+This is typically used to exclude analysis from our own process.
+
 
 
 
@@ -405,7 +517,7 @@ that involve stored queries (i.e. queries stored using the `LET`
 keyword). These queries will not be evaluated if they are not needed.
 
 This allows a query to cheaply branch. For example, if a parameter is
-given, then perform hash or upload to the server. See the
+given, then perform hash or upload to the server.
 
 
 
@@ -427,6 +539,10 @@ else||LazyExpr
 <span class='vql_type pull-right'>Function</span>
 
 Iterate over dict members producing _key and _value columns
+
+This can be used to filter dict items by feeding the results to
+`to_dict()`
+
 
 
 
