@@ -2,14 +2,16 @@ name: HashRunKeys
 description: |
     Iterate over all the run keys and locate their binary then hash it.
 
-    #windows #registry #detection
+    Tags: #windows #registry #detection
 
 parameters:
   - name: runKeys
     default: |
-        HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Run\*
+      HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Run\*
+
   - name: pathRegex
     type: hidden
+
     # Pick the first part - either quoted or not.
     default: >-
       (^"(?P<quoted_path>[^"]+)"|(?P<unquoted_path>^[^ ]+))
@@ -17,18 +19,18 @@ parameters:
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
-    queries:
-      - LET paths = SELECT FullPath,Name, Data.value AS Value,
+    query: |
+      LET paths = SELECT FullPath,Name, Data.value AS Value,
                parse_string_with_regex(string=Data.value,
                                        regex=pathRegex) as regData
-        FROM glob(globs=split(string=runKeys, sep="[, \\n]+"),
-                  accessor="reg")
-        WHERE Data.value
+      FROM glob(globs=split(string=runKeys, sep="[, \\n]+"),
+                accessor="reg")
+      WHERE Data.value
 
-        # Handle some variations we see in the value:
-        # system32\drivers\XXX.sys -> %systemRoot%\System32\
-        # \SystemRoot\ -> %SystemRoot%\
-      - LET normalized = SELECT *,
+      -- Handle some variations we see in the value:
+      -- system32\drivers\XXX.sys -> %systemRoot%\System32\
+      -- \SystemRoot\ -> %SystemRoot%\
+      LET normalized = SELECT *,
            expand(path=
               regex_replace(re='(?i)^system32\\\\',
                             replace="%SystemRoot%\\system32\\",
@@ -36,8 +38,8 @@ sources:
                   source=regData.quoted_path + regData.unquoted_path,
                   re="^\\\\SystemRoot\\\\",
                   replace="%SystemRoot%\\"))) AS RealPath
-        FROM paths
+      FROM paths
 
-      - SELECT FullPath, Name, Value, RealPath,
+      SELECT FullPath, Name, Value, RealPath,
                hash(path=expand(path=RealPath)).SHA256 AS Hash
-        FROM normalized
+      FROM normalized
