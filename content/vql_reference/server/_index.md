@@ -1069,27 +1069,6 @@ n|Pick every n row from query.|int64 (required)
 <div class="vql_item"></div>
 
 
-## search
-<span class='vql_type pull-right'>Plugin</span>
-
-Search the server client's index.
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-query|The query string.|string
-offset|Skip this many results.|uint64
-limit|Only return limited results|uint64
-type|The type of search (e.g. 'key')|string
-
-
-
-<div class="vql_item"></div>
-
-
 ## server_metadata
 <span class='vql_type pull-right'>Function</span>
 

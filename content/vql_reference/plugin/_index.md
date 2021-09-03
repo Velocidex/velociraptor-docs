@@ -594,7 +594,7 @@ row.
 
 Arg | Description | Type
 ----|-------------|-----
-pid|A process ID to list. If not provided list all processes.|int64
+pid|A pid to list. If this is provided we are able to operate much faster by only opening a single process.|int64
 
 
 
@@ -838,23 +838,37 @@ Scan files using yara rules.
 The `yara()` plugin applies a signature consisting of multiple rules
 across files. You can read more about [yara rules](https://yara.readthedocs.io/en/v3.4.0/writingrules.html). The
 accessor is used to open the various files which allows this plugin to
-work across raw ntfs, zip members etc.
+work across raw ntfs, zip members or indeed process memory.
 
 Scanning proceeds by reading a block from the file, then applying the
 yara rule on the block. This will fail if the signature is split
 across block boundary. You can choose the block size to be
 appropriate.
 
-Note that because we are just scanning the file data, yara plugins
-like the pe plugin will not work. You can emulate all the yara plugins
-with VQL anyway (e.g. to test for pe headers)
+If the accessor is **not** specified we use the yara library to
+directly open the file itself without Velociraptor's accessor
+API. This allows Yara to mmap the file which has a number of
+benefits including:
 
-Typically the yara rule does not change for the life of the query, so
-we cache it to avoid having to recompile it each time. The `key`
-variable can be used to uniquely identify the cache key for the
-rule. If the `key` variable is not specified, we use the rule text
-itself to generate the cache key. It is recommended that the `key`
-parameter be specified because it makes it more efficient.
+  1. The ability to scan without reading in blocks - so a
+     signature matching the file header as well as a string deep
+     within the file works.
+
+  2. Various Yara extensions like the `pe` extension work allowing
+     rules that use such extensions to work properly.
+
+If we are not able to open the file (for example due to sharing
+violations), Velociraptor will automatically fall back to the ntfs
+accessor (on Windows) and will automatically switch to block by
+block scanning.
+
+Typically the yara rule does not change for the life of the query,
+so Velociraptor caches it to avoid having to recompile it each
+time. The `key` variable can be used to uniquely identify the
+cache key for the rule. If the `key` variable is not specified, we
+use the rule text itself to generate the cache key. It is
+recommended that the `key` parameter be specified because it makes
+it more efficient since we do not need to hash the rules each time.
 
 ### Shorthand rules
 

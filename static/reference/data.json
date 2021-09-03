@@ -194,85 +194,6 @@
         "category": "basic"
     },
     {
-        "name": "binary_parse",
-        "description": "Parse a binary string with profile based parser.",
-        "type": "Function",
-        "args": [
-            {
-                "name": "offset",
-                "type": "int64",
-                "description": "Start parsing from this offset."
-            },
-            {
-                "name": "string",
-                "type": "string",
-                "description": "The string to parse.",
-                "required": true
-            },
-            {
-                "name": "profile",
-                "type": "string",
-                "description": "The profile to use."
-            },
-            {
-                "name": "iterator",
-                "type": "string",
-                "description": "An iterator to begin with."
-            },
-            {
-                "name": "target",
-                "type": "string",
-                "description": "The target type to fetch."
-            }
-        ],
-        "category": "parsers"
-    },
-    {
-        "name": "binary_parse",
-        "description": "Parse binary files using a profile.",
-        "type": "Plugin",
-        "args": [
-            {
-                "name": "offset",
-                "type": "int64",
-                "description": "Start parsing from this offset"
-            },
-            {
-                "name": "file",
-                "type": "string",
-                "description": "Filename to parse",
-                "required": true
-            },
-            {
-                "name": "accessor",
-                "type": "string",
-                "description": "Accessor to use (e.g. ntfs, data)"
-            },
-            {
-                "name": "profile",
-                "type": "string",
-                "description": "Profile to use."
-            },
-            {
-                "name": "target",
-                "type": "string",
-                "description": "The target to fetch.",
-                "required": true
-            },
-            {
-                "name": "args",
-                "type": "vfilter.Any",
-                "description": "Args for the target class."
-            },
-            {
-                "name": "start",
-                "type": "string",
-                "description": "The initial field in the target to fetch."
-            }
-        ],
-        "category": "parsers"
-    },
-    {
         "name": "cache",
         "description": "Creates a cache object.",
         "type": "Function",
@@ -3170,7 +3091,7 @@
             {
                 "name": "pid",
                 "type": "int64",
-                "description": "A process ID to list. If not provided list all processes."
+                "description": "A pid to list. If this is provided we are able to operate much faster by only opening a single process."
             }
         ],
         "category": "plugin"
@@ -3505,34 +3426,6 @@
         "description": "The scope plugin returns the current scope as a single row.",
         "type": "Plugin",
         "category": "plugin"
-    },
-    {
-        "name": "search",
-        "description": "Search the server client's index.",
-        "type": "Plugin",
-        "args": [
-            {
-                "name": "query",
-                "type": "string",
-                "description": "The query string."
-            },
-            {
-                "name": "offset",
-                "type": "uint64",
-                "description": "Skip this many results."
-            },
-            {
-                "name": "limit",
-                "type": "uint64",
-                "description": "Only return limited results"
-            },
-            {
-                "name": "type",
-                "type": "string",
-                "description": "The type of search (e.g. 'key')"
-            }
-        ],
-        "category": "server"
     },
     {
         "name": "send_event",
@@ -4196,13 +4089,18 @@
                 "name": "us_style",
                 "type": "bool",
                 "description": "US Style Month/Day/Year"
+            },
+            {
+                "name": "format",
+                "type": "string",
+                "description": "A format specifier.\n\nThis format specifier is the same as golang's time.Parse.\n"
             }
         ],
         "category": "basic"
     },
     {
         "name": "to_dict",
-        "description": "Construct a dict from another object.",
+        "description": "Construct a dict from a query.",
         "type": "Function",
         "args": [
             {
@@ -4592,6 +4490,11 @@
                 "name": "basic_auth_password",
                 "type": "string",
                 "description": "The password to use in HTTP basic auth"
+            },
+            {
+                "name": "noverifycert",
+                "type": "bool",
+                "description": "Skip TLS Verification"
             }
         ],
         "category": "basic"

@@ -15,10 +15,10 @@ params:
   disableShortcutsTitle: true
   editURL: https://github.com/scudette/velociraptor-docs/edit/master/content/
   custom_css:
-    - css/atom-one-light.css
     - css/dark.css
     - css/syntax.css
     - css/light.css
+    - css/hljs.css
     - https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css
 
 markup:
