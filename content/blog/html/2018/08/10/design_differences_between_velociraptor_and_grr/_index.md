@@ -10,13 +10,10 @@ description:  |
 
 title: Design differences between Velociraptor and GRR
 linktitle: 20180810 Design differences between Velociraptor and GRR
-url: /blog/html/2018/08/10/design_differences_between_velociraptor_and_grr.html
 categories: ["Blog"]
-hidden: true
 ---
 
-Velociraptor Clients run full VQL queries
-=========================================
+### Velociraptor Clients run full VQL queries
 
 GRR\'s design started off with the assumption that the client should be
 minimalist and only support a few simple primitives (such as
@@ -155,7 +152,7 @@ have a separate worker and does not need to queue messages to it, the
 frontend immediately runs the flow which just writes the result into a
 single DB row - total database operations: 1 row written.
 
-![image](image1.png)
+![](image1.png)
 
 Eliminating the need for a separate worker process also simplifies
 deployment significantly. GRR needs to deploy separate frontends and

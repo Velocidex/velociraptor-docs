@@ -9,9 +9,7 @@ description:  |
   shared state.
 
 title: Hunting - What Velociraptors do best!
-url: /blog/html/2018/08/10/hunting_what_velociraptors_do_best.html
 categories: ["Blog"]
-hidden: true
 ---
 
 
@@ -21,7 +19,7 @@ processing efficiency.
 
 Now we hunt like this:
 
-![image](image4.jpg){.align-center}
+![](image4.jpg)
 
 How are hunts scheduled?
 ========================
@@ -79,15 +77,13 @@ they participated in and so they present this hunt\'s timestamp to the
 foreman. If a new hunt is available, the foreman can immediately launch
 the CheckHuntCondition flow on the client.
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
 
 The clients themselves are actively keeping track of the hunts they
 participated in. This avoids the server having to check the client\'s DB
 record.
-:::
+
+{{% /notice %}}
 
 The CheckHuntCondition flow issues the client side VQL queries and then
 runs the server side query on the results. If the query matches (i.e.
@@ -109,7 +105,7 @@ queue to the completed queue or the results queue if the flow produced
 any results. We can observe how many clients exist in each queue using
 the GUI.
 
-![image](image2.png)
+![](image2.png)
 
 The flows that hunts launch arn the client. However, when they complete,
 a small record is made in the hunts\'s results queue pointing to the
@@ -117,7 +113,7 @@ flow. It is therefore possible to retrieve all results from the hunt
 from all client\'s. For example, the GUI allows downloading a zip file
 of all the results and files uploaded:
 
-![image](image7.png)
+![](image7.png)
 
 Since hunts invoke regular flows, and Velociraptor flows are much
 lighter than GRR\'s flows, hunts are much cheaper to run in terms of

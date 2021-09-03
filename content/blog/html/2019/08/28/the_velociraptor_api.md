@@ -8,8 +8,15 @@ description:  |
 
 title: The Velociraptor API and FUSE
 categories: ["Blog"]
-hidden: true
 ---
+
+{{% notice warning %}}
+
+This page is written about a very old version of Velociraptor and is
+retained for historical purposes. Currently the fuse feature was removed.
+
+{{% /notice %}}
+
 
 The Velociraptor GUI is very useful, but for the power user, the
 Velociraptor API provides a powerful mechanism to integrate and

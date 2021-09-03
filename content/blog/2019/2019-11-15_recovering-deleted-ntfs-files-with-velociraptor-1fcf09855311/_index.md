@@ -54,7 +54,10 @@ In this case the query took around 5 minutes to fully complete, the CPU load spi
 
 ![](../../img/1__HZsiiepiiL__PYUIz7zuHUA.png)
 
-> If the collection was taking too long or using up too many resource on the endpoint, I can always cancel it by clicking the “Stop” button in the **Collected Artifacts** GUI. Velociraptor will immediately abort the query on the endpoint when the collection is cancelled in the GUI.
+If the collection was taking too long or using up too many resource on
+the endpoint, I can always cancel it by clicking the “Stop” button in
+the **Collected Artifacts** GUI. Velociraptor will immediately abort
+the query on the endpoint when the collection is cancelled in the GUI.
 
 #### Viewing the results
 

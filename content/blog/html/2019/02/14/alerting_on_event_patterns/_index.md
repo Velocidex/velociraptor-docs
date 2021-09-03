@@ -4,9 +4,7 @@ description: "We have shown in earlier posts how Velociraptor uses VQL to define
 event queries that can detect specific conditions. These conditions
 can be used to create alerts and escalation actions."
 title: "Alerting on event patterns"
-url: /blog/html/2019/02/14/alerting_on_event_patterns.html
 categories: ["Blog"]
-hidden: true
 ---
 
 We have shown in earlier posts how Velociraptor uses VQL to define event

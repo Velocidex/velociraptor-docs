@@ -5,9 +5,7 @@ description: |
   Zealand Internet Engineering Task Force (NZITF) conference.
 
 title: Velociraptor training at NZITF
-url: /blog/html/2018/11/13/velociraptor_training_at_nzitf.html
 categories: ["Blog"]
-hidden: true
 ---
 
 # Velociraptor training at NZITF

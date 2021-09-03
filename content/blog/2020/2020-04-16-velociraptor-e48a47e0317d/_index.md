@@ -94,13 +94,13 @@ Searching for files is a very common operation which covers many of the common u
 
 ![](../../img/0hLC9MjRTfcS3MmyZ)
 
-While the** Windows.NTFS.MFT **artifact dumps all MFT entries from the endpoint, we can make this more surgical and specifically search for deleted executables. To do this we would need to modify the VQL query to add an additional filter.
+While the **Windows.NTFS.MFT** artifact dumps all MFT entries from the endpoint, we can make this more surgical and specifically search for deleted executables. To do this we would need to modify the VQL query to add an additional filter.
 
 Modifying or customizing an artifact is easy to do through the GUI. Simply search for the artifact in the “**View Artifacts**” screen, and then click the **“Modify Artifact”** button to bring up an editor allowing the YAML to be directly edited (Note that all customized artifacts, automatically receive the prefix “**Custom**” in their name setting them apart from curated artifacts).
 
 ![](../../img/0lVGMD5SpsDzt9beg)
 
-In the figure above we added the condition **“WHERE FileName =~ ‘.exe$’ AND NOT InUse”** to restrict output only to deleted executables. We now select this customized version and collect it on the endpoint as before. Since we have filtered only those executables which are deleted in this query, the result set is much smaller and somewhat quicker to calculate.** Figure 11** below shows a single binary was found on our test system still recoverable in unused MFT entry.
+In the figure above we added the condition **“WHERE FileName =~ ‘.exe$’ AND NOT InUse”** to restrict output only to deleted executables. We now select this customized version and collect it on the endpoint as before. Since we have filtered only those executables which are deleted in this query, the result set is much smaller and somewhat quicker to calculate. **Figure 11** below shows a single binary was found on our test system still recoverable in unused MFT entry.
 
 ![](../../img/0PVnSNZXUSeVkdoLy)
 
@@ -127,4 +127,7 @@ The type of analysis performed is driven by a flexible VQL query, written into a
 We opened this article by imagining a world where experienced forensic practitioners could transfer and encode their knowledge and experience into actionable artifacts. Velociraptor’s artifacts help to bring this vision to life — allowing experienced users to encode their workflow in VQL artifacts opens these techniques up to be used by other practitioners in a more consistent and automated fashion. We hope to inspire a vibrant community of VQL Artifact authors to facilitate exchange of experience, techniques and approaches between practitioners and researchers alike.
 
 Velociraptor is available under an open source license on [GitHub](https://github.com/Velocidex/velociraptor). You can download the latest Velociraptor release and use it immediately, or clone the source repository and contribute to the project. You can also contribute VQL snippets or artifacts directly to the project in order to share commonly used artifacts with the larger community.
-> About the author: Mike Cohen is a digital forensic researcher and senior software engineer. He has supported leading open-source DFIR projects including as a core developer of Volatility and lead developer of both Rekall and Google’s Grr Rapid Response. Mike has founded Velocidex in 2018 after working at Google for the previous 8 years in developing cutting edge DFIR tools. Velocidex is the company behind the Velociraptor open source endpoint visibility tool.
+
+{{% notice tip %}}
+About the author: Mike Cohen is a digital forensic researcher and senior software engineer. He has supported leading open-source DFIR projects including as a core developer of Volatility and lead developer of both Rekall and Google’s Grr Rapid Response. Mike has founded Velocidex in 2018 after working at Google for the previous 8 years in developing cutting edge DFIR tools. Velocidex is the company behind the Velociraptor open source endpoint visibility tool.
+{{% /notice %}}

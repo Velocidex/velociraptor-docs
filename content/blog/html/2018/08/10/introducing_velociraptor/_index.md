@@ -1,5 +1,5 @@
 ---
-date: 2018-02-09T04:10:06Z
+date: 2018-08-09T04:10:06Z
 description:  |
   At Velocidex we have been running open source endpoint monitoring
   tools for our clients in order to detect and respond to incidents.
@@ -7,10 +7,8 @@ description:  |
   DFIR tool.
 
 title:  Introducing Velociraptor
-linktitle: 20180209 Introducing Velociraptor
-url: /blog/html/2018/08/10/introducing_velociraptor.html
+linktitle: 20180809 Introducing Velociraptor
 categories: ["Blog"]
-hidden: true
 ---
 
 Hunting and responding like a raptor!
@@ -28,35 +26,35 @@ on the shoulders of giants called Velociraptor.
 
 These are Velociraptor\'s design goals:
 
-> -   Focus on data collection. Velociraptor\'s primary use case is to
->     collect data and export it to other systems. Velociraptor does no
->     analysis itself and therefore has no need for a complex data
->     model.
-> -   Flexibility - Velociraptor can adapt easily to new requirements
->     without needing to redeploy either clients or servers. Using VQL
->     (Velocidex Query Language) provides flexibility in the type and
->     number of queries that are used to rapidly adapt to changing
->     requirements. VQL allows us to collect just the information needed
->     and no more in an adaptive way.
-> -   Remove abstractions. Velociraptor aims to be as simple to
->     understand as possible. The default data store simply stores files
->     in the file system which may be easily inspected by the user. No
->     special tooling is required to script or manage Velociraptor.
->     Reduce demand on the data store. Rather than increase the data
->     store requirements, we want to simplify the design to the point
->     that requirements on the data store are so low, one can run a
->     medium to large sized deployment with very few resources (down to
->     perhaps a single server machine). In fact the default data store
->     does not even use a database, but simply uses flat files.
-> -   Simplify everything! Velociraptor aims to be very simple to run
->     and administer. We remove a lot of the GRR functionality that we
->     dont find we use often. Velociraptor ships as a single, statically
->     linked executable which can perform all actions necessary for
->     deployers.
+ -   Focus on data collection. Velociraptor\'s primary use case is to
+     collect data and export it to other systems. Velociraptor does no
+     analysis itself and therefore has no need for a complex data
+     model.
+ -   Flexibility - Velociraptor can adapt easily to new requirements
+     without needing to redeploy either clients or servers. Using VQL
+     (Velocidex Query Language) provides flexibility in the type and
+     number of queries that are used to rapidly adapt to changing
+     requirements. VQL allows us to collect just the information needed
+     and no more in an adaptive way.
+ -   Remove abstractions. Velociraptor aims to be as simple to
+     understand as possible. The default data store simply stores files
+     in the file system which may be easily inspected by the user. No
+     special tooling is required to script or manage Velociraptor.
+     Reduce demand on the data store. Rather than increase the data
+     store requirements, we want to simplify the design to the point
+     that requirements on the data store are so low, one can run a
+     medium to large sized deployment with very few resources (down to
+     perhaps a single server machine). In fact the default data store
+     does not even use a database, but simply uses flat files.
+ -   Simplify everything! Velociraptor aims to be very simple to run
+     and administer. We remove a lot of the GRR functionality that we
+     dont find we use often. Velociraptor ships as a single, statically
+     linked executable which can perform all actions necessary for
+     deployers.
 
 In short we really wanted something like this:
 
-![image](image5.png){.align-center}
+![](image5.png)
 
 Quick Start
 ===========
@@ -171,7 +169,7 @@ INFO:2018/08/08 15:39:09 Frontend is ready to handle client requests at 127.0.0.
 You can now verify the server is working by connecting to the GUI with a
 web browser:
 
-![image](image10.png)
+![](image10.png)
 
 Running the client
 ------------------
@@ -210,7 +208,7 @@ through a number of steps:
     a number of VQL queries.
 4.  We can now search for the client using the GUI search box.
 
-![image](image8.png)
+![](image8.png)
 
 Introducing Velociraptor
 ------------------------
@@ -245,4 +243,4 @@ The near term roadmap is:
 Please play with it and send feedback to
 <velociraptor-discuss@googlegroups.com>
 
-![image](image11.png){.align-center}
+![](image11.png)

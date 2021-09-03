@@ -1,5 +1,5 @@
 ---
-date: 2019-02-09T04:10:06Z
+date: 2019-09-03T04:10:06Z
 description: |
  In the latest point release of the Velociraptor IR tool (0.2.3) we
  have improved upon GRR's client communications protocol to deliver a
@@ -9,17 +9,14 @@ description: |
  communication.
 
 title: Velociraptor's client communications
-url: /blog/html/2018/09/03/velociraptor_s_client_communications.html
 categories: ["Blog"]
-hidden: true
 ---
 
-How does the GRR client communicate?
-====================================
+### How does the GRR client communicate?
 
 The GRR client protocol is depicted below.
 
-![image](comms1.png)
+![](comms1.png)
 
 Due to network realities such as NAT, firewalls etc, it is not possible
 to directly connect to the client, so GRR relies on the client
@@ -135,7 +132,7 @@ slowly (there is always some pad data flowing so none of the TCP or HTTP
 timers are triggered since the connection is always active). This is
 illustrated in the diagram below.
 
-![image](comms2.png)
+![](comms2.png)
 
 This scheme has the two main advantages:
 
@@ -174,7 +171,7 @@ and sends client requests as soon as new flows are launched.
 This scheme allows a full duplex, responsive communication protocol,
 with no polling overheads. This can be seen in the diagram below.
 
-![image](comms3.png)
+![](comms3.png)
 
 The client establishes the reader channel by sending a HTTP POST request
 to the reader handler. The server checks for any messages for the

@@ -6,19 +6,15 @@ description: |
   Powershell Scripts"
 
 title: Detecting powershell persistence with Velociraptor and Yara
-url: /blog/html/2018/09/29/detecting_powershell_persistence_with_velociraptor_and_yara.html
 categories: ["Blog"]
-hidden: true
 ---
 
-::: {.admonition}
-Update
+{{% notice warning %}}
 
-As of the latest release of Velociraptor we have raw registry parsing
-which can also be done via raw NTFS to get around file locking. It is no
-longer necessary to run yara scans and parse with regripper as shown
-here.
-:::
+This page is written about a very old version of Velociraptor and is
+retained for historical purposes.
+
+{{% /notice %}}
 
 I was watching the SANS DFIR Summit 2018 videos on youtube and came
 across Mari DeGrazia\'s talk titled [\"Finding and Decoding Malicious

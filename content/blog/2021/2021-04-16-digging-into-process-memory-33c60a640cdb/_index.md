@@ -58,8 +58,10 @@ Recently I read Adam Chester’s [blog post](https://blog.xpnsec.com/hiding-your
 
 When the `COMPlus_ETWEnabled` environment variable is set to “0”, process hacker will be unable to inspect the loaded assemblies, since it relies on ETW support to do so and this is disabled within the running powershell process.
 
-While this anti-detection technique is very simple for attackers to implement — they simply set an environment variable before launching the target binary, it should be very easy for us to detect it, using the following heuristics
-> Iterate over all processes, and if any process has an environment variable starting with “COMPlus_” then it is suspicious.
+While this anti-detection technique is very simple for attackers to implement — they simply set an environment variable before launching the target binary, it should be very easy for us to detect it, using the following heuristics:
+
+* Iterate over all processes, and
+* if any process has an environment variable starting with “COMPlus_” then it is suspicious.
 
 Our VQL can take advantage of the existing `Windows.Forensics.ProcessInfo` artifact and simply inspect each process’s environment dictionary
 

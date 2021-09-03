@@ -49,13 +49,15 @@ When a user selects an event in the Event Viewer, the application reads the **Pr
 
 Next the event viewer consults the registry at the key **HKEY\_LOCAL\_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Security\\Microsoft-Windows-Security-Auditing** and reads the value **EventMessageFile**.
 
-That value is the location of a dll which contains the messages for this provider. On my system, the DLL is located at **%SystemRoot%\\system32\\adtschema.dll (**Note that many DLLs use localizations and so the dll could be located in MUI files).
+That value is the location of a dll which contains the messages for this provider. On my system, the DLL is located at **%SystemRoot%\\system32\\adtschema.dll** (Note that many DLLs use localizations and so the dll could be located in MUI files).
 
 ![](../../img/1__SLH4iiByHYIz8HyJyOxAEw.png)
 
 The DLL has a resource section with a MESSAGE\_TABLE type. The event viewer then uses this to extract the message which looks like:
 
-> Special privileges assigned to new logon.%n%nSubject:%n%tSecurity ID:%t%t%1%n%tAccount Name:%t%t%2%n%tAccount Domain:%t%t%3%n%tLogon ID:%t%t%4%n%nPrivileges:%t%t%5
+```sh
+Special privileges assigned to new logon.%n%nSubject:%n%tSecurity ID:%t%t%1%n%tAccount Name:%t%t%2%n%tAccount Domain:%t%t%3%n%tLogon ID:%t%t%4%n%nPrivileges:%t%t%5
+```
 
 The event viewer then interpolates the EventData items into the message by their position — for example %1 is replaced with **SubjectUserSid** etc. Additionally %t is a tab and %n is a new line.
 
@@ -81,7 +83,9 @@ Velociraptor can interpolate and attach the event message to every log message i
 
 In the above we see the result of the simple VQL query:
 
-**SELECT** **\*** **FROM** **parse\_evtx(** filename**\=**'c:/Windows/System32/Winevt/logs/Security.evtx'**)**
+```vql
+SELECT * FROM parse_evtx(filename='c:/Windows/System32/Winevt/logs/Security.evtx')
+```
 
 You can see an additional field now, called **Message** containing the event message with the Event Data interpolated into it. This provides a lot of context around what the event is supposed to do.
 

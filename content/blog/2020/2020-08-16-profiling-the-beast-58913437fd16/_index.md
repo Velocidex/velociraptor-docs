@@ -33,7 +33,10 @@ Similarly, the server also collects telemetry periodically, which you can see on
 Velociraptor is written in Golang and one of the more useful (if not well advertised) feature of the Go runtime is the ability to profile the running program. Most programming languages have mechanisms to profile running code and collect information about memory allocations, backtraces etc — however in many programming languages, this information can only be collected by running a special debug build of the binary.
 
 What makes Golang different is that **every binary** has the ability to profile itself out of the box. Obviously this capability is disabled by default (since profiling itself has a non-trivial runtime cost) but it can simply be switched on at runtime for a limited time and then switched off. This means that we do not need to restart the binary in debug mode, nor replace a running binary with a special debug build! As a developer, I can not overstate the usefulness of this!
-> # If we see a Golang process running in production and want to inspect its inner working all we need to do is enable profiling for a short time (say 30 seconds) capturing execution traces **without restarting or otherwise affecting the running process!**
+
+{{% notice note %}}
+If we see a Golang process running in production and want to inspect its inner working all we need to do is enable profiling for a short time (say 30 seconds) capturing execution traces **without restarting or otherwise affecting the running process!**
+{{% /notice %}}
 
 Velociraptor exposes this functionality by simply offering the **profile()** VQL function. This is then utilized by two artifacts:
 
@@ -68,8 +71,11 @@ By default the profile is taken over 30 seconds, after which it is uploaded to t
 ![](../../img/17ZeuBYe5dIV_LATRLZkUaw.png)
 
 After downloading the profile file, I convert it to a callgrind format, so it can be viewed by my favourite profile inspector [kcachegrind](https://kcachegrind.github.io/html/Home.html) (there are other similar viewers and the Golang one is [called pprof](https://github.com/google/pprof)).
-> $ go tool pprof -callgrind -output=profile.grind profile.bin
+
+```sh
+$ go tool pprof -callgrind -output=profile.grind profile.bin
 $ kcachegrind profile.grind
+```
 
 ![](../../img/1GFekz4L0I4hm-LzR6EZbCQ.png)
 
@@ -78,7 +84,10 @@ The [kcachegrind](https://kcachegrind.github.io/html/Home.html) tool allows me t
 ![](../../img/1VV4GJRhUlO2rnN8zG1ahKA.png)
 
 Scrolling the call graph in this case shows that the os.Open() function spends about 35% of the time. Since os.Open() is not a part of our own code, it shows we end up spending most of our time in the operating system. In fact 35% of our time is spent waiting for Windows Defender’s real time scanner (which blocks os.Open for us as it scans the files on demand — Windows defender is a huge performance killer.).
-> # Our job as Velociraptor developers is to spend as little time as possible in our own code relative to the time spent in the operating system or external libraries.
+
+{{% notice note %}}
+Our job as Velociraptor developers is to spend as little time as possible in our own code relative to the time spent in the operating system or external libraries.
+{{% /notice %}}
 
 The function’s source code is shown in the top right pane and we see how much time is spent at each line of code. This makes it easy to see what function calls end up taking the most time and guides our thinking into possible optimizations
 
@@ -95,6 +104,9 @@ By exposing debugging and profiling tools in an easy way to end users, developer
 The profiling traces are typically much smaller than full memory core dumps and usually do not contain sensitive information. Profiles only contain high level statistics about memory and CPU usage (For example the CPU profile we saw in this article are obtained by statistic analysis of[ sampled backtrace](https://golang.org/pkg/net/http/pprof/)s).
 
 We find this extremely valuable in the Velociraptor project, but the same approach can be replicated by any Golang project:
-> # By exposing profiling and debugging information to our users, in running production binaries we are able to easily get high value visibility into hard to reproduce error conditions and therefore be more effective in isolating and fixing bugs.
+
+{{% notice note %}}
+By exposing profiling and debugging information to our users, in running production binaries we are able to easily get high value visibility into hard to reproduce error conditions and therefore be more effective in isolating and fixing bugs.
+{{% /notice %}}
 
 If you are interested in looking inside Velociraptor’s inner workings, check out the[ Github](https://github.com/Velocidex/velociraptor) page and join us on Discord and our mailing list.

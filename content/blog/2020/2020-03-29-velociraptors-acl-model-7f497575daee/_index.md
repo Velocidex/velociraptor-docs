@@ -6,8 +6,6 @@ categories: []
 keywords: []
 ---
 
-![Photo by [Jose Fontano](https://unsplash.com/@josenothose?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&utm_medium=referral)](https://cdn-images-1.medium.com/max/11762/0*1EbyprZe15SmrDlP?width=600px)*Photo by [Jose Fontano](https://unsplash.com/@josenothose?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&utm_medium=referral)*
-
 Velociraptor is a very powerful tool with a great deal of privileged access to many endpoints. Velociraptor clients typically run with System or root level access on endpoints, in order to have low level access to the operating system. It follows that administrators on Velociraptor also have privileged access to the entire domain as well — they are equivalent to domain administrators.
 
 For small trusted teams of investigators this is probably fine, however as Velociraptor is being more widely deployed in enterprise environments it has become clear that we needed a more elaborate role based ACL model.
@@ -146,9 +144,9 @@ This program only needs the following permissions
 
 First I will create an API config file for this program, then grant the API client the minimum required permissions.
 
-```
-> velociraptor config api_client api_config.yaml --name PythonPostProcess
-> velociraptor acl grant PythonPostProcess ‘{“any_query”:true,”collect_server”:true,”read_results”:true}’
+```sh
+velociraptor config api_client api_config.yaml --name PythonPostProcess
+velociraptor acl grant PythonPostProcess ‘{“any_query”:true,”collect_server”:true,”read_results”:true}’
 ```
 
 Note the **acl grant** command grants an ACL policy object to the specific username or API keys name. The policy object is simply a JSON encoded object with the required permission set to true.

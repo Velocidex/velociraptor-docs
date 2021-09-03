@@ -8,9 +8,7 @@ description:  |
   temporarily to collect specific artifacts.
 
 title: Agentless hunting with Velociraptor
-url: /blog/html/2019/03/02/agentless_hunting_with_velociraptor.html
 categories: ["Blog"]
-hidden: true
 ---
 
 
@@ -62,7 +60,7 @@ We create a directory on the server (I will create it on the domain
 controller but you should probably not do that - find another machine to
 host the share).
 
-![image](1.png)
+![](1.png)
 
 I created a directory C:\\\\Users\\\\Deployment and ensured that it is
 read only. I have shared the directory as the name Deployment.
@@ -72,7 +70,7 @@ directory and verify that I can run the binary from the network share.
 The binary should be accessible via
 \`\\\\\\\\DC\\Deployment\\velociraptor.exe\`:
 
-![image](2.png)
+![](2.png)
 
 Creating the group policy object.
 ---------------------------------
@@ -81,15 +79,15 @@ Next we create the group policy object which forces all domain connected
 machines to run the Velociraptor client. We use the Group Policy
 Management Console:
 
-![image](3.png)
+![](3.png)
 
 Select the OU or the entire domain and click \"Create New GPO\":
 
-![image](4.png)
+![](4.png)
 
 Now right click the GPO object and select \"Edit\":
 
-![image](5.png)
+![](5.png)
 
 We will create a new scheduled task. Rather than schedule it at a
 particular time, we will select to run it immediately. This will force
@@ -97,7 +95,7 @@ the command to run as soon as the endpoint updates its group policy
 settings (i.e. we do not want to wait for the next reboot of the
 endpoint).
 
-![image](6.png)
+![](6.png)
 
 Next we give the task a name and a description. In order to allow
 Velociraptor to access raw devices (e.g. to collect memory or NTFS
@@ -106,7 +104,7 @@ NT\_AUTHORITY\\\\SYSTEM privileges, and run without any user being
 logged on. It is also worth ticking the \"hidden\" checkbox here to
 prevent a console box from appearing.
 
-![image](7.png)
+![](7.png)
 
 Next click the Actions tab and add a new action. This is where we launch
 the Velociraptor client. The program will simply be launched from the
@@ -115,14 +113,14 @@ give it the arguments allowing it to read the provided configuration
 file (i.e.
 \--config \\\\\\\\\\\\\\\\DC\\\\Deployment\\\\client.config.yaml client -v).
 
-![image](8.png)
+![](8.png)
 
 In the setting tab we can control how long we want the client to run.
 For a quick hunt this may be an hour or two but maybe for a DFIR
 engagement it might be a few days. The GPO will ensure the client is
 killed after the allotted time.
 
-![image](9.png)
+![](9.png)
 
 Once the GPO is installed it becomes active for all domain machines. You
 can now schedule any hunts you wish using the Velociraptor GUI. When a
@@ -135,7 +133,7 @@ installed anything on the endpoint.
 You can force a group policy update by running the gpupdate program. Now
 you can verify that Velociraptor is running:
 
-![image](10.png)
+![](10.png)
 
 Persistence
 -----------

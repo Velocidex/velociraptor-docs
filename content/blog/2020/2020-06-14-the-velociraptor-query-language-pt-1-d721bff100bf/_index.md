@@ -12,7 +12,10 @@ keywords: []
 ![](../../img/14hy_vlttNoFFf-sr_Ei0tw.jpeg)
 
 Velociraptor’s query language is central to the operation of Velociraptor. We find it being used in querying endpoints, collecting forensic artifacts and endpoint state and even in post processing data on the server.
-> # Velociraptor is ultimately just a VQL query evaluation engine!
+
+{{% notice note %}}
+Velociraptor is ultimately just a VQL query evaluation engine!
+{{% /notice %}}
 
 Why should you know more about VQL? Users do not actually need to know VQL to simply collect DFIR artifacts from endpoints, hunt for malware or remediate an infection. The Velociraptor GUI is powerful and provides expert DFIR knowledge at the tip of your fingerprints through built in and community contributed artifact definitions.
 
@@ -49,7 +52,10 @@ When you create a new notebook, the first cell wil be of type markdown. You can 
 A VQL cell allows one to simply write VQL queries into the notebook. Note that VQL queries in the notebook are actually running on the server itself. It is therefore possible to control and automate the server using VQL (we will see this in a later article).
 
 For now simply write the following query and click the save icon.
-> # SELECT * FROM info()
+
+```vql
+SELECT * FROM info()
+```
 
 ![](../../img/1VIwIVaEUGr16yQlEUy-K9A.png)
 

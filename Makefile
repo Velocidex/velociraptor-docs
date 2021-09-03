@@ -10,5 +10,5 @@ blog:
 
 
 highlight_js:
-	cd ../highlight.js && node tools/build.js -t browser python yaml sql json bash powershell vql
+	cd ../highlight.js && node tools/build.js -t browser python yaml sql json bash powershell vql text
 	cp ../highlight.js/build/highlight.min.js static/js/

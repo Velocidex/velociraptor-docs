@@ -15,7 +15,13 @@ However, while OSQuery provides a query engine with many plugins exposing machin
 While, Velociraptor was designed to be a scalable DFIR tool that is easy to deploy (typically [deployed in minutes](https://www.youtube.com/watch?v=l1_sKDmNWS4&t=550s)). It is typically more complicated to deploy OSQuery at scale, use it to hunt widely and post-process the results.
 
 Nevertheless, OSQuery has been around for a long time, and there are many existing queries that could be used immediately, without needing to convert then to VQL first.
-> # Velociraptor and OSQuery are not an either or choice — you can use them both at the same time!
+
+{{% notice tip %}}
+
+Velociraptor and OSQuery are not an either or choice — you can use
+them both at the same time!
+
+{{% /notice %}}
 
 In recent releases Velociraptor directly integrates OSQuery on all supported platforms — so you can issue the same OSQuery query you always did and it would work exactly the same within Velociraptor. This blog post explains how the integration is done, and we go though a typical example to how Velociraptor can use OSQuery to hunt through many machines quickly.
 
