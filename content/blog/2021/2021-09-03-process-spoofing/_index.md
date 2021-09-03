@@ -1,5 +1,5 @@
 ---
-title: "ETW Pt2 Process Parent Spoofing"
+title: "ETW Part 2: Process Parent Spoofing"
 description: |
    This post takes another look at Event Tracing for Windows and how it can be used to detect a common attacker subversion technique.
 
@@ -8,6 +8,7 @@ tags:
  - VQL
  - ETW
 
+author: "Mike Cohen <mike@velocidex.com>"
 date: 2021-09-03
 noindex: true
 ---
@@ -169,6 +170,14 @@ processing on the backend to scale to many thousands of monitored
 endpoints, as the server only sees high value, low volume events. We
 are essentially using the end point itself to create a de-centralized
 detection engine for a fast and scalable alerting system.
+
+Unfortunately an ETW watcher must be running at the time the process
+is created, to be able to identify the spoofed parent. I am not
+currently aware of a way to detect that an existing process's reported
+parent is not correct (Please let me know if you know of a way!). This
+means that simply collecting information at a point in time after the
+process is started (as in a Velociraptor `pslist` hunt for example)
+does not reveal this information easily.
 
 In the next blog post in this series we will be looking at how ETW can
 be abused by malware and some of the limitations around ETW.

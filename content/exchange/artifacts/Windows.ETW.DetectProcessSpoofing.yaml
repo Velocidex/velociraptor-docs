@@ -1,0 +1,49 @@
+name: Windows.ETW.DetectProcessSpoofing
+description: |
+   Detects Process parent spoofing such as SelectMyParent.exe, Cobalt
+   Strike PPID spoofing etc.
+
+reference:
+  - https://blog.f-secure.com/detecting-parent-pid-spoofing/
+  - https://www.youtube.com/watch?v=DOe7WTuJ1Ac
+
+type: CLIENT_EVENT
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- Create a FIFO for short lived processes
+      -- hold process logs in memory for 60 seconds.
+      LET RecentProcesses = SELECT * FROM fifo(query={
+         SELECT System.TimeStamp AS CreateTime,
+                EventData.ImageName AS Name,
+                int(int=EventData.ProcessID) AS Pid
+         FROM watch_etw(guid="{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}", any=0x10)
+         WHERE System.ID = 1
+      }, max_rows=1000, max_age=60)
+
+      -- Query it once to materialize the FIFO
+      LET _ <= SELECT * FROM RecentProcesses
+
+      LET GetProcessInfo(TargetPid) = SELECT * FROM switch(
+           -- First try to get the pid directly from pslist
+           a={
+              SELECT Name, Pid, CreateTime
+              FROM pslist(pid=TargetPid)
+           },
+           -- Failing this look in the FIFO for a recently started process.
+           b={
+              SELECT * FROM RecentProcesses
+              WHERE Pid = TargetPid
+              LIMIT 1
+           })
+
+      -- Enrich the event with real parent information.
+      SELECT System.TimeStamp AS Timestamp,
+             GetProcessInfo(TargetPid=System.ProcessID)[0] AS RealParent,
+             GetProcessInfo(TargetPid=int(int=EventData.ParentProcessID))[0] AS ClaimedParent,
+             System, EventData
+      FROM watch_etw(guid="{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}", any=0x10)
+      WHERE System.ID = 1 AND str(str=System.ProcessID) != EventData.ParentProcessID

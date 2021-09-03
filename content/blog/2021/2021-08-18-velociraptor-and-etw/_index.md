@@ -1,15 +1,15 @@
 ---
 title: Event Tracing for Windows Part 1
 description: |
-   This post takes another look at Event Tracing for Windows.
+   This post introduces ETW as an event source and examines how VQL can be used to harness the power of ETW.
 
 tags:
  - Detection
  - VQL
  - ETW
 
+author: "Mike Cohen <mike@velocidex.com>"
 date: 2021-09-02
-noindex: true
 ---
 
 ## Digging into Windows Internals
@@ -57,7 +57,7 @@ connects providers and consumers, so our first task is simply to find
 a provider that will provider relevant data.
 
 In this post we explore how you might develop new ETW based queries by
-discovering new providers and experiementing with novel detection
+discovering new providers and experimenting with novel detection
 rules.
 
 ETW is designed to be self documented via `manifest` files, so each

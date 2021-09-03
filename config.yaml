@@ -28,7 +28,7 @@ markup:
 
   highlight:
     noClasses: false
-    style: pygments
+    style: none
 
 menu:
   shortcuts:
