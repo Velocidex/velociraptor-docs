@@ -1,5 +1,189 @@
 [
     {
+        "title": "Windows.ETW.DetectProcessSpoofing",
+        "description": "Detects Process parent spoofing such as SelectMyParent.exe, Cobalt\nStrike PPID spoofing etc.\n",
+        "link": "/exchange/artifacts/pages/windows.etw.detectprocessspoofing",
+        "tags": [],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-09-03"
+    },
+    {
+        "title": "Windows.EventLogs.Chainsaw",
+        "description": "\nThis artifact leverages Chainsaw to enable usage of Sigma rules to faciliate detection within Windows Event Logs.\n\nFrom the project's description:\n\n\"Chainsaw provides a powerful \u2018first-response\u2019 capability to quickly identify threats within Windows event logs. \nIt offers a generic and fast method of searching through event logs for keywords, and by identifying threats using built-in detection logic and via support for Sigma detection rules.\"\n\nhttps://github.com/countercept/chainsaw\n",
+        "link": "/exchange/artifacts/pages/windows.eventlogs.chainsaw",
+        "tags": [],
+        "author": "Wes Lambert - @therealwlambert",
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-09-03"
+    },
+    {
+        "title": "Linux.Network.Netstat",
+        "description": "This artifact will parse /proc and reveal information \nabout current network connections.\n",
+        "link": "/exchange/artifacts/pages/linux.network.netstat",
+        "tags": [],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-08-31"
+    },
+    {
+        "title": "Windows.ActiveDirectory.PrivilegedUsers",
+        "description": "If on a Domain Controller (ProductType = 2), recursively enumerate membership of privileged groups, then\nfor each user, collect details relevant to an investigation: Create Date, Last Logon, Group Membership, SID\n\nIf not on a Domain Controller, return nothing\n",
+        "link": "/exchange/artifacts/pages/activedirectoryprivilegedusers",
+        "tags": [],
+        "author": "liteman",
+        "author_link": "https://github.com/liteman",
+        "author_avatar": "https://avatars.githubusercontent.com/u/6087529?v=4",
+        "date": "2021-08-28"
+    },
+    {
+        "title": "Server.Import.ArtifactExchange",
+        "description": "This artifact will automatically import the latest\nartifact exchange bundle into the current server.\n",
+        "link": "/exchange/artifacts/pages/server.import.artifactexchange",
+        "tags": [],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-08-19"
+    },
+    {
+        "title": "Windows.NTFS.MFT.HiveNightmare",
+        "description": "This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to find several files created as part of the POC tooling for HiveNightmare (CVE-2021-36934):\n\n  - \\hive_sam_ - https://github.com/FireFart/hivenightmare\n  - \\SAM-20 - https://github.com/GossiTheDog/HiveNightmare\n  - \\SAM-haxx - https://github.com/GossiTheDog/HiveNightmare\n  - \\Sam.save - PowerShell version\n  - \\Sam.hive - https://github.com/WiredPulse/Invoke-HiveNightmare\n  - C:\\windows\\temp\\sam - https://github.com/cube0x0/CVE-2021-36934\nSee Florian Roth's rule here:\n- https://github.com/SigmaHQ/sigma/blob/master/rules/windows/file_event/win_hivenightmare_file_exports.yml\n",
+        "link": "/exchange/artifacts/pages/windows.ntfs.mft.hivenightmare",
+        "tags": [],
+        "author": "svch0stz",
+        "author_link": "https://github.com/svch0stz",
+        "author_avatar": "https://avatars.githubusercontent.com/u/8684257?v=4",
+        "date": "2021-07-25"
+    },
+    {
+        "title": "Custom.Windows.System.AccessControlList",
+        "description": "This artifact displays the access control lists of files.\n\nNote: This artifact uses Powershell to gather the information.\n",
+        "link": "/exchange/artifacts/pages/custom.windows.system.accesscontrollist",
+        "tags": [],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-07-23"
+    },
+    {
+        "title": "Custom.Windows.Memory.InjectedThread",
+        "description": "Use Get-InjetedThreads to detect process injections.\nNote: this query is complex powershell. Run it after a scriptblock hunt.\n\nhttps://gist.github.com/jaredcatkinson/23905d34537ce4b5b1818c3e6405c1d2\nhttps://gist.github.com/mgreen27/1982aaae37a7afdd047db619bf17c8a1\n",
+        "link": "/exchange/artifacts/pages/get-injectedthread",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-07-14"
+    },
+    {
+        "title": "Custom.Windows.Memory.HollowsHunter",
+        "description": "Use hollows_hunter to detect suspicious process injections.\n\nUpload any findings to the server, including process dumps.\n",
+        "link": "/exchange/artifacts/pages/hollowshunter",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-07-14"
+    },
+    {
+        "title": "Custom.Server.Slack.Clients.Enrolled",
+        "description": "Send a message to slack when clients become enrolled.\n\nThis artifact triggers when a client is interrogated \nwithin 60 seconds of it being seen for the first time.\n",
+        "link": "/exchange/artifacts/pages/custom.server.slack.clients.enrolled",
+        "tags": [],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-07-13"
+    },
+    {
+        "title": "Windows.Monitoring.PrintNightmare",
+        "description": "This artifact returns ETW PrintService events for potential PrintNightmare activity.  \nCVE-2021-1675 and CVE-2021-34527  \n\nIt monitors for DRIVER_ADDED events and enriches with binary information for payload \nDataFile. Hunt for unexpected drivers with malicious DataFiles.\n",
+        "link": "/exchange/artifacts/pages/printnightmaremonitor",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-07-08"
+    },
+    {
+        "title": "Windows.System.PrinterDriver",
+        "description": "This artifact will enumerate installed PrintDrivers using the Win32_PrinterDriver \nwmi class and parse each DriverPath, ConfigFile and DataFile.\n\nHunt by searching for untrusted binaries or suspicious removed binararies for \nevidence of previous exploitation.\n",
+        "link": "/exchange/artifacts/pages/printerdriver",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-07-07"
+    },
+    {
+        "title": "Windows.Remediation.PrintSpooler",
+        "description": "This artifact will enable mitigation of PrintSpooler exploitation used by \nPrintNightmare - CVE-2021-34527 and CVE-2021-1675.\n\nThere are two selectable mitigations:  \n  \n  - disabling the print spooler service.   \n  HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Spooler\\Start = 4 (service disabled).   \n      \n  - disable remote registration of the spool service.    \n  HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\RegisterSpoolerRemoteRpcEndPoint = 2 (RegisterSpoolerRemoteRpcEndPoint disables).  \n\nNOTE: ChangeServiceStartup will set to disable, not stop the printspool service. \nIts always reccomended to use group policy to deploy these settings.\n",
+        "link": "/exchange/artifacts/pages/printspoolerremediation",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-07-06"
+    },
+    {
+        "title": "Linux.Memory.Acquisition",
+        "description": "Acquires a full memory image. We download LiME and use it to\nacquire a full memory image.\n\nNOTE: This artifact usually transfers a lot of data. You should\nincrease the default timeout to allow it to complete.\n( Example : 2Gb of memory time takes about 50s )\n",
+        "link": "/exchange/artifacts/pages/linuxmemoryacquisition",
+        "tags": [],
+        "author": "makhno4n6",
+        "author_link": "https://github.com/makhno4n6",
+        "author_avatar": "https://avatars.githubusercontent.com/u/86801976?v=4",
+        "date": "2021-07-02"
+    },
+    {
+        "title": "Linux.Volatility.Create.Profile",
+        "description": "This artifact is used to create the profile to the environnements Debian / Ubuntu.\n",
+        "link": "/exchange/artifacts/pages/volatility_profile",
+        "tags": [],
+        "author": "makhno4n6",
+        "author_link": "https://github.com/makhno4n6",
+        "author_avatar": "https://avatars.githubusercontent.com/u/86801976?v=4",
+        "date": "2021-07-02"
+    },
+    {
+        "title": "Windows.Detection.PrintNightmare",
+        "description": "This artifact returns any binaries in the Windows/spool/drivers/** folders with\nan untrusted Authenticode entry.\n\nIt can be used to hunt for dll files droped during exploitation of \nCVE-2021-1675 - PrintNightmare.\n\nTo query all attached ntfs drives: check the AllDrives switch.\n\nI have added several filters to uplift search capabilities from the original\nMFT artifact. Due to the multi-drive features, the MFTPath will output the MFT\npath of the entry.\n\nAvailable filters include:\n- FullPath regex\n- FileName regex\n- Time bounds to select files with a timestamp within time ranges\n- FileSize bounds\n\n![Sample output](https://github.com/mgreen27/velociraptor-docs/raw/patch-5/content/exchange/artifacts/PrintNightmare.png)\n",
+        "link": "/exchange/artifacts/pages/printnightmare",
+        "tags": [],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-07-01"
+    },
+    {
+        "title": "Custom.Label.User",
+        "description": "This artifact watches for new client enrolments and automatically label \nthe client with the required label if the user exists.\n\nThis artifact can be the starting point for automatically labeling a machine \nbased on any other property - just change the artifact to watch and the result \nfilter.\n\n  \n",
+        "link": "/exchange/artifacts/pages/custom.label.user",
+        "tags": [
+            "server",
+            "event",
+            "labels"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-06-25"
+    },
+    {
+        "title": "Windows.Applications.FTKImager",
+        "description": "Create an E01 Image of the C drive using FTK Imager (Command Line Version)\n\nSourceDriveToImage usually will be 0 (as in \\\\.\\PHYSICALDRIVE0) for the C: drive, on a Windows system.\n\nIf you intend to image the secondary drive, use, for example, SourceDriveToImage = 1, for \\\\.\\PHYSICALDRIVE1\n",
+        "link": "/exchange/artifacts/pages/ftkimager",
+        "tags": [],
+        "author": "eduardomcm",
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2021-06-25"
+    },
+    {
         "title": "Windows.ETW.AMSI",
         "description": "This artifact uses the ETW provider:\n(Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}\n",
         "link": "/exchange/artifacts/pages/amsi",
@@ -11,16 +195,16 @@
     },
     {
         "title": "HashRunKeys",
-        "description": "Iterate over all the run keys and locate their binary then hash it.\n\n  \n",
+        "description": "Iterate over all the run keys and locate their binary then hash it.\n\nTags:   \n",
         "link": "/exchange/artifacts/pages/hash_run_keys",
         "tags": [
             "windows",
             "registry",
             "detection"
         ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2021-06-25"
+        "author": "ffh571",
+        "author_link": "https://github.com/ffh571",
+        "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
+        "date": "2021-06-23"
     }
 ]

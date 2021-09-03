@@ -11,6 +11,7 @@ output_data_path = "static/exchange/data.json"
 archive_path = "static/exchange/artifact_exchange.zip"
 artifact_root_directory = "content/exchange/artifacts"
 artifact_page_directory = "content/exchange/artifacts/pages"
+
 org = "Velocidex"
 project = "velociraptor-docs"
 
@@ -27,6 +28,13 @@ editURL: https://github.com/%s/%s/edit/master/%s
 %s
 ```
 """
+
+previous_data = []
+try:
+  with open(output_data_path) as fd:
+    previous_data = json.loads(fd.read())
+except:
+  pass
 
 date_regex = re.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 hash_regex = re.compile("#([0-9_a-z]+)", re.I | re.M | re.S)
@@ -51,6 +59,12 @@ def getTags(description):
   return result
 
 def getAuthor(record, yaml_filename):
+  # If the record already exists, just keep it the same
+  title = record["title"]
+  for item in previous_data:
+    if item["title"] == title:
+      return item
+
   # Get commit details for this file.
   path = yaml_filename.replace("\\", "/")
   commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
@@ -58,6 +72,7 @@ def getAuthor(record, yaml_filename):
 
   # Commit is not yet know.
   if not commits:
+    print("No commits yet\n")
     record["author"] = ""
     record["author_link"] = ""
     record["author_avatar"] = ""
@@ -70,6 +85,7 @@ def getAuthor(record, yaml_filename):
   record["author_avatar"] = first_commit["author"]["avatar_url"]
   record["date"] = cleanupDate(first_commit["commit"]["author"]["date"])
 
+  print("Commit by %s\n" % record["author"])
   return record
 
 # Create a zip file with all the artifacts in it.
@@ -86,6 +102,8 @@ def build_markdown():
   index = []
 
   for root, dirs, files in os.walk(artifact_root_directory):
+    files.sort()
+
     for name in files:
       if not name.endswith(".yaml"):
         continue
@@ -103,6 +121,7 @@ def build_markdown():
 
         index.append(getAuthor({
           "title": data["name"],
+          "author": data.get("author"),
           "description": cleanDescription(description),
           "link": os.path.join("/exchange/artifacts/pages/",
                                base_name.lower()).replace("\\", "/"),

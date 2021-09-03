@@ -64,7 +64,6 @@ let all_data = [];
 $.ajax({
   url: "/exchange/data.json",
 }).done(function( data ) {
-  console.log(data);
   all_data = data;
   DrawResults(data);
 });
@@ -82,7 +81,6 @@ function doSearch() {
       result.push(item);
     }
   };
-  console.log(result);
   DrawResults(result);
 }
 
