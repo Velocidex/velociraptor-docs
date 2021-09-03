@@ -68,8 +68,8 @@ timeout|How long to wait for destructors to run (default 60 seconds).|uint64
 Select columns from another query using regex.
 
 Sometimes a query produces a large number of columns or
-unpredictable column names (eg. the read_reg_key() plugin produces
-a column per value name).
+unpredictable column names (eg. the `read_reg_key()` plugin
+produces a column per value name).
 
 You can use the column_filter() plugin to select a subset of the
 columns to include or exclude from an underlying query. For example:

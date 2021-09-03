@@ -18,75 +18,6 @@ plugins so their results may be used in further queries.
 <div class="vql_item"></div>
 
 
-## binary_parse
-<span class='vql_type pull-right'>Function</span>
-
-Parse a binary string with profile based parser.
-
-This plugin extract binary data from strings. It works by applying
-a profile to the binary string and generating an object from
-that. Profiles are a json structure describing the binary format. For
-example a profile might be:
-
-```json
-[
-  ["StructName", 10, [
-     ["field1", 2, "unsigned int"],
-     ["field2", 6, "unsigned long long"],
-   ]]]
-]
-```
-
-The profile is compiled and overlayed on top of the offset specified,
-then the object is emitted with its required fields.
-
-You can read more about profiles here https://github.com/Velocidex/vtypes
-
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-offset|Start parsing from this offset.|int64
-string|The string to parse.|string (required)
-profile|The profile to use.|string
-iterator|An iterator to begin with.|string
-target|The target type to fetch.|string
-
-
-
-<div class="vql_item"></div>
-
-
-## binary_parse
-<span class='vql_type pull-right'>Plugin</span>
-
-Parse binary files using a profile.
-
-This is the plugin version of the `binary_parse()` function.
-
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-offset|Start parsing from this offset|int64
-file|Filename to parse|string (required)
-accessor|Accessor to use (e.g. ntfs, data)|string
-profile|Profile to use.|string
-target|The target to fetch.|string (required)
-args|Args for the target class.|Any
-start|The initial field in the target to fetch.|string
-
-
-
-<div class="vql_item"></div>
-
-
 ## grok
 <span class='vql_type pull-right'>Function</span>
 
@@ -162,6 +93,26 @@ accessor|The accessor to use.|string
 <span class='vql_type pull-right'>Function</span>
 
 Parse a binary file into a datastructure using a profile.
+
+This plugin extract binary data from strings. It works by applying
+a profile to the binary string and generating an object from
+that. Profiles are a json structure describing the binary format. For
+example a profile might be:
+
+```json
+[
+  ["StructName", 10, [
+     ["field1", 2, "unsigned int"],
+     ["field2", 6, "unsigned long long"],
+   ]]]
+]
+```
+
+The profile is compiled and overlayed on top of the offset specified,
+then the object is emitted with its required fields.
+
+You can read more about profiles here https://github.com/Velocidex/vtypes
+
 
 
 

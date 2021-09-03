@@ -6,4 +6,4 @@ index_page: true
 ---
 
 
-{{% children style="div" depth="99" %}}
+{{% children style="div" depth="99" sort="PublishDate" %}}

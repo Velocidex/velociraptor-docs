@@ -7,3 +7,8 @@ exchange:
 
 blog:
 	python3 scripts/blog_index.py
+
+
+highlight_js:
+	cd ../highlight.js && node tools/build.js -t browser python yaml sql json bash powershell vql
+	cp ../highlight.js/build/highlight.min.js static/js/

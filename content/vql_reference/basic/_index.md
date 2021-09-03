@@ -244,6 +244,9 @@ SELECT dict(Foo="Bar", `Name.With.Dots`="Baz")
 FROM scope()
 ```
 
+See the `to_dict()` function to create dicts from a query with
+unpredictable key names.
+
 
 
 
@@ -987,6 +990,59 @@ remove_last|If set we delay removal as much as possible.|bool
 
 Convert from different types to a time.Time.
 
+This is one of the most important functions in VQL. We need to
+convert timestamps very frequently from various
+representations. Most commonly from strings, Unix epoch times etc.
+
+This function is pretty smart and tries to do the right thing most
+of the time automatically. For example, you can provide the epoch
+parameter as an integer representing seconds since the epoch,
+milliseconds or microseconds since the epoch.
+
+```vql
+SELECT timestamp(epoch=1630414425) AS Time1,
+       timestamp(epoch=1630414425000) AS Time2,
+       timestamp(epoch=1630414425000000) AS Time3,
+FROM scope()
+```
+
+You can also provide a string, and `timestamp()` will try to parse
+it by guessing what it represents. For example
+
+```
+SELECT timestamp(string='March 3 2019'),
+       timestamp(string='07/25/2019 5pm')
+FROM scope()
+```
+
+For more control over the parsing of strings, use the `format`
+parameter to specify a template which will be used to parse the
+timestamp.
+
+The format template uses a constant time as an example of how the
+time is layed out. It represents a template for a timestamp that
+**must** use the following date constants
+
+Year: "2006" "06"
+Month: "Jan" "January"
+Textual day of the week: "Mon" "Monday"
+Numeric day of the month: "2" "_2" "02"
+Numeric day of the year: "__2" "002"
+Hour: "15" "3" "03" (PM or AM)
+Minute: "4" "04"
+Second: "5" "05"
+AM/PM mark: "PM"
+
+"-0700"  ±hhmm
+"-07:00" ±hh:mm
+"-07"    ±hh
+
+```vql
+SELECT timestamp(string="8/30/2021 6:01:28 PM",
+                 format="1/2/2006 3:04:05 PM")
+```
+
+
 
 
 <div class="vqlargs"></div>
@@ -999,6 +1055,10 @@ mactime|HFS+|int64
 winfiletime||int64
 string|Guess a timestamp from a string|string
 us_style|US Style Month/Day/Year|bool
+format|A format specifier.
+
+This format specifier is the same as golang's time.Parse.
+|string
 
 
 
@@ -1008,7 +1068,41 @@ us_style|US Style Month/Day/Year|bool
 ## to_dict
 <span class='vql_type pull-right'>Function</span>
 
-Construct a dict from another object.
+Construct a dict from a query.
+
+Sometimes we need to build a dict object where both the names of
+the keys and their values are not known in advance - they are
+calculated from another query. In this case we can use the
+to_dict() function to build a dict from a query. The query needs
+to emits as many rows as needed with a column called `_key` and
+one called `_value`. The `to_dict()` will then construct a dict
+from this query.
+
+### Notes
+
+1. In VQL all dicts are ordered, so the order in which rows appear
+in the query will determine the dict's key order.
+
+2. VQL dicts always have string keys, if the `_key` value is not a
+string the row will be ignored.
+
+### Example
+
+The following (rather silly) example creates a dict mapping Pid to
+ProcessNames in order to cache Pid->Name lookups. We then resolve
+Pid to Name within other queries. Note the use of <= to
+materialize the dict into memory once.
+
+```vql
+LET PidLookup <= to_dict(item={
+    SELECT str(str=Pid) AS _key, Name AS _value
+    FROM pslist()
+})
+
+SELECT Pid, get(item=PidLookup, field=str(str=Pid))
+FROM pslist()
+```
+
 
 
 
@@ -1083,6 +1177,7 @@ accessor|The accessor to use|string
 url|The WebDAV url|string (required)
 basic_auth_user|The username to use in HTTP basic auth|string
 basic_auth_password|The password to use in HTTP basic auth|string
+noverifycert|Skip TLS Verification|bool
 
 
 

@@ -72,10 +72,11 @@ determine row equivalency.
 
 {{% notice note %}}
 
-There is only a single equivalence row specified by the `key`
+There is only a single equivalence column specified by the `key`
 parameter, and it must be a string. If you need to watch multiple
-columns you need to create a new column which is the concatenation of
-other columns. For example `format(format="%s%d", args=[Name, Pid])`
+columns you need to create a new column which is the concatenation
+of other columns. For example `format(format="%s%d", args=[Name,
+Pid])`
 
 {{% /notice %}}
 
