@@ -30,6 +30,8 @@ body.dark {
 
     --footer-color: #183f81;
     --vql: red;
+    --MAIN-Author: red;
+    --MAIN-Date: #666;
     --mynotice: #EFEBE9;
     --mynotices-first-child: #E0E0E0;
     --mynotice-info-border: #FFCC8055;

@@ -640,12 +640,9 @@ dont want to actually run anything.
 
 ### Example
 
-```sql
-SELECT 1+1 As Two FROM scop()
+```vql
+SELECT 1+1 As Two FROM scope()
 ```
-
-
-
 
 <div class="vql_item"></div>
 
@@ -911,4 +908,3 @@ end|End scanning at this offset (100mb)|uint64
 number|Stop after this many hits (1).|int64
 blocksize|Blocksize for scanning (1mb).|uint64
 key|If set use this key to cache the  yara rules.|string
-
