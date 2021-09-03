@@ -1,7 +1,7 @@
 name: Windows.EventLogs.Chainsaw
 description: |
     
-    This artifact leverages Chainsaw to enable usage of Sigma rules to faciliate detection within Windows Event Logs.
+    This artifact leverages Chainsaw to enable usage of Sigma rules (in addition to built-in logic) to faciliate detection within Windows Event Logs.
     
     From the project's description:
     
@@ -10,48 +10,38 @@ description: |
     
     https://github.com/countercept/chainsaw
     
-    
 author: Wes Lambert - @therealwlambert
-
 tools:
   - name: Chainsaw
     url: https://github.com/countercept/chainsaw/releases/download/v1.0.0/chainsaw_x86_64-pc-windows-msvc.zip
 parameters:
   - name: EVTXPath
-    default: C:\Windows\System32\winevt\Logs\*.evtx
+    default: 'C:\Windows\System32\winevt\Logs'
 sources:
   - query: |
-        // Download Chainsaw
-        LET Toolzip = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-            ToolName="Chainsaw", IsExecutable=FALSE)
-        //Create temp directory
+        LET Toolzip = SELECT * FROM Artifact.Generic.Utils.FetchBinary(ToolName="Chainsaw", IsExecutable=FALSE)
         LET TmpDir <= tempdir()
-        //Create tempfile for JSON results
         LET TmpResults <= tempfile()
-        //Read in results file when ready
-        LET Results = SELECT * FROM read_file(filenames=TmpResults)
-        //Unzip into temp dir
         LET UnzipIt <= SELECT * FROM  unzip(filename=url(path=Toolzip[0].FullPath).String, output_directory=TmpDir)
-        //Sigma rules
         Let SigmaRules <= TmpDir + '/chainsaw/sigma_rules' 
-        //Mapping file(s) for Sigma
         Let SigmaMapping <= TmpDir + '/chainsaw/mapping_files/sigma-mapping.yml'
-        //Chainsaw hunt -- Example: ./chainsaw hunt evtx_attack_samples/ --json results.json --rules sigma_rules/ --mapping mapping_files/sigma-mapping.yml
-        LET ExecCS = TmpDir + '/chainsaw/chainsaw hunt ' + EVTXPath + ' --json ' + TmpResults + ' --rules ' + SigmaRules + ' --mapping ' + SigmaMapping
-        //Execute Chainsaw and cleanup for JSON
-        LET ExecCmd <= ExecCS + '; [IO.Directory]::SetCurrentDirectory((Convert-Path (Get-Location -PSProvider FileSystem)));$filetxt = [IO.File]::ReadAllText("' + TmpResults + '"); $filetxt = ($filetxt -replace "(?ms)^}\n{", "},`r`n{");Set-Content -Path "' + TmpResults + '" -Value $filetxt; "[" + (Get-Content ' + TmpResults + ' -Raw) | Set-Content ' + TmpResults + '; (Get-Content ' + TmpResults + ' -Raw) + "]" | Set-Content ' + TmpResults + ';'
-        LET ExecIt <= SELECT * from Artifact.Windows.System.PowerShell(Command=ExecCmd)
-        LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
-        LET Matches = SELECT * FROM foreach(row=Data, query={ 
-            SELECT
-                get(member="event.Event.System.TimeCreated.#attributes.SystemTime") AS EventTime,
-                get(member="detection") AS Detection, 
-                get(member="event.Event.System.EventID") AS _EventID, 
-                get(member="event.Event.System.Computer") AS _Computer, 
-                get(member="event.Event.EventData.User") AS _User,
-                get(member="event.Event.System.Channel") AS _Channel,
-                get(member="event.Event.EventData") AS SystemData,  
-                get(member="event.Event.System") AS EventData
-            FROM Content
+        SELECT get(member="Record.event.Event.System.TimeCreated.#attributes.SystemTime") AS EventTime,
+               get(member="Record.detection") AS Detection, 
+               get(member="Record.event.Event.System.EventID") AS _EventID, 
+               get(member="Record.event.Event.System.Computer") AS _Computer, 
+               get(member="Record.event.Event.EventData.User") AS _User,
+               get(member="Record.event.Event.System.Channel") AS _Channel,
+               get(member="Record.event.Event.EventData") AS SystemData,  
+               get(member="Record.event.Event.System") AS EventData
+        FROM foreach(row={        
+          SELECT * FROM execve(argv=[
+              TmpDir + '/chainsaw/chainsaw.exe', 
+              'hunt', EVTXPath, 
+              "--json", TmpResults,
+              "--rules", SigmaRules,
+              "--mapping", SigmaMapping], length=100000)
+        }, query={
+           SELECT parse_json(data=Record) AS Record 
+           FROM parse_records_with_regex(file=TmpResults, 
+              regex='''(?sm)(?P<Record>(^|\n\{\n).+?\n\}\n)''')
         })
-        SELECT * FROM Matches
