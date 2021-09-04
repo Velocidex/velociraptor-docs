@@ -6,9 +6,7 @@ description:  |
   Velociraptor identity management.
 
 title: Deploying Velociraptor with OAuth SSO
-url: /blog/html/2018/12/23/deploying_velociraptor_with_oauth_sso.html
 categories: ["Blog"]
-hidden: true
 ---
 
 
@@ -39,17 +37,15 @@ Velociraptor application with a token that allows the application to
 request information about the user (for example, the username or email
 address).
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
 
 OAuth is an authentication protocol. This means Velociraptor can be
 pretty confident the user is who they claim they are. This does not
 automatically grant them access to the application! A Velociraptor
 administrator must still manually grant them access before a user may
 log in.
-:::
+
+{{% /notice %}}
 
 Before we can use Google for Authentication, we need to register our
 Velociraptor deployment as an OAuth App with Google. Unfortunately
@@ -82,22 +78,22 @@ indicates that it is under \"APIs and Services\".
 We need to set up the OAuth consent screen first - in which we give our
 application a name to be presented to the user by the OAuth flow:
 
-![image](1.png)
+![](1.png)
 
 Further down we need to provide an authorized domain
 
-![image](2.png)
+![](2.png)
 
 In order to add an Authorized domain we need to *verify it*. Google\'s
 help pages explain it further:
 
-::: {.admonition}
-Authorized domains
+{{% notice tip "Authorized domains" %}}
 
 To protect you and your users, Google restricts your OAuth 2.0
 application to using Authorized Domains. If you have verified the domain
 with Google, you can use any Top Private Domain as an Authorized Domain.
-:::
+
+{{% /notice %}}
 
 And this links to <https://www.google.com/webmasters/tools/home> which
 again seems completely unrelated to OAuth, Velociraptor or even a web
@@ -106,7 +102,7 @@ search presence).
 
 Within this product we now need to \"Add a property\":
 
-![image](3.png)
+![](3.png)
 
 Hidden within the settings menu there is an option \"Verification
 Details\" which allows you to verify that you own the domain. If you
@@ -114,30 +110,28 @@ purchased your domain from Google Domains then it should already be
 verified - otherwise you can set some TXT records to prove you own the
 domain.
 
-![image](4.png)
+![](4.png)
 
 After all this we can go back to the cloud console and Create
 Credentials/OAuth client ID:
 
-![image](5.png)
+![](5.png)
 
 Now select \"Web App\" and we must set the \"Authorized redirect URIs\"
 to <https://velociraptor.rekall-innovations.com/auth/google/callback>
 -This is the URL that successful OAuth authentication will direct to.
 Velociraptor accepts this redirect and uses it to log the user on.
 
-![image](6.png)
+![](6.png)
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
 
 The UI is a bit confusing here - you must press enter after typing the
 redirect URL to have it registered **before** you hit *Create* otherwise
 it misses that you typed it completely. I spent some time stumped on
 this UI bug.
-:::
+
+{{% /notice %}}
 
 If all goes well the Google cloud console will give us a client ID and a
 client secret. We can then copy those into the Velociraptor
@@ -168,7 +162,7 @@ $ velociraptor --config server.config.yaml frontend
 Connecting using the browser goes through the familiar OAuth flow and
 arrives at this Velociraptor screen:
 
-![image](7.png)
+![](7.png)
 
 The OAuth flow ensures the user\'s identity is correct but does not give
 them permission to log into Velociraptor. Note that having an OAuth
@@ -199,15 +193,16 @@ Note that this time, Velociraptor does not ask for a password at all,
 since authentication occurs using Google\'s SSO. If we hit refresh in
 the browser we can now see the Velociraptor application:
 
-![image](8.png)
+![](8.png)
 
 We can see that the logged in user is authenticated by Google, and we
 can also see their Google avatar at the top right for some more eye
 candy :-).
 
-::: {.admonition}
-Thanks
+
+{{% notice note Thanks %}}
 
 Shouts to the folks from [Klein & Co](https://www.kleinco.com.au/) who
 sponsored this exciting feature!.
-:::
+
+{{% /notice %}}

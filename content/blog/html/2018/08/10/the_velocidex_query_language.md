@@ -6,10 +6,16 @@ description:  |
   overview of VQL.
 
 title: Velocidex Query Language (VQL)
-url: /blog/html/2018/08/10/the_velocidex_query_language.html
 categories: ["Blog"]
-hidden: true
 ---
+
+{{% notice warning %}}
+
+This page is written about a very old version of VQL and is retained
+for historical purposes. Current VQL works differently - consult the
+current documentation.
+
+{{% /notice %}}
 
 
 VQL Overview
@@ -26,8 +32,9 @@ each row for a single column.
 
 The basic structure of a VQL statement is:
 
-``` {.sourceCode .sql}
-SELECT Column1, Column2, Column3 from plugin(arg=value) WHERE Column1 > 5
+```vql
+SELECT Column1, Column2, Column3
+FROM plugin(arg=value) WHERE Column1 > 5
 ```
 
 There are three main parts: Column selectors, Plugin and Filter
@@ -48,15 +55,13 @@ the user\'s home directory so it can flexibly be applied to different
 situations. The ability to provide arguments to plugins encourages
 writing more generic plugins which can be reused in multiple situations.
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
 
 VQL plugins currently only accept keyword arguments. It is a syntax
-error to pass args without naming them - glob(\"/bin/\*\") is not valid
-syntax, it should be glob(globs=\"/bin/\*\")
-:::
+error to pass args without naming them - `glob("/bin/*")` is not valid
+syntax, it should be `glob(globs="/bin/*")`
+
+{{% /notice %}}
 
 It is important to appreciate that Plugins generate data dynamically.
 The data is not stored in a database table first! Plugins may begin
@@ -87,8 +92,8 @@ Since plugins may produce any object (for example, a JSON object with
 nested fields), VQL column specifications can dereference nested fields
 within the produced data.
 
-``` {.sourceCode .sql}
-SELECT Sys.Mtim.Sec from glob(globs="/bin/*")
+```vql
+SELECT Sys.Mtim.Sec FROM glob(globs="/bin/*")
 ```
 
 Specifying only selected columns can limit the number of columns
@@ -96,21 +101,21 @@ produced and make the output more useful by removing unneeded fields.
 For example the following will produce a result table with two columns
 named FullPath and SIze and a row per file found in the /bin/ directory:
 
-``` {.sourceCode .sql}
+```vql
 SELECT FullPath, Size from glob(globs="/bin/*")
 ```
 
 Column specifications can consist of arbitrary expressions - for example
 addition, comparisons:
 
-``` {.sourceCode .sql}
+```vql
 SELECT FullPath + '.bindir', Size from glob(globs="/bin/*") WHERE Size < 1000
 ```
 
 In this case it is often useful to add a Column Alias (Note that column
 aliases can also be used in the WHERE clause):
 
-``` {.sourceCode .sql}
+```vql
 SELECT FullPath + '.bindir' as Santized, Size from glob(globs="/bin/*")
 ```
 
@@ -120,14 +125,11 @@ single value (which can be an arbitrary o function formats a timestamp
 as a string. This is useful since many plugins produce times in seconds
 since epoch time:
 
-``` {.sourceCode .sql}
+```vql
 SELECT FullPath, timestamp(epoch=Sys.Mtim.Sec) as mtimefrom glob(globs="/bin/*")
 ```
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
 
 Some VQL functions have side effects, or are more expensive to run. It
 is important to understand that VQL transforms the columns emitted from
@@ -140,7 +142,7 @@ files, ignoring the WHERE condition because the upload() function will
 be evaluated on each row, even if the WHERE clause causes the row to be
 ignored:
 
-``` {.sourceCode .sql}
+```vql
 SELECT FullPath, upload(path=FullPath)
  from glob(globs="/bin/*")
       WHERE Name =~ "bash"
@@ -150,12 +152,12 @@ To upload only the files matching the expression, the query must be
 split into two - the first query applies the filtering condition and the
 second query does the upload:
 
-``` {.sourceCode .sql}
+```vql
 LET files = SELECT FullPath from glob(globs="/bin/*")
     WHERE Name =~ "bash"
 SELECT FullPath, upload(path=FullPath) from files
 ```
-:::
+{{% /notice %}}
 
 VQL Subselects
 --------------

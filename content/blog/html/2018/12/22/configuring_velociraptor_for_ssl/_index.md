@@ -4,9 +4,7 @@ description:  |
   This post describes how to deploy Velociraptor with SSL on a cloud VM.
 
 title: Configuring Velociraptor for SSL
-url: /blog/html/2018/12/22/configuring_velociraptor_for_ssl.html
 categories: ["Blog"]
-hidden: true
 ---
 
 

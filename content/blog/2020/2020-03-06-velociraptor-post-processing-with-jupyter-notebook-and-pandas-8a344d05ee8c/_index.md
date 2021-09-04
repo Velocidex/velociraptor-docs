@@ -25,7 +25,10 @@ In a [previous article](../2020-01-12_hunting-malware-using-mutants-ea08e86dfc19
 The notebook approach is ideal for DFIR investigations. Since we don't typically know what is important when we start our investigation, we go through checking various things and drilling down into various evidence sources. The notebook keeps track of all our work and records our analysis until we narrow down the intrusions, documenting any dead-ends we might encounter and documenting our findings in a logical easy to follow way.
 
 In this article I will show how to use Jupyter to post-process some simple Velociraptor hunts to perform a typical DFIR response.
-> Note that while Jupyter and Pandas are both written in Python you do not actually need to know Python to use Jupyter with Velociraptor. Jupyter simply evaluates VQL statements on the Velociraptor server and displays their result in the notebook. Similarly you don't need to be a VQL expert — Event a basic understanding of VQL is sufficient to be able to drill down into the hunt results.
+
+{{% notice note %}}
+Note that while Jupyter and Pandas are both written in Python you do not actually need to know Python to use Jupyter with Velociraptor. Jupyter simply evaluates VQL statements on the Velociraptor server and displays their result in the notebook. Similarly you don't need to be a VQL expert — Event a basic understanding of VQL is sufficient to be able to drill down into the hunt results.
+{{% /notice %}}
 
 ### Configuring Jupyter access to the Velociraptor Server
 

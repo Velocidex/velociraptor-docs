@@ -5,10 +5,14 @@ which might include a SIEM and SOC integration. In order to facilitate
 interoperability with other tools, Velociraptor now offers an external
 API."
 title: "The Velociraptor Python API"
-url: /blog/html/2019/02/09/velociraptor_python_api.html
 categories: ["Blog"]
-hidden: true
 ---
+
+{{% notice warning %}}
+
+The Python bindings described in this page have now moved to https://github.com/Velocidex/pyvelociraptor/
+
+{{% /notice %}}
 
 
 Velociraptor is very good at collecting artifacts from endpoints.
@@ -41,7 +45,7 @@ API:
 Client programs simply connect directly to this API and call gRPC
 methods on it.
 
-![image](api_diagram.png)
+![](api_diagram.png)
 
 The connection is encrypted using TLS and authenticated using mutual
 certificates. When we initially created the Velociraptor configuration
@@ -50,16 +54,15 @@ server.config.yaml file. It is this CA certificate which is used to
 verify that the certificate each end presents was issued by the
 Velociraptor CA.
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+
+{{% notice note %}}
 
 If you need to have extra security in your environment you should keep
 the original server.config.yaml file generated in an offline location,
 then deploy a redacted file (without the CA.private\_key value) on the
 server. This way api client certificates can only be issued offline.
-:::
+
+{{% /notice %}}
 
 Before the client may connect to the API server they must have a
 certificate issued by the Velociraptor CA. This is easy to generate:
@@ -282,10 +285,8 @@ is a file!).
 The python code then proceeds to launch the analyseMFT.py script to
 parse the \$MFT.
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
+
 
 The nice thing with this scheme is that the analyseMFT.py is running in
 its own process and can be managed separately to the main Velociraptor
@@ -296,7 +297,8 @@ performance in any way. If the analyseMFT.py script takes a long time,
 it will just fall behind but it eventually will catch up. In the
 meantime, the Velociraptor server will continue receiving the uploads
 regardless.
-:::
+
+{{% /notice %}}
 
 The above example sets up a watcher query to receive flow results in
 real time, but you can also just process the results of a specific hunt

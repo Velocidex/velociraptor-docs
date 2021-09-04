@@ -6,9 +6,7 @@ description: |
   locked by the operating system such as registry hives, pagefile and
   other locked files.
 title: Velorciraptor's filesystem's accessors
-url: /blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors.html
 categories: ["Blog"]
-hidden: true
 ---
 
 

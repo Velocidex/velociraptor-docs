@@ -22,7 +22,9 @@ However, one of the main differences between SQL and VQL is that VQL’s data so
 Just like most other programming languages, VQL has a concept of a scope. You can think of the scope as a bag of names referring to values. When VQL encounters a symbol reference within in the query, the VQL engine will consult the scope at that point and try to resolve the symbol’s name for an actual object.
 
 For example consider the following simple query
-> # SELECT * FROM info()
+```vql
+SELECT * FROM info()
+```
 
 When VQL encounters the symbol “**info**” it looks at the scope object used to evaluate the query, for a plugin with that name. If there is such a plugin, VQL will call it and extract rows from it.
 
@@ -69,10 +71,12 @@ You might notice that we refer to a symbol Exe within the **query** query — wh
 ### More foreach examples
 
 The foreach plugin is one of the most often used plugins in VQL. It is very common to apply one plugin over the result set of another plugin. Here we give several examples:
-> Yara scan files matching a glob expression:
+
+#### Yara scan files matching a glob expression:
 
 ![](../../img/1bGb_CYsiRQko7ai0mcWaVw.png)
-> List all open file handles from all chrome processes:
+
+#### List all open file handles from all chrome processes:
 
 ![](../../img/1h8EgsM6ji2Vv1ewQLx5ikQ.png)
 

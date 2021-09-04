@@ -9,10 +9,8 @@ description:  |
 
 title: Browsing around the filesystem.
 linktitle: 20180810 Browsing around the filesystem.
-url: /blog/html/2018/08/10/browsing_around_the_filesystem.html
 categories: ["Blog"]
 weight: 10
-hidden: true
 ---
 
 The Virtual File System
@@ -70,10 +68,7 @@ streamed back to the server. The server simply splits the response table
 into directory specific tables, and then stores a single VQL response
 table for each directory in the database.
 
-::: {.note}
-::: {.admonition-title}
-Note
-:::
+{{% notice note %}}
 
 The VQL glob() plugin is guaranteed to generate results in breadth first
 order. This means that it emits information about all files in the same
@@ -81,9 +76,11 @@ directory first, before recursing into sub directories. This feature
 makes it simple to split the result table into directory specific
 sub-tables by simply watching the FullPath column and noting when its
 directory changes.
-:::
 
-![image](image9.png)
+
+![](image9.png)
+
+{{% /notice %}}
 
 Very large VQL queries
 ======================

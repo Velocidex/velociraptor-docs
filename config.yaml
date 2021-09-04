@@ -28,7 +28,8 @@ markup:
 
   highlight:
     noClasses: false
-    style: none
+    # Disable hugo syntax highlight because we use highlight.js
+    codeFences: false
 
 menu:
   shortcuts:

@@ -35,7 +35,7 @@ for root, dirs, files in os.walk(blog_root_directory):
         link = link.rstrip("_index.md")
 
       if link.endswith(".md"):
-        link = link.rstrip(".md") + ".html"
+        link = link.rstrip(".md") + "/"
 
       date = data.get("date", "")
       if not date:

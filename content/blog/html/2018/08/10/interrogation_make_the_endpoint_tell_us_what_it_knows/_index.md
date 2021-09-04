@@ -7,9 +7,7 @@ description:  |
   shows this general information about each client.
 
 title: Interrogation - Make the endpoint tell us what it knows!
-url: /blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows.html
 categories: ["Blog"]
-hidden: true
 ---
 
 
@@ -139,4 +137,4 @@ Interrogate.additional_queries:
 From now on the additional query will be recorded for all clients. The
 GUI shows it in the client information page:
 
-![image](image6.png)
+![](image6.png)

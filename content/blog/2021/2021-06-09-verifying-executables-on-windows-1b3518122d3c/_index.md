@@ -35,8 +35,11 @@ The above diagram shows that signing information is embedded in the PE file itse
 Velociraptor can parse the authenticode information from the PE file using the parse_pe() VQL function. This allows a VQL query to extract signing information from any executable binary (Since this is just a file parser and does not use native APIs, you can use this function on all supported OSs).
 
 Let’s parse Velociraptor’s own PE file in a Velociraptor notebook using the following simple query:
-> SELECT parse_pe(file=’’’C:\Program Files\velociraptor\velociraptor.exe’’’)
+
+```vql
+SELECT parse_pe(file=’’’C:\Program Files\velociraptor\velociraptor.exe’’’)
 FROM scope()
+```
 
 ![](../../img/16bcC41eUaZxiHUieQpd9Nw.png)
 
@@ -49,7 +52,10 @@ As we can see in the above screenshot, the authenticode standard provides an exp
 ![](../../img/1tqLP9HIDA8glYRg0ULZScA.png)
 
 None of the calculated hashes is the same as the “ExpectedHash” provided in the Authenticode signature! This is because Authenticode hashes do not cover the entire PE file, as regular hashes do. Authenticode hashes only cover specific PE sections, in a specific order. They specifically allow PE sections to be reordered, and some regions in the file to be modified.
-> # Many people find it surprising that signed PE files can be modified without invalidating the signature.
+
+{{% notice warning %}}
+Many people find it surprising that signed PE files can be modified without invalidating the signature.
+{{% /notice %}}
 
 This means that hash database detection commonly used in DFIR do not work to identify malicious signed binaries. I have demonstrated this recently in a [video](https://www.youtube.com/watch?v=dmmliSh91uQ) where I modified a vulnerable driver to change its file hash, maintaining it’s authenticode hash. This allowed the driver to be loaded, even through its file hash was completely different and not found on Virus Total.
 

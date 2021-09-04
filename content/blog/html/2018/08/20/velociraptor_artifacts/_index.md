@@ -7,9 +7,7 @@ description:  |
   how can you use them.
 
 title: Velociraptor Artifacts
-url: /blog/html/2018/08/20/velociraptor_artifacts.html
 categories: ["Blog"]
-hidden: true
 ---
 
 First a bit of history. When we first started writing endpoint
@@ -218,14 +216,14 @@ Artifact Collector flow. This flow presents a special GUI which allows
 us to view the different artifacts, choose which ones we want to launch
 and describes them:
 
-![image](artifacts_how_to.png)
+![](artifacts_how_to.png)
 
 As we can see in the screenshot above, the artifact collector flow
 allows the user to inspect the artifacts, before issuing the VQL to the
 client. The responses are received by the server and displayed as part
 of the same flow:
 
-![image](artifacts2.png)
+![](artifacts2.png)
 
 This is a pretty easy set and forget type system. However, Velociraptor
 makes artifacts available within any VQL query too. The artifact simply
@@ -287,16 +285,14 @@ line. Each record consists of possible fields.
      FROM parse_records_with_regex(
             file=linuxDpkgStatus,
             regex='(?sm)^(?P<Record>Package:.+?)\\n\\n')
+
+- SELECT Record.Package as Package,
+      Record.InstalledSize as InstalledSize, Record.Version as
+      Version, Record.Source as Source, Record.Architecture as
+      Architecture
+  from packages
 ```
 
-> -
->
->     SELECT Record.Package as Package,
->
->     :   Record.InstalledSize as InstalledSize, Record.Version as
->         Version, Record.Source as Source, Record.Architecture as
->         Architecture from packages
->
 The above query uses the parse\_records\_with\_regex() plugin to split
 the file into records (anything between the Package: and the next empty
 line). Each record is then parsed separately using the

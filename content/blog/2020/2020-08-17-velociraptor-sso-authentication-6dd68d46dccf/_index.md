@@ -58,14 +58,19 @@ Setting up a Github OAuth2 application is detailed in [their extensive developer
 ![](../../img/1V0SFCRyBB3EgaTnRGEvbvg.png)
 
 The most important item in this form is the Authorization callback URL, which must be of the form
-> # https://public DNS name/auth/github/callback
+
+```
+https://public DNS name/auth/github/callback
+```
 
 Once I click Register Application, Github will provide me with a client id and a client secret — Those are used by Velociraptor to send authorization requests to Github for authentication.
 
 ![](../../img/1ZU-eolQPeo8inmTfq4VkVA.png)
 
 Now that we have the client id and secret we can create our configuration file using the interactive config generator
-> velociraptor.exe config generate -i
+```sh
+velociraptor.exe config generate -i
+```
 
 ![](../../img/1yJ7sIPl_qnL9UUrJvNZJLA.png)
 
@@ -119,6 +124,6 @@ Note that OAuth2 is only responsible for authentication — i.e. the user is who
 
 ![](../../img/18xUczf1PP7eyM9XaBzTBEw.png)
 
-You can assign or delete users using the **velociraptor user add **command. You can also assign roles to users using the **velociraptor acl grant** commands. The configuration wizard offers to provision an initial set of administrator users for smoother install, but you can always add users later using the command line.
+You can assign or delete users using the **velociraptor user add** command. You can also assign roles to users using the **velociraptor acl grant** commands. The configuration wizard offers to provision an initial set of administrator users for smoother install, but you can always add users later using the command line.
 
 If your favorite authentication provider is not yet supported, please file a feature request on our [GitHub](https://github.com/Velocidex/velociraptor) project, or even send us a pull request!

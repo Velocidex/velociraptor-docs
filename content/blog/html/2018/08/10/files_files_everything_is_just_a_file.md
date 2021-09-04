@@ -7,9 +7,7 @@ description:  |
 
 title:  Files, files everything is just a file!
 linktitle:  20180810 Files, files everything is just a file!
-url: /blog/html/2018/02/09/files_files_everything_is_just_a_file.html
 categories: ["Blog"]
-hidden: true
 ---
 
 
@@ -68,12 +66,14 @@ all clients which have the user \"mic\", we simply list the directory
 $ find ./client_index/
 ```
 
-> ./client\_index/c.84216c7aab97557d
-> ./client\_index/c.84216c7aab97557d/C.84216c7aab97557d.db./client\_index/user%3Amic
-> ./client\_index/user%3Amic/C.84216c7aab97557d.db
-> ./client\_index/user%3Amic/C.1b0cddfffbfe40f5.db./client\_index/all
-> ./client\_index/all/C.84216c7aab97557d.db
-> ./client\_index/all/C.1b0cddfffbfe40f5.db
+```text
+ ./client\_index/c.84216c7aab97557d
+ ./client\_index/c.84216c7aab97557d/C.84216c7aab97557d.db./client\_index/user%3Amic
+ ./client\_index/user%3Amic/C.84216c7aab97557d.db
+ ./client\_index/user%3Amic/C.1b0cddfffbfe40f5.db./client\_index/all
+ ./client\_index/all/C.84216c7aab97557d.db
+ ./client\_index/all/C.1b0cddfffbfe40f5.db
+```
 
 Modern file systems can hold many thousands of files in the same
 directory and list these very quickly. This feature is only really used
