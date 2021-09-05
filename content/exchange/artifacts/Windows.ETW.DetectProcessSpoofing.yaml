@@ -30,11 +30,6 @@ sources:
         -- Query it once to materialize the FIFO
         LET _ <= SELECT * FROM RecentProcesses
         
-        -- for PSList add integrity from ETW 
-        LET FindIntegrity(TargetPid) = SELECT MandatoryLabel 
-            FROM RecentProcesses
-            WHERE Pid = TargetPid
-        
         LET GetProcessInfo(TargetPid) = SELECT * FROM switch(
         -- First try to get the pid directly
         a={
@@ -43,7 +38,6 @@ sources:
                 Exe as ImageName,
                 CommandLine,
                 Username,
-                --FindIntegrity(TargetPid=Pid).MandatoryLabel[0] as MandatoryLabel,
                 TokenIsElevated
             FROM pslist(pid=TargetPid)
         },
