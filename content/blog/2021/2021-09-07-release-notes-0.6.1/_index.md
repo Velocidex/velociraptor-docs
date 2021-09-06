@@ -8,7 +8,7 @@ tags:
 
 author: "Mike Cohen"
 date: 2021-09-06
-noindex: false
+noindex: true
 ---
 
 I am very excited to announce the latest Velociraptor release
