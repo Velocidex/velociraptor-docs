@@ -607,10 +607,14 @@ figcaption  {
 }
 
 .author {
+    padding-left: 50px;
+    padding-bottom: 50px;
+    padding-top: 0;
     color: var(--MAIN-Author);
     font-weight: 400;
 }
 
 .date {
+    display: block;
     color: var(--MAIN-Date);
 }

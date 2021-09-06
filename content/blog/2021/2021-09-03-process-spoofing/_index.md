@@ -92,7 +92,7 @@ pid!
 
 This anomaly allows us to detect the spoofing behavior, now we just
 need to enrich the event with extra detail of the real parent, the
-spoofed parent etc. You can find the full VQL artifact on the [Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) [here](https://docs.velociraptor.app/exchange/artifacts/pages/custom.windows.etw.detectprocessspoofing/)
+spoofed parent etc. You can find the full VQL artifact on the [Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) [here](https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.detectprocessspoofing/)
 
 ![Searching the Artifact Exchange](artifact_exchange.png)
 
