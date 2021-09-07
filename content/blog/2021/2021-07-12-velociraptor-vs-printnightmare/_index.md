@@ -11,11 +11,11 @@ tags:
 - Detection
 - VQL
 date: 2021-07-11T18:13:50Z
+author: Matthew Green and Mike Cohen
 weight: 20
 ---
 
 ## Hunting a Zero day!
-#### Matthew Green and Mike Cohen
 
 Velociraptor is an advanced open source endpoint visibility framework
 based on a flexible query language called
