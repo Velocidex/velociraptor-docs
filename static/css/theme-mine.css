@@ -618,3 +618,7 @@ figcaption  {
     display: block;
     color: var(--MAIN-Date);
 }
+
+#body .banner img {
+    max-width: 100%;
+}
