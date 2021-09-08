@@ -33,7 +33,7 @@ description: |
     not be installed. Previously-installed ActiveX controls will continue to run.
     
     NOTE: if both AddMitigation and DeleteMitigation is selected DeleteMitigation 
-    will take preference.  
+    will take preference. Reboot may be required.  
 
 reference:
   - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-40444
