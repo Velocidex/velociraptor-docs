@@ -19,11 +19,11 @@ parameters:
     default: 'C:\Windows\System32\winevt\Logs'
 sources:
   - query: |
-        LET Toolzip <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(ToolName="Chainsaw", IsExecutable=FALSE)
+        LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Chainsaw", IsExecutable=FALSE)
         LET TmpDir <= tempdir()
         LET TmpResults <= tempfile()
         LET Results = SELECT * FROM read_file(filenames=TmpResults)
-        LET UnzipIt <= SELECT * FROM  unzip(filename=url(path=Toolzip[0].FullPath).String, output_directory=TmpDir)
+        LET UnzipIt <= SELECT * FROM  unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
         Let SigmaRules <= TmpDir + '/chainsaw/sigma_rules' 
         Let SigmaMapping <= TmpDir + '/chainsaw/mapping_files/sigma-mapping.yml'
         Let ExecCS <= SELECT * FROM execve(argv=[
