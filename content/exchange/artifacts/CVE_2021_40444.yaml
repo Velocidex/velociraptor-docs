@@ -45,7 +45,7 @@ precondition:
 
 parameters:
   - name: SearchRegistryGlob
-    default: HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/{1,2,3}/*
+    default: HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/{0,1,2,3}/*
   - name: AddMitigation
     type: bool
     description: Add registry key mitigations for CVE-2021-40444. 
@@ -57,6 +57,10 @@ sources:
   - query: |
         -- set registry values
         LET setvalues = SELECT
+            reg_set_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/0/1001/',
+                type='DWORD',value=3,create='Y'),
+            reg_set_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/0/1004/',
+                type='DWORD',value=3,create='Y'),
             reg_set_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/1/1001/',
                 type='DWORD',value=3,create='Y'),
             reg_set_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/1/1004/',
@@ -72,6 +76,8 @@ sources:
         FROM scope()
 
         LET rmvalues = SELECT
+            reg_rm_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/0/1001/'),
+            reg_rm_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/0/1004/'),
             reg_rm_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/1/1001/'),
             reg_rm_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/1/1004/'),
             reg_rm_value(path='HKEY_LOCAL_MACHINE/SOFTWARE/Policies/Microsoft/Windows/CurrentVersion/Internet Settings/Zones/2/1001/'),
