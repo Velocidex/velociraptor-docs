@@ -8,7 +8,6 @@ tags:
 
 author: "Mike Cohen"
 date: 2021-09-06
-noindex: true
 ---
 
 I am very excited to announce the latest Velociraptor release
@@ -19,7 +18,7 @@ detail.
 
 ## GUI Visible changes
 
-#### Most Recently Used
+### Most Recently Used
 
 One of my favorite new features is the new `Most Recently Used` (MRU)
 list in the GUI. Typically, a Velociraptor deployment may contain many
@@ -46,7 +45,7 @@ ignored.
 {{% /notice %}}
 
 
-#### Free disk space
+### Free disk space
 
 Many users asked to be able to see the free disk space available in
 the dashboard. This is useful to keep an eye during investigations. If
@@ -58,7 +57,7 @@ space in all mounted filesystems.
 ![Free disk space](df.png)
 
 
-#### Quarantine hosts
+### Quarantine hosts
 
 Velociraptor allows users to quarantine hosts using the
 `Windows.Remediation.Quarantine` artifact. This artifact updates the
@@ -99,7 +98,7 @@ the host from the quarantine.
 
 {{% /notice %}}
 
-#### Notebook full screen
+### Notebook full screen
 
 Velociraptor Notebooks have always been the best way for running and
 exploring VQL queries. The notebooks are a collaborative shared
@@ -119,7 +118,7 @@ You can switch back from full screen mode by simply clicking the button.
 Note that the URL contains the full screen mode so you can share a
 notebook URL with your team already in full screen.
 
-#### Favorite collections
+### Favorite collections
 
 If you are like me and often use the same combination of artifacts
 with similar parameters, but are just too lazy to create a custom
@@ -150,7 +149,7 @@ artifact.
 
 {{% /notice %}}
 
-#### Event Monitoring tables
+### Event Monitoring tables
 
 Velociraptor's `CLIENT_EVENT` artifacts run an event query on the
 client and stream the results back to the server. This can be used to
@@ -193,7 +192,7 @@ functionality applies to the visible time range so you can finely tune
 which events should be exported (simply zoom the visible range in or
 out).
 
-#### Timelines
+### Timelines
 
 One of the most exciting new features in 0.6.1 is the new built in
 timeline functionality. What is a timeline? It is a way to visualize
@@ -212,7 +211,7 @@ time column and it is sorted by time order.
 It is even possible (and necessary) to add the same rows multiple
 times to each super timeline, each time having a different key column.
 
-##### Adding timelines
+#### Adding timelines
 
 The first step is to view a table in a notebook - any table generated
 using any query. In the example below, I collected the MFT then post
@@ -242,13 +241,13 @@ column to use as the index.
 In this case I will add the Created times from the MFT to the timeline
 `MFT Analysis`. Velociraptor will sort the table on the Created Time and will add the timeline to the super timeline.
 
-Since I dont have a Super Timeline yet, I can create a new one by
+Since I do not have a Super Timeline yet, I can create a new one by
 starting to type in the box. Later I can add other timelines from any
 tables to the same supertimeline.
 
 ![](timeline-4.png)
 
-##### Viewing timelines
+#### Viewing timelines
 
 Once this is done, nothing appears to have happened! But really the
 supertimeline is added to the notebook. We just need to view it.
@@ -266,7 +265,7 @@ And we get to see the super timeline (which currently has only one
 timeline). It is actually a bit easier to see with full screen so I
 recommend to switch to that now.
 
-##### Inspecting timelines
+#### Inspecting timelines
 
 The cell is divided into two: At the top we see the timeline - it has
 a bar for each child timeline added as well as the top bar
@@ -304,7 +303,7 @@ In this release there are many improvements to the VQL language
 including new plugins, functions and enhanced capability. Let's talk
 about some of the interesting changes.
 
-##### Starlark is now available in VQL
+### Starlark is now available in VQL
 
 VQL has always been more of a glue language - connecting the results
 of multiple plugins, filtering and some basic manipulation of the
@@ -314,7 +313,7 @@ traditional language, such as Python.
 
 [Starlark](https://github.com/bazelbuild/starlark) is a mini-python
 interpreter that can be embedded into Go programs. Velociraptor now
-features a starlart interpreter built in! This is useful when you need
+features a starlark interpreter built in! This is useful when you need
 to perform more intricate functional style of programming.
 
 Here is a very simple example
@@ -335,7 +334,7 @@ within the Startlark module by just calling is as normal. This is most
 helpful when we need to do specific manipulation of strings, numbers
 etc.
 
-##### Functions that manipulate endpoint state
+### Functions that manipulate endpoint state
 
 When we first designed Velociraptor we wanted it to be a read only,
 forensic system. However, as people use Velociraptor more and more for
@@ -348,7 +347,7 @@ That is why the latest release introduces a number of new VQL
 functions, such as `rm`, `reg_set_value`,`reg_rm_value` and `reg_rm_key`
 that allow VQL queries to modify the registry or files.
 
-##### Server side VQL functions
+### Server side VQL functions
 
 On the server, Velociraptor now has the `user_delete()` and
 `user_create()` to manipulate GUI users. This allows for VQL to
@@ -361,16 +360,18 @@ addresses to location.
 
 ## Notable artifacts
 
-##### Carving Cobalt Strike configurations from memory
+### Carving Cobalt Strike configurations from memory
 
 The `Windows.Carving.CobaltStrike` artifact can now carve and decode
 the CobaltStrike configuration from memory. This is very helpful to
 identify the C&C and other configuration parameters encoded within the
 configuration.
 
+![Uncovering Cobalt Strike Config from memory](cs.png)
+
 ## Other changes
 
-##### Client index rewrite
+### Client index rewrite
 
 The client index is used in Velociraptor to quickly search for clients
 in the GUI. Previously this was implemented in a way that proved very
