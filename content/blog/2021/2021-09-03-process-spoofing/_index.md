@@ -8,9 +8,8 @@ tags:
  - VQL
  - ETW
 
-author: "Mike Cohen <mike@velocidex.com>"
+author: "Mike Cohen"
 date: 2021-09-03
-noindex: true
 ---
 
 ## Process Parent Spoofing
@@ -133,6 +132,24 @@ the `Raw Data` view in the GUI.
 Again we see the events in the timeline, but this time the row
 contains all the enriched information, like the real identity of the
 parent process!
+
+## False Positives
+
+After having this rule running for while you might notice some false
+positives - legitimate cases of parent process spoofing include the
+UAC prompt.
+
+![False Positive of parent process spoofing](fp.png)
+
+When elevating a command to "run as admin" the UAC prompt shows. Once
+the prompt is approved, the UAC manager launches the target program
+and spoofs the parent process.
+
+Other cases of legitimate parent process spoofing include the Windows
+Error Reporting.
+
+I thought it would be interesting to see UAC elevations and program
+crashes as well, so I did not filter those out.
 
 ## Conclusions
 
