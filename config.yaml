@@ -45,3 +45,5 @@ menu:
       identifier: "mail"
       url: "mailto:velociraptor-discuss@googlegroups.com"
       weight: 30
+
+googleAnalytics: G-QYH72LMYCS

@@ -8,7 +8,7 @@ tags:
  - VQL
  - ETW
 
-author: "Mike Cohen <mike@velocidex.com>"
+author: "Mike Cohen"
 date: 2021-09-02
 ---
 

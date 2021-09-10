@@ -1,5 +1,45 @@
 [
     {
+        "title": "Windows.Applications.OfficeServerCache",
+        "author": "eduardomcm",
+        "description": "Return Office Internet Server Cache Registry keys and values in order to identify possible C2 URLs from malicious opened Office documents.\n\nSuch keys should be written by exploits such as CVE-2021-40444 (Microsoft MSHTML Remote Code Execution Vulnerability)\n",
+        "link": "/exchange/artifacts/pages/officeservercache",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2021-09-10"
+    },
+    {
+        "title": "Linux.Applications.WgetHSTS",
+        "author": "scudette",
+        "description": "Wget creates a HSTS log file in a user's home directory. \nThis can contain forensically relevant informtion.\n",
+        "link": "/exchange/artifacts/pages/linux.applications.wgethsts",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2021-09-09"
+    },
+    {
+        "title": "Custom.Windows.EventLogs.RecordIDCheck",
+        "author": "mgreen27",
+        "description": "This artifact will compare EventLog records and report on abnormalities \nin RecordID sequence and optional time gap. The artifact can be used for both \nhunting, remote or local analysis.\n\nThere are several parameter's available.  \n  - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.  \n  - PathRegex enables filtering on evtx path for specific log targetting.  \n  - DateAfter enables search for events after this date.  \n  - DateBefore enables search for events before this date.  \n  - MaxTimeDifference enables flaging temporal gaps between Events. Note also potential false positives on machines turned off.  \n  - SearchVSS enables searching over VSS\n\n  Note:  \n  Please use with caution this artifact can potentially be heavy on the endpoint.\n  Temporal analysis is turned off by default due to potential for false positives \n  during machine shutdown. Sequential false positives may also occur very \n  occasionally.\n  \n  version: 0.6.1 \n",
+        "link": "/exchange/artifacts/pages/recordidcheck",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-09"
+    },
+    {
+        "title": "Custom.Windows.Registry.CVE_2021_40444",
+        "author": "mgreen27",
+        "description": "This artifact will enable both application and removal of the reccomended \nmitigation for CVE-2021-40444.\n\nDisabling the installation of all ActiveX controls in Internet Explorer \nmitigates this attack. This can be accomplished for all sites by updating \nthe registry. Previously-installed ActiveX controls will continue to run, \nbut do not expose this vulnerability.\n\nTo disable installing ActiveX controls in Internet Explorer in all zones\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\0]  \n\"1001\"=dword:00000003  \n\"1004\"=dword:00000003  \n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\1]  \n\"1001\"=dword:00000003  \n\"1004\"=dword:00000003  \n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\2]  \n\"1001\"=dword:00000003  \n\"1004\"=dword:00000003 \n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3]  \n\"1001\"=dword:00000003  \n\"1004\"=dword:00000003 \n\nThis sets the URLACTION_DOWNLOAD_SIGNED_ACTIVEX (0x1001) and \nURLACTION_DOWNLOAD_UNSIGNED_ACTIVEX (0x1004) to DISABLED (3) for all \ninternet zones for 64-bit and 32-bit processes. New ActiveX controls will \nnot be installed. Previously-installed ActiveX controls will continue to run.\n\nNOTE: if both AddMitigation and DeleteMitigation is selected DeleteMitigation \nwill take preference. Reboot may be required.  \n",
+        "link": "/exchange/artifacts/pages/cve_2021_40444",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-08"
+    },
+    {
         "title": "Windows.ETW.DetectProcessSpoofing",
         "description": "Detects Process parent spoofing such as SelectMyParent.exe, Cobalt\nStrike PPID spoofing etc.\n",
         "link": "/exchange/artifacts/pages/windows.etw.detectprocessspoofing",
