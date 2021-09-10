@@ -1,0 +1,41 @@
+name: Windows.Applications.OfficeServerCache
+
+description: |
+  Return Office Internet Server Cache Registry keys and values in order to identify possible C2 URLs from malicious opened Office documents.
+  
+  Such keys should be written by exploits such as CVE-2021-40444 (Microsoft MSHTML Remote Code Execution Vulnerability)
+  
+author: Eduardo Mattos - @eduardfir
+
+reference:
+  - https://twitter.com/RonnyTNL/status/1435918945349931008/photo/1
+  
+type: CLIENT
+
+parameters:
+  - name: OfficeServerCacheKey
+    default: SOFTWARE\Microsoft\Office\15.0\Common\Internet\Server Cache\**
+  - name: UserNameRegex
+    default: .
+    description: Filter by this UserName regex.
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+    query: |
+        LET UserList <= SELECT Name as UserName, User_sid as SID FROM users() 
+                      WHERE Name =~ UserNameRegex
+
+        SELECT * FROM foreach(
+            row={
+                SELECT * FROM UserList
+            },
+            query={
+                SELECT 
+                    Name,
+                    FullPath,
+                    Data,
+                    ModTime as Modified,
+                    UserName
+                FROM glob(globs="HKEY_USERS\\" + SID + "\\" + OfficeServerCacheKey, accessor="registry")
+            })
