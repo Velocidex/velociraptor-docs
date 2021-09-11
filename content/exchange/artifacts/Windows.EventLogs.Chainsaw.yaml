@@ -32,19 +32,17 @@ sources:
                         "--json", TmpResults,
                         "--rules", SigmaRules,
                         "--mapping", SigmaMapping], length=100000)
+        LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
         
-        -- we need to parse the results with regex to account for improperly formatted json.
-        LET ParseResults = SELECT parse_json(data=JsonRecord) AS JsonRecord 
-           FROM parse_records_with_regex(file=TmpResults, 
-              regex='''(?sm)(?P<JsonRecord>(^|\n\{\n).+?\n\}\n)''')
-        
-        -- output final rows from extracted Record
-        SELECT 
-            get(member="JsonRecord.event.Event.System.TimeCreated.#attributes.SystemTime") AS EventTime,
-            JsonRecord.detection as Detection,
-            JsonRecord.event.Event.System.Computer AS Computer, 
-            JsonRecord.event.Event.EventData.User AS User,
-            JsonRecord.event.Event.System.Channel AS Channel,
-            JsonRecord.event.Event.System as SystemData,
-            JsonRecord.event.Event.EventData as EventData
-        FROM ParseResults
+        SELECT * FROM foreach(row=Data, query={
+            SELECT
+                get(member="event.Event.System.TimeCreated.#attributes.SystemTime") AS EventTime,
+                get(member="detection") AS Detection, 
+                get(member="event.Event.System.Computer") AS Computer, 
+                get(member="event.Event.System.Channel") AS Channel,
+                get(member="event.Event.System.EventID") AS EventID, 
+                get(member="event.Event.EventData.User") AS _User,
+                get(member="event.Event.System") AS SystemData,
+                get(member="event.Event.EventData") AS EventData
+            FROM Content    
+        })
