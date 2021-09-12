@@ -14,7 +14,7 @@ type: CLIENT
 
 parameters:
   - name: OfficeServerCacheKey
-    default: SOFTWARE\Microsoft\Office\15.0\Common\Internet\Server Cache\**
+    default: SOFTWARE\Microsoft\Office\*\Common\Internet\Server Cache\**
   - name: UserNameRegex
     default: .
     description: Filter by this UserName regex.
