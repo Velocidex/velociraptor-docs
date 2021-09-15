@@ -36,9 +36,11 @@ sources:
                 SELECT rules FROM Data})
         SELECT * FROM foreach(row=items(item=Data.rules[0]), query={ 
             SELECT _key AS Rule,
+                _value.matches AS Matches,
                 get(member="_value.meta.namespace") AS Namespace,
+                get(member="_value.meta.scope") AS _Scope,
                 get(member="_value.meta.att&ck.0.tactic") AS Tactic, 
                 get(member="_value.meta.att&ck.0.technique") + " - " + get(member="_value.meta.att&ck.0.id")  AS Technique,
-                _value.matches AS Matches,
-                get(member="_value.meta") AS _Meta 
+                get(member="_value.meta.author") AS _Author,
+                get(member="_value.meta") AS _Meta
             FROM scope()})
