@@ -1,0 +1,42 @@
+name: Windows.System.BinaryVersion
+author: "Matt Green - @mgreen27"
+description: |
+   Extract the binary version information for binary files. This artifact will 
+   search the MFT for any matching filenames and return binary information.
+
+parameters:
+   - name: TargetBinary
+     default: 'kernel32.dll'
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET hits = SELECT FileName,
+            strip(string=split(string=MFTPath,sep='\\$MFT')[0],
+                prefix='\\\\.\\') + FullPath as FullPath,
+            parse_pe(file=strip(string=split(string=MFTPath,sep='\\$MFT')[0],
+                prefix='\\\\.\\') + FullPath) as PE,
+            authenticode(filename=strip(string=split(string=MFTPath,sep='\\$MFT')[0],
+                prefix='\\\\.\\') + FullPath) as Authenticode,
+            InUse,
+            FileSize
+      FROM Artifact.Windows.NTFS.MFT(
+            AllDrives='Y',
+            FileRegex=TargetLibrary)
+
+      SELECT 
+        FullPath,
+        FileName,
+        PE.VersionInformation.ProductName as ProductName,
+        PE.VersionInformation.FileVersion as DLLVersion,
+        PE.VersionInformation.Comments as Description,
+        PE.VersionInformation.LegalCopyright as LegalCopyright,
+        FileSize,
+        InUse as MFTAllocated,
+        hash(path=FullPath) as Hash,
+        PE,
+        Authenticode
+      FROM hits
+      WHERE PE OR Authenticode OR MFTAllocated = 'false'
