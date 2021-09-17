@@ -1,5 +1,5 @@
 ---
-title: "Welome to Velociraptor, Carlos"
+title: "Welcome to Velociraptor, Carlos"
 description: |
     Carlos Canto joins Velociraptor as its new Community Manager.  Read on to learn more.
 
