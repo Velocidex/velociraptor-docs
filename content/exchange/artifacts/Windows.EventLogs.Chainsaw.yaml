@@ -36,7 +36,7 @@ sources:
                         'hunt', EVTXPath, 
                         "--json", TmpResults,
                         "--rules", SigmaRules,
-                        "--mapping", SigmaMapping], length=10000000)
+                        "--mapping", SigmaMapping], length=Length)
         LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
         
         SELECT * FROM foreach(row=Data, query={
