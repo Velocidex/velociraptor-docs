@@ -17,6 +17,11 @@ tools:
 parameters:
   - name: EVTXPath
     default: 'C:\Windows\System32\winevt\Logs'
+  - name: Length
+    description: Size (in bytes) of output that will be returned for a single row.  This value may need to be adjusted depending on the size of your event logs.
+    type: int
+    default: "10000000"
+    
 sources:
   - query: |
         LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Chainsaw", IsExecutable=FALSE)
@@ -31,7 +36,7 @@ sources:
                         'hunt', EVTXPath, 
                         "--json", TmpResults,
                         "--rules", SigmaRules,
-                        "--mapping", SigmaMapping], length=100000)
+                        "--mapping", SigmaMapping], length=Length)
         LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
         
         SELECT * FROM foreach(row=Data, query={
