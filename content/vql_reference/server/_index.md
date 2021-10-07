@@ -490,7 +490,7 @@ locally stored at all) and this function may stop working.
 
 Arg | Description | Type
 ----|-------------|-----
-path|A VFS path to convert|list of string (required)
+path|A VFS path to convert|LazyExpr (required)
 
 
 
@@ -509,7 +509,7 @@ Delete file store paths.
 
 Arg | Description | Type
 ----|-------------|-----
-path|A VFS path to remove|string (required)
+path|A VFS path to remove|LazyExpr (required)
 
 
 

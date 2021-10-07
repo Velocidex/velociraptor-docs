@@ -61,6 +61,14 @@ SELECT * FROM chain(
 
 
 
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+async|If specified we run all queries asynchronously and combine the output.|bool
+
+
+
 <div class="vql_item"></div>
 
 
@@ -640,9 +648,12 @@ dont want to actually run anything.
 
 ### Example
 
-```vql
-SELECT 1+1 As Two FROM scope()
+```sql
+SELECT 1+1 As Two FROM scop()
 ```
+
+
+
 
 <div class="vql_item"></div>
 
@@ -796,8 +807,8 @@ name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
 bucket|The bucket to upload to|string (required)
 region|The region the bucket is in|string (required)
-credentialskey|The AWS key credentials to use|string (required)
-credentialssecret|The AWS secret credentials to use|string (required)
+credentialskey|The AWS key credentials to use|string
+credentialssecret|The AWS secret credentials to use|string
 endpoint|The Endpoint to use|string
 serversideencryption|The server side encryption method to use|string
 noverifycert|Skip TLS Verification|bool
@@ -908,3 +919,4 @@ end|End scanning at this offset (100mb)|uint64
 number|Stop after this many hits (1).|int64
 blocksize|Blocksize for scanning (1mb).|uint64
 key|If set use this key to cache the  yara rules.|string
+

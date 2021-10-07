@@ -62,6 +62,67 @@ timeout|How long to wait for destructors to run (default 60 seconds).|uint64
 <div class="vql_item"></div>
 
 
+## batch
+<span class='vql_type pull-right'>Plugin</span>
+
+Batches query rows into multiple arrays.
+
+This is useful for batching multiple rows from a query into
+another query (for example sending into an API endpoint). For
+example:
+
+```vql
+SELECT * FROM batch(query={
+  SELECT _value
+  FROM range(start=0, end=10, step=1)
+}, batch_size=3)
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+batch_size|Size of batch (defaults to 10).|int64
+batch_func|A VQL Lambda that determines when a batch is ready. Example
+'x=>len(list=x) >= 10'.
+|string
+query|Run this query over the item.|StoredQuery (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## cidr_contains
+<span class='vql_type pull-right'>Function</span>
+
+Calculates if an IP address falls within a range of CIDR specified
+networks.
+
+```vql
+SELECT cidr_contains(ip="192.168.0.132", ranges=[
+    "192.168.0.0/24", "127.0.0.1/8"])
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+ip|An IP address|string (required)
+ranges|A list of CIDR notation network ranges|list of string (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## column_filter
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -101,6 +162,45 @@ include|One of more regular expressions that will include columns.|list of strin
 <div class="vql_item"></div>
 
 
+## combine
+<span class='vql_type pull-right'>Plugin</span>
+
+Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).
+
+
+
+<div class="vql_item"></div>
+
+
+## commandline_split
+<span class='vql_type pull-right'>Function</span>
+
+Split a commandline into separate components following the windows
+convensions.
+
+Example:
+```vql
+SELECT
+  commandline_split(command='''"C:\Program Files\Velociraptor\Velociraptor.exe" service run'''),
+  commandline_split(command="/usr/bin/ls -l 'file with space.txt'", bash_style=TRUE)
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+command|Commandline to split into components.|string (required)
+bash_style|Use bash rules (Uses Windows rules by default).|bool
+
+
+
+<div class="vql_item"></div>
+
+
 ## gcs_pubsub_publish
 <span class='vql_type pull-right'>Function</span>
 
@@ -116,6 +216,50 @@ topic|The topic to publish to|string (required)
 project_id|The project id to publish to|string (required)
 msg|Message to publish to Pubsub|Any (required)
 credentials|The credentials to use|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## generate
+<span class='vql_type pull-right'>Function</span>
+
+Create a named generator that receives rows from the query.
+
+This plugin allow multiple queries to efficiently filter rows from
+the same query. For example:
+
+```vql
+LET SystemLog = generate(query={
+   SELECT * FROM parse_evtx(filename='''C:\Windows\system32\winevt\logs\System.evtx''')
+})
+
+SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+   Type, EventData
+FROM combine(
+a={
+  SELECT *, "Kernel Driver Install" AS Type
+  FROM SystemLog
+  WHERE System.EventID.Value = 7045 AND EventData.ServiceType =~ "kernel"
+}, b={
+  SELECT *, "Log File Cleared" AS Type,
+            UserData.LogFileCleared AS EventData
+  FROM SystemLog
+  WHERE System.EventID.Value = 104
+})
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+name|Name to call the generator|string
+query|Run this query to generator rows.|StoredQuery
+delay|Wait before starting the query|int64
 
 
 
@@ -335,6 +479,35 @@ create|Set to create missing intermediate keys|bool
 <div class="vql_item"></div>
 
 
+## regex_transform
+<span class='vql_type pull-right'>Function</span>
+
+Search and replace a string with multiple regex. Note you can use $1
+to replace the capture string.
+
+```vql
+SELECT regex_transform(source="Hello world", map=dict(
+   `^Hello`="Goodbye",
+   `world`="Space"), key="A")
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+source|The source string to replace.|string (required)
+map|A dict with keys reg, values substitutions.|ordereddict.Dict (required)
+key|A key for caching|string
+
+
+
+<div class="vql_item"></div>
+
+
 ## relpath
 <span class='vql_type pull-right'>Function</span>
 
@@ -397,6 +570,75 @@ row|The row to send to the artifact|ordereddict.Dict (required)
 <div class="vql_item"></div>
 
 
+## sequence
+<span class='vql_type pull-right'>Plugin</span>
+
+Combines the output of many queries into an in memory fifo. After
+each row is received from any subquery runs the query specified in
+the 'query' parameter to retrieve rows from the memory SEQUENCE
+object.
+
+The `sequence()` plugin is very useful to correlate temporally close
+events from multiple queries - for example, say a process execution
+query and a network query. The `query` can then search for relevant
+network event closely followed by a process event.
+
+For example:
+```vql
+SELECT * FROM sequence(
+network={
+  SELECT * FROM Artifact.Windows.ETW.DNS()
+  WHERE Query =~ "github"
+},
+process={
+  SELECT * FROM Artifact.Windows.Detection.WMIProcessCreation()
+  WHERE Name =~ "cmd.exe"
+},
+query={
+  SELECT Name, CommandLine, {  -- search for a DNS lookup
+    SELECT * FROM SEQUENCE
+    WHERE Query =~ "github"
+  } AS DNSInfo
+  FROM SEQUENCE
+  WHERE DNSInfo AND Name
+})
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+query|Run this query to generator rows. The query should select from SEQUENCE which will contain the current set of rows in the sequence. The query will be run on each new row that is pushed to the sequence.|StoredQuery (required)
+max_age|Maximum number of seconds to hold rows in the sequence.|int64
+
+
+
+<div class="vql_item"></div>
+
+
+## set
+<span class='vql_type pull-right'>Function</span>
+
+Sets the member field of the item. If item is omitted sets the scope.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+item||Any (required)
+field||string (required)
+value||Any (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## slice
 <span class='vql_type pull-right'>Function</span>
 
@@ -444,6 +686,31 @@ args||Any
 <span class='vql_type pull-right'>Function</span>
 
 Compile a starlark code block - returns a module usable in VQL
+
+Starl allows python like code to be used with VQL. This helps when
+we need some small functions with more complex needs. We can use a
+more powerful language to create small functions to transform
+certain fields etc.
+
+## Example
+
+In the following example we define a Starl code block and compile
+it into a module. VQL code can then reference any functions
+defined within it directly.
+
+```vql
+LET MyCode <= starl(code='''
+load("math.star", "math")
+
+def Foo(X):
+  return math.sin(X)
+
+''')
+
+SELECT MyCode.Foo(X=32)
+FROM scope()
+```
+
 
 
 

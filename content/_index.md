@@ -25,11 +25,4 @@ carousel:
 Velociraptor is an advanced digital forensic and incident response
 tool that enhances your visibility into your endpoints.
 
-<div class="banner">
-    <a href="/announcements/2021-artifact-contest/"
-       alt="2021 Velociraptor artifact contest">
-       <img src="competition-1.jpg?featherlight=false">
-    </a>
-</div>
-
 {{% carousel %}}
