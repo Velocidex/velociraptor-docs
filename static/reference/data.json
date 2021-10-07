@@ -194,6 +194,29 @@
         "category": "basic"
     },
     {
+        "name": "batch",
+        "description": "Batches query rows into multiple arrays.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "batch_size",
+                "type": "int64",
+                "description": "Size of batch (defaults to 10)."
+            },
+            {
+                "name": "batch_func",
+                "type": "string",
+                "description": "A VQL Lambda that determines when a batch is ready. Example\n'x=>len(list=x) >= 10'.\n"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query over the item.",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "cache",
         "description": "Creates a cache object.",
         "type": "Function",
@@ -250,7 +273,34 @@
         "name": "chain",
         "description": "Chain the output of several queries into the same table.",
         "type": "Plugin",
+        "args": [
+            {
+                "name": "async",
+                "type": "bool",
+                "description": "If specified we run all queries asynchronously and combine the output."
+            }
+        ],
         "category": "plugin"
+    },
+    {
+        "name": "cidr_contains",
+        "description": "Calculates if an IP address falls within a range of CIDR specified\nnetworks.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "ip",
+                "type": "string",
+                "description": "An IP address",
+                "required": true
+            },
+            {
+                "name": "ranges",
+                "type": "string",
+                "description": "A list of CIDR notation network ranges",
+                "repeated": true,
+                "required": true
+            }
+        ]
     },
     {
         "name": "client_delete",
@@ -486,6 +536,29 @@
                 "type": "string",
                 "description": "One of more regular expressions that will include columns.",
                 "repeated": true
+            }
+        ]
+    },
+    {
+        "name": "combine",
+        "description": "Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).",
+        "type": "Plugin"
+    },
+    {
+        "name": "commandline_split",
+        "description": "Split a commandline into separate components following the windows\nconvensions.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "command",
+                "type": "string",
+                "description": "Commandline to split into components.",
+                "required": true
+            },
+            {
+                "name": "bash_style",
+                "type": "bool",
+                "description": "Use bash rules (Uses Windows rules by default)."
             }
         ]
     },
@@ -940,9 +1013,8 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "LazyExpr",
                 "description": "A VFS path to convert",
-                "repeated": true,
                 "required": true
             }
         ],
@@ -955,7 +1027,7 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "LazyExpr",
                 "description": "A VFS path to remove",
                 "required": true
             }
@@ -1155,6 +1227,28 @@
                 "type": "string",
                 "description": "The credentials to use",
                 "required": true
+            }
+        ]
+    },
+    {
+        "name": "generate",
+        "description": "Create a named generator that receives rows from the query.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name to call the generator"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generator rows."
+            },
+            {
+                "name": "delay",
+                "type": "int64",
+                "description": "Wait before starting the query"
             }
         ]
     },
@@ -3347,6 +3441,30 @@
         "category": "parsers"
     },
     {
+        "name": "regex_transform",
+        "description": "Search and replace a string with multiple regex. Note you can use $1\nto replace the capture string.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "source",
+                "type": "string",
+                "description": "The source string to replace.",
+                "required": true
+            },
+            {
+                "name": "map",
+                "type": "ordereddict.Dict",
+                "description": "A dict with keys reg, values substitutions.",
+                "required": true
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "description": "A key for caching"
+            }
+        ]
+    },
+    {
         "name": "relpath",
         "description": "Return the relative path of .",
         "type": "Function",
@@ -3447,6 +3565,24 @@
         ]
     },
     {
+        "name": "sequence",
+        "description": "Combines the output of many queries into an in memory fifo. After\neach row is received from any subquery runs the query specified in\nthe 'query' parameter to retrieve rows from the memory SEQUENCE\nobject.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generator rows. The query should select from SEQUENCE which will contain the current set of rows in the sequence. The query will be run on each new row that is pushed to the sequence.",
+                "required": true
+            },
+            {
+                "name": "max_age",
+                "type": "int64",
+                "description": "Maximum number of seconds to hold rows in the sequence."
+            }
+        ]
+    },
+    {
         "name": "serialize",
         "description": "Encode an object as a string (csv or json).",
         "type": "Function",
@@ -3492,6 +3628,28 @@
         "category": "server"
     },
     {
+        "name": "set",
+        "description": "Sets the member field of the item. If item is omitted sets the scope.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "item",
+                "type": "Any",
+                "required": true
+            },
+            {
+                "name": "field",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "value",
+                "type": "Any",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "set_client_monitoring",
         "description": "Sets the current client monitoring state.",
         "type": "Function",
@@ -3528,6 +3686,11 @@
                 "name": "time",
                 "type": "int64",
                 "description": "The number of seconds to sleep"
+            },
+            {
+                "name": "ms",
+                "type": "int64",
+                "description": "The number of ms to sleep"
             }
         ],
         "category": "basic"
@@ -4086,14 +4249,14 @@
                 "description": "Guess a timestamp from a string"
             },
             {
-                "name": "us_style",
-                "type": "bool",
-                "description": "US Style Month/Day/Year"
+                "name": "timezone",
+                "type": "string",
+                "description": "A default timezone (UTC)"
             },
             {
                 "name": "format",
                 "type": "string",
-                "description": "A format specifier.\n\nThis format specifier is the same as golang's time.Parse.\n"
+                "description": "A format specifier as per Golangs time.Parse"
             }
         ],
         "category": "basic"
@@ -4374,14 +4537,12 @@
             {
                 "name": "credentialskey",
                 "type": "string",
-                "description": "The AWS key credentials to use",
-                "required": true
+                "description": "The AWS key credentials to use"
             },
             {
                 "name": "credentialssecret",
                 "type": "string",
-                "description": "The AWS secret credentials to use",
-                "required": true
+                "description": "The AWS secret credentials to use"
             },
             {
                 "name": "endpoint",
