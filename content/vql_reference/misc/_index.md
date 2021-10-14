@@ -86,9 +86,7 @@ SELECT * FROM batch(query={
 Arg | Description | Type
 ----|-------------|-----
 batch_size|Size of batch (defaults to 10).|int64
-batch_func|A VQL Lambda that determines when a batch is ready. Example
-'x=>len(list=x) >= 10'.
-|string
+batch_func|A VQL Lambda that determines when a batch is ready. Example 'x=>len(list=x) >= 10'.|string
 query|Run this query over the item.|StoredQuery (required)
 
 
@@ -195,6 +193,44 @@ Arg | Description | Type
 ----|-------------|-----
 command|Commandline to split into components.|string (required)
 bash_style|Use bash rules (Uses Windows rules by default).|bool
+
+
+
+<div class="vql_item"></div>
+
+
+## crypto_rc4
+<span class='vql_type pull-right'>Function</span>
+
+Apply rc4 to the string and key.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+string|String to apply Rc4 encryption|string (required)
+key|Rc4 key (1-256bytes).|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## favorites_delete
+<span class='vql_type pull-right'>Function</span>
+
+Delete a favorite.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+name|A name for this collection template.|string (required)
+type|The type of favorite.|string (required)
 
 
 
@@ -322,6 +358,25 @@ client_id|The client id to import to. Use 'auto' to generate a new client id.|st
 hostname|When creating a new client, set this as the hostname.|string
 filename|Path on server to the collector zip.|string (required)
 accessor|The accessor to use|string
+
+
+
+<div class="vql_item"></div>
+
+
+## parse_ese_catalog
+<span class='vql_type pull-right'>Plugin</span>
+
+Opens an ESE file and dump the schema.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+file||string (required)
+accessor|The accessor to use.|string
 
 
 
@@ -611,7 +666,7 @@ query={
 
 Arg | Description | Type
 ----|-------------|-----
-query|Run this query to generator rows. The query should select from SEQUENCE which will contain the current set of rows in the sequence. The query will be run on each new row that is pushed to the sequence.|StoredQuery (required)
+query|Run this query to generate rows. The query should select from SEQUENCE which will contain the current set of rows in the sequence. The query will be run on each new row that is pushed to the sequence.|StoredQuery (required)
 max_age|Maximum number of seconds to hold rows in the sequence.|int64
 
 
