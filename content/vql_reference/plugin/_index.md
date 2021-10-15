@@ -391,16 +391,17 @@ the binary.
 {{% /notice %}}
 
 The `http_client()` plugin allows use to interact with any web
-services. If the web service returns a json blob, we can parse it with
-the `parse_json()` function (or `parse_xml()` for SOAP
-endpoints). Using the parameters with a POST method we may actually
-invoke actions from within VQL (e.g. send an SMS via an SMS gateway
-when a VQL event is received).So this is a very powerful plugin.
+services. If the web service returns a json blob, we can parse it
+with the `parse_json()` function (or `parse_xml()` for SOAP
+endpoints). Using the parameters with a POST method we may
+actually invoke actions from within VQL (e.g. send an SMS via an
+SMS gateway when a VQL event is received). So this is a very
+powerful plugin - see examples below.
 
 When the `tempfile_extension` parameter is provided, the HTTP
-request body will be written to a tempfile with that
+response body will be written to a tempfile with that
 extension. The name of this tempfile will be emitted as the
-Content column.
+`Content` column.
 
 This plugin will emit rows with the following columns:
 * Url      string: The url we fetched.
@@ -422,6 +423,37 @@ create a new temp file with the speicfied extension, write the
 content of the HTTP request into it and then emit a row with
 `Content` being the name of the file. The file will be
 automatically removed when the query ends.
+
+### Example: Uploading files
+
+Many API handlers support uploading files via POST messages. While
+this is not directly supported by http_client it is possible to
+upload a file using simple VQL - by formatting the POST body using
+the multipart rules.
+
+```vql
+LET file_bytes = read_file(filename="/bin/ls")
+
+SELECT *
+FROM http_client(
+    url='http://localhost:8002/test/',
+    method='POST',
+    headers=dict(
+        `Content-Type`="multipart/form-data;boundary=83fcda3640aca670"
+    ),
+    data=regex_replace(re='\n', '\r\n', '''
+--83fcda3640aca670
+Content-Disposition: form-data; name="file";filename="ls"
+Content-Type: application/octet-stream
+
+''' + file_bytes + '''
+--83fcda3640aca670--
+''')
+```
+
+Note how custom headers can be provided using a dict - note also
+how dict keys with special characters in them can be constructed
+using the backtick quoting.
 
 
 

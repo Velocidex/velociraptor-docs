@@ -200,6 +200,7 @@ Arg | Description | Type
 ----|-------------|-----
 filename|A list of log files to parse.|list of string (required)
 accessor|The accessor to use.|string
+buffer_size|Maximum size of line buffer.|int
 
 
 
@@ -320,6 +321,7 @@ Arg | Description | Type
 ----|-------------|-----
 filename|A list of log files to parse.|list of string (required)
 accessor|The accessor to use.|string
+buffer_size|Maximum size of line buffer.|int
 
 
 

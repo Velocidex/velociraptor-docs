@@ -329,6 +329,7 @@ flow_id|The flow id to export.|string (required)
 wait|If set we wait for the download to complete before returning.|bool
 type|Type of download to create (e.g. 'report') default a full zip file.|string
 template|Report template to use (defaults to Reporting.Default).|string
+password|An optional password to encrypt the collection zip.|string
 
 
 
@@ -359,6 +360,7 @@ only_combined|If set we only export combined results.|bool
 wait|If set we wait for the download to complete before returning.|bool
 format|Format to export (csv,json) defaults to both.|string
 base|Base filename to write to.|string
+password|An optional password to encrypt the collection zip.|string
 
 
 
@@ -621,16 +623,25 @@ artifacts. The artifacts to collect are provided in the
 `artifacts` parameter. Artifact parameters are provided in the
 `spec` parameter (see example below).
 
-NOTE: In the GUI hunts are always created in the paused
+### NOTES
+
+1. In the GUI hunts are always created in the paused
 state. This is not the default state when using this function (all
-hunts are immediately active).
+hunts are immediately active - if you want the hunt to be created
+in the paused state provide the `pause=TRUE` parameter).
+
+2. The expiry time is specified in any of the usual time
+specification ways (seconds since epoch, or ISO format like
+"2021-10-02"). If the expiry time is in the past, the hunt will
+not be created.
 
 ```vql
 SELECT hunt(
     description="A general hunt",
     artifacts='Windows.KapeFiles.Targets',
     spec=dict(`Windows.KapeFiles.Targets`=dict(
-        Device ='C:', VSSAnalysis='Y', KapeTriage='Y')))
+        Device ='C:', VSSAnalysis='Y', KapeTriage='Y'),
+    expires=now() + 18000))
 FROM scope()
 ```
 
@@ -643,7 +654,7 @@ Arg | Description | Type
 ----|-------------|-----
 description|Description of the hunt|string (required)
 artifacts|A list of artifacts to collect|list of string (required)
-expires|Number of milliseconds since epoch for expiry|uint64
+expires|A time for expiry (e.g. now() + 1800)|LazyExpr
 spec|Parameters to apply to the artifacts|Any
 timeout|Set query timeout (default 10 min)|uint64
 ops_per_sec|Set query ops_per_sec value|float64
@@ -874,10 +885,15 @@ Send Email to a remote server.
 Arg | Description | Type
 ----|-------------|-----
 to|Receipient of the mail|list of string (required)
+from|The from email address.|string
 cc|A cc for the mail|list of string
 subject|The subject.|string
 body|The body of the mail.|string (required)
 period|How long to wait before sending the next mail - help to throttle mails.|int64 (required)
+server_port|The SMTP server port to use (default 587).|uint64
+server|The SMTP server to use (if not specified we try the config file).|string
+auth_username|The SMTP username we authenticate to the server.|string
+auth_password|The SMTP username password we use to authenticate to the server.|string
 
 
 
