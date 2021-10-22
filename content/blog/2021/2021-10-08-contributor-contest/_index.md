@@ -6,7 +6,7 @@ description: |
 tags:
  - Community
 
-authors: "Mike Cohen & Carlos Canto"
+author: "Mike Cohen & Carlos Canto"
 date: 2021-10-12
 ---
 
@@ -18,9 +18,9 @@ such as Velociraptor would not be nearly as capable.
 
 # And the winners are...
 
-We are thrilled to announce the winners of the Competition!  Each of these 
-submissions separated itself from the pack by earning the top combined 
-ratings in five key selection criteria:<br><br> Usefulness, Creativity, 
+We are thrilled to announce the winners of the Competition!  Each of these
+submissions separated itself from the pack by earning the top combined
+ratings in five key selection criteria:<br><br> Usefulness, Creativity,
 Effort/Difficulty, Completeness of Solution and Clarity of Documentation
 <br><br>
 
@@ -30,20 +30,20 @@ Without further ado, the winners are...
 * Second Place ($3,000 USD) - **Eduardo Cunha Mattos**
 * Third Place ($2,000 USD) - **Josh Brower**
 
-Congratulations to all three winners!  We'll be reaching out soon with details 
-on how to claim your prizes.  The Velociraptor team would also like to 
-sincerely thank all the judges for their valuable time and effort in evaluating 
-the submissions.  A great big shoutout and thanks to all our Community members 
-who submitted entries as well.  
+Congratulations to all three winners!  We'll be reaching out soon with details
+on how to claim your prizes.  The Velociraptor team would also like to
+sincerely thank all the judges for their valuable time and effort in evaluating
+the submissions.  A great big shoutout and thanks to all our Community members
+who submitted entries as well.
 
-You can still view our award presentation at the SANS Threat Hunting Summit by 
-registering to view a replay of the summit [here](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/).  
+You can still view our award presentation at the SANS Threat Hunting Summit by
+registering to view a replay of the summit [here](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/).
 But until then, take a look at all the submissions below and evaluate them yourself.
 
-Be sure to follow us on Twitter **@velocidex**, join our [Discord server](https://docs.velociraptor.app/discord/), 
-sign up for our [mailing list](https://groups.google.com/g/velociraptor-discuss) 
+Be sure to follow us on Twitter **@velocidex**, join our [Discord server](https://docs.velociraptor.app/discord/),
+sign up for our [mailing list](https://groups.google.com/g/velociraptor-discuss)
 and regularly check out this blog for details on upcoming Velociraptor events.  We have some exciting things planned for the rest of 2021, into 2022 and beyond!
-<br>  
+<br>
 <br>
 <br>
 
