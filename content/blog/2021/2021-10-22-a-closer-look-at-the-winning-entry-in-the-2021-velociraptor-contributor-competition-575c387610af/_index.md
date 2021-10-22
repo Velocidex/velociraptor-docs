@@ -306,4 +306,4 @@ Although this is a simplified example the concepts can be applied to much more c
 
 Have fun guys!!!
 
-What do you think of Justin’s submission? Drop your comments, thoughts and questions into the discussion thread below and keep the conversation going!
+What do you think of Justin’s submission? Drop your comments, thoughts and questions into the Discord server or by tweeting @velocidex and keep the conversation going!
