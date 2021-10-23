@@ -1,8 +1,12 @@
 name: Linux.Sysinternals.Sysmon
+author: Wes Lambert -- @therealwlambert
 description: |
- 
   Parses syslog for Sysmon events on Linux
+  
+  **Reference**: https://github.com/Sysinternals/SysmonForLinux
 
+  This artifact can also be modified to forward events (as a client event artifact), similar to Windows.Sysinternals.SysmonLogForward.
+  
 type: CLIENT
 
 precondition: SELECT OS From info() where OS = 'linux'
