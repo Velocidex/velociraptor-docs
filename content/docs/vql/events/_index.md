@@ -16,7 +16,10 @@ results are available, they are emitted into the query, and can
 potentially be relayed back to the server - even if the plugin takes a
 very long time to run.
 
-Consider now a VQL plugin that takes a long time to complete, perhaps even days. As soon as a result is available, a row will be emitted and will be relayed to the server. Now what if the plugin emits a row based on an event occuring?
+Consider now a VQL plugin that takes a long time to complete, perhaps
+even days. As soon as a result is available, a row will be emitted and
+will be relayed to the server. Now what if the plugin emits a row
+based on an event occuring?
 
 When the event occurs, the plugin will asynchronously emit a row
 describing the event, and go back to monitoring for the event
@@ -53,20 +56,8 @@ along. Of course the query will not complete by itsef, only when it
 hits the notebook's 10 Minute timeout or the user clicks the `Stop`
 <i class="fas fa-stop"></i> button.
 
-![Clock](image65.png)
+![The Clock plugin generates a row every second by default](image65.png)
 
-## Client monitoring architecture
-
-The client maintains a set of VQL Event Queries that are all run in
-parallel. This is called the `Client's Event Table` and it gets synced
-from the server when needed.
-
-When any of these produce rows, the client streams them to the server
-which writes them to the filestore.
-
-If the client is offline, these will be queued in the client’s local
-file buffer, until the client reconnects again, at which time they are
-synced back to the server. This architecture ensures that clients can
-not lose events, event when not online.
-
-![Client Event Architecture](client_events_arch.png)
+To learn more about how Velociraptor uses event queries to monitor
+events on endpoints, see [Client Monitoring]({{< ref
+"/docs/client_monitoring/" >}})
