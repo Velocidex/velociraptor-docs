@@ -63,7 +63,7 @@ Velociraptor allows users to quarantine hosts using the
 `Windows.Remediation.Quarantine` artifact. This artifact updates the
 client's firewall rules so it can only communicate with the
 Velociraptor server, and some limited exceptions. When a host is
-quarantined, no network connections are succuessful, but the
+quarantined, no network connections are successful, but the
 investigator can still communicate with the host using Velociraptor.
 
 This feature is useful in cases when time is of the essence and it

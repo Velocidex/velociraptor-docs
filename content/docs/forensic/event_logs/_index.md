@@ -69,7 +69,7 @@ This scheme has a number of advantages:
    events with large message strings.
 2. Probably the main reason for this scheme is that it allows for
    event message internationalization - the message string can be
-   tailored for the viewer's language regarless of the language set on
+   tailored for the viewer's language regardless of the language set on
    the system that generated the event.
 
 The below example shows a familiar event on a Chinese language system.

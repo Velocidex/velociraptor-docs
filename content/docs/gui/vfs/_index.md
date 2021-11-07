@@ -43,16 +43,16 @@ file from the server by clicking the download icon <i class="fas fa-download"></
 Previously we saw how we can list one directory or fetch one file from
 the endpoint. In many cases it would be convenient to fetch or
 download entire directories from the endpoint. Clicking on the
-recusively sync directory button begins a recusive directory listing.
+recursively sync directory button begins a recusive directory listing.
 
 ![Recursive listing](image66.png)
 
 {{% notice tip "Cancelling large VFS operations" %}}
 
 Syncing large directories and downloading many files from the endpoint
-can take a long time and tranfer large amount of data. By default
+can take a long time and transfer large amount of data. By default
 resource limits are enforced that limit the operation to 10 minutes
-and tranferring 1Gb of data. If you accidentally initiated a download
+and transferring 1Gb of data. If you accidentally initiated a download
 of a very large directory you can click the button again to cancel the
 operation.
 

@@ -70,7 +70,7 @@ quoted in the path.
 ### Glob results
 
 The `glob()` plugin returns rows with several columns. As usual, the
-best way to see what a plugin returns is to click the `Raw Reponse JSON`
+best way to see what a plugin returns is to click the `Raw Response JSON`
 button on the results table.
 
 ![Glob output](image12.png)

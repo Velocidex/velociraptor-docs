@@ -334,7 +334,7 @@ row={
 
 We know that subqueries can be used in various parts of
 the query, such as in a column specifier or as an argument to a
-plugin. While subqueries are convenient, they can become unweildy when
+plugin. While subqueries are convenient, they can become unwieldy when
 nested too deeply. VQL offers an alternative to subqueries called
 `Stored Queries`.
 
@@ -599,7 +599,7 @@ of the `Y` values.
 {{% notice warning "Selecting columns with GROUP BY" %}}
 
 As the above diagram illustrates, it only makes sense in general to
-select the same column as is being groupped. This is because other
+select the same column as is being grouped. This is because other
 columns may contain any number of values, but only a single one of
 these values will be returned.
 

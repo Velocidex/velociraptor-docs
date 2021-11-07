@@ -151,7 +151,7 @@ F:\>velociraptor.exe fs --accessor ntfs ls
 SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime,, Data FROM glob(globs=path, accessor=accessor) WHERE Sys.name_type != 'DOS'
 ```
 
-The above example shows two volume shadow copies that Windows has takens
+The above example shows two volume shadow copies that Windows has taken
 on two different dates (highlighted above). We can browse these
 snapshots just like they were another drive (We can also apply any glob
 expressions to this path):

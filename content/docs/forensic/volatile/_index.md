@@ -15,7 +15,7 @@ only exist briefly and might change in future.
 
 Traditionally volatile evidence was acquired using a full memory dump
 of the running system, and then using a number of memory analysis
-frameworks to extract some of the types of forencis artifacts we
+frameworks to extract some of the types of forensic artifacts we
 discuss in this page.
 
 While memory analysis is a sometimes useful technique, it is

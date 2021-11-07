@@ -37,7 +37,7 @@ Consider an analyst investigating an end point. The analyst has some
 third party tools on their workstation which they would like to use on
 files obtained from the end point.
 
-Filesystem in Usespace (FUSE) is a way of creating the illusion of a
+Filesystem in Userspace (FUSE) is a way of creating the illusion of a
 real filesystem using software. When various programs on the computer
 requests filesystem operations, such as listing files in a directory
 or reading a file, Velociraptor takes over and emulates these

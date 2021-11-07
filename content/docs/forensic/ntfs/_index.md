@@ -207,7 +207,7 @@ representing a stream of data
 A single MFT entry can have up to 16 timestamps, based on different
 attributes:
 
-* The $STANDARD_INFORMATION attribute contains 4 timestamps (Modified, Accessed, indoe Changed, Born)
+* The $STANDARD_INFORMATION attribute contains 4 timestamps (Modified, Accessed, Inode Changed, Born)
 * There are often 2 $FILENAME attributes for a short name and a long name, each will have 4 further timestamps.
 * The $I30 stream of the parent directory also contains 4 timestamps for the file.
 

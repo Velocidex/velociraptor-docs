@@ -129,11 +129,11 @@ Returns client info (like the fqdn) from the datastore.
 Velociraptor maintains basic information about the client in the
 data store, such as its hostname, OS etc.
 
-This information is refereshed each time the `Generic.Client.Info`
+This information is refreshed each time the `Generic.Client.Info`
 artifact is collected from the endpoint so it can be out of
 date. This process is called "interrogation" of the endpoint.
 
-You can refresh the entire fleet's datastore by schduling a
+You can refresh the entire fleet's datastore by scheduling a
 `Generic.Client.Info` hunt.
 
 
@@ -206,7 +206,7 @@ Retrieve the list of clients.
 
 Arg | Description | Type
 ----|-------------|-----
-search|Client search string. Can have the following prefixes: 'lable:', 'host:'|string
+search|Client search string. Can have the following prefixes: 'label:', 'host:'|string
 start|First client to fetch (0)'|uint64
 count|Maximum number of clients to fetch (1000)'|uint64
 client_id||string
@@ -239,7 +239,7 @@ SELECT collect_client(
 FROM scope()
 ```
 
-Sometimes we have a numebr of artifacts that use the same
+Sometimes we have a number of artifacts that use the same
 parameter name for different purposes. In that case we wish to
 specify precisely which artifact receives which parameter. This
 more complex way of specifying the collection using the `spec`
@@ -376,7 +376,7 @@ This uses the Elastic bulk upload API to push arbitrary rows to
 elastic. The query specified in `query` will be run and each row
 it emits will be uploaded as a separate event to Elastic.
 
-You can either specify the elastic index explicitely using the
+You can either specify the elastic index explicitly using the
 `index` parameter or provide an `_index` column in the query
 itself to send the row to a different index each time.
 
@@ -918,8 +918,8 @@ artifact|The name of the artifact collection to fetch|string
 source|An optional named source within the artifact|string
 start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
-notebook_id|The notebook to read from (shoud also include cell id)|string
-notebook_cell_id|The notebook cell read from (shoud also include notebook id)|string
+notebook_id|The notebook to read from (should also include cell id)|string
+notebook_cell_id|The notebook cell read from (should also include notebook id)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
@@ -967,8 +967,8 @@ artifact|The name of the artifact collection to fetch|string
 source|An optional named source within the artifact|string
 start_time|Start return events from this date (for event sources)|int64
 end_time|Stop end events reach this time (event sources).|int64
-notebook_id|The notebook to read from (shoud also include cell id)|string
-notebook_cell_id|The notebook cell read from (shoud also include notebook id)|string
+notebook_id|The notebook to read from (should also include cell id)|string
+notebook_cell_id|The notebook cell read from (should also include notebook id)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 workers|Number of workers to spawn.)|int64
 batch|Number of rows in each batch.)|int64
@@ -1185,8 +1185,8 @@ artifact|The name of the artifact collection to fetch|string
 source|An optional named source within the artifact|string
 start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
-notebook_id|The notebook to read from (shoud also include cell id)|string
-notebook_cell_id|The notebook cell read from (shoud also include notebook id)|string
+notebook_id|The notebook to read from (should also include cell id)|string
+notebook_cell_id|The notebook cell read from (should also include notebook id)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64

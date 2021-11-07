@@ -93,7 +93,7 @@ buffer_size|Maximum size of line buffer.|int
 ## parse_binary
 <span class='vql_type pull-right'>Function</span>
 
-Parse a binary file into a datastructure using a profile.
+Parse a binary file into a data structure using a profile.
 
 This plugin extract binary data from strings. It works by applying
 a profile to the binary string and generating an object from
@@ -513,7 +513,7 @@ Conffiles:
  /etc/update-motd.d/80-livepatch 1a3172ffaa815d12b58648f117ffb67e
 Description: management tools for Ubuntu Advantage
  Ubuntu Advantage is the professional package of tooling, technology
- and expertise from Canonical, helping organisations around the world
+ and expertise from Canonical, helping organizations around the world
  manage their Ubuntu deployments.
  .
  Subscribers to Ubuntu Advantage will find helpful tools for accessing
@@ -765,4 +765,3 @@ file||string (required)
 accessor|The accessor to use.|string
 query||string (required)
 args||Any
-

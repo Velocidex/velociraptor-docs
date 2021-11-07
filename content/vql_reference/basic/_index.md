@@ -924,7 +924,7 @@ Splits a string into an array based on a regexp separator.
 Arg | Description | Type
 ----|-------------|-----
 string|The value to split|string (required)
-sep|The serparator that will be used to split|string (required)
+sep|The separator that will be used to split|string (required)
 
 
 
@@ -1055,7 +1055,7 @@ mactime|HFS+|int64
 winfiletime||int64
 string|Guess a timestamp from a string|string
 timezone|A default timezone (UTC)|string
-format|A format specifier as per Golangs time.Parse|string
+format|A format specifier as per Golang's time.Parse|string
 
 
 

@@ -19,7 +19,7 @@ Let's look at the major design differences and priorities of Velociraptor, GRR, 
 
 ### Velociraptor vs Google Rapid Response
 
-Google's Rapid Response (GRR) launched in 2011, and was one of the first tools to allow hunting for forensic artifacts at scale. 
+Google's Rapid Response (GRR) launched in 2011, and was one of the first tools to allow hunting for forensic artifacts at scale.
 GRR allowed investigators to quickly query network hosts to check files or registry settings. Rather than passively analyse logs that after they were collected into a central location, GRR allowed security professionals to proactively search for evidence of compromise
 across many hosts.
 
@@ -52,7 +52,7 @@ much of the parsing and analysis to the endpoint as
 possible. Velociraptor contains many powerful forensic analysis modules
 on the endpoint, and uses a powerful query language allowing new parsers to
 be written. This allows endpoints
-to send only the most relevant results and reduces 
+to send only the most relevant results and reduces
 unnecessary parsing on the server.
 
 ### Velociraptor vs OSQuery
@@ -69,7 +69,7 @@ queries. While simple SQL is easy for beginners to learn, more
 sophisticated queries use SQL contracts that are a pretty complex, such as JOIN operators.
 
 Velociraptor's VQL also allows users to flexibly
-write new queries to gather new evidence onthe endpoint. However, VQL
+write new queries to gather new evidence on the endpoint. However, VQL
 is deliberately kept very simple, yet powerfully expressive.
 
 Additionally, OSQuery suffers from performance issues. Finding files using queries against the "file" table are notoriously

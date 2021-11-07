@@ -19,7 +19,7 @@ very long time to run.
 Consider now a VQL plugin that takes a long time to complete, perhaps
 even days. As soon as a result is available, a row will be emitted and
 will be relayed to the server. Now what if the plugin emits a row
-based on an event occuring?
+based on an event occurring?
 
 When the event occurs, the plugin will asynchronously emit a row
 describing the event, and go back to monitoring for the event
@@ -52,7 +52,7 @@ SELECT Unix FROM clock()
 
 The `clock()` plugin simply emits one row per second. The GUI will be
 waiting for the query to complete, showing partial results as it goes
-along. Of course the query will not complete by itsef, only when it
+along. Of course the query will not complete by itself, only when it
 hits the notebook's 10 Minute timeout or the user clicks the `Stop`
 <i class="fas fa-stop"></i> button.
 

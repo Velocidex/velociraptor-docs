@@ -57,7 +57,7 @@ Expanding the view for a single document you should see something like this:
 And that’s how easy it is to get your data into Elastic!
 
 {{% notice note %}}
-If you have an Elasticsearch cluster that uses authentication, non-standard ports or other customisations, you can create a custom artifact by copying the **Elastic.Flows.Upload** artifact and adding [additional parameters](https://github.com/Velocidex/velociraptor/blob/4d19d37191500b5f01f064586f8940a4b1a5dccf/vql/server/elastic.go#L56) to it in order to make it suit your non-standard environment.
+If you have an Elasticsearch cluster that uses authentication, non-standard ports or other customizations, you can create a custom artifact by copying the **Elastic.Flows.Upload** artifact and adding [additional parameters](https://github.com/Velocidex/velociraptor/blob/4d19d37191500b5f01f064586f8940a4b1a5dccf/vql/server/elastic.go#L56) to it in order to make it suit your non-standard environment.
  {{% /notice %}}
 
 ## Sending Client Events to Elastic
@@ -66,7 +66,7 @@ This is slightly less easy than the previous step but only because it requires t
 
 Once the client events are being collected and received by the VR server, the *Elastic.Events.Clients* artifact will take care of forwarding these events to Elastic *.*
 
-The artifact supports forwarding events from 4 built-in client event artifacts by default. These client event types can be selected/deselected and with a bit of customisation even more types can be added to suit your needs:
+The artifact supports forwarding events from 4 built-in client event artifacts by default. These client event types can be selected/deselected and with a bit of customization even more types can be added to suit your needs:
 
 * Windows.Detection.PsexecService
 * Windows.Events.DNSQueries
@@ -89,7 +89,7 @@ Easier than you expected, right? Well in the next section we take it to the next
 
 ## Slice & Dice with Logstash
 
-Want to reshape, filter or enrich the data? Well you could do that by writing custom Velociraptor artifacts, however you might already have an existing data pipeline that includes Logstash. This is a common architecture in information security environments where Logstash provides centralised flow control, data enrichment and standardisation functions prior to the data being fed into Elasticsearch.
+Want to reshape, filter or enrich the data? Well you could do that by writing custom Velociraptor artifacts, however you might already have an existing data pipeline that includes Logstash. This is a common architecture in information security environments where Logstash provides centralised flow control, data enrichment and standardization functions prior to the data being fed into Elasticsearch.
 
 While Velociraptor doesn’t directly support Logstash, integration can be achieved by making Logstash emulate the Elasticsearch Bulk API. To make this work you’ll need to install the Logstash [ES_bulk codec plugin](https://www.elastic.co/guide/en/logstash/current/plugins-codecs-es_bulk.html), since this is not one of the pre-installed plugins.
 

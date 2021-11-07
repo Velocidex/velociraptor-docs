@@ -26,7 +26,7 @@ Being able to efficiently and quickly collect and preserve evidence is
 important for being able to capture machine state at a point in
 time. It is also useful to be able to use these collected files with
 other forensic tools that might be able to handle the file formats
-invoved.
+involved.
 
 One of the most commonly used artifact is the
 `Windows.KapeFiles.Targets` artifact. This artifact is automatically
@@ -95,13 +95,13 @@ endpoint, how shall we collect and triage artifacts?
 
 Velociraptor is just a VQL engine!  All we need is Velociraptor to be
 able to collect the VQL artifacts into a file, and then we can
-transport the file ourselve for analysis.  Velociraptor does not
+transport the file ourselves for analysis.  Velociraptor does not
 really need a server...
 
 Often we rely of an external helper (such as a local admin) to
 actually perform the collection for us. However, these helpers are
 often not DFIR experts. We would like to provide them with a solution
-that performs the required collection with minimal intervension - even
+that performs the required collection with minimal intervention - even
 to the point where they do not need to type any command line
 arguments.
 
@@ -143,14 +143,14 @@ Here we get to choose what kind of collector we would like:
       same directory the collector is launched from.
 
     * Google Cloud Bucket: The zip file will be uploaded to a cloud
-      bucket. When selecting this you can provice GCP credentials to control
+      bucket. When selecting this you can provide GCP credentials to control
       the upload bucket.
 
     * AWS Bucket: The zip file will be uploaded to a cloud
-      bucket. When selecting this you can provice AWS credentials and
+      bucket. When selecting this you can provide AWS credentials and
       details to control the upload bucket.
 
-    * SFTP: This allows the collector to upload the file to an SFP
+    * SFTP: This allows the collector to upload the file to an SFTP
       server using a private key.
 
 The `Offline Collector Builder` is simply a GUI wrapped around the
@@ -160,7 +160,7 @@ created into the collection and the file will be available for
 download from the "Uploads" tab. Simply click on the link to get the
 collector.
 
-![Retreiving the Offline Collector binary](image13.png)
+![Retrieving the Offline Collector binary](image13.png)
 
 Once the collector is run without command line arguments, the
 collection will automatically start. No need for the user to enter
@@ -170,7 +170,7 @@ elevated administrator shell.
 ![Running the Offline Collector in the console](image14.png)
 
 The collector creates a zip file containing the collected files as
-well as an optional reprot.
+well as an optional report.
 
 ![Viewing the Offline Collector in the console](image29.png)
 
@@ -239,4 +239,4 @@ Offline collections are typically planned in advance and it is a bit
 more difficult to pivot and dig deeper based on analysis results to
 search for more results. For this reason offline collections tend to
 err on the side of collecting more data rather than being more
-targetted and focused on answering the investigative questions.
+targeted and focused on answering the investigative questions.

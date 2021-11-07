@@ -45,7 +45,7 @@ Start a new notebook by selecting the notebook in the sidebar then add a new not
 
 Notebooks consists of a series of **Cells**. There are a number of types of cells but the most common are **Markdown** Cells and **VQL** cells. VQL cells allow one to run arbitrary VQL directly within the notebook, and view the results in a table.
 
-When you create a new notebook, the first cell wil be of type markdown. You can add a VQL cell below that by simply selecting Add VQL cell from the toolbar.
+When you create a new notebook, the first cell will be of type markdown. You can add a VQL cell below that by simply selecting Add VQL cell from the toolbar.
 
 ![](../../img/1bqFDmsEFrvkpE8BGmMi2Tg.png)
 

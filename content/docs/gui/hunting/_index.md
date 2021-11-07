@@ -82,7 +82,7 @@ VQL query to the results.
 
 Let's consider our earlier example collecting the scheduled tasks from
 all endpoints. Suppose we wanted to only see those machines with a scheduled task that runs a batch script from cmd.exe and count
-only unique occurances of this command.
+only unique occurrences of this command.
 
 We can update the notebook's VQL with a `WHERE` clause and `GROUP BY`
 to post-process the results.
@@ -93,7 +93,7 @@ to post-process the results.
 {{% notice warning "Managing hunt data volumes" %}}
 
 When hunting large numbers of endpoints, data grows quickly. Even
-uploading a moderatly sized file can add up very quickly. For example,
+uploading a moderately sized file can add up very quickly. For example,
 collecting a 100Mb file from 10,000 machines results in over 1Tb of
 required storage.
 

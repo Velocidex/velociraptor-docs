@@ -52,7 +52,7 @@ verbose|Set to receive verbose information about all the certs.|bool
 Collect certificate from the system trust store.
 
 This plugin uses the Windows APIs to fetch the certificates. You
-migth also want to look at the `Windows.System.RootCAStore`
+might also want to look at the `Windows.System.RootCAStore`
 artifact.
 
 
@@ -170,7 +170,7 @@ Collect network information.
 ## partitions
 <span class='vql_type pull-right'>Plugin</span>
 
-List all partititions
+List all partitions
 
 
 
@@ -371,4 +371,3 @@ Arg | Description | Type
 ----|-------------|-----
 query|The WMI query to issue.|string (required)
 namespace|The WMI namespace to use (ROOT/CIMV2)|string
-

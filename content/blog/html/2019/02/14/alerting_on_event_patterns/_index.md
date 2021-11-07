@@ -13,7 +13,7 @@ used to create alerts and escalation actions.
 
 One of the most useful types of alerts is detecting a pattern of
 activity. For example we can detect failed and successful login attempts
-seperately, but it is the specific pattern of events (say 5 failed login
+separately, but it is the specific pattern of events (say 5 failed login
 attempts followed by a successful one) that is interesting from a
 detection point of view.
 
@@ -114,7 +114,7 @@ This pattern is way more interesting than just watching for a series of
 failed logons (although that is also good to know).
 
 But how do we write a query to detect this? Essentially the query needs
-to look back in time to see how many failed logon attempts preceeded
+to look back in time to see how many failed logon attempts preceded
 each successful logon.
 
 This is a typical problem which may be generalized as followed:
@@ -122,7 +122,7 @@ This is a typical problem which may be generalized as followed:
 ::: {.admonition}
 Goal
 
-We want to detect an event A preceeded by a specified number of events B
+We want to detect an event A proceeded by a specified number of events B
 within a defined time window.
 :::
 
