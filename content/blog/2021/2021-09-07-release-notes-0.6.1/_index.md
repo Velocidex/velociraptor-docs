@@ -330,7 +330,7 @@ FROM scope()
 The first statement defines a Starlark module by simply calling the
 `starl()` function on some python code. The `starl()` function
 compiles the code into a module. VQL queries can then access code
-within the Startlark module by just calling is as normal. This is most
+within the Starlark module by just calling is as normal. This is most
 helpful when we need to do specific manipulation of strings, numbers
 etc.
 

@@ -209,7 +209,7 @@ Strings denoted by `"` or `'` can escape special characters using the
 `\\`. For example, `"\\n"` means a new line. This is useful but it
 also means that backslashes need to be escaped. This is sometimes
 inconvenient, especially when dealing with Windows paths (that
-contains alot of backslashes).
+contains a lot of backslashes).
 
 Therefore, Velociraptor also offers a Multiline raw string which is
 denoted by `'''` (three single quotes). Within this type of string no
@@ -429,7 +429,7 @@ socket).
 
 The process listing will not likely change during the few seconds it takes the query to run.
 It would be more efficient to have the process listing cached in memory
-for the entire length of the query. 
+for the entire length of the query.
 
 We recommend that you `Materialize` the query:
 

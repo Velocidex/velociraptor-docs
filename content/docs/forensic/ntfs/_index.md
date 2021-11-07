@@ -316,7 +316,7 @@ SELECT * FROM foreach(
 ## The USN journal
 
 Update Sequence Number Journal or Change journal is maintained by NTFS
-to record filesystem changes. Prmiarily designed to support backup
+to record filesystem changes. Primarily designed to support backup
 programs, the USN journal records metadata about filesystem changes.
 
 The journal resides in the path `$Extend\$UsnJrnl:$J` and is normally

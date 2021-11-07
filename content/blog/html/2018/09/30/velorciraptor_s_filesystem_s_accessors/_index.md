@@ -5,7 +5,7 @@ description: |
   raw NTFS volumes, allowing users to read files which are normally
   locked by the operating system such as registry hives, pagefile and
   other locked files.
-title: Velorciraptor's filesystem's accessors
+title: Velociraptor's filesystem's accessors
 categories: ["Blog"]
 ---
 
@@ -267,7 +267,7 @@ runme.exe:
 
 ![image](vfs4.png)
 
-Velocirpator treats a file\'s DOS name and Win32 Name as distinct
+Velocirapator treats a file\'s DOS name and Win32 Name as distinct
 entries in the NTFS directory listing. This allows us to find any
 references to the file by it\'s DOS name as well as its Win32 name.
 

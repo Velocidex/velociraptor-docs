@@ -603,7 +603,7 @@ sep|The separator|string
 ## killkillkill
 <span class='vql_type pull-right'>Function</span>
 
-Kills the client and forces a restart - this is very aggresive!
+Kills the client and forces a restart - this is very aggressive!
 
 
 
@@ -1301,4 +1301,3 @@ Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
-

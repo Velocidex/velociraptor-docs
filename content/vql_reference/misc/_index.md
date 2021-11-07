@@ -5,7 +5,7 @@ linktitle: Misc
 index: true
 ---
 
-Miscelanueous plugins not yet categorized.
+Miscellaneous plugins not yet categorized.
 
 
 <div class="vql_item"></div>
@@ -988,4 +988,3 @@ Arg | Description | Type
 ----|-------------|-----
 string|String to apply Xor|string (required)
 key|Xor key.|string (required)
-

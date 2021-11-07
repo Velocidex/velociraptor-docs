@@ -884,7 +884,7 @@ Send Email to a remote server.
 
 Arg | Description | Type
 ----|-------------|-----
-to|Receipient of the mail|list of string (required)
+to|Recipient of the mail|list of string (required)
 from|The from email address.|string
 cc|A cc for the mail|list of string
 subject|The subject.|string
@@ -932,7 +932,7 @@ count|Maximum number of clients to fetch (default unlimited)'|int64
 ## notebook_delete
 <span class='vql_type pull-right'>Plugin</span>
 
-Delete a notebook with all its cells. 
+Delete a notebook with all its cells.
 
 
 
@@ -1236,4 +1236,3 @@ Arg | Description | Type
 ----|-------------|-----
 client_id|The client id to extract|string
 flow_id|A flow ID (client or server artifacts)|string
-

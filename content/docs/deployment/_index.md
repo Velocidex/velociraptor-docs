@@ -7,7 +7,7 @@ weight: 10
 
 You can deploy full-scale Velociraptor using either the [SSL-Self
 Signed]({{< relref "self-signed" >}}) or [Cloud Deployment]({{< relref
-"cloud" >}}) method, or set up a Velolicraptor environment on your
+"cloud" >}}) method, or set up a Velociraptor environment on your
 local machine for testing environment. For more information, see
 [Instant Velociraptor](#instant-velociraptor).
 

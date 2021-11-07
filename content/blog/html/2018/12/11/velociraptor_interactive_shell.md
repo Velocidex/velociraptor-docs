@@ -29,7 +29,7 @@ extract certain information is to run a command and parse its output.
 For example, consider the windows ipconfig command. It is possible to
 extract this information using win32 apis but this requires additional
 code to be written in the client. The ipconfig command is guaranteed to
-be available. Soemtimes running a command and parsing its output is the
+be available. Sometimes running a command and parsing its output is the
 easiest option.
 
 The GRR client has a client action which can run a command. However that

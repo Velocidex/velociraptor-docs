@@ -105,7 +105,7 @@ The file is typically locked so you would need to use Velociraptor to collect it
 
 So far we have learned how authenticode stores hashes in the PE file and we can verify if the hash of the current file matches the hash within the signature information, but how can we trust that this hash is correct?
 
-To really verify a signature, Windows must verify the trust chain by following the certificates to a trusted root certificate. Windows maintains a list of trusted certificates in a “Cerificate Root Store” within the registry. There are several stores, a main one for the OS and each user also has a certificate store in their NTUSER.dat hive.
+To really verify a signature, Windows must verify the trust chain by following the certificates to a trusted root certificate. Windows maintains a list of trusted certificates in a “Certificate Root Store” within the registry. There are several stores, a main one for the OS and each user also has a certificate store in their NTUSER.dat hive.
 
 Velociraptor can inspect the certificate root store using the certificates() plugin. This plugin uses the Windows APIs to query the root store and report the trusted certificates. It is typically important to verify the trusted certificate root store since if a adversary adds a new certificate to the root store, their executables will be trusted by the OS.
 
