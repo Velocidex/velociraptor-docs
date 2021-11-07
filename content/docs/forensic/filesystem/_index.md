@@ -49,7 +49,7 @@ SELECT * FROM glob(globs='''C:\Users\**\*.exe''')
 
 The `glob()` plugin is optimized to visit files on the filesystem as
 quickly as possible. Therefore if multiple glob expressions are
-provided, the `glob()` plugin will compbine them into a single
+provided, the `glob()` plugin will combine them into a single
 expression automatically to reduce filesystem access. It is always
 better to provide multiple glob expressions than to run the `glob()`
 plugin multiple times. For example the following will only make a

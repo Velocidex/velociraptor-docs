@@ -174,7 +174,7 @@ Combine the output of several queries into the same result set.A convenience plu
 <span class='vql_type pull-right'>Function</span>
 
 Split a commandline into separate components following the windows
-convensions.
+conventions.
 
 Example:
 ```vql

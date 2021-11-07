@@ -90,7 +90,7 @@ a system.
 
 ### Exercise - Mutants
 
-For example, comsider the following powershell snippet:
+For example, consider the following powershell snippet:
 
 ```powershell
 $createdNew = $False

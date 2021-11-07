@@ -196,4 +196,4 @@ Here is a high level overview diagram.
 
 Now we are able to decode encoded powershell command lines
 
-![Decoding powershell comamnds](decoded_powershell.png)
+![Decoding powershell commands](decoded_powershell.png)

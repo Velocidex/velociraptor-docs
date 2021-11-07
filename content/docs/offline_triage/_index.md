@@ -15,7 +15,7 @@ real difference between collecting files or other non-volatile
 artifacts: Everything that Velociraptor collects is just a VQL
 Artifact.
 
-We like to think of triage as simply captuing machine state - where
+We like to think of triage as simply capturing machine state - where
 the state may be bulk files (like the `$MFT` or registry hives) or any
 other volatile data, such as process information, network connections
 etc.

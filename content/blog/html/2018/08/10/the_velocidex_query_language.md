@@ -221,8 +221,8 @@ doing a significant amount of work. The VQL author must be aware of the
 relative costs of the different operations and how the query should be
 structured for maximum efficiency.
 
-What we would really like is for VQL to evaluate the cheap condst, and
-only for those files smaller than 1000 bytes, evaluate the grep()
+What we would really like is for VQL to evaluate the cheap condition,
+and only for those files smaller than 1000 bytes, evaluate the grep()
 condition. This allows us to eliminate most files immediately (since
 most files are larger than 1000 bytes) such that we only bother to
 grep() very few files.

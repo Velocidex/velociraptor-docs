@@ -80,7 +80,7 @@ prefix|Required name prefix|string
 
 Cancels the flow.
 
-This sends the client an immediate cacnellation message and stops
+This sends the client an immediate cancelation message and stops
 the flow. It also removes any outstanding requests for the client
 if there are any.
 
