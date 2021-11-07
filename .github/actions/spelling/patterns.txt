@@ -4,5 +4,9 @@
 \b([A-Za-z])\g{-1}{3,}\b
 
 # ignore very long words
-[A-Za-z0-9]{10,}
+[A-Za-z0-9\-]{10,}
 c\.[a-zA-Z0-9]+
+
+[A-Za-z0-9\-]\.png
+
+https://[^ ]+
