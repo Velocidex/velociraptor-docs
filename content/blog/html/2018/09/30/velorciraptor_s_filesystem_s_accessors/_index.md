@@ -267,7 +267,7 @@ runme.exe:
 
 ![image](vfs4.png)
 
-Velocirapator treats a file\'s DOS name and Win32 Name as distinct
+Velociraptor treats a file\'s DOS name and Win32 Name as distinct
 entries in the NTFS directory listing. This allows us to find any
 references to the file by it\'s DOS name as well as its Win32 name.
 

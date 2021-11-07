@@ -6,7 +6,7 @@ index: true
 ---
 
 VQL provides a basic set of functions and plugins allowing
-queries to maniulate data and implement logic. This page details
+queries to manipulate data and implement logic. This page details
 those plugins which are considered foundational to the VQL
 language and therefore may be useful in all types of artifacts.
 

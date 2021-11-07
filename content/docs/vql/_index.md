@@ -175,7 +175,7 @@ Take the following query for example,
 ![Scope lookup](scope.png)
 
 VQL evaluates the `info()` plugin, which emits a single row. Then VQL
-creates a child scope, with the row at the bottom level. Whe VQL tries
+creates a child scope, with the row at the bottom level. When VQL tries
 to resolve the symbol `OS` from the column expression, it examines the
 scope stack in reverse, checking if the symbol `OS` exists in the
 lower layer. If not, VQL checks the next layer, and so on.
