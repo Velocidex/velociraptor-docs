@@ -116,7 +116,6 @@ VMs
 Vtype
 WBEM
 WORKGROUP
-WOW’ed
 WQL
 WScri
 WScript
