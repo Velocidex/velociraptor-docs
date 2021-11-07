@@ -684,3 +684,7 @@ psexe
 psexesv
 pubsub
 webdav
+
+Primum
+Tanium
+Gamell

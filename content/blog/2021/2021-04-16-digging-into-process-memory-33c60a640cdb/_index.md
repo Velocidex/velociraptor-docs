@@ -42,7 +42,7 @@ I can then also extract some context around the hits to see if the hit is a fals
 
 When a process is launched it receives environment variables that often affect the way the launched program behaves. I was curious to see if it is possible to determine the environment variables that a process is launched with?
 
-On windows, each process is started with a [Process Environment Block](https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb). This data structure is populated by the OS before the process is created and contains important information about the proces. Processes can extract this information at runtime. The process environment variables are stored in the PEB too and therefore we can parse these out from each process’s memory.
+On windows, each process is started with a [Process Environment Block](https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb). This data structure is populated by the OS before the process is created and contains important information about the process. Processes can extract this information at runtime. The process environment variables are stored in the PEB too and therefore we can parse these out from each process’s memory.
 
 Velociraptor has a powerful binary parser built in, as was described previously in the post “[Parsing binary files](https://velociraptor.velocidex.com/parsing-binary-files-d31114a41f14)”. Having the process memory exposed via an accessor allows us to apply this parser to process memory via a VQL query.
 

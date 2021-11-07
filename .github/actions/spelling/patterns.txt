@@ -13,6 +13,8 @@ c\.[a-zA-Z0-9]+
 
 # urls
 https://[^ ]+
+http://[^ ]+
+www\.[^ ]+
 
 # Tables often break words
 \|.+

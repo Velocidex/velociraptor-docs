@@ -43,7 +43,7 @@ file from the server by clicking the download icon <i class="fas fa-download"></
 Previously we saw how we can list one directory or fetch one file from
 the endpoint. In many cases it would be convenient to fetch or
 download entire directories from the endpoint. Clicking on the
-recursively sync directory button begins a recusive directory listing.
+recursively sync directory button begins a recursive directory listing.
 
 ![Recursive listing](image66.png)
 
