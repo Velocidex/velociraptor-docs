@@ -142,7 +142,7 @@ parameter which renames the file as sent to the server.
 
 ### Example: Collect all executables in users’ home directory
 
-This is a common use of compbining a `glob()` plugin with an
+This is a common use of combining a `glob()` plugin with an
 `upload()` function:
 
 ```sql

@@ -49,7 +49,7 @@ SELECT * FROM glob(globs='''C:\Users\**\*.exe''')
 
 The `glob()` plugin is optimized to visit files on the filesystem as
 quickly as possible. Therefore if multiple glob expressions are
-provided, the `glob()` plugin will compbine them into a single
+provided, the `glob()` plugin will combine them into a single
 expression automatically to reduce filesystem access. It is always
 better to provide multiple glob expressions than to run the `glob()`
 plugin multiple times. For example the following will only make a
@@ -70,7 +70,7 @@ quoted in the path.
 ### Glob results
 
 The `glob()` plugin returns rows with several columns. As usual, the
-best way to see what a plugin returns is to click the `Raw Reponse JSON`
+best way to see what a plugin returns is to click the `Raw Response JSON`
 button on the results table.
 
 ![Glob output](image12.png)

@@ -11,7 +11,7 @@ date: 2021-10-20
 
 ![](16AEbbSzNdpNFVHh0VnSEoA.jpeg)
 
-On Friday October 9 the Velociraptor team crowned the grand prize winner in our 2021 Contributor Competition — unanimously won by Justin Welgemoed. His entry, “File Type Detection and Client-Server-Client Workflows” absolutely WOW’ed the judges. Want to learn more about Justin’s submission and how it takes Velociraptor to the next level? Read below for a deep dive into his work.
+On Friday October 9 the Velociraptor team crowned the grand prize winner in our 2021 Contributor Competition — unanimously won by Justin Welgemoed. His entry, “File Type Detection and Client-Server-Client Workflows” absolutely WOWed the judges. Want to learn more about Justin’s submission and how it takes Velociraptor to the next level? Read below for a deep dive into his work.
 
 ### 2021 Velociraptor Contributor Competition Entry:
 
@@ -35,7 +35,7 @@ The current approach results in a few downsides and inefficiencies:
 
 ## Goals
 
-1. The first goal of this demonstration is to show that Velociraptor artifacts can implement client-server-client workflow automation, with decision logic being driven by the server-side in order to achieve a more dynamic/flexible and modular system of DFIR data collection. This also shows that Velociraptor can support reasonably complex workflows implemented *using only VQL*, rather than having to implement decision logic in an external application that interfaces via the Velociraptor API. In a nutshell: client artifacts and server artifacts can dance together. Client artifacts don’t have to do all the heavy lifting on their own. Server Monitoring artifacts are essentially server-based services that are an underutilised yet powerful component of Velociraptor.
+1. The first goal of this demonstration is to show that Velociraptor artifacts can implement client-server-client workflow automation, with decision logic being driven by the server-side in order to achieve a more dynamic/flexible and modular system of DFIR data collection. This also shows that Velociraptor can support reasonably complex workflows implemented *using only VQL*, rather than having to implement decision logic in an external application that interfaces via the Velociraptor API. In a nutshell: client artifacts and server artifacts can dance together. Client artifacts don’t have to do all the heavy lifting on their own. Server Monitoring artifacts are essentially server-based services that are an underutilized yet powerful component of Velociraptor.
 
 2. The 2nd goal here is to demonstrate an approach that uses more concise and reusable Velociraptor artifacts. This is accomplished in 3 ways:
 
@@ -111,7 +111,7 @@ There are a few simple steps to get the artifacts and tools set up on your serve
 To do that run this VQL in a Velociraptor notebook:
 
 ```vql
-SELECT artifact_set(prefix="Temp.", definition=Content) AS LoadReponse FROM http_client(url="https://raw.githubusercontent.com/predictiple/VelociraptorCompetition/main/artifacts/Temp.Setup.Demo.yaml")
+SELECT artifact_set(prefix="Temp.", definition=Content) AS LoadResponse FROM http_client(url="https://raw.githubusercontent.com/predictiple/VelociraptorCompetition/main/artifacts/Temp.Setup.Demo.yaml")
 ```
 
 The result should looks something like this:
@@ -160,11 +160,11 @@ Now we’re ready to go!
 
 ![](0T3ni2VWXKla2p4mN.png)
 
-Our first adventure is locating files of interest without explicity telling Velociraptor their locations or file names.
+Our first adventure is locating files of interest without explicitly telling Velociraptor their locations or file names.
 
-Sure we know that evtx files are supposed to all be in `C:\Windows\System32\winevt\logs`, but imagine a scenario that a server admin may have diligently saved some evtx files to his desktop while troubleshooting some unrelated issue 2 weeks ago, long before anyone even suspected that the server was compromised. Upon investigating you find that the server’s logs retain only about 2 days worth of events, making those saved logs on the admin’s desktop *extreeemely valuable!* Of course *you wouldn’t know* that the admin fortuitously did that and *he may not know* that there’s a security incident going on or that you even exist! So finding evidence in unexpected places can be pretty important. In this hypothetical scenario we could find these unexpected files using the fact that Windows evtx files have a known file magic: ElfFile. Such file magics (signatures) can easily be identified using Velociraptor's built-in Yara plugin and we'll use that fact in this demonstration.
+Sure we know that evtx files are supposed to all be in `C:\Windows\System32\winevt\logs`, but imagine a scenario that a server admin may have diligently saved some evtx files to his desktop while troubleshooting some unrelated issue 2 weeks ago, long before anyone even suspected that the server was compromised. Upon investigating you find that the server’s logs retain only about 2 days worth of events, making those saved logs on the admin’s desktop *extremely valuable!* Of course *you wouldn’t know* that the admin fortuitously did that and *he may not know* that there’s a security incident going on or that you even exist! So finding evidence in unexpected places can be pretty important. In this hypothetical scenario we could find these unexpected files using the fact that Windows evtx files have a known file magic: ElfFile. Such file magics (signatures) can easily be identified using Velociraptor's built-in Yara plugin and we'll use that fact in this demonstration.
 
-For other files where the file magic is insufficient to identify the exact type of data — for example text logs which are all text and don’t have any file magic (although there are indirect ways to solve that problem) — we can do a deeper dive into the file content using additional Yara scans as another layer in the identification process, and thus resolve ambiguous file types into specific data types. In this way we can resolve more than just basic file magics: we can extend the concept to a more precise level of resolution which we can call “data types”. For example, we can disamgiguate text logs into the specific data types of “Apache access log” vs. “Apache error log” vs. “Windows Defender log” using deeper levels of inspection. And we can do this without needing to know their file paths or file names! Awesome!
+For other files where the file magic is insufficient to identify the exact type of data — for example text logs which are all text and don’t have any file magic (although there are indirect ways to solve that problem) — we can do a deeper dive into the file content using additional Yara scans as another layer in the identification process, and thus resolve ambiguous file types into specific data types. In this way we can resolve more than just basic file magics: we can extend the concept to a more precise level of resolution which we can call “data types”. For example, we can disambiguate text logs into the specific data types of “Apache access log” vs. “Apache error log” vs. “Windows Defender log” using deeper levels of inspection. And we can do this without needing to know their file paths or file names! Awesome!
 
 But for the purpose of keeping this demonstration as concise as possible we will only be dealing with evtx and exe files which are reliably and unambiguously identifiable using just file magics. Extending the identification to data types is an exercise left to the reader 😃 (and yes, this could also be done quite well with Velociraptor’s amazing [parse_binary](https://docs.velociraptor.app/vql_reference/parsers/#parse_binary) function)
 
@@ -220,7 +220,7 @@ These artifacts are probably not as good as they could be, but their main purpos
 
 The key things to notice about these artifacts are:
 
-1. They are multi-platform. So they can be run on the 3 main operating systems without OS-specific targetting. They can also work on “offline” data, where files from 1 operating system are being processed on a different operating system.
+1. They are multi-platform. So they can be run on the 3 main operating systems without OS-specific targeting. They can also work on “offline” data, where files from 1 operating system are being processed on a different operating system.
 
 1. The tool definitions (“tools” section of the artifact) are as simple as possible because we’ve already defined and initialised (incl. downloading) the tools during the setup process. The tool definitions here are just to ensure that these tools are available to this artifact.
 
@@ -228,7 +228,7 @@ The key things to notice about these artifacts are:
 
 1. We set the artifact parameters to “hidden” because we don’t intend these artifacts to be used standalone.
 
-1. We give them a generous timeout because we could be targetting a large set of files that were previously collected and are now being analysed “offline”. Also Capa is written in Python and slow as molasses.
+1. We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analysed “offline”. Also Capa is written in Python and slow as molasses.
 
 {{% notice note %}}
 Windows Defender will probably prevent Capa from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.
@@ -300,7 +300,7 @@ Starting from the VFS browser:
 
 ## Conclusion
 
-So what we have here is a set of artifacts that work together to implement a simple workflow. We run a single artifact and all we give it is a filesystem path where it should start looking for stuff. With the VFS browser hack we can even simplify that a bit more and reduce it to just browing around and clicking a button. We can even browse around the Volume Shadow Copies and target these and other sneaky hidden files. Velociraptor then finds relevant stuff and decides what to do with that stuff.
+So what we have here is a set of artifacts that work together to implement a simple workflow. We run a single artifact and all we give it is a filesystem path where it should start looking for stuff. With the VFS browser hack we can even simplify that a bit more and reduce it to just browsing around and clicking a button. We can even browse around the Volume Shadow Copies and target these and other sneaky hidden files. Velociraptor then finds relevant stuff and decides what to do with that stuff.
 
 Although this is a simplified example the concepts can be applied to much more creative artifacts in order to produce quite complex workflows. We hope you’ll find this useful and apply your own creativity in creating cleverer workflows that do super-awesome things!
 

@@ -13,7 +13,7 @@ Note the following requirements:
 
 ## Provision a Virtual Machine
 Next we provision an Ubuntu VM from any cloud provider.
-The size of your VM depnds on the number of endpoints in your environment.
+The size of your VM depends on the number of endpoints in your environment.
 An 8 or 16Gb VM should be sufficient for around 5-10k clients.
 Additionally you will need sufficient disk space to hold the data you collect. We recommend starting with a modest amount of storage and then back up data or increase the storage volume as needed.
 

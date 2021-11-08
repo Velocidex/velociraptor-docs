@@ -175,7 +175,7 @@ Take the following query for example,
 ![Scope lookup](scope.png)
 
 VQL evaluates the `info()` plugin, which emits a single row. Then VQL
-creates a child scope, with the row at the bottom level. Whe VQL tries
+creates a child scope, with the row at the bottom level. When VQL tries
 to resolve the symbol `OS` from the column expression, it examines the
 scope stack in reverse, checking if the symbol `OS` exists in the
 lower layer. If not, VQL checks the next layer, and so on.
@@ -209,7 +209,7 @@ Strings denoted by `"` or `'` can escape special characters using the
 `\\`. For example, `"\\n"` means a new line. This is useful but it
 also means that backslashes need to be escaped. This is sometimes
 inconvenient, especially when dealing with Windows paths (that
-contains alot of backslashes).
+contains a lot of backslashes).
 
 Therefore, Velociraptor also offers a Multiline raw string which is
 denoted by `'''` (three single quotes). Within this type of string no
@@ -334,7 +334,7 @@ row={
 
 We know that subqueries can be used in various parts of
 the query, such as in a column specifier or as an argument to a
-plugin. While subqueries are convenient, they can become unweildy when
+plugin. While subqueries are convenient, they can become unwieldy when
 nested too deeply. VQL offers an alternative to subqueries called
 `Stored Queries`.
 
@@ -429,7 +429,7 @@ socket).
 
 The process listing will not likely change during the few seconds it takes the query to run.
 It would be more efficient to have the process listing cached in memory
-for the entire length of the query. 
+for the entire length of the query.
 
 We recommend that you `Materialize` the query:
 
@@ -599,7 +599,7 @@ of the `Y` values.
 {{% notice warning "Selecting columns with GROUP BY" %}}
 
 As the above diagram illustrates, it only makes sense in general to
-select the same column as is being groupped. This is because other
+select the same column as is being grouped. This is because other
 columns may contain any number of values, but only a single one of
 these values will be returned.
 

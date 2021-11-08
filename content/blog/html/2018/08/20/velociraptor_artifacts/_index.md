@@ -266,7 +266,7 @@ not implement all tables using pure VQL queries, the ability to
 implement many artifacts this way provides us with unprecedented
 flexibility and enables rapid response to evolving threats.
 
-Let\'s looks at some artifacts that demonstrate this flexiblity.
+Let\'s looks at some artifacts that demonstrate this flexibility.
 
 Parsing debian packages.
 ------------------------

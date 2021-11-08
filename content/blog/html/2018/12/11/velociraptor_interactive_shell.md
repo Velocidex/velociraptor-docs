@@ -29,7 +29,7 @@ extract certain information is to run a command and parse its output.
 For example, consider the windows ipconfig command. It is possible to
 extract this information using win32 apis but this requires additional
 code to be written in the client. The ipconfig command is guaranteed to
-be available. Soemtimes running a command and parsing its output is the
+be available. Sometimes running a command and parsing its output is the
 easiest option.
 
 The GRR client has a client action which can run a command. However that
@@ -67,7 +67,7 @@ Velociraptor mitigates this risk in a few ways:
 Interactive Shell
 =================
 
-The interactive shell feature is accessed by issueing the shell command
+The interactive shell feature is accessed by issuing the shell command
 to the velociraptor binary:
 
 ``` {.sourceCode .bash}
@@ -154,7 +154,7 @@ Note that the frontend is very simple and does no specific processing of
 the interactive shell, the feature is implemented completely within the
 interactive shell process itself. This design lowers the load on the
 frontends since their job is very simple, but enables complex post
-processing and interaction to tbe implemented by other processes.
+processing and interaction to be implemented by other processes.
 
 Auditing
 ========
@@ -182,6 +182,6 @@ $ velociraptor query "select * from watch_monitoring(artifact='Shell')"
 
 We can easily write an artifact that escalates any use of the
 interactive shell by sending the admin an mail (See previous blog post).
-This way we can see if someone missused the feature. Alternatively we
+This way we can see if someone misused the feature. Alternatively we
 may simply archive the event queue CSV file for long term auditing of
 any interactive shell use.

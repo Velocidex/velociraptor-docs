@@ -99,7 +99,7 @@ How can we fix this?
 The main problem with a polling scheme is that the user experience is
 terrible - even if we reduce the poll wait times to few seconds, users
 will have to wait to view the results of their actions - leading to an
-overall experience of a slow and sluggish system. For a resposive user
+overall experience of a slow and sluggish system. For a responsive user
 interface we need to have client round trips of a second or less and
 having poll\_max set this low will just use up too many resources. This
 is particularly noticeable in the VFS browser since it takes so long to

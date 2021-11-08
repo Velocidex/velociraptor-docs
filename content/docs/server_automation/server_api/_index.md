@@ -243,7 +243,7 @@ WHERE condition.  Finally we wish to quit the query once a single row
 is found so we specify a LIMIT of 1 row.
 
 {{% notice note "Waiting for a query" %}}
-  Note the `LET _ <=` statement. This tells VQL to materialize the query and store the result in a dummy variable. This statememt causes VQL to pause and wait for the query to complete before evaluating the next query. See [Materialized LET expressions]({{< ref "/docs/vql/#materialized-let-expressions" >}}) for more about this.
+  Note the `LET _ <=` statement. This tells VQL to materialize the query and store the result in a dummy variable. This statement causes VQL to pause and wait for the query to complete before evaluating the next query. See [Materialized LET expressions]({{< ref "/docs/vql/#materialized-let-expressions" >}}) for more about this.
 {{% /notice %}}
 
 After this query exits we know the collection is complete. This may
@@ -281,7 +281,7 @@ Sun Nov  7 11:32:29 2021: vql: Query Stats: {"RowsScanned":2,"PluginsCalled":2,"
 {{% notice tip "Triggering external code based on server events" %}}
 
 The above query demonstrates a common use case for the API - notifying
-an external script of an event occuring on the server. For example
+an external script of an event occurring on the server. For example
 external python scripts can be notified when a specific artifact is
 collected, inspect its results, and upload them to further processing
 to an external system or escalate alerts for example.

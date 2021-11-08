@@ -32,7 +32,7 @@ Since [release 0.3.4,](https://github.com/Velocidex/velociraptor/releases/tag/v0
 
 #### Collecting files from the endpoint
 
-To collect files, simply select the **Windows.KapeFiles.Targers** artifact from the **Collected Artifacts** screen in the GUI. After adding the artifact to our collection (by clicking **Add**) we see a list of targets with check boxes next to them. Each target may invoke several rules (and therefore collect different files), but the dependencies are listed next to the target.
+To collect files, simply select the **Windows.KapeFiles.Targets** artifact from the **Collected Artifacts** screen in the GUI. After adding the artifact to our collection (by clicking **Add**) we see a list of targets with check boxes next to them. Each target may invoke several rules (and therefore collect different files), but the dependencies are listed next to the target.
 
 ![Selecting the Windows.KapeFiles.Targets artifact for collection on an endpoint.](../../img/1__9OLhR0z9EbEPbIBY9Dv3aQ.png)
 Selecting the Windows.KapeFiles.Targets artifact for collection on an endpoint.

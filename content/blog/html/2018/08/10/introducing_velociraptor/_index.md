@@ -179,8 +179,8 @@ The client is run using the s configuration
 ``` {.sourceCode .sh}
 $ velociraptor --config /etc/velociraptor.client.config.yaml client
 velociraptor: error: Unable to load writeback file: open /etc/velociraptor.writeback.yaml: no such file or directory
-Genering new private key....
-Wrote new config file  /etc/velocirpator.writeback.yaml
+Generating new private key....
+Wrote new config file  /etc/velociraptor.writeback.yaml
 INFO:2018/08/08 16:02:22 Starting Crypto for client C.039f18494e6dae95
 INFO:2018/08/08 16:02:22 Starting HTTPCommunicator: [http://localhost:8000/]
 INFO:2018/08/08 16:02:22 Sending unsolicited ping.

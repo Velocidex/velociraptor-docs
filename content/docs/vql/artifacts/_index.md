@@ -9,7 +9,7 @@ Velociraptor allows packaging VQL queries inside mini-programs called
 `Artifacts`. An artifact is simply a structured YAML file containing a
 query, with a name attached to it. This allows Velociraptor users to
 search for the query by name or description and simply run the query
-on the endpoint without necessaily needing to understand or type the
+on the endpoint without necessarily needing to understand or type the
 query into the UI.
 
 Therefore Artifacts can be thought of as VQL modules.

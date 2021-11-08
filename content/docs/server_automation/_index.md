@@ -5,7 +5,7 @@ draft: false
 weight: 60
 ---
 
-Velociraptor's uprecedented flexibility arises from the power of
+Velociraptor's unprecedented flexibility arises from the power of
 VQL. We have seen how VQL can be used to collect artifacts on the
 endpoint, but VQL can be used on the server too.
 
@@ -110,7 +110,7 @@ WHERE timestamp(epoch=last_seen_at) > now() - 600
 ### Exercise - label clients
 
 Labels are used within Velociraptor to group certain hosts
-together. This is useful for example when targetting a hunt, or to
+together. This is useful for example when targeting a hunt, or to
 specify a set of clients to run monitoring queries.
 
 You can change a client's label using the `label()` VQL function.

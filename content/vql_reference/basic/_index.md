@@ -6,7 +6,7 @@ index: true
 ---
 
 VQL provides a basic set of functions and plugins allowing
-queries to maniulate data and implement logic. This page details
+queries to manipulate data and implement logic. This page details
 those plugins which are considered foundational to the VQL
 language and therefore may be useful in all types of artifacts.
 
@@ -603,7 +603,7 @@ sep|The separator|string
 ## killkillkill
 <span class='vql_type pull-right'>Function</span>
 
-Kills the client and forces a restart - this is very aggresive!
+Kills the client and forces a restart - this is very aggressive!
 
 
 
@@ -924,7 +924,7 @@ Splits a string into an array based on a regexp separator.
 Arg | Description | Type
 ----|-------------|-----
 string|The value to split|string (required)
-sep|The serparator that will be used to split|string (required)
+sep|The separator that will be used to split|string (required)
 
 
 
@@ -1055,7 +1055,7 @@ mactime|HFS+|int64
 winfiletime||int64
 string|Guess a timestamp from a string|string
 timezone|A default timezone (UTC)|string
-format|A format specifier as per Golangs time.Parse|string
+format|A format specifier as per Golang's time.Parse|string
 
 
 
@@ -1301,4 +1301,3 @@ Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
-

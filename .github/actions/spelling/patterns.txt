@@ -1,0 +1,25 @@
+# See https://github.com/check-spelling/check-spelling/wiki/Configuration-Examples:-patterns
+
+# ignore long runs of a single character:
+\b([A-Za-z])\g{-1}{3,}\b
+
+# ignore very long words
+[A-Za-z_0-9\-]{10,}
+# client ids
+c\.[a-zA-Z0-9]+
+
+# png
+[A-Za-z_0-9\-]\.png
+
+# urls
+https://[^ ]+
+http://[^ ]+
+www\.[^ ]+
+
+# Tables often break words
+\|.+
+
+# Letters followed by numbers are not real words
+[A-Za-z]+[0-9_]
+
+[0-9][A-Za-z]+

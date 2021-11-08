@@ -121,7 +121,7 @@ We can verify the **server.pem** manually by using curl (note that when using se
 Note that the **server.pem** is always signed by the velociraptor internal CA in all deployment modes (even with lets encrypt). You can view the certificate details by using openssl:
 
 ```sh
-curl https://test.velocidex-training.comom/server.pem | openssl x509 -text
+curl https://test.velocidex-training.com/server.pem | openssl x509 -text
 ```
 
 

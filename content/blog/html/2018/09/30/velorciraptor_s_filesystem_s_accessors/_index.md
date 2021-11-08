@@ -5,7 +5,7 @@ description: |
   raw NTFS volumes, allowing users to read files which are normally
   locked by the operating system such as registry hives, pagefile and
   other locked files.
-title: Velorciraptor's filesystem's accessors
+title: Velociraptor's filesystem's accessors
 categories: ["Blog"]
 ---
 
@@ -151,7 +151,7 @@ F:\>velociraptor.exe fs --accessor ntfs ls
 SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime,, Data FROM glob(globs=path, accessor=accessor) WHERE Sys.name_type != 'DOS'
 ```
 
-The above example shows two volume shadow copies that Windows has takens
+The above example shows two volume shadow copies that Windows has taken
 on two different dates (highlighted above). We can browse these
 snapshots just like they were another drive (We can also apply any glob
 expressions to this path):
@@ -267,7 +267,7 @@ runme.exe:
 
 ![image](vfs4.png)
 
-Velocirpator treats a file\'s DOS name and Win32 Name as distinct
+Velociraptor treats a file\'s DOS name and Win32 Name as distinct
 entries in the NTFS directory listing. This allows us to find any
 references to the file by it\'s DOS name as well as its Win32 name.
 

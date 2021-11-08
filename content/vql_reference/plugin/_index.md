@@ -153,7 +153,7 @@ https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
 Arg | Description | Type
 ----|-------------|-----
 argv|Argv to run the command with.|list of string (required)
-sep|The serparator that will be used to split the stdout into rows.|string
+sep|The separator that will be used to split the stdout into rows.|string
 length|Size of buffer to capture output per row.|int64
 
 
@@ -419,7 +419,7 @@ SELECT Content as IP from http_client(url='http://www.myexternalip.com/raw')
 
 You can use this plugin to download file contents by passing the
 `tempfile_extension` parameter. In this case this plugin will
-create a new temp file with the speicfied extension, write the
+create a new temp file with the specified extension, write the
 content of the HTTP request into it and then emit a row with
 `Content` being the name of the file. The file will be
 automatically removed when the query ends.
@@ -951,4 +951,3 @@ end|End scanning at this offset (100mb)|uint64
 number|Stop after this many hits (1).|int64
 blocksize|Blocksize for scanning (1mb).|uint64
 key|If set use this key to cache the  yara rules.|string
-

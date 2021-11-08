@@ -75,7 +75,7 @@ Injection](https://owasp.org/www-community/attacks/Command_Injection)
 if the commandline incorporates a user provided string.
 
 Velociraptor minimizes the potential for this by requiring each
-argument to be explicitely provided.
+argument to be explicitly provided.
 
 {{% /notice %}}
 
@@ -177,7 +177,7 @@ the PowerShell Script is or what it does - we have encapsulation!
 Remediation means to restore the network from a compromised state -
 Usually remove persistence, and clean up infected machines. Unlike
 traditional DFIR work that focuses on detection with minimal
-interferance of the endpoint, remediation aims to modify the endpoint
+interference of the endpoint, remediation aims to modify the endpoint
 in order to actively remove threats and harden the endpoint against
 future compromise.
 
@@ -235,7 +235,7 @@ is not set, the artifact will report all the tasks that match but will
 not actually remove them.
 
 We can perform a wider hunt to uncover potential malicious tasks and
-see if any false postives will be found.
+see if any false positives will be found.
 
 ## Using external tools
 

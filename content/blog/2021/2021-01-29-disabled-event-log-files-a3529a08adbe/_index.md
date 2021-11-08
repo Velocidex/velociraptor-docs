@@ -31,7 +31,7 @@ bitsadmin.exe /transfer /download /priority foreground [https://www.google.com](
 
 Many tools rely on the presence of these eventlog messages to escalate an alert for this malicious activity.
 
-While I was playing with this technique I noticed an interesting option in the Windows Event Viewer: `isabled Log` available by simply right clicking on the log file.
+While I was playing with this technique I noticed an interesting option in the Windows Event Viewer: `disabled Log` available by simply right clicking on the log file.
 
 ![](../../img/1oOg5MAjs9uLe6SoqcRhBGg.png)
 

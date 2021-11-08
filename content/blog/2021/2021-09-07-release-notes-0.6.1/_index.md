@@ -63,7 +63,7 @@ Velociraptor allows users to quarantine hosts using the
 `Windows.Remediation.Quarantine` artifact. This artifact updates the
 client's firewall rules so it can only communicate with the
 Velociraptor server, and some limited exceptions. When a host is
-quarantined, no network connections are succuessful, but the
+quarantined, no network connections are successful, but the
 investigator can still communicate with the host using Velociraptor.
 
 This feature is useful in cases when time is of the essence and it
@@ -330,7 +330,7 @@ FROM scope()
 The first statement defines a Starlark module by simply calling the
 `starl()` function on some python code. The `starl()` function
 compiles the code into a module. VQL queries can then access code
-within the Startlark module by just calling is as normal. This is most
+within the Starlark module by just calling is as normal. This is most
 helpful when we need to do specific manipulation of strings, numbers
 etc.
 

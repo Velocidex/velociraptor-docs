@@ -126,7 +126,7 @@ import tables) hashes and specifically, if the file is signed or not
 ![](image12.png)
 
 The additional information about any modules found is critical in
-allowing analysts to quickly discount legitimate binaires and speed up
+allowing analysts to quickly discount legitimate binaries and speed up
 the triage process.
 
 

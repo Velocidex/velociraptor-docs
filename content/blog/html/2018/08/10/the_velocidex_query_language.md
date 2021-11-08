@@ -116,7 +116,7 @@ In this case it is often useful to add a Column Alias (Note that column
 aliases can also be used in the WHERE clause):
 
 ```vql
-SELECT FullPath + '.bindir' as Santized, Size from glob(globs="/bin/*")
+SELECT FullPath + '.bindir' as Sanitized, Size from glob(globs="/bin/*")
 ```
 
 VQL Functions provide a way to extend VQL expressions. Unlike full
@@ -215,14 +215,14 @@ cheap since it is just an integer comparison.
 However, VQL is not aware of the relative cost of the two conditions -it
 does not know that grep() is inherently an expensive operation since to
 VQL it just looks like another function. Although VQL does some
-shortcutting (for example it will cancel the grep() function if Size \>=
+short cutting (for example it will cancel the grep() function if Size \>=
 1000) this shortcut cancellation may arrive too late to stop grep() from
 doing a significant amount of work. The VQL author must be aware of the
 relative costs of the different operations and how the query should be
 structured for maximum efficiency.
 
-What we would really like is for VQL to evaluate the cheap condst, and
-only for those files smaller than 1000 bytes, evaluate the grep()
+What we would really like is for VQL to evaluate the cheap condition,
+and only for those files smaller than 1000 bytes, evaluate the grep()
 condition. This allows us to eliminate most files immediately (since
 most files are larger than 1000 bytes) such that we only bother to
 grep() very few files.

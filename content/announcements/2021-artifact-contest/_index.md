@@ -53,7 +53,7 @@ Winning submissions will also be published on the Velociraptor web
 site.
 
 Significant contributions will receive some cool Velociraptor
-merchendise.
+merchandise.
 
 ## Requirements
 

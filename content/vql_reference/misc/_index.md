@@ -5,7 +5,7 @@ linktitle: Misc
 index: true
 ---
 
-Miscelanueous plugins not yet categorized.
+Miscellaneous plugins not yet categorized.
 
 
 <div class="vql_item"></div>
@@ -174,7 +174,7 @@ Combine the output of several queries into the same result set.A convenience plu
 <span class='vql_type pull-right'>Function</span>
 
 Split a commandline into separate components following the windows
-convensions.
+conventions.
 
 Example:
 ```vql
@@ -988,4 +988,3 @@ Arg | Description | Type
 ----|-------------|-----
 string|String to apply Xor|string (required)
 key|Xor key.|string (required)
-

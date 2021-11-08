@@ -15,7 +15,7 @@ categories: ["Blog"]
 There has been a lot of interest lately in Agentless hunting especially
 using PowerShell. There are many reasons why Agentless hunting is
 appealing - there are already a ton of endpoint agents and yet another
-one may not be welcome. Somtimes we need to deploy endpoint agents as
+one may not be welcome. Sometimes we need to deploy endpoint agents as
 part of a DFIR engagement and we may not want to permanently install yet
 another agent on end points.
 
