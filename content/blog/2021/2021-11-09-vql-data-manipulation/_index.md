@@ -129,8 +129,6 @@ added to the Velociraptor Cobalt Strike parser.
 Finally, we may have a desire to extract specific key indicators and compare accross 
 samples.
 
-![VQL: viewing key indicators of interest](13_notebook_example.png)
-
 ![VQL results: key indicators of interest](13_notebook_example_results.png)
 
 ## Conclusions
