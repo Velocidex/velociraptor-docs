@@ -63,10 +63,9 @@ any other capability where both metadata and content based discovery is desired.
 
 The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case before 
 applying our yara rule. Applying additional options like size or time 
-stamp bounds before deploying the yara rule, enables targeted collection at 
-scale and optimal performance. The yara rule deployed in this case was simply 
-text directly from the project file referencing the unique variable setup 
-that was common accross acquired samples.
+stamp bounds enables targeted collection at scale and optimal performance. 
+The yara rule deployed in this case was simply text directly from the project 
+file referencing the unique variable setup that was common across acquired samples.
 
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
@@ -122,7 +121,7 @@ configuration from memory).
 ## Conclusions
 
 In this post we showed discovery, then decode of encoded Cobalt Strike beacons on disk. 
-Velociraptor can read, manipulate and enrich data efficiently accross a large network 
+Velociraptor can read, manipulate and enrich data efficiently across a large network 
 without the overhead of needing to extract and process manually.
 
 Whilst most traditional workflows concentrate on collection and offline analysis, 
