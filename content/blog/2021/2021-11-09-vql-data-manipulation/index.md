@@ -89,9 +89,7 @@ first step of decode is to examine all the files we collected in the hunt. The
 first query enumerates all the individual collections in the hunt, while the 
 second query retrieves the files collected for each job.
 
-![]()
-
-![]()
+![Find the location of all files collected](06_notebook_files.png)
 
 For the second step, to extract target bytes we leverage the parse_records_with_regex() 
 plugin to extract the strings of interest (Data and Key) in our target files. 
