@@ -245,6 +245,7 @@ globbing
 gmail
 golang
 google
+gpg
 googlegroups
 gpupdate
 Graphana
