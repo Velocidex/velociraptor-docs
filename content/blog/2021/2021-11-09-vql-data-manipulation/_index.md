@@ -119,7 +119,7 @@ configuration from memory).
 
 ![Coalt strike configuration example](11_notebook_config_example.png)
 
-![Coalt strike shellcode example](12_notebook_shellcode_example.png.png)
+![Coalt strike shellcode example](12_notebook_shellcode_example.png)
 
 
 ## Conclusions
