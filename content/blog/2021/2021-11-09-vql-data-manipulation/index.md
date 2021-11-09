@@ -33,19 +33,23 @@ execution as defence evasion and to bypass application whitelisting -
 [ATT&CK T1127](https://attack.mitre.org/techniques/T1127/001/).
 
 In this particular engagement, the Rapid7 MDR/IR team responded to an 
-intrusion where during lateral movement, the adversary dropped many 
+intrusion in which during lateral movement, the adversary dropped many 
 variants of an MSBuild inline task file to several machines and then 
 executed MSBuild via wmi to load an embedded Cobalt Strike beacon. 
 Detecting an in memory Cobalt Strike beacon is trivial for active threats 
-with our process based yara and carving content. The problem in this case 
-was: how do you discover, then decode these encoded files on disk quickly 
-to find any additional scope using Velociraptor?
+with our process based yara and carving content. 
+
+The problem in this case was: how do you discover, then decode these encoded 
+files on disk quickly to find any additional scope using Velociraptor?
 
 
 
 ## Collection
 
 First task is discovery and collecting our files in scope from the network. 
+Typically this task may be slow to deploy or rely on cobbled together 
+capabilies or rely on other teams. Velociraptor is an easy button for this 
+use case.
 
 ![Velociraptor GUI > hunt > add hunt](01_new_hunt.png)
 
@@ -62,7 +66,7 @@ applying our yara rule. Applying additional options like size or time
 stamp bounds before deploying the yara rule, enables targeted collection at 
 scale and optimal performance. The yara rule deployed in this case was simply 
 text directly from the project file referencing the unique variable setup 
-that was common accross aquired samples.
+that was common accross acquired samples.
 
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
