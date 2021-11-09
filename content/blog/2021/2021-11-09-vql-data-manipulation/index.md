@@ -48,8 +48,8 @@ files on disk quickly to find any additional scope using Velociraptor?
 
 First task is discovery and collecting our files in scope from the network. 
 Typically this task may be slow to deploy or rely on cobbled together 
-capabilies or rely on other teams. Velociraptor is an easy button for this 
-use case.
+capabilies from other teams. The Velociraptor hunt is an easy button for 
+this use case.
 
 ![Velociraptor GUI > hunt > add hunt](01_new_hunt.png)
 
