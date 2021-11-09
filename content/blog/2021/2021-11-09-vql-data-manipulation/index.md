@@ -71,8 +71,8 @@ across acquired samples.
 
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
-After launching the hunt, results become availible at the server for download 
-and additional analysis.
+After launching the hunt, results become inside the hunt entry on the 
+Velociraptor server for download or additional analysis.
 
 ![Hunt results](04_hunt_results.png)
 
@@ -99,7 +99,7 @@ files. We have also included a 200 character limitation on the data field initia
 as this will improve performance when working on VQL.
 
 
-![]()
+![VQL: extract data and keys](07_notebook_regex.png)
 ![]()
 
 The third step adds a custom function for hex normalisation and converts the inline 
