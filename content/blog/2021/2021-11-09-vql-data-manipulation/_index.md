@@ -117,10 +117,11 @@ configuration from memory).
 
 ![VQL: parse config](10_notebook_parse.png)
 
-![Coalt strike configuration example](11_notebook_config_example.png)
+![Cobalt strike configuration example](11_notebook_config_example.png)
 
-![Coalt strike shellcode example](12_notebook_shellcode_example.png)
+![Cobalt strike shellcode example](12_notebook_shellcode_example.png)
 
+![More flexability if view structure](13_notebook_example.png)
 
 ## Conclusions
 
