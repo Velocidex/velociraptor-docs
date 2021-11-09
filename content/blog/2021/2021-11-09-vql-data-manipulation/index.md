@@ -71,14 +71,18 @@ across acquired samples.
 
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
-Add bit on detection results....
+After launching the hunt, results become availible at the server for download 
+and additional analysis.
+
+![Hunt results](04_hunt_results.png)
+
 
 
 ## Payload decode
 The Cobalt Strike payload is a string with represented characters xor encoded 
 as a hex formatted buffer and key in embedded C Sharp code as seen below.
 
-![]()
+![MSBuild inline task project file with CobaltStrike payload](05_payload.png)
 
 In this case, I can run analysis directly in the hunt notebook on results. Our 
 first step of decode is to examine all the files we collected in the hunt. The 
