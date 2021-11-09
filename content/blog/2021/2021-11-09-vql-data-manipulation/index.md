@@ -61,11 +61,13 @@ any other capability where both metadata and content based discovery is desired.
 
 ![Select artifact > Windows.Detection.Yara.NTFS](02_find_artifact.png)
 
-The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case before 
-applying our yara rule. Applying additional options like size or time 
-stamp bounds enables targeted collection at scale and optimal performance. 
-The yara rule deployed in this case was simply text directly from the project 
-file referencing the unique variable setup that was common across acquired samples.
+The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case to target 
+our adversaries path for payloads before applying our yara rule. Typically when 
+running discovery like this, an analyst can also apply additional options like 
+file size or time stamp bounds for use at scale and optimal performance. 
+The yara rule deployed in this case was simply quick and dirty text directly 
+from the project file referencing the unique variable setup that was common 
+across acquired samples.
 
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
