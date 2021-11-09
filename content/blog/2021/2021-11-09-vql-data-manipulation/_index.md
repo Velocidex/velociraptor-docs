@@ -117,11 +117,21 @@ configuration from memory).
 
 ![VQL: parse config](10_notebook_parse.png)
 
+Decoded Cobalt Strike configuration is clearly observed.
+
 ![Cobalt strike configuration example](11_notebook_config_example.png)
+
+The smallest file also includes a Cobalt Strike shellcode stager, which I have recently 
+added to the Velociraptor Cobalt Strike parser.
 
 ![Cobalt strike shellcode example](12_notebook_shellcode_example.png)
 
-![More flexability if view structure](13_notebook_example.png)
+Finally, we may have a desire to extract specific key indicators and compare accross 
+samples.
+
+![VQL: viewing key indicators of interest](13_notebook_example.png)
+
+![VQL results: key indicators of interest](13_notebook_example_results.png)
 
 ## Conclusions
 
@@ -137,6 +147,15 @@ always, please file issues on the bug tracker or ask questions on our mailing li
 velociraptor-discuss@googlegroups.com. You can also chat with us directly on discord 
 at https://www.velocidex.com/discord.
 
+
+## References
+![MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)
+![Use MSBuild To Do More](https://3gstudent.github.io/Use-MSBuild-To-Do-More)
+![VirusTotal sample 1](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)
+![VirusTotal sample 1](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)
+![VirusTotal sample 1](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)
+![VirusTotal sample 1](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)
+![VirusTotal sample 1](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)
 
 
 
