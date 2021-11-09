@@ -121,10 +121,13 @@ In this post we showed discovery, then decode of encoded Cobalt Strike beacons o
 Velociraptor can read, manipulate and enrich data efficiently accross a large network 
 without the overhead of needing to extract and process manually.
 
-If you would like to try Velociraptor, It is available on [GitHub](https://github.com/Velocidex/velociraptor) 
-under an open source license. As always, please file issues on the bug tracker or ask 
-questions on our mailing list velociraptor-discuss@googlegroups.com. You can also chat 
-with us directly on discord at https://www.velocidex.com/discord.
+Whilst most traditional workflows concentrate on collection and offline analysis, 
+Velociraptor notebook also enables data manipulation and flexability in analysis. 
+If you would like to try out these features in Velociraptor, It is available on 
+[GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As 
+always, please file issues on the bug tracker or ask questions on our mailing list 
+velociraptor-discuss@googlegroups.com. You can also chat with us directly on discord 
+at https://www.velocidex.com/discord.
 
 
 
