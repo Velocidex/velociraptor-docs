@@ -126,7 +126,7 @@ added to the Velociraptor Cobalt Strike parser.
 
 ![Cobalt strike shellcode example](12_notebook_shellcode_example.png)
 
-Finally, we may have a desire to extract specific key indicators and compare accross 
+Finally, we may have a desire to extract specific key indicators and compare across 
 samples.
 
 ![VQL results: key indicators of interest](13_notebook_example_results.png)
