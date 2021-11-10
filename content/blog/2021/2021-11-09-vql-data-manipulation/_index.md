@@ -58,9 +58,9 @@ spring to mind readily.  In this instance I am selecting Yara.NTFS. I have
 leveraged this artifact in the field for hunting malware, searching logs or
 any other capability where both metadata and content based discovery is desired.
 
-{{% notice tip "Windows.Detection.Yara.NTFS" %}}
+{{% notice tip "`Windows.Detection.Yara.NTFS`" %}}
 * This artifact searches the MFT, returns a list of target files then runs Yara over the target list.  
-* The artifact leverages Windows.NTFS.MFT so similar regex filters can be applied including Path, Size and date.  
+* The artifact leverages `Windows.NTFS.MFT` so similar regex filters can be applied including Path, Size and date.  
 * The artifact also has an option to search across all attached drives and upload any files with Yara hits.  
 
 Some examples of path regex may include:
@@ -71,7 +71,7 @@ Some examples of path regex may include:
 * Multiple extentions: \.(php|aspx|resx|asmx)$  
 {{% /notice %}}
 
-![Select artifact : Windows.Detection.Yara.NTFS](02_find_artifact.png)
+![Select artifact : `Windows.Detection.Yara.NTFS`](02_find_artifact.png)
 
 The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case to target
 our adversaries path for payloads before applying our yara rule. Typically when
@@ -81,7 +81,7 @@ The yara rule deployed in this case was simply quick and dirty hex conversion of
 text directly from the project file referencing the unique variable setup that 
 was common across acquired samples.
 
-```
+```yara
 rule MSBuild_buff {
    meta:
       description = "Detect unique variable setup MSBuild inline task project file"
@@ -127,7 +127,7 @@ Our first step of decode is to examine all the files we collected in the hunt.
 The first query enumerates all the individual collections in the hunt, while the
 second query retrieves the files collected for each job.
 
-```
+```vql
 -- find flow ids for each client
 LET hunt_flows = SELECT *, Flow.client_id as ClientId, Flow.session_id as FlowId 
 FROM hunt_flows(hunt_id='H.C6508PLOOPD2U')
@@ -157,7 +157,7 @@ as this will improve performance when working on VQL. We have also specified buf
 size to be larger than default and just larger than the biggest payload in scope.
 
 
-```
+```vql
 -- regex to extract Data and Key fields
 LET target_regex = 'buff = new byte\\[\\]\\s*{(?P<Data>[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P<Key>[^\\n]*)};\\n'
 
@@ -176,11 +176,11 @@ SELECT * FROM foreach(row=targets,
 
 
 {{% notice tip "Parse records with regex" %}}
-parse_records_with_regex() is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.
+`parse_records_with_regex()` is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.
 
 The regular expressions are specified in the Go syntax. They are expected to contain capture variables to name the matches extracted.
 
-The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while parse_string_with_regex() can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.
+The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while `parse_string_with_regex()` can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.
 {{% /notice %}}
 
 
@@ -192,9 +192,10 @@ The aim of this plugin is to split the file into records which can be further pa
 The third step adds a custom function for hex normalisation and converts the inline
 C Sharp style encoding to a standard hex encoded string which VQL can easily parse. 
 In this case, the local normalise function will ensure we have  valid 2 character hex. 
-The regex replace will strip the leading '0x' from the hex strings and prepare for 
+The `regex_replace()` will strip the leading '0x' from the hex strings and prepare for 
 xor processing.
-```
+
+```vql
 -- regex to extract Data and Key fields
 LET target_regex = 'buff = new byte\\[\\]\\s*{(?P<Data>[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P<Key>[^\\n]*)};\\n'
 
@@ -219,9 +220,9 @@ SELECT * FROM foreach(row=targets,
 ### Extract to bytes
 
 The fourth step converts hex to bytes and validates that the next stage is working. In the example VQL below 
-we pass the hex text to the unhex() function to produce raw bytes for our variables.
+we pass the hex text to the `unhex()` function to produce raw bytes for our variables.
 
-```
+```vql
 SELECT * FROM foreach(row=targets,
     query={
         SELECT 
@@ -243,11 +244,10 @@ SELECT * FROM foreach(row=targets,
 ### Xor decode
 
 VQL's flexibility comes with its ability to reuse existing artifacts in different ways.
-The fifth step is running Velociraptor’s xor function and piping the output into our
-the existing Cobalt Strike configuration decoder (originally designed to extract
-configuration from memory).
+The fifth step is running Velociraptor’s `xor()` function and piping the output into our
+the existing `Windows.Carving.CobaltStrike()` configuration decoder.
 
-```
+```vql
 -- extract bytes
 LET bytes <= SELECT * FROM foreach(row=targets,
     query={
@@ -266,7 +266,7 @@ LET bytes <= SELECT * FROM foreach(row=targets,
 SELECT *, FROM foreach(row=bytes,query={
     SELECT *,
         basename(path=SamplePath) as Sample,SampleSize
-    FROM Artifact.Custom.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+    FROM Artifact.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
 })
 ```
 
@@ -281,10 +281,35 @@ added to the Velociraptor Cobalt Strike parser.
 
 ![Cobalt strike shellcode example](12_notebook_shellcode_example.png)
 
-Finally, we may have a desire to extract specific key indicators and compare across
-samples.
 
-![VQL results: key indicators of interest](13_notebook_example_results.png)
+### Additional analysis
+
+Finally, we may have a desire to extract specific key indicators and compare across
+samples. A simple data stack on key indicators of interest.
+
+```vql
+-- pass bytes to cobalt strike parser and format key indicators im interested in
+LET cobalt = SELECT *, FROM foreach(row=bytes,query={
+    SELECT 
+        basename(path=SamplePath) as Sample,SampleSize,
+        Hash as DecodeHash,
+        Rule,Offset,Xor,DecodedConfig 
+    FROM Artifact.Custom.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+})
+
+-- quick data stack on a few things to show sample analysis
+SELECT count() as Total,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.BeaconType, else= 'Shellcode stager') as Type,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.LicenseId, else= DecodedConfig.Licence) as License,
+    if(condition= Xor=~'^0x(2e|69)$', then=dict(SpawnTox86=DecodedConfig.SpawnTox86,SpawnTox64=DecodedConfig.SpawnTox64), else= 'N/A') as SpawnTo,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.Port, else= 'N/A') as Port,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.C2Server, else= DecodedConfig.Server) as Server
+FROM cobalt
+GROUP BY Type, Licence,SpawnTo,Port,Server
+```
+
+![VQL results: key indicators of interest](13_notebook_example.png)
+
 
 ## Conclusions
 
@@ -302,11 +327,11 @@ at https://www.velocidex.com/discord.
 
 
 ## References
-[MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)
-[MSBuild Inline Task template](https://github.com/3gstudent/msbuild-inline-task)
-[VirusTotal sample - "I20xQy.TMP"](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)
-[VirusTotal sample - "CSLHP.TMP"](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)
-[VirusTotal sample - "ddppllkm.TMP"](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)
-[VirusTotal sample - "gujf2z0z.0.cs.TMP"](https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd)
-[VirusTotal sample - "Ofeq81u.TMP"](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)
-[VirusTotal sample - "zzyhukwK.TMP"](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)
+[MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)  
+[MSBuild Inline Task template](https://github.com/3gstudent/msbuild-inline-task)  
+[VirusTotal sample - "I20xQy.TMP"](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)  
+[VirusTotal sample - "CSLHP.TMP"](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)  
+[VirusTotal sample - "ddppllkm.TMP"](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)  
+[VirusTotal sample - "gujf2z0z.0.cs.TMP"](https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd)  
+[VirusTotal sample - "Ofeq81u.TMP"](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)  
+[VirusTotal sample - "zzyhukwK.TMP"](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)  
