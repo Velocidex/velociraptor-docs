@@ -281,6 +281,9 @@ added to the Velociraptor Cobalt Strike parser.
 
 ![Cobalt strike shellcode example](12_notebook_shellcode_example.png)
 
+
+### Additional analysis
+
 Finally, we may have a desire to extract specific key indicators and compare across
 samples. A simple data stack on key indicators of interest.
 
