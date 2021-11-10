@@ -16,7 +16,7 @@ weight: 20
 Velociraptor’s ability for data manipulation is a core platform capability 
 that drives a lot of the great content we have available in terms of data 
 parsing for artifacts and live analysis. After observing a recent 
-engagement with several encoded Cobalt Strike beacons, then finding 
+engagement with several less common encoded Cobalt Strike beacons, then finding 
 sharable files on VirusTotal,  I thought it would be a good opportunity 
 to walk through some workflow around data manipulation and VQL for 
 analysis.
@@ -148,7 +148,7 @@ at https://www.velocidex.com/discord.
 
 ## References
 [MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)  
-[Use MSBuild To Do More](https://3gstudent.github.io/Use-MSBuild-To-Do-More)  
+[MSBuild Inline Task template](https://github.com/3gstudent/msbuild-inline-task)  
 [VirusTotal sample - I20xQy.TMP](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)  
 [VirusTotal sample - CSLHP.TMP](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)  
 [VirusTotal sample - ddppllkm.TMP](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)  
