@@ -11,15 +11,14 @@ author: Matthew Green
 weight: 20
 ---
 
-## Cobalt Strike payload discovery and data manipulation
-
 Velociraptor’s ability for data manipulation is a core platform capability
 that drives a lot of the great content we have available in terms of data
-parsing for artifacts and live analysis. After observing a recent
-engagement with several less common encoded Cobalt Strike beacons, then finding
-sharable files on VirusTotal,  I thought it would be a good opportunity
-to walk through some workflow around data manipulation and VQL for
-analysis.
+parsing for artifacts and live analysis. After a recent engagement with 
+less common encoded Cobalt Strike beacons, and finding sharable files on 
+VirusTotal,  I thought it would be a good opportunity to walk through some 
+workflow around data manipulation with VQL for analysis. In this post I 
+will walk though some background, collection at scale, and finally talk 
+about processing target files to extract key indicators.
 
 
 ## Background
@@ -59,19 +58,49 @@ spring to mind readily.  In this instance I am selecting Yara.NTFS. I have
 leveraged this artifact in the field for hunting malware, searching logs or
 any other capability where both metadata and content based discovery is desired.
 
-![Select artifact > Windows.Detection.Yara.NTFS](02_find_artifact.png)
+{{% notice tip "Windows.Detection.Yara.NTFS" %}}
+* This artifact searches the MFT, returns a list of target files then runs Yara over the target list.  
+* The artifact leverages Windows.NTFS.MFT so similar regex filters can be applied including Path, Size and date.  
+* The artifact also has an option to search across all attached drives and upload any files with Yara hits.  
+
+Some examples of path regex may include:
+
+* Extension at a path: Windows/System32/.+\\.dll$  
+* More wildcards: Windows/.+/.+\\.dll$  
+* Specific file: Windows/System32/kernel32\.dll$  
+* Multiple extentions: \.(php|aspx|resx|asmx)$  
+{{% /notice %}}
+
+![Select artifact : Windows.Detection.Yara.NTFS](02_find_artifact.png)
 
 The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case to target
 our adversaries path for payloads before applying our yara rule. Typically when
 running discovery like this, an analyst can also apply additional options like
 file size or time stamp bounds for use at scale and optimal performance.
-The yara rule deployed in this case was simply quick and dirty text directly
-from the project file referencing the unique variable setup that was common
-across acquired samples.
+The yara rule deployed in this case was simply quick and dirty hex conversion of 
+text directly from the project file referencing the unique variable setup that 
+was common across acquired samples.
 
+```
+rule MSBuild_buff {
+   meta:
+      description = "Detect unique variable setup MSBuild inline task project file"
+      author = "Matt Green - @mgreen27"
+      date = "2021-10-22"
+   strings:
+    // byte[] buff = new byte[]
+    $buff = { 62 79 74 65 5b 5d 20 62 75 66 66 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
+    
+    // byte[] key_code = new byte[]
+    $key_code = { 62 79 74 65 5b 5d 20 6b 65 79 5f 63 6f 64 65 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
+
+condition:
+      any of them
+}
+```
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
-After launching the hunt, results become inside the hunt entry on the
+After launching the hunt, results become available inside the hunt entry on the
 Velociraptor server for download or additional analysis.
 
 ![Hunt results](04_hunt_results.png)
@@ -82,38 +111,164 @@ Velociraptor server for download or additional analysis.
 The Cobalt Strike payload is a string with represented characters xor encoded
 as a hex formatted buffer and key in embedded C Sharp code as seen below.
 
-![MSBuild inline task project file with CobaltStrike payload](05_payload.png)
+![MSBuild inline task project file with CobaltStrike payload](05_payload_b.png)
 
-In this case, I can run analysis directly in the hunt notebook on results. Our
-first step of decode is to examine all the files we collected in the hunt. The
-first query enumerates all the individual collections in the hunt, while the
+### Enumerate collected files and find location on server
+So far we have only collected files that have suspicious content. Now we want 
+to post process the result and try to extract more information from the payload.
+
+{{% notice tip "Velociraptor notebook" %}}
+The Velociraptor notebook is a gui component that lets the user run VQL directly 
+on the server. In this case we are leveraging the notebook attached to our hunt 
+to post process results opposed to downloading the files and processing offline.
+{{% /notice %}}
+
+Our first step of decode is to examine all the files we collected in the hunt. 
+The first query enumerates all the individual collections in the hunt, while the
 second query retrieves the files collected for each job.
+
+```
+-- find flow ids for each client
+LET hunt_flows = SELECT *, Flow.client_id as ClientId, Flow.session_id as FlowId 
+FROM hunt_flows(hunt_id='H.C6508PLOOPD2U')
+
+-- extract uploaded files and path on server
+Let targets = SELECT  * FROM foreach(row=hunt_flows, 
+    query={
+        SELECT 
+            file_store(path=vfs_path) as SamplePath, 
+            file_size as SampleSize
+        FROM uploads(client_id=ClientId,flow_id=FlowId)
+    })
+
+SELECT * FROM targets 
+```
 
 ![Find the location of all files collected](06_notebook_files.png)
 
+
+### Extract encoded payload and xor key
 For the second step, to extract target bytes we leverage the `parse_records_with_regex()`
 plugin to extract the strings of interest (Data and Key) in our target files.
 Note: the buffer_size argument allows VQL to examine a larger buffer than the
 default size in order to capture the typically very large payloads in these build
 files. We have also included a 200 character limitation on the data field initially
-as this will improve performance when working on VQL.
+as this will improve performance when working on VQL. We have also specified buffer 
+size to be larger than default and just larger than the biggest payload in scope.
+
+
+```
+-- regex to extract Data and Key fields
+LET target_regex = 'buff = new byte\\[\\]\\s*{(?P<Data>[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P<Key>[^\\n]*)};\\n'
+
+SELECT * FROM foreach(row=targets,
+    query={
+        SELECT 
+            basename(path=SamplePath) as Sample,
+            SampleSize,
+            Key, --obtained from regex
+            read_file(filename=Data,accessor='data',length=200) as DataExtract -- obtained by regex, only output 200 characters
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+```
+
+
+{{% notice tip "Parse records with regex" %}}
+parse_records_with_regex() is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.
+
+The regular expressions are specified in the Go syntax. They are expected to contain capture variables to name the matches extracted.
+
+The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while parse_string_with_regex() can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.
+{{% /notice %}}
 
 
 ![VQL: extract data and keys](07_notebook_regex.png)
 
-The third step adds a custom function for hex normalisation and converts the inline
-C Sharp style encoding to a standard hex encoded string which VQL can easily parse.
 
+### Extract normalisation
+
+The third step adds a custom function for hex normalisation and converts the inline
+C Sharp style encoding to a standard hex encoded string which VQL can easily parse. 
+In this case, the local normalise function will ensure we have  valid 2 character hex. 
+The regex replace will strip the leading '0x' from the hex strings and prepare for 
+xor processing.
+```
+-- regex to extract Data and Key fields
+LET target_regex = 'buff = new byte\\[\\]\\s*{(?P<Data>[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P<Key>[^\\n]*)};\\n'
+
+-- normalise function to fix bad hex strings
+LET normalise_hex(value) = regex_replace(source=value,re='0x(.)[,}]',replace='0x0\$1,')
+
+SELECT * FROM foreach(row=targets,
+    query={
+        SELECT 
+            basename(path=SamplePath) as Sample,
+            SampleSize,
+            regex_replace(re="0x|,", replace="", source=normalise_hex(value=Key)) as KeyNormalised,
+            regex_replace(re="0x|,", replace="", source=normalise_hex(value=Data)) as DataNormalised
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+```
 ![VQL: hex normalisation](08_notebook_normalise.png)
 
-The fourth step converts hex to bytes and validates that the next stage is working.
+
+### Extract to bytes
+
+The fourth step converts hex to bytes and validates that the next stage is working. In the example VQL below 
+we pass the hex text to the unhex() function to produce raw bytes for our variables.
+
+```
+SELECT * FROM foreach(row=targets,
+    query={
+        SELECT 
+            basename(path=SamplePath) as Sample,
+            SampleSize,
+            unhex(string=regex_replace(re="0x|,", replace="", source=normalise_hex(value=Key))) as KeyBytes,
+            read_file(filename=
+                unhex(string=regex_replace(re="0x|,", replace="", source=normalise_hex(value=Data))),
+                    accessor='data',length=200) as DataBytesExtracted
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+```
 
 ![VQL: extract bytes](09_notebook_bytes.png)
+
+
+### Xor decode
 
 VQL's flexibility comes with its ability to reuse existing artifacts in different ways.
 The fifth step is running Velociraptor’s xor function and piping the output into our
 the existing Cobalt Strike configuration decoder (originally designed to extract
 configuration from memory).
+
+```
+-- extract bytes
+LET bytes <= SELECT * FROM foreach(row=targets,
+    query={
+        SELECT 
+            SamplePath, basename(path=SamplePath) as Sample, SampleSize,
+            unhex(string=regex_replace(re="0x|,", replace="", source=normalise_hex(value=Key))) as KeyBytes,
+            read_file(filename=
+                unhex(string=regex_replace(re="0x|,", replace="", source=normalise_hex(value=Data))),
+                    accessor='data') as DataBytes
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+
+-- pass bytes to cobalt strike parser and format key indicators im interested in
+SELECT *, FROM foreach(row=bytes,query={
+    SELECT *,
+        basename(path=SamplePath) as Sample,SampleSize
+    FROM Artifact.Custom.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+})
+```
 
 ![VQL: parse config](10_notebook_parse.png)
 
