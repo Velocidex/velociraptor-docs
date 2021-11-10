@@ -58,7 +58,7 @@ spring to mind readily.  In this instance I am selecting Yara.NTFS. I have
 leveraged this artifact in the field for hunting malware, searching logs or
 any other capability where both metadata and content based discovery is desired.
 
-{{% notice tip "`Windows.Detection.Yara.NTFS`" %}}
+{{% notice tip "Windows.Detection.Yara.NTFS" %}}
 * This artifact searches the MFT, returns a list of target files then runs Yara over the target list.  
 * The artifact leverages `Windows.NTFS.MFT` so similar regex filters can be applied including Path, Size and date.  
 * The artifact also has an option to search across all attached drives and upload any files with Yara hits.  
@@ -71,7 +71,7 @@ Some examples of path regex may include:
 * Multiple extentions: \.(php|aspx|resx|asmx)$  
 {{% /notice %}}
 
-![Select artifact : `Windows.Detection.Yara.NTFS`](02_find_artifact.png)
+![Select artifact : Windows.Detection.Yara.NTFS](02_find_artifact.png)
 
 The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case to target
 our adversaries path for payloads before applying our yara rule. Typically when
