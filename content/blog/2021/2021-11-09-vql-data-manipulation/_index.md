@@ -100,7 +100,7 @@ condition:
 ```
 ![Windows.Detection.Yara.NTFS hunt configuration](03_configure_artifact.png)
 
-After launching the hunt, results become availible inside the hunt entry on the
+After launching the hunt, results become available inside the hunt entry on the
 Velociraptor server for download or additional analysis.
 
 ![Hunt results](04_hunt_results.png)
