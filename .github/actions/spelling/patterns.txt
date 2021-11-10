@@ -23,3 +23,6 @@ www\.[^ ]+
 [A-Za-z]+[0-9_]
 
 [0-9][A-Za-z]+
+
+# Quoted words are ignored
+"[^ "]+"
