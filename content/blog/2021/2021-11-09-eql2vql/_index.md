@@ -43,7 +43,7 @@ Velociraptor's endpoint centric design.
 ## What is EQL anyway?
 
 The [Event Query
-Lanaguage](https://www.elastic.co/blog/introducing-event-query-language)
+Language](https://www.elastic.co/blog/introducing-event-query-language)
 (EQL), is a query language designed to identify specific conditions in
 collected telemetry from endpoints in order to implement detections of
 anomalous behavior.
@@ -260,7 +260,7 @@ new detections!
 ## Real time detections
 
 Velociraptor's hunting capabilities make it a breeze for actively
-searching for signed of past compromize on endpoints. However what
+searching for signed of past compromise on endpoints. However what
 about real time alerting? It would be nice to receive immediate
 notification when a detection rule is triggered.
 

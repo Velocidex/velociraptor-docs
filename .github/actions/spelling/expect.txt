@@ -725,3 +725,11 @@ zsdnhepyzs
 CSLHP
 MDR
 shellcode
+
+EQL
+winlogbeat
+wevtutil
+toml
+vectorpouch
+underutilized
+whitelisting
