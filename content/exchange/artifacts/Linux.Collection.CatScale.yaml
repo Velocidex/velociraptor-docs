@@ -23,7 +23,7 @@ parameters:
   - name: OutfilePrefix
     default: catscale_
     type: string
-    description: Prefix of collection file (Ex. cs_ -- useful for parsing the filename later or other identification purposes)
+    description: Prefix of collection file (Ex. catscale_ -- useful for parsing the filename later or other identification purposes)
   - name: OutDir
     default: catscale_out
     type: string
