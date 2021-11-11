@@ -134,7 +134,7 @@ transformed to ECS fields can be found coded in
 
 ## How can we use EQL detection queries?
 
-So now that we understand how EQL detection work, how can we use the
+So now that we understand how EQL detections work, how can we use the
 same detection logic in Velociraptor? Velociraptor's philosophy is
 that detection should be distributed - rather than forwarding all raw
 events to a central place for triaging, we wish to be able to do the
@@ -148,7 +148,7 @@ on the endpoint.
 
 ### The eql2vql project
 
-Let me introduce an new project to automatically convert EQL detection
+Let me introduce a new project to automatically convert EQL detection
 rules to VQL artifacts: https://github.com/Velocidex/eql2vql
 
 The aim of this project is to automatically produce a VQL artifact
@@ -275,7 +275,7 @@ for Windows]({{< ref
 
 ### Using EQL detections with real time monitoring
 
-The eql2vql project contains a second provider, that reads Sysmon
+The eql2vql project contains a second provider that reads Sysmon
 events directly from ETW sources. This bypasses the windows event log
 system completely, and applies the VQL directly on real time ETW
 events.
@@ -312,7 +312,7 @@ query={
 ```
 
 The only difference here is that the artifact produced is a client
-monitoring artifact so it can be installed on all clients permanents,
+monitoring artifact so it can be installed on all clients permanently,
 continuously monitoring their Sysmon event source for the same EQL
 detections. As soon as an EQL rule matches, Velociraptor will emit a
 single row and send it to the server.
@@ -320,11 +320,11 @@ single row and send it to the server.
 ![Real time detections](real_time_detections.png)
 
 
-We can now escalate such detections, through a number of mechanisms,
+We can escalate such detections, through a number of mechanisms,
 such as [Slack alerts]({{< ref
 "/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/_index.md"
 >}}), or escalate to an external case management tool like [The Hive
-](https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1).
+](https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1). See [Server Monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}}) for more information.
 
 We can even use the resulting VQL artifact as a base for other queries
 to provide further enrichment and response capabilities.
@@ -359,14 +359,14 @@ coverage to make the conversion as accurate as possible.
 Since VQL is a much more capable language with access to a lot more
 data (since it is running on the endpoint), we hope to build more
 accurate and powerful detection rules. For example by correlating
-information from the filesystem, NTFS analysis, yara scans, memory
-analysis etc. This capabilities can build on the basic EQL detection
+information from the filesystem, NTFS analysis, Yara scans, memory
+analysis etc. These capabilities can build on the basic EQL detection
 rules to help eliminate false positives. At the same time we can draw
 on the existing body of work in detection rules available with EQL.
 
 We decided to focus on EQL because it is fairly similar to VQL in
 spirit (both are query languages) so the conversion is a little
-easier. But there are other sources of threat intel such as Sigma
+easier. But there are other sources of threat intelligence such as Sigma
 which also output to EQL! A good coverage of the EQL capabilities will
 get us Sigma support as well.
 
