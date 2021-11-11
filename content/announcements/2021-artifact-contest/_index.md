@@ -10,7 +10,7 @@ no_edit: true
 
 ## The Contest is now closed!
 
-Check out the [submissions]({{< ref "/blog/2021/2021-10-08-contributor-contest/" >}}) and watch the winning presentation at the [SANS Threat Hunting Summit](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda)
+Check out the [submissions]({{< ref "/blog/2021/2021-10-08-contributor-contest/_index.md" >}}) and watch the winning presentation at the [SANS Threat Hunting Summit](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda)
 
 ## Goals
 
@@ -26,12 +26,12 @@ Some specific ideas:
    improved as a result of your contribution.
 
 2. **Detection artifacts** - Each submission may contain several VQL
-   artifacts - how do the artifacts improve Velociraptor’s detection
+   artifacts - how do the artifacts improve Velociraptor's detection
    capability? Can you include metrics of how effective they are
    compared to previous technology?
 
 3. **Monitoring artifacts/plugins** - This category includes real time
-   monitoring queries to enhance Velociraptor’s endpoint monitoring
+   monitoring queries to enhance Velociraptor's endpoint monitoring
    capability.
 
 ## Deadline

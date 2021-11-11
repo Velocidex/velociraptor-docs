@@ -13,11 +13,11 @@ weight: 20
 
 Velociraptor’s ability for data manipulation is a core platform capability
 that drives a lot of the great content we have available in terms of data
-parsing for artifacts and live analysis. After a recent engagement with 
-less common encoded Cobalt Strike beacons, and finding sharable files on 
-VirusTotal,  I thought it would be a good opportunity to walk through some 
-workflow around data manipulation with VQL for analysis. In this post I 
-will walk though some background, collection at scale, and finally talk 
+parsing for artifacts and live analysis. After a recent engagement with
+less common encoded Cobalt Strike beacons, and finding sharable files on
+VirusTotal,  I thought it would be a good opportunity to walk through some
+workflow around data manipulation with VQL for analysis. In this post I
+will walk though some background, collection at scale, and finally talk
 about processing target files to extract key indicators.
 
 
@@ -47,7 +47,7 @@ files on disk quickly to find any additional scope using Velociraptor?
 
 First task is discovery and collecting our files in scope from the network.
 Typically this task may be slow to deploy or rely on cobbled together
-capabilies from other teams. The Velociraptor hunt is an easy button for
+capabilities from other teams. The Velociraptor hunt is an easy button for
 this use case.
 
 ![Velociraptor GUI : hunt : add hunt](01_new_hunt.png)
@@ -59,16 +59,16 @@ leveraged this artifact in the field for hunting malware, searching logs or
 any other capability where both metadata and content based discovery is desired.
 
 {{% notice tip "Windows.Detection.Yara.NTFS" %}}
-* This artifact searches the MFT, returns a list of target files then runs Yara over the target list.  
-* The artifact leverages `Windows.NTFS.MFT` so similar regex filters can be applied including Path, Size and date.  
-* The artifact also has an option to search across all attached drives and upload any files with Yara hits.  
+* This artifact searches the MFT, returns a list of target files then runs Yara over the target list.
+* The artifact leverages `Windows.NTFS.MFT` so similar regex filters can be applied including Path, Size and date.
+* The artifact also has an option to search across all attached drives and upload any files with Yara hits.
 
 Some examples of path regex may include:
 
-* Extension at a path: Windows/System32/.+\\.dll$  
-* More wildcards: Windows/.+/.+\\.dll$  
-* Specific file: Windows/System32/kernel32\.dll$  
-* Multiple extentions: \.(php|aspx|resx|asmx)$  
+* Extension at a path: Windows/System32/.+\\.dll$
+* More wildcards: Windows/.+/.+\\.dll$
+* Specific file: Windows/System32/kernel32\.dll$
+* Multiple extentions: \.(php|aspx|resx|asmx)$
 {{% /notice %}}
 
 ![Select artifact : Windows.Detection.Yara.NTFS](02_find_artifact.png)
@@ -77,8 +77,8 @@ The file filter: `Windows/Temp/[^/]*\.TMP$` will suffice in this case to target
 our adversaries path for payloads before applying our yara rule. Typically when
 running discovery like this, an analyst can also apply additional options like
 file size or time stamp bounds for use at scale and optimal performance.
-The yara rule deployed in this case was simply quick and dirty hex conversion of 
-text directly from the project file referencing the unique variable setup that 
+The yara rule deployed in this case was simply quick and dirty hex conversion of
+text directly from the project file referencing the unique variable setup that
 was common across acquired samples.
 
 ```yara
@@ -90,7 +90,7 @@ rule MSBuild_buff {
    strings:
     // byte[] buff = new byte[]
     $buff = { 62 79 74 65 5b 5d 20 62 75 66 66 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
-    
+
     // byte[] key_code = new byte[]
     $key_code = { 62 79 74 65 5b 5d 20 6b 65 79 5f 63 6f 64 65 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
 
@@ -114,34 +114,34 @@ as a hex formatted buffer and key in embedded C Sharp code as seen below.
 ![MSBuild inline task project file with CobaltStrike payload](05_payload_b.png)
 
 ### Enumerate collected files and find location on server
-So far we have only collected files that have suspicious content. Now we want 
+So far we have only collected files that have suspicious content. Now we want
 to post process the result and try to extract more information from the payload.
 
 {{% notice tip "Velociraptor notebook" %}}
-The Velociraptor notebook is a gui component that lets the user run VQL directly 
-on the server. In this case we are leveraging the notebook attached to our hunt 
+The Velociraptor notebook is a gui component that lets the user run VQL directly
+on the server. In this case we are leveraging the notebook attached to our hunt
 to post process results opposed to downloading the files and processing offline.
 {{% /notice %}}
 
-Our first step of decode is to examine all the files we collected in the hunt. 
+Our first step of decode is to examine all the files we collected in the hunt.
 The first query enumerates all the individual collections in the hunt, while the
 second query retrieves the files collected for each job.
 
 ```vql
 -- find flow ids for each client
-LET hunt_flows = SELECT *, Flow.client_id as ClientId, Flow.session_id as FlowId 
+LET hunt_flows = SELECT *, Flow.client_id as ClientId, Flow.session_id as FlowId
 FROM hunt_flows(hunt_id='H.C6508PLOOPD2U')
 
 -- extract uploaded files and path on server
-Let targets = SELECT  * FROM foreach(row=hunt_flows, 
+Let targets = SELECT  * FROM foreach(row=hunt_flows,
     query={
-        SELECT 
-            file_store(path=vfs_path) as SamplePath, 
+        SELECT
+            file_store(path=vfs_path) as SamplePath,
             file_size as SampleSize
         FROM uploads(client_id=ClientId,flow_id=FlowId)
     })
 
-SELECT * FROM targets 
+SELECT * FROM targets
 ```
 
 ![Find the location of all files collected](06_notebook_files.png)
@@ -153,7 +153,7 @@ plugin to extract the strings of interest (Data and Key) in our target files.
 Note: the buffer_size argument allows VQL to examine a larger buffer than the
 default size in order to capture the typically very large payloads in these build
 files. We have also included a 200 character limitation on the data field initially
-as this will improve performance when working on VQL. We have also specified buffer 
+as this will improve performance when working on VQL. We have also specified buffer
 size to be larger than default and just larger than the biggest payload in scope.
 
 
@@ -163,7 +163,7 @@ LET target_regex = 'buff = new byte\\[\\]\\s*{(?P<Data>[^\\n]*)};\\s+byte\\[\\]\
 
 SELECT * FROM foreach(row=targets,
     query={
-        SELECT 
+        SELECT
             basename(path=SamplePath) as Sample,
             SampleSize,
             Key, --obtained from regex
@@ -190,9 +190,9 @@ The aim of this plugin is to split the file into records which can be further pa
 ### Extract normalisation
 
 The third step adds a custom function for hex normalisation and converts the inline
-C Sharp style encoding to a standard hex encoded string which VQL can easily parse. 
-In this case, the local normalise function will ensure we have  valid 2 character hex. 
-The `regex_replace()` will strip the leading '0x' from the hex strings and prepare for 
+C Sharp style encoding to a standard hex encoded string which VQL can easily parse.
+In this case, the local normalise function will ensure we have  valid 2 character hex.
+The `regex_replace()` will strip the leading '0x' from the hex strings and prepare for
 xor processing.
 
 ```vql
@@ -204,7 +204,7 @@ LET normalise_hex(value) = regex_replace(source=value,re='0x(.)[,}]',replace='0x
 
 SELECT * FROM foreach(row=targets,
     query={
-        SELECT 
+        SELECT
             basename(path=SamplePath) as Sample,
             SampleSize,
             regex_replace(re="0x|,", replace="", source=normalise_hex(value=Key)) as KeyNormalised,
@@ -219,13 +219,13 @@ SELECT * FROM foreach(row=targets,
 
 ### Extract to bytes
 
-The fourth step converts hex to bytes and validates that the next stage is working. In the example VQL below 
+The fourth step converts hex to bytes and validates that the next stage is working. In the example VQL below
 we pass the hex text to the `unhex()` function to produce raw bytes for our variables.
 
 ```vql
 SELECT * FROM foreach(row=targets,
     query={
-        SELECT 
+        SELECT
             basename(path=SamplePath) as Sample,
             SampleSize,
             unhex(string=regex_replace(re="0x|,", replace="", source=normalise_hex(value=Key))) as KeyBytes,
@@ -251,7 +251,7 @@ the existing `Windows.Carving.CobaltStrike()` configuration decoder.
 -- extract bytes
 LET bytes <= SELECT * FROM foreach(row=targets,
     query={
-        SELECT 
+        SELECT
             SamplePath, basename(path=SamplePath) as Sample, SampleSize,
             unhex(string=regex_replace(re="0x|,", replace="", source=normalise_hex(value=Key))) as KeyBytes,
             read_file(filename=
@@ -290,10 +290,10 @@ samples. A simple data stack on key indicators of interest.
 ```vql
 -- pass bytes to cobalt strike parser and format key indicators im interested in
 LET cobalt = SELECT *, FROM foreach(row=bytes,query={
-    SELECT 
+    SELECT
         basename(path=SamplePath) as Sample,SampleSize,
         Hash as DecodeHash,
-        Rule,Offset,Xor,DecodedConfig 
+        Rule,Offset,Xor,DecodedConfig
     FROM Artifact.Custom.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
 })
 
@@ -327,11 +327,11 @@ at https://www.velocidex.com/discord.
 
 
 ## References
-[MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)  
-[MSBuild Inline Task template](https://github.com/3gstudent/msbuild-inline-task)  
-[VirusTotal sample - "I20xQy.TMP"](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)  
-[VirusTotal sample - "CSLHP.TMP"](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)  
-[VirusTotal sample - "ddppllkm.TMP"](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)  
-[VirusTotal sample - "gujf2z0z.0.cs.TMP"](https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd)  
-[VirusTotal sample - "Ofeq81u.TMP"](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)  
-[VirusTotal sample - "zzyhukwK.TMP"](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)  
+[MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)
+[MSBuild Inline Task template](https://github.com/3gstudent/msbuild-inline-task)
+[VirusTotal sample - "I20xQy.TMP"](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)
+[VirusTotal sample - "CSLHP.TMP"](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)
+[VirusTotal sample - "ddppllkm.TMP"](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)
+[VirusTotal sample - "gujf2z0z.0.cs.TMP"](https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd)
+[VirusTotal sample - "Ofeq81u.TMP"](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)
+[VirusTotal sample - "zzyhukwK.TMP"](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)

@@ -89,7 +89,7 @@ If that file is not found, Velociraptor will wait and retry
 periodically to locate the configuration file. When the file is found,
 the client will be started.
 
-So to summarise, when installing from the official MSI package you
+So to summarize, when installing from the official MSI package you
 need to:
 
 1. Assign the MSI via Group Policy, or use some other method to deploy
@@ -115,7 +115,7 @@ destination location etc.
 To do so, follow follow the instructions
 [here](https://github.com/Velocidex/velociraptor/tree/master/docs/wix)
 
-To summarise the process, you will need to:
+To summarize the process, you will need to:
 
 1. Download the Velociraptor repository to a Windows host. Specifically,
    you need to copy the appropriate custom XML file and build batch file

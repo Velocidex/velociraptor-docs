@@ -19,7 +19,7 @@ Additionally you will need sufficient disk space to hold the data you collect. W
 
 {{% notice warning "Network filtering requirements" %}}
 
-Our virtual machine must be able to receive connections over both ports 80 and 443. Be sure to check inbound filtering Access Control Lists to ensure that access is allowed. When using SSL, both the client communication and the Admin GUI are served over the same ports to benefit from SSL transport encryption. The Let's Encrypt protocol requires Let's Encrypt’s servers to connect to the VM on port 80 - however the Admin GUI will only be served over SSL.
+Our virtual machine must be able to receive connections over both ports 80 and 443. Be sure to check inbound filtering Access Control Lists to ensure that access is allowed. When using SSL, both the client communication and the Admin GUI are served over the same ports to benefit from SSL transport encryption. The Let's Encrypt protocol requires Let's Encrypt's servers to connect to the VM on port 80 - however the Admin GUI will only be served over SSL.
 
 {{% /notice %}}
 
@@ -41,7 +41,7 @@ After the dynamic address is created, you need to get the credentials for updati
 ## Configure Velociraptor to use Let's Encrypt
 
 Let’s Encrypt allows Velociraptor to issue its own certificates. Selecting the Let's Encrypt option ensures:
-* The server will fetch certificates automatically from Let's Encrypt’s servers when first accessed by the browser.
+* The server will fetch certificates automatically from Let's Encrypt's servers when first accessed by the browser.
 * Both the Frontend and GUI will be served over the standard SSL port (443).
 * The GUI is externally available, but protected over SSL.
 * Clients will connect to the public DNS name over SSL.
