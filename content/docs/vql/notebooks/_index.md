@@ -80,7 +80,7 @@ SELECT * FROM info()
 
 The notebook may be switched into full screen to better emulate a full
 notebook. With this setting, the notebook takes up the entire width of
-the screen. You can switch back to the paned view by clicking on the
+the screen. You can switch back to the pane view by clicking on the
 collapse button at the top right of the screen.
 
 ![Full screen notebook](fullscreen.png)

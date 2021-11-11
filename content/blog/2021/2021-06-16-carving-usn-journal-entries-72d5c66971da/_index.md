@@ -63,7 +63,7 @@ In the screen shot above I can identify a number of fields which seem pretty rel
 
 1. The filename is also stored in the record with the length and the offset both specified. For a reasonable file the length should be less than say 255 bytes. Since the filename itself follows the end of the struct, the filename offset should be exactly 60 bytes (0x36 — the size of the struct).
 
-Let’s take a look at the timestamp above. I will use [CyberChef ](https://gchq.github.io/CyberChef/#recipe=Windows_Filetime_to_UNIX_Timestamp('Seconds%20(s)','Hex%20(little%20endian)')From_UNIX_Timestamp('Seconds%20(s)')&input=MDRlY2VkZWE1ODYyZDcwMQ)to convert the hex to a readable timestamp.
+Let’s take a look at the timestamp above. I will use [CyberChef ](https://gchq.github.io/CyberChef/#recipe=Windows_Filetime_to_UNIX_Timestamp('Seconds%20(s)','Hex%20(little%20endian)')From_UNIX_Timestamp('Seconds%20(s)')&input=MDRlY2VkZWE1ODYyZDcwMQ) to convert the hex to a readable timestamp.
 
 ![](../../img/1iCD7doMdvFls77vZdOdjKw.png)
 
@@ -77,7 +77,7 @@ A good carver is fast and accurate. Since we need to scan a huge amount of data 
 
 The usual approach is to use a fast but rough matcher for a first level sieve — this will eliminate most of the obviously wrong data but might have a high false positive rate (i.e. might match invalid data that is not really a USN record at all).
 
-We can then apply a more thorough check on the match using a more accurate parser to eliminate these false positives. If the false positive rate remains reasonably low, we wont waste too many CPU cycles eliminating them and will maintain a hight carving velocity while still having high accuracy.
+We can then apply a more thorough check on the match using a more accurate parser to eliminate these false positives. If the false positive rate remains reasonably low, we wont waste too many CPU cycles eliminating them and will maintain a high carving velocity while still having high accuracy.
 
 When I need a binary pattern matching engine, I immediately think of Yara — the Swiss army knife of binary searching! Let’s come up with a good Yara rule to identify USN journal entries. You can read more about Yara rule syntax [here](https://yara.readthedocs.io/en/stable/), but I will use a binary match rule to detect the byte pattern I am after.
 

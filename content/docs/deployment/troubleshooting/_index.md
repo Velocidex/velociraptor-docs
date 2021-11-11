@@ -11,7 +11,7 @@ clients and the steps needed to debug them.
 ## Velociraptor communications
 
 To understand where things might go wrong, we first need to understand
-how Velociraptor clients communicate with the server. You can read a lot more details about Velociraptor's encryption scheme and communication protocol in our [Velociraptor Communications Blog post]({{< ref "/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/" >}}), but we will go through the most important aspects here.
+how Velociraptor clients communicate with the server. You can read a lot more details about Velociraptor's encryption scheme and communication protocol in our [Velociraptor Communications Blog post]({{< ref "/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/_index.md" >}}), but we will go through the most important aspects here.
 
 ### Velociraptor’s internal PKI
 
@@ -28,7 +28,7 @@ certificate and a private key. This CA is used to
 1. The CA is used to create API keys for programmatic access. The
    server is then able to verify API clients.
 
-The configuration file contains the CA’s X509 certificate in the
+The configuration file contains the CA's X509 certificate in the
 **Client.ca_certificate** parameter (it is therefore embedded in the
 client configuration). The private key is contained in the
 **CA.private_key** parameter.
