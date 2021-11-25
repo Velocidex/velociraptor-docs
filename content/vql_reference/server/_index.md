@@ -272,7 +272,7 @@ Retrieve the list of clients.
 
 Arg | Description | Type
 ----|-------------|-----
-search|Client search string. Can have the following prefixes: 'lable:', 'host:'|string
+search|Client search string. Can have the following prefixes: 'label:', 'host:'|string
 start|First client to fetch (0)'|uint64
 count|Maximum number of clients to fetch (1000)'|uint64
 client_id||string
@@ -1100,7 +1100,7 @@ count|Maximum number of clients to fetch (default unlimited)'|int64
 ## notebook_delete
 <span class='vql_type pull-right'>Plugin</span>
 
-Delete a notebook with all its cells. 
+Delete a notebook with all its cells.
 
 
 
@@ -1549,4 +1549,3 @@ Deletes a user from the server.
 Arg | Description | Type
 ----|-------------|-----
 user||string (required)
-
