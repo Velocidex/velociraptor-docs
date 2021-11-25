@@ -1,5 +1,185 @@
 [
     {
+        "title": "Windows.EventLogs.Zircolite",
+        "author": "weslambert",
+        "description": "Zircolite is a standalone tool that can be used to apply Sigma rules to EVTX files on endpoints in an effort to quickly parse large datasets and surface detections.\n            \nYou can read more about Zircolite below:\n    \nhttps://github.com/wagga40/Zircolite\n    \nThis artifact currently supports usage of the built-in rulesets. Support for custom ruleset usage will be added in the future. \n    \nNOTE: This artifact may take several minutes to run, depending on the size of EVTZ files being analyzed.\n",
+        "link": "/exchange/artifacts/pages/windows.eventlogs.zircolite",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-11-24"
+    },
+    {
+        "title": "Server.Findflows",
+        "author": "mgreen27",
+        "description": "This artifact enables searching over client flow results with regex and returns \na link to the Flow for followup.\n",
+        "link": "/exchange/artifacts/pages/findflows",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-11-23"
+    },
+    {
+        "title": "Windows.Carving.Emotet",
+        "author": "eduardomcm",
+        "description": "This artifact yara-scans memory or unpacked DLL samples for the new 2021 Emotet\ndetections, decrypts and returns the C2 list.\n\nYou may select specific file paths or processes to be yara-scanned, or allow \nit to yara-scan all memory space.\n\nCurrently this artifact parses encrypted configurations from the Emotet variants\nintroducted in November 2021. It will not parse the configurations from earlier \nvariants.\n\nNOTE:\nThis content simply carves the configuration and does not unpack files on disk. \nThat means pointing this artifact as a packed or obfuscated file will not obtain the expected results.\n",
+        "link": "/exchange/artifacts/pages/windows.carving.emotet",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2021-11-20"
+    },
+    {
+        "title": "Linux.Collection.CatScale",
+        "author": "weslambert",
+        "description": "This is a simple artifact that leverages Cat-Scale to collect many different artifacts from a Linux host, then uploads the results to the Velociraptor server. \n\nFrom the project's description:\n\n\"Linux CatScale is a bash script that uses live of the land tools to collect extensive data from Linux based hosts. The data aims to help DFIR professionals triage and scope incidents. An Elk Stack instance also is configured to consume the output and assist the analysis process.\"\n\nhttps://github.com/FSecureLABS/LinuxCatScale\n\nhttps://labs.f-secure.com/tools/cat-scale-linux-incident-response-collection/\n",
+        "link": "/exchange/artifacts/pages/linux.collection.catscale",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-11-11"
+    },
+    {
+        "title": "Windows.Detection.ChinaChopper",
+        "author": "Seeps",
+        "description": "This artifact hunts for CVE-2021-27065 (Microsoft Exchange ProxyLogon RCE)\nexploitation by parsing entries in the 'MSExchange Management.evtx' log.\n\nThis log file is unique to Exchange and can be useful when ECP logs are\nno longer available. Webshell detection syntax is specific to 'China Chopper'\nvia the PowerShell 'Set-OabVirtualDirectory' cmdlet.\n",
+        "link": "/exchange/artifacts/pages/windows.detection.chinachopper",
+        "tags": [],
+        "author_link": "https://github.com/Seeps",
+        "author_avatar": "https://avatars.githubusercontent.com/u/10315852?v=4",
+        "date": "2021-11-10"
+    },
+    {
+        "title": "Windows.Applications.DIEC",
+        "author": "eduardomcm",
+        "description": "Execute DetectItEasy (console version) on specified paths and return rows of results\nto hunt/filter on binaries based types of files (E.g.: Packed binaries and its packers)\n",
+        "link": "/exchange/artifacts/pages/diec",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2021-11-09"
+    },
+    {
+        "title": "Custom.AttackSimulation.AtomicRedTeam",
+        "author": "weslambert",
+        "description": "This artifact allows you to run Atomic Red Team tests on Windows endpoints using Invoke-AtomicRedTeam. Linux and MacOS endpoints will soon be supported. \n\nNOTE: All tests may not work out OOB. You may notice interference or inoperability of some tests with Windows Defender/antivirus/EDR enabled. Best-effort checks are made using the built-in **-GetPreReqs** flag. This is an initial PoC, and as such, much testing is needed, and feedback is welcome.\n\n**Reference:**\n\nhttps://github.com/redcanaryco/invoke-atomicredteam\n\n**Description:**\n\nInvoke-AtomicRedTeam is a PowerShell module to execute tests as defined in the atomics folder of Red Canary's Atomic Red Team project. The \"atomics folder\" contains a folder for each Technique defined by the MITRE ATT&CK\u2122 Framework. Inside of each of these \"T#\" folders you'll find a yaml file that defines the attack procedures for each atomic test as well as an easier to read markdown (md) version of the same data.\n\n- Executing atomic tests may leave your system in an undesirable state. You are responsible for understanding what a test does before executing.\n\n- Ensure you have permission to test before you begin.\n\n- It is recommended to set up a test machine for atomic test execution that is similar to the build in your environment. Be sure you have your collection/EDR solution in place, and that the endpoint is checking in and active.\n",
+        "link": "/exchange/artifacts/pages/windows.attacksimulation.atomicredteam",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-11-06"
+    },
+    {
+        "title": "Linux.Sysinternals.Sysmon",
+        "author": "weslambert",
+        "description": "Parses syslog for Sysmon events on Linux\n\n**Reference**: https://github.com/Sysinternals/SysmonForLinux\n\nThis artifact can also be modified to forward events (as a client event artifact), similar to Windows.Sysinternals.SysmonLogForward.\n",
+        "link": "/exchange/artifacts/pages/linux.sysinternals.sysmon",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-10-23"
+    },
+    {
+        "title": "Windows.Carving.Qbot",
+        "author": "eduardomcm",
+        "description": "This artifact yara-scans memory or unpacked DLL samples for Qbot (or Qakbot)\ndetections, decrypts and returns the botnet and C2 configurations.\n\nYou may select specific file paths or processes to be yara-scanned, or allow \nit to yara-scan all memory space.\n\nCurrently this artifact parses encrypted configurations from the Qbot variant\nintroducted in April 2021. It will not parse the configurations from earlier \nvariants.\n\nNOTE:\nThis content simply carves the configuration and does not unpack files on disk. \nThat means pointing this artifact as a packed or obfuscated file will not obtain the expected results.\n",
+        "link": "/exchange/artifacts/pages/windows.carving.qbot",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2021-10-23"
+    },
+    {
+        "title": "Server.Analysis.CyberChefServer",
+        "author": "weslambert",
+        "description": "Analyze/transform data with CyberChef-server. \n\nNote that this requires an accessible Cyberchef-server instance to work.\n\nIf you prefer not to run a local instance, you might consider altering the artifact to leverage something like https://prod.apifor.io.\n  \n**Reference**: https://github.com/gchq/CyberChef-server\n\n**Examples**:\n\n  This artifact can be called from within another artifact to analyze/transform the data made available by that artifact.\n\n  `SELECT * from Artifact.Custom.Analysis.CyberchefServer(Input=$YOURDATA,Recipe=$YOURRECIPE)`\n\n  \n  If a default recipe is used, only the input will need to be passed, like so:\n   \n  `SELECT * from Artifact.Custom.Analysis.CyberchefServer(Input=$YOURDATA)`\n  \n  \n  The server metadata store can be used to store the URL of Cyberchef-server (with a key value of `CyberChefServerURL`). \n  \n  \n  Examples of recipes can be found here:\n  \n  https://github.com/mattnotmax/cyberchef-recipes\n",
+        "link": "/exchange/artifacts/pages/cyberchefserver",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-10-20"
+    },
+    {
+        "title": "Windows.Carving.SquirrelWaffle",
+        "author": "eduardomcm",
+        "description": "This artifact yara-scans memory or process dumps for \nunpacked SquirrelWaffle Dlls, decodes the configuration and\nreturns the C2s and the payload.\n\nDepending on the initial infection vector (the macro within .doc or\n.xls maldoc), SquirrelWaffle packed droper will be loaded by either rundll32 \nor regsvr32 and unpack itself in memory.\n\nThe decoded configurations found so far contain (1) a list of C2 URLS, \n(2*) *may* contain a list of C2 IPs, and lastly, (3) contains the command \n\"regsvr32.exe -s\". The command is used to launch its second-stage payload \ndownloaded from its C2 addresses, as a \".txt\" file that is in fact a \ndisguised PE, to be loaded in memory.\n\nNOTE:  \nThis content simply carves the configuration and does not unpack files on\ndisk. That means pointing this artifact as a packed or obfuscated file will not \nobtain the expected results.\n",
+        "link": "/exchange/artifacts/pages/squirrelwaffle",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2021-10-02"
+    },
+    {
+        "title": "Windows.Binary.Exports",
+        "author": "mgreen27",
+        "description": "This artifact can be used to extract all binary exports to research potential lolbins.\nSelecting the AllBinaryInfo tickbox will return complete Binary information.\n",
+        "link": "/exchange/artifacts/pages/exports",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-24"
+    },
+    {
+        "title": "Windows.Applications.Cylance",
+        "author": "mgreen27",
+        "description": "Parse Cylance logs.\n",
+        "link": "/exchange/artifacts/pages/cylance",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-21"
+    },
+    {
+        "title": "Windows.Applications.OfficeMacros.MacroRaptor",
+        "author": "mgreen27",
+        "description": "This artifact implements OleTools MacroRaptor capability in VQL.\n\nUse as a Hunt or triage capability.\n",
+        "link": "/exchange/artifacts/pages/macroraptor",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-21"
+    },
+    {
+        "title": "Windows.Bulk.File",
+        "author": "mgreen27",
+        "description": "Search for some simple bulk File IOCs and upload if desired.   \nTypical upload workflow may be to firstly search, then if returned \nrows match expectations rerun query with upload tickbox selected.  \nNOTE: strings with comma \",\" requre quotes.  \n\nIocLookupTable csv details:  \nGlob - \"Quote\" items with { glob } barckets.  \nWhitelist - Velociraptor regex to whitelist FullPath field.  \nDescription - Free text  \n",
+        "link": "/exchange/artifacts/pages/bulkfile",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-21"
+    },
+    {
+        "title": "Windows.System.BinaryVersion",
+        "author": "mgreen27",
+        "description": "Extract the binary version information for binary files. This artifact will \nsearch the MFT for any matching filenames and return binary information.\n",
+        "link": "/exchange/artifacts/pages/binaryversion",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-16"
+    },
+    {
+        "title": "Windows.EventLogs.Telerik",
+        "author": "mgreen27",
+        "description": "This Artifact will hunt for evidence of Telerik exploitation in the Application \nEvent Log.  \n\nTelerik is a commonly exploited component of IIS web pages that has been \nactively targeted by actors via several CVEs. Several tools and attack \ncapabilities exist making exploitation of vulnerable services trivial. Due to \nthe nature of the software and typical deployments the patches may require \nmanual application.  \n\nIocRegex enables searching for regex in the whole EventData field.  \nOutput of this artifact is targeted fields from EventID 1309 to provide \ncontext for the hit.\n\nThis Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.\n",
+        "link": "/exchange/artifacts/pages/telerik",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2021-09-16"
+    },
+    {
+        "title": "Windows.Analysis.Capa",
+        "author": "weslambert",
+        "description": "Analyze PE, ELF, or shellcode files with capa.\n\n\"capa detects capabilities in executable files. You run it against a PE, ELF, or shellcode file and it tells you what it thinks the program can do. For example, it might suggest that the file is a backdoor, is capable of installing services, or relies on HTTP to communicate.\"\n\nhttps://github.com/fireeye/capa\n",
+        "link": "/exchange/artifacts/pages/windows.analysis.capa",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2021-09-15"
+    },
+    {
         "title": "Windows.Applications.OfficeServerCache",
         "author": "eduardomcm",
         "description": "Return Office Internet Server Cache Registry keys and values in order to identify possible C2 URLs from malicious opened Office documents.\n\nSuch keys should be written by exploits such as CVE-2021-40444 (Microsoft MSHTML Remote Code Execution Vulnerability)\n",

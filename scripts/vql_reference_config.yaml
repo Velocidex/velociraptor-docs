@@ -3,7 +3,7 @@ content/vql_reference/basic/_index.md:
   linktitle: Basic VQL
   description: |
     VQL provides a basic set of functions and plugins allowing
-    queries to maniulate data and implement logic. This page details
+    queries to manipulate data and implement logic. This page details
     those plugins which are considered foundational to the VQL
     language and therefore may be useful in all types of artifacts.
 
@@ -117,6 +117,6 @@ content/vql_reference/misc/_index.md:
   title: Misc
   linktitle: Misc
   description: |
-    Miscelanueous plugins not yet categorized.
+    Miscellaneous plugins not yet categorized.
   weight: 70
   category: ""

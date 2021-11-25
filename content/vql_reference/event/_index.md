@@ -56,6 +56,16 @@ ms|Wait this many ms between events.|int64
 <div class="vql_item"></div>
 
 
+## combine
+<span class='vql_type pull-right'>Plugin</span>
+
+Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).
+
+
+
+<div class="vql_item"></div>
+
+
 ## diff
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -181,6 +191,30 @@ query|Source for cached rows.|StoredQuery (required)
 max_age|Maximum number of seconds to hold rows in the fifo.|int64
 max_rows|Maximum number of rows to hold in the fifo.|int64
 flush|If specified we flush all rows from cache after the call.|bool
+
+
+
+<div class="vql_item"></div>
+
+
+## send_event
+<span class='vql_type pull-right'>Function</span>
+
+Sends an event to a server event monitoring queue.
+
+This is used to send an event to a waiting server event monitoring
+artifact (either as a VQL query running on the server or perhaps
+an external program waiting for this event via the API.
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+artifact|The artifact name to send the event to.|string (required)
+row|The row to send to the artifact|ordereddict.Dict (required)
 
 
 

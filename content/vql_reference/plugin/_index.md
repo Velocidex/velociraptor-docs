@@ -441,14 +441,8 @@ FROM http_client(
     headers=dict(
         `Content-Type`="multipart/form-data;boundary=83fcda3640aca670"
     ),
-    data=regex_replace(re='\n', '\r\n', '''
---83fcda3640aca670
-Content-Disposition: form-data; name="file";filename="ls"
-Content-Type: application/octet-stream
-
-''' + file_bytes + '''
---83fcda3640aca670--
-''')
+    data='--83fcda3640aca670\r\nContent-Disposition: form-data; name="file";filename="ls"\r\nContent-Type: application/octet-stream\r\n\r\n' +
+         file_bytes + '\r\n--83fcda3640aca670--')
 ```
 
 Note how custom headers can be provided using a dict - note also
@@ -951,3 +945,4 @@ end|End scanning at this offset (100mb)|uint64
 number|Stop after this many hits (1).|int64
 blocksize|Blocksize for scanning (1mb).|uint64
 key|If set use this key to cache the  yara rules.|string
+

@@ -101,7 +101,7 @@
               {{ end }}
               {{.Title}}
             </h1>
-            {{ if .Params }}
+            {{ if .Params.author }}
             <div class="author pull-right">
               {{ .Params.author }}
               <span class="date">{{ .Params.date.Format "2006-01-02" }}</span>

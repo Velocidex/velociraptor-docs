@@ -200,6 +200,25 @@ table|A table name to dump|string (required)
 <div class="vql_item"></div>
 
 
+## parse_ese_catalog
+<span class='vql_type pull-right'>Plugin</span>
+
+Opens an ESE file and dump the schema.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+file||string (required)
+accessor|The accessor to use.|string
+
+
+
+<div class="vql_item"></div>
+
+
 ## parse_evtx
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -549,6 +568,7 @@ Arg | Description | Type
 file|A list of files to parse.|list of string (required)
 regex|A list of regex to apply to the file data.|list of string (required)
 accessor|The accessor to use.|string
+buffer_size|Maximum size of line buffer (default 64kb).|int
 
 
 
@@ -612,6 +632,24 @@ start_offset|The starting offset of the first USN record to parse.|int64
 <div class="vql_item"></div>
 
 
+## parse_x509
+<span class='vql_type pull-right'>Function</span>
+
+Parse a DER encoded x509 string into an object.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+data|X509 DER encoded string.|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## parse_xml
 <span class='vql_type pull-right'>Function</span>
 
@@ -626,6 +664,25 @@ Arg | Description | Type
 ----|-------------|-----
 file|XML file to open.|string (required)
 accessor|The accessor to use|string
+
+
+
+<div class="vql_item"></div>
+
+
+## parse_yaml
+<span class='vql_type pull-right'>Function</span>
+
+Parse yaml into an object.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+filename|Yaml Filename|string (required)
+accessor|File accessor|string
 
 
 
@@ -765,3 +822,68 @@ file||string (required)
 accessor|The accessor to use.|string
 query||string (required)
 args||Any
+
+
+
+<div class="vql_item"></div>
+
+
+## starl
+<span class='vql_type pull-right'>Function</span>
+
+Compile a starlark code block - returns a module usable in VQL
+
+Starl allows python like code to be used with VQL. This helps when
+we need some small functions with more complex needs. We can use a
+more powerful language to create small functions to transform
+certain fields etc.
+
+## Example
+
+In the following example we define a Starl code block and compile
+it into a module. VQL code can then reference any functions
+defined within it directly.
+
+```vql
+LET MyCode <= starl(code='''
+load("math.star", "math")
+
+def Foo(X):
+  return math.sin(X)
+
+''')
+
+SELECT MyCode.Foo(X=32)
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+code|The body of the starlark code.|string (required)
+key|If set use this key to cache the Starlark code block.|string
+globals|Dictionary of values to feed into Starlark environment|Any
+
+
+
+<div class="vql_item"></div>
+
+
+## xor
+<span class='vql_type pull-right'>Function</span>
+
+Apply xor to the string and key.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+string|String to apply Xor|string (required)
+key|Xor key.|string (required)
+

@@ -12,6 +12,27 @@ APIs. The following are only available when running on Windows.
 <div class="vql_item"></div>
 
 
+## amsi
+<span class='vql_type pull-right'>Function</span>
+
+AMSI is an interface on windows to scan a string for malware. This
+function submits the string to the AMSI system and receives a
+determination if it is malware.
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+string|A string to scan|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## appcompatcache
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -371,3 +392,4 @@ Arg | Description | Type
 ----|-------------|-----
 query|The WMI query to issue.|string (required)
 namespace|The WMI namespace to use (ROOT/CIMV2)|string
+

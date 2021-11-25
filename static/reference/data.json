@@ -1,8 +1,52 @@
 [
     {
+        "name": "add_client_monitoring",
+        "description": "Adds a new artifact to the client monitoring table.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The name of the artifact to add",
+                "required": true
+            },
+            {
+                "name": "parameters",
+                "type": "LazyExpr",
+                "description": "A dict of artifact parameters"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "description": "Add this artifact to this label group (default all)"
+            }
+        ],
+        "category": "server"
+    },
+    {
+        "name": "add_server_monitoring",
+        "description": "Adds a new artifact to the server monitoring table.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The name of the artifact to add",
+                "required": true
+            },
+            {
+                "name": "parameters",
+                "type": "LazyExpr",
+                "description": "A dict of artifact parameters"
+            }
+        ],
+        "category": "server"
+    },
+    {
         "name": "amsi",
         "description": "AMSI is an interface on windows to scan a string for malware. This\nfunction submits the string to the AMSI system and receives a\ndetermination if it is malware.\n",
         "type": "Function",
+        "category": "windows",
         "args": [
             {
                 "name": "string",
@@ -83,6 +127,7 @@
         "name": "atexit",
         "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
         "type": "Function",
+        "category": "basic",
         "args": [
             {
                 "name": "query",
@@ -197,6 +242,7 @@
         "name": "batch",
         "description": "Batches query rows into multiple arrays.",
         "type": "Plugin",
+        "category": "basic",
         "args": [
             {
                 "name": "batch_size",
@@ -284,6 +330,7 @@
     },
     {
         "name": "cidr_contains",
+        "category": "server",
         "description": "Calculates if an IP address falls within a range of CIDR specified\nnetworks.",
         "type": "Function",
         "args": [
@@ -516,6 +563,7 @@
     },
     {
         "name": "column_filter",
+        "category": "basic",
         "description": "Select columns from another query using regex.",
         "type": "Plugin",
         "args": [
@@ -541,12 +589,14 @@
     },
     {
         "name": "combine",
+        "category": "event",
         "description": "Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).",
         "type": "Plugin"
     },
     {
         "name": "commandline_split",
-        "description": "Split a commandline into separate components following the windows\nconvensions.",
+        "category": "client",
+        "description": "Split a commandline into separate components following the windows\nconventions.",
         "type": "Function",
         "args": [
             {
@@ -717,6 +767,7 @@
     {
         "name": "crypto_rc4",
         "description": "Apply rc4 to the string and key.",
+        "category": "client",
         "type": "Function",
         "args": [
             {
@@ -951,7 +1002,7 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The serparator that will be used to split the stdout into rows."
+                "description": "The separator that will be used to split the stdout into rows."
             },
             {
                 "name": "length",
@@ -977,6 +1028,7 @@
     },
     {
         "name": "favorites_delete",
+        "category": "server",
         "description": "Delete a favorite.",
         "type": "Function",
         "args": [
@@ -1249,6 +1301,7 @@
     },
     {
         "name": "gcs_pubsub_publish",
+        "category": "server",
         "description": "Publish a message to Google PubSub.",
         "type": "Function",
         "args": [
@@ -1280,6 +1333,7 @@
     },
     {
         "name": "generate",
+        "category": "basic",
         "description": "Create a named generator that receives rows from the query.",
         "type": "Function",
         "args": [
@@ -1297,11 +1351,17 @@
                 "name": "delay",
                 "type": "int64",
                 "description": "Wait before starting the query"
+            },
+            {
+                "name": "with_file_buffer",
+                "type": "bool",
+                "description": "Enable file buffering"
             }
         ]
     },
     {
         "name": "geoip",
+        "category": "server",
         "description": "Lookup an IP Address using the MaxMind GeoIP database. You can get\na copy of the database from https://www.maxmind.com/. The database\nmust be locally accessible so this probably only makes sense on\nthe server.\n",
         "type": "Function",
         "args": [
@@ -1760,6 +1820,7 @@
     },
     {
         "name": "import_collection",
+        "category": "server",
         "description": "Imports an offline collection zip file (experimental).",
         "type": "Function",
         "args": [
@@ -1929,7 +1990,7 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The separator"
+                "description": "The separator. Defaults to an empty string if not explicitly set"
             }
         ],
         "category": "basic"
@@ -2023,7 +2084,7 @@
     },
     {
         "name": "killkillkill",
-        "description": "Kills the client and forces a restart - this is very aggresive!",
+        "description": "Kills the client and forces a restart - this is very aggressive!",
         "type": "Function",
         "args": [
             {
@@ -2116,6 +2177,35 @@
         "category": "basic"
     },
     {
+        "name": "magic",
+        "category": "client",
+        "description": "Identify a file using magic rules.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "path",
+                "type": "string",
+                "description": "Path to open and hash.",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Magic type (can be empty or 'mime' or 'extension')"
+            },
+            {
+                "name": "magic",
+                "type": "string",
+                "description": "Additional magic to load"
+            }
+        ]
+    },
+    {
         "name": "mail",
         "description": "Send Email to a remote server.",
         "type": "Plugin",
@@ -2123,7 +2213,7 @@
             {
                 "name": "to",
                 "type": "string",
-                "description": "Receipient of the mail",
+                "description": "Recipient of the mail",
                 "repeated": true,
                 "required": true
             },
@@ -2185,7 +2275,7 @@
         "args": [
             {
                 "name": "item",
-                "type": "int64",
+                "type": "LazyExpr",
                 "required": true
             }
         ],
@@ -2223,7 +2313,7 @@
         "args": [
             {
                 "name": "item",
-                "type": "int64",
+                "type": "LazyExpr",
                 "required": true
             }
         ],
@@ -2343,12 +2433,12 @@
             {
                 "name": "notebook_id",
                 "type": "string",
-                "description": "The notebook to read from (shoud also include cell id)"
+                "description": "The notebook to read from (should also include cell id)"
             },
             {
                 "name": "notebook_cell_id",
                 "type": "string",
-                "description": "The notebook cell read from (shoud also include notebook id)"
+                "description": "The notebook cell read from (should also include notebook id)"
             },
             {
                 "name": "notebook_cell_table",
@@ -2479,12 +2569,12 @@
             {
                 "name": "notebook_id",
                 "type": "string",
-                "description": "The notebook to read from (shoud also include cell id)"
+                "description": "The notebook to read from (should also include cell id)"
             },
             {
                 "name": "notebook_cell_id",
                 "type": "string",
-                "description": "The notebook cell read from (shoud also include notebook id)"
+                "description": "The notebook cell read from (should also include notebook id)"
             },
             {
                 "name": "notebook_cell_table",
@@ -2531,7 +2621,7 @@
     },
     {
         "name": "parse_binary",
-        "description": "Parse a binary file into a datastructure using a profile.",
+        "description": "Parse a binary file into a data structure using a profile.",
         "type": "Function",
         "args": [
             {
@@ -2620,6 +2710,7 @@
     },
     {
         "name": "parse_ese_catalog",
+        "category": "parsers",
         "description": "Opens an ESE file and dump the schema.",
         "type": "Plugin",
         "args": [
@@ -2921,6 +3012,11 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "buffer_size",
+                "type": "int",
+                "description": "Maximum size of line buffer (default 64kb)."
             }
         ],
         "category": "parsers"
@@ -2987,6 +3083,7 @@
     },
     {
         "name": "parse_x509",
+        "category": "parsers",
         "description": "Parse a DER encoded x509 string into an object.",
         "type": "Function",
         "args": [
@@ -3019,6 +3116,7 @@
     },
     {
         "name": "parse_yaml",
+        "category": "parsers",
         "description": "Parse yaml into an object.",
         "type": "Function",
         "args": [
@@ -3037,7 +3135,7 @@
     },
     {
         "name": "partitions",
-        "description": "List all partititions",
+        "description": "List all partitions",
         "type": "Plugin",
         "args": [
             {
@@ -3292,6 +3390,7 @@
     },
     {
         "name": "query",
+        "category": "basic",
         "description": "Launch a subquery and materialize it into a list of rows.",
         "type": "Function",
         "args": [
@@ -3300,8 +3399,7 @@
                 "type": "vfilter.StoredQuery",
                 "required": true
             }
-        ],
-        "category": "basic"
+        ]
     },
     {
         "name": "query",
@@ -3336,6 +3434,7 @@
     },
     {
         "name": "range",
+        "category": "basic",
         "description": "Iterate over range.",
         "type": "Plugin",
         "args": [
@@ -3460,6 +3559,7 @@
     },
     {
         "name": "reg_rm_key",
+        "category": "client",
         "description": "Removes a key and all its values from the registry.",
         "type": "Function",
         "args": [
@@ -3473,6 +3573,7 @@
     },
     {
         "name": "reg_rm_value",
+        "category": "client",
         "description": "Removes a value in the registry.",
         "type": "Function",
         "args": [
@@ -3486,6 +3587,7 @@
     },
     {
         "name": "reg_set_value",
+        "category": "client",
         "description": "Set a value in the registry.",
         "type": "Function",
         "args": [
@@ -3542,6 +3644,7 @@
     },
     {
         "name": "regex_transform",
+        "category": "basic",
         "description": "Search and replace a string with multiple regex. Note you can use $1\nto replace the capture string.",
         "type": "Function",
         "args": [
@@ -3566,6 +3669,7 @@
     },
     {
         "name": "relpath",
+        "category": "basic",
         "description": "Return the relative path of .",
         "type": "Function",
         "args": [
@@ -3590,6 +3694,7 @@
     },
     {
         "name": "rm",
+        "category": "client",
         "description": "Remove a file from the filesystem using the API.",
         "type": "Function",
         "args": [
@@ -3600,6 +3705,49 @@
                 "required": true
             }
         ]
+    },
+    {
+        "name": "rm_client_monitoring",
+        "description": "Remove an artifact from the client monitoring table.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The name of the artifact to add",
+                "required": true
+            },
+            {
+                "name": "parameters",
+                "type": "LazyExpr",
+                "description": "A dict of artifact parameters"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "description": "Add this artifact to this label group (default all)"
+            }
+        ],
+        "category": "server"
+    },
+    {
+        "name": "rm_server_monitoring",
+        "description": "Remove an artifact from the server monitoring table.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The name of the artifact to add",
+                "required": true
+            },
+            {
+                "name": "parameters",
+                "type": "LazyExpr",
+                "description": "A dict of artifact parameters"
+            }
+        ],
+        "category": "server"
     },
     {
         "name": "rot13",
@@ -3647,6 +3795,7 @@
     },
     {
         "name": "send_event",
+        "category": "event",
         "description": "Sends an event to a server event monitoring queue.",
         "type": "Function",
         "args": [
@@ -3666,6 +3815,7 @@
     },
     {
         "name": "sequence",
+        "category": "experimental",
         "description": "Combines the output of many queries into an in memory fifo. After\neach row is received from any subquery runs the query specified in\nthe 'query' parameter to retrieve rows from the memory SEQUENCE\nobject.",
         "type": "Plugin",
         "args": [
@@ -3729,6 +3879,7 @@
     },
     {
         "name": "set",
+        "category": "basic",
         "description": "Sets the member field of the item. If item is omitted sets the scope.",
         "type": "Function",
         "args": [
@@ -3797,6 +3948,7 @@
     },
     {
         "name": "slice",
+        "category": "basic",
         "description": "Slice an array.",
         "type": "Function",
         "args": [
@@ -3863,12 +4015,12 @@
             {
                 "name": "notebook_id",
                 "type": "string",
-                "description": "The notebook to read from (shoud also include cell id)"
+                "description": "The notebook to read from (should also include cell id)"
             },
             {
                 "name": "notebook_cell_id",
                 "type": "string",
-                "description": "The notebook cell read from (shoud also include notebook id)"
+                "description": "The notebook cell read from (should also include notebook id)"
             },
             {
                 "name": "notebook_cell_table",
@@ -3902,7 +4054,7 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The serparator that will be used to split",
+                "description": "The separator that will be used to split",
                 "required": true
             }
         ],
@@ -4012,6 +4164,7 @@
     },
     {
         "name": "sql",
+        "category": "client",
         "description": "Run queries against sqlite, mysql, and postgres databases",
         "type": "Plugin",
         "args": [
@@ -4099,6 +4252,7 @@
     },
     {
         "name": "starl",
+        "category": "parsers",
         "description": "Compile a starlark code block - returns a module usable in VQL",
         "type": "Function",
         "args": [
@@ -4175,6 +4329,7 @@
     },
     {
         "name": "substr",
+        "category": "basic",
         "description": "Create a substring from a string",
         "type": "Function",
         "args": [
@@ -4198,6 +4353,7 @@
     },
     {
         "name": "sum",
+        "category": "basic",
         "description": "Sums the items.",
         "type": "Function",
         "args": [
@@ -4258,6 +4414,7 @@
     },
     {
         "name": "timeline",
+        "category": "server",
         "description": "Read a timeline. You can create a timeline with the timeline_add() function",
         "type": "Plugin",
         "args": [
@@ -4287,6 +4444,7 @@
     },
     {
         "name": "timeline_add",
+        "category": "server",
         "description": "Add a new query to a timeline.",
         "type": "Function",
         "args": [
@@ -4356,7 +4514,7 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "A format specifier as per Golangs time.Parse"
+                "description": "A format specifier as per Golang's time.Parse"
             }
         ],
         "category": "basic"
@@ -4389,6 +4547,7 @@
     },
     {
         "name": "unhex",
+        "category": "basic",
         "description": "Apply hex decoding to the string.",
         "type": "Function",
         "args": [
@@ -4401,6 +4560,7 @@
     },
     {
         "name": "unzip",
+        "category": "client",
         "description": "Unzips a file into a directory",
         "type": "Plugin",
         "args": [
@@ -4512,6 +4672,7 @@
     },
     {
         "name": "upload_directory",
+        "category": "server",
         "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
         "type": "Function",
         "args": [
@@ -4813,6 +4974,7 @@
     },
     {
         "name": "user_create",
+        "category": "server",
         "description": "Creates a new user from the server, or updates their permissions or reset their password.",
         "type": "Function",
         "args": [
@@ -4835,6 +4997,7 @@
     },
     {
         "name": "user_delete",
+        "category": "server",
         "description": "Deletes a user from the server.",
         "type": "Function",
         "args": [
@@ -5083,6 +5246,7 @@
     },
     {
         "name": "whoami",
+        "category": "client",
         "description": "Returns the username that is running the query.",
         "type": "Function"
     },
@@ -5171,6 +5335,7 @@
     },
     {
         "name": "xor",
+        "category": "parsers",
         "description": "Apply xor to the string and key.",
         "type": "Function",
         "args": [
