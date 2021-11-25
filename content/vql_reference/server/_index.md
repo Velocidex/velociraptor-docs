@@ -18,6 +18,45 @@ the GUI.
 <div class="vql_item"></div>
 
 
+## add_client_monitoring
+<span class='vql_type pull-right'>Function</span>
+
+Adds a new artifact to the client monitoring table.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+artifact|The name of the artifact to add|string (required)
+parameters|A dict of artifact parameters|LazyExpr
+label|Add this artifact to this label group (default all)|string
+
+
+
+<div class="vql_item"></div>
+
+
+## add_server_monitoring
+<span class='vql_type pull-right'>Function</span>
+
+Adds a new artifact to the server monitoring table.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+artifact|The name of the artifact to add|string (required)
+parameters|A dict of artifact parameters|LazyExpr
+
+
+
+<div class="vql_item"></div>
+
+
 ## artifact_definitions
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -80,7 +119,7 @@ prefix|Required name prefix|string
 
 Cancels the flow.
 
-This sends the client an immediate cancelation message and stops
+This sends the client an immediate cancellation message and stops
 the flow. It also removes any outstanding requests for the client
 if there are any.
 
@@ -93,6 +132,33 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+
+
+
+<div class="vql_item"></div>
+
+
+## cidr_contains
+<span class='vql_type pull-right'>Function</span>
+
+Calculates if an IP address falls within a range of CIDR specified
+networks.
+
+```vql
+SELECT cidr_contains(ip="192.168.0.132", ranges=[
+    "192.168.0.0/24", "127.0.0.1/8"])
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+ip|An IP address|string (required)
+ranges|A list of CIDR notation network ranges|list of string (required)
 
 
 
@@ -431,6 +497,25 @@ flow_id||string
 <div class="vql_item"></div>
 
 
+## favorites_delete
+<span class='vql_type pull-right'>Function</span>
+
+Delete a favorite.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+name|A name for this collection template.|string (required)
+type|The type of favorite.|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## favorites_save
 <span class='vql_type pull-right'>Function</span>
 
@@ -562,6 +647,50 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+
+
+
+<div class="vql_item"></div>
+
+
+## gcs_pubsub_publish
+<span class='vql_type pull-right'>Function</span>
+
+Publish a message to Google PubSub.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+topic|The topic to publish to|string (required)
+project_id|The project id to publish to|string (required)
+msg|Message to publish to Pubsub|Any (required)
+credentials|The credentials to use|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## geoip
+<span class='vql_type pull-right'>Function</span>
+
+Lookup an IP Address using the MaxMind GeoIP database. You can get
+a copy of the database from https://www.maxmind.com/. The database
+must be locally accessible so this probably only makes sense on
+the server.
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+ip|IP Address to lookup.|string (required)
+db|Path to the MaxMind GeoIP Database.|string (required)
 
 
 
@@ -783,6 +912,45 @@ Retrieve the list of hunts.
 Arg | Description | Type
 ----|-------------|-----
 hunt_id|A hunt id to read, if not specified we list all of them.|string
+
+
+
+<div class="vql_item"></div>
+
+
+## import_collection
+<span class='vql_type pull-right'>Function</span>
+
+Imports an offline collection zip file (experimental).
+
+Offline collectors are preconfigure Velociraptor binaries that
+collect specific artifacts into a zip file.
+
+This function allows such a collection to be imported into the GUI
+as if it was collected by the server. The collection will be
+loaded into a client's filestore directory.
+
+Since there is no actual client id associated with the offline
+collection (there is no Velociraptor client running on the
+endpoint) we generate a random client ID for a new client.
+
+If you specify an existing client id, the collection will be
+uploaded into that client.
+
+NOTE: Combine this function with the hunt_add() function to add a
+manual offline collection to an ongoing hunt.
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+client_id|The client id to import to. Use 'auto' to generate a new client id.|string (required)
+hostname|When creating a new client, set this as the hostname.|string
+filename|Path on server to the collector zip.|string (required)
+accessor|The accessor to use|string
 
 
 
@@ -1062,6 +1230,45 @@ y|The Y float|float64 (required)
 <div class="vql_item"></div>
 
 
+## rm_client_monitoring
+<span class='vql_type pull-right'>Function</span>
+
+Remove an artifact from the client monitoring table.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+artifact|The name of the artifact to add|string (required)
+parameters|A dict of artifact parameters|LazyExpr
+label|Add this artifact to this label group (default all)|string
+
+
+
+<div class="vql_item"></div>
+
+
+## rm_server_monitoring
+<span class='vql_type pull-right'>Function</span>
+
+Remove an artifact from the server monitoring table.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+artifact|The name of the artifact to add|string (required)
+parameters|A dict of artifact parameters|LazyExpr
+
+
+
+<div class="vql_item"></div>
+
+
 ## sample
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -1223,6 +1430,74 @@ wait_time|Batch splunk upload this long (2 sec).|int64
 <div class="vql_item"></div>
 
 
+## timeline
+<span class='vql_type pull-right'>Plugin</span>
+
+Read a timeline. You can create a timeline with the timeline_add() function
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+timeline|Name of the timeline to read|string (required)
+skip|List of child components to skip|list of string
+start|First timestamp to fetch|Any
+notebook_id|The notebook ID the timeline is stored in.|string
+
+
+
+<div class="vql_item"></div>
+
+
+## timeline_add
+<span class='vql_type pull-right'>Function</span>
+
+Add a new query to a timeline.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+timeline|Supertimeline to add to|string (required)
+name|Name of child timeline|string (required)
+query|Run this query to generate the timeline.|StoredQuery (required)
+key|The column representing the time.|string (required)
+notebook_id|The notebook ID the timeline is stored in.|string
+
+
+
+<div class="vql_item"></div>
+
+
+## upload_directory
+<span class='vql_type pull-right'>Function</span>
+
+Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+file|The file to upload|string (required)
+name|Filename to be stored within the output directory|string
+accessor|The accessor to use|string
+output|An output directory to store files in.|string (required)
+mtime|Modified time to set the output file.|Any
+atime|Access time to set the output file.|Any
+ctime|Change time to set the output file.|Any
+btime|Birth time to set the output file.|Any
+
+
+
+<div class="vql_item"></div>
+
+
 ## uploads
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -1236,3 +1511,41 @@ Arg | Description | Type
 ----|-------------|-----
 client_id|The client id to extract|string
 flow_id|A flow ID (client or server artifacts)|string
+
+
+
+<div class="vql_item"></div>
+
+
+## user_create
+<span class='vql_type pull-right'>Function</span>
+
+Creates a new user from the server, or updates their permissions or reset their password.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+user||string (required)
+roles||list of string (required)
+password||string
+
+
+
+<div class="vql_item"></div>
+
+
+## user_delete
+<span class='vql_type pull-right'>Function</span>
+
+Deletes a user from the server.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+user||string (required)

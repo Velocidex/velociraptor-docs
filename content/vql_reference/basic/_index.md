@@ -45,6 +45,36 @@ Will return a single row with Users being an array of names.
 <div class="vql_item"></div>
 
 
+## atexit
+<span class='vql_type pull-right'>Function</span>
+
+Install a query to run when the query is unwound. This is used to
+clean up when the query ends.
+
+For example:
+
+```vql
+LET _ <= atexit(query={
+  SELECT rm(filename="Foobar.txt") FROM scope()
+})
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+query|A VQL Query to parse and execute.|Any (required)
+env|A dict of args to insert into the scope.|ordereddict.Dict
+timeout|How long to wait for destructors to run (default 60 seconds).|uint64
+
+
+
+<div class="vql_item"></div>
+
+
 ## atoi
 <span class='vql_type pull-right'>Function</span>
 
@@ -119,6 +149,38 @@ sep|Separator to use (default /)|string
 <div class="vql_item"></div>
 
 
+## batch
+<span class='vql_type pull-right'>Plugin</span>
+
+Batches query rows into multiple arrays.
+
+This is useful for batching multiple rows from a query into
+another query (for example sending into an API endpoint). For
+example:
+
+```vql
+SELECT * FROM batch(query={
+  SELECT _value
+  FROM range(start=0, end=10, step=1)
+}, batch_size=3)
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+batch_size|Size of batch (defaults to 10).|int64
+batch_func|A VQL Lambda that determines when a batch is ready. Example 'x=>len(list=x) >= 10'.|string
+query|Run this query over the item.|StoredQuery (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## cache
 <span class='vql_type pull-right'>Function</span>
 
@@ -154,6 +216,45 @@ func|A function to evaluate|LazyExpr (required)
 name|The global name of this cache (needed when more than one)|string
 key|Cache key to use.|string (required)
 period|The latest age of the cache.|int64
+
+
+
+<div class="vql_item"></div>
+
+
+## column_filter
+<span class='vql_type pull-right'>Plugin</span>
+
+Select columns from another query using regex.
+
+Sometimes a query produces a large number of columns or
+unpredictable column names (eg. the `read_reg_key()` plugin
+produces a column per value name).
+
+You can use the column_filter() plugin to select a subset of the
+columns to include or exclude from an underlying query. For example:
+
+```vql
+SELECT * FROM column_filter(
+query={
+   SELECT 1 AS A, 2 AS B, 3 AS AB, 4 AS AA
+   FROM scope()
+}, include="A", exclude="B")
+```
+
+will include columns with the letter A in their name and remove
+columns with the letter B (so it will have A and AA above).
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+query|This query will be run to produce the columns.|StoredQuery (required)
+exclude|One of more regular expressions that will exclude columns.|list of string
+include|One of more regular expressions that will include columns.|list of string
 
 
 
@@ -433,6 +534,51 @@ args|An array of elements to apply into the format string.|Any
 <div class="vql_item"></div>
 
 
+## generate
+<span class='vql_type pull-right'>Function</span>
+
+Create a named generator that receives rows from the query.
+
+This plugin allow multiple queries to efficiently filter rows from
+the same query. For example:
+
+```vql
+LET SystemLog = generate(query={
+   SELECT * FROM parse_evtx(filename='''C:\Windows\system32\winevt\logs\System.evtx''')
+})
+
+SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+   Type, EventData
+FROM combine(
+a={
+  SELECT *, "Kernel Driver Install" AS Type
+  FROM SystemLog
+  WHERE System.EventID.Value = 7045 AND EventData.ServiceType =~ "kernel"
+}, b={
+  SELECT *, "Log File Cleared" AS Type,
+            UserData.LogFileCleared AS EventData
+  FROM SystemLog
+  WHERE System.EventID.Value = 104
+})
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+name|Name to call the generator|string
+query|Run this query to generator rows.|StoredQuery
+delay|Wait before starting the query|int64
+with_file_buffer|Enable file buffering|bool
+
+
+
+<div class="vql_item"></div>
+
+
 ## get
 <span class='vql_type pull-right'>Function</span>
 
@@ -593,7 +739,7 @@ Joins the array into a string separated by the sep character.
 Arg | Description | Type
 ----|-------------|-----
 array|The array to join|list of string (required)
-sep|The separator|string
+sep|The separator. Defaults to an empty string if not explicitly set|string
 
 
 
@@ -695,7 +841,7 @@ SELECT Name, max(items=Pid) as LargestPid from pslist() Where Name =~ 'bash' gro
 
 Arg | Description | Type
 ----|-------------|-----
-item||int64 (required)
+item||LazyExpr (required)
 
 
 
@@ -745,7 +891,7 @@ SELECT Name, min(items=Pid) as SmallestPid from pslist() Where Name =~ 'bash' gr
 
 Arg | Description | Type
 ----|-------------|-----
-item||int64 (required)
+item||LazyExpr (required)
 
 
 
@@ -843,6 +989,26 @@ range|Selects a random number up to this range.|int64
 <div class="vql_item"></div>
 
 
+## range
+<span class='vql_type pull-right'>Plugin</span>
+
+Iterate over range.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+start|Start index (0 based)|int64 (required)
+end|End index (0 based)|int64 (required)
+step|End index (0 based)|int64 (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## read_file
 <span class='vql_type pull-right'>Function</span>
 
@@ -858,6 +1024,55 @@ length|Max length of the file to read.|int
 offset|Where to read from the file.|int64
 filename|One or more files to open.|string (required)
 accessor|An accessor to use.|string
+
+
+
+<div class="vql_item"></div>
+
+
+## regex_transform
+<span class='vql_type pull-right'>Function</span>
+
+Search and replace a string with multiple regex. Note you can use $1
+to replace the capture string.
+
+```vql
+SELECT regex_transform(source="Hello world", map=dict(
+   `^Hello`="Goodbye",
+   `world`="Space"), key="A")
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+source|The source string to replace.|string (required)
+map|A dict with keys reg, values substitutions.|ordereddict.Dict (required)
+key|A key for caching|string
+
+
+
+<div class="vql_item"></div>
+
+
+## relpath
+<span class='vql_type pull-right'>Function</span>
+
+Return the relative path of .
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+path|Extract directory name of path|string (required)
+base|The base of the path|string (required)
+sep|Separator to use (default native)|string
 
 
 
@@ -893,6 +1108,26 @@ format|Encoding format (csv,json)|string
 <div class="vql_item"></div>
 
 
+## set
+<span class='vql_type pull-right'>Function</span>
+
+Sets the member field of the item. If item is omitted sets the scope.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+item||Any (required)
+field||string (required)
+value||Any (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## sleep
 <span class='vql_type pull-right'>Function</span>
 
@@ -906,6 +1141,26 @@ Arg | Description | Type
 ----|-------------|-----
 time|The number of seconds to sleep|int64
 ms|The number of ms to sleep|int64
+
+
+
+<div class="vql_item"></div>
+
+
+## slice
+<span class='vql_type pull-right'>Function</span>
+
+Slice an array.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+list|A list of items to slice|Any (required)
+start|Start index (0 based)|uint64 (required)
+end|End index (0 based)|uint64 (required)
 
 
 
@@ -962,6 +1217,44 @@ Arg | Description | Type
 ----|-------------|-----
 string|The string to strip|string (required)
 prefix|The prefix to strip|string
+
+
+
+<div class="vql_item"></div>
+
+
+## substr
+<span class='vql_type pull-right'>Function</span>
+
+Create a substring from a string
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+str|The string to shorten|string (required)
+start|Beginning index of substring|int
+end|End index of substring|int
+
+
+
+<div class="vql_item"></div>
+
+
+## sum
+<span class='vql_type pull-right'>Function</span>
+
+Sums the items.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+item||int64 (required)
 
 
 
@@ -1108,6 +1401,37 @@ FROM pslist()
 Arg | Description | Type
 ----|-------------|-----
 item||Any
+
+
+
+<div class="vql_item"></div>
+
+
+## unhex
+<span class='vql_type pull-right'>Function</span>
+
+Apply hex decoding to the string.
+
+A hex encoded string consists of two hex digits per byte -
+therefore valid hex encoded strings have an even length.
+
+For example: "01230F0a"
+
+Note: If you need to encode a string as hex encoded string you can
+use the format function:
+
+```vql
+format(format="%02x", args="Hello") -> "48656c6c6f"
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+string|Hex string to decode|string
 
 
 
@@ -1301,3 +1625,4 @@ Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
+
