@@ -31,7 +31,7 @@ sources:
         LET ExecZlite <= SELECT * FROM execve(argv=[
                         Zlite.FullPath[0], 
                         "--evtx", EVTXPath, 
-                        Ruleset,
+                        Ruleset, "--noexternal",
                         "--outfile", TmpResults])
         LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
         SELECT * FROM foreach(row=Data, query={
