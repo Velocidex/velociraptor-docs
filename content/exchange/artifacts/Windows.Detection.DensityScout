@@ -1,0 +1,34 @@
+name: Windows.Detection.DensityScout
+description: |
+  Finding malware on a potentially infected system by calculating the density of each file under the C disk by default
+
+author: Raul Ramirez Gomez -- @rauramgom
+tools:
+  - name: densityscout
+    url: https://cert.at/en/downloads/software/software-densityscout
+    serve_locally: true
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+required_permissions:
+  - EXECVE
+
+parameters:
+  - name: Arguments
+    description: |
+      A space separated list of args to run with.
+    default: 'C: -r -s exe,dll,sys,scr,ocx,cpl,pdf'
+  - name: ToolInfo
+    description: Override Tool information.
+
+sources:
+  - query: |
+      LET hostname <= SELECT Hostname From info()
+      // Get the path to the binary.
+      LET bin <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+              ToolName= "densityscout",
+              ToolInfo=ToolInfo)  
+      // Call the binary and return all its output inside the container.
+      SELECT upload(file=Stdout, accessor="data", name='Density_Cdisk_' + hostname.Hostname[0] + '.csv') AS Upload FROM execve(argv= bin[0].FullPath +
+           split(string=Arguments, sep=" "),
+           length=10000000)
