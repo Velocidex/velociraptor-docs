@@ -1,0 +1,37 @@
+name: Windows.Detection.DensityScout
+description: |
+  Finding malware on a potentially infected system by calculating the density of each file.
+  By default, it select PE (Portable Executable) files by checking them against the magic number ("MZ") 
+  of portable executables. This approach also matches portable executables with extensions one wouldn't expect.
+  Density under 0.1 is a fairly good threshold to start to think for suspicious files
+
+author: Raul Ramirez Gomez -- @rauramgom
+tools:
+  - name: densityscout
+    url: https://cert.at/media/files/downloads/software/densityscout/files/densityscout_build_45_windows.zip
+    serve_locally: true
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+required_permissions:
+  - EXECVE
+
+parameters:
+  - name: TargetDrive
+    description: |
+      Target drive from where to run the tool
+    default: 'C:'
+  - name: ToolInfo
+    description: Override Tool information.
+
+sources:
+  - query: |
+      LET hostname <= SELECT Hostname From info()
+      // Get the path to the binary.
+      LET bin <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+              ToolName= "densityscout",
+              ToolInfo=ToolInfo)  
+      // Call the binary and return all its output inside the container.
+      SELECT upload(file=Stdout, accessor="data", name='Density_' + TargetDrive + 'disk_' + hostname.Hostname[0] + '.csv') AS Upload FROM execve(argv=[bin[0].FullPath,
+           TargetDrive, '-r', '-pe'],
+           length=10000000)
