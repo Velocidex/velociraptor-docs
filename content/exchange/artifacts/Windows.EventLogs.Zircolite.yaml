@@ -8,7 +8,7 @@ description: |
         
     This artifact currently supports usage of the built-in rulesets. Support for custom ruleset usage will be added in the future. 
         
-    NOTE: This artifact may take several minutes to run, depending on the size of EVTZ files being analyzed.
+    NOTE: This artifact may take several minutes to run, depending on the size of EVTX files being analyzed.
 author: Wes Lambert -- @therealwlambert
 tools:
   - name: Zircolite
