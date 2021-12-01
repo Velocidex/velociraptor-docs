@@ -1,4 +1,4 @@
-name: Windows.Carving.Emotet
+name: Custom.Windows.Carving.Emotet
 author: "Eduardo Mattos - @eduardfir"
 description: |
     This artifact yara-scans memory or unpacked DLL samples for the new 2021 Emotet
@@ -32,10 +32,12 @@ parameters:
         rule Emotet {
             meta:
                 author = "Eduardo Mattos"
-                description = "Emotet Payload"
+                description = "Emotet Payload - Based on kevoreilly's Emotet Payload Yara rule"
+                reference = " ttps://github.com/kevoreilly/CAPEv2/blob/master/modules/processing/parsers/mwcp/Emotet.py"
             strings:
                 $snippetD = {8D 44 [2] 50 68 [4] FF 74 [2] FF 74 [2] 8B 54 [2] 8B 4C [2] E8 [4] 8B 54 [2] 83 C4 10 89 44 [2] 8B F8 03 44 [2] B9 [4] 89 44 [2] E9 [2] FF FF}
-                $snippetE = {68 [4] FF 74 [2] 8B 4C [2] E8 [4] 8B 54 [2] 83 C4 10 89 44 [2] 8B F8 03 44 [2] B9 [4] 89 44 [2] E9 [2] FF FF}
+                $snippetE = {FF 74 [2] 8D 54 [2] FF 74 [2] 68 [4] FF 74 [2] 8B 4C [2] E8 [4] 8B 54 [2] 83 C4 10 89 44 [2] 8B F8 03 44 [2] B9 [4] 89 44 [2] E9 [2] FF FF}
+                $snippetF = {FF 74 [2] 8D 44 [2] BA [4] FF 74 [2] 8B 4C [2] 50 E8 [4] 8B 54 [2] 8B D8 8B 84 [5] 83 C4 0C 03 C3 89 5C [2] 8B FB 89 44}
             condition:
                 any of them
         }
@@ -115,7 +117,7 @@ sources:
                            
         -- read the data from .data sections
         LET sectionData <= SELECT *,
-                                read_file(filename=PEData, accessor="data", offset=DataSections.RVA, length=DataSections.Size) AS EmotetDataSectionData
+                                read_file(filename=PEData, accessor="data", offset=DataSections.FileOffset, length=DataSections.Size) AS EmotetDataSectionData
                            FROM sectionInfo
 
         -- parse the .data sections to extract the C2 config
@@ -142,4 +144,5 @@ sources:
                 SELECT YaraRule, Pid, ProcessName, CommandLine,
                     { SELECT ip(netaddr4_be=int(int="0x" + IPAdd)) AS IPAddress, int(int="0x" + Port) AS PortNum FROM parse_records_with_regex(file=format(format="%x", args=xor(string=EmotetEncodedC2Conf.C2List, key=EmotetEncodedC2Conf.Key)), accessor="data", regex='(?P<IPAdd>........)(?P<Port>....)....')} AS C2Info
                 FROM parsedDataSection
+                GROUP BY Pid
         })
