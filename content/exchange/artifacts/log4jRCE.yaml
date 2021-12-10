@@ -1,32 +1,19 @@
 name: Generic.Detection.log4jRCE
 author: Matt Green - @mgreen27
 description: |
-  Detection for detction of exploitation attempts against log4j RCE 
-  vulnerability CVE-2021-44228
+  Detection for exploitation attempts against log4j RCE 
+  vulnerability CVE-2021-44228.
   
-  This artifact returns a list of target files then runs Yara over the target 
-  list.  
+  By default this artifact will search for linux path glob: /var/logs/**
+  
+  For Windows hosts please change the target path.  
+  Some examples of path glob may include:  
 
-  There are 3 kinds of Yara rules that can be deployed:  
-
-  1. Url link to a yara rule.  
-  2. Shorthand yara in the format `wide nocase ascii:string1,string2,string3`.  
-  3. or a Standard Yara rule attached as a parameter.  
-
-  Only one method of Yara will be applied and search order is as above.
-
-  The artifact leverages Glob for search so relevant filters can be applied
-  including Glob, Size and date. Date filters will target files with a timestamp 
-  before LatestTime and after EarliestTime. The artifact also has an option to 
-  upload any files with Yara hits.
-
-  Some examples of path glob may include:
-
-  * Specific binary: `/usr/bin/ls`
-  * Wildcards: `/var/www/*.js`
-  * More wildcards: `/var/www/**/*.js`
-  * Multiple extentions: `/var/www/*\.{php,aspx,js,html}`
-  * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
+  * Specific binary: `/usr/bin/ls` 
+  * Wildcards: `/var/www/*.js` 
+  * More wildcards: `/var/www/**/*.js`  
+  * Multiple extentions: `/var/www/*\.{php,aspx,js,html}`  
+  * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`  
   
   NOTE: this artifact runs the glob plugin with the nosymlink switch turned on. 
   This will NOT follow any symlinks and may cause unexpected results if 
