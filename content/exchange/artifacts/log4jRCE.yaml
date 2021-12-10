@@ -18,8 +18,10 @@ description: |
   NOTE: this artifact runs the glob plugin with the nosymlink switch turned on. 
   This will NOT follow any symlinks and may cause unexpected results if 
   unknowingly targeting a folder with symlinks.
-  
 
+reference:
+  - https://gist.github.com/Neo23x0/e4c8b03ff8cdf1fa63b7d15db6e3860b
+  
 type: CLIENT
 parameters:
   - name: PathGlob
