@@ -63,7 +63,7 @@ parameters:
            condition:
               1 of them
         }
-        
+
         rule EXPL_Log4j_CVE_2021_44228_Dec21_Hard {
            meta:
               description = "Detects indicators in server logs that indicate the exploitation of CVE-2021-44228"
@@ -77,7 +77,7 @@ parameters:
            condition:
               $x1 and not 1 of ($fp*)
         }
-        
+
         rule SUSP_Base64_Encoded_Exploit_Indicators_Dec21 {
            meta:
               description = "Detects base64 encoded strings found in payloads of exploits against log4j CVE-2021-44228"
