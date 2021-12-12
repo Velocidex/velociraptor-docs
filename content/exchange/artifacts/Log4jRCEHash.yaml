@@ -1,0 +1,92 @@
+name: Generic.Detection.Log4jRCEHash
+author: "Matt Green - @mgreen27"
+description: |
+    This artifact enables MD5 hash search for log4j versions vulnerable to 
+    CVE-2021-44228.
+    
+    The artifact:  
+    
+    * firstly searches for jar files
+    * then searches for filename
+    * then searches for md5 hash 
+    
+    To Add additional files, please add to the Ioc list below.
+    
+
+    Some examples of path glob may include:
+    
+    * Specific binary: `/usr/bin/ls`
+    * Wildcards: `/var/www/*.jar`
+    * More wildcards: `/var/www/**/*.jar`
+    * Windows: `C:/**/*.jar`
+  
+    NOTE: this artifact runs the glob plugin with the nosymlink switch turned on. 
+    This will NOT follow any symlinks and may cause unexpected results if 
+    unknowingly targeting a folder with symlinks.
+    
+reference:
+  - https://github.com/mubix/CVE-2021-44228-Log4Shell-Hashes
+  
+parameters:
+  - name: TargetGlob
+    default: "**/*.jar"
+  - name: IocLookupTable
+    type: csv
+    default: |
+        MD5,FileName
+        2addabe2ceca2145955c02a6182f7fc5,log4j-core-2.0-alpha2.jar
+        5b1d4e4eea828a724c8b0237326829b3,log4j-core-2.0-beta1.jar
+        ce9e9a27c2a5caa47754999eb9c549b8,log4j-core-2.0-beta2.jar
+        1538d8c342e3e2a31cd16e01e3865276,log4j-core-2.0-beta3.jar
+        9cb138881a317a7f49c74c3e462f35f4,log4j-core-2.0-beta4.jar
+        578ffc5bcccb29f6be2d23176c0425e0,log4j-core-2.0-beta5.jar
+        5b73a0ad257c57e7441778edee4620a7,log4j-core-2.0-beta6.jar
+        e32489039dab38637557882cca0653d7,log4j-core-2.0-beta7.jar
+        db025370dbe801ac623382edb2336ede,log4j-core-2.0-beta8.jar
+        152ecb3ce094ac5bc9ea39d6122e2814,log4j-core-2.0-beta9.jar
+        cd70a1888ecdd311c1990e784867ce1e,log4j-core-2.0.jar
+        088df113ad249ab72bf19b7f00b863d5,log4j-core-2.0-rc1.jar
+        de8d01cc15fd0c74fea8bbb668e289f5,log4j-core-2.0-rc2.jar
+        fbfa5f33ab4b29a6fdd52473ee7b834d,log4j-core-2.0.1.jar
+        8c0cf3eb047154a4f8e16daf5a209319,log4j-core-2.0.2.jar
+        8d331544b2e7b20ad166debca2550d73,log4j-core-2.1.jar
+        5e4bca5ed20b94ab19bb65836da93f96,log4j-core-2.2.jar
+        110ab3e3e4f3780921e8ee5dde3373ad,log4j-core-2.3.jar
+        0079c907230659968f0fc0e41a6abcf9,log4j-core-2.4.jar
+        f0c43adaca2afc71c6cc80f851b38818,log4j-core-2.4.1.jar
+        dd0e3e0b404083ec69618aabb50b8ac0,log4j-core-2.5.jar
+        5523f144faef2bfca08a3ca8b2becd6a,log4j-core-2.6.jar
+        48f7f3cda53030a87e8c387d8d1e4265,log4j-core-2.6.1.jar
+        472c8e1fbaa0e61520e025c255b5d168,log4j-core-2.6.2.jar
+        2b63e0e5063fdaccf669a1e26384f3fd,log4j-core-2.7.jar
+        c6d233bc8e9cfe5da690059d27d9f88f,log4j-core-2.8.jar
+        547bb3ed2deb856d0e3bbd77c27b9625,log4j-core-2.8.1.jar
+        4a5177a172764bda6f4472b94ba17ccb,log4j-core-2.8.2.jar
+        a27e67868b69b7223576d6e8511659dd,log4j-core-2.9.0.jar
+        a3a6bc23ffc5615efcb637e9fd8be7ec,log4j-core-2.9.1.jar
+        0042e7de635dc1c6c0c5a1ebd2c1c416,log4j-core-2.10.0.jar
+        90c12763ac2a49966dbb9a6d98be361d,log4j-core-2.11.0.jar
+        71d3394226547d81d1bf6373a5b0e53a,log4j-core-2.11.1.jar
+        8da9b75725fb3357cb9872adf7711f9f,log4j-core-2.11.2.jar
+        7943c49b634b404144557181f550a59c,log4j-core-2.12.0.jar
+        df949e7d73479ab717e5770814de0ae9,log4j-core-2.12.1.jar
+        2803991d51c98421be35d2db4ed3c2ac,log4j-core-2.13.0.jar
+        5ff1dab00c278ab8c7d46aadc60b4074,log4j-core-2.13.1.jar
+        b8e0d2779abbf38586b869f8b8e2eb46,log4j-core-2.13.2.jar
+        46e660d79456e6f751c22b94976f6ad5,log4j-core-2.13.3.jar
+        62ad26fbfb783183663ba5bfdbfb5ace,log4j-core-2.14.0.jar
+        3570d00d9ceb3ca645d6927f15c03a62,log4j-core-2.14.1.jar
+        f5e2d2a9543ee3c4339b6f90b6cb01fc,log4j-core-2.0-alpha1.jar
+
+sources:
+  - query: |
+      SELECT
+        FullPath,
+        Name as FileName,
+        Size,
+        "CVE-2021-44228 hash found" as Description,
+        hash(path=FullPath) as Hash,
+        Mtime,Atime,Ctime,Btime
+      FROM glob(globs=TargetGlob,nosymlink=True)
+      WHERE FileName in IocLookupTable.FileName
+        AND lowcase(string=Hash.MD5) in IocLookupTable.MD5
