@@ -1,4 +1,4 @@
-name: Custom.Generic.Detection.Log4jRCEHash
+name: Generic.Detection.Log4jRCEHash
 author: "Matt Green - @mgreen27"
 description: |
     This artifact enables MD5 hash search for log4j versions vulnerable to 
