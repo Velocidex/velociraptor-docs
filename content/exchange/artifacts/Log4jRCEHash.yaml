@@ -8,14 +8,14 @@ description: |
     
     * firstly searches for jar files
     * then searches for filename
-    * then searches for md5 hash 
+    * reports hit details.
     
     To Add additional files, please add to the Ioc list below.
     
 
     Some examples of path glob may include:
     
-    * Specific binary: `/usr/bin/ls`
+    * Specific binary: `/path/here/log4j-core-2.0-alpha2.jar`
     * Wildcards: `/var/www/*.jar`
     * More wildcards: `/var/www/**/*.jar`
     * Windows: `C:/**/*.jar`
@@ -80,13 +80,21 @@ parameters:
 
 sources:
   - query: |
-      SELECT
-        FullPath,
-        Name as FileName,
-        Size,
-        "CVE-2021-44228 hash found" as Description,
-        hash(path=FullPath) as Hash,
-        Mtime,Atime,Ctime,Btime
-      FROM glob(globs=TargetGlob,nosymlink=True)
-      WHERE FileName in IocLookupTable.FileName
-        AND lowcase(string=Hash.MD5) in IocLookupTable.MD5
+      -- this section searches by filename and hashes hits
+      LET hits = SELECT
+            FullPath,
+            Name as FileName,
+            Size,
+            hash(path=FullPath) as Hash,
+            Mtime,Atime,Ctime,Btime
+          FROM glob(globs=TargetGlob,nosymlink=True)
+          WHERE FileName in IocLookupTable.FileName
+      
+      -- output rows and add description of hit
+      SELECT 
+        FullPath, FileName, Size,
+        if(condition= lowcase(string=Hash.MD5) in IocLookupTable.MD5,
+            then= "CVE-2021-44228 hash found",
+            else= "CVE-2021-44228 filename found") as Description,
+        Hash, Mtime, Atime, Ctime, Btime
+      FROM hits
