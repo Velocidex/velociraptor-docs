@@ -1,0 +1,56 @@
+name: Generic.Detection.Log4jRCE_JndiLookup
+author: Matt Green - @mgreen27
+description: |
+  This artifact uses yara to hunt for Log4j RCE (CVE-2021-44228) vulnerable 
+  JndiLookup.class.
+    
+    The artifact:  
+    
+    * firstly searches for jar files using glob  
+    * then appplies yara for the strings: wide nocase ascii:JndiLookup.class  
+    
+  NOTE: this artifact runs the glob plugin with the nosymlink switch turned on. 
+  This will NOT follow any symlinks and may cause unexpected results if 
+  unknowingly targeting a folder with symlinks.
+  
+
+parameters:
+  - name: PathGlob
+    description: Only file names that match this glob will be scanned.
+    default: "**/*.jar"
+  - name: UploadHits
+    type: bool
+  - name: ShortHandYara
+    description: Second option Yara choice is a Velociraptor shorthand Yara rule
+    default: wide nocase ascii:JndiLookup.class
+
+
+sources:
+  - query: |
+      -- first find all matching glob
+      LET files = SELECT FullPath, Name, Size, Mtime, Atime, Ctime, Btime
+        FROM glob(globs=PathGlob,nosymlink='True')
+        WHERE NOT IsDir AND NOT IsLink
+          
+      -- scan files and only report a single hit.
+      LET hits = SELECT * FROM foreach(row=files,
+            query={
+                SELECT
+                    FileName as FullPath,
+                    File.Size AS Size,
+                    str(str=String.Data) AS HitContext,
+                    String.Offset AS HitOffset,
+                    Mtime, Atime, Ctime, Btime
+                FROM yara(rules=ShortHandYara,files=FullPath)
+                LIMIT 1
+            })
+
+      -- upload files that have hit
+      LET upload_hits=SELECT *,
+            upload(file=FullPath) AS Upload
+        FROM hits
+
+      -- return rows
+      SELECT * FROM if(condition=UploadHits,
+        then=upload_hits,
+        else=hits)
