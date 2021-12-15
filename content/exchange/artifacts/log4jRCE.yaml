@@ -60,7 +60,7 @@ parameters:
            condition:
               1 of them
         }
-        
+
         rule EXPL_JNDI_Exploit_Patterns_Dec21_1 {
            meta:
               description = "Detects JNDI Exploit Kit patterns in files"
@@ -89,12 +89,12 @@ parameters:
               $x18 = "/TomcatBypass/SpringMemshell"
               $x19 = "/GroovyBypass/Command/"
               $x20 = "/WebsphereBypass/Upload/"
-        
+
               $fp1 = "<html"
            condition:
               1 of ($x*) and not 1 of ($fp*)
         }
-        
+
         rule EXPL_Log4j_CVE_2021_44228_JAVA_Exception_Dec21_1 {
            meta:
               description = "Detects exceptions found in server logs that indicate an exploitation attempt of CVE-2021-44228"
@@ -104,13 +104,13 @@ parameters:
               score = 60
            strings:
               $xa1 = "header with value of BadAttributeValueException: "
-              
+
               $sa1 = ".log4j.core.net.JndiManager.lookup(JndiManager"
               $sa2 = "Error looking up JNDI resource"
            condition:
               $xa1 or all of ($sa*)
         }
-        
+
         rule EXPL_Log4j_CVE_2021_44228_Dec21_Soft {
            meta:
               description = "Detects indicators in server logs that indicate an exploitation attempt of CVE-2021-44228"
@@ -129,12 +129,12 @@ parameters:
               $x07 = "${jndi:nis:/"
               $x08 = "${jndi:nds:/"
               $x09 = "${jndi:corba:/"
-        
+
               $fp1 = "<html"
            condition:
               1 of ($x*) and not 1 of ($fp*)
         }
-        
+
         rule EXPL_Log4j_CVE_2021_44228_Dec21_OBFUSC {
            meta:
               description = "Detects obfuscated indicators in server logs that indicate an exploitation attempt of CVE-2021-44228"
@@ -152,12 +152,12 @@ parameters:
               $x6 = "${${env:BARFOO:-j}"
               $x7 = "${::-l}${::-d}${::-a}${::-p}"
               $x8 = "${base64:JHtqbmRp"
-        
+
               $fp1 = "<html"
            condition:
               1 of ($x*) and not 1 of ($fp*)
         }
-        
+
         rule EXPL_Log4j_CVE_2021_44228_Dec21_Hard {
            meta:
               description = "Detects indicators in server logs that indicate the exploitation of CVE-2021-44228"
@@ -173,7 +173,7 @@ parameters:
            condition:
               1 of ($x*) and not 1 of ($fp*)
         }
-        
+
         rule SUSP_Base64_Encoded_Exploit_Indicators_Dec21 {
            meta:
               description = "Detects base64 encoded strings found in payloads of exploits against log4j CVE-2021-44228"
@@ -191,13 +191,13 @@ parameters:
               $sb1 = "fHdnZXQgLXEgLU8tI"
               $sb2 = "x3Z2V0IC1xIC1PLS"
               $sb3 = "8d2dldCAtcSAtTy0g"
-        
+
               $fp1 = "<html"
            condition:
               1 of ($sa*) and 1 of ($sb*)
               and not 1 of ($fp*)
         }
-        
+
         rule SUSP_JDNIExploit_Indicators_Dec21 {
            meta:
               description = "Detects indicators of JDNI usage in log files and other payloads"
@@ -211,7 +211,7 @@ parameters:
            condition:
               filesize < 100MB and $xr1
         }
-        
+
         rule SUSP_EXPL_OBFUSC_Dec21_1{
            meta:
               description = "Detects obfuscation methods used to evade detection in log4j exploitation attempt of CVE-2021-44228"
@@ -231,12 +231,12 @@ parameters:
               $x6 = "$%7Blower:"
               $x7 = "$%7Bupper:"
               $x8 = "%24%7Bjndi:"
-        
+
               $fp1 = "<html"
            condition:
               1 of ($x*) and not 1 of ($fp*)
         }
-        
+
         rule SUSP_JDNIExploit_Error_Indicators_Dec21_1 {
            meta:
               description = "Detects error messages related to JDNI usage in log files that can indicate a Log4Shell / Log4j exploitation"
