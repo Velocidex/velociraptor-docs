@@ -293,15 +293,13 @@ sources:
       LET hits = SELECT * FROM foreach(row=files,
             query={
                 SELECT
-                    FileName as FullPath,
+                    url(parse=FileName).Path as FullPath,
                     Size,
                     Mtime, Atime, Ctime, Btime,
                     Rule, Tags, Meta,
                     str(str=String.Data) AS HitContext,
                     String.Offset AS HitOffset
-                FROM switch(
-                    a={ SELECT * FROM yara(rules=yara.Content[0],files=FullPath, accessor='gzip') },
-                    b={ SELECT * FROM yara(rules=yara.Content[0],files=FullPath) })
+                FROM yara(rules=yara.Content[0],files=url(path=FullPath, scheme="file"), accessor='gzip')
                 LIMIT 1
             })
       
