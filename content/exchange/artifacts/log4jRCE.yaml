@@ -299,7 +299,9 @@ sources:
                     Rule, Tags, Meta,
                     str(str=String.Data) AS HitContext,
                     String.Offset AS HitOffset
-                FROM yara(rules=yara.Content[0],files=FullPath,accessor='gzip')
+                FROM switch(
+                    a={ SELECT * FROM yara(rules=yara.Content[0],files=FullPath, accessor='gzip') },
+                    b={ SELECT * FROM yara(rules=yara.Content[0],files=FullPath) })
                 LIMIT 1
             })
       
