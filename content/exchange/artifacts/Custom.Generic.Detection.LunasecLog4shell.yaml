@@ -35,13 +35,31 @@ parameters:
 sources:
   - query: |
       LET os_info <= SELECT Architecture, OS FROM info()
+      
       // Get the path to the binary.
       LET bin <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
               ToolName= "log4shell_" + os_info[0].OS + "_" + os_info[0].Architecture,
               ToolInfo=ToolInfo)
       
       // Select the Disks to scan
-      LET disks = if(condition=(os_info[0].OS="windows"), then= { SELECT Mountpoint + "\\\\" as Mountpoint FROM filesystems()}, else={ SELECT "/" as Mountpoint FROM scope() })
+      LET disks = if(condition=(os_info[0].OS="windows"), 
+            then= { 
+                SELECT Mountpoint + "\\\\" as Mountpoint 
+                FROM filesystems()
+            }, 
+            else={ 
+                SELECT "/" as Mountpoint 
+                FROM scope() 
+            })
+            
       // Scan every disk
-      LET results = SELECT * FROM foreach(row=disks, query={ SELECT parse_json(data=Stdout) AS record FROM execve(argv=[bin[0].FullPath,"scan","--json",Mountpoint], sep="\n") })
-      SELECT * FROM foreach(row= results, query={ SELECT * FROM record })
+      LET results = SELECT * FROM foreach(row=disks, 
+            query={ 
+                SELECT parse_json(data=Stdout) AS record 
+                FROM execve(argv=[bin[0].FullPath,"scan","--json",Mountpoint], sep="\n") 
+                WHERE Stdout 
+            })
+      
+      // output rows
+      SELECT * FROM foreach(row= results, 
+        query={ SELECT * FROM record })
