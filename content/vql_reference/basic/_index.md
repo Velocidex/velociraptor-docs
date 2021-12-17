@@ -794,6 +794,7 @@ Log the message.
 Arg | Description | Type
 ----|-------------|-----
 message|Message to log.|string (required)
+dedup|Suppress same message in this many seconds (default 60 sec).|int64
 
 
 
@@ -1179,7 +1180,8 @@ Splits a string into an array based on a regexp separator.
 Arg | Description | Type
 ----|-------------|-----
 string|The value to split|string (required)
-sep|The separator that will be used to split|string (required)
+sep|The separator that will be used to split|string
+sep_string|The separator as string that will be used to split|string
 
 
 
@@ -1348,7 +1350,7 @@ mactime|HFS+|int64
 winfiletime||int64
 string|Guess a timestamp from a string|string
 timezone|A default timezone (UTC)|string
-format|A format specifier as per Golang's time.Parse|string
+format|A format specifier as per the Golang time.Parse|string
 
 
 
@@ -1432,6 +1434,27 @@ format(format="%02x", args="Hello") -> "48656c6c6f"
 Arg | Description | Type
 ----|-------------|-----
 string|Hex string to decode|string
+
+
+
+<div class="vql_item"></div>
+
+
+## unzip
+<span class='vql_type pull-right'>Plugin</span>
+
+Unzips a file into a directory
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+filename|File to unzip.|string (required)
+accessor|The accessor to use|string
+filename_filter|Only extract members matching this filter.|string
+output_directory|Where to unzip to|string (required)
 
 
 
@@ -1625,4 +1648,3 @@ Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
-

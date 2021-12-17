@@ -306,3 +306,47 @@ You can force a Group Policy update by running the `gpupdate`
 program. Now you can verify that Velociraptor is running:
 
 ![Task manager output](10.png)
+
+## Client upgrades
+
+The client's identity is derived from the client's cryptographic
+certificate which is stored in the `writeback` location on the
+endpoint (For example by default `C:\Program Files\Velociraptor\velociraptor.writeback.yaml`).
+
+We generally try to preserve this file between updates in order to
+ensure clients do not change their client id. The default provided
+`Wix` script ensures the file remains (even if the package is
+uninstalled completely) in order to ensure a consistent client id for
+the host.
+
+Generally it is sufficient to repackage the latest client binary in a
+new MSI, after downloading it from the [GitHub Release
+Page](https://github.com/Velocidex/velociraptor/releases). Installing
+the new MSI is simply a matter of using standard software management
+tools.
+
+{{% notice tip "Remotely upgrading Velociraptor" %}}
+
+It is possible to remotely upgrade the client by pushing the new MSI
+to the endpoint and installing it. This is handled by the
+`Admin.Client.Upgrade` artifact. To use it, simply collect the
+artifact from the endpoint and click the tool setup screen.
+
+![Configuring remote upgrade artifact](remote_upgrade_msi.png)
+
+In the tools setup screen select the MSI to push from your browser and
+upload it to the server.
+
+![Uploading client MSI to the server](remote_upgrade_msi_2.png)
+
+Note that when installing the MSI using Velociraptor, the Velociraptor
+process will be killed part way through collecting the artifact, so it
+would appear to never complete it (in the GUI the flow looks
+hung). This is OK and part of the upgrade process.
+
+{{% /notice %}}
+
+To verify that clients are upgraded we recommend running the
+`Generic.Client.Info` hunt periodically. This hunt will refresh the
+server's datastore of client details (including reporting the client's
+version).

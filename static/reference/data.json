@@ -46,7 +46,6 @@
         "name": "amsi",
         "description": "AMSI is an interface on windows to scan a string for malware. This\nfunction submits the string to the AMSI system and receives a\ndetermination if it is malware.\n",
         "type": "Function",
-        "category": "windows",
         "args": [
             {
                 "name": "string",
@@ -54,7 +53,8 @@
                 "description": "A string to scan",
                 "required": true
             }
-        ]
+        ],
+        "category": "windows"
     },
     {
         "name": "appcompatcache",
@@ -127,7 +127,6 @@
         "name": "atexit",
         "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
         "type": "Function",
-        "category": "basic",
         "args": [
             {
                 "name": "query",
@@ -145,7 +144,8 @@
                 "type": "uint64",
                 "description": "How long to wait for destructors to run (default 60 seconds)."
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "atoi",
@@ -242,7 +242,6 @@
         "name": "batch",
         "description": "Batches query rows into multiple arrays.",
         "type": "Plugin",
-        "category": "basic",
         "args": [
             {
                 "name": "batch_size",
@@ -260,7 +259,8 @@
                 "description": "Run this query over the item.",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "cache",
@@ -330,7 +330,6 @@
     },
     {
         "name": "cidr_contains",
-        "category": "server",
         "description": "Calculates if an IP address falls within a range of CIDR specified\nnetworks.",
         "type": "Function",
         "args": [
@@ -347,7 +346,8 @@
                 "repeated": true,
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "client_delete",
@@ -413,7 +413,7 @@
             {
                 "name": "search",
                 "type": "string",
-                "description": "Client search string. Can have the following prefixes: 'lable:', 'host:'"
+                "description": "Client search string. Can have the following prefixes: 'label:', 'host:'"
             },
             {
                 "name": "start",
@@ -557,13 +557,17 @@
                 "name": "max_bytes",
                 "type": "uint64",
                 "description": "Max number of bytes to upload"
+            },
+            {
+                "name": "urgent",
+                "type": "bool",
+                "description": "Set the collection as urgent - skips other queues collections on the client."
             }
         ],
         "category": "server"
     },
     {
         "name": "column_filter",
-        "category": "basic",
         "description": "Select columns from another query using regex.",
         "type": "Plugin",
         "args": [
@@ -585,17 +589,17 @@
                 "description": "One of more regular expressions that will include columns.",
                 "repeated": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "combine",
-        "category": "event",
         "description": "Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).",
-        "type": "Plugin"
+        "type": "Plugin",
+        "category": "event"
     },
     {
         "name": "commandline_split",
-        "category": "client",
         "description": "Split a commandline into separate components following the windows\nconventions.",
         "type": "Function",
         "args": [
@@ -610,7 +614,8 @@
                 "type": "bool",
                 "description": "Use bash rules (Uses Windows rules by default)."
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "compress",
@@ -767,7 +772,6 @@
     {
         "name": "crypto_rc4",
         "description": "Apply rc4 to the string and key.",
-        "category": "client",
         "type": "Function",
         "args": [
             {
@@ -782,7 +786,8 @@
                 "description": "Rc4 key (1-256bytes).",
                 "required": true
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "dict",
@@ -1028,7 +1033,6 @@
     },
     {
         "name": "favorites_delete",
-        "category": "server",
         "description": "Delete a favorite.",
         "type": "Function",
         "args": [
@@ -1044,7 +1048,8 @@
                 "description": "The type of favorite.",
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "favorites_save",
@@ -1301,7 +1306,6 @@
     },
     {
         "name": "gcs_pubsub_publish",
-        "category": "server",
         "description": "Publish a message to Google PubSub.",
         "type": "Function",
         "args": [
@@ -1329,11 +1333,11 @@
                 "description": "The credentials to use",
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "generate",
-        "category": "basic",
         "description": "Create a named generator that receives rows from the query.",
         "type": "Function",
         "args": [
@@ -1357,11 +1361,11 @@
                 "type": "bool",
                 "description": "Enable file buffering"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "geoip",
-        "category": "server",
         "description": "Lookup an IP Address using the MaxMind GeoIP database. You can get\na copy of the database from https://www.maxmind.com/. The database\nmust be locally accessible so this probably only makes sense on\nthe server.\n",
         "type": "Function",
         "args": [
@@ -1377,7 +1381,8 @@
                 "description": "Path to the MaxMind GeoIP Database.",
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "get",
@@ -1820,7 +1825,6 @@
     },
     {
         "name": "import_collection",
-        "category": "server",
         "description": "Imports an offline collection zip file (experimental).",
         "type": "Function",
         "args": [
@@ -1846,7 +1850,8 @@
                 "type": "string",
                 "description": "The accessor to use"
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "info",
@@ -2145,6 +2150,11 @@
                 "type": "string",
                 "description": "Message to log.",
                 "required": true
+            },
+            {
+                "name": "dedup",
+                "type": "int64",
+                "description": "Suppress same message in this many seconds (default 60 sec)."
             }
         ],
         "category": "basic"
@@ -2178,7 +2188,6 @@
     },
     {
         "name": "magic",
-        "category": "client",
         "description": "Identify a file using magic rules.",
         "type": "Function",
         "args": [
@@ -2203,7 +2212,8 @@
                 "type": "string",
                 "description": "Additional magic to load"
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "mail",
@@ -2459,6 +2469,44 @@
         "category": "server"
     },
     {
+        "name": "netcat",
+        "description": "Make a tcp connection and read data from a socket.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "address",
+                "type": "string",
+                "description": "The address to connect to (can be a file in case of a unix domain socket)",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Can be tcp or unix (default TCP)"
+            },
+            {
+                "name": "send",
+                "type": "string",
+                "description": "Data to send before reading"
+            },
+            {
+                "name": "sep",
+                "type": "string",
+                "description": "The separator that will be used to split (default - line feed)"
+            },
+            {
+                "name": "chunk_size",
+                "type": "int",
+                "description": "Read input with this chunk size (default 64kb)"
+            },
+            {
+                "name": "retry",
+                "type": "int",
+                "description": "Seconds to wait before retry - default 0 - do not retry"
+            }
+        ]
+    },
+    {
         "name": "netstat",
         "description": "Collect network information.",
         "type": "Plugin",
@@ -2679,7 +2727,18 @@
             {
                 "name": "separator",
                 "type": "string",
-                "description": "Comma separator"
+                "description": "Comma separator (default ',')"
+            },
+            {
+                "name": "comment",
+                "type": "string",
+                "description": "The single character that should be considered a comment"
+            },
+            {
+                "name": "columns",
+                "type": "string",
+                "description": "The columns to use",
+                "repeated": true
             }
         ],
         "category": "parsers"
@@ -2710,7 +2769,6 @@
     },
     {
         "name": "parse_ese_catalog",
-        "category": "parsers",
         "description": "Opens an ESE file and dump the schema.",
         "type": "Plugin",
         "args": [
@@ -2724,7 +2782,8 @@
                 "type": "string",
                 "description": "The accessor to use."
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "parse_evtx",
@@ -3083,7 +3142,6 @@
     },
     {
         "name": "parse_x509",
-        "category": "parsers",
         "description": "Parse a DER encoded x509 string into an object.",
         "type": "Function",
         "args": [
@@ -3093,7 +3151,8 @@
                 "description": "X509 DER encoded string.",
                 "required": true
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "parse_xml",
@@ -3116,7 +3175,6 @@
     },
     {
         "name": "parse_yaml",
-        "category": "parsers",
         "description": "Parse yaml into an object.",
         "type": "Function",
         "args": [
@@ -3131,7 +3189,8 @@
                 "type": "string",
                 "description": "File accessor"
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "partitions",
@@ -3203,6 +3262,28 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "pipe",
+        "description": "A pipe allows plugins that use files to read data from a vql\nquery. This is needed to be able to use the \"pipe\" accessor.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name to call the pipe"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generator data - the first column will be appended to pipe data."
+            },
+            {
+                "name": "sep",
+                "type": "string",
+                "description": "The separator that will be used to split each read (default: no separator will be used)"
+            }
+        ]
     },
     {
         "name": "plist",
@@ -3373,7 +3454,7 @@
                 "description": "Duration of samples (default 30 sec)"
             }
         ],
-        "category": "plugins"
+        "category": "plugin"
     },
     {
         "name": "pslist",
@@ -3390,7 +3471,6 @@
     },
     {
         "name": "query",
-        "category": "basic",
         "description": "Launch a subquery and materialize it into a list of rows.",
         "type": "Function",
         "args": [
@@ -3399,7 +3479,8 @@
                 "type": "vfilter.StoredQuery",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "query",
@@ -3434,7 +3515,6 @@
     },
     {
         "name": "range",
-        "category": "basic",
         "description": "Iterate over range.",
         "type": "Plugin",
         "args": [
@@ -3456,7 +3536,8 @@
                 "description": "End index (0 based)",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "rate",
@@ -3559,7 +3640,6 @@
     },
     {
         "name": "reg_rm_key",
-        "category": "client",
         "description": "Removes a key and all its values from the registry.",
         "type": "Function",
         "args": [
@@ -3569,11 +3649,11 @@
                 "description": "Registry key path.",
                 "required": true
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "reg_rm_value",
-        "category": "client",
         "description": "Removes a value in the registry.",
         "type": "Function",
         "args": [
@@ -3583,11 +3663,11 @@
                 "description": "Registry value path.",
                 "required": true
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "reg_set_value",
-        "category": "client",
         "description": "Set a value in the registry.",
         "type": "Function",
         "args": [
@@ -3614,7 +3694,8 @@
                 "type": "bool",
                 "description": "Set to create missing intermediate keys"
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "regex_replace",
@@ -3644,7 +3725,6 @@
     },
     {
         "name": "regex_transform",
-        "category": "basic",
         "description": "Search and replace a string with multiple regex. Note you can use $1\nto replace the capture string.",
         "type": "Function",
         "args": [
@@ -3665,11 +3745,11 @@
                 "type": "string",
                 "description": "A key for caching"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "relpath",
-        "category": "basic",
         "description": "Return the relative path of .",
         "type": "Function",
         "args": [
@@ -3690,11 +3770,11 @@
                 "type": "string",
                 "description": "Separator to use (default native)"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "rm",
-        "category": "client",
         "description": "Remove a file from the filesystem using the API.",
         "type": "Function",
         "args": [
@@ -3704,7 +3784,8 @@
                 "description": "Filename to remove.",
                 "required": true
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "rm_client_monitoring",
@@ -3795,7 +3876,6 @@
     },
     {
         "name": "send_event",
-        "category": "event",
         "description": "Sends an event to a server event monitoring queue.",
         "type": "Function",
         "args": [
@@ -3811,11 +3891,11 @@
                 "description": "The row to send to the artifact",
                 "required": true
             }
-        ]
+        ],
+        "category": "event"
     },
     {
         "name": "sequence",
-        "category": "experimental",
         "description": "Combines the output of many queries into an in memory fifo. After\neach row is received from any subquery runs the query specified in\nthe 'query' parameter to retrieve rows from the memory SEQUENCE\nobject.",
         "type": "Plugin",
         "args": [
@@ -3830,7 +3910,8 @@
                 "type": "int64",
                 "description": "Maximum number of seconds to hold rows in the sequence."
             }
-        ]
+        ],
+        "category": "experimental"
     },
     {
         "name": "serialize",
@@ -3879,7 +3960,6 @@
     },
     {
         "name": "set",
-        "category": "basic",
         "description": "Sets the member field of the item. If item is omitted sets the scope.",
         "type": "Function",
         "args": [
@@ -3898,7 +3978,8 @@
                 "type": "Any",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "set_client_monitoring",
@@ -3948,7 +4029,6 @@
     },
     {
         "name": "slice",
-        "category": "basic",
         "description": "Slice an array.",
         "type": "Function",
         "args": [
@@ -3970,7 +4050,8 @@
                 "description": "End index (0 based)",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "source",
@@ -4054,8 +4135,12 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The separator that will be used to split",
-                "required": true
+                "description": "The serparator that will be used to split"
+            },
+            {
+                "name": "sep_string",
+                "type": "string",
+                "description": "The serparator as string that will be used to split"
             }
         ],
         "category": "basic"
@@ -4164,7 +4249,6 @@
     },
     {
         "name": "sql",
-        "category": "client",
         "description": "Run queries against sqlite, mysql, and postgres databases",
         "type": "Plugin",
         "args": [
@@ -4198,7 +4282,8 @@
                 "name": "args",
                 "type": "Any"
             }
-        ]
+        ],
+        "category": "client"
     },
     {
         "name": "sqlite",
@@ -4252,7 +4337,6 @@
     },
     {
         "name": "starl",
-        "category": "parsers",
         "description": "Compile a starlark code block - returns a module usable in VQL",
         "type": "Function",
         "args": [
@@ -4272,7 +4356,8 @@
                 "type": "Any",
                 "description": "Dictionary of values to feed into Starlark environment"
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "stat",
@@ -4329,7 +4414,6 @@
     },
     {
         "name": "substr",
-        "category": "basic",
         "description": "Create a substring from a string",
         "type": "Function",
         "args": [
@@ -4349,11 +4433,11 @@
                 "type": "int",
                 "description": "End index of substring"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "sum",
-        "category": "basic",
         "description": "Sums the items.",
         "type": "Function",
         "args": [
@@ -4362,7 +4446,8 @@
                 "type": "int64",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "switch",
@@ -4414,7 +4499,6 @@
     },
     {
         "name": "timeline",
-        "category": "server",
         "description": "Read a timeline. You can create a timeline with the timeline_add() function",
         "type": "Plugin",
         "args": [
@@ -4440,11 +4524,11 @@
                 "type": "string",
                 "description": "The notebook ID the timeline is stored in."
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "timeline_add",
-        "category": "server",
         "description": "Add a new query to a timeline.",
         "type": "Function",
         "args": [
@@ -4477,7 +4561,8 @@
                 "type": "string",
                 "description": "The notebook ID the timeline is stored in."
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "timestamp",
@@ -4514,7 +4599,7 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "A format specifier as per Golang's time.Parse"
+                "description": "A format specifier as per the Golang time.Parse"
             }
         ],
         "category": "basic"
@@ -4547,7 +4632,6 @@
     },
     {
         "name": "unhex",
-        "category": "basic",
         "description": "Apply hex decoding to the string.",
         "type": "Function",
         "args": [
@@ -4556,11 +4640,11 @@
                 "type": "string",
                 "description": "Hex string to decode"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "unzip",
-        "category": "client",
         "description": "Unzips a file into a directory",
         "type": "Plugin",
         "args": [
@@ -4586,7 +4670,8 @@
                 "description": "Where to unzip to",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "upcase",
@@ -4672,7 +4757,6 @@
     },
     {
         "name": "upload_directory",
-        "category": "server",
         "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
         "type": "Function",
         "args": [
@@ -4718,7 +4802,8 @@
                 "type": "Any",
                 "description": "Birth time to set the output file."
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "upload_gcs",
@@ -4974,7 +5059,6 @@
     },
     {
         "name": "user_create",
-        "category": "server",
         "description": "Creates a new user from the server, or updates their permissions or reset their password.",
         "type": "Function",
         "args": [
@@ -4993,11 +5077,11 @@
                 "name": "password",
                 "type": "string"
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "user_delete",
-        "category": "server",
         "description": "Deletes a user from the server.",
         "type": "Function",
         "args": [
@@ -5006,7 +5090,8 @@
                 "type": "string",
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "users",
@@ -5128,7 +5213,18 @@
             {
                 "name": "separator",
                 "type": "string",
-                "description": "Comma separator"
+                "description": "Comma separator (default ',')"
+            },
+            {
+                "name": "comment",
+                "type": "string",
+                "description": "The single character that should be considered a comment"
+            },
+            {
+                "name": "columns",
+                "type": "string",
+                "description": "The columns to use",
+                "repeated": true
             }
         ],
         "category": "event"
@@ -5246,9 +5342,9 @@
     },
     {
         "name": "whoami",
-        "category": "client",
         "description": "Returns the username that is running the query.",
-        "type": "Function"
+        "type": "Function",
+        "category": "client"
     },
     {
         "name": "winobj",
@@ -5335,7 +5431,6 @@
     },
     {
         "name": "xor",
-        "category": "parsers",
         "description": "Apply xor to the string and key.",
         "type": "Function",
         "args": [
@@ -5351,7 +5446,8 @@
                 "description": "Xor key.",
                 "required": true
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "yara",
