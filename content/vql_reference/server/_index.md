@@ -342,6 +342,7 @@ timeout|Set query timeout (default 10 min)|uint64
 ops_per_sec|Set query ops_per_sec value|float64
 max_rows|Max number of rows to fetch|uint64
 max_bytes|Max number of bytes to upload|uint64
+urgent|Set the collection as urgent - skips other queues collections on the client.|bool
 
 
 
@@ -1100,7 +1101,7 @@ count|Maximum number of clients to fetch (default unlimited)'|int64
 ## notebook_delete
 <span class='vql_type pull-right'>Plugin</span>
 
-Delete a notebook with all its cells.
+Delete a notebook with all its cells. 
 
 
 
@@ -1549,3 +1550,4 @@ Deletes a user from the server.
 Arg | Description | Type
 ----|-------------|-----
 user||string (required)
+

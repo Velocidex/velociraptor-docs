@@ -422,7 +422,6 @@ WinEVT
 WinRM
 YaraRule
 Yogesh
-Yuo
 aca
 accelerometer
 accepteula
@@ -1252,3 +1251,15 @@ zsdnh
 zsdnhepyzs
 zzyhukwK
 kb
+
+bugfix
+bugfixes
+goroutine
+goroutines
+LHS
+RHS
+whitespace
+netcat
+auditable
+dedup
+allocs

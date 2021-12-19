@@ -173,7 +173,9 @@ Arg | Description | Type
 filename|CSV files to open|list of string (required)
 accessor|The accessor to use|string
 auto_headers|If unset the first row is headers|bool
-separator|Comma separator|string
+separator|Comma separator (default ',')|string
+comment|The single character that should be considered a comment|string
+columns|The columns to use|list of string
 
 
 
