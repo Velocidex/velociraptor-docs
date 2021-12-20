@@ -63,9 +63,9 @@ configuration is when the client and server versions match exactly
 (e.g. a 0.6.2 server communicating with a 0.6.2 client).
 
 Nevertheless we do attempt to achieve compatibility between the latest
-version of the server and the last 2 versions of the clients, however
-this is done on a best effort basis. Usually compatibility issues
-surface in the following ways:
+version of the server and recent clients, however this is done on a
+best effort basis. Usually compatibility issues surface in the
+following ways:
 
 1. The newer server may contain artifacts that reference functionality
    not present in the older clients - therefore they are unable to
