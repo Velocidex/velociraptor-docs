@@ -5,19 +5,23 @@ description: |
 
 tools:
   - name: log4shell_linux_amd64
-    url: https://github.com/lunasec-io/lunasec/releases/download/v1.4.0-log4shell/log4shell_1.4.0-log4shell_Linux_x86_64
+    github_project: lunasec-io/lunasec
+    github_asset_regex: Linux_x86_64
     serve_locally: true
 
   - name: log4shell_linux_x86
-    url: https://github.com/lunasec-io/lunasec/releases/download/v1.4.0-log4shell/log4shell_1.4.0-log4shell_Linux_i386
+    github_project: lunasec-io/lunasec
+    github_asset_regex: Linux_i386
     serve_locally: true
 
   - name: log4shell_windows_amd64
-    url: https://github.com/lunasec-io/lunasec/releases/download/v1.4.0-log4shell/log4shell_1.4.0-log4shell_Windows_x86_64.exe
+    github_project: lunasec-io/lunasec
+    github_asset_regex: Windows_x86_64
     serve_locally: true
 
   - name: log4shell_windows_x86
-    url: https://github.com/lunasec-io/lunasec/releases/download/v1.4.0-log4shell/log4shell_1.4.0-log4shell_Windows_i386.exe
+    github_project: lunasec-io/lunasec
+    github_asset_regex: Windows_i386
     serve_locally: true
 
 reference:
