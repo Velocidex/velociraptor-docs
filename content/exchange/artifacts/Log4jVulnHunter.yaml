@@ -34,7 +34,12 @@ reference:
 parameters:
   - name: TargetGlob
     default: "**/*.{jar,war,ear}"
+  - name: MaxRecursions
+    description: Number of recursions to allow checking inside archives. Default is 10 layers.
+    default: 10
+    type: int
   - name: UploadHits
+    description: Select to upload hits to server.
     type: bool
   - name: IocLookupTable
     type: csv
@@ -135,10 +140,9 @@ sources:
       LET target_files = SELECT * FROM glob(globs=TargetGlob,nosymlink=True)
       
       -- recursive search function
-      LET Recurse(File, OriginalFile, Container) = SELECT * FROM foreach(
+      LET Recurse(File, OriginalFile, Container, RecursionRounds) = SELECT * FROM foreach(
                 row={
                     SELECT * 
-                        --,hash(path=FullPath,accessor='zip').SHA256 as SHA256 
                     FROM glob(accessor="zip", root=url(path=File, scheme="file"), globs="/**")
                     WHERE NOT IsDir AND Size > 0
                 }, 
@@ -150,7 +154,8 @@ sources:
                                     OriginalFile=OriginalFile + "/" + url(parse=FullPath).Fragment,
                                     File=copy(dest=tempfile(extension=".zip", remove_last=TRUE), 
                                         accessor="zip", filename=FullPath),
-                                    Container=Container)
+                                    Container=Container, RecursionRounds = RecursionRounds + 1)
+                                WHERE RecursionRounds < MaxRecursions
                                 
                             },
                             else={
@@ -159,7 +164,7 @@ sources:
                                     SELECT Container,
                                         'Path detection' as Description,
                                         Name, url(parse=FullPath).Fragment AS ZipPath, OriginalFile,
-                                        hash(path=FullPath,accessor='zip').SHA256 as SHA256h 
+                                        hash(path=FullPath,accessor='zip').SHA256 as SHA256h
                                     FROM scope() 
                                     WHERE ZipPath in IocLookupTable.FilePath 
                                         OR basename(path=ZipPath) in IocLookupTable.JarName 
@@ -169,7 +174,7 @@ sources:
                                     SELECT Container,
                                         'Hash detection' as Description,
                                         Name, url(parse=FullPath).Fragment AS ZipPath, OriginalFile, Size,
-                                        hash(path=FullPath,accessor='zip').SHA256 as SHA256h  
+                                        hash(path=FullPath,accessor='zip').SHA256 as SHA256h
                                     FROM scope() 
                                     WHERE SHA256h in IocLookupTable.SHA256 
                                 })
@@ -213,7 +218,7 @@ sources:
             query={
                 SELECT *,
                     find_cve(hash=SHA256h,originalfile=OriginalFile) as CVEDetails
-                FROM Recurse(File=FullPath, OriginalFile=FullPath,Container=FullPath)
+                FROM Recurse(File=FullPath, OriginalFile=FullPath,Container=FullPath,RecursionRounds=0)
                 WHERE CVEDetails
                 LIMIT 1
             })
