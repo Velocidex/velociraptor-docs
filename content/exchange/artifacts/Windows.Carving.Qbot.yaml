@@ -1,4 +1,4 @@
-name: Windows.Carving.Qbot
+name: Custom.Windows.Carving.Qbot
 author: "Eduardo Mattos - @eduardfir"
 description: |
     This artifact yara-scans memory or unpacked DLL samples for Qbot (or Qakbot)
@@ -14,7 +14,6 @@ description: |
     NOTE:
     This content simply carves the configuration and does not unpack files on disk. 
     That means pointing this artifact as a packed or obfuscated file will not obtain the expected results.
-
 type: CLIENT
 
 reference:
@@ -65,7 +64,6 @@ sources:
                         WHERE Name =~ ProcessRegex 
                             AND format(format="%d", args=Pid) =~ PidRegex
                             AND NOT Pid in me.Pid
-
         -- scan processes in scope with our DetectionYara
         LET processDetections <= SELECT * FROM foreach(row=processes,
                                 query={
@@ -75,7 +73,6 @@ sources:
                                             FROM proc_yara(pid=Pid, rules=DetectionYara)
                                         })
                                 })
-
         -- scan files in scope with our DetectionYara
         LET fileDetections = SELECT * FROM foreach(row=targetFiles,
                                 query={
@@ -96,7 +93,6 @@ sources:
                                             FROM targetFiles
                                         })
                              })
-
         -- return the VAD region size from yara detections for later use                         
         LET regionDetections = SELECT * 
                                 FROM foreach(row=processDetections,
@@ -125,11 +121,20 @@ sources:
                            FROM peData
                            
         -- read the data from .rsrc sections
-        LET sectionData <= SELECT *,
-                                Sectionrsrc.RVA AS QBOTrsrcRVA,
-                                read_file(filename=PEData, accessor="data", offset=Sectionrsrc.RVA, length=Sectionrsrc.Size) AS QBOTrsrcData
-                           FROM sectionInfo
-
+        LET sectionData <=  SELECT * FROM if(condition=TargetFileGlob,
+                                        then={ -- query files
+                                            SELECT *,
+                                                Sectionrsrc.RVA AS QBOTrsrcOffSet,
+                                                read_file(filename=PEData, accessor="data", offset=Sectionrsrc.FileOffset, length=Sectionrsrc.Size) AS QBOTrsrcData
+                                           FROM sectionInfo
+                                        },
+                                        else={ -- query processes
+                                            SELECT *,
+                                                Sectionrsrc.RVA AS QBOTrsrcOffSet,
+                                                read_file(filename=PEData, accessor="data", offset=Sectionrsrc.RVA, length=Sectionrsrc.Size) AS QBOTrsrcData
+                                           FROM sectionInfo
+                                        })
+                           
         -- parse the .rsrc sections to extract the rcdata resources containing the encrypted info
         LET parsedRdata = SELECT *,
                             parse_binary(filename=QBOTrsrcData, accessor="data", profile='''[
@@ -140,8 +145,8 @@ sources:
                                         ["__prefix2", 112, "String", {"length": 8, "term":""}],
                                         ["Address5812", 120, "uint32", {"length": 4, "term":""}],
                                         ["Size5812", 124, "uint32", {"length": 4, "term":""}], 
-                                        ["Data3719", "x=> x.Address3719 - QBOTrsrcRVA", "String", {"length": "x=> x.Size3719", "term":""}],
-                                        ["Data5812", "x=> x.Address5812 - QBOTrsrcRVA", "String", {"length": "x=> x.Size5812", "term":""}]
+                                        ["Data3719", "x=> x.Address3719 - QBOTrsrcOffSet", "String", {"length": "x=> x.Size3719", "term":""}],
+                                        ["Data5812", "x=> x.Address5812 - QBOTrsrcOffSet", "String", {"length": "x=> x.Size5812", "term":""}]
                                     ]
                                 ]
                             ]''', struct="QbotRCData") AS RCDataSections
