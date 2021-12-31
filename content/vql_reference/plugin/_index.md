@@ -97,6 +97,68 @@ format|Output format (csv, jsonl).|string
 artifact_definitions|Optional additional custom artifacts.|Any
 template|The name of a template artifact (i.e. one which has report of type HTML).|string
 level|Compression level between 0 (no compression) and 9.|int64
+ops_per_sec|Rate limiting for collections.|int64
+
+
+
+<div class="vql_item"></div>
+
+
+## commandline_split
+<span class='vql_type pull-right'>Function</span>
+
+Split a commandline into separate components following the windows
+conventions.
+
+Example:
+```vql
+SELECT
+  commandline_split(command='''"C:\Program Files\Velociraptor\Velociraptor.exe" service run'''),
+  commandline_split(command="/usr/bin/ls -l 'file with space.txt'", bash_style=TRUE)
+FROM scope()
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+command|Commandline to split into components.|string (required)
+bash_style|Use bash rules (Uses Windows rules by default).|bool
+
+
+
+<div class="vql_item"></div>
+
+
+## connections
+<span class='vql_type pull-right'>Plugin</span>
+
+List all active connections
+
+On windows this uses the API to list active sockets.
+
+
+
+
+<div class="vql_item"></div>
+
+
+## crypto_rc4
+<span class='vql_type pull-right'>Function</span>
+
+Apply rc4 to the string and key.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+string|String to apply Rc4 encryption|string (required)
+key|Rc4 key (1-256bytes).|string (required)
 
 
 
@@ -155,6 +217,7 @@ Arg | Description | Type
 argv|Argv to run the command with.|list of string (required)
 sep|The separator that will be used to split the stdout into rows.|string
 length|Size of buffer to capture output per row.|int64
+env|Environment variables to launch with.|LazyExpr
 
 
 
@@ -611,6 +674,150 @@ key|If set use this key to cache the JS VM.|string
 <div class="vql_item"></div>
 
 
+## magic
+<span class='vql_type pull-right'>Function</span>
+
+Identify a file using magic rules.
+
+Magic rules are designed to identify a file based on a sequence of
+tests. They are a great way of quickly triaging a file type based
+on its content, not its name.
+
+Detection is facilitated via libmagic - a common library powering
+the unix "file" utility. Velociraptor comes with all of "file"
+basic magic signatures.
+
+You can also write your own signatures using the magic syntax (see
+https://man7.org/linux/man-pages/man4/magic.4.html )
+
+## Example
+
+The following will check all files in /var/lib applying a custom
+magic rule.
+
+```vql
+LET Magic = '''
+0 search/1024 "GET Apache Logs
+!:strength + 100
+'''
+
+SELECT FullPath, Size, magic(path=FullPath, magic=Magic)
+FROM glob(globs="/var/lib/*")
+```
+
+NOTE: `magic()` requires reading the headers of each file which
+causes the file to be opened. If you have on-access scanning such
+as Windows Defender "Realtime monitoring", applying magic() on
+many files (e.g. in a glob) may result in substantial load on the
+endpoint.
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+path|Path to open and hash.|string (required)
+accessor|The accessor to use|string
+type|Magic type (can be empty or 'mime' or 'extension')|string
+magic|Additional magic to load|string
+
+
+
+<div class="vql_item"></div>
+
+
+## netcat
+<span class='vql_type pull-right'>Plugin</span>
+
+Make a tcp connection and read data from a socket.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+address|The address to connect to (can be a file in case of a unix domain socket)|string (required)
+type|Can be tcp or unix (default TCP)|string
+send|Data to send before reading|string
+sep|The separator that will be used to split (default - line feed)|string
+chunk_size|Read input with this chunk size (default 64kb)|int
+retry|Seconds to wait before retry - default 0 - do not retry|int
+
+
+
+<div class="vql_item"></div>
+
+
+## pathspec
+<span class='vql_type pull-right'>Function</span>
+
+Create a structured path spec to pass to certain accessors.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+DelegateAccessor|An accessor to use.|string
+DelegatePath|A delegate to pass to the accessor.|string
+Path|A path to open.|LazyExpr
+parse|Alternatively parse the pathspec from this string.|string
+
+
+
+<div class="vql_item"></div>
+
+
+## pipe
+<span class='vql_type pull-right'>Function</span>
+
+A pipe allows plugins that use files to read data from a vql
+query. This is needed to be able to use the "pipe" accessor.
+
+### Example
+
+In the following example we create a pipe from a query which
+reads a log file line by line. Each line is being transformed by
+a regex and potentially filtered (perhaps to fix up buggy CSV
+implementations that generated a bad CSV).
+
+The pipe is then fed into the parse_csv() plugin to parse each
+line as a csv file.
+
+```vql
+LET MyPipe = pipe(query={
+    SELECT regex_replace(
+      re='''^(\d{4}-\d{2}-\d{2}) (\d{2}:)''',
+      replace='''${1}T${2}''', source=Line) AS Line
+    FROM parse_lines(filename=IISPath)
+    WHERE NOT Line =~ "^#"
+  }, sep="\n")
+
+SELECT * FROM parse_csv(
+   columns=Columns, separator=" ",
+   filename="MyPipe", accessor="pipe")
+```
+
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+name|Name to call the pipe|string
+query|Run this query to generator data - the first column will be appended to pipe data.|StoredQuery
+sep|The separator that will be used to split each read (default: no separator will be used)|string
+
+
+
+<div class="vql_item"></div>
+
+
 ## profile
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -693,6 +900,81 @@ accessor|An accessor to use.|string
 <div class="vql_item"></div>
 
 
+## reg_rm_key
+<span class='vql_type pull-right'>Function</span>
+
+Removes a key and all its values from the registry.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+path|Registry key path.|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## reg_rm_value
+<span class='vql_type pull-right'>Function</span>
+
+Removes a value in the registry.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+path|Registry value path.|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
+## reg_set_value
+<span class='vql_type pull-right'>Function</span>
+
+Set a value in the registry.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+path|Registry value path.|string (required)
+value|Value to set|LazyExpr (required)
+type|Type to set (SZ, DWORD, QWORD)|string (required)
+create|Set to create missing intermediate keys|bool
+
+
+
+<div class="vql_item"></div>
+
+
+## rm
+<span class='vql_type pull-right'>Function</span>
+
+Remove a file from the filesystem using the API.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+filename|Filename to remove.|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## scope
 <span class='vql_type pull-right'>Plugin</span>
 
@@ -707,6 +989,29 @@ dont want to actually run anything.
 SELECT 1+1 As Two FROM scop()
 ```
 
+
+
+
+<div class="vql_item"></div>
+
+
+## sql
+<span class='vql_type pull-right'>Plugin</span>
+
+Run queries against sqlite, mysql, and postgres databases
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+driver|sqlite, mysql,or postgres|string (required)
+connstring|SQL Connection String|string
+file|Required if using sqlite driver|string
+accessor|The accessor to use if using sqlite|string
+query||string (required)
+args||Any
 
 
 
@@ -867,6 +1172,16 @@ credentialssecret|The AWS secret credentials to use|string
 endpoint|The Endpoint to use|string
 serversideencryption|The server side encryption method to use|string
 noverifycert|Skip TLS Verification|bool
+
+
+
+<div class="vql_item"></div>
+
+
+## whoami
+<span class='vql_type pull-right'>Function</span>
+
+Returns the username that is running the query.
 
 
 

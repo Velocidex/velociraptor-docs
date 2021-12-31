@@ -167,7 +167,7 @@ api from a difference host you will need to update the connection
 string to include the correct IP address or hostname.
 
 ```yaml
-api_connection_string: 0.0.0.0:8001
+api_connection_string: www.example.com:8001
 name: Mike
 ```
 

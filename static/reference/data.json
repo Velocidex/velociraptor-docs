@@ -506,6 +506,11 @@
                 "name": "level",
                 "type": "int64",
                 "description": "Compression level between 0 (no compression) and 9."
+            },
+            {
+                "name": "ops_per_sec",
+                "type": "int64",
+                "description": "Rate limiting for collections."
             }
         ],
         "category": "plugin"
@@ -615,7 +620,7 @@
                 "description": "Use bash rules (Uses Windows rules by default)."
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "compress",
@@ -640,7 +645,7 @@
         "name": "connections",
         "description": "List all active connections",
         "type": "Plugin",
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "copy",
@@ -787,7 +792,7 @@
                 "required": true
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "dict",
@@ -1013,6 +1018,11 @@
                 "name": "length",
                 "type": "int64",
                 "description": "Size of buffer to capture output per row."
+            },
+            {
+                "name": "env",
+                "type": "LazyExpr",
+                "description": "Environment variables to launch with."
             }
         ],
         "category": "plugin"
@@ -1715,6 +1725,22 @@
         "category": "server"
     },
     {
+        "name": "hunt_delete",
+        "description": "Delete a hunt. ",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool"
+            }
+        ]
+    },
+    {
         "name": "hunt_flows",
         "description": "Retrieve the flows launched by a hunt.",
         "type": "Plugin",
@@ -2213,7 +2239,7 @@
                 "description": "Additional magic to load"
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "mail",
@@ -2504,7 +2530,8 @@
                 "type": "int",
                 "description": "Seconds to wait before retry - default 0 - do not retry"
             }
-        ]
+        ],
+        "category": "plugin"
     },
     {
         "name": "netstat",
@@ -3046,7 +3073,8 @@
                 "description": "PKCS7 DER encoded string.",
                 "required": true
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "parse_records_with_regex",
@@ -3264,6 +3292,34 @@
         "category": "basic"
     },
     {
+        "name": "pathspec",
+        "description": "Create a structured path spec to pass to certain accessors.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "DelegateAccessor",
+                "type": "string",
+                "description": "An accessor to use."
+            },
+            {
+                "name": "DelegatePath",
+                "type": "string",
+                "description": "A delegate to pass to the accessor."
+            },
+            {
+                "name": "Path",
+                "type": "LazyExpr",
+                "description": "A path to open."
+            },
+            {
+                "name": "parse",
+                "type": "string",
+                "description": "Alternatively parse the pathspec from this string."
+            }
+        ],
+        "category": "plugin"
+    },
+    {
         "name": "pipe",
         "description": "A pipe allows plugins that use files to read data from a vql\nquery. This is needed to be able to use the \"pipe\" accessor.",
         "type": "Function",
@@ -3283,7 +3339,8 @@
                 "type": "string",
                 "description": "The separator that will be used to split each read (default: no separator will be used)"
             }
-        ]
+        ],
+        "category": "plugin"
     },
     {
         "name": "plist",
@@ -3650,7 +3707,7 @@
                 "required": true
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "reg_rm_value",
@@ -3664,7 +3721,7 @@
                 "required": true
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "reg_set_value",
@@ -3695,7 +3752,7 @@
                 "description": "Set to create missing intermediate keys"
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "regex_replace",
@@ -3785,7 +3842,7 @@
                 "required": true
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "rm_client_monitoring",
@@ -3927,7 +3984,7 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "Encoding format (csv,json)"
+                "description": "Encoding format (csv,json,yaml,hex,base64)"
             }
         ],
         "category": "basic"
@@ -4135,12 +4192,12 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The serparator that will be used to split"
+                "description": "The separator that will be used to split"
             },
             {
                 "name": "sep_string",
                 "type": "string",
-                "description": "The serparator as string that will be used to split"
+                "description": "The separator as string that will be used to split"
             }
         ],
         "category": "basic"
@@ -4283,7 +4340,7 @@
                 "type": "Any"
             }
         ],
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "sqlite",
@@ -4922,7 +4979,7 @@
             {
                 "name": "name",
                 "type": "string",
-                "description": "The name of the file that should be stored on the server"
+                "description": "The name of the file that should be stored on the server (may contain the path)"
             },
             {
                 "name": "user",
@@ -4933,8 +4990,7 @@
             {
                 "name": "path",
                 "type": "string",
-                "description": "Path on server to upload file to",
-                "required": true
+                "description": "Path on server to upload file to (will be prepended to name)"
             },
             {
                 "name": "accessor",
@@ -4950,7 +5006,7 @@
             {
                 "name": "endpoint",
                 "type": "string",
-                "description": "The Endpoint to use",
+                "description": "The Endpoint to use including port number (e.g. 192.168.1.1:22 )",
                 "required": true
             },
             {
@@ -5344,7 +5400,7 @@
         "name": "whoami",
         "description": "Returns the username that is running the query.",
         "type": "Function",
-        "category": "client"
+        "category": "plugin"
     },
     {
         "name": "winobj",

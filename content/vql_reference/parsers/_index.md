@@ -486,6 +486,24 @@ accessor|The accessor to use.|string
 <div class="vql_item"></div>
 
 
+## parse_pkcs7
+<span class='vql_type pull-right'>Function</span>
+
+Parse a DER encoded pkcs7 string into an object.
+
+
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+data|PKCS7 DER encoded string.|string (required)
+
+
+
+<div class="vql_item"></div>
+
+
 ## parse_records_with_regex
 <span class='vql_type pull-right'>Plugin</span>
 
