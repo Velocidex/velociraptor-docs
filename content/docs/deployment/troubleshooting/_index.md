@@ -39,13 +39,13 @@ its logs directory. Other errors might be disk full or various permission denied
 {{% notice warning "Incorrect permissions in the filestore" %}}
 
 Because Velociraptor normally runs as a low privileged user, it needs
-to maintain file ownerships as the `velociraptor` user. Sometimes
+to maintain file ownership as the `velociraptor` user. Sometimes
 permissions change by accident (usually this happens by running
 velociraptor as root and interacting with the file store - you should
 **always** change to the `velociraptor` user before interacting with
 the server).
 
-It is worth checking file permissions (using `ls -l`) and recursivly
+It is worth checking file permissions (using `ls -l`) and recursively
 returning file ownership back to the `velociraptor` user (using the
 command `chown -R velociraptor:velociraptor /path/to/filestore/`)
 
@@ -105,12 +105,12 @@ signed using the sending party’s private key.
 {{% notice tip "Messages are double encrypted" %}}
 
 You might have noticed that **MessageList** protobufs are encrypted
-and signed, but they are usually still delived within a TLS session -
+and signed, but they are usually still delivered within a TLS session -
 therefore there are two layers of encryption.
 
 The internal encryption scheme's main purpose is not to encrypt the
 messages but to sign them. This prevents messages from one client from
-impersnating anohter client.
+impersonating another client.
 
 {{% /notice %}}
 
