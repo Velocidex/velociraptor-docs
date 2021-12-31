@@ -235,7 +235,7 @@ Finally I create the new user with the name `velouploader`
 
 In our example I created a user with an upload only policy that could
 not read any of the files in the bucket. However, you can also create
-a user with full access to the bucket by remove the scope down policy
+a user with full access to the bucket by removing the scope down policy
 or apply a different policy per user.
 
 This is convenient to allow the investigator the ability to download
@@ -275,7 +275,7 @@ artifact and just collect the `$MFT` file.
 ![Creating an offline collector](kapefiles_1.png)
 
 Now I will configure the collector to use the SFTP upload method,
-giving the username I created earlier and pasting the private key IX
+giving the username I created earlier and pasting the private key I
 generated.
 
 ![Configuring the offline collector for SFTP uploads](kapefiles_2.png)
@@ -295,7 +295,7 @@ Once the collector is created I am able to run it on a test system.
 As can be seen the upload is mostly fine except there are some
 features that are not possible due to the restricted
 permissions. Although, the log file shows a failure the file did
-successfully upload.
+successfully upload as can be confirmed in the bucket view.
 
 ![Verifying files uploaded in the S3 bucket](success.png)
 

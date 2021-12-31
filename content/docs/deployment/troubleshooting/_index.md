@@ -1,5 +1,5 @@
 ---
-title: Troubleshooting Client Connectivity
+title: Troubleshooting Deployments
 menutitle: Troubleshooting
 weight: 100
 ---
@@ -7,6 +7,49 @@ weight: 100
 Sometimes things don't work when you first try them. This page will go
 through the common issues people find when deploying Velociraptor
 clients and the steps needed to debug them.
+
+## Server fails to start
+
+If the server fails to start, you can try to start it by hand to see any logs or issues. Typically the Linux service will report something unhelpful such as:
+
+```
+# service velociraptor_server status
+● velociraptor_server.service - Velociraptor linux amd64
+    Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+    Active: activating (auto-restart) (Result: exit-code) since Fri 2021-12-31 15:32:58 AEST; 1min 1s ago
+   Process: 3561364 ExecStart=/usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend (code=exited, status=1/FAILURE)
+  Main PID: 3561364 (code=exited, status=1/FAILURE)
+```
+
+You can usually get more information from the system log files,
+usually `/var/log/syslog`. Alternative you can try to start the
+service by hand and see any issues on the console.
+
+First change to the Velociraptor user and then start the service as that user.
+
+```
+# sudo -u velociraptor bash
+$ velociraptor frontend -v
+Dec 31 15:47:18 devbox velociraptor[3572509]: velociraptor.bin: error: frontend: loading config file: failed to acquire target io.Writer: failed to create a new file /mnt/data/logs/Velociraptor_debug.log.202112270000: failed to open file /mnt/data/logs/Velociraptor_debug.log.202112270000: open /mnt/data/logs/Velociraptor_debug.log.202112270000: permission denied
+```
+
+In this case, Velociraptor can not start because it can not write on
+its logs directory. Other errors might be disk full or various permission denied problems.
+
+{{% notice warning "Incorrect permissions in the filestore" %}}
+
+Because Velociraptor normally runs as a low privileged user, it needs
+to maintain file ownerships as the `velociraptor` user. Sometimes
+permissions change by accident (usually this happens by running
+velociraptor as root and interacting with the file store - you should
+**always** change to the `velociraptor` user before interacting with
+the server).
+
+It is worth checking file permissions (using `ls -l`) and recursivly
+returning file ownership back to the `velociraptor` user (using the
+command `chown -R velociraptor:velociraptor /path/to/filestore/`)
+
+{{% /notice %}}
 
 ## Velociraptor communications
 
@@ -44,13 +87,34 @@ command, and the server does not need it in normal operations.
 
 ### Messages
 
-Clients and servers communicate by sending each other messages (which are simply protocol buffers), for example, a message may contain VQL queries or result sets. Messages are collected into a list and sent in a single POST operation in a **MessageList** protobuf. This protobuf is encrypted using a session key with a symmetric cipher (aes_128_cbc). The session key is chosen by the sending party and is written into an encrypted **Cipher** protobuf and sent along with each message.
+Clients and servers communicate by sending each other messages (which
+are simply protocol buffers), for example, a message may contain VQL
+queries or result sets. Messages are collected into a list and sent in
+a single POST operation in a **MessageList** protobuf. This protobuf
+is encrypted using a session key with a symmetric cipher
+(aes_128_cbc). The session key is chosen by the sending party and is
+written into an encrypted **Cipher** protobuf and sent along with each
+message.
 
 ![Velociraptor Communication overview](1ntQkR2sRm8mIg5vkYjngEg.png)
 
-This symmetric key is encoded in a **Cipher Properties** protobuf which is encrypted in turn using the receiving party’s public key and signed using the sending party’s private key.
+This symmetric key is encoded in a **Cipher Properties** protobuf
+which is encrypted in turn using the receiving party’s public key and
+signed using the sending party’s private key.
 
-## HTTP protocol
+{{% notice tip "Messages are double encrypted" %}}
+
+You might have noticed that **MessageList** protobufs are encrypted
+and signed, but they are usually still delived within a TLS session -
+therefore there are two layers of encryption.
+
+The internal encryption scheme's main purpose is not to encrypt the
+messages but to sign them. This prevents messages from one client from
+impersnating anohter client.
+
+{{% /notice %}}
+
+### HTTP protocol
 
 Velociraptor uses HTTPS POST messages to deliver message sets to the
 server. The server in turn sends messages to the client in the body of
@@ -123,7 +187,7 @@ server. Many proxies have mechanisms to whitelist certain domains.
 
 {{% /notice %}}
 
-### Debugging client communications
+## Debugging client communications
 
 Now that we have an understanding on the low level communication
 mechanism, let’s try to apply our understanding to debugging common
