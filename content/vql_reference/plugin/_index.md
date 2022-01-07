@@ -364,6 +364,40 @@ directory - i.e. the glob pattern is appended to the root
 parameter.  The `root` parameter is useful if the directory name
 itself may contain glob characters.
 
+## Following symlinks
+
+On Unix like operating systems symlinks are used
+extensively. Symlinks complicate the job of the glob() plugin
+because they break the assumption that filesystems are
+trees. Instead a symlink may form a cycle or create very deep
+directories within the filesystem.
+
+By default glob() follows symlinks but also checks for cycles by
+checking that a target of a symlink has not been seen before. You
+can disable this behavior with `nosymlink=TRUE`
+
+## Setting a recursion callback
+
+Sometimes it is useful to prevent glob() from recursing into a
+directory. For example, if we know a directory can not possibly
+contain a hit we can avoid descending into it at all. This more
+efficient than simply eliminating the matching rows in the WHERE
+clause.
+
+You can provide a recursion callback (in the form of a VQL lambda
+function) to let glob() know if it should be recursing a
+directory. The glob() plugin will call the lambda with current
+directory entry and if the lambda returns a `true` value will
+recurse into it.
+
+For example consider the following query which searches for pem
+files in all directories other than /proc, /sys or /snap
+
+```vql
+SELECT * FROM glob(globs='/**/*.pem',
+    recursion_callback="x=>NOT x.Name =~ '^/(proc|sys|snap)'")
+```
+
 
 
 
@@ -375,6 +409,8 @@ globs|One or more glob patterns to apply to the filesystem.|list of string (requ
 root|The root directory to glob from (default '').|string
 accessor|An accessor to use.|string
 nosymlink|If set we do not follow symlinks.|bool
+recursion_callback|A VQL function that determines if a directory should be recursed (e.g. "x=>NOT x.Name =~ 'proc'").|string
+one_filesystem|If set we do not follow links to other filesystems.|bool
 
 
 
@@ -528,6 +564,7 @@ chunk_size|Read input with this chunk size and send each chunk as a row|int
 disable_ssl_security|Disable ssl certificate verifications.|bool
 tempfile_extension|If specified we write to a tempfile. The content field will contain the full path to the tempfile.|string
 remove_last|If set we delay removal as much as possible.|bool
+root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 
 
 
@@ -764,7 +801,7 @@ Arg | Description | Type
 ----|-------------|-----
 DelegateAccessor|An accessor to use.|string
 DelegatePath|A delegate to pass to the accessor.|string
-Path|A path to open.|LazyExpr
+Path|A path to open.|Any
 parse|Alternatively parse the pathspec from this string.|string
 
 
