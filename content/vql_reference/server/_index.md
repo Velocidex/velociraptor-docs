@@ -466,6 +466,8 @@ cloud_id|Endpoint for the Elastic Service (https://elastic.co/cloud).|string
 api_key|Base64-encoded token for authorization; if set, overrides username and password.|string
 wait_time|Batch elastic upload this long (2 sec).|int64
 pipeline|Pipeline for uploads|string
+disable_ssl_security|Disable ssl certificate verifications.|bool
+root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 
 
 

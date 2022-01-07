@@ -917,6 +917,16 @@
                 "name": "pipeline",
                 "type": "string",
                 "description": "Pipeline for uploads"
+            },
+            {
+                "name": "disable_ssl_security",
+                "type": "bool",
+                "description": "Disable ssl certificate verifications."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
             }
         ],
         "category": "server"
@@ -1462,6 +1472,16 @@
                 "name": "nosymlink",
                 "type": "bool",
                 "description": "If set we do not follow symlinks."
+            },
+            {
+                "name": "recursion_callback",
+                "type": "string",
+                "description": "A VQL function that determines if a directory should be recursed (e.g. \"x=>NOT x.Name =~ 'proc'\")."
+            },
+            {
+                "name": "one_filesystem",
+                "type": "bool",
+                "description": "If set we do not follow links to other filesystems."
             }
         ],
         "category": "plugin"
@@ -1616,6 +1636,11 @@
                 "name": "remove_last",
                 "type": "bool",
                 "description": "If set we delay removal as much as possible."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
             }
         ],
         "category": "plugin"
@@ -1995,7 +2020,7 @@
     },
     {
         "name": "items",
-        "description": "Enumerate all members of the item (similar to Pythons items() method.",
+        "description": "Enumerate all members of the item (similar to Python's items() method).",
         "type": "Plugin",
         "args": [
             {
@@ -3308,7 +3333,7 @@
             },
             {
                 "name": "Path",
-                "type": "LazyExpr",
+                "type": "Any",
                 "description": "A path to open."
             },
             {
