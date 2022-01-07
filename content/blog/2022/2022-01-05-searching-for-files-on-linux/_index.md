@@ -14,7 +14,7 @@ date: 2022-01-05
 
 {{% notice tip %}}
 
-This article discussed new features appearing in Velociraptor's 0.6.3
+This article discusses new features appearing in Velociraptor's 0.6.3
 release. Earlier releases may not have the same features.
 
 {{% /notice %}}
@@ -50,7 +50,8 @@ Go based
 I wanted to share some of the potential pitfalls that one may
 encounter searching the filesystem in the real world. In particular
 some of these issues may present performance problems so should be
-kept in mind.
+kept in mind when writing custom one off scripts, or new Velociraptor
+artifacts.
 
 ## Following Symlinks
 
@@ -92,7 +93,9 @@ consumption on the target system and spinning out of control programs.
 
 This is probably the reason why `find`'s default behavior is to
 **not** follow symbolic links. However if not following symbolic links
-it is possible to miss important files.
+it is possible to miss important files (for example many servers
+contain symlinks to data drives so starting a find from `/var/www`
+might miss files).
 
 Velociraptor's `glob()` plugin does follow links by default, but keeps
 track of visited inodes in order to detect cycles. This can still lead

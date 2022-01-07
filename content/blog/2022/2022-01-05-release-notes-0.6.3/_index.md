@@ -33,10 +33,10 @@ collecting a large number of files and then pretty soon the disk is
 full.
 
 Using EFS removed this risk since storage is essentially infinite (but
-not free). So there is a definitely advantage to running the data
-store on EFS even when not running multiple frontends.  When scaling
-to multiple frontends, EFS use is essential as a shared distributed
-filesystem.
+not free). So there is a definite advantage to running the data store
+on EFS even when not running multiple frontends.  When scaling to
+multiple frontends, EFS use is essential to facilitate as a shared
+distributed filesystem among all the servers.
 
 However, EFS presents some challenges. Although conceptually EFS
 behaves as a transparent filesystem, in reality the added network
@@ -71,6 +71,9 @@ SELECT * , split(sep=":", string=last_ip)[0] AS LastIp
 FROM clients()
 WHERE cidr_contains(ip=LastIp, ranges="192.168.1.0/16")
 ```
+
+This query will complete in a few seconds even with a large number of
+clients.
 
 The GUI search bar now can search for IP addresses, and the online
 only filter is much faster as a result!
@@ -107,7 +110,7 @@ expression!
 In 0.6.3 there are now dedicated GUI elements for Regular Expression
 inputs. Special regex patterns such as backslash sequences are
 visually distinct. Additionally the GUI verifies that the regex is
-syntactically correct and offers suggestion. Users can type `?` to
+syntactically correct and offers suggestions. Users can type `?` to
 receive further regular expression suggestions and help them build
 their regex.
 
@@ -124,14 +127,14 @@ keyword search) a full rule needs to be constructed.
 To help with this task, the GUI now presents a specific Yara GUI
 element. Users can press `?` to automatically fill in a skeleton Yara
 rule suitable for a simple keyword match. Additionally, syntax
-highlighting give visual feedback to the validity of the yara syntax.
+highlighting gives visual feedback to the validity of the yara syntax.
 
 ![Entering Yara Rules in the GUI](yara.png)
 
-Additionally, some artifacts allow file upload as a parameter to the
-artifact. This allows users to upload larger inputs for example a
-large Yara rule-set. The content of the file will be made available to
-the VQL running on the client transparently.
+Some artifacts allow file upload as a parameter to the artifact. This
+allows users to upload larger inputs for example a large Yara
+rule-set. The content of the file will be made available to the VQL
+running on the client transparently.
 
 To receive a RegEx GUI selector in your custom artifacts, simply
 denote the parameter's type as `yara`. To allow uploads in your
@@ -150,13 +153,13 @@ the version of Velociraptor etc. This information is used to feed the
 search index and is also displayed in the "VQL drilldown" page of the
 `Host Information` screen.
 
-In the latest release it is possible customize the
+In the latest release it is possible to customize the
 `Generic.Client.Info` artifact and Velociraptor will use the
 customized version instead to interrogate new clients. This allows
-users to add most deployment specific collection to the interrogate
+users to add more deployment specific collections to the interrogate
 flow and customize the "VQL drilldown" page. Simply search for
 `Generic.Client.Info` in the `View Artifact` screen and customize as
-normal.
+needed.
 
 ## Root certificates are now embedded
 
@@ -170,19 +173,22 @@ we do not need to rely on the OS itself.
 
 Additionally Velociraptor will now accept additional root certs
 embedded in its config file (Just add all the certs in PEM format
-under the `Client.Crypto.root_certs` key in the config file). This helps deployments that must use a MITM proxy or traffic inspection.
+under the `Client.Crypto.root_certs` key in the config file). This
+helps deployments that must use a MITM proxy or traffic inspection
+proxies.
 
 {{% notice note "Traffic inspection proxy" %}}
 
-When adding a Root Certificate to the config file, Velociraptor will
-treat that certificate as part of the public PKI roots - therefore you
-will need to have `Client.use_self_signed_ssl` as false.
+When adding a Root Certificate to the configuration file, Velociraptor
+will treat that certificate as part of the public PKI roots -
+therefore you will need to have `Client.use_self_signed_ssl` as false.
 
 This allows Velociraptor to trust the TLS connection - however, bear
 in mind that Velociraptor's internal encryption channel is still
 present! The MITM proxy will not be able to actually decode the data
 nor can it interfere with the communications by injecting or modifying
-data.
+data. Only the outer layer of TLS encryption can be stripped by the
+MITM proxy.
 
 {{% /notice %}}
 
@@ -192,7 +198,9 @@ data.
 
 The `glob` plugin now has a new option: `recursion_callback`. This
 allows much finer control over which directories to visit making file
-searches much more efficient and targeted. To read more about it see [Searching for files]({{< ref "/blog/2022/2022-01-05-searching-for-files-on-linux/" >}}).
+searches much more efficient and targeted. To read more about it see
+[Searching for files]({{< ref
+"/blog/2022/2022-01-05-searching-for-files-on-linux/" >}}).
 
 
 ## Conclusions
@@ -202,7 +210,7 @@ test it widely and report any issues. As an open source project, we
 are grateful for the amazing Velociraptor community for contributions
 in the form of testing, suggestions, documentation and code.
 
-If you liked the new features, take [Velociraptor for a
+If you like the new features, take [Velociraptor for a
 spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
