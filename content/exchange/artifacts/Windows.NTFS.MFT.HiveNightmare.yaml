@@ -1,15 +1,19 @@
 name: Windows.NTFS.MFT.HiveNightmare
 description: |
-  This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to find several files created as part of the POC tooling for HiveNightmare (CVE-2021-36934):
-  
+  This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to
+  find several files created as part of the POC tooling for
+  HiveNightmare (CVE-2021-36934):
+
     - \hive_sam_ - https://github.com/FireFart/hivenightmare
     - \SAM-20 - https://github.com/GossiTheDog/HiveNightmare
     - \SAM-haxx - https://github.com/GossiTheDog/HiveNightmare
     - \Sam.save - PowerShell version
     - \Sam.hive - https://github.com/WiredPulse/Invoke-HiveNightmare
     - C:\windows\temp\sam - https://github.com/cube0x0/CVE-2021-36934
+
   See Florian Roth's rule here:
   - https://github.com/SigmaHQ/sigma/blob/master/rules/windows/file_event/win_hivenightmare_file_exports.yml
+
 author: "Zach Stanford - @svch0st"
 
 parameters:

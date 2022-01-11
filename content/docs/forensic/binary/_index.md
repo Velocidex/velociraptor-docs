@@ -390,12 +390,12 @@ value fields so it is ignored.
 
 {{% notice tip "Using value as a debugging tool" %}}
 
-You can use Value fields for debugging - just use a `log()` statement
-in the lambda to log other fields in the struct.
+You can use Value fields for debugging - just use a `log()` or
+`format()` statement in the lambda to log other fields in the struct.
 
 ```json
 ['Debug', 0, 'Value', {
-   "value": "x=>format='Field %v SizeOf %v', args=[x.Field, x.SizeOf])",
+   "value": "x=>format(format='Field %v SizeOf %v', args=[x.Field, x.SizeOf])",
 }],
 ```
 
@@ -403,7 +403,7 @@ in the lambda to log other fields in the struct.
 
 ### Enumeration
 
-An enumeration is a set of values mapped to named with some
+An enumeration is a set of values mapped to names with some
 meaning. For example, an application might store a value as the
 integer 2, representing "Error", and integer 0 representing "Success".
 
@@ -418,7 +418,11 @@ When the parser encounters a 2, we want it to show "Error".
 
 Note that due to the limitations of JSON, even though the keys in the
 choices dictionary are really ints they need to be encoded as
-strings. Example:
+strings. That is why there is a `map` parameter that has names mapped
+to ints because it looks a bit more natural with JSON.
+
+
+Example:
 
 ```json
   ["NetworkProviderType", 16, "Enumeration", {
@@ -484,7 +488,7 @@ Example:
 }],
 ```
 
-{{% notice warn "Flags uses bit positions" %}}
+{{% notice warning "Flags uses bit positions" %}}
 
 When looking at procedural parsers (or header files), quite often
 flags will be presented as a MASK. For example above you might see
@@ -497,7 +501,8 @@ something like:
 #define FLAG4_MASK 0x08
 ```
 
-Remember that the bitmap above uses bit number instead.
+Remember that the bitmap above uses bit number instead, so e.g. a mask
+of 0x08 represents bit 3.
 
 {{% /notice %}}
 

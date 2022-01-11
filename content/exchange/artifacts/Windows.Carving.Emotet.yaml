@@ -1,18 +1,18 @@
-name: Custom.Windows.Carving.Emotet
+name: Windows.Carving.Emotet
 author: "Eduardo Mattos - @eduardfir"
 description: |
     This artifact yara-scans memory or unpacked DLL samples for the new 2021 Emotet
     detections, decrypts and returns the C2 list.
-    
-    You may select specific file paths or processes to be yara-scanned, or allow 
+
+    You may select specific file paths or processes to be yara-scanned, or allow
     it to yara-scan all memory space.
-    
+
     Currently this artifact parses encrypted configurations from the Emotet variants
-    introducted in November 2021. It will not parse the configurations from earlier 
+    introducted in November 2021. It will not parse the configurations from earlier
     variants.
-    
+
     NOTE:
-    This content simply carves the configuration and does not unpack files on disk. 
+    This content simply carves the configuration and does not unpack files on disk.
     That means pointing this artifact as a packed or obfuscated file will not obtain the expected results.
 type: CLIENT
 
@@ -50,16 +50,16 @@ sources:
 
     query: |
         -- find target files
-        LET targetFiles = SELECT FullPath FROM glob(globs=TargetFileGlob) 
-                
+        LET targetFiles = SELECT FullPath FROM glob(globs=TargetFileGlob)
+
         -- find velociraptor process
-        LET me <= SELECT Pid 
+        LET me <= SELECT Pid
                   FROM pslist(pid=getpid())
-        
+
         -- find all processes and add filters
         LET processes <= SELECT Name AS ProcessName, CommandLine, Pid
                         FROM pslist()
-                        WHERE Name =~ ProcessRegex 
+                        WHERE Name =~ ProcessRegex
                             AND format(format="%d", args=Pid) =~ PidRegex
                             AND NOT Pid in me.Pid
         -- scan processes in scope with our DetectionYara
@@ -82,24 +82,24 @@ sources:
                                                     FROM yara(files=FullPath, rules=DetectionYara)
                                                 },
                                                 b={ -- yara miss
-                                                    SELECT FullPath, Null AS YaraRule 
+                                                    SELECT FullPath, Null AS YaraRule
                                                     FROM targetFiles
                                                 })
                                         },
                                         else={ -- no yara detection run
-                                            SELECT FullPath, 'N/A' AS YaraRule 
+                                            SELECT FullPath, 'N/A' AS YaraRule
                                             FROM targetFiles
                                         })
                              })
-        -- return the VAD region size from yara detections for later use                         
-        LET regionDetections = SELECT * 
+        -- return the VAD region size from yara detections for later use
+        LET regionDetections = SELECT *
                                 FROM foreach(row=processDetections,
                                     query={
                                         SELECT YaraRule, Pid, ProcessName, CommandLine, Address as EmotetBaseOffset, Size AS VADSize
                                         FROM vad(pid=Pid)
                                         WHERE Protection =~ "xrw"
                                 })
-        
+
         -- get data from the whole PE
         LET peData <= SELECT * FROM if(condition=TargetFileGlob,
                                         then={ -- query files
@@ -112,12 +112,12 @@ sources:
                                                 read_file(filename=str(str=Pid), accessor='process', offset=EmotetBaseOffset, length=VADSize) AS PEData
                                             FROM regionDetections
                                         })
-                                        
+
         -- return .data section info
         LET sectionInfo <= SELECT *,
                                 parse_pe(file=PEData, accessor="data").Sections[2] AS DataSections
                            FROM peData
-                           
+
         -- read the data from .data sections
         LET sectionData <= SELECT *,
                                 read_file(filename=PEData, accessor="data", offset=DataSections.FileOffset, length=DataSections.Size) AS EmotetDataSectionData
@@ -134,7 +134,7 @@ sources:
                                     ]
                                 ]
                             ]''', struct="EmotetC2Config") AS EmotetEncodedC2Conf
-                          FROM sectionData  
+                          FROM sectionData
 
         -- format the decrypted configurations
         SELECT * FROM if(condition=TargetFileGlob,

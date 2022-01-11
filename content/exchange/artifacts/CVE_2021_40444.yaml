@@ -1,15 +1,17 @@
-name: Custom.Windows.Registry.CVE_2021_40444
+name: Windows.Registry.CVE_2021_40444
 author: Matt Green - @mgreen27
 description: |
-    This artifact will enable both application and removal of the reccomended
-    mitigation for CVE-2021-40444.
+    This artifact will enable both application and removal of the
+    reccomended mitigation for CVE-2021-40444.
 
-    Disabling the installation of all ActiveX controls in Internet Explorer
-    mitigates this attack. This can be accomplished for all sites by updating
-    the registry. Previously-installed ActiveX controls will continue to run,
-    but do not expose this vulnerability.
+    Disabling the installation of all ActiveX controls in Internet
+    Explorer mitigates this attack. This can be accomplished for all
+    sites by updating the registry. Previously-installed ActiveX
+    controls will continue to run, but do not expose this
+    vulnerability.
 
-    To disable installing ActiveX controls in Internet Explorer in all zones
+    To disable installing ActiveX controls in Internet Explorer in all
+    zones
 
     ```
     [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\0]

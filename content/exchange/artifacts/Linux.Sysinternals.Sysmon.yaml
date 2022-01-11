@@ -2,11 +2,12 @@ name: Linux.Sysinternals.Sysmon
 author: Wes Lambert -- @therealwlambert
 description: |
   Parses syslog for Sysmon events on Linux
-  
+
   **Reference**: https://github.com/Sysinternals/SysmonForLinux
 
-  This artifact can also be modified to forward events (as a client event artifact), similar to Windows.Sysinternals.SysmonLogForward.
-  
+  This artifact can also be modified to forward events (as a client
+  event artifact), similar to Windows.Sysinternals.SysmonLogForward.
+
 type: CLIENT
 
 precondition: SELECT OS From info() where OS = 'linux'
@@ -27,7 +28,7 @@ parameters:
     description: "Parse events on or before this date (YYYY-MM-DDTmm:hh:ssZ)"
   - name: IDRegex
     default: "."
-    
+
 sources:
   - queries:
       # Basic syslog parsing via GROK expressions.
@@ -47,7 +48,7 @@ sources:
            Event.System.EventRecordID AS EventRecordID,
            Event.System.EventID AS EventID,
            Event.System.Computer AS Computer,
-           Event.System AS System, 
+           Event.System AS System,
            to_dict(item={SELECT AttrName AS _key, `#text` AS _value FROM Event.EventData.Data}) AS EventData
          FROM ParsedEvents
          WHERE

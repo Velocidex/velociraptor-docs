@@ -2,35 +2,37 @@ name: Generic.Detection.Log4jVulnHunter
 author: "Matt Green - @mgreen27"
 description: |
     This artifact searches for Vulnerable log4j libraries.
-    
-    The artifact:  
-    
+
+    The artifact:
+
     * firstly searches for jar, war and ear files
-    * then recursively checks content by name then hash for vulnerable versions.
+    * then recursively checks content by name then hash for vulnerable
+      versions.
     * reports hit details.
-    
-    The artifact is optimised to recursively search through embedded jar,war and 
-    ear files by extracting any discovered jar containers to a tempfile on disk.   
-    Select UploadHits to upload Discovered file for further analysis.  
-    It is recommended to increase default artifact timeout for large servers or 
-    target glob.
+
+    The artifact is optimised to recursively search through embedded
+    jar,war and ear files by extracting any discovered jar containers
+    to a tempfile on disk.  Select UploadHits to upload Discovered
+    file for further analysis.  It is recommended to increase default
+    artifact timeout for large servers or target glob.
 
     Some examples of path glob may include:
-    
+
     * Specific container: `/path/here/log4j-core-2.0-alpha2.jar`
     * Wildcards: `/var/www/*.{jar,war,ear}`
     * More wildcards: `/var/www/**/*.jar`
     * Windows: `C:/**/*.jar`
-    
-    NOTE: this artifact runs the glob plugin with the nosymlink switch turned on. 
-    This will NOT follow any symlinks and may cause unexpected results if 
-    unknowingly targeting a folder with symlinks.
-    
+
+    NOTE: this artifact runs the glob plugin with the nosymlink switch
+    turned on.  This will NOT follow any symlinks and may cause
+    unexpected results if unknowingly targeting a folder with
+    symlinks.
+
 reference:
   - https://www.lunasec.io/docs/blog/log4j-zero-day/
   - https://github.com/lunasec-io/lunasec/blob/master/tools/log4shell/findings.json
   - https://github.com/mubix/CVE-2021-44228-Log4Shell-Hashes
-  
+
 parameters:
   - name: TargetGlob
     default: "**/*.{jar,war,ear}"
@@ -157,30 +159,30 @@ parameters:
         log4j-core-2.8.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
         log4j-core-2.9.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
         log4j-core-2.9.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
-        
+
 sources:
   - query: |
       -- this section searches by filename and hashes hits
       LET target_files = SELECT * FROM glob(globs=TargetGlob,nosymlink=True)
-      
+
       -- recursive search function
       LET Recurse(File, OriginalFile, Container, RecursionRounds) = SELECT * FROM foreach(
                 row={
-                    SELECT * 
+                    SELECT *
                     FROM glob(accessor="zip", root=url(path=File, scheme="file"), globs="/**")
                     WHERE NOT IsDir AND Size > 0
-                }, 
+                },
                 query={
                     SELECT *
                       FROM if(condition=Name =~ ".(jar|war|ear)$",
                             then={
                                 SELECT * FROM Recurse(
                                     OriginalFile=OriginalFile + "/" + url(parse=FullPath).Fragment,
-                                    File=copy(dest=tempfile(extension=".zip", remove_last=TRUE), 
+                                    File=copy(dest=tempfile(extension=".zip", remove_last=TRUE),
                                         accessor="zip", filename=FullPath),
                                     Container=Container, RecursionRounds = RecursionRounds + 1)
                                 WHERE RecursionRounds < MaxRecursions
-                                
+
                             },
                             else={
                               SELECT * FROM switch(
@@ -189,9 +191,9 @@ sources:
                                         'Path detection' as Description,
                                         Name, url(parse=FullPath).Fragment AS ZipPath, OriginalFile,
                                         hash(path=FullPath,accessor='zip').SHA256 as SHA256h
-                                    FROM scope() 
-                                    WHERE ZipPath in IocLookupTable.FilePath 
-                                        OR basename(path=ZipPath) in IocLookupTable.JarName 
+                                    FROM scope()
+                                    WHERE ZipPath in IocLookupTable.FilePath
+                                        OR basename(path=ZipPath) in IocLookupTable.JarName
                                         OR basename(path=Container) in IocLookupTable.JarName
                                 },
                                 hash={
@@ -199,8 +201,8 @@ sources:
                                         'Hash detection' as Description,
                                         Name, url(parse=FullPath).Fragment AS ZipPath, OriginalFile, Size,
                                         hash(path=FullPath,accessor='zip').SHA256 as SHA256h
-                                    FROM scope() 
-                                    WHERE SHA256h in IocLookupTable.SHA256 
+                                    FROM scope()
+                                    WHERE SHA256h in IocLookupTable.SHA256
                                         OR SHA256h in IocLookupTable.JndiSHA256
 
                                 })
@@ -209,27 +211,27 @@ sources:
 
       -- CVE lookup
       LET find_cve(hash,originalfile) = if(condition= hash in IocLookupTable.SHA256,
-                then= { 
-                    SELECT Version,Cve,Severity 
-                    FROM IocLookupTable 
+                then= {
+                    SELECT Version,Cve,Severity
+                    FROM IocLookupTable
                     WHERE SHA256 = hash
-                    GROUP BY Version,Cve,Severity 
+                    GROUP BY Version,Cve,Severity
                 },
             else= if(condition= basename(path=originalfile) in IocLookupTable.JarName,
-                then= { 
-                    SELECT Version,Cve,Severity 
-                    FROM IocLookupTable 
+                then= {
+                    SELECT Version,Cve,Severity
+                    FROM IocLookupTable
                     WHERE basename(path=originalfile) = JarName
-                    GROUP BY Version,Cve,Severity 
+                    GROUP BY Version,Cve,Severity
                 }))[0]
-      
+
       -- find hits
-      LET hits <= SELECT 
+      LET hits <= SELECT
                 Container as FullPath,
                 if(condition= Container=OriginalFile,
                     then= Null,
                     else= OriginalFile ) as Embedded,
-                if(condition= Description=~ 'Hash', 
+                if(condition= Description=~ 'Hash',
                     then= format(format='%s: %s',args=[Description, SHA256h]),
                 else= if(condition= basename(path=Container) in IocLookupTable.JarName,
                     then = format(format='%s: %s',args=[Description, Container]),
@@ -248,7 +250,7 @@ sources:
                 WHERE CVEDetails
                 LIMIT 1
             })
-        
+
       -- upload files that have hits
       LET upload_hits=SELECT *,
             upload(file=FullPath) AS Upload

@@ -1,10 +1,13 @@
 name: Windows.Applications.FTKImager
 description: |
-    Create an E01 Image of the C drive using FTK Imager (Command Line Version)
-    
-    SourceDriveToImage usually will be 0 (as in \\.\PHYSICALDRIVE0) for the C: drive, on a Windows system.
-    
-    If you intend to image the secondary drive, use, for example, SourceDriveToImage = 1, for \\.\PHYSICALDRIVE1
+    Create an E01 Image of the C drive using FTK Imager (Command Line
+    Version)
+
+    SourceDriveToImage usually will be 0 (as in \\.\PHYSICALDRIVE0)
+    for the C: drive, on a Windows system.
+
+    If you intend to image the secondary drive, use, for example,
+    SourceDriveToImage = 1, for \\.\PHYSICALDRIVE1
 
 author: Eduardo Mattos - @eduardfir
 
@@ -22,7 +25,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 parameters:
   - name: SourceDriveToImage
     default: "0"
-    
+
   - name: OutputPath
     default: "D:\\E01"
 

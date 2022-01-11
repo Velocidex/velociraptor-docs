@@ -1,21 +1,23 @@
 name: Windows.Bulk.File
 author: Matt Green - @mgreen27
 description: |
-    Search for some simple bulk File IOCs and upload if desired.   
-    Typical upload workflow may be to firstly search, then if returned 
-    rows match expectations rerun query with upload tickbox selected.  
-    NOTE: strings with comma "," requre quotes.  
+    Search for some simple bulk File IOCs and upload if desired.
+    Typical upload workflow may be to firstly search, then if returned
+    rows match expectations rerun query with upload tickbox selected.
 
-    IocLookupTable csv details:  
-    Glob - "Quote" items with { glob } barckets.  
-    Whitelist - Velociraptor regex to whitelist FullPath field.  
-    Description - Free text  
+    NOTE: strings with comma "," requre quotes.
+
+    IocLookupTable csv details:
+
+    Glob - "Quote" items with { glob } barckets.
+    Whitelist - Velociraptor regex to whitelist FullPath field.
+    Description - Free text
 
 parameters:
   - name: UploadHits
-    description: Upload hits to server. 
+    description: Upload hits to server.
     type: bool
-    
+
   - name: IocLookupTable
     type: csv
     default: |
@@ -43,7 +45,7 @@ sources:
       LET hits = SELECT * FROM foreach(
             row=IocLookupTable,
             query={
-                SELECT 
+                SELECT
                     FullPath,
                     Name,
                     Description,
@@ -56,15 +58,15 @@ sources:
                     hash(path=FullPath) as Hash
                 FROM glob(globs=Glob)
                 WHERE NOT IsDir
-                    AND NOT if(condition=Whitelist, 
+                    AND NOT if(condition=Whitelist,
                         then=FullPath =~ Whitelist,
                         else=FALSE)
             })
-            
+
       -- upload hits
       LET upload_hits = SELECT *, upload(file=FullPath) FROM hits
-      
-      -- output rows 
+
+      -- output rows
       SELECT * FROM if(condition=UploadHits,
             then= upload_hits,
             else= hits)

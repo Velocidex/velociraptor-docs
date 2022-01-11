@@ -1,17 +1,18 @@
 name: Windows.System.PrinterDriver
 author: Matt Green - @mgreen27
 description: |
-   This artifact will enumerate installed PrintDrivers using the Win32_PrinterDriver 
-   wmi class and parse each DriverPath, ConfigFile and DataFile.
-   
-   Hunt by searching for untrusted binaries or suspicious removed binararies for 
-   evidence of previous exploitation.
-   
+   This artifact will enumerate installed PrintDrivers using the
+   Win32_PrinterDriver wmi class and parse each DriverPath, ConfigFile
+   and DataFile.
+
+   Hunt by searching for untrusted binaries or suspicious removed
+   binararies for evidence of previous exploitation.
+
 type: CLIENT
 
 sources:
   - query: |
-      LET Win32_PrinterDrivers = SELECT 
+      LET Win32_PrinterDrivers = SELECT
             split(string=Name, sep=',')[0] as Name,
             SupportedPlatform,
             Version,
@@ -19,15 +20,15 @@ sources:
             ConfigFile,
             DataFile
           FROM wmi(query='SELECT * FROM Win32_PrinterDriver',namespace='root/CIMV2')
-    
+
       SELECT * FROM Win32_PrinterDrivers
 
   - name: BinaryCheck
     query: |
-      SELECT 
+      SELECT
             lowcase(string=Binary) as Binary,
             array(a1={
-                SELECT Name FROM Win32_PrinterDrivers 
+                SELECT Name FROM Win32_PrinterDrivers
                 WHERE ( DriverPath = Binary OR ConfigFile = Binary OR DataFile = Binary )
             }) as DriverNames,
             hash(path=Binary) as Hash,
@@ -35,15 +36,15 @@ sources:
             authenticode(filename=Binary) as Authenticode
       FROM chain(
             a={
-                SELECT Name, DriverPath as Binary, 'DriverPath' as Type 
+                SELECT Name, DriverPath as Binary, 'DriverPath' as Type
                 FROM Win32_PrinterDrivers
             },
             b={
-                SELECT Name as DriverName, ConfigFile as Binary, 'ConfigFile' as Type 
+                SELECT Name as DriverName, ConfigFile as Binary, 'ConfigFile' as Type
                 FROM Win32_PrinterDrivers
             },
             c={
-                SELECT Name as DriverName, DataFile as Binary, 'DataFile' as Type 
+                SELECT Name as DriverName, DataFile as Binary, 'DataFile' as Type
                 FROM Win32_PrinterDrivers
             })
       GROUP BY lowcase(string=Binary)

@@ -1,25 +1,24 @@
-name: Custom.Windows.EventLogs.RecordIDCheck
+name: Windows.EventLogs.RecordIDCheck
 author: Matt Green - @mgreen27
 description: |
-  This artifact will compare EventLog records and report on abnormalities 
-  in RecordID sequence and optional time gap. The artifact can be used for both 
-  hunting, remote or local analysis.
-  
-  There are several parameter's available.  
-    - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.  
-    - PathRegex enables filtering on evtx path for specific log targetting.  
-    - DateAfter enables search for events after this date.  
-    - DateBefore enables search for events before this date.  
-    - MaxTimeDifference enables flaging temporal gaps between Events. Note also potential false positives on machines turned off.  
+  This artifact will compare EventLog records and report on
+  abnormalities in RecordID sequence and optional time gap. The
+  artifact can be used for both hunting, remote or local analysis.
+
+  There are several parameter's available.
+    - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.
+    - PathRegex enables filtering on evtx path for specific log targetting.
+    - DateAfter enables search for events after this date.
+    - DateBefore enables search for events before this date.
+    - MaxTimeDifference enables flaging temporal gaps between Events. Note also potential false positives on machines turned off.
     - SearchVSS enables searching over VSS
 
-    Note:  
-    Please use with caution this artifact can potentially be heavy on the endpoint.
-    Temporal analysis is turned off by default due to potential for false positives 
-    during machine shutdown. Sequential false positives may also occur very 
-    occasionally.
-    
-    version: 0.6.1 
+  Note: Please use with caution this artifact can potentially be heavy
+  on the endpoint.  Temporal analysis is turned off by default due to
+  potential for false positives during machine shutdown. Sequential
+  false positives may also occur very occasionally.
+
+  version: 0.6.1
 
 parameters:
   - name: EvtxGlob
@@ -54,7 +53,7 @@ sources:
                 then= stamp > DateAfter,
                 else= True
             )))
-            
+
       -- create dict for previous results.
       LET EvtxPath<=dict(FullPath='',RecordID='',EventTime='')
 
@@ -89,12 +88,12 @@ sources:
                     System.EventRecordID - EvtxPath.OLDRecordID as _RecordIDSequence,
                     EvtxPath.OLDFullPath as _OLDFullPath
                 FROM parse_evtx(filename=FullPath)
-                WHERE 
+                WHERE
                     time_test(stamp=SecondEventTime)
             }
           )
 
-      -- include VSS 
+      -- include VSS
       LET include_vss = SELECT * FROM foreach(row=fspaths,
             query={
                 SELECT *
@@ -108,7 +107,7 @@ sources:
       LET exclude_vss = SELECT *
         FROM evtxsearch(PathList={SELECT FullPath FROM fspaths})
       -- return rows
-      SELECT *, 
+      SELECT *,
         SecondEventTime.Unix - FirstEventTime.Unix as SecondsGap,
         if(condition= NOT _RecordIDSequence=1,
                 then= "EventRecordID not sequential",
@@ -118,8 +117,8 @@ sources:
         else=exclude_vss)
       WHERE _RecordIDSequence
         AND FullPath = _OLDFullPath
-        AND 
+        AND
             ( if(condition=MaxTimeDifference,
                 then= SecondsGap > int(int=MaxTimeDifference),
-                else= False) 
+                else= False)
             OR NOT _RecordIDSequence=1 )
