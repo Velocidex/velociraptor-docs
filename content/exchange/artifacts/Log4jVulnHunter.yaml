@@ -163,7 +163,10 @@ parameters:
 sources:
   - query: |
       -- this section searches by filename and hashes hits
-      LET target_files = SELECT * FROM glob(globs=TargetGlob,nosymlink=True)
+      LET target_files = SELECT * 
+        FROM if(condition=version(plugin='glob') >= 2,
+            then={ SELECT * FROM glob(globs=TargetGlob,recursion_callback='x=>x.IsLink OR x.Data.DevMajor > 7') },
+            else={ SELECT * FROM glob(globs=TargetGlob,nosymlink=True) })
 
       -- recursive search function
       LET Recurse(File, OriginalFile, Container, RecursionRounds) = SELECT * FROM foreach(
