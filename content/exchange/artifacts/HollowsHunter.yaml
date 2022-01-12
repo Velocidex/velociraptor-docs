@@ -1,4 +1,4 @@
-name: Custom.Windows.Memory.HollowsHunter
+name: Windows.Memory.HollowsHunter
 description: |
    Use hollows_hunter to detect suspicious process injections.
 

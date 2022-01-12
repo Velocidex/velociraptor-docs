@@ -1,6 +1,7 @@
 name: Windows.ETW.AMSI
 description: |
     This artifact uses the ETW provider:
+
     (Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}
 
 type: CLIENT_EVENT
@@ -15,16 +16,16 @@ parameters:
     description: "Application name Regex to enable filtering on source."
     default: .
 
-    
+
 sources:
   - query: |
       -- collect a small cache of process information for enrichment
       LET proc = cache(key='Pid', period=600,
         query={
-            SELECT Pid, Name, Exe,CommandLine, Username,TokenIsElevated 
+            SELECT Pid, Name, Exe,CommandLine, Username,TokenIsElevated
             FROM pslist()
         })
- 
+
       -- watch ETW provider and first round data manipulation
       LET hits = SELECT *,
           timestamp(epoch=timestamp(string=System.TimeStamp).unix) as EventTime,
@@ -45,9 +46,8 @@ sources:
                 source=EventData.Content,re='^0x',replace=''))
         ) as Content
       FROM hits
-      WHERE 
+      WHERE
         Content =~ IocRegex
         AND if(condition= WhitelistRegex,
             then= NOT Content =~ WhitelistRegex,
             else= True)
-            

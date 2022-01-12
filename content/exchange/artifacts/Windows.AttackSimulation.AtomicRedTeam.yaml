@@ -1,23 +1,40 @@
-name: Custom.AttackSimulation.AtomicRedTeam
+name: Windows.AttackSimulation.AtomicRedTeam
 author: Wes Lambert -- @therealwlambert
 description: |
-    This artifact allows you to run Atomic Red Team tests on Windows endpoints using Invoke-AtomicRedTeam. Linux and MacOS endpoints will soon be supported. 
-    
-    NOTE: All tests may not work out OOB. You may notice interference or inoperability of some tests with Windows Defender/antivirus/EDR enabled. Best-effort checks are made using the built-in **-GetPreReqs** flag. This is an initial PoC, and as such, much testing is needed, and feedback is welcome.
-    
-    **Reference:**
-   
-    https://github.com/redcanaryco/invoke-atomicredteam
-    
-    **Description:**
-    
-    Invoke-AtomicRedTeam is a PowerShell module to execute tests as defined in the atomics folder of Red Canary's Atomic Red Team project. The "atomics folder" contains a folder for each Technique defined by the MITRE ATT&CK™ Framework. Inside of each of these "T#" folders you'll find a yaml file that defines the attack procedures for each atomic test as well as an easier to read markdown (md) version of the same data.
+    This artifact allows you to run Atomic Red Team tests on Windows
+    endpoints using Invoke-AtomicRedTeam. Linux and MacOS endpoints
+    will soon be supported.
 
-    - Executing atomic tests may leave your system in an undesirable state. You are responsible for understanding what a test does before executing.
+    NOTE: All tests may not work out OOB. You may notice interference
+    or inoperability of some tests with Windows Defender/antivirus/EDR
+    enabled. Best-effort checks are made using the built-in
+    **-GetPreReqs** flag. This is an initial PoC, and as such, much
+    testing is needed, and feedback is welcome.
+
+    **Reference:**
+
+    https://github.com/redcanaryco/invoke-atomicredteam
+
+    **Description:**
+
+    Invoke-AtomicRedTeam is a PowerShell module to execute tests as
+    defined in the atomics folder of Red Canary's Atomic Red Team
+    project. The "atomics folder" contains a folder for each Technique
+    defined by the MITRE ATT&CK™ Framework. Inside of each of these
+    "T#" folders you'll find a yaml file that defines the attack
+    procedures for each atomic test as well as an easier to read
+    markdown (md) version of the same data.
+
+    - Executing atomic tests may leave your system in an undesirable
+      state. You are responsible for understanding what a test does
+      before executing.
 
     - Ensure you have permission to test before you begin.
 
-    - It is recommended to set up a test machine for atomic test execution that is similar to the build in your environment. Be sure you have your collection/EDR solution in place, and that the endpoint is checking in and active.
+    - It is recommended to set up a test machine for atomic test
+      execution that is similar to the build in your environment. Be
+      sure you have your collection/EDR solution in place, and that
+      the endpoint is checking in and active.
 
 type: CLIENT
 
@@ -30,21 +47,21 @@ parameters:
       description: Install AtomicRedTeam Execution Framework (Choose this for the first run, then de-select thereafter)
       default: Y
       type: bool
-      
+
     - name: ExecutionLogFile
       description: Path to log file (CSV) for executions by ART tests
       default: C:\Windows\Temp\ARTExec.csv
-    
+
     - name: RemoveExecLog
       description: Remove execution log before running artifact (in the event we don't want to intertwine results from previous tests)
       default: Y
       type: bool
-    
+
     - name: Cleanup
       description: Clean up execution artifacts
       default: Y
       type: bool
- 
+
     - name: RunAll
       description: NOT RECOMMENDED...USE WITH CAUTION - Run all ART tests
       default: N
@@ -3484,18 +3501,18 @@ sources:
      T1566.001 - 2,Invoke-AtomicTest T1566.001 -TestNumbers 2
      ''')
      LET CommandsToRun <= if(condition=RunAll, then='''Invoke-AtomicTest All -Confirm:$false''', else={ SELECT Command FROM CommandTable WHERE get(field=Flag)})
-     
+
      LET RemoveLog <= if(condition=RemoveExecLog, then={ SELECT * FROM execve(argv=["powershell.exe", "Remove-Item", ExecutionLogFile])})
 
      LET InstallART <= if(condition=InstallART, then={ SELECT * FROM execve(argv=[   'powershell.exe', '-exec', 'bypass',
                                                 '-Command', "IEX (IWR https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1 -UseBasicParsing); Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser; Install-AtomicRedTeam -getAtomics -F"
                                             ])})
-     
-     LET JustDoIt <= SELECT * FROM foreach(row=CommandsToRun, query={ 
-            SELECT * FROM execve(argv=[   'powershell.exe', '-exec', 'bypass', 
+
+     LET JustDoIt <= SELECT * FROM foreach(row=CommandsToRun, query={
+            SELECT * FROM execve(argv=[   'powershell.exe', '-exec', 'bypass',
                                                 '-Command', '''Import-Module "C:\AtomicRedTeam\invoke-atomicredteam\Invoke-AtomicRedTeam.psd1" -Force; ''' + Command + ''' -GetPreReqs; ''' + Command + ''' -ExecutionLogPath ''' + ExecutionLogFile + ''';''' + if(condition=Cleanup, then=Command + ''' -Cleanup''', else='''''')
                                             ])}
-        
+
      )
 
      SELECT `Execution Time (UTC)`, `Execution Time (Local)`, '[' + Technique + '](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/' + Technique + '/' + Technique + '.md)' AS Technique, `Test Number`, `Test Name`, Hostname, Username, GUID FROM parse_csv(accessor="file", filename=ExecutionLogFile)

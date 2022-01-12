@@ -1,7 +1,8 @@
 name: Windows.Applications.DIEC
 description: |
-    Execute DetectItEasy (console version) on specified paths and return rows of results
-    to hunt/filter on binaries based types of files (E.g.: Packed binaries and its packers)
+    Execute DetectItEasy (console version) on specified paths and
+    return rows of results to hunt/filter on binaries based types of
+    files (E.g.: Packed binaries and its packers)
 
 author: Eduardo Mattos - @eduardfir
 
@@ -19,7 +20,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 parameters:
   - name: TargetGlob
     default: C:\Users\**\*.{exe,dll}
- 
+
   - name: EntropyScan
     type: bool
 
@@ -29,17 +30,17 @@ sources:
         LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="DIEC", IsExecutable=FALSE)
         LET TmpDir <= tempdir(remove_last=TRUE)
         LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
-        
+
         LET Targets <= SELECT FullPath FROM glob(globs=TargetGlob)
-        
+
         -- execute DIEC
         LET ExecDIEC <= SELECT * FROM if(condition=EntropyScan,
                         then={ -- execute EntropyScan
                             SELECT * FROM foreach(row=Targets,
-                                query={ 
-                                    SELECT parse_json(data=Stdout) as DiecOutput, FullPath 
+                                query={
+                                    SELECT parse_json(data=Stdout) as DiecOutput, FullPath
                                     FROM execve(argv=[
-                                        TmpDir + "/die_win64_portable/diec.exe", 
+                                        TmpDir + "/die_win64_portable/diec.exe",
                                         "-e",
                                         "-j",
                                         FullPath])
@@ -47,29 +48,29 @@ sources:
                         },
                         else={ -- execute DeepScan
                             SELECT * FROM foreach(row=Targets,
-                                query={ 
-                                    SELECT parse_json(data=Stdout) as DiecOutput, FullPath 
+                                query={
+                                    SELECT parse_json(data=Stdout) as DiecOutput, FullPath
                                     FROM execve(argv=[
-                                        TmpDir + "/die_win64_portable/diec.exe", 
+                                        TmpDir + "/die_win64_portable/diec.exe",
                                         "-d",
                                         "-j",
                                         FullPath])
                                 })
                         })
-                        
+
         -- format the output according to selected scan type
         SELECT * FROM if(condition=EntropyScan,
             then={
-                SELECT 
-                    DiecOutput.records as Records, 
+                SELECT
+                    DiecOutput.records as Records,
                     DiecOutput.status as Status,
                     DiecOutput.total as Entropy,
                     FullPath
                 FROM ExecDIEC
             },
             else={
-                SELECT 
-                    dict(Arch=DiecOutput.arch, 
+                SELECT
+                    dict(Arch=DiecOutput.arch,
                     Endianess=DiecOutput.endianess,
                     FileType=DiecOutput.filetype,
                     Mode=DiecOutput.mode,

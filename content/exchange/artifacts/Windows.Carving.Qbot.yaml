@@ -1,19 +1,21 @@
-name: Custom.Windows.Carving.Qbot
+name: Windows.Carving.Qbot
 author: "Eduardo Mattos - @eduardfir"
 description: |
-    This artifact yara-scans memory or unpacked DLL samples for Qbot (or Qakbot)
-    detections, decrypts and returns the botnet and C2 configurations.
-    
-    You may select specific file paths or processes to be yara-scanned, or allow 
-    it to yara-scan all memory space.
-    
-    Currently this artifact parses encrypted configurations from the Qbot variant
-    introducted in April 2021. It will not parse the configurations from earlier 
-    variants.
-    
-    NOTE:
-    This content simply carves the configuration and does not unpack files on disk. 
-    That means pointing this artifact as a packed or obfuscated file will not obtain the expected results.
+    This artifact yara-scans memory or unpacked DLL samples for Qbot
+    (or Qakbot) detections, decrypts and returns the botnet and C2
+    configurations.
+
+    You may select specific file paths or processes to be
+    yara-scanned, or allow it to yara-scan all memory space.
+
+    Currently this artifact parses encrypted configurations from the
+    Qbot variant introducted in April 2021. It will not parse the
+    configurations from earlier variants.
+
+    NOTE: This content simply carves the configuration and does not
+    unpack files on disk.  That means pointing this artifact as a
+    packed or obfuscated file will not obtain the expected results.
+
 type: CLIENT
 
 reference:
@@ -52,16 +54,16 @@ sources:
 
     query: |
         -- find target files
-        LET targetFiles = SELECT FullPath FROM glob(globs=TargetFileGlob) 
-                
+        LET targetFiles = SELECT FullPath FROM glob(globs=TargetFileGlob)
+
         -- find velociraptor process
-        LET me <= SELECT Pid 
+        LET me <= SELECT Pid
                   FROM pslist(pid=getpid())
-        
+
         -- find all processes and add filters
         LET processes <= SELECT Name AS ProcessName, CommandLine, Pid
                         FROM pslist()
-                        WHERE Name =~ ProcessRegex 
+                        WHERE Name =~ ProcessRegex
                             AND format(format="%d", args=Pid) =~ PidRegex
                             AND NOT Pid in me.Pid
         -- scan processes in scope with our DetectionYara
@@ -84,24 +86,24 @@ sources:
                                                     FROM yara(files=FullPath, rules=DetectionYara)
                                                 },
                                                 b={ -- yara miss
-                                                    SELECT FullPath, Null AS YaraRule 
+                                                    SELECT FullPath, Null AS YaraRule
                                                     FROM targetFiles
                                                 })
                                         },
                                         else={ -- no yara detection run
-                                            SELECT FullPath, 'N/A' AS YaraRule 
+                                            SELECT FullPath, 'N/A' AS YaraRule
                                             FROM targetFiles
                                         })
                              })
-        -- return the VAD region size from yara detections for later use                         
-        LET regionDetections = SELECT * 
+        -- return the VAD region size from yara detections for later use
+        LET regionDetections = SELECT *
                                 FROM foreach(row=processDetections,
                                     query={
                                         SELECT YaraRule, Pid, ProcessName, CommandLine, Address as QBOTBaseOffset, Size AS VADSize
                                         FROM vad(pid=Pid)
                                         WHERE Protection =~ "xrw"
                                 })
-        
+
         -- get data from the whole PE
         LET peData <= SELECT * FROM if(condition=TargetFileGlob,
                                         then={ -- query files
@@ -114,12 +116,12 @@ sources:
                                                 read_file(filename=str(str=Pid), accessor='process', offset=QBOTBaseOffset, length=VADSize) AS PEData
                                             FROM regionDetections
                                         })
-                                        
+
         -- return .rsrc section info
         LET sectionInfo <= SELECT *,
                                 parse_pe(file=PEData, accessor="data").Sections[3] AS Sectionrsrc
                            FROM peData
-                           
+
         -- read the data from .rsrc sections
         LET sectionData <=  SELECT * FROM if(condition=TargetFileGlob,
                                         then={ -- query files
@@ -134,7 +136,7 @@ sources:
                                                 read_file(filename=PEData, accessor="data", offset=Sectionrsrc.RVA, length=Sectionrsrc.Size) AS QBOTrsrcData
                                            FROM sectionInfo
                                         })
-                           
+
         -- parse the .rsrc sections to extract the rcdata resources containing the encrypted info
         LET parsedRdata = SELECT *,
                             parse_binary(filename=QBOTrsrcData, accessor="data", profile='''[
@@ -144,20 +146,20 @@ sources:
                                         ["Size3719", 108, "uint32", {"length": 4, "term":""}],
                                         ["__prefix2", 112, "String", {"length": 8, "term":""}],
                                         ["Address5812", 120, "uint32", {"length": 4, "term":""}],
-                                        ["Size5812", 124, "uint32", {"length": 4, "term":""}], 
+                                        ["Size5812", 124, "uint32", {"length": 4, "term":""}],
                                         ["Data3719", "x=> x.Address3719 - QBOTrsrcOffSet", "String", {"length": "x=> x.Size3719", "term":""}],
                                         ["Data5812", "x=> x.Address5812 - QBOTrsrcOffSet", "String", {"length": "x=> x.Size5812", "term":""}]
                                     ]
                                 ]
                             ]''', struct="QbotRCData") AS RCDataSections
-                          FROM sectionData  
-                          
-        -- rc4 decrypt the configurations        
+                          FROM sectionData
+
+        -- rc4 decrypt the configurations
         LET decryptedInfo <= SELECT *,
                                 format(format="%x", args=crypto_rc4(key=unhex(string="43a5b0bdb1b829bb796e3dbad916f7185f6a6b1a"), string=RCDataSections.Data5812)) AS DecryptedBotInfo,
                                 format(format="%x", args=crypto_rc4(key=unhex(string="43a5b0bdb1b829bb796e3dbad916f7185f6a6b1a"), string=RCDataSections.Data3719)) AS DecryptedC2Info
                              FROM parsedRdata
-                             
+
         -- format the decrypted configurations
         SELECT * FROM if(condition=TargetFileGlob,
             then= {

@@ -1,4 +1,4 @@
-name: Custom.Windows.Memory.InjectedThread
+name: Windows.Memory.InjectedThread
 author: "Matt Green - @mgreen27"
 description: |
    Use Get-InjetedThreads to detect process injections.

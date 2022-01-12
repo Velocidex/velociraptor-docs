@@ -1,10 +1,10 @@
 name: Windows.Monitor.USBPlugIn
 description: |
-  Monitor for plug in of USB volume. 
-  Output drive letter for additional enrichment artifacts
-  
+  Monitor for plug in of USB volume.  Output drive letter for
+  additional enrichment artifacts
+
 type: CLIENT_EVENT
-        
+
 sources:
   - query: |
       SELECT

@@ -1,8 +1,9 @@
 name: Windows.System.BinaryVersion
 author: "Matt Green - @mgreen27"
 description: |
-   Extract the binary version information for binary files. This artifact will 
-   search the MFT for any matching filenames and return binary information.
+   Extract the binary version information for binary files. This
+   artifact will search the MFT for any matching filenames and return
+   binary information.
 
 parameters:
    - name: TargetBinary
@@ -26,7 +27,7 @@ sources:
             AllDrives='Y',
             FileRegex=TargetLibrary)
 
-      SELECT 
+      SELECT
         FullPath,
         FileName,
         PE.VersionInformation.ProductName as ProductName,
