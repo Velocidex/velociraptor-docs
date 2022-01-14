@@ -11,7 +11,7 @@ reference:
   
 parameters:
   - name: TargetGlob
-    default: "C:\\Users\\**\\*.{xls,xlsm,xlsm,doc,docx,dotm,ppt,pptm}"
+    default: "C:\\Users\\**\\*.{xls,xlsx,xlsm,doc,docx,dotm,ppt,pptm}"
     description: The directory to search for office documents.
   - name: AutoExecRegex
     default: "\\b(?:Auto(?:Exec|_?Open|_?Close|Exit|New)|Document(?:_?Open|_Close|_?BeforeClose|Change|_New)|NewDocument|Workbook(?:_Open|_Activate|_Close|_BeforeClose)|\\w+_(?:Painted|Painting|GotFocus|LostFocus|MouseHover|Layout|Click|Change|Resize|BeforeNavigate2|BeforeScriptExecute|DocumentComplete|DownloadBegin|DownloadComplete|FileDownload|NavigateComplete2|NavigateError|ProgressChange|PropertyChange|SetSecureLockIcon|StatusTextChange|TitleChange|MouseMove|MouseEnter|MouseLeave|OnConnecting))|Auto_Ope\\b"
