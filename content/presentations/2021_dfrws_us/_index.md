@@ -14,6 +14,10 @@ Machine (for example Windows 10, or Windows server edition) with
 administrator level access. You can obtain a suitable VM from your
 favorite cloud provider or run the VM locally.
 
-## The slides are available <a href="https://docs.google.com/presentation/d/165aynAErTyYdymaoqwBuguVXJNia3CdqYSZiL6RJMPM/edit#slide=id.gd3eefa0eac_0_162">here</a>
+## Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PiYPLEjYXnw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Slides
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQPVQPr3TvDJGBTxdFJqG_ZXeNs6pvrBDqNn46levEkJ6HGbVA9Ay33RaTzpXiyaqnQq1Zim3Lh2msf/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
