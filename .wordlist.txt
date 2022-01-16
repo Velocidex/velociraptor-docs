@@ -1292,3 +1292,9 @@ WinFileTime
 bitfield
 bitfields
 struct's
+
+OSDFC
+webshell
+Auscert
+BTV
+DefCon
