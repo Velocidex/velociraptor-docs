@@ -188,6 +188,47 @@ The service can be uninstalled with the following command:
 
 Confirm with `ps -eaf | grep velo` and `sudo launchctl list | grep velo`.
 
+### Linux
+
+The dpkg (Debian)or rpm (Red Hat/CentOS/Fedora) tools can be used to install Velociraptor on
+Linux clients after creating an appropriate package. The following command installs binary & config to /usr/local/sbin.
+Persistence is via launchd (check with `ps -eaf | grep velo` and
+`sudo launchctl list | grep velo`)
+
+#### Debian Package
+Create
+```shell
+# velociraptor --config client.config.yaml debian client
+```
+Install
+```shell
+# sudo dpkg -i velociraptor.deb
+```
+Remove
+```shell
+# sudo apt-get remove velociraptor
+```
+
+#### Red Hat Package
+Create (Most OS variants with systemctl)
+```shell
+# velociraptor --config client.config.yaml rpm client
+```
+Create (OS variant without systemctl)
+```shell
+# velociraptor --config --use_sysv client.config.yaml rpm client
+```
+Install
+```shell
+# sudo rpm -i velociraptor.rpm
+```
+Remove
+```shell
+# sudo rpm -e velociraptor.rpm
+```
+
+
+
 ## Agentless deployment
 
 There has been a lot of interest in "agentless hunting" especially
