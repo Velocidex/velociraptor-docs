@@ -12,6 +12,7 @@ tags:
  - VQL
  - ASEP
  - ETW
+ - T1546.003
 
 
 author: "Matt Green - @mgreen27"
@@ -47,7 +48,7 @@ a filter to a consumer.
 Most detection will focus on collecting the WMI classes in root/subscription 
 and, in some tools root/default WMI namespaces.
 
-![Autoruns 14.07: detects root/detault and root/subscription namespace WMI event consumers](02Autoruns.png)
+![Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers](02Autoruns.png)
 
 
 #### Custom Namespaces
@@ -60,7 +61,7 @@ case, the focus was on Sysmon behaviour of collection only in
 root/subscription, interestingly, it also highlighted the possibility to 
 implement \_\_EventConsumer classes in arbitrary namespaces. 
 
-It is detection of WMI Event Consumers in arbitrary namespaces that im going 
+It is detection of WMI Event Consumers in arbitrary namespaces that I'm going 
 to focus. For anyone interested in testing I have written 
 [a script to generate WMI event consumers](https://github.com/mgreen27/mgreen27.github.io/blob/master/static/other/WMIEventingNoisemaker/WmiEventingNoisemaker.ps1). 
 This script wraps several powershell functions released during the Black 
@@ -79,7 +80,7 @@ Velociraptor has several valuable artifacts for hunting WMI Event
 Consumers: 
 
 * `Windows.Sysinternals.Autoruns` - leverages a thirdparty deployment of 
-Sysinternals Autoruns and typically my goto ASEP collection artifact but 
+Sysinternals Autoruns and typically my go to ASEP collection artifact but 
 limited by visibility in root/default and root/subscription only.
 * `Windows.Persistence.PermanentWMIEvents` - recently upgraded to query 
 all ROOT namespaces.
@@ -127,7 +128,7 @@ WHERE EventId = 11
 
 I have included a completed artifact in the artifact exchange: 
 [Windows.ETW.WMIEventing](https://docs.velociraptor.app/exchange/artifacts/pages/wmieventing/). 
-That artifact includes process enrichment, targetting both creation and deletion of EventConsumers.
+That artifact includes process enrichment, targeting both creation and deletion of EventConsumers.
 
 ![Custom namespace provider registration and process enrichment](06ETW.png)
 
@@ -154,7 +155,7 @@ network in minutes using Velociraptor's "hunt" capability. Similarly
 Velociraptor notebook workflow assists excluding known good entries quickly as part of analysis.
 
 The Velociraptor platform aims to provide visibility and access 
-to endpoint data. If you would like to try Velociraptor it is available on Github under an open source licence. 
+to endpoint data. If you would like to try Velociraptor it is available on Github under an open source license. 
 As always, please file issues on the bug tracker or ask questions on our 
 mailing list velociraptor-discuss@googlegroups.com. You can also chat with 
 us directly on discord at https://www.velocidex.com/discord
