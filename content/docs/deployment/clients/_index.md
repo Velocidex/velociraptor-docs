@@ -212,9 +212,9 @@ Create (Most OS variants with systemctl)
 ```shell
 # velociraptor-vx.x.x-linux-amd64 --config client.config.yaml rpm client
 ```
-Create (OS variants without systemctl and old GLIBC)
+Create (OS variants without systemctl and old GLIBC i.e. CentOS6)
 ```shell
-# velociraptor-vx.x.x-linux-amd64-centos --config --use_sysv client.config.yaml rpm client
+# velociraptor-vx.x.x-linux-amd64-centos --config client.config.yaml rpm client --use_sysv
 ```
 Install
 ```shell
