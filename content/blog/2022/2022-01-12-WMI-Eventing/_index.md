@@ -151,8 +151,7 @@ to the party during an investigation.
 During this post, we have shown three techniques for detecting WMI event consumers 
 that are worth considering. We can collect these data-points over an entire 
 network in minutes using Velociraptor's "hunt" capability. Similarly 
-Velociraptor notebook workflow assists excluding known good entries to the 
-quickly as part of analysis.
+Velociraptor notebook workflow assists excluding known good entries quickly as part of analysis.
 
 The Velociraptor platform aims to provide visibility and access 
 to endpoint data. If you would like to try Velociraptor it is available on Github under an open source licence. 
