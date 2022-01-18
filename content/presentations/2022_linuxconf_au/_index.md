@@ -28,6 +28,10 @@ to build sophisticated alerting around process execution chains,
 network connections and even bash instrumentation of the command line,
 all done at scale with the click of a few buttons.
 
+## Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0Cs4rj-_FD4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Slides
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vS_EFYmZwPF_UCJANczTU7ATNhqPiV9SiN3pLx5hpZIW8HmzgleOhN0Kzq8EKWZGBIGD5E09EoVoIM3/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
