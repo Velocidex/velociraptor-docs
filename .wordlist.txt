@@ -1,5 +1,3 @@
-13GLIBC
-14systemctl
 Aalfaifi
 Abagnale
 aca
@@ -474,6 +472,7 @@ GetShortPathName
 gif
 github
 gitlab
+GLIBC
 GLOBALROOT
 globals
 globbing
@@ -1098,6 +1097,7 @@ syslog
 syslogs
 sysmon
 Sysmon's
+systemctl
 systemd
 SystemLog
 systemLogFile

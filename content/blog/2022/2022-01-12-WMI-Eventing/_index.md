@@ -61,7 +61,7 @@ case, the focus was on Sysmon behaviour of collection only in
 root/subscription, interestingly, it also highlighted the possibility to 
 implement \_\_EventConsumer classes in arbitrary namespaces. 
 
-It is detection of WMI Event Consumers in arbitrary namespaces that i'm going 
+It is detection of WMI Event Consumers in arbitrary namespaces that I'm going 
 to focus. For anyone interested in testing I have written 
 [a script to generate WMI event consumers](https://github.com/mgreen27/mgreen27.github.io/blob/master/static/other/WMIEventingNoisemaker/WmiEventingNoisemaker.ps1). 
 This script wraps several powershell functions released during the Black 
