@@ -1,3 +1,5 @@
+13GLIBC
+14systemctl
 Aalfaifi
 Abagnale
 aca
@@ -163,6 +165,7 @@ ccaXXXXX
 cdn
 cdrom
 cel
+CentOS
 centralised
 centric
 certbot
@@ -892,6 +895,7 @@ proto
 protobuf
 protobufs
 PRs
+ps
 psexe
 PsExec
 psexec
