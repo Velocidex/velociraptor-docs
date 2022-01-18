@@ -1,7 +1,7 @@
 ---
 date: 2018-09-29T04:10:06Z
 description: |
-  I was watching the SANS DFIR Summit 2018 videos on youtube and came
+  I was watching the SANS DFIR Summit 2018 videos on YouTube and came
   across Mari DeGrazia's talk titled "Finding and Decoding Malicious
   Powershell Scripts"
 
@@ -16,7 +16,7 @@ retained for historical purposes.
 
 {{% /notice %}}
 
-I was watching the SANS DFIR Summit 2018 videos on youtube and came
+I was watching the SANS DFIR Summit 2018 videos on YouTube and came
 across Mari DeGrazia\'s talk titled [\"Finding and Decoding Malicious
 Powershell Scripts\"](https://www.youtube.com/watch?v=JWC7fzhvAY8). This
 is an excellent talk and it really contains a wealth of information. It
@@ -287,23 +287,23 @@ no results!
 ![image](powershell3.png)
 
 Why is that? Experienced incident responders would recognize that any
-artifact that works from the HKEY\_USERS registry hive is inherently
-unreliable. This is because the HKEY\_USERS hive is not a real hive -it
+artifact that works from the `HKEY_USERS` registry hive is inherently
+unreliable. This is because the `HKEY_USERS` hive is not a real hive -it
 is a place where Windows mounts the user\'s hive when the user logs in.
 
-How does HKEY\_USERS hive work?
+How does `HKEY_USERS` hive work?
 -------------------------------
 
 Windows implements the concept of user profiles. Each user has a
 personal registry hive that stores user specific settings. It is
 actually a file stored on their home directory called ntuser.dat. When a
 user logs into the workstation, the file may be synced from the domain
-controller and then it is mounted under the HKEY\_USERS\\\<sid\>
+controller and then it is mounted under the `HKEY_USERS\<sid>`
 registry hive.
 
 This means that when the user logs out, their user registry hive is
-unmounted and does not appear in HKEY\_USERS any longer. Any artifacts
-based around the HKEY\_USERS hive will work only if the collection is
+unmounted and does not appear in `HKEY_USERS` any longer. Any artifacts
+based around the `HKEY_USERS` hive will work only if the collection is
 run when a user is logged in.
 
 This is obviously not what we want when we hunt for persistence! We want
@@ -322,7 +322,7 @@ for. Of course this has its limitations, but yara can raise a red flag
 if the signature matches the file, and we can analyse this file more
 carefully later.
 
-In this case, we can not rely on globbing the HKEY\_USER registry hive,
+In this case, we can not rely on globbing the `HKEY_USER` registry hive,
 so maybe we can just search the files that back these hives? We know
 that each user on the system has an NTUSER.DAT file in their home
 directory (usually C:\\\\Users\\\\\<username\>), so let\'s write an
@@ -429,7 +429,7 @@ Velociraptor\'s artifacts we can apply it to files, registry values, and
 raw NTFS files such as locked registry hives and the pagefile.
 
 We also saw some of the inherent problems with relying on the
-HKEY\_USERS registry hive for detection - the hive is only present when
+`HKEY_USERS` registry hive for detection - the hive is only present when
 a user is logged in so when we hunt, we might miss those users who are
 currently logged out. We saw how YARA can be used to detect suspicious
 patterns in raw registry hive files and how artifacts may retrieve those

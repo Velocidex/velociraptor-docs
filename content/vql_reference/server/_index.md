@@ -247,6 +247,13 @@ Sets client metadata.
 Client metadata is a set of free form key/value data (see
 client_metadata() function).
 
+Example:
+
+```vql
+SELECT client_set_metadata(ClientId="C.1234", Foo="Bar")
+FROM scope()
+```
+
 
 
 
@@ -1124,6 +1131,35 @@ really_do_it||bool
 
 Runs query on result batches in parallel.
 
+Normally the source() plugin reads result sets from disk in
+series. This is fine when the result set is not too large but when
+we need to filter a lot of rows at the same time it is better to
+use all cores by reading and filtering in parallel.
+
+The `parallelize()` plugin is a parallel version of `source()`
+which breaks result sets into batches and applies a query over
+each batch in parallel. If you have a multi threaded machine, it
+will be a lot faster.
+
+The query passed to parallelize() will receive a special scope in
+which the `source()` plugin will returns results from a small
+batch of the total. The size of this batch is controlled by the
+`batch` parameter.
+
+This is especially useful when we need to filter rows from a hunt
+- each client's result set will be filtered in parallel on a
+different core.
+
+### Example:
+
+```vql
+SELECT * FROM parallelize(hunt_id=HuntId, artifact=ArtifactName, query={
+   SELECT * FROM source()
+   WHERE FullPath =~ "XYZ"
+})
+```
+
+
 
 
 <div class="vqlargs"></div>
@@ -1316,7 +1352,16 @@ client_id||string (required)
 ## server_set_metadata
 <span class='vql_type pull-right'>Function</span>
 
-Sets client metadata. Client metadata is a set of free form key/value data
+Sets server metadata. Server metadata is a set of free form
+key/value data, usually used for configuration of artifacts.
+
+Example:
+
+```vql
+SELECT server_set_metadata(`Slack Token`="X12233")
+FROM scope()
+```
+
 
 
 

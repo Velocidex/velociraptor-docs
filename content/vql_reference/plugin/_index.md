@@ -302,8 +302,8 @@ Arg | Description | Type
 ----|-------------|-----
 row|A query or slice which generates rows.|LazyExpr (required)
 query|Run this query for each row.|StoredQuery
-async|If set we run all queries asyncronously (implies workers=1000).|bool
-workers|Total number of asyncronous workers.|int64
+async|If set we run all queries asynchronously (implies workers=1000).|bool
+workers|Total number of asynchronous workers.|int64
 column|If set we only extract the column from row.|string
 
 
@@ -1299,8 +1299,8 @@ wide nocase:foo,bar,baz
 When the rule is provided in the above form, the plugin will
 automatically generate a yara rule which matches any of the specified
 keywords. The specification before the `:` means the same thing as the
-yara DSL and the following combinations are supported `wide`, `wide
-ascii`, `wide nocase`, `wide nocase ascii`.
+yara DSL and the following combinations are supported `wide`,
+`wide ascii`, `wide nocase`, `wide nocase ascii`.
 
 
 {{% notice note %}}

@@ -109,7 +109,7 @@ configuration file embedded in it.
 
 Velociraptor already includes a Wix Framework configuration file that
 creates a proper custom MSI with embedded configuration. You can also
-customize this wix file to specify a different service name,
+customize this Wix file to specify a different service name,
 destination location etc.
 
 To do so, follow follow the instructions
@@ -126,9 +126,9 @@ To summarize the process, you will need to:
 2. Update the custom XML for your installation. The README file from
    `docs/wix` steps you through the typical settings to customize.
 
-![Modifying the wix configuration](image36.png)
+![Modifying the Wix configuration](image36.png)
 
-3. Install the [WiX application](http://wixtoolset.org/releases/) on your
+3. Install the [Wix application](http://wixtoolset.org/releases/) on your
    Windows host.
 
 4. Add your custom client.config.xml file and the appropriate Velociraptor

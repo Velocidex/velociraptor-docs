@@ -53,7 +53,7 @@ This submission demonstrates how Velociraptor can be used to automate
 collection, analysis and post processing using a combination of client
 and server artifacts. Justin has also re-purposed the GUI to automate
 further processing of files by signature identification using tools
-such as GENE and CAPA for further triaging.
+such as `GENE` and `CAPA` for further triaging.
 
 ### References:
 

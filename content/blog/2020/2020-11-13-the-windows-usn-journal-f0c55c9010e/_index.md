@@ -118,7 +118,12 @@ You can now easily page through the data viewing the hashes and files that were 
 
 ![](../../img/17fRC-jlP_4VxarLtqfhtMQ.png)
 
-Let’s test querying this local database. I will just pick a random hash and see if my endpoint has this hash. I will simply collect the Windows.Forensics.LocalHashes.Query artifact on my endpoint and configure it to search for the hash f4065c7516d47e6cb5b5f58e1ddd1312. This hash can be entered as a table in the GUI or simply as a comma delimited text field.
+Let’s test querying this local database. I will just pick a random
+hash and see if my endpoint has this hash. I will simply collect the
+Windows.Forensics.LocalHashes.Query artifact on my endpoint and
+configure it to search for the hash
+`f4065c7516d47e6cb5b5f58e1ddd1312`. This hash can be entered as a
+table in the GUI or simply as a comma delimited text field.
 
 ![](../../img/17SU9muB1xlvOuwZ-AGxkPQ.png)
 

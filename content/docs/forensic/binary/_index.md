@@ -15,7 +15,7 @@ questions.
 While binary parsers written in Golang are typically the best options
 for speed and memory efficiency, the need to compile a parser into an
 executable and push it to the endpoint makes it difficult to implement
-ad hoc parsers. Ideally we would like to have a parser fully
+adhoc parsers. Ideally we would like to have a parser fully
 implemented in VQL, so it can be added to an artifact and pushed to
 the endpoint without needing to recompile and rebuild anything.
 

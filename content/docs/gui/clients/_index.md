@@ -52,7 +52,7 @@ The table contains five columns:
 3. The **hostname** reported by the host.
 
 4. The **operating system version**. This indicates if the host is a
-   Windows/Linux/OSX machine and its respective version.
+   Windows/Linux/MacOS machine and its respective version.
 
 5. Any **labels** applied to the host.
 
@@ -227,7 +227,7 @@ arbitrary commands on the endpoint in a dynamic incident response
 operation.
 
 Velociraptor allows running arbitrary shell commands on the endpoint
-using Powershell/Cmd/Bash or ad hoc VQL.
+using Powershell/Cmd/Bash or adhoc VQL.
 
 ![Shell command](image60.png)
 

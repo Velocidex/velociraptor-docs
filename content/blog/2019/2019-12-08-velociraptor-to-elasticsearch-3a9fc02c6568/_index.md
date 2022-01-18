@@ -103,4 +103,13 @@ Now you can do all the data reshaping/filtering/enriching that your heart desire
 
 ## Conclusions
 
-By integrating Velociraptor with the mature and widely-adopted Elastic Stack we can achieve significant scalability benefits. This also means that Velociraptor data can be made available to analysts who may not have the time or inclination to learn yet another tool. Having the data in Elastic also allows us to leverage the many excellent analysis and detection tools that have blossomed around the Elastic ecosystem, as well as make use of existing organisational expertise in these tools. The data can furthermore be enriched, combined and correlated with data from a wide variety of security tools that make use of Elastic as a data backend.
+By integrating Velociraptor with the mature and widely-adopted Elastic
+Stack we can achieve significant scalability benefits. This also means
+that Velociraptor data can be made available to analysts who may not
+have the time or inclination to learn yet another tool. Having the
+data in Elastic also allows us to leverage the many excellent analysis
+and detection tools that have blossomed around the Elastic ecosystem,
+as well as make use of existing organizational expertise in these
+tools. The data can furthermore be enriched, combined and correlated
+with data from a wide variety of security tools that make use of
+Elastic as a data backend.

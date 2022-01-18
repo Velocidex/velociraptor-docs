@@ -85,7 +85,7 @@ algorithms.
 Consider the simple request \"ListDirectory\". The client request may
 elicit thousands of responses (one for each file) and may span multiple
 POST operations. The GRR frontend queues all the responses in the
-database until it receives a STATUS response, and then fet once. So even
+database until it receives a STATUS response, and then fetches once. So even
 if the client sends the responses over multiple packets, the flow only
 sees a single list. When a status message is seen by the frontend, it
 notifies the worker via a worker queue, which collects all responses,

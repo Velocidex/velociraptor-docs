@@ -118,7 +118,7 @@ This modified query can now run as a hunt on the entire fleet to determine which
 
 ## Conclusions
 
-Velociraptor includes many other low level analysis modules, such as parsing prefetch files, raw registry access (for [AMCache ](https://www.andreafortuna.org/2017/10/16/amcache-and-shimcache-in-forensic-analysis/)analysis), [ESE database](https://en.wikipedia.org/wiki/Extensible_Storage_Engine) parser (facilitating [SRUM database forensics](https://www.sans.org/cyber-security-summit/archives/file/summit_archive_1492184583.pdf) and Internet Explorer history analysis), [SQLite](https://www.sqlite.org/) parsers (for Chrome and Firefox history) and much more.
+Velociraptor includes many other low level analysis modules, such as parsing prefetch files, raw registry access (for [`AMCache` ](https://www.andreafortuna.org/2017/10/16/amcache-and-shimcache-in-forensic-analysis/)analysis), [ESE database](https://en.wikipedia.org/wiki/Extensible_Storage_Engine) parser (facilitating [SRUM database forensics](https://www.sans.org/cyber-security-summit/archives/file/summit_archive_1492184583.pdf) and Internet Explorer history analysis), [SQLite](https://www.sqlite.org/) parsers (for Chrome and Firefox history) and much more.
 
 The true power of Velociraptor is in combining these low level modules with other VQL queries to further enrich the output or narrow down queries making them more surgical and reducing the amount of false positives. This more targeted approach is critical when hunting at scale in order to reduce the amount of data collected and assist the operator in focusing on the truly important evidence quickly and efficiently.
 

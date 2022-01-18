@@ -72,7 +72,7 @@ further enrich the output from WMI providers.
 
 ## Mutants
 
-Malware typically need to persist using multiple persistance
+Malware typically need to persist using multiple persistence
 mechanisms - in case one mechanism is detected and removed, often
 other mechanisms will re-infect the machine. This leaves a common
 problem: How to avoid multiple copies of the same malware from

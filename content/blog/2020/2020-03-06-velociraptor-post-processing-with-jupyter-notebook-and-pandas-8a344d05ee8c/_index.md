@@ -36,7 +36,7 @@ In order for Jupyter to connect to the Velociraptor server, we will use the Velo
 
 By default, the server’s API service is not exposed to the internet. We can modify the server’s configuration to allow this by simply changing the API’s bind port to 0.0.0.0
 
-In our example we have an ubuntu server running Velociraptor in[ the recommended way](https://www.velocidex.com/docs/getting-started/cloud/#deploying-to-the-cloud). When used in this way, Velociraptor runs under a low privilege user account called “velociraptor”.
+In our example we have an Ubuntu server running Velociraptor in[ the recommended way](https://www.velocidex.com/docs/getting-started/cloud/#deploying-to-the-cloud). When used in this way, Velociraptor runs under a low privilege user account called “velociraptor”.
 
 We therefore need to change to that user, edit the configuration file and restart the service. Finally we check that the service is listening on all interfaces with port 8001.
 

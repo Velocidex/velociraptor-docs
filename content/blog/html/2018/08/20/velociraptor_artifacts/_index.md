@@ -48,8 +48,8 @@ implements a specific parser to extract one set of data. In this sense
 OSQuery also solves the same problem as GRR\'s artifacts - they provide
 a single named entity (called a table in OSQuery) which produces results
 about one type of thing (e.g. arp\_cache table produces results about
-the arp cache entries). The user can then just ask for the arp cache and
-doesn\'t care how we get it.
+the arp cache entries). The user can then just ask for the ARP cache and
+doesn't care how we get it.
 
 The next logical development was the development of Velociraptor Query
 Language (VQL). VQL is not pure SQL - instead it is an SQL like language

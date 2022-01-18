@@ -24,7 +24,7 @@ Many people are sometimes surprised to learn that on Windows
 parent/child process relationship is not particularly reliable. Back
 in 2009, Didier Stevens released a demo tool called
 [SelectMyParent](https://blog.didierstevens.com/2009/11/22/quickpost-selectmyparent-or-playing-with-the-windows-process-tree/)
-demonstrating a quirk of the Windows CreateProcess API that allows any
+demonstrating a quirk of the Windows `CreateProcess` API that allows any
 caller to simply spoof the parent process ID.  This is particularly
 troublesome, especially when so much of the DFIR industry relies on
 process tracing of parent/child call chain. Further, parent spoofing
