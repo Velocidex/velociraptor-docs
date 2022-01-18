@@ -29,7 +29,7 @@ WMI eventing visibility and detection including custom namespaces.
 There has been a fair bit of research and observations of WMI eventing 
 in field over the last years. In short, a WMI event consumer is a 
 method of subscribing to certain system events, then enabling an action 
-of some sort. Common adversary use cases may include persistance, privilage 
+of some sort. Common adversary use cases may include persistence, privilege 
 escalation, or as a collection trigger. Represented as ATT&CK T1546.003 
 this technique has been observed in use from APT, through to trash-tic 
 worm and coin miner threats.
@@ -58,9 +58,9 @@ This excellent talk focused on defense evasion methodology and highlighted
 potential collection gaps in telemetry tools around WMI eventing. In this 
 case, the focus was on Sysmon behaviour of collection only in 
 root/subscription, interestingly, it also highlighted the possibility to 
-implement \_\_EventConsumer classes in arbituary namespaces. 
+implement \_\_EventConsumer classes in arbitrary namespaces. 
 
-It is detection of WMI Event Consumers in arbituary namespaces that im going 
+It is detection of WMI Event Consumers in arbitrary namespaces that im going 
 to focus. For anyone interested in testing I have written 
 [a script to generate WMI event consumers](https://github.com/mgreen27/mgreen27.github.io/blob/master/static/other/WMIEventingNoisemaker/WmiEventingNoisemaker.ps1). 
 This script wraps several powershell functions released during the Black 
@@ -99,10 +99,10 @@ root namespace event consumers.
 
 #### Telemetry
 
-Unfortunatley prior to Windows 10 WMI logging was fairly limited. Sysmon and 
+Unfortunately prior to Windows 10 WMI logging was fairly limited. Sysmon and 
 other telemetry sources often rely on WMI eventing itself to collect WMI 
 eventing telemetry events. That means custom classes require namespace and 
-class existance prior to telemetry subscription. Sysmon as seen below also 
+class existence prior to telemetry subscription. Sysmon as seen below also 
 does not have coverage for root/default namespace.
 
 ![Sysmon collection: Eid 20 mapping (__EventConsumer)](03SysmonEid20.png)
@@ -148,14 +148,14 @@ to the party during an investigation.
 
 # Conclusions
 
-Durig this post, we have shown 3 techniques for detecting WMI event consumers 
-that are worth considering. We can collect these datapoints over an entire 
+During this post, we have shown 3 techniques for detecting WMI event consumers 
+that are worth considering. We can collect these data-points over an entire 
 network in minutes using Velociraptor's "hunt" capability. Similarly 
-Velociraptor notebook workflow assists bubling up suspicious entries to the 
+Velociraptor notebook workflow assists bubbling up suspicious entries to the 
 top quickly as part of analysis.
 
-The Velociraptor platform aims to provide visability and access 
-to endpoint data. If you would like to try Velociraptor it is availible on Github under an open source licence. 
+The Velociraptor platform aims to provide visibility and access 
+to endpoint data. If you would like to try Velociraptor it is available on Github under an open source licence. 
 As always, please file issues on the bug tracker or ask questions on our 
 mailing list velociraptor-discuss@googlegroups.com. You can also chat with 
 us directly on discord at https://www.velocidex.com/discord
