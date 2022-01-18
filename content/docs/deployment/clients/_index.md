@@ -190,41 +190,40 @@ Confirm with `ps -eaf | grep velo` and `sudo launchctl list | grep velo`.
 
 ### Linux
 
-The dpkg (Debian)or rpm (Red Hat/CentOS/Fedora) tools can be used to install Velociraptor on
-Linux clients after creating an appropriate package. The following command installs binary & config to /usr/local/sbin.
-Persistence is via launchd (check with `ps -eaf | grep velo` and
-`sudo launchctl list | grep velo`)
+The dpkg (Debian) or rpm (Red Hat/CentOS/Fedora) tools can be used to install Velociraptor on
+Linux clients after creating an appropriate package.
 
 #### Debian Package
 Create
 ```shell
-# velociraptor --config client.config.yaml debian client
+# velociraptor-vx.x.x-linux-amd64 --config client.config.yaml debian client
 ```
 Install
 ```shell
-# sudo dpkg -i velociraptor.deb
+# sudo dpkg -i velociraptor_x.x.x_client.deb
 ```
 Remove
 ```shell
-# sudo apt-get remove velociraptor
+# sudo apt-get remove velociraptor-client
 ```
 
 #### Red Hat Package
 Create (Most OS variants with systemctl)
 ```shell
-# velociraptor --config client.config.yaml rpm client
+# velociraptor-vx.x.x-linux-amd64 --config client.config.yaml rpm client
 ```
-Create (OS variant without systemctl)
+Create (OS variants without systemctl and old GLIBC)
 ```shell
-# velociraptor --config --use_sysv client.config.yaml rpm client
+# velociraptor-vx.x.x-linux-amd64-centos --config --use_sysv client.config.yaml rpm client
 ```
 Install
 ```shell
-# sudo rpm -i velociraptor.rpm
+# sudo rpm -i velociraptor_x.x.x_client.rpm
 ```
 Remove
 ```shell
-# sudo rpm -e velociraptor.rpm
+# rpm -qa | grep -i velociraptor
+# sudo rpm -e velociraptor-x.x.x.X86_64
 ```
 
 
