@@ -215,7 +215,7 @@ is detected.
 
 In a recent engagement we needed to collect a large number of \$MFT
 files from many endpoints. We wanted to analyze these using external
-tools like analyseMFT.py.
+tools like `analyseMFT.py`.
 
 We wrote a simple artifact to collect the MFT:
 
@@ -237,7 +237,7 @@ sources:
 ```
 
 We then created a hunt to collect this artifact from the machines of
-interest. Once each \$MFT file is uploaded we need to run analyseMFT.py
+interest. Once each \$MFT file is uploaded we need to run `analyseMFT.py`
 to parse it:
 
 ``` {.sourceCode .python}
@@ -282,18 +282,18 @@ the files actually reside. The server simply stores the uploaded files
 on its filesystem since Velociraptor does not use a database (everything
 is a file!).
 
-The python code then proceeds to launch the analyseMFT.py script to
+The python code then proceeds to launch the `analyseMFT.py` script to
 parse the \$MFT.
 
 {{% notice note %}}
 
 
-The nice thing with this scheme is that the analyseMFT.py is running in
+The nice thing with this scheme is that the `analyseMFT.py` is running in
 its own process and can be managed separately to the main Velociraptor
 server (e.g. we can set its execution priority or even run it on a
 separate machine). The Velociraptor server does not actually need to
 wait for post processing nor will the post processing affect its
-performance in any way. If the analyseMFT.py script takes a long time,
+performance in any way. If the `analyseMFT.py` script takes a long time,
 it will just fall behind but it eventually will catch up. In the
 meantime, the Velociraptor server will continue receiving the uploads
 regardless.

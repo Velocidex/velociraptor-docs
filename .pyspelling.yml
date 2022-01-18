@@ -8,9 +8,7 @@ matrix:
       - .wordlist.txt
     output: .wordlist.dict
   sources:
-#  - "content/docs/deployment/troubleshooting/_index.md"
-  - 'content/**/*.md|!content/exchange/artifacts/pages/**'
-#  - 'content/docs/deployment/_index.md'
+  - 'content/**/*.md|!content/exchange/artifacts/pages/**|!content/golang/**'
   pipeline:
     - pyspelling.filters.context:
         context_visible_first: true
@@ -25,7 +23,15 @@ matrix:
             # Ignore text between inline back ticks
           - open: '(?P<open>`+)'
             close: '(?P=open)'
+            # Insides of URL links
           - open: '\]\('
             close: '\)'
+            # Bolded words are usually terms
+          - open: '[*]+'
+            close: '[*]+'
+            # Inside HTML tags
+          - open: '(?s)(?P<open>[<])'
+            close: '[>]'
+
     - pyspelling.filters.markdown:
     - pyspelling.filters.url:

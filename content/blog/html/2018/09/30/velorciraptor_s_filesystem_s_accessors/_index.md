@@ -63,7 +63,7 @@ SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime,
 The \"fs ls\" command instructs Velociraptor to list directories using
 its internal filesystem accessors. By default it will use the \"file\"
 accessor - which simply uses the usual Win32 api filesystem calls (i.e.
-CreateFile, FindFirstFile etc).
+`CreateFile`, `FindFirstFile` etc).
 
 On windows, the file accessor lists the drive letters at the root of the
 filesystem, then allows subdirectories to be listed under each letter.
@@ -215,16 +215,16 @@ A note about filenames.
 =======================
 
 NTFS can have several different names to the same file. Typically, a
-short DOS 8.3 style filename (e.g. PROGRA\~1), as well as a Win32 long
+short DOS 8.3 style filename (e.g. `PROGRA~1`), as well as a Win32 long
 filename (e.g. Program Files). You can see the short name for a file
-using the API GetShortPathName() (or the command dir /x), but a program
+using the API GetShortPathName() (or the command `dir /x`), but a program
 needs to deliberately ask for it. Most programs do not explicitly
 collect or show the short filename of a file.
 
 This can cause problems for DFIR applications. For example, Imagine we
 discovered a Run key to C:\\\\Users\\\\test\\\\runme.exe. If we only
 considered the long filename (as for example returned by the Win32API
-FindFile() or the output of the dir command), then we would assume the
+FindFile() or the output of the `dir` command), then we would assume the
 file has been removed and the run key is not active. In reality however,
 the file may be called \"This is some long filename.exe\" with a DOS
 name of \"runme.exe\". Explorer (and most tools) will only show the long

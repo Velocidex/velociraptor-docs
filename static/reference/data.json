@@ -1290,12 +1290,12 @@
             {
                 "name": "async",
                 "type": "bool",
-                "description": "If set we run all queries asyncronously (implies workers=1000)."
+                "description": "If set we run all queries asynchronously (implies workers=1000)."
             },
             {
                 "name": "workers",
                 "type": "int64",
-                "description": "Total number of asyncronous workers."
+                "description": "Total number of asynchronous workers."
             },
             {
                 "name": "column",
@@ -4029,7 +4029,7 @@
     },
     {
         "name": "server_set_metadata",
-        "description": "Sets client metadata. Client metadata is a set of free form key/value data",
+        "description": "Sets server metadata. Server metadata is a set of free form\nkey/value data, usually used for configuration of artifacts.",
         "type": "Function",
         "args": [
             {

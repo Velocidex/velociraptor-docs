@@ -195,7 +195,7 @@ hunt everywhere.
 ### Example: Remediate scheduled tasks
 
 For this example we will schedule a task to run daily. This emulates a
-common persistance used by malware to re-infect the machine daily,
+common persistence used by malware to re-infect the machine daily,
 even after the machine is cleaned up.
 
 ```ps1
@@ -268,7 +268,7 @@ tool and provide a hint of where to download it from.
 We will go through an example to understand this process. Let's
 consider the `Windows.Sysinternals.Autoruns` artifact. This is a
 commonly used artifact that launches the `autorunsc.exe` binary
-(looking for common malware persistance) on the endpoint, collects the
+(looking for common malware persistence) on the endpoint, collects the
 output and converts the results to a table.
 
 1. The artifact defines an external tool by specifying the `tools`

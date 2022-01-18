@@ -8,11 +8,20 @@ tags:
 date: 2021-06-09
 ---
 
-How do we know if a windows executable is a legitimate program written by the purported developer and not malware? Users may run malicious binaries with increasingly devastating consequences, including compromise or ransomware.
+How do we know if a windows executable is a legitimate program written
+by the purported developer and not malware? Users may run malicious
+binaries with increasingly devastating consequences, including
+compromise or ransomware.
 
-To address this concern, Microsoft has introduced a standard called Authenticode, designed to sign trusted binaries, so they can be identified by the operating system. Additionally, recent versions of Windows will refuse load unsigned device drivers, therefore maintaining kernel integrity.
+To address this concern, Microsoft has introduced a standard called
+Authenticode, designed to sign trusted binaries, so they can be
+identified by the operating system. Additionally, recent versions of
+Windows will refuse load unsigned device drivers, therefore
+maintaining kernel integrity.
 
-While the Authenticode standard itself is well documented, as DFIR practitioners we need to understand how Authenticode works, and how we can determine if an executable is trusted during our analysis.
+While the Authenticode standard itself is well documented, as DFIR
+practitioners we need to understand how Authenticode works, and how we
+can determine if an executable is trusted during our analysis.
 
 This post explains the basics of Authenticode, and how Velociraptor can be used to extract Authenticode related information from remote systems. Since release 0.6.0, Velociraptor features an Authenticode parser allowing much deeper inspection of signed executables.
 
@@ -30,11 +39,19 @@ Authenticode uses a number of file format standards to actually embed the signat
 
 ![](../../img/0aJlEkIX3M0d8aKnI.png)
 
-The above diagram shows that signing information is embedded in the PE file itself, and consists of a PKCS#7 structure, itself an ASN.1 encoded binary blob. The information contains a hash of the PE file, and a list of certificates of verifying authorities.
+The above diagram shows that signing information is embedded in the PE
+file itself, and consists of a PKCS#7 structure, itself an `ASN.1`
+encoded binary blob. The information contains a hash of the PE file,
+and a list of certificates of verifying authorities.
 
-Velociraptor can parse the authenticode information from the PE file using the parse_pe() VQL function. This allows a VQL query to extract signing information from any executable binary (Since this is just a file parser and does not use native APIs, you can use this function on all supported OSs).
+Velociraptor can parse the authenticode information from the PE file
+using the parse_pe() VQL function. This allows a VQL query to extract
+signing information from any executable binary (Since this is just a
+file parser and does not use native APIs, you can use this function on
+all supported OSs).
 
-Let’s parse Velociraptor’s own PE file in a Velociraptor notebook using the following simple query:
+Let’s parse Velociraptor’s own PE file in a Velociraptor notebook
+using the following simple query:
 
 ```vql
 SELECT parse_pe(file=’’’C:\Program Files\velociraptor\velociraptor.exe’’’)
@@ -75,7 +92,12 @@ The example above shows that notepad.exe, does not typically contain embedded si
 
 Could Microsoft simply have forgotten to sign such an integral part of the OS as notepad.exe?
 
-The answer turns out to be more interesting. When distributing a large number of binaries, a developer has the option of signing a “catalog file” instead of each individual binary. The catalog file is essentially a list of authenticode hashes that are all trusted. Catalog files are stored in C:\Windows\system32\CatRoot\{F750E6C3–38EE-11D1–85E5–00C04FC295EE}
+The answer turns out to be more interesting. When distributing a large
+number of binaries, a developer has the option of signing a “catalog
+file” instead of each individual binary. The catalog file is
+essentially a list of authenticode hashes that are all
+trusted. Catalog files are stored in
+`C:\Windows\system32\CatRoot\{F750E6C3–38EE-11D1–85E5–00C04FC295EE}`
 
 While .cat files are simply encoded in PKCS#7 format, they do contain a few Microsoft specific objects. Velociraptor can parse the PKCS#7 files directly and supports the extra extensions using the parse_pkcs7() VQL function.
 

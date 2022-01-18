@@ -29,7 +29,7 @@ This capability is also available in many other tools, for example,
 the `find` native Linux command allows searching the filesystem, and
 most programming languages have similar features. For example in
 Python the
-[os.walk](https://docs.python.org/3/library/os.html#os.walk) method,
+[`os.walk`](https://docs.python.org/3/library/os.html#os.walk) method,
 or in Golang the
 [filepath.Walk](https://pkg.go.dev/path/filepath#Walk) method. The
 following discussion applies equally to all methods and is also
@@ -42,10 +42,10 @@ the high severity and ease of exploitation many blue teamers scrambled
 to identify the presence of vulnerable software on servers. A myriad
 of scripts and single use tools were published that could search the
 filesystem for vulnerable jar files (e.g. `find` based scripts
-[yahoo/check-log4j](https://github.com/yahoo/check-log4j),
-[rubo77/log4j_checker_beta](https://github.com/rubo77/log4j_checker_beta),
+[`yahoo/check-log4j`](https://github.com/yahoo/check-log4j),
+[`rubo77/log4j_checker_beta`](https://github.com/rubo77/log4j_checker_beta),
 Go based
-[palantir/log4j-sniffer](https://github.com/palantir/log4j-sniffer) ).
+[`palantir/log4j-sniffer`](https://github.com/palantir/log4j-sniffer) ).
 
 I wanted to share some of the potential pitfalls that one may
 encounter searching the filesystem in the real world. In particular
@@ -182,7 +182,7 @@ so any recursion into that directory will be very slow.
 
 ## Excluding recursion into certain directories
 
-Supposed that in this case we dont really care about remote
+Supposed that in this case we don't really care about remote
 filesystems, we just want to search for pem files in the local
 system. We know that certain directories should be excluded so we
 might be tempted to write a query like:

@@ -168,7 +168,7 @@ as malicious, it is not shown as signed either.
 
 ![](image5.png)
 
-![mxdwdrv.dll: not by verified signature - virusTotal trusted tag by hash](image8.png)
+![mxdwdrv.dll: not by verified signature - VirusTotal trusted tag by hash](image8.png)
 
 All original Microsoft printer drivers are trusted and properly signed
 via catalog, as shown by Velociraptor. Note that Velociraptor is also

@@ -16,7 +16,7 @@ Commonly in many incident response scenarios we need to gather evidence of progr
 
 One of the most useful sources of evidence of execution on Windows is the System Resource Usage Monitor (SRUM). It was first described by Yogesh Khatri in the seminal paper “[Forensic implications of System Resource Usage Monitor (SRUM) data in Windows 8](https://www.sciencedirect.com/science/article/pii/S1742287615000031)”.
 
-SRUM is a feature in modern Windows systems which collect statistics on execution of binaries. The information is stored in an Extensible Storage Engine (ESE) database. ESE is Microsoft’s proprietary single file database format, acting similarly to SQLLite, as a default storage engine for many applications — including the SRUM database.
+SRUM is a feature in modern Windows systems which collect statistics on execution of binaries. The information is stored in an Extensible Storage Engine (ESE) database. ESE is Microsoft’s proprietary single file database format, acting similarly to SQLite, as a default storage engine for many applications — including the SRUM database.
 
 As from the [0.3.7 release of Velociraptor](https://github.com/Velocidex/velociraptor/releases/tag/v0.3.7), an ESE parser is built into the client, allowing VQL artifacts to directly query ESE databases. This opens up the exciting possibility of extracting and querying information from the SRUM database directly on the endpoint.
 
@@ -70,7 +70,7 @@ This artifact source stores cumulative information about the running executable.
 
 Sometimes we need to determine which endpoint in our fleet has run a particular binary — perhaps with a unique name. For example, a phishing campaign might launch a trojan malware with a specific name.
 
-To simulate this I copied a binary to the user’s temp folder with the unique name “sdfjhsdfc.exe”. I then ran it for a while.
+To simulate this I copied a binary to the user’s temp folder with the unique name `sdfjhsdfc.exe`. I then ran it for a while.
 
 Next, I created a hunt, but this time, instead of dumping the entire SRUM table, I filtered the results by the name of the binary.
 

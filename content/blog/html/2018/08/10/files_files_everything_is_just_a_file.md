@@ -3,7 +3,7 @@ date: 2018-08-10T04:10:06Z
 description:  |
   Velociraptor introduced a major redesign of the underlying data
   store architecture. The default data store
-  is now the FileBasedDataStore which stores all data in flat files.
+  is now the FileBaseDataStore which stores all data in flat files.
 
 title:  Files, files everything is just a file!
 linktitle:  20180810 Files, files everything is just a file!
@@ -22,7 +22,7 @@ As Velociraptor introduced a major redesign of the underlying data store
 architecture, we are now able to relax our demands of the datastore and
 use a true key/value model (since we have no requirements for locking
 and synchronization). The default data store is now the
-FileBasedDataStore which stores all data in flat files.
+FileBaseDataStore which stores all data in flat files.
 
 Using flat files over a database has many advantages, including ease of
 deployment, and simplification of the data model. Having flat files
@@ -60,7 +60,7 @@ Searching
 Searching for clients is implemented by simply creating empty files in
 directories based on the search term. For example in order to retrieve
 all clients which have the user \"mic\", we simply list the directory
-\"client\_index/user%3Amic\":
+`client\_index/user%3Amic`:
 
 ``` {.sourceCode .console}
 $ find ./client_index/

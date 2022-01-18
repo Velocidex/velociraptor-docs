@@ -92,7 +92,7 @@ are simply protocol buffers), for example, a message may contain VQL
 queries or result sets. Messages are collected into a list and sent in
 a single POST operation in a **MessageList** protobuf. This protobuf
 is encrypted using a session key with a symmetric cipher
-(aes_128_cbc). The session key is chosen by the sending party and is
+(`aes_128_cbc`). The session key is chosen by the sending party and is
 written into an encrypted **Cipher** protobuf and sent along with each
 message.
 

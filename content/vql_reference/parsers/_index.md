@@ -109,7 +109,7 @@ example a profile might be:
 ]
 ```
 
-The profile is compiled and overlayed on top of the offset specified,
+The profile is compiled and overlaid on top of the offset specified,
 then the object is emitted with its required fields.
 
 You can read more about profiles here https://github.com/Velocidex/vtypes

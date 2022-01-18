@@ -9,7 +9,7 @@ categories: []
 keywords: []
 ---
 
-![[People vector created by brgfx ](https://www.freepik.com/free-photos-vectors/people)— [www.freepik.com](http://www.freepik.com)](https://cdn-images-1.medium.com/max/2560/1*N7EiK5rrkbiWNF47_ifOKQ.png)*[People vector created by brgfx ](https://www.freepik.com/free-photos-vectors/people)— [www.freepik.com](http://www.freepik.com)*
+![[People vector created by `brgfx`](https://www.freepik.com/free-photos-vectors/people)— [www.freepik.com](http://www.freepik.com)](https://cdn-images-1.medium.com/max/2560/1*N7EiK5rrkbiWNF47_ifOKQ.png)*[People vector created by `brgfx` ](https://www.freepik.com/free-photos-vectors/people)— [www.freepik.com](http://www.freepik.com)*
 
 Velociraptor is a powerful endpoint visibility tool. It has plugins and parsers for many file formats, such as raw NTFS access, raw registry hive, prefetch files etc.
 

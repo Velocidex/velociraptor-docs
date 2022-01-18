@@ -118,7 +118,7 @@ The above illustrates how event queries work, but to actually be able to
 use these we had to implement the Velociraptor event monitoring
 framework.
 
-Normally, when we launch a CollectVQL flow, the client executes the
+Normally, when we launch a `CollectVQL` flow, the client executes the
 query and returns the result to the flow. Clearly since event queries
 never terminate, we can not run them in series (because the client will
 never be able to do anything else). The Velociraptor client has a table

@@ -69,7 +69,7 @@ any inbound firewall rules! Letsencrypt uses both to issue
 certificates. If you forgot to open port 80, Letsencrypt will fail to
 issue the certificate and this might result in blocking the domain
 name from getting an SSL certificate for several days. If you find
-this happened, simply change the dyndns name and start again.
+this happened, simply change the DynDNS name and start again.
 
 {{% /notice %}}
 
