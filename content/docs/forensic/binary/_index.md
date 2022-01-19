@@ -58,11 +58,11 @@ from binary data. The parser encodes semantic information about what
 each bytes in the binary sequence means. It really emulates the
 software that usually reads the data by constructing something similar
 to the original (often closed code) meaning. Sometimes not all the
-information if known or can be interpreted - so parsers can be
+information is known or can be interpreted - so parsers can be
 incomplete.
 
 Parsers typically fall into two general types: `Procedural` and
-`declerative`.
+`Declerative`.
 
 A procedural parser is written as a sequence of actions (i.e. code)
 that pulls information from the binary data and reports some semantic
@@ -70,7 +70,7 @@ information about that data. On the other hand, a declarative parser
 seeks to explain the meaning behind each field and decode it based on
 the type of the field.
 
-An example might illustrate the different between the two
+An example might illustrate the difference between the two
 approaches. Suppose a program encodes a sequence of flags in an 8 bit
 integer - one flag per bit. A procedural parser might be coded as:
 
@@ -338,6 +338,48 @@ SELECT * FROM foreach(row=Header.Entries, query={
 })
 ```
 
+An example of a use of Array can be found in the Linux `wtmp` parser:
+
+```json
+["Header", 0, [
+  ["records", 0, "Array", {
+      "type": "utmp",
+      "count": "x=>MaxCount",
+      "max_count": "x=>MaxCount"
+  }]
+]],
+```
+
+{{% notice tip "Specifying the size of array members" %}}
+
+Normally the size of a struct can be specified as 0, however when
+using the struct in an Array, the size must be valid and non
+zero. This is because Array uses the size of the target type to
+determine how far apart each array member lies in the data.
+
+You can also use a lambda to specify the size of the item - this
+allows you to use Array to specify non uniform arrays (where each
+member has a different size).
+
+For example the following specifies a header containing a count of
+entries stored back to back, while each entry has a size specified in
+its first member.
+
+```json
+["Header", 0, [
+  ["count", 0, "uint32"],
+  ["records", 4, "Array", {
+      "type": "Entry",
+      "count": "x=>x.count",
+  }]
+]],
+["Entry", "x=>x.Length", [
+  ["Length", 0, "uint32"],
+]],
+```
+
+{{% /notice %}}
+
 ### String
 
 Strings are very common items to parse. The string parser can be
@@ -574,4 +616,34 @@ The Payload field will be interpreted based on the PayloadType:
 
   ]],
 ]
+```
+
+### Profile
+
+Sometimes a struct represents a pointer to another offset in a more
+complex way. The `Profile` field type allows us to take full control
+over how the field is to be instantiated.
+
+
+| Option  | Description                                                                                                                 |
+|---------|-----------------------------------------------------------------------------------------------------------------------------|
+| type    | The type of the underlying object (usually an integer)                                                                      |
+| type_options | A dict of options to pass to the type parser if needed                                                                           |
+| offset | a lambda function to specify the offset |
+
+For example the following definition specifies that when the `Value`
+field is accessed it will be created from an `ASFinderInfo` struct
+positioned at a calculated offset of `x.Offset + 48` (from the start
+of the file).
+
+```json
+["Entry", 12, [
+  ["ID", 0, "uint32b"],
+  ["Offset", 4, "uint32b"],
+  ["Length", 8, "uint32b"],
+  ["Value", 0, "Profile", {
+       type: "ASFinderInfo",
+       offset: "x=>x.Offset + 48",
+  }]
+]],
 ```
