@@ -106,7 +106,7 @@ if ($createdNew) {
 
 The first time it is run, the mutant will be "acquired" and the
 program will simply go to sleep. Further instances of the script will
-be unable to acquire the mutant and will exist immediately.
+be unable to acquire the mutant and will exit immediately.
 
 ### Enumerate the mutants
 
