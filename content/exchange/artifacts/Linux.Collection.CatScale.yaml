@@ -42,7 +42,7 @@ sources:
         Let RunIt = SELECT *, TmpDir + '/' + OutfilePrefix + Outfile + '.tar.gz' AS TarFile
                     FROM execve(argv=[
                         CS.FullPath[0],
-                        "-d", Outdir,
+                        "-d", OutDir,
                         "-o", TmpDir,
                         "-f", Outfile,
                         "-p", OutfilePrefix
