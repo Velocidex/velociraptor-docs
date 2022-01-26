@@ -12,9 +12,7 @@ date: 2022-01-05
 
 I am very excited to announce the latest Velociraptor release
 0.6.3. This release has been in the making for a few months now and
-has a lot of new features. I wanted to take some time to tell you all
-about it in our blog so I can show some of the new screenshots in more
-detail.
+has a lot of new features.
 
 The main focus of development since our previous release was around
 scalability and speed. Working with some of our larger partners on
@@ -53,7 +51,7 @@ snappy and quick even with slow filesystems.
 I encourage everyone to test the new release on an EFS backend, to
 assess the performance on this setup - there are many advantages to
 this configuration. While this configuration is still considered
-experimentally it is running successfully in a number of environments.
+experimental it is running successfully in a number of environments.
 
 ## Searching and indexing
 
