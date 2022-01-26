@@ -52,8 +52,8 @@ snappy and quick even with slow filesystems.
 
 I encourage everyone to test the new release on an EFS backend, to
 assess the performance on this setup - there are many advantages to
-this configuration.
-
+this configuration. While this configuration is still considered
+experimentally it is running successfully in a number of environments.
 
 ## Searching and indexing
 
@@ -75,16 +75,17 @@ WHERE cidr_contains(ip=LastIp, ranges="192.168.1.0/16")
 This query will complete in a few seconds even with a large number of
 clients.
 
-The GUI search bar now can search for IP addresses, and the online
-only filter is much faster as a result!
+The GUI search bar can now search for IP addresses
+(e.g. `ip:192.168*`), and the online only filter is much faster as a
+result!
 
 ![Searching is much faster](searching.png)
 
-Another benefit is rapid index searching is that we can now quickly
-estimate how many hosts will be affected by a hunt (calculated how
-many hosts are included and how many are excluded from the hunt). When
-users have multiple label groups this helps to quickly understand how
-targeted a specific hunt is.
+Another benefit of rapid index searching is that we can now quickly
+estimate how many hosts will be affected by a hunt (calculated based
+on how many hosts are included and how many are excluded from the
+hunt). When users have multiple label groups this helps to quickly
+understand how targeted a specific hunt is.
 
 ![Estimating hunt scope](hunt.png)
 
@@ -95,7 +96,7 @@ Velociraptor artifacts are just a way of wrapping a VQL query inside a
 YAML file for ease of use. Artifacts accept parameters that are passed
 to the VQL itself controlling how it runs.
 
-Velociraptor artifacts accepts a number of parameters of different
+Velociraptor artifacts accept a number of parameters of different
 types. Sometimes, they accept a windows path - for example the
 `Windows.EventLogs.EvtxHunter` artifact accepts a Windows glob path
 like `%SystemRoot%\System32\Winevt\Logs\*.evtx`. In the same artifact,
@@ -202,13 +203,19 @@ searches much more efficient and targeted. To read more about it see
 [Searching for files]({{< ref
 "/blog/2022/2022-01-05-searching-for-files-on-linux/" >}}).
 
+## Notable new artifacts
+
+Many people use Velociraptor to collect and hunt for data from
+endpoints. Once the data is inspected and analyzed, often the data is
+no longer needed.
+
+To help with the task os expiring old data, the latest release
+incorporates the `Server.Utils.DeleteManyFlows` and
+`Server.Utils.DeleteMonitoringData` artifacts which allow users to
+remove older collections. This helps to manage disk usage and reduce
+ongoing costs.
 
 ## Conclusions
-
-The 0.6.3 release is currently in release candidate stage - please
-test it widely and report any issues. As an open source project, we
-are grateful for the amazing Velociraptor community for contributions
-in the form of testing, suggestions, documentation and code.
 
 If you like the new features, take [Velociraptor for a
 spin](https://github.com/Velocidex/velociraptor)!  It is a available
