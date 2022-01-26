@@ -209,7 +209,7 @@ Many people use Velociraptor to collect and hunt for data from
 endpoints. Once the data is inspected and analyzed, often the data is
 no longer needed.
 
-To help with the task os expiring old data, the latest release
+To help with the task of expiring old data, the latest release
 incorporates the `Server.Utils.DeleteManyFlows` and
 `Server.Utils.DeleteMonitoringData` artifacts which allow users to
 remove older collections. This helps to manage disk usage and reduce
