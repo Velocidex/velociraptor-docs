@@ -33,7 +33,7 @@ parameters:
             meta:
                 author = "Eduardo Mattos"
                 description = "Emotet Payload - Based on kevoreilly's Emotet Payload Yara rule"
-                reference = " ttps://github.com/kevoreilly/CAPEv2/blob/master/modules/processing/parsers/mwcp/Emotet.py"
+                reference = "https://github.com/kevoreilly/CAPEv2/blob/master/modules/processing/parsers/mwcp/Emotet.py"
             strings:
                 $snippetD = {8D 44 [2] 50 68 [4] FF 74 [2] FF 74 [2] 8B 54 [2] 8B 4C [2] E8 [4] 8B 54 [2] 83 C4 10 89 44 [2] 8B F8 03 44 [2] B9 [4] 89 44 [2] E9 [2] FF FF}
                 $snippetE = {FF 74 [2] 8D 54 [2] FF 74 [2] 68 [4] FF 74 [2] 8B 4C [2] E8 [4] 8B 54 [2] 83 C4 10 89 44 [2] 8B F8 03 44 [2] B9 [4] 89 44 [2] E9 [2] FF FF}
@@ -41,6 +41,12 @@ parameters:
                 $snippetG = {FF 74 [2] 8B 54 [2] 8D 44 [2] 8B 4C [2] 50 E8 [4] 8B D0 83 C4 0C 8B 44 [2] 8B FA 03 C2 89 54 [2] 89 44}
                 $snippetH = {FF 74 [2] 8D 84 [5] 68 [4] 50 FF 74 [2] 8B 54 [2] 8B 4C [2] E8 [4] 8B 94 [5] 83 C4 10 89 84 [5] 8B F8 03 84}
                 $snippetI = {FF 74 [2] 8D 8C [5] FF 74 [2] 8B 54 [2] E8 [4] 8B 54 [2] 8B D8 8B 84 [5] 83 C4 0C 03 C3 89 5C [2] 8B FB 89 44 24 74}
+                $snippetJ = {FF 74 [2] 8B 4C [2] 8D 44 [2] 50 BA [4] E8 [4] 8B 54 [2] 8B F8 59 89 44 [2] 03 44 [2] 59 89 44 [2] B9 [4] E9}
+                $snippetK = {FF 74 [2] FF 74 [2] 8B 54 [2] E8 [4] 8B 54 [2] 83 C4 0C 89 44 [2] 8B F8 03 44 [2] B9 [4] 89 44 [2] E9}
+                $snippetL = {FF 74 [2] 8B 54 [2] 8D 4C [2] E8 [4] 59 89 44 [2] 8B F8 03 44 [2] 59 89 44 24 68 B9 [4] E9}
+                $snippetM = {FF 74 [2] 8D 84 [3] 00 00 B9 [4] 50 FF 74 [2] FF 74 [2] 8B 94 [3] 00 00 E8 [4] 83 C4 10 89 44 [2] 8B F8 B9 [4] 03 84 [3] 00 00 89 44 [2] E9}
+                $snippetN = {FF 74 [2] 8D 44 [2] B9 [4] FF 74 [2] 50 FF 74 [2] 8B 54 [2] E8 [4] 8B 8C [3] 00 00 83 C4 10 03 C8 89 44 [2] 89 4C [2] 8B F8 B9 45 89 77 05 E9}
+                $snippetO = {8D 44 [2] B9 [4] 50 FF 74 [2] 8B 54 [2] E8 [4] 8B D0 8B 44 [2] 59 59 03 C2 89 54 [2] 8B FA 89 44 [2] B9 [4] E9}
             condition:
                 any of them
         }
@@ -62,6 +68,7 @@ sources:
                         WHERE Name =~ ProcessRegex
                             AND format(format="%d", args=Pid) =~ PidRegex
                             AND NOT Pid in me.Pid
+                            
         -- scan processes in scope with our DetectionYara
         LET processDetections <= SELECT * FROM foreach(row=processes,
                                 query={
@@ -71,6 +78,7 @@ sources:
                                             FROM proc_yara(pid=Pid, rules=DetectionYara)
                                         })
                                 })
+                                
         -- scan files in scope with our DetectionYara
         LET fileDetections = SELECT * FROM foreach(row=targetFiles,
                                 query={
@@ -91,6 +99,7 @@ sources:
                                             FROM targetFiles
                                         })
                              })
+                             
         -- return the VAD region size from yara detections for later use
         LET regionDetections = SELECT *
                                 FROM foreach(row=processDetections,
@@ -127,10 +136,9 @@ sources:
         LET parsedDataSection = SELECT *,
                             parse_binary(filename=EmotetDataSectionData, accessor="data", profile='''[
                                 ["EmotetC2Config", 0, [
-                                        ["Key4Size", 0, "String", {"length": 1, "term":""}],
                                         ["Key", 0, "String", {"length": 4, "term":""}],
-                                        ["SizeEncoded", 4, "String", {"length": 1, "term":""}],
-                                        ["C2List", 8, "String", {"length":"x=> parse_binary(accessor='data',filename=xor(string=x.SizeEncoded, key=x.Key4Size),struct='uint8')", "term":""}]
+                                        ["SizeEncoded", 4, "String", {"length": 4, "term":""}],
+                                        ["C2List", 8, "String", {"length":"x=> parse_binary(accessor='data',filename=xor(string=x.SizeEncoded, key=x.Key),struct='uint32')", "term":""}]
                                     ]
                                 ]
                             ]''', struct="EmotetC2Config") AS EmotetEncodedC2Conf
