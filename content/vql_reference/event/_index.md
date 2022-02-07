@@ -33,7 +33,7 @@ object. You can access its unix epoch time with the Sec column.
 The following will generate an event every 10 seconds.
 
 ```sql
-SELECT Sec FROM clock(period=10)
+SELECT Second FROM clock(period=10)
 ```
 
 The `start` parameter can be used to schedule the plugin to start
