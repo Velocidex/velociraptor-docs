@@ -2153,7 +2153,7 @@
     },
     {
         "name": "label",
-        "description": "Add the labels to the client. If op is 'remove' then remove these labels.\n",
+        "description": "Add the labels to the client. If op is 'remove' then remove these labels.",
         "type": "Function",
         "args": [
             {
