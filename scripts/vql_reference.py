@@ -15,6 +15,12 @@ parser.add_argument('definition_path',
 
 parser.add_argument('--reference_data', help='Path the the reference data.json to write".')
 
+def CleanTypes(definitions):
+    for item in definitions:
+        for arg in item.get("args", []):
+            arg["type"] = arg["type"].replace(
+                "vfilter.", "").replace("accessors.OSPath", "OSPath")
+
 def SaveDefinition(fd, item):
     fd.write("\n\n<div class=\"vql_item\"></div>\n\n");
     fd.write ("\n## %s\n<span class='vql_type pull-right'>%s</span>\n\n" % (item["name"], item["type"]))
@@ -27,7 +33,7 @@ def SaveDefinition(fd, item):
     for arg in item["args"]:
         name = arg["name"]
         description = arg.get("description", "")
-        type = arg["type"].replace("vfilter.", "")
+        type = arg["type"]
         if type == "":
             type = "string"
         if arg.get("repeated"):
@@ -58,6 +64,8 @@ if __name__ == "__main__" :
     args = parser.parse_args()
 
     definitions = yaml.safe_load(open(args.definition_path).read())
+    CleanTypes(definitions)
+
     if args.reference_data:
         SaveDataJson(definitions)
 

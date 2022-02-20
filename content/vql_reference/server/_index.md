@@ -678,6 +678,7 @@ topic|The topic to publish to|string (required)
 project_id|The project id to publish to|string (required)
 msg|Message to publish to Pubsub|Any (required)
 credentials|The credentials to use|string (required)
+attributes|The publish attributes|ordereddict.Dict (required)
 
 
 
@@ -1380,7 +1381,7 @@ FROM scope()
 
 Arg | Description | Type
 ----|-------------|-----
-client_id||string (required)
+metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
 
 
 

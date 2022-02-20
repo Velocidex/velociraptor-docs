@@ -455,7 +455,7 @@ This function calculates the MD5, SHA1 and SHA256 hashes of the file.
 
 Arg | Description | Type
 ----|-------------|-----
-path|Path to open and hash.|string (required)
+path|Path to open and hash.|OSPath (required)
 accessor|The accessor to use|string
 
 
@@ -803,6 +803,7 @@ DelegateAccessor|An accessor to use.|string
 DelegatePath|A delegate to pass to the accessor.|string
 Path|A path to open.|Any
 parse|Alternatively parse the pathspec from this string.|string
+path_type|Type of path this is (windows,linux,registry,ntfs).|string
 
 
 
@@ -1319,7 +1320,7 @@ Arg | Description | Type
 ----|-------------|-----
 rules|Yara rules in the yara DSL.|string (required)
 files|The list of files to scan.|list of string (required)
-accessor|Accessor (e.g. NTFS)|string
+accessor|Accessor (e.g. ntfs,file)|string
 context|How many bytes to include around each hit|int
 start|The start offset to scan|uint64
 end|End scanning at this offset (100mb)|uint64
