@@ -9,8 +9,8 @@ description: |
     yara-scanned, or allow it to yara-scan all memory space.
 
     Currently this artifact parses encrypted configurations from the
-    Qbot variant introducted in April 2021. It will not parse the
-    configurations from earlier variants.
+    Qbot variant introducted in February 2022. It will identify, but not 
+    parse the configurations from earlier variants.
 
     NOTE: This content simply carves the configuration and does not
     unpack files on disk.  That means pointing this artifact as a
@@ -45,6 +45,7 @@ parameters:
                 $decrypt_config2 = {8B 45 08 8B 88 24 04 00 00 51 8B 55 10 83 EA 14 52 8B 45 0C 83 C0 14 50 6A 14 8B 4D 0C 51 E8 6C 08 00 00}
                 $decrypt_config3 = {6A 13 8B CE 8B C3 5A 8A 18 3A 19 75 05 40 41 4A 75 F5 0F B6 00 0F B6 09 2B C1 74 05 83 C8 FF EB 0E}
                 $call_decrypt = {83 7D ?? 00 56 74 0B FF 75 10 8B F3 E8 [4] 59 8B 45 0C 83 F8 28 72 19 8B 55 08 8B 37 8D 48 EC 6A 14 8D 42 14 52 E8}
+                $mw_xor_key = {33 D2 8B ?? 6A 5A 5B F7 F3 8B 5D 08 8A 04 1A 8B 55 fC 8B 5D 10 3A 04 ?? 74 07 46 3B ?? 72 E1 EB 04}
             condition:
                 any of ($*)
         }
@@ -119,7 +120,7 @@ sources:
 
         -- return .rsrc section info
         LET sectionInfo <= SELECT *,
-                                parse_pe(file=PEData, accessor="data").Sections[3] AS Sectionrsrc
+                                parse_pe(file=PEData, accessor="data").Sections[4] AS Sectionrsrc
                            FROM peData
 
         -- read the data from .rsrc sections
@@ -141,14 +142,12 @@ sources:
         LET parsedRdata = SELECT *,
                             parse_binary(filename=QBOTrsrcData, accessor="data", profile='''[
                                 ["QbotRCData", 0, [
-                                        ["__prefix", 0, "String", {"length": 104, "term":""}],
-                                        ["Address3719", 104, "uint32", {"length": 4, "term":""}],
-                                        ["Size3719", 108, "uint32", {"length": 4, "term":""}],
-                                        ["__prefix2", 112, "String", {"length": 8, "term":""}],
-                                        ["Address5812", 120, "uint32", {"length": 4, "term":""}],
-                                        ["Size5812", 124, "uint32", {"length": 4, "term":""}],
-                                        ["Data3719", "x=> x.Address3719 - QBOTrsrcOffSet", "String", {"length": "x=> x.Size3719", "term":""}],
-                                        ["Data5812", "x=> x.Address5812 - QBOTrsrcOffSet", "String", {"length": "x=> x.Size5812", "term":""}]
+                                        ["AddressFirstRsc", 104, "uint32", {"length": 4, "term":""}],
+                                        ["SizeFirstRsc", 108, "uint32", {"length": 4, "term":""}],
+                                        ["AddressSecondRsc", 120, "uint32", {"length": 4, "term":""}],
+                                        ["SizeSecondRsc", 124, "uint32", {"length": 4, "term":""}],
+                                        ["EncBotInfo", "x=> x.AddressFirstRsc - QBOTrsrcOffSet", "String", {"length": "x=> x.SizeFirstRsc", "term":""}],
+                                        ["EncC2Info", "x=> x.AddressSecondRsc - QBOTrsrcOffSet", "String", {"length": "x=> x.SizeSecondRsc", "term":""}]
                                     ]
                                 ]
                             ]''', struct="QbotRCData") AS RCDataSections
@@ -156,8 +155,8 @@ sources:
 
         -- rc4 decrypt the configurations
         LET decryptedInfo <= SELECT *,
-                                format(format="%x", args=crypto_rc4(key=unhex(string="43a5b0bdb1b829bb796e3dbad916f7185f6a6b1a"), string=RCDataSections.Data5812)) AS DecryptedBotInfo,
-                                format(format="%x", args=crypto_rc4(key=unhex(string="43a5b0bdb1b829bb796e3dbad916f7185f6a6b1a"), string=RCDataSections.Data3719)) AS DecryptedC2Info
+                                format(format="%x", args=crypto_rc4(key=unhex(string="2fbafdc0451de65322a9aee65f28be319ad9574e"), string=RCDataSections.EncC2Info)) AS DecryptedC2Info,
+                                format(format="%x", args=crypto_rc4(key=unhex(string="2fbafdc0451de65322a9aee65f28be319ad9574e"), string=RCDataSections.EncBotInfo)) AS DecryptedBotInfo
                              FROM parsedRdata
 
         -- format the decrypted configurations
