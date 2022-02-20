@@ -1019,7 +1019,7 @@ Arg | Description | Type
 ----|-------------|-----
 components|Path components to join.|list of Any (required)
 sep|Separator to use (default /)|string
-path_type|Type of path (e.g. 'windpws)|string
+path_type|Type of path (e.g. 'windows)|string
 
 
 
@@ -1739,4 +1739,3 @@ Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
-
