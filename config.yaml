@@ -3,7 +3,7 @@ languageCode: en-us
 title: "Velociraptor - Digging deeper!"
 
 theme: "hugo-theme-learn"
-
+disqusShortname: velocidex-velociraptor
 params:
   themeVariant: "mine"
   disableSearch: true

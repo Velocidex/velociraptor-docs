@@ -59,7 +59,7 @@ if the binary is trusted by the system.
 Arg | Description | Type
 ----|-------------|-----
 accessor|The accessor to use.|string
-filename|The filename to parse.|string (required)
+filename|The filename to parse.|OSPath (required)
 verbose|Set to receive verbose information about all the certs.|bool
 
 
@@ -282,6 +282,7 @@ Arg | Description | Type
 ----|-------------|-----
 globs|Glob expressions to apply.|list of string (required)
 accessor|The accessor to use.|string
+root|The root directory to glob from (default '/').|string
 
 
 

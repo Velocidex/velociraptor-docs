@@ -121,7 +121,7 @@ You can read more about profiles here https://github.com/Velocidex/vtypes
 
 Arg | Description | Type
 ----|-------------|-----
-filename|Binary file to open.|string (required)
+filename|Binary file to open.|OSPath (required)
 accessor|The accessor to use|string
 profile|Profile to use (see https://github.com/Velocidex/vtypes).|string
 struct|Name of the struct in the profile to instantiate.|string (required)
@@ -415,7 +415,8 @@ Parse an NTFS image file.
 
 Arg | Description | Type
 ----|-------------|-----
-device|The device file to open. This may be a full path - we will figure out the device automatically.|string (required)
+device|The device file to open. This may be a full path - we will figure out the device automatically.|OSPath (required)
+accessor|The accessor to use.|string
 inode|The MFT entry to parse in inode notation (5-144-1).|string
 mft|The MFT entry to parse.|int64
 mft_offset|The offset to the MFT entry to parse.|int64
@@ -436,7 +437,8 @@ Scan the $I30 stream from an NTFS MFT entry.
 
 Arg | Description | Type
 ----|-------------|-----
-device|The device file to open. This may be a full path - we will figure out the device automatically.|string (required)
+device|The device file to open. This may be a full path - we will figure out the device automatically.|OSPath (required)
+accessor|The accessor to use.|string
 inode|The MFT entry to parse in inode notation (5-144-1).|string
 mft|The MFT entry to parse.|int64
 mft_offset|The offset to the MFT entry to parse.|int64
@@ -457,7 +459,8 @@ Show the run ranges for an NTFS stream.
 
 Arg | Description | Type
 ----|-------------|-----
-device|The device file to open. This may be a full path - we will figure out the device automatically.|string (required)
+device|The device file to open. This may be a full path - we will figure out the device automatically.|OSPath (required)
+accessor|The accessor to use.|string
 inode|The MFT entry to parse in inode notation (5-144-1).|string
 mft|The MFT entry to parse.|int64
 mft_offset|The offset to the MFT entry to parse.|int64
@@ -478,7 +481,7 @@ Parse a PE file.
 
 Arg | Description | Type
 ----|-------------|-----
-file|The PE file to open.|string (required)
+file|The PE file to open.|OSPath (required)
 accessor|The accessor to use.|string
 
 
@@ -644,7 +647,8 @@ Parse the USN journal from a device.
 
 Arg | Description | Type
 ----|-------------|-----
-device|The device file to open.|string (required)
+device|The device file to open.|OSPath (required)
+accessor|The accessor to use.|string
 start_offset|The starting offset of the first USN record to parse.|int64
 
 

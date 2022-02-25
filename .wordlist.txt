@@ -1174,3 +1174,6 @@ dat
 MyLabel
 Memoizing
 memoizing
+OSPath
+kwargs
+shannon

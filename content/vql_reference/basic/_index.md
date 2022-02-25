@@ -141,8 +141,9 @@ Return the basename of the path. For example basename(path="/foo/bar") -> "bar"
 
 Arg | Description | Type
 ----|-------------|-----
-path|Extract directory name of path|string (required)
+path|Extract directory name of path|Any (required)
 sep|Separator to use (default /)|string
+path_type|Type of path (e.g. 'windows,linux)|string
 
 
 
@@ -370,8 +371,9 @@ Related: basename()
 
 Arg | Description | Type
 ----|-------------|-----
-path|Extract directory name of path|string (required)
+path|Extract directory name of path|Any (required)
 sep|Separator to use (default /)|string
+path_type|Type of path (e.g. 'windows,linux)|string
 
 
 
@@ -1015,8 +1017,9 @@ Build a path by joining all components.
 
 Arg | Description | Type
 ----|-------------|-----
-components|Path components to join.|list of string (required)
+components|Path components to join.|list of Any (required)
 sep|Separator to use (default /)|string
+path_type|Type of path (e.g. 'windows)|string
 
 
 
@@ -1034,7 +1037,8 @@ Split a path into components. Note this is more complex than just split() becaus
 
 Arg | Description | Type
 ----|-------------|-----
-path|Path to split into components.|string (required)
+path|Path to split into components.|Any (required)
+path_type|Type of path (e.g. 'windows')|string
 
 
 
@@ -1735,4 +1739,3 @@ Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
-

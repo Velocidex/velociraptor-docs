@@ -179,7 +179,7 @@
             },
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The filename to parse.",
                 "required": true
             },
@@ -226,7 +226,7 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "Any",
                 "description": "Extract directory name of path",
                 "required": true
             },
@@ -234,6 +234,11 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default /)"
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windows,linux)"
             }
         ],
         "category": "basic"
@@ -832,7 +837,7 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "Any",
                 "description": "Extract directory name of path",
                 "required": true
             },
@@ -840,6 +845,11 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default /)"
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windows,linux)"
             }
         ],
         "category": "basic"
@@ -948,6 +958,18 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "entropy",
+        "description": "Calculates shannon scale entropy of a string.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "required": true
+            }
+        ]
     },
     {
         "name": "enumerate",
@@ -1352,6 +1374,12 @@
                 "type": "string",
                 "description": "The credentials to use",
                 "required": true
+            },
+            {
+                "name": "attributes",
+                "type": "ordereddict.Dict",
+                "description": "The publish attributes",
+                "required": true
             }
         ],
         "category": "server"
@@ -1574,7 +1602,7 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Path to open and hash.",
                 "required": true
             },
@@ -2402,7 +2430,7 @@
             },
             {
                 "name": "results",
-                "type": "Any",
+                "type": "LazyExpr",
                 "description": "The result to return",
                 "required": true
             }
@@ -2726,7 +2754,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Binary file to open.",
                 "required": true
             },
@@ -2988,9 +3016,14 @@
         "args": [
             {
                 "name": "device",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "inode",
@@ -3017,9 +3050,14 @@
         "args": [
             {
                 "name": "device",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "inode",
@@ -3046,9 +3084,14 @@
         "args": [
             {
                 "name": "device",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "inode",
@@ -3075,7 +3118,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The PE file to open.",
                 "required": true
             },
@@ -3181,9 +3224,14 @@
         "args": [
             {
                 "name": "device",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The device file to open.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "start_offset",
@@ -3289,7 +3337,7 @@
         "args": [
             {
                 "name": "components",
-                "type": "string",
+                "type": "Any",
                 "description": "Path components to join.",
                 "repeated": true,
                 "required": true
@@ -3298,6 +3346,11 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default /)"
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windpws)"
             }
         ],
         "category": "basic"
@@ -3309,9 +3362,14 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "Any",
                 "description": "Path to split into components.",
                 "required": true
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windpws)"
             }
         ],
         "category": "basic"
@@ -3340,6 +3398,11 @@
                 "name": "parse",
                 "type": "string",
                 "description": "Alternatively parse the pathspec from this string."
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path this is (windows,linux,registry,ntfs)."
             }
         ],
         "category": "plugin"
@@ -3558,7 +3621,7 @@
         "args": [
             {
                 "name": "vql",
-                "type": "vfilter.StoredQuery",
+                "type": "StoredQuery",
                 "required": true
             }
         ],
@@ -3716,6 +3779,11 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "root",
+                "type": "string",
+                "description": "The root directory to glob from (default '/')."
             }
         ],
         "category": "windows"
@@ -3854,6 +3922,30 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "remap",
+        "description": "Apply a remapping configuration to the root scope.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "config",
+                "type": "string",
+                "description": "A Valid remapping configuration in YAML format",
+                "required": true
+            },
+            {
+                "name": "copy",
+                "type": "string",
+                "description": "Accessors to copy to the new scope",
+                "repeated": true
+            },
+            {
+                "name": "clear",
+                "type": "bool",
+                "description": "If set we clear all accessors from the device manager"
+            }
+        ]
     },
     {
         "name": "rm",
@@ -4033,9 +4125,9 @@
         "type": "Function",
         "args": [
             {
-                "name": "client_id",
-                "type": "string",
-                "required": true
+                "name": "metadata",
+                "type": "ordereddict.Dict",
+                "description": "A dict containing metadata. If not specified we use kwargs."
             }
         ],
         "category": "server"
@@ -5414,7 +5506,7 @@
         "args": [
             {
                 "name": "device",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The device file to open.",
                 "required": true
             }
@@ -5551,7 +5643,7 @@
             {
                 "name": "accessor",
                 "type": "string",
-                "description": "Accessor (e.g. NTFS)"
+                "description": "Accessor (e.g. ntfs,file)"
             },
             {
                 "name": "context",

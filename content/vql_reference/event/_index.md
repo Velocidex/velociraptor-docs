@@ -375,7 +375,7 @@ Watch the USN journal from a device.
 
 Arg | Description | Type
 ----|-------------|-----
-device|The device file to open.|string (required)
+device|The device file to open.|OSPath (required)
 
 
 
