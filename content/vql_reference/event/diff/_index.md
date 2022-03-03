@@ -95,6 +95,6 @@ This query:
    and the query exits.
 
 Sometimes we need to wait for a subprocess to exist if it detaches
-from the teminal immediately but does some work in the background.
+from the terminal immediately but does some work in the background.
 
 
