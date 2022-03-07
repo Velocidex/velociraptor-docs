@@ -8,6 +8,7 @@ pre: <i class="fas fa-code"></i>
 no_edit: true
 disableToc: true
 no_children: true
+noDisqus: true
 ---
 
 {{% exchange %}}

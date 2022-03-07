@@ -634,6 +634,57 @@ Finally in the last case, the regex is applies to an integer. It makes
 no sense to apply a regular expression to an integer and so VQL
 returns FALSE.
 
+### Example - Associative operator applied on a stored query
+
+The Associative operator is denoted by `.` and accesses a field from
+an object or dict. One of the interesting protocols of the `.`
+operator is when it is applied to a query or a list.
+
+In the following example, I define a stored query that calls the
+`Generic.Utils.FetchBinary` artifact (This artifact fetches the named
+binary):
+
+```vql
+LET binary = SELECT FullPath
+  FROM Artifact.Generic.Utils.FetchBinary(ToolName="ToolName")
+```
+
+Although a query defined via the `LET` keyword does not actually run
+the query immediately (it is a lazy operator), we can think of the
+variable `binary` as containing an array of dictionaries
+(e.g. `[{"FullPath": "C:\Windows\Temp\binary.exe"}]`).
+
+If we now apply the associative operator `.` to the variable binary,
+the operator will convert the array into another array, where each
+member is extracted for example `binary.FullPath` is
+`["C:\Windows\Temp\binary.exe"]`. To access the name of the binary we
+can then index the first element from the array.
+
+
+```vql
+SELECT * FROM execve(argv=[binary.FullPath[0], "-flag"])
+```
+
+{{% notice warning "Expanding queries using the associative operator" %}}
+
+While using the `.` operator is useful to apply to a stored query, care
+must be taken that the query is not too large. In VQL stored queries
+are lazy and do not actually execute until needed because they can
+generate thousands of rows! The `.` operator expands the query into an
+array and may exhaust memory doing so.
+
+The following query may be disastrous:
+
+```vql
+LET MFT = SELECT * FROM Artifact.Windows.NTFS.MFT()
+
+SELECT MFT.FullPath FROM scope()
+```
+
+The `Windows.NTFS.MFT` artifact typically generates millions of rows,
+and `MFT.FullPath` will expand them all into memory!
+
+{{% /notice %}}
 
 ## VQL control structures
 

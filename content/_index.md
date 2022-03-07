@@ -2,6 +2,7 @@
 title: "Welcome"
 date: 2021-06-12T07:11:04Z
 draft: false
+noDisqus: true
 weight: 20
 no_header: true
 carousel:

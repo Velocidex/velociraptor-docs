@@ -516,6 +516,16 @@
                 "name": "ops_per_sec",
                 "type": "int64",
                 "description": "Rate limiting for collections."
+            },
+            {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Set query cpu_limit value"
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Set query iops_limit value"
             }
         ],
         "category": "plugin"
@@ -557,6 +567,16 @@
                 "name": "ops_per_sec",
                 "type": "float64",
                 "description": "Set query ops_per_sec value"
+            },
+            {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Set query cpu_limit value"
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Set query iops_limit value"
             },
             {
                 "name": "max_rows",
@@ -1194,7 +1214,7 @@
         "args": [
             {
                 "name": "list",
-                "type": "string",
+                "type": "Any",
                 "description": "A list of items to filter",
                 "repeated": true,
                 "required": true
@@ -1203,8 +1223,12 @@
                 "name": "regex",
                 "type": "string",
                 "description": "A regex to test each item",
-                "repeated": true,
-                "required": true
+                "repeated": true
+            },
+            {
+                "name": "condition",
+                "type": "string",
+                "description": "A VQL lambda to use to filter elements"
             }
         ],
         "category": "basic"
@@ -1725,6 +1749,16 @@
                 "description": "Set query ops_per_sec value"
             },
             {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Set query ops_per_sec value"
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Set query ops_per_sec value"
+            },
+            {
                 "name": "max_rows",
                 "type": "uint64",
                 "description": "Max number of rows to fetch"
@@ -2234,6 +2268,11 @@
                 "name": "dedup",
                 "type": "int64",
                 "description": "Suppress same message in this many seconds (default 60 sec)."
+            },
+            {
+                "name": "args",
+                "type": "Any",
+                "description": "An array of elements to apply into the format string."
             }
         ],
         "category": "basic"
@@ -2264,6 +2303,19 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "lzxpress_decompress",
+        "description": "Decompress an lzxpress blob.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "data",
+                "type": "string",
+                "description": "The lzxpress stream (bytes)",
+                "required": true
+            }
+        ]
     },
     {
         "name": "magic",
@@ -2998,7 +3050,7 @@
             {
                 "name": "filename",
                 "type": "string",
-                "description": "A list of event log files to parse.",
+                "description": "The MFT file.",
                 "required": true
             },
             {
@@ -3011,14 +3063,18 @@
     },
     {
         "name": "parse_ntfs",
-        "description": "Parse an NTFS image file.",
+        "description": "Parse specific inodes from an NTFS image file or the raw device.",
         "type": "Function",
         "args": [
             {
                 "name": "device",
+                "type": "string",
+                "description": "The device file to open. This may be a full path for example C:\\Windows - we will figure out the device automatically."
+            },
+            {
+                "name": "filename",
                 "type": "OSPath",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
-                "required": true
+                "description": "A raw image to open. You can also provide the accessor if using a raw image file."
             },
             {
                 "name": "accessor",
@@ -3050,9 +3106,13 @@
         "args": [
             {
                 "name": "device",
+                "type": "string",
+                "description": "The device file to open. This may be a full path for example C:\\Windows - we will figure out the device automatically."
+            },
+            {
+                "name": "filename",
                 "type": "OSPath",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
-                "required": true
+                "description": "A raw image to open. You can also provide the accessor if using a raw image file."
             },
             {
                 "name": "accessor",
@@ -3084,9 +3144,13 @@
         "args": [
             {
                 "name": "device",
+                "type": "string",
+                "description": "The device file to open. This may be a full path for example C:\\Windows - we will figure out the device automatically."
+            },
+            {
+                "name": "filename",
                 "type": "OSPath",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
-                "required": true
+                "description": "A raw image to open. You can also provide the accessor if using a raw image file."
             },
             {
                 "name": "accessor",
@@ -3350,7 +3414,7 @@
             {
                 "name": "path_type",
                 "type": "string",
-                "description": "Type of path (e.g. 'windpws)"
+                "description": "Type of path (e.g. 'windows')"
             }
         ],
         "category": "basic"
@@ -3369,7 +3433,7 @@
             {
                 "name": "path_type",
                 "type": "string",
-                "description": "Type of path (e.g. 'windpws)"
+                "description": "Type of path (e.g. 'windows')"
             }
         ],
         "category": "basic"
@@ -3634,7 +3698,7 @@
         "args": [
             {
                 "name": "query",
-                "type": "string",
+                "type": "Any",
                 "description": "A VQL Query to parse and execute.",
                 "required": true
             },
@@ -3642,6 +3706,11 @@
                 "name": "env",
                 "type": "ordereddict.Dict",
                 "description": "A dict of args to insert into the scope."
+            },
+            {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Average CPU usage in percent of a core."
             }
         ]
     },
@@ -3666,8 +3735,7 @@
             {
                 "name": "start",
                 "type": "int64",
-                "description": "Start index (0 based)",
-                "required": true
+                "description": "Start index (0 based - default 0)"
             },
             {
                 "name": "end",
@@ -3678,8 +3746,7 @@
             {
                 "name": "step",
                 "type": "int64",
-                "description": "End index (0 based)",
-                "required": true
+                "description": "Step (default 1)"
             }
         ],
         "category": "basic"
@@ -3897,6 +3964,18 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "rekey",
+        "description": "Causes the client to rekey and regenerate a new client ID. DANGEROUS! This will change the client's identity and it will appear as a new client in the GUI.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "wait",
+                "type": "int64",
+                "description": "Wait this long before rekeying the client."
+            }
+        ]
     },
     {
         "name": "relpath",
@@ -5635,7 +5714,7 @@
             },
             {
                 "name": "files",
-                "type": "string",
+                "type": "Any",
                 "description": "The list of files to scan.",
                 "repeated": true,
                 "required": true

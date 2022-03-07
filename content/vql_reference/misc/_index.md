@@ -3,82 +3,16 @@ title: Misc
 weight: 70
 linktitle: Misc
 index: true
+no_edit: true
+no_children: true
 ---
 
 Miscellaneous plugins not yet categorized.
-
-
-<div class="vql_item"></div>
-
-
-## entropy
-<span class='vql_type pull-right'>Function</span>
-
-Calculates shannon scale entropy of a string.
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-string||string (required)
-
-
-
-<div class="vql_item"></div>
-
-
-## hunt_delete
-<span class='vql_type pull-right'>Plugin</span>
-
-Delete a hunt. 
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-hunt_id||string (required)
-really_do_it||bool
-
-
-
-<div class="vql_item"></div>
-
-
-## query
-<span class='vql_type pull-right'>Plugin</span>
-
-Evaluate a VQL query.
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-query|A VQL Query to parse and execute.|string (required)
-env|A dict of args to insert into the scope.|ordereddict.Dict
-
-
-
-<div class="vql_item"></div>
-
-
-## remap
-<span class='vql_type pull-right'>Function</span>
-
-Apply a remapping configuration to the root scope.
-
-
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-config|A Valid remapping configuration in YAML format|string (required)
-copy|Accessors to copy to the new scope|list of string
-clear|If set we clear all accessors from the device manager|bool
-
+|Plugin/Function|<span class='vql_type'>Type</span>|Description|
+|-|-|-|
+|[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
+|[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
+|[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
+|[query](query)|<span class='vql_type'>Plugin</span>|Evaluate a VQL query|
+|[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
+|[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
