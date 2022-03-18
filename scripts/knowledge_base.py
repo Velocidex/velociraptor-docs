@@ -174,5 +174,4 @@ if __name__ == "__main__":
 
 if os.getenv('CI'):
    # Remove this file so the site may be pushed correctly.
-   os.remove(artifact_root_directory + "/.gitignore")
    os.remove(os.path.dirname(output_data_path) + "/.gitignore")
