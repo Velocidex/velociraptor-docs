@@ -5,6 +5,9 @@ references:
 exchange:
 	python3 scripts/exchange_index.py
 
+kb:
+	python3 scripts/knowledge_base.py
+
 blog:
 	python3 scripts/blog_index.py
 
