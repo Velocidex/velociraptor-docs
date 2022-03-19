@@ -19,7 +19,7 @@
 
 <!-- Modal -->
 <div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog E" role="document">
+  <div class="modal-dialog E wide" role="document">
     <div class="modal-content E">
       <div class="modal-header E">
         <button type="button" class="close"
@@ -36,11 +36,39 @@
         <p>
           Clicking "Contribute" below will allow you to add a new kb
           article to this repository. You will be taken to Github
-          where you can create a new article from the template.
+          where you can create a new article using the knowledge base
+          template described below.
         </p>
+        <p>
+          Please provide a name for the file above prior to preparing
+          a pull request. This file is in markdown
+          format.  <b>Remember</b>: The aim of this article is to
+          quickly answer an immediate need for users who may not be
+          familiar with Velociraptor or DFIR in general. It should
+          have pointers for further research or links to other
+          knowledge base articles.
+        </p>
+        <p>
+<pre><code class="language-text hljs">
+# The article should begin with a title (start with #)...
+<br>
+The title should be in the form of a question or task - for example: `How do I search for malicious downloaded files?` (The website will use the first heading as the searchable title.)
+
+The first paragraph after the title should be a short description of the kb article. It will be searchable on the main knowledge base page.
+<br>
+The rest of the article is normal markdown. You can also include screenshots by simply pasting them into the github editor.
+<br>
+You can tag your tip using the following syntax. A line starting with <b>Tags:</b> will be removed from the final text. For example:
+<br>
+Tags: #deployment, #vql
+<br>
+Once you finish writing the article, simply save it to a local branch and send a pull request.
+</code></pre>
+</p>
       </div>
       <div class="modal-footer">
-        <a href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/template.md"
+        <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/knowledge_base/tips"
+           target="_blank"
            class="btn btn-primary btn-lg right">
           <i class="fab fa-github"></i>&nbsp;Contribute
         </a>
