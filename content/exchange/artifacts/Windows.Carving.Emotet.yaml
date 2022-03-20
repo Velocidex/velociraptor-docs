@@ -17,7 +17,7 @@ description: |
 type: CLIENT
 
 reference:
-  - https://github.com/kevoreilly/CAPEv2/blob/master/modules/processing/parsers/mwcp/Emotet.py
+  - https://github.com/kevoreilly/CAPEv2/blob/3fc7e94e22b5e4a04531292c095ea6db44879e72/data/yara/CAPE/Emotet.yar
   - https://github.com/OALabs/Lab-Notes/blob/main/Emotet/Emotet.ipynb
 
 parameters:
@@ -47,6 +47,11 @@ parameters:
                 $snippetM = {FF 74 [2] 8D 84 [3] 00 00 B9 [4] 50 FF 74 [2] FF 74 [2] 8B 94 [3] 00 00 E8 [4] 83 C4 10 89 44 [2] 8B F8 B9 [4] 03 84 [3] 00 00 89 44 [2] E9}
                 $snippetN = {FF 74 [2] 8D 44 [2] B9 [4] FF 74 [2] 50 FF 74 [2] 8B 54 [2] E8 [4] 8B 8C [3] 00 00 83 C4 10 03 C8 89 44 [2] 89 4C [2] 8B F8 B9 45 89 77 05 E9}
                 $snippetO = {8D 44 [2] B9 [4] 50 FF 74 [2] 8B 54 [2] E8 [4] 8B D0 8B 44 [2] 59 59 03 C2 89 54 [2] 8B FA 89 44 [2] B9 [4] E9}
+                $snippetP = {FF 74 [2] 8B 54 [2] 8D 44 [2] 8B 4C [2] 68 [4] 50 E8 [4] 8B D0 83 C4 0C 8B 44 [2] 8B FA 03 C2 89 54 [2] 8B 54 [2] B9 [4] 89 44 [2] E9}
+                $snippetQ = {FF 74 [2] BA [4] 8D 4C [2] FF 74 [2] E8 [4] 59 89 84 [3] 00 00 8B F8 03 44 [2] 59 89 44 [2] B9 [4] 81 F9 [4] 74 28 8B 54 [2] E9}
+                $snippetR = {8D 44 [2] 50 FF 74 [2] 8B 54 [2] 8B 4C [2] 68 [4] E8 [4] 8B D0 83 C4 0C 8B 44 [2] 8B FA 03 C2 89 54 [2] 8B 54 [2] B9 [4] 89 44 [2] E9}
+                $snippetS = {FF 74 [2] 8D 54 [2] FF 74 [2] 8B 4C [2] E8 [4] 8B D0 83 C4 0C 8B 44 [2] 8B FA 03 C2 89 54 [2] 8B 54 [2] B9 [4] 89 44 [2] E9}
+                $snippetT = {8B 54 [2] 8D 44 [2] 8B 4C [2] 68 [4] 50 E8 [4] 8B 9C [3] 00 00 8B F8 59 59 03 D8 89 44 [2] 89 5C [2] B9 [4] EB}
             condition:
                 any of them
         }
