@@ -33,5 +33,6 @@ The nice thing about collecting profiles is that the client does **not** need to
 
 ### References
 
-You can read more about ![profiling Velociraptor here](https://docs.velociraptor.app/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/).
+You can read more about [profiling Velociraptor here](https://docs.velociraptor.app/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/).
+
 Tags: #deployment, #debugging
