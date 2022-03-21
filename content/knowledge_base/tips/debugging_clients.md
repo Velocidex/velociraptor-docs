@@ -25,11 +25,11 @@ The most common thing to collect include:
 
 When asking for help on Discord or our mailing list, we will often ask for the profiles collected from the client (or server). At a minimum we will need the above items to diagnose any issues.
 
-{{% note tip %}}
+{{% notice tip %}}
 
 The nice thing about collecting profiles is that the client does **not** need to be restarted and we do not need to run a special debug build - all clients are capable of collecting profile information at any time.
 
-{{% /note %}}
+{{% /notice %}}
 
 ### References
 
