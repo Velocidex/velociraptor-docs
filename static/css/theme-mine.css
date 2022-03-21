@@ -630,3 +630,7 @@ figcaption  {
 #body .banner img {
     max-width: 100%;
 }
+
+.modal-dialog.wide {
+    width: 90%;
+}
