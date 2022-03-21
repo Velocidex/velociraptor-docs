@@ -1189,3 +1189,8 @@ subprocess
 rekeying
 
 editURL
+
+pathspecs
+stringified
+suprisingly
+deserialization
