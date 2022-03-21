@@ -25,6 +25,7 @@ jobs:
         run: |
           python scripts/exchange_index.py
           python scripts/blog_index.py
+          python scripts/knowledge_base.py
 
       - name: Build
         run: hugo --minify

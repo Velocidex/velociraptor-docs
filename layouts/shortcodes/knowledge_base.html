@@ -1,0 +1,121 @@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="row searchbar">
+  <div class="input-group col-lg-8 pull-left">
+    <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+           placeholder="Search the knowledge base" aria-describedby="basic-addon2">
+    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+  </div>
+  <div class="col-lg-3 pull-right exchange-contribute">
+    <button type="button" class="btn btn-default btn-lg pull-right"
+            data-toggle="modal" data-target="#myModal">
+      <i class="fas fa-external-link-alt"></i>
+      Share your own tip
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog E" role="document">
+    <div class="modal-content E">
+      <div class="modal-header E">
+        <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title E">Share a tip</h4>
+      </div>
+      <div class="modal-body E">
+        <p>
+          A knowledge base tip aims to help users answer a specific
+          question.
+        </p>
+        <p>
+          Clicking "Contribute" below will allow you to add a new kb
+          article to this repository. You will be taken to Github
+          where you can create a new article from the template.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/template.md"
+           class="btn btn-primary btn-lg right">
+          <i class="fab fa-github"></i>&nbsp;Contribute
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+<div class="row search_results"></div>
+
+<script>
+let all_data = [];
+
+$.ajax({
+  url: "/kb/data.json",
+}).done(function( data ) {
+  all_data = data;
+  DrawResults(data);
+});
+
+function doSearch() {
+  // Declare variables
+  let input = document.getElementById('myInput');
+  let filter = input.value.toUpperCase();
+
+  let result = [];
+  for(let i=0;i<all_data.length; i++) {
+    let item = all_data[i];
+
+    if (item.title.toUpperCase().includes(filter)) {
+      result.push(item);
+    }
+  };
+  DrawResults(result);
+}
+
+function DrawResults(data) {
+  $(".search_results").empty();
+
+  for(let i=0;i<data.length; i++) {
+    let item = data[i];
+    let template = $(`<div class="panel panel-default color">
+  <div class="panel-heading color">
+    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="date pull-right"></div>
+  </div>
+  <div class="panel-body color">
+   <div class="border color">
+     <div class="border color">
+      <div class="idea-inner-text-main color">
+        <p class="description"></p>
+        <span class="user-name" href="">Contributed by <a class="user-name-link"></a>
+          <img class="user-avatar inline">
+        </span>
+
+        <p class="idea-tag space"/>
+      </div>
+     </div>
+   </div>
+  </div>`);
+
+    template.find(".title").append(item.title);
+    template.find(".user-name-link").append(item.author);
+    template.find(".description").append(item.description);
+    template.find(".user-name-link").attr("href", item.author_link);
+    template.find(".user-avatar").attr("src", item.author_avatar);
+    template.find(".title").attr("href", item.link);
+    template.find(".date").append(item.date)
+
+    for (let j=0; j<item.tags.length; j++) {
+      let tag = item.tags[j];
+      template.find(".idea-tag").append(`<i class="linkcolour label label-success">` + tag + `</i>&nbsp;`);
+    }
+    let new_item = $(".search_results").append(template);
+  }
+};
+</script>

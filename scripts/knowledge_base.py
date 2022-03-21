@@ -7,10 +7,10 @@ from zipfile import ZipFile
 
 # Where we generate the search index.
 commits_url = "https://api.github.com/repos/Velocidex/velociraptor-docs/commits"
-output_data_path = "static/exchange/data.json"
-archive_path = "static/exchange/artifact_exchange.zip"
-artifact_root_directory = "content/exchange/artifacts"
-artifact_page_directory = "content/exchange/artifacts/pages"
+output_data_path = "static/kb/data.json"
+
+# The source of the tips - this is where contributed content lives.
+kb_root_directory = "content/knowledge_base/tips/"
 
 org = "Velocidex"
 project = "velociraptor-docs"
@@ -18,15 +18,17 @@ project = "velociraptor-docs"
 # Each yaml file will be converted to a markdown if needed.
 template = """---
 title: %s
+author: "%s"
+author_link: "%s"
+author_avatar: "%s"
+date: "%s"
+tags: %s
 hidden: true
+noTitle: true
 editURL: https://github.com/%s/%s/edit/master/%s
 ---
 
 %s
-
-```yaml
-%s
-```
 """
 
 previous_data = []
@@ -38,11 +40,21 @@ except:
 
 date_regex = re.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 hash_regex = re.compile("#([0-9_a-z]+)", re.I | re.M | re.S)
+title_regex = re.compile("^#\\s*(.+?)$", re.I | re.M | re.S)
+content_regex = re.compile("^Tags: .+?$", re.I | re.M | re.S)
+
+def ensure_dir_exists(dirname):
+    try:
+        os.mkdir(dirname)
+    except: pass
 
 def cleanDescription(description):
   description = description.replace("\r\n", "\n")
   top_paragraph = description.split("\n\n")[0]
   return top_paragraph
+
+def cleanContent(content):
+  return content_regex.sub("", content)
 
 def cleanupDate(date):
   try:
@@ -97,55 +109,57 @@ def getAuthor(record, yaml_filename):
   print("Commit by %s\n" % record["author"])
   return record
 
-# Create a zip file with all the artifacts in it.
-def make_archive():
-  with ZipFile(archive_path, mode='w') as archive:
-    for root, dirs, files in os.walk(artifact_root_directory):
-      for name in files:
-        if not name.endswith(".yaml"):
-          continue
-
-        archive.write(os.path.join(root, name))
-
 def build_markdown():
   index = []
 
-  for root, dirs, files in os.walk(artifact_root_directory):
+  for root, dirs, files in os.walk(kb_root_directory):
     files.sort()
 
     for name in files:
-      if not name.endswith(".yaml"):
+      if (not name.endswith(".md") or
+          name == 'template.md' or
+          name == '_index.md'):
         continue
 
-      yaml_filename = os.path.join(root, name)
-      with open(yaml_filename) as stream:
+      md_filename = os.path.join(root, name)
+      with open(md_filename) as stream:
         content = stream.read()
-        data = yaml.safe_load(content)
 
-        base_name = os.path.splitext(yaml_filename)[0]
-        base_name = os.path.relpath(base_name, artifact_root_directory)
-        filename_name = os.path.join(artifact_page_directory, base_name)
+        # Find the title.
+        m = title_regex.search(content)
+        if not m:
+          continue
 
-        description = data.get("description", "")
+        title = m.group(1)
+
+        # We convert the original kb article into a compiled version
+        # in the same directory so it is easier to access images etc.
+        base_name = os.path.splitext(md_filename)[0]
+        base_name = os.path.relpath(base_name, kb_root_directory)
+        dirname = os.path.join(kb_root_directory, base_name)
+        filename_name = os.path.join(dirname, "_index.md")
+
+        ensure_dir_exists(dirname)
 
         record = {
-          "title": data["name"],
-          "author": data.get("author"),
-          "description": cleanDescription(description),
-          "link": os.path.join("/exchange/artifacts/pages/",
+          "title": title,
+          "link": os.path.join("/knowledge_base/tips/",
                                base_name.lower()).replace("\\", "/"),
-          "tags": getTags(description),
+          "tags": getTags(content),
         }
-
-        record_with_author = getAuthor(record, yaml_filename)
+        record_with_author = getAuthor(record, md_filename)
 
         index.append(record_with_author)
 
-        md_filename = filename_name + ".md"
-        with open(md_filename, "w") as fd:
-           fd.write(template % (data["name"], org, project,
-                                yaml_filename,
-                                data["description"], content))
+        with open(filename_name, "w") as fd:
+           fd.write(template % (
+             title,
+             record_with_author["author"],
+             record_with_author["author_link"],
+             record_with_author["author_avatar"],
+             record_with_author["date"],
+             json.dumps(record_with_author["tags"]),
+             org, project, md_filename, cleanContent(content)))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)
@@ -156,10 +170,8 @@ def build_markdown():
 
 if __name__ == "__main__":
   build_markdown()
-  make_archive()
 
 
 if os.getenv('CI'):
    # Remove this file so the site may be pushed correctly.
-   os.remove(artifact_root_directory + "/.gitignore")
    os.remove(os.path.dirname(output_data_path) + "/.gitignore")

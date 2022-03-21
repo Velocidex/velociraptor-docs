@@ -11,4 +11,17 @@ no_children: true
 noDisqus: true
 ---
 
+The artifact exchange is a place for sharing community contributed
+artifacts. Simply search before for an artifact that might address
+your need. If you wish to contribute to the exchange, please click the
+button to the right.
+
+{{% notice tip "Importing the artifact exchange" %}}
+
+You can automatically import the entire content of the artifact
+exchange into your server by running the
+`Server.Import.ArtifactExchange` artifact.
+
+{{% /notice %}}
+
 {{% exchange %}}
