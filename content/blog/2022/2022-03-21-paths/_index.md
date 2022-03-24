@@ -7,6 +7,7 @@ tags:
  - Forensics
  - VQL
 
+noindex: true
 author: "Mike Cohen"
 date: 2022-03-20
 ---
@@ -88,7 +89,7 @@ handle various paths:
 
 3. An `OSPath` implements specific serialization and deserialization
    methods: When we need to pass an OSPath object to the OS API we
-   need to serialize the abstract OSPath is a way that is appropriate
+   need to serialize the abstract OSPath in a way that is appropriate
    to the OS. Otherwise we prefer to retain the OSPath as an abstract
    path as much as possible.
 
@@ -119,9 +120,9 @@ FROM glob(globs="C:\\Windows\\*")
 
 The `glob()` plugin applies the glob expression on the filesystem and
 returns a single row for each matching file. Since release `0.6.4`,
-the raw OSPath object is also available within VQL. While it may
-appear that it is a simple string, it is in fact an object with many
-convenient methods.
+the raw `OSPath` object is also available within VQL. While it may
+appear that it is a simple string when serialized to JSON, it is in
+fact an object with many convenient methods.
 
 ![The OSPath object](ospath.png)
 
@@ -132,7 +133,7 @@ The OSPath object has some convenient properties:
   or filename.  (negative indexes are counted from the end of the
   component array).
 
-* The `Basename` property is a short hand to the last component
+* The `Basename` property is a shorthand to the last component
   (equivalent to `OSPath.Components[-1]`)
 
 * The `Dirname` property is an OSPath representing the directory
@@ -146,7 +147,7 @@ The OSPath object has some convenient properties:
 
 ## Filesystem accessors and OSPath
 
-Velociraptor access filesystems by way of an `accessor`. You can think
+Velociraptor accesses filesystems by way of an `accessor`. You can think
 of an accessor as a specific driver that VQL can use to open a
 path. All VQL plugins or functions that accept files will also accept
 an accessor to use to open the file.
@@ -158,14 +159,15 @@ SELECT read_file(path="C:/Windows/notepad.exe", accessor="file")
 FROM scope()
 ```
 
-The `read_file()` VQL function will read raw data from the specified
-file. The plugin will call onto the "file" accessor and pass the
-provided path to it as an opaque string.
+The `read_file()` VQL function reads raw data from the specified
+file. It will call onto the "file" accessor and pass the provided path
+to it as an opaque string.
 
 The `file` accessor is used to open files using the OS
 APIs. Therefore, it will interpret the path string according to the OS
 convention it is running on (i.e. on Windows it will create a Windows
-flavor of OSPath).
+flavor of OSPath). However, were we to use another accessor, the
+string path will be interpreted differently by the accessor.
 
 {{% notice note "Interpreting paths" %}}
 
@@ -200,7 +202,9 @@ open an archive member we need several pieces of information:
 The `zip` accessor therefore requires a more complex OSPath object
 containing additional information about the `Delegate` (i.e. the path
 and accessor that the zip accessor will delegate the actual reading
-to).
+to). We call this more complex path specification a `pathspec` as it
+specifies more precisely what the accessor should do. In a VQL query
+we may build a pathspec from scratch using the `pathspec` function.
 
 ```vql
 SELECT read_file(
@@ -217,10 +221,13 @@ function.
 
 The `zip` accessor receives the new OSPath object and
 
-1. Will open the zip container using the "file" accessor, with a path
-   of "F:/hello.zip".
-2. Within the zip container, the zip accessor will open a member
-   called `hello.txt`.
+1. Will open the zip container itself using the `Delegate`: i.e. the
+   "file" accessor, with a path of "F:/hello.zip".
+2. After parsing the zip file, the `zip` accessor will open the member
+   within it specified by the `Path` field. For zip files, the path is
+   interpreted as a forward slash separated unix like path (according
+   to the zip specification). In this case the zip accessor will open
+   a member called `hello.txt`.
 
 ## Nesting OSPath objects.
 
@@ -257,22 +264,68 @@ The OSPath object is now capable of more complex path manipulations:
    OSPath around to plugins because they will automatically parse the
    string into an OSPath object.
 
+{{% notice warning "Glob's root parameter" %}}
+
+In previous versions of Velociraptor it was possible to pass a
+pathspec to the glob parameter (e.g. to glob within a zip file)
+however since 0.6.4 this is not allowed. Glob expressions are always
+flat strings (i.e. a glob is not a pathspec). A pathspec is allowed to
+be passed to the root parameter to indicate where searching should
+start from.
+
+{{% /notice %}}
+
 ## Compatibility with previous releases
 
 Previously the `glob()` plugin would emit the `FullPath` column as a
 string representing the serialized version of each file. This string
-was passed to other plugins/vql functions which parsed it again.
+was passed to other plugins/vql functions which parsed it again. This
+lead to a lot of unnecessary path serialization and parsing, but more
+importantly it was difficult to maintain the correct "flavor" of the
+path throughout the query and required a lot of complex path
+manipulations to extract specific parts of the path.
 
-It should be more efficient to pass the raw OSPath object instead of
-the FullPath. However 0.6.4 onward still support the old FullPath
-convention. The overall effect is that artifacts originally written
-for older versions of VQL should continue to work on 0.6.4. However
-newer artifacts written for 0.6.4 will not run on older clients.
-
-If you still have older clients deployed, you should import older VQL
-artifacts into 0.6.4 server using the `Server.Import.PreviousReleases`
-server artifact.
+It should be more efficient to pass the raw OSPath object everywhere
+the old FullPath was used. However 0.6.4 onward still provide the
+FullPath column for backwards compatibility. The overall effect is
+that artifacts originally written for older versions of VQL should
+continue to work on 0.6.4. However newer artifacts written for 0.6.4
+will not run on older clients.
 
 Previously nested paths were encoded with URLs, but this is now
 deprecated and future VQL queries should not use URLs to encode nested
 paths.
+
+{{% notice warning "Supporting older clients" %}}
+
+Many people upgrade their Velociraptor server more frequently than
+their clients. Usually, newer versions of Velociraptor maintains
+reasonable backwards compatibility with older clients so most things
+continue to work. However in 0.6.4, the introduction of the `OSPath`
+column means that newer artifacts will fail on older clients (since
+VQL is evaluated on the client).
+See our [Support Policy]({{% ref "/docs/overview/support/" %}})
+
+To help with the migration process, we made the older versions of
+artifacts easily available in newer servers. If you still have older
+clients deployed, you should import older VQL artifacts into `0.6.4`
+server using the `Server.Import.PreviousReleases` server
+artifact. This will import the old artifacts under a name reflecting
+their version so they may be collected from older clients.
+
+{{% /notice %}}
+
+## Conclusions
+
+Path representation is surprisingly much more complex that it first
+appears. While paths are strings, internally Velociraptor treats them
+as a sequence of components with different flavors controlling how
+they are serialized and represented. This affords the VQL query a more
+powerful way to manipulate paths and build new paths based on them.
+
+For more complex accessors, paths are represented as a JSON serialized
+`pathspec` object, describing a delegate container path as well. Using
+the `OSPath` object methods does the right thing even for more complex
+path and makes it a lot easier to manipulate (for example
+`OSPath.Dirname` is a valid and correct `OSPath` for the containing
+directory, even for more complex pathspec based paths)
