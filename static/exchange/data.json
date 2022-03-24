@@ -1,8 +1,222 @@
 [
     {
+        "title": "Windows.EventLogs.RDPClientActivity",
+        "author": "NorthwaveCERT",
+        "description": "This artifact retrieves outgoing RDP session activity from the\nMicrosoft-Windows-TerminalServices-RDPClient event logs. It aggregates\nsessions based on ActivityID and outputs hostname, timeframe and disconnect reasons.\nDisconnect reason is filled using a dict that was filled using MS Docs (see references)",
+        "link": "/exchange/artifacts/pages/windows.eventlogs.rdpclientactivity",
+        "tags": [],
+        "author_link": "https://github.com/NorthwaveCERT",
+        "author_avatar": "https://avatars.githubusercontent.com/u/96190431?v=4",
+        "date": "2022-03-24"
+    },
+    {
+        "title": "Custom.Windows.Office.MRU",
+        "author": "Sam0rai",
+        "description": "This artifact enables hunting for recently used Office Documents.",
+        "link": "/exchange/artifacts/pages/windows.office.mru",
+        "tags": [],
+        "author_link": "https://github.com/Sam0rai",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4671530?v=4",
+        "date": "2022-03-24"
+    },
+    {
+        "title": "MacOS.Applications.Safari.History",
+        "author": "Seeps",
+        "description": "Parses Safari history database\n",
+        "link": "/exchange/artifacts/pages/macos.applications.safari.history",
+        "tags": [],
+        "author_link": "https://github.com/Seeps",
+        "author_avatar": "https://avatars.githubusercontent.com/u/10315852?v=4",
+        "date": "2022-03-21"
+    },
+    {
+        "title": "Windows.Carving.IcedID",
+        "author": "eduardomcm",
+        "description": "This artifact yara-scans memory or unpacked DLL samples for IcedID trojan (also\nknown as BokBot, or Anubis) detections, finds, decodes and returns the \nCampaign ID and C2 configurations.",
+        "link": "/exchange/artifacts/pages/windows.carving.icedid",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2022-03-19"
+    },
+    {
+        "title": "Windows.System.PowerEfficiencyDiagnostics",
+        "author": "eduardomcm",
+        "description": "This artifact parses the XML Energy Reports from the Power Efficiency \nDiagnostics feature of Windows, returning the processes which had high \nCPU usage, including which ",
+        "link": "/exchange/artifacts/pages/powerefficiencydiagnostics",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2022-03-13"
+    },
+    {
+        "title": "Windows.Registry.BackupRestore",
+        "author": "mgreen27",
+        "description": "This artifact will return BackupRestore configuration.",
+        "link": "/exchange/artifacts/pages/backuprestore",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-03-10"
+    },
+    {
+        "title": "Windows.Detection.BinaryHunter",
+        "author": "mgreen27",
+        "description": "This artifact enables hunting for binary attributes.",
+        "link": "/exchange/artifacts/pages/binaryhunter",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-03-07"
+    },
+    {
+        "title": "Windows.Registry.HiddenUsers",
+        "author": "eduardomcm",
+        "description": "Find hidden user accounts through registry values on the filesystem.",
+        "link": "/exchange/artifacts/pages/hiddenusers",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2022-03-07"
+    },
+    {
+        "title": "Windows.EventLogs.CondensedAccountUsage",
+        "author": "Qazeer",
+        "description": "This artifact will extract condensed information on logon / logoff events.",
+        "link": "/exchange/artifacts/pages/condensedaccountusage",
+        "tags": [],
+        "author_link": "https://github.com/Qazeer",
+        "author_avatar": "https://avatars.githubusercontent.com/u/5614972?v=4",
+        "date": "2022-02-09"
+    },
+    {
+        "title": "MacOS.System.LocationServices",
+        "author": "weslambert",
+        "description": "This artifact looks for applications that are registered and allowed for use of location services by checking the plist file in `/var/db/locationd/clients.plist`.  \nThis can be useful to help determine if these settings have been modified by an attacker to perform location tracking.",
+        "link": "/exchange/artifacts/pages/macos.system.locationservices",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-02-01"
+    },
+    {
+        "title": "Linux.Detection.CVE20214034",
+        "author": "scudette",
+        "description": "This artifact lists processes running as root that were spawns by processes that are not\nrunning as root. This kind of behavior is normal for things like sudo or su but for other\nprocesses (especially /bin/bash) it could represent a process launched via CVE-2021-4034.",
+        "link": "/exchange/artifacts/pages/linux.detection.cve20214034",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-26"
+    },
+    {
+        "title": "Windows.Applications.DefenderDHParser",
+        "author": "eduardomcm",
+        "description": "This artifact leverages Windows Defender DetectionHistory tool to parse and return\nthe parameters of Windows Defender detections contained in Detection History files.\n",
+        "link": "/exchange/artifacts/pages/defenderdhparser",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2022-01-24"
+    },
+    {
+        "title": "Windows.System.WMIProviders",
+        "author": "scudette",
+        "description": "List the WMI providers in the system.",
+        "link": "/exchange/artifacts/pages/windows.system.wmiproviders",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-24"
+    },
+    {
+        "title": "Windows.ETW.WMIEventing",
+        "author": "mgreen27",
+        "description": "This artifact collects events associated with creation and deletion of WMI \nEvent Consumers. All Event Consumers created under any namespace will \ngenerate events which are filtered on event consumer classes.  ",
+        "link": "/exchange/artifacts/pages/wmieventing",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-01-15"
+    },
+    {
+        "title": "Linux.Carving.SSHLogs",
+        "author": "scudette",
+        "description": "Linux systems typically store audit events in syslog. In particular successful \nssh logins are especially important for some investigations.",
+        "link": "/exchange/artifacts/pages/linux.carving.sshlogs",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-14"
+    },
+    {
+        "title": "Linux.Sysinternals.SysmonEvent",
+        "author": "scudette",
+        "description": "Parses syslog for Sysmon events on Linux using a unix domain socket.",
+        "link": "/exchange/artifacts/pages/linux.sysinternals.sysmonevent",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-14"
+    },
+    {
+        "title": "Windows.Registry.AteraNetworks",
+        "author": "mgreen27",
+        "description": "Find AteraNetworks configuration details in the registry.\nThis artifact is best combined with Windows.Forensics.FilenameSearch \nsearching for the string \"atera\".\n",
+        "link": "/exchange/artifacts/pages/ateranetworks",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-01-12"
+    },
+    {
+        "title": "Exchange.Label.User",
+        "author": "scudette",
+        "description": "This artifact watches for new client enrolments and automatically\nlabel the client with the required label if the user exists.",
+        "link": "/exchange/artifacts/pages/exchange.label.user",
+        "tags": [
+            "server",
+            "event",
+            "labels"
+        ],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-12"
+    },
+    {
+        "title": "Generic.Detection.LunasecLog4shell",
+        "author": "scudette",
+        "description": "Uses the Log4Shell scanner of Lunasec to scan the file systems of\nall drives of the host for any sign of vulnerabilities related to\nLog4shell\n",
+        "link": "/exchange/artifacts/pages/generic.detection.lunaseclog4shell",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-12"
+    },
+    {
+        "title": "Server.Slack.Clients.Enrolled",
+        "author": "scudette",
+        "description": "Send a message to slack when clients become enrolled.",
+        "link": "/exchange/artifacts/pages/server.slack.clients.enrolled",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-12"
+    },
+    {
+        "title": "Windows.System.AccessControlList",
+        "author": "scudette",
+        "description": "This artifact displays the access control lists of files.",
+        "link": "/exchange/artifacts/pages/windows.system.accesscontrollist",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-01-12"
+    },
+    {
         "title": "Windows.Detection.ProxyLogon.ProxyShell",
         "author": "Seeps",
-        "description": "This artifact hunts for CVE-2021-27065 (Microsoft Exchange ProxyLogon RCE)\nand CVE-2021-31207 (Microsoft Exchange ProxyShell RCE) exploitation by parsing \nentries in the 'MSExchange Management.evtx' log.\n\nThis log file is unique to Exchange and can be useful when ECP logs are\nno longer available. \n\nProxyLogon webshell detection syntax is specific to \n'China Chopper' via the PowerShell 'Set-OabVirtualDirectory' cmdlet.\n\nProxyShell webshell detection syntax is specific to PowerShell \n'New-MailboxExportRequest' and 'New-ExchangeCertificate' cmdlets.\n",
+        "description": "This artifact hunts for CVE-2021-27065 (Microsoft Exchange ProxyLogon RCE)\nand CVE-2021-31207 (Microsoft Exchange ProxyShell RCE) exploitation by parsing \nentries in the 'MSExchange Management.evtx' log.",
         "link": "/exchange/artifacts/pages/windows.detection.proxylogon.proxyshell",
         "tags": [],
         "author_link": "https://github.com/Seeps",
@@ -12,7 +226,7 @@
     {
         "title": "Windows.Registry.CapabilityAccessManager",
         "author": "scudette",
-        "description": "The ConsentStore in CapabilityAccessManager can provide insight to what resources binaries have had access to, such as the microphone and webcam. This artefact returns non-Microsoft executables (ie: entries listed in the `NonPackaged` path).\n\nAdditional Resources:\n\n* https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072\n* https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/\n\nTags:  \n",
+        "description": "The ConsentStore in CapabilityAccessManager can provide insight to\nwhat resources binaries have had access to, such as the microphone\nand webcam. This artefact returns non-Microsoft executables (ie:\nentries listed in the `NonPackaged` path).",
         "link": "/exchange/artifacts/pages/windows.registry.capabilityaccessmanager",
         "tags": [
             "windows",
@@ -25,7 +239,7 @@
     {
         "title": "Generic.Detection.Log4jVulnHunter",
         "author": "mgreen27",
-        "description": "This artifact searches for Vulnerable log4j libraries.\n\nThe artifact:  \n\n* firstly searches for jar, war and ear files\n* then recursively checks content by name then hash for vulnerable versions.\n* reports hit details.\n\nThe artifact is optimised to recursively search through embedded jar,war and \near files by extracting any discovered jar containers to a tempfile on disk.   \nSelect UploadHits to upload Discovered file for further analysis.  \nIt is recommended to increase default artifact timeout for large servers or \ntarget glob.\n\nSome examples of path glob may include:\n\n* Specific container: `/path/here/log4j-core-2.0-alpha2.jar`\n* Wildcards: `/var/www/*.{jar,war,ear}`\n* More wildcards: `/var/www/**/*.jar`\n* Windows: `C:/**/*.jar`\n\nNOTE: this artifact runs the glob plugin with the nosymlink switch turned on. \nThis will NOT follow any symlinks and may cause unexpected results if \nunknowingly targeting a folder with symlinks.\n",
+        "description": "This artifact searches for Vulnerable log4j libraries.",
         "link": "/exchange/artifacts/pages/log4jvulnhunter",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -33,29 +247,9 @@
         "date": "2021-12-21"
     },
     {
-        "title": "Generic.Detection.Log4jRCE_JndiLookup",
-        "author": "mgreen27",
-        "description": "This artifact uses yara to hunt for Log4j RCE (CVE-2021-44228) vulnerable \nJndiLookup.class.\n  \n  The artifact:  \n  \n  * firstly searches for jar files using glob  \n  * then appplies yara for the strings: wide nocase ascii:JndiLookup.class  \n  \nNOTE: this artifact runs the glob plugin with the nosymlink switch turned on. \nThis will NOT follow any symlinks and may cause unexpected results if \nunknowingly targeting a folder with symlinks.\n",
-        "link": "/exchange/artifacts/pages/log4jrce_jndilookup",
-        "tags": [],
-        "author_link": "https://github.com/mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
-        "date": "2021-12-14"
-    },
-    {
-        "title": "Generic.Detection.Log4jRCEHash",
-        "author": "mgreen27",
-        "description": "This artifact enables MD5 hash search for log4j versions vulnerable to \nCVE-2021-44228.\n\nThe artifact:  \n\n* firstly searches for jar files\n* then searches for filename\n* reports hit details.\n\nTo Add additional files, please add to the Ioc list below.\n\n\nSome examples of path glob may include:\n\n* Specific binary: `/path/here/log4j-core-2.0-alpha2.jar`\n* Wildcards: `/var/www/*.jar`\n* More wildcards: `/var/www/**/*.jar`\n* Windows: `C:/**/*.jar`\n\nNOTE: this artifact runs the glob plugin with the nosymlink switch turned on. \nThis will NOT follow any symlinks and may cause unexpected results if \nunknowingly targeting a folder with symlinks.\n",
-        "link": "/exchange/artifacts/pages/log4jrcehash",
-        "tags": [],
-        "author_link": "https://github.com/mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
-        "date": "2021-12-12"
-    },
-    {
         "title": "Generic.Detection.log4jRCE",
         "author": "mgreen27",
-        "description": "Detection for exploitation attempts against log4j RCE \nvulnerability CVE-2021-44228.\n\nBy default this artifact will search for linux path glob: /var/logs/**\n\nFor Windows hosts please change the target path.  \nSome examples of path glob may include:  \n\n* Specific binary: `/var/logs/log.gz` \n* Wildcards: `/var/log/*.gz` \n* More wildcards: `/var/www/**/*.log`  \n* Multiple extentions: `/var/log/**/*\\.{log,gz}`  \n* Windows: `C:/Logs/**/*.{gz,log}` or `**/*.{gz,log}`      \n  \nNOTE: this artifact runs the glob plugin with the nosymlink switch turned on. \nThis will NOT follow any symlinks and may cause unexpected results if \nunknowingly targeting a folder with symlinks.\n",
+        "description": "Detection for exploitation attempts against log4j RCE\nvulnerability CVE-2021-44228.",
         "link": "/exchange/artifacts/pages/log4jrce",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -65,7 +259,7 @@
     {
         "title": "Splunk.Events.Clients",
         "author": "jurelou",
-        "description": "This server monitoring artifact will watch a selection of client\nmonitoring artifacts for new events and push those to a splunk\nindex.\nNOTE: You must ensure you are collecting these artifacts from the\nclients by adding them to the \"Client Events\" GUI.\n",
+        "description": "This server monitoring artifact will watch a selection of client\nmonitoring artifacts for new events and push those to a splunk\nindex.",
         "link": "/exchange/artifacts/pages/splunk.events.clients",
         "tags": [],
         "author_link": "https://github.com/jurelou",
@@ -75,7 +269,7 @@
     {
         "title": "Windows.Carving.Hancitor",
         "author": "eduardomcm",
-        "description": "This artifact yara-scans memory or unpacked DLL samples for\nHancitor trojan detections, decrypting and returning the Build ID\nand C2 list.\n\nYou may select specific file paths or processes to be yara-scanned,\nor simply allow it to yara-scan all running processes (default)\n\nNOTE:\nThis content simply carves the configuration and does not unpack\nfiles on disk.  That means pointing this artifact as a packed or\nobfuscated file will not obtain the expected results.\n",
+        "description": "This artifact yara-scans memory or unpacked DLL samples for\nHancitor trojan detections, decrypting and returning the Build ID\nand C2 list.",
         "link": "/exchange/artifacts/pages/windows.carving.hancitor",
         "tags": [],
         "author_link": "https://github.com/eduardomcm",
@@ -85,7 +279,7 @@
     {
         "title": "Windows.Monitor.USBPlugIn",
         "author": "mgreen27",
-        "description": "Monitor for plug in of USB volume. \nOutput drive letter for additional enrichment artifacts\n",
+        "description": "Monitor for plug in of USB volume.  Output drive letter for\nadditional enrichment artifacts\n",
         "link": "/exchange/artifacts/pages/usbplugin",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -95,7 +289,7 @@
     {
         "title": "Windows.Detection.USBYara",
         "author": "mgreen27",
-        "description": "Run yara over usb when USB is plugged into machine.\nReturn context and hit details.\n\nThis artifact requires:  \n  Exchange.Windows.Monitor.USBPlugIn (imported from Exchange)  \n  Generic.Detection.Yara.Glob  \n\nYara rule deployed and target path can be modified.\n",
+        "description": "Run yara over usb when USB is plugged into machine.  Return context\nand hit details.",
         "link": "/exchange/artifacts/pages/usbyara",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -105,7 +299,7 @@
     {
         "title": "Windows.EventLogs.Zircolite",
         "author": "weslambert",
-        "description": "Zircolite is a standalone tool that can be used to apply Sigma rules to EVTX files on endpoints in an effort to quickly parse large datasets and surface detections.\n            \nYou can read more about Zircolite below:\n    \nhttps://github.com/wagga40/Zircolite\n    \nThis artifact currently supports usage of the built-in rulesets. Support for custom ruleset usage will be added in the future. \n    \nNOTE: This artifact may take several minutes to run, depending on the size of EVTZ files being analyzed.\n",
+        "description": "Zircolite is a standalone tool that can be used to apply Sigma rules to EVTX files on endpoints in an effort to quickly parse large datasets and surface detections.\n            \nYou can read more about Zircolite below:\n    \nhttps://github.com/wagga40/Zircolite\n    \nThis artifact currently supports usage of the built-in rulesets. Support for custom ruleset usage will be added in the future. \n    \nNOTE: This artifact may take several minutes to run, depending on the size of EVTX files being analyzed.\n",
         "link": "/exchange/artifacts/pages/windows.eventlogs.zircolite",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -115,7 +309,7 @@
     {
         "title": "Server.Findflows",
         "author": "mgreen27",
-        "description": "This artifact enables searching over client flow results with regex and returns \na link to the Flow for followup.\n",
+        "description": "This artifact enables searching over client flow results with regex\nand returns a link to the Flow for followup.\n",
         "link": "/exchange/artifacts/pages/findflows",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -125,7 +319,7 @@
     {
         "title": "Windows.Carving.Emotet",
         "author": "eduardomcm",
-        "description": "This artifact yara-scans memory or unpacked DLL samples for the new 2021 Emotet\ndetections, decrypts and returns the C2 list.\n\nYou may select specific file paths or processes to be yara-scanned, or allow\nit to yara-scan all memory space.\n\nCurrently this artifact parses encrypted configurations from the Emotet variants\nintroducted in November 2021. It will not parse the configurations from earlier\nvariants.\n\nNOTE:\nThis content simply carves the configuration and does not unpack files on disk.\nThat means pointing this artifact as a packed or obfuscated file will not obtain the expected results.\n",
+        "description": "This artifact yara-scans memory or unpacked DLL samples for the new 2021 Emotet\ndetections, decrypts and returns the C2 list.",
         "link": "/exchange/artifacts/pages/windows.carving.emotet",
         "tags": [],
         "author_link": "https://github.com/eduardomcm",
@@ -135,7 +329,7 @@
     {
         "title": "Linux.Collection.CatScale",
         "author": "weslambert",
-        "description": "This is a simple artifact that leverages Cat-Scale to collect many different artifacts from a Linux host, then uploads the results to the Velociraptor server. \n\nFrom the project's description:\n\n\"Linux CatScale is a bash script that uses live of the land tools to collect extensive data from Linux based hosts. The data aims to help DFIR professionals triage and scope incidents. An Elk Stack instance also is configured to consume the output and assist the analysis process.\"\n\nhttps://github.com/FSecureLABS/LinuxCatScale\n\nhttps://labs.f-secure.com/tools/cat-scale-linux-incident-response-collection/\n",
+        "description": "This is a simple artifact that leverages Cat-Scale to collect many\ndifferent artifacts from a Linux host, then uploads the results to\nthe Velociraptor server.",
         "link": "/exchange/artifacts/pages/linux.collection.catscale",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -145,7 +339,7 @@
     {
         "title": "Windows.Applications.DIEC",
         "author": "eduardomcm",
-        "description": "Execute DetectItEasy (console version) on specified paths and return rows of results\nto hunt/filter on binaries based types of files (E.g.: Packed binaries and its packers)\n",
+        "description": "Execute DetectItEasy (console version) on specified paths and\nreturn rows of results to hunt/filter on binaries based types of\nfiles (E.g.: Packed binaries and its packers)\n",
         "link": "/exchange/artifacts/pages/diec",
         "tags": [],
         "author_link": "https://github.com/eduardomcm",
@@ -155,7 +349,7 @@
     {
         "title": "Windows.AttackSimulation.AtomicRedTeam",
         "author": "weslambert",
-        "description": "This artifact allows you to run Atomic Red Team tests on Windows\nendpoints using Invoke-AtomicRedTeam. Linux and MacOS endpoints\nwill soon be supported.\n\nNOTE: All tests may not work out OOB. You may notice interference\nor inoperability of some tests with Windows Defender/antivirus/EDR\nenabled. Best-effort checks are made using the built-in\n**-GetPreReqs** flag. This is an initial PoC, and as such, much\ntesting is needed, and feedback is welcome.\n\n**Reference:**\n\nhttps://github.com/redcanaryco/invoke-atomicredteam\n\n**Description:**\n\nInvoke-AtomicRedTeam is a PowerShell module to execute tests as\ndefined in the atomics folder of Red Canary's Atomic Red Team\nproject. The \"atomics folder\" contains a folder for each Technique\ndefined by the MITRE ATT&CK\u2122 Framework. Inside of each of these\n\"T#\" folders you'll find a yaml file that defines the attack\nprocedures for each atomic test as well as an easier to read\nmarkdown (md) version of the same data.\n\n- Executing atomic tests may leave your system in an undesirable\n  state. You are responsible for understanding what a test does\n  before executing.\n\n- Ensure you have permission to test before you begin.\n\n- It is recommended to set up a test machine for atomic test\n  execution that is similar to the build in your environment. Be\n  sure you have your collection/EDR solution in place, and that\n  the endpoint is checking in and active.\n",
+        "description": "This artifact allows you to run Atomic Red Team tests on Windows\nendpoints using Invoke-AtomicRedTeam. Linux and MacOS endpoints\nwill soon be supported.",
         "link": "/exchange/artifacts/pages/windows.attacksimulation.atomicredteam",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -165,7 +359,7 @@
     {
         "title": "Linux.Sysinternals.Sysmon",
         "author": "weslambert",
-        "description": "Parses syslog for Sysmon events on Linux\n\n**Reference**: https://github.com/Sysinternals/SysmonForLinux\n\nThis artifact can also be modified to forward events (as a client event artifact), similar to Windows.Sysinternals.SysmonLogForward.\n",
+        "description": "Parses syslog for Sysmon events on Linux",
         "link": "/exchange/artifacts/pages/linux.sysinternals.sysmon",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -175,7 +369,7 @@
     {
         "title": "Windows.Carving.Qbot",
         "author": "eduardomcm",
-        "description": "This artifact yara-scans memory or unpacked DLL samples for Qbot\n(or Qakbot) detections, decrypts and returns the botnet and C2\nconfigurations.\n\nYou may select specific file paths or processes to be\nyara-scanned, or allow it to yara-scan all memory space.\n\nCurrently this artifact parses encrypted configurations from the\nQbot variant introducted in April 2021. It will not parse the\nconfigurations from earlier variants.\n\nNOTE: This content simply carves the configuration and does not\nunpack files on disk.  That means pointing this artifact as a\npacked or obfuscated file will not obtain the expected results.\n",
+        "description": "This artifact yara-scans memory or unpacked DLL samples for Qbot\n(or Qakbot) detections, decrypts and returns the botnet and C2\nconfigurations.",
         "link": "/exchange/artifacts/pages/windows.carving.qbot",
         "tags": [],
         "author_link": "https://github.com/eduardomcm",
@@ -185,7 +379,7 @@
     {
         "title": "Server.Analysis.CyberChefServer",
         "author": "weslambert",
-        "description": "Analyze/transform data with CyberChef-server. \n\nNote that this requires an accessible Cyberchef-server instance to work.\n\nIf you prefer not to run a local instance, you might consider altering the artifact to leverage something like https://prod.apifor.io.\n  \n**Reference**: https://github.com/gchq/CyberChef-server\n\n**Examples**:\n\n  This artifact can be called from within another artifact to analyze/transform the data made available by that artifact.\n\n  `SELECT * from Artifact.Custom.Analysis.CyberchefServer(Input=$YOURDATA,Recipe=$YOURRECIPE)`\n\n  \n  If a default recipe is used, only the input will need to be passed, like so:\n   \n  `SELECT * from Artifact.Custom.Analysis.CyberchefServer(Input=$YOURDATA)`\n  \n  \n  The server metadata store can be used to store the URL of Cyberchef-server (with a key value of `CyberChefServerURL`). \n  \n  \n  Examples of recipes can be found here:\n  \n  https://github.com/mattnotmax/cyberchef-recipes\n",
+        "description": "Analyze/transform data with CyberChef-server.",
         "link": "/exchange/artifacts/pages/cyberchefserver",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -195,7 +389,7 @@
     {
         "title": "Windows.Carving.SquirrelWaffle",
         "author": "eduardomcm",
-        "description": "This artifact yara-scans memory or process dumps for \nunpacked SquirrelWaffle Dlls, decodes the configuration and\nreturns the C2s and the payload.\n\nDepending on the initial infection vector (the macro within .doc or\n.xls maldoc), SquirrelWaffle packed droper will be loaded by either rundll32 \nor regsvr32 and unpack itself in memory.\n\nThe decoded configurations found so far contain (1) a list of C2 URLS, \n(2*) *may* contain a list of C2 IPs, and lastly, (3) contains the command \n\"regsvr32.exe -s\". The command is used to launch its second-stage payload \ndownloaded from its C2 addresses, as a \".txt\" file that is in fact a \ndisguised PE, to be loaded in memory.\n\nNOTE:  \nThis content simply carves the configuration and does not unpack files on\ndisk. That means pointing this artifact as a packed or obfuscated file will not \nobtain the expected results.\n",
+        "description": "This artifact yara-scans memory or process dumps for unpacked\nSquirrelWaffle Dlls, decodes the configuration and returns the C2s\nand the payload.",
         "link": "/exchange/artifacts/pages/squirrelwaffle",
         "tags": [],
         "author_link": "https://github.com/eduardomcm",
@@ -205,7 +399,7 @@
     {
         "title": "Windows.Binary.Exports",
         "author": "mgreen27",
-        "description": "This artifact can be used to extract all binary exports to research potential lolbins.\nSelecting the AllBinaryInfo tickbox will return complete Binary information.\n",
+        "description": "This artifact can be used to extract all binary exports to research\npotential lolbins.  Selecting the AllBinaryInfo tickbox will return\ncomplete Binary information.\n",
         "link": "/exchange/artifacts/pages/exports",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -225,7 +419,7 @@
     {
         "title": "Windows.Applications.OfficeMacros.MacroRaptor",
         "author": "mgreen27",
-        "description": "This artifact implements OleTools MacroRaptor capability in VQL.\n\nUse as a Hunt or triage capability.\n",
+        "description": "This artifact implements OleTools MacroRaptor capability in VQL.",
         "link": "/exchange/artifacts/pages/macroraptor",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -235,7 +429,7 @@
     {
         "title": "Windows.Bulk.File",
         "author": "mgreen27",
-        "description": "Search for some simple bulk File IOCs and upload if desired.   \nTypical upload workflow may be to firstly search, then if returned \nrows match expectations rerun query with upload tickbox selected.  \nNOTE: strings with comma \",\" requre quotes.  \n\nIocLookupTable csv details:  \nGlob - \"Quote\" items with { glob } barckets.  \nWhitelist - Velociraptor regex to whitelist FullPath field.  \nDescription - Free text  \n",
+        "description": "Search for some simple bulk File IOCs and upload if desired.\nTypical upload workflow may be to firstly search, then if returned\nrows match expectations rerun query with upload tickbox selected.",
         "link": "/exchange/artifacts/pages/bulkfile",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -245,7 +439,7 @@
     {
         "title": "Windows.System.BinaryVersion",
         "author": "mgreen27",
-        "description": "Extract the binary version information for binary files. This artifact will \nsearch the MFT for any matching filenames and return binary information.\n",
+        "description": "Extract the binary version information for binary files. This\nartifact will search the MFT for any matching filenames and return\nbinary information.\n",
         "link": "/exchange/artifacts/pages/binaryversion",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -255,7 +449,7 @@
     {
         "title": "Windows.EventLogs.Telerik",
         "author": "mgreen27",
-        "description": "This Artifact will hunt for evidence of Telerik exploitation in the Application \nEvent Log.  \n\nTelerik is a commonly exploited component of IIS web pages that has been \nactively targeted by actors via several CVEs. Several tools and attack \ncapabilities exist making exploitation of vulnerable services trivial. Due to \nthe nature of the software and typical deployments the patches may require \nmanual application.  \n\nIocRegex enables searching for regex in the whole EventData field.  \nOutput of this artifact is targeted fields from EventID 1309 to provide \ncontext for the hit.\n\nThis Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.\n",
+        "description": "This Artifact will hunt for evidence of Telerik exploitation in the\nApplication Event Log.",
         "link": "/exchange/artifacts/pages/telerik",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -265,7 +459,7 @@
     {
         "title": "Windows.Analysis.Capa",
         "author": "weslambert",
-        "description": "Analyze PE, ELF, or shellcode files with capa.\n\n\"capa detects capabilities in executable files. You run it against a PE, ELF, or shellcode file and it tells you what it thinks the program can do. For example, it might suggest that the file is a backdoor, is capable of installing services, or relies on HTTP to communicate.\"\n\nhttps://github.com/fireeye/capa\n",
+        "description": "Analyze PE, ELF, or shellcode files with capa.",
         "link": "/exchange/artifacts/pages/windows.analysis.capa",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -275,7 +469,7 @@
     {
         "title": "Windows.Applications.OfficeServerCache",
         "author": "eduardomcm",
-        "description": "Return Office Internet Server Cache Registry keys and values in order to identify possible C2 URLs from malicious opened Office documents.\n\nSuch keys should be written by exploits such as CVE-2021-40444 (Microsoft MSHTML Remote Code Execution Vulnerability)\n",
+        "description": "Return Office Internet Server Cache Registry keys and values in\norder to identify possible C2 URLs from malicious opened Office\ndocuments.",
         "link": "/exchange/artifacts/pages/officeservercache",
         "tags": [],
         "author_link": "https://github.com/eduardomcm",
@@ -285,7 +479,7 @@
     {
         "title": "Linux.Applications.WgetHSTS",
         "author": "scudette",
-        "description": "Wget creates a HSTS log file in a user's home directory. \nThis can contain forensically relevant informtion.\n",
+        "description": "Wget creates a HSTS log file in a user's home directory.  This can\ncontain forensically relevant informtion.\n",
         "link": "/exchange/artifacts/pages/linux.applications.wgethsts",
         "tags": [],
         "author_link": "https://github.com/scudette",
@@ -295,7 +489,7 @@
     {
         "title": "Windows.EventLogs.RecordIDCheck",
         "author": "mgreen27",
-        "description": "This artifact will compare EventLog records and report on\nabnormalities in RecordID sequence and optional time gap. The\nartifact can be used for both hunting, remote or local analysis.\n\nThere are several parameter's available.\n  - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.\n  - PathRegex enables filtering on evtx path for specific log targetting.\n  - DateAfter enables search for events after this date.\n  - DateBefore enables search for events before this date.\n  - MaxTimeDifference enables flaging temporal gaps between Events. Note also potential false positives on machines turned off.\n  - SearchVSS enables searching over VSS\n\nNote: Please use with caution this artifact can potentially be heavy\non the endpoint.  Temporal analysis is turned off by default due to\npotential for false positives during machine shutdown. Sequential\nfalse positives may also occur very occasionally.\n\nversion: 0.6.1\n",
+        "description": "This artifact will compare EventLog records and report on\nabnormalities in RecordID sequence and optional time gap. The\nartifact can be used for both hunting, remote or local analysis.",
         "link": "/exchange/artifacts/pages/recordidcheck",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -305,7 +499,7 @@
     {
         "title": "Windows.Registry.CVE_2021_40444",
         "author": "mgreen27",
-        "description": "This artifact will enable both application and removal of the\nreccomended mitigation for CVE-2021-40444.\n\nDisabling the installation of all ActiveX controls in Internet\nExplorer mitigates this attack. This can be accomplished for all\nsites by updating the registry. Previously-installed ActiveX\ncontrols will continue to run, but do not expose this\nvulnerability.\n\nTo disable installing ActiveX controls in Internet Explorer in all\nzones\n\n```\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\0]\n\"1001\"=dword:00000003\n\"1004\"=dword:00000003\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\1]\n\"1001\"=dword:00000003\n\"1004\"=dword:00000003\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\2]\n\"1001\"=dword:00000003\n\"1004\"=dword:00000003\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3]\n\"1001\"=dword:00000003\n\"1004\"=dword:00000003\n```\n\nThis sets the `URLACTION_DOWNLOAD_SIGNED_ACTIVEX` (0x1001) and\n`URLACTION_DOWNLOAD_UNSIGNED_ACTIVEX` (0x1004) to `DISABLED` (3) for all\ninternet zones for 64-bit and 32-bit processes. New ActiveX controls will\nnot be installed. Previously-installed ActiveX controls will continue to run.\n\n**NOTE**: if both AddMitigation and DeleteMitigation is selected\nDeleteMitigation will take preference. Reboot may be required.\n",
+        "description": "This artifact will enable both application and removal of the\nreccomended mitigation for CVE-2021-40444.",
         "link": "/exchange/artifacts/pages/cve_2021_40444",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -314,7 +508,7 @@
     },
     {
         "title": "Windows.ETW.DetectProcessSpoofing",
-        "description": "Detects Process parent spoofing such as SelectMyParent.exe, Cobalt\nStrike PPID spoofing etc.\n",
+        "description": "Detects Process parent spoofing such as SelectMyParent.exe or\nCobalt Strike select PPID.",
         "link": "/exchange/artifacts/pages/windows.etw.detectprocessspoofing",
         "tags": [],
         "author": "scudette",
@@ -324,7 +518,7 @@
     },
     {
         "title": "Windows.EventLogs.Chainsaw",
-        "description": "\nThis artifact leverages Chainsaw to enable usage of Sigma rules to faciliate detection within Windows Event Logs.\n\nFrom the project's description:\n\n\"Chainsaw provides a powerful \u2018first-response\u2019 capability to quickly identify threats within Windows event logs. \nIt offers a generic and fast method of searching through event logs for keywords, and by identifying threats using built-in detection logic and via support for Sigma detection rules.\"\n\nhttps://github.com/countercept/chainsaw\n",
+        "description": "\nThis artifact leverages Chainsaw to enable usage of Sigma rules\n(in addition to built-in rules) to faciliate detection within\nWindows Event Logs.",
         "link": "/exchange/artifacts/pages/windows.eventlogs.chainsaw",
         "tags": [],
         "author": "Wes Lambert - @therealwlambert",
@@ -334,7 +528,7 @@
     },
     {
         "title": "Linux.Network.Netstat",
-        "description": "This artifact will parse /proc and reveal information \nabout current network connections.\n",
+        "description": "This artifact will parse /proc and reveal information about current\nnetwork connections.\n",
         "link": "/exchange/artifacts/pages/linux.network.netstat",
         "tags": [],
         "author": "scudette",
@@ -344,7 +538,7 @@
     },
     {
         "title": "Windows.ActiveDirectory.PrivilegedUsers",
-        "description": "If on a Domain Controller (ProductType = 2), recursively enumerate membership of privileged groups, then\nfor each user, collect details relevant to an investigation: Create Date, Last Logon, Group Membership, SID\n\nIf not on a Domain Controller, return nothing\n",
+        "description": "If on a Domain Controller (ProductType = 2), recursively enumerate\nmembership of privileged groups, then for each user, collect\ndetails relevant to an investigation: Create Date, Last Logon,\nGroup Membership, SID",
         "link": "/exchange/artifacts/pages/activedirectoryprivilegedusers",
         "tags": [],
         "author": "liteman",
@@ -354,7 +548,7 @@
     },
     {
         "title": "Server.Import.ArtifactExchange",
-        "description": "This artifact will automatically import the latest\nartifact exchange bundle into the current server.\n",
+        "description": "This artifact will automatically import the latest artifact exchange bundle\ninto the current server.",
         "link": "/exchange/artifacts/pages/server.import.artifactexchange",
         "tags": [],
         "author": "scudette",
@@ -364,7 +558,7 @@
     },
     {
         "title": "Windows.NTFS.MFT.HiveNightmare",
-        "description": "This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to find several files created as part of the POC tooling for HiveNightmare (CVE-2021-36934):\n\n  - \\hive_sam_ - https://github.com/FireFart/hivenightmare\n  - \\SAM-20 - https://github.com/GossiTheDog/HiveNightmare\n  - \\SAM-haxx - https://github.com/GossiTheDog/HiveNightmare\n  - \\Sam.save - PowerShell version\n  - \\Sam.hive - https://github.com/WiredPulse/Invoke-HiveNightmare\n  - C:\\windows\\temp\\sam - https://github.com/cube0x0/CVE-2021-36934\nSee Florian Roth's rule here:\n- https://github.com/SigmaHQ/sigma/blob/master/rules/windows/file_event/win_hivenightmare_file_exports.yml\n",
+        "description": "This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to\nfind several files created as part of the POC tooling for\nHiveNightmare (CVE-2021-36934):",
         "link": "/exchange/artifacts/pages/windows.ntfs.mft.hivenightmare",
         "tags": [],
         "author": "svch0stz",
@@ -375,7 +569,7 @@
     {
         "title": "Windows.Memory.InjectedThread",
         "author": "mgreen27",
-        "description": "Use Get-InjetedThreads to detect process injections.\nNote: this query is complex powershell. Run it after a scriptblock hunt.\n\nhttps://gist.github.com/jaredcatkinson/23905d34537ce4b5b1818c3e6405c1d2\nhttps://gist.github.com/mgreen27/1982aaae37a7afdd047db619bf17c8a1\n",
+        "description": "Use Get-InjetedThreads to detect process injections.\nNote: this query is complex powershell. Run it after a scriptblock hunt.",
         "link": "/exchange/artifacts/pages/get-injectedthread",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -385,7 +579,7 @@
     {
         "title": "Windows.Memory.HollowsHunter",
         "author": "mgreen27",
-        "description": "Use hollows_hunter to detect suspicious process injections.\n\nUpload any findings to the server, including process dumps.\n",
+        "description": "Use hollows_hunter to detect suspicious process injections.",
         "link": "/exchange/artifacts/pages/hollowshunter",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -394,7 +588,7 @@
     },
     {
         "title": "Windows.Monitoring.PrintNightmare",
-        "description": "This artifact returns ETW PrintService events for potential PrintNightmare activity.  \nCVE-2021-1675 and CVE-2021-34527  \n\nIt monitors for DRIVER_ADDED events and enriches with binary information for payload \nDataFile. Hunt for unexpected drivers with malicious DataFiles.\n",
+        "description": "This artifact returns ETW PrintService events for potential\nPrintNightmare activity.  CVE-2021-1675 and CVE-2021-34527",
         "link": "/exchange/artifacts/pages/printnightmaremonitor",
         "tags": [],
         "author": "mgreen27",
@@ -404,7 +598,7 @@
     },
     {
         "title": "Windows.System.PrinterDriver",
-        "description": "This artifact will enumerate installed PrintDrivers using the Win32_PrinterDriver \nwmi class and parse each DriverPath, ConfigFile and DataFile.\n\nHunt by searching for untrusted binaries or suspicious removed binararies for \nevidence of previous exploitation.\n",
+        "description": "This artifact will enumerate installed PrintDrivers using the\nWin32_PrinterDriver wmi class and parse each DriverPath, ConfigFile\nand DataFile.",
         "link": "/exchange/artifacts/pages/printerdriver",
         "tags": [],
         "author": "mgreen27",
@@ -414,7 +608,7 @@
     },
     {
         "title": "Windows.Remediation.PrintSpooler",
-        "description": "This artifact will enable mitigation of PrintSpooler exploitation used by \nPrintNightmare - CVE-2021-34527 and CVE-2021-1675.\n\nThere are two selectable mitigations:  \n  \n  - disabling the print spooler service.   \n  HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Spooler\\Start = 4 (service disabled).   \n      \n  - disable remote registration of the spool service.    \n  HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Printers\\RegisterSpoolerRemoteRpcEndPoint = 2 (RegisterSpoolerRemoteRpcEndPoint disables).  \n\nNOTE: ChangeServiceStartup will set to disable, not stop the printspool service. \nIts always reccomended to use group policy to deploy these settings.\n",
+        "description": "This artifact will enable mitigation of PrintSpooler exploitation\nused by PrintNightmare - CVE-2021-34527 and CVE-2021-1675.",
         "link": "/exchange/artifacts/pages/printspoolerremediation",
         "tags": [],
         "author": "mgreen27",
@@ -424,7 +618,7 @@
     },
     {
         "title": "Linux.Memory.Acquisition",
-        "description": "Acquires a full memory image. We download LiME and use it to\nacquire a full memory image.\n\nNOTE: This artifact usually transfers a lot of data. You should\nincrease the default timeout to allow it to complete.\n( Example : 2Gb of memory time takes about 50s )\n",
+        "description": "Acquires a full memory image. We download LiME and use it to acquire\na full memory image.",
         "link": "/exchange/artifacts/pages/linuxmemoryacquisition",
         "tags": [],
         "author": "makhno4n6",
@@ -444,7 +638,7 @@
     },
     {
         "title": "Windows.Detection.PrintNightmare",
-        "description": "This artifact returns any binaries in the Windows/spool/drivers/** folders with\nan untrusted Authenticode entry.\n\nIt can be used to hunt for dll files droped during exploitation of \nCVE-2021-1675 - PrintNightmare.\n\nTo query all attached ntfs drives: check the AllDrives switch.\n\nI have added several filters to uplift search capabilities from the original\nMFT artifact. Due to the multi-drive features, the MFTPath will output the MFT\npath of the entry.\n\nAvailable filters include:\n- FullPath regex\n- FileName regex\n- Time bounds to select files with a timestamp within time ranges\n- FileSize bounds\n\n![Sample output](https://github.com/mgreen27/velociraptor-docs/raw/patch-5/content/exchange/artifacts/PrintNightmare.png)\n",
+        "description": "This artifact returns any binaries in the Windows/spool/drivers/**\nfolders with an untrusted Authenticode entry.",
         "link": "/exchange/artifacts/pages/printnightmare",
         "tags": [],
         "author": "mgreen27",
@@ -454,7 +648,7 @@
     },
     {
         "title": "Windows.Applications.FTKImager",
-        "description": "Create an E01 Image of the C drive using FTK Imager (Command Line Version)\n\nSourceDriveToImage usually will be 0 (as in \\\\.\\PHYSICALDRIVE0) for the C: drive, on a Windows system.\n\nIf you intend to image the secondary drive, use, for example, SourceDriveToImage = 1, for \\\\.\\PHYSICALDRIVE1\n",
+        "description": "Create an E01 Image of the C drive using FTK Imager (Command Line\nVersion)",
         "link": "/exchange/artifacts/pages/ftkimager",
         "tags": [],
         "author": "eduardomcm",
@@ -464,7 +658,7 @@
     },
     {
         "title": "Windows.ETW.AMSI",
-        "description": "This artifact uses the ETW provider:\n(Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}\n",
+        "description": "This artifact uses the ETW provider:",
         "link": "/exchange/artifacts/pages/amsi",
         "tags": [],
         "author": "mgreen27",
@@ -474,7 +668,7 @@
     },
     {
         "title": "HashRunKeys",
-        "description": "Iterate over all the run keys and locate their binary then hash it.\n\nTags:   \n",
+        "description": "Iterate over all the run keys and locate their binary then hash it.",
         "link": "/exchange/artifacts/pages/hash_run_keys",
         "tags": [
             "windows",
@@ -485,49 +679,5 @@
         "author_link": "https://github.com/ffh571",
         "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
         "date": "2021-06-23"
-    },
-    {
-        "title": "Exchange.Label.User",
-        "author": "",
-        "description": "This artifact watches for new client enrolments and automatically\nlabel the client with the required label if the user exists.\n\nThis artifact can be the starting point for automatically labeling\na machine based on any other property - just change the artifact to\nwatch and the result filter.\n\n  \n",
-        "link": "/exchange/artifacts/pages/exchange.label.user",
-        "tags": [
-            "server",
-            "event",
-            "labels"
-        ],
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
-    },
-    {
-        "title": "Generic.Detection.LunasecLog4shell",
-        "author": "",
-        "description": "Uses the Log4Shell scanner of Lunasec to scan the file systems of\nall drives of the host for any sign of vulnerabilities related to\nLog4shell\n",
-        "link": "/exchange/artifacts/pages/generic.detection.lunaseclog4shell",
-        "tags": [],
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
-    },
-    {
-        "title": "Server.Slack.Clients.Enrolled",
-        "author": "",
-        "description": "Send a message to slack when clients become enrolled.\n\nThis artifact triggers when a client is interrogated within 60\nseconds of it being seen for the first time.\n",
-        "link": "/exchange/artifacts/pages/server.slack.clients.enrolled",
-        "tags": [],
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
-    },
-    {
-        "title": "Windows.System.AccessControlList",
-        "author": "",
-        "description": "This artifact displays the access control lists of files.\n\nNote: This artifact uses Powershell to gather the information.\n",
-        "link": "/exchange/artifacts/pages/windows.system.accesscontrollist",
-        "tags": [],
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

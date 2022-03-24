@@ -118,8 +118,10 @@ function DrawResults(data) {
     template.find(".date").append(item.date)
 
     for (let j=0; j<item.tags.length; j++) {
-      let tag = item.tags[j];
-      template.find(".idea-tag").append(`<i class="linkcolour label label-success">` + tag + `</i>&nbsp;`);
+        let tag = item.tags[j];
+        template.find(".idea-tag").
+            append($(`<a class="tag">`).attr("href", "/tags/" + tag).
+                   append(`<i class="linkcolour tag label label-success">` + tag + `</i>&nbsp;`));
     }
     let new_item = $(".search_results").append(template);
   }

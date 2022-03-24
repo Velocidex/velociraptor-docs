@@ -19,6 +19,7 @@ project = "velociraptor-docs"
 template = """---
 title: %s
 hidden: true
+tags: %s
 editURL: https://github.com/%s/%s/edit/master/%s
 ---
 
@@ -143,9 +144,12 @@ def build_markdown():
 
         md_filename = filename_name + ".md"
         with open(md_filename, "w") as fd:
-           fd.write(template % (data["name"], org, project,
-                                yaml_filename,
-                                data["description"], content))
+           fd.write(template % (
+             data["name"],
+             json.dumps(record_with_author["tags"]),
+             org, project,
+             yaml_filename,
+             data["description"], content))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)

@@ -106,8 +106,8 @@ pre {
 
 }
 
-pre code {
-    font-size: 14px;
+pre code, pre.code {
+    font-size: 14pt;
 }
 
 div.progress  {
@@ -483,6 +483,10 @@ div .border {
 .linkcolour {
     color: var(--MAIN-LINK-color);
     word-spacing: 3px;
+}
+
+a.tag:hover {
+    text-decoration: none;
 }
 
 body.dark .color {
