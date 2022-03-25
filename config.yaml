@@ -13,7 +13,7 @@ params:
   disableNextPrev: true
   disableLandingPageButton: true
   disableShortcutsTitle: true
-  editURL: https://github.com/scudette/velociraptor-docs/edit/master/content/
+  editURL: https://github.com/Velocidex/velociraptor-docs/edit/master/content/
   custom_css:
     - css/dark.css
     - css/syntax.css
@@ -47,3 +47,11 @@ menu:
       weight: 30
 
 googleAnalytics: G-QYH72LMYCS
+
+# We only want RSS to be generated in some areas.
+outputs:
+  page: ["HTML"]
+  home: ["HTML"]
+  section: ["HTML"]
+  taxonomyTerm: ["HTML"]
+  taxonomy: ["HTML"]

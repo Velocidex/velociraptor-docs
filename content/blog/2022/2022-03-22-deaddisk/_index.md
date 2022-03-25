@@ -22,16 +22,16 @@ and wider testing.
 
 Velociraptor's killer feature is its VQL language making it possible
 to write powerful queries that triage and extract valuable forensic
-evidence from the running system. One of the most attractive feature
-is the ability to write a VQL `artifact` encapsulating a powerful VQL
-query. Users have access to a library of packaged `Artifacts` that
+evidence from the running system. One of the most attractive features
+is the ability to write VQL `artifacts` encapsulating powerful VQL
+queries. Users have access to a library of packaged `Artifacts` that
 come with Velociraptor as well as a vibrant community and an [Artifact
 Exchange]({{% ref "/exchange/" %}}).
 
 Previously Velociraptor was most useful as a live analysis
 platform. Either deployed as an agent on the live endpoint, or via the
 `Offline Collector` collecting artifacts from the running
-system. However, many users are sometimes faced with analysing a dead
+system. However, many users are sometimes faced with analyzing a dead
 disk image - for example, when handed a clone of a cloud VM disk after
 a compromise.
 
@@ -41,19 +41,20 @@ without having to start the VM and install Velociraptor on it.
 
 ## Dead disk analysis
 
-When we want to analyse a disk image we mean that:
+When we want to analyze a disk image we mean that:
 
-1. A VQL query that looks at a disk, should look inside the disk image
-   instead of the real disk.
+1. A VQL query that looks at a disk (e.g. via the `glob()` plugin),
+   should look inside the disk image instead of the real disk of the
+   analysis machine.
 2. A VQL query that looks at system state (e.g. process listing)
    should fail - otherwise we will accidentally mix results from the
    analysis machine and the machine the image came from.
 
 Consider the following scenario: I have a dead disk image (In a `vmdk`
-format) of a server (Let's call it `server`) on my analysis machine,
-and I want to run Velociraptor to triage this image.
+format) of a server on my analysis machine, and I want to run
+Velociraptor to triage this image.
 
-The following query retrieves all event logs from a system:
+The following query retrieves all event logs from a windows system:
 
 ```vql
 SELECT OSPath
@@ -74,23 +75,23 @@ drive the artifact will look for files in the `C:` drive again.
 What I really want is to **remap** the `C:` drive to the dead image -
 so whenever Velociraptor attempts to access a path beginning with `C:`
 drive, the data will come from the image! This way I can use all the
-artifacts as they are **without modification**, thereby leveraging the
-rich community shared artifacts available.
+artifacts as they are **without modification**, thereby leveraging all
+my existing favorite artifacts.
 
 ## Remapping accessors
 
 Velociraptor accesses files using [filesystem accessors]({{% ref
 "/docs/forensic/filesystem/#filesystem-accessors" %}}). You can think
-of an accessor as simply a driver that can be used to open a
-particular file using a specific method.
+of an accessor as simply a driver that provides access to a file or
+directory.
 
-There are a number of types of accessors used for multiple things, in
-the following discussion the following accessors are important:
+There are a number of types of accessors available, in the following
+discussion the following accessors are important:
 
 * The **auto** accessor is the default accessor used when an accessor
-  is not explicitly specified. The above query will use the `auto`
-  accessor since the glob is not provided an explicit `accessor`
-  parameter.
+  is not explicitly specified. The query `SELECT * FROM
+  glob(globs='/*')` will use the `auto` accessor since an explicit
+  `accessor` parameter is not provided.
 
   On Windows the `auto` accessor attempts to open files using the OS
   API and failing this, reverts to NTFS parsing (for locked
@@ -107,7 +108,7 @@ the following discussion the following accessors are important:
 
 The first step is to mount my dead disk image on my system so it can
 be accessed by Velociraptor. Since this is a `vmdk` image, I can use
-vmware to mount a "flat" image easily:
+`vmware-mount` to mount a "flat" image easily:
 
 ```
 $ sudo vmware-mount -f /vmware/TestVM/Windows\ 10\ x64.vmdk /mnt
@@ -117,7 +118,7 @@ total 62914560
 ```
 
 The entire disk image is now available as a classic `dd` style image
-within the /mnt/flat file.
+within the `/mnt/flat` file.
 
 ## Remounting configuration
 
@@ -149,8 +150,8 @@ map it to the `C:` drive.
 
 You can see the full generated configuration file
 [here](https://gist.github.com/scudette/ffcd3ed2e589ebbdbe5c3edcf3914176)
-but in the next few sections we will examine some remapping rule in
-details.
+but in the next few sections we will examine some remapping rules in
+detail.
 
 ### The "mount" remapping rules
 
@@ -226,8 +227,8 @@ Let's see how this works in practice. I will start the GUI using:
 $ velociraptor-v0.6.4-linux-amd64 --config_override /tmp/remapping.yaml gui -v
 ```
 
-This simply starts the Velociraptor server and a single clients
-talking to it. However, due to the config_override, the remapping
+This simply starts the Velociraptor server and a single client talking
+to it. However, due to the `--config_override` flag, the remapping
 configuration will be applied to both client and server
 configurations.
 
@@ -270,7 +271,9 @@ This rule mounts the `registry` accessor's
 `HKEY_LOCAL_MACHINE\Software` path on the
 `/Windows/System32/Config/SOFTWARE` file found within the raw NTFS
 partition.  Note how pathspec descriptors nest and can utilize
-multiple different accessors to achieve the same solution.
+multiple different accessors to achieve the final mount point (in this
+case, the `file` accessor, followed by `offset` followed by `raw_ntfs`
+followed by `raw_registry`)..
 
 ![Browsing the VFS with registry accessors](reg_accssor_vfs.png)
 
@@ -341,12 +344,12 @@ to work on windows - despite the remapping rules emulating a Windows
 system.
 
 We therefore need to `impersonate` a windows system - even when we are
-really running on a Linux machine. The impersonation rule look like:
+really running on a Linux machine. The impersonation rule looks like:
 
 ```yaml
 - type: impersonation
   os: windows
-  hostname: Virtual Host
+  hostname: VirtualHostname
   env:
   - key: SystemRoot
     value: C:\Windows
@@ -366,25 +369,29 @@ really running on a Linux machine. The impersonation rule look like:
 This rule has a number of functions
 
 1. The OS type is set to Windows- This affects the output from
-   `SELECT * FROM info()`
-2. A specific hostname is set to "Virtual Host". When the client
+   `SELECT * FROM info()` - this query controls most of the artifact
+   preconditions.
+2. A specific hostname is set to "VirtualHostname". When the client
    interrogates, this hostname will appear in the Velociraptor GUI.
 
 3. We specify a number of environment variables. This affects the
    `expand()` function which expands paths using environment
    variables. Many artifacts use environment variables to locate files
-   on the filesystem.
+   within the filesystem.
 4. Disabled functions and plugins: Many artifacts use plugins and
-   functions that query system state in order to enrich the collected
-   data. I.e. their output does not depend just on the disk. Using
-   this impersonation rule we can disable those plugins and functions
-   (essentially return nothing from them).
+   functions that query non-disk system state in order to enrich the
+   collected data. I.e. their output does not depend just on the
+   disk. Using this impersonation rule we can disable those plugins
+   and functions (essentially return nothing from them) so the query
+   can complete successfully.
 
-Impersonation aims to make it appear that the VQL artifacts is being
-collected from the target system as much as possible.
+Impersonation aims to make it appear that the VQL artifacts are being
+collected from the target system as if it were running live.
 
 Here is an example of collecting some common Windows artifacts from my
-flat image above - running on a Linux analysis machine.
+flat image above - running on a Linux analysis machine. We can see
+some of our favorite artifacts, such as `Windows.Forensics.Usn`,
+`Windows.Timeline.Prefetch`, `Windows.Forensics.Bam` and many more.
 
 ![Collecting some common artifacts](artifacts_prefetch.png)
 
@@ -392,15 +399,15 @@ flat image above - running on a Linux analysis machine.
 ## Analysis of non windows disk images
 
 In the previous example, we exported the `vmdk` image as a flat file
-and simply relies on Velociraptor to parse the filesystem using its
+and simply relied on Velociraptor to parse the filesystem using its
 inbuilt NTFS parser.
 
 For other operating systems, Velociraptor does not currently have a
-native parser (for example for Linux of MacOS). Instead, Velociraptor
+native parser (for example for Linux or MacOS). Instead, Velociraptor
 relies on another tool mounting the image filesystem as a directory.
 
-We can still do the same thing as before however, by remapping the
-directory instead.
+We can still perform the analysis as before however, by remapping the
+mounted directory instead of a raw image.
 
 To demonstrate this process I will mount the flat image using the
 Linux loopback driver and the built in Linux NTFS filesystem support.
@@ -438,10 +445,10 @@ as before. The `C:` drive remapping rule is:
 ## Conclusions
 
 Velociraptor is an extremely capable triage and analysis tool which
-works best when running live on the endpoint - where is correlate
+works best when running live on the endpoint - where it can correlate
 information from disk, memory and volatile system state. Velociraptor
 has a vibrant community with powerful user contributed artifacts
-designed for use in the environment.
+designed for use in this context.
 
 However, sometimes we do not have the luxury of running directly on
 the running endpoint, but have to rely instead on dead disk images of
@@ -453,14 +460,14 @@ focused forensic analysis, we are able to use most artifacts directly
 without change.
 
 This feature opens Velociraptor to more traditional image based
-forensic analysis use cases - but these users are now able to leverage
-the same artifacts we use in live triage to quickly triage dead disk
+forensic analysis use cases - these users are now able to leverage the
+same artifacts we all use in live triage to quickly triage dead disk
 images.
 
 Since this is such a new feature it is still considered experimental -
-we value our community's feedback, bug reports and discussions.  If
-you would like to try out these features in Velociraptor, It is
-available on GitHub under an open source license. As always, please
-file issues on the bug tracker or ask questions on our mailing list
+we value your feedback, bug reports and discussions.  If you would
+like to try out these features in Velociraptor, It is available on
+GitHub under an open source license. As always, please file issues on
+the bug tracker or ask questions on our mailing list
 velociraptor-discuss@googlegroups.com. You can also chat with us
 directly on discord at https://www.velocidex.com/discord.

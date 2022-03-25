@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 path|Path to open and hash.|OSPath (required)
 accessor|The accessor to use|string
+hashselect|The hash function to use (MD5,SHA1,SHA256)|list of string
 
 ### Description
 
