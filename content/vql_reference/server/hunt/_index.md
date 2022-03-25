@@ -59,8 +59,8 @@ SELECT hunt(
     description="A general hunt",
     artifacts='Windows.KapeFiles.Targets',
     spec=dict(`Windows.KapeFiles.Targets`=dict(
-        Device ='C:', VSSAnalysis='Y', KapeTriage='Y'),
-    expires=now() + 18000))
+        Device ='C:', VSSAnalysis='Y', KapeTriage='Y')),
+    expires=now() + 18000)
 FROM scope()
 ```
 
