@@ -77,7 +77,6 @@ def getAuthor(record, yaml_filename):
   title = record["title"]
   for item in previous_data:
     if item["title"] == title and item.get("author"):
-      item["description"] = record["description"]
       return item
 
   # Get commit details for this file.
