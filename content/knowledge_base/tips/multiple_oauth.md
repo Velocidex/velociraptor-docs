@@ -36,7 +36,7 @@ GUI:
        oauth_client_secret: AAAAA
 ```
 
-Note that you can have multiple oidc authenticators and each can have a separate name and an icon associated with it (e.g. if multiple organizations use separate Okta logins).
+Note that you can have multiple `OIDC` authenticators and each can have a separate name and an icon associated with it (e.g. if multiple organizations use separate Okta logins).
 
 ![Logging in with multiple providers](https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png)
 
@@ -58,6 +58,6 @@ FROM scope()
 
 Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.
 
-In simple terms, if a user has username "mike" on OIDC provider 1 and another user can get say a Github account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
+In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a Github account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
 
 {{% /notice %}}
