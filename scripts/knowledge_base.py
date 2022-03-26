@@ -77,7 +77,6 @@ def getAuthor(record, yaml_filename):
   title = record["title"]
   for item in previous_data:
     if item["title"] == title and item.get("author"):
-      item["description"] = record["description"]
       return item
 
   # Get commit details for this file.
@@ -117,7 +116,6 @@ def build_markdown():
 
     for name in files:
       if (not name.endswith(".md") or
-          name == 'template.md' or
           name == '_index.md'):
         continue
 

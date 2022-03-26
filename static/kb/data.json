@@ -1,13 +1,25 @@
 [
     {
+        "title": "How do I debug the client while it is running?",
+        "link": "/knowledge_base/tips/debugging_clients",
+        "tags": [
+            "deployment",
+            "debugging"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-03-21"
+    },
+    {
         "title": "How do I deploy the client as agentless (without install)?",
         "link": "/knowledge_base/tips/deploying_in_agentless_mode",
         "tags": [
             "deployment"
         ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-03-21"
     }
 ]

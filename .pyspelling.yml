@@ -32,6 +32,9 @@ matrix:
             # Inside HTML tags
           - open: '(?s)(?P<open>[<])'
             close: '[>]'
+            # Inside yaml headers
+          - open: '(?s)^(?P<open> *-{3,})'
+            close: '^(?P=open)$'
 
     - pyspelling.filters.markdown:
     - pyspelling.filters.url:

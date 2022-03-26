@@ -8,6 +8,11 @@ no_edit: true
 disableToc: true
 no_children: true
 noDisqus: true
+rss_data_file: static/kb/data.json
+rss_title: Velociraptor Artifact Exchange
+outputs:
+- html
+- RSS
 ---
 
 Velociraptor is a powerful but very flexible tool. Sometimes getting

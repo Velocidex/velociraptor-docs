@@ -111,25 +111,29 @@ function DrawResults(data) {
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
-    let template = $(`<div class="panel panel-default color">
-  <div class="panel-heading color">
-    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-    <div class="date pull-right"></div>
-  </div>
-  <div class="panel-body color">
-   <div class="border color">
-     <div class="border color">
-      <div class="idea-inner-text-main color">
-        <p class="description"></p>
-        <span class="user-name" href="">Contributed by <a class="user-name-link"></a>
-          <img class="user-avatar inline">
-        </span>
-
-        <p class="idea-tag space"/>
+    let template = $(`
+<div class="well well-sm color container-fluid">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="row">
+         <div class="col-md-12">
+           <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+         </div>
       </div>
-     </div>
-   </div>
-  </div>`);
+      <div class="row">
+         <div class="col-md-12 kb-tag">
+           <div class="idea-tag"/>
+         </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <span class="user-name" href=""></span>
+      <span class="date"></span>
+      <a class="user-name-link"></a>
+      <img class="user-avatar inline">
+    </div>
+  </div>
+</div>`);
 
     template.find(".title").append(item.title);
     template.find(".user-name-link").append(item.author);
