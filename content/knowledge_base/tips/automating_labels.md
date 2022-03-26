@@ -1,6 +1,6 @@
 # How can I automatically apply labels to clients?
 
-Sommetimes it is useful to automatically label clients based on client
+Sometimes it is useful to automatically label clients based on client
 state. You can do this automatically by running a [Server Event
 Artifact]({{< ref "/docs/server_automation/server_monitoring/" >}})
 that automatically applies labels based on some criteria.

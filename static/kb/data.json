@@ -38,7 +38,10 @@
     {
         "title": "How can I automatically apply labels to clients?",
         "link": "/knowledge_base/tips/automating_labels",
-        "tags": [],
+        "tags": [
+            "automation",
+            "labels"
+        ],
         "author": "",
         "author_link": "",
         "author_avatar": "",
