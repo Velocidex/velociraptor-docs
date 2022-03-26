@@ -638,3 +638,12 @@ figcaption  {
 .modal-dialog.wide {
     width: 90%;
 }
+
+.kb-tag {
+    margin: 0px;
+}
+
+.kb-tag .idea-tag {
+    margin: 0px;
+    padding: 0px;
+}

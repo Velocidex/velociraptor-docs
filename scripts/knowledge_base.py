@@ -117,7 +117,6 @@ def build_markdown():
 
     for name in files:
       if (not name.endswith(".md") or
-          name == 'template.md' or
           name == '_index.md'):
         continue
 

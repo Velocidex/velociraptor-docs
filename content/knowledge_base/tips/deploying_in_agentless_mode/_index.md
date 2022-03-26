@@ -1,9 +1,9 @@
 ---
 title: How do I deploy the client as agentless (without install)?
-author: ""
-author_link: ""
-author_avatar: ""
-date: ""
+author: "scudette"
+author_link: "https://github.com/scudette"
+author_avatar: "https://avatars.githubusercontent.com/u/3856546?v=4"
+date: "2022-03-21"
 tags: ["deployment"]
 hidden: true
 noTitle: true

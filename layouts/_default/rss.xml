@@ -1,11 +1,31 @@
-{{ $baseUrl := .Site.BaseURL }}
-{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-{{- $data := getJSON "static/blog/data.json" }}
+{{- $baseUrl := .Site.BaseURL -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML -}}
+{{- $jsonPath := .Page.Params.rss_data_file -}}
+{{- if $jsonPath -}}
+{{- $data := getJSON $jsonPath }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <title>
+      {{- if .Page.Params.rss_title -}}
+         {{- .Page.Params.rss_title -}}
+      {{- else -}}
+        {{- if eq  .Title  .Site.Title -}}
+          {{- .Site.Title -}}
+        {{- else -}}
+          {{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}
+        {{- end -}}
+      {{- end -}}</title>
     <link>{{ .Permalink }}</link>
-    <description>Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{.}} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+    <description>Recent content
+    {{- if .Page.Params.rss_description -}}
+      {{- .Page.Params.rss_description -}}
+    {{- else -}}
+      {{ if ne  .Title  .Site.Title }}
+        {{- with .Title }} in {{.}}
+        {{- end -}}
+      {{- end }} on {{ .Site.Title -}}
+    {{- end -}}
+    </description>
     <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
     <language>{{.}}</language>{{end}}{{ with .Site.Author.email }}
     <managingEditor>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Author.email }}
@@ -15,7 +35,8 @@
     {{- with .OutputFormats.Get "RSS" -}}
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
     {{- end -}}
-    {{ range $data | first 20 }}
+    {{ range $data | first 50 }}
+    {{- if .date -}}
     <item>
       <title>{{ .title }}</title>
       <link>{{ $baseUrl }}{{ strings.TrimPrefix "/" .link }}</link>
@@ -24,5 +45,7 @@
       <description>{{ .description }}</description>
     </item>
     {{ end }}
+    {{ end }}
   </channel>
 </rss>
+{{ end }}

@@ -45,6 +45,10 @@ menu:
       identifier: "mail"
       url: "mailto:velociraptor-discuss@googlegroups.com"
       weight: 30
+   -  name: "<i class='fas fa-rss'></i>RSS"
+      identifier: "rss"
+      url: "/rss/"
+      weight: 40
 
 googleAnalytics: G-QYH72LMYCS
 
