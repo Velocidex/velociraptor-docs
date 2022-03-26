@@ -42,7 +42,7 @@ Note that you can have multiple `OIDC` authenticators and each can have a separa
 
 ## Granting a user a role.
 
-Velociraptor will trust any of the configured authenticators, to identify the user and based on the username, grant the user the approripriate roles on the Velociraptor server. You will need to grant the user a role either through the command line:
+Velociraptor will trust any of the configured authenticators, to identify the user and based on the username, grant the user the appropriate roles on the Velociraptor server. You will need to grant the user a role either through the command line:
 
 ```
 velociraptor user add --role administrator mike@gmail.comm
