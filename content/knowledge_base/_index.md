@@ -9,7 +9,7 @@ disableToc: true
 no_children: true
 noDisqus: true
 rss_data_file: static/kb/data.json
-rss_title: Velociraptor Artifact Exchange
+rss_title: Velociraptor Knowledge Base
 outputs:
 - html
 - RSS

@@ -1,5 +1,18 @@
 [
     {
+        "title": "How can I configure Velociraptor for multiple SSO providers",
+        "link": "/knowledge_base/tips/multiple_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-26"
+    },
+    {
         "title": "How do I debug the client while it is running?",
         "link": "/knowledge_base/tips/debugging_clients",
         "tags": [
@@ -7,8 +20,8 @@
             "debugging"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
     },
     {
@@ -18,8 +31,17 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How can I automatically apply labels to clients?",
+        "link": "/knowledge_base/tips/automating_labels",
+        "tags": [],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

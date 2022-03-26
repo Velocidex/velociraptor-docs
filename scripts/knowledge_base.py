@@ -67,8 +67,9 @@ def cleanupDate(date):
 
 def getTags(description):
   result = []
-  for m in hash_regex.finditer(description):
-    result.append(m.group(1))
+  for line in content_regex.finditer(description):
+    for m in hash_regex.finditer(line.group(0)):
+      result.append(m.group(1))
 
   return result
 
@@ -77,7 +78,11 @@ def getAuthor(record, yaml_filename):
   title = record["title"]
   for item in previous_data:
     if item["title"] == title and item.get("author"):
-      return item
+      record["author"] = item["author"]
+      record["author_avatar"] = item["author_avatar"]
+      record["author_link"] = item["author_link"]
+      record["date"] = item["date"]
+      return record
 
   # Get commit details for this file.
   path = yaml_filename.replace("\\", "/")
@@ -146,7 +151,6 @@ def build_markdown():
           "tags": getTags(content),
         }
         record_with_author = getAuthor(record, md_filename)
-
         index.append(record_with_author)
 
         with open(filename_name, "w") as fd:
