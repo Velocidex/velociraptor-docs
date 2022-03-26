@@ -61,3 +61,5 @@ Be aware that trusting multiple identity providers can result in account hijack 
 In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a Github account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
 
 {{% /notice %}}
+
+Tags: #configuration #sso #deployment
