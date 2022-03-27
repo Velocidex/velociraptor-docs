@@ -1202,3 +1202,5 @@ SMA
 VirtualHostname
 RSS
 sso
+
+MSIs
