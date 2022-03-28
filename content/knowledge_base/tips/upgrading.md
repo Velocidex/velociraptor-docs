@@ -7,3 +7,5 @@ See [this page for more details]({{< ref "/docs/deployment/cloud/#server-upgrade
 To upgrade the Velociraptor clients, you will need to push out new MSIs using the existing client configuration files.
 
 More details on [Client upgrades]({{< ref "/docs/deployment/clients/#client-upgrades" >}})
+
+Tips: #configuration #admin
