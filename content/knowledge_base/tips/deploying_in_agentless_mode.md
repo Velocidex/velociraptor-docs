@@ -40,7 +40,7 @@ will exist if a mutant of this name already exists.
 
 ### Systemd 
 
-It is possible to execute a program in a "transient scope", which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the ned to create persistent configurations.
+It is possible to execute a program in a "transient scope", which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the need to create persistent configurations.
 Using ```systemd-run``` the process will be executed and its parent will be the `init` process, and will not terminate until the host is rebooted.
 
 To execute the Velociraptor binary run the following:
