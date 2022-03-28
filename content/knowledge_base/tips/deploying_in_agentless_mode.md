@@ -28,7 +28,7 @@ client.
 
 {{% notice warning "Controlling number of instances" %}}
 
-Windows's Group Policy allows setting only a single instance of the
+Window's Group Policy allows setting only a single instance of the
 program to run at the time, however we found in practice this is not
 reliable and sometimes GPO will launch dozens of copies of
 Velociraptor over time. To avoid this we use the `--mutant` flag which
@@ -41,7 +41,7 @@ will exist if a mutant of this name already exists.
 ### Systemd 
 
 It is possible to execute a program in a "transient scope", which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the ned to create persistent configurations.
-Using ```systemd-run``` the process will be executed and its parent wil be the init proces, and will not terminate until the host is reboted.
+Using ```systemd-run``` the process will be executed and its parent will be the `init` process, and will not terminate until the host is rebooted.
 
 To execute the Velociraptor binary run the following:
 
@@ -56,8 +56,8 @@ You can check it's status with: ```systemctl status velociraptor_tmp.service```
 
 {{% notice warning "Temporary locations" %}}
 
-On Linux /tmp is cleaned up by a service, which gets trigered on shutdown.
-You wil ned to arrange for the Velociraptor binary and configuration file to be transferred again if the host rebots.
+On Linux /tmp is cleaned up by a service, which gets triggered on shutdown.
+You will need to arrange for the Velociraptor binary and configuration file to be transferred again if the host reboots.
 
 {{% /notice %}}
 
