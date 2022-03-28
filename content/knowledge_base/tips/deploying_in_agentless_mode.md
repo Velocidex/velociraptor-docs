@@ -3,6 +3,8 @@
 Sometimes we need to deploy Velociraptor in an IR and can not install
 it permanently as a service.
 
+## Windows Environments
+
 It is possible to deploy the client using Group Policy by using
 `Scheduled task` feature to cause domain connected machines to run the
 client.
@@ -33,5 +35,33 @@ Velociraptor over time. To avoid this we use the `--mutant` flag which
 will exist if a mutant of this name already exists.
 
 {{% /notice %}}
+
+## Linux Environments
+
+### Systemd 
+
+It is possible to execute a program in a "transient scope", which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the ned to create persistent configurations.
+Using ```systemd-run``` the process will be executed and its parent wil be the init proces, and will not terminate until the host is reboted.
+
+To execute the Velociraptor binary run the following:
+
+```
+systemd-run -u velociraptor_tmp /tmp/velociraptor.bin client --config /tmp/client.config.yaml 
+```
+Once the service is running, you should now be free to terminate the SSH / management session without terminating the process.
+
+You can manually terminate the service with: ```systemctl stop velociraptor_tmp.service ```
+
+You can check it's status with: ```systemctl status velociraptor_tmp.service```
+
+{{% notice warning "Temporary locations" %}}
+
+On Linux /tmp is cleaned up by a service, which gets trigered on shutdown.
+You wil ned to arrange for the Velociraptor binary and configuration file to be transferred again if the host rebots.
+
+{{% /notice %}}
+
+You can read more about the ```systemd-run``` here for flags etc: https://www.freedesktop.org/software/systemd/man/systemd-run.html 
+
 
 Tags: #deployment
