@@ -48,6 +48,7 @@ artifact by giving it a name.
 
 ```yaml
 name: AutomateServerLabels
+type: SERVER_EVENT
 sources:
 - query: |
     LET interrogations = SELECT *

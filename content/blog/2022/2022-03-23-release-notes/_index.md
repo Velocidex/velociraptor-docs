@@ -4,7 +4,6 @@ description: |
    Velociraptor Release 0.6.4 is now in release candidate status. This post discusses some of the new features.
 tags:
  - Release
-noindex: true
 author: "Mike Cohen"
 date: 2022-03-21
 ---
