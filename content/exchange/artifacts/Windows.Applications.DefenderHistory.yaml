@@ -78,6 +78,7 @@ sources:
                   Size,    
                   parse_binary(filename=FullPath, profile = profile, struct = 'Info') as parsedfile 
             FROM glob(globs = TargetGlob)
+            Where IsDir = False
             
             SELECT  parsedfile.Time as EventTime,
                     parsedfile.ThreatType as ThreatType,
