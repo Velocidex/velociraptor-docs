@@ -25,4 +25,4 @@ Before upgrading perform testing of the combination of client and server version
  - Upgrading the server before clients is more common, so version problems are more likely to have been caught in community testing with this approach.
  - Consider running a parallel deployment as the most compatible way to upgrade. Such as when upgrading and there are known breaking changes between the current client and target server versions (going from self signed to auto cert), or when there are large version differences (unusual combinations of client and server).
 
-Tips: #configuration #admin
+Tags: #configuration #admin

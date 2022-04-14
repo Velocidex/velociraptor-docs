@@ -7,7 +7,7 @@ it permanently as a service.
 
 It is possible to deploy the client using Group Policy by using
 `Scheduled task` feature to cause domain connected machines to run the
-client.
+client. See details [here]({{< ref "/blog/html/2019/03/02/agentless_hunting_with_velociraptor/" >}}).
 
 1. The first step is to place the client and the generated
    `client.config.yaml` on a public read only windows share.
@@ -32,13 +32,13 @@ Window's Group Policy allows setting only a single instance of the
 program to run at the time, however we found in practice this is not
 reliable and sometimes GPO will launch dozens of copies of
 Velociraptor over time. To avoid this we use the `--mutant` flag which
-will exist if a mutant of this name already exists.
+will exit if a mutant of this name already exists.
 
 {{% /notice %}}
 
 ## Linux Environments
 
-### Systemd 
+### Systemd
 
 It is possible to execute a program in a "transient scope", which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the need to create persistent configurations.
 Using ```systemd-run``` the process will be executed and its parent will be the `init` process, and will not terminate until the host is rebooted.
@@ -46,7 +46,7 @@ Using ```systemd-run``` the process will be executed and its parent will be the 
 To execute the Velociraptor binary run the following:
 
 ```
-systemd-run -u velociraptor_tmp /tmp/velociraptor.bin client --config /tmp/client.config.yaml 
+systemd-run -u velociraptor_tmp /tmp/velociraptor.bin client --config /tmp/client.config.yaml
 ```
 Once the service is running, you should now be free to terminate the SSH / management session without terminating the process.
 
@@ -61,7 +61,7 @@ You will need to arrange for the Velociraptor binary and configuration file to b
 
 {{% /notice %}}
 
-You can read more about the ```systemd-run``` here for flags etc: https://www.freedesktop.org/software/systemd/man/systemd-run.html 
+You can read more about the ```systemd-run``` here for flags etc: https://www.freedesktop.org/software/systemd/man/systemd-run.html
 
 
 Tags: #deployment
