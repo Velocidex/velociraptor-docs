@@ -2,7 +2,7 @@
 
 Many enterprise environments require a proxy to be set before outbound
 web communications is allowed. The Velociraptor client uses HTTP to
-communicate witht the server, and therefore must use a proxy to
+communicate with the server, and therefore must use a proxy to
 connect in such environments.
 
 It is possible to specify the HTTP proxy using the configuration file
@@ -30,7 +30,7 @@ The rules for environment variables are described
 // An error is returned if the value is a different form.
 ```
 
-### Settig a proxy in the configuration file
+### Setting a proxy in the configuration file
 
 You can also hard code the proxy in the configuration file's Client
 section:
