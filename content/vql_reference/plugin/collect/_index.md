@@ -28,9 +28,11 @@ format|Output format (csv, jsonl).|string
 artifact_definitions|Optional additional custom artifacts.|Any
 template|The name of a template artifact (i.e. one which has report of type HTML).|string
 level|Compression level between 0 (no compression) and 9.|int64
-ops_per_sec|Rate limiting for collections.|int64
+ops_per_sec|Rate limiting for collections (deprecated).|int64
 cpu_limit|Set query cpu_limit value|float64
 iops_limit|Set query iops_limit value|float64
+progress_timeout|If no progress is detected in this many seconds, we terminate the query and output debugging information|float64
+timeout|Total amount of time in seconds, this collection will take. Collection is cancelled when timeout is exceeded.|float64
 
 ### Description
 
