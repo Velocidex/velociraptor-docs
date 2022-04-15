@@ -17,7 +17,7 @@ outputs:
 ---
 
 The artifact exchange is a place for sharing community contributed
-artifacts. Simply search before for an artifact that might address
+artifacts. Simply search below for an artifact that might address
 your need. If you wish to contribute to the exchange, please click the
 button to the right.
 

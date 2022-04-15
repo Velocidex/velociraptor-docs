@@ -11,6 +11,19 @@ Signed]({{< relref "self-signed" >}}) or [Cloud Deployment]({{< relref
 local machine for testing environment. For more information, see
 [Instant Velociraptor](#instant-velociraptor).
 
+## Deployment Overview
+
+Below is a typical Velociraptor deployment
+
+![A typical Velociraptor deployment](overview.png)
+
+Major parts include:
+
+1. The `client` is the instance of the Velociraptor agent running on the endpoint.
+2. The `frontend` is the server component communicating with the client.
+3. The `gui` is the web application server that presents the administrative interface.
+4. The `API` server is used to accept API requests.
+
 ## Deployment Milestones
 
 At a high level, your Velociraptor deployment will consist of 3 tasks: setting up a server, deploying clients, and granting user access to the console.
@@ -77,7 +90,7 @@ to work with a persistently stored data store.
 
 ### Verifying your download
 
-The Velociraptor releases are signed using gpg with key ID `0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1`. 
+The Velociraptor releases are signed using gpg with key ID `0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1`.
 You can verify the signature using `gpg`:
 
 ```
