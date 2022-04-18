@@ -4,7 +4,7 @@ Use case: For an on-premises deployment, Let's Encrypt may not be an option. You
 
 Thanks to recent enhancements by the Velociraptor developers, this is quite a simple task. The below is a simple test configuration used and may need adapting to your environment.
 
-Prior to commencing we a plaintext PEM private key, certificate for our Velociraptor server, and the certificate chain of our enterprise CA, including the root and multiple intermediaries.
+Prior to commencing we have a plaintext PEM private key, certificate for our Velociraptor server, and the certificate chain of our enterprise CA, including the root and multiple intermediaries.
 
 
 ### Generate the configuration
@@ -26,7 +26,7 @@ Frontend:
 
 
 ### Update the client.config.yaml
-In the client section modify to not use self signed, and add the root certificates to be trusted, which in our case was a root and multiple intermediaries.
+In the client section modify `use_self_signed_ssl` to be false, and add the CA root/intermediary certificates to be trusted by the client:
 
 ```yaml
 use_self_signed_ssl: false
@@ -48,6 +48,6 @@ Crypto:
 ### Test
 Launching the server we should be able to connect to the GUI using our new certificate. Note this must be trusted by browser/system to prevent errors.
 
-Launching the client, it should connect securely without error the the server using the certificate.
+Launching the client, it should connect securely without error, using the trusted CA chain and the new server certificate.
 
 No changes need to be made to the pinned certificate name, nor do any certificates need to be modified in the configuration files.
