@@ -28,17 +28,17 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows' OR OS = 'linux' OR OS = 'darwin'
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       -- firstly match regex for macro code of interest
       LET macros = SELECT * FROM foreach(
             row={
-                SELECT FullPath,Size,Mtime,Atime,Ctime,Btime FROM glob(globs=TargetGlob)
+                SELECT FullPath,Name,Size,Mtime,Atime,Ctime,Btime FROM glob(globs=TargetGlob)
             },
             query={
                 SELECT 
-                    FullPath,Size,
+                    FullPath,Name,Size,
                     dict(Mtime=Mtime,Atime=Atime,Ctime=Ctime,Btime=Btime) as Timestamps,
                     dict(
                         AutoExec = if(condition= Code=~AutoExecRegex,
@@ -58,7 +58,7 @@ sources:
       
       -- determine if suspicious
       LET results = SELECT 
-            FullPath,Size,Timestamps,
+            FullPath,Name,Size,Timestamps,
             if(condition= MacroDetection.AutoExec AND ( MacroDetection.Write OR MacroDetection.Execute ),
                 then = True,
                 else= False ) as Suspicious,
@@ -74,6 +74,8 @@ sources:
         FROM results
 
       -- output rows
-      SELECT * FROM if(condition= UploadDocument,
+      SELECT *,
+        hash(path=FullPath) as Hash
+      FROM if(condition= UploadDocument,
             then= { SELECT * FROM upload_results},
             else= { SELECT * FROM results})
