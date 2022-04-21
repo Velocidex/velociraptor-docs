@@ -11,7 +11,7 @@ reference:
   
 parameters:
   - name: TargetGlob
-    default: "C:\\Users\\**\\*.{xls,xlsm,xlsm,doc,docx,dotm,ppt,pptm}"
+    default: "C:\\Users\\**\\*.{doc,dot,docx,docm,dotx,dotm,docb,xls,xlt,xlm,xlsx,xlsm,xltx,xltm,xlsb,ppt,pptx,pptm,potx,potm}"
     description: The directory to search for office documents.
   - name: ShowAllDetections
     type: bool
