@@ -1,5 +1,39 @@
 [
     {
+        "title": "What do I do about \"version GLIBC_2.14 not found\" errors?",
+        "link": "/knowledge_base/tips/glibc_errors",
+        "tags": [
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "How can I override the configuration file?",
+        "link": "/knowledge_base/tips/merging_config",
+        "tags": [
+            "configuration"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?",
+        "link": "/knowledge_base/tips/startup_artifacts",
+        "tags": [
+            "deployment",
+            "configuration"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
         "title": "How do I search for registry keys",
         "link": "/knowledge_base/tips/registry_finder",
         "tags": [
@@ -118,9 +152,24 @@
         "date": "2022-03-21"
     },
     {
-        "title": "What do I do about `version GLIBC_2.14 not found` errors?",
-        "link": "/knowledge_base/tips/glibc_errors",
-        "tags": [],
+        "title": "How can I save my favorite collections for the future?",
+        "link": "/knowledge_base/tips/favorites",
+        "tags": [
+            "configuration",
+            "GUI"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How to fix \"certificate has expired or not yet valid error\"?",
+        "link": "/knowledge_base/tips/rolling_certificates",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
         "author": "",
         "author_link": "",
         "author_avatar": "",
