@@ -1,5 +1,65 @@
 [
     {
+        "title": "Windows.Registry.TaskCache.HiddenTasks",
+        "author": "svch0stz",
+        "description": "This artefact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods. ",
+        "link": "/exchange/artifacts/pages/windows.registry.taskcache.hiddentasks",
+        "tags": [],
+        "author_link": "https://github.com/svch0stz",
+        "author_avatar": "https://avatars.githubusercontent.com/u/8684257?v=4",
+        "date": "2022-04-21"
+    },
+    {
+        "title": "Windows.NTFS.Timestomp",
+        "author": "mgreen27",
+        "description": "This artifact enables triage to detect potential time stomped files.",
+        "link": "/exchange/artifacts/pages/timestomp",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-04-15"
+    },
+    {
+        "title": "Windows.Applications.DefenderQuarantineExtract",
+        "author": "eduardomcm",
+        "description": "Extracts Quarantine Files from Windows Defender.",
+        "link": "/exchange/artifacts/pages/defenderquarantineextract",
+        "tags": [],
+        "author_link": "https://github.com/eduardomcm",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49650494?v=4",
+        "date": "2022-04-14"
+    },
+    {
+        "title": "Custom.Windows.Registry.CortexEDRDisabled",
+        "author": "Rhysistance",
+        "description": "This artifact will attempt to identify Cortex EDR that has been disabled via regkey\n",
+        "link": "/exchange/artifacts/pages/windows.registry.disabledcortexxdr",
+        "tags": [],
+        "author_link": "https://github.com/Rhysistance",
+        "author_avatar": "https://avatars.githubusercontent.com/u/93743676?v=4",
+        "date": "2022-04-14"
+    },
+    {
+        "title": "Windows.Applications.DefenderHistory",
+        "author": "rmakuch",
+        "description": "This artifact parses the Windows Defender files generated on threat detection and returns\nthe contained parameters created by Windows Defender about the detected threat. ",
+        "link": "/exchange/artifacts/pages/windows.applications.defenderhistory",
+        "tags": [],
+        "author_link": "https://github.com/rmakuch",
+        "author_avatar": "https://avatars.githubusercontent.com/u/33912291?v=4",
+        "date": "2022-04-12"
+    },
+    {
+        "title": "MacOS.Applications.Safari.Downloads",
+        "author": "Seeps",
+        "description": "Parses Safari downloads for all standard macOS users",
+        "link": "/exchange/artifacts/pages/macos.applications.safari.downloads",
+        "tags": [],
+        "author_link": "https://github.com/Seeps",
+        "author_avatar": "https://avatars.githubusercontent.com/u/10315852?v=4",
+        "date": "2022-03-29"
+    },
+    {
         "title": "Windows.EventLogs.RDPClientActivity",
         "author": "NorthwaveCERT",
         "description": "This artifact retrieves outgoing RDP session activity from the\nMicrosoft-Windows-TerminalServices-RDPClient event logs. It aggregates\nsessions based on ActivityID and outputs hostname, timeframe and disconnect reasons.\nDisconnect reason is filled using a dict that was filled using MS Docs (see references)",

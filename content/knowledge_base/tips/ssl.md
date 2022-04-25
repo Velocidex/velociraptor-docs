@@ -8,7 +8,7 @@ Prior to commencing we have a plaintext PEM private key, certificate for our Vel
 
 
 ### Generate the configuration
-Using Ubuntu we generated a stock standard "Self Signed SSL" configuration:  
+Using Ubuntu we generated a stock standard "Self Signed SSL" configuration:
 
 `./velociraptor-v0.6.3-2-linux-amd64 config generate -i`
 
@@ -51,3 +51,5 @@ Launching the server we should be able to connect to the GUI using our new certi
 Launching the client, it should connect securely without error, using the trusted CA chain and the new server certificate.
 
 No changes need to be made to the pinned certificate name, nor do any certificates need to be modified in the configuration files.
+
+Tags: #configuration #deployment

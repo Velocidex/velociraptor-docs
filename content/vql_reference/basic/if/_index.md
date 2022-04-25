@@ -20,8 +20,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 condition||Any (required)
-then||LazyExpr
-else||LazyExpr
+then||types.LazyAny
+else||types.LazyAny
 
 ### Description
 
