@@ -1,4 +1,4 @@
-# What do I do about `version GLIBC_2.14 not found` errors?
+# What do I do about "version GLIBC_2.14 not found" errors?
 
 On Linux, binaries always link to the C library dynamically. This
 happens even with a static binary like Velociraptor. The C library is
@@ -97,3 +97,5 @@ The main differences are:
 4. Since building the CentOS version is a manual process, it may not
    be done on each release. You might need to use an older version of
    the client instead of the latest.
+
+Tags: #deployment
