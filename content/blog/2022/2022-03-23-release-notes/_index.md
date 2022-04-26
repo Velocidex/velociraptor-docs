@@ -1,11 +1,11 @@
 ---
 title: "Velociraptor 0.6.4 Release"
 description: |
-   Velociraptor Release 0.6.4 is now in release candidate status. This post discusses some of the new features.
+   Velociraptor Release 0.6.4 is now LIVE. This post discusses some of the new features.
 tags:
  - Release
 author: "Mike Cohen"
-date: 2022-03-21
+date: 2022-04-21
 ---
 
 I am very excited to announce the latest Velociraptor release
