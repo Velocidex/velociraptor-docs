@@ -5,6 +5,7 @@ description: |
     Were you planning to try Velociraptor in the past? You can now win some awesome prizes by learning and applying Velociraptor to your own network.
 
 weight: 10
+hidden: true
 no_edit: true
 ---
 
