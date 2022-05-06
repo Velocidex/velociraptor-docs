@@ -13,7 +13,7 @@ Collector_velociraptor-v0.6.4-windows-amd64.exe config show > config.yaml
 ```
 
 2. Next we can edit the config file - for example, if we need to tweak the parameters
-3. Finally we repack the new configuation file into the existing collector:
+3. Finally we repack the new configuration file into the existing collector:
 
 ```
 Collector_velociraptor-v0.6.4-windows-amd64.exe config repack config.yaml new_collector.exe
