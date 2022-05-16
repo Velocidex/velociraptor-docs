@@ -6,7 +6,10 @@ description: |
 
 weight: 10
 no_edit: true
+noTitle: true
 ---
+
+<img style="width: 100%" src="velocon_banner.jpg">
 
 The first annual VeloCon Conference will be held Thursday Sept 15th,
 with times oriented to the continental USA timezones. This year the
