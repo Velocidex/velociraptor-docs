@@ -1,4 +1,4 @@
-#Applying labels to hunt results
+# Applying labels to hunt results
 
 Sometimes it is useful to label clients from a hunt.
 
@@ -13,4 +13,4 @@ GROUP BY ClientId
 
 ![image](https://user-images.githubusercontent.com/13081800/169450498-39d31902-81ec-4b7c-8c6c-72abe0419c7e.png)
 
-#labels
+Tags: #labels
