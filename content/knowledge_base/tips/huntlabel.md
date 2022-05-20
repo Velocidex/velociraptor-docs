@@ -2,7 +2,7 @@
 
 Sometimes it is useful to label clients from a hunt.
 
-For the following example, I will label a client with rows from the Windows.Carving.CobaltStrike artifact. We are lookin to label machine detected with CobaltStrike beacons.
+For the following example, I will label all machines with rows from the Windows.Carving.CobaltStrike artifact with a label "CobaltStrike".
 
 ```vql
 SELECT ClientId,Fqdn,Rule,
