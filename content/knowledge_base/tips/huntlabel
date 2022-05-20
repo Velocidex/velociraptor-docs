@@ -1,0 +1,13 @@
+#Applying labels to hunt results
+
+Sometimes it is useful to label clients from a hunt.
+
+For the following example, I will label a client with results from the Windows.Carving.CobaltStrike artifact. We are lookin to label machine detected with CobaltStrike beacons.
+
+```vql
+SELECT ClientId,Fqdn,Rule,
+    label(client_id=ClientId,labels=['CobaltStrike'],op='set') as SetLabel
+FROM source(artifact="Windows.Carving.CobaltStrike")
+GROUP BY ClientId
+```
+
