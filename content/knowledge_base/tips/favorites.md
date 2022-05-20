@@ -46,4 +46,4 @@ artifact parameters.
 By including the VQL in a notebook, any user can collect it and
 install the favorites in their own profile.
 
-Tags: #configuration #GUI
+Tags: #labels #huntmanagement
