@@ -1,4 +1,4 @@
-#Applying labels to hunt results
+# Applying labels to hunt results
 
 Sometimes it is useful to label clients from a hunt.
 
