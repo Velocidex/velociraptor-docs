@@ -14,11 +14,17 @@ description: |
     logic and via support for Sigma detection rules."
 
     https://github.com/countercept/chainsaw
+    
+    **WARNING!** As of the latest version of Chainsaw, 
+    there is a [bug](https://github.com/countercept/chainsaw/pull/62) 
+    that does not return all of Chainsaw's "builtin detections" 
+    via JSON output which means this VQL artifact is likely not 
+    to return complete detection results until the bug is fixed!
 
 author: Wes Lambert - @therealwlambert
 tools:
   - name: Chainsaw
-    url: https://github.com/countercept/chainsaw/releases/download/v1.0.2/chainsaw_x86_64-pc-windows-msvc.zip
+    url: https://github.com/countercept/chainsaw/releases/download/v1.1.7/chainsaw_x86_64-pc-windows-msvc.zip
 parameters:
   - name: EVTXPath
     default: 'C:\Windows\System32\winevt\Logs'
@@ -39,7 +45,8 @@ sources:
         Let ExecCS <= SELECT * FROM execve(argv=[
                         TmpDir + '/chainsaw/chainsaw.exe',
                         'hunt', EVTXPath,
-                        "--json", TmpResults,
+                        "--json",
+                        "--output", TmpResults,
                         "--rules", SigmaRules,
                         "--mapping", SigmaMapping], length=Length)
         LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
