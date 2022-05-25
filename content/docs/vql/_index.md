@@ -630,7 +630,7 @@ expression.
 The second case applied the regex to a string, so it is true if the
 string matches.
 
-Finally in the last case, the regex is applies to an integer. It makes
+Finally in the last case, the regex is applied to an integer. It makes
 no sense to apply a regular expression to an integer and so VQL
 returns FALSE.
 
