@@ -21,6 +21,11 @@ parameters:
   - name: UserNameRegex
     default: .
     description: Filter by this UserName regex.
+  - name: TargetRegex
+    default: "http|https|ftp|smb|webdav|\\\\|//|:"
+    description: Target server regex filter. Default should return all protocols.
+  - name: TargetWhitelist
+    description: Target whitelist regex.
 
 sources:
   - precondition:
@@ -35,10 +40,13 @@ sources:
             },
             query={
                 SELECT
-                    Name,
-                    FullPath,
-                    Data,
                     ModTime as Modified,
-                    UserName
+                    UserName,
+                    Name,
+                    FullPath
                 FROM glob(globs="HKEY_USERS\\" + SID + "\\" + OfficeServerCacheKey, accessor="registry")
+                WHERE Name =~ TargetRegex
+                    AND NOT if(condition=TargetWhitelist,
+                                then= Name=~TargetWhitelist,
+                                else= False)
             })
