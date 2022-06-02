@@ -2,7 +2,7 @@ name: Windows.Detection.MsdtFollina
 author: Matt Green - @mgreen27
 description: |
    This artifact will search Microsoft Support Diagnostic Tool logs for evidence 
-   of ms-msdt Follina exploittion (CVE-2022-30190).
+   of ms-msdt Follina exploitation (CVE-2022-30190).
    
    The exploit appears to add a recursive path "../../" to a TargetPath field 
    inside the PCW.debugreport.xml.
