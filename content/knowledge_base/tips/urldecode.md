@@ -10,7 +10,7 @@ SELECT regex_replace(source=Line, replace_lambda="x=>unhex(string=x[1:]) || x", 
 
 ```
 
-![UrlDecode: results](https://user-images.githubusercontent.com/13081800/172098424-d78c73f9-e7d2-405b-99ca-129eba4350c0.png)
+![Url Decode: results](https://user-images.githubusercontent.com/13081800/172098424-d78c73f9-e7d2-405b-99ca-129eba4350c0.png)
 
 
 Tags: #decode #url #vql
