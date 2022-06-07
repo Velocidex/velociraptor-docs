@@ -1,0 +1,47 @@
+name: Linux.Detection.ConfluenceLogs
+author: "Matt Green - @mgreen27"
+description: |
+  This artifact enables grep of Linux logs and targets strings observed in 
+  exploitation of CVE-2022-26134.
+  
+  CVE-2022-26134, a critical unauthenticated remote code execution vulnerability 
+  in Confluence Server and Confluence Data Center. 
+  
+reference:
+  - https://www.rapid7.com/blog/post/2022/06/02/active-exploitation-of-confluence-cve-2022-26134/
+
+parameters:
+  - name: TargetFiles
+    default: '/{/var/log/**,/opt/atlassian/confluence*/**/logs/*}'
+  - name: SearchRegex
+    description: "Regex of strings to search in log line."
+    default: '%24%7B|(GET|POST).{0,50}\$\{'
+    type: regex
+  - name: WhitelistRegex
+    description: "Regex of strings to leave out of output."
+    default:
+    type: regex
+  - name: ExcludePathRegex
+    description: "Regex of paths to exclude."
+    default: '^/(proc|sys|run|snap)|\.journal$'
+    type: regex
+    
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'linux'
+
+    query: |
+      LET files = SELECT OSPath FROM glob(globs=TargetFiles,nosymlink=True)
+        WHERE NOT if(condition=ExcludePathRegex,
+                                then= OSPath=~ExcludePathRegex,
+                                else= False )
+
+      SELECT * FROM foreach(row=files,
+          query={
+              SELECT OSPath, Line FROM parse_lines(filename=OSPath)
+              WHERE
+                Line =~ SearchRegex
+                AND NOT if(condition= WhitelistRegex,
+                    then= Line =~ WhitelistRegex,
+                    else= FALSE)
+          })
