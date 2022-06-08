@@ -15,7 +15,7 @@ parameters:
     default: '/{/var/log/**,/opt/atlassian/confluence*/**/logs/*}'
   - name: SearchRegex
     description: "Regex of strings to search in log line."
-    default: '%24%7B|(GET|POST).{0,50}\$\{'
+    default: '%24%7B|(GET|POST).{0,50}\$\{|154\.146\.34\.145|154\.16\.105\.147|156\.146\.34\.46|156\.146\.34\.52|156\.146\.34\.9|156\.146\.56\.136|198\.147\.22\.148|221\.178\.126\.244|45\.43\.19\.91|59\.163\.248\.170|64\.64\.228\.239|66\.115\.182\.102|66\.115\.182\.111|67\.149\.61\.16|98\.32\.230\.38'
     type: regex
   - name: WhitelistRegex
     description: "Regex of strings to leave out of output."
@@ -23,18 +23,17 @@ parameters:
     type: regex
   - name: ExcludePathRegex
     description: "Regex of paths to exclude."
-    default: '^/(proc|sys|run|snap)|\.journal$'
+    default: '^/(shared|proc|snap)|.journal$'
     type: regex
     
 sources:
-  - precondition:
-      SELECT OS From info() where OS = 'linux'
-
-    query: |
-      LET files = SELECT OSPath FROM glob(globs=TargetFiles,nosymlink=True)
-        WHERE NOT if(condition=ExcludePathRegex,
-                                then= OSPath=~ExcludePathRegex,
-                                else= False )
+  - query: |
+      LET files = SELECT OSPath 
+        FROM glob(globs=TargetFiles,nosymlink=True,
+            recursion_callback="x=> NOT if(condition= ExcludePathRegex,
+                                            then= x.OSPath=~ExcludePathRegex,
+                                            else= False)" )
+        WHERE NOT IsDir
 
       SELECT * FROM foreach(row=files,
           query={
