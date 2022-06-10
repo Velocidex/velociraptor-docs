@@ -50,10 +50,10 @@ sources:
                 EventId = 59
                 AND NOT if( condition= UrlWhitelistRegex,
                             then= Url =~ UrlWhitelistRegex,
-                            else= FALSE),
+                            else= FALSE)
                 AND NOT if( condition= UrlWhitelistRegex2,
                             then= Url =~ UrlWhitelistRegex2,
-                            else= FALSE),
+                            else= FALSE)
                 AND NOT if( condition= UrlWhitelistRegex3,
                             then= Url =~ UrlWhitelistRegex3,
                             else= FALSE)
