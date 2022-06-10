@@ -12,10 +12,10 @@ parameters:
     default: C:\Windows\System32\winevt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx
   - name: UrlWhitelistRegex
     description: Primary whitelist regex - anchor base domain - e.g *.live.com/*
-    default: 'http(s|):(|.*\\.)(live|mozilla|sun|adobe|onenote|microsoft|windowsupdate|google|oracle|googleapis|hp)\\.(net|com|(|\\.au))(|:80|:443|:5985)/'
+    default: 'https?://(|.*)(office365|dell|live|mozilla|sun|adobe|onenote|microsoft|windowsupdate|google|oracle|googleapis|hp)\.(net|com|(|\.au))(|:80|:443|:5985)/'
   - name: UrlWhitelistRegex2
-    description: Secondary whitelist regex. Used for root domain e.g live.com/*
-    default: 'http(s|)://aka.ms|(10|192)\\.d{1,3}\\.\\d{1,3}\\.\\d{1,3})(|:80|:443|:5985)/'
+    description: Secondary whitelist regex. Used for root domain e.g domain.com/*
+    default: 'https?://((oneclient\.sfx|aka)\.ms|(10|192)\.d{1,3}\.\d{1,3}\.\d{1,3})(|:80|:443|:5985)/'
   - name: UrlWhitelistRegex3
     description: Secondary whitelist regex. Used for other regex.
 
