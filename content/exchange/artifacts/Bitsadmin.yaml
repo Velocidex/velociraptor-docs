@@ -1,0 +1,62 @@
+name: Windows.EventLogs.Bitsadmin
+author: "Matt Green - @mgreen27"
+description: |
+    This content will extract BITS Transfer events and enable filtering by URL
+
+reference:
+  - https://attack.mitre.org/techniques/T1197/
+  - https://mgreen27.github.io/posts/2018/02/18/Sharing_my_BITS.html
+
+parameters:
+  - name: EventLog
+    default: C:\Windows\System32\winevt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx
+  - name: UrlWhitelistRegex
+    description: Primary whitelist regex - anchor base domain - e.g *.live.com/*
+    default: 'https?://(|.*)(office365|dell|live|mozilla|sun|adobe|onenote|microsoft|windowsupdate|google|oracle|googleapis|hp)\.(net|com|(|\.au))(|:80|:443|:5985)/'
+  - name: UrlWhitelistRegex2
+    description: Secondary whitelist regex. Used for root domain e.g domain.com/*
+    default: 'https?://((oneclient\.sfx|aka)\.ms|(10|192)\.d{1,3}\.\d{1,3}\.\d{1,3})(|:80|:443|:5985)/'
+  - name: UrlWhitelistRegex3
+    description: Secondary whitelist regex. Used for other regex.
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- Find Files in scope
+      LET files = SELECT * FROM glob(globs=EventLog)
+      
+      LET results = SELECT * FROM foreach(
+        row=files,
+        query={
+            SELECT
+                timestamp(epoch=int(int=System.TimeCreated.SystemTime)) AS EventTime,
+                System.Computer as Computer,
+                System.EventID.Value as EventId,
+                System.Security.UserID as UserId,
+                EventData.transferId as TransferId,
+                EventData.name as Name,
+                EventData.id as Id,
+                EventData.url as Url,
+                EventData.peer as Peer,
+                timestamp(epoch=EventData.fileTime) as FileTime,
+                EventData.fileLength as fileLength,
+                EventData.bytesTotal as bytesTotal,
+                EventData.bytesTransferred as bytesTransferred,
+                EventData.bytesTransferredFromPeer
+            FROM parse_evtx(filename=FullPath)
+            WHERE 
+                EventId = 59
+                AND NOT if( condition= UrlWhitelistRegex,
+                            then= Url =~ UrlWhitelistRegex,
+                            else= FALSE)
+                AND NOT if( condition= UrlWhitelistRegex2,
+                            then= Url =~ UrlWhitelistRegex2,
+                            else= FALSE)
+                AND NOT if( condition= UrlWhitelistRegex3,
+                            then= Url =~ UrlWhitelistRegex3,
+                            else= FALSE)
+        })
+
+      SELECT * FROM results
