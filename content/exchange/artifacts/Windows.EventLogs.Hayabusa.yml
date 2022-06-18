@@ -1,0 +1,53 @@
+name: Windows.EventLogs.Hayabusa
+description: |
+   [Hayabusa](https://github.com/Yamato-Security/hayabusa) is a Windows event log fast forensics timeline generator and threat hunting tool.
+   
+   This artifact runs Hayabusa on the endpoint against the specified Windows event log directory, and generates and uploads a single CSV file for further analysis with excel, timeline explorer, elastic stack, etc.
+
+author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack
+
+tools:
+ - name: Hayabusa
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v1.3.2/hayabusa-1.3.2-windows-64-bit.zip
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+ - name: EVTXPath
+   default: C:\Windows\System32\winevt\Logs
+
+sources:
+ - query: |
+
+        LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa", IsExecutable=FALSE)
+
+        LET TmpDir <= tempdir()
+
+        LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+
+        LET ConfigPath <= TmpDir + '\\rules\\config'
+
+        LET RulesPath <= TmpDir + '\\rules'
+       
+        LET Random <= rand(range=100000000000)
+        
+        LET CSVFile <= TmpDir + '\\hayabusa_results_'+str(str=Random)+'.csv'
+        
+        LET ExecHB <= SELECT * FROM execve(argv=[
+                       TmpDir + '\\hayabusa-1.3.2-win-x64.exe',
+                       '-d', EVTXPath,
+                       "-o", CSVFile,
+                       "-r", RulesPath,
+                       "-C", ConfigPath,
+                       "-F",
+                       "-q"])
+                       
+        LET UploadCSV <= upload(file=CSVFile,
+                          accessor="file",
+                          name='hayabusa_results_'+str(str=Random)+'.csv')
+            
+        LET UploadCSVResults <= SELECT *, FullPath, Size, Modifed, Type FROM UploadCSV
+                       
+        LET Results <= SELECT Timestamp, Computer, Channel, EventID, Level, MitreAttack, RecordID, RuleTitle, Details, RecordInformation, RulePath, FilePath FROM parse_csv(filename=CSVFile)
+        
+        SELECT * FROM Results
