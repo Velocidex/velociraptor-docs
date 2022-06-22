@@ -22,7 +22,7 @@ Arg | Description | Type
 query|Source for rows to upload.|StoredQuery (required)
 threads|How many threads to use.|int64
 index|The name of the index to upload to. If not specified ensure a column is named '_index'.|string
-type|The type of the index to upload to.|string (required)
+type|The type of the index to upload to.|string
 chunk_size|The number of rows to send at the time.|int64
 addresses|A list of Elasticsearch nodes to use.|list of string
 username|Username for HTTP Basic Authentication.|string

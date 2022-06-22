@@ -20,7 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 globs|One or more glob patterns to apply to the filesystem.|list of string (required)
-root|The root directory to glob from (default '').|string
+root|The root directory to glob from (default '').|OSPath
 accessor|An accessor to use.|string
 nosymlink|If set we do not follow symlinks.|bool
 recursion_callback|A VQL function that determines if a directory should be recursed (e.g. "x=>NOT x.Name =~ 'proc'").|string

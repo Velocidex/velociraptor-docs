@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|One or more files to open.|list of string (required)
+filename|One or more files to open.|OSPath (required)
 accessor|An accessor to use.|string
 
 ### Description

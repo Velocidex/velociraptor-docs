@@ -22,6 +22,7 @@ Arg | Description | Type
 message|Message to log.|string (required)
 dedup|Suppress same message in this many seconds (default 60 sec).|int64
 args|An array of elements to apply into the format string.|Any
+level|Level to log at (DEFAULT, WARN, ERROR, INFO).|string
 
 ### Description
 

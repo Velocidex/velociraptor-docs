@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|The file to upload|string (required)
+file|The file to upload|OSPath (required)
 name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
 mtime|Modified time to record|Any

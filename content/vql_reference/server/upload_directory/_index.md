@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|The file to upload|string (required)
+file|The file to upload|OSPath (required)
 name|Filename to be stored within the output directory|string
 accessor|The accessor to use|string
 output|An output directory to store files in.|string (required)

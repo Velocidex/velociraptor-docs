@@ -1,5 +1,5 @@
 ---
-title: hunts
+title: flow_logs
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## hunts
+## flow_logs
 <span class='vql_type pull-right page-header'>Plugin</span>
 
 
@@ -19,12 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-hunt_id|A hunt id to read, if not specified we list all of them.|string
-offset|Start offset.|uint64
-count|Max number of results to return.|uint64
+flow_id|The flow id to read.|string (required)
+client_id|The client id to extract|string (required)
 
 ### Description
 
-Retrieve the list of hunts.
-
+Retrieve the query logs of a flow.
 

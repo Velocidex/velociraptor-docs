@@ -20,7 +20,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 source|The source string to replace.|string (required)
-replace|The substitute string.|string (required)
+replace|The substitute string.|string
+replace_lambda|Optionally the replacement can be a lambda.|string
 re|A regex to apply|string (required)
 
 ### Description
