@@ -116,7 +116,8 @@ machines (previous to Ubuntu 18.04). We used to build a more
 compatible version on an old Centos VM but this was manual and did not
 support the latest Go compiler.
 
-In 0.6.5 we added a new build target using MUSL - a light weight Glibc
+In 0.6.5 we added a new build target using
+[MUSL](https://www.musl-libc.org/) - a light weight `Glibc`
 replacement. The produced binary is completely static and should run
 on a much wider range of Linux versions. This is still considered
 experimental but should improve the experience on older Linux
