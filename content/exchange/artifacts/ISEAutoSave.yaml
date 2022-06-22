@@ -3,7 +3,7 @@ description: |
    This artifact hunts for Powershell ISE autosave files and extracts ISE user 
    config.
    
-   Powershell ISE generates auto-save files if the editor crashes.  
+   Powershell ISE generates auto-save files for if the editor crashes.  
    user.config holds ISE session metadata including a MRU for the relevant user.  
    
 type: CLIENT
