@@ -16,5 +16,5 @@ no_edit: true
 
 ### Description
 
-Get all prcesses stored in the tracker.
+Get all processes stored in the tracker.
 

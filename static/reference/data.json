@@ -3759,7 +3759,7 @@
     },
     {
         "name": "process_tracker_all",
-        "description": "Get all prcesses stored in the tracker.",
+        "description": "Get all processes stored in the tracker.",
         "type": "Function"
     },
     {

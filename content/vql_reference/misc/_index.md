@@ -19,7 +19,7 @@ Miscellaneous plugins not yet categorized.
 |[lru](lru)|<span class='vql_type'>Function</span>|Creates an LRU object|
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
 |[process_tracker](process_tracker)|<span class='vql_type'>Function</span>|Install a global process tracker|
-|[process_tracker_all](process_tracker_all)|<span class='vql_type'>Function</span>|Get all prcesses stored in the tracker|
+|[process_tracker_all](process_tracker_all)|<span class='vql_type'>Function</span>|Get all processes stored in the tracker|
 |[process_tracker_callchain](process_tracker_callchain)|<span class='vql_type'>Function</span>|Get a call chain from the global process tracker|
 |[process_tracker_children](process_tracker_children)|<span class='vql_type'>Function</span>|Get all children of a process|
 |[process_tracker_get](process_tracker_get)|<span class='vql_type'>Function</span>|Get a single process from the global tracker|
