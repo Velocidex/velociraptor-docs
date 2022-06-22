@@ -1,5 +1,115 @@
 [
     {
+        "title": "Label.DomainController",
+        "author": "scudette",
+        "description": "This artifact watches for completion of the `watchArtifact`\nand assigns the given `setLabel` if the `WHERE` condition is matched.",
+        "link": "/exchange/artifacts/pages/label.domaincontroller",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-06-19"
+    },
+    {
+        "title": "Windows.EventLogs.Hayabusa",
+        "author": "ecapuano",
+        "description": "[Hayabusa](https://github.com/Yamato-Security/hayabusa) is a Windows event log fast forensics timeline generator and threat hunting tool.",
+        "link": "/exchange/artifacts/pages/windows.eventlogs.hayabusa",
+        "tags": [],
+        "author_link": "https://github.com/ecapuano",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4219694?v=4",
+        "date": "2022-06-19"
+    },
+    {
+        "title": "Windows.EventLogs.Bitsadmin",
+        "author": "mgreen27",
+        "description": "This content will extract BITS Transfer events and enable filtering by URL\n",
+        "link": "/exchange/artifacts/pages/bitsadmin",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-06-10"
+    },
+    {
+        "title": "Linux.Detection.ConfluenceLogs",
+        "author": "mgreen27",
+        "description": "This artifact enables grep of Linux logs and targets strings observed in \nexploitation of CVE-2022-26134.",
+        "link": "/exchange/artifacts/pages/confluencelogs",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-06-07"
+    },
+    {
+        "title": "Windows.Detection.MsdtFollina",
+        "author": "mgreen27",
+        "description": "This artifact will search Microsoft Support Diagnostic Tool logs for evidence \nof ms-msdt Follina exploitation (CVE-2022-30190).",
+        "link": "/exchange/artifacts/pages/msdtfollina",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-06-02"
+    },
+    {
+        "title": "Windows.Registry.NetshHelperDLLs",
+        "author": "ecapuano",
+        "description": "# Enumerate all NetSh Helper DLLs",
+        "link": "/exchange/artifacts/pages/windows.registry.netshhelperdlls",
+        "tags": [],
+        "author_link": "https://github.com/ecapuano",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4219694?v=4",
+        "date": "2022-06-01"
+    },
+    {
+        "title": "Windows.EventLogs.LogonSessions",
+        "author": "NorthwaveCERT",
+        "description": "This artifact searches for logon and logoff events within Security event logs identified\nby Event ID 4624 and 4634. These logon/logoff events are grouped by \"TargetLogonId\" field\ninto \"logon sessions\". For each of these logon sessions, start, end and duration\nare derived\n",
+        "link": "/exchange/artifacts/pages/windows.eventlogs.logonsessions",
+        "tags": [],
+        "author_link": "https://github.com/NorthwaveCERT",
+        "author_avatar": "https://avatars.githubusercontent.com/u/96190431?v=4",
+        "date": "2022-05-31"
+    },
+    {
+        "title": "Windows.System.Powershell.ISEAutoSave",
+        "author": "mgreen27",
+        "description": "This artifact hunts for Powershell ISE autosave files and extracts ISE user \nconfig.",
+        "link": "/exchange/artifacts/pages/iseautosave",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-05-26"
+    },
+    {
+        "title": "Server.Enrichment.Virustotal.FileScan",
+        "author": "weslambert",
+        "description": "Submit a file to Virustotal for analysis.  ",
+        "link": "/exchange/artifacts/pages/server.enrichment.virustotal.filescan",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-05-24"
+    },
+    {
+        "title": "Windows.Events.EventLogModifications",
+        "author": "scudette",
+        "description": "It is possible to disable windows event logs on a per channel or per\nprovider basis. Attackers may disable ciritcal log sources to\nprevent detections.",
+        "link": "/exchange/artifacts/pages/windows.events.eventlogmodifications",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-05-03"
+    },
+    {
+        "title": "Windows.Detection.PrefetchHunter",
+        "author": "mgreen27",
+        "description": "This artifact enables hunting prefetch entries for accessed files of interest. ",
+        "link": "/exchange/artifacts/pages/prefetchhunter",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-04-27"
+    },
+    {
         "title": "Windows.Registry.TaskCache.HiddenTasks",
         "author": "svch0stz",
         "description": "This artefact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods. ",
@@ -62,7 +172,7 @@
     {
         "title": "Windows.EventLogs.RDPClientActivity",
         "author": "NorthwaveCERT",
-        "description": "This artifact retrieves outgoing RDP session activity from the\nMicrosoft-Windows-TerminalServices-RDPClient event logs. It aggregates\nsessions based on ActivityID and outputs hostname, timeframe and disconnect reasons.\nDisconnect reason is filled using a dict that was filled using MS Docs (see references)",
+        "description": "This artifact retrieves outgoing RDP session activity from the\nMicrosoft-Windows-TerminalServices-RDPClient event logs. It aggregates\nsessions based on ActivityID and outputs hostname, timeframe and disconnect reasons.\nThe latter is filled using a dict that was taken from MS Docs (see references)\n",
         "link": "/exchange/artifacts/pages/windows.eventlogs.rdpclientactivity",
         "tags": [],
         "author_link": "https://github.com/NorthwaveCERT",
