@@ -19,9 +19,9 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-globs|Glob expressions to apply.|list of string (required)
+globs|Glob expressions to apply.|list of string
 accessor|The accessor to use.|string
-root|The root directory to glob from (default '/').|string
+root|The root directory to glob from (default '/').|OSPath
 
 ### Description
 

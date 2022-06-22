@@ -28,7 +28,7 @@ source|The source field for splunk. If not specified this will be 'velociraptor'
 sourcetype|The sourcetype field for splunk. If not specified this will 'vql'|string
 chunk_size|The number of rows to send at the time.|int64
 skip_verify|Skip SSL verification(default: False).|bool
-root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
+root_ca|As a better alternative to skip_verify, allows root ca certs to be added here.|string
 wait_time|Batch splunk upload this long (2 sec).|int64
 
 ### Description

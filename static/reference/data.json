@@ -355,6 +355,41 @@
         "category": "server"
     },
     {
+        "name": "client_create",
+        "description": "Create a new client in the data store.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "first_seen_at",
+                "type": "time.Time"
+            },
+            {
+                "name": "last_seen_at",
+                "type": "time.Time"
+            },
+            {
+                "name": "labels",
+                "type": "string",
+                "repeated": true
+            },
+            {
+                "name": "os",
+                "type": "string",
+                "description": "What type of OS this is (default offline)"
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "The hostname of the system"
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "if set we use this client id otherwise we make a new one"
+            }
+        ]
+    },
+    {
         "name": "client_delete",
         "description": "Delete all information related to a client from the filestore.",
         "type": "Plugin",
@@ -766,6 +801,11 @@
                 "name": "password",
                 "type": "string",
                 "description": "An optional password to encrypt the collection zip."
+            },
+            {
+                "name": "format",
+                "type": "string",
+                "description": "Format to export (csv,json) defaults to both."
             }
         ],
         "category": "server"
@@ -828,6 +868,22 @@
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "delete_flow",
+        "description": "Delete all the files that make up a flow.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string"
+            }
+        ]
     },
     {
         "name": "dict",
@@ -914,8 +970,7 @@
             {
                 "name": "type",
                 "type": "string",
-                "description": "The type of the index to upload to.",
-                "required": true
+                "description": "The type of the index to upload to."
             },
             {
                 "name": "chunk_size",
@@ -1085,6 +1140,11 @@
                 "name": "env",
                 "type": "LazyExpr",
                 "description": "Environment variables to launch with."
+            },
+            {
+                "name": "cwd",
+                "type": "string",
+                "description": "If specified we change to this working directory first."
             }
         ],
         "category": "plugin"
@@ -1254,6 +1314,25 @@
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "flow_logs",
+        "description": "Retrieve the query logs of a flow.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "flow_id",
+                "type": "string",
+                "description": "The flow id to read.",
+                "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client id to extract",
+                "required": true
+            }
+        ]
     },
     {
         "name": "flow_results",
@@ -1522,7 +1601,7 @@
             },
             {
                 "name": "root",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The root directory to glob from (default '')."
             },
             {
@@ -1614,6 +1693,19 @@
         "description": "Retrieve the list of users on the server.\n",
         "type": "Plugin",
         "category": "server"
+    },
+    {
+        "name": "gunzip",
+        "description": "Apply Gunzip to the data.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "description": "Data to apply Gunzip",
+                "required": true
+            }
+        ]
     },
     {
         "name": "handles",
@@ -1905,6 +1997,16 @@
                 "name": "hunt_id",
                 "type": "string",
                 "description": "A hunt id to read, if not specified we list all of them."
+            },
+            {
+                "name": "offset",
+                "type": "uint64",
+                "description": "Start offset."
+            },
+            {
+                "name": "count",
+                "type": "uint64",
+                "description": "Max number of results to return."
             }
         ],
         "category": "server"
@@ -2289,6 +2391,11 @@
                 "name": "args",
                 "type": "Any",
                 "description": "An array of elements to apply into the format string."
+            },
+            {
+                "name": "level",
+                "type": "string",
+                "description": "Level to log at (DEFAULT, WARN, ERROR, INFO)."
             }
         ],
         "category": "basic"
@@ -2297,14 +2404,6 @@
         "name": "lookupSID",
         "description": "Get information about the SID.",
         "type": "Function",
-        "args": [
-            {
-                "name": "sid",
-                "type": "string",
-                "description": "A SID to lookup using LookupAccountSid ",
-                "required": true
-            }
-        ],
         "category": "windows"
     },
     {
@@ -2319,6 +2418,18 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "lru",
+        "description": "Creates an LRU object",
+        "type": "Function",
+        "args": [
+            {
+                "name": "size",
+                "type": "int64",
+                "description": "Size of the LRU (default 1000)"
+            }
+        ]
     },
     {
         "name": "lzxpress_decompress",
@@ -3614,6 +3725,93 @@
         "category": "windows"
     },
     {
+        "name": "process_tracker",
+        "description": "Install a global process tracker.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "sync_query",
+                "type": "StoredQuery",
+                "description": "Source for full tracker updates. Query must emit rows with the ProcessTrackerUpdate shape - usually uses pslist() to form a full sync."
+            },
+            {
+                "name": "sync_period",
+                "type": "int64",
+                "description": "How often to do a full sync (default 5000 msec)."
+            },
+            {
+                "name": "update_query",
+                "type": "StoredQuery",
+                "description": "An Event query that produces live updates of the tracker state."
+            },
+            {
+                "name": "max_size",
+                "type": "int64",
+                "description": "Maximum size of process tracker LRU."
+            },
+            {
+                "name": "enrichments",
+                "type": "string",
+                "description": "One or more VQL lambda functions that can enrich the data for the process.",
+                "repeated": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_all",
+        "description": "Get all prcesses stored in the tracker.",
+        "type": "Function"
+    },
+    {
+        "name": "process_tracker_callchain",
+        "description": "Get a call chain from the global process tracker.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_children",
+        "description": "Get all children of a process.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_get",
+        "description": "Get a single process from the global tracker.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_pslist",
+        "description": "List all processes from the process tracker.",
+        "type": "Plugin"
+    },
+    {
+        "name": "process_tracker_updates",
+        "description": "Get the process tracker update events from the global process tracker.",
+        "type": "Plugin"
+    },
+    {
         "name": "profile",
         "description": "Returns a profile dump from the running process.",
         "type": "Plugin",
@@ -3865,8 +4063,7 @@
                 "name": "globs",
                 "type": "string",
                 "description": "Glob expressions to apply.",
-                "repeated": true,
-                "required": true
+                "repeated": true
             },
             {
                 "name": "accessor",
@@ -3875,7 +4072,7 @@
             },
             {
                 "name": "root",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The root directory to glob from (default '/')."
             }
         ],
@@ -3954,8 +4151,12 @@
             {
                 "name": "replace",
                 "type": "string",
-                "description": "The substitute string.",
-                "required": true
+                "description": "The substitute string."
+            },
+            {
+                "name": "replace_lambda",
+                "type": "string",
+                "description": "Optionally the replacement can be a lambda."
             },
             {
                 "name": "re",
@@ -4521,7 +4722,7 @@
             {
                 "name": "root_ca",
                 "type": "string",
-                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+                "description": "As a better alternative to skip_verify, allows root ca certs to be added here."
             },
             {
                 "name": "wait_time",
@@ -4650,9 +4851,8 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "One or more files to open.",
-                "repeated": true,
                 "required": true
             },
             {
@@ -4977,7 +5177,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -5046,7 +5246,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -5616,8 +5816,8 @@
         "args": [
             {
                 "name": "device",
-                "type": "OSPath",
-                "description": "The device file to open.",
+                "type": "string",
+                "description": "The device file to open (as an NTFS device).",
                 "required": true
             }
         ],

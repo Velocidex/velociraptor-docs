@@ -23,6 +23,7 @@ argv|Argv to run the command with.|list of string (required)
 sep|The separator that will be used to split the stdout into rows.|string
 length|Size of buffer to capture output per row.|int64
 env|Environment variables to launch with.|LazyExpr
+cwd|If specified we change to this working directory first.|string
 
 ### Description
 

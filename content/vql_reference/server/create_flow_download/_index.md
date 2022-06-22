@@ -25,6 +25,7 @@ wait|If set we wait for the download to complete before returning.|bool
 type|Type of download to create (e.g. 'report') default a full zip file.|string
 template|Report template to use (defaults to Reporting.Default).|string
 password|An optional password to encrypt the collection zip.|string
+format|Format to export (csv,json) defaults to both.|string
 
 ### Description
 
