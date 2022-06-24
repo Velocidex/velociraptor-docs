@@ -125,4 +125,4 @@ Push the debian package to the server using Secure Copy Protocol (SCP):
 
 ## Install the package
 Run the following command to install the server package:
-```sudo dpkg -i velociraptor_server*.deb```
+```sudo dpkg -i velociraptor_*_server.deb```
