@@ -64,7 +64,9 @@ sources:
       LET shimcache <= SELECT * 
         FROM if(condition= ShimcacheTest,
             then= { SELECT Name, ModificationTime FROM Artifact.Windows.Registry.AppCompatCache() })
-      LET shimcache_mtime(target) = SELECT Name, ModificationTime FROM shimcache WHERE Name = target
+      LET shimcache_mtime(target) = SELECT Name, ModificationTime FROM shimcache 
+        WHERE Name = target 
+        ORDER BY ModificationTime
       
       LET i30 <= SELECT * FROM if(condition= I30Test,
             then= { 
