@@ -53,7 +53,7 @@ sources:
 
         SELECT * FROM foreach(row=Data, query={
             SELECT
-                get(member="event.Event.System.TimeCreated.#attributes.SystemTime") AS EventTime,
+                get(member="event.Event.System.TimeCreated_attributes.SystemTime") AS EventTime,
                 get(member="detection") AS Detection,
                 get(member="event.Event.System.Computer") AS Computer,
                 get(member="event.Event.System.Channel") AS Channel,
