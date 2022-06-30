@@ -8,15 +8,20 @@ author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack
 
 tools:
  - name: Hayabusa
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v1.3.2/hayabusa-1.3.2-windows-64-bit.zip
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v1.4.1/hayabusa-1.4.1-windows-64-bit.zip
 
 precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
  - name: EVTXPath
+   description: "Path to the event logs for scanning"
    default: C:\Windows\System32\winevt\Logs
  - name: UTC
    description: "Output time in UTC format"
+   type: bool
+   default: Y
+ - name: UpdateRules
+   description: "Update rules to latest before scanning logs"
    type: bool
  - name: DeprecatedRules
    description: "Enable rules marked as deprecated"
@@ -26,6 +31,9 @@ parameters:
    type: bool
  - name: FullData
    description: "Return original event content instead of just the detection - VERBOSE!"
+   type: bool
+ - name: DeepScan
+   description: "Scan ALL event IDs, not just those which apply to known rules."
    type: bool
  - name: MinLevel
    description: "Minimum level for rules"
@@ -47,21 +55,31 @@ sources:
 
         LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
+        LET HayabusaExe <= TmpDir + '\\hayabusa-1.4.1-win-x64.exe'
+
         LET ConfigPath <= TmpDir + '\\rules\\config'
 
         LET RulesPath <= TmpDir + '\\rules'
        
+        LET BackupRules <= if(condition=UpdateRules, then={
+                                                    SELECT *
+                                                    FROM execve(argv=['cmd.exe', '/c',
+                                                    'ren',RulesPath,'rules_old'])
+                                                    })
+        
+        LET Update_Rules <= if(condition=UpdateRules, then={
+                                                    SELECT *
+                                                    FROM execve(argv=['cmd.exe', '/c', 'cd', TmpDir, '&', HayabusaExe, '-u'])
+                                                    })
+
         LET Random <= rand(range=100000000000)
         
         LET CSVFile <= TmpDir + '\\hayabusa_results_'+str(str=Random)+'.csv'
-
-        LET HayabusaExe <= TmpDir + '\\hayabusa-1.3.2-win-x64.exe'
 
         LET cmdline <= array(a=HayabusaExe)
         LET cmdline <= cmdline + ("-d", EVTXPath,
                                   "-o", CSVFile,
                                   "-r", RulesPath,
-                                  "-C", ConfigPath,
                                   "-m", MinLevel,
                                   "-q")
 
@@ -69,6 +87,7 @@ sources:
         LET cmdline <= if(condition=DeprecatedRules, then=cmdline + array(a="-D"), else=cmdline)
         LET cmdline <= if(condition=NoisyRules, then=cmdline + array(a="-n"), else=cmdline)
         LET cmdline <= if(condition=FullData, then=cmdline + array(a="-F"), else=cmdline)
+        LET cmdline <= if(condition=DeepScan, then=cmdline + array(a="-D"), else=cmdline)
 
 
         LET ExecHB <= SELECT * FROM execve(argv=cmdline, sep="\n", length=9999999)
@@ -82,3 +101,4 @@ sources:
         LET Results <= SELECT * FROM parse_csv(filename=CSVFile)
         
         SELECT * FROM Results
+
