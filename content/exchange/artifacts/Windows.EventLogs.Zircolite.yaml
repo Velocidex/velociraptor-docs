@@ -28,7 +28,7 @@ sources:
   - query: |
         LET TmpResults <= tempfile(remove_last=True)
         LET Results =  SELECT * FROM read_file(filenames=TmpResults)
-        LET Zlite <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Zircolite2", IsExecutable=FALSE)
+        LET Zlite <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Zircolite", IsExecutable=FALSE)
         LET RulesFile <= tempfile(data=Rules, remove_last=True, extension=".json")
         Let MappingsFile <= tempfile(data=Mappings, remove_last=True, extension=".json")
         LET ExecZlite <= SELECT * FROM execve(argv=[
