@@ -1,0 +1,155 @@
+---
+title: Windows.Detection.Yara.NTFS
+hidden: true
+tags: [Client Artifact]
+---
+
+This artifact searches the MFT, returns a list of target files then runs Yara
+over the target list.
+
+There are 3 kinds of Yara rules that can be deployed:
+
+1. Url link to a yara rule.
+2. Shorthand yara in the format `wide nocase ascii:string1,string2,string3`.
+3. or a Standard Yara rule attached as a parameter.
+
+Only one method of Yara will be applied and search order is as above.
+
+The artifact leverages Windows.NTFS.MFT so similar regex filters can be applied
+including Path, Size and date. The artifact also has an option to search across
+all attached drives and upload any files with Yara hits.
+
+Some examples of path regex may include:
+
+* Extension at a path: `Windows/System32/.+\\.dll$`
+* More wildcards: `Windows/.+/.+\\.dll$`
+* Specific file: `Windows/System32/kernel32\.dll$`
+* Multiple extentions: `\.(php|aspx|resx|asmx)$`
+
+Note: no drive and forward slashes - these expressions are for paths
+relative to the root of the filesystem.
+
+
+```yaml
+name: Windows.Detection.Yara.NTFS
+author: Matt Green - @mgreen27
+description: |
+  This artifact searches the MFT, returns a list of target files then runs Yara
+  over the target list.
+
+  There are 3 kinds of Yara rules that can be deployed:
+
+  1. Url link to a yara rule.
+  2. Shorthand yara in the format `wide nocase ascii:string1,string2,string3`.
+  3. or a Standard Yara rule attached as a parameter.
+
+  Only one method of Yara will be applied and search order is as above.
+
+  The artifact leverages Windows.NTFS.MFT so similar regex filters can be applied
+  including Path, Size and date. The artifact also has an option to search across
+  all attached drives and upload any files with Yara hits.
+
+  Some examples of path regex may include:
+
+  * Extension at a path: `Windows/System32/.+\\.dll$`
+  * More wildcards: `Windows/.+/.+\\.dll$`
+  * Specific file: `Windows/System32/kernel32\.dll$`
+  * Multiple extentions: `\.(php|aspx|resx|asmx)$`
+
+  Note: no drive and forward slashes - these expressions are for paths
+  relative to the root of the filesystem.
+
+type: CLIENT
+parameters:
+  - name: PathRegex
+    description: Only file names that match this regular expression will be scanned.
+    default: Windows/System32/kernel32\.dll$
+  - name: DriveLetter
+    description: "Target drive. Default is a C:"
+    default: "C:"
+  - name: SizeMax
+    type: int
+  - name: SizeMin
+    type: int
+  - name: AllDrives
+    type: bool
+  - name: UploadHits
+    type: bool
+  - name: EarliestSILastChanged
+    type: timestamp
+  - name: LatestSILastChanged
+    type: timestamp
+  - name: EarliestFNCreation
+    type: timestamp
+  - name: LatestFNCreation
+    type: timestamp
+  - name: YaraUrl
+    description: If configured will attempt to download Yara rules form Url
+    type: upload
+  - name: YaraRule
+    type: yara
+    description: Final Yara option and the default if no other options provided.
+    default: |
+        rule IsPE:TestRule {
+           meta:
+              author = "the internet"
+              date = "2021-03-04"
+              description = "A simple PE rule to test yara features"
+          condition:
+             uint16(0) == 0x5A4D and
+             uint32(uint32(0x3C)) == 0x00004550
+        }
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- check which Yara to use
+      LET yara_rules <= YaraUrl || YaraRule
+
+      -- first find all matching files mft
+      LET files = SELECT IsDir,
+            DriveLetter + "/" + FullPath as FullPath
+        FROM Artifact.Windows.NTFS.MFT(
+            MFTDrive=DriveLetter, AllDrives=AllDrives,
+            PathRegex=PathRegex, SizeMax=SizeMax, SizeMin=SizeMin)
+        WHERE NOT IsDir
+          AND if(condition=EarliestSILastChanged,
+            then= LastRecordChange0x10 > EarliestSILastChanged,
+            else= True)
+          AND if(condition=LatestSILastChanged,
+            then= LastRecordChange0x10 < LatestSILastChanged,
+            else= True)
+          AND if(condition=EarliestFNCreated,
+            then= Created0x30 > EarliestFNCreation,
+            else= True)
+          AND if(condition=LatestFNCreated,
+            then= Created0x30 < LatestFNCreation,
+            else= True)
+
+      -- scan files and only report a single hit.
+      LET hits = SELECT * FROM foreach(row=files,
+            query={
+                SELECT
+                    FileName as FullPath,
+                    File.Size AS Size,
+                    File.ModTime AS ModTime,
+                    Rule, Tags, Meta,
+                    str(str=String.Data) AS HitContext,
+                    String.Offset AS HitOffset
+                FROM yara(rules=yara_rules, files=FullPath)
+                LIMIT 1
+            })
+
+      -- upload files that have hit
+      LET upload_hits=SELECT *,
+            upload(file=FullPath) AS Upload
+        FROM hits
+
+      -- return rows
+      SELECT * FROM if(condition=UploadHits,
+        then={ SELECT * FROM upload_hits},
+        else={ SELECT * FROM hits})
+
+```

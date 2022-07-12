@@ -1,0 +1,51 @@
+---
+title: Server.Alerts.PsExec
+hidden: true
+tags: [Server Event Artifact]
+---
+
+Send an email if execution of the psexec service was detected on
+any client. This is a server side artifact.
+
+Note this requires that the Windows.Event.ProcessCreation
+monitoring artifact be collected from clients.
+
+
+```yaml
+name: Server.Alerts.PsExec
+description: |
+   Send an email if execution of the psexec service was detected on
+   any client. This is a server side artifact.
+
+   Note this requires that the Windows.Event.ProcessCreation
+   monitoring artifact be collected from clients.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: EmailAddress
+    default: admin@example.com
+  - name: MessageTemplate
+    default: |
+      PsExec execution detected at %v: %v for client %v
+
+sources:
+  - query: |
+        SELECT * FROM foreach(
+          row={
+            SELECT * from watch_monitoring(
+              artifact='Windows.Events.ProcessCreation')
+            WHERE Name =~ 'psexesvc'
+          },
+          query={
+            SELECT * FROM mail(
+              to=EmailAddress,
+              subject='PsExec launched on host',
+              period=60,
+              body=format(
+              format=MessageTemplate,
+              args=[Timestamp, CommandLine, ClientId])
+          )
+        })
+
+```

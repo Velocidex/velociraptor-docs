@@ -1,0 +1,48 @@
+---
+title: Windows.Detection.PsexecService.Kill
+hidden: true
+tags: [Client Event Artifact]
+---
+
+Psexec can launch a service remotely. This artifact implements a
+client side response plan whereby all the child processes of the
+service are killed.
+
+NOTE: There is an inherent race between detection and response. If
+the psexec is very quick we will miss it.
+
+
+```yaml
+name: Windows.Detection.PsexecService.Kill
+description: |
+    Psexec can launch a service remotely. This artifact implements a
+    client side response plan whereby all the child processes of the
+    service are killed.
+
+    NOTE: There is an inherent race between detection and response. If
+    the psexec is very quick we will miss it.
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: yaraRule
+    type: yara
+    default: |
+        rule Hit {
+           strings:
+             $a = "psexec" nocase wide ascii
+           condition:
+             any of them
+        }
+
+sources:
+  - query: |
+        SELECT * FROM foreach(
+          row={ SELECT * FROM Artifact.Windows.Detection.PsexecService() },
+          query={
+             SELECT ServiceName, PathName, Modified, FileSize, Timestamp,
+                    ServiceType, ChildProcess, Stdout, Stderr FROM execve(
+               argv=["taskkill", "/PID", PID, "/T", "/F"])
+        })
+
+```

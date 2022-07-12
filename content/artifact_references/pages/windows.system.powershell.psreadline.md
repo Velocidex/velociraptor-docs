@@ -1,0 +1,102 @@
+---
+title: Windows.System.Powershell.PSReadline
+hidden: true
+tags: [Client Artifact]
+---
+
+This Artifact will search and extract lines from PSReadline history file.
+
+Powershell is commonly used by attackers across all stages of the attack
+lifecycle. The PSReadline module is responsible for command history and from
+Powershell 5 on Windows 10 default configuration saves a copy of the console
+history to disk.
+
+There are several parameter's available for search leveraging regex.
+- SearchStrings enables regex search over a PSReadline line.
+- StringWhiteList enables a regex whitelist for results.
+- UserRegex enables a regex search on Username
+- UploadFiles enables upload ConsoleHost_history.txt in scope
+
+
+```yaml
+name: Windows.System.Powershell.PSReadline
+description: |
+  This Artifact will search and extract lines from PSReadline history file.
+
+  Powershell is commonly used by attackers across all stages of the attack
+  lifecycle. The PSReadline module is responsible for command history and from
+  Powershell 5 on Windows 10 default configuration saves a copy of the console
+  history to disk.
+
+  There are several parameter's available for search leveraging regex.
+  - SearchStrings enables regex search over a PSReadline line.
+  - StringWhiteList enables a regex whitelist for results.
+  - UserRegex enables a regex search on Username
+  - UploadFiles enables upload ConsoleHost_history.txt in scope
+
+
+author: Matt Green - @mgreen27
+
+reference:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://0xdf.gitlab.io/2018/11/08/powershell-history-file.html
+
+type: CLIENT
+
+parameters:
+  - name: ConsoleHostHistory
+    default: \AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+  - name: SearchStrings
+    default: .
+    type: regex
+  - name: StringWhiteList
+    default:
+    type: regex
+  - name: UserRegex
+    default: .
+    type: regex
+  - name: UploadFiles
+    description: "Upload ConsoleHost_history.txt files in scope"
+    type: bool
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+        -- First extract target ConsoleHost_history path for each user
+        LET targets = SELECT Name as Username,
+           { SELECT Mtime, Atime, Ctime, Btime, Size, FullPath
+             FROM stat(filename=expand(path=Directory) + ConsoleHostHistory)
+           } AS Stat
+        FROM Artifact.Windows.Sys.Users()
+        WHERE Directory and Username =~ UserRegex AND Stat.FullPath
+
+        -- Extract targets PSReadline entries
+        SELECT * FROM foreach(
+        row=targets,
+        query={
+            SELECT Stat, count() AS LineNum,
+                   Line,
+                   Username,
+                   Stat.FullPath AS FullPath
+            FROM parse_lines(filename=Stat.FullPath)
+            WHERE LineNum
+             AND Line =~ SearchStrings
+             AND NOT if(condition=StringWhiteList,
+                        then=Line =~ StringWhiteList,
+                        else=FALSE)
+        })
+
+  - name: Upload
+    query: |
+        -- if configured upload ConsoleHost_history.txt in results
+        SELECT * FROM if(condition=UploadFiles,
+            then={
+                SELECT
+                    Username,
+                    upload(file=Stat.FullPath) as ConsoleHost_history
+                FROM targets
+            })
+
+```

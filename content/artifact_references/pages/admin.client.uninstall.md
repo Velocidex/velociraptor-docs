@@ -1,0 +1,106 @@
+---
+title: Admin.Client.Uninstall
+hidden: true
+tags: [Client Artifact]
+---
+
+Uninstall Velociraptor from the endpoint.
+
+This artifact uninstalls a Velociraptor client (or any other MSI
+package) from the endpoint.
+
+Typically the client will be hard terminated during the uninstall
+process, so on the server it would appear that the collection is not
+completed. This is normal.
+
+NOTE: Be careful with the DisplayNameRegex to ensure you do not
+uninstall another package accidentally.
+
+
+```yaml
+name: Admin.Client.Uninstall
+description: |
+  Uninstall Velociraptor from the endpoint.
+
+  This artifact uninstalls a Velociraptor client (or any other MSI
+  package) from the endpoint.
+
+  Typically the client will be hard terminated during the uninstall
+  process, so on the server it would appear that the collection is not
+  completed. This is normal.
+
+  NOTE: Be careful with the DisplayNameRegex to ensure you do not
+  uninstall another package accidentally.
+
+required_permissions:
+  - EXECVE
+
+parameters:
+  - name: DisplayNameRegex
+    type: regex
+    default: Velociraptor
+    description: A regex that will match the package to uninstall.
+
+  - name: ReallyDoIt
+    type: bool
+
+sources:
+  - name: Windows
+    precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query:  |
+      LET packages = SELECT Name, DisplayName,UninstallString FROM Artifact.Windows.Sys.Programs()
+      WHERE DisplayName =~ DisplayNameRegex AND
+        log(message="Will uninstall " + DisplayName)
+
+      LET uninstall(UninstallString) = SELECT * FROM execve(argv=[commandline_split(command=UninstallString) + "/quiet"])
+
+      SELECT Name, DisplayName, UninstallString,
+          if(condition=ReallyDoIt, then=uninstall(Name=UninstallString).Stdout) AS UninstallLog
+      FROM packages
+
+  - name: Debian
+    precondition: |
+      -- Only run if dpkg is installed.
+      SELECT OS, {
+         SELECT ReturnCode FROM execve(argv=["dpkg", "--help"])
+      } AS ReturnCode
+      FROM info()
+      WHERE OS = 'linux' AND ReturnCode = 0
+
+    query:  |
+      SELECT * FROM if(condition=ReallyDoIt,
+      then={
+        SELECT * FROM execve(argv=["dpkg", "--remove", "velociraptor-client"])
+      })
+  - name: RPMBased
+    precondition: |
+      -- Only run if dpkg is installed.
+      SELECT OS, {
+         SELECT ReturnCode FROM execve(argv=["rpm", "--help"])
+      } AS ReturnCode
+      FROM info()
+      WHERE OS = 'linux' AND ReturnCode = 0
+
+    query:  |
+      SELECT * FROM if(condition=ReallyDoIt,
+      then={
+        SELECT * FROM execve(argv=["rpm", "--remove", "velociraptor-client"])
+      })
+
+  - name: MacOS
+    precondition: |
+      SELECT OS
+      FROM info()
+      WHERE OS = 'darwin'
+
+    query:  |
+      LET me <= SELECT Exe FROM info()
+
+      SELECT * FROM if(condition=ReallyDoIt,
+      then={
+        SELECT * FROM execve(argv=[me[0].Exe, "service", "remove"])
+      })
+
+```
