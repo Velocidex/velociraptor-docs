@@ -8,7 +8,7 @@ matrix:
       - .wordlist.txt
     output: .wordlist.dict
   sources:
-  - 'content/**/*.md|!content/exchange/artifacts/pages/**|!content/golang/**'
+  - 'content/**/*.md|!content/{golang,exchange/artifacts/pages,artifact_references/pages}/**'
   pipeline:
     - pyspelling.filters.context:
         context_visible_first: true

@@ -1,0 +1,62 @@
+---
+title: Windows.Applications.Chrome.History
+hidden: true
+tags: [Client Artifact]
+---
+
+Enumerate the users chrome history.
+
+
+```yaml
+name: Windows.Applications.Chrome.History
+description: |
+  Enumerate the users chrome history.
+author: Angry-Bender @angry-bender
+parameters:
+  - name: historyGlobs
+    default: \AppData\Local\Google\Chrome\User Data\*\History
+  - name: urlSQLQuery
+    default: |
+      SELECT U.id AS id, U.url AS url, V.visit_time as visit_time,
+      U.title AS title, U.visit_count, U.typed_count,
+      U.last_visit_time, U.hidden, V.from_visit, strftime('%H:%M:%f',
+      V.visit_duration/1000000.0, 'unixepoch') as visit_duration,
+      V.transition FROM urls AS U JOIN visits AS V ON U.id = V.url
+  - name: userRegex
+    default: .
+    type: regex
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+  - query: |
+        LET history_files = SELECT * from foreach(
+          row={
+             SELECT Uid, Name AS User,
+                    expand(path=Directory) AS HomeDirectory
+             FROM Artifact.Windows.Sys.Users()
+             WHERE Name =~ userRegex
+          },
+          query={
+             SELECT User, OSPath, Mtime
+             FROM glob(globs=historyGlobs, root=HomeDirectory)
+          })
+
+        SELECT * FROM foreach(row=history_files,
+          query={
+            SELECT User,
+                   id AS url_id,
+                   timestamp(winfiletime=visit_time * 10) AS visit_time,
+                   url as visted_url,
+                   title,visit_count,typed_count,
+                   timestamp(epoch=last_visit_time) AS last_visit_time,
+                   hidden,
+                   from_visit AS from_url_id,
+                   visit_duration,transition,
+                   timestamp(winfiletime=last_visit_time * 10) as _SourceLastModificationTimestamp
+            FROM sqlite(
+              file=OSPath,
+              query=urlSQLQuery)
+          })
+
+```

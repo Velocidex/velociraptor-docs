@@ -1,0 +1,35 @@
+---
+title: Server.Utils.DeleteFavoriteFlow
+hidden: true
+tags: [Client Artifact]
+---
+
+This artifact allows the user to delete a previously saved
+favorite. It will only addect the current user.
+
+
+```yaml
+name: Server.Utils.DeleteFavoriteFlow
+description: |
+  This artifact allows the user to delete a previously saved
+  favorite. It will only addect the current user.
+
+parameters:
+  - name: Name
+    description: A name for this collection template
+  - name: Type
+    description: The type of favorites to delete.
+    type: choices
+    default: CLIENT
+    choices:
+      - CLIENT
+      - SERVER
+      - CLIENT_EVENT
+      - SERVER_EVENT
+
+sources:
+  - query: |
+      SELECT favorites_delete(name=Name, type=Type)
+      FROM scope()
+
+```

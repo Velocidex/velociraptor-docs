@@ -1,0 +1,117 @@
+---
+title: Server.Internal.ArtifactDescription
+hidden: true
+tags: [Internal Artifact]
+---
+
+
+
+```yaml
+name: Server.Internal.ArtifactDescription
+
+type: INTERNAL
+
+reports:
+  - type: INTERNAL
+    template: |
+      {{ $artifact := Scope "artifact" }}
+
+      ## {{ $artifact.Name }}
+
+      #### Type: {{ $artifact.Type }}
+
+      {{ if $artifact.BuiltIn }}
+      {{ else }}
+      ##### Custom Artifact
+      {{ end }}
+
+      {{ if $artifact.Author }}
+      ##### Author: {{ $artifact.Author }}
+      {{end}}
+
+      {{ $artifact.Description }}
+
+      {{ if $artifact.Tools }}
+      ### Tools
+
+      {{ range $artifact.Tools -}}
+      * <grr-tool-viewer name="{{.Name}}"></grr-tool-viewer>
+      {{ end }}
+
+      {{ end }}
+
+      {{ if $artifact.Parameters }}
+
+      ### Parameters
+
+      <table class="table table-striped">
+      <thead>
+         <tr>
+           <th>Name</th>
+           <th>Type</th>
+           <th>Default</th>
+           <th>Description</th>
+         </tr>
+      </thead>
+      <tbody>
+      {{- range $item := $artifact.Parameters -}}
+         {{- if not (eq $item.Type "hidden") -}}
+           <tr>
+             <td>{{ $item.Name }}</td>
+             <td>{{ $item.Type }}</td>
+             <td><pre>{{ $item.Default }}</pre></td>
+             <td>{{ $item.Description }}</td>
+           </tr>
+         {{- end -}}
+      {{- end -}}
+      </tbody></table>
+
+      {{ end }}
+
+      {{ if $artifact.Imports }}
+
+      <table class="table table-striped">
+      <thead>
+         <tr>
+           <th>Imports</th>
+         </tr>
+      </thead>
+      <tbody>
+      {{- range $item := $artifact.Imports -}}
+        <tr>
+          <td>{{ $item }}</td>
+        </tr>
+      {{- end -}}
+      </tbody></table>
+
+      {{ end }}
+
+      {{ if $artifact.Export }}
+      ### Exports
+
+      ```vql
+      {{ $artifact.Export }}
+      ```
+      {{ end }}
+
+      {{ range $source := $artifact.Sources }}
+
+      ### Source {{ $source.Name }}
+      {{ if $source.Query }}
+
+      ```vql
+      {{ $source.Query }}
+      ```
+
+      {{- else -}}
+
+      ```vql
+      {{ range $query := $source.Queries -}}
+      {{- $query -}}
+      {{ end }}
+      ```
+      {{ end }}
+
+      {{ end }}
+
+```

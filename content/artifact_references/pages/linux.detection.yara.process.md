@@ -1,0 +1,139 @@
+---
+title: Linux.Detection.Yara.Process
+hidden: true
+tags: [Client Artifact]
+---
+
+This artifact enables running Yara over processes in memory.
+
+There are 2 kinds of Yara rules that can be deployed:
+
+1. Url link to a yara rule.
+2. A Standard Yara rule attached as a parameter.
+
+Only one method of Yara will be applied and search order is as above. The
+default is Cobalt Strike opcodes.
+
+Regex parameters can be applied for process name and pid for targeting. The
+artifact also has an option to upload any process with Yara hits.
+
+Note: the Yara scan will stop after one hit. Multi-string rules will also only
+show one string in returned rows.
+
+
+```yaml
+name: Linux.Detection.Yara.Process
+author: Matt Green - @mgreen27
+description: |
+  This artifact enables running Yara over processes in memory.
+
+  There are 2 kinds of Yara rules that can be deployed:
+
+  1. Url link to a yara rule.
+  2. A Standard Yara rule attached as a parameter.
+
+  Only one method of Yara will be applied and search order is as above. The
+  default is Cobalt Strike opcodes.
+
+  Regex parameters can be applied for process name and pid for targeting. The
+  artifact also has an option to upload any process with Yara hits.
+
+  Note: the Yara scan will stop after one hit. Multi-string rules will also only
+  show one string in returned rows.
+
+type: CLIENT
+parameters:
+  - name: ProcessRegex
+    default: .
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: UploadHits
+    type: bool
+  - name: YaraUrl
+    description: If configured will attempt to download Yara rules from Url
+    type: upload
+  - name: YaraRule
+    type: yara
+    description: Final Yara option and the default if no other options provided.
+    default: |
+      rule keyword_search {
+         strings:
+           $a = "velociraptor" ascii
+
+        condition:
+            any of them
+      }
+  - name: PathWhitelist
+    description: |
+        Process paths to exclude. Default is common AntiVirus we have seen cause
+        false positives with signatures in memory.
+    type: csv
+    default: |
+      Path
+      /usr/local/bin/velociraptor
+
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'linux'
+
+    query: |
+      -- check which Yara to use
+      LET yara_rules <= YaraUrl || YaraRule
+
+      -- find velociraptor process
+      LET me = SELECT Pid FROM pslist(pid=getpid())
+
+      -- allow whitelist case sensitive
+      LET whitelist <= SELECT upcase(string=Path) AS Path FROM PathWhitelist
+
+      -- find all processes and add filters
+      LET processes = SELECT
+             Name as ProcessName,
+             Cmdline AS CommandLine, Pid
+        FROM pslist()
+        WHERE
+            Name =~ ProcessRegex
+            AND format(format="%d", args=Pid) =~ PidRegex
+            AND NOT Pid in me.Pid
+            AND NOT upcase(string=Exe) in whitelist.Path
+            AND log(message=format(format="Scanning pid %v: %v", args=[
+                Pid, CommandLine]))
+
+      -- scan processes in scope with our rule, limit 1 hit
+      LET hits = SELECT * FROM foreach(
+        row=processes,
+        query={
+            SELECT
+                ProcessName,
+                CommandLine,
+                Pid,
+                Namespace,
+                Rule,
+                Meta,
+                String.Offset as HitOffset,
+                String.Name as HitName,
+                String.HexData as HitHexData
+             FROM yara(files=format(format="/%d", args=Pid),
+                       accessor='process',rules=yara_rules)
+             LIMIT 1
+          })
+
+      -- upload hits using the process accessor
+      LET upload_hits = SELECT *,
+          upload(
+            accessor="process",
+            file=format(format="/%v", args=Pid),
+            name=format(format='%v-%v.dmp',
+            args= [ ProcessName, Pid ])) as ProcessDump
+      FROM hits
+      WHERE log(message=format(format='Will upload %v: %v', args=[Pid, ProcessName]))
+
+      -- return rows
+      SELECT * FROM if(condition=UploadHits,
+        then=upload_hits,
+        else=hits)
+
+```

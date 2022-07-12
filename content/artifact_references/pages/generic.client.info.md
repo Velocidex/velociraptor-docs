@@ -1,0 +1,132 @@
+---
+title: Generic.Client.Info
+hidden: true
+tags: [Client Artifact]
+---
+
+Collect basic information about the client.
+
+This artifact is collected when any new client is enrolled into the
+system. Velociraptor will watch for this artifact and populate its
+internal indexes from this artifact as well.
+
+You can edit this artifact to enhance the client's interrogation
+information as required, by adding new sources.
+
+NOTE: Do not modify the BasicInformation source since it is used to
+interrogate the clients.
+
+
+```yaml
+name: Generic.Client.Info
+description: |
+  Collect basic information about the client.
+
+  This artifact is collected when any new client is enrolled into the
+  system. Velociraptor will watch for this artifact and populate its
+  internal indexes from this artifact as well.
+
+  You can edit this artifact to enhance the client's interrogation
+  information as required, by adding new sources.
+
+  NOTE: Do not modify the BasicInformation source since it is used to
+  interrogate the clients.
+
+sources:
+  - name: BasicInformation
+    description: |
+      This source is used internally to populate agent info. Do not
+      modify or remove this query.
+    query: |
+        LET Interfaces = SELECT format(format='%02x:%02x:%02x:%02x:%02x:%02x',
+            args=HardwareAddr) AS MAC
+        FROM interfaces()
+        WHERE HardwareAddr
+
+        SELECT config.Version.Name AS Name,
+               config.Version.BuildTime as BuildTime,
+               config.Version.Version as Version,
+               config.Version.ci_build_url AS build_url,
+               config.Labels AS Labels,
+               Hostname, OS, Architecture,
+               Platform, PlatformVersion, KernelVersion, Fqdn,
+               Interfaces.MAC AS MACAddresses
+        FROM info()
+
+  - name: WindowsInfo
+    description: Windows specific information about the host
+    precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      SELECT
+      {
+            SELECT DNSHostName,  Name, Domain, TotalPhysicalMemory
+            FROM wmi(
+               query='SELECT * FROM win32_computersystem')
+          } AS `Computer Info`,
+          {
+            SELECT Caption,
+               join(array=IPAddress, sep=", ") AS IPAddresses,
+               join(array=IPSubnet, sep=", ") AS IPSubnet,
+               MACAddress,
+               join(array=DefaultIPGateway, sep=", ") AS DefaultIPGateway,
+               DNSHostName,
+               join(array=DNSServerSearchOrder, sep=", ") AS DNSServerSearchOrder
+            FROM wmi(
+               query="SELECT * from Win32_NetworkAdapterConfiguration" )
+            WHERE IPAddress
+          } AS `Network Info`
+      FROM scope()
+
+  - name: Users
+    precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      SELECT Name, Description, Mtime AS LastLogin
+      FROM Artifact.Windows.Sys.Users(OnlyRemote=TRUE)
+
+reports:
+  - type: CLIENT
+    template: |
+      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
+
+      {{ $flow_id := Query "SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)" }}
+
+      # {{ Get $client_info "0.os_info.fqdn" }} ( {{ Get $client_info "0.client_id" }} ) @ {{ Get $flow_id "0.Timestamp" }}
+
+      {{ Query "SELECT * FROM source(source='BasicInformation')" | Table }}
+
+      # Memory and CPU footprint over the past 24 hours
+
+      {{ define "resources" }}
+       SELECT * FROM sample(
+         n=4,
+         query={
+           SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+                  RSS / 1000000 AS MemoryUse
+           FROM source(artifact="Generic.Client.Stats",
+                       client_id=ClientId,
+                       start_time=now() - 86400)
+           WHERE CPUPercent >= 0
+         })
+      {{ end }}
+
+      <div>
+      {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+      </div>
+
+      {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
+      {{ if $windows_info }}
+      # Windows agent information
+        {{ $windows_info | Table }}
+      {{ end }}
+
+      # Active Users
+      {{ Query "SELECT * FROM source(source='Users')" | Table }}
+
+
+column_types:
+  - name: BuildTime
+    type: timestamp
+  - name: LastLogin
+    type: timestamp
+
+```

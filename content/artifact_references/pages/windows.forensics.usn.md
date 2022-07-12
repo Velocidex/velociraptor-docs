@@ -1,0 +1,129 @@
+---
+title: Windows.Forensics.Usn
+hidden: true
+tags: [Client Artifact]
+---
+
+This artifact parses the NTFS USN journal and allows filters to 
+assist investigative workflow.
+
+NTFS is a journal filesystem. This means that it maintains a journal
+file where intended filesystem changes are written first, then the
+filesystem is changed. This journal is called the USN journal in NTFS.
+
+Velociraptor can parse the USN journal from the filesystem. This
+provides an indication of recent file changes. Typically the system
+maintains the journal of around 30mb and depending on system
+activity this can go back quite some time.
+
+Use this artifact to determine the times when a file was
+modified/added from the journal. This will be present even if the
+file was later removed.
+
+Availible filters are Filename, FullPath, MFT/Parent ID and time bounds.
+
+
+```yaml
+name: Windows.Forensics.Usn
+description: |
+  This artifact parses the NTFS USN journal and allows filters to 
+  assist investigative workflow.
+  
+  NTFS is a journal filesystem. This means that it maintains a journal
+  file where intended filesystem changes are written first, then the
+  filesystem is changed. This journal is called the USN journal in NTFS.
+
+  Velociraptor can parse the USN journal from the filesystem. This
+  provides an indication of recent file changes. Typically the system
+  maintains the journal of around 30mb and depending on system
+  activity this can go back quite some time.
+
+  Use this artifact to determine the times when a file was
+  modified/added from the journal. This will be present even if the
+  file was later removed.
+  
+  Availible filters are Filename, FullPath, MFT/Parent ID and time bounds.
+
+type: CLIENT
+
+parameters:
+  - name: Device
+    description: The NTFS drive to parse
+    default: C:\\
+  - name: AllDrives
+    description: Dump USN from all drives and VSC
+    type: bool
+  - name: FileNameRegex
+    description: A regex to match the Filename field.
+    default: .
+  - name: PathRegex
+    description: A regex to match the entire path (you can watch a directory or a file type).
+    default: .
+    type: regex
+  - name: MFT_ID_Regex
+    description: A regex to match the MFTId. e.g ^10225$ or ^(10225|232111)$
+    default: .
+    type: regex
+  - name: Parent_MFT_ID_Regex
+    description: A regex to match the MFTId. e.g ^10225$ or ^(10225|232111)$
+    default: .
+    type: regex
+  - name: DateAfter
+    type: timestamp
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: DateBefore
+    type: timestamp
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+sources:
+  - precondition:
+      SELECT OS From info() where OS =~ 'windows'
+
+    query: |
+      -- firstly set timebounds for performance
+      LET DateAfterTime <= if(condition=DateAfter,
+            then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
+      LET DateBeforeTime <= if(condition=DateBefore,
+            then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+        
+      LET all_drives = SELECT OSPath.Components[0] AS Drive
+        FROM glob(globs="/*/$Extend/$UsnJrnl:$J", accessor="ntfs")
+        WHERE log(message="Processing " + Drive)
+
+      SELECT 
+            Timestamp,
+            Filename,
+            Device,FullPath,
+            Reason,
+            _FileMFTID as MFTId,
+            _FileMFTSequence as Sequence,
+            _ParentMFTID as ParentMFTId,
+            _ParentMFTSequence as ParentSequence,
+            FileAttributes,
+            SourceInfo,
+            Usn
+      FROM if(condition=AllDrives,
+          then={
+            SELECT * FROM foreach(row=all_drives,
+            query={
+              SELECT *, Drive AS Device
+              FROM parse_usn(
+                 device=Drive, accessor="ntfs")
+              WHERE Filename =~ FileNameRegex
+                AND str(str=_FileMFTID) =~ MFT_ID_Regex
+                AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
+                AND Timestamp < DateBeforeTime
+                AND Timestamp > DateAfterTime
+                AND FullPath =~ PathRegex
+            })
+          }, else={
+            SELECT *, Device
+            FROM parse_usn(device=Device, accessor="ntfs")
+            WHERE Filename =~ FileNameRegex
+                AND str(str=_FileMFTID) =~ MFT_ID_Regex
+                AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
+                AND Timestamp < DateBeforeTime
+                AND Timestamp > DateAfterTime
+                AND FullPath =~ PathRegex
+          })
+
+```

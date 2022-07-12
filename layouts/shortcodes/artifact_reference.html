@@ -1,0 +1,75 @@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="row searchbar">
+  <div class="input-group col-lg-8 pull-left">
+    <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+           placeholder="Search for an artifact" aria-describedby="basic-addon2">
+    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+  </div>
+</div>
+<hr />
+<div class="row search_results"></div>
+
+<script>
+let all_data = [];
+
+$.ajax({
+  url: "/artifact_reference/data.json",
+}).done(function( data ) {
+  all_data = data;
+  DrawResults(data);
+});
+
+function doSearch() {
+  // Declare variables
+  let input = document.getElementById('myInput');
+  let filter = input.value.toUpperCase();
+
+  let result = [];
+  for(let i=0;i<all_data.length; i++) {
+    let item = all_data[i];
+
+    if (item.title.toUpperCase().includes(filter)) {
+      result.push(item);
+    }
+  };
+  DrawResults(result);
+}
+
+function DrawResults(data) {
+  $(".search_results").empty();
+
+  for(let i=0;i<data.length; i++) {
+    let item = data[i];
+    let template = $(`<div class="panel panel-default color">
+  <div class="panel-heading color">
+    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="date pull-right"></div>
+  </div>
+  <div class="panel-body color">
+   <div class="border color">
+     <div class="border color">
+      <div class="idea-inner-text-main color">
+        <p class="description"></p>
+        <p class="idea-tag space"/>
+      </div>
+     </div>
+   </div>
+  </div>`);
+
+    template.find(".title").append(item.title);
+    template.find(".description").append(item.description);
+    template.find(".title").attr("href", item.link);
+
+    for (let j=0; j<item.tags.length; j++) {
+        let tag = item.tags[j];
+        template.find(".idea-tag").
+            append($(`<a class="tag">`).attr("href", "/tags/" + tag.toLowerCase().replace(" ","-")).
+                   append(`<i class="linkcolour tag label label-success">` + tag + `</i>&nbsp;`));
+    }
+    let new_item = $(".search_results").append(template);
+  }
+};
+</script>

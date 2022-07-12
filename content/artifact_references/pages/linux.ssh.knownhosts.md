@@ -1,0 +1,41 @@
+---
+title: Linux.Ssh.KnownHosts
+hidden: true
+tags: [Client Artifact]
+---
+
+Find and parse ssh known hosts files.
+
+```yaml
+name: Linux.Ssh.KnownHosts
+description: Find and parse ssh known hosts files.
+parameters:
+  - name: sshKnownHostsFiles
+    default: '.ssh/known_hosts*'
+sources:
+  - precondition: |
+      SELECT OS From info() where OS = 'linux'
+    query: |
+        // For each user on the system, search for known_hosts files.
+        LET authorized_keys = SELECT * from foreach(
+          row={
+             SELECT Uid, User, Homedir from Artifact.Linux.Sys.Users()
+          },
+          query={
+             SELECT FullPath, Mtime, Ctime, User, Uid
+             FROM glob(
+               globs=sshKnownHostsFiles,
+               root=Homedir)
+          })
+
+        // For each known_hosts file, extract each line on a different row.
+        SELECT * from foreach(
+          row=authorized_keys,
+          query={
+            SELECT Uid, User, FullPath, Line from split_records(
+               filenames=FullPath, regex="\n", columns=["Line"])
+            /* Ignore comment lines. */
+            WHERE not Line =~ "^[^#]+#"
+          })
+
+```

@@ -1,0 +1,44 @@
+---
+title: Windows.System.LocalAdmins
+hidden: true
+tags: [Client Artifact]
+---
+
+Gets a list of local admin accounts.
+
+
+```yaml
+name: Windows.System.LocalAdmins
+description: |
+   Gets a list of local admin accounts.
+
+reference:
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember?view=powershell-5.1
+
+type: CLIENT
+
+required_permissions:
+  - EXECVE
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET script <= 'Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json'
+
+      LET out = SELECT parse_json_array(data=Stdout) AS Output
+          FROM execve(argv=["powershell",
+               "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+                  base64encode(string=utf16_encode(
+                  string=script))
+            ], length=1000000)
+      SELECT * FROM foreach(row=out.Output[0],
+      query={
+          SELECT Name, Value AS SID, if(condition=PrincipalSource=1,
+            then="Local", else=if(condition=PrincipalSource=2,
+            then="Domain", else=PrincipalSource)) AS PrincipalSource
+          FROM scope()
+      })
+
+```
