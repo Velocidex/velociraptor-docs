@@ -106,19 +106,13 @@ sources:
             query={
                  SELECT {
                      SELECT * FROM wmi(
-                       query="SELECT * FROM " + Consumer.Type,
-                       namespace=if(condition=Consumer.namespace,
-                          then=Consumer.namespace,
-                          else=namespace)) 
+                       query="SELECT * FROM " + Consumer.Type, namespace=Consumer.namespace || namespace) 
                      WHERE Name = Consumer.Name AND NOT 
                        Name IN KnownGoodConsumers.consumer_name
                    } AS ConsumerDetails,
                    {
                      SELECT * FROM wmi(
-                       query="SELECT * FROM " + Filter.Type,
-                       namespace=if(condition=Filter.namespace,
-                          then=Filter.namespace,
-                          else=namespace)) 
+                       query="SELECT * FROM " + Filter.Type, namespace=Filter.namespace || namespace) 
                      WHERE Name = Filter.Name AND NOT
                        Name IN KnownGoodFilters.filter_name
                    } AS FilterDetails,
