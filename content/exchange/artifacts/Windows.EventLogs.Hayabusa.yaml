@@ -98,7 +98,7 @@ sources:
             
         LET UploadCSVResults <= SELECT *, FullPath, Size, Modifed, Type FROM UploadCSV
                        
-        LET Results <= SELECT * FROM parse_csv(filename=CSVFile)
+        LET Results <= SELECT *, timestamp(string=Timestamp) AS EventTime FROM parse_csv(filename=CSVFile)
         
         SELECT * FROM Results
 
