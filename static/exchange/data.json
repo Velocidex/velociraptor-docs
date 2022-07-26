@@ -1,5 +1,75 @@
 [
     {
+        "title": "Windows.System.WindowsErrorReporting",
+        "author": "svch0stz",
+        "description": "Parses several Windows Error Reporting (WER) files that contain information about crashed programs. ",
+        "link": "/exchange/artifacts/pages/windows.system.windowserrorreporting",
+        "tags": [],
+        "author_link": "https://github.com/svch0stz",
+        "author_avatar": "https://avatars.githubusercontent.com/u/8684257?v=4",
+        "date": "2022-07-23"
+    },
+    {
+        "title": "Windows.Analysis.SuspiciousWMIConsumers",
+        "author": "AmgdGocha",
+        "description": "This artifact reports suspicious WMI Event Consumers and their associated Filters\nthat may indicate a malicious abuse for persistence.",
+        "link": "/exchange/artifacts/pages/suspiciouswmiconsumers",
+        "tags": [],
+        "author_link": "https://github.com/AmgdGocha",
+        "author_avatar": "https://avatars.githubusercontent.com/u/17185638?v=4",
+        "date": "2022-07-18"
+    },
+    {
+        "title": "Windows.Remediation.KillProcess",
+        "author": "mgreen27",
+        "description": "Quick and dirty monitoring artifact to kill a process by Image Name.\nWe monitor the Microsoft-Windows-Kernel-Process ETW provider and leverage \ntaskkill to kill the process.",
+        "link": "/exchange/artifacts/pages/killprocess",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-07-11"
+    },
+    {
+        "title": "Windows.Events.SysmonRegistry",
+        "author": "mgreen27",
+        "description": "This artifact enables monitoring for registry events of interest via the Sysmon \nETW proiver.",
+        "link": "/exchange/artifacts/pages/sysmonregistry",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-07-07"
+    },
+    {
+        "title": "Exchange.Server.Enrichment.Gimphash",
+        "author": "weslambert",
+        "description": "Calculate the Gimphash for a Golang binary.",
+        "link": "/exchange/artifacts/pages/exchange.server.enrichment.gimphash",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-07-06"
+    },
+    {
+        "title": "Windows.Forensics.FileZilla",
+        "author": "dkelly-r7",
+        "description": "This artifact enumerate's all user directories on a system and will\nparse three files within a users AppData\\Roaming\\FileZilla\ndirectory: filezilla.xml, recentservers.xml, and queue.sqlite3",
+        "link": "/exchange/artifacts/pages/filezilla",
+        "tags": [],
+        "author_link": "https://github.com/dkelly-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/49883598?v=4",
+        "date": "2022-07-06"
+    },
+    {
+        "title": "Server.Enrichment.EchoTrail",
+        "author": "ecapuano",
+        "description": "\nThis is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the \ndata made available by that artifact. We are calling the EchoTrail v2 API which is still in beta.",
+        "link": "/exchange/artifacts/pages/server.enrichment.echotrail",
+        "tags": [],
+        "author_link": "https://github.com/ecapuano",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4219694?v=4",
+        "date": "2022-06-24"
+    },
+    {
         "title": "Label.DomainController",
         "author": "scudette",
         "description": "This artifact watches for completion of the `watchArtifact`\nand assigns the given `setLabel` if the `WHERE` condition is matched.",
@@ -469,7 +539,7 @@
     {
         "title": "Windows.EventLogs.Zircolite",
         "author": "weslambert",
-        "description": "Zircolite is a standalone tool that can be used to apply Sigma rules to EVTX files on endpoints in an effort to quickly parse large datasets and surface detections.\n            \nYou can read more about Zircolite below:\n    \nhttps://github.com/wagga40/Zircolite\n    \nThis artifact currently supports usage of the built-in rulesets. Support for custom ruleset usage will be added in the future. \n    \nNOTE: This artifact may take several minutes to run, depending on the size of EVTX files being analyzed.\n",
+        "description": "Zircolite is a standalone tool that can be used to apply Sigma rules to EVTX files on endpoints in an effort to quickly parse large datasets and surface detections.\n            \nYou can read more about Zircolite below:\n    \nhttps://github.com/wagga40/Zircolite\n    \nNOTE: This artifact may take several minutes to run, depending on the size of EVTX files being analyzed.\n",
         "link": "/exchange/artifacts/pages/windows.eventlogs.zircolite",
         "tags": [],
         "author_link": "https://github.com/weslambert",
@@ -849,5 +919,15 @@
         "author_link": "https://github.com/ffh571",
         "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
         "date": "2021-06-23"
+    },
+    {
+        "title": "Server.Utils.OrphanedFlows",
+        "author": "scudette",
+        "description": "Sometimes flows are deleted but there is still outstanding data for\nthem in flight. The server will continue to save this data after the\nflow is deleted.",
+        "link": "/exchange/artifacts/pages/server.utils.orphanedflows",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-07-26"
     }
 ]
