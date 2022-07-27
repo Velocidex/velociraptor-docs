@@ -14,24 +14,21 @@ description: |
     logic and via support for Sigma detection rules."
 
     https://github.com/countercept/chainsaw
-    
-    **WARNING!** As of the latest version of Chainsaw, 
-    there is a [bug](https://github.com/countercept/chainsaw/pull/62) 
-    that does not return all of Chainsaw's "builtin detections" 
-    via JSON output which means this VQL artifact is likely not 
-    to return complete detection results until the bug is fixed!
 
-author: Wes Lambert - @therealwlambert
+author: Wes Lambert - @therealwlambert, James Dorgan - @FranticTyping, Alex Korntizer - @AlexKornitzer
 tools:
   - name: Chainsaw
-    url: https://github.com/countercept/chainsaw/releases/download/v1.1.7/chainsaw_x86_64-pc-windows-msvc.zip
+    url: https://github.com/countercept/chainsaw/releases/download/v2.0.0-beta.5/chainsaw_all_platforms+rules+examples.zip
+
+precondition: SELECT OS From info() where OS = 'windows'
+
 parameters:
   - name: EVTXPath
     default: 'C:\Windows\System32\winevt\Logs'
   - name: Length
     description: Size (in bytes) of output that will be returned for a single row.  This value may need to be adjusted depending on the size of your event logs.
     type: int
-    default: "10000000"
+    default: "100000000"
 
 sources:
   - query: |
@@ -39,27 +36,32 @@ sources:
         LET TmpDir <= tempdir()
         LET TmpResults <= tempfile()
         LET Results = SELECT * FROM read_file(filenames=TmpResults)
-        LET UnzipIt <= SELECT * FROM  unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
-        Let SigmaRules <= TmpDir + '/chainsaw/sigma_rules'
-        Let SigmaMapping <= TmpDir + '/chainsaw/mapping_files/sigma-mapping.yml'
-        Let ExecCS <= SELECT * FROM execve(argv=[
-                        TmpDir + '/chainsaw/chainsaw.exe',
-                        'hunt', EVTXPath,
+        LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+        LET SigmaRules <= TmpDir + '\\chainsaw\\sigma\\rules'
+        LET ChainsawRules <= TmpDir + '\\chainsaw\\rules'
+        LET SigmaMapping <= TmpDir + '\\chainsaw\\mappings\\sigma-event-logs-all.yml'
+        LET ExecCS <= SELECT * FROM execve(argv=[
+                        TmpDir + '\\chainsaw\\chainsaw_x86_64-pc-windows-msvc.exe',
+                        'hunt', ChainsawRules, EVTXPath,
                         "--json",
                         "--output", TmpResults,
-                        "--rules", SigmaRules,
-                        "--mapping", SigmaMapping], length=Length)
+                        "-s", SigmaRules,
+                        "--mapping", SigmaMapping,
+                        "-q"], length=Length)
+
         LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
 
         SELECT * FROM foreach(row=Data, query={
             SELECT
-                get(member="event.Event.System.TimeCreated_attributes.SystemTime") AS EventTime,
-                get(member="detection") AS Detection,
-                get(member="event.Event.System.Computer") AS Computer,
-                get(member="event.Event.System.Channel") AS Channel,
-                get(member="event.Event.System.EventID") AS EventID,
-                get(member="event.Event.EventData.User") AS _User,
-                get(member="event.Event.System") AS SystemData,
-                get(member="event.Event.EventData") AS EventData
+                get(member="document.data.Event.System.TimeCreated_attributes.SystemTime") AS EventTime,
+                get(member="name") AS Detection,
+                get(member="level") AS Severity,
+                get(member="status") AS Status,
+                get(member="document.data.Event.System.Computer") AS Computer,
+                get(member="document.data.Event.System.Channel") AS Channel,
+                get(member="document.data.Event.System.EventID") AS EventID,
+                get(member="document.data.Event.EventData.User") AS _User,
+                get(member="document.data.Event.System") AS SystemData,
+                get(member="document.data.Event.EventData") AS EventData
             FROM Content
         })
