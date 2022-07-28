@@ -35,7 +35,7 @@ precondition: SELECT OS From info() where OS = 'linux'
 
 sources:
   - queries:
-    - LET Volatility = SELECT * FROM Artifact.Linux.Volatility.Create.Profile(Zipname=Zipname)
+    - LET Volatility = SELECT * FROM Artifact.Exchange.Linux.Volatility.Create.Profile(Zipname=Zipname)
 
       LET Lime = SELECT FullPath, Stdout, Stderr, if(condition=Complete, then=upload(file="/tmp/" + Dumpname + ".raw", name=Dumpname + ".raw")) As Upload FROM execve(argv=['bash', '-c', 'mv /tmp/master.zip /tmp/lime-master.zip ; unzip -o /tmp/lime-master.zip -d /tmp/ ; cd /tmp/LiME-master/src/ ; apt-get -y install build-essential linux-headers-$(uname -r) ; make ; insmod /tmp/LiME-master/src/lime-*.ko "path=/tmp/"' + Dumpname + '".raw format=lime"'])
 
