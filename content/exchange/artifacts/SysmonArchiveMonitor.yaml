@@ -1,4 +1,4 @@
-name: Windows.Events.SysmonArchive
+name: Windows.Events.SysmonArchiveMonitor
 author: Matt Green - @mgreen27
 description: |
    This artifact enables automatic management of the Sysmon archive folder.
