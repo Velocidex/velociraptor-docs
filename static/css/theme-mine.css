@@ -214,6 +214,7 @@ div.mynotices.info > div {
 div.mynotices > div:first-child:after {
     content: attr(heading);
     text-transform: capitalize;
+    color: var(--mynotices);
 }
 
 div.mynotices.warning > div {
