@@ -1,15 +1,14 @@
 name: Windows.KapeFiles.Remapping
 description: |
-   This artifact automates the rebuilding of remapping rules to be able to easily 
-   post process the results of the Windows.KapeFiles.Targets. 
-   
+   This artifact automates the rebuilding of remapping rules to be able to easily
+   post process the results of the Windows.KapeFiles.Targets.
+
    Use as follows in the flow notebook cell of a collection:
-   ```vql
-   LET _ <= 
+
+   LET _ <=
       SELECT * FROM Artifact.Custom.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
 
    SELECT * FROM Artifact.Windows.System.TaskScheduler()
-   ```
 
    NOTE: Not all plugins are enabled in this mode for obvious reasons (e.g. pslist, wmi etc).
 
@@ -22,8 +21,9 @@ parameters:
      description: The FlowID of the collection
 
 export: |
-        LET BasePath = regex_transform(source="/clients/ClientId/collections/FlowId/uploads", map=dict(FlowId=FlowId, ClientId=ClientId))
-        
+        LET BasePath = regex_transform(source="/clients/ClientId/collections/FlowId/uploads",
+            map=dict(FlowId=FlowId, ClientId=ClientId))
+
         LET HiveMount(BasePath, UserSID) = regex_transform(source='''
                 - type: mount
                   from:
@@ -40,7 +40,7 @@ export: |
                     prefix: Target
                     path_type: registry
         ''', map=dict(BasePath=BasePath, Target=Target), key=Target)
-        
+
         LET AccessorMount(Accessor) = regex_transform(source='''
                 - type: mount
                   from:
@@ -51,7 +51,7 @@ export: |
                     prefix: ""
                     path_type: AccessorName
         ''', map=dict(BasePath=BasePath, AccessorName=Accessor), key=Accessor)
-        
+
         LET ShadowMount(Accessor) = regex_transform(source='''
                 - type: shadow
                   from:
@@ -59,7 +59,7 @@ export: |
                   "on":
                     accessor: AccessorName
         ''', map=dict(AccessorName=Accessor), key=Accessor)
-        
+
         LET CommonMount = '''
         remappings:
                 - type: permissions
@@ -97,13 +97,13 @@ export: |
                   - winobj
                   - wmi
         '''
-        
+
 sources:
   - query: |
         -- Build remapping parts by searching for registry hives to mount.
         LET Parts = SELECT * FROM chain(
         a={
-          SELECT OSPath, 
+          SELECT OSPath,
             HiveMount(BasePath=OSPath.String, Target="HKEY_USERS/" + OSPath[-2]) AS Mount
           FROM glob(globs="*/C:/Users/*/ntuser.dat", accessor="fs", root=BasePath)
           WHERE NOT OSPath.Basename =~ "idx$"
@@ -122,6 +122,6 @@ sources:
             SELECT ShadowMount(Accessor=_value) AS Mount
             FROM foreach(row=["raw_reg", "zip", "data", "scope", "gzip"])
         })
-        
+
         SELECT remap(clear=TRUE, config=CommonMount + join(array=Parts.Mount))
         FROM scope()
