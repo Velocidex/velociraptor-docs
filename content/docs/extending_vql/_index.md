@@ -6,7 +6,7 @@ weight: 53
 ---
 
 VQL is really a glue language - we rely on VQL plugins and functions
-to do all the heavy liftingm.  VQL was never designed to be an all
+to do all the heavy lifting.  VQL was never designed to be an all
 powerful language - users will hit the limits of what is possible in
 VQL pretty quickly.
 
