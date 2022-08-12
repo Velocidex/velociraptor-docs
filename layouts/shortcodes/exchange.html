@@ -79,6 +79,9 @@ function doSearch() {
 
     if (item.title.toUpperCase().includes(filter)) {
       result.push(item);
+    } else if(item.description &&
+              item.description.toUpperCase().includes(filter)) {
+        result.push(item);
     }
   };
   DrawResults(result);
