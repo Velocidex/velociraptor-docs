@@ -45,15 +45,6 @@
         ]
     },
     {
-        "title": "Custom.Linux.SudoUsers",
-        "description": "Detects users added in the `sudo` group.\n",
-        "link": "/artifact_references/pages/custom.linux.sudousers",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Demo.Plugins.Fifo",
         "description": "This is a demo of the fifo() plugin. The Fifo plugin collects and\ncaches rows from its inner query. Every subsequent execution of the\nquery then reads from the cache. The plugin will expire old rows\ndepending on its expiration policy - so we always see recent rows.",
         "link": "/artifact_references/pages/demo.plugins.fifo",
@@ -246,6 +237,15 @@
         "title": "Generic.Forensic.Timeline",
         "description": "This artifact generates a timeline of a file glob in bodyfile\nformat. We currently do not calculate the md5 because it is quite\nexpensive.\n",
         "link": "/artifact_references/pages/generic.forensic.timeline",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.System.ProcessSiblings",
+        "description": "This artifact queries the process tracker to display all known\nsibling processes of the target process (i.e. all other processes\nfrom the same parent).",
+        "link": "/artifact_references/pages/generic.system.processsiblings",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -606,6 +606,15 @@
         "title": "Linux.Users.InteractiveUsers",
         "description": "Gets the interactive users from a Linux host.\n",
         "link": "/artifact_references/pages/linux.users.interactiveusers",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Users.RootUsers",
+        "description": "Detects users added in the `sudo` group.\n",
+        "link": "/artifact_references/pages/linux.users.rootusers",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -1197,6 +1206,24 @@
         ]
     },
     {
+        "title": "Server.Orgs.ListOrgs",
+        "description": "This server artifact will list all currently configured orgs on the\nserver.",
+        "link": "/artifact_references/pages/server.orgs.listorgs",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Orgs.NewOrg",
+        "description": "This server artifact will create a new org and assign the current\nuser as an admin to it.",
+        "link": "/artifact_references/pages/server.orgs.neworg",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Powershell.EncodedCommand",
         "description": "It is possible to pass powershell an encoded script. This artifact\ndecodes the scripts.",
         "link": "/artifact_references/pages/server.powershell.encodedcommand",
@@ -1218,6 +1245,15 @@
         "title": "Server.Utils.AddTimeline",
         "description": "Adds a new timeline to a super timeline.\n",
         "link": "/artifact_references/pages/server.utils.addtimeline",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.AddUser",
+        "description": "This server artifact is used to add new user to the Velociraptor\nGUI.",
+        "link": "/artifact_references/pages/server.utils.adduser",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1287,6 +1323,15 @@
         ]
     },
     {
+        "title": "Server.Utils.DeleteEvents",
+        "description": "This artifact permanently deletes Event files for client or\nmonitoring events.",
+        "link": "/artifact_references/pages/server.utils.deleteevents",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.DeleteFavoriteFlow",
         "description": "This artifact allows the user to delete a previously saved\nfavorite. It will only addect the current user.\n",
         "link": "/artifact_references/pages/server.utils.deletefavoriteflow",
@@ -1335,6 +1380,15 @@
         "title": "Server.Utils.ImportCollection",
         "description": "The Velociraptor offline collector is an automated, preconfigured\ncollection tool. Users can use the collector to automatically\ncollect any artifacts on endpoints that do not have the Velociraptor\nclient (offline endpoints).",
         "link": "/artifact_references/pages/server.utils.importcollection",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.ListUsers",
+        "description": "This server artifact is used to list all current users and their\npermissions and org access.",
+        "link": "/artifact_references/pages/server.utils.listusers",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1485,15 +1539,6 @@
         ]
     },
     {
-        "title": "Windows.Application.Firefox.Downloads",
-        "description": "Enumerate the users Firefox downloads.\n",
-        "link": "/artifact_references/pages/windows.application.firefox.downloads",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Applications.ChocolateyPackages",
         "description": "Chocolatey packages installed in a system.",
         "link": "/artifact_references/pages/windows.applications.chocolateypackages",
@@ -1533,6 +1578,15 @@
         "title": "Windows.Applications.Edge.History",
         "description": "Enumerate the users chrome history.\n",
         "link": "/artifact_references/pages/windows.applications.edge.history",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Firefox.Downloads",
+        "description": "Enumerate the users Firefox downloads.\n",
+        "link": "/artifact_references/pages/windows.applications.firefox.downloads",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -1620,6 +1674,15 @@
         ]
     },
     {
+        "title": "Windows.Attack.UnexpectedImagePath",
+        "description": "Some malware are hiding in plain text by masqurading a legitimate\nexecutable name.",
+        "link": "/artifact_references/pages/windows.attack.unexpectedimagepath",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Carving.CobaltStrike",
         "description": "This artifact extracts cobalt strike configuration from a byte stream, process\nor file on disk such as a process dump. Best used as a triage step against a\ndetection of a cobalt strike beacon via a yara process scan.",
         "link": "/artifact_references/pages/windows.carving.cobaltstrike",
@@ -1641,6 +1704,15 @@
         "title": "Windows.Carving.USNFiles",
         "description": "The USN journal is an important source of information about when\nfiles were manipulated on a system.",
         "link": "/artifact_references/pages/windows.carving.usnfiles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Collectors.File",
+        "description": "Using Windows.Collectors.File is deprecated. Please use\nGeneric.Collectors.File instead.\n",
+        "link": "/artifact_references/pages/windows.collectors.file",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2062,7 +2134,7 @@
     },
     {
         "title": "Windows.Events.ProcessCreation",
-        "description": "Collect all process creation events.\n",
+        "description": "Collect all process creation events.",
         "link": "/artifact_references/pages/windows.events.processcreation",
         "type": "client_event",
         "tags": [
@@ -2674,7 +2746,7 @@
     },
     {
         "title": "Windows.Sys.Drivers",
-        "description": "Details for in-use Windows device drivers. This does not display installed but unused drivers.\n",
+        "description": "Details for in-use Windows device drivers. This does not display\ninstalled but unused drivers.\n",
         "link": "/artifact_references/pages/windows.sys.drivers",
         "type": "client",
         "tags": [

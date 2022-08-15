@@ -637,6 +637,11 @@
                 "name": "urgent",
                 "type": "bool",
                 "description": "Set the collection as urgent - skips other queues collections on the client."
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "If set the collection will be started in the specified org."
             }
         ],
         "category": "server"
@@ -868,6 +873,64 @@
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "delay",
+        "description": "Executes 'query' and delays relaying the rows by the specified number of seconds.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Source for rows.",
+                "required": true
+            },
+            {
+                "name": "delay",
+                "type": "int64",
+                "description": "Number of seconds to delay.",
+                "required": true
+            },
+            {
+                "name": "buffer_size",
+                "type": "int64",
+                "description": "Maximum number of rows to buffer (default 1000)."
+            }
+        ]
+    },
+    {
+        "name": "delete_events",
+        "description": "Delete all the files that make up a flow.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "Name of artifact events to remove",
+                "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "Client ID of events to remove (use 'server' for server events)",
+                "required": true
+            },
+            {
+                "name": "start_time",
+                "type": "time.Time",
+                "description": "Start time to be deleted"
+            },
+            {
+                "name": "end_time",
+                "type": "time.Time",
+                "description": "End time to be deleted"
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool",
+                "description": "If not specified, just show what files will be removed"
+            }
+        ]
     },
     {
         "name": "delete_flow",
@@ -1692,6 +1755,13 @@
         "name": "gui_users",
         "description": "Retrieve the list of users on the server.\n",
         "type": "Plugin",
+        "args": [
+            {
+                "name": "all_orgs",
+                "type": "bool",
+                "description": "If set we enumberate permission for all orgs, otherwise just for this org."
+            }
+        ],
         "category": "server"
     },
     {
@@ -1892,6 +1962,11 @@
                 "type": "string",
                 "description": "If specified exclude these labels",
                 "repeated": true
+            },
+            {
+                "name": "os",
+                "type": "string",
+                "description": "If specified target this OS"
             }
         ],
         "category": "server"
@@ -2828,6 +2903,34 @@
         "category": "parsers"
     },
     {
+        "name": "org",
+        "description": "Return the details of the current org.",
+        "type": "Function"
+    },
+    {
+        "name": "org_create",
+        "description": "Creates a new organizaion.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the org.",
+                "required": true
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "An ID for the new org (if not set use a random ID)."
+            }
+        ]
+    },
+    {
+        "name": "orgs",
+        "description": "Retrieve the list of orgs on this server.",
+        "type": "Plugin"
+    },
+    {
         "name": "parallelize",
         "description": "Runs query on result batches in parallel.",
         "type": "Plugin",
@@ -3498,6 +3601,24 @@
         "category": "windows"
     },
     {
+        "name": "passwd",
+        "description": "Updates the user's password.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to set password for. If not set, changes the current user's password."
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "description": "The new password to set.",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "patch",
         "description": "Patch a JSON object with a json patch or merge.",
         "type": "Function",
@@ -3935,6 +4056,16 @@
                 "name": "progress_timeout",
                 "type": "float64",
                 "description": "If no progress is detected in this many seconds, we terminate the query and output debugging information"
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "If specified, the query will run in the specified org space (Use 'root' to refer to the root org)"
+            },
+            {
+                "name": "runas",
+                "type": "string",
+                "description": "If specified, the query will run as the specified user"
             }
         ]
     },
@@ -4446,11 +4577,13 @@
             {
                 "name": "item",
                 "type": "Any",
+                "description": "A dict to set",
                 "required": true
             },
             {
                 "name": "field",
                 "type": "string",
+                "description": "The field to set",
                 "required": true
             },
             {
@@ -5548,17 +5681,26 @@
             {
                 "name": "user",
                 "type": "string",
+                "description": "The user to create or update.",
                 "required": true
             },
             {
                 "name": "roles",
                 "type": "string",
+                "description": "List of roles to give the user.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "password",
-                "type": "string"
+                "type": "string",
+                "description": "A password to set for the user (If not using SSO this might be needed)."
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "One or more org IDs to grant access to.",
+                "repeated": true
             }
         ],
         "category": "server"
@@ -5571,10 +5713,37 @@
             {
                 "name": "user",
                 "type": "string",
+                "description": "The user to delete.",
                 "required": true
             }
         ],
         "category": "server"
+    },
+    {
+        "name": "user_grant",
+        "description": "Grants the user the specified roles.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to create or update.",
+                "required": true
+            },
+            {
+                "name": "roles",
+                "type": "string",
+                "description": "List of roles to give the user.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "One or more org IDs to grant access to.",
+                "repeated": true
+            }
+        ]
     },
     {
         "name": "users",

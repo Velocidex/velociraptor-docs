@@ -4,6 +4,8 @@ menutitle: SANS Summit 2022
 weight: 65
 ---
 
+[Full agenda](https://www.sans.org/webcasts/threat-hunting---part-of-the-dfir-summit---solutions-track/)
+
 ## How to unlock achievements in Threat Hunting using Velociraptor
 
 Velociraptor is the open source DFIR framework that everyone is
@@ -18,14 +20,12 @@ capabilities investigating and monitoring the security of Linux and
 Windows hosts. Velociraptor’s superpower is its flexible and powerful
 query language called VQL. Using VQL we can implement novel detection,
 hunt for compromise and automate all our response needs. We will cover
-common use cases such as hunting for ssh keys across large networks or
-automatic escalation when suspicious events are discovered. We also
-cover real time monitoring of the endpoint (for example webshell
-detection via process parent/child analysis) and how VQL can be used
-to build sophisticated alerting around process execution chains,
-network connections and even bash instrumentation of the command line,
-all done at scale with the click of a few buttons.
+common use cases such as hunting for ssh keys across large networks.
 
-<iframe src="https://present.velocidex.com/sans_2022/index.html" frameborder="0" width="900px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+We will also discuss the advantages and disadvantages of the
+Velociraptor philosophy: Push processing to the endpoint rather than
+transfer raw data for local processing.
+
+<iframe src="https://present.velocidex.com/sans_2022/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 [Full Screen](https://present.velocidex.com/sans_2022/index.html)

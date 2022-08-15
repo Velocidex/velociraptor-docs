@@ -6,6 +6,11 @@ tags: [Client Artifact]
 
 Maps the Mitre Att&ck framework process executions into artifacts.
 
+NOTE: This artifact uses the process tracker. If you also enable the
+Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
+artifacts, this will be able to retrieve information about exited
+processes.
+
 ### References:
 * https://www.sans.org/security-resources/posters/hunt-evil/165/download
 * https://github.com/teoseller/osquery-attck/blob/master/windows-incorrect_parent_process.conf
@@ -16,6 +21,11 @@ name: Windows.Attack.ParentProcess
 description: |
   Maps the Mitre Att&ck framework process executions into artifacts.
 
+  NOTE: This artifact uses the process tracker. If you also enable the
+  Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
+  artifacts, this will be able to retrieve information about exited
+  processes.
+
   ### References:
   * https://www.sans.org/security-resources/posters/hunt-evil/165/download
   * https://github.com/teoseller/osquery-attck/blob/master/windows-incorrect_parent_process.conf
@@ -25,6 +35,12 @@ precondition: SELECT OS From info() where OS = 'windows'
 parameters:
   - name: lookupTable
     type: csv
+    description: |
+      A table mapping a process name to its expected parents. Both
+      columns are regular expressions. The ProcessName must appear
+      only once - you can specify multiple possible parents using
+      regular expressions patterns.
+
     default: |
        ProcessName,ParentRegex
        smss.exe,System
@@ -37,39 +53,27 @@ parameters:
        powershell.exe,explorer.exe
        iexplore.exe,explorer.exe
        firefox.exe,explorer.exe
-       chrome.exe,explorer.exe
+       chrome.exe,(chrome|explorer).exe
 
 sources:
      - query: |
-         // Build up some cached queries for speed.
-         LET processes <= SELECT Name, Pid, Ppid, CommandLine, CreateTime, Exe
-         FROM pslist()
-
-         LET processes_lookup <= SELECT Name As ProcessName, Pid As ProcID
-         FROM processes
-
-         // Resolve the Ppid into a parent name using our processes_lookup
-         LET resolved_parent_name = SELECT * FROM foreach(
-           row={ SELECT * FROM processes},
-           query={
-             SELECT Name AS ActualProcessName,
-                  ProcessName AS ActualParentName,
-                  Pid, Ppid, CommandLine, CreateTime, Exe
-             FROM processes_lookup
-             WHERE ProcID = Ppid LIMIT 1
-           })
-
-         // Get the expected parent name from the table above.
-         SELECT * FROM foreach(
-           row=resolved_parent_name,
-           query={
-             SELECT ActualProcessName,
-                    ActualParentName,
-                    Pid, Ppid, CommandLine, CreateTime, Exe,
-                    ParentRegex as ExpectedParentName
-             FROM lookupTable
-             WHERE ActualProcessName =~ ProcessName
-               AND NOT ActualParentName =~ ParentRegex
-          })
+         SELECT * FROM foreach(row=lookupTable,
+         query={
+           SELECT Name AS ActualProcessName,
+                  process_tracker_get(id=Ppid).Data.Name AS ActualParentName,
+                  Pid, Ppid,
+                  CommandLine,
+                  StartTime,
+                  EndTime,
+                  Exe,
+                  ParentRegex as ExpectedParentName,
+                  Username,
+                  join(array=process_tracker_callchain(id=Pid).Data.Name,
+                       sep=" -> ") AS CallChain
+           FROM process_tracker_pslist()
+           WHERE ActualProcessName =~ ProcessName
+             AND ActualParentName
+             AND NOT ActualParentName =~ ParentRegex
+         })
 
 ```

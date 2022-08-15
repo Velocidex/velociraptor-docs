@@ -30,6 +30,7 @@ iops_limit|Set query iops_limit value|float64
 max_rows|Max number of rows to fetch|uint64
 max_bytes|Max number of bytes to upload|uint64
 urgent|Set the collection as urgent - skips other queues collections on the client.|bool
+org_id|If set the collection will be started in the specified org.|string
 
 ### Description
 
