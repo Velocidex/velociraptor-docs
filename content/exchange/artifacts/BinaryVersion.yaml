@@ -9,6 +9,7 @@ description: |
 parameters:
    - name: TargetLibrary
      default: 'kernel32.dll'
+     description: regex of target library filename e.g file.dll or ^(file.dll|file2.exe)$
    - name: TargetDrive
      default: 'C:\'
    - name: TargetAllDrives
