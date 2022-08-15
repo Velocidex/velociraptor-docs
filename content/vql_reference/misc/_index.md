@@ -21,7 +21,7 @@ Miscellaneous plugins not yet categorized.
 |[lru](lru)|<span class='vql_type'>Function</span>|Creates an LRU object|
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
 |[org](org)|<span class='vql_type'>Function</span>|Return the details of the current org|
-|[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organizaion|
+|[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organization|
 |[orgs](orgs)|<span class='vql_type'>Plugin</span>|Retrieve the list of orgs on this server|
 |[passwd](passwd)|<span class='vql_type'>Function</span>|Updates the user's password|
 |[process_tracker](process_tracker)|<span class='vql_type'>Function</span>|Install a global process tracker|

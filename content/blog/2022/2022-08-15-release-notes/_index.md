@@ -23,7 +23,7 @@ organization is like a completely different Velociraptor installation,
 with unique hunts, notebooks and clients:
 
 1. Organizations can be created and deleted easily with no overheads.
-2. Users can seemlessly switch between organizations using the GUI.
+2. Users can seamlessly switch between organizations using the GUI.
 3. Operations like hunting and post processing can occur across organizations.
 
 When looking at the latest Velociraptor GUI you might notice the
@@ -191,7 +191,7 @@ their own passwords within the GUI.
 ### Allow notebook GUI to set notebooks to public.
 
 Previously notebooks could be shared with specific other users but
-this proved unweildy for larger installs with many users. In this
+this proved unwieldy for larger installs with many users. In this
 release Velociraptor offers a notebook to be `public` - this means the
 notebook will be shared with all users within the org.
 
