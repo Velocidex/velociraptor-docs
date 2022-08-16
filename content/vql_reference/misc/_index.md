@@ -11,6 +11,8 @@ Miscellaneous plugins not yet categorized.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
+|[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
+|[delete_events](delete_events)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[delete_flow](delete_flow)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[flow_logs](flow_logs)|<span class='vql_type'>Plugin</span>|Retrieve the query logs of a flow|
@@ -18,6 +20,10 @@ Miscellaneous plugins not yet categorized.
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[lru](lru)|<span class='vql_type'>Function</span>|Creates an LRU object|
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
+|[org](org)|<span class='vql_type'>Function</span>|Return the details of the current org|
+|[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organization|
+|[orgs](orgs)|<span class='vql_type'>Plugin</span>|Retrieve the list of orgs on this server|
+|[passwd](passwd)|<span class='vql_type'>Function</span>|Updates the user's password|
 |[process_tracker](process_tracker)|<span class='vql_type'>Function</span>|Install a global process tracker|
 |[process_tracker_all](process_tracker_all)|<span class='vql_type'>Function</span>|Get all processes stored in the tracker|
 |[process_tracker_callchain](process_tracker_callchain)|<span class='vql_type'>Function</span>|Get a call chain from the global process tracker|
@@ -28,3 +34,4 @@ Miscellaneous plugins not yet categorized.
 |[query](query)|<span class='vql_type'>Plugin</span>|Evaluate a VQL query|
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
+|[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|

@@ -1,5 +1,5 @@
 ---
-title: set
+title: passwd
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## set
+## passwd
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -19,11 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-item|A dict to set|Any (required)
-field|The field to set|string (required)
-value||Any (required)
+user|The user to set password for. If not set, changes the current user's password.|string
+password|The new password to set.|string (required)
 
 ### Description
 
-Sets the member field of the item. If item is omitted sets the scope.
+Updates the user's password.
 

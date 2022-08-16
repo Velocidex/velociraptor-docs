@@ -24,6 +24,8 @@ env|A dict of args to insert into the scope.|ordereddict.Dict
 cpu_limit|Average CPU usage in percent of a core.|float64
 iops_limit|Average IOPs to target.|float64
 progress_timeout|If no progress is detected in this many seconds, we terminate the query and output debugging information|float64
+org_id|If specified, the query will run in the specified org space (Use 'root' to refer to the root org)|string
+runas|If specified, the query will run as the specified user|string
 
 ### Description
 

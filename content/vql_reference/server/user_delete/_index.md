@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-user||string (required)
+user|The user to delete.|string (required)
 
 ### Description
 

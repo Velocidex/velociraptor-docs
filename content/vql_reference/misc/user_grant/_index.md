@@ -1,5 +1,5 @@
 ---
-title: user_create
+title: user_grant
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## user_create
+## user_grant
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -21,10 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 user|The user to create or update.|string (required)
 roles|List of roles to give the user.|list of string (required)
-password|A password to set for the user (If not using SSO this might be needed).|string
 orgs|One or more org IDs to grant access to.|list of string
 
 ### Description
 
-Creates a new user from the server, or updates their permissions or reset their password.
+Grants the user the specified roles.
 

@@ -30,6 +30,15 @@ description: |
 
 type: CLIENT_EVENT
 
+tools:
+  - name: SysmonBinary
+    url: https://live.sysinternals.com/tools/sysmon64.exe
+    serve_locally: true
+
+  - name: SysmonConfig
+    url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
+    serve_locally: true
+
 parameters:
   - name: AlsoForwardUpdates
     type: bool
@@ -44,14 +53,9 @@ parameters:
     description: If set, we check this location first for sysmon installed.
     default: C:/Windows/sysmon64.exe
 
-tools:
-  - name: SysmonBinary
-    url: https://live.sysinternals.com/tools/sysmon64.exe
-    serve_locally: true
-
-  - name: SysmonConfig
-    url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
-    serve_locally: true
+  - name: AddEnrichments
+    type: bool
+    description: Add process information enrichments (can use more resources)
 
 sources:
   - precondition:
@@ -74,7 +78,10 @@ sources:
                        EventData.ParentProcessId AS parent_id,
                        "start" AS update_type,
                        EventData + dict(
+                           Name=split(sep_string="\\", string=EventData.Image)[-1],
+                           Username=EventData.User,
                            CreateTime=EventData.UtcTime,
+                           Exe=EventData.Image,
                            Hashes=parse_string_with_regex(regex=[
                              "SHA256=(?P<SHA256>[^,]+)",
                              "MD5=(?P<MD5>[^,]+)",
@@ -103,23 +110,22 @@ sources:
                  Ppid AS parent_id,
                  CreateTime AS start_time,
                  dict(
-                   Image=Exe,
-                   CommandLine=CommandLine,
-                   CreateTime=CreateTime) AS data
+                   Name=Name,
+                   Username=Username,
+                   Exe=Exe,
+                   CommandLine=CommandLine) AS data
               FROM pslist()
 
-
-
       LET Tracker <= process_tracker(
-         enrichments=[
+         enrichments=if(condition=AddEnrichments, then=[
            '''x=>if(
-                condition=NOT x.Data.VersionInformation,
+                condition=NOT x.Data.VersionInformation AND x.Data.Image,
                 then=dict(VersionInformation=parse_pe(file=x.Data.Image).VersionInformation))
            ''',
            '''x=>if(
                 condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = '-',
                 then=dict(OriginalFilename=x.Data.VersionInformation.OriginalFilename))
-           '''],
+           '''], else=[]),
         sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
 
       SELECT * FROM process_tracker_updates()

@@ -1,5 +1,5 @@
 ---
-title: set
+title: org_create
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## set
+## org_create
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -19,11 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-item|A dict to set|Any (required)
-field|The field to set|string (required)
-value||Any (required)
+name|The name of the org.|string (required)
+org_id|An ID for the new org (if not set use a random ID).|string
 
 ### Description
 
-Sets the member field of the item. If item is omitted sets the scope.
+Creates a new organizaion.
 
