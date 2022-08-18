@@ -11,6 +11,8 @@ noTitle: true
 
 <img style="width: 100%" src="velocon.jpg">
 
+## The 2022 Velociraptor Conference - Digging together...
+
 Join the open-source DFIR community for a day-long virtual summit as
 we DIG DEEPER TOGETHER!
 
@@ -29,10 +31,11 @@ of the wider DFIR community.  This year the conference will be online
 and completely free! User-created presentations will be published on
 our Velociraptor site and as YouTube videos after the event.
 
-No need to register! Just mark the date on your calendar.
-
-The event link will be posted on this page a week prior to the event,
-so check back closer to the 15th Sept.
+<a  style="width: 100%;font-size: 24px !important"
+    href="https://rapid7.zoom.us/webinar/register/WN_Hsef_RoXSGOzT40rGW5jwg"
+    class="btn btn-default">
+    Register Here
+</a>
 
 We look forward to seeing you at VeloCON!
 
