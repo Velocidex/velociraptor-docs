@@ -11,6 +11,8 @@ noTitle: true
 
 <img style="width: 100%" src="velocon.jpg">
 
+## The 2022 Velociraptor Conference - Digging together...
+
 Join the open-source DFIR community for a day-long virtual summit as
 we DIG DEEPER TOGETHER!
 
@@ -29,10 +31,11 @@ of the wider DFIR community.  This year the conference will be online
 and completely free! User-created presentations will be published on
 our Velociraptor site and as YouTube videos after the event.
 
-No need to register! Just mark the date on your calendar.
-
-The event link will be posted on this page a week prior to the event,
-so check back closer to the 15th Sept.
+<a  style="width: 100%;font-size: 24px !important"
+    href="https://rapid7.zoom.us/webinar/register/WN_Hsef_RoXSGOzT40rGW5jwg"
+    class="btn btn-default">
+    Register Here
+</a>
 
 We look forward to seeing you at VeloCON!
 
@@ -395,6 +398,26 @@ individual files on upload helped massively and gave the law
 enforcement comfort.
 
 
+
+### Mac Response – The Good, the Bad, and the Ugly
+By **Mike Pilkington**
+
+Mac adoption is on the rise. Gartner reported 8.5% market share for
+macOS in the enterprise in 2021, and the rate of adoption continues to
+rise. With Macs becoming more common across more organizations, it's
+important for security teams to have the ability to respond
+effectively. Velociraptor offers an excellent opportunity to do that!
+However, deploying and using security tooling like Velociraptor comes
+with a unique set of challenges on Macs. In particular, features such
+as System Integrity Protection (SIP) and Transparency, Consent, and
+Control (TCC) make rapid response difficult if responders have not
+planned ahead. In this talk, we’ll cover how to prepare to clear these
+hurdles so that you have solid visibility when responding to Mac hosts
+in your network. We’ll also look at useful areas for analyzing
+potential intrusions against Macs, and how Velociraptor can speed up
+the triage process at scale.
+
+
 ### Purple Teaming with ARTifacts
 By **Wes Lambert** - Principal Engineer, Security Onion Solutions
 
@@ -414,3 +437,4 @@ Attendees will walk away from this presentation with several examples
 of how they immediately leverage Atomic Red Team tests and catch
 execution of those tests through Velociraptor to evaluate their
 detection capability and improve the security of their enterprise.
+z

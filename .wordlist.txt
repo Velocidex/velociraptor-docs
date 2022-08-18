@@ -1268,3 +1268,6 @@ observables
 prise
 reimplement
 scikit
+Gartner
+TCC
+macOS
