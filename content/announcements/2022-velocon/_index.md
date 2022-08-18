@@ -395,6 +395,26 @@ individual files on upload helped massively and gave the law
 enforcement comfort.
 
 
+
+### Mac Response – The Good, the Bad, and the Ugly
+By **Mike Pilkington**
+
+Mac adoption is on the rise. Gartner reported 8.5% market share for
+macOS in the enterprise in 2021, and the rate of adoption continues to
+rise. With Macs becoming more common across more organizations, it's
+important for security teams to have the ability to respond
+effectively. Velociraptor offers an excellent opportunity to do that!
+However, deploying and using security tooling like Velociraptor comes
+with a unique set of challenges on Macs. In particular, features such
+as System Integrity Protection (SIP) and Transparency, Consent, and
+Control (TCC) make rapid response difficult if responders have not
+planned ahead. In this talk, we’ll cover how to prepare to clear these
+hurdles so that you have solid visibility when responding to Mac hosts
+in your network. We’ll also look at useful areas for analyzing
+potential intrusions against Macs, and how Velociraptor can speed up
+the triage process at scale.
+
+
 ### Purple Teaming with ARTifacts
 By **Wes Lambert** - Principal Engineer, Security Onion Solutions
 
@@ -414,3 +434,4 @@ Attendees will walk away from this presentation with several examples
 of how they immediately leverage Atomic Red Team tests and catch
 execution of those tests through Velociraptor to evaluate their
 detection capability and improve the security of their enterprise.
+z
