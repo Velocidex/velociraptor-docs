@@ -80,7 +80,7 @@ We look forward to seeing you at VeloCON!
         </tr>
     <tr>
         <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">11-11:45 am</font></td>
-        <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Christian Hammerschmidt, PhD <br>APTA Technologies</font></td>
+        <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Christian Hammerschmidt, PhD <br>Head of Engineering/ML, APTA Technologies</font></td>
         <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
             <a href="#machine-learning-for-dfir-with-velociraptor-from-setting-expectations-to-a-case-study">
                 Machine Learning for DFIR with Velociraptor: From Setting Expectations to a Case Study
@@ -236,7 +236,7 @@ If you answered yes to any of these questions, then Velocistack may be
 for you! To learn more about Velocistack, attend this presentation!
 
 ### Machine Learning for DFIR with Velociraptor: From Setting Expectations to a Case Study
-By **Christian Hammerschmidt**
+By **Christian Hammerschmidt, PhD** - Head of Engineering/ML, APTA Technologies
 
 Machine learning (ML) or artificial intelligence (AI) often comes with
 great promise and large marketing budgets for cybersecurity,
@@ -349,7 +349,7 @@ useful to the Velociraptor ecosystem.
 
 
 ### Velociraptor and Law enforcement
-By **Luke Fardell**
+By **Luke Fardell** - Director of DFIR, Control Risks
 
 Dealing with an incident which results in the prosecution of a threat
 actor when all the data was gathered using Velociraptor. The talk
