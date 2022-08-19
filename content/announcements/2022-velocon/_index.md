@@ -56,7 +56,7 @@ We look forward to seeing you at VeloCON!
         </tr>
     <tr>
         <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">9-9:30 am</font></td>
-        <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Paulo Pereira, PhD<br>Forensics Investigation at IDESP</font></td>
+        <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Paulo Pereira, PhD<br>Forensics at Digits3c</font></td>
         <td style="border-right: 1px solid #000000" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">
             <a href="#ransomware-investigation-using-velociraptor">Ransomware Investigation Using Velociraptor</a></font></td>
     </tr>
@@ -168,11 +168,7 @@ We look forward to seeing you at VeloCON!
 
 
 ### Ransomware Investigation Using Velociraptor.
-By **Paulo Pereira, PhD**
-
-IDESP (Cyber Security Higher Education Institute of São
-Paulo/Instituto de Ensino Superiorde Segurança Cibernética de São
-Paulo)
+By **Paulo Pereira, PhD** - Digits3c
 
 The objective of this work is to present the investigation process for
 the identification of malware activities in memory analysis. The real
