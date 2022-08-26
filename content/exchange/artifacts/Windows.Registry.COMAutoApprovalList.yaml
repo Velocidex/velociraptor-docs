@@ -7,8 +7,6 @@ reference:
     - https://twitter.com/d4rksystem/status/1562507028337131520?s=20&t=3k45RhMaSRvLr6kNc0fdKg
     - https://swapcontext.blogspot.com/2020/11/uac-bypasses-from-comautoapprovallist.html 
 
-precondition: SELECT OS From info() where OS = 'windows'
-
 parameters:
  - name: KeyGlob
    default:  HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\UAC\COMAutoApprovalList\**
