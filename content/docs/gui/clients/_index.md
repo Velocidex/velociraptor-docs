@@ -39,7 +39,7 @@ The table contains five columns:
 1. The **online state** of the host is shown as a color icon. A green dot
    indicated that the host is currently connected to the server, a
    yellow icon indicates the host is not currently connected but was
-   connected less than 24 hours ago. A red icon indicates that the
+   connected between 15 minutes and 24 hours ago. A red icon indicates that the
    host has not been seen for 24 hours or more.
 
 2. The **client ID** of the host is shown. Clients have a unique ID
