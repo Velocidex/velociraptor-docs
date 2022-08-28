@@ -113,7 +113,7 @@ You can see the full artifact here [https://github.com/Velocidex/velociraptor/bl
 
 ### Collecting the new **artifact**
 
-I will now collect the artifact from my endpoint. Using the GUI, I click the **add new collection** button, then search for my **Windows.Forensics.CertUtil **artifact.
+I will now collect the artifact from my endpoint. Using the GUI, I click the **add new collection** button, then search for my **Windows.Forensics.CertUtil** artifact.
 
 ![](../../img/1j1yRTbk4mFoWNPBWKHHevA.png)
 
@@ -129,7 +129,7 @@ Doing a hunt across all my endpoints will now tell me if `certutil` was ever use
 
 ### Conclusions
 
-Although this was a simple example, the binary parser is extremely capable. Some other examples include **Windows.System.Powershell.ModuleAnalysisCache** (parses the powershell module analysis cache) and **Windows.Forensic.Lnk **(Parse link files) and many more.
+Although this was a simple example, the binary parser is extremely capable. Some other examples include **Windows.System.Powershell.ModuleAnalysisCache** (parses the powershell module analysis cache) and **Windows.Forensic.Lnk** (Parse link files) and many more.
 
 Being able to go from reading an analysis in a blog post to running a hunt across your entire network in a matter of minutes is a truly powerful capability, allowing our DFIR team to be proactive and innovative. Having a powerful binary parser in your toolbox is a real bonus making many types of hunts possible.
 
