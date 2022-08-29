@@ -15,16 +15,17 @@ SELECT regex_replace(source=Line, replace_lambda="x=>unhex(string=x[1:]) || x", 
 
 Similarly, to URL encode we can run a similar function:
 
-```
+```vql
 LET Line = '''http://target/login.asp?userid=bob'; update logintable set passwd='0wn3d';--'''
 
 SELECT
-    regex_replace(source=Line,replace_lambda="x=>format(format='%%%x',args=x)", re=" |\\!|\\#|\\$|\\&|\\'|\\(|\\)|\\*|\\+|\\,|\\;|\\=|\\@|\\[|\\]") as Encoded
+    url(path=Line).String[1:] as URLFunction,
+    regex_replace(source=Line,replace_lambda="x=>format(format='%%%02x',args=x)", re="[^a-z0-9\\-_.~:/?]") as ManualMethod
 FROM scope()
 ```
 
-![image](https://user-images.githubusercontent.com/13081800/187111592-7b33f103-5e00-42ce-a4c1-a9a1acf2f1d7.png)
+![Url Encode: results](https://user-images.githubusercontent.com/13081800/187116187-9347d6be-5566-49b0-98d6-65ce0d2ff0cc.png)
 
 
 
-Tags: #decode #url #vql
+Tags: #decode #encode #url #vql
