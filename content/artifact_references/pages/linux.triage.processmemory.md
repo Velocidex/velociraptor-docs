@@ -21,7 +21,7 @@ parameters:
 
 sources:
   - query: |
-      SELECT Name as ProcessName, Cmdline AS CommandLine, Pid,
+      SELECT Name as ProcessName, CommandLine, Pid,
              upload(file=format(format="/%d", args=processPid),
                     accessor="process") as CrashDump
       FROM pslist(pid=processPid)

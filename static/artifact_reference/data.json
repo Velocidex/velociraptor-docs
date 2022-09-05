@@ -666,6 +666,15 @@
         ]
     },
     {
+        "title": "MacOS.Forensics.FSEvents",
+        "description": "This artifact parses the FSEvents log files.\n",
+        "link": "/artifact_references/pages/macos.forensics.fsevents",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "MacOS.Network.PacketCapture",
         "description": "This artifact leverages tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/macos.network.packetcapture",

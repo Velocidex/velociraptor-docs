@@ -56,3 +56,8 @@
 body.light div.btn.lightmode {
     display: none !important;
 }
+
+.featherlight-content {
+    min-width: 60%;
+    max-height: 100%;
+}
