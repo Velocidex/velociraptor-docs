@@ -37,6 +37,9 @@ parameters:
     default: .
     type: regex
 
+  - name: IncludePstree
+    type: bool
+
 sources:
   - query: |
         LET GetDetails(Records) = SELECT
@@ -54,9 +57,14 @@ sources:
             AND Pid =~ PidFilter
         }, query={
           SELECT Pid,Ppid, Name, ChildPid,
-                 CommandLine, Username, StartTime, EndTime
+                 CommandLine, Username, StartTime, EndTime,
+                 if(condition=IncludePstree, then=process_tracker_tree(id=Ppid)) AS ParentTree
           FROM foreach(row=GetDetails(
               Records=process_tracker_children(id=Ppid)))
         })
+
+column_types:
+  - name: ParentTree
+    type: tree
 
 ```

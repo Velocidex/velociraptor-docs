@@ -1,5 +1,185 @@
 [
     {
+        "title": "Windows.ETW.DNSOfflineCollector",
+        "author": "DfirJos",
+        "description": "This artifact collects DNS queries for a specified duration. It can be used \nwith an Offline Collector (which is not the case with Windows.ETW.DNS).\nIt uses the artifact (Windows.ETW.DNS) that was built by Matt Green - @mgreen27\n",
+        "link": "/exchange/artifacts/pages/windows.etw.dnsofflinecollector",
+        "tags": [],
+        "author_link": "https://github.com/DfirJos",
+        "author_avatar": "https://avatars.githubusercontent.com/u/11965973?v=4",
+        "date": "2022-08-29"
+    },
+    {
+        "title": "Server.Alerts.IRIS.Case.Create",
+        "author": "weslambert",
+        "description": "Create an IRIS case when monitored artifacts complete with results.  Adds the ClientId, FlowId as tags to the case.  Adds the FQDN as an asset.",
+        "link": "/exchange/artifacts/pages/server.alerts.iris.case.create",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-08-27"
+    },
+    {
+        "title": "Server.Enrichment.IRIS.IOCLookup",
+        "author": "weslambert",
+        "description": "Query an IRIS instance for an indicator.",
+        "link": "/exchange/artifacts/pages/server.enrichment.iris.ioclookup",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-08-27"
+    },
+    {
+        "title": "Windows.Registry.COMAutoApprovalList",
+        "author": "weslambert",
+        "description": "This artifact will return COM objects that auto-elevate and bypass UAC (these could potentially be used by adversaries/malware to elevate privileges), and cross-reference the class ID with a name where able.\n",
+        "link": "/exchange/artifacts/pages/windows.registry.comautoapprovallist",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-08-26"
+    },
+    {
+        "title": "Windows.Detection.MagicWeb",
+        "author": "mgreen27",
+        "description": "This artifact will find evidence of NOBELIUM\u2019s MagicWeb.",
+        "link": "/exchange/artifacts/pages/magicweb",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-08-25"
+    },
+    {
+        "title": "Windows.System.Services.SliverPsexec",
+        "author": "svch0stz",
+        "description": "This pack detects various artefacts left behind by default configurations of the C2 framework Sliver PsExec module",
+        "link": "/exchange/artifacts/pages/windows.system.services.sliverpsexec",
+        "tags": [],
+        "author_link": "https://github.com/svch0stz",
+        "author_avatar": "https://avatars.githubusercontent.com/u/8684257?v=4",
+        "date": "2022-08-25"
+    },
+    {
+        "title": "Windows.Detection.UnattendXML",
+        "author": "mgreen27",
+        "description": "This artifact will find unscrubbed passwords in unattend.xml answer files. This \nfile is used for non interactive Windows installation.\n",
+        "link": "/exchange/artifacts/pages/unattendxml",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-08-22"
+    },
+    {
+        "title": "Linux.Remediation.Quarantine",
+        "author": "weslambert",
+        "description": "Quarantine a Linux host using iptables rules. ",
+        "link": "/exchange/artifacts/pages/linux.remediation.quarantine",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-08-18"
+    },
+    {
+        "title": "MacOS.Files.FileMonitor",
+        "author": "weslambert",
+        "description": "This artifact parses Objective-See's FileMonitor log.",
+        "link": "/exchange/artifacts/pages/macos.files.filemonitor",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-08-12"
+    },
+    {
+        "title": "MacOS.Network.LittleSnitch",
+        "author": "weslambert",
+        "description": "This is artifact parses Little Snitch's network traffic log.",
+        "link": "/exchange/artifacts/pages/macos.network.littlesnitch",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-08-12"
+    },
+    {
+        "title": "Windows.Detection.Ntdsutil",
+        "author": "mgreen27",
+        "description": "This artifact will extract evidence of Ntdsutil abuse from the application \neventlog. The artifact targets the string \"ntds.dit\" in event IDs: 216, 325,\n326 and 327.\n",
+        "link": "/exchange/artifacts/pages/ntdsutil",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-08-12"
+    },
+    {
+        "title": "Windows.KapeFiles.Remapping",
+        "author": "scudette",
+        "description": "This artifact automates the rebuilding of remapping rules to be able to easily\npost process the results of the Windows.KapeFiles.Targets.",
+        "link": "/exchange/artifacts/pages/windows.kapefiles.remapping",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-08-04"
+    },
+    {
+        "title": "MacOS.Forensics.FSEvents",
+        "author": "scudette",
+        "description": "This artifact parses the FSEvents log files.\n",
+        "link": "/exchange/artifacts/pages/macos.forensics.fsevents",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-08-02"
+    },
+    {
+        "title": "Server.Enrichment.MalwareBazaar",
+        "author": "weslambert",
+        "description": "Query MalwareBazaar for a hash.",
+        "link": "/exchange/artifacts/pages/server.enrichment.malwarebazaar",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-07-29"
+    },
+    {
+        "title": "Server.Enrichment.ThreatFox",
+        "author": "weslambert",
+        "description": "Query ThreatFox for an indicator.",
+        "link": "/exchange/artifacts/pages/server.enrichment.threatfox",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-07-29"
+    },
+    {
+        "title": "Windows.Sysinternals.SysmonArchive",
+        "author": "mgreen27",
+        "description": "If configured, Sysmon EID 23: FileDelete enables archiving file deletes on \ndisk. The challenges of this configuraiton is management of the archive \nfolder which can grow to be significant size and use up disk space.  ",
+        "link": "/exchange/artifacts/pages/sysmonarchive",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-07-29"
+    },
+    {
+        "title": "Windows.Events.SysmonArchiveMonitor",
+        "author": "mgreen27",
+        "description": "This artifact enables automatic management of the Sysmon archive folder.",
+        "link": "/exchange/artifacts/pages/sysmonarchivemonitor",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-07-29"
+    },
+    {
+        "title": "Server.Utils.OrphanedFlows",
+        "author": "scudette",
+        "description": "Sometimes flows are deleted but there is still outstanding data for\nthem in flight. The server will continue to save this data after the\nflow is deleted.",
+        "link": "/exchange/artifacts/pages/server.utils.orphanedflows",
+        "tags": [],
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2022-07-26"
+    },
+    {
         "title": "Windows.System.WindowsErrorReporting",
         "author": "svch0stz",
         "description": "Parses several Windows Error Reporting (WER) files that contain information about crashed programs. ",
@@ -679,7 +859,7 @@
     {
         "title": "Windows.System.BinaryVersion",
         "author": "mgreen27",
-        "description": "Extract the binary version information for binary files. This\nartifact will search the MFT for any matching filenames and return\nbinary information.\n",
+        "description": "This artifact will search the MFT for any matching filenames and return\nbinary details. This artifact can be used to find all instances of a \nbinary on disk so its great for scoping both legititimate and illegitimate \nfiles.\n",
         "link": "/exchange/artifacts/pages/binaryversion",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -898,7 +1078,7 @@
     },
     {
         "title": "Windows.ETW.AMSI",
-        "description": "This artifact uses the ETW provider:",
+        "description": "This artifact uses the ETW provider:\n    (Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}\n",
         "link": "/exchange/artifacts/pages/amsi",
         "tags": [],
         "author": "mgreen27",
@@ -919,15 +1099,5 @@
         "author_link": "https://github.com/ffh571",
         "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
         "date": "2021-06-23"
-    },
-    {
-        "title": "Server.Utils.OrphanedFlows",
-        "author": "scudette",
-        "description": "Sometimes flows are deleted but there is still outstanding data for\nthem in flight. The server will continue to save this data after the\nflow is deleted.",
-        "link": "/exchange/artifacts/pages/server.utils.orphanedflows",
-        "tags": [],
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-07-26"
     }
 ]

@@ -10,6 +10,8 @@ no_children: true
 Miscellaneous plugins not yet categorized.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
+|[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
+|[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
 |[delete_events](delete_events)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
@@ -22,6 +24,7 @@ Miscellaneous plugins not yet categorized.
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
 |[org](org)|<span class='vql_type'>Function</span>|Return the details of the current org|
 |[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organization|
+|[org_delete](org_delete)|<span class='vql_type'>Function</span>|Deletes an Org from the server|
 |[orgs](orgs)|<span class='vql_type'>Plugin</span>|Retrieve the list of orgs on this server|
 |[passwd](passwd)|<span class='vql_type'>Function</span>|Updates the user's password|
 |[process_tracker](process_tracker)|<span class='vql_type'>Function</span>|Install a global process tracker|
@@ -30,6 +33,7 @@ Miscellaneous plugins not yet categorized.
 |[process_tracker_children](process_tracker_children)|<span class='vql_type'>Function</span>|Get all children of a process|
 |[process_tracker_get](process_tracker_get)|<span class='vql_type'>Function</span>|Get a single process from the global tracker|
 |[process_tracker_pslist](process_tracker_pslist)|<span class='vql_type'>Plugin</span>|List all processes from the process tracker|
+|[process_tracker_tree](process_tracker_tree)|<span class='vql_type'>Function</span>|Get the full process tree under the process id|
 |[process_tracker_updates](process_tracker_updates)|<span class='vql_type'>Plugin</span>|Get the process tracker update events from the global process tracker|
 |[query](query)|<span class='vql_type'>Plugin</span>|Evaluate a VQL query|
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|

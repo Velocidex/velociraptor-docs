@@ -43,6 +43,30 @@
         "category": "server"
     },
     {
+        "name": "all",
+        "description": "Returns TRUE if all items are true.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluted!",
+                "required": true
+            },
+            {
+                "name": "filter",
+                "type": "Lambda",
+                "description": "A callback to consider each item"
+            },
+            {
+                "name": "regex",
+                "type": "string",
+                "description": "Optionally one or more regex can be provided for convenience",
+                "repeated": true
+            }
+        ]
+    },
+    {
         "name": "amsi",
         "description": "AMSI is an interface on windows to scan a string for malware. This\nfunction submits the string to the AMSI system and receives a\ndetermination if it is malware.\n",
         "type": "Function",
@@ -55,6 +79,30 @@
             }
         ],
         "category": "windows"
+    },
+    {
+        "name": "any",
+        "description": "Returns TRUE if any items are true.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluted!",
+                "required": true
+            },
+            {
+                "name": "filter",
+                "type": "Lambda",
+                "description": "A callback to consider each item"
+            },
+            {
+                "name": "regex",
+                "type": "string",
+                "description": "Optionally one or more regex can be provided for convenience",
+                "repeated": true
+            }
+        ]
     },
     {
         "name": "appcompatcache",
@@ -2909,7 +2957,7 @@
     },
     {
         "name": "org_create",
-        "description": "Creates a new organizaion.",
+        "description": "Creates a new organization.",
         "type": "Function",
         "args": [
             {
@@ -2922,6 +2970,19 @@
                 "name": "org_id",
                 "type": "string",
                 "description": "An ID for the new org (if not set use a random ID)."
+            }
+        ]
+    },
+    {
+        "name": "org_delete",
+        "description": "Deletes an Org from the server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "org",
+                "type": "string",
+                "description": "The org ID to delete.",
+                "required": true
             }
         ]
     },
@@ -3926,6 +3987,23 @@
         "name": "process_tracker_pslist",
         "description": "List all processes from the process tracker.",
         "type": "Plugin"
+    },
+    {
+        "name": "process_tracker_tree",
+        "description": "Get the full process tree under the process id.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID."
+            },
+            {
+                "name": "data_callback",
+                "type": "Lambda",
+                "description": "A VQL Lambda function to that receives a ProcessEntry and returns the data node for each process."
+            }
+        ]
     },
     {
         "name": "process_tracker_updates",

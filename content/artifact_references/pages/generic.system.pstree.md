@@ -21,7 +21,7 @@ Windows.Events.TrackProcesses artifact is collected (required
 Sysmon) or Windows.Events.TrackProcessesBasic (does not require
 Sysmon)
 
-Minimum Version: 0.6.5
+Minimum Version: 0.6.6
 
 
 ```yaml
@@ -44,7 +44,7 @@ description: |
   Sysmon) or Windows.Events.TrackProcessesBasic (does not require
   Sysmon)
 
-  Minimum Version: 0.6.5
+  Minimum Version: 0.6.6
 
 parameters:
   - name: CommandlineRegex
@@ -63,13 +63,21 @@ parameters:
   - name: CallChainSep
     default: " -> "
 
+  - name: IncludePstree
+    type: bool
+
 sources:
   - query: |
       SELECT Pid, Ppid, Name, Username, Exe, CommandLine, StartTime, EndTime,
-          join(array=process_tracker_callchain(id=Pid).Data.Name, sep=CallChainSep) AS CallChain
+          join(array=process_tracker_callchain(id=Pid).Data.Name, sep=CallChainSep) AS CallChain,
+          if(condition=IncludePstree, then=process_tracker_tree(id=Pid)) AS PSTree
       FROM process_tracker_pslist()
       WHERE CommandLine =~ CommandlineRegex
         AND CallChain =~ CallChainFilter
         AND Pid =~ PidFilter
+
+column_types:
+  - name: PSTree
+    type: tree
 
 ```

@@ -1,5 +1,5 @@
 ---
-title: org_create
+title: org_delete
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## org_create
+## org_delete
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -19,10 +19,9 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-name|The name of the org.|string (required)
-org_id|An ID for the new org (if not set use a random ID).|string
+org|The org ID to delete.|string (required)
 
 ### Description
 
-Creates a new organization.
+Deletes an Org from the server.
 

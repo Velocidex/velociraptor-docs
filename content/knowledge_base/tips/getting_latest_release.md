@@ -1,4 +1,4 @@
-## How do I get the latest release binary?
+# How do I get the latest release binary?
 
 The Velociraptor release process uses a release branch to prepare a
 new release. Releases go through a release candidate (RC) process with
@@ -56,3 +56,5 @@ token (see
 https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 {{% /notice %}}
+
+Tags: #configuration #deployment

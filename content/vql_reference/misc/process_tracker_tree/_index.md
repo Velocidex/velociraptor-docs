@@ -1,5 +1,5 @@
 ---
-title: org_create
+title: process_tracker_tree
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## org_create
+## process_tracker_tree
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -19,10 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-name|The name of the org.|string (required)
-org_id|An ID for the new org (if not set use a random ID).|string
+id|Process ID.|string
+data_callback|A VQL Lambda function to that receives a ProcessEntry and returns the data node for each process.|Lambda
 
 ### Description
 
-Creates a new organization.
+Get the full process tree under the process id.
 
