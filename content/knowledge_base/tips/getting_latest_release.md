@@ -22,6 +22,14 @@ MACOS_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases
 The above `jq` filter sorts all asserts by creation data and filters
 the relevant binaries, then extracts the most recent binary.
 
+Powershell example:
+
+```powershell
+	$VeloLatest = Invoke-WebRequest https://api.github.com/repos/velocidex/velociraptor/releases/latest
+	$VeloURL.line = ($VeloLatest.content | convertfrom-json).assets.browser_download_url | select-string windows-amd64.exe | select-object -First 1
+	Invoke-WebRequest -Uri $VeloURL.tostring() -OutFile velociraptor.exe
+ ```
+  
 ## Verifying signatures
 
 Velociraptor releases are signed using Authenticode on Windows as well
