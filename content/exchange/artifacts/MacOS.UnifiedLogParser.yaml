@@ -1,4 +1,4 @@
-name: MacOS.UnfiedLogParser
+name: MacOS.UnifiedLogParser
 description: |
 
   This is a simple, un-optimized artifact that leverages Mandiant's `macos-unifiedlogs`/`unifiedlog_parser` to obtain parsed log information from macOS's Unified Log.
