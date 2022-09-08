@@ -5,8 +5,7 @@ description: |
 tags:
  - VQL
 author: "Mike Cohen"
-date: 2022-08-15
-noindex: true
+date: 2022-09-07
 ---
 
 One of the advantages of running Velociraptor on the endpoint
@@ -274,6 +273,8 @@ enabling the `AddEnrichments` parameter when configuring the
 overall load on the endpoint (due to the additional work in
 calculating hashes etc) but will provide better quality data in a
 response.
+
+![Enriching tracked process information](enrichment.png)
 
 ## Conclusions
 
