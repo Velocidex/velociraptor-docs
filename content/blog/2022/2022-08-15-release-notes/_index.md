@@ -5,12 +5,12 @@ description: |
 tags:
  - Release
 author: "Mike Cohen"
-date: 2022-08-14
+date: 2022-09-07
 ---
 
 I am very excited to announce the latest Velociraptor release 0.6.6 is
-now in release candidate. This release has been in the making for a
-few months now and has a lot of new features and bug fixes.
+now out. This release has been in the making for a few months now and
+has a lot of new features and bug fixes.
 
 In this post I will discuss some of the interesting new features.
 
@@ -170,7 +170,6 @@ flexibility and power.
 
 {{% /notice %}}
 
-
 ## GUI Improvements
 
 The 0.6.6 release introduces a number of other GUI improvements
@@ -199,13 +198,24 @@ notebook will be shared with all users within the org.
 
 ### More improvements to the process tracker
 
-The experimental process tracker will be described in more details in
-another blog post, but you can already begin using it by enabling the
+The experimental process tracker is described in more details
+[here]({{% ref "/blog/2022/2022-08-17-process-tracker/" %}}), but you
+can already begin using it by enabling the
 `Windows.Events.TrackProcessesBasic` client event artifact and using
 artifacts just as `Generic.System.Pstree`, `Windows.System.Pslist` and
 many others.
 
-The process tracker now properly supports PID reuse.
+### Context Menu
+
+A new context menu is now available to allow sending any table cell
+data to an external service.
+
+![Sending a cell content to an external service](sendto.png)
+
+This allows for quick lookups using `VirusTotal` or a quick
+`CyberChef` analysis. You can also add your own send to items in the
+configuration files.
+
 
 ## Conclusions
 

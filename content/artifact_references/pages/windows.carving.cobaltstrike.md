@@ -464,7 +464,7 @@ sources:
 
 
       -- function to extract potential additional encoded PE in data section
-      LET embedded_section(path,type) = SELECT 
+      LET embedded_section(path,type) = SELECT
             path as OriginalFileName,
             _value.Name as Name,
             _value.Size as Size,
@@ -501,16 +501,29 @@ sources:
                         FullPath,Size,
                         'Embedded data section: ' + Rule as Rule,
                         substr(start=0,end=1,str=String.Data) as Xor,
-                        read_file(accessor='data',filename=File.FullPath,offset=String.Offset,length=ExtractBytes) as _Data
-                    FROM yara(files=parse_binary(accessor='data',filename= embedded_section(path=TargetBytes,type='data')[0].Data,profile=PROFILE,struct="EmbeddedPE").DecodedPayload, accessor='data', rules=FindConfig, number=99)
+                        read_file(accessor='data',
+                                  filename=File.FullPath,
+                                  offset=String.Offset,
+                                  length=ExtractBytes) as _Data
+                    FROM yara(files=parse_binary(
+                                accessor='data',
+                                filename= embedded_section(path=TargetBytes,type='data')[0].Data,
+                                profile=PROFILE,
+                                struct="EmbeddedPE").DecodedPayload,
+                              accessor='data', rules=FindConfig, number=99)
                 },
                     section_encoded_stager = {
-                        SELECT 
+                        SELECT
                             FullPath,Size,
                             '' as Xor,
                             'Embedded data section: ' + Rule as Rule,
                             read_file(accessor='data',filename=File.FullPath) as _Data
-                        FROM yara(files=parse_binary(accessor='data',filename= embedded_section(path=TargetBytes,type='data')[0].Data,profile=PROFILE,struct="EmbeddedPE").DecodedPayload, accessor='data', rules=FindShellcode, number=99)
+                        FROM yara(files=parse_binary(
+                                     accessor='data',
+                                     filename= embedded_section(path=TargetBytes,type='data')[0].Data,
+                                     profile=PROFILE,
+                                     struct="EmbeddedPE").DecodedPayload,
+                                  accessor='data', rules=FindShellcode, number=99)
                     },
                 sleepfunction = {
                     SELECT *, '' as Xor,
@@ -521,7 +534,7 @@ sources:
                 })
 
       -- find target files
-      LET TargetFiles = SELECT FullPath,Size
+      LET TargetFiles = SELECT OSPath AS FullPath,Size
         FROM glob(globs=TargetFileGlob) WHERE NOT IsDir
 
 
@@ -533,7 +546,7 @@ sources:
                     FullPath, Size,
                     hash(path=FullPath) as Hash,
                     Xor,_Data,
-                    Rule + '|' + FullPath as _Group
+                    Rule + '|' + FullPath.String as _Group
                 FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                     beacon = {
                         SELECT *,
@@ -551,16 +564,29 @@ sources:
                             FullPath,Size,
                             'Embedded data section: ' + Rule as Rule,
                             substr(start=0,end=1,str=String.Data) as Xor,
-                            read_file(accessor='data',filename=File.FullPath,offset=String.Offset,length=ExtractBytes) as _Data
-                        FROM yara(files=parse_binary(accessor='data',filename= embedded_section(path=FullPath,type='auto')[0].Data,profile=PROFILE,struct="EmbeddedPE").DecodedPayload, accessor='data', rules=FindConfig, number=99)
+                            read_file(accessor='data',filename=File.OSPath,
+                                      offset=String.Offset,length=ExtractBytes) as _Data
+                        FROM yara(files=parse_binary(
+                                      accessor='data',
+                                      filename= embedded_section(path=FullPath,type='auto')[0].Data,
+                                      profile=PROFILE,
+                                      struct="EmbeddedPE").DecodedPayload,
+                                  accessor='data', rules=FindConfig, number=99)
                     },
                     section_encoded_stager = {
-                        SELECT 
+                        SELECT
                             FullPath,Size,
                             '' as Xor,
                             'Embedded data section: ' + Rule as Rule,
-                            read_file(accessor='data',filename=File.FullPath,length=ExtractBytes) as _Data
-                        FROM yara(files=parse_binary(accessor='data',filename= embedded_section(path=FullPath,type='auto')[0].Data,profile=PROFILE,struct="EmbeddedPE").DecodedPayload, accessor='data', rules=FindShellcode, number=99)
+                            read_file(accessor='data',
+                                      filename=File.FullPath,
+                                      length=ExtractBytes) as _Data
+                        FROM yara(files=parse_binary(
+                                      accessor='data',
+                                      filename= embedded_section(path=FullPath,type='auto')[0].Data,
+                                      profile=PROFILE,
+                                      struct="EmbeddedPE").DecodedPayload,
+                                  accessor='data', rules=FindShellcode, number=99)
                     },
                     sleepfunction = {
                         SELECT *, '' as Xor,
@@ -661,13 +687,13 @@ sources:
                 else=_Data)) as DecodedData
         FROM results
 
-      LET cleanup(config) = to_dict(item= 
-            { 
-                SELECT _key, _value 
-                FROM items(item=config) 
+      LET cleanup(config) = to_dict(item=
+            {
+                SELECT _key, _value
+                FROM items(item=config)
                 WHERE NOT _key =~ '^__'  AND ( _value  OR _key =~ '^license' )
             })
-      
+
       -- output rows, standard config priority, exclude _Data
       SELECT *,
         if(condition= format(format='%T',args=DecodedConfig)='string',
@@ -685,4 +711,5 @@ sources:
                 else= results)
             GROUP BY _Group
         }, exclude=["_Data","_Group"])
+
 ```
