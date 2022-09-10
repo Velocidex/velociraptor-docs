@@ -29,7 +29,7 @@ longer than that.
 
 ![Collection timed out](timed_out.png)
 
-Although sme data was transferred, not all the data was fully
+Although some data was transferred, not all the data was fully
 collected. This might be acceptable but if this machine is really
 compromised how can I recollect the same artifact?
 
@@ -75,14 +75,14 @@ choose which hunt to add it to.
 ![The new collection is now part of the hunt](new_hunt_collection.png)
 
 
-Now the new successul collection is part of the hunt. I can see it as
+Now the new successful collection is part of the hunt. I can see it as
 a second entry in the client's list.
 
 {{% notice note "Deleting the old collection" %}}
 
 Velociraptor does not automatically delete the old failed collection
 because it may still have some useful data (some data **was**
-transfered).
+transferred).
 
 If you do not want the old data any more, then just click the `Delete
 Flow` button once a better collection is available.

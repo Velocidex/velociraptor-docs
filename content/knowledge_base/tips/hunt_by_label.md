@@ -2,7 +2,7 @@
 
 In Velociraptor, `Hunts` are sets of the same collections across
 clients. For example, a hunt for `Scheduled Tasks` will automatically
-collect the scueduled tasks from each client.
+collect the scheduled tasks from each client.
 
 When creating the hunt it is possible to target the hunt to a
 `Label`. This only schedules the hunt on clients that have that same
