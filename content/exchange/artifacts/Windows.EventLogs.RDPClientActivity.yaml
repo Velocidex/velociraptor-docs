@@ -227,6 +227,7 @@ sources:
             max(item=EventTime) as End,
             max(item=EventTimeFloat)-min(item=EventTimeFloat) as Duration,
             SourceUserSID,
+            lookupSID(sid=SourceUserSID) as SourceUser,
             SourceHost,
             { SELECT _value FROM foreach(row=enumerate(items=DestinationHost)) WHERE _value != NULL LIMIT 1 } as DestinationHost,
             { SELECT _value FROM foreach(row=enumerate(items=ConnectedDomain)) WHERE _value != NULL LIMIT 1 } as ConnectedDomain,
