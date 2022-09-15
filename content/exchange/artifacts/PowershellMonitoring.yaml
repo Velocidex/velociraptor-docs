@@ -68,7 +68,8 @@ sources:
             System.ProcessID as ProcessID,
             get(member="EventData") AS EventData
       FROM watch_etw(guid="{a0c1853b-5c40-4b15-8766-3cf1c58f985a}") 
-      WHERE ( EventData.ScriptBlockText OR EventData.Payload =~ '^Command .+ is Started\.\r\n$' )
+      WHERE EventID = ( 4104, 7937 )
+        AND ( EventData.ScriptBlockText OR EventData.Payload =~ '^Command .+ is Started\.\r\n$' )
         AND ( EventData.ScriptBlockText =~ ScriptBlockRegex
            OR EventData.Payload =~ CommandletRegex )
       
