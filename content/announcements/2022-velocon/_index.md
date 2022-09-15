@@ -31,6 +31,9 @@ of the wider DFIR community.  This year the conference will be online
 and completely free! User-created presentations will be published on
 our Velociraptor site and as YouTube videos after the event.
 
+Ask questions and interact with other attendees on our Discord server
+in channel [#velocon2022](https://docs.velociraptor.app/discord/)
+
 <a  style="width: 100%;font-size: 24px !important"
     href="https://rapid7.zoom.us/webinar/register/WN_Hsef_RoXSGOzT40rGW5jwg"
     class="btn btn-default">
@@ -56,9 +59,8 @@ We look forward to seeing you at VeloCON!
         </tr>
     <tr>
         <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">9-9:30 am</font></td>
-        <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Paulo Pereira, PhD<br>Forensics at Digits3c</font></td>
-        <td style="border-right: 1px solid #000000" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">
-            <a href="#ransomware-investigation-using-velociraptor">Ransomware Investigation Using Velociraptor</a></font></td>
+        <td align="left" valign=bottom><font size=3 color="#000000">Mike Cohen <br>Digital Paleontologist, Velociraptor/Rapid7</font></td>
+        <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">Year in Review/Future Roadmap</font></td>
     </tr>
     <tr>
         <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom><font size=3 color="#000000">9:30-10 am</font></td>
@@ -154,8 +156,9 @@ We look forward to seeing you at VeloCON!
     </tr>
     <tr>
         <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom><font size=3 color="#000000">5-5:15 pm</font></td>
-        <td align="left" valign=bottom><font size=3 color="#000000">Mike Cohen <br>Digital Paleontologist, Velociraptor/Rapid7</font></td>
-        <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">Year in Review/Future Roadmap</font></td>
+        <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Paulo Pereira, PhD<br>Forensics at Digits3c</font></td>
+        <td style="border-right: 1px solid #000000" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">
+            <a href="#ransomware-investigation-using-velociraptor">Ransomware Investigation Using Velociraptor</a></font></td>
     </tr>
     <tr>
         <td style="border-bottom: 1px solid #000000; border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">5:15-5:20 pm</font></td>

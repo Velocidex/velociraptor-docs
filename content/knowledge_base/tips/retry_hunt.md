@@ -64,8 +64,8 @@ collections. You can add/remove collections from this set at will.
 
 {{% /notice %}}
 
-I am add the new collection to the hunt manually by clicking the `Add
-to Hunt` button.
+I am adding the new collection to the hunt manually by clicking the
+`Add to Hunt` button.
 
 ![Manually Adding the collection to the hunt](manually_adding_hunt_collection.png)
 
