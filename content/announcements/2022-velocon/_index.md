@@ -13,34 +13,10 @@ noTitle: true
 
 ## The 2022 Velociraptor Conference - Digging together...
 
-Join the open-source DFIR community for a day-long virtual summit as
-we DIG DEEPER TOGETHER!
+Thank you for joining us for the day-long virtual summit as we DIG
+DEEPER TOGETHER!
 
-Have you ever wanted to share your passion and interest of
-Velociraptor with the rest of the community? VeloCON is your chance!
-Join other DFIR experts and enthusiasts from around the world this
-September as we delve into new ideas, workflows and features that will
-take Velociraptor to the next level of endpoint management, detection
-and response.
-
-The first annual VeloCON summit will be held Thursday Sept 15th, 2022
-with times oriented to the continental USA timezones.  It is a 1-day
-event focused on the Velociraptor community. It is a forum to share
-experiences in using and developing Velociraptor to address the needs
-of the wider DFIR community.  This year the conference will be online
-and completely free! User-created presentations will be published on
-our Velociraptor site and as YouTube videos after the event.
-
-Ask questions and interact with other attendees on our Discord server
-in channel [#velocon2022](https://docs.velociraptor.app/discord/)
-
-<a  style="width: 100%;font-size: 24px !important"
-    href="https://rapid7.zoom.us/webinar/register/WN_Hsef_RoXSGOzT40rGW5jwg"
-    class="btn btn-default">
-    Register Here
-</a>
-
-We look forward to seeing you at VeloCON!
+[The full conference is now available!]({{< ref "/presentations/2022_velocon/" >}})
 
 ## Agenda at a glance
 
@@ -436,4 +412,3 @@ Attendees will walk away from this presentation with several examples
 of how they immediately leverage Atomic Red Team tests and catch
 execution of those tests through Velociraptor to evaluate their
 detection capability and improve the security of their enterprise.
-z
