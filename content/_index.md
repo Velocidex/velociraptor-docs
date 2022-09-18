@@ -21,14 +21,6 @@ carousel:
 
 ---
 
-<div class="banner">
-    <a href="/announcements/2022-velocon/"
-       alt="2022 VeloCon">
-       <img style="margin: 0"
-           src="/announcements/2022-velocon/hunt_in_packs.jpg?featherlight=false">
-    </a>
-</div>
-
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response
