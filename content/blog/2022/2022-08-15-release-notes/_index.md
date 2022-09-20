@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.6.6 Release"
 description: |
-   Velociraptor Release 0.6.6 is now in Release Candidate. This post discusses some of the new features.
+   Velociraptor Release 0.6.6 is now LIVE. This post discusses some of the new features.
 tags:
  - Release
 author: "Mike Cohen"
