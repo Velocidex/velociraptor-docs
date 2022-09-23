@@ -54,16 +54,16 @@ LET Boundary = "-----------------------------9051914041544843365972754266"
 
 -- A Helper function to make a regular form variable.
 LET Data(Name, Value) = format(
-  format='--%s\nContent-Disposition: form-data; name="%v"\n\n%s\n',
+  format='--%s\r\nContent-Disposition: form-data; name="%s"\r\n\r\n\r\n%s\r\n',
   args=[Boundary, Name, Value])
 
 -- A Helper function to embed a file content.
-LET File(Filename, ParameterName, Data) = format(
-  format='--%s\nContent-Disposition: form-data; name="%s"; filename="%v"\nContent-Type: text/plain\n\n%s\n',
-  args=[Boundary, ParameterName, Filename, Data])
+LET File(Filename, ParameterName, ContentType, Data) = format(
+  format='--%s\r\nContent-Disposition: form-data; name="%s"; filename="%s"\r\nContent-Type: %s\r\n\r\n%v\r\n',
+  args=[Boundary, ParameterName, Filename, ContentType, Data])
 
 -- The End boundary signals the last part
-LET END = format(format="--%s--\n", args=Boundary)
+LET END = format(format="%s--\r\n", args=Boundary)
 
 -- Now make the HTTP request and post the form
 -- Remember the Content-Type header which includes the boundary!
@@ -72,7 +72,7 @@ SELECT * FROM http_client(
   url="http://www.example.com/formhandler",
   headers=dict(`Content-Type`="multipart/form-data; boundary=" + Boundary),
   data=Data(Name="name", Value="Bar") +
-       File(Filename="Hello.txt", ParameterName="file_upload", Data="this is a test") +
+       File(Filename="Hello.txt", ParameterName="file_upload", ContentType="text/plain", Data="this is a test") +
        END)
 ```
 
