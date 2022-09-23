@@ -54,7 +54,7 @@ LET Boundary = "-----------------------------9051914041544843365972754266"
 
 -- A Helper function to make a regular form variable.
 LET Data(Name, Value) = format(
-  format='--%s\r\nContent-Disposition: form-data; name="%s"\r\n\r\n\r\n%s\r\n',
+  format='--%s\r\nContent-Disposition: form-data; name="%s"\r\n\r\n\r\n%v\r\n',
   args=[Boundary, Name, Value])
 
 -- A Helper function to embed a file content.
