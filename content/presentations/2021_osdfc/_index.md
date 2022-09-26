@@ -2,6 +2,7 @@
 title: Open Source Digital Forensic Conference 2021
 menutitle: OSDFC 2021
 weight: 15
+no_menu: true
 ---
 
 This talk was given at the Open Source Digital Forensic conference 2021 https://www.osdfcon.org/events_2021/velociraptor/

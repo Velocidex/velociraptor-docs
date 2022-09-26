@@ -53,6 +53,8 @@ The takeaway for attendees:
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTsDqy_0Vy1SzV3kQ_j5rfl3S5xL1pwKSLHat73VBFgSe_cNNTo80Ds2cJNad2wt588Al_29Vudtieg/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1280" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/lfkHBzXqA1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Workshop: Digging Deeper with Velociraptor (Half Day)
 
 With an increasingly mobile and remote workforce the old manual

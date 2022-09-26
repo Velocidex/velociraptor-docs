@@ -2,6 +2,7 @@
 title: DFRWS US 2021 Workshop
 linktitle: DFRWS US 2021 Workshop
 weight: 10
+no_menu: true
 ---
 
 This workshop will be hosted on [Thursday, July 15 2021](https://dfrws.org/usa-2021-program/). It will be delivered
