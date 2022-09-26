@@ -25,9 +25,9 @@ verbose|Set to receive verbose information about all the certs.|bool
 
 ### Description
 
-This plugin parses authenticode information from PE files.
+Parses authenticode information from PE files.
 
-On windows, the plugin will also use the windows API to determine
+On windows, the function will also use the windows API to determine
 if the binary is trusted by the system.
 
 

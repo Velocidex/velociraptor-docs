@@ -13,7 +13,7 @@ APIs. The following are only available when running on Windows.
 |-|-|-|
 |[amsi](amsi)|<span class='vql_type'>Function</span>|AMSI is an interface on windows to scan a string for malware|
 |[appcompatcache](appcompatcache)|<span class='vql_type'>Plugin</span>|Parses the appcompatcache|
-|[authenticode](authenticode)|<span class='vql_type'>Function</span>|This plugin parses authenticode information from PE files|
+|[authenticode](authenticode)|<span class='vql_type'>Function</span>|Parses authenticode information from PE files|
 |[certificates](certificates)|<span class='vql_type'>Plugin</span>|Collect certificate from the system trust store|
 |[dns](dns)|<span class='vql_type'>Plugin</span>|Monitor dns queries|
 |[handles](handles)|<span class='vql_type'>Plugin</span>|Enumerate process handles|
