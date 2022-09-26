@@ -6,6 +6,7 @@ description: |
 
 weight: 10
 no_edit: true
+hidden: true
 noTitle: true
 ---
 

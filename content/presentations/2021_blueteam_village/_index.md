@@ -2,6 +2,7 @@
 title: Blue Team Village 2021
 menutitle: BTV 2021
 weight: 18
+no_menu: true
 ---
 
 This talk was given at the Blue Team Village at DefCon 2021

@@ -217,7 +217,7 @@
     },
     {
         "name": "authenticode",
-        "description": "This plugin parses authenticode information from PE files.",
+        "description": "Parses authenticode information from PE files.",
         "type": "Function",
         "args": [
             {
