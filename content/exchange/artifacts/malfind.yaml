@@ -187,7 +187,6 @@ sources:
       FROM if(condition= UploadSection,
                 then= upload_section,
                 else= results)
-        WHERE 
         
 column_types:
   - name: SectionData
