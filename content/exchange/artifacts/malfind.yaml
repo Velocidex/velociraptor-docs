@@ -15,8 +15,6 @@ description: |
     To output all executable sections without a file backed on disk add the yara 
     rule:  rule always_true {  condition: true }  
     
-    
-
 parameters:
   - name: ProcessRegex
     description: A regex applied to process names.
