@@ -11,9 +11,7 @@ description: |
     or well known suspicious strings, meterpreter and Cobalt Strike.
     
     Note: Add additional yara as desired.  
-    Expect some false positives and triage accordingly.  
-    To output all executable sections without a file backed on disk add the yara 
-    rule:  rule always_true {  condition: true }  
+    Expect some false positives and triage accordingly.
     
 parameters:
   - name: ProcessRegex
@@ -149,7 +147,7 @@ sources:
           
       LET results = SELECT * FROM foreach(row=hits,
         query={
-            SELECT 
+            SELECT
                 CreateTime,Pid, Name,_Address, AddressRange,Protection,SectionSize,
                 format(format='% x',args=read_file(
                      accessor='offset',
@@ -163,7 +161,13 @@ sources:
                                 then= SectionDataGuiSize, 
                                 else= SectionSize)
                         ) as SectionData,
-                _PathSpec
+                _PathSpec,
+                dict(
+                    Hit=Rule,
+                    Variable=String.Name,
+                    Offset=String.Offset,
+                    HexData=String.HexData
+                        ) as ContentHit
             FROM yara(accessor='offset',
                 files=_PathSpec, 
                 rules=SuspiciousContent,
