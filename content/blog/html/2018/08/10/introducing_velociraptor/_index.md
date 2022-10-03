@@ -108,7 +108,7 @@ into sections. Here is a quick overview:
     -   Server\_urls is a list of URLs the client will attempt to
         connect to. If a connection to one fails it will try the others
         repeatedly. It is wise to include several URLs here or at least
-        a DNS name so the server may be easily t just use a single IP
+        a DNS name so the server may be easily to just use a single IP
         address here). This will usually be different from Frontend bind
         address in a proper deployment but for testing it may be the
         same.
