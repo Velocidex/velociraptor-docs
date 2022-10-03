@@ -194,7 +194,7 @@ mechanism, let’s try to apply our understanding to debugging common
 deployment issues.
 
 If the client does not appear to properly connect to the server, the
-first thing is to run it manually (using the `velociraptor client -v`
+first thing is to run it manually (using the `velociraptor --config client.config.yaml client -v`
 command):
 
 ![Running the client manually](1TOeyrCcX69mtUdO8E4ZK9g.png)
