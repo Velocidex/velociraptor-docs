@@ -1,9 +1,7 @@
 name: MacOS.Collection.Aftermath
 author: Wes Lambert -- @therealwlambert
 description: |
-    This is a simple artifact that leverages Afermath to collect many
-    different forensic artifacts from a macOS host, then uploads the results to
-    the Velociraptor server.
+    This is a simple artifact that leverages Afermath to collect many different forensic artifacts from a macOS host, then uploads the results to the Velociraptor server.
 
     From the project's description:
 
@@ -19,7 +17,7 @@ tools:
     serve_locally: true
 parameters:
   - name: Analyze
-    descriptions: Analyze the collected data using the native --analyze option. This produces a ZIP file with summary information based on the analysis. If not chosen, the raw data will be uploaded.
+    description: Analyze the collected data using the native --analyze option. This produces a ZIP file with summary information based on the analysis. If not chosen, the raw data will be uploaded.
     default: F
     type: bool
     
