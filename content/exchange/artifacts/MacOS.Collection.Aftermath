@@ -17,7 +17,7 @@ description: |
 
 tools:
   - name: Aftermath
-    url: https://github.com/Velocidex/Tools/raw/main/aftermath
+    url: https://github.com/Velocidex/Tools/raw/main/Aftermath/aftermath
     serve_locally: true
   
 precondition: SELECT OS From info() where OS = 'darwin'
