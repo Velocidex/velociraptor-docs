@@ -29,6 +29,11 @@ VELO_URL = "https://github.com/Velocidex/velociraptor/releases/download/v0.6.4-2
 EXCHANGE_PATH = os.path.abspath("./content/exchange/artifacts/")
 VELO_LOGFILE = "/tmp/velo.log"
 
+# Verify artifact contains correct file extension
+for f in os.listdir(EXCHANGE_PATH):
+    if not f.endswith('.yaml'):
+        raise Exception("ERROR: File {0} does not contain a valid extension!".format(f))
+
 with open(VELO_CONFIG_FILENAME, "w") as fd:
     fd.write(VELO_CONFIG)
 
