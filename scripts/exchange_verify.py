@@ -32,9 +32,8 @@ VELO_LOGFILE = "/tmp/velo.log"
 # Verify artifact contains correct file extension
 # Skip other specific file types
 VALID_EXTENSIONS = (".yaml", ".gitignore", ".jpg", ".png")
-
 for f in os.listdir(EXCHANGE_PATH):
-    if os.path.isfile(f):
+    if '.' in f:
         if not f.endswith(VALID_EXTENSIONS):
             raise Exception("ERROR: File {0} does not contain a valid extension!".format(f))
 
