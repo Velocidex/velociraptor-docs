@@ -11,7 +11,7 @@ description: |
     or well known suspicious strings, meterpreter and Cobalt Strike.
     
     Note: Add additional yara as desired.  
-    Expect some false positives and triage accordingly.
+    Expect some false positives and triage accordingly.  
     
 parameters:
   - name: ProcessRegex
@@ -20,6 +20,14 @@ parameters:
     type: regex
   - name: PidRegex
     default: .
+    type: regex
+  - name: ProtectionRegex
+    description: |
+        Protection of section. Default is Executable but can customise for other usecases.  
+        Examples: x for executable, r for read, w for write.  
+        (x|r|w) or xrw for multiple.
+        x-w for strict.
+    default: x
     type: regex
   - name: SectionDataGuiSize
     description: Size of SectionData to show in gui. For large files, use UploadSection
@@ -115,7 +123,14 @@ parameters:
             condition:
                 7 of them
         }
-
+  - name: NumberOfHits
+    description: THis artifact will stop by default at one hit. This setting allows additional hits
+    default: 1
+    type: int
+  - name: ContextBytes
+    description: Include this amount of bytes around hit as context.
+    default: 0
+    type: int
   - name: UploadSection
     description: Upload suspicious section.
     type: bool
@@ -142,38 +157,45 @@ sources:
                     Path=Address) AS _PathSpec
             FROM vad(pid=Pid)
             WHERE NOT MappingName
-                AND Protection =~ 'X'
+                AND Protection =~ ProtectionRegex
           })
           
-      LET results = SELECT * FROM foreach(row=hits,
-        query={
-            SELECT
-                CreateTime,Pid, Name,_Address, AddressRange,Protection,SectionSize,
-                format(format='% x',args=read_file(
+      LET results <= SELECT *,
+            format(format='% x',args=read_file(
                      accessor='offset',
                      filename=_PathSpec,
                      length=2)) as HexHeader,
-                magic(path=_PathSpec, accessor='offset') as DataMagic,
-                read_file(
+            magic(path=_PathSpec, accessor='offset') as DataMagic,
+            base64encode(string=read_file(
                      accessor='offset',
                      filename=_PathSpec,
-                     length= if(condition= Size>SectionDataGuiSize, 
-                                then= SectionDataGuiSize, 
-                                else= SectionSize)
-                        ) as SectionData,
-                _PathSpec,
-                dict(
-                    Hit=Rule,
-                    Variable=String.Name,
-                    Offset=String.Offset,
-                    HexData=String.HexData
-                        ) as ContentHit
-            FROM yara(accessor='offset',
-                files=_PathSpec, 
-                rules=SuspiciousContent,
-                end=SectionSize,  key='X',  number=1)
-            LIMIT 1
-        })        
+                     length= if(condition= SectionDataGuiSize > SectionSize,
+                                then= SectionSize,
+                                else= SectionDataGuiSize)
+                        )) as SectionData,
+            YaraHit, _PathSpec
+        FROM foreach(row=hits,
+            query={
+                SELECT
+                    CreateTime,Pid, Name,_Address, AddressRange,Protection,SectionSize,
+                    enumerate(items=dict(
+                        Rule=Rule,
+                        Meta=Meta,
+                    	Tags=Tags,
+                    	String=String)) as YaraHit,
+                    _PathSpec
+                FROM yara(
+                            accessor='offset',
+                            files=_PathSpec, 
+                            rules=SuspiciousContent,
+                            end=SectionSize,  key='X', 
+                            number=NumberOfHits,
+                            context=ContextBytes
+                        )
+                GROUP BY CreateTime,Pid, Name, AddressRange
+            })
+        
+        
       LET upload_section = SELECT *,
                 upload(accessor='sparse', 
                   file=pathspec(
@@ -183,8 +205,9 @@ sources:
                     name=format(format='%v-%v_%v.bin',args= [ Name, Pid, AddressRange ])
                     ) as SectionDump
             FROM results
+            GROUP BY CreateTime,Pid, Name,_Address, AddressRange
       
-      SELECT *, 
+      SELECT *,
         process_tracker_callchain(id=Pid).Data as ProcessChain
       FROM if(condition= UploadSection,
                 then= upload_section,
@@ -192,4 +215,4 @@ sources:
         
 column_types:
   - name: SectionData
-    type: hex
+    type: base64hex
