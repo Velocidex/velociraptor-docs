@@ -12,10 +12,10 @@ GUI is nice it can be made much more efficient to automate the
 collector.
 
 When building the collector using the GUI you might notice that the
-GUI simply preconfigures and launches a new server artifact and the
+GUI simply preconfigured and launches a new server artifact and the
 server simply collects that.
 
-![The CreateOfflineCollector artifact](create_collector.png)
+![The Create Offline Collector artifact](create_collector.png)
 
 
 You can actually collect the same artifact using the command line (on
@@ -54,4 +54,4 @@ change to the velociraptor user first (`sudo -u velociraptor bash`)
 
 {{% /notice %}}
 
-Tags: #configuation #offlinecollector
+Tags: #configuration #collector
