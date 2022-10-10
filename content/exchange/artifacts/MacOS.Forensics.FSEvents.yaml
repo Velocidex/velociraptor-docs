@@ -22,7 +22,7 @@ parameters:
      default: .
      type: regex
    - name: FlagsRegex
-     description: Filter by flags 
+     description: Filter by flags
      type: regex
      default: .
 export: |
@@ -47,7 +47,7 @@ export: |
           bitmap: {
             FSE_CREATE_FILE: 0,
             FSE_DELETE: 1,
-            FSE_STAT_CHANGED: 2, 
+            FSE_STAT_CHANGED: 2,
             FSE_RENAME: 3,
             FSE_CONTENT_MODIFIED: 4,
             FSE_EXCHANGE: 5,
@@ -56,10 +56,10 @@ export: |
             FSE_CHOWN: 8,
             FSE_XATTR_MODIFIED: 9,
             FSE_XATTR_REMOVED: 10,
-            FSE_DOCID_CREATED: 11, 
+            FSE_DOCID_CREATED: 11,
             FSE_DOCID_CHANGED: 12,
             FSE_UNMOUNT_PENDING: 13,
-            FSE_CLONE: 14, 
+            FSE_CLONE: 14,
             FSE_MODE_CLONE: 16,
             FSE_TRUNCATED_PATH: 17,
             FSE_REMOTE_DIR_EVENT: 18,
@@ -75,20 +75,20 @@ export: |
       }],
     ]]
     ]'''
-    
+
 sources:
   - query: |
-      LET files = SELECT OSPath 
+      LET files = SELECT OSPath, Mtime
       FROM glob(globs=(Glob || GlobTable.Glob))
-      
+      WHERE log(message=OSPath)
+
       SELECT * FROM foreach(row=files,
       query={
-        SELECT path, id, join(array=flags, sep=", ") AS flags 
+        SELECT OSPath.Basename AS File, Mtime, path,
+               id, join(array=flags, sep=", ") AS flags
         FROM foreach(row=parse_binary(
            filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
            accessor="data",
            profile=FSEventProfile, struct="Header").Items)
       })
       WHERE path =~ PathRegex AND flags =~ FlagsRegex
-
-       

@@ -68,6 +68,8 @@ for you! To learn more about Velocistack, attend this presentation!
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IFChO6ER3_Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
+[Slides](https://drive.google.com/file/d/19Vpf1Wb5CzWEU44PJxz0sTiAbWHAdT_g/view?usp=sharing)
+
 ## Machine Learning for DFIR with Velociraptor: From Setting Expectations to a Case Study
 By **Christian Hammerschmidt, PhD** - Head of Engineering/ML, APTA Technologies
 
@@ -106,6 +108,7 @@ Affiliation: APTA Technologies, https://apta.tech
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lFfAam4KLuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+[Slides](https://drive.google.com/file/d/1wtHAAi00CMGDj9d5nqcGD67MZR_XIkA2/view?usp=sharing)
 
 ## When Dinosaurs Ruled the Blue Team: Retrieving triage images with EDR
 By **Dan Banker**
@@ -124,6 +127,8 @@ also cover using Winpmem in a similar process to retrieve memory, and
 an alternate triage image process for Linux machines.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/eL2YZ1CoKtQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[Slides](https://drive.google.com/file/d/1pmhMxnXwD5VEQ8IyFdxUsMsqCIfpYuvN/view?usp=sharing)
 
 ## Using DinoSOARLab to Uncover Adversary Actions and Orchestrate Rapid Response
 By **Wes Lambert** - Principal Engineer, Security Onion Solutions
@@ -161,6 +166,8 @@ how they can benefit from integration of Velociraptor with Security
 Onion, but with other stacks and technologies as well.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5RxFjQc652w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[Slides](https://drive.google.com/file/d/15jf6pHkYq5Gu9ih-iAaKKtemyX9Tp4pi/view?usp=sharing)
 
 ## Cloud Native Velociraptor
 By **Mike Cohen** - Digital Paleontologist
@@ -241,6 +248,8 @@ enforcement comfort.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JvoweIS4c9g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+[Slides](https://drive.google.com/file/d/1voM5HDWOE4aTrdf0_w1oRzg8YZ5nPi9x/view?usp=sharing)
+
 ## Mac Response – The Good, the Bad, and the Ugly
 By **Mike Pilkington**
 
@@ -260,6 +269,8 @@ potential intrusions against Macs, and how Velociraptor can speed up
 the triage process at scale.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-ask9Oe6ovo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[Slides](https://drive.google.com/file/d/1_Y4IAxxxePV4TrhtamWQXXMZ723z7KUC/view?usp=sharing)
 
 ## Purple Teaming with ARTifacts
 By **Wes Lambert** - Principal Engineer, Security Onion Solutions
@@ -282,3 +293,5 @@ execution of those tests through Velociraptor to evaluate their
 detection capability and improve the security of their enterprise.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9HmYNDTIsJ0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[Slides](https://drive.google.com/file/d/1nRqqodiAn1-eGw5RWOIHaI6FxS3EROwb/view?usp=sharing)

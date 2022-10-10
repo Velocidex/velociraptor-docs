@@ -1,5 +1,30 @@
 [
     {
+        "title": "How to control hunting by label groups?",
+        "link": "/knowledge_base/tips/hunt_by_label",
+        "tags": [
+            "hunting",
+            "vql",
+            "labels"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-09-10"
+    },
+    {
+        "title": "How do I re-collect a failed artifact in a hunt?",
+        "link": "/knowledge_base/tips/retry_hunt",
+        "tags": [
+            "hunting",
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-09-10"
+    },
+    {
         "title": "How do I get the latest release binary?",
         "link": "/knowledge_base/tips/getting_latest_release",
         "tags": [
@@ -231,5 +256,17 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How can I automate the creation of the offline collector?",
+        "link": "/knowledge_base/tips/automate_offline_collector",
+        "tags": [
+            "configuation",
+            "offlinecollector"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]
