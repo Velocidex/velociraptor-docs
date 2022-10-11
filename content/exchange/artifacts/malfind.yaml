@@ -27,7 +27,7 @@ parameters:
         Examples: x for executable, r for read, w for write.  
         (x|r|w) or xrw for multiple.
         x-w for strict.
-    default: x
+    default: xrw
     type: regex
   - name: SectionDataGuiSize
     description: Size of SectionData to show in gui. For large files, use UploadSection
