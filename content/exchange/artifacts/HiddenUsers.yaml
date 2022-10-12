@@ -7,7 +7,7 @@ description: |
     (via Reg or other means) that will hide the user "test" from 
     the Windows login screen: 
     
-    reg.exe ADD 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccountsUserList' /v test /t REG_DWORD /d 0 /f.
+    reg.exe ADD 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList' /v test /t REG_DWORD /d 0 /f.
 
     * ATT&CK tactic: Defense Evasion, Hide Artifacts: Hidden Users
     * ATT&CK technique: T1564.002
