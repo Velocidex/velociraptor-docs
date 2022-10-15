@@ -27,7 +27,7 @@
         "tags": [],
         "author_link": "https://github.com/RHinDFIR",
         "author_avatar": "https://avatars.githubusercontent.com/u/95378541?v=4",
-        "date": "2022-10-07"
+        "date": "2022-02-16"
     },
     {
         "title": "Windows.Detection.BruteRatel",
@@ -37,7 +37,7 @@
         "tags": [],
         "author_link": "https://github.com/flukes86",
         "author_avatar": "https://avatars.githubusercontent.com/u/60819470?v=4",
-        "date": "2022-10-07"
+        "date": "2022-07-12"
     },
     {
         "title": "Windows.Detection.ISOMount",
@@ -47,7 +47,7 @@
         "tags": [],
         "author_link": "https://github.com/cquinn-r7",
         "author_avatar": "https://avatars.githubusercontent.com/u/107484627?v=4",
-        "date": "2022-10-07"
+        "date": "2022-10-04"
     },
     {
         "title": "Custom.Windows.Triage.HighValueMemory",
@@ -57,7 +57,7 @@
         "tags": [],
         "author_link": "https://github.com/liteman",
         "author_avatar": "https://avatars.githubusercontent.com/u/6087529?v=4",
-        "date": "2022-10-07"
+        "date": "2022-01-25"
     },
     {
         "title": "MacOS.ParallelsVM.SuspendedMemory",
