@@ -1,5 +1,105 @@
 [
     {
+        "title": "Windows.Carving.BRc4",
+        "author": "mgreen27",
+        "description": "This artifact extracts Brute Ratel C4 (BRc4) configuration from a byte stream, \nprocess or file on disk. BRc4 is an emerging red-teaming and adversarial \nattack simulation tool.",
+        "link": "/exchange/artifacts/pages/brc4",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-10-13"
+    },
+    {
+        "title": "MacOS.Collection.Aftermath",
+        "author": "weslambert",
+        "description": "This is a simple artifact that leverages Afermath to collect many different forensic artifacts from a macOS host, then uploads the results to the Velociraptor server.",
+        "link": "/exchange/artifacts/pages/macos.collection.aftermath",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-10-07"
+    },
+    {
+        "title": "Windows.Applications.AnyDesk.LogParser",
+        "author": "RHinDFIR",
+        "description": "Parses the AnyDesk ad.trace log file.",
+        "link": "/exchange/artifacts/pages/windows.applications.anydesk.logparser",
+        "tags": [],
+        "author_link": "https://github.com/RHinDFIR",
+        "author_avatar": "https://avatars.githubusercontent.com/u/95378541?v=4",
+        "date": "2022-10-07"
+    },
+    {
+        "title": "Windows.Detection.BruteRatel",
+        "author": "flukes86",
+        "description": "This hunt runts the Immersive Labs yara rule (https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings. \n",
+        "link": "/exchange/artifacts/pages/windows.detection.bruteratel",
+        "tags": [],
+        "author_link": "https://github.com/flukes86",
+        "author_avatar": "https://avatars.githubusercontent.com/u/60819470?v=4",
+        "date": "2022-10-07"
+    },
+    {
+        "title": "Windows.Detection.ISOMount",
+        "author": "cquinn-r7",
+        "description": "Following Microsoft's decision to block macros by default on MS Office applications, threat actors are increasingly using container files such as ISO files to distribute malware. \nThis artifact will extract evidence of .iso files being mounted that may be malicious from the Microsoft-Windows-VHDMP-Operational EventLog. \nThe artifact targets the string \".iso\" in event IDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).\n",
+        "link": "/exchange/artifacts/pages/windows.detection.isomount",
+        "tags": [],
+        "author_link": "https://github.com/cquinn-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/107484627?v=4",
+        "date": "2022-10-07"
+    },
+    {
+        "title": "Custom.Windows.Triage.HighValueMemory",
+        "author": "liteman",
+        "description": "Dump process memory and upload to the server",
+        "link": "/exchange/artifacts/pages/windows.triage.highvaluememory",
+        "tags": [],
+        "author_link": "https://github.com/liteman",
+        "author_avatar": "https://avatars.githubusercontent.com/u/6087529?v=4",
+        "date": "2022-10-07"
+    },
+    {
+        "title": "MacOS.ParallelsVM.SuspendedMemory",
+        "author": "DoppioRistretto",
+        "description": "Looks for suspended Parallels VM owned by any user on a MacOS system. Can automatically upload the virtual memory files if found.",
+        "link": "/exchange/artifacts/pages/macos.parallelsvm.suspendedmemory",
+        "tags": [],
+        "author_link": "https://github.com/DoppioRistretto",
+        "author_avatar": "https://avatars.githubusercontent.com/u/28914750?v=4",
+        "date": "2022-10-01"
+    },
+    {
+        "title": "Windows.Detection.Malfind",
+        "author": "mgreen27",
+        "description": "This artifact checks the VAD for executable sections that are not maped to disk \nand has suspicious content which may indicate process injection.",
+        "link": "/exchange/artifacts/pages/malfind",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-09-30"
+    },
+    {
+        "title": "Windows.ETW.Powershell",
+        "author": "mgreen27",
+        "description": "This artifact enables Powershell scriptblock and commandlet load monitoring.  \nIt uses the ETW provider: Microsoft-Windows-PowerShell  ",
+        "link": "/exchange/artifacts/pages/powershellmonitoring",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-09-15"
+    },
+    {
+        "title": "MacOS.UnifiedLogParser",
+        "author": "weslambert",
+        "description": "\nThis is a simple, un-optimized artifact that leverages Mandiant's `macos-unifiedlogs`/`unifiedlog_parser` to obtain parsed log information from macOS's Unified Log.",
+        "link": "/exchange/artifacts/pages/macos.unifiedlogparser",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2022-09-07"
+    },
+    {
         "title": "Windows.ETW.DNSOfflineCollector",
         "author": "DfirJos",
         "description": "This artifact collects DNS queries for a specified duration. It can be used \nwith an Offline Collector (which is not the case with Windows.ETW.DNS).\nIt uses the artifact (Windows.ETW.DNS) that was built by Matt Green - @mgreen27\n",
