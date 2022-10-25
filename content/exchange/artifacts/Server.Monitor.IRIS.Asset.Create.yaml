@@ -1,0 +1,107 @@
+name: Server.Monitor.IRIS.Asset.Create
+description: |
+   Watches for clients that get the `IRIS-ADD` label assigned and adds them to DFIR-IRIS. To successfully add an asset, a label specifying the system type is required as well. See the default values of `AssetLabels`. This artifact adds information to IRIS and vice versa:
+   
+    * As properties in IRIS: Hostname, domain, last IP address, system type
+    * As description in IRIS: Velo ClientId, Velo agent first seen, Time when the asset was added to IRIS
+    * As tags in IRIS: Existing tags for the client in Velo except for the IRIS tags and the system type labels
+    * As metadata in Velo: IRIS asset id
+
+   Once an asset has been added to IRIS, the `IRIS-ADD` label will be changed to `IRIS`. As long as the IRIS tag is in place, the asset won't be readded.
+   If it fails to add the client for whatever reason, i.e., wrong case ID, wrong API key, etc., it will change the `IRIS-ADD` label to `IRIS-ERROR`.
+   
+   For best experience use the Exchange.Server.Monitor.Autolabeling.Clients to automatically apply labels specifying the system types to clients as soon as they are enrolled!
+  
+   Learn more about IRIS, here: https://dfir-iris.org/
+  
+   It is recommended to use the Server Metadata section to store credentials, instead of having to store directly inside the artifact.
+   
+   *Disclaimer: This artifact utilized some parts of Wes Lamberts Exchange.Server.Monitor.IRIS.Case.Create artifact.*
+
+type: SERVER_EVENT
+
+author: Stephan Mikiss - @StephMikiss
+
+parameters:
+  - name: IrisURL
+    default: https://iris.example.com:4433
+  - name: IrisKey
+    type: string
+    description: API key for DFIR-IRIS. Leave blank here if using server metadata store.
+    default:
+  - name: IrisCaseId
+    default: 1
+    type: int
+    description: Case ID of DFIR-IRIS case where the assets should be added. Leave blank here if using server metadata store.
+  - name: AssetLabels
+    type: csv
+    description: Label to machine type mapping. It's working best if you combine it with the Exchange.Server.Monitor.Autolabeling.Clients artifact.
+    default: |
+        AssetLabel,AssetTypeId,AssetDescription
+        Workstation,9,Windows Workstation
+        Server,10,Windows Server
+        Domain Controller,11,Windows Domain Controller
+        Linux,3,Linux Server
+        Linux Workstation,4,Linux Workstation
+        Mac,6,Mac Workstation
+  - name: DisableSSLVerify
+    type: bool
+    default: true
+    
+sources:
+  - query: |
+      LET URL <= if(
+            condition=IrisURL,
+            then=IrisURL,
+            else=server_metadata().IrisURL)
+      LET Creds = if(
+           condition=IrisKey,
+           then=IrisKey,
+           else=server_metadata().IrisKey)
+      LET CaseID <= if(
+           condition=IrisCaseId,
+           then=IrisCaseId,
+           else=server_metadata().IrisCaseId)
+    
+      LET scheduler = SELECT * FROM clock(period=5)
+
+      LET matches = SELECT * FROM foreach(
+        row=AssetLabels,
+        query={
+            SELECT client_id,os_info.hostname as Hostname,join(array=slice(list=split(sep_string=".",string=os_info.fqdn),start=1,end=-1),sep=".") as Domain,split(sep_string=":",string=last_ip)[0] as IP,timestamp(epoch=first_seen_at) as FirstSeen,{
+                SELECT * FROM if(
+                    condition=irisAdd,
+                        then={
+                            SELECT *,label(client_id=client_id,labels="IRIS",op="set"),label(client_id=client_id,labels="IRIS-ADD",op="remove")
+                            FROM scope()
+                        },else={
+                            SELECT *,label(client_id=client_id,labels="IRIS-ERROR",op="set"),label(client_id=client_id,labels="IRIS-ADD",op="remove")
+                            FROM scope()}
+                    )} as IrisStatusLabel
+            FROM clients(search="label:IRIS-ADD")
+            WHERE AssetLabel in labels AND NOT "IRIS" in labels AND NOT "IRIS-ERROR" in labels})
+            
+      LET irisAdd = SELECT *,client_set_metadata(client_id=client_id,IRIS_AssetId=format(format="%v",args=[parse_json(data=Content).data.asset_id]))
+                    FROM http_client(
+                        data=serialize(
+                            item=dict(
+                                asset_name=format(format="%v",args=[os_info.hostname]), 
+                                asset_type_id=AssetTypeId, 
+                                analysis_status_id=1,
+                                cid=CaseID,
+                                asset_compromised=null,
+                                asset_domain=format(format="%v",args=[join(array=slice(list=split(sep_string=".",string=os_info.fqdn),start=1,end=-1),sep=".")]),
+                                asset_ip=format(format="%v",args=[split(sep_string=":",string=last_ip)[0]]),
+                                asset_tags=format(format="Velo,%v",args=[join(array=array(a1={SELECT _value FROM foreach(row=labels) WHERE NOT _value in AssetLabels.AssetLabel AND NOT _value = "IRIS-ADD"}),sep=",")]),
+                                asset_description=format(format="Velo ClientId: %v\nVelo Agent First seen: %v\nAsset added to IRIS by Velo: %v", args=[client_id,timestamp(epoch=first_seen_at),timestamp(epoch=now())])
+                            )
+                            ,format="json"
+                        ),
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        disable_ssl_security=DisableSSLVerify,
+                        method="POST",
+                        url=format(format="%v/case/assets/add", args=[URL]))
+                    WHERE Response = 200
+
+      SELECT * FROM foreach(row=scheduler, query=matches)
+
