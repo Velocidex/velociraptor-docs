@@ -5,7 +5,7 @@ description: |
   process or file on disk.
   
   The User can define bytes, file glob, process name or pid regex as a target.
-  The artifact firstly discovers BruteRatel configuration and extracts bytes, 
+  The artifact firstly discovers configuration and extracts bytes, 
   before parsing with Velociraptor Binary Parser.
   
   This content simply carves the configuration and does not unpack files on
