@@ -21,7 +21,15 @@ sources:
 
     query: |
       SELECT EventTime,
-        Computer,Channel,EventID,EventRecordID,Message,EventData,FullPath, UserPath
+             Computer,
+             Username,
+             Channel,
+             EventID,
+             EventRecordID,
+             Message,
+             EventData,
+             regex_replace(source=EventData.VhdFileName, re='''\\\\\?\\''', replace='') AS Filename,
+             FullPath
       FROM Artifact.Windows.EventLogs.EvtxHunter(
         EvtxGlob=TargetGlob,
         IdRegex='^(1|2|12|22|23)$',
