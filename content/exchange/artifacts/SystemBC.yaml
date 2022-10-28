@@ -53,10 +53,6 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      -- dynamic functions to reverse list order
-      LET _Reverse(data) = SELECT *, count() as Count FROM foreach(row=data) ORDER BY Count desc
-      LET Reverse(data) = _Reverse(data=data)._value
-
       -- binary parse profile to extract SystemBC configuration.
       LET PROFILE = '''[
                 [SystemBC, 0, [
