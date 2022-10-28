@@ -63,7 +63,7 @@ sources:
                     ["__FindPort1",0, "String",{term: "PORT1:"}],
                     ["PORT1","x=>len(list=x.__FindPort1) + 6", "String",{term_hex: "0000"}],
                     ["__FindTOR",0, "String",{term: "TOR:"}],
-                    ["TOR","x=>len(list=x.__FindTOR) + 6", "String",{term_hex: "0000"}],
+                    ["TOR","x=>len(list=x.__FindTOR) + 4", "String",{term_hex: "0000"}],
                     ["__FindUserAgent",0, "String",{term: "\r\nUser-Agent: "}],
                     ["User-Agent","x=>len(list=x.__FindUserAgent) + 14", "String",{term: "\r\n"}],
                 ]
