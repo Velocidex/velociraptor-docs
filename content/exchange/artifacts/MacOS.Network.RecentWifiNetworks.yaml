@@ -22,7 +22,7 @@ sources:
       LET RecentNetworks = SELECT parse_json(data=read_file(filename=OSPath)) AS RN FROM RecentNetworksLocation
       LET EachNetwork = SELECT * from foreach(
             row=RecentNetworks,
-          query={
+            query={
                SELECT _key AS Network, _value AS Value
                FROM items(item=RN)
           }
