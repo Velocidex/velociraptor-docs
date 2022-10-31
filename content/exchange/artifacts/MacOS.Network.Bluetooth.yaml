@@ -20,7 +20,7 @@ sources:
       LET BluetoothDevices = SELECT plist(file=OSPath) AS BD FROM BluetoothLocation
       SELECT * from foreach(
             row=BluetoothDevices,
-          query={
+            query={
                SELECT _value.Name AS Name,
                       timestamp(epoch=_value.LastSeenTime) AS LastSeen,
                       _value.DefaultName AS Description,
