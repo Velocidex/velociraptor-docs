@@ -1,6 +1,10 @@
 name: Windows.EventLogs.RPCFirewall
 description: |
    Collect RPC Firewall logs from Windows hosts
+   
+reference:
+  - https://github.com/zeronetworks/rpcfirewall
+  
 author: Wes Lambert - @therealwlambert
 parameters:
    - name: TargetGlob
