@@ -10,7 +10,7 @@ reference:
     
 parameters:
   - name: TimerLocation
-    default: /lib/systemd/system/*.timer
+    default: /lib/systemd/system/*.timer,/usr/lib/systemd/system/*.timer,/etc/systemd/system/*.timer,~/.config/systemd/user/*.timer
     description: The location of Systemd timers
     
 sources:
@@ -18,4 +18,4 @@ sources:
       SELECT OS From info() where OS = 'linux'
     queries:
       - |
-        SELECT *, read_file(filename=OSPath) AS Content FROM glob(globs=TimerLocation)
+        SELECT *, read_file(filename=OSPath) FROM glob(globs=split(string=TimerLocation, sep=","))
