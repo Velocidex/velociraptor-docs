@@ -16,6 +16,9 @@ parameters:
     default: /etc/crontab,/etc/cron.d/**,/var/at/tabs/**,/var/spool/cron/**,/var/spool/cron/crontabs/**
   - name: cronTabScripts
     default: /etc/cron.daily/*,/etc/cron.hourly/*,/etc/cron.monthly/*,/etc/cron.weekly/*
+  - name: Length
+    default: 10000
+    type: int
 
 precondition: SELECT OS From info() where OS = 'linux'
 
@@ -58,10 +61,12 @@ sources:
                Record.Command AS Command,
                FullPath AS Path
       FROM raw
-
+  - name: CronScripts
+    query: |
+      SELECT Mtime, FullPath, read_file(filename=FullPath,length=Length) AS Content FROM glob(globs=split(string=cronTabScripts, sep=","))
   - name: Uploaded
     query: |
-      SELECT FullPath, upload(filename=FullPath) AS Upload
+      SELECT FullPath, upload(file=FullPath) AS Upload
       FROM glob(globs=split(string=cronTabGlob + "," + cronTabScripts, sep=","))
 
 ```

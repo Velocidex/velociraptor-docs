@@ -19,7 +19,8 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-pid|The PID to dump out.|int64 (required)
+pid|If specified only get handles from these PIDs.|uint64
+types|If specified only get handles of this type.|list of string
 
 ### Description
 

@@ -1277,3 +1277,6 @@ keyring
 
 velocon
 APAC
+
+tlsh
+pubkey

@@ -13,10 +13,6 @@ can then be used to find the executed program.
 
 This artifact works on Windows 10 1607 version.
 
-References:
-  https://www.andreafortuna.org/cybersecurity/amcache-and-shimcache-in-forensic-analysis/
-  https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
-
 
 ```yaml
 name: Windows.System.Amcache
@@ -30,9 +26,9 @@ description: |
 
   This artifact works on Windows 10 1607 version.
 
-  References:
-    https://www.andreafortuna.org/cybersecurity/amcache-and-shimcache-in-forensic-analysis/
-    https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
+reference:
+  - https://www.andreafortuna.org/cybersecurity/amcache-and-shimcache-in-forensic-analysis/
+  - https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
 
 parameters:
   - name: amCacheGlob

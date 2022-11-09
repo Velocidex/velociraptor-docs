@@ -39,6 +39,10 @@ parameters:
     type: regex
     default: "."
 
+  - name: MultipleRegularExpression
+    type: regex_array
+    default: '[".+"]'
+
   - name: YaraRule
     type: yara
 

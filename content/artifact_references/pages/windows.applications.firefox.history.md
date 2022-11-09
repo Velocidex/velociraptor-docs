@@ -11,7 +11,7 @@ Enumerate the users Firefox history.
 name: Windows.Applications.Firefox.History
 description: |
   Enumerate the users Firefox history.
-author: Zach Stanford @svch0st
+author: Zach Stanford @svch0st, Modified by @angry-bender
 parameters:
   - name: placesGlobs
     default: \AppData\Roaming\Mozilla\Firefox\Profiles\*\places.sqlite
@@ -19,6 +19,9 @@ parameters:
     default: |
         SELECT *,url as url_visited FROM moz_historyvisits, moz_places WHERE moz_historyvisits.place_id=moz_places.id
   - name: userRegex
+    default: .
+    type: regex
+  - name: URLRegex
     default: .
     type: regex
 
@@ -47,5 +50,6 @@ sources:
               file=OSPath,
               query=urlSQLQuery)
           })
+          WHERE url_visited =~ URLRegex
 
 ```

@@ -25,9 +25,6 @@ context. Additionally, adversaries can use this mechanism on their
 own malware to make sure they're able to execute in elevated
 contexts in the future [2].
 
-## References:
-- https://attack.mitre.org/techniques/T1166/
-
 
 ```yaml
 name: Linux.Sys.SUID
@@ -53,7 +50,7 @@ description: |
   own malware to make sure they're able to execute in elevated
   contexts in the future [2].
 
-  ## References:
+reference:
   - https://attack.mitre.org/techniques/T1166/
 
 parameters:
@@ -67,6 +64,6 @@ sources:
                Mtime,
                Sys.Uid AS OwnerID,
                Sys.Gid AS GroupID
-      FROM glob(globs=GlobExpression) WHERE Mode =~ '^u'
+      FROM glob(globs=GlobExpression) WHERE Mode =~ '^g|u'
 
 ```

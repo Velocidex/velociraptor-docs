@@ -21,7 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 length|Max length of the file to read.|int
 offset|Where to read from the file.|int64
-filename|One or more files to open.|string (required)
+filename|One or more files to open.|OSPath (required)
 accessor|An accessor to use.|string
 
 ### Description

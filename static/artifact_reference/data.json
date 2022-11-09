@@ -441,6 +441,15 @@
         ]
     },
     {
+        "title": "Linux.Remediation.Quarantine",
+        "description": "This artifact applies quarantine to Linux systems via nftables.\nIt expects the target system to have nftables installed, and\nhence the availability of nft CLI.",
+        "link": "/artifact_references/pages/linux.remediation.quarantine",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Linux.Search.FileFinder",
         "description": "Find files on the filesystem using the filename or content.",
         "link": "/artifact_references/pages/linux.search.filefinder",
@@ -631,7 +640,7 @@
     },
     {
         "title": "MacOS.Applications.MRU",
-        "description": "Parse the MRU from MacOS users",
+        "description": "Parse the MRU from MacOS users\n",
         "link": "/artifact_references/pages/macos.applications.mru",
         "type": "client",
         "tags": [
@@ -676,7 +685,7 @@
     },
     {
         "title": "MacOS.Network.PacketCapture",
-        "description": "This artifact leverages tcpdump to natively capture packets.",
+        "description": "description: |\nThis artifact leverages tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/macos.network.packetcapture",
         "type": "client",
         "tags": [
@@ -847,7 +856,7 @@
     },
     {
         "title": "Server.Enrichment.CortexAnalyzer",
-        "description": "",
+        "description": "Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.",
         "link": "/artifact_references/pages/server.enrichment.cortexanalyzer",
         "type": "server",
         "tags": [
@@ -2179,7 +2188,7 @@
     },
     {
         "title": "Windows.Events.Trackaccount",
-        "description": "Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack notifications you can enable the server_event artifact named 'Server.Alerts.Trackaccount'\n",
+        "description": "Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'\n",
         "link": "/artifact_references/pages/windows.events.trackaccount",
         "type": "client_event",
         "tags": [
@@ -2269,7 +2278,7 @@
     },
     {
         "title": "Windows.Forensics.RecentApps",
-        "description": "GUI Program execution launched on the Win10 system is tracked in the\nRecentApps key\n",
+        "description": "GUI Program execution launched on the Win10 system is tracked in the\nRecentApps key.",
         "link": "/artifact_references/pages/windows.forensics.recentapps",
         "type": "client",
         "tags": [
@@ -2332,7 +2341,7 @@
     },
     {
         "title": "Windows.Forensics.UserAccessLogs",
-        "description": "UAL is a feature that can help server administrators quantify the\nnumber of unique client requests of roles and services on a local\nserver.",
+        "description": "Parse and collect the SUM database",
         "link": "/artifact_references/pages/windows.forensics.useraccesslogs",
         "type": "client",
         "tags": [
@@ -2341,7 +2350,7 @@
     },
     {
         "title": "Windows.Forensics.Usn",
-        "description": "This artifact parses the NTFS USN journal and allows filters to \nassist investigative workflow.",
+        "description": "This artifact parses the NTFS USN journal and allows filters to\nassist investigative workflow.",
         "link": "/artifact_references/pages/windows.forensics.usn",
         "type": "client",
         "tags": [
@@ -2620,7 +2629,7 @@
     },
     {
         "title": "Windows.Registry.PortProxy",
-        "description": "**Description**:\nThis artifact will return any items in the Windows PortProxy service\nregistry path. The most common configuration of this service is via the\nlolbin netsh.exe; Metaspoit and other common attack tools also have\nconfiguration modules.",
+        "description": "This artifact will return any items in the Windows PortProxy service\nregistry path. The most common configuration of this service is via the\nlolbin netsh.exe; Metaspoit and other common attack tools also have\nconfiguration modules.\n",
         "link": "/artifact_references/pages/windows.registry.portproxy",
         "type": "client",
         "tags": [
@@ -2764,7 +2773,7 @@
     },
     {
         "title": "Windows.Sys.FirewallRules",
-        "description": "List windows firewall rules.",
+        "description": "List Windows firewall rules.",
         "link": "/artifact_references/pages/windows.sys.firewallrules",
         "type": "client",
         "tags": [
@@ -2980,7 +2989,7 @@
     },
     {
         "title": "Windows.System.RootCAStore",
-        "description": "Enumerate the root certificates in the Windows Root store.",
+        "description": "Enumerate the root certificates in the Windows Root store.\n",
         "link": "/artifact_references/pages/windows.system.rootcastore",
         "type": "client",
         "tags": [
@@ -3000,6 +3009,15 @@
         "title": "Windows.System.Services",
         "description": "List Service details.\n",
         "link": "/artifact_references/pages/windows.system.services",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Shares",
+        "description": "This artifact will extract network shares per machine.\n",
+        "link": "/artifact_references/pages/windows.system.shares",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -3034,7 +3052,7 @@
     },
     {
         "title": "Windows.System.VAD",
-        "description": "Enumerate the memory regions of each running process.\n",
+        "description": "This artifact enables enumeration of process memory sections via the Virtual \nAddress Descriptor (VAD). The VAD is used by the Windows memory manager to \ndescribe allocated process memory ranges.",
         "link": "/artifact_references/pages/windows.system.vad",
         "type": "client",
         "tags": [

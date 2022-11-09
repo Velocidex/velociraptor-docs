@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-Name||string
+query||StoredQuery (required)
 
 ### Description
 

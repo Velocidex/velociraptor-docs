@@ -43,10 +43,14 @@ tools:
 
 type: CLIENT
 parameters:
-  - name: Context
-    description: How many bytes of context around the hit to return
+  - name: NumberOfHits
+    description: THis artifact will stop by default at one hit. This setting allows additional hits
+    default: 1
+    type: int64
+  - name: ContextBytes
+    description: Include this amount of bytes around hit as context.
+    default: 0
     type: int
-    default: "0"
   - name: YaraUrl
     description: If configured will attempt to download Yara rules from Url
     type: upload
@@ -128,6 +132,6 @@ sources:
          String.Name as HitName,
          String.HexData as HitHexData
       FROM yara(files=SparsePath, accessor='sparse',
-                rules=yara_rules, context=Context)
+                rules=yara_rules, context=ContextBytes, number=NumberOfHits)
 
 ```

@@ -563,7 +563,7 @@
             {
                 "name": "report",
                 "type": "string",
-                "description": "A path to write the report on."
+                "description": "A path to write the report on (deprecated and ignored)."
             },
             {
                 "name": "args",
@@ -578,7 +578,7 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "Output format (csv, jsonl)."
+                "description": "Output format (csv, jsonl, csv_only)."
             },
             {
                 "name": "artifact_definitions",
@@ -619,6 +619,11 @@
                 "name": "timeout",
                 "type": "float64",
                 "description": "Total amount of time in seconds, this collection will take. Collection is cancelled when timeout is exceeded."
+            },
+            {
+                "name": "metadata",
+                "type": "StoredQuery",
+                "description": "Metadata to store in the zip archive. Outputs to metadata.json in top level of zip file."
             }
         ],
         "category": "plugin"
@@ -843,12 +848,12 @@
             {
                 "name": "type",
                 "type": "string",
-                "description": "Type of download to create (e.g. 'report') default a full zip file."
+                "description": "Type of download to create (deperated Ignored)."
             },
             {
                 "name": "template",
                 "type": "string",
-                "description": "Report template to use (defaults to Reporting.Default)."
+                "description": "Report template to use (deperated Ignored)."
             },
             {
                 "name": "password",
@@ -858,7 +863,17 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "Format to export (csv,json) defaults to both."
+                "description": "Format to export (csv,json,csv_only) defaults to both."
+            },
+            {
+                "name": "expand_sparse",
+                "type": "bool",
+                "description": "If set we expand sparse files in the archive."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "If specified we call the file this name otherwise we generate name based on flow id."
             }
         ],
         "category": "server"
@@ -898,6 +913,11 @@
                 "name": "password",
                 "type": "string",
                 "description": "An optional password to encrypt the collection zip."
+            },
+            {
+                "name": "expand_sparse",
+                "type": "bool",
+                "description": "If set we expand sparse files in the archive."
             }
         ],
         "category": "server"
@@ -1420,8 +1440,9 @@
         "type": "Plugin",
         "args": [
             {
-                "name": "Name",
-                "type": "string"
+                "name": "query",
+                "type": "StoredQuery",
+                "required": true
             }
         ],
         "category": "plugin"
@@ -1832,9 +1853,14 @@
         "args": [
             {
                 "name": "pid",
-                "type": "int64",
-                "description": "The PID to dump out.",
-                "required": true
+                "type": "uint64",
+                "description": "If specified only get handles from these PIDs."
+            },
+            {
+                "name": "types",
+                "type": "string",
+                "description": "If specified only get handles of this type.",
+                "repeated": true
             }
         ],
         "category": "windows"
@@ -2015,6 +2041,12 @@
                 "name": "os",
                 "type": "string",
                 "description": "If specified target this OS"
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "If set the collection will be started in the specified orgs.",
+                "repeated": true
             }
         ],
         "category": "server"
@@ -2198,11 +2230,6 @@
                 "type": "string",
                 "description": "Path on server to the collector zip.",
                 "required": true
-            },
-            {
-                "name": "accessor",
-                "type": "string",
-                "description": "The accessor to use"
             }
         ],
         "category": "server"
@@ -3804,6 +3831,62 @@
         "category": "plugin"
     },
     {
+        "name": "pk_decrypt",
+        "description": "Decrypt files using pubkey encryption",
+        "type": "Function",
+        "args": [
+            {
+                "name": "data",
+                "type": "string",
+                "description": "The data to decrypt",
+                "required": true
+            },
+            {
+                "name": "signing_key",
+                "type": "string",
+                "description": "Public key to verify signature"
+            },
+            {
+                "name": "private_key",
+                "type": "string",
+                "description": "Private key to decrypt with. Defaults to server private key"
+            },
+            {
+                "name": "scheme",
+                "type": "string",
+                "description": "Encryption scheme to use. Defaults to RSA. Currently supported: PGP,RSA"
+            }
+        ]
+    },
+    {
+        "name": "pk_encrypt",
+        "description": "Encrypt files using pubkey encryption",
+        "type": "Function",
+        "args": [
+            {
+                "name": "data",
+                "type": "string",
+                "description": "The data to encrypt",
+                "required": true
+            },
+            {
+                "name": "signing_key",
+                "type": "string",
+                "description": "Private key to sign with"
+            },
+            {
+                "name": "public_key",
+                "type": "string",
+                "description": "Public key to encrypt with. Defaults to server public key"
+            },
+            {
+                "name": "scheme",
+                "type": "string",
+                "description": "Encryption scheme to use. Defaults to X509. Currently supported: PGP,X509"
+            }
+        ]
+    },
+    {
         "name": "plist",
         "description": "Parse plist file",
         "type": "Function",
@@ -4131,6 +4214,11 @@
                 "description": "Average IOPs to target."
             },
             {
+                "name": "timeout",
+                "type": "float64",
+                "description": "Cancel the query after this many seconds"
+            },
+            {
                 "name": "progress_timeout",
                 "type": "float64",
                 "description": "If no progress is detected in this many seconds, we terminate the query and output debugging information"
@@ -4221,7 +4309,7 @@
             },
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "One or more files to open.",
                 "required": true
             },
@@ -4620,6 +4708,11 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "server_frontend_cert",
+        "description": "Get Server Frontend Certificate",
+        "type": "Function"
     },
     {
         "name": "server_metadata",
@@ -5298,6 +5391,24 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "tlsh_hash",
+        "description": "Calculate the tlsh hash of a file.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "path",
+                "type": "OSPath",
+                "description": "Path to open and hash.",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            }
+        ]
     },
     {
         "name": "to_dict",

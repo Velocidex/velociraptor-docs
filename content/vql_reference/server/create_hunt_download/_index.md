@@ -25,6 +25,7 @@ wait|If set we wait for the download to complete before returning.|bool
 format|Format to export (csv,json) defaults to both.|string
 base|Base filename to write to.|string
 password|An optional password to encrypt the collection zip.|string
+expand_sparse|If set we expand sparse files in the archive.|bool
 
 ### Description
 

@@ -25,13 +25,13 @@ sources:
     query: |
       SELECT * FROM Artifact.Windows.Registry.UserAssist()
 
+  - name: Amcache
+    query: |
+      SELECT * FROM Artifact.Windows.Detection.Amcache()
+
   - name: Timeline
     query: |
       SELECT * FROM Artifact.Windows.Forensics.Timeline()
-
-  - name: Recent Apps
-    query: |
-      SELECT * FROM Artifact.Windows.Forensics.RecentApps()
 
   - name: ShimCache
     query: |
@@ -40,5 +40,9 @@ sources:
   - name: Prefetch
     query: |
       SELECT * FROM Artifact.Windows.Forensics.Prefetch()
+
+  - name: Recent Apps
+    query: |
+      SELECT * FROM Artifact.Windows.Forensics.RecentApps()
 
 ```

@@ -648,3 +648,58 @@ figcaption  {
     margin: 0px;
     padding: 0px;
 }
+
+
+.item-comment {
+    margin-top: 20px;
+    padding-left: 20px;
+    color: black;
+}
+
+.reference-key,
+.reference-value-sequence,
+.reference-value-mapping {
+    display: inline;
+}
+
+.reference-value-mapping,
+.reference-value-sequence {
+    color: #00000054;
+}
+
+.reference-document {
+    font-family: monospace, Consolas, Courier Prime, Courier, Courier New;
+}
+
+.reference-document ul {
+    list-style-type: none;
+}
+
+.reference-value-mapping > ul {
+    border: #00000026;
+    border-style: dashed;
+    margin-left: 0px;
+}
+
+.reference-value-sequence > ul {
+    margin-left: 0px;
+}
+
+.multiline-value {
+    display: block;
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: pre;
+    padding-left: 40px;
+}
+
+.bullet-placeholder {
+    padding: 10px;
+    display: inline;
+}
+
+.anchorlink {
+    float: right;
+    padding-right: 20px;
+    color: #00000054;
+}

@@ -8,8 +8,6 @@ Parses user account information from the SAM hive.
 
 Based on Omer Yampel's parser
 
-reference: https://github.com/yampelo/samparser/blob/master/samparser.py
-
 
 ```yaml
 name: Windows.Forensics.SAM
@@ -18,7 +16,8 @@ description: |
 
    Based on Omer Yampel's parser
 
-   reference: https://github.com/yampelo/samparser/blob/master/samparser.py
+reference:
+  - https://github.com/yampelo/samparser/blob/master/samparser.py
 
 parameters:
    - name: SAMPath

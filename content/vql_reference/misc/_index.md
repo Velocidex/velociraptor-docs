@@ -27,6 +27,8 @@ Miscellaneous plugins not yet categorized.
 |[org_delete](org_delete)|<span class='vql_type'>Function</span>|Deletes an Org from the server|
 |[orgs](orgs)|<span class='vql_type'>Plugin</span>|Retrieve the list of orgs on this server|
 |[passwd](passwd)|<span class='vql_type'>Function</span>|Updates the user's password|
+|[pk_decrypt](pk_decrypt)|<span class='vql_type'>Function</span>|Decrypt files using pubkey encryption|
+|[pk_encrypt](pk_encrypt)|<span class='vql_type'>Function</span>|Encrypt files using pubkey encryption|
 |[process_tracker](process_tracker)|<span class='vql_type'>Function</span>|Install a global process tracker|
 |[process_tracker_all](process_tracker_all)|<span class='vql_type'>Function</span>|Get all processes stored in the tracker|
 |[process_tracker_callchain](process_tracker_callchain)|<span class='vql_type'>Function</span>|Get a call chain from the global process tracker|
@@ -38,4 +40,6 @@ Miscellaneous plugins not yet categorized.
 |[query](query)|<span class='vql_type'>Plugin</span>|Evaluate a VQL query|
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
+|[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
+|[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|

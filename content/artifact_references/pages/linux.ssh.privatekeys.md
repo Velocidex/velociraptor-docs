@@ -26,9 +26,6 @@ ssh-keygen -p -f my_private_key
 Change the glob to /** if you would like to search the entire filesystem.
 Be aware, this is an expensive operation.
 
-## references
-- https://attack.mitre.org/techniques/T1145/
-
 
 ```yaml
 name: Linux.Ssh.PrivateKeys
@@ -55,10 +52,8 @@ description: |
   Change the glob to /** if you would like to search the entire filesystem.
   Be aware, this is an expensive operation.
 
-  ## references
-  - https://attack.mitre.org/techniques/T1145/
-
 reference:
+  - https://attack.mitre.org/techniques/T1145/
   - https://coolaj86.com/articles/the-openssh-private-key-format/
   - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 
@@ -96,23 +91,23 @@ sources:
       // Only search local filesystems
       LET RecursionCallback = "x=>x.Data.DevMajor IN LocalDeviceMajor"
 
-      LET _Hits = SELECT FullPath,
-           read_file(filename=FullPath, length=20240) AS Data
+      LET _Hits = SELECT OSPath,
+           read_file(filename=OSPath, length=20240) AS Data
         FROM glob(globs=KeyGlobs, recursion_callback=RecursionCallback)
         WHERE Size < 20000
 
-      LET Hits = SELECT FullPath, Data,
+      LET Hits = SELECT OSPath, Data,
              base64decode(
                 string=parse_string_with_regex(
                     string=Data,
-                    regex="(?sm)KEY-----(.+)-----END").g1) AS Decoded,
+                    regex="(?sm)KEY-----(.+)-----END").g1) || "" AS Decoded,
             parse_string_with_regex(
                string=Data,
                regex="(BEGIN.* PRIVATE KEY)").g1 AS Header
       FROM _Hits
       WHERE Header
 
-      LET OpenSSHKeyParser(FullPath, Decoded) = SELECT FullPath,
+      LET OpenSSHKeyParser(OSPath, Decoded) = SELECT OSPath,
          parse_binary(accessor="data", filename=Decoded,
                       profile=SSHProfile, struct="Header") AS Parsed
          FROM scope()
@@ -123,16 +118,16 @@ sources:
         SELECT * FROM switch(
           a={
              -- new format
-             SELECT FullPath,
+             SELECT OSPath,
                     Parsed.Magic AS KeyType,
                     Parsed.cipher AS Cipher,
                     Header
-             FROM OpenSSHKeyParser(FullPath=FullPath, Decoded=Decoded)
+             FROM OpenSSHKeyParser(OSPath= OSPath, Decoded=Decoded)
              WHERE Header =~ "BEGIN OPENSSH PRIVATE KEY"
           },
           a2={
              -- encrypted rsa key from e.g. putty
-             SELECT FullPath,
+             SELECT OSPath,
                     "PKCS8" AS KeyType,
                     parse_string_with_regex(string=Data,
                       regex="DEK-Info: ([-a-zA-Z0-9]+)").g1 AS Cipher,
@@ -143,7 +138,7 @@ sources:
           },
           b={
              -- unencrypted rsa key from e.g. AWS
-             SELECT FullPath,
+             SELECT OSPath,
                     "PKCS8" AS KeyType,
                     "none" AS Cipher,
                     Header
@@ -152,7 +147,7 @@ sources:
           },
           c={
              -- old format encrypted
-             SELECT FullPath,
+             SELECT OSPath,
                     "PKCS8" AS KeyType,
                     "PKCS#5" AS Cipher,
                     Header
@@ -161,7 +156,7 @@ sources:
           },
           d={
              -- catch all for unknown keys
-             SELECT FullPath,
+             SELECT OSPath,
                     "Unknown" AS KeyType,
                     "Unknown" AS Cipher,
                     Header

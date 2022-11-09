@@ -4,11 +4,11 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-List windows firewall rules.
+List Windows firewall rules.
 
 ```yaml
 name: Windows.Sys.FirewallRules
-description: List windows firewall rules.
+description: List Windows firewall rules.
 reference:
   - https://social.technet.microsoft.com/Forums/azure/en-US/aaed9c6a-fb8b-4d43-8b69-9f4e0f619a8c/how-to-check-the-windows-firewall-settings-from-netsh-command?forum=winserverGP
 
@@ -35,10 +35,10 @@ sources:
         FROM glob(globs=regKey, accessor="registry")
 
         SELECT Value,
-               Record.Action as Action,
                Record.Name as Name,
                get(item=Record, field="Desc") as Description,
                Record.App as App,
+               if(condition=Record.Active =~ "TRUE", then="Yes", else="No") as Active,
                Record.Action as Action,
                Record.Dir as Dir,
                if(condition=Record.Protocol = "6",

@@ -59,12 +59,16 @@ parameters:
     default: |
       ["Generic.Client.Info"]
 
-  - name: template
-    default:
-    description: The HTML report template to use.
+  - name: encryption_scheme
+    description: |
+      Encryption scheme to use. Currently supported are Passowrd, X509 or PGP
 
-  - name: Password
-    description: If set we encrypt collected zip files with this password.
+  - name: encryption_args
+    description: |
+      Encryption arguments
+    type: json
+    default: |
+      {}
 
   - name: parameters
     description: A dict containing the parameters to set.
@@ -127,7 +131,9 @@ parameters:
   - name: opt_cpu_limit
     default: "0"
     type: int
-    description: A number between 0 to 100 representing the target maximum CPU utilization during running of this artifact.
+    description: |
+      A number between 0 to 100 representing the target maximum CPU
+      utilization during running of this artifact.
 
   - name: opt_progress_timeout
     default: "1800"
@@ -147,28 +153,17 @@ parameters:
   - name: StandardCollection
     type: hidden
     default: |
-      // Add all the tools we are going to use to the inventory.
-      LET _ <= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
-       FROM parse_csv(filename="/inventory.csv", accessor="me")
-       WHERE log(message="Adding tool " + ToolName)
-
-      LET baseline <= SELECT Fqdn FROM info()
-
-      // Make the filename safe on windows but we trust the OutputPrefix.
-      LET filename <= OutputPrefix + regex_replace(
-          source=format(format="Collection-%s-%s",
-                        args=[baseline[0].Fqdn,
-                              timestamp(epoch=now()).MarshalText]),
-          re="[^0-9A-Za-z\\-]", replace="_")
-
       LET _ <= log(message="Will collect package " + filename)
-      LET report_filename <= if(condition=Template, then=filename + ".html")
-      SELECT * FROM collect(artifacts=Artifacts, report=report_filename,
-          args=Parameters, output=filename + ".zip", template=Template,
-          cpu_limit=CpuLimit,
-          progress_timeout=ProgressTimeout,
-          timeout=Timeout,
-          password=Password, level=Level, format=Format)
+
+      SELECT * FROM collect(artifacts=Artifacts,
+            args=Parameters, output=filename + ".zip",
+            cpu_limit=CpuLimit,
+            progress_timeout=ProgressTimeout,
+            timeout=Timeout,
+            password=pass[0].Pass,
+            level=Level,
+            format=Format,
+            metadata=ContainerMetadata)
 
   - name: S3Collection
     type: hidden
@@ -211,16 +206,15 @@ parameters:
         endpoint=TargetArgs.endpoint,
         hostkey = TargetArgs.hostkey)
 
-  - name: CloudCollection
+  - name: CommonCollections
     type: hidden
     default: |
       // Add all the tools we are going to use to the inventory.
       LET _ <= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
-      FROM parse_csv(filename="/inventory.csv", accessor="me")
-      WHERE log(message="Adding tool " + ToolName)
+       FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
+       WHERE log(message="Adding tool " + ToolName)
 
       LET baseline <= SELECT Fqdn, basename(path=Exe) AS Exe FROM info()
-      LET TargetArgs <= target_args
 
       // Make the filename safe on windows but we trust the OutputPrefix.
       LET filename <= OutputPrefix + regex_replace(
@@ -228,6 +222,47 @@ parameters:
                         args=[baseline[0].Fqdn,
                               timestamp(epoch=now()).MarshalText]),
           re="[^0-9A-Za-z\\-]", replace="_")
+
+      -- Make a random hex string as a random password
+      LET RandomPassword <= SELECT format(format="%02x",
+            args=rand(range=255)) AS A
+      FROM range(end=25)
+
+      LET pass = SELECT * FROM switch(a={
+
+         -- For X509 encryption we use a random session password.
+         SELECT join(array=RandomPassword.A) as Pass From scope()
+         WHERE encryption_scheme =~ "pgp|x509"
+          AND log(message="I will generate a container password using the %v scheme",
+                  args=encryption_scheme)
+
+      }, b={
+
+         -- Otherwise the user specified the password.
+         SELECT encryption_args.password as Pass FROM scope()
+         WHERE encryption_scheme =~ "password"
+
+      }, c={
+
+         -- No password specified.
+         SELECT Null as Pass FROM scope()
+      })
+
+      -- For X509 encryption_scheme, store the encrypted
+      -- password in the metadata file for later retrieval.
+      LET ContainerMetadata = if(
+          condition=encryption_args.public_key,
+          then=dict(
+             EncryptedPass=pk_encrypt(data=pass[0].Pass,
+                public_key=encryption_args.public_key,
+             scheme=encryption_scheme),
+          Scheme=encryption_scheme,
+          PublicKey=encryption_args.public_key))
+
+  - name: CloudCollection
+    type: hidden
+    default: |
+      LET TargetArgs <= target_args
 
       // Try to upload the log file now to see if we are even able to
       // upload at all - we do this to avoid having to collect all the
@@ -240,34 +275,31 @@ parameters:
 
       LET _ <= log(message="Will collect package " + filename +
          " and upload to cloud bucket " + TargetArgs.bucket)
-      LET report_filename <= if(condition=Template, then=tempfile(extension=".html"))
+
       LET collect_and_upload = SELECT
           upload_file(filename=Container,
                       name=filename+".zip",
                       accessor="file") AS Upload,
-          if(condition=Template,
-             then=upload_file(filename=Report,
-                              name=filename+".html",
-                              accessor="file")) AS ReportUpload,
           upload_file(filename=baseline[0].Exe + ".log",
                       name=filename+".log",
                       accessor="file") AS LogUpload
+
       FROM collect(artifacts=Artifacts,
-          report=report_filename,
           args=Parameters,
           format=Format,
           output=tempfile(extension=".zip"),
-          template=Template,
           cpu_limit=CpuLimit,
           progress_timeout=ProgressTimeout,
           timeout=Timeout,
-          password=Password,
-          level=Level)
+          password=pass[0].Pass,
+          level=Level,
+          metadata=ContainerMetadata)
 
       SELECT * FROM if(condition=upload_test.Path,
           then=collect_and_upload,
-          else={SELECT log(message="Aborting collection: Failed to upload to cloud bucket!")
-                FROM scope()})
+          else={SELECT log(
+             message="Aborting collection: Failed to upload to cloud bucket!")
+          FROM scope()})
 
   - name: PackageToolsArtifact
     description: Collects and uploads third party binaries.
@@ -283,7 +315,7 @@ parameters:
           LET temp <= tempfile()
 
           LET uploader = SELECT ToolName,
-                                Upload.Path AS Filename,
+                                Upload.StoredName AS Filename,
                                 Upload.sha256 AS ExpectedHash,
                                 Upload.Size AS Size
           FROM foreach(row=Binaries,
@@ -298,7 +330,9 @@ parameters:
           LET _ <= SELECT * FROM write_csv(filename=temp, query=uploader)
 
           // Now upload it.
-          SELECT upload(file=temp, name="inventory.csv") FROM scope()
+          SELECT upload(file=temp, name="inventory.csv") AS Inventory,
+                 read_file(filename=temp) AS Data
+          FROM scope()
 
   - name: FetchBinaryOverride
     type: hidden
@@ -310,7 +344,7 @@ parameters:
        LET RequiredTool <= ToolName
 
        LET matching_tools <= SELECT ToolName, Filename
-       FROM parse_csv(filename="/inventory.csv", accessor="me")
+       FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
        WHERE RequiredTool = ToolName
 
        LET get_ext(filename) = parse_string_with_regex(
@@ -373,28 +407,41 @@ sources:
          artifact_definitions=PackageToolsArtifact)
 
       LET CollectionArtifact <= SELECT Value FROM switch(
-        a = { SELECT StandardCollection AS Value FROM scope() WHERE target = "ZIP" },
-        b = { SELECT S3Collection + CloudCollection AS Value  FROM scope() WHERE target = "S3" },
-        c = { SELECT GCSCollection + CloudCollection AS Value  FROM scope() WHERE target = "GCS" },
-        d = { SELECT SFTPCollection + CloudCollection AS Value  FROM scope() WHERE target = "SFTP" },
-        e = { SELECT "" AS Value  FROM scope() WHERE log(message="Unknown collection type " + target) }
+        a = { SELECT CommonCollections + StandardCollection AS Value
+              FROM scope()
+              WHERE target = "ZIP" },
+        b = { SELECT S3Collection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "S3" },
+        c = { SELECT GCSCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "GCS" },
+        d = { SELECT SFTPCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "SFTP" },
+        e = { SELECT "" AS Value  FROM scope()
+              WHERE log(message="Unknown collection type " + target) }
+      )
+
+      LET use_server_cert = encryption_scheme =~ "x509"
+         AND NOT encryption_args.public_key =~ "----BEGIN CERTIFICATE-----"
+         AND log(message="Pubkey encryption specified, but no cert/key provided. Defaulting to server frontend cert")
+
+      -- For x509, if no public key cert is specified, we use the
+      -- server's own key. This makes it easy for the server to import
+      -- the file again.
+      LET updated_encryption_args <= if(
+         condition=use_server_cert,
+         then=dict(public_key=server_frontend_cert(),
+                   scheme="x509"),
+         else=encryption_args
       )
 
       LET definitions <= SELECT * FROM chain(
-      a = { SELECT name, description, tools, parameters, sources, reports
+      a = { SELECT name, description, tools, parameters, sources
             FROM artifact_definitions(names=artifacts)
             WHERE NOT built_in AND
               log(message="Adding artifact_definition for " + name) },
-
-      -- Support custom templates if provided
-      a2 = { SELECT * FROM if(condition=template,
-             then={
-                SELECT name, description, tools, parameters, sources, reports
-                FROM artifact_definitions(names=template)
-                WHERE NOT built_in AND
-                  log(message="Adding artifact_definition for template " + name)
-              })
-      },
 
       // Create the definition of the Collector artifact.
       b = { SELECT "Collector" AS name, (
@@ -404,8 +451,11 @@ sources:
                     dict(name="Parameters",
                          default=serialize(format='json', item=parameters),
                          type="json"),
-                    dict(name="Template", default=template),
-                    dict(name="Password", default=Password),
+                    dict(name="encryption_scheme", default=encryption_scheme),
+                    dict(name="encryption_args",
+                         default=serialize(format='json', item=updated_encryption_args),
+                         type="json"
+                         ),
                     dict(name="Level", default=opt_level, type="int"),
                     dict(name="Format", default=opt_format),
                     dict(name="OutputPrefix", default=opt_output_directory),
