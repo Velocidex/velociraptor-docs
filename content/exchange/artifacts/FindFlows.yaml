@@ -15,6 +15,10 @@ parameters:
   - name: DateBefore
     type: timestamp
     description: "search for flow data before this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: Workers
+    type: int
+    default: 100
+    description: Number of concurrent workers
   - name: SearchRegex
     type: regex
     description: Second option Yara choice is a Velociraptor shorthand Yara rule
@@ -69,7 +73,7 @@ sources:
                     str(str=String.Data) AS HitContext
                 FROM yara(rules=FinderYara,files=FullPath)
                 LIMIT 1
-            },workers=20)
+            },workers=Workers)
 
 
       -- find configuration information
