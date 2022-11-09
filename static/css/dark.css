@@ -28,6 +28,9 @@ body.dark {
     --TABLE-HEADER-background-color: #323232;
     --TABLE-HEADER-color: #ECEFF1;
 
+    --REFERENCE-value-color: #ffffff54;
+    --REFERENCE-border-color: #ffffff26;
+
     --footer-color: #183f81;
     --vql: red;
     --MAIN-Author: red;

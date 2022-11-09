@@ -653,7 +653,7 @@ figcaption  {
 .item-comment {
     margin-top: 20px;
     padding-left: 20px;
-    color: black;
+    color: var(--MAIN-TEXT-color);
 }
 
 .reference-key,
@@ -664,7 +664,7 @@ figcaption  {
 
 .reference-value-mapping,
 .reference-value-sequence {
-    color: #00000054;
+    color: var(--REFERENCE-value-color);
 }
 
 .reference-document {
@@ -676,7 +676,7 @@ figcaption  {
 }
 
 .reference-value-mapping > ul {
-    border: #00000026;
+    border: var(--REFERENCE-border-color);
     border-style: dashed;
     margin-left: 0px;
 }
@@ -701,5 +701,5 @@ figcaption  {
 .anchorlink {
     float: right;
     padding-right: 20px;
-    color: #00000054;
+    color: var(--REFERENCE-value-color);
 }
