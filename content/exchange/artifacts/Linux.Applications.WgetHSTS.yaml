@@ -1,7 +1,7 @@
 name: Linux.Applications.WgetHSTS
 description: |
    Wget creates a HSTS log file in a user's home directory.  This can
-   contain forensically relevant informtion.
+   contain forensically relevant information.
 
 reference:
 - https://firexfly.com/wget-hsts/
