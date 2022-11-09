@@ -81,6 +81,9 @@ parameters:
   - name: ChannelRegex
     description: "Channel Regex to enable filtering on path"
     default: .
+  - name: ProviderRegex
+    description: "Provider Regex to enable filtering on provider"
+    default: .
     type: regex
   - name: IdRegex
     default: .
@@ -121,6 +124,7 @@ sources:
                     timestamp(epoch=int(int=System.TimeCreated.SystemTime)) AS EventTime,
                     System.Computer as Computer,
                     System.Channel as Channel,
+                    System.Provider.Name as Provider,
                     System.EventID.Value as EventID,
                     System.EventRecordID as EventRecordID,
                     System.Security.UserID as UserSID,
@@ -134,6 +138,7 @@ sources:
                     AND EventTime < DateBeforeTime
                     AND EventTime > DateAfterTime
                     AND Channel =~ ChannelRegex
+                    AND Provider =~ ProviderRegex
                     AND str(str=EventID) =~ IdRegex
                     AND format(format='%v %v %v', args=[
                                EventData, UserData, Message]) =~ IocRegex

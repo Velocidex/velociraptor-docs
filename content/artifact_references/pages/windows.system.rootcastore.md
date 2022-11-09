@@ -6,17 +6,14 @@ tags: [Client Artifact]
 
 Enumerate the root certificates in the Windows Root store.
 
-Att&ck: #T1553
-
 
 ```yaml
 name: Windows.System.RootCAStore
 description: |
    Enumerate the root certificates in the Windows Root store.
 
-   Att&ck: #T1553
-
 reference:
+   - "ATT&CK: T1553"
    - https://attack.mitre.org/techniques/T1553/004/
 
 parameters:

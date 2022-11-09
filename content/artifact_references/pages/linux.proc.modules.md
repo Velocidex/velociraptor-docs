@@ -21,7 +21,9 @@ sources:
         SELECT Name,
           atoi(string=Size) As Size,
           atoi(string=UseCount) As UseCount,
-          Status, Address
+          parse_string_with_regex(regex='''(?P<UsedBy>.*),''', string=UsedBy).UsedBy AS UsedBy,
+          Status, 
+          Address
         FROM split_records(
            filenames=ProcModules,
            regex='\\s+',

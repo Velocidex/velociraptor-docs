@@ -33,6 +33,7 @@ pause|If specified the new hunt will be in the paused state|bool
 include_labels|If specified only include these labels|list of string
 exclude_labels|If specified exclude these labels|list of string
 os|If specified target this OS|string
+org_id|If set the collection will be started in the specified orgs.|list of string
 
 ### Description
 

@@ -25,6 +25,9 @@ parameters:
   - name: userRegex
     default: .
     type: regex
+  - name: URLRegex
+    default: .
+    type: regex
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -58,5 +61,6 @@ sources:
               file=OSPath,
               query=urlSQLQuery)
           })
+          WHERE visited_url =~ URLRegex
 
 ```

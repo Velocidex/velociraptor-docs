@@ -21,6 +21,9 @@ parameters:
   - name: userRegex
     default: .
     type: regex
+  - name: URLRegex
+    default: .
+    type: regex
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -76,5 +79,6 @@ sources:
               query=urlSQLQuery)
             ORDER BY last_modified DESC
           })
+          WHERE url =~ URLRegex
 
 ```

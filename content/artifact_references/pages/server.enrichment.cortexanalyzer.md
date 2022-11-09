@@ -4,33 +4,28 @@ hidden: true
 tags: [Server Artifact]
 ---
 
-
-
-**Description**: Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
 
 This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
 
- Ex.
+Ex.
 
- `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
-
- **Reference**: https://github.com/TheHive-Project/Cortex
+  `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
 
 ```yaml
 name: Server.Enrichment.CortexAnalyzer
 description: |
+  Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
 
+  This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
 
-   **Description**: Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
-
-   This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
-
-    Ex.
+  Ex.
 
     `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
-    **Reference**: https://github.com/TheHive-Project/Cortex
+reference:
+  - https://github.com/TheHive-Project/Cortex
 
 author: Wes Lambert - @therealwlambert
 
