@@ -62,6 +62,7 @@ sources:
             row=Workflows,
             query={
                SELECT
+                    Mtime AS Timestamp, 
                     OSPath AS Name,
                     get(member="actions.action.ActionName") AS Actions, 
                     get(field="state") AS State,
