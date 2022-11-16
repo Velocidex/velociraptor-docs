@@ -1,8 +1,6 @@
 name: MacOS.Sys.BashHistory
 author: Wes Lambert - @therealwlambert
 description: |
-
-  
   This artifact is a modified version of the Linux.Sys.BashHistory artifact that enables grep of Bash and alternate shell history and *session* files.
 
   Session files can be helpful in determining an approximate timeframe in which certain commands were run (the session start/end time), as traditional history files do not provide this information. 
