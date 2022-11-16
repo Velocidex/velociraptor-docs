@@ -39,19 +39,20 @@ sources:
           
   - name: Sessions
     query: |
-      LET files = SELECT FullPath, Mtime FROM glob(globs=SessionsGlob)
+      LET files = SELECT FullPath, Btime FROM glob(globs=SessionsGlob)
       SELECT * FROM foreach(row=files,
         query={
-          SELECT Line,  
+          SELECT Line,
             {SELECT Btime FROM glob(globs=FullPath + 'new')} AS SessionStarted, 
-            Mtime AS SessionEnded,
+            Btime AS SessionEnded,
             timestamp(
               string=grok(
                 data=read_file(
                   filename=split(
                     string=FullPath, 
                     sep='''\.history''')[0] + '.session'), grok='''echo Restored session: "\$\(/bin/date -r %{DATA:date}\)"''').date) AS SessionResumed,
-            FullPath FROM parse_lines(filename=FullPath)
+            FullPath 
+          FROM parse_lines(filename=FullPath)
           WHERE Line =~ SearchRegex 
           AND NOT if(condition= WhitelistRegex, then= Line =~ WhitelistRegex, else= FALSE)
         })
