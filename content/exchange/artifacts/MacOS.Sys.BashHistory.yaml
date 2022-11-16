@@ -45,15 +45,13 @@ sources:
           SELECT Line,  
             {SELECT Btime FROM glob(globs=FullPath + 'new')} AS SessionStarted, 
             Mtime AS SessionEnded,
-            {SELECT timestamp(
+            timestamp(
               string=grok(
                 data=read_file(
                   filename=split(
                     string=FullPath, 
-                    sep='''\.history''')[0] + '.session'), grok='''echo Restored session: "\$\(/bin/date -r %{DATA:date}\)"''').date) 
-            FROM scope()} AS SessionResumed,
-              FullPath FROM parse_lines(filename=FullPath)
-            WHERE
-              Line =~ SearchRegex
-            AND NOT if(condition= WhitelistRegex, then= Line =~ WhitelistRegex, else= FALSE)
-          })
+                    sep='''\.history''')[0] + '.session'), grok='''echo Restored session: "\$\(/bin/date -r %{DATA:date}\)"''').date) AS SessionResumed,
+            FullPath FROM parse_lines(filename=FullPath)
+          WHERE Line =~ SearchRegex 
+          AND NOT if(condition= WhitelistRegex, then= Line =~ WhitelistRegex, else= FALSE)
+        })
