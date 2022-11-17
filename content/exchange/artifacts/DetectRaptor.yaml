@@ -8,7 +8,7 @@ required_permissions:
 - SERVER_ADMIN
 
 parameters:
-   - name: DetectRaptor
+   - name: ExchangeURL
      default: https://github.com/mgreen27/DetectRaptor/releases/download/DetectRaptor/DetectRaptorVQL.zip
    - name: Prefix
      description: Add artifacts with this prefix
