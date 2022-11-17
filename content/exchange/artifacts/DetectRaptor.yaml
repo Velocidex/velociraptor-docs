@@ -1,7 +1,6 @@
 name: Server.Import.DetectRaptor
 description: |
-   This artifact will automatically import the latest
-  DetectRaptor bundle into the current server.
+   This artifact will automatically import the latest DetectRaptor bundle into the current server.
 
 type: SERVER
 
