@@ -77,10 +77,8 @@ sources:
 
 
       -- find configuration information
-      LET config_target = SELECT VELOCIRAPTOR_CONFIG  FROM environ()
-      LET public_url = SELECT parse_yaml(filename=Data,accessor='data').GUI.public_url as Url FROM read_file(filenames=config_target.VELOCIRAPTOR_CONFIG[0])
       LET find_hostname(ClientId) = SELECT os_info.hostname as Hostname FROM clients() WHERE client_id = ClientId
-
+      
 
       -- enrich results
       LET flows = SELECT *,
@@ -97,7 +95,7 @@ sources:
             find_hostname(ClientId=ClientId)[0].Hostname as Hostname,
             HitContext,
             Mtime as FlowModTime,
-            public_url.Url[0] + 'app/index.html?#/collected/' + ClientId + '/' + FlowId + '/notebook' as FlowNotebook,
+            '#/collected/' + ClientId + '/' + FlowId + '/notebook' as FlowNotebook,
             ClientId,FlowId
         FROM flows
 
