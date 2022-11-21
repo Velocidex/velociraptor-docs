@@ -18,7 +18,7 @@ In this post I will discuss some of the interesting new features.
 ## NTFS Parser changes
 
 In this release the NTFS parser was improved significantly. The main
-areas of developements were around better support for NTFS compressed
+areas of developments were around better support for NTFS compressed
 and sparse files and better path reconstruction.
 
 In NTFS there is a Master File Table (MFT) containing a record for
@@ -39,7 +39,7 @@ record can **a different parent directory**. This surprising property
 of NTFS is called **hard links**.
 
 You can play with this property using the `fsutil` program. The
-following adds a hardlink to the program at
+following adds a hard link to the program at
 `C:/users/test/downloads/X.txt` into a different directory.
 
 ```
@@ -111,7 +111,7 @@ included in the collector configuration. Dumping the configuration
 from the collection is not sufficient to be able to decrypt the
 collected data - the corresponding private key is also required!
 
-This is extremey important for forensic collections since these will
+This is extremely important for forensic collections since these will
 often contain sensitive and PII information.
 
 Using this new feature is also extremely easy: One simply selects the
@@ -138,7 +138,7 @@ needs to be derived from the X509 private key, we must use
 Velociraptor itself to decrypt the container (i.e. we can not use
 e.g. `7zip`).
 
-![Decryting encrypted containers with the server's private key](decrypting_containers.png)
+![Decrypting encrypted containers with the server's private key](decrypting_containers.png)
 
 ## Importing offline collections
 
@@ -179,7 +179,7 @@ exercise using Velociraptor and people wanted to import this into
 their own Velociraptor installations so they can run notebook post
 processing on the data themselves.
 
-![The Opensoc challenge https://twitter.com/eric_capuano/status/1559190056736378880 ](opensoc_challenge.png)
+![The OpenSoc challenge https://twitter.com/eric_capuano/status/1559190056736378880 ](opensoc_challenge.png)
 
 Our community has spoken though! This is a useful feature!
 
@@ -206,7 +206,7 @@ While Velociraptor stores the file internally in an efficient way,
 when exporting the file for use by other tools, they might expect the
 file to be properly padded out (so that file offsets are correct).
 
-Velociraptor now allows the user the choice of exoprting an individual
+Velociraptor now allows the user the choice of exporting an individual
 file in a padded form (with sparse regions padded). This can also be
 applied to the entire Zip export in the GUI.
 
