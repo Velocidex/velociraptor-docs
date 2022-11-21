@@ -656,6 +656,10 @@ figcaption  {
     color: var(--MAIN-TEXT-color);
 }
 
+.reference-key {
+    padding-right: 1ex;
+}
+
 .reference-key,
 .reference-value-sequence,
 .reference-value-mapping {
