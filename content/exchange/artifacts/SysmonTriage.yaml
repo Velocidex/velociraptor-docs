@@ -16,6 +16,9 @@ parameters:
      description: the time box in seconds we want around TargetTime.
      default: 600
      type: int
+   - name: IdRegex
+     description: Regex of Sysmon EventIDs to include. Default is all.
+     default: .
    - name: IocRegex
      description: Regex of strings to search for in Sysmon events. Default is any.
      default: .
@@ -39,5 +42,6 @@ sources:
                 ChannelRegex='Sysmon',
                 DateAfter= DateAfterTime,
                 DateBefore= DateBeforeTime,
+                IdRegex=IdRegex,
                 IocRegex=IocRegex,
                 WhitelistRegex=FilterRegex )
