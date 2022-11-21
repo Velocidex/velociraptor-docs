@@ -1,0 +1,43 @@
+name: Windows.Triage.Sysmon
+author: Matt Green - @mgreen27
+description: |
+   This artifact allows collecting Sysmon Events for Triage around a timestamp.
+   
+   By default collection will be 600 seconds from the current time and allows 
+   fast triage of a machine with recent telemetry.
+   
+type: CLIENT
+
+parameters:
+   - name: TargetTime
+     description: the timestamp we want to box time around. Default is current time.
+     type: timestamp
+   - name: TargetTimeBox
+     description: the time box in seconds we want around TargetTime.
+     default: 600
+     type: int
+   - name: IocRegex
+     description: Regex of strings to search for in Sysmon events. Default is any.
+     default: .
+   - name: FilterRegex
+     description: Regex of strings to filter out of results. Default is none.
+     
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- firstly set boxed timebounds
+      LET DateAfterTime <= if(condition=TargetTime,
+        then=timestamp(epoch=TargetTime.Unix - TargetTimeBox), else=timestamp(epoch=now() - TargetTimeBox))
+      LET DateBeforeTime <= if(condition=TargetTime,
+        then=timestamp(epoch=TargetTime.Unix + TargetTimeBox), else=timestamp(epoch=now() + TargetTimeBox))
+        
+      -- run query and output rows
+      SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
+                EvtxGlob='''%SystemRoot%\System32\Winevt\Logs\*Sysmon*.evtx''',
+                ChannelRegex='Sysmon',
+                DateAfter= DateAfterTime,
+                DateBefore= DateBeforeTime,
+                IocRegex=IocRegex,
+                WhitelistRegex=FilterRegex )
