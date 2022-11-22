@@ -117,7 +117,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 `, strip_comments(key.HeadComment),
 				make_id(next_breadcrumb),
 				bullet,
-				fmt.Sprintf(repository_link, node.Line),
+				fmt.Sprintf(repository_link, value.Line),
 				escape(key.Value),
 				make_id(next_breadcrumb),
 				print_node(value, next_breadcrumb))
