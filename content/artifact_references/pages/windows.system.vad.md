@@ -86,7 +86,7 @@ sources:
                     DelegatePath=Pid,
                     Path=Address) AS _PathSpec
             FROM vad(pid=Pid)
-            WHERE if(condition=MappingName,
+            WHERE if(condition=MappingNameRegex,
                     then= MappingName=~MappingNameRegex,
                     else= True)
                 AND if(condition = ProtectionRegex,
