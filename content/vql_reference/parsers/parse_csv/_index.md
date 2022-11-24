@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|CSV files to open|list of string (required)
+filename|CSV files to open|list of OSPath (required)
 accessor|The accessor to use|string
 auto_headers|If unset the first row is headers|bool
 separator|Comma separator (default ',')|string

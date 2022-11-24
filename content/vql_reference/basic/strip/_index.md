@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 string|The string to strip|string (required)
 prefix|The prefix to strip|string
+suffix|The suffix to strip|string
 
 ### Description
 

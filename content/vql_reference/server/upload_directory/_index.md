@@ -20,7 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 file|The file to upload|OSPath (required)
-name|Filename to be stored within the output directory|string
+name|Filename to be stored within the output directory|OSPath
 accessor|The accessor to use|string
 output|An output directory to store files in.|string (required)
 mtime|Modified time to set the output file.|Any

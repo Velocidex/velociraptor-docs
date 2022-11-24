@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|Files to be parsed.|list of string (required)
+filename|Files to be parsed.|list of OSPath (required)
 accessor|The accessor to use.|string
 
 ### Description

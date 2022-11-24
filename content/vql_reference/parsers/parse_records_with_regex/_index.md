@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|A list of files to parse.|list of string (required)
+file|A list of files to parse.|list of OSPath (required)
 regex|A list of regex to apply to the file data.|list of string (required)
 accessor|The accessor to use.|string
 buffer_size|Maximum size of line buffer (default 64kb).|int

@@ -24,7 +24,7 @@ serve_locally||bool
 url||string
 hash||string
 filename|The name of the file on the endpoint|string
-file|An optional file to upload|string
+file|An optional file to upload|OSPath
 accessor|The accessor to use to read the file.|string
 
 ### Description

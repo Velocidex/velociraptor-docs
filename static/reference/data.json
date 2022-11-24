@@ -175,6 +175,7 @@
         "name": "atexit",
         "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
         "type": "Function",
+        "version": 1,
         "args": [
             {
                 "name": "query",
@@ -489,6 +490,11 @@
                 "name": "client_id",
                 "type": "string",
                 "required": true
+            },
+            {
+                "name": "metadata",
+                "type": "ordereddict.Dict",
+                "description": "A dict containing metadata. If not specified we use kwargs."
             }
         ],
         "category": "server"
@@ -782,7 +788,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to copy from.",
                 "required": true
             },
@@ -1661,6 +1667,7 @@
         "name": "geoip",
         "description": "Lookup an IP Address using the MaxMind GeoIP database. You can get\na copy of the database from https://www.maxmind.com/. The database\nmust be locally accessible so this probably only makes sense on\nthe server.\n",
         "type": "Function",
+        "version": 1,
         "args": [
             {
                 "name": "ip",
@@ -1723,6 +1730,7 @@
         "name": "glob",
         "description": "Retrieve files based on a list of glob expressions",
         "type": "Plugin",
+        "version": 3,
         "args": [
             {
                 "name": "globs",
@@ -1869,6 +1877,7 @@
         "name": "hash",
         "description": "Calculate the hash of a file.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "path",
@@ -1914,7 +1923,7 @@
             {
                 "name": "method",
                 "type": "string",
-                "description": "HTTP method to use (GET, POST)"
+                "description": "HTTP method to use (GET, POST, PUT, PATCH, DELETE)"
             },
             {
                 "name": "data",
@@ -2294,7 +2303,7 @@
             },
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "An optional file to upload"
             },
             {
@@ -2598,10 +2607,11 @@
         "name": "magic",
         "description": "Identify a file using magic rules.",
         "type": "Function",
+        "version": 1,
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Path to open and hash.",
                 "required": true
             },
@@ -2959,7 +2969,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of filenames to open as OLE files.",
                 "repeated": true,
                 "required": true
@@ -3099,7 +3109,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -3159,7 +3169,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "CSV files to open",
                 "repeated": true,
                 "required": true
@@ -3200,7 +3210,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "required": true
             },
             {
@@ -3224,7 +3234,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "required": true
             },
             {
@@ -3242,7 +3252,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
@@ -3323,7 +3333,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "JSON file to open",
                 "required": true
             },
@@ -3342,7 +3352,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -3364,10 +3374,11 @@
         "name": "parse_mft",
         "description": "Scan the $MFT from an NTFS volume.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The MFT file.",
                 "required": true
             },
@@ -3375,6 +3386,11 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "prefix",
+                "type": "OSPath",
+                "description": "If specified we prefix all paths with this path."
             }
         ],
         "category": "parsers"
@@ -3533,7 +3549,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of files to parse.",
                 "repeated": true,
                 "required": true
@@ -3565,7 +3581,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Files to be parsed.",
                 "repeated": true,
                 "required": true
@@ -3644,7 +3660,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "XML file to open.",
                 "required": true
             },
@@ -3663,7 +3679,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Yaml Filename",
                 "required": true
             },
@@ -3778,6 +3794,7 @@
         "name": "pathspec",
         "description": "Create a structured path spec to pass to certain accessors.",
         "type": "Function",
+        "version": 1,
         "args": [
             {
                 "name": "DelegateAccessor",
@@ -3893,7 +3910,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of files to parse.",
                 "required": true
             },
@@ -3912,7 +3929,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of files to parse.",
                 "repeated": true,
                 "required": true
@@ -3932,7 +3949,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
@@ -3985,6 +4002,21 @@
                 "name": "key",
                 "type": "string",
                 "description": "If set use this key to cache the  yara rules."
+            },
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "The Yara namespece to use."
+            },
+            {
+                "name": "vars",
+                "type": "ordereddict.Dict",
+                "description": "The Yara variables to use."
+            },
+            {
+                "name": "number",
+                "type": "int64",
+                "description": "Stop after this many hits (1)."
             }
         ],
         "category": "windows"
@@ -4338,7 +4370,7 @@
             },
             {
                 "name": "filenames",
-                "type": "string",
+                "type": "OSPath",
                 "description": "One or more files to open.",
                 "repeated": true,
                 "required": true
@@ -4936,7 +4968,7 @@
         "args": [
             {
                 "name": "filenames",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Files to parse.",
                 "repeated": true,
                 "required": true
@@ -5032,6 +5064,21 @@
                 "name": "wait_time",
                 "type": "int64",
                 "description": "Batch splunk upload this long (2 sec)."
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "Hostname for Splunk Events. Defaults to server hostname."
+            },
+            {
+                "name": "timestamp_field",
+                "type": "string",
+                "description": "Field to use as event timestamp."
+            },
+            {
+                "name": "hostname_field",
+                "type": "string",
+                "description": "Field to use as event hostname. Overrides hostname param."
             }
         ],
         "category": "server"
@@ -5108,7 +5155,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "required": true
             },
             {
@@ -5152,6 +5199,7 @@
         "name": "stat",
         "description": "Get file information. Unlike glob() this does not support wildcards.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "filename",
@@ -5196,6 +5244,11 @@
                 "name": "prefix",
                 "type": "string",
                 "description": "The prefix to strip"
+            },
+            {
+                "name": "suffix",
+                "type": "string",
+                "description": "The suffix to strip"
             }
         ],
         "category": "basic"
@@ -5456,7 +5509,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "File to unzip.",
                 "required": true
             },
@@ -5505,7 +5558,7 @@
             },
             {
                 "name": "name",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The name of the file that should be stored on the server"
             },
             {
@@ -5574,7 +5627,7 @@
             },
             {
                 "name": "name",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Filename to be stored within the output directory"
             },
             {
@@ -5618,7 +5671,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -5660,7 +5713,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -5721,7 +5774,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -5773,7 +5826,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -5863,6 +5916,24 @@
         "category": "basic"
     },
     {
+        "name": "user",
+        "description": "Retrieves information about the Velociraptor user.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to create or update.",
+                "required": true
+            },
+            {
+                "name": "org",
+                "type": "string",
+                "description": "The org under which we query the user's ACL."
+            }
+        ]
+    },
+    {
         "name": "user_create",
         "description": "Creates a new user from the server, or updates their permissions or reset their password.",
         "type": "Function",
@@ -5888,7 +5959,7 @@
             {
                 "name": "orgs",
                 "type": "string",
-                "description": "One or more org IDs to grant access to.",
+                "description": "One or more org IDs to grant access to. If empty we use the current org.",
                 "repeated": true
             }
         ],
@@ -5904,6 +5975,17 @@
                 "type": "string",
                 "description": "The user to delete.",
                 "required": true
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "If set we only delete from these orgs, otherwise we delete from the current org.",
+                "repeated": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool",
+                "description": "If not specified, just show what user will be removed"
             }
         ],
         "category": "server"
@@ -5923,14 +6005,18 @@
                 "name": "roles",
                 "type": "string",
                 "description": "List of roles to give the user.",
-                "repeated": true,
-                "required": true
+                "repeated": true
             },
             {
                 "name": "orgs",
                 "type": "string",
-                "description": "One or more org IDs to grant access to.",
+                "description": "One or more org IDs to grant access to. If not specified we use current org",
                 "repeated": true
+            },
+            {
+                "name": "policy",
+                "type": "ordereddict.Dict",
+                "description": "A dict of permissions to set (e.g. as obtained from the gui_users() function)."
             }
         ]
     },
@@ -6011,7 +6097,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -6036,7 +6122,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "CSV files to open",
                 "repeated": true,
                 "required": true
@@ -6111,7 +6197,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
@@ -6149,7 +6235,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -6342,6 +6428,16 @@
                 "name": "key",
                 "type": "string",
                 "description": "If set use this key to cache the  yara rules."
+            },
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "The Yara namespece to use."
+            },
+            {
+                "name": "vars",
+                "type": "ordereddict.Dict",
+                "description": "The Yara variables to use."
             }
         ],
         "category": "plugin"

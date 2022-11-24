@@ -40,7 +40,7 @@ reports:
     timeout: 10
     parameters:
       - name: Sample
-        default: "4"
+        default: "6"
 
     template: |
       {{ define "CPU" }}
@@ -63,7 +63,9 @@ reports:
             })
       {{ end }}
 
-      ## Server status
+      {{ $time := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
+
+      ## Server status @ {{ Get $time "0.Now" }}
 
       <p>The following are total across all frontends.</p>
           <span class="container">
@@ -79,18 +81,15 @@ reports:
             </span>
       </span>
 
-      {{ if ( Query "SELECT org() FROM scope() WHERE org().name =~ 'root org' " | Expand ) }}
       ## Current Orgs
 
       {{ Query "LET ColumnTypes <= dict(ClientConfig='url') \
                 SELECT Name, OrgId, \
-                       format(format='[%s](/notebooks/Dashboards/Dashboard.%s/uploads/client.%s.config.yaml)', \
+                       format(format='[%s](/notebooks/Dashboards/%s/uploads/client.%s.config.yaml)', \
                        args=[OrgId, ArtifactName, OrgId]) AS ClientConfig, \
                        upload(accessor='data', file=_client_config, \
                               name='client.'+OrgId+'.config.yaml') AS _Upload \
                 FROM orgs() " | Table }}
-
-      {{ end }}
 
       ## Disk Space
 

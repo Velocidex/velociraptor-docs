@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|JSON file to open|string (required)
+filename|JSON file to open|OSPath (required)
 accessor|The accessor to use|string
 
 ### Description

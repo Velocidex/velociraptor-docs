@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|A list of filenames to open as OLE files.|list of string (required)
+file|A list of filenames to open as OLE files.|list of OSPath (required)
 accessor|The accessor to use.|string
 max_size|Maximum size of file we load into memory.|int64
 

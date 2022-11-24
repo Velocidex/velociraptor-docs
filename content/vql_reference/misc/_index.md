@@ -42,4 +42,5 @@ Miscellaneous plugins not yet categorized.
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
 |[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
+|[user](user)|<span class='vql_type'>Function</span>|Retrieves information about the Velociraptor user|
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|

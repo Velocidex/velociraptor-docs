@@ -30,6 +30,9 @@ chunk_size|The number of rows to send at the time.|int64
 skip_verify|Skip SSL verification(default: False).|bool
 root_ca|As a better alternative to skip_verify, allows root ca certs to be added here.|string
 wait_time|Batch splunk upload this long (2 sec).|int64
+hostname|Hostname for Splunk Events. Defaults to server hostname.|string
+timestamp_field|Field to use as event timestamp.|string
+hostname_field|Field to use as event hostname. Overrides hostname param.|string
 
 ### Description
 

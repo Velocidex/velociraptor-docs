@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|The file to upload|string (required)
+file|The file to upload|OSPath (required)
 name|The name of the file that should be stored on the server (may contain the path)|string
 user|The username to connect to the endpoint with|string (required)
 path|Path on server to upload file to (will be prepended to name)|string

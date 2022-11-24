@@ -67,7 +67,7 @@ sources:
 
       SELECT
           {
-            SELECT DNSHostName,  Name, Domain, TotalPhysicalMemory,
+            SELECT DNSHostName, Name, Domain, TotalPhysicalMemory,
                    get(item=DomainLookup,
                        field=str(str=DomainRole), default="Unknown") AS DomainRole
             FROM wmi(
@@ -120,9 +120,9 @@ sources:
 reports:
   - type: CLIENT
     template: |
-      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
+      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" | Expand }}
 
-      {{ $flow_id := Query "SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)" }}
+      {{ $flow_id := Query "SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)" | Expand }}
 
       # {{ Get $client_info "0.os_info.fqdn" }} ( {{ Get $client_info "0.client_id" }} ) @ {{ Get $flow_id "0.Timestamp" }}
 

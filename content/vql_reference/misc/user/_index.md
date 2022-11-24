@@ -1,5 +1,5 @@
 ---
-title: srum_lookup_id
+title: user
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## srum_lookup_id
+## user
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -19,11 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file||OSPath (required)
-accessor|The accessor to use.|string
-id||int64 (required)
+user|The user to create or update.|string (required)
+org|The org under which we query the user's ACL.|string
 
 ### Description
 
-Lookup a SRUM id.
+Retrieves information about the Velociraptor user.
 

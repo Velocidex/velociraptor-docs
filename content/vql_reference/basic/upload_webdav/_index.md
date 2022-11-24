@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|The file to upload|string (required)
+file|The file to upload|OSPath (required)
 name|The name that the file should have on the server|string
 accessor|The accessor to use|string
 url|The WebDAV url|string (required)

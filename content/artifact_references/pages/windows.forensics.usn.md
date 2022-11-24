@@ -92,7 +92,8 @@ sources:
       SELECT
             Timestamp,
             Filename,
-            Device,FullPath,
+            Device, FullPath,
+            _Links,
             Reason,
             _FileMFTID as MFTId,
             _FileMFTSequence as Sequence,
@@ -113,7 +114,7 @@ sources:
                 AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
                 AND Timestamp < DateBeforeTime
                 AND Timestamp > DateAfterTime
-                AND FullPath =~ PathRegex
+                AND _Links =~ PathRegex
             })
           }, else={
             SELECT *, Device
@@ -123,7 +124,7 @@ sources:
                 AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
                 AND Timestamp < DateBeforeTime
                 AND Timestamp > DateAfterTime
-                AND FullPath =~ PathRegex
+                AND _Links =~ PathRegex
           })
 
 ```

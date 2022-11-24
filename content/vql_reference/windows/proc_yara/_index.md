@@ -23,6 +23,9 @@ rules|Yara rules|string (required)
 pid|The pid to scan|int (required)
 context|Return this many bytes either side of a hit|int
 key|If set use this key to cache the  yara rules.|string
+namespace|The Yara namespece to use.|string
+vars|The Yara variables to use.|ordereddict.Dict
+number|Stop after this many hits (1).|int64
 
 ### Description
 
