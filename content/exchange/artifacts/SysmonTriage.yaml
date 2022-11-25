@@ -45,3 +45,88 @@ sources:
                 IdRegex=IdRegex,
                 IocRegex=IocRegex,
                 WhitelistRegex=FilterRegex )
+
+    notebook:
+      - type: vql_suggestion
+        name: Process event timeline
+        template: |
+            /*
+            ## Process Events
+            Comment in fields as needed.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --EventData.RuleName as RuleName
+                --EventData.UtcTime as UtcTime
+                --EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.OriginalFileName as OriginalFileName
+                --,dict(FileVersion = EventData.FileVersion, Description = EventData.Description, Product = EventData.Product,Company = EventData.Company,OriginalFileName = EventData.OriginalFileName) as VersionInformation
+                ,EventData.CommandLine as CommandLine
+                --,EventData.CurrentDirectory as CurrentDirectory
+                ,EventData.User as User
+                --,EventData.LogonGuid as LogonGuid
+                --,EventData.LogonId as LogonId
+                --,EventData.TerminalSessionId as TerminalSessionId
+                --,EventData.IntegrityLevel as IntegrityLevel
+                --,parse_string_with_regex(string=EventData.Hashes, regex=["MD5=(?P<MD5>[^,]+)","SHA1=(?P<SHA1>[^,]+)","SHA256=(?P<SHA256>[^,]+)","IMPHASH=(?P<IMPHASH>[^,]+)"] ) as Hash
+                --,EventData.ParentProcessGuid as ParentProcessGuid
+                ,EventData.ParentProcessId as ParentProcessId
+                ,EventData.ParentImage as ParentImage
+                ,EventData.ParentCommandLine as ParentCommandLine
+                --,EventData.ParentUser as ParentUser
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 1
+            
+      - type: vql_suggestion
+        name: DNS event timeline
+        template: |            
+            /*
+            ## Sysmon DNSEvent
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.QueryName as QueryName
+                ,EventData.QueryStatus as QueryStatus
+                ,EventData.QueryResults as QueryResults
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 22
+            
+      - type: vql_suggestion
+        name: Network event timeline
+        template: |             
+            /*
+            ## Sysmon Network connection (Eid:3)
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.Protocol as Protocol
+                ,EventData.Initiated as Initiated
+                ,EventData.SourceIsIpv6 as SourceIsIpv6
+                ,EventData.SourceIp as SourceIp
+                ,EventData.SourceHostname as SourceHostname
+                ,EventData.SourcePort as SourcePort
+                ,EventData.SourcePortName as SourcePortName
+                ,EventData.DestinationIsIpv6 as DestinationIsIpv6
+                ,EventData.DestinationIp as DestinationIp
+                ,EventData.DestinationHostname as DestinationHostname
+                ,EventData.DestinationPort as DestinationPort
+                ,EventData.DestinationPortName as DestinationPortName
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 3
