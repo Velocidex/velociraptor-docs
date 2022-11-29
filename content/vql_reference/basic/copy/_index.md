@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|The file to copy from.|string (required)
+filename|The file to copy from.|OSPath (required)
 accessor|The accessor to use|string
 dest|The destination file to write.|string (required)
 permissions|Required permissions (e.g. 'x').|string

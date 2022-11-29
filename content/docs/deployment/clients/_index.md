@@ -347,6 +347,20 @@ program. Now you can verify that Velociraptor is running:
 
 ![Task manager output](10.png)
 
+{{% notice note "Preventing multiple instances of Velociraptor" %}}
+
+In our experience GPO deployments are not very reliable - we often
+find the Velociraptor client will be launched multiple times on the
+endpoint. It is highly recommended that you use the `--mutant` flag to
+specify a mutant preventing the client from starting multiple times.
+
+```
+velociraptor.exe --config ... client -v --mutant ArandomString
+```
+
+{{% /notice %}}
+
+
 ## Client upgrades
 
 The client's identity is derived from the client's cryptographic

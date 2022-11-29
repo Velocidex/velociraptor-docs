@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|File to unzip.|string (required)
+filename|File to unzip.|OSPath (required)
 accessor|The accessor to use|string
 filename_filter|Only extract members matching this filter.|string
 output_directory|Where to unzip to|string (required)

@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|A list of files to parse.|string (required)
+file|A list of files to parse.|OSPath (required)
 accessor|The accessor to use.|string
 
 ### Description
@@ -40,7 +40,7 @@ Parse plist file
 
 Arg | Description | Type
 ----|-------------|-----
-file|A list of files to parse.|list of string (required)
+file|A list of files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
 
 ### Description

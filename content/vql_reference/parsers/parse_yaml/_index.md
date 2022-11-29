@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|Yaml Filename|string (required)
+filename|Yaml Filename|OSPath (required)
 accessor|File accessor|string
 
 ### Description

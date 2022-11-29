@@ -397,7 +397,7 @@
     },
     {
         "title": "Linux.Network.PacketCapture",
-        "description": "description: |\nThis artifact leverages tcpdump to natively capture packets.",
+        "description": "This artifact leverages tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/linux.network.packetcapture",
         "type": "client",
         "tags": [
@@ -685,7 +685,7 @@
     },
     {
         "title": "MacOS.Network.PacketCapture",
-        "description": "description: |\nThis artifact leverages tcpdump to natively capture packets.",
+        "description": "This artifact leverages tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/macos.network.packetcapture",
         "type": "client",
         "tags": [
@@ -2361,9 +2361,9 @@
         "title": "Windows.KapeFiles.Extract",
         "description": "The Windows.KapeFiles.Targets artifact collects files into a Zip\nfile. Zip files can not generally preserve timestamps since they\nonly have a single timestamp concept. Velociraptor will only record\nthe modified time in the zip file header itself but all the times\nare present in the metadata file:",
         "link": "/artifact_references/pages/windows.kapefiles.extract",
-        "type": "client",
+        "type": "server",
         "tags": [
-            "Client Artifact"
+            "Server Artifact"
         ]
     },
     {

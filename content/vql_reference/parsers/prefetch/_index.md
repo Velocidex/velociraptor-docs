@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|A list of event log files to parse.|list of string (required)
+filename|A list of event log files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
 
 ### Description

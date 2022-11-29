@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-path|Path to open and hash.|string (required)
+path|Path to open and hash.|OSPath (required)
 accessor|The accessor to use|string
 type|Magic type (can be empty or 'mime' or 'extension')|string
 magic|Additional magic to load|string

@@ -4,7 +4,6 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-description: |
 This artifact leverages tcpdump to natively capture packets.
 
 The `Duration` parameter is used to define how long (in seconds) the capture should be.  Specific interfaces can be defined using the `Interface` parameter, otherwise the artifact defaults to an interface assignment of `any`.
@@ -18,7 +17,6 @@ Read more about BPF expressions here: https://biot.com/capstats/bpf.html
 name: Linux.Network.PacketCapture
 author: Wes Lambert, @therealwlambert
 description: |
-  description: |
   This artifact leverages tcpdump to natively capture packets.
 
   The `Duration` parameter is used to define how long (in seconds) the capture should be.  Specific interfaces can be defined using the `Interface` parameter, otherwise the artifact defaults to an interface assignment of `any`.

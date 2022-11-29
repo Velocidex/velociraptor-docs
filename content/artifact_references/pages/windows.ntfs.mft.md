@@ -104,6 +104,24 @@ parameters:
 
 sources:
   - query: |
+      -- Cater for older clients which do not have the Links column.
+      LET parse_mft_version(filename, accessor, prefix) = SELECT *
+      FROM if(condition=version(plugin="parse_mft") > 1,
+              then={ SELECT *
+                     FROM parse_mft(
+                         filename=filename, accessor=accessor, prefix=prefix)
+              },
+
+              -- Older versions do not have the prefix parameter in
+              -- the plugin and need the prefix prepended to the
+              -- OSPath
+              else={ SELECT *,
+                            prefix + OSPath AS Links,
+                            prefix + OSPath AS OSPath
+                     FROM parse_mft(
+                         filename=filename, accessor=accessor)
+              })
+
       -- The path to to the drive that holds the MFT file (can be a pathspec)
       LET Drive <= pathspec(parse=MFTDrive, path_type="windows")
 
@@ -131,7 +149,7 @@ sources:
       -- Only check the filename - should be very quick
       LET mftsearch_with_filename(Drive, MFTPath) =
         SELECT EntryNumber, InUse, ParentEntryNumber,
-            Drive + OSPath AS OSPath,
+            OSPath,
             Links AS _Links,
             FileName, FileSize, ReferenceCount, IsDir,
             Created0x10, Created0x30,
@@ -140,7 +158,8 @@ sources:
             LastAccess0x10,LastAccess0x30,
             HasADS, SI_Lt_FN, uSecZeros, Copied,
             FileNames, FileNameTypes
-        FROM parse_mft(filename=MFTPath, accessor=Accessor)
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
         WHERE FileName =~ FileRegex
           AND Links =~ PathRegex
 
@@ -148,7 +167,7 @@ sources:
       LET mftsearch_after_date(Drive, MFTPath) =
         SELECT
             EntryNumber, InUse, ParentEntryNumber,
-            Drive + OSPath AS OSPath,
+            OSPath,
             Links AS _Links,
             FileName, FileSize, ReferenceCount, IsDir,
             Created0x10, Created0x30,
@@ -157,7 +176,8 @@ sources:
             LastAccess0x10,LastAccess0x30,
             HasADS, SI_Lt_FN, uSecZeros, Copied,
             FileNames, FileNameTypes
-        FROM parse_mft(filename=MFTPath, accessor=Accessor)
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
         WHERE
              ( Created0x10 > DateAfter
               OR Created0x30 > DateAfter
@@ -170,7 +190,7 @@ sources:
 
       LET mftsearch_before_date(Drive, MFTPath) =
         SELECT EntryNumber, InUse, ParentEntryNumber,
-            Drive + OSPath AS OSPath,
+            OSPath,
             Links AS _Links,
             FileName, FileSize, ReferenceCount, IsDir,
             Created0x10, Created0x30,
@@ -179,7 +199,8 @@ sources:
             LastAccess0x10,LastAccess0x30,
             HasADS, SI_Lt_FN, uSecZeros, Copied,
             FileNames, FileNameTypes
-        FROM parse_mft(filename=MFTPath, accessor=Accessor)
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
         WHERE
              ( Created0x10 < DateBefore
               OR Created0x30 < DateBefore
@@ -193,7 +214,7 @@ sources:
       -- Check everything can be slow.
       LET mftsearch_full(Drive, MFTPath) =
         SELECT EntryNumber, InUse, ParentEntryNumber,
-            Drive + OSPath AS OSPath,
+            OSPath,
             Links AS _Links,
             FileName, FileSize, ReferenceCount, IsDir,
             Created0x10, Created0x30,
@@ -202,7 +223,8 @@ sources:
             LastAccess0x10,LastAccess0x30,
             HasADS, SI_Lt_FN, uSecZeros, Copied,
             FileNames, FileNameTypes
-        FROM parse_mft(filename=MFTPath, accessor=Accessor)
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
         WHERE FileName =~ FileRegex
             AND Links =~ PathRegex
             AND if(condition=SizeMax,

@@ -28,13 +28,15 @@ end|End scanning at this offset (100mb)|uint64
 number|Stop after this many hits (1).|int64
 blocksize|Blocksize for scanning (1mb).|uint64
 key|If set use this key to cache the  yara rules.|string
+namespace|The Yara namespece to use.|string
+vars|The Yara variables to use.|ordereddict.Dict
 
 ### Description
 
 Scan files using yara rules.
 
 The `yara()` plugin applies a signature consisting of multiple rules
-across files. You can read more about [yara rules](https://yara.readthedocs.io/en/v3.4.0/writingrules.html). The
+across files. You can read more about [yara rules](https://yara.readthedocs.io/en/v4.2.3/writingrules.html). The
 accessor is used to open the various files which allows this plugin to
 work across raw ntfs, zip members or indeed process memory.
 
@@ -85,6 +87,9 @@ keywords. The specification before the `:` means the same thing as the
 yara DSL and the following combinations are supported `wide`,
 `wide ascii`, `wide nocase`, `wide nocase ascii`.
 
+This shorthand notation is less useful because recent Velociraptor
+versions offer a context sensivite Yara rule editor in the GUI
+(simply press ? to bring up a rule template).
 
 {{% notice note %}}
 
@@ -92,5 +97,23 @@ By default only the first 100mb of the file are scanned and
 scanning stops after one hit is found.
 
 {{% /notice %}}
+
+### Compatibility with yara rules.
+
+The YARA engine supports a number of directives that bring in
+unreasonably sized dependencies. Velociraptor's Yara integration
+disables directive importing dependencies such as openssl and
+libmagic. This means that some rule conditions do not work (for
+example `pe.number_of_signatures`). Other condition are still
+supported (e.g. `pe.imphash()`). You can usually find equivalents
+to the Yara plugins in VQL plugins so rules can be rewritten to
+avoid this limitation.
+
+If you have a large number of rules, you may use the `yara-tools`
+repository https://github.com/Velocidex/yara-tools to clean up the
+rules and verify that they will work with Velociraptor's yara
+engine. The tool will automatically remove rules that are
+incompatible with Velociraptor and reduce the size of the rules by
+removing metadata and extra fluff.
 
 

@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|XML file to open.|string (required)
+file|XML file to open.|OSPath (required)
 accessor|The accessor to use|string
 
 ### Description

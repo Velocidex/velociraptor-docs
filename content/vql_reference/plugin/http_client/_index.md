@@ -22,7 +22,7 @@ Arg | Description | Type
 url|The URL to fetch|string (required)
 params|Parameters to encode as POST or GET query strings|Any
 headers|A dict of headers to send.|Any
-method|HTTP method to use (GET, POST)|string
+method|HTTP method to use (GET, POST, PUT, PATCH, DELETE)|string
 data|If specified we write this raw data into a POST request instead of encoding the params above.|string
 chunk_size|Read input with this chunk size and send each chunk as a row|int
 disable_ssl_security|Disable ssl certificate verifications.|bool

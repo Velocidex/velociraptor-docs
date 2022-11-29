@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
+metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
 
 ### Description
 
