@@ -48,10 +48,10 @@ sources:
 
     notebook:
       - type: vql_suggestion
-        name: Process event timeline
+        name: 1. Process event timeline
         template: |
             /*
-            ## Process Events
+            ## 1: Process creation
             Comment in fields as needed.
             */
             SELECT EventTime, Computer,EventID
@@ -79,33 +79,40 @@ sources:
                 --,Message
             FROM source(artifact="Exchange.Windows.Triage.Sysmon")
             WHERE EventID = 1
-            
+ 
       - type: vql_suggestion
-        name: DNS event timeline
-        template: |            
+        name: 2 Change file time
+        template: |
             /*
-            ## Sysmon DNSEvent
+            ## 2: A process changed a file creation time
+                The change file creation time event is registered when a file creation time is 
+                explicitly modified by a process. This event helps tracking the real creation 
+                time of a file. Attackers may change the file creation time of a backdoor to 
+                make it look like it was installed with the operating system. Note that many 
+                processes legitimately change the creation time of a file; it does not 
+                necessarily indicate malicious activity.
             */
             SELECT EventTime, Computer,EventID
                 --,Channel,Provider
-                --,EventData.RuleName as RuleName
-                --,EventData.UtcTime as UtcTime
-                --,EventData.ProcessGuid as ProcessGuid
+                --EventData.RuleName as RuleName
+                --EventData.UtcTime as UtcTime
+                --EventData.ProcessGuid as ProcessGuid
                 ,EventData.ProcessId as ProcessId
                 ,EventData.Image as Image
                 ,EventData.User as User
-                ,EventData.QueryName as QueryName
-                ,EventData.QueryStatus as QueryStatus
-                ,EventData.QueryResults as QueryResults
+                ,EventData.TargetFilename as TargetFilename
+                ,EventData.CreationUtcTime as CreationUtcTime
+                ,EventData.PreviousCreationUtcTime as PreviousCreationUtcTime
+                --,EventData
                 --,Message
             FROM source(artifact="Exchange.Windows.Triage.Sysmon")
-            WHERE EventID = 22
-            
+            WHERE EventID = 2
+
       - type: vql_suggestion
-        name: Network event timeline
+        name: 3. Network event timeline
         template: |             
             /*
-            ## Sysmon Network connection (Eid:3)
+            ## 3. Network connection
             */
             SELECT EventTime, Computer,EventID
                 --,Channel,Provider
@@ -130,3 +137,281 @@ sources:
                 --,Message
             FROM source(artifact="Exchange.Windows.Triage.Sysmon")
             WHERE EventID = 3
+       
+       
+      - type: vql_suggestion
+        name: 8. CreateRemoteThread
+        template: |           
+            /*
+            ## 8: CreateRemoteThread
+            The CreateRemoteThread event detects when a process creates a thread in another 
+            process. This technique is used by malware to inject code and hide in other 
+            processes. The event indicates the source and target process. It gives 
+            information on the code that will be run in the new thread: StartAddress, 
+            StartModule and StartFunction. Note that StartModule and StartFunction fields 
+            are inferred, they might be empty if the starting address is outside loaded 
+            modules or known exported functions.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.SourceProcessGuid as SourceProcessGuid
+                ,EventData.SourceProcessId as SourceProcessId
+                ,EventData.SourceImage as SourceImage
+                ,EventData.SourceUser as SourceUser
+                --,EventData.TargetProcessGuid as TargetProcessGuid
+                ,EventData.TargetImage as TargetImage
+                ,EventData.TargetUser as TargetUser
+                ,EventData.NewThreadId as NewThreadId
+                ,EventData.StartAddress as StartAddress
+                ,EventData.StartModule as StartModule
+                ,EventData.StartFunction as StartFunction
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 8
+     
+      - type: vql_suggestion
+        name: 10. ProcessAccess
+        template: |          
+            /*
+            ## 10: ProcessAccess
+            The process accessed event reports when a process opens another process, 
+            an operation that’s often followed by information queries or reading 
+            and writing the address space of the target process. This enables 
+            detection of hacking tools that read the memory contents of processes 
+            like Local Security Authority (Lsass.exe) in order to steal credentials 
+            for use in Pass-the-Hash attacks. Enabling it can generate significant 
+            amounts of logging if there are diagnostic utilities active that 
+            repeatedly open processes to query their state, so it generally 
+            should only be done so with filters that remove expected accesses.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.SourceProcessGuid as SourceProcessGuid
+                ,EventData.SourceProcessId as SourceProcessId
+                ,EventData.SourceThreadId as SourceThreadId
+                ,EventData.SourceImage as SourceImage
+                ,EventData.SourceUser as SourceUser
+                --,EventData.TargetProcessGuid as TargetProcessGuid
+                ,EventData.TargetProcessId as TargetProcessId
+                ,EventData.TargetImage as TargetImage
+                ,EventData.TargetUser as TargetUser
+                ,EventData.GrantedAccess as GrantedAccess
+                ,EventData.CallTrace as CallTrace
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 10
+
+      - type: vql_suggestion
+        name: 11. FileCreate
+        template: |             
+            /*
+            ## 11: FileCreate
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFilename as TargetFilename
+                ,EventData.CreationUtcTime as CreationUtcTime
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 11
+
+      - type: vql_suggestion
+        name: 12 13 14. Registry events
+        template: |                 
+            /*
+            ## 12, 13, 14: Registry
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.EventType as EventType
+                ,EventData.TargetObject as TargetObject
+                ,EventData.Details as Details
+                ,EventData.NewName as NewName
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID in ( 12, 13, 14 )
+
+      - type: vql_suggestion
+        name: 15. FileCreateStreamHash
+        template: | 
+            /*
+            ## 15: FileCreateStreamHash
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFileName as TargetFileName
+                ,EventData.CreationUtcTime as CreationUtcTime
+                --,parse_string_with_regex(string=EventData.Hash, regex=["MD5=(?P<MD5>[^,]+)","SHA1=(?P<SHA1>[^,]+)","SHA256=(?P<SHA256>[^,]+)"] ) as Hash
+                ,EventData.Hash as Hash
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 15
+
+      - type: vql_suggestion
+        name: 17 18. Named Pipes
+        template: | 
+            /*
+            ## 17, 18: Named Pipes
+            17: Pipe created
+            18: Pipe connected
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.EventType as EventType
+                ,EventData.PipeName as PipeName
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID in ( 17,18 )
+            
+            
+            /*
+            
+      - type: vql_suggestion
+        name: 19 20 21. WMI Eventing
+        template: |            
+            ## 19,20,21: WMI Eventing
+            19: WmiEventFilter activity detected.  
+            20: WmiEventConsumer activity detected.  
+            21: WmiEventConsumerToFilter activity detected.  
+            
+            Note: some fields for each event will be null.  
+            Comment in and out relevant fields.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.EventType as EventType
+                ,EventData.Operation as Operation
+                ,EventData.EventNamespace as EventNamespace
+                ,EventData.Name as Name
+                ,EventData.Query as Query
+                ,EventData.Type as Type
+                ,EventData.Destination as Destination
+                ,EventData.Consumer as Consumer
+                ,EventData.Filter as Filter
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID in ( 19,20,21 )
+
+      - type: vql_suggestion
+        name: 22. DNS event timeline
+        template: |            
+            /*
+            ## 22: DNSEvent
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.QueryName as QueryName
+                ,EventData.QueryStatus as QueryStatus
+                ,EventData.QueryResults as QueryResults
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 22
+
+      - type: vql_suggestion
+        name: 23. FileDelete
+        template: |             
+            /*
+            ## 23: FileDelete
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFilename as TargetFilename
+                --,parse_string_with_regex(string=EventData.Hashes, regex=["MD5=(?P<MD5>[^,]+)","SHA1=(?P<SHA1>[^,]+)","SHA256=(?P<SHA256>[^,]+)"] ) as Hashes
+                ,EventData.Hashes as Hashes
+                ,EventData.Archived as Archived
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 23
+
+      - type: vql_suggestion
+        name: 24. ClipboardChange
+        template: |             
+            /*
+            ## 24: ClipboardChange
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.Session as Session
+                ,EventData.ClientInfo as ClientInfo
+                --,parse_string_with_regex(string=EventData.Hashes, regex=["MD5=(?P<MD5>[^,]+)","SHA1=(?P<SHA1>[^,]+)","SHA256=(?P<SHA256>[^,]+)"] ) as Hashes
+                ,EventData.Hashes as Hashes
+                ,EventData.Archived as Archived
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 24
+
+      - type: vql_suggestion
+        name: XX. Full Timeline
+        template: |                
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                --,EventData.ProcessId as ProcessId
+                --,EventData.Image as Image
+                --,EventData.User as User
+                --,EventData
+                ,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
