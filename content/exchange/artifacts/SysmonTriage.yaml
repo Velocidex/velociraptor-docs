@@ -437,7 +437,7 @@ sources:
                     `25` = 'Process Tampering',
                     `26` = 'File Delete logged',
                     `27` = 'File Block Executable',
-                    `28` = 'FFile Block Shredding',
+                    `28` = 'File Block Shredding',
                     `255` = 'Error'),
                     member=str(str=EventID)) as timestamp_desc
                 ,Message as message
