@@ -402,16 +402,44 @@ sources:
             WHERE EventID = 24
 
       - type: vql_suggestion
-        name: XX. Full Timeline
+        name: Timesketch format
         template: |                
-            SELECT EventTime, Computer,EventID
+            SELECT EventTime as datetime
+                ,Computer,EventID
                 --,Channel,Provider
                 --,EventData.RuleName as RuleName
                 --,EventData.UtcTime as UtcTime
-                --,EventData.ProcessGuid as ProcessGuid
-                --,EventData.ProcessId as ProcessId
-                --,EventData.Image as Image
-                --,EventData.User as User
+                ,get(item=dict(
+                    `1` = 'Process Create',
+                    `2` = 'File creation time changed',
+                    `3` = 'Network connection detected',
+                    `4` = 'Sysmon service state changed',
+                    `5` = 'Process terminated',
+                    `6` = 'Driver loaded',
+                    `7` = 'Image loaded',
+                    `8` = 'CreateRemoteThread detected',
+                    `9` = 'RawAccessRead detected',
+                    `10` = 'Process accessed',
+                    `11` = 'File created',
+                    `12` = 'Registry object added or deleted',
+                    `13` = 'Registry value set',
+                    `14` = 'Registry object renamed',
+                    `15` = 'File stream created',
+                    `16` = 'Sysmon config state changed',
+                    `17` = 'Pipe Created"',
+                    `18` = 'Pipe Connected',
+                    `19` = 'WmiEventFilter activity detected',
+                    `20` = 'WmiEventConsumer activity detected',
+                    `21` = 'WmiEventConsumerToFilter activity detected',
+                    `22` = 'Dns query',
+                    `23` = 'File Delete archived',
+                    `24` = 'Clipboard changed',
+                    `25` = 'Process Tampering',
+                    `26` = 'File Delete logged',
+                    `27` = 'File Block Executable',
+                    `28` = 'FFile Block Shredding',
+                    `255` = 'Error'),
+                    member=str(str=EventID)) as timestamp_desc
+                ,Message as message
                 --,EventData
-                ,Message
             FROM source(artifact="Exchange.Windows.Triage.Sysmon")
