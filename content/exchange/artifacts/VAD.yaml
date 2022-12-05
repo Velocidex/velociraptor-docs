@@ -55,7 +55,7 @@ sources:
             AND log(message="Scanning pid %v : %v", args=[Pid, Name])
 
       -- next find sections in scope
-      LET sections <= SELECT * FROM foreach(
+      LET sections = SELECT * FROM foreach(
           row=processes,
           query={
             SELECT CreateTime as ProcessCreateTime,Pid, Name,MappingName  ,
