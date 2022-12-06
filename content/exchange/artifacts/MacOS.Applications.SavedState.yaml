@@ -38,9 +38,11 @@ precondition:
 
 sources:
   - query: |
-      LET SavedStateList = SELECT ModTime, Btime, OSPath, 
-                                  regex_replace(source=split(sep='''/''', string=OSPath)[5], replace="", re=".savedState") AS Name, 
-                                  split(sep='''/''', string=OSPath)[2] AS _User
+      LET SavedStateList = SELECT ModTime,
+                                  Btime,
+                                  OSPath,
+                                  regex_replace(source=OSPath[4], replace="", re=".savedState") AS Name,
+                                  OSPath[1] AS _User
                            FROM glob(globs=split(string=SavedStateGlob, sep=","))
       SELECT *,
              if(condition = OSPath =~ "windows.plist", then=items(item=plist(file=OSPath))._value.NSDockMenu.name)[0][0] AS DockMenuName,
