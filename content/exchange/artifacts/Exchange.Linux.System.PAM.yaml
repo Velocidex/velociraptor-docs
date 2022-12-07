@@ -1,7 +1,6 @@
 name: Exchange.Linux.System.PAM
 
 description: |
-   
    This artifact enumerates applicable lines from the files that reside in `/etc/PAM.d/`. This information can be useful for auditing and compliance purposes, or to identify suspicious activity on Linux systems.
    
    For example, we could use the `RecordFilter` parameter to check for the presence of `pam_exec.so`, which can be used within PAM configuration to invoke arbitrary scripts.  
