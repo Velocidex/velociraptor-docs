@@ -105,7 +105,7 @@ anyone with access to the binary.
 
 In the latest release, Velociraptor supports asymmetric encryption to
 protect the acquisition Zip file. There are two asymmetric schemes:
-`X509 encyption` and `PGP encyption`. Having asymmetric encryption
+`X509 encryption` and `PGP encryption`. Having asymmetric encryption
 improves security greatly because only the public key needs to be
 included in the collector configuration. Dumping the configuration
 from the collection is not sufficient to be able to decrypt the
