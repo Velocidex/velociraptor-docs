@@ -1,4 +1,4 @@
-name: Exchange.Linux.System.PAM
+name: Linux.System.PAM
 
 description: |
    This artifact enumerates applicable lines from the files that reside in `/etc/PAM.d/`. This information can be useful for auditing and compliance purposes, or to identify suspicious activity on Linux systems.
