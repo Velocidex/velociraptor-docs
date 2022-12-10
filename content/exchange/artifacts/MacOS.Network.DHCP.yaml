@@ -5,28 +5,21 @@ description: |
     Either way, the informaton provided by this artifact can be used to help defenders find unexpected DHCP lease configuration.
 reference:
   - https://attack.mitre.org/techniques/T1557/003/
-
 type: CLIENT
-
 author: Wes Lambert - @therealwlambert|@weslambert@infosec.exchange
-
 parameters:
 - name: LeaseGlob
   default: /private/var/db/dhcpclient/leases/*.plist
 - name: UploadFiles
   default: 
-  type: bool
-  
+  type: bool 
 precondition:
       SELECT OS From info() where OS = 'darwin'
-
 sources:
   - query: |
       LET LeaseList = SELECT Mtime, OSPath
        FROM glob(globs=split(string=LeaseGlob, sep=","))
-
-  
-      
+       
       SELECT * FROM foreach(row=LeaseList,
                             query={
                                 SELECT Mtime,
@@ -51,4 +44,3 @@ sources:
                     upload(file=OSPath) as DHCPLeaseFile
                 FROM LeaseList
             })
-  
