@@ -2,7 +2,7 @@ name: MacOS.Network.DHCP
 description: |
     It can be useful to view DHCP lease information on an endpoint.  If the  `LeaseLength`, `RouterIPAddress`, `SSID`, or other values are not as expected,  it could potentially indicate a rogue DHCP server on the network, or just misconfiguration.
     
-    Either way, the informaton provided by this artifact can be used to help defenders find unexpected DHCP lease configuration.
+    Either way, the information provided by this artifact can be used to help defenders find unexpected DHCP lease configuration.
 reference:
   - https://attack.mitre.org/techniques/T1557/003/
 type: CLIENT
