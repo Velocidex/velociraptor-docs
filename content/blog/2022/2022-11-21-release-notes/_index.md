@@ -184,8 +184,8 @@ processing on the data themselves.
 Our community has spoken though! This is a useful feature!
 
 In the latest release exported files from the GUI use the same
-container format at the offline collector and therefore can be
-imported into a difference Velociraptor installation seamlessly.
+container format as the offline collector and therefore can be
+imported into a different Velociraptor installation seamlessly.
 
 ## Handling of sparse files
 
