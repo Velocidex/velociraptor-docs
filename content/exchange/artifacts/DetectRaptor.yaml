@@ -1,6 +1,12 @@
 name: Server.Import.DetectRaptor
 description: |
-   This artifact will automatically import the latest DetectRaptor bundle into the current server.
+   This artifact will automatically import the latest DetectRaptor bundle into the current server.  
+   
+   Last updated: 2022-12-16.   
+   
+   Windows.Detection.BulkEvtx  
+   Windows.Detection.BulkMFT   
+   Windows.Detection.BulkWebhistory  
 
 type: SERVER
 
