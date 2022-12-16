@@ -1,7 +1,8 @@
 name: MacOS.Applications.Notes
 description: |
    This artifact provides details about notes taken using the default Notes application on macOS.  These notes can be useful during an investigation, especially if tied to interesting files.  
-  Deleted notes and attachments can also be recovered in some instances.
+  
+   Deleted notes and attachments can also be recovered in some instances.
    
    The SQL query within this artifact was primarily derived from Yogesh Khatri's referenced blog post.
    
