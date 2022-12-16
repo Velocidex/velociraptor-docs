@@ -4,6 +4,8 @@ description: |
    
    These notes can be useful during an investigation, especially if tied to interesting files.
    
+   Deleted notes and attachments can also be recovered in some instances.
+   
    The SQL query within this artifact was primarily derived from Yogesh Khatri's referenced blog post.
    
    NOTE: This artifact may not cover all attachments at this time, and there are many more great pieces of data to discover! More information can be found in the `ZICCLOUDSYNCINGOBJECT` table.
