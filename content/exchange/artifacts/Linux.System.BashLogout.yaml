@@ -23,10 +23,10 @@ precondition:
 
 sources:
   - query: |
-      LET BashLogoutList = SELECT OSPath
+      LET BashLogoutList = SELECT OSPath, Mtime
        FROM glob(globs=split(string=BashLogoutGlob, sep=","))
   
-      SELECT parse_string_with_regex(regex="(?sm)(?P<Commands>^[a-z].*)", string=read_file(filename=OSPath)).Commands AS Content, 
+      SELECT OSPath, Mtime, parse_string_with_regex(regex="(?sm)(?P<Commands>^[a-z].*)", string=read_file(filename=OSPath)).Commands AS Content, 
              if(condition=UploadFiles,then=OSPath) AS Upload
       FROM foreach(row=BashLogoutList)
       WHERE Content =~ ContentFilter
