@@ -1,12 +1,24 @@
 name: Server.Import.DetectRaptor
+author: Matt Green - @mgreen27
 description: |
-   This artifact will automatically import the latest DetectRaptor bundle into the current server.  
+   DetectRaptor is a collection of publically availible Velociraptor detection content. 
+   Most content is managed by a series of csv files and artifacts are automatically updated.
    
-   Last updated: 2022-12-16.   
+   This artifact will import the latest DetectRaptor bundle into the current server.  
    
-   Windows.Detection.BulkEvtx  
-   Windows.Detection.BulkMFT   
-   Windows.Detection.BulkWebhistory  
+   Last updated: 2022-12-18.   
+
+   Current artifacts include:  
+   
+   - Windows.Detection.Evtx  
+   - Windows.Detection.MFT  
+   - Windows.Detection.Webhistory  
+   - Windows.Detection.ZoneIdentifier
+
+reference:
+  - https://github.com/mgreen27/DetectRaptor
+  - https://github.com/svch0stz/velociraptor-detections
+  - https://github.com/SigmaHQ/sigma
 
 type: SERVER
 
