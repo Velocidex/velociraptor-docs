@@ -10,8 +10,10 @@ description: |
 
    Current artifacts include:  
    
+   - Windows.Detection.Applications
    - Windows.Detection.Evtx  
    - Windows.Detection.MFT  
+   - Windows.Detection.NamedPipes
    - Windows.Detection.Webhistory  
    - Windows.Detection.ZoneIdentifier
 
