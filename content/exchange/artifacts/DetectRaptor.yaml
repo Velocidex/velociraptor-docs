@@ -10,11 +10,11 @@ description: |
 
    Current artifacts include:  
    
+   - Windows.Detection.Applications
    - Windows.Detection.Evtx  
    - Windows.Detection.MFT  
    - Windows.Detection.Webhistory  
    - Windows.Detection.ZoneIdentifier
-   - Windows.Detection.Applications
 
 reference:
   - https://github.com/mgreen27/DetectRaptor
