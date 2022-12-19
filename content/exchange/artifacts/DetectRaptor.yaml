@@ -1,21 +1,23 @@
 name: Server.Import.DetectRaptor
 author: Matt Green - @mgreen27
 description: |
-   DetectRaptor is a collection of publically availible Velociraptor detection content. 
+   DetectRaptor is a collection of publicly availible Velociraptor detection content. 
    Most content is managed by a series of csv files and artifacts are automatically updated.
    
    This artifact will import the latest DetectRaptor bundle into the current server.  
    
-   Last updated: 2022-12-18.   
+   Last updated: 2022-12-19.   
 
    Current artifacts include:  
    
    - Windows.Detection.Applications
+   - Windows.Detection.BinaryRename
    - Windows.Detection.Evtx  
    - Windows.Detection.MFT  
    - Windows.Detection.NamedPipes
    - Windows.Detection.Webhistory  
    - Windows.Detection.ZoneIdentifier
+   - Server.StartHunts
 
 reference:
   - https://github.com/mgreen27/DetectRaptor
