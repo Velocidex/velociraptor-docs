@@ -6,7 +6,7 @@ description: |
         
         However, users should ensure their searches are scoped appropriately (date/time/event type/etc), as a lot of data can be returned, which could affect the ability to review the collected data or potentially impact client performance.
         
-        The `Predicate` parameter can be used to filter logs. Example queries are included as artifact parameters.
+        The `Predicate` parameter can be used to filter logs. Example filters are included as artifact parameters.
         
         Users may need to adjust the `Length` parameter to accomodate a large number of events being returned.
         
@@ -27,10 +27,11 @@ parameters:
     default:
     type: timestamp  
   - name: Predicate
+    description: Use a custom filter
     default:
     type: string
   - name: RunAllQueries
-    description: Run all preconfigured queries.  You may need to increase the default timeout of 600s.
+    description: Run all preconfigured filters.  You may need to increase the default timeout of 600s.
     type: bool
   - name: Configuration Profile - Manual Install
     description: Look for manual install of a configuration profile
