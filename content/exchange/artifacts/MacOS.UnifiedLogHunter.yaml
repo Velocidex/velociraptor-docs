@@ -27,6 +27,7 @@ parameters:
     default:
     type: timestamp  
   - name: Predicate
+    description: Use a custom query
     default:
     type: string
   - name: RunAllQueries
