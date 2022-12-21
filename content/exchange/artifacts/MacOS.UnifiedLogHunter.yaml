@@ -1,0 +1,98 @@
+name: MacOS.UnifiedLogHunter
+description: |
+        This artifact allows for live hunting through Apple's Unified Logs using the native `log` command.
+        
+        The Unified Logs can be a great resource for learning about system events. There are many logging subsystems that can provide a wealth of data for investigators.
+        
+        However, users should ensure their searches are scoped appropriately (date/time/event type/etc), as a lot of data can be returned, which could affect the ability to review the collected data or potentially impact client performance.
+        
+        The `Predicate` parameter can be used to filter logs.
+        
+        Examples:
+        
+        `process == "sudo"` Captures command line activity run with elevated privileges 
+        
+        `process == "logind"` Captures user login events
+        
+        `process == "tccd"` Captures events that indicate permissions and access violations 
+        
+        `process == "sshd"` Captures successful, failed and general ssh activity
+        
+        `process == "kextd" && sender == "IOKit"`  Captures successful and failed attempts to add kernel extensions 
+        
+        `process == "screensharingd" || process == "ScreensharingAgent"`  Captures events that indicate successful or failed authentication via screen sharin
+        
+        `process == "loginwindow" && sender == "Security"` Captures keychain.db unlock events
+        
+        `process == "securityd" && eventMessage CONTAINS "Session"  && subsystem == "com.apple.securityd"` Captures session creation and destruction events
+        
+        
+        https://www.crowdstrike.com/blog/how-to-leverage-apple-unified-log-for-incident-response/
+        
+        Users may need to adjust the `Length` parameter to accomodate a large number of events being returned.
+        
+        If you would like to perform an offline collection, or only care about collecting the raw files associated with this data, consider using [Exchange.MacOS.UnifiedLogParser](https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedlogparser/).
+reference:
+  - https://www.mandiant.com/resources/blog/reviewing-macos-unified-logs
+  - https://skartek.dev/2022/05/04/unified-logging-for-macos-an-introduction/
+  - https://www.crowdstrike.com/blog/how-to-leverage-apple-unified-log-for-incident-response/
+  - https://devstreaming-cdn.apple.com/videos/wwdc/2016/721wh2etddp4ghxhpcg/721/721_unified_logging_and_activity_tracing.pdf
+type: CLIENT
+author: Wes Lambert - @therealwlambert|@weslambert@infosec.exchange
+parameters:
+  - name: StartDate
+    default: timestamp
+    type: timestamp
+  - name: EndDate
+    default:
+    type: timestamp  
+  - name: Predicate
+    default: eventType != "nonExistentEventType"
+    type: string
+  - name: Length 
+    type: int 
+    default: 10000000  
+required_permissions:
+  - EXECVE
+precondition: SELECT OS From info() where OS = 'darwin' AND StartDate AND EndDate
+sources:
+  - query: |
+      LET Raw <= SELECT * 
+                 FROM execve(
+                   length=Length, 
+                   argv=[
+                     "log", 
+                     "show",
+                     "--start",
+                     grok(grok="%{TIMESTAMP_ISO8601:Date}", data=StartDate).Date,
+                     "--end",
+                     grok(grok="%{TIMESTAMP_ISO8601:Date}", data=EndDate).Date,
+                     "--predicate",
+                     Predicate,
+                     "--style",
+                     "json"])
+
+      SELECT
+        timestamp(string=timestamp) AS EventTime,
+        machTimestamp AS _TimeSinceBoot,
+        traceID AS _TraceID,
+        eventMessage AS EventMessage,
+        eventType AS EventType,
+        messageType AS MessageType,
+        category AS Category,
+        subsystem AS Subsystem,
+        processID AS PID,
+        processImagePath AS ProcessImagePath,
+        processImageUUID AS ProcessImageUUID,
+        senderImagePath AS SenderImagePath,
+        senderImageUUID AS SenderImageUUID,
+        senderProgramCounter AS SenderProgramCounter,
+        source AS _Source,
+        formatString AS _FormatString,
+        activityIdentifier AS ActivityID,
+        parentActivityIdentifier AS ParentActivityID,
+        threadID AS _ThreadID,
+        backtrace AS _Backtrace,
+        bootUUID AS _BootUUID,
+        timezoneName AS _TimezoneName
+      FROM foreach(row=parse_json_array(data=Raw.Stdout))
