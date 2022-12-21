@@ -31,7 +31,7 @@ parameters:
     default:
     type: string
   - name: RunAllQueries
-    description: Run all preconfigured queries.  You may need to increase the default timeout of 600s.
+    description: Run all preconfigured filters.  You may need to increase the default timeout of 600s.
     type: bool
   - name: Configuration Profile - Manual Install
     description: Look for manual install of a configuration profile
