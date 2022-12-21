@@ -91,7 +91,7 @@ parameters:
     description: Look for the removal of MDM profiles
   - name: Network server connection attempts inbound
     type: bool
-    description: Look for inbound network connections attempts
+    description: Look for inbound network connection attempts
   - name: Root user enabled or password changed
     type: bool
     description: Look for changes to the root user configuration
