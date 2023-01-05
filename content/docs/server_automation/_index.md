@@ -124,7 +124,7 @@ notebook.
 ```vql
 SELECT label(client_id=client_id, op='set', labels="MyLabel"), client_id
 FROM source()
-WHEN Name =~ "Mike"
+WHERE Name =~ "Mike"
 ```
 
 ![Labeling machines based on a hunt query](label_users.png)
