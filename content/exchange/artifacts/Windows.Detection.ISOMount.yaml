@@ -13,7 +13,7 @@ parameters:
    - name: TargetGlob
      default: '%SystemRoot%\System32\Winevt\Logs\Microsoft-Windows-VHDMP-Operational.evtx'
    - name: TargetImageRegex
-     default: 'C:\\Users\\.+\.(iso|vhd|img)$'
+     default: 'C:\\Users\\.+\.(iso|vhd|vhdx|img)$'
      type: regex
    - name: TargetVSS
      type: bool
