@@ -1,3 +1,3 @@
-{{ if not .Params.noDisqus }}
+{{ if and false not .Params.noDisqus }}
   {{ template "_internal/disqus.html" . }}
 {{ end }}
