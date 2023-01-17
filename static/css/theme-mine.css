@@ -707,3 +707,8 @@ figcaption  {
     padding-right: 20px;
     color: var(--REFERENCE-value-color);
 }
+
+details > summary:first-of-type {
+    display: list-item;
+    counter-increment: list-item 0;
+    list-style: inside disclosure-closed;

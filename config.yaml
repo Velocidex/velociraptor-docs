@@ -5,6 +5,7 @@ title: "Velociraptor - Digging deeper!"
 theme: "hugo-theme-learn"
 disqusShortname: velocidex-velociraptor
 params:
+  noDisqus: true
   themeVariant: "mine"
   disableSearch: true
   showVisitedLinks: false
