@@ -3,46 +3,78 @@ title: Cloud Deployment
 weight: 10
 ---
 
-With cloud deployments you can create a proper SSL certificate using the free Let's Encrypt CA. This eliminates the bad certificate browser warning seen in the Self Signed Deployment method. Velociraptor uses the Let's Encrypt protocol to obtain and manage its own certificates (and automatically rotate them when they expire).
+With cloud deployments you can create a proper SSL certificate using
+the free Let's Encrypt CA. This eliminates the bad certificate browser
+warning seen in the Self Signed Deployment method. Velociraptor uses
+the Let's Encrypt protocol to obtain and manage its own certificates
+(and automatically rotate them when they expire).
 
 ## Before You Begin
 Note the following requirements:
-* You must use a DNS name as Let's Encrypt will not issue a certificate for an IP address. The DNS name can be a Dynamic DNS name managed by Google Domains.
-* Ports 80 and 443 must publicly accessible. Let's Encrypt uses both ports to issue certificates.
+* You must use a DNS name as Let's Encrypt will not issue a
+  certificate for an IP address. The DNS name can be a Dynamic DNS
+  name managed by Google Domains.
+* Ports 80 and 443 must publicly accessible. Let's Encrypt uses both
+  ports to issue certificates.
 * You can optionally configure Authentication via SSO providers.
 
 ## Provision a Virtual Machine
-Next we provision an Ubuntu VM from any cloud provider.
-The size of your VM depends on the number of endpoints in your environment.
-An 8 or 16Gb VM should be sufficient for around 5-10k clients.
-Additionally you will need sufficient disk space to hold the data you collect. We recommend starting with a modest amount of storage and then back up data or increase the storage volume as needed.
+Next we provision an Ubuntu VM from any cloud provider.  The size of
+your VM depends on the number of endpoints in your environment.  An 8
+or 16Gb VM should be sufficient for around 5-10k clients.
+Additionally you will need sufficient disk space to hold the data you
+collect. We recommend starting with a modest amount of storage and
+then back up data or increase the storage volume as needed.
 
 {{% notice warning "Network filtering requirements" %}}
 
-Our virtual machine must be able to receive connections over both ports 80 and 443. Be sure to check inbound filtering Access Control Lists to ensure that access is allowed. When using SSL, both the client communication and the Admin GUI are served over the same ports to benefit from SSL transport encryption. The Let's Encrypt protocol requires Let's Encrypt's servers to connect to the VM on port 80 - however the Admin GUI will only be served over SSL.
+Our virtual machine must be able to receive connections over both
+ports 80 and 443. Be sure to check inbound filtering Access Control
+Lists to ensure that access is allowed. When using SSL, both the
+client communication and the Admin GUI are served over the same ports
+to benefit from SSL transport encryption. The Let's Encrypt protocol
+requires Let's Encrypt's servers to connect to the VM on port 80 -
+however the Admin GUI will only be served over SSL.
 
 {{% /notice %}}
 
 ### Get a domain name
-An SSL certificate says that the DNS name is owned by the server that presents it. Since you cannot currently get a Let's Encrypt certificate for an IP address. you'll need buy a DNS domain from any provider. You'll then need to set up a DNS A Record to point at your Velociraptor server’s external IP.
-You can use a dynamic DNS client such as ddclient to update your DNS->IP mapping dynamically. Alternatively, Velociraptor directly supports updating Google Domains Dynamic DNS so this is the easiest option since it requires the least amount of configuration.
-In this example we use Google Domains to purchase our domain, but any other domain provider would work as well.
+An SSL certificate says that the DNS name is owned by the server that
+presents it. Since you cannot currently get a Let's Encrypt
+certificate for an IP address. you'll need buy a DNS domain from any
+provider. You'll then need to set up a DNS A Record to point at your
+Velociraptor server’s external IP.  You can use a dynamic DNS client
+such as ddclient to update your DNS->IP mapping
+dynamically. Alternatively, Velociraptor directly supports updating
+Google Domains Dynamic DNS so this is the easiest option since it
+requires the least amount of configuration.  In this example we use
+Google Domains to purchase our domain, but any other domain provider
+would work as well.
 
 ### Assign an IP
 
-You can deploy a Virtual Machine over a static IP address or allow the cloud provider to assign a dynamic IP address. If you use a dynamic IP address you must also configure Dynamic DNS. Google Domains allows you to assign a dynamic DNS entry for our domain by selecting a Dynamic DNS record:
+You can deploy a Virtual Machine over a static IP address or allow the
+cloud provider to assign a dynamic IP address. If you use a dynamic IP
+address you must also configure Dynamic DNS. Google Domains allows you
+to assign a dynamic DNS entry for our domain by selecting a Dynamic
+DNS record:
 
 
 ![DynDNS Dashboard](sso1.png)
 
-After the dynamic address is created, you need to get the credentials for updating the IP address from the console. You will use these credentials during the interactive configuration process below.
+After the dynamic address is created, you need to get the credentials
+for updating the IP address from the console. You will use these
+credentials during the interactive configuration process below.
 
 
 ## Configure Velociraptor to use Let's Encrypt
 
-Let’s Encrypt allows Velociraptor to issue its own certificates. Selecting the Let's Encrypt option ensures:
-* The server will fetch certificates automatically from Let's Encrypt's servers when first accessed by the browser.
-* Both the Frontend and GUI will be served over the standard SSL port (443).
+Let’s Encrypt allows Velociraptor to issue its own
+certificates. Selecting the Let's Encrypt option ensures:
+* The server will fetch certificates automatically from Let's
+  Encrypt's servers when first accessed by the browser.
+* Both the Frontend and GUI will be served over the standard SSL port
+  (443).
 * The GUI is externally available, but protected over SSL.
 * Clients will connect to the public DNS name over SSL.
 
