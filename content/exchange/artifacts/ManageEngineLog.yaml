@@ -12,7 +12,7 @@ type: CLIENT
 
 parameters:
    - name: TargetLogGlob
-     default: "**/{access_log,serverout*.txt}"
+     default: "**/{ServiceDesk/logs,logs3PM}/serverout*.txt"
    - name: YaraRule
      default: |
         rule LOG_EXPL_ManageEngine_CVE_2022_47966_Jan23 {
