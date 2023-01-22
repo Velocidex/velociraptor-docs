@@ -1,7 +1,7 @@
 name: Generic.Detection.ManageEngineLog
 author: Matt Green - @mgreen27
 description: |
-   This artifact will enable discovery of associated with observed exploitation 
+   This artifact will enable discovery of logs associated with observed exploitation 
    of critical ManageEngine vulnerability: CVE-2022-47966.
    
    The artifact leverages Yara.Glob to scan ManageEngine logs and is cross 
