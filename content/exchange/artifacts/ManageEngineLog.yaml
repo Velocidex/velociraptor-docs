@@ -1,5 +1,5 @@
 name: Generic.Detection.ManageEngineLog
-author: Matt Green - @mgreen27
+author: Matt Green - @mgreen27, Jason Frost - @jaysonfrost2
 description: |
    This artifact will enable discovery of logs associated with observed exploitation 
    of critical ManageEngine vulnerability: CVE-2022-47966.
