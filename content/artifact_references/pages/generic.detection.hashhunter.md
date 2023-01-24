@@ -32,7 +32,7 @@ description: |
 parameters:
   - name: TargetGlob
     description: Glob to target.
-    default: "C:/Users/**/*"
+    default: "C:\Users\**\*"
   - name: Accessor
     description: Velociraptor accessor to use. Changing to ntfs will increase scan time.
     default: auto
