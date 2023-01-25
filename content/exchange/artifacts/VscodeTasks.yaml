@@ -7,10 +7,10 @@ description: |
    Terminal Profiles via settings.json  
    Visual Studio tasks via tasks.json  
 
-   THe artifact has configurable options to Include all tasks and settings for 
+   The artifact has configurable options to Include all tasks and settings for 
    visibility. 
    
-   NOTE: additional research may include Visual Studio Code Extensions
+   NOTE: experimental - additional research may include Visual Studio Code Extensions
    
 reference:
     - https://twitter.com/nas_bench/status/1618021415852335105
