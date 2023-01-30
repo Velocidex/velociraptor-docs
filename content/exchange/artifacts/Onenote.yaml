@@ -91,7 +91,8 @@ sources:
                                 hash(path=OSPath) as OneFileHash,
                                 format(format='% x',args=[read_file(filename=OSPath,length=16),]) as _Header
         FROM glob(globs=TargetGlob)
-        WHERE _Header = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+        WHERE NOT IsDir
+            AND _Header = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
         
       -- Hash source file here for performance
       LET target_files_hash = SELECT *, hash(path=OSPath) as Hash FROM target_files
