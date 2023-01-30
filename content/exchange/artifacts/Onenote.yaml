@@ -24,7 +24,7 @@ type: CLIENT
 parameters:
    - name: TargetGlob
      description: Glob to target .one files
-     default: C:\Users\yolo\Desktop\one\*
+     default: C:\Users\**
    - name: ContentRegex
      description: Regex to filter for on embedded files or Title Metadata
      default: ^MZ|^TV(oA|pB|pQ|qA|qQ|ro)|This program cannot be run in dos mode.|@echo|<HTA:APPLICATION|/vbscript|WmiExec|Win32_Process|Powershell|comspec"
