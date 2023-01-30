@@ -27,7 +27,7 @@ parameters:
      default: C:\Users\**
    - name: ContentRegex
      description: Regex to filter for on embedded files or Title Metadata
-     default: ^MZ|^TV(oA|pB|pQ|qA|qQ|ro)|This program cannot be run in dos mode.|@echo|<HTA:APPLICATION|/vbscript|WmiExec|Win32_Process|Powershell|comspec"
+     default: ^MZ|^TV(oA|pB|pQ|qA|qQ|ro)|^PK|This program cannot be run in dos mode.|@echo|<HTA:APPLICATION|/vbscript|WmiExec|Win32_Process|Powershell|comspec
    - name: PreviewBytes
      description: Number of bytes of embedded files to preview in hex
      type: int64
