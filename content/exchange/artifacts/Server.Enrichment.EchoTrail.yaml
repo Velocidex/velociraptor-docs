@@ -3,7 +3,9 @@ author: Eric Capuano - @eric_capuano
 description: |
   
   This is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the 
-  data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta.
+  data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta. 
+  
+  NOTE: The EchoTrail free API is limited to 25 queries per day which is very low for most use cases. This artifact may send more than 25 queries at the API!
 
   Ex.
 
