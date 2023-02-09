@@ -43,7 +43,10 @@ parameters:
         "C:\Windows\twain_32\*.{ps1,vbs,js,exe,dll,bat,cpl}",,Staging location
 
 sources:
-  - query: |
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
       -- extract IOCs from lookupTable
       LET hits = SELECT * FROM foreach(
             row=IocLookupTable,
