@@ -8,7 +8,7 @@ author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Math
 
 tools:
  - name: Hayabusa
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.1.0/hayabusa-2.1.0-win-64-bit.zip
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.2.0/hayabusa-2.2.0-win-64-bit.zip
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -66,7 +66,7 @@ sources:
 
         LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.1.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.2.0-win-x64.exe'
        
         LET Update_Rules <= if(condition=UpdateRules, then={ SELECT * FROM execve(argv=['cmd.exe', '/c', 'cd', TmpDir, '&', HayabusaExe, 'update-rules']) })
 
@@ -80,11 +80,11 @@ sources:
                                   "--min-level", MinimalLevel,
                                   "--profile", OutputProfile,
                                   "--quiet", "--no-summary",
-                                  "--thread-number", Threads)
+                                  "--threads", Threads)
 
         LET cmdline <= if(condition=UTC, then=cmdline + array(a="--UTC"), else=cmdline)
         LET cmdline <= if(condition=NoisyRules, then=cmdline + array(a="--enable-noisy-rules"), else=cmdline)
-        LET cmdline <= if(condition=EIDFilter, then=cmdline + array(a="--eid-filter"), else=cmdline)
+        LET cmdline <= if(condition=EIDFilter, then=cmdline + array(a="--EID-filter"), else=cmdline)
 
         LET ExecHB <= SELECT * FROM execve(argv=cmdline, sep="\n", length=9999999)
                        
