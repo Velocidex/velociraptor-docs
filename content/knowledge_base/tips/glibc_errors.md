@@ -72,8 +72,8 @@ to build on an old system to ensure the linked to GLIBC is old enough.
 
 Velociraptor uses the [musl](https://www.musl-libc.org/) project to
 build completely static binaries independent of the GLIBC installed on
-the system. While this feature is considered experiemental it seems to
-work well and produces truely portable binaries.
+the system. While this feature is considered experimental it seems to
+work well and produces truly portable binaries.
 
 We recommend that version to only be used for clients on older
 systems, although it might also work for a server too (but really you
