@@ -65,7 +65,7 @@ sources:
         LET TmpDir <= tempdir()
 
         LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
-
+        
         LET HayabusaExe <= TmpDir + '\\hayabusa-2.2.0-win-x64.exe'
        
         LET Update_Rules <= if(condition=UpdateRules, then={ SELECT * FROM execve(argv=['cmd.exe', '/c', 'cd', TmpDir, '&', HayabusaExe, 'update-rules']) })
