@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-description|Description of the hunt|string (required)
+description|Description of the hunt|string
 artifacts|A list of artifacts to collect|list of string (required)
 expires|A time for expiry (e.g. now() + 1800)|LazyExpr
 spec|Parameters to apply to the artifacts|Any

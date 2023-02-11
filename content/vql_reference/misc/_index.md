@@ -13,6 +13,7 @@ Miscellaneous plugins not yet categorized.
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
+|[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
 |[delete_events](delete_events)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[delete_flow](delete_flow)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
@@ -44,3 +45,5 @@ Miscellaneous plugins not yet categorized.
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[user](user)|<span class='vql_type'>Function</span>|Retrieves information about the Velociraptor user|
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|
+|[vfs_ls](vfs_ls)|<span class='vql_type'>Plugin</span>|List directory and build a VFS object|
+|[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
