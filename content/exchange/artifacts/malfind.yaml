@@ -37,24 +37,6 @@ parameters:
     description: A yara rule of suspicious section content 
     type: yara
     default: |
-        rule suspicious {
-            meta:
-                author = "Matt Green - @mgreen27"
-                description = "Suspicious unbacked on disk executable section content"
-                date = "2022-09-30"
-
-            strings:
-                $header1 = "MZ"
-                $header2 = { 00 00 41 52 55 48 } // cobalt strike stomped dll
-
-                $body1 = "This program cannot be run in DOS mode" 
-                $body2 = { FC E8 8? 00 00 00 60 }     // shellcode prologe in metasploit
-
-            condition:
-                $header1 at 0 or $header2 at 0 or $header3 at 0
-                    or any of ($body*) 
-        }
-
         rule win_cobalt_strike_auto {
          meta:
            author = "Felix Bilstein - yara-signator at cocacoding dot com"
@@ -118,6 +100,23 @@ parameters:
 
             condition:
                 7 of them
+        }
+        rule suspicious {
+            meta:
+                author = "Matt Green - @mgreen27"
+                description = "Suspicious unbacked on disk executable section content"
+                date = "2022-09-30"
+
+            strings:
+                $header1 = "MZ"
+                $header2 = { 00 00 41 52 55 48 } // cobalt strike stomped dll
+
+                $body1 = "This program cannot be run in DOS mode" 
+                $body2 = { FC E8 8? 00 00 00 60 }     // shellcode prologe in metasploit
+
+            condition:
+                $header1 at 0 or $header2
+                    or any of ($body*) 
         }
         rule shellcode_get_eip
         {
