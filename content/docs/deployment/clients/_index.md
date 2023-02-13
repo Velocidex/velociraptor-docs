@@ -96,7 +96,7 @@ velociraptor-v0.6.7-4-linux-amd64 config repack --msi velociraptor-v0.6.7-4-wind
 The above command will repack the provided client.config.yaml into the
 official MSI and write out a new MSI file.
 
-![Building custom MSI](https://user-images.githubusercontent.com/3856546/210061369-839dfe55-9be9-417f-b37e-43af109cb2dc.png)
+![Building custom MSI](repacking.png)
 
 {{% notice note "Resigning the repacked MSI" %}}
 
