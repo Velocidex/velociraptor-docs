@@ -211,378 +211,378 @@ parameters:
 sources:
 - name: uploadAPTSources
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=APTSources))
 
 - name: uploadAPTTrustKeys
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=APTTrustKeys))
 
 - name: uploadCronAtAllowDenyFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=CronAtAllowDenyFiles))
 
 - name: uploadDebianPackagesStatus
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=DebianPackagesStatus)
 
 - name: uploadDebianVersion
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=DebianVersion)
 
 - name: uploadKernelModules
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=KernelModules))
 
 - name: uploadLinuxASLREnabled
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxASLREnabled)
 
 - name: uploadLinuxCACertificates
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxCACertificates))
 
 - name: uploadLinuxDHCPConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxDHCPConfigurationFile)
 
 - name: uploadLinuxDSDTTable
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxDSDTTable)
 
 - name: uploadLinuxFstab
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxFstab)
 
 - name: uploadLinuxGrubConfiguration
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxGrubConfiguration))
 
 - name: uploadLinuxInitrdFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxInitrdFiles))
 
 - name: uploadLinuxIssueFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxIssueFile))
 
 - name: uploadLinuxKernelBootloader
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxKernelBootloader))
 
 - name: uploadLinuxKernelModuleRestrictions
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxKernelModuleRestrictions))
 
 - name: uploadLinuxKernelModuleTaintStatus
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxKernelModuleTaintStatus)
 
 - name: uploadLinuxLoaderSystemPreloadFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxLoaderSystemPreloadFile)
 
 - name: uploadLinuxLocalTime
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxLocalTime)
 
 - name: uploadLinuxLSBInit
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxLSBInit))
 
 - name: uploadLinuxLSBRelease
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxLSBRelease)
 
 - name: uploadLinuxNetworkManager
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxNetworkManager))
 
 - name: uploadLinuxPamConfigs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxPamConfigs))
 
 - name: uploadLinuxPasswdFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxPasswdFile)
 
 - name: uploadLinuxProcMounts
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxProcMounts)
 
 - name: uploadLinuxRelease
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxRelease))
 
 - name: uploadLinuxRestrictedDmesgReadPrivileges
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxRestrictedDmesgReadPrivileges)
 
 - name: uploadLinuxRestrictedKernelPointerReadPrivileges
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxRestrictedKernelPointerReadPrivileges)
 
 - name: uploadLinuxRsyslogConfigs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxRsyslogConfigs))
 
 - name: uploadLinuxSecureFsLinks
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxSecureFsLinks))
 
 - name: uploadLinuxSecureSuidCoreDumps
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxSecureSuidCoreDumps)
 
 - name: uploadLinuxSSDTTables
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxSSDTTables)
 
 - name: uploadLinuxSysctlConfigurationFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxSysctlConfigurationFiles))
 
 - name: uploadLinuxSyslogNgConfigs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxSyslogNgConfigs))
 
 - name: uploadLinuxSystemdJournalConfig
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxSystemdJournalConfig)
 
 - name: uploadLinuxSystemdOSRelease
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxSystemdOSRelease))
 
 - name: uploadLinuxTimezoneFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxTimezoneFile)
 
 - name: uploadLinuxXinetd
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxXinetd))
 
 - name: uploadLocateDatabase
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LocateDatabase))
 
 - name: uploadLoginPolicyConfiguration
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LoginPolicyConfiguration))
 
 - name: uploadNetgroupConfiguration
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=NetgroupConfiguration)
 
 - name: uploadNfsExportsFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=NfsExportsFile))
 
 - name: uploadNtpConfFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=NtpConfFile)
 
 - name: uploadPCIDevicesInfoFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=PCIDevicesInfoFiles))
 
 - name: uploadSambaConfigFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=SambaConfigFile)
 
 - name: uploadSecretsServiceDatabaseFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=SecretsServiceDatabaseFile))
 
 - name: uploadSshdConfigFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=SshdConfigFile))
 
 - name: uploadSSHHostPubKeys
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=SSHHostPubKeys)
 
 - name: uploadUnixGroupsFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=UnixGroupsFile))
 
 - name: uploadUnixLocalTimeConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=UnixLocalTimeConfigurationFile))
 
 - name: uploadUnixPasswdFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=UnixPasswdFile))
 
 - name: uploadUnixShadowFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=UnixShadowFile))
 
 - name: uploadUnixSudoersConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=UnixSudoersConfigurationFile))
 
 - name: uploadYumSources
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=YumSources))

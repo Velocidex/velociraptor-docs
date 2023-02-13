@@ -84,105 +84,105 @@ parameters:
 sources:
 - name: uploadBashShellConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=BashShellConfigurationFile))
 
 - name: uploadChromePreferences
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ChromePreferences))
 
 - name: uploadCShellConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=CShellConfigurationFile))
 
 - name: uploadFishShellConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=FishShellConfigurationFile))
 
 - name: uploadJupyterConfigFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=JupyterConfigFile)
 
 - name: uploadKornShellConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=KornShellConfigurationFile))
 
 - name: uploadRHostsFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=RHostsFile)
 
 - name: uploadShellLogoutFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=ShellLogoutFile)
 
 - name: uploadShellProfileFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ShellProfileFile))
 
 - name: uploadSignalApplicationContent
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=SignalApplicationContent))
 
 - name: uploadSSHAuthorizedKeysFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=SSHAuthorizedKeysFiles))
 
 - name: uploadSSHKnownHostsFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=SSHKnownHostsFiles))
 
 - name: uploadSSHUserConfigFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=SSHUserConfigFile)
 
 - name: uploadTeeShellConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=TeeShellConfigurationFile)
 
 - name: uploadZShellConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ZShellConfigurationFile))

@@ -59,70 +59,70 @@ parameters:
 sources:
 - name: uploadMongoDBConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=MongoDBConfigurationFile))
 
 - name: uploadMongoDBLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=MongoDBLogFiles)
 
 - name: uploadMySQLConfigurationFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=MySQLConfigurationFiles))
 
 - name: uploadMySQLLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=MySQLLogFiles))
 
 - name: uploadOpenSearchLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=OpenSearchLogFiles))
 
 - name: uploadPostgreSQLConfigurationFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=PostgreSQLConfigurationFiles))
 
 - name: uploadPostgreSQLLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=PostgreSQLLogFiles))
 
 - name: uploadRedisConfigFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=RedisConfigFile))
 
 - name: uploadRedisConfigurationFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=RedisConfigurationFile))
 
 - name: uploadRedisLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=RedisLogFiles))

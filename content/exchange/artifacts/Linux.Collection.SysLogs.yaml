@@ -66,112 +66,112 @@ parameters:
 sources:
 - name: uploadDebianPackagesLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=DebianPackagesLogFiles))
 
 - name: uploadLinuxAuditLogs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxAuditLogs)
 
 - name: uploadLinuxAuthLogs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxAuthLogs))
 
 - name: uploadLinuxCronLogs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxCronLogs)
 
 - name: uploadLinuxDaemonLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxDaemonLogFiles)
 
 - name: uploadLinuxKernelLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxKernelLogFiles)
 
 - name: uploadLinuxLatlogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxLatlogFiles)
 
 - name: uploadLinuxMessagesLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxMessagesLogFiles)
 
 - name: uploadLinuxSudoReplayLogs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxSudoReplayLogs)
 
 - name: uploadLinuxSysLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LinuxSysLogFiles)
 
 - name: uploadLinuxSystemdJournalLogs
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxSystemdJournalLogs))
 
 - name: uploadLinuxUtmpFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LinuxUtmpFiles))
 
 - name: uploadLinuxWtmp
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=LinuxWtmp)
 
 - name: uploadSambaLogFiles
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=SambaLogFiles)
 
 - name: uploadUFWLogFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM stat(filename=UFWLogFile)
 
 - name: uploadUnixUtmpFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=UnixUtmpFile))

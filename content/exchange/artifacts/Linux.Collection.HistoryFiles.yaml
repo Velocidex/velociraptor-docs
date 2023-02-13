@@ -47,70 +47,70 @@ parameters:
 sources:
 - name: uploadBashShellHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=BashShellHistoryFile))
 
 - name: uploadBourneShellHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=BourneShellHistoryFile)
 
 - name: uploadFishShellHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=FishShellHistoryFile)
 
 - name: uploadMySQLHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=MySQLHistoryFile)
 
 - name: uploadPostgreSQLHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=PostgreSQLHistoryFile))
 
 - name: uploadPythonHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=PythonHistoryFile)
 
 - name: uploadSQLiteHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=SQLiteHistoryFile)
 
 - name: uploadZShellHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ZShellHistoryFile))
 
 - name: uploadLessHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=LessHistoryFile)
 
 - name: uploadNanoHistoryFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=NanoHistoryFile)
