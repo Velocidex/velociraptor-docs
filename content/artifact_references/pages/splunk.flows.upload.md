@@ -27,6 +27,26 @@ completed prior to setting up this event:
      Splunk server -- meaning you have proper certificates and DNS. If you are
      accessing your Splunk instance by IP, `Enable SSL` should be set to OFF.
 
+Adding the following stanza to a Splunk props.conf file will allow for proper data separation and additional better parsing:
+```
+[vql]
+INDEXED_EXTRACTIONS = json
+DATETIME_CONFIG = CURRENT
+TZ = GMT
+category = Custom
+pulldown_type = 1
+TRANSFORMS-vql-sourcetype = vql-sourcetype,vql-timestamp
+TRUNCATE = 512000
+```
+The following can then be added to a Splunk transforms.conf file to adapt data and perform the necessary parsing of `_index` and `_time`:
+```
+[vql-sourcetype]
+INGEST_EVAL = sourcetype=lower(_index)
+
+[vql-timestamp]
+INGEST_EVAL = _time=case(_index=="artifact_Linux_Search_FileFinder",strptime(CTime,"%Y-%m-%dT%H:%M:%SZ"), _index="artifact_Windows_Timeline_MFT",strptime(event_time,"%Y-%m-%dT%H:%M:%S.%NZ"), _index="artifact_Windows_NTFS_MFT",strptime(Created0x10,"%Y-%m-%dT%H:%M:%S.%NZ"), _index="artifact_Windows_EventLogs_Evtx",strptime(TimeCreated,"%Y-%m-%dT%H:%M:%SZ"), _index="artifact_Windows_Analysis_EvidenceOfExecution_UserAssist",strptime(LastExecution,"%Y-%m-%dT%H:%M:%SZ"), _index="artifact_Windows_Analysis_EvidenceOfExecution_Amcache",strptime(KeyMTime,"%Y-%m-%dT%H:%M:%SZ"), _index="artifact_Windows_Applications_NirsoftBrowserViewer",strptime(Visited,"%Y-%m-%dT%H:%M:%SZ"))
+```
+Additional timestamp mappings will be required for other artifacts but these should be easy to add as needed.
 
 ```yaml
 name: Splunk.Flows.Upload
@@ -54,6 +74,7 @@ description: |
        > Note: `Enable SSL` only works if SSL is properly configured on your
        Splunk server -- meaning you have proper certificates and DNS. If you are
        accessing your Splunk instance by IP, `Enable SSL` should be set to OFF.
+    
 type: SERVER_EVENT
 
 parameters:
