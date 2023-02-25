@@ -8,7 +8,7 @@ author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Math
 
 tools:
  - name: Hayabusa
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.1.0/hayabusa-2.1.0-win-64-bit.zip
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.2.2/hayabusa-2.2.2-win-64-bit.zip
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -66,7 +66,7 @@ sources:
 
         LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.1.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.2.2-win-x64.exe'
        
         LET Update_Rules <= if(condition=UpdateRules, then={ SELECT * FROM execve(argv=['cmd.exe', '/c', 'cd', TmpDir, '&', HayabusaExe, 'update-rules']) })
 
