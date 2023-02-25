@@ -1,5 +1,13 @@
 # What do I do about "version GLIBC_2.14 not found" errors?
 
+{{% notice tip "TLDR - use the `musl` build" %}}
+
+Use the `musl` built binary for older Linux systems. You can
+find this build together with the others on the release page with the
+`-musl` suffix in the name.
+
+{{% /notice %}}
+
 On Linux, binaries always link to the C library dynamically. This
 happens even with a static binary like Velociraptor. The C library is
 intimately linked to the version of Linux installed on the system and
@@ -62,40 +70,13 @@ $ ./velociraptor-v0.6.4-linux-amd64
 Since the version requirement is added at build time, we really need
 to build on an old system to ensure the linked to GLIBC is old enough.
 
-{{% notice tip %}}
+Velociraptor uses the [musl](https://www.musl-libc.org/) project to
+build completely static binaries independent of the GLIBC installed on
+the system. While this feature is considered experimental it seems to
+work well and produces truly portable binaries.
 
-In other words, on Linux, the build version determines which Linux
-versions will be supported: Any Linux version older than the build
-system will work, but earlier systems will not work.
-
-{{% /notice %}}
-
-This means that we need to build on a very old system to ensure
-support for old outdated endpoints.
-
-Currently we use CentoOS 6 as the build system and produce a special
-build for older endpoints, with the suffix `-centos`. This is **not**
-a normal Velociraptor build and **should only** be used to support
-outdated endpoints. Note that although the build is tagged as `centos`
-is it suitable for all older Linux distributions like Oracle, RedHat,
-SUSSE etc.
-
-![Download the centos build for old systems](centos_build.png)
-
-The main differences are:
-
-1. The `centos` build does not include the GUI and so it is not
-   suitable for running the server.
-
-2. The `centos` build uses a very old version of the Go compiler so it
-   is lacking performance and possibly security improvements offered
-   by the compiler.
-
-3. Many VQL functions are missing from the build, for example the
-   `magic()` VQL function.
-
-4. Since building the CentOS version is a manual process, it may not
-   be done on each release. You might need to use an older version of
-   the client instead of the latest.
+We recommend that version to only be used for clients on older
+systems, although it might also work for a server too (but really you
+should be running servers on modern patched systems).
 
 Tags: #deployment

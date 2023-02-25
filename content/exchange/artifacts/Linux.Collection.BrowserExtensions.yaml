@@ -54,29 +54,29 @@ parameters:
 sources:
 - name: uploadChromiumBasedBrowsersExtensions
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ChromiumBasedBrowsersExtensions))
 
 
 - name: uploadChromiumBasedBrowsersExtensionActivitySQLiteDatabaseFile
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ChromiumBasedBrowsersExtensionActivitySQLiteDatabaseFile))
 
 - name: uploadChromePreferences
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=ChromePreferences))
 
 - name: uploadFirefoxAddOns
   query: |
-    SELECT FullPath,
+    SELECT OSPath,
            Mtime,
-           upload(file=FullPath) AS Upload
+           upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=FirefoxAddOns))
