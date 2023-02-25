@@ -7,7 +7,7 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
- - name: Hayabusa
+ - name: Hayabusa-2.2.2
    url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.2.2/hayabusa-2.2.2-win-64-bit.zip
 
 precondition: SELECT OS From info() where OS = 'windows'
