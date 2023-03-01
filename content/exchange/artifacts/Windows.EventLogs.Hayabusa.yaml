@@ -7,8 +7,8 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
- - name: Hayabusa-2.2
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.2.0/hayabusa-2.2.0-win-64-bit.zip
+ - name: Hayabusa-2.2.2
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.2.2/hayabusa-2.2.2-win-64-bit.zip
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -60,13 +60,13 @@ parameters:
 sources:
  - query: |
 
-        LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.2", IsExecutable=FALSE)
+        LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.2.2", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
-        LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip[0].FullPath, output_directory=TmpDir)
+        LET UnzipIt <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.2.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.2.2-win-x64.exe'
 
         LET Update_Rules <= if(condition=UpdateRules, then={ SELECT * FROM execve(argv=['cmd.exe', '/c', 'cd', TmpDir, '&', HayabusaExe, 'update-rules']) })
 
@@ -80,11 +80,11 @@ sources:
                                   "--min-level", MinimalLevel,
                                   "--profile", OutputProfile,
                                   "--quiet", "--no-summary",
-                                  "--threads", Threads)
+                                  "--thread-number", Threads)
 
         LET cmdline <= if(condition=UTC, then=cmdline + array(a="--UTC"), else=cmdline)
         LET cmdline <= if(condition=NoisyRules, then=cmdline + array(a="--enable-noisy-rules"), else=cmdline)
-        LET cmdline <= if(condition=EIDFilter, then=cmdline + array(a="--EID-filter"), else=cmdline)
+        LET cmdline <= if(condition=EIDFilter, then=cmdline + array(a="--eid-filter"), else=cmdline)
 
         LET ExecHB <= SELECT * FROM execve(argv=cmdline, sep="\n", length=9999999)
 
