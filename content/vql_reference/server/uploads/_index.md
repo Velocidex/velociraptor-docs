@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 client_id|The client id to extract|string
 flow_id|A flow ID (client or server artifacts)|string
+hunt_id|A hunt ID|string
 
 ### Description
 

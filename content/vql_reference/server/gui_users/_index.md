@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-all_orgs|If set we enumberate permission for all orgs, otherwise just for this org.|bool
+all_orgs|If set we enumerate permission for all orgs, otherwise just for this org.|bool
 
 ### Description
 

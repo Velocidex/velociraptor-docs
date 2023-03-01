@@ -24,6 +24,7 @@ DelegatePath|A delegate to pass to the accessor.|string
 Path|A path to open.|Any
 parse|Alternatively parse the pathspec from this string.|string
 path_type|Type of path this is (windows,linux,registry,ntfs).|string
+accessor|The accessor to use to parse the path with|string
 
 ### Description
 
