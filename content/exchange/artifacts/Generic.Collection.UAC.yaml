@@ -26,7 +26,7 @@ parameters:
 sources:
     - query: |
         // fetch .tar.gz package
-        LET uac_package <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(ToolName="uac")
+        LET uac_package <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(ToolName="uac", IsExecutable=FALSE)
         // create temp dir
         LET temp_dir <= tempdir(remove_last=true)
         // uncompress the .tar.gz container
