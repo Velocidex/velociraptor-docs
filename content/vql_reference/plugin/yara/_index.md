@@ -88,7 +88,7 @@ yara DSL and the following combinations are supported `wide`,
 `wide ascii`, `wide nocase`, `wide nocase ascii`.
 
 This shorthand notation is less useful because recent Velociraptor
-versions offer a context sensivite Yara rule editor in the GUI
+versions offer a context sensitive Yara rule editor in the GUI
 (simply press ? to bring up a rule template).
 
 {{% notice note %}}

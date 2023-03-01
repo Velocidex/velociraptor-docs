@@ -50,7 +50,7 @@
             {
                 "name": "items",
                 "type": "Any",
-                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluted!",
+                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluated!",
                 "required": true
             },
             {
@@ -88,7 +88,7 @@
             {
                 "name": "items",
                 "type": "Any",
-                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluted!",
+                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluated!",
                 "required": true
             },
             {
@@ -854,12 +854,12 @@
             {
                 "name": "type",
                 "type": "string",
-                "description": "Type of download to create (deperated Ignored)."
+                "description": "Type of download to create (deprecated Ignored)."
             },
             {
                 "name": "template",
                 "type": "string",
-                "description": "Report template to use (deperated Ignored)."
+                "description": "Report template to use (deprecated Ignored)."
             },
             {
                 "name": "password",
@@ -1172,6 +1172,11 @@
                 "name": "root_ca",
                 "type": "string",
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "max_memory_buffer",
+                "type": "uint64",
+                "description": "How large we allow the memory buffer to grow to while we are trying to contact the Elastic server (default 100mb)."
             }
         ],
         "category": "server"
@@ -1734,6 +1739,22 @@
         "category": "server"
     },
     {
+        "name": "get_flow",
+        "description": "Gets flow details.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string"
+            }
+        ]
+    },
+    {
         "name": "get_server_monitoring",
         "description": "Retrieve the current server monitoring state.",
         "type": "Function",
@@ -1855,7 +1876,7 @@
             {
                 "name": "all_orgs",
                 "type": "bool",
-                "description": "If set we enumberate permission for all orgs, otherwise just for this org."
+                "description": "If set we enumerate permission for all orgs, otherwise just for this org."
             }
         ],
         "category": "server"
@@ -2542,7 +2563,7 @@
             {
                 "name": "list",
                 "type": "Any",
-                "description": "A list of items too filter",
+                "description": "A list of items to filter",
                 "required": true
             }
         ],
@@ -2550,8 +2571,9 @@
     },
     {
         "name": "log",
-        "description": "Log the message.",
+        "description": "Log the message and return TRUE.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "message",
@@ -2654,6 +2676,77 @@
     {
         "name": "mail",
         "description": "Send Email to a remote server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "to",
+                "type": "string",
+                "description": "Recipient of the mail",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "from",
+                "type": "string",
+                "description": "The from email address."
+            },
+            {
+                "name": "cc",
+                "type": "string",
+                "description": "A cc for the mail",
+                "repeated": true
+            },
+            {
+                "name": "subject",
+                "type": "string",
+                "description": "The subject."
+            },
+            {
+                "name": "body",
+                "type": "string",
+                "description": "The body of the mail.",
+                "required": true
+            },
+            {
+                "name": "period",
+                "type": "int64",
+                "description": "How long to wait before sending the next mail - help to throttle mails."
+            },
+            {
+                "name": "server_port",
+                "type": "uint64",
+                "description": "The SMTP server port to use (default 587)."
+            },
+            {
+                "name": "server",
+                "type": "string",
+                "description": "The SMTP server to use (if not specified we try the config file)."
+            },
+            {
+                "name": "auth_username",
+                "type": "string",
+                "description": "The SMTP username we authenticate to the server."
+            },
+            {
+                "name": "auth_password",
+                "type": "string",
+                "description": "The SMTP username password we use to authenticate to the server."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
+                "description": "Skip SSL verification(default: False)."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            }
+        ]
+    },
+    {
+        "name": "mail",
+        "description": "Send Email to a remote server.",
         "type": "Plugin",
         "args": [
             {
@@ -2688,8 +2781,7 @@
             {
                 "name": "period",
                 "type": "int64",
-                "description": "How long to wait before sending the next mail - help to throttle mails.",
-                "required": true
+                "description": "How long to wait before sending the next mail - help to throttle mails."
             },
             {
                 "name": "server_port",
@@ -2710,6 +2802,16 @@
                 "name": "auth_password",
                 "type": "string",
                 "description": "The SMTP username password we use to authenticate to the server."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
+                "description": "Skip SSL verification(default: False)."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
             }
         ],
         "category": "server"
@@ -2821,6 +2923,38 @@
             }
         ],
         "category": "utils"
+    },
+    {
+        "name": "mock_clear",
+        "description": "Resets all mocks.",
+        "type": "Function"
+    },
+    {
+        "name": "mock_replay",
+        "description": "Replay recorded calls on a mock.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "plugin",
+                "type": "string",
+                "description": "The plugin to mock"
+            },
+            {
+                "name": "function",
+                "type": "string",
+                "description": "The function to mock"
+            },
+            {
+                "name": "expected_calls",
+                "type": "int",
+                "description": "How many times plugin should be called"
+            },
+            {
+                "name": "clear",
+                "type": "bool",
+                "description": "This call will clear previous mocks for this plugin"
+            }
+        ]
     },
     {
         "name": "modules",
@@ -3409,6 +3543,11 @@
                 "name": "prefix",
                 "type": "OSPath",
                 "description": "If specified we prefix all paths with this path."
+            },
+            {
+                "name": "start",
+                "type": "int64",
+                "description": "The first entry to scan."
             }
         ],
         "category": "parsers"
@@ -3838,6 +3977,11 @@
                 "name": "path_type",
                 "type": "string",
                 "description": "Type of path this is (windows,linux,registry,ntfs)."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use to parse the path with"
             }
         ],
         "category": "plugin"
@@ -4601,6 +4745,46 @@
         ]
     },
     {
+        "name": "repack",
+        "description": "Repack and upload a repacked binary or MSI to the server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "target",
+                "type": "string",
+                "description": "The name of the target OS to repack (VelociraptorWindows, VelociraptorLinux, VelociraptorDarwin)"
+            },
+            {
+                "name": "exe",
+                "type": "OSPath",
+                "description": "Alternative a path to the executable to repack"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use to read the file."
+            },
+            {
+                "name": "binaries",
+                "type": "string",
+                "description": "List of tool names that will be repacked into the target",
+                "repeated": true
+            },
+            {
+                "name": "config",
+                "type": "string",
+                "description": "The config to be repacked in the form of a json or yaml string",
+                "required": true
+            },
+            {
+                "name": "upload_name",
+                "type": "string",
+                "description": "The name of the upload to create",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "rm",
         "description": "Remove a file from the filesystem using the API.",
         "type": "Function",
@@ -4999,8 +5183,7 @@
             {
                 "name": "regex",
                 "type": "string",
-                "description": "The split regular expression (e.g. a comma)",
-                "required": true
+                "description": "The split regular expression (e.g. a comma, default whitespace)"
             },
             {
                 "name": "columns",
@@ -5017,6 +5200,16 @@
                 "name": "count",
                 "type": "int",
                 "description": "Only split into this many columns if possible."
+            },
+            {
+                "name": "record_regex",
+                "type": "string",
+                "description": "A regex to split data into records (default "
+            },
+            {
+                "name": "buffer_size",
+                "type": "int",
+                "description": "Maximum size of line buffer (default 64kb)."
             }
         ],
         "category": "parsers"
@@ -5096,7 +5289,7 @@
             {
                 "name": "hostname_field",
                 "type": "string",
-                "description": "Field to use as event hostname. Overrides hostname param."
+                "description": "Field to use as event hostname. Overrides hostname parameter."
             }
         ],
         "category": "server"
@@ -5508,6 +5701,12 @@
         "category": "windows"
     },
     {
+        "name": "trace",
+        "description": "Upload a trace file.",
+        "type": "Function",
+        "version": 1
+    },
+    {
         "name": "unhex",
         "description": "Apply hex decoding to the string.",
         "type": "Function",
@@ -5896,6 +6095,11 @@
                 "name": "flow_id",
                 "type": "string",
                 "description": "A flow ID (client or server artifacts)"
+            },
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "A hunt ID"
             }
         ],
         "category": "server"
@@ -6411,13 +6615,13 @@
             {
                 "name": "filename",
                 "type": "string",
-                "description": "Output JSON files to open",
+                "description": "CSV files to open",
                 "required": true
             },
             {
                 "name": "accessor",
                 "type": "string",
-                "description": "The accessor to use. Currently only supports \"auto\", \"file\" or \"\"."
+                "description": "The accessor to use"
             },
             {
                 "name": "query",

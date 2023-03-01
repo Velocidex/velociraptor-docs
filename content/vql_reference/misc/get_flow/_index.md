@@ -1,5 +1,5 @@
 ---
-title: len
+title: get_flow
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## len
+## get_flow
 <span class='vql_type pull-right page-header'>Function</span>
 
 
@@ -19,9 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-list|A list of items to filter|Any (required)
+client_id||string (required)
+flow_id||string
 
 ### Description
 
-Returns the length of an object.
+Gets flow details.
 

@@ -19,8 +19,8 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|Output JSON files to open|string (required)
-accessor|The accessor to use. Currently only supports "auto", "file" or "".|string
+filename|CSV files to open|string (required)
+accessor|The accessor to use|string
 query|query to write into the file.|StoredQuery (required)
 
 ### Description

@@ -22,8 +22,8 @@ Arg | Description | Type
 client_id|Client ID to export.|string (required)
 flow_id|The flow id to export.|string (required)
 wait|If set we wait for the download to complete before returning.|bool
-type|Type of download to create (deperated Ignored).|string
-template|Report template to use (deperated Ignored).|string
+type|Type of download to create (deprecated Ignored).|string
+template|Report template to use (deprecated Ignored).|string
 password|An optional password to encrypt the collection zip.|string
 format|Format to export (csv,json,csv_only) defaults to both.|string
 expand_sparse|If set we expand sparse files in the archive.|bool

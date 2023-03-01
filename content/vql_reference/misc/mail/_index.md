@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## mail
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type pull-right page-header'>Function</span>
 
 
 

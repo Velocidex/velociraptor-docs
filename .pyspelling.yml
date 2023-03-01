@@ -20,9 +20,6 @@ matrix:
           # ```
           - open: '(?s)^(?P<open> *`{3,})'
             close: '^(?P=open)$'
-            # Ignore text between inline back ticks
-          - open: '(?P<open>`+)'
-            close: '(?P=open)'
             # Insides of URL links
           - open: '\]\('
             close: '\)'
@@ -32,8 +29,12 @@ matrix:
             # Inside HTML tags
           - open: '(?s)(?P<open>[<])'
             close: '[>]'
+            # Ignore text between inline back ticks
+          - open: '(?P<open>`+)'
+            close: '(?P=open)'
+
             # Inside yaml headers
-          - open: '(?s)^(?P<open> *-{3,})'
+          - open: '(?s)^(?P<open>---)$'
             close: '^(?P=open)$'
 
     - pyspelling.filters.markdown:

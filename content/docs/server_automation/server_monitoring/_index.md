@@ -30,8 +30,7 @@ case:
 
 The full description of how to set up slack to receive messages from
 Velociraptor can be found in our blog post [Slack and
-Velociraptor]({{< ref
-"/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" >}}), but
+Velociraptor]({{< ref "/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" >}}), but
 here we cover the high level details.
 
 ### Step 1: Checking a group of clients for online status

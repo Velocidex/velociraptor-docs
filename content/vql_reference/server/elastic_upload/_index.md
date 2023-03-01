@@ -33,6 +33,7 @@ wait_time|Batch elastic upload this long (2 sec).|int64
 pipeline|Pipeline for uploads|string
 disable_ssl_security|Disable ssl certificate verifications.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
+max_memory_buffer|How large we allow the memory buffer to grow to while we are trying to contact the Elastic server (default 100mb).|uint64
 
 ### Description
 
