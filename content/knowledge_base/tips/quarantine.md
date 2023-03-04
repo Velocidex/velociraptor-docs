@@ -1,6 +1,6 @@
 # Custom quarentine
 
-We may want to add custom exclusions to Velociraptor quarentine and allow communication to another IP
+We may want to add custom exclusions to Velociraptor quarantine and allow communication to another IP
 
 1. Add machine in scope to a new label: e.g NewQuarentine
 2. Remove standard quarantine
