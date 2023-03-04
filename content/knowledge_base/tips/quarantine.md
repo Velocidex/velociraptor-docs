@@ -2,7 +2,7 @@
 
 We may want to add custom exclusions to Velociraptor quarantine and allow communication to another IP
 
-1. Add machine in scope to a new label: e.g NewQuarentine
+1. Add machine in scope to a new label: e.g NewQuarantine
 2. Remove standard quarantine
 3. Run a hunt targeting your label above or a collection on the single machine
 4. Select relevant quarantine content:  Windows.Remediation.Quarantine
