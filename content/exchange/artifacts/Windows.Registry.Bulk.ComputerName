@@ -1,0 +1,40 @@
+name: Windows.Registry.Bulk.ComputerName
+description: |
+  This looks through registry on all disks to determine the hostname for cases where multiple disks are mounted.
+author: @Angry-bender
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+ - query: |
+    -- get all drives
+    LET ntfs_drives = SELECT
+    OSPath AS Drive,
+    OSPath + '\\windows\\system32\\config\\system' AS SystemHive
+    FROM glob(globs="/*", accessor="ntfs")
+    WHERE log(message="Processing " + SystemHive)
+    
+    LET RegParse(Drive,SysHivePth) = 
+    SELECT Drive, Name, FullPath, url(parse=FullPath).Fragment AS Value, Mtime, Data.value AS Key FROM foreach(
+            row={
+                SELECT * FROM Drive
+            },
+            query={
+                SELECT *
+                FROM glob(
+                globs=url(scheme="file",
+                path=SysHivePth,
+                fragment="/ControlSet001/Control/ComputerName/ComputerName/ComputerName"),
+                accessor="raw_reg")
+            })
+
+    SELECT * FROM foreach(
+        row={
+             SELECT * FROM ntfs_drives
+          },
+          query={
+             SELECT *, Drive
+             FROM RegParse(
+                Drive=Drive,
+                SysHivePth=SystemHive)
+    })
