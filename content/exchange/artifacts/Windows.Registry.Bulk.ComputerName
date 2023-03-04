@@ -1,7 +1,7 @@
 name: Windows.Registry.Bulk.ComputerName
 description: |
   This looks through registry on all disks to determine the hostname for cases where multiple disks are mounted.
-author: @Angry-bender
+author: angry-bender
 
 precondition: SELECT OS From info() where OS = 'windows'
 
