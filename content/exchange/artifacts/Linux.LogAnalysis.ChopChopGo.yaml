@@ -13,7 +13,7 @@ reference:
 author: Wes Lambert - @therealwlambert, @weslambert@infosec.exchange
 tools:
   - name: ChopChopGo
-    url: https://github.com/M00NLIG7/ChopChopGo/releases/download/Forensics/ChopChopGo_v1.0.0.zip
+    url: https://github.com/M00NLIG7/ChopChopGo/releases/download/v1.0.0-beta-2/ChopChopGo_v1.0.0-beta-2.zip
     
 precondition: SELECT OS From info() where OS = 'linux'
 
