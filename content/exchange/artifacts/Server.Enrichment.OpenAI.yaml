@@ -42,17 +42,23 @@ parameters:
     - name: Model
       type: string
       description: The model used for processing the prompt
-      default: text-davinci-003
+      default: gpt-3.5-turbo
 
     - name: OpenAIToken
       type: string
       description: Token for OpenAI. Leave blank here if using server metadata store.
       default:
-
-    - name: Temperature
-      type: int
-      description:
-      default: 0
+    
+    - name: Role
+      type: string
+      description: Role used for messages
+      default: system
+    
+    - name: User
+      type: string 
+      description: User for API request 
+      default: abcd12345
+    
    
 sources:
   - query: |
@@ -62,11 +68,12 @@ sources:
             else=server_metadata().OpenAIToken)
         
         SELECT PromptPrefix + Prompt AS Prompt, 
-               parse_json(data=Content).choices.text[0] AS ResponseText,
-               parse_json(data=Content) AS ResponseDetails 
+               parse_json(data=Content).choices[0].message.content AS ResponseText,
+               parse_json(data=Content) AS ResponseDetails
+               
         FROM http_client(
-            url='https://api.openai.com/v1/completions',
+            url='https://api.openai.com/v1/chat/completions',
             headers=dict(`Authorization`='Bearer ' + Creds, `Content-Type`="application/json"),
             method="POST",
-            data=dict(`max_tokens`=MaxTokens, `model`=Model, `prompt`=PromptPrefix + Prompt, `temperature`=Temperature)
+            data=serialize(item=dict(`model`=Model, messages=[dict(`role`=Role, `content`=Prompt), ]))
         )
