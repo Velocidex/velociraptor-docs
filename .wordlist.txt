@@ -182,6 +182,7 @@ DER
 dereference
 dereferences
 dest
+DstAddr
 destructors
 detections
 DFIR
@@ -570,6 +571,7 @@ netcat
 netspi
 netstat
 NetUserEnum
+NewQuarantine
 NewQuery
 NFS
 nginx
@@ -823,6 +825,7 @@ sql
 SQL's
 SQLite
 src
+SrcAddr
 SRUDB
 srum
 ssd
