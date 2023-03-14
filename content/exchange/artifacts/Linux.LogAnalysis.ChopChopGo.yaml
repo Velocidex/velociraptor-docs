@@ -13,7 +13,7 @@ reference:
 author: Wes Lambert - @therealwlambert, @weslambert@infosec.exchange
 tools:
   - name: ChopChopGo
-    url: https://github.com/M00NLIG7/ChopChopGo/releases/download/v1.0.0-beta-2/ChopChopGo_v1.0.0-beta-2.zip
+    url: https://github.com/M00NLIG7/ChopChopGo/releases/download/v1.0.0-beta-3/ChopChopGo_v1.0.0-beta-3.zip
     
 precondition: SELECT OS From info() where OS = 'linux'
 
@@ -49,9 +49,11 @@ sources:
         FROM foreach(
             row=ExecCCG, 
              query={
-                SELECT
-                    timestamp AS Timestamp,
-                    message AS Message,
-                    tags AS Tags,
-                    author AS Author
+                SELECT 
+                    Timestamp,
+                    Title,
+                    Message AS Message,
+                    Tags,
+                    Author,
+                    ID
                 FROM parse_json_array(data=Stdout)})
