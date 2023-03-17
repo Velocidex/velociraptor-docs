@@ -1,8 +1,8 @@
 name: Windows.Detection.RemoteIconForcedAuth
 author: ACEResponder.com
 description: |
-   Attackers plant SCF, URL, and LNK files with remote icon file paths
-   to force authentication and capture hashes. The attack 
+   Attackers plant SCF, URL, and LNK files with malicious icon file paths
+   on file shares to escalate privileges or maintain persistence. This attack 
    only requires the user to browse to the location of the malicious file.
    This artifact enumerates file shares and returns an event for each file with a
    remote icon. It can also scan a target root directory since attackers commonly
@@ -57,7 +57,7 @@ sources:
       LET paths = SELECT * FROM if(
         condition=AllShares, 
         then={SELECT * FROM foreach(row={SELECT Stdout FROM execve(argv=["Powershell", "-ExecutionPolicy","unrestricted", "-c", script], length=1000000)}, query = {SELECT * FROM parse_json_array(data=Stdout)})},
-        else={SELECT * FROM parse_json_array(data='[{"Path":"'+TargetFolder+'\**\*.lnk"},{"Path":"'+TargetFolder+'\**\*.url"},{"Path":"'+TargetFolder+'\**\*.scf"}]')}
+        else={SELECT * FROM parse_json_array(data='[{"Path":"'+TargetFolder+'\**\*"}]')}
 
         )
 
@@ -86,7 +86,7 @@ sources:
             then={SELECT Name, ModTime, FullPath, OSPath, Mtime, Btime, Ctime, Atime, lnk_file.Icons AS IconLocation FROM hits WHERE lnk_file.Icons},
             else={SELECT Name, ModTime, FullPath, OSPath, Mtime, Btime, Ctime, Atime, url_file.parsed.IconLocation AS IconLocation, url_file.Data AS Data FROM hits}
             )
-      }) WHERE NOT TargetHost IN AllowList.TargetHost
+      }) WHERE NOT TargetHost IN AllowList.TargetHost AND IconLocation
       
       SELECT * FROM final
 
