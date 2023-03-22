@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.6.8 Release"
 description: |
-   Velociraptor Release 0.6.8 is now in release candidate status.
+   Velociraptor Release 0.6.8 is now LIVE.
    This post discusses some of the new features.
 
 tags:
@@ -11,7 +11,7 @@ date: 2023-02-13
 ---
 
 I am very excited to announce the latest Velociraptor release 0.6.8 is
-in release candidate status. This release has been in the making for a
+now live. This release has been in the making for a
 few months now and has a lot of new features and bug fixes.
 
 In this post I will discuss some of the interesting new features.
@@ -46,7 +46,7 @@ improvement in performance once the newer clients are deployed.
 
 ### New Virtual File System GUI
 
-The VFS feature in Velociraptor allows users interactively inspect
+The VFS feature in Velociraptor allows users to interactively inspect
 directories and files on the endpoint, in an familiar tree user
 interface. The previous VFS view would store the entire directory
 listing in a single table for each directory. For very large
@@ -145,7 +145,7 @@ configuration file in the officially distributed MSI packages using
 the following command:
 
 ```
-velociraptor-v0.6.8-rc1-linux-amd64 config repack --msi velociraptor-v0.6.8-rc1-windows-amd64.msi client.config.yaml output.msi
+velociraptor-v0.6.8-rc1-linux-amd64 config repack --exe velociraptor-v0.6.8-rc1-windows-amd64.msi client.config.yaml output.msi
 ```
 
 ![Repacking an MSI for windows distribution](repacking.png)
