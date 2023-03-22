@@ -145,7 +145,7 @@ configuration file in the officially distributed MSI packages using
 the following command:
 
 ```
-velociraptor-v0.6.8-rc1-linux-amd64 config repack --msi velociraptor-v0.6.8-rc1-windows-amd64.msi client.config.yaml output.msi
+velociraptor-v0.6.8-rc1-linux-amd64 config repack --exe velociraptor-v0.6.8-rc1-windows-amd64.msi client.config.yaml output.msi
 ```
 
 ![Repacking an MSI for windows distribution](repacking.png)
