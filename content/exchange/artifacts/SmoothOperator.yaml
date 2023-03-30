@@ -216,7 +216,8 @@ sources:
     query: |
         SELECT * FROM Artifact.Windows.System.VAD(
                                                 ProcessRegex='3cxdesktopapp.exe',
-                                                SuspiciousContent=TargetYara )
+                                                SuspiciousContent=TargetYara,
+                                                UploadHits=UploadHits )
 
   - name: AMCache
     precondition: |
