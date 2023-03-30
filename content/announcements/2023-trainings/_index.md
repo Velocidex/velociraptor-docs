@@ -11,7 +11,7 @@ noTitle: true
 ---
 
 # Digging Deeper With Velociraptor
-## Mike Cohen, Digital Paneontologies, Rapid7 Inc. | August 5-8
+## Mike Cohen, Digital Paleontologist, Rapid7 Inc. | August 5-8
 
 This year we will be presenting an extensive, 4 day long, Velociraptor training course
 at [BlackHat 2023](https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129)!
