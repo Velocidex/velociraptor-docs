@@ -109,12 +109,12 @@ parameters:
       Windows.Events.ServiceCreation
 
 column_types:
-  - name: Hex
+  - name: Base64Hex
     type: base64hex
 
 sources:
   - query: |
-      SELECT base64encode(string="This should popup in a hex editor") AS Hex,
+      SELECT base64encode(string="This should popup in a hex editor") AS Base64Hex,
              ChoiceSelector, Flag, Flag2, Flag3,
              OffFlag, StartDate, StartDate2, StartDate3,
              CSVData, CSVData2, JSONData, JSONData2,
@@ -196,7 +196,7 @@ sources:
 
                  FlowId, ClientId, URL, URL AS SafeURL, Base64Data,
 
-                 "Hello" AS Data
+                 format(format="%02x", args="Hello") AS Data
           FROM scope()
 
       - type: Markdown
@@ -343,13 +343,18 @@ sources:
           These apply to notebooks automatically without needing to
           define them again.
 
-          Hash column should right click to VT
+          * Hash column should right click to VT
+          * upload preview should show the uploaded file.
 
           */
 
-          LET ColumnTypes = dict(`StartDate`='timestamp')
+          LET ColumnTypes = dict(`StartDate`='timestamp',
+                                 Hex='hex', Upload='preview_upload')
+          LET Hex = "B0 EC 48 5F 18 77"
 
-          SELECT Hex, StartDate, hash(accessor="data", path="Hello") AS Hash
+          SELECT Hex, StartDate, hash(accessor="data", path="Hello") AS Hash,
+                 upload(accessor="data", file="Hello world",
+                        name="test.txt") AS Upload
           FROM source()
 
 ```

@@ -22,6 +22,7 @@ Arg | Description | Type
 client_id||string (required)
 hunt_id||string (required)
 flow_id|If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt.|string
+relaunch|If specified we relaunch the hunt on this client again.|bool
 
 ### Description
 

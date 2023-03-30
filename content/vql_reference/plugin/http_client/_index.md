@@ -29,6 +29,7 @@ disable_ssl_security|Disable ssl certificate verifications.|bool
 tempfile_extension|If specified we write to a tempfile. The content field will contain the full path to the tempfile.|string
 remove_last|If set we delay removal as much as possible.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
+cookie_jar|A cookie jar to use if provided. This is a dict of cookie structures.|ordereddict.Dict
 
 ### Description
 

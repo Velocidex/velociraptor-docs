@@ -1,4 +1,4 @@
-name: Exchange.Windows.Bulk.File
+name: Windows.Bulk.File
 author: Matt Green - @mgreen27
 description: |
     Search for some simple bulk File IOCs and upload if desired.

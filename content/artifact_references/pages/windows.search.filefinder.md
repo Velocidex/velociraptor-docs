@@ -180,5 +180,7 @@ column_types:
     type: timestamp
   - name: CTime
     type: timestamp
+  - name: Upload
+    type: preview_upload
 
 ```

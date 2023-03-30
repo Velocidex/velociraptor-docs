@@ -6,7 +6,7 @@ description: |
    Use as follows in the flow notebook cell of a collection:
 
    LET _ <=
-      SELECT * FROM Artifact.Custom.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
+      SELECT * FROM Artifact.Windows.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
 
    SELECT * FROM Artifact.Windows.System.TaskScheduler()
 

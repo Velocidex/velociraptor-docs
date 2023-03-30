@@ -25,6 +25,9 @@ type: SERVER_EVENT
 parameters:
   - name: EmailAddress
     default: admin@example.com
+  - name: SkipVerify
+    type: bool
+    description: If set we skip TLS verification.
 
 sources:
   - query: |
@@ -39,6 +42,7 @@ sources:
               to=EmailAddress,
               subject='Pmem launched on host',
               period=60,
+              skip_verify=SkipVerify,
               body=format(
                  format="WinPmem execution detected at %s for client %v",
                  args=[Timestamp, ClientId]

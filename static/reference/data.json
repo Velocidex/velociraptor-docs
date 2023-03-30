@@ -1943,6 +1943,7 @@
         "name": "http_client",
         "description": "Make a http request.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "url",
@@ -1994,6 +1995,11 @@
                 "name": "root_ca",
                 "type": "string",
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "cookie_jar",
+                "type": "ordereddict.Dict",
+                "description": "A cookie jar to use if provided. This is a dict of cookie structures."
             }
         ],
         "category": "plugin"
@@ -2118,6 +2124,11 @@
                 "name": "flow_id",
                 "type": "string",
                 "description": "If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt."
+            },
+            {
+                "name": "relaunch",
+                "type": "bool",
+                "description": "If specified we relaunch the hunt on this client again."
             }
         ],
         "category": "server"
@@ -2190,6 +2201,34 @@
             }
         ],
         "category": "server"
+    },
+    {
+        "name": "hunt_update",
+        "description": "Update a hunt.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "The hunt to update",
+                "required": true
+            },
+            {
+                "name": "stop",
+                "type": "bool",
+                "description": "Stop the hunt"
+            },
+            {
+                "name": "start",
+                "type": "bool",
+                "description": "Start the hunt"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "Update hunt description"
+            }
+        ]
     },
     {
         "name": "hunts",
@@ -3681,6 +3720,11 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "base_offset",
+                "type": "int64",
+                "description": "The offset in the file for the base address."
             }
         ],
         "category": "parsers"
@@ -3985,6 +4029,30 @@
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "pe_dump",
+        "description": "Dump a PE file from process memory.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "pid",
+                "type": "uint64",
+                "description": "The pid to dump.",
+                "required": true
+            },
+            {
+                "name": "base_offset",
+                "type": "int64",
+                "description": "The offset in the file for the base address.",
+                "required": true
+            },
+            {
+                "name": "in_memory",
+                "type": "uint64",
+                "description": "By default we store to a tempfile and return the path. If this option is larger than 0, we prepare the file in a memory buffer at the specified limit, to avoid AV alerts on disk access."
+            }
+        ]
     },
     {
         "name": "pipe",
@@ -4354,6 +4422,11 @@
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "pskill",
+        "description": "Kill the specified process.",
+        "type": "Function"
     },
     {
         "name": "pslist",

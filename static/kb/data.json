@@ -1,5 +1,17 @@
 [
     {
+        "title": "Custom quarantine exclusions",
+        "link": "/knowledge_base/tips/quarantine",
+        "tags": [
+            "quarantine",
+            "containment"
+        ],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2023-03-04"
+    },
+    {
         "title": "How can I convert decimal?",
         "link": "/knowledge_base/tips/decimaldecode",
         "tags": [
@@ -8,8 +20,8 @@
             "vql"
         ],
         "author": "mgreen27",
-        "author_link": "https://github.com/mgreen27",
         "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
         "date": "2022-11-02"
     },
     {
@@ -20,8 +32,8 @@
             "collector"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2022-10-10"
     },
     {

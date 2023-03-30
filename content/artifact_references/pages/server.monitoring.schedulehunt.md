@@ -26,7 +26,7 @@ parameters:
     default: "01:28:"
     type: regex
   - name: HuntDescription
-    default:
+    default: "Periodic info hunt"
 
 sources:
   - query: |
@@ -40,7 +40,7 @@ sources:
 
       SELECT hunt(artifacts=["Generic.Client.Info"],
                   spec=dict(`Generic.Client.Info`=dict()),
-                  description="Periodic info hunt")
+                  description=HuntDescription)
       FROM schedule
 
 ```

@@ -6,10 +6,11 @@ tags: [Client Artifact]
 
 This artifact enables running Yara over processes in memory.
 
-There are 3 kinds of Yara rules that can be deployed:
- &nbsp;1. Url link to a yara rule.
- &nbsp;2. Shorthand yara in the format "wide nocase ascii:string1,string2,string3".
- &nbsp;3. or a Standard Yara rule attached as a parameter.
+There are 2 kinds of Yara rules that can be deployed:
+ 
+1. Url link to a yara rule.
+3. or a Standard Yara rule attached as a parameter.
+
 Only one method of Yara will be applied and search order is as above. The
 default is Cobalt Strike opcodes.
 
@@ -17,8 +18,8 @@ Regex parameters can be applied for process name and pid for targeting. The
 artifact also has an option to upload any process with Yara hits.
 
 Note: by default the Yara scan will stop after one hit. Multi-string rules will also only
-show one string in returned rows. 
-If upload is selected NumberOfHits is redundant and not advised as hits are 
+show one string in returned rows.
+If upload is selected NumberOfHits is redundant and not advised as hits are
 grouped by path to ensure files only downloaded once.
 
 
@@ -28,10 +29,11 @@ author: Matt Green - @mgreen27
 description: |
   This artifact enables running Yara over processes in memory.
 
-  There are 3 kinds of Yara rules that can be deployed:
-   &nbsp;1. Url link to a yara rule.
-   &nbsp;2. Shorthand yara in the format "wide nocase ascii:string1,string2,string3".
-   &nbsp;3. or a Standard Yara rule attached as a parameter.
+  There are 2 kinds of Yara rules that can be deployed:
+   
+  1. Url link to a yara rule.
+  3. or a Standard Yara rule attached as a parameter.
+  
   Only one method of Yara will be applied and search order is as above. The
   default is Cobalt Strike opcodes.
 
@@ -39,9 +41,10 @@ description: |
   artifact also has an option to upload any process with Yara hits.
 
   Note: by default the Yara scan will stop after one hit. Multi-string rules will also only
-  show one string in returned rows. 
-  If upload is selected NumberOfHits is redundant and not advised as hits are 
+  show one string in returned rows.
+  If upload is selected NumberOfHits is redundant and not advised as hits are
   grouped by path to ensure files only downloaded once.
+  
 
 type: CLIENT
 parameters:
@@ -95,19 +98,14 @@ parameters:
   - name: NumberOfHits
     description: THis artifact will stop by default at one hit. This setting allows additional hits
     default: 1
-    type: int64
+    type: int
   - name: ContextBytes
     description: Include this amount of bytes around hit as context.
     default: 0
-    type: int
-  - name: PathWhitelist
-    description: |
-        Process paths to exclude. Default is common AntiVirus we have seen cause
-        false positives with signitures in memory.
-    type: csv
-    default: |
-      Path
-      C:\Program Files\Folder to Exclude\binary.exe
+    type: int64
+  - name: ExePathWhitelist
+    description: Regex of ProcessPaths to exclude
+    type: regex
 
 
 sources:
@@ -121,17 +119,15 @@ sources:
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
 
-      -- allow whitelist case sensitive
-      LET whitelist <= SELECT upcase(string=Path) AS Path FROM PathWhitelist
-
       -- find all processes and add filters
-      LET processes = SELECT Name as ProcessName, CommandLine, Pid
+      LET processes = SELECT Name as ProcessName, Exe as ExePath, CommandLine, Pid, WorkingSetSize
         FROM pslist()
         WHERE
             Name =~ ProcessRegex
             AND format(format="%d", args=Pid) =~ PidRegex
             AND NOT Pid in me.Pid
-            AND NOT upcase(string=Exe) in whitelist.Path
+            AND NOT if(condition=ExePathWhitelist,
+                    then= Exe=~ExePathWhitelist)
 
       -- scan processes in scope with our rule, limit 1 hit
       LET hits = SELECT * FROM foreach(
@@ -139,15 +135,21 @@ sources:
         query={
             SELECT
                 ProcessName,
+                ExePath,
                 CommandLine,
                 Pid,
                 Namespace,
                 Rule,
                 Meta,
+                String.Name as YaraString,
                 String.Offset as HitOffset,
-                String.Name as HitName,
-                str(str=String.Data) AS HitContext,
-                String.HexData as HitHexData
+                upload( accessor='scope',
+                    file='String.Data',
+                    name=format(format="%v-%v_%v",
+                    args=[
+                        split(string=ProcessName, sep='\\.')[0], Pid,
+                        String.Offset ]
+                    )) as HitContext
              FROM yara(
                 files=format(format="/%d", args=Pid),
                 accessor='process',
@@ -162,15 +164,15 @@ sources:
         query={
             SELECT
                 ProcessName,
+                ExePath,
                 CommandLine,
                 Pid,
                 Namespace,
                 Rule,
                 Meta,
+                YaraString,
                 HitOffset,
-                HitName,
                 HitContext,
-                HitHexData,
                 upload(
                   file=FullPath,
                   name=format(format='%v-%v.dmp',
@@ -178,11 +180,14 @@ sources:
                 ) as ProcessDump
             FROM proc_dump(pid=Pid)
           })
-          GROUP BY Pid
 
       -- return rows
       SELECT * FROM if(condition=UploadHits,
         then=upload_hits,
         else=hits)
+
+column_types:
+  - name: HitContext
+    type: preview_upload
 
 ```

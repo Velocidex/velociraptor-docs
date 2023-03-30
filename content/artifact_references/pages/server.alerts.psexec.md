@@ -25,6 +25,9 @@ type: SERVER_EVENT
 parameters:
   - name: EmailAddress
     default: admin@example.com
+  - name: SkipVerify
+    type: bool
+    description: If set we skip TLS verification.
   - name: MessageTemplate
     default: |
       PsExec execution detected at %v: %v for client %v
@@ -42,6 +45,7 @@ sources:
               to=EmailAddress,
               subject='PsExec launched on host',
               period=60,
+              skip_verify=SkipVerify,
               body=format(
               format=MessageTemplate,
               args=[Timestamp, CommandLine, ClientId])

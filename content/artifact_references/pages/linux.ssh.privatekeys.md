@@ -103,7 +103,8 @@ sources:
                     regex="(?sm)KEY-----(.+)-----END").g1) || "" AS Decoded,
             parse_string_with_regex(
                string=Data,
-               regex="(BEGIN.* PRIVATE KEY)").g1 AS Header
+               regex="(BEGIN.* PRIVATE KEY)").g1 AS Header,
+            read_file(filename=OSPath.Dirname + (OSPath.Basename + ".pub") ) AS PublicKey
       FROM _Hits
       WHERE Header
 
@@ -121,7 +122,7 @@ sources:
              SELECT OSPath,
                     Parsed.Magic AS KeyType,
                     Parsed.cipher AS Cipher,
-                    Header
+                    Header, PublicKey
              FROM OpenSSHKeyParser(OSPath= OSPath, Decoded=Decoded)
              WHERE Header =~ "BEGIN OPENSSH PRIVATE KEY"
           },
@@ -131,7 +132,7 @@ sources:
                     "PKCS8" AS KeyType,
                     parse_string_with_regex(string=Data,
                       regex="DEK-Info: ([-a-zA-Z0-9]+)").g1 AS Cipher,
-                    Header
+                    Header, PublicKey
              FROM scope()
              WHERE Header =~ "BEGIN RSA PRIVATE KEY"
                AND "Proc-Type: 4,ENCRYPTED" in Data
@@ -141,7 +142,7 @@ sources:
              SELECT OSPath,
                     "PKCS8" AS KeyType,
                     "none" AS Cipher,
-                    Header
+                    Header, PublicKey
              FROM scope()
              WHERE Header =~ "BEGIN (RSA )?PRIVATE KEY"
           },
@@ -150,7 +151,7 @@ sources:
              SELECT OSPath,
                     "PKCS8" AS KeyType,
                     "PKCS#5" AS Cipher,
-                    Header
+                    Header, PublicKey
              FROM scope()
              WHERE Header =~ "BEGIN ENCRYPTED PRIVATE KEY"
           },
@@ -159,7 +160,7 @@ sources:
              SELECT OSPath,
                     "Unknown" AS KeyType,
                     "Unknown" AS Cipher,
-                    Header
+                    Header, PublicKey
              FROM scope()
           })
       })

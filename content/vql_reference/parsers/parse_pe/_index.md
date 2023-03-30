@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 file|The PE file to open.|OSPath (required)
 accessor|The accessor to use.|string
+base_offset|The offset in the file for the base address.|int64
 
 ### Description
 
