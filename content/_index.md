@@ -21,6 +21,10 @@ carousel:
 
 ---
 
+{{% notice tip "Training Event at Blackhat!" %}}
+The Velociraptor will be at BlackHat 2023! [Join us for and learn about Velociraptor from the developers themselves]({{< ref "/announcements/2023-trainings/" >}})
+{{% /notice %}}
+
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response

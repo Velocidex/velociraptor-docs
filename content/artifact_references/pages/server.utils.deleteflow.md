@@ -40,7 +40,7 @@ parameters:
 
 sources:
   - query: |
-       SELECT Type, VFSPath
+       SELECT Type, Data.VFSPath AS VFSPath, Error
        FROM delete_flow(flow_id=FlowId, client_id=ClientId, really_do_it=ReallyDoIt)
 
 ```

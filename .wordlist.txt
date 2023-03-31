@@ -1313,3 +1313,6 @@ namespece
 cwd
 PIDs
 EBS
+
+pskill
+BlackHat

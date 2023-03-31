@@ -22,27 +22,6 @@ description: |
 
 type: SERVER
 
-tools:
-  - name: VelociraptorWindows
-    github_project: Velocidex/velociraptor
-    github_asset_regex: windows-amd64.exe
-    serve_locally: true
-
-  - name: VelociraptorWindows_x86
-    github_project: Velocidex/velociraptor
-    github_asset_regex: windows-386.exe
-    serve_locally: true
-
-  - name: VelociraptorLinux
-    github_project: Velocidex/velociraptor
-    github_asset_regex: linux-amd64
-    serve_locally: true
-
-  - name: VelociraptorDarwin
-    github_project: Velocidex/velociraptor
-    github_asset_regex: darwin-amd64
-    serve_locally: true
-
 parameters:
   - name: OS
     default: Windows
@@ -61,7 +40,7 @@ parameters:
 
   - name: encryption_scheme
     description: |
-      Encryption scheme to use. Currently supported are Passowrd, X509 or PGP
+      Encryption scheme to use. Currently supported are Password, X509 or PGP
 
   - name: encryption_args
     description: |
@@ -301,39 +280,6 @@ parameters:
              message="Aborting collection: Failed to upload to cloud bucket!")
           FROM scope()})
 
-  - name: PackageToolsArtifact
-    description: Collects and uploads third party binaries.
-    type: hidden
-    default: |
-      name: PackageToolsArtifact
-      parameters:
-       - name: Binaries
-         type: json_array
-         default: '[]'
-      sources:
-       - query: |
-          LET temp <= tempfile()
-
-          LET uploader = SELECT ToolName,
-                                Upload.StoredName AS Filename,
-                                Upload.sha256 AS ExpectedHash,
-                                Upload.Size AS Size
-          FROM foreach(row=Binaries,
-            query={
-              SELECT _value AS ToolName, upload(file=FullPath, name=Name) AS Upload
-              FROM Artifact.Generic.Utils.FetchBinary(
-                   ToolName=_value, SleepDuration='0',
-                   ToolInfo=inventory_get(tool=_value))
-            })
-
-          // Flush the entire query into the inventory file.
-          LET _ <= SELECT * FROM write_csv(filename=temp, query=uploader)
-
-          // Now upload it.
-          SELECT upload(file=temp, name="inventory.csv") AS Inventory,
-                 read_file(filename=temp) AS Data
-          FROM scope()
-
   - name: FetchBinaryOverride
     type: hidden
     description: |
@@ -362,20 +308,15 @@ parameters:
 
 sources:
   - query: |
-      LET Payload <= tempfile(extension=".zip")
       LET Binaries <= SELECT * FROM foreach(
           row={
-             SELECT tools FROM artifact_definitions(names=artifacts)
+             SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
           }, query={
              SELECT * FROM foreach(row=tools,
              query={
-              SELECT name AS Binary FROM scope()
+                SELECT name AS Binary FROM scope()
              })
           }) GROUP BY Binary
-
-      // Get some tempfiles to work with.
-      LET Config <= tempfile()
-      LET Destination <= tempfile()
 
       // Choose the right target binary depending on the target OS
       LET tool_name = SELECT * FROM switch(
@@ -387,24 +328,12 @@ sources:
            WHERE NOT log(message="Unknown target type " + OS) }
       )
 
-      // Repack this binary.
-      LET _ <= log(message="Will get tool " + tool_name[0].Type)
-
-      LET target_binary <= SELECT FullPath, Name
-         FROM Artifact.Generic.Utils.FetchBinary(
-            ToolName=tool_name[0].Type, SleepDuration="0",
-            ToolInfo=inventory_get(tool=tool_name[0].Type))
-         WHERE log(message="Target binary " + Name + " is at " + FullPath)
+      LET Target <= tool_name[0].Type
 
       // This is what we will call it.
       LET CollectorName <= format(
           format='Collector_%v',
-          args=[target_binary[0].Name, ])
-
-      // Create a zip file with the binaries in it.
-      LET _ <= SELECT * FROM collect(artifacts="PackageToolsArtifact",
-         output=Payload, args=dict(PackageToolsArtifact=dict(Binaries=Binaries.Binary)),
-         artifact_definitions=PackageToolsArtifact)
+          args=inventory_get(tool=Target).Definition.filename)
 
       LET CollectionArtifact <= SELECT Value FROM switch(
         a = { SELECT CommonCollections + StandardCollection AS Value
@@ -437,9 +366,10 @@ sources:
          else=encryption_args
       )
 
+      -- Add custom definition if needed. Built in definitions are not added
       LET definitions <= SELECT * FROM chain(
       a = { SELECT name, description, tools, parameters, sources
-            FROM artifact_definitions(names=artifacts)
+            FROM artifact_definitions(deps=TRUE, names=artifacts)
             WHERE NOT built_in AND
               log(message="Adding artifact_definition for " + name) },
 
@@ -503,28 +433,12 @@ sources:
           artifact_definitions=definitions)
       )
 
-      LET me <= SELECT Exe FROM info()
-                WHERE log(message="My binary is " + Exe)
-
-      // Copy the configuration to a temp file and shell out to our
-      // binary to repack it.
-      LET repack_step = SELECT upload(
-           file=Destination,
-           accessor="file",
-           name=CollectorName) AS Binary,
-           timestamp(epoch=now()) As CreationTime
-      FROM execve(argv=[
-        me[0].Exe, "config", "repack",
-        "--exe", target_binary[0].FullPath,
-        "--append", Payload,
-        copy(dest=Config,
-             accessor='data',
-             filename=serialize(format='json', item=autoexec)),
-        Destination ], length=1000000)
-      WHERE log(message="Creating config on " + Config) AND log(message=Stderr)
-
-      // Only actually run stuff if everything looks right.
-      SELECT * FROM if(condition=autoexec AND target_binary AND me[0].Exe,
-         then=repack_step)
+      // Do the actual repacking.
+      SELECT repack(
+           upload_name=CollectorName,
+           target=tool_name[0].Type,
+           binaries=Binaries.Binary,
+           config=serialize(format='json', item=autoexec))
+      FROM scope()
 
 ```

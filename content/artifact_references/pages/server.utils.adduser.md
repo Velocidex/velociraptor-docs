@@ -13,7 +13,7 @@ of the artifact itself). The Administrator can share this password
 with the user later.
 
 When using SSO (e.g. oauth) this password is not used and can be
-ignored (Because the SSO provider will do the authentication).
+ignored (Becuase the SSO provider will do the authentication).
 
 
 ```yaml
@@ -28,7 +28,7 @@ description: |
   with the user later.
 
   When using SSO (e.g. oauth) this password is not used and can be
-  ignored (Because the SSO provider will do the authentication).
+  ignored (Becuase the SSO provider will do the authentication).
 
 type: SERVER
 

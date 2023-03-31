@@ -1,10 +1,10 @@
-name: Custom.Windows.Registry.CortexEDRDisabled
+name: Windows.Registry.CortexEDRDisabled
 author: Rhys Jenkins @Rhysistance
 description: |
     This artifact will attempt to identify Cortex EDR that has been disabled via regkey
 reference:
   - https://mrd0x.com/cortex-xdr-analysis-and-bypass/
-  
+
 parameters:
  - name: KeyGlob
    default: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\CryptSvc\Parameters\ServiceDll

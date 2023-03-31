@@ -22,6 +22,7 @@ Miscellaneous plugins not yet categorized.
 |[get_flow](get_flow)|<span class='vql_type'>Function</span>|Gets flow details|
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Apply Gunzip to the data|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
+|[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[lru](lru)|<span class='vql_type'>Function</span>|Creates an LRU object|
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
 |[mail](mail)|<span class='vql_type'>Function</span>|Send Email to a remote server|
@@ -32,6 +33,7 @@ Miscellaneous plugins not yet categorized.
 |[org_delete](org_delete)|<span class='vql_type'>Function</span>|Deletes an Org from the server|
 |[orgs](orgs)|<span class='vql_type'>Plugin</span>|Retrieve the list of orgs on this server|
 |[passwd](passwd)|<span class='vql_type'>Function</span>|Updates the user's password|
+|[pe_dump](pe_dump)|<span class='vql_type'>Function</span>|Dump a PE file from process memory|
 |[pk_decrypt](pk_decrypt)|<span class='vql_type'>Function</span>|Decrypt files using pubkey encryption|
 |[pk_encrypt](pk_encrypt)|<span class='vql_type'>Function</span>|Encrypt files using pubkey encryption|
 |[process_tracker](process_tracker)|<span class='vql_type'>Function</span>|Install a global process tracker|
@@ -42,6 +44,7 @@ Miscellaneous plugins not yet categorized.
 |[process_tracker_pslist](process_tracker_pslist)|<span class='vql_type'>Plugin</span>|List all processes from the process tracker|
 |[process_tracker_tree](process_tracker_tree)|<span class='vql_type'>Function</span>|Get the full process tree under the process id|
 |[process_tracker_updates](process_tracker_updates)|<span class='vql_type'>Plugin</span>|Get the process tracker update events from the global process tracker|
+|[pskill](pskill)|<span class='vql_type'>Function</span>|Kill the specified process|
 |[query](query)|<span class='vql_type'>Plugin</span>|Evaluate a VQL query|
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|

@@ -29,9 +29,12 @@ reports:
       ##### Author: {{ $artifact.Author }}
       {{end}}
 
+      <div class="description-content">
+
       {{ $artifact.Description }}
 
       {{ if $artifact.Reference }}
+      ---
       References:
       <ul>
       {{- range $item := $artifact.Reference -}}
@@ -39,6 +42,7 @@ reports:
       {{- end -}}
       </ul>
       {{ end }}
+      </div>
 
       {{ if $artifact.Tools }}
       ### Tools

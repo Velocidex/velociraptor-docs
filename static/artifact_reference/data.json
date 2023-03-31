@@ -36,15 +36,6 @@
         ]
     },
     {
-        "title": "Admin.System.CompressUploads",
-        "description": "Compresses all uploaded files.",
-        "link": "/artifact_references/pages/admin.system.compressuploads",
-        "type": "server_event",
-        "tags": [
-            "Server Event Artifact"
-        ]
-    },
-    {
         "title": "Demo.Plugins.Fifo",
         "description": "This is a demo of the fifo() plugin. The Fifo plugin collects and\ncaches rows from its inner query. Every subsequent execution of the\nquery then reads from the cache. The plugin will expire old rows\ndepending on its expiration policy - so we always see recent rows.",
         "link": "/artifact_references/pages/demo.plugins.fifo",
@@ -132,6 +123,15 @@
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.Trace",
+        "description": "This artifact collects profiling information about the running\nclient. The artifact is automatically added when the GUI selects a\nnon zero Trace frequency.",
+        "link": "/artifact_references/pages/generic.client.trace",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -237,6 +237,24 @@
         "title": "Generic.Forensic.Timeline",
         "description": "This artifact generates a timeline of a file glob in bodyfile\nformat. We currently do not calculate the md5 because it is quite\nexpensive.\n",
         "link": "/artifact_references/pages/generic.forensic.timeline",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Network.InterfaceAddresses",
+        "description": "Network interfaces and relevant metadata. This artifact works on all\nsupported OSs.\n",
+        "link": "/artifact_references/pages/generic.network.interfaceaddresses",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.System.EfiSignatures",
+        "description": "Collect Efi Signature information from the client.\n",
+        "link": "/artifact_references/pages/generic.system.efisignatures",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -390,6 +408,15 @@
         "title": "Linux.Network.Netstat",
         "description": "This artifact will parse /proc and reveal information\nabout current network connections.\n",
         "link": "/artifact_references/pages/linux.network.netstat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Network.NetstatEnriched",
+        "description": "Report network connections, and enrich with process information.\n",
+        "link": "/artifact_references/pages/linux.network.netstatenriched",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -810,6 +837,15 @@
         ]
     },
     {
+        "title": "Server.Alerts.ProcessCreation",
+        "description": "This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).\n",
+        "link": "/artifact_references/pages/server.alerts.processcreation",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Server.Alerts.PsExec",
         "description": "Send an email if execution of the psexec service was detected on\nany client. This is a server side artifact.",
         "link": "/artifact_references/pages/server.alerts.psexec",
@@ -1026,6 +1062,15 @@
         ]
     },
     {
+        "title": "Server.Internal.ClientInfo",
+        "description": "An internal artifact collecting client information. This is used to\nupdate the client info indexes. Client send this automatically at\nstartup and then every day.\n",
+        "link": "/artifact_references/pages/server.internal.clientinfo",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
         "title": "Server.Internal.ClientPing",
         "description": "An internal event channel for notifying about client pings.\n",
         "link": "/artifact_references/pages/server.internal.clientping",
@@ -1125,6 +1170,15 @@
         ]
     },
     {
+        "title": "Server.Internal.MetadataModifications",
+        "description": "This event artifact is an internal event stream over which\nnotifications of server metadata modifications are sent.",
+        "link": "/artifact_references/pages/server.internal.metadatamodifications",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Server.Internal.Notifications",
         "description": "This event artifact is an internal event stream over which client\nnotifications are sent. A frontend will watch for events over this\nstream and if a client is actively connected to this frontend, the\nclient will be notified that new work is available to it.",
         "link": "/artifact_references/pages/server.internal.notifications",
@@ -1149,6 +1203,15 @@
         "type": "internal",
         "tags": [
             "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ToolDependencies",
+        "description": "An internal artifact that defines some tool\ndepenencies. Velociraptor releases for offline collector\n",
+        "link": "/artifact_references/pages/server.internal.tooldependencies",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -1332,6 +1395,15 @@
         ]
     },
     {
+        "title": "Server.Utils.CreateMSI",
+        "description": "Build an MSI ready for deployment in the current org.\n",
+        "link": "/artifact_references/pages/server.utils.createmsi",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.DeleteClient",
         "description": "This artifact completely removes a client from the data store.",
         "link": "/artifact_references/pages/server.utils.deleteclient",
@@ -1432,7 +1504,7 @@
     },
     {
         "title": "Splunk.Flows.Upload",
-        "description": "This server side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to a\nSplunk server.\nTo configure the event collector properly a couple steps need to be\ncompleted prior to setting up this event:\n  1. Configure an index to ingest the data.\n     * Go to Settings > Index.\n     * New Index.\n  2. Configure the collector.\n     * Go to Settings > Data Inputs > HTTP Event Collector.\n     * Add New.\n     * Name does not matter, but ensure indexer acknowledgement is OFF.\n     * Set `Selected Indexes` to the index configured in step 1.\n     * Save API key for this event.\n  3. Set Global settings.\n     * Go to Settings > Data Inputs > HTTP Event Collector > Global Settings\n     * Ensure `All Tokens` is set to ENABLED\n     * Copy the HTTP Port Number for this event",
+        "description": "This server side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to a\nSplunk server.\nTo configure the event collector properly a couple steps need to be\ncompleted prior to setting up this event:\n  1. Configure an index to ingest the data.\n     * Go to Settings > Index.\n     * New Index.\n  2. Configure the collector.\n     * Go to Settings > Data Inputs > HTTP Event Collector.\n     * Add New.\n     * Name does not matter, but ensure indexer acknowledgement is OFF.\n     * Set `Selected Indexes` to the index configured in step 1.\n     * Save API key for this event.\n  3. Set Global settings.\n     * Go to Settings > Data Inputs > HTTP Event Collector > Global Settings\n     * Ensure `All Tokens` is set to ENABLED\n     * Copy the HTTP Port Number for this event\n  4. Configure your Splunk props.conf and tranforms.conf\n     * Add the following to props.conf\n       [vql]\n       INDEXED_EXTRACTIONS = json\n       DATETIME_CONFIG = CURRENT\n       TZ = GMT\n       category = Custom\n       pulldown_type = 1\n       TRANSFORMS-vql-sourcetype = vql-sourcetype,vql-timestamp\n       TRUNCATE = 512000\n     * Add the following to transforms.conf\n       [vql-sourcetype]\n       INGEST_EVAL = sourcetype=lower(_index)\n       [vql-timestamp]\n       INGEST_EVAL = _time=case( \\\n                     _index=\"artifact_Linux_Search_FileFinder\",strptime(CTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_System_VFS_ListDirectory\",strptime(ctime,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                     _index=\"artifact_Windows_Timeline_MFT\",strptime(event_time,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                     _index=\"artifact_Windows_NTFS_MFT\",strptime(Created0x10,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                     _index=\"artifact_Windows_EventLogs_Evtx\",strptime(TimeCreated,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Custom_Windows_EventLogs_System_7045\",strptime(TimeCreated,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_EventLogs_RDPAuth\",strptime(EventTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_Analysis_EvidenceOfExecution_UserAssist\",strptime(LastExecution,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_Analysis_EvidenceOfExecution_Amcache\",strptime(KeyMTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_System_Amcache_InventoryApplicationFile\",strptime(LastModified,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_Search_FileFinder\",strptime(CTime,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                     _index=\"artifact_Windows_Applications_NirsoftBrowserViewer\",strptime(Visited,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_Registry_RecentDocs\",strptime(LastWriteTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Custom_Windows_Application_IIS_IISLogs\",strptime(event_time,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_MacOS_Applications_Chrome_History\",strptime(last_visit_time,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                     _index=\"artifact_Windows_Registry_UserAssist\",strptime(LastExecution,\"%Y-%m-%dT%H:%M:%SZ\") \\\n                     )",
         "link": "/artifact_references/pages/splunk.flows.upload",
         "type": "server_event",
         "tags": [
@@ -1593,6 +1665,15 @@
         ]
     },
     {
+        "title": "Windows.Applications.Edge.Favicons",
+        "description": "Enumerate the users edge favicons.",
+        "link": "/artifact_references/pages/windows.applications.edge.favicons",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Applications.Edge.History",
         "description": "Enumerate the users chrome history.\n",
         "link": "/artifact_references/pages/windows.applications.edge.history",
@@ -1728,15 +1809,6 @@
         ]
     },
     {
-        "title": "Windows.Collectors.File",
-        "description": "Using Windows.Collectors.File is deprecated. Please use\nGeneric.Collectors.File instead.\n",
-        "link": "/artifact_references/pages/windows.collectors.file",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Collectors.VSS",
         "description": "Collects files with VSS deduplication.",
         "link": "/artifact_references/pages/windows.collectors.vss",
@@ -1815,6 +1887,15 @@
         "type": "client",
         "tags": [
             "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.ProcessCreation",
+        "description": "This artifact logs specific process creation events to\nVelociraptor. It auto-installs Sysmon and it watches the Sysmon ETW\nprovider for new events.\n",
+        "link": "/artifact_references/pages/windows.detection.processcreation",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
         ]
     },
     {
@@ -2268,15 +2349,6 @@
         ]
     },
     {
-        "title": "Windows.Forensics.ProcessInfo",
-        "description": "Extract information about processes.\n",
-        "link": "/artifact_references/pages/windows.forensics.processinfo",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Forensics.RecentApps",
         "description": "GUI Program execution launched on the Win10 system is tracked in the\nRecentApps key.",
         "link": "/artifact_references/pages/windows.forensics.recentapps",
@@ -2394,6 +2466,33 @@
         ]
     },
     {
+        "title": "Windows.Memory.PEDump",
+        "description": "This artifact dumps a PE file from memory and uploads the file to\nthe server.",
+        "link": "/artifact_references/pages/windows.memory.pedump",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.ProcessDump",
+        "description": "Dump process memory and upload to the server.",
+        "link": "/artifact_references/pages/windows.memory.processdump",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.ProcessInfo",
+        "description": "This artifact returns process information obtained by parsing the PEB directly.",
+        "link": "/artifact_references/pages/windows.memory.processinfo",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.NTFS.ADSHunter",
         "description": "This artifact hunts\nfor Alternate Data Streams on NTFS file systems. \nAdversaries may use NTFS file attributes for covert storage in order to evade \ndetection. \nAlternate Data Streams (ADS) are additional $DATA attributes for an MFT entry in \nNTFS file systems. In NTFS, the primary $DATA attribute is \nnever named but subsequent $DATA attributes must be named.",
         "link": "/artifact_references/pages/windows.ntfs.adshunter",
@@ -2442,15 +2541,6 @@
         "title": "Windows.Network.ArpCache",
         "description": "Address resolution cache, both static and dynamic (from ARP, NDP).",
         "link": "/artifact_references/pages/windows.network.arpcache",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Windows.Network.InterfaceAddresses",
-        "description": "Network interfaces and relevant metadata.",
-        "link": "/artifact_references/pages/windows.network.interfaceaddresses",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2637,6 +2727,15 @@
         ]
     },
     {
+        "title": "Windows.Registry.PuttyHostKeys",
+        "description": "This artifact extracts PuTTY SSH host keys.",
+        "link": "/artifact_references/pages/windows.registry.puttyhostkeys",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Registry.RecentDocs",
         "description": "This artifact extracts RecentDocs MRU from the target.",
         "link": "/artifact_references/pages/windows.registry.recentdocs",
@@ -2665,7 +2764,7 @@
     },
     {
         "title": "Windows.Registry.WDigest",
-        "description": "Find WDigest registry values on the filesystem.",
+        "description": "Find WDigest registry values on the filesystem. The artifact will also use \nGROUP BY to limit all ControlSet output to a single row.",
         "link": "/artifact_references/pages/windows.registry.wdigest",
         "type": "client",
         "tags": [
@@ -2730,6 +2829,15 @@
         "title": "Windows.Search.Yara",
         "description": "Searches for a specific malicious file or set of files by a Yara rule.\n",
         "link": "/artifact_references/pages/windows.search.yara",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.AllUsers",
+        "description": "List User accounts. We combine two data sources - the output from\nthe `NetUserEnum` API (termed `local` users) and the list of SIDs in\nthe registry (termed `remote` users).",
+        "link": "/artifact_references/pages/windows.sys.allusers",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2818,7 +2926,7 @@
     },
     {
         "title": "Windows.Sys.Users",
-        "description": "List User accounts. We combine two data sources - the output from\nthe `NetUserEnum` API (termed `local` users) and the list of SIDs in\nthe registry (termed `remote` users).",
+        "description": "List User accounts by inspecting registry keys. This method is a\nreliable indicator for users who have physically logged into the\nsystem and thereby created local profiles.",
         "link": "/artifact_references/pages/windows.sys.users",
         "type": "client",
         "tags": [
@@ -3052,7 +3160,7 @@
     },
     {
         "title": "Windows.System.VAD",
-        "description": "This artifact enables enumeration of process memory sections via the Virtual \nAddress Descriptor (VAD). The VAD is used by the Windows memory manager to \ndescribe allocated process memory ranges.",
+        "description": "This artifact enables enumeration of process memory sections via the Virtual\nAddress Descriptor (VAD). The VAD is used by the Windows memory manager to\ndescribe allocated process memory ranges.",
         "link": "/artifact_references/pages/windows.system.vad",
         "type": "client",
         "tags": [
@@ -3099,15 +3207,6 @@
         "title": "Windows.Timeline.Registry.RunMRU",
         "description": "# Output all available RunMRU registry keys in timeline format.",
         "link": "/artifact_references/pages/windows.timeline.registry.runmru",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Windows.Triage.ProcessMemory",
-        "description": "Dump process memory and upload to the server\n",
-        "link": "/artifact_references/pages/windows.triage.processmemory",
         "type": "client",
         "tags": [
             "Client Artifact"
