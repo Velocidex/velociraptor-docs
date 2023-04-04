@@ -24,16 +24,14 @@ road map.
 
 In early 2023, the Velociraptor team has distributed a community
 survey which was very well received. We are grateful to the community
-members who took the time to respond.
+members who took the time to respond. As an open source project, we
+depend on our community to contribute. There are many ways
+contributors can help the project, from developing code, to filing
+bugs or improving documentation. One of the most important ways users
+can contribute is by providing valuable feedback through channels such
+as this survey, to help shape the future road map and new features.
 
 In this blog post I wanted to share some of the responses we received.
-
-As an open source project, we depend on our community to
-contribute. There are many ways contributors can help the project,
-from developing code, to filing bugs or improving documentation. One
-of the most important ways users can contribute is by providing
-valuable feedback through channels such as this survey, to help shape
-the future road map and new features.
 
 ## Who are the Velociraptor Community?
 
@@ -42,22 +40,22 @@ were `Analysts` (57%) and `Managers` (26%) indicating that most of the
 respondents are people who know and use Velociraptor frequently.
 
 We wanted to get a feel to the type of companies using
-Velociraptor. Users fell pretty evenly into company sized, with about
+Velociraptor. Users fell pretty evenly into company sizes, with about
 30% of responses from small companies (less than 100 employees) and
 20% of responses from very large companies of 10,000 employees or
 more.
 
 These companies also came from a wide range of industries. While many
-were primarily in the information security fields such as MSSP,
-Consultants and Cybersecurity business, we also saw a large number of
-responses from the Government sector, the Aerospace industries,
-Education, Banking/Finance, Health care etc.
+were primarily in the information security fields such as Managed
+Security Service Providers (MSSP), Consultants and Cybersecurity
+businesses, we also saw a large number of responses from the
+Government sector, the Aerospace industries, Education,
+Banking/Finance, Health care etc.
 
-
-With such a wide range of users we were interested how often users
+With such a wide range of users we were interested in how often users
 were using Velociraptor. About a third of users use Velociraptor
-frequently, a third use it occasionally and a third are in the
-process of evaluation and learning about the tool.
+frequently, a third use it occasionally and a third are in the process
+of evaluation and learning about the tool.
 
 ## Velociraptor use cases
 
@@ -81,7 +79,8 @@ main use cases:
     Velociraptor's unique ability to collect artifacts at scale from
     many system can be combined with threat intelligence information
     (such as hashes etc) to proactively hunt for compromised by known
-    actors.
+    actors. This question specifically related for hunting for threat
+    feed indicators, such as hashes, IP addresses etc.
 
     16% of users were utilizing this feature
 
@@ -105,9 +104,9 @@ main use cases:
 
    Velociraptor's artifacts are used to directly parse files on the
    endpoint, returning actionable high value information quickly
-   without the need for length post processing
+   without the need for length post processing.
 
-   21% of users use these
+   21% of users use these type of queries.
 
 6. **Proactive hunt for indicators across many systems (Incident
    Response)**
@@ -153,11 +152,13 @@ to archived data and re-analyze.
 
 ## Version compatibility
 
-The Velociraptor support policy officially only supports clients and
-servers on the same release version. However in reality it usually
-take longer to upgrade clients than servers. While some users are able
-to upgrade clients promptly, many users estimate between 10-50% of
-deployed clients are a version older than the server.
+The Velociraptor [support
+policy](https://docs.velociraptor.app/docs/overview/support/)
+officially only supports clients and servers on the same release
+version. However in reality it usually take longer to upgrade clients
+than servers. While some users are able to upgrade clients promptly,
+many users estimate between 10-50% of deployed clients are a version
+older than the server.
 
 The Velociraptor team therefore needs to maintain some compatibility
 with older clients to allow time for users to upgrade their endpoints.
@@ -176,22 +177,25 @@ making this even more seamless and easy to use.
 
 Most users of the offline collection deploy it manually (50%), while
 deploying via another EDR tool, or via Group Policy are also robust
-options. Some users have create custom wrappers to deploy.
+options. Some users have created custom wrappers to deploy the offline
+collector in the field.
 
 The Offline collection supports directly uploading the collection to a
 cloud server using a number of methods.
 
-The most popular upload method is to an AWS S3 bucket (30%) while SFTP
-connector in the cloud or a custom SFTP server on a VM are also
-popular options (20% and 23%). Uploading directly to Google Cloud
-Storage is the least popular option at about 5%.
+The most popular upload method is to an `AWS S3 bucket` (30%) while
+the `SFTP connector` in the cloud or a `custom SFTP server` on a VM
+are also popular options (20% and 23%). Uploading directly to `Google
+Cloud Storage` is the least popular option at about 5%.
 
 Manual copy methods were also popular ranging from EDR based copying
 to Zoom file copy.
 
-A commonly requested method was Azure blob storage which Velociraptor
-currently does not support. Many responses indicate that `SFTP` is
-currently a workaround to the lack of direct Azure support.
+A commonly requested method was `Azure blob storage` which
+Velociraptor currently does not support. Many responses indicate that
+`SFTP` is currently a workaround to the lack of direct Azure
+support. The Velociraptor team should prioritize supporting Azure blob
+storage.
 
 ## Data analysis
 
@@ -201,7 +205,7 @@ already contains extensive parsers for most forensic artifacts that
 can be used directly on the endpoint.
 
 Most users do use the built in forensic parsing and analysis artifacts
-(55%) but many users also collect raw files (e.g. the
+(55%) but many users also collect raw files (e.g. via the
 `Windows.Collection.KapeFiles` artifact).
 
 ## VQL artifacts
@@ -210,24 +214,23 @@ Velociraptor uses the Velociraptor Query Language to perform
 collections and analysis. The VQL is usually shared via an `Artifact`
 with the community.
 
-Most users utilize the built in artifacts as well as the artifact
-exchange. But a significant number of users also develop their own
-artifacts for their own use. Over 60% of users report that they
-develop their own artifacts.
+Most users utilize the built in artifacts as well as the [artifact
+exchange](https://docs.velociraptor.app/exchange/). A significant
+number of users also develop their own artifacts for their own
+use. Over 60% of users report that they develop their own artifacts.
 
 For those users who develop their own artifacts, we asked about
 limitations and difficulties in this process. A common theme that
-arose was around debugging artifacts and the lack of a debugger and
-error reporting.
+arose was around debugging artifacts and the lack of a VQL debugger
+and better error reporting.
 
 Training and documentation was also pointed as needing improvements. A
 suggestion was made to enhance documentation with a lot more examples
 of how each VQL plugin can be used in practice.
 
-Luckily the Velociraptor team is doing a training course at [BlackHat
-2023](https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129)
-this year so users can gain more hands on experience in deploying and
-running Velociraptor in practice.
+Luckily the Velociraptor team is running a training course at
+[BlackHat 2023](https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129)
+this year so users can learn from the Velociraptor developers detailed information of how to deploy Velociraptor and write effective custom VQL.
 
 ## Role based access controls
 
@@ -243,8 +246,8 @@ finding it `very useful` and `extremely useful`.
 
 The main suggestion for improvements include:
 
-1. Easier management through the GUI (in 0.6.8 all user ACLs are
-   managed through the GUI now).
+1. Easier management through the GUI (as of version 0.6.8 all user
+   ACLs are managed through the GUI now).
 2. Custom roles with more granular permissions.
 3. Better logging and auditing
 4. Some way to allow a specific role to only run a pre-approved subset
@@ -255,9 +258,10 @@ The main suggestion for improvements include:
 ## Multi-tenant support
 
 In recent versions, Velociraptor offers a fully multi-tenanted mode,
-where organizations can be created and destroyed cheaply. This is used
-by 25% of respondents mainly by consultants to separate out different
-customers. Some companies use multi-tenants to separate out different
+where organizations can be created and destroyed quickly with minimal
+resource overheads. This feature is used by 25% of respondents, who
+are mainly consultants using it to separate out different
+customers. Some companies use multi-tenancies to separate out different
 organizations in the same business or subsidiaries.
 
 ## Client monitoring and alerting
@@ -268,8 +272,8 @@ conditions are met. A common use case for these is to generate alerts
 and for enhanced detection.
 
 Some users deploy client monitoring artifacts frequently while others
-see it as a duplication of existing EDR tools. The primary use case
-breakdown was:
+see it as an alternative to EDR tools, when these are available. The
+primary use case breakdown was:
 
 1. Detection (e.g. alert when an anomalous event occurs) 27% of users.
 2. Collection of client events (e.g. forward process event logs to an
@@ -302,7 +306,7 @@ host. This allows for an endpoint to be isolated during
 investigation.
 
 The feature was sometimes used by about 30% of users and always used
-by 12%.
+by 12%, making it a popular feature.
 
 ## How is Velociraptor deployed?
 
@@ -317,12 +321,13 @@ single server deployment option is used by 70% of users.
 
 While some users deploy very short lived deployments of several days
 or less (13%), most users keep their deployment for several weeks
-(27%) to months or permanently (44%).
+(27%) to months or permanently (44% of users).
 
 Velociraptor is designed to work efficiently with many end points. We
 recommend a maximum of 15-20k endpoints on a single server before
-switching to a multi-server architecture. This level of performance is
-adequate in practice for the majority of users.
+switching to a multi-server architecture (although users reported
+success with larger deployment sizes on a single server). This level
+of performance is adequate in practice for the majority of users.
 
 Many users run deployments of less than 250 endpoint (44%) while a
 further 40% of users deploy to less than 5,000 endpoints.
@@ -332,11 +337,11 @@ endpoints with 2% of users over 100,000 endpoints.
 
 ## Popular operating systems
 
-Among Velociraptor's supported operating systems, Windows 64 bits,
-is the most popular (with 82% of users ranking it the most deployed OS
-type), while Linux is the next most popular deployed OS (26% ranked
-second, and 48% third). Finally Mac is the third popular choice for
-Velociraptor's users, with 32 bit Windows systems still very
+Among Velociraptor's supported operating systems, Windows 64 bits, is
+the most popular (with 82% of users ranking it the most deployed OS
+type), while Linux is the next most popular deployed endpoint OS (26%
+ranked second, and 48% third). Finally Mac is the third popular choice
+for Velociraptor's users, with 32 bit Windows systems still very
 prevalent.
 
 ## Resources and references
@@ -351,8 +356,9 @@ is clearly room for improvements with 42% of users only rating it as
 
 Suggestions for improvements included:
 
-* More in-depth YouTube videos breaking down the tools features with workflows
-* More detailed how to with practical examples
+* More in-depth YouTube videos breaking down the tools features with
+  workflows
+* More detailed "how to" with practical examples
 * Please improve documentation about functions and plugins with a
   slightly more detailed explanation and a small example.
 * Documents seem to be outdated, would like to see updates to the
@@ -366,8 +372,8 @@ words we read, and are excited to be making an impact on the DFIR
 field.
 
 * I have to congratulate you and thank you for developing such an
-  amazing tool. It's future of DFIR. I hope Rapid7 won't make it very
-  expensive in future.
+  amazing tool. It's the future of DFIR. I hope Rapid7 won't make it
+  very expensive in future.
 
 * Awesome product, can't wait to use it in prod!
 
