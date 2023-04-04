@@ -26,8 +26,8 @@ PowerShell (assuming the server is running on Windows):
 velociraptor.exe --config server.config.yaml -v artifacts collect
    Server.Utils.CreateCollector
    --args OS=Windows
-   --args artifacts='[\"Generic.System.Pstree\"]'
-   --args parameters='{\"Generic.System.Pstree\":{}}'
+   --args artifacts='["""Generic.System.Pstree"""]'
+   --args parameters='{"""Generic.System.Pstree""":{}}'
    --args target=ZIP
    --args opt_admin=N
    --args opt_prompt=N
@@ -38,6 +38,16 @@ This command will create a new offline collector binary and store it
 inside the file `collector.zip`
 
 We can now extract the executable from the ZIP file (using powershell)
+
+{{% notice note "Escaping quotes" %}}
+
+Note that running this in powershell requires quotes to be escaped in
+the powershell specific way. Usually it means expanding double quotes
+(`"`) into 3 double quotes (`"""`)
+
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules
+
+{{% /notice %}}
 
 ```powershell
 Expand-Archive .\collector.zip .\my_dir\
