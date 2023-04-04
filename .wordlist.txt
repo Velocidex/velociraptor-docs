@@ -1316,3 +1316,6 @@ EBS
 
 pskill
 BlackHat
+
+MSSP
+infosec
