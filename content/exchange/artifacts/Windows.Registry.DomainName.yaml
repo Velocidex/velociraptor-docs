@@ -12,7 +12,7 @@ sources:
     - |
             SELECT
                 ModTime,
-                dirname(path=FullPath) as registry_key,
-                basename(path=FullPath) as registry_name,
+                OSPath.Dirname as registry_key,
+                OSPath.Basename as registry_name,
                 Data.value as registry_value
-            FROM glob(globs=DomainHive, accessor="reg")
+            FROM glob(globs=DomainHive, accessor="registry")
