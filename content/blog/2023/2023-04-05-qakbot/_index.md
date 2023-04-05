@@ -50,8 +50,8 @@ of the unpacked payload binary. The decryption process has not changed
 significantly in recent times, but for some minor key changes. It uses 
 a SHA1 of a hard coded key that can typically be extracted as an 
 encoded string in the .data section of the payload binary. This key 
-often remains static across campaigns, which can speed up analysis if 
-we maintain a recent key list. 
+often remains static across campaigns, which can speed up analysis with 
+the maintainance of a recent key list. 
 
 Current samples undergo two rounds of RC4 decryption with validation 
 built in. The validation bytes dropped from the data for the second 
@@ -90,7 +90,7 @@ and data from the referenced key offset which similarly is reused
 across samples.
 
 Current samples start at offset 0x50, with an xor key, followed by a 
-separator of 0x0000 before encoded data. In recent samples we have 
+separator of 0x0000 before encoded data. In recent samples I have 
 observed more than one string blob and these have occurred in the same 
 format after the separator.
 
@@ -117,7 +117,7 @@ When executing locally Qakbot typically injects its payload into a
 Windows process, and can be detected with yara targeting the process 
 for an unbacked section with PAGE_EXECUTE_READWRITE protections. 
 
-Below we have an example of running PE-Sieve / Hollows Hunter tool 
+Below is an example of running PE-Sieve / Hollows Hunter tool 
 from Hasherezade. This helpful tool enables detection of several types 
 of process injection, and the dumping of injected sections with 
 appropriately aligned headers. In this case, the injected process is 
@@ -187,11 +187,12 @@ samples over a few days.
 - Most prevalent campaigns are “BB” and  “obama” prefixed
 - Minor campaigns observed: “azd”, “tok”  and “rds” with only one or 
 two observed payload samples each.
-- Strings analysis can also provide insights to sample behavior over 
+
+Strings analysis can also provide insights to sample behavior over 
 time to assist analysis. A great example is the adding to process name 
 list for anti-analysis checks.
 
-![Bulk collection: Strings highlighting anti-analysis check additions over time](images/11research_strings.png)
+![Bulk collection: Strings highlighting anti-analysis check additions over time](images/11research_strings.png)  
 
 
 
@@ -210,7 +211,7 @@ our training courses.
 
 I also would like to thank some of Rapid7’s great analysts - Jakob 
 Denlinger and James Dunne for bouncing some ideas when writing this 
-post.
+post.  
 
 
 
