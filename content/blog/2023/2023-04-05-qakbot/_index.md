@@ -4,6 +4,11 @@ description: |
    This is a technical post covering practical methodology to extract 
    configuration data from recent Qakbot samples.
 author: "Matt Green - @mgreen27"
+tags:
+ - Malware
+ - Detection
+ - Qakbot
+ - QBot
 date: 2023-04-05
 ---
 
@@ -141,7 +146,7 @@ decoding workflow for a generic Qakbot parser and save time for a
 common analysis. I also wanted an easy to update parser to add 
 additional keys or decode nuances when changes are discovered. 
 
-![Dumping Qakbot payload using pe-sieve](images/09parameters.png)
+![Windows.Carving.Qakbot: parameters](images/09parameters.png)
 
 This artifact uses Yara to detect an injected Qakbot payload, then 
 attempts to parse the payload configuration and strings. Some of the 
