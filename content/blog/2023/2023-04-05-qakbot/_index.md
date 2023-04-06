@@ -4,6 +4,11 @@ description: |
    This is a technical post covering practical methodology to extract 
    configuration data from recent Qakbot samples.
 author: "Matt Green - @mgreen27"
+tags:
+ - Malware
+ - Detection
+ - Qakbot
+ - QBot
 date: 2023-04-05
 ---
 
