@@ -15,7 +15,7 @@ to detect and automate the decode process at scale.
 
 ![Qak!](images/01qak.png)
 
-QakBot or QBot, is a modular malware first observed in 2007 that has 
+Qakbot or QBot, is a modular malware first observed in 2007 that has 
 been historically known as a banking Trojan. Qbot is used to steal 
 credentials, financial, or other endpoint data, and in recent years, 
 regularly a loader for other malware leading to hands on keyboard 
@@ -217,7 +217,7 @@ post.
 
 ### References
 
-1. [Malpedia, QakBot](https://malpedia.caad.fkie.fraunhofer.de/details/win.qakbot)
+1. [Malpedia, Qakbot](https://malpedia.caad.fkie.fraunhofer.de/details/win.qakbot)
 2. [Elastic, QBOT Malware Analysis](https://www.elastic.co/security-labs/qbot-malware-analysis)
 3. [Hasherezade, Hollows Hunter](https://github.com/hasherezade/hollows_hunter)
 4. [Windows.Carving.Qakbot](https://docs.velociraptor.app/exchange/artifacts/pages/qakbot/)
