@@ -22,7 +22,7 @@ capabilities, features and use cases. We use this information in order
 to shape future development direction, set priorities and develop our
 road map.
 
-In early 2023, the Velociraptor team has distributed a community
+In early 2023, the Velociraptor team distributed a community
 survey which was very well received. We are grateful to the community
 members who took the time to respond. As an open source project, we
 depend on our community to contribute. There are many ways
@@ -61,14 +61,14 @@ of evaluation and learning about the tool.
 
 Velociraptor is a powerful tool with a wide feature set. We wanted to
 glimpse an idea of what features were most popular and how users
-priorities these features. Specifically we asked about the following
+prioritize these features. Specifically, we asked about the following
 main use cases:
 
 1. **Client monitoring and alerts (Detection).**
 
     Velociraptor can collect client event queries focused on
     detection. This allows the client to autonomously monitor the
-    endpoint and sent back high value events when certain conditions
+    endpoint and send back high value events when certain conditions
     are met.
 
     12% of users were actively using this feature to monitor the end
@@ -78,8 +78,8 @@ main use cases:
 
     Velociraptor's unique ability to collect artifacts at scale from
     many system can be combined with threat intelligence information
-    (such as hashes etc) to proactively hunt for compromised by known
-    actors. This question specifically related for hunting for threat
+    (such as hashes, etc.) to proactively hunt for compromises by known
+    actors. This question specifically related to hunting for threat
     feed indicators, such as hashes, IP addresses etc.
 
     16% of users were utilizing this feature
@@ -104,9 +104,9 @@ main use cases:
 
    Velociraptor's artifacts are used to directly parse files on the
    endpoint, returning actionable high value information quickly
-   without the need for length post processing.
+   without the need for lengthy post processing.
 
-   21% of users use these type of queries.
+   21% of users use these types of queries.
 
 6. **Proactive hunt for indicators across many systems (Incident
    Response)**
@@ -128,11 +128,11 @@ compatibility is to users so we can develop effective update
 procedures.
 
 Some users deployed Velociraptor for limited time engagements so they
-did not need backwards compatibility for stored data as they wont be
+did not need backwards compatibility for stored data as they wouldn't be
 upgrading to major versions within the same deployment.
 
 Other users required more stable data migration but were generally
-happy with removing data compatibility if necessary. For example with
+happy with removing data compatibility if necessary. For example, with
 one response stating "I would rather you prioritize improvements over
 compatibility even if it breaks things."
 
@@ -155,7 +155,7 @@ to archived data and re-analyze.
 The Velociraptor [support
 policy](https://docs.velociraptor.app/docs/overview/support/)
 officially only supports clients and servers on the same release
-version. However in reality it usually take longer to upgrade clients
+version. However in reality it usually takes longer to upgrade clients
 than servers. While some users are able to upgrade clients promptly,
 many users estimate between 10-50% of deployed clients are a version
 older than the server.
@@ -244,15 +244,15 @@ Users generally found this feature very useful, with 40% of users
 finding it `moderately useful` and a further 20% and 15% further
 finding it `very useful` and `extremely useful`.
 
-The main suggestion for improvements include:
+The main suggestions for improvements include:
 
 1. Easier management through the GUI (as of version 0.6.8 all user
    ACLs are managed through the GUI now).
 2. Custom roles with more granular permissions.
-3. Better logging and auditing
+3. Better logging and auditing.
 4. Some way to allow a specific role to only run a pre-approved subset
    of artifacts. Some way to only run signed/hashed VQL - prevent a
-   malicious artifact being dropped on the server
+   malicious artifact being dropped on the server.
 5. Making it clearer what each permission grants the user.
 
 ## Multi-tenant support
@@ -275,10 +275,10 @@ Some users deploy client monitoring artifacts frequently while others
 see it as an alternative to EDR tools, when these are available. The
 primary use case breakdown was:
 
-1. Detection (e.g. alert when an anomalous event occurs) 27% of users.
+1. Detection (e.g. alert when an anomalous event occurs) - 27% of users.
 2. Collection of client events (e.g. forward process event logs to an
    external system) - 18% of users
-3. Remediation (e.g. quarantine or remove files automatically) 15% of users
+3. Remediation (e.g. quarantine or remove files automatically) - 15% of users
 
 While 30% of users do not use client monitoring at all.
 
@@ -288,11 +288,11 @@ on](https://github.com/Velocidex/velociraptor/issues/1869). Some
 useful feedback on this feature included:
 
 * Better support for integration with business tools - e.g., Teams,
-  Slack etc
+  Slack, etc.
 * Easier to manage event data.
 * Not having to build a server side artifact for each client_event
-  artifact. And a dashboard that lists all alerts. Also a more easy
-  way to forward alerts based on severity
+  artifact. And a dashboard that lists all alerts. Also, a more easy
+  way to forward alerts based on severity.
 * Lack of pre-built detection rules / packs. In other words, it would
   be easier to tune down, than to build up.
 
@@ -305,14 +305,14 @@ communication while maintaining connectivity to the Velociraptor
 host. This allows for an endpoint to be isolated during
 investigation.
 
-The feature was sometimes used by about 30% of users and always used
+The feature was "sometimes used" by about 30% of users and "always used"
 by 12%, making it a popular feature.
 
 ## How is Velociraptor deployed?
 
 Velociraptor is a very light weight solution, typically taking a few
 minutes to provision a new deployment. For many of our users,
-Velociraptor is used in an Incident Response context on an as needed
+Velociraptor is used in an Incident Response context on an as-needed
 basis (46%). Other users, prefer a more permanent deployment (25%).
 
 For larger environments, Velociraptor also supports multi-server
@@ -329,7 +329,7 @@ switching to a multi-server architecture (although users reported
 success with larger deployment sizes on a single server). This level
 of performance is adequate in practice for the majority of users.
 
-Many users run deployments of less than 250 endpoint (44%) while a
+Many users run deployments of less than 250 endpoints (44%) while a
 further 40% of users deploy to less than 5,000 endpoints.
 
 Approximately 10% of users have deployment sizes larger than 25,000
@@ -337,18 +337,18 @@ endpoints with 2% of users over 100,000 endpoints.
 
 ## Popular operating systems
 
-Among Velociraptor's supported operating systems, Windows 64 bits, is
+Among Velociraptor's supported operating systems, Windows 64-bit, is
 the most popular (with 82% of users ranking it the most deployed OS
 type), while Linux is the next most popular deployed endpoint OS (26%
-ranked second, and 48% third). Finally Mac is the third popular choice
-for Velociraptor's users, with 32 bit Windows systems still very
+ranked second, and 48% third). Finally, Mac is the third popular choice
+for Velociraptor's users, with 32-bit Windows systems still very
 prevalent.
 
 ## Resources and references
 
 Velociraptor's web site at https://docs.velociraptor.app/ contains a
-wealth of reference material, training course and presentations. We
-also have an active YouTube channel with many instructional videos.
+wealth of reference material, training courses and presentations. We
+also have an active YouTube channel (https://www.youtube.com/@velocidexenterprises8702) with many instructional videos.
 
 While some users ranked the website as `Extremely Useful` (25%) there
 is clearly room for improvements with 42% of users only rating it as
@@ -356,10 +356,10 @@ is clearly room for improvements with 42% of users only rating it as
 
 Suggestions for improvements included:
 
-* More in-depth YouTube videos breaking down the tools features with
-  workflows
-* More detailed "how to" with practical examples
-* Please improve documentation about functions and plugins with a
+* More in-depth YouTube videos breaking down the tool's features with
+  workflows.
+* More detailed "how to" with practical examples.
+* Improved documentation about functions and plugins with a
   slightly more detailed explanation and a small example.
 * Documents seem to be outdated, would like to see updates to the
   documentation to reflect the new versions and features.
@@ -373,11 +373,11 @@ field.
 
 * I have to congratulate you and thank you for developing such an
   amazing tool. It's the future of DFIR. I hope Rapid7 won't make it
-  very expensive in future.
+  very expensive in the future.
 
 * Awesome product, can't wait to use it in prod!
 
-* This is a game changer for the DFIR industry. Keep up the great work
+* This is a game changer for the DFIR industry. Keep up the great work.
 
 * Keep the file system based back end, its simplicity makes chain of
   custody/court submissions possible.
@@ -409,5 +409,5 @@ all contributions, from code to documentation, testing and bug reports.
 
 Finally for all our US based users, we hope to see you all in person
 at [BlackHat 2023](https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129) this year! Join us for an in depth Velociraptor
-training and get to geek out with VQL for 4 days learning practical,
+training and to geek out with VQL for 4 days, learning practical,
 actionable skills and supporting this open source project.
