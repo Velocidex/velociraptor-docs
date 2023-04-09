@@ -28,7 +28,8 @@ credentialskey|The AWS key credentials to use|string
 credentialssecret|The AWS secret credentials to use|string
 endpoint|The Endpoint to use|string
 serversideencryption|The server side encryption method to use|string
-noverifycert|Skip TLS Verification|bool
+noverifycert|Skip TLS Verification (deprecated in favor of SkipVerify)|bool
+skip_verify|Skip TLS Verification|bool
 
 ### Description
 

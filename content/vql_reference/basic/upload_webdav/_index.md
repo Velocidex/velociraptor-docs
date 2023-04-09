@@ -25,7 +25,8 @@ accessor|The accessor to use|string
 url|The WebDAV url|string (required)
 basic_auth_user|The username to use in HTTP basic auth|string
 basic_auth_password|The password to use in HTTP basic auth|string
-noverifycert|Skip TLS Verification|bool
+noverifycert|Skip TLS Verification (deprecated in favor of SkipVerify)|bool
+skip_verify|Skip TLS Verification|bool
 
 ### Description
 

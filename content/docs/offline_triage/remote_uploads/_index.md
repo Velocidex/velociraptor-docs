@@ -55,7 +55,7 @@ We recommend an asymmetric scheme to be used in practice.
 
 To avoid needing to embed the password in the collector binary,
 Velociraptor offers an X509 scheme. In this scheme the Velociraptor
-server embeds it public certificate in the collector binary.
+server embeds its public certificate in the collector binary.
 
 The offline collector then generates a random password to encrypt the
 collection archive with, and in turn encrypts this password with the
@@ -64,7 +64,7 @@ the corresponding private key is able to decrypt the zip file.
 
 To use this option, simply select the `X509 Certificate` option for
 the collector and leave the `Public Key/Cert` text box blank. The
-produced container will automatically encrypt the container.
+produced collector will automatically encrypt the container.
 
 ![Offline collector encrypting the output container](encrypting_container.png)
 
@@ -77,7 +77,7 @@ key.
 To extract the X509 encrypted container you can use Velociraptor's
 `unzip` command to decrypt the container automatically. You will need
 to provide Velociraptor with the correct config file for the server
-than created the collector in the first place. Velociraptor will use
+that created the collector in the first place. Velociraptor will use
 the server's private key to decrypt the container transparently.
 
 ```
@@ -116,7 +116,7 @@ practice of securing them.
 ## SMB Share
 
 SMB is the Microsoft file sharing protocol which is a convenient
-options for Windows based systems. Velociraptor supports uploading to
+option for Windows based systems. Velociraptor supports uploading to
 SMB shares since release 0.6.9.
 
 To configure this option we need to:
@@ -186,10 +186,10 @@ Azure supports an authentication policy called [Shared Access
 Signature
 (SAS)](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview)
 making it convenient and secure to provide limited access to the
-offline collector. Using this method, we can embed a simple SAS URL
+a storage container. Using this method, we can embed a simple SAS URL
 that provides access to upload data to the storage container without
 granting the ability to download or remove any data. This is ideal for
-embedding in the offline collection.
+embedding in the offline collector.
 
 The steps required to set up Azure access are:
 
@@ -202,13 +202,13 @@ The steps required to set up Azure access are:
 
 ![Adding a role assignment to the storage account](azure_role_assignment.png)
 
-3. Generate a SAS Policy URL. You can specify an appropriate expiry
-time for the SAS URL. After this time the uploader will no longer
-work.
+3. Generate a SAS Policy URL.
 
 ![Right click on the container to generate a SAS policy](generating_sas_policy.png)
 
-4. Create a SAS policy with only write and create access.
+4. Create a SAS policy with only write and create access. You can
+specify an appropriate expiry time for the SAS URL. After this time
+the uploader will no longer work.
 
 ![SAS Policy should have only Write and Create Access](sas_policy_details.png)
 

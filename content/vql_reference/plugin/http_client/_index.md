@@ -25,7 +25,8 @@ headers|A dict of headers to send.|Any
 method|HTTP method to use (GET, POST, PUT, PATCH, DELETE)|string
 data|If specified we write this raw data into a POST request instead of encoding the params above.|string
 chunk_size|Read input with this chunk size and send each chunk as a row|int
-disable_ssl_security|Disable ssl certificate verifications.|bool
+disable_ssl_security|Disable ssl certificate verifications (deprecated in favor of SkipVerify).|bool
+skip_verify|Disable ssl certificate verifications.|bool
 tempfile_extension|If specified we write to a tempfile. The content field will contain the full path to the tempfile.|string
 remove_last|If set we delay removal as much as possible.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string

@@ -4,14 +4,14 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Find WDigest registry values on the filesystem. The artifact will also use 
+Find WDigest registry values on the filesystem. The artifact will also use
 GROUP BY to limit all ControlSet output to a single row.
 
 In order to prevent a clear-text password from being placed in
 LSASS, the following registry key needs to be set to “0” (Digest
 Disabled):
 
- - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest 
+ - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
     “UseLogonCredential”(DWORD)
     “Negotiate”(DWORD)
 
@@ -31,14 +31,14 @@ added. The existence of the key is suspicious, if not expected.
 name: Windows.Registry.WDigest
 author: Eduardo Mattos - @eduardfir, Matt Green - @mgreen27
 description: |
-    Find WDigest registry values on the filesystem. The artifact will also use 
+    Find WDigest registry values on the filesystem. The artifact will also use
     GROUP BY to limit all ControlSet output to a single row.
 
     In order to prevent a clear-text password from being placed in
     LSASS, the following registry key needs to be set to “0” (Digest
     Disabled):
 
-     - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest 
+     - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
         “UseLogonCredential”(DWORD)
         “Negotiate”(DWORD)
 
@@ -52,7 +52,7 @@ description: |
 
     * ATT&CK tactic: Defense Evasion, Credential Access
     * ATT&CK technique: T1112, T1003.001
-    
+
 reference:
     - https://medium.com/blue-team/preventing-mimikatz-attacks-ed283e7ebdd5
 
@@ -62,16 +62,16 @@ precondition:
 
 parameters:
   - name: WDigestGlob
-    default: HKEY_LOCAL_MACHINE\SYSTEM\*ControlSet*\Control\SecurityProviders\WDigest**
+    default: HKEY_LOCAL_MACHINE\SYSTEM\*ControlSet*\Control\SecurityProviders\WDigest\**
     description: Use a glob to define the files that will be searched.
   - name: ShowAllValues
     type: bool
     description: Show all key values. It may be suspicious if these keys exist.
-    
-    
+
+
 sources:
   - query: |
-        SELECT  
+        SELECT
             ModTime as LastModified,
             FullPath as KeyPath,
             Name as KeyName,
@@ -84,8 +84,9 @@ sources:
                         then= False,
                         else= KeyValue = 0)
         GROUP BY LastModified, KeyName, KeyType, KeyValue,
-            regex_replace(source=FullPath,re='[^\\]+ControlSet[^\\]+',replace='CurrentControlSet')
-          
+            regex_replace(source=FullPath,
+                re='''[^\\]+ControlSet[^\\]+''',replace='CurrentControlSet')
+
 column_types:
   - name: LastModified
     type: timestamp

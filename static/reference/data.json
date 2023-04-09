@@ -1097,6 +1097,28 @@
         "category": "windows"
     },
     {
+        "name": "efivariables",
+        "description": "Enumerate efi variables.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "Variable namespace."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Variable name"
+            },
+            {
+                "name": "value",
+                "type": "bool",
+                "description": "Read variable value"
+            }
+        ]
+    },
+    {
         "name": "elastic_upload",
         "description": "Upload rows to elastic.",
         "type": "Plugin",
@@ -1165,6 +1187,11 @@
             },
             {
                 "name": "disable_ssl_security",
+                "type": "bool",
+                "description": "Disable ssl certificate verifications (deprecated in favor of SkipVerify)."
+            },
+            {
+                "name": "skip_verify",
                 "type": "bool",
                 "description": "Disable ssl certificate verifications."
             },
@@ -1978,6 +2005,11 @@
             },
             {
                 "name": "disable_ssl_security",
+                "type": "bool",
+                "description": "Disable ssl certificate verifications (deprecated in favor of SkipVerify)."
+            },
+            {
+                "name": "skip_verify",
                 "type": "bool",
                 "description": "Disable ssl certificate verifications."
             },
@@ -3076,6 +3108,40 @@
             }
         ],
         "category": "server"
+    },
+    {
+        "name": "monitoring_logs",
+        "description": "Retrieve log messages from client event monitoring for the specified client id and artifact",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client id to extract",
+                "required": true
+            },
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The name of the artifact collection to fetch",
+                "required": true
+            },
+            {
+                "name": "source",
+                "type": "string",
+                "description": "An optional named source within the artifact"
+            },
+            {
+                "name": "start_time",
+                "type": "Any",
+                "description": "Start return events from this date (for event sources)"
+            },
+            {
+                "name": "end_time",
+                "type": "Any",
+                "description": "Stop end events reach this time (event sources)."
+            }
+        ]
     },
     {
         "name": "netcat",
@@ -5905,6 +5971,35 @@
         "category": "plugin"
     },
     {
+        "name": "upload_azure",
+        "description": "Upload files to Azure Blob Storage Service.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "file",
+                "type": "OSPath",
+                "description": "The file to upload",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the file that should be stored on the server"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "sas_url",
+                "type": "string",
+                "description": "A SAS URL to use for upload to the container.",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "upload_directory",
         "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
         "type": "Function",
@@ -6052,6 +6147,11 @@
             {
                 "name": "noverifycert",
                 "type": "bool",
+                "description": "Skip TLS Verification (deprecated in favor of SkipVerify)"
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
                 "description": "Skip TLS Verification"
             }
         ],
@@ -6110,6 +6210,47 @@
         "category": "basic"
     },
     {
+        "name": "upload_smb",
+        "description": "Upload files using the SMB file share protocol.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "file",
+                "type": "OSPath",
+                "description": "The file to upload",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "OSPath",
+                "description": "The name of the file that should be stored on the server"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "username",
+                "type": "string",
+                "description": "The SMB username to login as",
+                "required": true
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "description": "The SMB password to login as",
+                "required": true
+            },
+            {
+                "name": "server_address",
+                "type": "string",
+                "description": "The SMB server address and optionally port followed by the share name (e.g. \\\\192.168.1.1:445\\ShareName)",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "upload_webdav",
         "description": "Upload files to a WebDAV server.",
         "type": "Function",
@@ -6148,6 +6289,11 @@
             },
             {
                 "name": "noverifycert",
+                "type": "bool",
+                "description": "Skip TLS Verification (deprecated in favor of SkipVerify)"
+            },
+            {
+                "name": "skip_verify",
                 "type": "bool",
                 "description": "Skip TLS Verification"
             }
