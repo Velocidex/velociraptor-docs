@@ -37,7 +37,7 @@ other metadata, even if the file content itself is encrypted.
 To mitigate this risk, Velociraptor will create an embedded ZIP file
 inside an encrypted container zip file with a fixed name (called
 `data.zip`). This way the file metadata is not exposed without needing
-to decrypt the embeeded ZIP file.
+to decrypt the embedded ZIP file.
 
 {{% notice warning "Password encrypted ZIP files" %}}
 
@@ -47,7 +47,7 @@ extract the collector configuration (simply by running `collector.exe
 config show`) and therefore the fixed password can be easily
 extracted.
 
-We recommend an asymetric scheme to be used in practice.
+We recommend an asymmetric scheme to be used in practice.
 
 {{% /notice %}}
 
@@ -64,7 +64,7 @@ the corresponding private key is able to decrypt the zip file.
 
 To use this option, simply select the `X509 Certificate` option for
 the collector and leave the `Public Key/Cert` text box blank. The
-produced container wil automatically encrypt the container.
+produced container will automatically encrypt the container.
 
 ![Offline collector encrypting the output container](encrypting_container.png)
 
@@ -133,7 +133,7 @@ To configure this option we need to:
 4. Adjust directory ACLs to only permit the user to write files
    without being able to list the directory or read the files. This is
    required because the uploader user credentials must be embedded in
-   the offline collector so we do not want these missused to alter any
+   the offline collector so we do not want these misused to alter any
    of the other uploads.
 
 ![Adjusting directory permissions to only provide write access](directory_permissions.png)

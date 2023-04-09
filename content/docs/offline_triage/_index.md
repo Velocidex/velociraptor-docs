@@ -224,7 +224,7 @@ by providing a new JSON encoded artifacts list to the collector:
 Collector_velociraptor.exe -- --args Artifacts="["""Generic.Client.Info""","""Windows.Sys.Users"""]"
 ```
 
-NOTE: The windows command interpreter (`cmd.exe`) uses an ecclectic
+NOTE: The windows command interpreter (`cmd.exe`) uses an eclectic
 escaping scheme with each quote character encoded into three
 quotes. The same command using bash looks like:
 
