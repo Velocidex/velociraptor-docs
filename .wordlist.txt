@@ -1320,5 +1320,18 @@ BlackHat
 MSSP
 infosec
 
+# content/blog/2023/2023-04-05-qakbot/_index.md
+IPs
+QBOT
+QBot
+Qak
+Qakbot
+Qbot
+Unescaped
+Virustotal
+onwards
+unbacked
+
+# content/docs/offline_triage/remote_uploads/_index.md
 SAS
 uploader
