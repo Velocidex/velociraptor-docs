@@ -64,6 +64,8 @@ parameters:
       - GCS
       - S3
       - SFTP
+      - Azure
+      - SMBShare
 
   - name: target_args
     description: Type Dependent args
@@ -171,6 +173,28 @@ parameters:
           project=GCSBlob.project_id,
           name=name,
           credentials=TargetArgs.GCSKey)
+
+  - name: AzureSASURL
+    type: hidden
+    default: |
+      // A utility function to upload the file.
+      LET upload_file(filename, name, accessor) = upload_azure(
+          file=filename,
+          accessor=accessor,
+          sas_url=TargetArgs.sas_url,
+          name=name)
+
+  - name: SMBCollection
+    type: hidden
+    default: |
+      // A utility function to upload the file.
+      LET upload_file(filename, name, accessor) = upload_smb(
+          file=filename,
+          accessor=accessor,
+          username=TargetArgs.username,
+          password=TargetArgs.password,
+          server_address=TargetArgs.server_address,
+          name=name)
 
   - name: SFTPCollection
     type: hidden
@@ -348,7 +372,13 @@ sources:
         d = { SELECT SFTPCollection + CommonCollections + CloudCollection AS Value
               FROM scope()
               WHERE target = "SFTP" },
-        e = { SELECT "" AS Value  FROM scope()
+        e = { SELECT AzureSASURL + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "Azure" },
+        f = { SELECT SMBCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "SMBShare" },
+        z = { SELECT "" AS Value  FROM scope()
               WHERE log(message="Unknown collection type " + target) }
       )
 

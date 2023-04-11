@@ -1335,3 +1335,15 @@ unbacked
 # content/docs/offline_triage/remote_uploads/_index.md
 SAS
 uploader
+
+# content/vql_reference/plugin/http_client/_index.md
+SkipVerify
+
+# content/vql_reference/misc/efivariables/_index.md
+efi
+efivariables
+sas
+
+# content/vql_reference/misc/upload_smb/_index.md
+ShareName
+smb
