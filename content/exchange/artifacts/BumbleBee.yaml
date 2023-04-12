@@ -1,5 +1,5 @@
 name: Windows.Carving.BumbleBee
-author: "Angelo Violetti (SEC Consult - SEC Defence)"
+author: Angelo Violetti @SEC Defence
 type: CLIENT
 description: |
         This artficat will detect running BumbleBee processes and subsequently extract the command and control servers with the destination port 443.
