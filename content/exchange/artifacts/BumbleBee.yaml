@@ -3,7 +3,8 @@ author: Angelo Violetti @SEC Defence
 type: CLIENT
 description: |
         This artficat will detect running BumbleBee processes and subsequently extract the command and control servers with the destination port 443.
-reference: sec-consult.com/blog/detail/bumblebee-hunting-with-a-velociraptor/
+reference:
+  - sec-consult.com/blog/detail/bumblebee-hunting-with-a-velociraptor/
 parameters:
   - name: TargetFileGlob
     default:
