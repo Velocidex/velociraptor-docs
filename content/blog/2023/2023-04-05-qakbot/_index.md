@@ -1,5 +1,5 @@
 ---
-title: "Automating Qakbot detection at scale"
+title: "Automating Qakbot decode at scale"
 description: |
    This is a technical post covering practical methodology to extract
    configuration data from recent Qakbot samples.
