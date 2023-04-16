@@ -36,6 +36,7 @@ description: |
 
 reference:
   - https://malpedia.caad.fkie.fraunhofer.de/details/win.qakbot
+  - https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/
 type: CLIENT
 
 
