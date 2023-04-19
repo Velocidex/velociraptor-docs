@@ -1347,3 +1347,6 @@ sas
 # content/vql_reference/misc/upload_smb/_index.md
 ShareName
 smb
+
+# content/announcements/2023-velocon/_index.md
+TBD

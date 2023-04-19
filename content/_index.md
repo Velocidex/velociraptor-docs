@@ -25,6 +25,11 @@ carousel:
 The Velociraptor will be at BlackHat 2023! [Join us for and learn about Velociraptor from the developers themselves]({{< ref "/announcements/2023-trainings/" >}})
 {{% /notice %}}
 
+{{% notice tip "VeloCon 2023 CFP is now open!" %}}
+The annual Velociraptor Conference (VeloCon 2023) Call for papers is now open [Submit your proposal and share your experiences with Velociraptor]({{< ref "/announcements/2023-velocon/" >}})
+{{% /notice %}}
+
+
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response
