@@ -79,7 +79,7 @@ API:
 ```
 
 After this change the server will report on the logs that the API
-server is not listening on all interfaces.
+server is now listening on all interfaces.
 
 ```text
 [INFO] 2021-11-07T01:57:26+10:00 Starting gRPC API server on 0.0.0.0:8001
@@ -141,6 +141,19 @@ show` command.
 $ velociraptor --config /etc/velociraptor/server.config.yaml acl show Mike
 {"roles":["administrator","api"]}
 ```
+
+{{% notice tip "Managing API roles" %}}
+
+Since release 0.6.7 the Velociraptor GUI contains a user management
+pane. You can use this to inspect all the currently issued API users
+as well as GUI users (There is inherently no difference between API
+users and GUI users other than the fact that API users are
+authenticated with certificates).
+
+Ensure the `any query` permission is provided to an API user so they
+can connect over the API.
+
+{{% /notice %}}
 
 ## Python bindings
 

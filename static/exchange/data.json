@@ -1,5 +1,25 @@
 [
     {
+        "title": "Windows.Carving.BumbleBee",
+        "author": "angelovioletti",
+        "description": "This artficat will detect running BumbleBee processes and subsequently extract the command and control servers with the destination port 443.\n",
+        "link": "/exchange/artifacts/pages/bumblebee",
+        "tags": [],
+        "author_link": "https://github.com/angelovioletti",
+        "author_avatar": "https://avatars.githubusercontent.com/u/99129049?v=4",
+        "date": "2023-04-12"
+    },
+    {
+        "title": "Server.Telegram.Clients.Enrolled",
+        "author": "tuedenn",
+        "description": "Send a message to telegram when clients become enrolled.",
+        "link": "/exchange/artifacts/pages/server.telegram.clients.enrolled",
+        "tags": [],
+        "author_link": "https://github.com/tuedenn",
+        "author_avatar": "https://avatars.githubusercontent.com/u/25119013?v=4",
+        "date": "2023-04-11"
+    },
+    {
         "title": "Windows.Registry.Domain",
         "author": "angry-bender",
         "description": "Checks the configured domain name on each endpoint",
@@ -1078,7 +1098,7 @@
     {
         "title": "Windows.EventLogs.Hayabusa",
         "author": "ecapuano",
-        "description": "[Hayabusa](https://github.com/Yamato-Security/hayabusa) is a Windows event log fast forensics timeline generator and threat hunting tool.",
+        "description": "[Hayabusa](https://github.com/Yamato-Security/hayabusa) is a\nWindows event log fast forensics timeline generator and threat\nhunting tool.",
         "link": "/exchange/artifacts/pages/windows.eventlogs.hayabusa",
         "tags": [],
         "author_link": "https://github.com/ecapuano",

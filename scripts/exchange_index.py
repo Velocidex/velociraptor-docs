@@ -99,7 +99,7 @@ def getAuthor(record, yaml_filename):
   return record
 
 # Create a zip file with all the artifacts in it.
-def make_archive():
+def make_archive(archive_path):
   with ZipFile(archive_path, mode='w') as archive:
     for root, dirs, files in os.walk(artifact_root_directory):
       for name in files:
@@ -160,7 +160,7 @@ def build_markdown():
 
 if __name__ == "__main__":
   build_markdown()
-  make_archive()
+  make_archive(archive_path)
 
 
 if os.getenv('CI'):
