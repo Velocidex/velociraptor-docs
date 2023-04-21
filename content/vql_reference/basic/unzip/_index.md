@@ -24,6 +24,10 @@ accessor|The accessor to use|string
 filename_filter|Only extract members matching this filter.|string
 output_directory|Where to unzip to|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Unzips a file into a directory

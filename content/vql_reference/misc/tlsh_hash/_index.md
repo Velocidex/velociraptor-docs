@@ -22,6 +22,9 @@ Arg | Description | Type
 path|Path to open and hash.|OSPath (required)
 accessor|The accessor to use|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Calculate the tlsh hash of a file.

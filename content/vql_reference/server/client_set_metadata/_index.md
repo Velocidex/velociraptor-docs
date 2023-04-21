@@ -22,6 +22,10 @@ Arg | Description | Type
 client_id||string (required)
 metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Sets client metadata.

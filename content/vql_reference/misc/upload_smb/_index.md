@@ -26,6 +26,9 @@ username|The SMB username to login as (if not provided we use the SMB_CREDENTIAL
 password|The SMB password to login as (if not provided we use the SMB_CREDENTIALS env)|string
 server_address|The SMB server address and optionally port followed by the share name (e.g. \\192.168.1.1:445\ShareName)|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Upload files using the SMB file share protocol.

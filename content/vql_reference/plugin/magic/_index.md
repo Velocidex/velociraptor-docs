@@ -24,6 +24,9 @@ accessor|The accessor to use|string
 type|Magic type (can be empty or 'mime' or 'extension')|string
 magic|Additional magic to load|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Identify a file using magic rules.

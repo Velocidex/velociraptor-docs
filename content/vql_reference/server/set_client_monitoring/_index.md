@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 value|The Value to set|Any (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
+
 ### Description
 
 Sets the current client monitoring state.

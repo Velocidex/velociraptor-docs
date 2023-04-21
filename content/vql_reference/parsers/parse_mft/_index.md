@@ -24,6 +24,9 @@ accessor|The accessor to use.|string
 prefix|If specified we prefix all paths with this path.|OSPath
 start|The first entry to scan.|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Scan the $MFT from an NTFS volume.

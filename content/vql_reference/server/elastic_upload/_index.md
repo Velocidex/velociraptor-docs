@@ -36,6 +36,9 @@ skip_verify|Disable ssl certificate verifications.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 max_memory_buffer|How large we allow the memory buffer to grow to while we are trying to contact the Elastic server (default 100mb).|uint64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Upload rows to elastic.

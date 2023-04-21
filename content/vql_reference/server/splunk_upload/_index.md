@@ -34,6 +34,9 @@ hostname|Hostname for Splunk Events. Defaults to server hostname.|string
 timestamp_field|Field to use as event timestamp.|string
 hostname_field|Field to use as event hostname. Overrides hostname parameter.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Upload rows to splunk.

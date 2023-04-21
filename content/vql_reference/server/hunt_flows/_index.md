@@ -23,6 +23,9 @@ hunt_id|The hunt id to inspect.|string (required)
 start_row|The first row to show (used for paging).|int64
 limit|Number of rows to show (used for paging).|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve the flows launched by a hunt.

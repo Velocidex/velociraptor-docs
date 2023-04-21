@@ -22,6 +22,9 @@ Arg | Description | Type
 filename|JSON file to open|OSPath (required)
 accessor|The accessor to use|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parses a line oriented json file.

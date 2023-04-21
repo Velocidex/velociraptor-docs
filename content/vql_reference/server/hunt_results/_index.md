@@ -24,6 +24,9 @@ source|An optional source within the artifact.|string
 hunt_id|The hunt id to read.|string (required)
 brief|If set we return less columns.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve the results of a hunt.

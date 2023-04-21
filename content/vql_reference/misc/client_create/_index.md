@@ -26,6 +26,9 @@ os|What type of OS this is (default offline)|string
 hostname|The hostname of the system|string
 client_id|if set we use this client id otherwise we make a new one|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Create a new client in the data store.

@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 filename|Filename to remove.|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+
 ### Description
 
 Remove a file from the filesystem using the API.

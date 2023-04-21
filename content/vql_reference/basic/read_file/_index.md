@@ -24,6 +24,9 @@ offset|Where to read from the file.|int64
 filename|One or more files to open.|OSPath (required)
 accessor|An accessor to use.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Read a file into a string.

@@ -28,6 +28,9 @@ privatekey|The private key to use|string (required)
 endpoint|The Endpoint to use including port number (e.g. 192.168.1.1:22 )|string (required)
 hostkey|Host key to verify. Blank to disable|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Upload files to SFTP.

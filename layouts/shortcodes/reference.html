@@ -56,7 +56,10 @@ function DrawResults(data) {
           <img class="user-avatar inline">
           <p class="description"></p>
           <p class="args"/>
+
+          <span class="permissions"/>
           <p class="idea-tag space"></p>
+
         </div>
       </div>
     </div>
@@ -70,6 +73,18 @@ function DrawResults(data) {
       template.find(".idea-tag").append(
           `<i class="linkcolour label label-success">` +
               (item.category || "misc") + `</i>`);
+
+      if (item.metadata && item.metadata.permissions) {
+          let html = $(`
+            <span class="vql_type">Permissions</span>
+            <span class="permission_list label label-success linkcolour pull-right "></span>`)
+          template.find(".permissions").append(html);
+
+          for(x of item.metadata.permissions.split(",")) {
+              template.find(".permission_list").append(
+                  `<span class=" label label-success">` + x + `</span>`)
+          };
+      }
 
       let args = item.args || [];
       if (args.length > 0) {

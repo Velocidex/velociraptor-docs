@@ -23,6 +23,9 @@ filename|A list of event log files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
 messagedb|A Message database from https://github.com/Velocidex/evtx-data.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parses events from an EVTX file.

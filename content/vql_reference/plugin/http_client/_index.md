@@ -32,6 +32,9 @@ remove_last|If set we delay removal as much as possible.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 cookie_jar|A cookie jar to use if provided. This is a dict of cookie structures.|ordereddict.Dict
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Make a http request.

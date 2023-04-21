@@ -14,6 +14,9 @@ no_edit: true
 <span class='vql_type pull-right page-header'>Function</span>
 
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">EXECVE</i>
+
 ### Description
 
 Kill the specified process.

@@ -57,6 +57,13 @@ def BuildDefinition(filename, item):
                 type = type + " (required)"
 
             result+=("%s|%s|%s\n" % (name, description, type))
+
+    permissions = item.get("metadata", {}).get("permissions")
+    if permissions:
+        result += "\nRequired Permissions: \n"
+        for p in permissions.split(","):
+            result += '<i class="linkcolour label pull-right label-success">%s</i>\n' % p
+
     result+=("\n")
 
     if item.get("description", ""):

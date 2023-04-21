@@ -32,6 +32,10 @@ max_bytes|Max number of bytes to upload|uint64
 urgent|Set the collection as urgent - skips other queues collections on the client.|bool
 org_id|If set the collection will be started in the specified org.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Launch an artifact collection against a client. If the client_id

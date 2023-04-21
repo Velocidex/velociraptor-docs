@@ -27,6 +27,9 @@ base|Base filename to write to.|string
 password|An optional password to encrypt the collection zip.|string
 expand_sparse|If set we expand sparse files in the archive.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
+
 ### Description
 
 Creates a download pack for a hunt.

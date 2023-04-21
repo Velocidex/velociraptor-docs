@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Returns client info (like the fqdn) from the datastore.

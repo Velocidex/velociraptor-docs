@@ -27,6 +27,9 @@ atime|Access time to record|Any
 ctime|Change time to record|Any
 btime|Birth time to record|Any
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Upload a file to the upload service. For a Velociraptor client this

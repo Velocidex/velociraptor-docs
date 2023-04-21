@@ -23,6 +23,9 @@ client_id|Client ID to label.|string (required)
 labels|A list of labels to apply|list of string (required)
 op|An operation on the labels (set, check, remove)|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">LABEL_CLIENT</i>
+
 ### Description
 
 Add the labels to the client. If op is 'remove' then remove these labels.

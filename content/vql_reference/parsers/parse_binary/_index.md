@@ -25,6 +25,9 @@ profile|Profile to use (see https://github.com/Velocidex/vtypes).|string
 struct|Name of the struct in the profile to instantiate.|string (required)
 offset|Start parsing from this offset|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parse a binary file into a data structure using a profile.

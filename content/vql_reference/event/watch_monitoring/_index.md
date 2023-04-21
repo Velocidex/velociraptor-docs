@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 artifact|The artifact to watch|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Watch clients' monitoring log. This is an event plugin. This

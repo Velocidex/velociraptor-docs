@@ -22,6 +22,9 @@ Arg | Description | Type
 filename|Files to be parsed.|list of OSPath (required)
 accessor|The accessor to use.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parses a $I file found in the $Recycle.Bin

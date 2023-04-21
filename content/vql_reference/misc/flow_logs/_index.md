@@ -22,6 +22,9 @@ Arg | Description | Type
 flow_id|The flow id to read.|string (required)
 client_id|The client id to extract|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve the query logs of a flow.

@@ -25,6 +25,9 @@ query|Run this query to generate the timeline.|StoredQuery (required)
 key|The column representing the time.|string (required)
 notebook_id|The notebook ID the timeline is stored in.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Add a new query to a timeline.

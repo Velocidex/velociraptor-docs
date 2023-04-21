@@ -21,6 +21,10 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Returns client metadata from the datastore.

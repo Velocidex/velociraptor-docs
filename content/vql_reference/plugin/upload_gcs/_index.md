@@ -26,6 +26,9 @@ bucket|The bucket to upload to|string (required)
 project|The project to upload to|string (required)
 credentials|The credentials to use|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Upload files to GCS.

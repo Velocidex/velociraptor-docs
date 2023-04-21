@@ -25,6 +25,9 @@ length|Size of buffer to capture output per row.|int64
 env|Environment variables to launch with.|LazyExpr
 cwd|If specified we change to this working directory first.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">EXECVE</i>
+
 ### Description
 
 This plugin launches an external command and captures its STDERR,

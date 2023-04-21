@@ -21,6 +21,10 @@ Arg | Description | Type
 ----|-------------|-----
 name|The Artifact to delete|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">ARTIFACT_WRITER</i>
+<i class="linkcolour label pull-right label-success">SERVER_ARTIFACT_WRITER</i>
+
 ### Description
 
 Deletes an artifact from the global repository.
