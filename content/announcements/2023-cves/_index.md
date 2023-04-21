@@ -18,6 +18,9 @@ If you use multiple roles with your Velociraptor GUI users, we
 recommend to upgrade your server to the 0.6.7-5 release. These issues
 do not affect clients so there is no need to upgrade clients.
 
+## CVE-2023-2226  Velociraptor crashes while parsing some malformed PE or OLE files.
+{{< include-html "CVE-2023-2226.html" >}}
+
 ## CVE-2023-0242  Insufficient Permission Check In The VQL Copy() Function
 {{< include-html "CVE-2023-0242.html" >}}
 

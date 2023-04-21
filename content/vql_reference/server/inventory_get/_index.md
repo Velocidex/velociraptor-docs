@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 tool||string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Get tool info from inventory service.

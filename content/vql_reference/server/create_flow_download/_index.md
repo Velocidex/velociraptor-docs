@@ -29,6 +29,9 @@ format|Format to export (csv,json,csv_only) defaults to both.|string
 expand_sparse|If set we expand sparse files in the archive.|bool
 name|If specified we call the file this name otherwise we generate name based on flow id.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
+
 ### Description
 
 Creates a download pack for the flow.

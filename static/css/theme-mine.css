@@ -306,6 +306,10 @@ code.hljs {
     float: right;
 }
 
+.label.label-success {
+    margin: 5px;
+}
+
 .gsc-search-box td, .gsc-search-box table {
     border: none;
 }

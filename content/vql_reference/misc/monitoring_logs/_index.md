@@ -25,6 +25,9 @@ source|An optional named source within the artifact|string
 start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve log messages from client event monitoring for the specified client id and artifact

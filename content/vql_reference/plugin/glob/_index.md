@@ -26,6 +26,9 @@ nosymlink|If set we do not follow symlinks.|bool
 recursion_callback|A VQL function that determines if a directory should be recursed (e.g. "x=>NOT x.Name =~ 'proc'").|string
 one_filesystem|If set we do not follow links to other filesystems.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Retrieve files based on a list of glob expressions

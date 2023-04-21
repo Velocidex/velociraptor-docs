@@ -22,6 +22,9 @@ Arg | Description | Type
 artifact|The name of the artifact to add|string (required)
 parameters|A dict of artifact parameters|LazyExpr
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Adds a new artifact to the server monitoring table.

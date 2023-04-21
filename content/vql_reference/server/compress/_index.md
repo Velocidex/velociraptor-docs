@@ -22,6 +22,10 @@ Arg | Description | Type
 path|A path to compress|string (required)
 output|A path to write the output - default is the path with a .gz extension|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Compress a file.

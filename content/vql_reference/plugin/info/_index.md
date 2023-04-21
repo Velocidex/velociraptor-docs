@@ -14,6 +14,9 @@ no_edit: true
 <span class='vql_type pull-right page-header'>Plugin</span>
 
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Get information about the running host.

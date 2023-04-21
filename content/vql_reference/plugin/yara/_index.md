@@ -31,6 +31,9 @@ key|If set use this key to cache the  yara rules.|string
 namespace|The Yara namespece to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Scan files using yara rules.

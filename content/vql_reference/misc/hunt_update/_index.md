@@ -24,6 +24,9 @@ stop|Stop the hunt|bool
 start|Start the hunt|bool
 description|Update hunt description|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">START_HUNT</i>
+
 ### Description
 
 Update a hunt.

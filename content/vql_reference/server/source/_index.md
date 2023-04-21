@@ -32,6 +32,9 @@ notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve rows from an artifact's source.

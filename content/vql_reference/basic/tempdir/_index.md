@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 remove_last|If set we delay removal as much as possible.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+
 ### Description
 
 Create a temporary directory. The directory will be removed when the query ends.

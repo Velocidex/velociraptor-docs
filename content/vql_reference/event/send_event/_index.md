@@ -22,6 +22,10 @@ Arg | Description | Type
 artifact|The artifact name to send the event to.|string (required)
 row|The row to send to the artifact|ordereddict.Dict (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<i class="linkcolour label pull-right label-success">PUBLISH</i>
+
 ### Description
 
 Sends an event to a server event monitoring queue.

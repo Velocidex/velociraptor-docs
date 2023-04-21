@@ -28,6 +28,9 @@ count|Only split into this many columns if possible.|int
 record_regex|A regex to split data into records (default |string
 buffer_size|Maximum size of line buffer (default 64kb).|int
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parses files by splitting lines into records.

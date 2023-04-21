@@ -23,6 +23,9 @@ filename|CSV files to open|string (required)
 accessor|The accessor to use|string
 query|query to write into the file.|StoredQuery (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+
 ### Description
 
 Write a query into a JSONL file.

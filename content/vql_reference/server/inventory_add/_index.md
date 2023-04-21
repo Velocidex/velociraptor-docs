@@ -27,6 +27,9 @@ filename|The name of the file on the endpoint|string
 file|An optional file to upload|OSPath
 accessor|The accessor to use to read the file.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Add or reconfigure a tool into the inventory.

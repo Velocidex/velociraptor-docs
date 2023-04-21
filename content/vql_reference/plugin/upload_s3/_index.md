@@ -31,6 +31,9 @@ serversideencryption|The server side encryption method to use|string
 noverifycert|Skip TLS Verification (deprecated in favor of SkipVerify)|bool
 skip_verify|Skip TLS Verification|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Upload files to S3.

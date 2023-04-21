@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 value|The Value to set|Any (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Sets the current server monitoring state.

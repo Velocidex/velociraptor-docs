@@ -22,6 +22,9 @@ Arg | Description | Type
 client_id||string (required)
 flow_id||string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Enumerate all the files that make up a flow.

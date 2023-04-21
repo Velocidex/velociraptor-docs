@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 path|A VFS path to remove|LazyExpr (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Delete file store paths.

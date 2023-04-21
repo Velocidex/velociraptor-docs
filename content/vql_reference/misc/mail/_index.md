@@ -32,6 +32,9 @@ auth_password|The SMTP username password we use to authenticate to the server.|s
 skip_verify|Skip SSL verification(default: False).|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Send Email to a remote server.

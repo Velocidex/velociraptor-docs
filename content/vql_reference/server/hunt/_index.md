@@ -35,6 +35,10 @@ exclude_labels|If specified exclude these labels|list of string
 os|If specified target this OS|string
 org_id|If set the collection will be started in the specified orgs.|list of string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">START_HUNT</i>
+<i class="linkcolour label pull-right label-success">ORG_ADMIN</i>
+
 ### Description
 
 Create and launch a hunt.

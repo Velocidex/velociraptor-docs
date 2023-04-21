@@ -26,6 +26,9 @@ accessor|The accessor to use if using sqlite|string
 query||string (required)
 args||Any
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Run queries against sqlite, mysql, and postgres databases

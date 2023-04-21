@@ -24,6 +24,9 @@ hunt_id||string (required)
 flow_id|If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt.|string
 relaunch|If specified we relaunch the hunt on this client again.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">START_HUNT</i>
+
 ### Description
 
 Assign a client to a hunt.

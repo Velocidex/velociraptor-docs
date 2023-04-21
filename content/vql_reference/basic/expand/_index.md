@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 path|A path with environment escapes|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Expand the path using the environment.
