@@ -9,15 +9,15 @@ author: "Mike Cohen"
 date: 2023-04-01
 ---
 
-Velociraptor is an open source project lead and shaped by the
+Velociraptor is an open source project led and shaped by the
 community. Over the years, Velociraptor has become a real force in the
 field of DFIR making it the obvious choice for many operational
 situations.
 
 The Velociraptor development team is committed to continue making
-Velociraptor the premier opensource DFIR and security tool. We are
+Velociraptor the premier open source DFIR and security tool. We are
 therefore interested to hear about how the tool is used in the
-community and what are the community expectations in regard to
+community and what the community expectations are in regard to
 capabilities, features and use cases. We use this information in order
 to shape future development direction, set priorities and develop our
 road map.
@@ -39,7 +39,7 @@ Overall there were 213 responses. By far the majority of responders
 were `Analysts` (57%) and `Managers` (26%) indicating that most of the
 respondents are people who know and use Velociraptor frequently.
 
-We wanted to get a feel to the type of companies using
+We wanted to get a feel for the type of companies using
 Velociraptor. Users fell pretty evenly into company sizes, with about
 30% of responses from small companies (less than 100 employees) and
 20% of responses from very large companies of 10,000 employees or
@@ -50,12 +50,12 @@ were primarily in the information security fields such as Managed
 Security Service Providers (MSSP), Consultants and Cybersecurity
 businesses, we also saw a large number of responses from the
 Government sector, the Aerospace industries, Education,
-Banking/Finance, Health care etc.
+Banking/Finance, Health care, etc.
 
 With such a wide range of users we were interested in how often users
 were using Velociraptor. About a third of users use Velociraptor
 frequently, a third use it occasionally and a third are in the process
-of evaluation and learning about the tool.
+of evaluating and learning about the tool.
 
 ## Velociraptor use cases
 
@@ -79,7 +79,7 @@ main use cases:
     Velociraptor's unique ability to collect artifacts at scale from
     many system can be combined with threat intelligence information
     (such as hashes, etc.) to proactively hunt for compromises by known
-    actors. This question specifically related to hunting for threat
+    actors. This question was specifically related to hunting for threat
     feed indicators, such as hashes, IP addresses etc.
 
     16% of users were utilizing this feature
@@ -96,9 +96,9 @@ main use cases:
 
    Velociraptor can be used to collect bulk files from the endpoint
    for later analysis by other tools (for example using the
-   `Windows.Collection.KapeFiles` artifact.
+   `Windows.Collection.KapeFiles` artifact).
 
-   20% of users we using this feature regularly.
+   20% of users were using this feature regularly.
 
 5. **Parse for indicators on the endpoint (Digital Forensics)**
 
@@ -238,11 +238,11 @@ Velociraptor is a very powerful tool and concentrates a lot of
 responsibility in the hands of a few users. To control access to the
 tool, Velociraptor has a role based access control mechanism, where
 users can be assigned roles from `administrator`, `investigator` to
-read only access provided by the `reader` role.
+read-only access provided by the `reader` role.
 
 Users generally found this feature very useful, with 40% of users
 finding it `moderately useful` and a further 20% and 15% further
-finding it `very useful` and `extremely useful`.
+finding it `very useful` and `extremely useful`, respectively.
 
 The main suggestions for improvements include:
 
@@ -275,7 +275,7 @@ Some users deploy client monitoring artifacts frequently while others
 see it as an alternative to EDR tools, when these are available. The
 primary use case breakdown was:
 
-1. Detection (e.g. alert when an anomalous event occurs) - 27% of users.
+1. Detection (e.g. alert when an anomalous event occurs) - 27% of users
 2. Collection of client events (e.g. forward process event logs to an
    external system) - 18% of users
 3. Remediation (e.g. quarantine or remove files automatically) - 15% of users
@@ -283,15 +283,15 @@ primary use case breakdown was:
 While 30% of users do not use client monitoring at all.
 
 The main pain point with client monitoring seems to be the lack of
-integrated alerting capability (an [issue currently worked
-on](https://github.com/Velocidex/velociraptor/issues/1869). Some
+integrated alerting capability (an [issue currently being worked
+on](https://github.com/Velocidex/velociraptor/issues/1869)). Some
 useful feedback on this feature included:
 
 * Better support for integration with business tools - e.g., Teams,
   Slack, etc.
 * Easier to manage event data.
 * Not having to build a server side artifact for each client_event
-  artifact. And a dashboard that lists all alerts. Also, a more easy
+  artifact. And a dashboard that lists all alerts. Also, an easier
   way to forward alerts based on severity.
 * Lack of pre-built detection rules / packs. In other words, it would
   be easier to tune down, than to build up.
@@ -313,7 +313,7 @@ by 12%, making it a popular feature.
 Velociraptor is a very light weight solution, typically taking a few
 minutes to provision a new deployment. For many of our users,
 Velociraptor is used in an Incident Response context on an as-needed
-basis (46%). Other users, prefer a more permanent deployment (25%).
+basis (46%). Other users prefer a more permanent deployment (25%).
 
 For larger environments, Velociraptor also supports multi-server
 configuration (used by 13% of users), while the more traditional
@@ -398,7 +398,7 @@ field.
 ## Conclusions
 
 This is our first Velociraptor community survey, and it has proven to
-be extremely useful. Since Velociraptor is a community led open source
+be extremely useful. Since Velociraptor is a community-led open source
 project, we need an open feedback loop to our users, to understand
 where things need to be improved and what features should be
 prioritized.
