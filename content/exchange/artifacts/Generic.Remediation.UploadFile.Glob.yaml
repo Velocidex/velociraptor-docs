@@ -19,9 +19,7 @@ tools:
 sources:
   - query: |
       LET targets = SELECT * FROM glob(globs=TargetGlob)
-        WHERE NOT if(condition=TRUE,
-                then= IsDir,
-                else= FALSE)
+        WHERE NOT IsDir
         ORDER BY OSPath DESC 
      
       LET UploadedFile <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="RemediationFile", IsExecutable=FALSE, TemporaryOnly=TRUE)
