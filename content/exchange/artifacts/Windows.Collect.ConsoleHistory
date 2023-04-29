@@ -1,0 +1,29 @@
+name: Windows.Collect.ConsoleHistory
+author: Osama Radwan - github @minirobot22
+description: |
+    This Artifact will look for all running cmd shells on the target and dump thier command line history using GetConsoleHistory tool.
+    Original Tool from @IllusiveNetworks-Labs https://github.com/IllusiveNetworks-Labs/GetConsoleHistoryAndOutput
+    Tool compiled in my repo https://github.com/minirobot22/Collect.ConsoleHistory
+
+type: CLIENT
+
+tools:
+  - name: ConsoleHistory
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+     query: |
+           LET TmpDir <= tempdir(remove_last=TRUE)
+           LET Tool <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="ConsoleHistory", IsExecutable=True)
+           LET Output <= TmpDir + "\\output%RANDOM%.txt"
+           
+           LET qr <= SELECT * FROM foreach(row={
+           SELECT Pid FROM pslist() where Name = 'cmd.exe'
+           }, query={
+               SELECT * FROM execve(argv=["cmd.exe", "/c", Tool[0].FullPath, Pid, Output],length=1000000000)
+           })
+           
+              SELECT Name, FullPath , upload(file=FullPath, accessor="file") FileInfo
+              FROM glob(globs="/**", root=TmpDir)
