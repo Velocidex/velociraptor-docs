@@ -36,7 +36,7 @@ parameters:
         "C:\Perflogs\**\*.{lnk,ps1,vbs,js,exe,dll,bat,cpl,zip,7z,rar}",\.(ini|txt|zip|etl|html|xml|xsl|log|blg)$,Staging location
         "C:\ProgramData\*.{ps1,vbs,js,exe,dll,bat,cpl}",,Staging location
         "C:\ProgramData\.*\*.{bin,dat,txt,log,ps1,vbs,js,exe,dll,bat,cpl}",,Copy-Paste staging location
-        "C:\Users\Public\**\*.{lnk,ps1,vbs,js,exe,dll,bat,cpl,zip,7z,rar}",,Staging location
+        "C:\Users\Public\**\*.{lnk,ps1,vbs,js,exe,dll,bat,cpl,zip,7z,rar}",C:\\Users\\Public\\Desktop\\[\\]+\.lnk,Staging location
         "C:\Users\*\Sounds\*.{ps1,vbs,js,exe,dll,bat,cpl}",,Investigation staging
         "C:\Windows\Temp\winsyslog\*.{ps1,vbs,js,exe,dll,bat,cpl}",,Current investigation X1002
         "C:\Windows\Help\*.{ps1,vbs,js,exe,dll,bat,cpl}",,Staging location
