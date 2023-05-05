@@ -14,6 +14,8 @@ author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Math
 tools:
  - name: Hayabusa-2.3.3
    url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.3.3/hayabusa-2.3.3-win-64-bit.zip
+   expected_hash: bacf8596bf94715c85017f1a4236c5488de5573a0987742c20421f6e958e1ff0
+   version: 2.3.3
 
 precondition: SELECT OS From info() where OS = 'windows'
 

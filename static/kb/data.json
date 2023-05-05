@@ -293,5 +293,14 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "What to do about error \"Plugin info not found\"",
+        "link": "/knowledge_base/tips/plugin_not_found",
+        "tags": [],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]
