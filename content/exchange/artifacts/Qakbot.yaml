@@ -256,14 +256,13 @@ sources:
             FROM vad(pid=Pid)
             WHERE MappingName=~'^$'
                 AND Protection='xrw'
+                AND NOT State =~ 'RESERVE'
           })
       
       -- search for qakbot in suspicious sections
       LET process_hits = SELECT *
-        FROM foreach(row={
-                SELECT * FROM sections
-                WHERE NOT State =~ "RESERVE"
-            }, query={
+        FROM foreach(row= sections,
+            query={
                 SELECT
                     Rule as Detection,
                     dict( 
