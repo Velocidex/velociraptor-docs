@@ -1350,3 +1350,7 @@ smb
 
 # content/announcements/2023-velocon/_index.md
 TBD
+
+# content/presentations/2023_auscert/_index
+exfiltrated
+CyberCrime
