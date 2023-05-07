@@ -27,6 +27,12 @@ You can automatically import the entire content of the artifact
 exchange into your server by running the
 `Server.Import.ArtifactExchange` artifact.
 
+Alternatively, download the artifact pack for [Version
+0.6.9](/static/exchange/artifact_exchange_v2.zip) or for [older
+versions](/static/exchange/artifact_exchange.zip), and manually upload
+them in the GUI (navigate to `View Artifacts` and click the `Upload
+Artifact Pack` button)
+
 {{% /notice %}}
 
 {{% exchange %}}

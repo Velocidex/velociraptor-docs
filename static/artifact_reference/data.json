@@ -54,9 +54,9 @@
         ]
     },
     {
-        "title": "Elastic.Events.Clients",
-        "description": "This server monitoring artifact will watch a selection of client\nmonitoring artifacts for new events and push those to an elastic\nindex.",
-        "link": "/artifact_references/pages/elastic.events.clients",
+        "title": "Elastic.Events.Upload",
+        "description": "This server monitoring artifact will watch a selection of client or\nserver monitoring artifacts for new events and push those to an\nelastic index.",
+        "link": "/artifact_references/pages/elastic.events.upload",
         "type": "server_event",
         "tags": [
             "Server Event Artifact"
@@ -891,6 +891,15 @@
         ]
     },
     {
+        "title": "Server.Audit.Logs",
+        "description": "This internal event artifact collects relevant audit events from the\nserver. Audit events are significant auditable actions that a user\ntakes, for example, starting a new collection, creating a new hunt,\nupdating an artifact definition etc.\n",
+        "link": "/artifact_references/pages/server.audit.logs",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Server.Enrichment.CortexAnalyzer",
         "description": "Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.",
         "link": "/artifact_references/pages/server.enrichment.cortexanalyzer",
@@ -1023,6 +1032,15 @@
         "type": "server",
         "tags": [
             "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.Alerts",
+        "description": "An internal event queue for alerts. All alerts sent from clients are\ncollected in this event queue.",
+        "link": "/artifact_references/pages/server.internal.alerts",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
         ]
     },
     {
@@ -2656,7 +2674,7 @@
     },
     {
         "title": "Windows.Registry.AppCompatCache",
-        "description": "This artifact parses AppCompatCache (shimcache) from target hives. ",
+        "description": "This artifact parses AppCompatCache (shimcache) from target hives.",
         "link": "/artifact_references/pages/windows.registry.appcompatcache",
         "type": "client",
         "tags": [
@@ -3079,7 +3097,7 @@
     },
     {
         "title": "Windows.System.Powershell.ModuleAnalysisCache",
-        "description": "",
+        "description": "ModuleAnalysisCache stores metadata about loaded Powershell modules.",
         "link": "/artifact_references/pages/windows.system.powershell.moduleanalysiscache",
         "type": "client",
         "tags": [

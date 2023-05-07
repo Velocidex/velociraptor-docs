@@ -4,10 +4,19 @@ hidden: true
 tags: [Client Artifact]
 ---
 
+ModuleAnalysisCache stores metadata about loaded Powershell modules.
+
+Recent updates include filters by regex to enable targeted hunting 
+use cases.
 
 
 ```yaml
 name: Windows.System.Powershell.ModuleAnalysisCache
+description: |
+    ModuleAnalysisCache stores metadata about loaded Powershell modules.
+
+    Recent updates include filters by regex to enable targeted hunting 
+    use cases.
 
 reference:
  - https://github.com/PowerShell/PowerShell/blob/281b437a65360ae869d40f3766a1f2bbba786e5e/src/System.Management.Automation/engine/Modules/AnalysisCache.cs#L649
@@ -15,6 +24,17 @@ reference:
 parameters:
   - name: GlobLookup
     default: C:\{Users\*,Windows\System32\config\systemprofile}\AppData\Local\Microsoft\Windows\PowerShell\ModuleAnalysisCache
+  - name: ModulePathRegex
+    description: Regex of installed ModulePath to target.
+    default: .
+    type: regex
+  - name: ModulePathIgnoreRegex
+    description: Regex of installed ModulePath to ignore.
+    type: regex
+  - name: FunctionNameRegex
+    description: Regex of FunctionName to include.
+    default: .
+    type: regex
 
 sources:
   - query: |
@@ -57,7 +77,11 @@ sources:
                   timestamp(epoch=TimestampTicks/10000000 - 62136892800) AS Timestamp,
                   Func.Name AS Functions
             FROM scope()
+            WHERE ModuleName =~ ModulePathRegex
+                AND NOT if(condition= ModulePathIgnoreRegex,
+                            then= ModuleName =~ ModulePathIgnoreRegex,
+                            else= False )
+                AND filter(list=Functions,regex=FunctionNameRegex)
          })
       })
-
 ```
