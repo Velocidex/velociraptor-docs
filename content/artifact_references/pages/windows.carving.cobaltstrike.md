@@ -484,7 +484,7 @@ sources:
       LET ByteConfiguration = SELECT Rule,
                 len(list=TargetBytes) as Size,
                 hash(path=TargetBytes,accessor='data') as Hash,
-                --String.Offset as Offset,
+                format(format="%v_%v.bin", args=[Rule,String.Offset]) as _DecodedDataName,
                 Xor,_Data,
                 Rule  as _Group
             FROM switch( -- switchcase will find beacon as priority, then search for shellcode
@@ -508,8 +508,7 @@ sources:
                               rules=FindShellcode, number=99)
                 },
                 section_encoded_pe = {
-                    SELECT
-                        FullPath,Size,
+                    SELECT *,
                         'Embedded data section: ' + Rule as Rule,
                         substr(start=0,end=1,str=String.Data) as Xor,
                         read_file(accessor='data',
@@ -525,8 +524,7 @@ sources:
                               accessor='data', rules=FindConfig, number=99)
                 },
                     section_encoded_stager = {
-                        SELECT
-                            FullPath,Size,
+                        SELECT *,
                             '' as Xor,
                             'Embedded data section: ' + Rule as Rule,
                             read_file(accessor='data',
@@ -560,7 +558,8 @@ sources:
                     FullPath, Size,
                     hash(path=FullPath) as Hash,
                     Xor,_Data,
-                    Rule + '|' + FullPath.String as _Group
+                    Rule + '|' + FullPath.String as _Group,
+                    format(format="%v_%v_%v.bin", args=[Rule,FullPath,String.Offset]) as _DecodedDataName
                 FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                     beacon = {
                         SELECT *,
@@ -579,8 +578,7 @@ sources:
                     },
 
                     section_encoded_pe = {
-                        SELECT
-                            FullPath,Size,
+                        SELECT *,
                             'Embedded data section: ' + Rule as Rule,
                             substr(start=0,end=1,str=String.Data) as Xor,
                             read_file(accessor='data',filename=File.OSPath,
@@ -593,8 +591,7 @@ sources:
                                   accessor='data', rules=FindConfig, number=99)
                     },
                     section_encoded_stager = {
-                        SELECT
-                            FullPath,Size,
+                        SELECT *,
                             '' as Xor,
                             'Embedded data section: ' + Rule as Rule,
                             read_file(accessor='data',
@@ -636,7 +633,7 @@ sources:
         query={
             SELECT Rule,
                 Pid, ProcessName, CommandLine,
-                --String.Offset as Offset,
+                format(format="%v_%v_%v_%v.bin", args=[Rule,ProcessName,Pid,String.Offset]) as _DecodedDataName,
                 Xor,_Data,_Group
             FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                 beacon = {
@@ -707,10 +704,11 @@ sources:
 
       -- add decoded data seperate to keep pretty output
       LET output_decoded_data = SELECT *,
-            format(format="% x",
-              args=if(condition= Rule='cobalt_strike_beacon',
-                then=xor(string=_Data,key=Xor),
-                else=_Data)) as DecodedData
+            upload(accessor = 'data',
+                file = if(condition = Rule='cobalt_strike_beacon',
+                            then = xor(string=_Data,key=unhex(string=Xor)),
+                            else = _Data),
+                name = _DecodedDataName) as DecodedData
         FROM results
 
       LET cleanup(config) = to_dict(item=
@@ -738,4 +736,7 @@ sources:
             GROUP BY _Group
         }, exclude=["_Data","_Group"])
 
+column_types:
+  - name: DecodedData
+    type: preview_upload
 ```

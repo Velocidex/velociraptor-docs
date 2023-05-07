@@ -1336,16 +1336,6 @@
         "date": "2022-03-10"
     },
     {
-        "title": "Windows.Detection.BinaryHunter",
-        "author": "mgreen27",
-        "description": "This artifact enables hunting for binary attributes.",
-        "link": "/exchange/artifacts/pages/binaryhunter",
-        "tags": [],
-        "author_link": "https://github.com/mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
-        "date": "2022-03-07"
-    },
-    {
         "title": "Windows.Registry.HiddenUsers",
         "author": "eduardomcm",
         "description": "Find hidden user accounts through registry values on the filesystem.",
@@ -1697,16 +1687,6 @@
         "author": "mgreen27",
         "description": "This artifact will search the MFT for any matching filenames and return\nbinary details. This artifact can be used to find all instances of a \nbinary on disk so its great for scoping both legititimate and illegitimate \nfiles.\n",
         "link": "/exchange/artifacts/pages/binaryversion",
-        "tags": [],
-        "author_link": "https://github.com/mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
-        "date": "2021-09-16"
-    },
-    {
-        "title": "Windows.EventLogs.Telerik",
-        "author": "mgreen27",
-        "description": "This Artifact will hunt for evidence of Telerik exploitation in the\nApplication Event Log.",
-        "link": "/exchange/artifacts/pages/telerik",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
         "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
