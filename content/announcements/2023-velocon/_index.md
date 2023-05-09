@@ -11,7 +11,7 @@ noTitle: true
 
 <img style="width: 100%" src="velocon_banner_2023.jpg">
 
-We are thrilled to announce that the 2nd annual VeloCON Conference will
+We are thrilled to announce that the 2nd annual VeloCON virtual summit will
 be held this September (date TBD), with times oriented to the continental
 USA timezones. Once again, the conference will be online and completely
 free! Presentations will be published on our Velociraptor site and as
@@ -40,7 +40,7 @@ below).
 VeloCON invites contributions in the form of a 30-45 minute
 presentation. We require a brief proposal (~500 words; not a
 paper). These proposals undergo a review process to select
-presentations of maximal interest to VeloCON attendees and the
+presentations of maximum interest to VeloCON attendees and the
 wider Velociraptor community, and to filter out sales pitches.
 
 VeloCON focuses on work that pushes the envelope of what is currently
@@ -66,5 +66,5 @@ following details:
 
 ## Deadline
 
-Submission are due Monday, July 17, 2023 and a decision will be
+Submissions are due Monday, July 17, 2023 and a decision will be
 announced shortly afterwards.
