@@ -9,7 +9,13 @@ description: |
    
    - If it fails to add the client to IRIS, it will assign the 'IRIS-ERROR' label to it. A successful run afterwards will remove it.
    - It is **recommended** to add the parameters with 'Iris' prefix to the server metadata (via notebook) to ease the usage of the artifact:
-   ``SELECT server_set_metadata(IrisURL="https://dfir-iris.local:4433",IrisKey="This-is-an_API_KEY",IrisDisableSSLVerify="true",IrisCaseId="1"),server_metadata() FROM scope()``
+   
+   ```VQL
+   SELECT server_set_metadata(IrisURL="https://dfir-iris.local:4433",IrisKey="This-is-an_API_KEY",IrisCaseId="1",IrisRootCA='''-----BEGIN CERTIFICATE-----
+   <...>
+   -----END CERTIFICATE-----'''),server_metadata() FROM scope()
+   ```
+   
    - You can define the compromise status of a system when creating and when updating the information. **However, if an asset is categorized as *compromised*, you cannot change the status using this artifact.** This is a safety measure to mitigate a potential high impact error. Beside that, you can freely change the status between *No*, *Unknown* and *To be determined*.
    - The true power of this artifact lies in the ability to quickly add many clients to DFIR-IRIS. As it is usually not needed to add all clients that are enrolled in Velociraptor to IRIS but rather an excerpt of important, suspicious, or compromised systems, you will **most likely use this artifact from within a notebook**.
     
