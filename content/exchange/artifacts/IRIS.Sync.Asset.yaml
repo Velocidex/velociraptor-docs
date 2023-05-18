@@ -1,24 +1,34 @@
 name: IRIS.Sync.Asset
+author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult)
 description: |
    This artifact synchronizes clients from Velociraptor to DFIR-IRIS (https://dfir-iris.org/). It will parse available information of clients such as network interfaces, IP addresses, asset type and applied labels. Once it has been added, the asset ID from DFIR-IRIS will be added as client metadata and 'IRIS' will be added as label. If this artifact is applied on a client that has the asset ID set in its metadata, it won't be readded but rather updated: Labels and the compromised status will by synchronized.
+   
+   Tested with Dfir-Iris API v2.0.1
    
    **Hints:**
    
    - If it fails to add the client to IRIS, it will assign the 'IRIS-ERROR' label to it. A successful run afterwards will remove it.
-   - It is **recommended** to add the parameters with 'Iris' prefix to the server metadata to ease the usage of the artifact:
-   ``SELECT server_set_metadata(IrisURL="https://dfir-iris.local:4433",IrisKey="This-is-an_API_KEY",IrisDisableSSLVerify="true",IrisCaseId="1"),server_metadata() FROM scope()``
+   - It is **recommended** to add the parameters with 'Iris' prefix to the server metadata (via notebook) to ease the usage of the artifact:
+   
+   ```VQL
+   SELECT server_set_metadata(IrisURL="https://dfir-iris.local:4433",IrisKey="This-is-an_API_KEY",IrisCaseId="1",IrisRootCA='''-----BEGIN CERTIFICATE-----
+   <...>
+   -----END CERTIFICATE-----'''),server_metadata() FROM scope()
+   ```
+   
+   - You can define the compromise status of a system when creating and when updating the information. **However, if an asset is categorized as *compromised*, you cannot change the status using this artifact.** This is a safety measure to mitigate a potential high impact error. Beside that, you can freely change the status between *No*, *Unknown* and *To be determined*.
    - The true power of this artifact lies in the ability to quickly add many clients to DFIR-IRIS. As it is usually not needed to add all clients that are enrolled in Velociraptor to IRIS but rather an excerpt of important, suspicious, or compromised systems, you will **most likely use this artifact from within a notebook**.
     
    **Example** to add just a few systems and have the results of the operation as JSON:
         
    ```VQL
-   SELECT client_id,{SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=client_id,isCompromised="Y")} FROM clients(search="label:suspicious")
+   SELECT client_id,{SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=client_id,isCompromised="Y")} FROM clients(search="label:compromised")
    ```
    
-   **Example** to add many systems and have the results in well-structured columns:
+   **Example** to add many systems in a performant way and have the results in well-structured columns:
         
    ```VQL
-   SELECT * FROM foreach(row={SELECT * FROM clients(search="label:suspicious")},query={SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=client_id,isCompromised="N")},async=true)
+   SELECT * FROM foreach(row={SELECT * FROM clients(search="label:suspicious")},query={SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=client_id,isCompromised="UNK")},async=true)
    ```
 
 
@@ -29,8 +39,14 @@ parameters:
   - name: clientId
     description: Client Id of the client that should be synced to DFIR-IRIS
   - name: isCompromised
-    default: "Y|N"
-    description: Specify whether this asset should be marked as compromised in IRIS using 'Y' or 'N'
+    default: TBD
+    description: Specify whether this asset should be marked as compromised in IRIS using "Y" (compromised), "N" (not compromised), "TBD" (to be determined), or "UNK" (unknown).
+    type: choices
+    choices:
+      - Y
+      - N
+      - TBD
+      - UNK
   - name: labelIgnoreListRegex
     default: "IRIS|^Workstation$|^Server$|^Domain Controller$|^Linux$"
     description: Labels that should be ignored and not added to IRIS
@@ -40,9 +56,11 @@ parameters:
     description: API Key of DFIR-IRIS. Preferred method is to use the server metadata
   - name: IrisCaseId
     description: Case ID of the current case. Preferred method is to use the server metadata
+  - name: IrisRootCA
+    description: RootCA of DFIR-IRIS for self-signed or internal certificates of DFIR-IRIS. Preferred over completely skipping SSL verification.
   - name: IrisDisableSSLVerify
     default: false
-    description: Disable TLS verification for HTTPS request to DFIR-IRIS. Preferred method is to use the server metadata
+    description: Disabled due to not working as expected! Disable TLS verification for HTTPS request to DFIR-IRIS. Preferred method is to use the server metadata
 
 sources:
   - query: |
@@ -63,6 +81,10 @@ sources:
             condition=IrisDisableSSLVerify,
             then=IrisDisableSSLVerify,
             else=server_metadata().IrisDisableSSLVerify)
+      LET RootCA <= if(
+            condition=IrisRootCA,
+            then=IrisRootCA,
+            else=server_metadata().IrisRootCA)
 
       LET AssetType = SELECT * FROM switch(
         a = {SELECT {
@@ -112,8 +134,7 @@ sources:
                                 asset_name=format(format="%v",args=[os_info.hostname]), 
                                 asset_type_id=AssetType.AssetTypeId[0], 
                                 analysis_status_id=1,
-                                cid=CaseID,
-                                asset_compromised=if(condition= isCompromised =~ "^Y$",then=true,else = false),
+                                asset_compromise_status_id=if(condition=isCompromised=~"^Y$",then=1,else=if(condition=isCompromised=~"^N$",then=2,else=if(condition=isCompromised=~"^UNK$",then=3,else=0))),
                                 asset_domain=format(format="%v",args=[join(array=slice(list=split(sep_string=".",string=os_info.fqdn),start=1,end=-1),sep=".")]),
                                 asset_ip=format(format="%v",args=[primaryIP.PrimaryIPv4Address]),
                                 asset_tags=if(condition=labelToTags,then=format(format="Velo,%v",args=[labelToTags]),else="Velo"),
@@ -122,17 +143,19 @@ sources:
                             ,format="json"
                         ),
                         headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
-                        disable_ssl_security=DisableSSLVerify,
+                        //skip_verify=DisableSSLVerify, //Disabled due to not working as expected.
+                        root_ca=RootCA,
                         method="POST",
-                        url=format(format="%v/case/assets/add", args=[URL]))
+                        url=format(format="%v/case/assets/add?cid=%v", args=[URL,CaseID]))
      
       LET apiRequestIrisGet(assetId) = SELECT parse_json(data=Content),parse_json(data=Content).data.asset_name as asset_name,parse_json(data=Content).data.asset_type_id as asset_type_id,
                 parse_json(data=Content).data.analysis_status_id as analysis_status_id,parse_json(data=Content).data.asset_tags as asset_tags,
                 parse_json(data=Content).data.linked_ioc as linked_ioc,parse_json(data=Content).data.custom_attributes as custom_attributes,
-                parse_json(data=Content).data.asset_compromised as asset_compromised
+                parse_json(data=Content).data.asset_compromise_status_id as asset_compromise_status_id
                 FROM http_client(
                         headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
-                        disable_ssl_security=DisableSSLVerify,
+                        //skip_verify=DisableSSLVerify, //Disabled due to not working as expected.
+                        root_ca=RootCA,
                         method="GET",
                         url=format(format="%v/case/assets/%v?cid=%v", args=[URL,assetId,CaseID]))
                         
@@ -148,16 +171,16 @@ sources:
                                 asset_name=currentAsset.asset_name[0],
                                 asset_type_id=currentAsset.asset_type_id[0],
                                 analysis_status_id=currentAsset.analysis_status_id[0],
-                                asset_compromised=if(condition= isCompromised =~ "^Y$",then=true,else = if(condition= isCompromised =~ "^N$",then=false,else=currentAsset.asset_compromised[0])),
-                                asset_tags=if(condition=labelToTags,then=format(format="Velo,%v",args=[labelToTags]),else="Velo"),
-                                cid=CaseID
+                                asset_compromise_status_id=if(condition=isCompromised=~"^Y$",then=1,else=if(condition=currentAsset.asset_compromise_status_id[0]=1,then=1,else=if(condition=isCompromised=~"^N$",then=2,else=if(condition=isCompromised=~"^UNK$",then=3,else=if(condition=isCompromised=~"^TBD$",then=0,else=currentAsset.asset_compromise_status_id[0]))))),
+                                asset_tags=if(condition=labelToTags,then=format(format="Velo,%v",args=[labelToTags]),else="Velo")
                             )
                             ,format="json"
                         ),
                         headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
-                        disable_ssl_security=DisableSSLVerify,
+                        //skip_verify=DisableSSLVerify, //Disabled due to not working as expected.
+                        root_ca=RootCA,
                         method="POST",
-                        url=format(format="%v/case/assets/update/%v", args=[URL,assetId]))
+                        url=format(format="%v/case/assets/update/%v?cid=%v", args=[URL,assetId,CaseID]))
 
       LET addAsset = SELECT {SELECT * FROM apiRequestIrisAdd} as apiRequestIrisAdd FROM clients(client_id=clientId)
       LET updateAsset = SELECT {SELECT * FROM apiRequestIrisUpdate(currentAsset=apiRequestIrisGet(assetId=client_metadata(client_id=clientId).IRIS_AssetId),assetId=client_metadata(client_id=clientId).IRIS_AssetId)} as apiRequestIrisUpdate FROM clients(client_id=clientId)
