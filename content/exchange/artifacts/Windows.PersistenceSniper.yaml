@@ -10,20 +10,7 @@ type: Client
 
 precondition: 
     SELECT OS From info() where OS = 'windows'
-    
-parameters:
-
-    - name: VTAPI
-      type: string
-      description: API key for Virustotal.
-      default:
-   
-   
-    - name: VTThreshold
-      type: string
-      description: Threshold for Virustotal hits.
-      default: 0
-      
+         
 sources:
     - query: |
         
@@ -36,15 +23,10 @@ sources:
         LET PSniperLocation <= TmpDir + '\\PersistenceSniper\\PersistenceSniper.psm1'
         
         LET cmdline = 'powershell -executionpolicy bypass -command "& { import-module '+ "'" + PSniperLocation + "'" + '; Find-AllPersistence | ConvertTo-JSON}"'         
-        LET cmdlinevt = 'powershell -executionpolicy bypass -command "& { import-module '+ "'" + PSniperLocation + "'" + '; Find-AllPersistence -VTAPI ' + VTAPI + ' | Where-Object "VTEntries" -ge ' + VTThreshold + ' | ConvertTo-JSON}"'         
-
-        LET execute <= if(condition= VTAPI,
-                        then= cmdlinevt, 
-                        else=cmdline)
         
         SELECT * FROM foreach(
             row={
-                SELECT Stdout FROM execve(argv=["Powershell", execute], length=10000000000)
+                SELECT Stdout FROM execve(argv=["Powershell", cmdline], length=10000000000)
             }, query={
                 SELECT * FROM parse_json_array(data=Stdout) where log(message=Stdout) AND log(message=Stderr)
             })
