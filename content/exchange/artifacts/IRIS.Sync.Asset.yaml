@@ -1,4 +1,4 @@
-name: Custom.IRIS.Sync.Asset
+name: IRIS.Sync.Asset
 author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult)
 description: |
    This artifact synchronizes clients from Velociraptor to DFIR-IRIS (https://dfir-iris.org/). It will parse available information of clients such as network interfaces, IP addresses, asset type and applied labels. Once it has been added, the asset ID from DFIR-IRIS will be added as client metadata and 'IRIS' will be added as label. If this artifact is applied on a client that has the asset ID set in its metadata, it won't be readded but rather updated: Labels and the compromised status will by synchronized.
