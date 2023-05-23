@@ -64,7 +64,7 @@ sources:
         SELECT 
             { SELECT Mtime FROM stat(filename=FileToScan)} AS Mtime,
             FileToScan AS File,
-            Content.file as FileDetals, 
+            Content.file as FileDetails, 
             Content.request as RequestDetails, 
             Content.scan as ScanResults 
         FROM ScanResults
