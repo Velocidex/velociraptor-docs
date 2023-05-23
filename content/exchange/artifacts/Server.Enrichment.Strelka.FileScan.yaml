@@ -59,7 +59,7 @@ sources:
                             "-s", StrelkaFrontend,
                             "-c", CertPath,
                             "-l", "-",
-                            "t", StrelkaTimeout])
+                            "-t", StrelkaTimeout])
         
         SELECT 
             { SELECT Mtime FROM stat(filename=FileToScan)} AS Mtime,
