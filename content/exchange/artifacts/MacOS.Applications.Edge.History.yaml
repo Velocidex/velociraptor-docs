@@ -1,0 +1,40 @@
+name: MacOS.Applications.Edge.History
+description: |
+  Read all users Edge history and upload a copy.
+
+parameters:
+  - name: historyGlobs
+    default: /Users/*/Library/Application Support/Microsoft Edge/*/History
+  - name: urlSQLQuery
+    default: |
+      SELECT url as visited_url, title, visit_count,
+             typed_count, last_visit_time
+      FROM urls
+  - name: userRegex
+    default: .
+   
+precondition: SELECT OS From info() where OS = 'darwin'
+
+author: https://github.com/x64-julian
+
+reference:
+  - https://www.foxtonforensics.com/browser-history-examiner/microsoft-edge-history-location
+
+sources:
+  - query: |
+      LET history_files = SELECT
+         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=FullPath).User AS User,
+         FullPath, Mtime, upload(file=FullPath) AS Upload
+      FROM glob(globs=historyGlobs)
+    
+      SELECT * FROM foreach(row=history_files,
+        query={
+           SELECT User, FullPath,
+              Mtime,
+              visited_url,
+              title, visit_count, typed_count,
+              timestamp(winfiletime=last_visit_time * 10) as last_visit_time
+          FROM sqlite(
+             file=FullPath,
+             query=urlSQLQuery)
+          })
