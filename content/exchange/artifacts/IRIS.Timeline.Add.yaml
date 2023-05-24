@@ -1,4 +1,4 @@
-name: IRIS.Timeline.Add
+name: Custom.IRIS.Timeline.Add
 author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult)
 description: |
    This artifact adds Velociraptor rows as timeline entries to DFIR-IRIS (https://dfir-iris.org/).
@@ -21,7 +21,11 @@ description: |
    **Example** to add entries in a performant way and have the results in well-structured columns. **ATTENTION: ALWAYS USE ASYNC=FALSE OTHERWISE ANY ASSETS THAT NEED TO BE CREATED MIGHT BE DUPLICATED!!!**
         
    ```VQL
-   SELECT * FROM foreach(row=filteredEvents,query={SELECT * FROM Artifact.Custom.Exchange.IRIS.Timeline.Add(clientId=ClientId,Category="exec",Description=format(format="Execution of %v on the system\nPrefetch Details: %v",args=[file_name,message]),FlowId=FlowId,Graph=true,Summary=true,Timestamp=event_time,Title="Malware Execution")},async=false)
+   LET eventsToAdd = SELECT event_time,str(str=event_time),message,path,FlowId,ClientId,Fqdn FROM source(artifact="Windows.Timeline.MFT")
+           ORDER BY event_time
+           LIMIT 10
+
+   SELECT * FROM foreach(row=eventsToAdd,query={SELECT * FROM Artifact.Custom.IRIS.Timeline.Add(AdditionalAssetId="1,2,3",AddToGraph=true,AddToSummary=false,IocId="8,9,10",Category="pers",clientId=ClientId,Description=format(format="Malicious file dropped to the system to establish persistence.\nFile path: %v\nActivity: %v",args=[path,message]),DisableSSLVerify=true,FlowId=FlowId,Timestamp=event_time,Title="Persistence established via Autostart Location")},async=false)
    ```
 # Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
 type: SERVER
