@@ -16,6 +16,7 @@ description: |
    ```
    
    - The true power of this artifact lies in the ability to quickly add many entries to DFIR-IRIS. You will **most likely use this artifact from within a notebook**.
+   - There is a basic mechanism established to stop duplicates from being added. An event is compared to existing entries based on asset name, flow id, timestamp and the description. You can add multiple events happening at the same time for the same asset originating from the same flow as long as the description varies, e.g. by including dynamic details of the activity that differentiates between the events at the same time like a process name.
    
    **Example** to add entries in a performant way and have the results in well-structured columns. **ATTENTION: ALWAYS USE ASYNC=FALSE OTHERWISE ANY ASSETS THAT NEED TO BE CREATED MIGHT BE DUPLICATED!!!**
         
@@ -195,14 +196,17 @@ sources:
                         root_ca=RootCA,
                         disable_ssl_security=DisableSSLVerify,
                         params=filterParams,
-                        url=format(format="%v/case/timeline/advanced-filter", args=[URL])) GROUP BY Timeline }) },
+                        url=format(format="%v/case/timeline/advanced-filter", args=[URL])) GROUP BY Timeline
+                        })
+                   WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description) },
             else={ SELECT * FROM flatten(query={SELECT parse_json(data=Content).data.timeline as Timeline     FROM http_client(
                         headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
                         method="GET",
                         root_ca=RootCA,
                         skip_verify=DisableSSLVerify,
                         params=filterParams,
-                        url=format(format="%v/case/timeline/advanced-filter", args=[URL])) GROUP BY Timeline }) })
+                        url=format(format="%v/case/timeline/advanced-filter", args=[URL])) GROUP BY Timeline })
+                   WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description) })
                         
       SELECT * FROM if(condition=checkExistingEntries,
                 then={SELECT "Already Added -> Skipping the event. Check for existing entries manually!" as Action FROM scope()},
