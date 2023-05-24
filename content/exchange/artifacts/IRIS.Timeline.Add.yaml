@@ -1,7 +1,7 @@
 name: IRIS.Timeline.Add
 author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult)
 description: |
-   This artifact adds Velociraptor rows as timeline entries to DFIR-IRIS (https://dfir-iris.org/).
+   This artifact adds Velociraptor rows as timeline entries to DFIR-IRIS (https://dfir-iris.org/). It will link the assets and IOCs as specified in the parameters. Additionally, if the client is not yet existing in Iris, this artifact will leverage the IRIS.Sync.Asset artifact to add the asset to Iris first and link it in the event.
    
    Tested with Dfir-Iris API v2.0.1
    
