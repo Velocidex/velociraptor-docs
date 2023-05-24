@@ -25,7 +25,7 @@ description: |
    SELECT client_id,{SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=client_id,isCompromised="Y")} FROM clients(search="label:compromised")
    ```
    
-   **Example** to add many systems in a performant way and have the results in well-structured columns:
+   **Example** to add many systems in a performant way and have the results in well-structured columns. **ATTENTION: ALWAYS USE ASYNC=FALSE IF CLIENTS ARE PRESENT IN THE TABLE MULTIPLE TIMES! OTHERWISE THESE ASSETS MIGHT BE DUPLICATED IN IRIS!!!**
         
    ```VQL
    SELECT * FROM foreach(row={SELECT * FROM clients(search="label:suspicious")},query={SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=client_id,isCompromised="UNK")},async=true)
@@ -58,9 +58,9 @@ parameters:
     description: Case ID of the current case. Preferred method is to use the server metadata
   - name: IrisRootCA
     description: RootCA of DFIR-IRIS for self-signed or internal certificates of DFIR-IRIS. Preferred over completely skipping SSL verification.
-  - name: IrisDisableSSLVerify
+  - name: DisableSSLVerify
     default: false
-    description: Disabled due to not working as expected! Disable TLS verification for HTTPS request to DFIR-IRIS. Preferred method is to use the server metadata
+    description: Disable TLS verification for HTTPS request to DFIR-IRIS.
 
 sources:
   - query: |
@@ -77,10 +77,6 @@ sources:
            condition=IrisCaseId,
            then=IrisCaseId,
            else=server_metadata().IrisCaseId)
-      LET DisableSSLVerify <= if(
-            condition=IrisDisableSSLVerify,
-            then=IrisDisableSSLVerify,
-            else=server_metadata().IrisDisableSSLVerify)
       LET RootCA <= if(
             condition=IrisRootCA,
             then=IrisRootCA,
@@ -121,15 +117,8 @@ sources:
       LET assetId = SELECT metadata_preparation.metadata[0].IRIS_AssetId as assetId FROM scope()
       LET addMetadata(assetIdValue) = SELECT client_set_metadata(client_id=clientId,metadata=client_metadata(client_id=clientId) + dict(IRIS_AssetId=assetIdValue)),
                                                     client_metadata(client_id=clientId) FROM scope()
-                                                    
-      LET apiRequestIrisAdd = SELECT *,if(condition=parse_json(data=Content).data.asset_id,
-                        then={SELECT addMetadata(assetIdValue=format(format="%v",args=parse_json(data=Content).data.asset_id)),
-                                      label(client_id=clientId,op="set",labels="IRIS"),
-                                      label(client_id=clientId,op="remove",labels="IRIS-ERROR")
-                              FROM scope()},
-                        else={SELECT label(client_id=clientId,op="set",labels="IRIS-ERROR") FROM scope()}) as applyLabels
-                    FROM http_client(
-                        data=serialize(
+      
+      LET assetProperties = serialize(
                             item=dict(
                                 asset_name=format(format="%v",args=[os_info.hostname]), 
                                 asset_type_id=AssetType.AssetTypeId[0], 
@@ -141,32 +130,59 @@ sources:
                                 asset_description=format(format="Velo ClientId: %v\nVelo Agent First seen: %v\nAsset added to IRIS by Velo: %v\nNetwork Info:\n%v", args=[client_id,timestamp(epoch=first_seen_at),timestamp(epoch=now()),networkInterfacesDescription.NetworkInfo[0]])
                             )
                             ,format="json"
-                        ),
-                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
-                        //skip_verify=DisableSSLVerify, //Disabled due to not working as expected.
-                        root_ca=RootCA,
-                        method="POST",
-                        url=format(format="%v/case/assets/add?cid=%v", args=[URL,CaseID]))
-     
-      LET apiRequestIrisGet(assetId) = SELECT parse_json(data=Content),parse_json(data=Content).data.asset_name as asset_name,parse_json(data=Content).data.asset_type_id as asset_type_id,
-                parse_json(data=Content).data.analysis_status_id as analysis_status_id,parse_json(data=Content).data.asset_tags as asset_tags,
-                parse_json(data=Content).data.linked_ioc as linked_ioc,parse_json(data=Content).data.custom_attributes as custom_attributes,
-                parse_json(data=Content).data.asset_compromise_status_id as asset_compromise_status_id
-                FROM http_client(
-                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
-                        //skip_verify=DisableSSLVerify, //Disabled due to not working as expected.
-                        root_ca=RootCA,
-                        method="GET",
-                        url=format(format="%v/case/assets/%v?cid=%v", args=[URL,assetId,CaseID]))
-                        
-      LET apiRequestIrisUpdate(currentAsset,assetId) = SELECT *,if(condition= Response=200,
+                        )
+                                                    
+      LET apiRequestIrisAdd = if(condition=config.version.version < "0.6.9",
+            then={ SELECT *,if(condition=parse_json(data=Content).data.asset_id,
                         then={SELECT addMetadata(assetIdValue=format(format="%v",args=parse_json(data=Content).data.asset_id)),
                                       label(client_id=clientId,op="set",labels="IRIS"),
                                       label(client_id=clientId,op="remove",labels="IRIS-ERROR")
                               FROM scope()},
                         else={SELECT label(client_id=clientId,op="set",labels="IRIS-ERROR") FROM scope()}) as applyLabels
                     FROM http_client(
-                        data=serialize(
+                        data=assetProperties,
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        disable_ssl_security=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="POST",
+                        url=format(format="%v/case/assets/add?cid=%v", args=[URL,CaseID])) },
+            else={ SELECT *,if(condition=parse_json(data=Content).data.asset_id,
+                        then={SELECT addMetadata(assetIdValue=format(format="%v",args=parse_json(data=Content).data.asset_id)),
+                                      label(client_id=clientId,op="set",labels="IRIS"),
+                                      label(client_id=clientId,op="remove",labels="IRIS-ERROR")
+                              FROM scope()},
+                        else={SELECT label(client_id=clientId,op="set",labels="IRIS-ERROR") FROM scope()}) as applyLabels
+                    FROM http_client(
+                        data=assetProperties,
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        skip_verify=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="POST",
+                        url=format(format="%v/case/assets/add?cid=%v", args=[URL,CaseID])) })
+     
+      LET apiRequestIrisGet(assetId) = if(condition=config.version.version < "0.6.9",
+            then={ SELECT parse_json(data=Content),parse_json(data=Content).data.asset_name as asset_name,parse_json(data=Content).data.asset_type_id as asset_type_id,
+                parse_json(data=Content).data.analysis_status_id as analysis_status_id,parse_json(data=Content).data.asset_tags as asset_tags,
+                parse_json(data=Content).data.linked_ioc as linked_ioc,parse_json(data=Content).data.custom_attributes as custom_attributes,
+                parse_json(data=Content).data.asset_compromise_status_id as asset_compromise_status_id
+                FROM http_client(
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        disable_ssl_security=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="GET",
+                        url=format(format="%v/case/assets/%v?cid=%v", args=[URL,assetId,CaseID])) },
+            else={ SELECT parse_json(data=Content),parse_json(data=Content).data.asset_name as asset_name,parse_json(data=Content).data.asset_type_id as asset_type_id,
+                parse_json(data=Content).data.analysis_status_id as analysis_status_id,parse_json(data=Content).data.asset_tags as asset_tags,
+                parse_json(data=Content).data.linked_ioc as linked_ioc,parse_json(data=Content).data.custom_attributes as custom_attributes,
+                parse_json(data=Content).data.asset_compromise_status_id as asset_compromise_status_id
+                FROM http_client(
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        skip_verify=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="GET",
+                        url=format(format="%v/case/assets/%v?cid=%v", args=[URL,assetId,CaseID])) })
+                        
+      LET assetPropertiesUpdate = serialize(
                             item=dict(
                                 asset_name=currentAsset.asset_name[0],
                                 asset_type_id=currentAsset.asset_type_id[0],
@@ -175,12 +191,35 @@ sources:
                                 asset_tags=if(condition=labelToTags,then=format(format="Velo,%v",args=[labelToTags]),else="Velo")
                             )
                             ,format="json"
-                        ),
+                        )
+                        
+      LET apiRequestIrisUpdate(currentAsset,assetId) = if(condition=config.version.version < "0.6.9",
+            then={ SELECT *,if(condition= Response=200,
+                        then={SELECT addMetadata(assetIdValue=format(format="%v",args=parse_json(data=Content).data.asset_id)),
+                                      label(client_id=clientId,op="set",labels="IRIS"),
+                                      label(client_id=clientId,op="remove",labels="IRIS-ERROR")
+                              FROM scope()},
+                        else={SELECT label(client_id=clientId,op="set",labels="IRIS-ERROR") FROM scope()}) as applyLabels
+                    FROM http_client(
+                        data=assetPropertiesUpdate,
                         headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
-                        //skip_verify=DisableSSLVerify, //Disabled due to not working as expected.
+                        disable_ssl_security=DisableSSLVerify,
                         root_ca=RootCA,
                         method="POST",
-                        url=format(format="%v/case/assets/update/%v?cid=%v", args=[URL,assetId,CaseID]))
+                        url=format(format="%v/case/assets/update/%v?cid=%v", args=[URL,assetId,CaseID])) },
+            else={ SELECT *,if(condition= Response=200,
+                        then={SELECT addMetadata(assetIdValue=format(format="%v",args=parse_json(data=Content).data.asset_id)),
+                                      label(client_id=clientId,op="set",labels="IRIS"),
+                                      label(client_id=clientId,op="remove",labels="IRIS-ERROR")
+                              FROM scope()},
+                        else={SELECT label(client_id=clientId,op="set",labels="IRIS-ERROR") FROM scope()}) as applyLabels
+                    FROM http_client(
+                        data=assetPropertiesUpdate,
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        skip_verify=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="POST",
+                        url=format(format="%v/case/assets/update/%v?cid=%v", args=[URL,assetId,CaseID])) })
 
       LET addAsset = SELECT {SELECT * FROM apiRequestIrisAdd} as apiRequestIrisAdd FROM clients(client_id=clientId)
       LET updateAsset = SELECT {SELECT * FROM apiRequestIrisUpdate(currentAsset=apiRequestIrisGet(assetId=client_metadata(client_id=clientId).IRIS_AssetId),assetId=client_metadata(client_id=clientId).IRIS_AssetId)} as apiRequestIrisUpdate FROM clients(client_id=clientId)
