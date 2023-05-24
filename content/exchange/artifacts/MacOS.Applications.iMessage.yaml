@@ -1,0 +1,60 @@
+name: MacOS.Applications.iMessagePROD
+description: |
+  Read the iMessage chat.db file and upload a copy
+
+parameters:
+  - name: chatGlobs
+    default: /Users/*/Library/Messages/chat.db
+
+  - name: urlSQLQuery
+    default: |
+        select
+         m.rowid
+        ,coalesce(m.cache_roomnames, h.id) ThreadId
+        ,m.is_from_me IsFromMe
+        ,case when m.is_from_me = 1 then m.account
+         else h.id end as FromPhoneNumber
+        ,case when m.is_from_me = 0 then m.account
+         else coalesce(h2.id, h.id) end as ToPhoneNumber
+        ,m.service Service
+        
+        /*,datetime(m.date + 978307200, 'unixepoch', 'localtime') as TextDate -- date stored as ticks since 2001-01-01 */
+        ,datetime((m.date / 1000000000) + 978307200, 'unixepoch', 'localtime') as TextDate /* after iOS11 date needs to be / 1000000000 */
+        
+        ,m.text MessageText
+        
+        ,c.display_name RoomName
+        
+        from
+        message as m
+        left join handle as h on m.handle_id = h.rowid
+        left join chat as c on m.cache_roomnames = c.room_name /* note: chat.room_name is not unique, this may cause one-to-many join */
+        left join chat_handle_join as ch on c.rowid = ch.chat_id
+        left join handle as h2 on ch.handle_id = h2.rowid
+        
+        where
+        -- try to eliminate duplicates due to non-unique message.cache_roomnames/chat.room_name
+        (h2.service is null or m.service = h2.service)
+        
+        order by m.date desc;
+
+  - name: userRegex
+    default: .
+
+reference:
+  - https://apple.stackexchange.com/questions/421665/how-specificially-do-i-read-a-chat-db-file
+  
+author: https://github.com/x64-julian
+
+precondition: SELECT OS From info() where OS = 'darwin'
+
+sources:
+  - query: |
+      LET chat_files = SELECT OSPath, upload(file=OSPath) AS Upload FROM glob(globs=chatGlobs) WHERE log(message="Value of OSPath is %v", args=OSPath)
+      
+      SELECT * FROM foreach(row=chat_files, 
+      query={ 
+      SELECT * FROM sqlite(file=tempfile(data=read_file(filename=OSPath), remove_last=True), query=urlSQLQuery) 
+          
+      })
+
