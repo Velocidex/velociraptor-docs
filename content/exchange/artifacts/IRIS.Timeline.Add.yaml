@@ -1,4 +1,4 @@
-name: Custom.IRIS.Timeline.Add
+name: IRIS.Timeline.Add
 author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult)
 description: |
    This artifact adds Velociraptor rows as timeline entries to DFIR-IRIS (https://dfir-iris.org/).
