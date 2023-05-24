@@ -22,6 +22,9 @@ Arg | Description | Type
 file|XML file to open.|OSPath (required)
 accessor|The accessor to use|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parse an XML document into a dict like object.

@@ -28,6 +28,9 @@ atime|Access time to set the output file.|Any
 ctime|Change time to set the output file.|Any
 btime|Birth time to set the output file.|Any
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+
 ### Description
 
 Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.

@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Kills the client and forces a restart - this is very aggressive!

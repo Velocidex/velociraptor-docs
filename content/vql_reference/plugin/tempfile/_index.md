@@ -24,6 +24,9 @@ extension|An extension to place in the tempfile.|string
 permissions|Required permissions (e.g. 'x').|string
 remove_last|If set we delay removal as much as possible.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+
 ### Description
 
 Create a temporary file and write some data into it.

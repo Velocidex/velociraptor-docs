@@ -40,7 +40,7 @@ sources:
                   }
 
                   $userdetails = @()
-                  foreach ($user in ($users | Sort-Object | Get-Unique))
+                  foreach ($user in ($users | Sort-Object | Get-Unique)) {
                     $userdetails += Get-ADUser -Identity $user -Properties *
                   }
 

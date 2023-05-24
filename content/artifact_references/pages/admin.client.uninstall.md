@@ -89,7 +89,7 @@ sources:
     query:  |
       SELECT * FROM if(condition=ReallyDoIt,
       then={
-        SELECT * FROM execve(argv=["rpm", "--remove", "velociraptor-client"])
+        SELECT * FROM execve(argv=["rpm", "--erase", "velociraptor-client"])
       })
 
   - name: MacOS

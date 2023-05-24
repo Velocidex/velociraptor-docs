@@ -23,6 +23,9 @@ accessor|The accessor to use.|string
 filename|The filename to parse.|OSPath (required)
 verbose|Set to receive verbose information about all the certs.|bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Parses authenticode information from PE files.

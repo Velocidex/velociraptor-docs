@@ -32,6 +32,9 @@ notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Extract monitoring log from a client. If client_id is not specified we watch the global journal which contains event logs from all clients.

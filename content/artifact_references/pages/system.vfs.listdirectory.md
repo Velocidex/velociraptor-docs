@@ -34,8 +34,47 @@ parameters:
     type: int
     default: 0
 
+export: |
+      -- Make the generator unique with the session id - so it can
+      -- only be shared by the two sources in this collection.
+      LET VFSGenerator = generate(name="vfs-" + _SessionId, query={
+         SELECT * FROM vfs_ls(
+            path="/", components=Components,
+            accessor=Accessor, depth=Depth)
+      }, delay=500)  -- wait a while for both sources to connect.
+
 sources:
-  - query: |
+  - precondition: SELECT * FROM info() WHERE version(plugin="vfs_ls") = 1
+    name: Listing
+    description: File listing of multiple directories in a single table.
+    query: |
+      SELECT FullPath AS _FullPath,
+             Components AS _Components,
+             Accessor AS _Accessor,
+             Data AS _Data,
+             Name, Size, Mode,
+             Mtime as mtime,
+             Atime as atime,
+             Ctime as ctime,
+             Btime as btime,
+             Idx AS _Idx
+      FROM VFSGenerator
+      WHERE Stats = NULL
+
+  - precondition: SELECT * FROM info() WHERE version(plugin="vfs_ls") = 1
+    name: Stats
+    description: |
+      A list of summary objects dividing the Listing source into
+      distinct directories.
+    query: |
+      SELECT Components,
+             Accessor,
+             Stats
+      FROM VFSGenerator
+      WHERE Stats != NULL
+
+  - precondition: SELECT * FROM info() WHERE NOT version(plugin="vfs_ls")
+    query: |
       // Glob > v2 accepts a component list for the root parameter.
       LET Path <= if(condition=version(plugin="glob") > 2 AND Components,
         then=Components, else=Path)

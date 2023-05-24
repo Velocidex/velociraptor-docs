@@ -26,6 +26,9 @@ separator|Comma separator (default ',')|string
 comment|The single character that should be considered a comment|string
 columns|The columns to use|list of string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parses events from a CSV file.

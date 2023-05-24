@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 pid|A pid to list. If this is provided we are able to operate much faster by only opening a single process.|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Enumerate running processes.

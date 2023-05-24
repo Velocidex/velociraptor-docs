@@ -14,6 +14,9 @@ no_edit: true
 <span class='vql_type pull-right page-header'>Function</span>
 
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve the current server monitoring state.

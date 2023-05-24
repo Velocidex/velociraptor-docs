@@ -23,6 +23,10 @@ client_id|The client id to import to. Use 'auto' to generate a new client id.|st
 hostname|When creating a new client, set this as the hostname.|string
 filename|Path on server to the collector zip.|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Imports an offline collection zip file (experimental).

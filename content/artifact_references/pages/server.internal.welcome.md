@@ -37,7 +37,7 @@ reports:
     template: |
       <div class="row dashboard ">
       <div class="card col-10">
-      <img src="assets/velo.svg" height="150">
+      <img src="./velo.svg" height="150">
       <div class="card-body">
 
       # Welcome to Velociraptor!
@@ -45,9 +45,10 @@ reports:
       ## Common tasks:
 
       * <a href="#/dashboard">Inspect the server's state</a>
-      * <a href="#/collected/server">Building an Offline Collector</a>
+      * <a href="#/collected/server">Build an Offline Collector</a>
       * <a href="#/notebooks">Write VQL notebooks</a>
       * <a href="#/host/server">View Server Configuration</a>
+      * <a href="#/events/server/Server.Audit.Logs">Inspect Server Audit Log</a>
       * <a href="#/artifacts/Server.Internal.Welcome">Customize this welcome screen</a>
 
       Or simply search for a client in the search bar above.

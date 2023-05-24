@@ -65,14 +65,17 @@ parameters:
         condition:
             any of them
       }
-  - name: PathWhitelist
-    description: |
-        Process paths to exclude. Default is common AntiVirus we have seen cause
-        false positives with signatures in memory.
-    type: csv
-    default: |
-      Path
-      /usr/local/bin/velociraptor
+  - name: NumberOfHits
+    description: THis artifact will stop by default at one hit. This setting allows additional hits
+    default: 1
+    type: int
+  - name: ContextBytes
+    description: Include this amount of bytes around hit as context.
+    default: 0
+    type: int
+  - name: ExePathWhitelist
+    description: Regex of ProcessPaths to exclude
+    type: regex
 
 
 sources:
@@ -86,9 +89,6 @@ sources:
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
 
-      -- allow whitelist case sensitive
-      LET whitelist <= SELECT upcase(string=Path) AS Path FROM PathWhitelist
-
       -- find all processes and add filters
       LET processes = SELECT
              Name as ProcessName,
@@ -98,7 +98,8 @@ sources:
             Name =~ ProcessRegex
             AND format(format="%d", args=Pid) =~ PidRegex
             AND NOT Pid in me.Pid
-            AND NOT upcase(string=Exe) in whitelist.Path
+            AND NOT if(condition=ExePathWhitelist,
+                    then= Exe=~ExePathWhitelist)
             AND log(message=format(format="Scanning pid %v: %v", args=[
                 Pid, CommandLine]))
 
@@ -113,12 +114,16 @@ sources:
                 Namespace,
                 Rule,
                 Meta,
+                String.Name as YaraString,
                 String.Offset as HitOffset,
-                String.Name as HitName,
-                String.HexData as HitHexData
+                upload( accessor='scope', 
+                    file='String.Data', 
+                    name=format(format="%v-%v_%v_%v", 
+                    args=[ ProcessName, Pid, String.Offset, ContextBytes ]
+                        )) as HitContext
              FROM yara(files=format(format="/%d", args=Pid),
-                       accessor='process',rules=yara_rules)
-             LIMIT 1
+                       accessor='process',rules=yara_rules,
+                       context=ContextBytes, number=NumberOfHits )
           })
 
       -- upload hits using the process accessor
@@ -126,8 +131,8 @@ sources:
           upload(
             accessor="process",
             file=format(format="/%v", args=Pid),
-            name=format(format='%v-%v.dmp',
-            args= [ ProcessName, Pid ])) as ProcessDump
+            name=pathspec(Path=format(format='%v-%v.dmp',
+                          args= [ ProcessName, Pid ]))) as ProcessDump
       FROM hits
       WHERE log(message=format(format='Will upload %v: %v', args=[Pid, ProcessName]))
 
@@ -136,4 +141,7 @@ sources:
         then=upload_hits,
         else=hits)
 
+column_types:
+  - name: HitContext
+    type: preview_upload
 ```

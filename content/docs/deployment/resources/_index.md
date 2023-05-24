@@ -164,27 +164,23 @@ filestore directory:
 
 4. `config`: This directory contains server specific configuration
    that is changed through the GUI.
+
 5. `downloads`: Contains Zip files prepared via the GUI's "Prepare Download" button.
 
 6. `hunt_index` and `hunt`: contain metadata related to managing
    current hunts. It does not typically contain a lot of data.
 
-7. `journals` are journal files that allow Velociraptor to follow all
-   clients at the same time. It is safe to remove journal files at any
-   time as they can become large. They typically contain events from
-   client and server monitoring queries.
-
-8. `notebooks` contains the user created post processing and analysis
+7. `notebooks` contains the user created post processing and analysis
    notebooks. You probably do not want to remove these.
 
-9. `server_artifacts` store the results of collection Server Artifacts
+8. `server_artifacts` store the results of collection Server Artifacts
    in the GUI.
 
-10. `users` contains information about all GUI users.
+9. `users` contains information about all GUI users.
 
 
-The majority of the disk usage appears in the `clients` and `journals`
-directories so it is worth aggressively managing that usage.
+The majority of the disk usage appears in the `clients` directory so
+it is worth aggressively managing that usage.
 
 
 In the AWS cloud it is possible to resize disk space dynamically. See [Requesting Modifications to Your EBS Volumes

@@ -1,4 +1,4 @@
-name: Custom.Windows.Triage.HighValueMemory
+name: Windows.Triage.HighValueMemory
 
 description: |
   Dump process memory and upload to the server

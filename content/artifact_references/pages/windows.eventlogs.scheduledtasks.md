@@ -74,7 +74,7 @@ parameters:
   - name: TaskSchedulerEventRegex
     description: Regex of TaskScheduler log event ids.
     type: regex
-    default: ^(140|141)$
+    default: .
   - name: SecurityEventRegex
     description: regex of Security log event ids.
     type: regex

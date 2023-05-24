@@ -9,7 +9,7 @@ In DFIR Triaging means to quickly collect information about the system
 in order to establish its potential relevance to a forensic
 investigation.
 
-While many think of triage as a collecting files (perhaps as an
+While many think of triage as collecting files (perhaps as an
 alternative to full disk acquisition), in Velociraptor, there is no
 real difference between collecting files or other non-volatile
 artifacts: Everything that Velociraptor collects is just a VQL
@@ -87,7 +87,7 @@ VM disk.
 
 ## Offline collections
 
-We have seem previously how to collect many files using the
+We have seen previously how to collect many files using the
 `Windows.KapeFiles.Targets` artifact in the usual client/server
 mode. But what if we are unable to deploy Velociraptor on a new
 network in client/server mode? With Velociraptor not installed on the
@@ -153,7 +153,7 @@ Here we get to choose what kind of collector we would like:
     * SFTP: This allows the collector to upload the file to an SFTP
       server using a private key.
 
-The `Offline Collector Builder` is simply a GUI wrapped around the
+The `Offline Collector Builder` is simply a GUI wrapper around the
 `Server.Utils.CreateCollector` server artifact. Once it is collected,
 the artifact will automatically upload the pre-configured collector it
 created into the collection and the file will be available for
@@ -173,6 +173,64 @@ The collector creates a zip file containing the collected files as
 well as an optional report.
 
 ![Viewing the Offline Collector in the console](image29.png)
+
+### Customizing the execution of the offline collector
+
+You can see the embedded configuration of the offline collector using
+the `config show` command:
+
+```
+C:\Users\Administrator\Downloads>Collector_velociraptor.exe config show
+autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - --logfile
+  - Collector_velociraptor.exe.log
+  - -v
+  - --require_admin
+  artifact_definitions:
+  - name: Collector
+    parameters:
+    - name: Artifacts
+      default: |-
+        [
+         "Demo.Plugins.GUI"
+        ]
+      type: json_array
+    - name: Parameters
+      default: '{}'
+      type: json
+```
+
+The autoexec parameters are run when no other command line options are
+specified. The default command line simply collects a special custom
+artifact which collects the specified artifacts in the Artifacts
+parameter specified as a JSON list.
+
+The primary use of the offline collector is to be able to run it
+without any needed command line options, which is why the
+configuration file specifies the full list of required artifacts to
+collect. However, sometimes it is useful to slightly tweak the
+collector from the command line. We do this by adding the `--` flag
+which introduces other command line options to the default autoexec
+array specified in the configuration.
+
+You can use this to change the list of collected artifacts on the fly
+by providing a new JSON encoded artifacts list to the collector:
+
+```
+Collector_velociraptor.exe -- --args Artifacts="["""Generic.Client.Info""","""Windows.Sys.Users"""]"
+```
+
+NOTE: The windows command interpreter (`cmd.exe`) uses an eclectic
+escaping scheme with each quote character encoded into three
+quotes. The same command using bash looks like:
+
+```
+Collector_velociraptor -- --args Artifacts='["Generic.Client.Info"]'
+```
 
 ### Include third party binaries
 
@@ -227,7 +285,6 @@ server. You will need to use an appropriate transfer mechanism (such
 as SFTP or SCP) to upload to the server itself.
 
 {{% /notice %}}
-
 
 # Local collection considerations
 

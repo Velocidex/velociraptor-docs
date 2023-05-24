@@ -13,9 +13,9 @@ The artifact:
 * files matching ZipFilenameRegex are recursively searched as above.
 
 The artifact is optimised to recursively search through embedded zip,
-jar,war and ear files by extracting any discovered containers.  
-Select UploadHits to upload Discovered file for further analysis.  It is 
-recommended to increase default artifact timeout for large servers or target 
+jar,war and ear files by extracting any discovered containers.
+Select UploadHits to upload Discovered file for further analysis.  It is
+recommended to increase default artifact timeout for large servers or target
 glob.
 
 Some examples of path glob may include:
@@ -28,7 +28,7 @@ Some examples of path glob may include:
 NOTE: this artifact runs the glob plugin with the nosymlink switch
 turned on.  This will NOT follow any symlinks and may cause
 unexpected results if unknowingly targeting a folder with
-symlinks. Yara is not applied to the containers, only contained contents 
+symlinks. Yara is not applied to the containers, only contained contents
 that are not containers.
 
 
@@ -45,9 +45,9 @@ description: |
     * files matching ZipFilenameRegex are recursively searched as above.
 
     The artifact is optimised to recursively search through embedded zip,
-    jar,war and ear files by extracting any discovered containers.  
-    Select UploadHits to upload Discovered file for further analysis.  It is 
-    recommended to increase default artifact timeout for large servers or target 
+    jar,war and ear files by extracting any discovered containers.
+    Select UploadHits to upload Discovered file for further analysis.  It is
+    recommended to increase default artifact timeout for large servers or target
     glob.
 
     Some examples of path glob may include:
@@ -60,7 +60,7 @@ description: |
     NOTE: this artifact runs the glob plugin with the nosymlink switch
     turned on.  This will NOT follow any symlinks and may cause
     unexpected results if unknowingly targeting a folder with
-    symlinks. Yara is not applied to the containers, only contained contents 
+    symlinks. Yara is not applied to the containers, only contained contents
     that are not containers.
 
 parameters:
@@ -89,15 +89,23 @@ parameters:
              uint16(0) == 0x5A4D and
              uint32(uint32(0x3C)) == 0x00004550
         }
-      
+  - name: NumberOfHits
+    description: THis artifact will stop by default at one hit. This setting allows additional hits
+    default: 1
+    type: int
+  - name: ContextBytes
+    description: Include this amount of bytes around hit as context.
+    default: 0
+    type: int
+
 sources:
   - query: |
       -- this section glob searches and confirms we are looking at zip container
-      LET target_files = SELECT *, 
-            read_file(filename=OSPath,offset=0,length=2) as _Header 
+      LET target_files = SELECT *,
+            read_file(filename=OSPath,offset=0,length=2) as _Header
         FROM glob(globs=TargetGlob,nosymlink=True)
         WHERE _Header = 'PK'
-                    
+
       -- recursive search function
       LET Recurse(Container, File, Accessor, RecursionRounds) = SELECT * FROM if(
         condition=RecursionRounds < MaxRecursions,
@@ -105,8 +113,8 @@ sources:
            SELECT * FROM foreach(
                 row={
                     SELECT *
-                    FROM glob(accessor='zip', 
-                       root=pathspec(DelegatePath=File, DelegateAccessor=Accessor), 
+                    FROM glob(accessor='zip',
+                       root=pathspec(DelegatePath=File, DelegateAccessor=Accessor),
                        globs='**')
                     WHERE NOT IsDir AND Size > 0
                 },
@@ -114,11 +122,11 @@ sources:
                     SELECT *
                     FROM if(condition=Name =~ ZipFilenameRegex,
                             then={
-                                SELECT * 
+                                SELECT *
                                 FROM Recurse(
                                     Container = Container,
                                     File=OSPath,
-                                    Accessor="zip", 
+                                    Accessor="zip",
                                     RecursionRounds = RecursionRounds + 1)
                             },
                             else={
@@ -130,24 +138,34 @@ sources:
                                 File.Size AS Size,
                                 Mtime, Atime, Ctime, Btime,
                                 Rule, Tags, Meta,
-                                str(str=String.Data) AS HitContext,
-                                String.Offset AS HitOffset
-                              FROM yara(accessor='zip',files=OSPath,rules=YaraRule)
+                                String.Name as YaraString,
+                                String.Offset as HitOffset,
+                                upload( accessor='scope',
+                                    file='String.Data',
+                                    name=format(format="%v_%v",
+                                    args=[ OSPath.HumanString, String.Offset ]
+                                        )) as HitContext
+                              FROM yara(accessor='zip',files=OSPath,rules=YaraRule,
+                                context=ContextBytes, number=NumberOfHits)
                             })
                     })
           })
-        
+
       LET hits = SELECT * FROM foreach(row=target_files,
             query={
                 SELECT *
                 FROM Recurse(Container=OSPath,File=OSPath, Accessor="auto", RecursionRounds=0)
             })
-      
+
       -- upload files that have hit
       LET upload_hits = SELECT *, upload(file=Container) as ContainerUpload FROM hits
-      
+
       -- display rows
       SELECT * FROM if(condition=UploadHits,
         then= upload_hits,
         else= hits)
+
+column_types:
+  - name: HitContext
+    type: preview_upload
 ```

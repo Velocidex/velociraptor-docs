@@ -16,6 +16,9 @@ description: |
    device. The globs will be searched in one pass - so you can provide
    many globs at the same time.
 
+aliases:
+  - Windows.Collectors.File
+
 parameters:
   - name: collectionSpec
     description: |
@@ -25,28 +28,32 @@ parameters:
     default: |
        Glob
        Users\*\NTUser.dat
+
   - name: Root
     description: |
-      On Windows, this is the device to apply all the glob on. On *NIX,
-      this should be a path to a subdirectory but must not be a real
-      device from /dev.
+      On Windows, this is the device to apply all the glob on
+      (e.g. `C:`). On *NIX, this should be a path to a subdirectory or
+      /.
     default: "C:"
+
   - name: Accessor
-    default: lazy_ntfs
+    default: auto
     description: |
-      On Windows, this can be left on `lazy_ntfs'. For *NIX, this value
-      must be set to `file' since the ntfs accessors are not available.
-  - name: Separator
-    description: |
-      The path separator used to construct the final globs from the root
-      and the partial globs in `collectionSpec'.
-    default: "\\"
+      On Windows, this can be changed to `ntfs`.
+
+  - name: NTFS_CACHE_TIME
+    type: int
+    description: How often to flush the NTFS cache. (Default is never).
+    default: "1000000"
+
 
 sources:
    - name: All Matches Metadata
      query: |
+      LET RootPath <= pathspec(Path=Root, accessor=Accessor)
+
       -- Generate the collection globs for each device
-      LET specs = SELECT Root + Separator + Glob AS Glob
+      LET specs = SELECT RootPath + Glob AS Glob
             FROM collectionSpec
             WHERE log(message=format(format="Processing Device %v with %v: %v",
                       args=[Root, Accessor, Glob]))
@@ -60,27 +67,31 @@ sources:
         FROM glob(globs=specs.Glob, accessor=Accessor)
         WHERE NOT IsDir AND log(message="Found " + SourceFile)
 
-      -- Create a unique key to group by - modification time and path name.
-      LET all_results <= SELECT Created, LastAccessed,
-              Modified, Size, SourceFile
-        FROM hits
+      -- Pass all the results to the next query.
+      LET all_results <=
+         SELECT Created, LastAccessed, Modified, Size, SourceFile
+         FROM hits
 
       SELECT * FROM all_results
 
    - name: Uploads
      query: |
       -- Upload the files
-      LET uploaded_files = SELECT * FROM foreach(row=all_results,
+      LET uploaded_files = SELECT * FROM foreach(row={
+          SELECT * FROM all_results
+        },
         workers=30,
         query={
-            SELECT Created, LastAccessed, Modified, SourceFile, Size,
-               upload(file=SourceFile, accessor=Accessor, name=SourceFile,
+          SELECT Created, LastAccessed, Modified, SourceFile, Size,
+               upload(file=SourceFile,
+                      accessor=Accessor,
                       mtime=Modified) AS Upload
             FROM scope()
         })
 
       -- Separate the hashes into their own column.
-      SELECT now() AS CopiedOnTimestamp, SourceFile, Upload.Path AS DestinationFile,
+      SELECT now() AS CopiedOnTimestamp, SourceFile,
+             Upload.Path AS DestinationFile,
                Size AS FileSize, Upload.sha256 AS SourceFileSha256,
                Created, Modified, LastAccessed
         FROM uploaded_files

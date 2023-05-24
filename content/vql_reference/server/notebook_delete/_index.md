@@ -22,6 +22,9 @@ Arg | Description | Type
 notebook_id||string (required)
 really_do_it||bool
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+
 ### Description
 
 Delete a notebook with all its cells. 

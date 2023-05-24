@@ -28,6 +28,9 @@ progress_timeout|If no progress is detected in this many seconds, we terminate t
 org_id|If specified, the query will run in the specified org space (Use 'root' to refer to the root org)|string
 runas|If specified, the query will run as the specified user|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">IMPERSONATION</i>
+
 ### Description
 
 Evaluate a VQL query.

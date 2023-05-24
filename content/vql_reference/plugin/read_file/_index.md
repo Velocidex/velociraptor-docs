@@ -24,6 +24,9 @@ max_length|Max length of the file to read.|int
 filenames|One or more files to open.|list of OSPath (required)
 accessor|An accessor to use.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Read files in chunks.

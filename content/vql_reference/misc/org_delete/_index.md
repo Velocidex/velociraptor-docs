@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 org|The org ID to delete.|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">ORG_ADMIN</i>
+
 ### Description
 
 Deletes an Org from the server.

@@ -24,6 +24,9 @@ start|First client to fetch (0)'|uint64
 count|Maximum number of clients to fetch (1000)'|uint64
 client_id||string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve the list of clients.

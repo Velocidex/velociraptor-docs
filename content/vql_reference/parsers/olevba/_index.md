@@ -23,6 +23,9 @@ file|A list of filenames to open as OLE files.|list of OSPath (required)
 accessor|The accessor to use.|string
 max_size|Maximum size of file we load into memory.|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Extracts VBA Macros from Office documents.

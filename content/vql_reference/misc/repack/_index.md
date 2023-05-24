@@ -26,6 +26,9 @@ binaries|List of tool names that will be repacked into the target|list of string
 config|The config to be repacked in the form of a json or yaml string|string (required)
 upload_name|The name of the upload to create|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Repack and upload a repacked binary or MSI to the server.

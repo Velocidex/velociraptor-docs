@@ -26,6 +26,9 @@ separator|Comma separator (default ',')|string
 comment|The single character that should be considered a comment|string
 columns|The columns to use|list of string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Watch a CSV file and stream events from it. Note: This is an event

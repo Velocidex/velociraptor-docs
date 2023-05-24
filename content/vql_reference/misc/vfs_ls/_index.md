@@ -24,6 +24,9 @@ components|Alternatively a list of path components can be given.|list of string
 accessor|An accessor to use.|string
 depth|Depth of directory to list (default 0).|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 List directory and build a VFS object.

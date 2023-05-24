@@ -22,6 +22,9 @@ Arg | Description | Type
 file||OSPath (required)
 accessor|The accessor to use.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Opens an ESE file and dump the schema.

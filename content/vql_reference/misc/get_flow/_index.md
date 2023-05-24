@@ -22,6 +22,10 @@ Arg | Description | Type
 client_id||string (required)
 flow_id||string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
+<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+
 ### Description
 
 Gets flow details.

@@ -32,6 +32,9 @@ queries|Recent Queries run|bool
 metrics|Collect metrics|bool
 duration|Duration of samples (default 30 sec)|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Returns a profile dump from the running process.

@@ -22,6 +22,9 @@ Arg | Description | Type
 file|A list of files to parse.|OSPath (required)
 accessor|The accessor to use.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parse plist file
@@ -42,6 +45,9 @@ Arg | Description | Type
 ----|-------------|-----
 file|A list of files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
+
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
 
 ### Description
 

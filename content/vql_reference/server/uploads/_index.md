@@ -23,6 +23,9 @@ client_id|The client id to extract|string
 flow_id|A flow ID (client or server artifacts)|string
 hunt_id|A hunt ID|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Retrieve information about a flow's uploads.

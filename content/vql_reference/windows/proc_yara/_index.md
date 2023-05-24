@@ -27,6 +27,9 @@ namespace|The Yara namespece to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 number|Stop after this many hits (1).|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Scan processes using yara rules.

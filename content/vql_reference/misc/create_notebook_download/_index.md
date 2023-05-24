@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 notebook_id|Client ID to export.|string (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
+
 ### Description
 
 Creates a notebook export zip file.

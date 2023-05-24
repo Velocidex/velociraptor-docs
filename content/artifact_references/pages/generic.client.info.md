@@ -47,6 +47,7 @@ sources:
                config.Version.BuildTime as BuildTime,
                config.Version.Version as Version,
                config.Version.ci_build_url AS build_url,
+               config.Version.install_time as install_time,
                config.Labels AS Labels,
                Hostname, OS, Architecture,
                Platform, PlatformVersion, KernelVersion, Fqdn,
@@ -115,7 +116,7 @@ sources:
     precondition: SELECT OS From info() where OS = 'windows'
     query: |
       SELECT Name, Description, Mtime AS LastLogin
-      FROM Artifact.Windows.Sys.Users(OnlyRemote=TRUE)
+      FROM Artifact.Windows.Sys.Users()
 
 reports:
   - type: CLIENT

@@ -24,6 +24,9 @@ regex|A list of regex to apply to the file data.|list of string (required)
 accessor|The accessor to use.|string
 buffer_size|Maximum size of line buffer (default 64kb).|int
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+
 ### Description
 
 Parses a file with a set of regexp and yields matches as records.  The

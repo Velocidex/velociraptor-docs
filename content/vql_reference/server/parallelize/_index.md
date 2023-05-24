@@ -33,6 +33,9 @@ notebook_cell_table|A notebook cell can have multiple tables.)|int64
 workers|Number of workers to spawn.)|int64
 batch|Number of rows in each batch.)|int64
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+
 ### Description
 
 Runs query on result batches in parallel.

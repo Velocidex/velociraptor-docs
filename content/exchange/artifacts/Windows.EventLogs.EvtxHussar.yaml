@@ -15,10 +15,11 @@ description: |
    - ScheduledTasks (creation/modification/execution)<br />
    - Services<br />
    - WinRM<br />
-   - Boot up/Restart/Shutdown
+   - Boot up/Restart/Shutdown<br />
+   - SMB
    
    Note: If no logs from specific category will be found, source will remain empty.<br />
-   Based on version 1.6b of EvtxHussar. 
+   Based on version 1.7 of EvtxHussar. 
    
 author: Jarosław Oparka - @yarox24
 
@@ -30,8 +31,8 @@ resources:
   max_upload_bytes: 5368709120 # 5 Gigabytes
 
 tools:
-  - name: EvtxHussar16
-    url: https://github.com/yarox24/EvtxHussar/releases/download/1.6/EvtxHussar1.6b_windows_amd64.zip
+  - name: EvtxHussar17
+    url: https://github.com/yarox24/EvtxHussar/releases/download/1.7/EvtxHussar1.7_windows_amd64.zip
     serve_locally: true
 
 precondition:
@@ -66,11 +67,6 @@ parameters:
   - name: AuditPolicyChanges
     description: |
       Include events related to changes in audit policy (Security.evtx)
-    default: Y
-    type: bool
-  - name: WindowsFirewall
-    description: |
-      Include Windows Firewall (Microsoft-Windows-Windows Firewall With Advanced Security%4Firewall.evtx, Security.evtx) events
     default: Y
     type: bool
   - name: BootupRestartShutdown
@@ -123,6 +119,26 @@ parameters:
       Include events related to Windows services (System.evtx, Security.evtx)
     default: Y
     type: bool
+  - name: SMBClientDestinations
+    description: |
+      Include events related to usage of SMB Client (outgoing SMB connections)
+    default: Y
+    type: bool
+  - name: SMBServerAccessAudit
+    description: |
+      Include events related to access to SMB Server (incoming SMB connections)
+    default: Y
+    type: bool
+  - name: SMBServerModifications
+    description: |
+      Include events related to SMB Server configuration
+    default: Y
+    type: bool
+  - name: WindowsFirewall
+    description: |
+      Include Windows Firewall (Microsoft-Windows-Windows Firewall With Advanced Security%4Firewall.evtx, Security.evtx) events
+    default: Y
+    type: bool
   - name: WinRM
     description: |
       Include events related to Windows Remote Management (Microsoft-Windows-WinRM%4Operational.evtx)
@@ -134,7 +150,7 @@ sources:
   - name: Antivirus_Symantec
     query: |
       // Execute EvtxHussar
-      LET ZipInfo <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName= "EvtxHussar16", IsExecutable= False)
+      LET ZipInfo <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName= "EvtxHussar17", IsExecutable= False)
       
       LET tmpdir <= tempdir()
       
@@ -153,7 +169,6 @@ sources:
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=AccountsUserRelatedOperations)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=AuditLogCleared)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=AuditPolicyChanges)
-      LET cnt <= IncreaseCounter(c=cnt, cat_flag=WindowsFirewall)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=BootupRestartShutdown)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=Logons)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=PowerShellScriptBlocksReconstructAndUpload)
@@ -163,8 +178,13 @@ sources:
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=ScheduledTasksCreationModification)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=ScheduledTasksExecution)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=Services)
+      LET cnt <= IncreaseCounter(c=cnt, cat_flag=SMBClientDestinations)
+      LET cnt <= IncreaseCounter(c=cnt, cat_flag=SMBServerAccessAudit)
+      LET cnt <= IncreaseCounter(c=cnt, cat_flag=SMBServerModifications)
       LET cnt <= IncreaseCounter(c=cnt, cat_flag=WinRM)
-      LET cnt_max <= int(int=16)
+      LET cnt <= IncreaseCounter(c=cnt, cat_flag=WindowsFirewall)
+      LET cnt_max <= int(int=19)
+      
       
       LET AppendIfEnabled(arr, cat_flag, l2propername) = if(condition= cat_flag = "Y", then= arr + l2propername, else= arr )
       
@@ -174,7 +194,6 @@ sources:
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=AccountsUserRelatedOperations, l2propername="AccountsUserRelatedOperations")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=AuditLogCleared, l2propername="AuditLogCleared")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=AuditPolicyChanges, l2propername="AuditPolicyChanged")
-      LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=WindowsFirewall, l2propername="FirewallUniversal")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=BootupRestartShutdown, l2propername="General_BootupRestartShutdown")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=Logons, l2propername="LogonsUniversal")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=PowerShellScriptBlocksReconstructAndUpload, l2propername="PowerShellScriptBlock")
@@ -184,7 +203,11 @@ sources:
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=ScheduledTasksCreationModification, l2propername="ScheduledTasks_CreationModification")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=ScheduledTasksExecution, l2propername="ScheduledTasks_Execution")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=Services, l2propername="ServicesUniversal")
+      LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=SMBClientDestinations, l2propername="SMB_ClientDestinations")
+      LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=SMBServerAccessAudit, l2propername="SMB_ServerAccessAudit")
+      LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=SMBServerModifications, l2propername="SMB_ServerModifications")
       LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=WinRM, l2propername="WinRMUniversal")
+      LET EnabledL2Maps <= AppendIfEnabled(arr=EnabledL2Maps, cat_flag=WindowsFirewall, l2propername="FirewallUniversal")
       
       
       LET HussArgs <= array(bin=Binpath, 
@@ -234,10 +257,6 @@ sources:
   - name: BootupRestartShutdown
     query: |
       SELECT *, "EvtxHussar.BootupRestartShutdown" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="general", jsonl_filename="bootup_restart_shutdown.jsonl"))
-
-  - name: WindowsFirewall
-    query: |
-      SELECT *, "EvtxHussar.WindowsFirewall" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="firewall", jsonl_filename="windows_firewall.jsonl"))
       
   - name: Logons
     query: |
@@ -273,8 +292,24 @@ sources:
   - name: Services
     query: |
       SELECT *, "EvtxHussar.Services" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="services", jsonl_filename="services.jsonl"))
+
+  - name: SMB_ClientDestinations
+    query: |
+      SELECT *, "EvtxHussar.SMB_ClientDestinations" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="smb", jsonl_filename="smb_client_destinations.jsonl"))
+
+  - name: SMB_ServerAccessAudit
+    query: |
+      SELECT *, "EvtxHussar.SMB_ServerAccessAudit" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="smb", jsonl_filename="smb_server_access_audit.jsonl"))
       
+  - name: SMB_ServerModifications
+    query: |
+      SELECT *, "EvtxHussar.SMB_ServerModifications" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="smb", jsonl_filename="smb_server_modifications.jsonl"))
+
   - name: WinRM
     query: |
       SELECT *, "EvtxHussar.WinRM" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="winrm", jsonl_filename="winrm.jsonl"))
-
+      
+  - name: WindowsFirewall
+    query: |
+      SELECT *, "EvtxHussar.WindowsFirewall" AS __Source FROM PluginOutput(search_result=GetOutputFiles(category="firewall", jsonl_filename="windows_firewall.jsonl"))
+      
