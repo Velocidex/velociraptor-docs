@@ -4,7 +4,7 @@ description: |
 
    Info such as connection times, clipboard activity, and remote host information are captured.
 
-author: Rob Homewood 
+author: Rob Homewood, Modified by angry-bender
 
 type: CLIENT
 parameters:
@@ -31,6 +31,8 @@ sources:
                        FROM parse_lines(filename=InputLogPath.FullPath)
                     
         -- Prints matching data where there is an entry in Record.Message                    
-        SELECT Record.Date as Date, Record.PPID as PPID, Record.PID as PID, Record.Message as Message 
+        SELECT Record.Date as Date, Record.PPID as PPID, Record.PID as PID, Record.Message as Message,
+        -- Extracts IP address from Message field and adds to its own column
+        if(condition=Message=~"External", then=parse_string_with_regex(string=Message, regex="((?:[0-9]{1,3}[\.]{3}[0-9]{1,3})")).g1 AS ExternalIPAddress
         FROM parse_log 
         WHERE Record.Message
