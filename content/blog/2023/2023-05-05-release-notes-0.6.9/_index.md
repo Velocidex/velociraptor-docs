@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.6.9 Release"
 description: |
-   Velociraptor Release 0.6.9 is now in Release Candidate.
+   Velociraptor Release 0.6.9 is now LIVE!
    This post discusses some of the new features.
 
 tags:
@@ -12,7 +12,7 @@ date: 2023-05-05
 ---
 
 I am very excited to announce the latest Velociraptor release 0.6.9 is
-now in release candidate status. Please test widely. This release has
+now LIVE and available for download. This release has
 been in the making for a few months now and has a lot of new features
 and bug fixes.
 
@@ -70,7 +70,7 @@ Velociraptor allows uploading an `artifact pack` - a simple Zip file
 containing artifact definitions. For example, the artifact exchange is
 simply a zip file with artifact definitions.
 
-Previously artifact packs could only be upload in their entirety and
+Previously artifact packs could only be uploaded in their entirety and
 always had an "Exchange" prefix prepended. However in this release the
 UI was revamped to allow only some artifacts to be imported from the
 pack and customize the prefix.
@@ -84,12 +84,12 @@ Windows file sharing is implemented over the SMB protocol. Within the
 OS, accessing remote file shares happens transparently, for example by
 mapping the remote share to a drive using `net use` command or
 accessing a file name starting with a UNC path
-(e.g. `\\ServerName\Share\File.exe`)
+(e.g. `\\ServerName\Share\File.exe`).
 
 While Velociraptor can technically also access UNC shares by using the
 usual file APIs and providing a UNC path, in reality this does not
 work because Velociraptor is running as the local `System` user which
-normally does not have network credentials so can not map remote
+normally does not have network credentials so it can not map remote
 shares.
 
 This limitation is problematic because sometimes we need to access
@@ -153,7 +153,7 @@ Azure Blob Storage.
 Because the offline collector is typically used to collect large
 volumes of data, it is beneficial to upload the data to a networked
 server close to the collected machine. This avoids cloud network costs
-and bandwidth limitations and works very well in air gaped networks.
+and bandwidth limitations and works very well in air gapped networks.
 
 You can now simply create a new share on any machine, by adding a
 local Windows user with password credentials, exporting a directory as
@@ -310,14 +310,14 @@ Because audit events are available now as part of the server
 monitoring artifact, it is possible for users to develop custom VQL
 server monitoring artifacts to forward or respond to auditable events
 just like any other event on the client or the server. This makes it
-possible to forward events to e.g. Slack or Discord, as demonstrated
+possible to forward events (e.g. to Slack or Discord) as demonstrated
 by the `Elastic.Events.Upload` artifact above.
 
 ## Tool definitions can now specify an expected hash
 
 Velociraptor supports pushing tools to external endpoints. A
 Velociraptor artifact can define an external tool, allowing the server
-to automatically fetch the tool and upload it the endpoint.
+to automatically fetch the tool and upload it to the endpoint.
 
 Previously the artifact could only specify the URL where the tool
 should be downloaded from. However in this release it is also possible
@@ -340,11 +340,10 @@ the tool hash was legitimately updated.
 ## Conclusions
 
 There are many more new features and bug fixes in the latest
-release. Currently the release is in testing for the next few weeks,
-so please test widely and provide feedback by opening GitHub issues.
+release. 
 
 If you like the new features, take [Velociraptor for a
-spin](https://github.com/Velocidex/velociraptor)!  It is a available
+spin](https://github.com/Velocidex/velociraptor)!  It is available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
