@@ -1357,3 +1357,5 @@ CyberCrime
 
 # content/blog/2023/2023-05-05-release-notes-0.6.9/_index.md
 lockdown
+
+gapped
