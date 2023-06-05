@@ -1,8 +1,6 @@
-name:  Windows.EventLogs.MoveIT
+name:  Windows.EventLogs.MoveIt
 author: Rapid7 team -  Ted Samuels, @mgreen27 & @scudette
 description: |
-  MoveIT Specific Notes
-  ====================
   This Artifact enables scoping EventLogs from Progress Software's MoveIT File 
   Transfer. It is designed to assist in identifying exfiltration resulting from
   the exploitation of CVE-2023-34362
@@ -64,7 +62,8 @@ sources:
         }) +  parse_string_with_regex(regex="User '(?P<User>[^']+)'", string=X)
 
       SELECT EventTime,Computer,Channel,Provider,EventID,EventRecordID,
-        Parse(X=EventData.Data[0]) as Data,
+        Parse(X=split(string=EventData.Data[0],sep="\r\n\r\n")[1]) as EventData,
+        split(string=EventData.Data[0],sep="\r\n\r\n")[0] as Message,
         FullPath,
         EventData.Data[0] as _RawData
       FROM Artifact.Windows.EventLogs.EvtxHunter(
