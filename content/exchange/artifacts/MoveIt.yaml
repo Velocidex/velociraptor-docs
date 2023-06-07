@@ -203,11 +203,11 @@ sources:
       LET files = SELECT OSPath, IsDir
         FROM Artifact.Windows.NTFS.MFT(MFTDrive=DriveLetter, AllDrives=AllDrives,
             FileRegex='\.aspx$|^App_Web_[0-9a-z]{8}\.dll$|^u_.+\.log$',
-            PathRegex='MoveIt|Microsoft\.net|inetpub' )
+            PathRegex='MoveIt|Microsoft\.net|temp|inetpub' )
         WHERE NOT IsDir
-            AND NOT OSPath =~ '''\\\\.\\.:\\<Err>\\'''
+            AND NOT OSPath =~ '''.:\\<Err>\\'''
             AND ((  FileName=~ '\.aspx$' AND OSPath =~ 'MoveIt' )
-                OR (FileName=~ '^App_Web_[0-9a-z]{8}\.dll$' AND OSPath =~ 'Microsoft\.net' )
+                OR (FileName=~ '^App_Web_[0-9a-z]{8}\.dll$' AND OSPath =~ 'Microsoft\.net|temp' )
                 OR (FileName=~ '^u_.+\.log$' AND OSPath =~ 'inetpub' ))
             AND if(condition=DateAfter,
                 then= LastRecordChange0x10 > DateAfter,
