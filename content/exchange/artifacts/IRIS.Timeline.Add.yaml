@@ -1,0 +1,219 @@
+name: IRIS.Timeline.Add
+author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult)
+description: |
+   This artifact adds Velociraptor rows as timeline entries to DFIR-IRIS (https://dfir-iris.org/). It will link the assets and IOCs as specified in the parameters. Additionally, if the client is not yet existing in Iris, this artifact will leverage the IRIS.Sync.Asset artifact to add the asset to Iris first and link it in the event.
+   
+   Tested with Dfir-Iris API v2.0.1
+   
+   **Hints:**
+   
+   - It is **recommended** to add the parameters with 'Iris' prefix to the server metadata (via notebook) to ease the usage of the artifact:
+   
+   ```VQL
+   SELECT server_set_metadata(IrisURL="https://dfir-iris.local:4433",IrisKey="This-is-an_API_KEY",IrisCaseId="1",IrisRootCA='''-----BEGIN CERTIFICATE-----
+   <...>
+   -----END CERTIFICATE-----'''),server_metadata() FROM scope()
+   ```
+   
+   - The true power of this artifact lies in the ability to quickly add many entries to DFIR-IRIS. You will **most likely use this artifact from within a notebook**.
+   - There is a basic mechanism established to stop duplicates from being added. An event is compared to existing entries based on asset name, flow id, timestamp and the description. You can add multiple events happening at the same time for the same asset originating from the same flow as long as the description varies, e.g. by including dynamic details of the activity that differentiates between the events at the same time like a process name.
+   
+   **Example** to add entries in a performant way and have the results in well-structured columns. **ATTENTION: ALWAYS USE ASYNC=FALSE OTHERWISE ANY ASSETS THAT NEED TO BE CREATED MIGHT BE DUPLICATED!!!**
+        
+   ```VQL
+   LET eventsToAdd = SELECT event_time,str(str=event_time),message,path,FlowId,ClientId,Fqdn FROM source(artifact="Windows.Timeline.MFT")
+           ORDER BY event_time
+           LIMIT 10
+
+   SELECT * FROM foreach(row=eventsToAdd,query={SELECT * FROM Artifact.Custom.IRIS.Timeline.Add(AdditionalAssetId="1,2,3",AddToGraph=true,AddToSummary=false,IocId="8,9,10",Category="pers",clientId=ClientId,Description=format(format="Malicious file dropped to the system to establish persistence.\nFile path: %v\nActivity: %v",args=[path,message]),DisableSSLVerify=true,FlowId=FlowId,Timestamp=event_time,Title="Persistence established via Autostart Location")},async=false)
+   ```
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: SERVER
+
+parameters:
+  - name: clientId
+    description: Client Id of the client that should be synced to DFIR-IRIS
+  - name: AdditionalAssetId
+    description: Comma seperated list of IRIS AssetIds of additional assets beside the client to link in this event.
+  - name: IocId
+    description: Comma seperated list of IRIS IocIds to link IOCs in this event.
+  - name: Timestamp
+    description: Timestamp of the event in ISO format.
+  - name: Title
+    description: Title of the event.
+  - name: FlowId
+    description: FlowId or HuntId of the event source. This is needed to allow detection of duplicates!
+  - name: Tags
+    description: List of comma seperated tags to be added to the event.
+  - name: Description
+    description: Description of the event. Very important to actually understand what this entry is all about :)
+  - name: AddToSummary
+    description: Add it to timeline summary?
+    type: bool
+  - name: AddToGraph
+    description: Add it to attack graph?
+    type: bool
+  - name: Category
+    description: "Category of the action, mostly MITRE Enterprise Tactics. Allowed options are abbreviations and their MITRE ID: tbd,legit,rem,ini,exec,pers,priv,def,creds,disc,lat,coll,c2,exfil,imp"
+    type: choices
+    choices:
+      - tbd
+      - legit
+      - rem
+      - ini
+      - exec
+      - pers
+      - priv
+      - def
+      - creds
+      - disc
+      - lat
+      - coll
+      - c2
+      - exfil
+      - imp
+  - name: Color
+    description: Specify the color for this event in Iris. Green by default for obvious reasons.
+    type: choices
+    choices:
+      - green
+      - white
+      - blue
+      - lightblue
+      - purple
+      - red
+      - orange
+  - name: RawEvent
+    description: Add the raw event, message or the entire row as additional information. 
+  - name: IrisURL
+    description: URL of DFIR-IRIS. Preferred method is to use the server metadata
+  - name: IrisKey
+    description: API Key of DFIR-IRIS. Preferred method is to use the server metadata
+  - name: IrisCaseId
+    description: Case ID of the current case. Preferred method is to use the server metadata
+  - name: IrisRootCA
+    description: RootCA of DFIR-IRIS for self-signed or internal certificates of DFIR-IRIS. Preferred over completely skipping SSL verification.
+  - name: DisableSSLVerify
+    default: false
+    description: Disable TLS verification for HTTPS request to DFIR-IRIS.
+
+sources:
+
+  - query: |
+
+      LET URL <= if(
+            condition=IrisURL,
+            then=IrisURL,
+            else=server_metadata().IrisURL)
+      LET Creds <= if(
+           condition=IrisKey,
+           then=IrisKey,
+           else=server_metadata().IrisKey)
+      LET CaseID <= if(
+           condition=IrisCaseId,
+           then=IrisCaseId,
+           else=server_metadata().IrisCaseId)
+      LET RootCA <= if(
+            condition=IrisRootCA,
+            then=IrisRootCA,
+            else=server_metadata().IrisRootCA)
+            
+      LET metadata_preparation = SELECT client_metadata(client_id=clientId) as metadata FROM scope() WHERE metadata.IRIS_AssetId
+      
+      LET syncAsset = SELECT * FROM Artifact.Custom.Exchange.IRIS.Sync.Asset(clientId=clientId,IrisURL=URL,IrisCaseId=CaseID,IrisKey=Creds,IrisRootCA=RootCA,DisableSSLVerify=DisableSSLVerify)
+        
+      LET eventAsset1 = if(condition=metadata_preparation,then=array(a=metadata_preparation.metadata[0].IRIS_AssetId),else=if(condition=syncAsset.Result[0]="SUCCESS",then=array(a=metadata_preparation.metadata[0].IRIS_AssetId),else=[]))
+        
+      LET eventAsset2 = if(condition=AdditionalAssetId,then=split(string=AdditionalAssetId,sep=",|;"),else=[])
+        
+      LET eventCategory = if(condition=Category=~"^legit",then=2,
+                    else= if(condition=Category=~"^rem",then=3,
+                    else= if(condition=Category=~"^ini|^ta0001$",then=4,
+                    else= if(condition=Category=~"^exec|^ta0002$",then=5,
+                    else= if(condition=Category=~"^pers|^ta0003$",then=6,
+                    else= if(condition=Category=~"^priv|^ta0004$",then=7,
+                    else= if(condition=Category=~"^def|^ta0005$",then=8,
+                    else= if(condition=Category=~"^cred|^ta0006$",then=9,
+                    else= if(condition=Category=~"^disc|^ta0007$",then=10,
+                    else= if(condition=Category=~"^lat|^ta0008$",then=11,
+                    else= if(condition=Category=~"^coll|^ta0009$",then=12,
+                    else= if(condition=Category=~"^c2|^com|^ta0011$",then=13,
+                    else= if(condition=Category=~"^exf|^ta0010$",then=14,
+                    else= if(condition=Category=~"^imp|^ta0040$",then=15,
+                    else= 1))))))))))))))
+                    
+      LET eventColor = if(condition=Color =~ "^white",then="#fff",
+                else = if(condition=Color =~ "^blue",then="#1572E899",
+                else = if(condition=Color =~ "^purple",then="#6861CE99",
+                else = if(condition=Color =~ "^lightblue",then="#48ABF799",
+                else = if(condition=Color =~ "^red",then="#F2596199",
+                else = if(condition=Color =~ "^orange",then="#FFAD4699",
+                else = "#31CE3699"))))))
+                
+      LET eventDate = format(format="%vT%v.000",args=[split(string=Timestamp,sep=" ")[0],split(string=Timestamp,sep=" ")[1]])
+      
+      LET eventProperties = serialize(
+                            item=dict(
+                                event_title=Title, 
+                                event_source=if(condition=FlowId,then=format(format="Velo: %v",args=[FlowId]),else="Velo"),
+                                event_assets=if(condition=eventAsset1 OR eventAsset1,then=array(a=eventAsset1,b=eventAsset2),else=[]),
+                                event_iocs=if(condition=IocId,then=split(string=IocId,sep=",|;"),else=[]),
+                                event_tags=if(condition=Tags,then=format(format="Velo,%v",args=[Tags]),else="Velo"),
+                                event_category_id=eventCategory,
+                                event_in_summary=AddToSummary,
+                                event_in_graph=AddToGraph,
+                                event_color=eventColor,
+                                event_date=eventDate,
+                                event_tz="+00:00",
+                                event_content=Description,
+                                event_raw=RawEvent
+                            )
+                            ,format="json"
+                        )
+      
+      LET apiRequestIrisAddEvent = if(condition=config.version.version < "0.6.9",
+            then={ SELECT *
+                    FROM http_client(
+                        data=eventProperties,
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        disable_ssl_security=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="POST",
+                        url=format(format="%v/case/timeline/events/add?cid=%v", args=[URL,CaseID])) },
+            else={ SELECT *
+                    FROM http_client(
+                        data=eventProperties,
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        skip_verify=DisableSSLVerify,
+                        root_ca=RootCA,
+                        method="POST",
+                        url=format(format="%v/case/timeline/events/add?cid=%v", args=[URL,CaseID])) })
+
+      LET resolveHostname = SELECT os_info.hostname as hostname from clients(client_id=clientId)
+      
+      LET filterParams = dict(cid=CaseID,q=format(format='{"asset":["%v"],"source":["%v"],"startDate":["%v"],"endDate":["%v"]}',args=[resolveHostname.hostname[0],FlowId,eventDate,eventDate]))
+
+      LET checkExistingEntries = if(condition=config.version.version < "0.6.9",
+            then={ SELECT * FROM flatten(query={SELECT parse_json(data=Content).data.timeline as Timeline     FROM http_client(
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        method="GET",
+                        root_ca=RootCA,
+                        disable_ssl_security=DisableSSLVerify,
+                        params=filterParams,
+                        url=format(format="%v/case/timeline/advanced-filter", args=[URL])) GROUP BY Timeline
+                        })
+                   WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description) },
+            else={ SELECT * FROM flatten(query={SELECT parse_json(data=Content).data.timeline as Timeline     FROM http_client(
+                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[Creds])),
+                        method="GET",
+                        root_ca=RootCA,
+                        skip_verify=DisableSSLVerify,
+                        params=filterParams,
+                        url=format(format="%v/case/timeline/advanced-filter", args=[URL])) GROUP BY Timeline })
+                   WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description) })
+                        
+      SELECT * FROM if(condition=checkExistingEntries,
+                then={SELECT "Already Added -> Skipping the event. Check for existing entries manually!" as Action FROM scope()},
+                else={SELECT "Needs to be added" as Action, if(condition= Response=200,then="SUCCESS",else="ERROR") as Result,
+                    parse_json(data=Content).data as EventProperties
+                    FROM apiRequestIrisAddEvent})
