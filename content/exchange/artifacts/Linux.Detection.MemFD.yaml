@@ -4,7 +4,8 @@ description: |
    This artifact will parse /proc/*/exe files and look for processes 
     that have been executed from memory via memfd_create()
 
-reference: https://github.com/4ltern4te/velociraptor-contrib/blob/main/Linux.Detection.MemFD/README.md
+reference: 
+  - https://github.com/4ltern4te/velociraptor-contrib/blob/main/Linux.Detection.MemFD/README.md
 
 type: CLIENT
 
