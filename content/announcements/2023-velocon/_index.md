@@ -12,7 +12,7 @@ noTitle: true
 <img style="width: 100%" src="velocon_banner_2023.jpg">
 
 We are thrilled to announce that the 2nd annual VeloCON virtual summit will
-be held this September (date TBD), with times oriented to the continental
+be held this September 13th, with times oriented to the continental
 USA timezones. Once again, the conference will be online and completely
 free! Presentations will be published on our Velociraptor site and as
 YouTube videos after the event.
