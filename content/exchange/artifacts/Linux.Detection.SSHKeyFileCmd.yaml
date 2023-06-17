@@ -1,5 +1,9 @@
 name: Linux.Detection.SSHKeyFileCmd
 author: alternate
+description: |
+   This artifact will parse ~/.ssh/authorized_keys and ~/.ssh/id_*.pub looking for the command option
+   to detect potential persistence
+
 
 reference: 
   - https://github.com/4ltern4te/velociraptor-contrib/blob/main/Linux.Detection.SSHKeyFileCmd/README.md
