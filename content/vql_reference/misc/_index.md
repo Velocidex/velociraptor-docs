@@ -10,6 +10,7 @@ no_children: true
 Miscellaneous plugins not yet categorized.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
+|[alert](alert)|<span class='vql_type'>Function</span>|Generate an alert message|
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|

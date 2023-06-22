@@ -72,6 +72,15 @@
         ]
     },
     {
+        "title": "Generic.Applications.Chrome.SessionStorage",
+        "description": "Session storage allows a web site to store permanent data in the\nuser's browser.",
+        "link": "/artifact_references/pages/generic.applications.chrome.sessionstorage",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Generic.Applications.Office.Keywords",
         "description": "Microsoft Office documents among other document format (such as\nLibraOffice) are actually stored in zip files. The zip file contain\nthe document encoded as XML in a number of zip members.",
         "link": "/artifact_references/pages/generic.applications.office.keywords",
@@ -507,6 +516,15 @@
         "title": "Linux.Ssh.PrivateKeys",
         "description": "SSH Private keys can be either encrypted or unencrypted. Unencrypted\nprivate keys are more risky because an attacker can use them without\nneeding to unlock them with a password.",
         "link": "/artifact_references/pages/linux.ssh.privatekeys",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.SuSE.Packages",
+        "description": "Parse list of installed packages from zypper output\n",
+        "link": "/artifact_references/pages/linux.suse.packages",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -1675,7 +1693,7 @@
     },
     {
         "title": "Windows.Applications.Chrome.History",
-        "description": "Enumerate the users chrome history.\n",
+        "description": "Enumerates a targets chrome history. Source based on Hindsight and code review of https://source.chromium.org/chromium/chromium/src/+/master:components/history/core/browser/history_types.h. NOTE: Some research has shown that older browsers may not have this table, then you should be treating it as you would in a traditional investigation, this changes is aimed at taking advantage of the newer tables to reduce false postitives.\n",
         "link": "/artifact_references/pages/windows.applications.chrome.history",
         "type": "client",
         "tags": [
@@ -2241,9 +2259,9 @@
         ]
     },
     {
-        "title": "Windows.Events.Kerbroasting",
-        "description": "**Description**:\nThis Artifact will monitor all successful Kerberos TGS Ticket events for\nService Accounts (SPN attribute) implemented with weak encryption. These\ntickets are vulnerable to brute force attack and this event is an indicator\nof a Kerbroasting attack.",
-        "link": "/artifact_references/pages/windows.events.kerbroasting",
+        "title": "Windows.Events.Kerberoasting",
+        "description": "**Description**:\nThis Artifact will monitor all successful Kerberos TGS Ticket events for\nService Accounts (SPN attribute) implemented with weak encryption. These\ntickets are vulnerable to brute force attack and this event is an indicator\nof a Kerberoasting attack.",
+        "link": "/artifact_references/pages/windows.events.kerberoasting",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"

@@ -131,6 +131,15 @@ parameters:
       If specified the collection must complete in the given time. It
       will be cancelled if the collection exceeds this time.
 
+  - name: opt_version
+    default: ""
+    type: string
+    description: |
+      If specified the collection will be packed with the specified
+      version of the binary. NOTE: This is rarely what you want
+      because the packed builtin artifacts are only compatible with
+      the current release version.
+
   - name: StandardCollection
     type: hidden
     default: |
@@ -160,6 +169,8 @@ parameters:
           region=TargetArgs.region,
           endpoint=TargetArgs.endpoint,
           serversideencryption=TargetArgs.serverSideEncryption,
+          kmsencryptionkey=TargetArgs.kmsEncryptionKey,
+          s3uploadroot=TargetArgs.s3UploadRoot,
           noverifycert=TargetArgs.noverifycert)
 
   - name: GCSCollection
@@ -468,6 +479,7 @@ sources:
            upload_name=CollectorName,
            target=tool_name[0].Type,
            binaries=Binaries.Binary,
+           version=opt_version,
            config=serialize(format='json', item=autoexec))
       FROM scope()
 

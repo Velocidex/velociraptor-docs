@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 tool||string (required)
+version||string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
