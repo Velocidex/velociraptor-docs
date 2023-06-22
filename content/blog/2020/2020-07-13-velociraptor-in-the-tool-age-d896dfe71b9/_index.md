@@ -16,8 +16,7 @@ Velociraptor is a powerful endpoint visibility tool. It has plugins and parsers 
 However, as most DFIR professionals know, there are so many tools out there that we would love to use in our IR work. One of the strengths of Velociraptor is its flexibility afforded by the use of the[ Velociraptor Query Language (VQL).](../../img/the-velociraptor-query-language-pt-1-d721bff100bf)
 
 We have written before on how VQL can be extended by use of short
-[PowerShell scripts]({{% ref
-"/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/" %}}),
+[PowerShell scripts]({{% ref "/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/" %}}),
 by including these scripts directly in the Artifact definitions. This
 is a great way to extend the functionality provided by VQL, but what
 if we wanted to launch a completely separate binary on the endpoint,

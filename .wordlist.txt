@@ -1357,5 +1357,14 @@ CyberCrime
 
 # content/blog/2023/2023-05-05-release-notes-0.6.9/_index.md
 lockdown
-
 gapped
+
+# content/announcements/2023-trainings/_index.md
+MPLogs
+cmdline
+geeking
+teamserver
+
+# content/vql_reference/basic/unzip/_index.md
+autodetected
+tgz

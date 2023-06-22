@@ -81,7 +81,7 @@ and ideas along as well!
       * Local VQL Functions
       * Protocols and VQL operators
       * Exercise: Detect WMI launched shell
-      * Exercise: Enrich netstate with binary info
+      * Exercise: Enrich netstat with binary info
   * VQL Artifacts: VQL Modules
       * What are Velociraptor Artifacts?
       * The Artifact Exchange
@@ -183,7 +183,7 @@ and ideas along as well!
      * Why an offline collector?
      * Creating an Offline Collector
      * Exercise: Collect triage data and upload to a cloud bucket
-     * Protecting the collection file: Encrypion
+     * Protecting the collection file: Encryption
      * Exercise: Take a memory image with winpmem
      * Preparing an SMB share to receive offline collections
      * Importing collections into the GUI
