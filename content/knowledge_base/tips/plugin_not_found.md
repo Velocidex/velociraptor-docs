@@ -39,3 +39,5 @@ ERROR:Plugin info not found.
 If you decide you need this particular plugin you can either add to
 the allow list in the server configuration file. Or you may remove the
 allow list entirely (which allows all plugins to be registered).
+
+Tags: #vql #configuration #deployment

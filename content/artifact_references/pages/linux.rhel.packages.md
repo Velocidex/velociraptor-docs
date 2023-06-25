@@ -24,7 +24,7 @@ sources:
     query: |
         SELECT * FROM foreach(row={
           SELECT grok(grok=DNFGrokExpression, data=Stdout) AS Parsed
-          FROM execve(argv=["dnf", "list", "installed"], sep="\n")
+          FROM execve(argv=["dnf", "--quiet", "list", "installed"], sep="\n")
           WHERE count() > 2
         }, column="Parsed")
 

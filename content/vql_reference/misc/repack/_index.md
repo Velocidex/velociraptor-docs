@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 target|The name of the target OS to repack (VelociraptorWindows, VelociraptorLinux, VelociraptorDarwin)|string
+version|Velociraptor Version to repack|string
 exe|Alternative a path to the executable to repack|OSPath
 accessor|The accessor to use to read the file.|string
 binaries|List of tool names that will be repacked into the target|list of string

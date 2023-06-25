@@ -24,7 +24,7 @@ dont want to actually run anything.
 ### Example
 
 ```sql
-SELECT 1+1 As Two FROM scop()
+SELECT 1+1 As Two FROM scope()
 ```
 
 

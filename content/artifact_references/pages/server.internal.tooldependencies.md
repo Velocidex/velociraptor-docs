@@ -16,33 +16,33 @@ description: |
 
 tools:
   - name: VelociraptorWindows
-    github_project: Velocidex/velociraptor
-    github_asset_regex: windows-amd64.exe
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.9/velociraptor-v0.6.9-windows-amd64.exe
     serve_locally: true
+    version: 0.6.9
 
   - name: VelociraptorWindows_x86
-    github_project: Velocidex/velociraptor
-    github_asset_regex: windows-386.exe
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.9/velociraptor-v0.6.9-windows-386.exe
     serve_locally: true
+    version: 0.6.9
 
   - name: VelociraptorLinux
-    github_project: Velocidex/velociraptor
-    github_asset_regex: linux-amd64-musl
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.9/velociraptor-v0.6.9-linux-amd64-musl
     serve_locally: true
+    version: 0.6.9
 
   - name: VelociraptorDarwin
-    github_project: Velocidex/velociraptor
-    github_asset_regex: darwin-amd64
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.9/velociraptor-v0.6.9-darwin-amd64
     serve_locally: true
+    version: 0.6.9
 
   - name: VelociraptorWindowsMSI
-    github_project: Velocidex/velociraptor
-    github_asset_regex: windows-amd64.msi
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.9/velociraptor-v0.6.9-windows-amd64.msi
     serve_locally: true
+    version: 0.6.9
 
   - name: VelociraptorWindows_x86MSI
-    github_project: Velocidex/velociraptor
-    github_asset_regex: windows-386.msi
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.9/velociraptor-v0.6.9-windows-386.msi
     serve_locally: true
+    version: 0.6.9
 
 ```

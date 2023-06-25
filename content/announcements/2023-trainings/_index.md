@@ -13,113 +13,253 @@ noTitle: true
 # Digging Deeper With Velociraptor
 ## Mike Cohen, Digital Paleontologist, Rapid7 Inc. | August 5-8
 
-This year we will be presenting an extensive, 4 day long, Velociraptor training course
-at [BlackHat 2023](https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129)!
+We are really looking forward to spend the week with other
+Velociraptor fans geeking out on DFIR and Velociraptor!
+
+This year we will be presenting an extensive, 4 day long, Velociraptor
+training course at
+[BlackHat 2023](https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129)!
 
 
-### Course Contents
+## Detailed Outline
 
-### Installation and introduction to the UI
+The following detailed course outline gives you an idea of the topics
+covered in the training. Of course this is a live course and we love
+discussing all things Velociraptor, so please bring your own questions
+and ideas along as well!
 
-The old way of performing in-depth forensic analysis and incident
-response with your existing tools is clearly not adequate or scalable
-to many endpoints. It is just too time consuming to analyze many
-machines, acquire large disk images, and memory, let alone actively
-hunt for indicators of compromise across your entire network.
+### **Module 1**: Deployment
 
-You heard that Velociraptor, an advanced open source endpoint
-visibility tool, is the ideal tool for effectively investigating,
-hunting and monitoring your endpoints with minimal fuss.
+   * Deploying Servers
+      * What is Velociraptor?
+      * Typical deployments and overview
+      * Cloud deployment options
+      * Setting up Dynamic DNS
+      * Configuring Google OAuth2
+      * Exercise: Configure and deploy a new Server with Google and
+        Lets Encrypt
+      * Using multiple OAuth providers - Azure + Google
+      * Deploying with browser client certificates
+      * Exercise: Create a Multi-Frontend deployments
+      * Exercise: Customize the dashboard
+      * Server Lockdown Mode: Additional security.
+   * Multi-Tenancy deployments
+      * Supporting multiple Orgs on the same server.
+      * Exercise: Create a new Org
+      * User roles, ACLs and Orgs
+      * Exercise: Add additional Users to new Org
+      * Exercise: Prepare MSI deployment for different orgs
+      * Auditing User Actions.
+   * Deploying Clients
+      * Windows - Creating MSI packages
+      * Exercise: Domain Deployment
+   * GUI Tour
+      * The Dashboard
+      * User preferences: Themes, Languages, Timezones
+      * Interactively investigate clients
+      * Searching for clients
+      * Running shell commands
+      * The Virtual Filesystem
+      * Previewing files in the GUI
 
-You are excited to install Velociraptor and deploy it to your entire
-infrastructure. This module is for you! In this module we will deploy
-Velociraptor and gain an introduction to the basic operation of the
-tool. We will learn the architecture and the unique mindset behind the
-tool.
+### **Module 2**: VQL Fundamentals
 
-### Exercises:
+  * The Velociraptor Query Language
+      * Why a query language?
+      * The Notebook - an interactive document
+      * What is VQL syntax?
+      * Life of a query - understanding data flow
+      * Explaining a VQL Query
+      * Exercise: List running processes
+      * Exercise: Lazy Evaluation
+      * What is a scope?
+      * The foreach() plugin
+      * Exercise: Hash all the files!
+      * Exercise: Hash faster!
+      * LET Expressions
+      * Materialized LET Expressions
+      * Local VQL Functions
+      * Protocols and VQL operators
+      * Exercise: Detect WMI launched shell
+      * Exercise: Enrich netstat with binary info
+  * VQL Artifacts: VQL Modules
+      * What are Velociraptor Artifacts?
+      * The Artifact Exchange
+      * Exercise: Selectively Import artifacts
+      * Main parts of an artifact
+      * Parameter types
+      * Exercise: Create an artifact - WMI shell
+      * Collecting artifact
+      * Artifact Writing tips
+      * VQL and times - formatting and parsing times
+      * Exercise: Identify recently active accounts
+      * VQL Control structures
+      * Aggregate Functions and GROUP BY Stacking
+  * Event Queries and asynchronous VQL
+      * What are Event Queries
+      * Client monitoring with VQL
 
-Installing a typical secure Velociraptor server on a cloud VM.  Deploy
-Velociraptor clients on a typical Windows network using group policy.
-Introduction to the Velociraptor Query Language (VQL). It is the
-workhorse behind the tool and mastering VQL will provide you with the
-flexibility you need to adapt to rapidly changing challenges.
+### **Module 3**: Filesystem Forensics
 
-### Interactive forensic investigation:
+  * Searching for files - glob()
+    * Exercise: Search for executables
+    * Filesystem accessors
+    * The registry accessor
+    * Exercise: RunOnce detection
+    * Raw Registry Parsing
+    * Paths in Velociraptor
+    * The data accessor
+    * Search bulk data for patterns: yara
+    * Exercise: drive by download using YARA
+    * Yara best practice
+    * Uploading files
+    * Exercise: Collect all executables in user's home directory
+  * NTFS Forensics
+    * NTFS Overview
+    * NTFS Analysis in Velociraptor
+    * Finding suspicious files
+    * Exercise: Use NTFS analysis to detect attacker behavior
+    * The USN Journal
+    * Alternate Data Streams
+    * Volume Shadow Copies (VSS)
+    * The ntfs accessor and VSS
+    * Exercise: Find all VSS copies of the same event log
+    * Carving the USN Journal
+  * More on Accessors
+    * The OSPath object
+    * Exercise: Parsing a string into OSPath
+    * Life of a Path: How are paths handled within VQL
+    * Exercise: OSPath operations
+    * The ZIP accessor and nested paths
+    * Exercise: Search a word document for a keyword
+    * The Process Accessor: Accessing process memory
+    * Exercise: Write an artifact that uploads process memory
+    * The sparse accessor
+    * Exercise: Upload only first 10k of each file.
+    * The smb accessor
+    * Exercise: Configuring an SMB share
+  * Parsing: Processing and analysing evidence on the endpoint
+    * Built in parsers: SQLite
+    * Parsing with Regular Expressions
+    * Exercise: Parse MPLogs
+    * The binary parser - parsing binary data
+    * Exercise: Parsing SSH private keys
+    * Exercise: Parsing root certificates in the registry
+  * Timelines
+    * What is a timeline?
+    * Exercise: Create a timeline for the NTFS investigation
+  * MSBuild based attacks
+    * The Microsoft Build Engine
+    * MSBuild: Cobalt Strike teamserver
+    * Detection ideas: Disk template files
+    * Exercise: Detect a typical MSBuild attack
+    * Exercise: Prefetch detection
+    * Exercise: Memory only detection
+    * Exercise: Search for beacon in memory
+    * Exercise: Extract configuration data from memory
 
-Velociraptor puts the power of experienced digital forensic
-investigators at your fingertips! This module will cover at a high
-level the basics of modern forensic analysis techniques. You will now
-be able to apply these techniques to answer many questions – from
-determining evidence of malware execution, detecting persistent
-malware to uncovering malicious user activity and determining
-ex-filtration of proprietary data.
+### **Module 4**: Event Logs
+  * The Windows Event Logs
+    * Parsing EVTX log files
+    * Event Messages - where are they?
+    * Deriving event messages
+    * What could go wrong - copying event logs from the system.
+    * Disabling event logs
+    * Exercise: Detecting disabled event logs
+    * Using Sigma Rules to search event logs
+    * The EVTX Hunter
+  * Syslog log: Linux/Unix logs
+    * Line based logging
+    * Applying Grok for parsing syslogs
+    * Parsing SSH login events
+    * Exercise: Write a structured artifact for extracting SSH login events
+    * Carving SSH auth logs
 
-### Basics of Windows Forensics
+### **Module 5**: Offline Collection and Triage
+   * Interactive triage collections
+     * Collecting Files: Windows.KapeFiles.Targets
+     * Resource control
+   * Offline Collections
+     * Why an offline collector?
+     * Creating an Offline Collector
+     * Exercise: Collect triage data and upload to a cloud bucket
+     * Protecting the collection file: Encryption
+     * Exercise: Take a memory image with winpmem
+     * Preparing an SMB share to receive offline collections
+     * Importing collections into the GUI
+     * Local collection considerations
 
-#### NTFS Overview
+### **Module 6**: Volatile artifacts and Memory Analysis
+   * The Process Tracker
+     * Tracking process executions on the endpoint
+     * Exercise: Emulate an attack
+     * The Process Tree and call chain
+   * Event Tracing For Windows (ETW)
+     * ETW Providers
+     * Exercise: Monitor DNS Queries
+   * Memory and Process Analysis
+     * Mutants
+     * Handles
+     * Process Information
+     * The process Environment Block
+     * Process Memory - Mapped Memory
+     * The VAD Plugin
+     * Exercise: Determine functionality by examining the VAD
+     * Process Injection
+     * Process Memory Scanning
+     * Exercise: Memory carving: Zip Files
+     * Physical Memory Acquisition
 
-* Data Streams and the $MFT
-* Recovering evidence of deleted files from $MFT and USN journal carving
+### **Module 7**: Hunting
+   * Hunting at scale
+     * Typical hunting workflow
+     * Mitre Att&ck framework
+     * Atomic Red team
+     * Exercise: Image File Execution Options
+     * Hunting: Mass collections
+     * Exercise: Baseline Event Logs
+     * The pool client
+     * Exercise: Stacking reveal results that stand out
+     * Optimizing filtering and post processing.
 
-#### Registry
-* What is the Windows Registry?
-* Inspecting user hives and user profiles.
-* Common registry based malware persistence mechanisms
+### **Module 8**: Event queries for monitoring
+  * Using Event Queries for detection.
+     * Lateral movement using WMI
+     * Exercise: Watch for new service creation
+  * Integration with external systems
+     * Interfacing with Elastic/Kibana
+     * Uploading collections to Elastic
+     * Integration with Slack/Discord
+     * Exercise: Forwarding alerts to Discord
 
-#### Windows Management Instrumentation (WMI)
-* What is WMI and what information is exposed with it?
-* Lateral movement and privilege escalation using WMI – an attacker's favorite!
-* WMI persistence mechanisms (Filter/consumer bindings)
+### **Module 9**: Server Automation and the API
+  * Extending VQL With Powershell
+     * Exercise: PowerShell based pslist
+  * Using External Tools
+     * Velociraptor Third Party Tools
+     * Exercise: Detect malicious scheduled task with autoruns
+     * Exercise - Package Sysinternal DU
+     * Serving tools from an SMB server
+  * Server Artifacts
+     * Exercise: Write artifact for Client version distribution
+     * Exercise: label clients
+     * Exercise: Write a server event query to automatically import
+            new offline collections uploaded to S3 or SMB share.
+  * The Velociraptor API
+     * Creating an API certificate
+     * Managing ACLs for an API key
+     * Exposing the API
+     * Using the API from Python
+     * Exercise: Launch collection on client with the API
+     * Exercise: Automatically Decode Powershell encoded cmdline
+     * Alerting and escalation.
 
-#### Windows Event Logs are the cornerstone of windows auditing
-* How are event logs structured?
-* What are event Ids and how do they relate to messages?
-* Some examples of common event log messages: lateral movement, powershell abuse etc.
-
-#### Interactive investigation – collecting artifacts:
-Throughout this module we will use Velociraptor to gain experience in
-analysis and searching for the discussed artifacts.
-
-#### Triage and data collection – collecting data without an agent
-A remote user is suspected of being compromised. The user is located
-in Australia and therefore due to limited bandwidth, can not upload
-vast amounts of data quickly. You need to triage their system to
-determine if they are compromised. You would like to acquire memory,
-critical files and capture as much of system state as
-possible. Unfortunately, the user is not command-line savvy – but
-luckily they are really good at double clicking a binary!
-
-In this module we learn how to perform offline collection with
-Velociraptor. We prepare an automatic collection package which simply
-acquires system state when double clicked. The package will
-automatically upload the files to a cloud bucket when run.
-
-
-#### Lateral movement and hunting:
-You have discovered evidence of compromise on some of your
-systems. Your boss wants to know if the attackers have laterally moved
-through your network and the extent of compromise. You would like to
-hunt for the indicators.
-
-
-### Monitoring for events:
-You have learned so much in this course about how to detect malware,
-lateral movement and compromise. But so far, everything was reactive –
-we were looking at forensic evidence left behind after the fact. What
-you really want is to design monitoring and alerting that will let you
-know when evidence of compromise is found in real-time. Luckily
-Velociraptor is a complete endpoint monitoring and response tool!
-
-#### Introduction to Velociraptor's event monitoring framework
-Windows Event Log forwarding and classification. Event log enrichment
-and prioritization.  Monitoring for changes in system state: New file
-executions and High-risk files such as office macros and remote
-PowerShell
-
-### Capture the Flag
-On the final day of the course you can demonstrate your skills using a
-number of live exercises - a friendly game of capture the flag!
+### **Module 10**: Friendly game of Capture the Flag
+  * Given a threat report, your team will develop a set of artifacts
+    that detect as many steps in the kill chain as possible. Deploy
+    those artifacts in the Velociraptor environment.
+  * The Winners are the team that automatically detects and remediates
+    the most attacker actions.
 
 ## Book now
 

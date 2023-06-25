@@ -49,6 +49,30 @@
         }
     },
     {
+        "name": "alert",
+        "description": "Generate an alert message.",
+        "type": "Function",
+        "version": 2,
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the alert.",
+                "required": true
+            },
+            {
+                "name": "dedup",
+                "type": "int64",
+                "description": "Suppress same message in this many seconds (default 7200 sec or 2 hours)."
+            },
+            {
+                "name": "condition",
+                "type": "Any",
+                "description": "If specified we ignore the alert unless the condition is true"
+            }
+        ]
+    },
+    {
         "name": "all",
         "description": "Returns TRUE if all items are true.",
         "type": "Function",
@@ -482,7 +506,7 @@
         ],
         "category": "server",
         "metadata": {
-            "permissions": "SERVER_ADMIN"
+            "permissions": "DELETE_RESULTS"
         }
     },
     {
@@ -1085,7 +1109,7 @@
             }
         ],
         "metadata": {
-            "permissions": "SERVER_ADMIN"
+            "permissions": "DELETE_RESULTS"
         }
     },
     {
@@ -1104,7 +1128,7 @@
             }
         ],
         "metadata": {
-            "permissions": "SERVER_ADMIN"
+            "permissions": "DELETE_RESULTS"
         }
     },
     {
@@ -2565,6 +2589,10 @@
                 "description": "The name of the file on the endpoint"
             },
             {
+                "name": "version",
+                "type": "string"
+            },
+            {
                 "name": "file",
                 "type": "OSPath",
                 "description": "An optional file to upload"
@@ -2589,6 +2617,10 @@
                 "name": "tool",
                 "type": "string",
                 "required": true
+            },
+            {
+                "name": "version",
+                "type": "string"
             }
         ],
         "category": "server",
@@ -4748,6 +4780,14 @@
         "name": "pskill",
         "description": "Kill the specified process.",
         "type": "Function",
+        "args": [
+            {
+                "name": "pid",
+                "type": "int64",
+                "description": "A pid to kill.",
+                "required": true
+            }
+        ],
         "metadata": {
             "permissions": "EXECVE"
         }
@@ -5165,6 +5205,11 @@
                 "name": "target",
                 "type": "string",
                 "description": "The name of the target OS to repack (VelociraptorWindows, VelociraptorLinux, VelociraptorDarwin)"
+            },
+            {
+                "name": "version",
+                "type": "string",
+                "description": "Velociraptor Version to repack"
             },
             {
                 "name": "exe",
@@ -6187,7 +6232,7 @@
     },
     {
         "name": "unzip",
-        "description": "Unzips a file into a directory",
+        "description": "Unzips a file into a directory.",
         "type": "Plugin",
         "args": [
             {
@@ -6204,13 +6249,18 @@
             {
                 "name": "filename_filter",
                 "type": "string",
-                "description": "Only extract members matching this filter."
+                "description": "Only extract members matching this regex filter."
             },
             {
                 "name": "output_directory",
                 "type": "string",
                 "description": "Where to unzip to",
                 "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "The type of file (default autodetected from file extension - zip or tgz or tar.gz)."
             }
         ],
         "category": "basic",
