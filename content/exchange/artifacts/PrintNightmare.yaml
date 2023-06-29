@@ -6,7 +6,7 @@ description: |
    
    According to Microsoft, this vulnerability can only be exploited if the “NoWarningNoElevationOnInstall” key in the registry is set to 1. 
    
-   The artifact scans the device registry to check if the beforementioned key exists or not; if it is undefined or doesn’t exist, then the system is not vulnerable to the PrintNightmare. Otherwise, the system is considered to be vulnerable to exploitation.
+   The artefact scans the device registry to check if the aforementioned key exists or not; if it is undefined or doesn’t exist, then the system is not vulnerable to the PrintNightmare. Otherwise, the system is considered vulnerable to exploitation.
    
    This vulnerability can be exploited using the Evil Printer attack.
    
