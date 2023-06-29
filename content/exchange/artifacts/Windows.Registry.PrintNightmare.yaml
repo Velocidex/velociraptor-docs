@@ -1,0 +1,32 @@
+name: Windows.Registry.PrintNightmare
+description: |
+   The artefact scans the device registry to check if the aforementioned key exists or not; if it is undefined or doesn’t exist, then the system is not vulnerable to the PrintNightmare. Otherwise, the system is considered vulnerable to exploitation.
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: CLIENT
+
+author: https://github.com/DakshGajjar
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: SearchRegistryGlob
+    default: \HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint\**
+    description: Having NoWarningNoElevationOnInstall set to 1 makes your system vulnerable by design
+
+sources:
+  - query: |
+        SELECT  Name as KeyName,
+                FullPath,
+                Data.type as KeyType, 
+                Data.value as KeyValue,
+                Sys,
+                ModTime as Modified
+        FROM glob(globs=SearchRegistryGlob, accessor='registry')
+        
+        WHERE KeyType = "DWORD"
+        AND KeyName =~ "NoWarningNoElevationOnInstall"
+                  
+column_types:
+  - name: Modified
+    type: timestamp
