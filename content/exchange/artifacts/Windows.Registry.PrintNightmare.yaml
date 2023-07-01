@@ -17,4 +17,7 @@ sources:
       ModTime as Modified
     FROM glob(globs=SearchRegistryGlob, accessor='registry')
     WHERE KeyType = "DWORD"
-      AND KeyName =~ "NoWarningNoElevationOnInstall"
+      AND KeyName =~ "NoWarningNoElevationOnInstall"                
+column_types:
+  - name: Modified
+    type: timestamp
