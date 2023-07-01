@@ -1,32 +1,38 @@
 name: Windows.Registry.PrintNightmare
+author: Daksh Gajjar
 description: |
-   The artefact scans the device registry to check if the aforementioned key exists or not; if it is undefined or doesn’t exist, then the system is not vulnerable to the PrintNightmare. Otherwise, the system is considered vulnerable to exploitation.
+   According to Microsoft, this vulnerability can only be exploited if the “NoWarningNoElevationOnInstall” key in the registry is set to 1.
+   
+   The artifact scans the device registry to check if the beforementioned key exists or not; if it is undefined or doesn’t exist, then the system is not vulnerable    to the PrintNightmare. Otherwise, the system is considered to be vulnerable to exploitation.
+   
+   This vulnerability can be exploited using the Evil Printer attack.
+   
+   The suggested VQL query looks for the registry values to find a registry key named “NoWarningNoElevationOnInstall”.
 
-# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+reference:
+   - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-34527
+
 type: CLIENT
-
-author: https://github.com/DakshGajjar
 
 precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: SearchRegistryGlob
+    description: Registry path
     default: \HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint\**
-    description: Having NoWarningNoElevationOnInstall set to 1 makes your system vulnerable by design
 
 sources:
-  - query: |
-        SELECT  Name as KeyName,
-                FullPath,
-                Data.type as KeyType, 
-                Data.value as KeyValue,
-                Sys,
-                ModTime as Modified
-        FROM glob(globs=SearchRegistryGlob, accessor='registry')
-        
-        WHERE KeyType = "DWORD"
-        AND KeyName =~ "NoWarningNoElevationOnInstall"
+   - query: |
+         SELECT  Name as KeyName,
+            FullPath,
+            Data.type as KeyType, 
+            Data.value as KeyValue,
+            Sys,
+            ModTime as Modified
+         FROM glob(globs=SearchRegistryGlob, accessor='registry')
+         WHERE KeyType = "DWORD"
+            AND KeyName =~ "NoWarningNoElevationOnInstall"
                   
 column_types:
-  - name: Modified
-    type: timestamp
+   - name: Modified
+   - type: timestamp
