@@ -244,6 +244,17 @@ config file):
 velociraptor --config server.config.yaml config rotate_key > new_server.config.yaml
 ```
 
+Depending on which user invoked the Velociraptor binary, you may need to alter the permissions of the new server configuration file.
+
+For example:
+
+```bash
+chmod 600 new_server.config.yaml
+chown velociraptor:velociraptor new_server.config.yaml
+```
+
+From here, you will need to move the updated server configuration into the appropriate location. 
+
 {{% notice warning "CA certificate expiry" %}}
 
 The above step was able to use the internal Velociraptor CA to reissue
