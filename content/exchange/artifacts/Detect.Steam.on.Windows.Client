@@ -1,0 +1,13 @@
+name: steam_detection
+description: Artifact to detect Steam installation on endpoints. 
+
+flows:
+ - name: detect_steam
+   description: Detects Steam installation
+   artifacts:
+     - type: command
+       args:
+         cmd: 'reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam"'
+       name: steam_installation
+   conditions:
+     - os: "Windows"
