@@ -18,7 +18,7 @@ description: |
 author: Wes Lambert - @therealwlambert, James Dorgan - @FranticTyping, Alex Korntizer - @AlexKornitzer
 tools:
   - name: Chainsaw
-    url: https://github.com/countercept/chainsaw/releases/download/v2.0.0/chainsaw_all_platforms+rules+examples.zip
+    url: https://github.com/WithSecureLabs/chainsaw/releases/download/v2.7.2/chainsaw_all_platforms+rules+examples.zip
 
 precondition: SELECT OS From info() where OS = 'windows'
 
