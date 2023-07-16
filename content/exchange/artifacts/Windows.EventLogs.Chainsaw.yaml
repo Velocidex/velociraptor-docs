@@ -18,8 +18,10 @@ description: |
 author: Wes Lambert - @therealwlambert, James Dorgan - @FranticTyping, Alex Korntizer - @AlexKornitzer
 tools:
   - name: Chainsaw
-    url: https://github.com/countercept/chainsaw/releases/download/v2.0.0/chainsaw_all_platforms+rules+examples.zip
-
+    url: https://github.com/WithSecureLabs/chainsaw/releases/download/v2.7.2/chainsaw_all_platforms+rules+examples.zip
+    version: 2.7.2
+    expected_hash: 4a9c501af2c8d67522cc80a58ca1ecb3adb97e105a3ad53e419a115a52f2ae6e
+    
 precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
