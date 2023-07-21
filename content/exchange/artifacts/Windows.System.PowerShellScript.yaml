@@ -1,0 +1,37 @@
+name: Windows.System.PowerShellScript
+description: |
+  This artifact allows running arbitrary script through the system
+  powershell.
+
+  Since Velociraptor typically runs as system, the script will also
+  run as System.
+
+  This is a very powerful artifact since it allows for arbitrary
+  script execution on the endpoints. Therefore this artifact requires
+  elevated permissions (specifically the `EXECVE` permission). 
+  Typically it is only available with the `administrator` role.
+  
+  Note: It normal return stdout without parsing. If you wanna do that, 
+  try to custom the new one. Or use `Out-File` Utility to save local file, 
+  then collect later.
+
+tools:
+  - name: PowershellScript
+    url: https://raw.githubusercontent.com/davehull/Kansa/master/Modules/Process/Get-Prox.ps1
+    serve_locally: true
+
+required_permissions:
+  - EXECVE
+
+precondition:
+  SELECT OS From info() where OS = 'windows'
+
+sources:
+  - query: |
+      LET scriptfile = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+       ToolName="PowershellScript", IsExecutable=FALSE)
+       
+      SELECT * FROM execve(argv=["powershell",
+        "-ExecutionPolicy", "Unrestricted", "-File",
+        scriptfile[0].FullPath
+      ])
