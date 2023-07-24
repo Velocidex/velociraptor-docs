@@ -1,6 +1,6 @@
-# How can I clone an organization with all its hunts and artefacts to another instance?
+# How can I clone an organization with all its hunts and artifacts to another instance?
 
-There are a few use cases where you need to migrate data from an instance to another. It could be for educational purpose to provide pre-filled labs, or to provide a third party with the exact insights you had during your investigation. Event for archiving, being able to reload a dataset in Velociraptor to review what was done if something went amiss, being able to export and import an organisation dataset could prove useful.
+There are a few use cases where you need to migrate data from an instance to another. It could be for educational purpose to provide pre-filled labs, or to provide a third party with the exact insights you had during your investigation. Event for archiving, being able to reload a dataset in Velociraptor to review what was done if something went amiss, being able to export and import an organization dataset could prove useful.
 
 ## Exporting
 
