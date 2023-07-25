@@ -1,4 +1,4 @@
-name: Windows.Registry.WindowsDefender
+name: Windows.Registry.DefenderConfig
 author: Matt Green - @mgreen27
 description: |
     Thit artifact enables extracting Windows Defender configuration from 
