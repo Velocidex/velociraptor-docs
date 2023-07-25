@@ -1,0 +1,83 @@
+name: Windows.Applications.Chrome.Bookmarks
+author: "Sikha Puthanveedu @SikhaMohan"
+description: |
+  This artifact Fetch bookmarks in Chrome browser.
+  Chrome bookmarks are stored into the user's home directory. This artifact
+  search for bookmarks files in a known path within each system
+  user's home directory and then parse the bookmarks file as JSON.
+parameters:
+  - name: bookmarksGlobs
+    default: \AppData\Local\Google\Chrome\User Data\Default\Bookmarks
+  - name: userRegex
+    default: .
+    type: regex
+
+sources:
+  - precondition:
+      SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      /* For each user on the system, search for bookmarks
+         in their home directory. */
+      LET bookmarksFiles = SELECT *
+      FROM foreach(
+        row={
+          SELECT Uid, Name AS User,
+                 expand(path=Directory) AS HomeDirectory
+          FROM Artifact.Windows.Sys.Users()
+          WHERE Name =~ userRegex
+        },
+        query={
+          SELECT User, OSPath, Mtime
+          FROM glob(root=HomeDirectory, globs=bookmarksGlobs)
+        }
+      )
+        -- Parse the bookmark json file 
+        LET bookmark_content <= SELECT parse_json(data=read_file(filename=bookmarksFiles.OSPath)) as bookmarkjson 
+                FROM bookmarksFiles
+                
+        -- Retrieve bookmark information from the bookmark_bar  
+        LET Bookmark_bar <= SELECT bookmarkjson.roots.bookmark_bar.children as bookmarkchild
+                FROM bookmark_content
+        -- Retrieve bookmark information from other bookmark sections
+        LET OtherBookmarks <= SELECT bookmarkjson.roots.other.children as otherbookmark
+                FROM bookmark_content
+        -- Retrieve bookmark information from mobile bookmark section
+        LET MobileBookmarks <= SELECT bookmarkjson.roots.synced.children as mobbookmark
+                FROM bookmark_content
+                
+        -- Combine all the results 
+        SELECT * FROM chain(
+        a={ SELECT  _value.name AS BookmarkName,
+                    _value.date_added AS DateAdded,
+                    _value.date_last_used AS DateLastUsed,
+                    _value.guid AS GUIId,
+                    _value.id AS Id,
+                    _value.type AS Type, 
+                    if(condition=_value.type = 'url',
+                      then=_value.url,
+                      else=_value.children) AS BookmarkUrl
+            FROM items(item=Bookmark_bar.bookmarkchild[0])
+        },
+        b={ SELECT  _value.name AS BookmarkName,
+                    _value.date_added AS DateAdded,
+                    _value.date_last_used AS DateLastUsed,
+                    _value.guid AS GUIId,
+                    _value.id AS Id,
+                    _value.type AS Type, 
+                    if(condition=_value.type = 'url',
+                      then=_value.url,
+                      else=_value.children) AS BookmarkUrl
+            FROM items(item=OtherBookmarks.otherbookmark[0])
+        },
+        c={ SELECT  _value.name AS BookmarkName,
+                    _value.date_added AS DateAdded,
+                    _value.date_last_used AS DateLastUsed,
+                    _value.guid AS GUIId,
+                    _value.id AS Id,
+                    _value.type AS Type, 
+                    if(condition=_value.type = 'url',
+                      then=_value.url,
+                      else=_value.children) AS BookmarkUrl
+            FROM items(item= MobileBookmarks.mobbookmark[0])
+        })
+
