@@ -26,7 +26,7 @@ sources:
         
         SELECT * FROM foreach(
             row={
-                SELECT Stdout FROM execve(argv=["Powershell", execute], length=10000000000)
+                SELECT Stdout FROM execve(argv=["Powershell", execute], length=1000000)
             }, query={
                 SELECT * FROM parse_json_array(data=Stdout) where log(message=Stdout) AND log(message=Stderr)
             })
