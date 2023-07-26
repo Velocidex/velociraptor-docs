@@ -12,8 +12,6 @@ description: |
     for a process in exclusions or specific setting name of interest.
     3. ValueRegex - Regex for KeyValue.
     
-    For boolean configuraiton (DWORD): 0=enable, 1=disable
-    
 type: CLIENT
 
 parameters:
