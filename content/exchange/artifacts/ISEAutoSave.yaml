@@ -32,11 +32,7 @@ sources:
       SELECT 
         OSPath, Size, Mtime, Btime, Ctime, Atime,
         read_file(filename=OSPath) as Content
-      FROM foreach(row=files, query={
-            SELECT *, OSPath, Size, Mtime, Btime, Ctime, Atime 
-            FROM read_file(filenames=OSPath)
-            WHERE NOT OSPath =~ 'user.config$'
-        })
+      FROM foreach(row=files)
       WHERE Content =~ ContentRegex
         AND NOT if(condition=ContentWhitelist,
                 then= Content =~ ContentWhitelist,
