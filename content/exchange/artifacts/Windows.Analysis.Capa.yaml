@@ -15,6 +15,8 @@ author: Wes Lambert - @therealwlambert
 tools:
   - name: CapaWindows
     url: https://github.com/mandiant/capa/releases/download/v6.0.0/capa-v6.0.0-windows.zip
+    expected_hash: ca9a5388de86e95289426007ef794f6f6977ba6720f7fe5bc35a8cdc8a16f452
+    serve_locally: true
 parameters:
    - name: File
 sources:
