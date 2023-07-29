@@ -20,7 +20,7 @@ Use this artifact to determine the times when a file was
 modified/added from the journal. This will be present even if the
 file was later removed.
 
-Availible filters are Filename, FullPath, MFT/Parent ID and time bounds.
+Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 
 ```yaml
@@ -42,7 +42,7 @@ description: |
   modified/added from the journal. This will be present even if the
   file was later removed.
 
-  Availible filters are Filename, FullPath, MFT/Parent ID and time bounds.
+  Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 type: CLIENT
 
@@ -92,7 +92,7 @@ sources:
       SELECT
             Timestamp,
             Filename,
-            Device, FullPath,
+            Device, OSPath,
             _Links,
             Reason,
             _FileMFTID as MFTId,

@@ -31,7 +31,7 @@ sources:
                         "Desc=(?P<Desc>[^|]+)",
                         "App=(?P<App>[^|]+)"]) as Record,
                Data,
-               FullPath
+               OSPath
         FROM glob(globs=regKey, accessor="registry")
 
         SELECT Value,

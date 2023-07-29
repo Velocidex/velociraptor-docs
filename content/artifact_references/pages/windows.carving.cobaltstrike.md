@@ -413,12 +413,12 @@ export: |
         ["XorKey", 8, "Value",{"value":"x=>format(format='0x%08x',args=x.__XorKey)"}],
         ["__Id2", 12, "uint32"],
         ["Id2", 12, "Value",{"value":"x=>format(format='0x%08x',args=x.__Id2)"}],
-        ["__Payload", 16, "Value",{"value":"x=>read_file(accessor='data',filename=embedded_section(path=TargetBytes || FullPath,
+        ["__Payload", 16, "Value",{"value":"x=>read_file(accessor='data',filename=embedded_section(path=TargetBytes || OSPath,
                 type=if(condition=TargetBytes,then='data',else='auto'))[0].Data || '', offset=16,length=x.__PayloadSize)"}],
         #["__Payload", 16, "String",{"term_hex":"",length=x.__PayloadSize)"}],
         ["DecodedPayload", 16, "Value",{"value":"x=>xor(string=x.__Payload,key=unhex(string=x.XorKey))"}],
         ["PayloadHash", 16, "Value",{"value":"x=>hash(path=xor(string=x.__Payload,key=unhex(string=x.XorKey)),accessor='data')"}],
-        ["OriginalFileHash", 16, "Value",{"value":"x=>hash(path=FullPath)"}],
+        ["OriginalFileHash", 16, "Value",{"value":"x=>hash(path=OSPath)"}],
     ]]]'''
 
 
@@ -512,7 +512,7 @@ sources:
                         'Embedded data section: ' + Rule as Rule,
                         substr(start=0,end=1,str=String.Data) as Xor,
                         read_file(accessor='data',
-                                  filename=File.FullPath,
+                                  filename=File.OSPath,
                                   offset=String.Offset,
                                   length=ExtractBytes) as _Data
                     FROM yara(files=parse_binary(
@@ -528,7 +528,7 @@ sources:
                             '' as Xor,
                             'Embedded data section: ' + Rule as Rule,
                             read_file(accessor='data',
-                                      filename=File.FullPath) as _Data
+                                      filename=File.OSPath) as _Data
                         FROM yara(files=parse_binary(
                                      accessor='data',
                                      filename= embedded_section(
@@ -546,7 +546,7 @@ sources:
                 })
 
       -- find target files
-      LET TargetFiles = SELECT OSPath AS FullPath,Size
+      LET TargetFiles = SELECT OSPath AS OSPath,Size
         FROM glob(globs=TargetFileGlob) WHERE NOT IsDir
 
 
@@ -555,26 +555,26 @@ sources:
             query={
                 SELECT
                     Rule,
-                    FullPath, Size,
-                    hash(path=FullPath) as Hash,
+                    OSPath, Size,
+                    hash(path=OSPath) as Hash,
                     Xor,_Data,
-                    Rule + '|' + FullPath.String as _Group,
-                    format(format="%v_%v_%v.bin", args=[Rule,FullPath,String.Offset]) as _DecodedDataName
+                    Rule + '|' + OSPath.String as _Group,
+                    format(format="%v_%v_%v.bin", args=[Rule,OSPath,String.Offset]) as _DecodedDataName
                 FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                     beacon = {
                         SELECT *,
                             substr(start=0,end=1,str=String.Data) as Xor,
                             read_file(
-                               filename=FullPath,
+                               filename=OSPath,
                                offset= String.Offset,
                                length=ExtractBytes) as _Data
-                        FROM yara(files=FullPath, rules=FindConfig, number=99)
+                        FROM yara(files=OSPath, rules=FindConfig, number=99)
                     },
 
                     shellcode = {
                         SELECT *, '' as Xor,
-                            read_file(filename=FullPath,length=4096) as _Data
-                        FROM yara(files=FullPath, rules=FindShellcode, number=99)
+                            read_file(filename=OSPath,length=4096) as _Data
+                        FROM yara(files=OSPath, rules=FindShellcode, number=99)
                     },
 
                     section_encoded_pe = {
@@ -585,7 +585,7 @@ sources:
                                       offset=String.Offset,length=ExtractBytes) as _Data
                         FROM yara(files=parse_binary(
                                       accessor='data',
-                                      filename= embedded_section(path=FullPath,type='auto')[0].Data || "",
+                                      filename= embedded_section(path=OSPath,type='auto')[0].Data || "",
                                       profile=PROFILE,
                                       struct="EmbeddedPE").DecodedPayload,
                                   accessor='data', rules=FindConfig, number=99)
@@ -595,11 +595,11 @@ sources:
                             '' as Xor,
                             'Embedded data section: ' + Rule as Rule,
                             read_file(accessor='data',
-                                      filename=File.FullPath,
+                                      filename=File.OSPath,
                                       length=ExtractBytes) as _Data
                         FROM yara(files=parse_binary(
                                       accessor='data',
-                                      filename= embedded_section(path=FullPath,type='auto')[0].Data || "",
+                                      filename= embedded_section(path=OSPath,type='auto')[0].Data || "",
                                       profile=PROFILE,
                                       struct="EmbeddedPE").DecodedPayload,
                                   accessor='data', rules=FindShellcode, number=99)
@@ -609,7 +609,7 @@ sources:
                             if(condition= String.Name= '$x86',
                                 then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
                                 else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data
-                        FROM yara(files=FullPath, rules=FindSleepFunction, number=1)
+                        FROM yara(files=OSPath, rules=FindSleepFunction, number=1)
                     })
             })
 
@@ -739,4 +739,5 @@ sources:
 column_types:
   - name: DecodedData
     type: preview_upload
+
 ```

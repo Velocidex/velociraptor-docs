@@ -142,7 +142,7 @@ sources:
         WHERE start_sec > 0
 
         SELECT StartOffset, EndOffset, Size, name, {
-              SELECT OSPath.Path AS FullPath
+              SELECT OSPath.Path AS OSPath
               FROM glob(globs="/*",
                         accessor="raw_ntfs",
                         root=pathspec(

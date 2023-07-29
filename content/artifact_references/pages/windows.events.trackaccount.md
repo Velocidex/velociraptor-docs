@@ -49,7 +49,7 @@ sources:
           async=TRUE,
           query={
             SELECT *
-            FROM watch_evtx(filename=FullPath)
+            FROM watch_evtx(filename=OSPath)
             WHERE System.EventID.Value = 4624
                 AND EventData.TargetUserName =~ UserRegex
                 AND EventData.LogonType in LogonTypeRegex

@@ -314,6 +314,18 @@
         "category": "basic"
     },
     {
+        "name": "base85decode",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "description": "A string to decode",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "basename",
         "description": "Return the basename of the path. For example basename(path=\"/foo/bar\") -> \"bar\"\n",
         "type": "Function",
@@ -483,6 +495,11 @@
                 "name": "client_id",
                 "type": "string",
                 "description": "if set we use this client id otherwise we make a new one"
+            },
+            {
+                "name": "mac_addresses",
+                "type": "string",
+                "repeated": true
             }
         ],
         "metadata": {
@@ -1118,13 +1135,18 @@
         "type": "Plugin",
         "args": [
             {
+                "name": "flow_id",
+                "type": "string",
+                "required": true
+            },
+            {
                 "name": "client_id",
                 "type": "string",
                 "required": true
             },
             {
-                "name": "flow_id",
-                "type": "string"
+                "name": "really_do_it",
+                "type": "bool"
             }
         ],
         "metadata": {
@@ -2838,6 +2860,26 @@
         "category": "basic"
     },
     {
+        "name": "leveldb",
+        "description": "Enumerate all items in a level db database",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "file",
+                "type": "OSPath",
+                "description": "The path to the leveldb file."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
         "name": "log",
         "description": "Log the message and return TRUE.",
         "type": "Function",
@@ -3498,6 +3540,11 @@
                 "type": "string",
                 "description": "The org ID to delete.",
                 "required": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool",
+                "description": "If not specified, just show what org will be removed"
             }
         ],
         "metadata": {
@@ -5434,7 +5481,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "server_set_metadata",
@@ -6537,6 +6587,16 @@
                 "description": "The server side encryption method to use"
             },
             {
+                "name": "kmsencryptionkey",
+                "type": "string",
+                "description": "The server side KMS key to use"
+            },
+            {
+                "name": "s3uploadroot",
+                "type": "string",
+                "description": "Prefix for the S3 object"
+            },
+            {
                 "name": "noverifycert",
                 "type": "bool",
                 "description": "Skip TLS Verification (deprecated in favor of SkipVerify)"
@@ -6752,6 +6812,11 @@
                 "name": "fragment",
                 "type": "string",
                 "description": "The fragment"
+            },
+            {
+                "name": "query",
+                "type": "Any",
+                "description": "A dict representing a query string"
             },
             {
                 "name": "parse",

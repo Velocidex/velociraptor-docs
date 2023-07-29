@@ -39,10 +39,10 @@ sources:
   - query: |
         SELECT * FROM foreach(
            row={
-              SELECT FullPath FROM glob(globs=officeFileSearchGlob + officeExtensions)
+              SELECT OSPath FROM glob(globs=officeFileSearchGlob + officeExtensions)
            },
            query={
-               SELECT * from olevba(file=FullPath)
+               SELECT * from olevba(file=OSPath)
            })
 
 ```

@@ -59,12 +59,12 @@ sources:
                X.BinFileVersion AS BinFileVersion
         FROM foreach(
           row={
-            SELECT FullPath from glob(globs=expand(path=amCacheGlob))
-            WHERE log(message="Processing "+FullPath)
+            SELECT OSPath from glob(globs=expand(path=amCacheGlob))
+            WHERE log(message="Processing "+OSPath)
           }, query={
             SELECT * from read_reg_key(
                globs=amCacheRegPath,
-               root=pathspec(DelegatePath=FullPath),
+               root=pathspec(DelegatePath=OSPath),
                accessor='raw_reg'
             )
         })
@@ -73,14 +73,14 @@ sources:
     query: |
         SELECT * FROM foreach(
           row={
-            SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+            SELECT OSPath from glob(globs=expand(path=amCacheGlob))
           }, query={
             SELECT get(item=scope(), member="100") As ProductId,
                    get(item=scope(), member="101") As SHA1,
-                   get(item=scope(), member="15") As FullPath,
+                   get(item=scope(), member="15") As OSPath,
                    Key.Mtime as LastModifiedKey
             FROM read_reg_key(
-               root=pathspec(DelegatePath=FullPath),
+               root=pathspec(DelegatePath=OSPath),
                globs='/Root/File/*/*',
                accessor='raw_reg'
             )

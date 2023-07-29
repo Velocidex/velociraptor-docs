@@ -136,10 +136,10 @@ export: |
 sources:
  - query: |
      LET DoubleFiles = SELECT * FROM foreach(row={
-        SELECT FullPath AS ZipPath
+        SELECT OSPath AS ZipPath
         FROM glob(globs=ZipGlob)
      }, query={
-        SELECT FullPath, pathspec(parse=FullPath) AS PathSpec
+        SELECT OSPath, pathspec(parse=OSPath) AS PathSpec
         FROM glob(
              globs="__MACOSX/**",
              accessor="zip",
@@ -151,7 +151,7 @@ sources:
        SELECT PathSpec.DelegatePath AS ZipFile,
               PathSpec.Path AS Member,
               Key, Value
-       FROM ParseAppleDouble(double_data=read_file(filename=FullPath, accessor="zip"))
+       FROM ParseAppleDouble(double_data=read_file(filename=OSPath, accessor="zip"))
      })
 
 ```
