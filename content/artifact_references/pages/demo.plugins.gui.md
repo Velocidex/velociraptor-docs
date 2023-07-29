@@ -49,7 +49,7 @@ parameters:
   - name: Flag
     friendly_name: A Flag with a name
     type: bool
-    default: Y
+    default: True
 
   - name: Flag2
     type: bool

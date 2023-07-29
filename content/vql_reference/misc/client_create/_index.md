@@ -25,6 +25,7 @@ labels||list of string
 os|What type of OS this is (default offline)|string
 hostname|The hostname of the system|string
 client_id|if set we use this client id otherwise we make a new one|string
+mac_addresses||list of string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>

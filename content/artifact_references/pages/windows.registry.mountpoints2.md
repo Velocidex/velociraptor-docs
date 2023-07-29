@@ -40,6 +40,6 @@ sources:
           OSPath.DelegatePath as Hive,
           OSPath.Path as Key
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
-        WHERE FullPath =~ MountPointFilterRegex
+        WHERE OSPath =~ MountPointFilterRegex
 
 ```

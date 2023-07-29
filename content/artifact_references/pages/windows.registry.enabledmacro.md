@@ -33,7 +33,7 @@ sources:
  - query: |
         LET UserProfiles = Select Name as Username,
             {
-                SELECT FullPath FROM glob(
+                SELECT OSPath FROM glob(
                   root=expand(path=Directory),
                   globs="/NTUSER.DAT",
                   accessor="auto")

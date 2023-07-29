@@ -66,12 +66,20 @@ parameters:
   - name: UserNameWhitelist
     default: '\$$'
     type: regex
-  - name: SearchVSS
-    description: "add VSS into query."
-    type: bool
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
 
 sources:
   - query: |
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+
       -- firstly set timebounds for performance
       LET DateAfterTime <= if(condition=DateAfter,
         then=DateAfter, else=timestamp(epoch="1600-01-01"))
@@ -79,16 +87,12 @@ sources:
         then=DateBefore, else=timestamp(epoch="2200-01-01"))
 
       -- expand provided glob into a list of paths on the file system (fs)
-      LET fspaths <= SELECT FullPath
+      LET fspaths <= SELECT OSPath
         FROM glob(globs=[
             expand(path=Security),
             expand(path=System),
             expand(path=LocalSessionManager),
-            expand(path=RemoteConnectionManager)])
-
-      -- function returning list of VSS paths corresponding to path
-      LET vsspaths(path) = SELECT FullPath
-        FROM Artifact.Windows.Search.VSS(SearchFilesGlob=path)
+            expand(path=RemoteConnectionManager)], accessor=Accessor)
 
       -- function returning query hits
       LET evtxsearch(PathList) = SELECT * FROM foreach(
@@ -162,8 +166,8 @@ sources:
                         ))))))) as Description,
                     get(field="Message") as Message,
                     System.EventRecordID as EventRecordID,
-                    FullPath
-                FROM parse_evtx(filename=FullPath)
+                    OSPath
+                FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE
                     ( Channel = 'Security'
                         AND ( (EventID in (4624,4634) AND LogonType in (3,10,7))
@@ -183,24 +187,12 @@ sources:
             }
           )
 
-      -- include VSS in calculation and deduplicate with GROUP BY by file
-      LET include_vss = SELECT * FROM foreach(row=fspaths,
-            query={
-                SELECT *
-                FROM evtxsearch(PathList={
-                        SELECT FullPath FROM vsspaths(path=FullPath)
-                    })
-                GROUP BY EventRecordID,Channel
-              })
-
-      -- exclude VSS in EvtxHunt
-      LET exclude_vss = SELECT *
-        FROM evtxsearch(PathList={SELECT FullPath FROM fspaths})
-
-      -- return rows
-      SELECT *
-      FROM if(condition=SearchVSS,
-        then=include_vss,
-        else=exclude_vss)
+      SELECT * FROM if(condition=VSSAnalysisAge > 0,
+      then={
+        SELECT * FROM evtxsearch(PathList=fspaths)
+        GROUP BY EventRecordID, Channel
+      }, else={
+        SELECT * FROM evtxsearch(PathList=fspaths)
+      })
 
 ```

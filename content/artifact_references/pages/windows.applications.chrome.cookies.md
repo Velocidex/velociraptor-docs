@@ -15,6 +15,11 @@ The pertinant information from a forensic point of view is the
 user's Created and LastAccess timestamp and the fact that the user
 has actually visited the site and obtained a cookie.
 
+## NOTES:
+
+This artifact is deprecated in favor of
+Generic.Forensic.SQLiteHunter and will be removed in future
+
 
 ```yaml
 name: Windows.Applications.Chrome.Cookies
@@ -29,6 +34,11 @@ description: |
   The pertinant information from a forensic point of view is the
   user's Created and LastAccess timestamp and the fact that the user
   has actually visited the site and obtained a cookie.
+
+  ## NOTES:
+
+  This artifact is deprecated in favor of
+  Generic.Forensic.SQLiteHunter and will be removed in future
 
 parameters:
   - name: cookieGlobs
@@ -66,7 +76,7 @@ sources:
                    host_key, name, path, value,
                    base64encode(string=encrypted_value) as EncryptedValue
             FROM sqlite(
-              file=FullPath,
+              file=OSPath,
               query=cookieSQLQuery)
           })
 

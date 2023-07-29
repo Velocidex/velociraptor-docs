@@ -8,6 +8,11 @@ Win10 records recently used applications and files in a “timeline”
 accessible via the “WIN+TAB” key. The data is recorded in a SQLite
 database.
 
+## NOTES:
+
+This artifact is deprecated in favor of
+Generic.Forensic.SQLiteHunter and will be removed in future
+
 
 ```yaml
 name: Windows.Forensics.Timeline
@@ -15,6 +20,11 @@ description: |
   Win10 records recently used applications and files in a “timeline”
   accessible via the “WIN+TAB” key. The data is recorded in a SQLite
   database.
+
+  ## NOTES:
+
+  This artifact is deprecated in favor of
+  Generic.Forensic.SQLiteHunter and will be removed in future
 
 parameters:
   - name: UserFilter
@@ -36,19 +46,19 @@ sources:
   - query: |
       LET timeline = SELECT * FROM foreach(
          row={
-            SELECT FullPath
+            SELECT OSPath
             FROM glob(globs=Win10TimelineGlob)
          },
          query={
-            SELECT AppId, FullPath, LastModifiedTime
-            FROM sqlite(file=FullPath, query="SELECT * FROM Activity")
+            SELECT AppId, OSPath, LastModifiedTime
+            FROM sqlite(file=OSPath, query="SELECT * FROM Activity")
          })
 
       LET TMP = SELECT get(
       item=parse_json_array(data=AppId).application,
                member="0") AS Application,
              parse_string_with_regex(
-               string=FullPath,
+               string=OSPath,
                regex="\\\\L.(?P<User>[^\\\\]+)\\\\").User AS User,
                LastModifiedTime,
                LastModifiedTime.Unix as LastExecutionTS

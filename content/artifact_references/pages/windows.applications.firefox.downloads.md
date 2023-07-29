@@ -6,12 +6,26 @@ tags: [Client Artifact]
 
 Enumerate the users Firefox downloads.
 
+## NOTES:
+
+This artifact is deprecated in favor of
+Generic.Forensic.SQLiteHunter and will be removed in future
+
 
 ```yaml
 name: Windows.Applications.Firefox.Downloads
 description: |
   Enumerate the users Firefox downloads.
-author: Angry-Bender @angry-bender, based on Custom.Windows.Application.Firefox.History by Zach Stanford @svch0st
+
+  ## NOTES:
+
+  This artifact is deprecated in favor of
+  Generic.Forensic.SQLiteHunter and will be removed in future
+
+author: |
+  Angry-Bender @angry-bender, based on
+  Custom.Windows.Application.Firefox.History by Zach Stanford @svch0st
+
 parameters:
   - name: placesGlobs
     default: \AppData\Roaming\Mozilla\Firefox\Profiles\*\places.sqlite

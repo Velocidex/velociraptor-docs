@@ -23,6 +23,7 @@ scheme|The scheme to use|string
 host|The host component|string
 path|The path component|string
 fragment|The fragment|string
+query|A dict representing a query string|Any
 parse|A url to parse|string
 
 ### Description

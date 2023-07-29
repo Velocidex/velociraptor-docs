@@ -7,7 +7,7 @@ tags: [Client Artifact]
 GUI Program execution launched on the Win10 system is tracked in the
 RecentApps key.
 
-NOTE: This artifact is available up from Windows 10 1607 to 1709. 
+NOTE: This artifact is available up from Windows 10 1607 to 1709.
 After that, the RecentApps key is no longer populated in the referenced location. Previously existing data is not removed.
 
 
@@ -16,8 +16,8 @@ name: Windows.Forensics.RecentApps
 description: |
   GUI Program execution launched on the Win10 system is tracked in the
   RecentApps key.
-  
-  NOTE: This artifact is available up from Windows 10 1607 to 1709. 
+
+  NOTE: This artifact is available up from Windows 10 1607 to 1709.
   After that, the RecentApps key is no longer populated in the referenced location. Previously existing data is not removed.
 
 reference:
@@ -48,20 +48,20 @@ sources:
   - query: |
       LET TMP = SELECT * FROM foreach(
          row={
-            SELECT FullPath FROM glob(globs=UserHomes)
+            SELECT OSPath FROM glob(globs=UserHomes)
          },
          query={
             SELECT AppId, AppPath, LaunchCount,
                    timestamp(winfiletime=LastAccessedTime) AS LastExecution,
                    timestamp(winfiletime=LastAccessedTime).Unix AS LastExecutionTS,
                    parse_string_with_regex(
-                      string=Key.FullPath,
+                      string=Key.OSPath,
                       regex="/Users/(?P<User>[^/]+)/ntuser.dat").User AS User
             FROM read_reg_key(
                globs=RecentAppsKey,
                root=pathspec(
                  DelegateAccessor="ntfs",
-                 DelegatePath=FullPath),
+                 DelegatePath=OSPath),
                accessor="raw_reg")
          })
 
