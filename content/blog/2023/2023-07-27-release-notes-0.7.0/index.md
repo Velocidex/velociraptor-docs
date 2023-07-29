@@ -26,7 +26,7 @@ In previous versions client information was written to the datastore
 in individual files (one file per client record). This works ok as
 long as the number of clients is not too large and the filesystem is
 fast. As users are now deploying Velociraptor with larger deployment
-sizes we were seeing some slow downs when the number of cients
+sizes we were seeing some slow downs when the number of clients
 exceeded 50k.
 
 In this release the client index was rewritten to store all client
@@ -45,7 +45,7 @@ of clients.
 
 Velociraptor's collections view shows the list of collections from the
 endpoint (or the server). Previously the GUI limited this view to 100
-previous collections. This means that for heavily collecected clients
+previous collections. This means that for heavily collected clients
 it was impossible to view older collections (without custom VQL).
 
 In this release the GUI was updated to include a paged table (with
@@ -71,8 +71,8 @@ the `Windows.Forensics.Lnk artifact.
 ### Direct S3 accessor
 
 Velociraptor's accessors provide a way to apply the many plugins that
-opeate on files to other domains. In particular the glob() plugin
-allows serching the accessors for filename patterns.
+operate on files to other domains. In particular the glob() plugin
+allows searching the accessors for filename patterns.
 
 In this release Velociraptor adds an S3 accessor. This allows plugins
 to directly operate on S3 buckets. In particular the glob() plugin can
@@ -82,7 +82,7 @@ around S3 buckets.
 
 ### Volume Shadow Copies analysis
 
-Window's Volume Shadow Serice (VSS) creates a snapshot of the drive at
+Window's Volume Shadow Service (VSS) creates a snapshot of the drive at
 a point in time. Forensically, this is sometimes very helpful as it
 captures a point in time view of the previous disk state (If the VSS
 are still around when we perform our analysis).
@@ -120,7 +120,7 @@ previously difficult to know why a particular reported file was
 chosen.
 
 In this release, the glob plugin reports the list of glob expressions
-that caused the match to be reposted. This allows callers to more
+that caused the match to be reported. This allows callers to more
 easily combine several file searches into the same plugin call.
 
 ## Server improvements
@@ -129,7 +129,7 @@ Velociraptor offers automatic use of let's encrypt
 certificates. However, Let's encrypt can only issue certificates for
 port 443. This means that the frontend service (which is used to
 communicate with clients) has to share the same port as the GUI port
-(which is used to serve the GUI appliction). This makes it hard to
+(which is used to serve the GUI application). This makes it hard to
 create firewall rules to filter access to the frontend and not to the
 GUI when used in this configuration.
 
