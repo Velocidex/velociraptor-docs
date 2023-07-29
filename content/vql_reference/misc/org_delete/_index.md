@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 org|The org ID to delete.|string (required)
+really_do_it|If not specified, just show what org will be removed|bool
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">ORG_ADMIN</i>

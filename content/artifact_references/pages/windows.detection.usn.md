@@ -58,6 +58,6 @@ precondition: SELECT OS from info() where OS = "windows"
 sources:
   - query: |
       SELECT * FROM watch_usn(device=Device)
-      WHERE FullPath =~ PathRegex
+      WHERE OSPath =~ PathRegex
 
 ```

@@ -24,7 +24,7 @@ journal file.
    probably increase the collection timeout past 10 minutes (usually
    more than an hour).
 
-3. The reassembled FullPath is derived from the MFTId referenced in
+3. The reassembled OSPath is derived from the MFTId referenced in
    the USN record. Bear in mind that this might be out of date and
    inaccurate.
 
@@ -56,7 +56,7 @@ description: |
      probably increase the collection timeout past 10 minutes (usually
      more than an hour).
 
-  3. The reassembled FullPath is derived from the MFTId referenced in
+  3. The reassembled OSPath is derived from the MFTId referenced in
      the USN record. Bear in mind that this might be out of date and
      inaccurate.
 
@@ -220,7 +220,7 @@ sources:
               TimeStamp > DateAfterTime
 
         SELECT Offset, TimeStamp, Name, MFTId,
-               MFTEntry.FullPath AS FullPath,
+               MFTEntry.OSPath AS OSPath,
                ParentMFTId, Reason
         FROM FlatHits
 

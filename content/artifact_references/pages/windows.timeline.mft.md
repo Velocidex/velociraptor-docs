@@ -44,7 +44,7 @@ parameters:
   - name: Accessor
     default: ntfs
   - name: PathRegex
-    description: "regex search over FullPath."
+    description: "regex search over OSPath."
     type: regex
   - name: NameRegex
     default: .

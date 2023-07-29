@@ -4,23 +4,37 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Enumerate the users edge favicons.
+Enumerate the users Microsoft Edge favicons.
+
+Tested against Chrome as well, replace Microsoft Edge with Google Chrome in the faviconsGlob
 
 Chrome Favicons are stored in the 'Favicons' SQLite database, within
 the 'favicons', 'favicon_bitmaps' and 'icon_mapping' tables. Older
 versions of Chrome stored Favicons in a 'Thumbnails' SQLite
 database, within the 'favicons' table.
 
+## NOTES:
+
+This artifact is deprecated in favor of
+Generic.Forensic.SQLiteHunter and will be removed in future
+
 
 ```yaml
 name: Windows.Applications.Edge.Favicons
 description: |
-  Enumerate the users edge favicons.
+  Enumerate the users Microsoft Edge favicons.
+
+  Tested against Chrome as well, replace Microsoft Edge with Google Chrome in the faviconsGlob
 
   Chrome Favicons are stored in the 'Favicons' SQLite database, within
   the 'favicons', 'favicon_bitmaps' and 'icon_mapping' tables. Older
   versions of Chrome stored Favicons in a 'Thumbnails' SQLite
   database, within the 'favicons' table.
+
+  ## NOTES:
+
+  This artifact is deprecated in favor of
+  Generic.Forensic.SQLiteHunter and will be removed in future
 
 references:
   - https://www.foxtonforensics.com/browser-history-examiner/chrome-history-location
@@ -36,6 +50,7 @@ parameters:
       SELECT favicons.id AS ID,
              favicon_bitmaps.icon_id AS IconID,
              favicon_bitmaps.image_data as _image,
+             HEX(favicon_bitmaps.image_data) as _image_hex,
              datetime( favicon_bitmaps.last_updated / 1000000 + ( strftime( '%s', '1601-01-01' ) ), 'unixepoch', 'localtime' ) AS LastUpdated,
              icon_mapping.page_url AS PageURL,
              favicons.url AS FaviconURL
@@ -71,7 +86,7 @@ sources:
             SELECT ID, IconID, LastUpdated, PageURL, FaviconURL,
                    upload(accessor="data",
                           file=_image,
-                          name=format(format="Image%v.png", args=ID)) AS Image
+                          name=format(format="Image%v.png", args=ID)) AS Image, _image_hex, OSPath as _OSPath
             FROM sqlite(
               file=OSPath,
               query=faviconsQuery)

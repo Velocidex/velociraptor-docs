@@ -42,10 +42,10 @@ sources:
         SELECT * FROM foreach(
           row = {
             SELECT * FROM Artifact.Windows.Detection.Thumbdrives.List()
-            WHERE FullPath =~ officeExtensions
+            WHERE OSPath =~ officeExtensions
           },
           query = {
-            SELECT * from olevba(file=FullPath)
+            SELECT * from olevba(file=OSPath)
           })
 
 ```

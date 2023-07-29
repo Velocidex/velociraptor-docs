@@ -94,7 +94,7 @@ sources:
           async=TRUE,
           query={
             SELECT *
-            FROM watch_evtx(filename=FullPath)
+            FROM watch_evtx(filename=OSPath)
             WHERE System.EventID.Value = 4769
                 AND EventData.TicketEncryptionType = 23
                 AND EventData.Status = 0

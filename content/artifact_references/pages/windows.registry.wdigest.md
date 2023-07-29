@@ -73,7 +73,7 @@ sources:
   - query: |
         SELECT
             ModTime as LastModified,
-            FullPath as KeyPath,
+            OSPath as KeyPath,
             Name as KeyName,
             Data.type as KeyType,
             Data.value as KeyValue
@@ -84,7 +84,7 @@ sources:
                         then= False,
                         else= KeyValue = 0)
         GROUP BY LastModified, KeyName, KeyType, KeyValue,
-            regex_replace(source=FullPath,
+            regex_replace(source=OSPath,
                 re='''[^\\]+ControlSet[^\\]+''',replace='CurrentControlSet')
 
 column_types:

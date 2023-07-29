@@ -74,11 +74,11 @@ sources:
                     LastRunTimes,
                     RunCount,
                     // FilesAccessed,
-                    FullPath,
+                    OSPath,
                     Name AS PrefetchFileName,
                     Btime as CreationTime,
                     Mtime as ModificationTime
-                 FROM prefetch(filename=FullPath)
+                 FROM prefetch(filename=OSPath)
                  WHERE
                     if(condition=binaryRegex, then= Executable =~ binaryRegex,
                     else=TRUE) AND
@@ -89,7 +89,7 @@ sources:
       LET executionTimes = SELECT * FROM flatten(
                 query = {
                     SELECT *,
-                        FullPath as FilteredPath,
+                        OSPath as FilteredPath,
                         LastRunTimes as ExecutionTime
                     FROM pf
                 })
@@ -102,7 +102,7 @@ sources:
       LET creationTimes = SELECT * FROM flatten(
                 query = {
                     SELECT *,
-                        FullPath as FilteredPath,
+                        OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
                     WHERE RunCount > 8

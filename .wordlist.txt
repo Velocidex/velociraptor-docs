@@ -1368,3 +1368,13 @@ teamserver
 # content/vql_reference/basic/unzip/_index.md
 autodetected
 tgz
+
+#content/vql_reference/plugin/upload_s3/_index.md
+KMS
+kmsencryptionkey
+uploadroot
+
+# content/blog/2023/2023-07-27-release-notes-0.7.0/index.md
+SQLiteHunter
+deduplicates
+leveldb

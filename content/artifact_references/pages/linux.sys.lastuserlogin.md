@@ -22,7 +22,7 @@ export: |
   LET wtmpProfile <= '''
   [
     ["Header", 0, [
-    
+
     ["records", 0, "Array", {
         "type": "utmp",
         "count": "x=>MaxCount",
@@ -56,13 +56,13 @@ export: |
     ]
     ]]
     ]'''
-    
+
 sources:
   - precondition: |
       SELECT OS From info() where OS = 'linux'
     query: |
-      LET parsed = SELECT FullPath, parse_binary(
-                   filename=FullPath,
+      LET parsed = SELECT OSPath, parse_binary(
+                   filename=OSPath,
                    profile=wtmpProfile,
                    struct="Header"
                  ) AS Parsed
@@ -71,7 +71,7 @@ sources:
       query={
          SELECT * FROM foreach(row=Parsed.records,
          query={
-           SELECT FullPath, ut_type AS Type,
+           SELECT OSPath, ut_type AS Type,
               ut_id AS ID,
               ut_pid as PID,
               ut_hostname as Host,
