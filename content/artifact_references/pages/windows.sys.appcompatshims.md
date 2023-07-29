@@ -43,7 +43,7 @@ sources:
         LET result = SELECT * from foreach(
           row={
             SELECT regex_replace(
-               source=FullPath,
+               source=OSPath,
                replace="$1",
                re="^.+\\\\([^\\\\]+)\\\\[^\\\\]+$") as Executable,
               regex_replace(

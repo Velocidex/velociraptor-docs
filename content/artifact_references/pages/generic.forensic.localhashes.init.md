@@ -41,6 +41,6 @@ sources:
          SELECT * FROM sqlite(file=hash_db, query=Line)
       })
 
-      SELECT hash_db AS FullPath FROM scope()
+      SELECT hash_db AS OSPath FROM scope()
 
 ```

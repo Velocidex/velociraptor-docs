@@ -13,6 +13,7 @@ Miscellaneous plugins not yet categorized.
 |[alert](alert)|<span class='vql_type'>Function</span>|Generate an alert message|
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
+|[base85decode](base85decode)|<span class='vql_type'>Function</span>||
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
@@ -25,6 +26,7 @@ Miscellaneous plugins not yet categorized.
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Apply Gunzip to the data|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
+|[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
 |[lru](lru)|<span class='vql_type'>Function</span>|Creates an LRU object|
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
 |[mail](mail)|<span class='vql_type'>Function</span>|Send Email to a remote server|

@@ -98,7 +98,7 @@ sources:
                     query={
                         SELECT *, Name
                         FROM execve(argv=[
-                            payload.FullPath[0],
+                            payload.OSPath[0],
                             "-d", HomeDirectory,
                             "--csv", tempfolder + "\\" + Name,
                             "--dedupe"])
@@ -118,8 +118,8 @@ sources:
          SELECT * FROM if(
            condition=UploadFiles,
            then={
-             SELECT Name, upload(file=FullPath,
-                                 name=relpath(base=tempfile, path=FullPath)) as FileDetails
+             SELECT Name, upload(file=OSPath,
+                                 name=relpath(base=tempfile, path=OSPath)) as FileDetails
              FROM glob(globs="/**", root=tempfolder)
            })
       },
@@ -128,7 +128,7 @@ sources:
            condition=RemovePayload,
            then={
              SELECT * FROM execve(argv=['powershell','Remove-Item',
-                                             payload.FullPath[0],'-Force' ])
+                                             payload.OSPath[0],'-Force' ])
            })
       })
       WHERE Stdout =~ "SBECmd"

@@ -9,7 +9,7 @@ We verify the hash of the binary on disk and if it does not match we fetch it ag
 from the source URL.
 
 This artifact is designed to be called from other artifacts. The
-binary path will be emitted in the FullPath column.
+binary path will be emitted in the OSPath column.
 
 As a result of launching an artifact with declared "tools"
 field, the server will populate the following environment
@@ -28,7 +28,7 @@ description: |
    from the source URL.
 
    This artifact is designed to be called from other artifacts. The
-   binary path will be emitted in the FullPath column.
+   binary path will be emitted in the OSPath column.
 
    As a result of launching an artifact with declared "tools"
    field, the server will populate the following environment
@@ -123,7 +123,7 @@ sources:
           SELECT hash(path=(args[0]).ToolPath) as Hash,
                  (args[0]).ToolFilename AS Name,
                  "Downloaded" AS DownloadStatus,
-                 (args[0]).ToolPath AS FullPath
+                 (args[0]).ToolPath AS OSPath
           FROM scope()
           WHERE (args[0]).ToolPath AND
                 log(message="File served from " + (args[0]).ToolPath)
@@ -139,7 +139,7 @@ sources:
               (args[0]).ToolFilename AS Name,
               "Downloaded" AS DownloadStatus,
               copy(filename=Content, dest=(ToolPath[0]).Path,
-                   permissions=if(condition=IsExecutable, then="x")) AS FullPath
+                   permissions=if(condition=IsExecutable, then="x")) AS OSPath
           FROM http_client(url=(args[0]).ToolURL, tempfile_extension=".exe")
           WHERE log(message=format(format="downloaded hash of %v: %v, expected %v", args=[
                     Content, Hash.SHA256, (args[0]).ToolHash]))
@@ -152,18 +152,19 @@ sources:
 
       // Check if the existing file in the binary file cache matches
       // the hash.
-      LET existing = SELECT FullPath, hash(path=FullPath) AS Hash, Name,
+      LET existing = SELECT OSPath, hash(path=OSPath) AS Hash, Name,
                     "Cached" AS DownloadStatus
         FROM stat(filename=(ToolPath[0]).Path)
         WHERE log(message=format(format="Local hash of %v: %v, expected %v", args=[
-            FullPath, Hash.SHA256, (args[0]).ToolHash]))
+            OSPath, Hash.SHA256, (args[0]).ToolHash]))
         AND Hash.SHA256 = (args[0]).ToolHash
 
       // Find the required_tool either in the local cache or
       // download it (and put it in the cache for next time). If we
       // have to download the file we sleep for a random time to
       // stagger server bandwidth load.
-      SELECT * FROM switch(
+      SELECT *, OSPath AS FullPath
+      FROM switch(
         a=local_file,
         b=existing,
         c={

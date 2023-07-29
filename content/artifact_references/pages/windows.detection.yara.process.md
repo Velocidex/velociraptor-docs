@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact enables running Yara over processes in memory.
 
 There are 2 kinds of Yara rules that can be deployed:
- 
+
 1. Url link to a yara rule.
 3. or a Standard Yara rule attached as a parameter.
 
@@ -30,10 +30,10 @@ description: |
   This artifact enables running Yara over processes in memory.
 
   There are 2 kinds of Yara rules that can be deployed:
-   
+
   1. Url link to a yara rule.
   3. or a Standard Yara rule attached as a parameter.
-  
+
   Only one method of Yara will be applied and search order is as above. The
   default is Cobalt Strike opcodes.
 
@@ -44,7 +44,7 @@ description: |
   show one string in returned rows.
   If upload is selected NumberOfHits is redundant and not advised as hits are
   grouped by path to ensure files only downloaded once.
-  
+
 
 type: CLIENT
 parameters:
@@ -174,7 +174,7 @@ sources:
                 HitOffset,
                 HitContext,
                 upload(
-                  file=FullPath,
+                  file=OSPath,
                   name=format(format='%v-%v.dmp',
                     args= [ split(string=ProcessName, sep='\\.')[0], Pid ])
                 ) as ProcessDump

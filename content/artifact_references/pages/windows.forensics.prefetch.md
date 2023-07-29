@@ -342,14 +342,14 @@ sources:
                   SCCAHeader.Version AS Version,
                   filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=>x.Unix > 0") AS LastRunTimes,
                   SCCAHeader.Info.RunCount AS RunCount,
-                  FullPath,
+                  OSPath,
                   Name AS PrefetchFileName,
                   Btime as CreationTime,
                   Mtime as ModificationTime,
                   filter(list=SCCAHeader.Info.Metrics.Filename, regex=".exe$")[0] AS Binary,
                   if(condition= IncludeFilesAccessed, then=SCCAHeader.Info.Metrics.Filename) AS FilesAccessed,
                   if(condition= IncludeFilesAccessed, then=SCCAHeader.Info.VolumeInfo) AS VolumeInfo
-                FROM ParsePrefetch(PrefetchFile=FullPath)
+                FROM ParsePrefetch(PrefetchFile=OSPath)
                 WHERE
                     if(condition=binaryRegex, then= Executable =~ binaryRegex, else=TRUE) AND
                     if(condition=hashRegex, then= Hash =~ hashRegex, else=TRUE)
@@ -359,7 +359,7 @@ sources:
         LET executionTimes = SELECT * FROM flatten(
                 query = {
                     SELECT *,
-                        FullPath as FilteredPath,
+                        OSPath as FilteredPath,
                         LastRunTimes as ExecutionTime
                     FROM pf
                 })
@@ -371,7 +371,7 @@ sources:
         LET creationTimes = SELECT * FROM flatten(
                 query = {
                     SELECT *,
-                        FullPath as FilteredPath,
+                        OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
                     WHERE RunCount > 8
@@ -383,7 +383,7 @@ sources:
                         else=TRUE)
             GROUP BY ExecutionTime
 
-        // For stdOutput with timefilters we need to group by FullPath
+        // For stdOutput with timefilters we need to group by OSPath
         LET timeFiltered = SELECT FilteredPath
             FROM chain(
                 a = { SELECT * FROM executionTimes },
@@ -397,7 +397,7 @@ sources:
                 query={
                     SELECT *
                     FROM pf
-                    WHERE FullPath = FilteredPath
+                    WHERE OSPath = FilteredPath
                 })
 
         SELECT *

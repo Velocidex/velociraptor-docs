@@ -35,7 +35,7 @@ sources:
 
     query: |
       -- output rows and dedup on unique values for each
-      SELECT ModTime,FullPath,
+      SELECT ModTime,OSPath,
         Name as KeyName,
         Data.value as KeyValue,
         Data.type as KeyType

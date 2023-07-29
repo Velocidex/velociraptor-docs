@@ -23,10 +23,10 @@ parameters:
 
 sources:
   - query: |
-        LET results = SELECT FullPath, Size,
+        LET results = SELECT OSPath, Size,
                Mtime As Modifed,
                Type,
-               upload(file=FullPath,
+               upload(file=OSPath,
                       mtime=Mtime,
                       ctime=Ctime,
                       accessor=Accessor) AS FileDetails
@@ -36,7 +36,7 @@ sources:
         SELECT * FROM foreach(
          row=triageTable,
          query={
-           SELECT FullPath, Size, Modifed, Type,
+           SELECT OSPath, Size, Modifed, Type,
                FileDetails.Path AS ZipPath,
                FileDetails.Md5 as Md5,
                FileDetails.Sha256 as SHA256

@@ -5,7 +5,7 @@ tags: [Client Artifact]
 ---
 
 Detects anomalous files in a Linux filesystem.
- 
+
 An anomalous file is considered one that matches at least one criteria:
 
 - Hidden (prefixed with a dot);
@@ -20,7 +20,7 @@ name: Linux.Detection.AnomalousFiles
 
 description: |
   Detects anomalous files in a Linux filesystem.
-   
+
   An anomalous file is considered one that matches at least one criteria:
 
   - Hidden (prefixed with a dot);
@@ -51,7 +51,7 @@ sources:
 
     query: |
       SELECT Fqdn AS Host,
-             FullPath,
+             OSPath,
              substr(str=Name, start=0, end=1) = "." AS IsHidden,
              Size,
              Size > MaxNormalSize AS IsLarge,

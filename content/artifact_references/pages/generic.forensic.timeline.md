@@ -28,7 +28,7 @@ sources:
   - precondition:
       SELECT OS From info() where OS = 'windows' AND timelineAccessor = 'ntfs'
     query: |
-        SELECT 0 AS Md5, FullPath,
+        SELECT 0 AS Md5, OSPath,
                Sys.mft as Inode,
                Mode.String AS Mode, 0 as Uid, 0 as Gid, Size,
                Atime, Mtime, Ctime
@@ -38,7 +38,7 @@ sources:
   - precondition:
       SELECT * From scope() where timelineAccessor = 'file'
     query: |
-        SELECT 0 AS Md5, FullPath,
+        SELECT 0 AS Md5, OSPath,
                Sys.Ino as Inode,
                Mode.String AS Mode, Sys.Uid AS Uid, Sys.Gid AS Gid, Size,
                Atime, Mtime, Ctime

@@ -68,7 +68,6 @@ sources:
 
         // First we need to extract populated RunMRU
         LET MRUList <= SELECT OSPath,
-           FullPath,
            Data.value as RunMruOrder,
            len(list=Data.value) as RunMruLength,
            Username,
