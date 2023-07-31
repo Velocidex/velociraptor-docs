@@ -140,7 +140,7 @@ sources:
                 SELECT * FROM UserProfiles
             },
             query={
-                SELECT FullPath, OSPath, Data, Mtime AS Mtime,
+                SELECT OSPath, OSPath, Data, Mtime AS Mtime,
                        Username, Description, Uid, Gid, UUID, Directory
                 FROM glob(
                     globs=KeyGlob,

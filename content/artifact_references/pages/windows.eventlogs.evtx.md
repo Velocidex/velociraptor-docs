@@ -82,9 +82,14 @@ precondition: SELECT OS FROM info() WHERE OS = 'windows'
 parameters:
   - name: EvtxGlob
     default: '%SystemRoot%\System32\winevt\Logs\*.evtx'
-  - name: SearchVSS
-    description: "Search VSS for EvtxGlob as well."
-    type: bool
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
   - name: StartDate
     type: timestamp
     description: "Parse events on or after this date (YYYY-MM-DDTmm:hh:ssZ)"
@@ -103,19 +108,16 @@ parameters:
 
 sources:
   - query: |
-      // expand provided glob into a list of paths on the file system (fs)
-      LET fspaths <=
-          SELECT FullPath FROM glob(globs=expand(path=EvtxGlob))
-          WHERE FullPath =~ PathRegex
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
-      // function returning list of VSS paths corresponding to path
-      LET vsspaths(path) =
-          SELECT FullPath FROM Artifact.Windows.Search.VSS(SearchFilesGlob=path)
-          WHERE FullPath =~ PathRegex
+      // expand provided glob into a list of paths on the file system (fs)
+      LET fspaths =
+          SELECT OSPath FROM glob(globs=expand(path=EvtxGlob), accessor=Accessor)
+          WHERE OSPath =~ PathRegex
 
       // function returning parsed evtx from list of paths
-      LET evtxsearch(pathList) =
-          SELECT * FROM foreach(
+      LET evtxsearch(pathList) = SELECT * FROM foreach(
             row=pathList,
             query={
               SELECT *,
@@ -123,8 +125,8 @@ sources:
                 System.Channel as Channel,
                 System.EventRecordID as EventRecordID,
                 System.EventID.Value as EventID,
-                FullPath
-              FROM parse_evtx(filename=FullPath)
+                OSPath
+              FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE
                 if(condition=StartDate,
                    then=TimeCreated >= timestamp(string=StartDate),
@@ -137,17 +139,7 @@ sources:
             }
           )
 
-      // only de-duplicate using GROUP BY when searching VSS
-      // de-duplicate file-by-file to reduce memory impact
-      SELECT * FROM if(condition=SearchVSS, then={
-          SELECT * FROM foreach(row=fspaths, query={
-            SELECT * FROM evtxsearch(pathList={
-                SELECT FullPath FROM vsspaths(path=FullPath)
-            })
-            GROUP BY EventRecordID,Channel
-          })
-        }, else={
-          SELECT * FROM evtxsearch(pathList={SELECT FullPath FROM fspaths})
-        })
+      SELECT * FROM evtxsearch(pathList=fspaths)
+      GROUP BY EventRecordID, Channel
 
 ```

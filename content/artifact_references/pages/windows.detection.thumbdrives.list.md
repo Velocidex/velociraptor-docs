@@ -50,7 +50,7 @@ sources:
         FROM glob(globs="/*", accessor="file")
         WHERE Data.Description =~ "Removable" AND Size < atoi(string=maxDriveSize)
 
-        LET file_listing = SELECT FullPath,
+        LET file_listing = SELECT OSPath,
             Mtime As Modified,
             Size
         FROM glob(globs=Drive+"\\**", accessor="file")
@@ -62,7 +62,7 @@ sources:
                  row=removable_disks,
                  query=file_listing)
           },
-          key="FullPath",
+          key="OSPath",
           period=10)
           WHERE Diff = "added"
 

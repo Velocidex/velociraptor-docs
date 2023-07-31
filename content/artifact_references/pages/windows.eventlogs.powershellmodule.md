@@ -56,12 +56,21 @@ parameters:
   - name: PayloadRegex
     description: "regex search over Payload text field."
     type: regex
-  - name: SearchVSS
-    description: "Add VSS into query."
-    type: bool
+
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
 
 sources:
   - query: |
+        LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+        LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+
         -- Build time bounds
         LET DateAfterTime <= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
@@ -69,20 +78,12 @@ sources:
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
         -- Determine target files
-        LET files = SELECT *
-          FROM if(condition=SearchVSS,
-            then= {
-              SELECT *
-              FROM Artifact.Windows.Search.VSS(SearchFilesGlob=EventLog)
-            },
-            else= {
-              SELECT *, FullPath as Source
-              FROM glob(globs=EventLog)
-            })
+        LET files =
+              SELECT *, OSPath as Source
+              FROM glob(globs=EventLog, accessor=Accessor)
 
         -- Main query
-        LET hits = SELECT *
-          FROM foreach(
+        LET hits = SELECT * FROM foreach(
             row=files,
             query={
               SELECT
@@ -98,7 +99,7 @@ sources:
                 System.Opcode as Opcode,
                 System.Task as Task,
                 Source
-              FROM parse_evtx(filename=FullPath)
+              FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE EventID = 4103
                 AND EventTime > DateAfterTime
                 AND EventTime < DateBeforeTime
@@ -108,11 +109,6 @@ sources:
                     then=ContextInfo=~PayloadRegex,else=TRUE)
             })
           ORDER BY Source DESC
-
-        -- Group results for deduplication
-        LET grouped = SELECT *
-          FROM hits
-          GROUP BY EventRecordID
 
         -- Output results
         SELECT
@@ -128,6 +124,7 @@ sources:
             Opcode,
             Task,
             Source
-        FROM grouped
+        FROM hits
+        GROUP BY EventRecordID, Channel
 
 ```

@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 ModuleAnalysisCache stores metadata about loaded Powershell modules.
 
-Recent updates include filters by regex to enable targeted hunting 
+Recent updates include filters by regex to enable targeted hunting
 use cases.
 
 
@@ -15,7 +15,7 @@ name: Windows.System.Powershell.ModuleAnalysisCache
 description: |
     ModuleAnalysisCache stores metadata about loaded Powershell modules.
 
-    Recent updates include filters by regex to enable targeted hunting 
+    Recent updates include filters by regex to enable targeted hunting
     use cases.
 
 reference:
@@ -65,15 +65,15 @@ sources:
          ]]
        ]
       '
-      LET parsed = SELECT FullPath,
-         parse_binary(filename=FullPath, profile=Profile, struct="Header") AS Header
+      LET parsed = SELECT OSPath,
+         parse_binary(filename=OSPath, profile=Profile, struct="Header") AS Header
       FROM glob(globs=GlobLookup)
 
       SELECT * FROM foreach(row=parsed,
       query={
          SELECT * FROM foreach(row=Header.Entries,
          query={
-            SELECT FullPath, ModuleName,
+            SELECT OSPath, ModuleName,
                   timestamp(epoch=TimestampTicks/10000000 - 62136892800) AS Timestamp,
                   Func.Name AS Functions
             FROM scope()
@@ -84,4 +84,5 @@ sources:
                 AND filter(list=Functions,regex=FunctionNameRegex)
          })
       })
+
 ```

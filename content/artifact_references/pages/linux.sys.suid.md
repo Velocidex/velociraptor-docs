@@ -60,7 +60,7 @@ parameters:
 sources:
   - query: |
       SELECT Mode.String AS Mode,
-               FullPath, Size,
+               OSPath, Size,
                Mtime,
                Sys.Uid AS OwnerID,
                Sys.Gid AS GroupID

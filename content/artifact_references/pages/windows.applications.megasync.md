@@ -38,37 +38,38 @@ parameters:
     description: "Regex of strings to leave out of output."
     default:
     type: regex
-  - name: SearchVSS
-    description: "Add VSS into query."
-    type: bool
+
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
+
   - name: UploadLogs
     description: "Upload MEGASync logs."
     type: bool
 
-
 sources:
   - query: |
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+
       -- Find target files
-      LET files = SELECT *
-        FROM if(condition=SearchVSS,
-            then= {
-                SELECT *
-                FROM Artifact.Windows.Search.VSS(SearchFilesGlob=LogFiles)
-            },
-            else= {
-                SELECT *, FullPath as Source
-                FROM glob(globs=LogFiles)
-            })
+      LET files = SELECT *, OSPath as Source
+        FROM glob(globs=LogFiles, accessor=Accessor)
 
       -- Collect all Lines in scope of regex search
-      LET output <= SELECT * FROM foreach(row=files,
+      LET output = SELECT * FROM foreach(row=files,
           query={
-              SELECT Line, FullPath,
+              SELECT Line, OSPath,
                 Mtime,
                 Atime,
                 Ctime,
                 Size
-              FROM parse_lines(filename=FullPath,accessor='file')
+              FROM parse_lines(filename=OSPath,accessor='file')
               WHERE TRUE
                 AND Line =~ SearchRegex
                 AND NOT if(condition= WhitelistRegex,
@@ -79,16 +80,16 @@ sources:
 
       SELECT
         Line as RawLine,
-        FullPath
+        OSPath
       FROM output
 
 
   - name: LogFiles
     query: |
         SELECT
-            FullPath,
+            OSPath,
             if(condition=UploadLogs,
-                then= upload(file=FullPath,accessor='ntfs')
+                then= upload(file=OSPath, accessor=Accessor)
                 ) as Upload,
             'MEGAsync logfile' as Description,
             Mtime,
@@ -96,6 +97,6 @@ sources:
             Ctime,
             Size
         FROM output
-        GROUP BY FullPath
+        GROUP BY OSPath
 
 ```

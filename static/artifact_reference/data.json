@@ -243,6 +243,15 @@
         ]
     },
     {
+        "title": "Generic.Forensic.SQLiteHunter",
+        "description": "Hunt for SQLite files.",
+        "link": "/artifact_references/pages/generic.forensic.sqlitehunter",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Generic.Forensic.Timeline",
         "description": "This artifact generates a timeline of a file glob in bodyfile\nformat. We currently do not calculate the md5 because it is quite\nexpensive.\n",
         "link": "/artifact_references/pages/generic.forensic.timeline",
@@ -352,7 +361,7 @@
     },
     {
         "title": "Linux.Detection.AnomalousFiles",
-        "description": "Detects anomalous files in a Linux filesystem.\n \nAn anomalous file is considered one that matches at least one criteria:",
+        "description": "Detects anomalous files in a Linux filesystem.",
         "link": "/artifact_references/pages/linux.detection.anomalousfiles",
         "type": "client",
         "tags": [
@@ -393,6 +402,15 @@
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Forensics.Journal",
+        "description": "Parses the binary journal logs. Systemd uses a binary log format to\nstore logs. You can read these logs using journalctl command:",
+        "link": "/artifact_references/pages/linux.forensics.journal",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -675,8 +693,26 @@
         ]
     },
     {
+        "title": "LogScale.Events.Clients",
+        "description": "This server side event monitoring artifact will watch a selection of client\nmonitoring artifacts for new events and push those to a LogScale (formerly\nHumio) ingestion endpoint",
+        "link": "/artifact_references/pages/logscale.events.clients",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "LogScale.Flows.Upload",
+        "description": "This server side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically posts those to a\nLogScale (formerly Humio) ingestion endpoint.\n",
+        "link": "/artifact_references/pages/logscale.flows.upload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "MacOS.Applications.Chrome.History",
-        "description": "Read all User's chrome history.\n",
+        "description": "Read all User's chrome history.",
         "link": "/artifact_references/pages/macos.applications.chrome.history",
         "type": "client",
         "tags": [
@@ -1101,6 +1137,15 @@
         "title": "Server.Internal.ClientInfo",
         "description": "An internal artifact collecting client information. This is used to\nupdate the client info indexes. Client send this automatically at\nstartup and then every day.\n",
         "link": "/artifact_references/pages/server.internal.clientinfo",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientInfoSnapshot",
+        "description": "An internal artifact that fires when the master node writes a new\nsnapshot. Minion use this to trigger a refresh of their client info\nsnapshots.\n",
+        "link": "/artifact_references/pages/server.internal.clientinfosnapshot",
         "type": "internal",
         "tags": [
             "Internal Artifact"
@@ -1693,7 +1738,7 @@
     },
     {
         "title": "Windows.Applications.Chrome.History",
-        "description": "Enumerates a targets chrome history. Source based on Hindsight and code review of https://source.chromium.org/chromium/chromium/src/+/master:components/history/core/browser/history_types.h. NOTE: Some research has shown that older browsers may not have this table, then you should be treating it as you would in a traditional investigation, this changes is aimed at taking advantage of the newer tables to reduce false postitives.\n",
+        "description": "Enumerates a targets chrome history. Source based on Hindsight and\ncode review of\nhttps://source.chromium.org/chromium/chromium/src/+/master:components/history/core/browser/history_types.h.",
         "link": "/artifact_references/pages/windows.applications.chrome.history",
         "type": "client",
         "tags": [
@@ -1702,7 +1747,7 @@
     },
     {
         "title": "Windows.Applications.Edge.Favicons",
-        "description": "Enumerate the users edge favicons.",
+        "description": "Enumerate the users Microsoft Edge favicons.",
         "link": "/artifact_references/pages/windows.applications.edge.favicons",
         "type": "client",
         "tags": [
@@ -1720,7 +1765,7 @@
     },
     {
         "title": "Windows.Applications.Firefox.Downloads",
-        "description": "Enumerate the users Firefox downloads.\n",
+        "description": "Enumerate the users Firefox downloads.",
         "link": "/artifact_references/pages/windows.applications.firefox.downloads",
         "type": "client",
         "tags": [
@@ -1729,7 +1774,7 @@
     },
     {
         "title": "Windows.Applications.Firefox.History",
-        "description": "Enumerate the users Firefox history.\n",
+        "description": "Enumerate the users Firefox history.",
         "link": "/artifact_references/pages/windows.applications.firefox.history",
         "type": "client",
         "tags": [
@@ -1845,15 +1890,6 @@
         ]
     },
     {
-        "title": "Windows.Collectors.VSS",
-        "description": "Collects files with VSS deduplication.",
-        "link": "/artifact_references/pages/windows.collectors.vss",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Detection.Amcache",
         "description": "This artifact collects AMCache entries with a SHA1 hash to enable threat\ndetection.",
         "link": "/artifact_references/pages/windows.detection.amcache",
@@ -1875,15 +1911,6 @@
         "title": "Windows.Detection.BinaryRename",
         "description": "This artifact will detect renamed binaries commonly abused by adversaries.",
         "link": "/artifact_references/pages/windows.detection.binaryrename",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Windows.Detection.CryptnetUrlCache",
-        "description": "This artifact will hunt for evidence of Certutil use as a download cradle.",
-        "link": "/artifact_references/pages/windows.detection.cryptneturlcache",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2350,7 +2377,7 @@
     },
     {
         "title": "Windows.Forensics.Lnk",
-        "description": "A Lnk file parser.",
+        "description": "This artiact parses LNK shortcut files.",
         "link": "/artifact_references/pages/windows.forensics.lnk",
         "type": "client",
         "tags": [
@@ -2379,6 +2406,15 @@
         "title": "Windows.Forensics.Prefetch",
         "description": "Windows keeps a cache of prefetch files. When an executable is run,\nthe system records properties about the executable to make it faster\nto run next time. By parsing this information we are able to\ndetermine when binaries are run in the past. On Windows10 we can see\nthe last 8 execution times and creation time (9 potential executions).",
         "link": "/artifact_references/pages/windows.forensics.prefetch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.RDPCache",
+        "description": "This artifact views and enables simplified upload of RDP \ncache files. ",
+        "link": "/artifact_references/pages/windows.forensics.rdpcache",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2440,7 +2476,7 @@
     },
     {
         "title": "Windows.Forensics.Timeline",
-        "description": "Win10 records recently used applications and files in a \u201ctimeline\u201d\naccessible via the \u201cWIN+TAB\u201d key. The data is recorded in a SQLite\ndatabase.\n",
+        "description": "Win10 records recently used applications and files in a \u201ctimeline\u201d\naccessible via the \u201cWIN+TAB\u201d key. The data is recorded in a SQLite\ndatabase.",
         "link": "/artifact_references/pages/windows.forensics.timeline",
         "type": "client",
         "tags": [
@@ -2494,7 +2530,7 @@
     },
     {
         "title": "Windows.Memory.Intezer",
-        "description": "This artifact will trigger an intezer agent scan on the endpoint. ",
+        "description": "This artifact will trigger an intezer agent scan on the endpoint.",
         "link": "/artifact_references/pages/windows.memory.intezer",
         "type": "client",
         "tags": [
@@ -2772,6 +2808,15 @@
         ]
     },
     {
+        "title": "Windows.Registry.RDP",
+        "description": "This artifact will collect historical RDP server names and MRU items stored \nin each users NTUser.dat",
+        "link": "/artifact_references/pages/windows.registry.rdp",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Registry.RecentDocs",
         "description": "This artifact extracts RecentDocs MRU from the target.",
         "link": "/artifact_references/pages/windows.registry.recentdocs",
@@ -2863,7 +2908,7 @@
     },
     {
         "title": "Windows.Search.VSS",
-        "description": "This artifact will find all relevant files in the VSS. Typically used to\nout deduplicated paths for processing by other artifacts.",
+        "description": "This artifact will find all relevant files in the VSS. Typically\nused to out deduplicated paths for processing by other artifacts.",
         "link": "/artifact_references/pages/windows.search.vss",
         "type": "client",
         "tags": [
