@@ -6,16 +6,21 @@ description: |
    
    This artifact will import the latest DetectRaptor bundle into the current server.  
    
-   Last updated: 2022-12-19.   
+   Last updated: 2023-08-02.   
 
    Current artifacts include:  
    
    - Windows.Detection.Applications
    - Windows.Detection.BinaryRename
-   - Windows.Detection.Evtx  
-   - Windows.Detection.MFT  
+   - Windows.Detection.Evtx
+   - Windows.Detection.HijackLibsEnv
+   - Windows.Detection.HijackLibsMFT
+   - Windows.Detection.LolDrivers
+   - Windows.Detection.MFT
    - Windows.Detection.NamedPipes
-   - Windows.Detection.Webhistory  
+   - Windows.Detection.Powershell.ISEAutoSave
+   - Windows.Detection.Powershell.PSReadline
+   - Windows.Detection.Webhistory
    - Windows.Detection.ZoneIdentifier
    - Server.StartHunts
 
