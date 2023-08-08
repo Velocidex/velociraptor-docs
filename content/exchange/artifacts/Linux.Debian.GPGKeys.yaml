@@ -44,9 +44,9 @@ export: |
             FROM execve(argv=['gpg', '--with-colons', filename])
 
         /* Pipe data to the same command as in InspectGPGFile(): */
-        LET InspectGPGData(data) = SELECT Stdout AS Info
-            FROM execve(argv=['sh', '-c', format(format='echo "%v"|gpg --with-colons', args=[data])])
 
+        LET InspectGPGData(data) = SELECT *
+            FROM InspectGPGFile(filename=tempfile(data=data))
         /* Convert the validity code to a more human-readable string (see
            reference for details): */
         LET GPGValidityString(validity) = regex_transform(source=validity, map=dict(
