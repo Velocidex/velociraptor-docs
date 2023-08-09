@@ -1,6 +1,6 @@
 # How do you generate random characters?
 
-Using the rand() funciton we can manipulate the results to output a character set then use the WHERE condition to filter for the characters of interest.
+Using the rand() function we can manipulate the results to output a character set then use the WHERE condition to filter for the characters of interest.
 
 For example output 32 random printable characters:  
 ```
