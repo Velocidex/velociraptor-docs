@@ -14,12 +14,12 @@ We have previously said that one of the reasons we developed
 Velociraptor was to improve on the performance of GRR which was not
 scalable for our use case.
 
-We\'ve been working with the team at Klein & Co. on several intrusions
-over the past several months, which are providing valuable opportunities
-to deploy and test Velociraptor in a range of real world investigation
-scenarios. Through this process, we've been able to extend
-Velociraptor's functionality and prove its performance on real client
-networks.
+We have been working with the team at Klein & Co. on several
+intrusions over the past several months, which are providing valuable
+opportunities to deploy and test Velociraptor in a range of real world
+investigation scenarios. Through this process, we have been able to
+extend Velociraptor's functionality and prove its performance on real
+client networks.
 
 I thought I would write a short blog post to show how Velociraptor
 performed on such a recent engagement. In this engagement we deployed
@@ -149,7 +149,7 @@ MFT Download
 A common technique is to examine the Master File Table (MFT) of an NTFS
 volume. By forensically analyzing the MFT it is possible to detect
 deleted files, time stomping and build a timeline of the system using
-tools like [analyseMFT.py](https://github.com/dkovar/analyzeMFT) or
+tools like [`analyseMFT.py`](https://github.com/dkovar/analyzeMFT) or
 [ntfswalker](https://dmitrybrant.com/ntfswalker) .
 
 In this case we decided to collect the \$MFT from all the Windows hosts

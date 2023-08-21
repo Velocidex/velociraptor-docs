@@ -1,4 +1,4 @@
-name: Custom.Windows.Memory.HollowsHunter
+name: Windows.Memory.HollowsHunter
 description: |
    Use hollows_hunter to detect suspicious process injections.
 
@@ -10,22 +10,31 @@ tools:
    github_asset_regex: hollows_hunter64.exe
    serve_locally: true
 
+precondition:
+   SELECT OS From info() where OS = 'windows'
+   
 sources:
-  - precondition:
-      SELECT OS From info() where OS = 'windows'
-
+  - name: Output
     query: |
-      -- Get the path to the hollows_hunter tool and a fresh temp directory.
-      LET binaries <= SELECT FullPath, tempdir() AS TempDir
-      FROM Artifact.Generic.Utils.FetchBinary(
-         ToolName="hollows_hunter")
+      -- Get the path to the hollows_hunter tool and a fresh temp directory.\
+      LET TempDir <= tempdir(remove_last=TRUE)
+      LET binaries <= SELECT FullPath
+      FROM Artifact.Generic.Utils.FetchBinary(ToolName="hollows_hunter")
 
       -- Run the tool and relay back the output, as well as upload all the files from the tempdir.
-      SELECT * FROM chain(
-      a={SELECT Stdout, NULL AS Upload
-         FROM execve(argv=[binaries[0].FullPath,"/hooks",
-           "/json", "/dir", binaries[0].TempDir], length=100000)},
-      b={
-        SELECT upload(file=FullPath) AS Upload
-        FROM glob(globs="*", root=binaries[0].TempDir)
-      })
+      SELECT *
+      FROM execve(argv=[binaries[0].FullPath,"/hooks",
+           "/json", "/dir", TempDir], sep="\n")
+           
+  - name: Summary
+    query: |
+      LET LookupPid(pid) = SELECT Name, CommandLine, Exe FROM pslist(pid=pid)
+
+      SELECT *, LookupPid(pid=pid)[0] AS ProcessInfo
+      FROM foreach(row=parse_json(
+            data=read_file(filename=TempDir + "/summary.json")).suspicious)  
+            
+  - name: Uploads
+    query: |
+      SELECT upload(file=FullPath) AS Upload
+      FROM glob(globs="*", root=TempDir)

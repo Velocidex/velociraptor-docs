@@ -50,7 +50,7 @@ In a secure installation you should remove the **CA.private_key** section from t
 
 ### Messages
 
-Clients and servers communicate by sending each other messages (which are simply protocol buffers), for example, a message may contain VQL queries or result sets. Messages are collected into a list and sent in a single POST operation in a **MessageList** protobuf. This protobuf is encrypted using a session key with a symmetric cipher (aes_128_cbc). The session key is chosen by the sending party and is written into an encrypted **Cipher** protobuf and sent along with each message.
+Clients and servers communicate by sending each other messages (which are simply protocol buffers), for example, a message may contain VQL queries or result sets. Messages are collected into a list and sent in a single POST operation in a **MessageList** protobuf. This protobuf is encrypted using a session key with a symmetric cipher (`aes_128_cbc`). The session key is chosen by the sending party and is written into an encrypted **Cipher** protobuf and sent along with each message.
 
 ![](../../img/1ntQkR2sRm8mIg5vkYjngEg.png)
 
@@ -62,7 +62,7 @@ The encrypted cipher is sent with each message and contains an encrypted version
 
 On a loaded server you might notice CPU utilization spikes for a few seconds after the system starts up, as the server unlocks the session keys from incoming clients, but after that the server should not need to perform many RSA operations and CPU load should be low since most session keys are cached in memory.
 
-The **Frontend.expected_clients** setting controls the size of the memory cache of session keys. If this is too small, keys will be evicted from cache and cpu load will rapidly rise as the server is forced to do more RSA operations to decrypt client messages. You should increase this value to reflect how many clients you expect to be active at the same time.
+The **Frontend.expected_clients** setting controls the size of the memory cache of session keys. If this is too small, keys will be evicted from cache and CPU load will rapidly rise as the server is forced to do more RSA operations to decrypt client messages. You should increase this value to reflect how many clients you expect to be active at the same time.
 
 ## HTTP protocol
 

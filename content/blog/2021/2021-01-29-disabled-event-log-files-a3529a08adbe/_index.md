@@ -39,9 +39,15 @@ Sure enough when the log file is disabled, no events are recorded in the event l
 
 ### What does this setting do?
 
-I wanted to know if I can detect when a log file was disabled on an endpoint. My working hypothesis was that this UI would change some registry keys and I know how to collect those!
+I wanted to know if I can detect when a log file was disabled on an
+endpoint. My working hypothesis was that this UI would change some
+registry keys and I know how to collect those!
 
-I started up procmon and clicked the button to disable the log. After some applications of filtering I was able to narrow it down to the following value HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Bits-Client/Operational\Enabled which is set to 0 for disabling the log file.
+I started up procmon and clicked the button to disable the log. After
+some applications of filtering I was able to narrow it down to the
+following value
+`HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Bits-Client/Operational\Enabled`
+which is set to 0 for disabling the log file.
 
 ![](../../img/12sb1bdsZuU3ghB9CTWVAZQ.png)
 

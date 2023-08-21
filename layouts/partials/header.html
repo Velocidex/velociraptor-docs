@@ -94,7 +94,7 @@
           <div id="chapter">
         {{ end }}
         <div id="body-inner">
-          {{if and (not .IsHome) (not .Params.chapter) }}
+          {{if and (not .IsHome) (not .Params.chapter) (not .Params.noTitle) }}
             <h1>
               {{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}
                 {{.Data.Singular}} ::

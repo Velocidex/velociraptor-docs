@@ -30,7 +30,11 @@ Velociraptor doesn't support other self-signed SSL certificates, and we don't re
 
 {{% notice info "SSL Intercepting proxies" %}}
 
-By default, Velociraptor will not connect through an SSL intercepting proxy. While not recommended, it is possible to add allowlist rules that enable Velociraptor to connect through an SSL intercepting proxy. If you do so, you will see a certificate warning about the possibility of a MITM attack when accessing the Admin GUI.
+By default, Velociraptor will not connect through an SSL intercepting
+proxy. While not recommended, it is possible to add allow list rules
+that enable Velociraptor to connect through an SSL intercepting
+proxy. If you do so, you will see a certificate warning about the
+possibility of a MITM attack when accessing the Admin GUI.
 
 {{% /notice %}}
 
@@ -121,4 +125,4 @@ Push the debian package to the server using Secure Copy Protocol (SCP):
 
 ## Install the package
 Run the following command to install the server package:
-```sudo dpkg -i velociraptor_server*.deb```
+```sudo dpkg -i velociraptor_*_server.deb```

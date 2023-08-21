@@ -1,41 +1,50 @@
 name: Windows.System.BinaryVersion
 author: "Matt Green - @mgreen27"
 description: |
-   Extract the binary version information for binary files. This artifact will 
-   search the MFT for any matching filenames and return binary information.
+   This artifact will search the MFT for any matching filenames and return
+   binary details. This artifact can be used to find all instances of a 
+   binary on disk so its great for scoping both legititimate and illegitimate 
+   files.
 
 parameters:
-   - name: TargetBinary
+   - name: TargetLibrary
      default: 'kernel32.dll'
-
+     description: regex of target library filename e.g file.dll or ^(file.dll|file2.exe)$
+   - name: TargetDrive
+     default: 'C:\'
+   - name: TargetAllDrives
+     type: bool
+     
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET hits = SELECT FileName,
-            strip(string=split(string=MFTPath,sep='\\$MFT')[0],
-                prefix='\\\\.\\') + FullPath as FullPath,
-            parse_pe(file=strip(string=split(string=MFTPath,sep='\\$MFT')[0],
-                prefix='\\\\.\\') + FullPath) as PE,
-            authenticode(filename=strip(string=split(string=MFTPath,sep='\\$MFT')[0],
-                prefix='\\\\.\\') + FullPath) as Authenticode,
+      LET hits = SELECT FileName, OSPath,
+            dict(
+                    LastModified0x10=LastModified0x10,
+                    LastAccess0x10=LastAccess0x10,
+                    LastRecordChange0x10=LastRecordChange0x10,
+                    Created0x10=Created0x10
+                ) as SI_Timestamps,
+            dict(
+                    LastModified0x30=LastModified0x30,
+                    LastAccess0x30=LastAccess0x30,
+                    LastRecordChange0x30=LastRecordChange0x30,
+                    Created0x30=Created0x30
+                ) as FN_Timestamps,
+            SI_Lt_FN, uSecZeros,
+            parse_pe(file=OSPath) as PE,
+            authenticode(filename=OSPath) as Authenticode,
             InUse,
             FileSize
-      FROM Artifact.Windows.NTFS.MFT(
-            AllDrives='Y',
+      FROM Artifact.Windows.NTFS.MFT(MFTDrive=TargetDrive,
+            AllDrives=TargetAllDrives,
             FileRegex=TargetLibrary)
 
-      SELECT 
-        FullPath,
-        FileName,
-        PE.VersionInformation.ProductName as ProductName,
-        PE.VersionInformation.FileVersion as DLLVersion,
-        PE.VersionInformation.Comments as Description,
-        PE.VersionInformation.LegalCopyright as LegalCopyright,
-        FileSize,
+      SELECT *,
         InUse as MFTAllocated,
-        hash(path=FullPath) as Hash,
+        hash(path=OSPath) as Hash,
         PE,
         Authenticode
       FROM hits

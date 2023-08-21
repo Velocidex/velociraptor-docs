@@ -9,15 +9,30 @@ date: 2021-01-19
 
 ![](../../img/05guWyV7JU51Gcg3T?width=600px)
 
-During the course of our DFIR work, we typically need to extract some information from endpoints from various files and registry keys on the system. Sometimes it is possible to extract the needed information using text processing tools — such as a regular expression applied on a configuration file.
+During the course of our DFIR work, we typically need to extract some
+information from endpoints from various files and registry keys on the
+system. Sometimes it is possible to extract the needed information
+using text processing tools — such as a regular expression applied on
+a configuration file.
 
-In many cases however, the information we need is encoded inside a binary file. A large part of DFIR analysis involves parsing binary structures from files, registry keys and even event logs.
+In many cases however, the information we need is encoded inside a
+binary file. A large part of DFIR analysis involves parsing binary
+structures from files, registry keys and even event logs.
 
-While it is always possible to write a dedicated parser for whatever file format we are interested in, this leads to operational complexities — if we download an ad hoc parser for a particular file format, how do we push new program or script to the endpoint? how to ensure it has any dependencies (e.g. Python, .NET etc)?
+While it is always possible to write a dedicated parser for whatever
+file format we are interested in, this leads to operational
+complexities — if we download an adhoc parser for a particular file
+format, how do we push new program or script to the endpoint? how to
+ensure it has any dependencies (e.g. Python, .NET etc)?
 
-The entire premise of VQL is that users should be able to rapidly issue new queries to the endpoint, in a consistent and easy to learn way. Wouldn’t it be great if users can parse binary files directly in VQL without needing to use external programs?
+The entire premise of VQL is that users should be able to rapidly
+issue new queries to the endpoint, in a consistent and easy to learn
+way. Wouldn’t it be great if users can parse binary files directly in
+VQL without needing to use external programs?
 
-As of Velociraptor 0.5.5, VQL contains a powerful new built in binary parser. This post introduces the new parser and shows a practical example of using it to develop a powerful Velociraptor artifact.
+As of Velociraptor 0.5.5, VQL contains a powerful new built in binary
+parser. This post introduces the new parser and shows a practical
+example of using it to develop a powerful Velociraptor artifact.
 
 ### Binary parsing overview.
 
@@ -29,21 +44,21 @@ Velociraptor’s binary parser has taken inspiration from other great parsers, s
 
 The best way to introduce the new parser is with an example so I will jump straight in!
 
-### Certutil metadata parsing
+### `Certutil` metadata parsing
 
-The certutil program is a native, built in Windows tool used to download certificate information. It is a commonly used [Lolbin](https://lolbas-project.github.io/lolbas/Binaries/Certutil/), with attackers misusing the tool to download malicious code to compromised endpoints (see [Att&ck S0160](https://attack.mitre.org/software/S0160/)).
+The `certutil` program is a native, built in Windows tool used to download certificate information. It is a commonly used [Lolbin](https://lolbas-project.github.io/lolbas/Binaries/Certutil/), with attackers misusing the tool to download malicious code to compromised endpoints (see [Att&ck S0160](https://attack.mitre.org/software/S0160/)).
 
-I was reading an excellent blog post recently titled [Certutil Artifacts Analysis](https://u0041.co/blog/post/3) where Aalfaifi analyses the forensic evidence left behind by certutil. Let’s write a parser for this!
+I was reading an excellent blog post recently titled [`Certutil` Artifacts Analysis](https://u0041.co/blog/post/3) where `Aalfaifi` analyses the forensic evidence left behind by `certutil`. Let’s write a parser for this!
 
-We start off by using certutils in a malicious way — rather than downloading certificate revocation lists we will download an executable to the system for testing.
+We start off by using `certutil` in a malicious way — rather than downloading certificate revocation lists we will download an executable to the system for testing.
 
 ![](../../img/1c9DTl-Q04OAFY9T6CUidfw.png)
 
-The certutil tool will download our executable and create a metadata file containing some very interesting data but what does it mean?
+The `certutil` tool will download our executable and create a metadata file containing some very interesting data but what does it mean?
 
 ![](../../img/13ZKzTgDOewJinIZPEk_5TQ.png)
 
-Luckily Aalfaifi has done the sleuthing work and their excellent article covers the details. I will interactively develop my VQL parser using the Velociraptor notebook. I first add a new notebook then add a VQL cell to it. I can now write and evaluate free form VQL.
+Luckily `Aalfaifi` has done the sleuthing work and their excellent article covers the details. I will interactively develop my VQL parser using the Velociraptor notebook. I first add a new notebook then add a VQL cell to it. I can now write and evaluate free form VQL.
 
 Let’s begin by just hard coding the path to the metadata file I created. I will also define a profile and an initial struct called Header.
 
@@ -87,7 +102,10 @@ We can specify the URL as being a **String** type with a length determined dynam
 
 ### Putting it all together
 
-This was easy! We now know the url the certutil tool downloaded from, the hash and the timestamp — all are critical in a DFIR investigation to distinguish the legitimate use of certutil from malicious.
+This was easy! We now know the url the `certutil` tool downloaded
+from, the hash and the timestamp — all are critical in a DFIR
+investigation to distinguish the legitimate use of `certutil` from
+malicious.
 
 While the above VQL only parsed a single hard coded metadata file, in practice we want to search for all metadata files from all users and parse them in a single collection.
 
@@ -95,7 +113,7 @@ You can see the full artifact here [https://github.com/Velocidex/velociraptor/bl
 
 ### Collecting the new **artifact**
 
-I will now collect the artifact from my endpoint. Using the GUI, I click the **add new collection** button, then search for my **Windows.Forensics.CertUtil **artifact.
+I will now collect the artifact from my endpoint. Using the GUI, I click the **add new collection** button, then search for my **Windows.Forensics.CertUtil** artifact.
 
 ![](../../img/1j1yRTbk4mFoWNPBWKHHevA.png)
 
@@ -107,11 +125,11 @@ The files are parsed on the endpoint and we see the relevant information in seco
 
 ![](../../img/1W9X8wH91FoezNlOk4gXzuA.png)
 
-Doing a hunt across all my endpoints will now tell me if certutil was ever used to download a suspicious tool, from where, and potentially uploading the tool itself in the **CryptUrlCache**.
+Doing a hunt across all my endpoints will now tell me if `certutil` was ever used to download a suspicious tool, from where, and potentially uploading the tool itself in the **CryptUrlCache**.
 
 ### Conclusions
 
-Although this was a simple example, the binary parser is extremely capable. Some other examples include **Windows.System.Powershell.ModuleAnalysisCache** (parses the powershell module analysis cache) and **Windows.Forensic.Lnk **(Parse link files) and many more.
+Although this was a simple example, the binary parser is extremely capable. Some other examples include **Windows.System.Powershell.ModuleAnalysisCache** (parses the powershell module analysis cache) and **Windows.Forensic.Lnk** (Parse link files) and many more.
 
 Being able to go from reading an analysis in a blog post to running a hunt across your entire network in a matter of minutes is a truly powerful capability, allowing our DFIR team to be proactive and innovative. Having a powerful binary parser in your toolbox is a real bonus making many types of hunts possible.
 

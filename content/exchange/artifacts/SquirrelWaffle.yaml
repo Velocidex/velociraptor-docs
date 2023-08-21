@@ -1,24 +1,25 @@
 name: Windows.Carving.SquirrelWaffle
 author: "Eduardo Mattos - @eduardfir & Kostya Iliouk - @kostyailiouk"
 description: |
-    This artifact yara-scans memory or process dumps for 
-    unpacked SquirrelWaffle Dlls, decodes the configuration and
-    returns the C2s and the payload.
-    
-    Depending on the initial infection vector (the macro within .doc or
-    .xls maldoc), SquirrelWaffle packed droper will be loaded by either rundll32 
-    or regsvr32 and unpack itself in memory.
-    
-    The decoded configurations found so far contain (1) a list of C2 URLS, 
-    (2*) *may* contain a list of C2 IPs, and lastly, (3) contains the command 
-    "regsvr32.exe -s". The command is used to launch its second-stage payload 
-    downloaded from its C2 addresses, as a ".txt" file that is in fact a 
-    disguised PE, to be loaded in memory.
+    This artifact yara-scans memory or process dumps for unpacked
+    SquirrelWaffle Dlls, decodes the configuration and returns the C2s
+    and the payload.
 
-    NOTE:  
-    This content simply carves the configuration and does not unpack files on
-    disk. That means pointing this artifact as a packed or obfuscated file will not 
-    obtain the expected results.
+    Depending on the initial infection vector (the macro within .doc or
+    .xls maldoc), SquirrelWaffle packed droper will be loaded by either rundll32
+    or regsvr32 and unpack itself in memory.
+
+    The decoded configurations found so far contain (1) a list of C2
+    URLS, (2*) *may* contain a list of C2 IPs, and lastly, (3)
+    contains the command "regsvr32.exe -s". The command is used to
+    launch its second-stage payload downloaded from its C2 addresses,
+    as a ".txt" file that is in fact a disguised PE, to be loaded in
+    memory.
+
+    ### NOTE
+    This content simply carves the configuration and does not unpack
+    files on disk. That means pointing this artifact as a packed or
+    obfuscated file will not obtain the expected results.
 
 type: CLIENT
 
@@ -43,7 +44,7 @@ parameters:
               date = "2021-09-29"
               hash = "ea4e9be41fa3f6895423e791596011f88ba45cde"
            strings:
-              $s1 = { 20 48 54 54 50 2F 31 2E 31 0D 0A 48 6F 73 74 3A 20 } // HTTP/1.1 Host: 
+              $s1 = { 20 48 54 54 50 2F 31 2E 31 0D 0A 48 6F 73 74 3A 20 } // HTTP/1.1 Host:
               $s2 = { 41 50 50 44 41 54 41 00 54 45 4D 50 } // APPDATA TEMP
               $s3 = { 34 30 34 00 32 30 30 00 2E 74 78 74 } // 404 200 .txt
               $s4 = { 20 03 2C 35 3E 18 58 59 48 0F 37 26 } // xored regsvr32.exe
@@ -57,42 +58,42 @@ sources:
         def Main(arr):
             res=[]
             for i in range(0,len(arr),2):
-                
+
                 res.append({"Length":arr[i],"DataBlock":arr[i+1],"Count":i/2})
-                
+
             return Pair(sorted(res, key=GetLength, reverse=True))
-        
+
         def GetLength(dic):
            return dic["Length"]
-        
+
         def Pair(arr):
             res=[]
             for dic in arr:
-                found = False 
+                found = False
                 for tdic in arr:
                     if (tdic["Count"] == dic["Count"] + 1):
                         res.append({"DataBlock":dic,"Key":tdic})
                         found = True
                         break
                 if (found == False):
-                
+
                     res.append(({"DataBlock":dic,"Key":0}))
             return res
         ''')
         -- find target files
-        LET TargetFiles = SELECT FullPath FROM glob(globs=TargetFileGlob) 
-             
+        LET TargetFiles = SELECT FullPath FROM glob(globs=TargetFileGlob)
+
         -- find velociraptor process
-        LET me <= SELECT Pid 
+        LET me <= SELECT Pid
                   FROM pslist(pid=getpid())
 
         -- find all processes and add filters
         LET processes <= SELECT Name AS ProcessName, CommandLine, Exe, Pid
                         FROM pslist()
-                        WHERE Name =~ ProcessRegex 
+                        WHERE Name =~ ProcessRegex
                             AND format(format="%d", args=Pid) =~ PidRegex
                             AND NOT Pid in me.Pid
-                
+
         -- scan processes in scope with our Detection
         LET processDetections <= SELECT * FROM foreach(row=processes,
                                 query={
@@ -103,16 +104,16 @@ sources:
                                             GROUP BY Pid
                                         })
                                 })
-                                            
-        -- return the VAD region size from yara detections for later use                         
-        LET regionDetections = SELECT * 
+
+        -- return the VAD region size from yara detections for later use
+        LET regionDetections = SELECT *
                                 FROM foreach(row=processDetections,
                                     query={
                                         SELECT YaraRule, Pid, ProcessName, CommandLine, Exe, BaseOffset, Size AS VADSize
                                         FROM vad(pid=Pid)
                                         WHERE Address = BaseOffset
                                 })
-                                
+
         -- scan files in scope with our rule
         LET fileDetections = SELECT * FROM foreach(row=TargetFiles,
                                 query={
@@ -124,20 +125,20 @@ sources:
                                                     FROM yara(files=FullPath, rules=DetectionYara)
                                                 },
                                                 b={ -- yara miss
-                                                    SELECT FullPath, Null AS YaraRule 
+                                                    SELECT FullPath, Null AS YaraRule
                                                     FROM TargetFiles
                                                 })
                                         },
                                         else={ -- no yara detection run
-                                            SELECT FullPath, 'N/A' AS YaraRule 
+                                            SELECT FullPath, 'N/A' AS YaraRule
                                             FROM TargetFiles
                                         })
                              })
-        
+
         -- scan files in scope with our rule
         LET fileConfiguration = SELECT * FROM foreach(row=fileDetections,
                                     query={
-                                        SELECT FullPath, YaraRule, 
+                                        SELECT FullPath, YaraRule,
                                             read_file(filename=FullPath, offset=IdealOffset, length=10000) AS PEData
                                         FROM scope()
                                     })
@@ -146,8 +147,8 @@ sources:
         LET processConfiguration <= SELECT YaraRule, Pid, ProcessName, CommandLine, Exe, BaseOffset,
                                         read_file(filename=str(str=Pid), accessor='process', offset=BaseOffset, length=VADSize) AS PEData
                                     FROM regionDetections
-        
-        -- store the SquirrelWaffle configuration in blocks split by null bytes.                     
+
+        -- store the SquirrelWaffle configuration in blocks split by null bytes.
         LET parsedRdata = SELECT *,
                             split(string=format(format="% X", args=parse_binary(filename=PEData, accessor="data", profile='''[
                                 ["SquirrelRdata", 0, [
@@ -159,25 +160,25 @@ sources:
                           FROM if(condition=TargetFileGlob,
                                 then= fileConfiguration,
                                 else= processConfiguration)
-                                
-        -- generate a list of sorted blocks and then pair encoded blocks with their keys using Starlark                      
-        LET blocks <= SELECT *, CountBlock.Main(arr=array(a=enumerate(items=NewDict))) AS EnumDict 
+
+        -- generate a list of sorted blocks and then pair encoded blocks with their keys using Starlark
+        LET blocks <= SELECT *, CountBlock.Main(arr=array(a=enumerate(items=NewDict))) AS EnumDict
                       FROM foreach(row=parsedRdata,
-                        query= { 
-                            SELECT *, FullPath, YaraRule, Pid, ProcessName, CommandLine, Exe 
+                        query= {
+                            SELECT *, FullPath, YaraRule, Pid, ProcessName, CommandLine, Exe
                             FROM foreach(row=SplitBlocks,
-                                query= { 
-                                        SELECT dict(Length=len(list=_value), DataBlock=_value) AS NewDict 
-                                        FROM scope() 
+                                query= {
+                                        SELECT dict(Length=len(list=_value), DataBlock=_value) AS NewDict
+                                        FROM scope()
                                         WHERE NewDict.Length > 45
                                 })
                         })
                       GROUP BY if(condition=TargetFileGlob,
                                 then= FullPath,
                                 else= CommandLine)
-                                
+
         -- store encoded blocks and their keys in separate columns, filtering out FPs based on key size
-        LET finalPairs <= SELECT *, unhex(string=regex_replace(source=DataBlock.DataBlock, re=" ", replace="")) AS DataBlock, 
+        LET finalPairs <= SELECT *, unhex(string=regex_replace(source=DataBlock.DataBlock, re=" ", replace="")) AS DataBlock,
                             unhex(string=regex_replace(source=Key.DataBlock, re=" ", replace="")) AS Key
                           FROM foreach(row=blocks,
                                 query= {
@@ -187,14 +188,14 @@ sources:
                                     })
                             })
                           WHERE len(list=Key) > 32 AND len(list=Key) < 256
-        
+
         -- return our results
         SELECT * FROM if(condition=TargetFileGlob,
             then= {
                 SELECT YaraRule, FullPath, regex_replace(source=xor(key=Key,string=DataBlock), re="(\r)|(\\|)", replace=",\n") AS DecodedConfigs
-                FROM finalPairs   
+                FROM finalPairs
             },
             else= {
                 SELECT YaraRule, Pid, ProcessName, CommandLine, Exe, regex_replace(source=xor(key=Key,string=DataBlock), re="(\r)|(\\|)", replace=",\n") AS DecodedConfigs
                 FROM finalPairs
-        })    
+        })

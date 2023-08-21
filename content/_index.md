@@ -2,6 +2,7 @@
 title: "Welcome"
 date: 2021-06-12T07:11:04Z
 draft: false
+noDisqus: true
 weight: 20
 no_header: true
 carousel:
@@ -19,6 +20,17 @@ carousel:
    description: Don't wait until an event occurs. Actively search for suspicious activities using our library of forensic artifacts, then customize to your specific threat hunting needs.
 
 ---
+
+{{% notice tip "VeloCon 2023 September 13 2023!" %}}
+
+Keep your calendars clear for this year's VeloCon event taking place on the
+13th Sept in the EST timezone. This virtual conference will present
+community talks about Velociraptor!
+
+[See more details here]({{< ref "/announcements/2023-velocon/" >}})
+
+{{% /notice %}}
+
 
 ## Velociraptor - Digging Deeper!
 

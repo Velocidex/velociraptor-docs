@@ -106,8 +106,8 @@ pre {
 
 }
 
-pre code {
-    font-size: 14px;
+pre code, pre.code {
+    font-size: 14pt;
 }
 
 div.progress  {
@@ -135,6 +135,14 @@ body.dark code.hljs {
 footer.footline {
     border-top: 1px none;
     border-top: var(--footer-color);
+}
+
+.vql_type.page-header {
+    margin-top: -30px;
+}
+
+table .vql_type {
+    padding: 20px;
 }
 
 .vql_type {
@@ -206,6 +214,7 @@ div.mynotices.info > div {
 div.mynotices > div:first-child:after {
     content: attr(heading);
     text-transform: capitalize;
+    color: var(--mynotices);
 }
 
 div.mynotices.warning > div {
@@ -295,6 +304,10 @@ code.hljs {
 .pull-right {
     position: relative;
     float: right;
+}
+
+.label.label-success {
+    margin: 5px;
 }
 
 .gsc-search-box td, .gsc-search-box table {
@@ -477,6 +490,10 @@ div .border {
     word-spacing: 3px;
 }
 
+a.tag:hover {
+    text-decoration: none;
+}
+
 body.dark .color {
     background-color: var(--MAIN-TEXT-background-color);
     color: white;
@@ -622,3 +639,80 @@ figcaption  {
 #body .banner img {
     max-width: 100%;
 }
+
+.modal-dialog.wide {
+    width: 90%;
+}
+
+.kb-tag {
+    margin: 0px;
+}
+
+.kb-tag .idea-tag {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.item-comment {
+    margin-top: 20px;
+    padding-left: 20px;
+    color: var(--MAIN-TEXT-color);
+}
+
+.reference-key {
+    padding-right: 1ex;
+}
+
+.reference-key,
+.reference-value-sequence,
+.reference-value-mapping {
+    display: inline;
+}
+
+.reference-value-mapping,
+.reference-value-sequence {
+    color: var(--REFERENCE-value-color);
+}
+
+.reference-document {
+    font-family: monospace, Consolas, Courier Prime, Courier, Courier New;
+}
+
+.reference-document ul {
+    list-style-type: none;
+}
+
+.reference-value-mapping > ul {
+    border: var(--REFERENCE-border-color);
+    border-style: dashed;
+    margin-left: 0px;
+}
+
+.reference-value-sequence > ul {
+    margin-left: 0px;
+}
+
+.multiline-value {
+    display: block;
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: pre;
+    padding-left: 40px;
+}
+
+.bullet-placeholder {
+    padding: 10px;
+    display: inline;
+}
+
+.anchorlink {
+    float: right;
+    padding-right: 20px;
+    color: var(--REFERENCE-value-color);
+}
+
+details > summary:first-of-type {
+    display: list-item;
+    counter-increment: list-item 0;
+    list-style: inside disclosure-closed;

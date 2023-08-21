@@ -48,7 +48,7 @@ These are Velociraptor\'s design goals:
      does not even use a database, but simply uses flat files.
  -   Simplify everything! Velociraptor aims to be very simple to run
      and administer. We remove a lot of the GRR functionality that we
-     dont find we use often. Velociraptor ships as a single, statically
+     don't find we use often. Velociraptor ships as a single, statically
      linked executable which can perform all actions necessary for
      deployers.
 
@@ -108,13 +108,13 @@ into sections. Here is a quick overview:
     -   Server\_urls is a list of URLs the client will attempt to
         connect to. If a connection to one fails it will try the others
         repeatedly. It is wise to include several URLs here or at least
-        a DNS name so the server may be easily t just use a single IP
+        a DNS name so the server may be easily to just use a single IP
         address here). This will usually be different from Frontend bind
         address in a proper deployment but for testing it may be the
         same.
     -   Writeback: The writeback path is where clients will write their
         local persistent state (for example, their private keys). You
-        can specify a different location for windows, osx and linux
+        can specify a different location for Windows, MacOS and Linux
         clients.
 -   The Datastore section specifies where to store the data for the
     server. Be sure to update the location to a more permanent path. The

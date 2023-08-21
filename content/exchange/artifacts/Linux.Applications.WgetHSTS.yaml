@@ -1,8 +1,8 @@
 name: Linux.Applications.WgetHSTS
 description: |
-   Wget creates a HSTS log file in a user's home directory. 
-   This can contain forensically relevant informtion.
-   
+   Wget creates a HSTS log file in a user's home directory.  This can
+   contain forensically relevant information.
+
 reference:
 - https://firexfly.com/wget-hsts/
 
@@ -26,7 +26,7 @@ sources:
           FROM parse_lines(filename=FullPath)
           WHERE NOT Line =~ "^#"
         })
-        
+
 column_types:
   - name: Created
     type: timestamp

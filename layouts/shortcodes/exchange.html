@@ -46,7 +46,7 @@
         </p>
       </div>
       <div class="modal-footer">
-        <a href="https://github.com/scudette/velociraptor-docs/new/master/content/exchange/artifacts"
+        <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/exchange/artifacts"
            class="btn btn-primary btn-lg right">
           <i class="fab fa-github"></i>&nbsp;Contribute
         </a>
@@ -79,6 +79,9 @@ function doSearch() {
 
     if (item.title.toUpperCase().includes(filter)) {
       result.push(item);
+    } else if(item.description &&
+              item.description.toUpperCase().includes(filter)) {
+        result.push(item);
     }
   };
   DrawResults(result);
@@ -118,8 +121,10 @@ function DrawResults(data) {
     template.find(".date").append(item.date)
 
     for (let j=0; j<item.tags.length; j++) {
-      let tag = item.tags[j];
-      template.find(".idea-tag").append(`<i class="linkcolour label label-success">` + tag + `</i>&nbsp;`);
+        let tag = item.tags[j];
+        template.find(".idea-tag").
+            append($(`<a class="tag">`).attr("href", "/tags/" + tag).
+                   append(`<i class="linkcolour tag label label-success">` + tag + `</i>&nbsp;`));
     }
     let new_item = $(".search_results").append(template);
   }

@@ -83,7 +83,13 @@ The [kcachegrind](https://kcachegrind.github.io/html/Home.html) tool allows me t
 
 ![](../../img/1VV4GJRhUlO2rnN8zG1ahKA.png)
 
-Scrolling the call graph in this case shows that the os.Open() function spends about 35% of the time. Since os.Open() is not a part of our own code, it shows we end up spending most of our time in the operating system. In fact 35% of our time is spent waiting for Windows Defender’s real time scanner (which blocks os.Open for us as it scans the files on demand — Windows defender is a huge performance killer.).
+Scrolling the call graph in this case shows that the `os.Open()`
+function spends about 35% of the time. Since `os.Open()` is not a part
+of our own code, it shows we end up spending most of our time in the
+operating system. In fact 35% of our time is spent waiting for Windows
+Defender’s real time scanner (which blocks `os.Open` for us as it
+scans the files on demand — Windows defender is a huge performance
+killer.).
 
 {{% notice note %}}
 Our job as Velociraptor developers is to spend as little time as possible in our own code relative to the time spent in the operating system or external libraries.

@@ -1,0 +1,188 @@
+---
+title: Windows.Registry.AppCompatCache
+hidden: true
+tags: [Client Artifact]
+---
+
+This artifact parses AppCompatCache (shimcache) from target hives.
+
+AppCompatCache, also known as Shimcache, is a component of the Application
+Compatibility Database, which was created by Microsoft and used by the Windows
+operating system to identify application compatibility issues. This helps
+developers troubleshoot legacy functions and contains data related to Windows
+features.
+
+Note: the appcompatcache plugin does not currently support execution flag in
+Windows 7 and 8/8.1 Systems.
+
+
+```yaml
+name: Windows.Registry.AppCompatCache
+author: Matt Green - @mgreen27
+description: |
+  This artifact parses AppCompatCache (shimcache) from target hives.
+
+  AppCompatCache, also known as Shimcache, is a component of the Application
+  Compatibility Database, which was created by Microsoft and used by the Windows
+  operating system to identify application compatibility issues. This helps
+  developers troubleshoot legacy functions and contains data related to Windows
+  features.
+
+  Note: the appcompatcache plugin does not currently support execution flag in
+  Windows 7 and 8/8.1 Systems.
+
+reference:
+  - https://www.mandiant.com/resources/caching-out-the-val
+
+parameters:
+  - name: AppCompatCacheKey
+    default: HKEY_LOCAL_MACHINE/System/ControlSet*/Control/Session Manager/AppCompatCache/AppCompatCache
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+export: |
+    LET AppCompatCacheParser <= '''[
+    ["HeaderWin10", "x=>x.HeaderSize", [
+      ["HeaderSize", 0, "unsigned int"],
+      ["Entries", "x=>x.HeaderSize", Array, {
+          type: "Entry",
+          sentinel: "x=>x.Size = 0",
+          count: 10000,
+      }]
+    ]],
+    ["HeaderWin8", 128, [
+      ["Entries", 128, Array, {
+          type: "EntryWin8",
+          sentinel: "x=>x.EntrySize = 0",
+          count: 10000,
+      }]
+    ]],
+
+    ["EntryWin8", "x=>x.EntrySize + 12", [
+      ["Signature", 0, "String", {
+         length: 4,
+      }],
+      ["EntrySize", 8, "unsigned int"],
+      ["PathSize", 12, "uint16"],
+      ["Path", 14, "String", {
+          length: "x=>x.PathSize",
+          encoding: "utf16",
+      }],
+      ["LastMod", "x=>x.PathSize + 14 + 10", "WinFileTime"]
+    ]],
+
+    ["Entry", "x=>x.Size + 12", [
+      ["Signature", 0, "String", {
+         length: 4,
+      }],
+      ["Size", 8, "unsigned int"],
+      ["PathSize", 12, "uint16"],
+      ["Path", 14, "String", {
+          length: "x=>x.PathSize",
+          encoding: "utf16",
+      }],
+      ["LastMod", "x=>x.PathSize + 14", "WinFileTime"],
+      ["DataSize", "x=>x.PathSize + 14 + 8", "uint32"],
+      ["Data", "x=>x.PathSize + 14 + 8 + 4" , "String", {
+          length: "x=>x.DataSize",
+      }],
+
+      # The last byte of the Data block is 1 for execution
+      ["Execution", "x=>x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
+    ]],
+
+    # This is the Win7 parser but we dont use it right now.
+    ["HeaderWin7x64", 128, [
+      ["Signature", 0, "uint32"],
+      ["Entries", 128, "Array", {
+          count: 10000,
+          sentinel: "x=>x.PathSize = 0",
+          type: EntryWin7x64,
+      }]
+    ]],
+    ["EntryWin7x64", 48, [
+      ["PathSize", 0, "uint16"],
+      ["PathOffset", 8, "uint32"],
+      ["Path", "x=>x.PathOffset - x.StartOf", "String", {
+          encoding: "utf16",
+          length: "x=>x.PathSize",
+      }],
+      ["LastMod", 16, "WinFileTime"]
+    ]]
+
+    ]'''
+
+    LET AppCompatCacheWin10(Blob) = parse_binary(
+        accessor="data",
+        filename=Blob,
+        profile=AppCompatCacheParser,
+        struct="HeaderWin10")
+
+    LET AppCompatCacheWin8(Blob) = parse_binary(
+        accessor="data",
+        filename=Blob,
+        profile=AppCompatCacheParser,
+        struct="HeaderWin8")
+
+    LET AppCompatCache(Blob) = SELECT *
+    FROM foreach(
+      row=if(
+        condition=AppCompatCacheWin10(Blob=Blob).HeaderSize IN (52, 48),
+        then=AppCompatCacheWin10(Blob=Blob).Entries,
+        else=AppCompatCacheWin8(Blob=Blob).Entries))
+
+
+sources:
+  - query: |
+      -- first find all ControlSet Keys in scope
+      LET AppCompatKeys <= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor='registry')
+
+      -- when greater than one key we need to extract results and order later
+      LET results <= SELECT
+            ModificationTime,
+            Name as Path,
+            ControlSet,
+            Key
+          FROM foreach(
+              row={
+                 SELECT OSPath FROM glob(accessor='registry',
+                     globs=AppCompatCacheKey)
+              }, query={
+                  SELECT OSPath AS Key, Path AS Name,
+                     LastMod AS ModificationTime,
+                     OSPath[2] as ControlSet
+                  FROM AppCompatCache(Blob=read_file(
+                      accessor='registry', filename=OSPath))
+            })
+
+      -- find position of entry for each ControlSet. Lower numbers more recent
+      LET ControlSetPosition(cs) = SELECT *, count() - 1 as Position
+        FROM results WHERE ControlSet = cs
+      LET position = SELECT ControlSetPosition(cs=ControlSet) as Results
+            FROM foreach(
+                row={
+                    SELECT ControlSet, count(items=ControlSet) as Entries
+                    FROM results GROUP BY ControlSet
+                })
+
+      LET mutli_controlset = SELECT *
+        FROM foreach(
+                row=position.Results,
+                query={
+                    SELECT * FROM foreach(row=_value)
+                })
+
+      -- output results
+      SELECT
+        Position,
+        ModificationTime,
+        Path,
+        ControlSet,
+        Key
+      FROM if(condition= len(list=AppCompatKeys.OSPath)=1,
+        then={
+            SELECT *, count() - 1 as Position FROM results
+        },
+        else= mutli_controlset )
+
+```

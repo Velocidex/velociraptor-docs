@@ -3,8 +3,9 @@ languageCode: en-us
 title: "Velociraptor - Digging deeper!"
 
 theme: "hugo-theme-learn"
-
+disqusShortname: velocidex-velociraptor
 params:
+  noDisqus: true
   themeVariant: "mine"
   disableSearch: true
   showVisitedLinks: false
@@ -13,7 +14,7 @@ params:
   disableNextPrev: true
   disableLandingPageButton: true
   disableShortcutsTitle: true
-  editURL: https://github.com/scudette/velociraptor-docs/edit/master/content/
+  editURL: https://github.com/Velocidex/velociraptor-docs/edit/master/content/
   custom_css:
     - css/dark.css
     - css/syntax.css
@@ -45,5 +46,17 @@ menu:
       identifier: "mail"
       url: "mailto:velociraptor-discuss@googlegroups.com"
       weight: 30
+   -  name: "<i class='fas fa-rss'></i>RSS"
+      identifier: "rss"
+      url: "/rss/"
+      weight: 40
 
 googleAnalytics: G-QYH72LMYCS
+
+# We only want RSS to be generated in some areas.
+outputs:
+  page: ["HTML"]
+  home: ["HTML"]
+  section: ["HTML"]
+  taxonomyTerm: ["HTML"]
+  taxonomy: ["HTML"]

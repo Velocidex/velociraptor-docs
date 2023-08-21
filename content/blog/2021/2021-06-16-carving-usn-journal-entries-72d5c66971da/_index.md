@@ -49,25 +49,48 @@ Luckily the USN journal struct is well documented by Microsoft
 
 ![](../../img/1byPQQuD1tjF5pwHXhexdtg.png)
 
-In the above we can see that a USN record contains a number of fields, and we can determine their offsets relative to the record. Let’s look at what a typical USN record looks like. I will use Velociraptor to fetch the USN journal from the endpoint and select the hex viewer to see some of the data.
+In the above we can see that a USN record contains a number of fields,
+and we can determine their offsets relative to the record. Let’s look
+at what a typical USN record looks like. I will use Velociraptor to
+fetch the USN journal from the endpoint and select the hex viewer to
+see some of the data.
 
 ![](../../img/1onswBmgD7ZPdxnVV8RxDuA.png)
 
-In the screen shot above I can identify a number of fields which seem pretty reliable — I can develop a set of rules to determine if this is a legitimate structure or just random noise.
+In the screen shot above I can identify a number of fields which seem
+pretty reliable — I can develop a set of rules to determine if this is
+a legitimate structure or just random noise.
 
-1. The RecordLength field starts at offset 0 and occupies 4 bytes. A real USN journal must have a length between 60 bytes (the minimum size of the struct) and 512 bytes (most file names are not that large).
+1. The RecordLength field starts at offset 0 and occupies 4 bytes. A
+   real USN journal must have a length between 60 bytes (the minimum
+   size of the struct) and 512 bytes (most file names are not that
+   large).
 
-1. The MajorVersion and MinorVersion is always going to be the same — for Windows 10 this is currently 2 and 0. These 4 bytes have to be 02 00 00 00
+2. The MajorVersion and MinorVersion is always going to be the same —
+   for Windows 10 this is currently 2 and 0. These 4 bytes have to be
+   02 00 00 00
 
-1. The next interesting field is the timestamp. This is a Windows FileTime format timestamp (so 64 bits). Timestamps make for a good rule because they typically need to be valid over a narrow range to make sense.
+3. The next interesting field is the timestamp. This is a Windows
+   FileTime format timestamp (so 64 bits). Timestamps make for a good
+   rule because they typically need to be valid over a narrow range to
+   make sense.
 
-1. The filename is also stored in the record with the length and the offset both specified. For a reasonable file the length should be less than say 255 bytes. Since the filename itself follows the end of the struct, the filename offset should be exactly 60 bytes (0x36 — the size of the struct).
+4. The filename is also stored in the record with the length and the
+   offset both specified. For a reasonable file the length should be
+   less than say 255 bytes. Since the filename itself follows the end
+   of the struct, the filename offset should be exactly 60 bytes (0x36
+   — the size of the struct).
 
-Let’s take a look at the timestamp above. I will use [CyberChef ](https://gchq.github.io/CyberChef/#recipe=Windows_Filetime_to_UNIX_Timestamp('Seconds%20(s)','Hex%20(little%20endian)')From_UNIX_Timestamp('Seconds%20(s)')&input=MDRlY2VkZWE1ODYyZDcwMQ) to convert the hex to a readable timestamp.
+Let’s take a look at the timestamp above. I will use [CyberChef ](https://gchq.github.io/CyberChef/#recipe=Windows_Filetime_to_UNIX_Timestamp%28'Seconds%20%28s%29','Hex%20%28little%20endian%29'%29From_UNIX_Timestamp%28'Seconds%20%28s%29'%29&input=MDRlY2VkZWE1ODYyZDcwMQ) to convert the hex to a readable timestamp.
 
 ![](../../img/1iCD7doMdvFls77vZdOdjKw.png)
 
-What is the lowest time thats reasonable? The last byte (most significant byte) should probably be 01, the next byte in should be larger than 0xd0. I can quickly check the earliest time that ends with 0xd0 0x01 using CyberChef — it is after 2015 so this is probably good enough for any investigations run in 2021. Similar logic shows we are good until 2028 with the pattern “d? 01”
+What is the lowest time that is reasonable? The last byte (most
+significant byte) should probably be 01, the next byte in should be
+larger than `0xd0`. I can quickly check the earliest time that ends with
+`0xd0` `0x01` using `CyberChef` — it is after 2015 so this is probably good
+enough for any investigations run in 2021. Similar logic shows we are
+good until 2028 with the pattern “d? 01”
 
 ![](../../img/1o16pA_mO0r5KNGsL4aMdug.png)
 
@@ -85,7 +108,11 @@ As usual in Velociraptor, I will create a notebook and type a query into the cel
 
 ![](../../img/1KgW2M_VDzWABx2xP_9iMVA.png)
 
-The rule will match a **RecordLength** smaller than 512 bytes, **Version** must match 2. The timestamp field must end in D? 01 (i.e. 0xD0–0xDF followed by 0x01). Finally the filename length must be smaller than 256 and the file offset must be exactly 60 (0x36).
+The rule will match a **RecordLength** smaller than 512 bytes,
+**Version** must match 2. The timestamp field must end in D? 01
+(i.e. `0xD0–0xDF` followed by `0x01`). Finally the filename length
+must be smaller than 256 and the file offset must be exactly 60
+(0x36).
 
 As you can see above I immediately identify a hit and it looks pretty similar to one of the USN entries I extracted before.
 

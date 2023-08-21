@@ -20,7 +20,7 @@ In this post we explore the windows event log system from the point of view of t
 
 Consider an incident occurred on one of your systems. You would like to investigate it and so collect all the event log files from **C:\\Windows\\System32\\WinEVT\\Logs\\\*.evtx**.
 
-The logs are stored in binary format so you will need to post process the files. Luckily there are a number of tools out there that will do that for you. Here is a typical output from the [dumpevtx](https://github.com/Velocidex/evtx) tool for a particular event from the Security.evtx log file:
+The logs are stored in binary format so you will need to post process the files. Luckily there are a number of tools out there that will do that for you. Here is a typical output from the [`dumpevtx`](https://github.com/Velocidex/evtx) tool for a particular event from the Security.evtx log file:
 
 <script src="https://gist.github.com/scudette/0b88f27e258021eecf7de9b8c0861184.js"></script>
 
@@ -49,7 +49,10 @@ When a user selects an event in the Event Viewer, the application reads the **Pr
 
 Next the event viewer consults the registry at the key **HKEY\_LOCAL\_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Security\\Microsoft-Windows-Security-Auditing** and reads the value **EventMessageFile**.
 
-That value is the location of a dll which contains the messages for this provider. On my system, the DLL is located at **%SystemRoot%\\system32\\adtschema.dll** (Note that many DLLs use localizations and so the dll could be located in MUI files).
+That value is the location of a dll which contains the messages for
+this provider. On my system, the DLL is located at
+`%SystemRoot%\\system32\\adtschema.dll` (Note that many DLLs use
+localizations and so the dll could be located in MUI files).
 
 ![](../../img/1__SLH4iiByHYIz8HyJyOxAEw.png)
 
@@ -103,27 +106,35 @@ The project releases a stand along command line tool for parsing and examining w
 
 ![](../../img/1__ABF6klKd0xQ82TvhOEq__hw.png)
 
-The **extract** command walks all providers in the registry, gathers their message DLLs and parses the message table resource for each. Then, all the messages are stored in a sqlite database. Sqlite being the de-facto standard for portable databases can be easily consumed by other tools written in many languages. The total size of the database is modest (I have extracted all event log messages on Windows 2019 server to about 23MB sqlite file).
+The **extract** command walks all providers in the registry, gathers their message DLLs and parses the message table resource for each. Then, all the messages are stored in a sqlite database. Sqlite being the de facto standard for portable databases can be easily consumed by other tools written in many languages. The total size of the database is modest (I have extracted all event log messages on Windows 2019 server to about 23MB SQLite file).
 
 Now we can easily use the database to resolve our provider and event id to a message:
 
 ![](../../img/1__SRuWlPV0wk754__jlxI2tMw.png)
 
-Alternatively we can simply use sqlite directly to query the database
+Alternatively we can simply use SQLite directly to query the database
 
+```
 $ sqlite3 mydb.sqlite
 SQLite version 3.24.0 2018-06-04 19:24:41
 Enter ".help" for usage hints.
 sqlite> **SELECT message FROM providers join messages on providers.id = messages.provider\_id where providers.name = 'Microsoft-Windows-Security-Auditing' and messages.event\_id = 4672;**
 _Special privileges assigned to new logon.%n%nSubject:%n%tSecurity ID:%t%t%1%n%tAccount Name:%t%t%2%n%tAccount Domain:%t%t%3%n%tLogon ID:%t%t%4%n%nPrivileges:%t%t%5_
+```
 
 #### Enriching old event log files
 
-We have shown how dumpevtx can use our sqlite database to retrieve the messages for each event id individually but this leaves us to interpolate the full data by hand — no fun indeed!
+We have shown how `dumpevtx` can use our sqlite database to retrieve
+the messages for each event id individually but this leaves us to
+interpolate the full data by hand — no fun indeed!
 
-You can also use dumpevtx to export the events into JSON, and automatically resolve event IDs with the sqlite database too by providing the database with the `--messagedb` flag.
+You can also use `dumpevtx` to export the events into JSON, and
+automatically resolve event IDs with the sqlite database too by
+providing the database with the `--messagedb` flag.
 
+```
 F:\\>dumpevtx.exe parse --messagedb mydb.sqlite c:\\Windows\\System32\\winevt\\Logs\\Security.evtx
+```
 
 ![Parsing the EVTX file with the assistance of the event id database. The message interpolates the Event Data into it.](../../img/1__Uk794PvLspR__m5WX8ENDZw.png)
 Parsing the EVTX file with the assistance of the event id database. The message interpolates the Event Data into it.
@@ -132,4 +143,10 @@ Parsing the EVTX file with the assistance of the event id database. The message 
 
 The Windows Event Log system is fairly complex — it is not enough to just copy out the \*.evtx files because the information content of the log is spread throughout the filesystem in DLLs and registry keys. For many event types there is enough context in the EventData or UserData fields of the event log but in many cases, without the actual message corresponding to the event ID we lose critical meaning.
 
-It is essential therefore to include the original message for each event log. We have shown how Velociraptor is able to include this critical information automatically. We also present the dumpevtx project which allows collecting messages in a database so events can be matched up quickly and easily with their correct messages without requiring the original program that generated the message to be installed on the analyst system.
+It is essential therefore to include the original message for each
+event log. We have shown how Velociraptor is able to include this
+critical information automatically. We also present the `dumpevtx`
+project which allows collecting messages in a database so events can
+be matched up quickly and easily with their correct messages without
+requiring the original program that generated the message to be
+installed on the analyst system.

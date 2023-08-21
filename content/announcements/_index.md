@@ -6,4 +6,4 @@ no_edit: true
 pre: <i class="fas fa-bullhorn"></i>
 ---
 
-{{% children description="true" %}}
+{{% children  %}}

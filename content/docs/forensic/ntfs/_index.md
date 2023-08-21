@@ -34,7 +34,10 @@ kinds of information about each file:
 
 ![The MFT and NTFS](image22.png)
 
-Data attributes may be compressed or sparse and contain a list of `runs` that comprize the content of the file. The data content is stored elsewhere on the disk, but the location is stored within the MFT entry.
+Data attributes may be compressed or sparse and contain a list of
+`runs` that comprise the content of the file. The data content is
+stored elsewhere on the disk, but the location is stored within the
+MFT entry.
 
 In NTFS Each file may contain two different filenames, a long and a
 short filename. Filename attributes contain their own timestamps.
@@ -297,7 +300,10 @@ of slack space to potentially hold residual data.
 
 ![I30 slack](image54.png)
 
-Velociraptor can report on the $I30 streams and carve out headers from slack using the parse_ntfs_i30() function as duscussed in [this article](https://www.fireeye.com/blog/threat-research/2012/10/incident-response-ntfs-indx-buffers-part-4-br-internal.html). An example query:
+Velociraptor can report on the $I30 streams and carve out headers from
+slack using the `parse_ntfs_i30()` function as discussed in [this
+article](https://www.fireeye.com/blog/threat-research/2012/10/incident-response-ntfs-indx-buffers-part-4-br-internal.html). An
+example query:
 
 ```sql
 SELECT * FROM foreach(
@@ -344,7 +350,11 @@ be very large, however only about 30mb was actually collected.
 
 {{% notice tip %}}
 
-Downloading the file from the `Uploaded Files` tab will pad the sparse regions and produce a large file with ranges of 0 in it. On the other hand, exporting the zip file from the `Overview` tab will store the collected file and the idx range file into the zip file so will only store about 30mb.
+Downloading the file from the `Uploaded Files` tab will pad the sparse
+regions and produce a large file with ranges of 0 in it. On the other
+hand, exporting the zip file from the `Overview` tab will store the
+collected file and the `idx` range file into the zip file so will only
+store about 30mb.
 
 {{% /notice %}}
 

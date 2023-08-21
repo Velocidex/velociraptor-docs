@@ -1,0 +1,64 @@
+name: Server.Import.DetectRaptor
+author: Matt Green - @mgreen27
+description: |
+   DetectRaptor is a collection of publicly availible Velociraptor detection content. 
+   Most content is managed by a series of csv files and artifacts are automatically updated.
+   
+   This artifact will import the latest DetectRaptor bundle into the current server.  
+   
+   Last updated: 2023-08-02.   
+
+   Current artifacts include:  
+   
+   - Windows.Detection.Applications
+   - Windows.Detection.BinaryRename
+   - Windows.Detection.Evtx
+   - Windows.Detection.HijackLibsEnv
+   - Windows.Detection.HijackLibsMFT
+   - Windows.Detection.LolDrivers
+   - Windows.Detection.MFT
+   - Windows.Detection.NamedPipes
+   - Windows.Detection.Powershell.ISEAutoSave
+   - Windows.Detection.Powershell.PSReadline
+   - Windows.Detection.Webhistory
+   - Windows.Detection.ZoneIdentifier
+   - Server.StartHunts
+
+reference:
+  - https://github.com/mgreen27/DetectRaptor
+  - https://github.com/svch0stz/velociraptor-detections
+  - https://github.com/SigmaHQ/sigma
+
+type: SERVER
+
+required_permissions:
+- SERVER_ADMIN
+
+parameters:
+   - name: ExchangeURL
+     default: https://github.com/mgreen27/DetectRaptor/releases/download/DetectRaptor/DetectRaptorVQL.zip
+   - name: Prefix
+     description: Add artifacts with this prefix
+     default: DetectRaptor.
+
+sources:
+  - query: |
+        LET X = SELECT artifact_set(prefix=Prefix, definition=Definition) AS Definition
+        FROM foreach(row={
+          SELECT Content FROM http_client(
+             remove_last=TRUE,
+             tempfile_extension=".zip", url=ExchangeURL)
+        }, query={
+          SELECT read_file(accessor="zip", filename=OSPath) AS Definition
+          FROM glob(
+             globs='/**/*.yaml',
+             root=pathspec(
+                DelegateAccessor="auto",
+                DelegatePath=Content),
+             accessor="zip")
+        })
+
+        SELECT Definition.name AS Name,
+               Definition.description AS Description,
+               Definition.author AS Author
+        FROM X

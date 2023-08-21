@@ -22,9 +22,16 @@ for many other artifacts.
 The `glob()` plugin searches the filesystem by glob expression. The
 following represent the syntax of the glob expressions:
 
-* A `*` is a wildcard match (e.g. `*.exe` matches all files ending with ".exe")
-* Alternatives are expressed as comma separated strings in `{}`. For example, `*.{exe,dll,sys}`
-* Velociraptor supports recursive wildcards: A `**` denotes recursive search, e.g. `C:\Users\**\*.exe`
+* A `*` is a wildcard match (e.g. `*.exe` matches all files ending
+  with ".exe")
+* Alternatives are expressed as comma separated strings in `{}`. For
+  example, `*.{exe,dll,sys}`
+* Velociraptor supports recursive wildcards: A `**` denotes recursive
+  search, e.g. `C:\Users\**\*.exe`. NOTE: A `**` must appear in its
+  own path component to be considered a recursive search:
+  `C:\Users\mike**` will be interpreted the same as `C:\Users\mike*`
+* A Recursive search `**` can be followed by a number representing the
+  depth of recursion search (default 30).
 
 For example, the following quickly searches all users' home
 directories for files with ".exe" extension.

@@ -15,28 +15,61 @@ parser.add_argument('definition_path',
 
 parser.add_argument('--reference_data', help='Path the the reference data.json to write".')
 
-def SaveDefinition(fd, item):
-    fd.write("\n\n<div class=\"vql_item\"></div>\n\n");
-    fd.write ("\n## %s\n<span class='vql_type pull-right'>%s</span>\n\n" % (item["name"], item["type"]))
-    fd.write ("%s\n\n" % item.get("description", ""))
-    if not item.get("args"):
-        return
+def CleanTypes(definitions):
+    for item in definitions:
+        for arg in item.get("args", []):
+            arg["type"] = arg["type"].replace(
+                "vfilter.", "").replace("accessors.OSPath", "OSPath")
 
-    fd.write("\n\n<div class=\"vqlargs\"></div>\n\n");
-    fd.write ("Arg | Description | Type\n----|-------------|-----\n")
-    for arg in item["args"]:
-        name = arg["name"]
-        description = arg.get("description", "")
-        type = arg["type"].replace("vfilter.", "")
-        if type == "":
-            type = "string"
-        if arg.get("repeated"):
-            type = "list of "+type
-        if arg.get("required"):
-            type = type + " (required)"
+def EnsureDirExists(dirname):
+    try:
+        os.mkdir(dirname)
+    except: pass
 
-        fd.write("%s|%s|%s\n" % (name, description, type))
-    fd.write("\n")
+def SaveDefinitions(filename, name, texts):
+    with open(filename, "w") as fd:
+        fd.write("---\ntitle: %s\nindex: true\nnoTitle: true\nno_edit: true\n---\n\n" % name)
+        for text in texts:
+            fd.write(text)
+
+def BuildDefinition(filename, item):
+    """Returns a pair of filename and text."""
+    # Store the text in its own file.
+    dirname = os.path.join(os.path.dirname(filename), item["name"])
+    EnsureDirExists(dirname)
+
+    filename =  os.path.join(dirname, "_index.md")
+    result = "\n\n<div class=\"vql_item\"></div>\n\n"
+    result += ("\n## %s\n<span class='vql_type pull-right page-header'>%s</span>\n\n" % (item["name"], item["type"]))
+
+    if item.get("args"):
+        result += ("\n\n<div class=\"vqlargs\"></div>\n\n")
+        result += ("Arg | Description | Type\n----|-------------|-----\n")
+        for arg in item["args"]:
+            name = arg["name"]
+            description = arg.get("description", "")
+            type = arg["type"]
+            if type == "":
+                type = "string"
+            if arg.get("repeated"):
+                type = "list of "+type
+            if arg.get("required"):
+                type = type + " (required)"
+
+            result+=("%s|%s|%s\n" % (name, description, type))
+
+    permissions = item.get("metadata", {}).get("permissions")
+    if permissions:
+        result += "\nRequired Permissions: \n"
+        for p in permissions.split(","):
+            result += '<i class="linkcolour label pull-right label-success">%s</i>\n' % p
+
+    result+=("\n")
+
+    if item.get("description", ""):
+        result+= ("### Description\n\n%s\n\n" % item.get("description", ""))
+
+    return filename, result
 
 def SaveDataJson(definitions):
     summary = []
@@ -58,18 +91,45 @@ if __name__ == "__main__" :
     args = parser.parse_args()
 
     definitions = yaml.safe_load(open(args.definition_path).read())
+    CleanTypes(definitions)
+
     if args.reference_data:
         SaveDataJson(definitions)
 
     config = yaml.safe_load(open(args.config).read())
     for filename, file_config in config.items():
         with open(filename, "w") as fd:
-            fd.write("---\ntitle: %s\nweight: %s\nlinktitle: %s\nindex: true\n---\n\n%s" % (
+            fd.write("---\ntitle: %s\nweight: %s\nlinktitle: %s\nindex: true\nno_edit: true\nno_children: true\n---\n\n%s" % (
                 file_config["title"], file_config["weight"],
                 file_config.get("linktitle", file_config["title"]),
                 file_config["description"]))
 
+            children = []
+
+            # Maps filenames and data
+            files = dict()
+            filenames = dict()
+
             for definition in definitions:
                 category = definition.get("category", "")
                 if category == file_config["category"]:
-                    SaveDefinition(fd, definition)
+                    item_filename, text = BuildDefinition(filename, definition)
+                    old = files.get(item_filename, [])
+                    old.append(text)
+                    files[item_filename] = old
+                    filenames[item_filename] = definition["name"]
+                    children.append(definition)
+
+            for filename, texts in files.items():
+                SaveDefinitions(filename, filenames.get(filename), texts)
+
+            fd.write("|Plugin/Function|<span class='vql_type'>Type</span>|Description|\n|-|-|-|\n")
+            for definition in sorted(children, key=lambda x: x.get("name")):
+                first_description = re.split("\\.|$", definition.get("description", ""), maxsplit=1, flags=re.M)
+                if first_description and len(first_description) > 0:
+                    first_description = first_description[0]
+                fd.write("|[%s](%s)|<span class='vql_type'>%s</span>|%s|\n" % (
+                    definition.get("name"),
+                    definition.get("name"),
+                    definition.get("type", ""),
+                    first_description))

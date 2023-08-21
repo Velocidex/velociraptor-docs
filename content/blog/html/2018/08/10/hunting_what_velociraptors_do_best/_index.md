@@ -75,7 +75,7 @@ active hunts managed by the Foreman. Clients then poll the foreman for
 new hunts they should participate in. Clients remember the last hunt
 they participated in and so they present this hunt\'s timestamp to the
 foreman. If a new hunt is available, the foreman can immediately launch
-the CheckHuntCondition flow on the client.
+the `CheckHuntCondition` flow on the client.
 
 {{% notice note %}}
 
@@ -85,7 +85,7 @@ record.
 
 {{% /notice %}}
 
-The CheckHuntCondition flow issues the client side VQL queries and then
+The `CheckHuntCondition` flow issues the client side VQL queries and then
 runs the server side query on the results. If the query matches (i.e.
 the hunt should be scheduled for this client), the client\'s record is
 written into the hunt\'s \"pending\" queue.

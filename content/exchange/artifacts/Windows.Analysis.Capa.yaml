@@ -1,16 +1,22 @@
 name: Windows.Analysis.Capa
 description: |
    Analyze PE, ELF, or shellcode files with capa.
-   
-   "capa detects capabilities in executable files. You run it against a PE, ELF, or shellcode file and it tells you what it thinks the program can do. For example, it might suggest that the file is a backdoor, is capable of installing services, or relies on HTTP to communicate."
-   
+
+   "capa detects capabilities in executable files. You run it against
+   a PE, ELF, or shellcode file and it tells you what it thinks the
+   program can do. For example, it might suggest that the file is a
+   backdoor, is capable of installing services, or relies on HTTP to
+   communicate."
+
    https://github.com/fireeye/capa
-   
+
 type: CLIENT
 author: Wes Lambert - @therealwlambert
 tools:
   - name: CapaWindows
-    url: https://github.com/fireeye/capa/releases/download/v3.0.0/capa-v3.0.0-windows.zip
+    url: https://github.com/mandiant/capa/releases/download/v6.0.0/capa-v6.0.0-windows.zip
+    expected_hash: ca9a5388de86e95289426007ef794f6f6977ba6720f7fe5bc35a8cdc8a16f452
+    serve_locally: true
 parameters:
    - name: File
 sources:
@@ -29,17 +35,17 @@ sources:
             '-j',
             File
         ], length=10000000)
-        LET Data = SELECT * FROM foreach (row={ 
-            SELECT parse_json(data=Stdout) 
-            AS Data 
-            FROM ExecCapa}, query={ 
+        LET Data = SELECT * FROM foreach (row={
+            SELECT parse_json(data=Stdout)
+            AS Data
+            FROM ExecCapa}, query={
                 SELECT rules FROM Data})
-        SELECT * FROM foreach(row=items(item=Data.rules[0]), query={ 
+        SELECT * FROM foreach(row=items(item=Data.rules[0]), query={
             SELECT _key AS Rule,
                 _value.matches AS Matches,
                 get(member="_value.meta.namespace") AS Namespace,
                 get(member="_value.meta.scope") AS _Scope,
-                get(member="_value.meta.att&ck.0.tactic") AS Tactic, 
+                get(member="_value.meta.att&ck.0.tactic") AS Tactic,
                 get(member="_value.meta.att&ck.0.technique") + " - " + get(member="_value.meta.att&ck.0.id")  AS Technique,
                 get(member="_value.meta.author") AS _Author,
                 get(member="_value.meta") AS _Meta

@@ -65,10 +65,10 @@ any other capability where both metadata and content based discovery is desired.
 
 Some examples of path regex may include:
 
-* Extension at a path: Windows/System32/.+\\.dll$
-* More wildcards: Windows/.+/.+\\.dll$
-* Specific file: Windows/System32/kernel32\.dll$
-* Multiple extentions: \.(php|aspx|resx|asmx)$
+* Extension at a path: `Windows/System32/.+\\.dll$`
+* More wildcards: `Windows/.+/.+\\.dll$`
+* Specific file: `Windows/System32/kernel32\.dll$`
+* Multiple extensions: `\.(php|aspx|resx|asmx)$`
 {{% /notice %}}
 
 ![Select artifact : Windows.Detection.Yara.NTFS](02_find_artifact.png)
@@ -329,9 +329,9 @@ at https://www.velocidex.com/discord.
 ## References
 1. [MITRE ATT&CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild](https://attack.mitre.org/techniques/T1127/001/)
 2. [MSBuild Inline Task template](https://github.com/3gstudent/msbuild-inline-task)
-3. [VirusTotal sample - "I20xQy.TMP"](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)
-4. [VirusTotal sample - "CSLHP.TMP"](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)
-5. [VirusTotal sample - "ddppllkm.TMP"](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)
-6. [VirusTotal sample - "gujf2z0z.0.cs.TMP"](https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd)
-7. [VirusTotal sample - "Ofeq81u.TMP"](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)
-8. [VirusTotal sample - "zzyhukwK.TMP"](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)
+3. [VirusTotal sample - `I20xQy.TMP`](https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2)
+4. [VirusTotal sample - `CSLHP.TMP`](https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3)
+5. [VirusTotal sample - `ddppllkm.TMP`](https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9)
+6. [VirusTotal sample - `gujf2z0z.0.cs.TMP`](https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd)
+7. [VirusTotal sample - `Ofeq81u.TMP`](https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2)
+8. [VirusTotal sample - `zzyhukwK.TMP`](https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999)

@@ -1,0 +1,79 @@
+name: Server.Enrichment.OpenAI
+author: Wes Lambert - @therealwlambert|@weslambert@infosec.exchange
+description: |
+  Query OpenAI for analysis of data.
+
+  The `Prompt` parameter can be the entirety of the prompt to OpenAI, or variable data that is provided to support a question. 
+
+  The `PromptPrefix` parameter can be used to preface data with a particular question or statement.
+  
+  For example, consider the following:
+  
+  `Prompt` = $DataBlob
+  
+  `PromptPrefix` = What is your analysis of the data?
+  
+  `PromptPrefix` + `Prompt` = What is your analysis of the data? $DataBlob
+  
+  This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+
+  Ex.
+
+    `SELECT * from Artifact.Server.Enrichment.OpenAI(Prompt=$YOURPROMPT, PromptPrefix=$YOURPROMPTPREFIX)`
+  
+type: SERVER
+
+parameters:
+    - name: Prompt
+      type: string
+      description: The data sent to OpenAI
+      default: 'This is a test'
+    
+    - name: PromptPrefix
+      type: string
+      description: A prefix to be used with the prompt. For example, when asking a question, then providing data separately
+      default: ''
+    
+    - name: MaxTokens
+      type: int
+      description: The maximum number of tokens returned in the completion
+      default: 100
+    
+    - name: Model
+      type: string
+      description: The model used for processing the prompt
+      default: gpt-3.5-turbo
+
+    - name: OpenAIToken
+      type: string
+      description: Token for OpenAI. Leave blank here if using server metadata store.
+      default:
+    
+    - name: Role
+      type: string
+      description: Role used for messages
+      default: system
+    
+    - name: User
+      type: string 
+      description: User for API request 
+      default: abcd12345
+    
+   
+sources:
+  - query: |
+        LET Creds <= if(
+            condition=OpenAIToken,
+            then=OpenAIToken,
+            else=server_metadata().OpenAIToken)
+        
+        SELECT PromptPrefix + Prompt AS Prompt, 
+               parse_json(data=Content).choices[0].message.content AS ResponseText,
+               parse_json(data=Content) AS ResponseDetails
+               
+        FROM http_client(
+            url='https://api.openai.com/v1/chat/completions',
+            headers=dict(`Authorization`='Bearer ' + Creds, `Content-Type`="application/json"),
+            method="POST",
+            data=serialize(item=dict(`model`=Model, messages=[dict(`role`=Role, `content`=Prompt), ]))
+        )

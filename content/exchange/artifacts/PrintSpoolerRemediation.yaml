@@ -1,21 +1,22 @@
 name: Windows.Remediation.PrintSpooler
 author: Matt Green - @mgreen27
 description: |
-   This artifact will enable mitigation of PrintSpooler exploitation used by 
-   PrintNightmare - CVE-2021-34527 and CVE-2021-1675.
-   
-   There are two selectable mitigations:  
-     
-     - disabling the print spooler service.   
-     HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler\Start = 4 (service disabled).   
-         
-     - disable remote registration of the spool service.    
-     HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RegisterSpoolerRemoteRpcEndPoint = 2 (RegisterSpoolerRemoteRpcEndPoint disables).  
-   
-   NOTE: ChangeServiceStartup will set to disable, not stop the printspool service. 
-   Its always reccomended to use group policy to deploy these settings.
-   
-   
+   This artifact will enable mitigation of PrintSpooler exploitation
+   used by PrintNightmare - CVE-2021-34527 and CVE-2021-1675.
+
+   There are two selectable mitigations:
+
+     - disabling the print spooler service.
+     HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler\Start = 4 (service disabled).
+
+     - disable remote registration of the spool service.
+     HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\RegisterSpoolerRemoteRpcEndPoint = 2 (RegisterSpoolerRemoteRpcEndPoint disables).
+
+   NOTE: ChangeServiceStartup will set to disable, not stop the
+   printspool service.  Its always reccomended to use group policy to
+   deploy these settings.
+
+
 type: CLIENT
 
 parameters:
@@ -36,7 +37,7 @@ sources:
       -- remediation template
       LET execute_reg(key,name,value) = SELECT * FROM execve(argv=['reg','add',key,'/v',name,'/t','REG_DWORD','/d',value,'/f'])
       LET Arch = SELECT PROCESSOR_ARCHITECTURE FROM environ()
-      
+
       LET remediation <= SELECT * FROM chain(
             a=if(condition=MitigateServiceStartup,
                 then = execute_reg(key='HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Spooler',name='Start',value=4)),
@@ -46,7 +47,7 @@ sources:
                 then= if(condition= Arch.PROCESSOR_ARCHITECTURE[0]='AMD64',
                     then= execute_reg(key='HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Policies\\Microsoft\\Windows NT\\Printers',name='RegisterSpoolerRemoteRpcEndPoint',value=2)))
             )
-      
+
       SELECT * FROM foreach(row=TargetGlobs,
         query={
             SELECT
@@ -58,5 +59,3 @@ sources:
                 Data.value as KeyValue
             FROM glob(globs=Target, accessor="reg")
         })
-        
-      

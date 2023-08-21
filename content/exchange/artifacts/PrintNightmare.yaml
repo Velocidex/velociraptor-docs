@@ -1,17 +1,17 @@
 name: Windows.Detection.PrintNightmare
 author: "Matt Green - @mgreen27"
 description: |
-  This artifact returns any binaries in the Windows/spool/drivers/** folders with
-  an untrusted Authenticode entry.
-  
-  It can be used to hunt for dll files droped during exploitation of 
+  This artifact returns any binaries in the Windows/spool/drivers/**
+  folders with an untrusted Authenticode entry.
+
+  It can be used to hunt for dll files droped during exploitation of
   CVE-2021-1675 - PrintNightmare.
-  
+
   To query all attached ntfs drives: check the AllDrives switch.
 
-  I have added several filters to uplift search capabilities from the original
-  MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
-  path of the entry.
+  I have added several filters to uplift search capabilities from the
+  original MFT artifact. Due to the multi-drive features, the MFTPath
+  will output the MFT path of the entry.
 
   Available filters include:
   - FullPath regex
@@ -56,13 +56,13 @@ parameters:
 sources:
   - query: |
       -- time testing
-      LET time_test(stamp) = 
+      LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
                 then= stamp < DateBefore AND stamp > DateAfter,
-                else= 
+                else=
             if(condition=DateBefore,
                 then= stamp < DateBefore,
-                else= 
+                else=
             if(condition= DateAfter,
                 then= stamp > DateAfter,
                 else= True
@@ -75,7 +75,7 @@ sources:
 
 
       -- function returning MFT entries
-      LET mftsearch(MFTPath) = SELECT 
+      LET mftsearch(MFTPath) = SELECT
             split(sep='\\$',string=MFTPath)[0] + FullPath as FullPath,
             InUse,FileName,FileSize,
             dict(
@@ -100,7 +100,7 @@ sources:
             AND if(condition=SizeMin,
                 then=FileSize > atoi(string=SizeMin),
                 else=TRUE)
-            AND 
+            AND
              ( time_test(stamp=Created0x10)
             OR time_test(stamp=Created0x30)
             OR time_test(stamp=LastModified0x10)

@@ -39,7 +39,7 @@ The table contains five columns:
 1. The **online state** of the host is shown as a color icon. A green dot
    indicated that the host is currently connected to the server, a
    yellow icon indicates the host is not currently connected but was
-   connected less than 24 hours ago. A red icon indicates that the
+   connected between 15 minutes and 24 hours ago. A red icon indicates that the
    host has not been seen for 24 hours or more.
 
 2. The **client ID** of the host is shown. Clients have a unique ID
@@ -52,7 +52,7 @@ The table contains five columns:
 3. The **hostname** reported by the host.
 
 4. The **operating system version**. This indicates if the host is a
-   Windows/Linux/OSX machine and its respective version.
+   Windows/Linux/MacOS machine and its respective version.
 
 5. Any **labels** applied to the host.
 
@@ -227,7 +227,7 @@ arbitrary commands on the endpoint in a dynamic incident response
 operation.
 
 Velociraptor allows running arbitrary shell commands on the endpoint
-using Powershell/Cmd/Bash or ad hoc VQL.
+using Powershell/Cmd/Bash or adhoc VQL.
 
 ![Shell command](image60.png)
 

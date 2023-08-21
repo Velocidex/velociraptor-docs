@@ -36,10 +36,30 @@ into the cell.
 
 ## Basic Syntax
 
-VQL's syntax is heavily inspired by SQL. It uses the same basic `SELECT
-.. FROM .. WHERE` sentence structure, but does not include the more complex SQL syntax, such as `JOIN` or `HAVING`. In VQL, similar functionality is provided through
-plugins, which keeps the syntax simple and
-concise.
+VQL's syntax is heavily inspired by SQL. It uses the same basic
+`SELECT .. FROM .. WHERE` sentence structure, but does not include the
+more complex SQL syntax, such as `JOIN` or `HAVING`. In VQL, similar
+functionality is provided through plugins, which keeps the syntax
+simple and concise.
+
+### Whitespace
+
+VQL does not place any restrictions on the use of whitespace in the
+query body. We generally prefer queries that are well indented because
+they are more readable and look better but this is not a
+requirement. Unlike SQL, VQL does not require or allow a semicolon `;`
+at the end of statements.
+
+The following two queries are equivalent
+
+```vql
+-- This query is all on the same line - not very readable but valid.
+LET X = SELECT * FROM info() SELECT * FROM X
+
+-- We prefer well indented queries but VQL does not mind.
+LET X= SELECT * FROM info()
+SELECT * FROM X
+```
 
 Let's consider the basic syntax of a VQL query.
 
@@ -65,7 +85,7 @@ plugins, some arguments are required while some are optional.
 
 {{% notice tip "Using the GUI suggestions" %}}
 
-Yuo can type `?` in the Notebook interface to view a
+You can type `?` in the Notebook interface to view a
 list of possible completions for a keyword. Completions are context sensitive. For example, since plugins must follow the `FROM` keyword, any suggestions
 after the `FROM` keyword will be for VQL plugins. Typing `?` inside
 a plugin arguments list shows the possible arguments, their
@@ -206,21 +226,59 @@ words, the parent's name.
 ### String constants
 
 Strings denoted by `"` or `'` can escape special characters using the
-`\\`. For example, `"\\n"` means a new line. This is useful but it
+`\`. For example, `"\n"` means a new line. This is useful but it
 also means that backslashes need to be escaped. This is sometimes
 inconvenient, especially when dealing with Windows paths (that
 contains a lot of backslashes).
 
-Therefore, Velociraptor also offers a Multiline raw string which is
+Therefore, Velociraptor also offers a multi-line raw string which is
 denoted by `'''` (three single quotes). Within this type of string no
 escaping is possible, and the all characters are treated literally -
 including new lines. You can use `'''` to denote multi line strings.
+
+### Identifiers with spaces
+
+In VQL an `Identifier` is the name of a column, member of a dict or a
+keyword name. Sometimes identifiers contain special characters such as
+space or `.` which make it difficult to specify them without having
+VQL get confused by these extra characters.
+
+In this case it is possible to enclose the identifier name with back
+ticks (`` ` ``).
+
+In the following example, the query specifies keywords with spaces to
+the `dict()` plugin in order to create a dict with keys containing spaces.
+
+The query then continues to extract the value from this key by
+enclosing the name of the key using backticks.
+
+```vql
+LET X = SELECT dict(`A key with spaces`="String value") AS Dict
+FROM scope()
+
+SELECT Dict, Dict.`A key with spaces` FROM X
+```
 
 ### Subqueries
 
 VQL Subqueries can be specified as a column expression or as an
 arguments. Subqueries are delimited by `{` and `}`. Subqueries are
 also lazily evaluated, and will only be evaluated when necessary.
+
+The following example demonstrates subqueries inside plugin args. The
+`if()` plugin will evaluate the `then` or the `else` query depending
+on the `condition` value (in this example when X has the value 1).
+
+```vql
+SELECT * FROM if(condition=X=1,
+then={
+  SELECT * FROM ...
+},
+else={
+  SELECT * FROM ...
+})
+```
+
 
 ### Arrays
 
@@ -329,6 +387,33 @@ row={
 }, worker=10)
 
 ```
+
+### Foreach and deconstructing a dict
+
+Deconstructing a dict means to take that dict and create a column for
+each field of that dict. Consider the following query:
+
+```sql
+LET Lines = '''Foo Bar
+Hello World
+Hi There
+'''
+
+LET all_lines = SELECT grok(grok="%{NOTSPACE:First} %{NOTSPACE:Second}", data=Line) AS Parsed
+FROM parse_lines(accessor="data", filename=Lines)
+
+SELECT * FROM foreach(row=all_lines, column="Parsed")
+```
+
+This query reads some lines (for example log lines) and applies a grok
+expression to parse each line. The grok function will produce a dict
+after parsing the line with fields determined by the grok expression.
+
+The `all_lines` query will have one column called "Parsed" containing
+a dict with two fields (First and Second). Using the `column`
+parameter to the foreach() plugin, foreach will use the value in that
+column as a row, deconstructing the dict into a table containing the
+`First` and `Second` column.
 
 ## LET expressions
 
@@ -493,6 +578,111 @@ Remember the difference between a VQL plugin and a VQL function is
 that a plugin returns multiple rows and therefore needs to appear
 between the FROM and WHERE clauses. A function simply takes several
 values and transforms them into a single value.
+
+{{% /notice %}}
+
+## VQL Operators
+
+In VQL an operator represents an operation to be taken on
+operands. Unlike SQL, VQL keeps the number of operators down,
+preferring to use VQL functions over introducing new operators.
+
+The following operators are available. Most operators apply to two
+operands, one on the left and one on the right (so in the expression
+`1 + 2` we say that `1` is the Left Hand Side (`LHS`), `2` is the Right
+Hand Side (`RHS`) and `+` is the operator.
+
+|Operator|Meaning|
+|--------|-------|
+|`+ - * /`| These are the usual arithmetic operators |
+|`=~` | This is the regex operator, reads like "matches". For example `X =~ "Windows"` will return `TRUE` if X matches the regex "Windows"|
+|`!= = < <= > >=` | The usual comparison operators. |
+|`in` | The membership operator. Returns TRUE if the LHS is present in the RHS. Note that `in` is an exact case sensitive match|
+|`.`| The `.` operator is called the Associative operator. It dereferences a field from the LHS named by the RHS. For example `X.Y` extracts the field `Y` from the dict `X`|
+
+### Protocols
+
+When VQL encounters an operator it needs to decide how to actually
+evaluate the operator. This depends on what types the LHS and RHS
+operands actually are. The way in which operators interact with the
+types of operands is called a `protocol`.
+
+Generally VQL does the expected thing but it is valuable to understand
+which protocol will be chosen in specific cases.
+
+### Example - Regex operator
+
+For example consider the following query
+
+```vql
+LET MyArray = ("X", "XY", "Y")
+LET MyValue = "X"
+LET MyInteger = 5
+
+SELECT MyArray =~ "X", MyValue =~ "X", MyInteger =~ "5"
+FROM scope()
+```
+
+In the first case the regex operator is applied to an array so the
+expression is true if **any** member of the array matches the regular
+expression.
+
+The second case applied the regex to a string, so it is true if the
+string matches.
+
+Finally in the last case, the regex is applied to an integer. It makes
+no sense to apply a regular expression to an integer and so VQL
+returns FALSE.
+
+### Example - Associative operator applied on a stored query
+
+The Associative operator is denoted by `.` and accesses a field from
+an object or dict. One of the interesting protocols of the `.`
+operator is when it is applied to a query or a list.
+
+In the following example, I define a stored query that calls the
+`Generic.Utils.FetchBinary` artifact (This artifact fetches the named
+binary):
+
+```vql
+LET binary = SELECT FullPath
+  FROM Artifact.Generic.Utils.FetchBinary(ToolName="ToolName")
+```
+
+Although a query defined via the `LET` keyword does not actually run
+the query immediately (it is a lazy operator), we can think of the
+variable `binary` as containing an array of dictionaries
+(e.g. `[{"FullPath": "C:\Windows\Temp\binary.exe"}]`).
+
+If we now apply the associative operator `.` to the variable binary,
+the operator will convert the array into another array, where each
+member is extracted for example `binary.FullPath` is
+`["C:\Windows\Temp\binary.exe"]`. To access the name of the binary we
+can then index the first element from the array.
+
+
+```vql
+SELECT * FROM execve(argv=[binary.FullPath[0], "-flag"])
+```
+
+{{% notice warning "Expanding queries using the associative operator" %}}
+
+While using the `.` operator is useful to apply to a stored query, care
+must be taken that the query is not too large. In VQL stored queries
+are lazy and do not actually execute until needed because they can
+generate thousands of rows! The `.` operator expands the query into an
+array and may exhaust memory doing so.
+
+The following query may be disastrous:
+
+```vql
+LET MFT = SELECT * FROM Artifact.Windows.NTFS.MFT()
+
+SELECT MFT.FullPath FROM scope()
+```
+
+The `Windows.NTFS.MFT` artifact typically generates millions of rows,
+and `MFT.FullPath` will expand them all into memory!
 
 {{% /notice %}}
 

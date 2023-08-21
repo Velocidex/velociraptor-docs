@@ -80,7 +80,8 @@ We can now refine the columns we see by specifying them in the VQL query. In our
 
 ![](../../img/1v7Q9nmHRzfbtydgggYRBWA.png)
 
-After more investigation we determine that the “silcollector” and “dsregcmd” tasks are not malicious so we can exclude them.
+After more investigation we determine that the `silcollector` and
+`dsregcmd` tasks are not malicious so we can exclude them.
 
 ![](../../img/196esqvqOz2HYIKteGdSK3w.png)
 

@@ -21,7 +21,10 @@
                 "description": "Add this artifact to this label group (default all)"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_CLIENT"
+        }
     },
     {
         "name": "add_server_monitoring",
@@ -40,19 +43,94 @@
                 "description": "A dict of artifact parameters"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
+    },
+    {
+        "name": "alert",
+        "description": "Generate an alert message.",
+        "type": "Function",
+        "version": 2,
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the alert.",
+                "required": true
+            },
+            {
+                "name": "dedup",
+                "type": "int64",
+                "description": "Suppress same message in this many seconds (default 7200 sec or 2 hours)."
+            },
+            {
+                "name": "condition",
+                "type": "Any",
+                "description": "If specified we ignore the alert unless the condition is true"
+            }
+        ]
+    },
+    {
+        "name": "all",
+        "description": "Returns TRUE if all items are true.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluated!",
+                "required": true
+            },
+            {
+                "name": "filter",
+                "type": "Lambda",
+                "description": "A callback to consider each item"
+            },
+            {
+                "name": "regex",
+                "type": "string",
+                "description": "Optionally one or more regex can be provided for convenience",
+                "repeated": true
+            }
+        ]
     },
     {
         "name": "amsi",
         "description": "AMSI is an interface on windows to scan a string for malware. This\nfunction submits the string to the AMSI system and receives a\ndetermination if it is malware.\n",
         "type": "Function",
-        "category": "windows",
         "args": [
             {
                 "name": "string",
                 "type": "string",
                 "description": "A string to scan",
                 "required": true
+            }
+        ],
+        "category": "windows"
+    },
+    {
+        "name": "any",
+        "description": "Returns TRUE if any items are true.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "items",
+                "type": "Any",
+                "description": "The items to consider. Can be an array, subquery or stored query. Will only be lazily evaluated!",
+                "required": true
+            },
+            {
+                "name": "filter",
+                "type": "Lambda",
+                "description": "A callback to consider each item"
+            },
+            {
+                "name": "regex",
+                "type": "string",
+                "description": "Optionally one or more regex can be provided for convenience",
+                "repeated": true
             }
         ]
     },
@@ -90,7 +168,10 @@
                 "description": "If true we remove extra metadata."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "artifact_delete",
@@ -103,7 +184,10 @@
                 "description": "The Artifact to delete"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
+        }
     },
     {
         "name": "artifact_set",
@@ -121,13 +205,16 @@
                 "description": "Required name prefix"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
+        }
     },
     {
         "name": "atexit",
         "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
         "type": "Function",
-        "category": "basic",
+        "version": 1,
         "args": [
             {
                 "name": "query",
@@ -145,7 +232,8 @@
                 "type": "uint64",
                 "description": "How long to wait for destructors to run (default 60 seconds)."
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "atoi",
@@ -165,11 +253,14 @@
         "name": "audit",
         "description": "Register as an audit daemon in the kernel.",
         "type": "Plugin",
-        "category": "linux"
+        "category": "linux",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "authenticode",
-        "description": "This plugin parses authenticode information from PE files.",
+        "description": "Parses authenticode information from PE files.",
         "type": "Function",
         "args": [
             {
@@ -179,7 +270,7 @@
             },
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The filename to parse.",
                 "required": true
             },
@@ -189,7 +280,10 @@
                 "description": "Set to receive verbose information about all the certs."
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "base64decode",
@@ -220,13 +314,25 @@
         "category": "basic"
     },
     {
+        "name": "base85decode",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "description": "A string to decode",
+                "required": true
+            }
+        ]
+    },
+    {
         "name": "basename",
         "description": "Return the basename of the path. For example basename(path=\"/foo/bar\") -> \"bar\"\n",
         "type": "Function",
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "Any",
                 "description": "Extract directory name of path",
                 "required": true
             },
@@ -234,6 +340,11 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default /)"
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windows,linux)"
             }
         ],
         "category": "basic"
@@ -242,7 +353,6 @@
         "name": "batch",
         "description": "Batches query rows into multiple arrays.",
         "type": "Plugin",
-        "category": "basic",
         "args": [
             {
                 "name": "batch_size",
@@ -260,7 +370,8 @@
                 "description": "Run this query over the item.",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "cache",
@@ -307,7 +418,10 @@
                 "type": "string"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER,COLLECT_CLIENT"
+        }
     },
     {
         "name": "certificates",
@@ -330,7 +444,6 @@
     },
     {
         "name": "cidr_contains",
-        "category": "server",
         "description": "Calculates if an IP address falls within a range of CIDR specified\nnetworks.",
         "type": "Function",
         "args": [
@@ -347,7 +460,51 @@
                 "repeated": true,
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
+    },
+    {
+        "name": "client_create",
+        "description": "Create a new client in the data store.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "first_seen_at",
+                "type": "time.Time"
+            },
+            {
+                "name": "last_seen_at",
+                "type": "time.Time"
+            },
+            {
+                "name": "labels",
+                "type": "string",
+                "repeated": true
+            },
+            {
+                "name": "os",
+                "type": "string",
+                "description": "What type of OS this is (default offline)"
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "The hostname of the system"
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "if set we use this client id otherwise we make a new one"
+            },
+            {
+                "name": "mac_addresses",
+                "type": "string",
+                "repeated": true
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "client_delete",
@@ -364,7 +521,10 @@
                 "type": "bool"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "DELETE_RESULTS"
+        }
     },
     {
         "name": "client_info",
@@ -377,7 +537,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "client_metadata",
@@ -390,7 +553,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS,SERVER_ADMIN"
+        }
     },
     {
         "name": "client_set_metadata",
@@ -401,9 +567,17 @@
                 "name": "client_id",
                 "type": "string",
                 "required": true
+            },
+            {
+                "name": "metadata",
+                "type": "ordereddict.Dict",
+                "description": "A dict containing metadata. If not specified we use kwargs."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_CLIENT,SERVER_ADMIN"
+        }
     },
     {
         "name": "clients",
@@ -413,7 +587,7 @@
             {
                 "name": "search",
                 "type": "string",
-                "description": "Client search string. Can have the following prefixes: 'lable:', 'host:'"
+                "description": "Client search string. Can have the following prefixes: 'label:', 'host:'"
             },
             {
                 "name": "start",
@@ -430,7 +604,10 @@
                 "type": "string"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "clock",
@@ -475,7 +652,7 @@
             {
                 "name": "report",
                 "type": "string",
-                "description": "A path to write the report on."
+                "description": "A path to write the report on (deprecated and ignored)."
             },
             {
                 "name": "args",
@@ -490,7 +667,7 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "Output format (csv, jsonl)."
+                "description": "Output format (csv, jsonl, csv_only)."
             },
             {
                 "name": "artifact_definitions",
@@ -506,9 +683,42 @@
                 "name": "level",
                 "type": "int64",
                 "description": "Compression level between 0 (no compression) and 9."
+            },
+            {
+                "name": "ops_per_sec",
+                "type": "int64",
+                "description": "Rate limiting for collections (deprecated)."
+            },
+            {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Set query cpu_limit value"
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Set query iops_limit value"
+            },
+            {
+                "name": "progress_timeout",
+                "type": "float64",
+                "description": "If no progress is detected in this many seconds, we terminate the query and output debugging information"
+            },
+            {
+                "name": "timeout",
+                "type": "float64",
+                "description": "Total amount of time in seconds, this collection will take. Collection is cancelled when timeout is exceeded."
+            },
+            {
+                "name": "metadata",
+                "type": "StoredQuery",
+                "description": "Metadata to store in the zip archive. Outputs to metadata.json in top level of zip file."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "collect_client",
@@ -549,6 +759,16 @@
                 "description": "Set query ops_per_sec value"
             },
             {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Set query cpu_limit value"
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Set query iops_limit value"
+            },
+            {
                 "name": "max_rows",
                 "type": "uint64",
                 "description": "Max number of rows to fetch"
@@ -557,13 +777,25 @@
                 "name": "max_bytes",
                 "type": "uint64",
                 "description": "Max number of bytes to upload"
+            },
+            {
+                "name": "urgent",
+                "type": "bool",
+                "description": "Set the collection as urgent - skips other queues collections on the client."
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "If set the collection will be started in the specified org."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
+        }
     },
     {
         "name": "column_filter",
-        "category": "basic",
         "description": "Select columns from another query using regex.",
         "type": "Plugin",
         "args": [
@@ -585,17 +817,17 @@
                 "description": "One of more regular expressions that will include columns.",
                 "repeated": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "combine",
-        "category": "event",
         "description": "Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).",
-        "type": "Plugin"
+        "type": "Plugin",
+        "category": "event"
     },
     {
         "name": "commandline_split",
-        "category": "client",
         "description": "Split a commandline into separate components following the windows\nconventions.",
         "type": "Function",
         "args": [
@@ -610,7 +842,8 @@
                 "type": "bool",
                 "description": "Use bash rules (Uses Windows rules by default)."
             }
-        ]
+        ],
+        "category": "plugin"
     },
     {
         "name": "compress",
@@ -629,13 +862,19 @@
                 "description": "A path to write the output - default is the path with a .gz extension"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE,FILESYSTEM_READ"
+        }
     },
     {
         "name": "connections",
         "description": "List all active connections",
         "type": "Plugin",
-        "category": "client"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "copy",
@@ -644,7 +883,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to copy from.",
                 "required": true
             },
@@ -670,7 +909,10 @@
                 "description": "If true we append to the target file otherwise truncate it"
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE,FILESYSTEM_READ"
+        }
     },
     {
         "name": "count",
@@ -710,20 +952,38 @@
             {
                 "name": "type",
                 "type": "string",
-                "description": "Type of download to create (e.g. 'report') default a full zip file."
+                "description": "Type of download to create (deprecated Ignored)."
             },
             {
                 "name": "template",
                 "type": "string",
-                "description": "Report template to use (defaults to Reporting.Default)."
+                "description": "Report template to use (deprecated Ignored)."
             },
             {
                 "name": "password",
                 "type": "string",
                 "description": "An optional password to encrypt the collection zip."
+            },
+            {
+                "name": "format",
+                "type": "string",
+                "description": "Format to export (csv,json,csv_only) defaults to both."
+            },
+            {
+                "name": "expand_sparse",
+                "type": "bool",
+                "description": "If set we expand sparse files in the archive."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "If specified we call the file this name otherwise we generate name based on flow id."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "PREPARE_RESULTS"
+        }
     },
     {
         "name": "create_hunt_download",
@@ -760,14 +1020,37 @@
                 "name": "password",
                 "type": "string",
                 "description": "An optional password to encrypt the collection zip."
+            },
+            {
+                "name": "expand_sparse",
+                "type": "bool",
+                "description": "If set we expand sparse files in the archive."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "PREPARE_RESULTS"
+        }
+    },
+    {
+        "name": "create_notebook_download",
+        "description": "Creates a notebook export zip file.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "Client ID to export.",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "PREPARE_RESULTS"
+        }
     },
     {
         "name": "crypto_rc4",
         "description": "Apply rc4 to the string and key.",
-        "category": "client",
         "type": "Function",
         "args": [
             {
@@ -782,7 +1065,93 @@
                 "description": "Rc4 key (1-256bytes).",
                 "required": true
             }
+        ],
+        "category": "plugin"
+    },
+    {
+        "name": "delay",
+        "description": "Executes 'query' and delays relaying the rows by the specified number of seconds.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Source for rows.",
+                "required": true
+            },
+            {
+                "name": "delay",
+                "type": "int64",
+                "description": "Number of seconds to delay.",
+                "required": true
+            },
+            {
+                "name": "buffer_size",
+                "type": "int64",
+                "description": "Maximum number of rows to buffer (default 1000)."
+            }
         ]
+    },
+    {
+        "name": "delete_events",
+        "description": "Delete all the files that make up a flow.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "Name of artifact events to remove",
+                "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "Client ID of events to remove (use 'server' for server events)",
+                "required": true
+            },
+            {
+                "name": "start_time",
+                "type": "time.Time",
+                "description": "Start time to be deleted"
+            },
+            {
+                "name": "end_time",
+                "type": "time.Time",
+                "description": "End time to be deleted"
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool",
+                "description": "If not specified, just show what files will be removed"
+            }
+        ],
+        "metadata": {
+            "permissions": "DELETE_RESULTS"
+        }
+    },
+    {
+        "name": "delete_flow",
+        "description": "Delete all the files that make up a flow.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "flow_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool"
+            }
+        ],
+        "metadata": {
+            "permissions": "DELETE_RESULTS"
+        }
     },
     {
         "name": "dict",
@@ -822,7 +1191,7 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "Any",
                 "description": "Extract directory name of path",
                 "required": true
             },
@@ -830,6 +1199,11 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default /)"
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windows,linux)"
             }
         ],
         "category": "basic"
@@ -839,6 +1213,31 @@
         "description": "Monitor dns queries.",
         "type": "Plugin",
         "category": "windows"
+    },
+    {
+        "name": "efivariables",
+        "description": "Enumerate efi variables.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "Variable namespace."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Variable name"
+            },
+            {
+                "name": "value",
+                "type": "bool",
+                "description": "Read variable value"
+            }
+        ],
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "elastic_upload",
@@ -864,8 +1263,7 @@
             {
                 "name": "type",
                 "type": "string",
-                "description": "The type of the index to upload to.",
-                "required": true
+                "description": "The type of the index to upload to."
             },
             {
                 "name": "chunk_size",
@@ -907,9 +1305,32 @@
                 "name": "pipeline",
                 "type": "string",
                 "description": "Pipeline for uploads"
+            },
+            {
+                "name": "disable_ssl_security",
+                "type": "bool",
+                "description": "Disable ssl certificate verifications (deprecated in favor of SkipVerify)."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
+                "description": "Disable ssl certificate verifications."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "max_memory_buffer",
+                "type": "uint64",
+                "description": "How large we allow the memory buffer to grow to while we are trying to contact the Elastic server (default 100mb)."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
     },
     {
         "name": "encode",
@@ -928,6 +1349,18 @@
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "entropy",
+        "description": "Calculates shannon scale entropy of a string.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "required": true
+            }
+        ]
     },
     {
         "name": "enumerate",
@@ -957,7 +1390,10 @@
                 "type": "string"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "environ",
@@ -971,7 +1407,10 @@
                 "required": true
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "environ",
@@ -1008,9 +1447,22 @@
                 "name": "length",
                 "type": "int64",
                 "description": "Size of buffer to capture output per row."
+            },
+            {
+                "name": "env",
+                "type": "LazyExpr",
+                "description": "Environment variables to launch with."
+            },
+            {
+                "name": "cwd",
+                "type": "string",
+                "description": "If specified we change to this working directory first."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "EXECVE"
+        }
     },
     {
         "name": "expand",
@@ -1024,11 +1476,13 @@
                 "required": true
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "favorites_delete",
-        "category": "server",
         "description": "Delete a favorite.",
         "type": "Function",
         "args": [
@@ -1044,7 +1498,8 @@
                 "description": "The type of favorite.",
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "favorites_save",
@@ -1132,7 +1587,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "filesystems",
@@ -1147,7 +1605,7 @@
         "args": [
             {
                 "name": "list",
-                "type": "string",
+                "type": "Any",
                 "description": "A list of items to filter",
                 "repeated": true,
                 "required": true
@@ -1156,8 +1614,12 @@
                 "name": "regex",
                 "type": "string",
                 "description": "A regex to test each item",
-                "repeated": true,
-                "required": true
+                "repeated": true
+            },
+            {
+                "name": "condition",
+                "type": "string",
+                "description": "A VQL lambda to use to filter elements"
             }
         ],
         "category": "basic"
@@ -1168,11 +1630,34 @@
         "type": "Plugin",
         "args": [
             {
-                "name": "Name",
-                "type": "string"
+                "name": "query",
+                "type": "StoredQuery",
+                "required": true
             }
         ],
         "category": "plugin"
+    },
+    {
+        "name": "flow_logs",
+        "description": "Retrieve the query logs of a flow.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "flow_id",
+                "type": "string",
+                "description": "The flow id to read.",
+                "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client id to extract",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "flow_results",
@@ -1202,7 +1687,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "flows",
@@ -1219,7 +1707,10 @@
                 "type": "string"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "for",
@@ -1265,12 +1756,12 @@
             {
                 "name": "async",
                 "type": "bool",
-                "description": "If set we run all queries asyncronously (implies workers=1000)."
+                "description": "If set we run all queries asynchronously (implies workers=1000)."
             },
             {
                 "name": "workers",
                 "type": "int64",
-                "description": "Total number of asyncronous workers."
+                "description": "Total number of asynchronous workers."
             },
             {
                 "name": "column",
@@ -1301,7 +1792,6 @@
     },
     {
         "name": "gcs_pubsub_publish",
-        "category": "server",
         "description": "Publish a message to Google PubSub.",
         "type": "Function",
         "args": [
@@ -1328,14 +1818,21 @@
                 "type": "string",
                 "description": "The credentials to use",
                 "required": true
+            },
+            {
+                "name": "attributes",
+                "type": "ordereddict.Dict",
+                "description": "The publish attributes",
+                "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "generate",
-        "category": "basic",
         "description": "Create a named generator that receives rows from the query.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "name",
@@ -1356,14 +1853,20 @@
                 "name": "with_file_buffer",
                 "type": "bool",
                 "description": "Enable file buffering"
+            },
+            {
+                "name": "fan_out",
+                "type": "int64",
+                "description": "Wait for this many listeners to connect before starting the query"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "geoip",
-        "category": "server",
         "description": "Lookup an IP Address using the MaxMind GeoIP database. You can get\na copy of the database from https://www.maxmind.com/. The database\nmust be locally accessible so this probably only makes sense on\nthe server.\n",
         "type": "Function",
+        "version": 1,
         "args": [
             {
                 "name": "ip",
@@ -1377,7 +1880,8 @@
                 "description": "Path to the MaxMind GeoIP Database.",
                 "required": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "get",
@@ -1407,24 +1911,53 @@
         "name": "get_client_monitoring",
         "description": "Retrieve the current client monitoring state.",
         "type": "Function",
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
+    },
+    {
+        "name": "get_flow",
+        "description": "Gets flow details.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string"
+            }
+        ],
+        "metadata": {
+            "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
+        }
     },
     {
         "name": "get_server_monitoring",
         "description": "Retrieve the current server monitoring state.",
         "type": "Function",
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "getpid",
         "description": "Returns the current pid of the Velociraptor process.",
         "type": "Function",
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "glob",
         "description": "Retrieve files based on a list of glob expressions",
         "type": "Plugin",
+        "version": 3,
         "args": [
             {
                 "name": "globs",
@@ -1435,7 +1968,7 @@
             },
             {
                 "name": "root",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The root directory to glob from (default '')."
             },
             {
@@ -1447,9 +1980,22 @@
                 "name": "nosymlink",
                 "type": "bool",
                 "description": "If set we do not follow symlinks."
+            },
+            {
+                "name": "recursion_callback",
+                "type": "string",
+                "description": "A VQL function that determines if a directory should be recursed (e.g. \"x=>NOT x.Name =~ 'proc'\")."
+            },
+            {
+                "name": "one_filesystem",
+                "type": "bool",
+                "description": "If set we do not follow links to other filesystems."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "grep",
@@ -1516,7 +2062,27 @@
         "name": "gui_users",
         "description": "Retrieve the list of users on the server.\n",
         "type": "Plugin",
+        "args": [
+            {
+                "name": "all_orgs",
+                "type": "bool",
+                "description": "If set we enumerate permission for all orgs, otherwise just for this org."
+            }
+        ],
         "category": "server"
+    },
+    {
+        "name": "gunzip",
+        "description": "Apply Gunzip to the data.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "string",
+                "type": "string",
+                "description": "Data to apply Gunzip",
+                "required": true
+            }
+        ]
     },
     {
         "name": "handles",
@@ -1525,9 +2091,14 @@
         "args": [
             {
                 "name": "pid",
-                "type": "int64",
-                "description": "The PID to dump out.",
-                "required": true
+                "type": "uint64",
+                "description": "If specified only get handles from these PIDs."
+            },
+            {
+                "name": "types",
+                "type": "string",
+                "description": "If specified only get handles of this type.",
+                "repeated": true
             }
         ],
         "category": "windows"
@@ -1536,10 +2107,11 @@
         "name": "hash",
         "description": "Calculate the hash of a file.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Path to open and hash.",
                 "required": true
             },
@@ -1547,14 +2119,24 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use"
+            },
+            {
+                "name": "hashselect",
+                "type": "string",
+                "description": "The hash function to use (MD5,SHA1,SHA256)",
+                "repeated": true
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "http_client",
         "description": "Make a http request.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "url",
@@ -1575,7 +2157,7 @@
             {
                 "name": "method",
                 "type": "string",
-                "description": "HTTP method to use (GET, POST)"
+                "description": "HTTP method to use (GET, POST, PUT, PATCH, DELETE)"
             },
             {
                 "name": "data",
@@ -1590,6 +2172,11 @@
             {
                 "name": "disable_ssl_security",
                 "type": "bool",
+                "description": "Disable ssl certificate verifications (deprecated in favor of SkipVerify)."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
                 "description": "Disable ssl certificate verifications."
             },
             {
@@ -1601,9 +2188,22 @@
                 "name": "remove_last",
                 "type": "bool",
                 "description": "If set we delay removal as much as possible."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "cookie_jar",
+                "type": "ordereddict.Dict",
+                "description": "A cookie jar to use if provided. This is a dict of cookie structures."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
     },
     {
         "name": "humanize",
@@ -1626,8 +2226,7 @@
             {
                 "name": "description",
                 "type": "string",
-                "description": "Description of the hunt",
-                "required": true
+                "description": "Description of the hunt"
             },
             {
                 "name": "artifacts",
@@ -1657,6 +2256,16 @@
                 "description": "Set query ops_per_sec value"
             },
             {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Set query ops_per_sec value"
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Set query ops_per_sec value"
+            },
+            {
                 "name": "max_rows",
                 "type": "uint64",
                 "description": "Max number of rows to fetch"
@@ -1682,9 +2291,23 @@
                 "type": "string",
                 "description": "If specified exclude these labels",
                 "repeated": true
+            },
+            {
+                "name": "os",
+                "type": "string",
+                "description": "If specified target this OS"
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "If set the collection will be started in the specified orgs.",
+                "repeated": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "START_HUNT,ORG_ADMIN"
+        }
     },
     {
         "name": "hunt_add",
@@ -1705,9 +2328,36 @@
                 "name": "flow_id",
                 "type": "string",
                 "description": "If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt."
+            },
+            {
+                "name": "relaunch",
+                "type": "bool",
+                "description": "If specified we relaunch the hunt on this client again."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "START_HUNT"
+        }
+    },
+    {
+        "name": "hunt_delete",
+        "description": "Delete a hunt. ",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool"
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "hunt_flows",
@@ -1731,7 +2381,10 @@
                 "description": "Number of rows to show (used for paging)."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "hunt_results",
@@ -1760,7 +2413,41 @@
                 "description": "If set we return less columns."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
+    },
+    {
+        "name": "hunt_update",
+        "description": "Update a hunt.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "The hunt to update",
+                "required": true
+            },
+            {
+                "name": "stop",
+                "type": "bool",
+                "description": "Stop the hunt"
+            },
+            {
+                "name": "start",
+                "type": "bool",
+                "description": "Start the hunt"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "Update hunt description"
+            }
+        ],
+        "metadata": {
+            "permissions": "START_HUNT"
+        }
     },
     {
         "name": "hunts",
@@ -1771,9 +2458,22 @@
                 "name": "hunt_id",
                 "type": "string",
                 "description": "A hunt id to read, if not specified we list all of them."
+            },
+            {
+                "name": "offset",
+                "type": "uint64",
+                "description": "Start offset."
+            },
+            {
+                "name": "count",
+                "type": "uint64",
+                "description": "Max number of results to return."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "if",
@@ -1787,11 +2487,11 @@
             },
             {
                 "name": "then",
-                "type": "LazyExpr"
+                "type": "types.LazyAny"
             },
             {
                 "name": "else",
-                "type": "LazyExpr"
+                "type": "types.LazyAny"
             }
         ],
         "category": "basic"
@@ -1820,7 +2520,6 @@
     },
     {
         "name": "import_collection",
-        "category": "server",
         "description": "Imports an offline collection zip file (experimental).",
         "type": "Function",
         "args": [
@@ -1840,19 +2539,21 @@
                 "type": "string",
                 "description": "Path on server to the collector zip.",
                 "required": true
-            },
-            {
-                "name": "accessor",
-                "type": "string",
-                "description": "The accessor to use"
             }
-        ]
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER,FILESYSTEM_READ"
+        }
     },
     {
         "name": "info",
         "description": "Get information about the running host.",
         "type": "Plugin",
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "int",
@@ -1871,7 +2572,10 @@
         "name": "interfaces",
         "description": "List all active network interfaces using the API.\n",
         "type": "Plugin",
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "inventory",
@@ -1907,8 +2611,12 @@
                 "description": "The name of the file on the endpoint"
             },
             {
+                "name": "version",
+                "type": "string"
+            },
+            {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "An optional file to upload"
             },
             {
@@ -1917,7 +2625,10 @@
                 "description": "The accessor to use to read the file."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "inventory_get",
@@ -1928,9 +2639,16 @@
                 "name": "tool",
                 "type": "string",
                 "required": true
+            },
+            {
+                "name": "version",
+                "type": "string"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "ip",
@@ -1964,7 +2682,7 @@
     },
     {
         "name": "items",
-        "description": "Enumerate all members of the item (similar to Pythons items() method.",
+        "description": "Enumerate all members of the item (similar to Python's items() method).",
         "type": "Plugin",
         "args": [
             {
@@ -2093,11 +2811,14 @@
                 "required": true
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "label",
-        "description": "Add the labels to the client. If op is 'remove' then remove these labels.\n",
+        "description": "Add the labels to the client. If op is 'remove' then remove these labels.",
         "type": "Function",
         "args": [
             {
@@ -2119,7 +2840,10 @@
                 "description": "An operation on the labels (set, check, remove)"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "LABEL_CLIENT"
+        }
     },
     {
         "name": "len",
@@ -2129,22 +2853,58 @@
             {
                 "name": "list",
                 "type": "Any",
-                "description": "A list of items too filter",
+                "description": "A list of items to filter",
                 "required": true
             }
         ],
         "category": "basic"
     },
     {
+        "name": "leveldb",
+        "description": "Enumerate all items in a level db database",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "file",
+                "type": "OSPath",
+                "description": "The path to the leveldb file."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
         "name": "log",
-        "description": "Log the message.",
+        "description": "Log the message and return TRUE.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "message",
                 "type": "string",
                 "description": "Message to log.",
                 "required": true
+            },
+            {
+                "name": "dedup",
+                "type": "int64",
+                "description": "Suppress same message in this many seconds (default 60 sec)."
+            },
+            {
+                "name": "args",
+                "type": "Any",
+                "description": "An array of elements to apply into the format string."
+            },
+            {
+                "name": "level",
+                "type": "string",
+                "description": "Level to log at (DEFAULT, WARN, ERROR, INFO)."
             }
         ],
         "category": "basic"
@@ -2153,14 +2913,6 @@
         "name": "lookupSID",
         "description": "Get information about the SID.",
         "type": "Function",
-        "args": [
-            {
-                "name": "sid",
-                "type": "string",
-                "description": "A SID to lookup using LookupAccountSid ",
-                "required": true
-            }
-        ],
         "category": "windows"
     },
     {
@@ -2177,14 +2929,39 @@
         "category": "basic"
     },
     {
-        "name": "magic",
-        "category": "client",
-        "description": "Identify a file using magic rules.",
+        "name": "lru",
+        "description": "Creates an LRU object",
         "type": "Function",
         "args": [
             {
-                "name": "path",
+                "name": "size",
+                "type": "int64",
+                "description": "Size of the LRU (default 1000)"
+            }
+        ]
+    },
+    {
+        "name": "lzxpress_decompress",
+        "description": "Decompress an lzxpress blob.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "data",
                 "type": "string",
+                "description": "The lzxpress stream (bytes)",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "magic",
+        "description": "Identify a file using magic rules.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "path",
+                "type": "OSPath",
                 "description": "Path to open and hash.",
                 "required": true
             },
@@ -2203,7 +2980,85 @@
                 "type": "string",
                 "description": "Additional magic to load"
             }
-        ]
+        ],
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
+        "name": "mail",
+        "description": "Send Email to a remote server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "to",
+                "type": "string",
+                "description": "Recipient of the mail",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "from",
+                "type": "string",
+                "description": "The from email address."
+            },
+            {
+                "name": "cc",
+                "type": "string",
+                "description": "A cc for the mail",
+                "repeated": true
+            },
+            {
+                "name": "subject",
+                "type": "string",
+                "description": "The subject."
+            },
+            {
+                "name": "body",
+                "type": "string",
+                "description": "The body of the mail.",
+                "required": true
+            },
+            {
+                "name": "period",
+                "type": "int64",
+                "description": "How long to wait before sending the next mail - help to throttle mails."
+            },
+            {
+                "name": "server_port",
+                "type": "uint64",
+                "description": "The SMTP server port to use (default 587)."
+            },
+            {
+                "name": "server",
+                "type": "string",
+                "description": "The SMTP server to use (if not specified we try the config file)."
+            },
+            {
+                "name": "auth_username",
+                "type": "string",
+                "description": "The SMTP username we authenticate to the server."
+            },
+            {
+                "name": "auth_password",
+                "type": "string",
+                "description": "The SMTP username password we use to authenticate to the server."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
+                "description": "Skip SSL verification(default: False)."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "mail",
@@ -2242,8 +3097,7 @@
             {
                 "name": "period",
                 "type": "int64",
-                "description": "How long to wait before sending the next mail - help to throttle mails.",
-                "required": true
+                "description": "How long to wait before sending the next mail - help to throttle mails."
             },
             {
                 "name": "server_port",
@@ -2264,6 +3118,16 @@
                 "name": "auth_password",
                 "type": "string",
                 "description": "The SMTP username password we use to authenticate to the server."
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
+                "description": "Skip SSL verification(default: False)."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
             }
         ],
         "category": "server"
@@ -2341,7 +3205,7 @@
             },
             {
                 "name": "results",
-                "type": "Any",
+                "type": "LazyExpr",
                 "description": "The result to return",
                 "required": true
             }
@@ -2375,6 +3239,38 @@
             }
         ],
         "category": "utils"
+    },
+    {
+        "name": "mock_clear",
+        "description": "Resets all mocks.",
+        "type": "Function"
+    },
+    {
+        "name": "mock_replay",
+        "description": "Replay recorded calls on a mock.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "plugin",
+                "type": "string",
+                "description": "The plugin to mock"
+            },
+            {
+                "name": "function",
+                "type": "string",
+                "description": "The function to mock"
+            },
+            {
+                "name": "expected_calls",
+                "type": "int",
+                "description": "How many times plugin should be called"
+            },
+            {
+                "name": "clear",
+                "type": "bool",
+                "description": "This call will clear previous mocks for this plugin"
+            }
+        ]
     },
     {
         "name": "modules",
@@ -2456,7 +3352,89 @@
                 "description": "Maximum number of clients to fetch (default unlimited)'"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
+    },
+    {
+        "name": "monitoring_logs",
+        "description": "Retrieve log messages from client event monitoring for the specified client id and artifact",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client id to extract",
+                "required": true
+            },
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The name of the artifact collection to fetch",
+                "required": true
+            },
+            {
+                "name": "source",
+                "type": "string",
+                "description": "An optional named source within the artifact"
+            },
+            {
+                "name": "start_time",
+                "type": "Any",
+                "description": "Start return events from this date (for event sources)"
+            },
+            {
+                "name": "end_time",
+                "type": "Any",
+                "description": "Stop end events reach this time (event sources)."
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
+    },
+    {
+        "name": "netcat",
+        "description": "Make a tcp connection and read data from a socket.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "address",
+                "type": "string",
+                "description": "The address to connect to (can be a file in case of a unix domain socket)",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Can be tcp or unix (default TCP)"
+            },
+            {
+                "name": "send",
+                "type": "string",
+                "description": "Data to send before reading"
+            },
+            {
+                "name": "sep",
+                "type": "string",
+                "description": "The separator that will be used to split (default - line feed)"
+            },
+            {
+                "name": "chunk_size",
+                "type": "int",
+                "description": "Read input with this chunk size (default 64kb)"
+            },
+            {
+                "name": "retry",
+                "type": "int",
+                "description": "Seconds to wait before retry - default 0 - do not retry"
+            }
+        ],
+        "category": "plugin",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
     },
     {
         "name": "netstat",
@@ -2479,7 +3457,10 @@
                 "type": "bool"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "now",
@@ -2502,7 +3483,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of filenames to open as OLE files.",
                 "repeated": true,
                 "required": true
@@ -2518,7 +3499,62 @@
                 "description": "Maximum size of file we load into memory."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
+        "name": "org",
+        "description": "Return the details of the current org.",
+        "type": "Function"
+    },
+    {
+        "name": "org_create",
+        "description": "Creates a new organization.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the org.",
+                "required": true
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "An ID for the new org (if not set use a random ID)."
+            }
+        ],
+        "metadata": {
+            "permissions": "ORG_ADMIN"
+        }
+    },
+    {
+        "name": "org_delete",
+        "description": "Deletes an Org from the server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "org",
+                "type": "string",
+                "description": "The org ID to delete.",
+                "required": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool",
+                "description": "If not specified, just show what org will be removed"
+            }
+        ],
+        "metadata": {
+            "permissions": "ORG_ADMIN"
+        }
+    },
+    {
+        "name": "orgs",
+        "description": "Retrieve the list of orgs on this server.",
+        "type": "Plugin"
     },
     {
         "name": "parallelize",
@@ -2592,7 +3628,10 @@
                 "description": "Number of rows in each batch.)"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "parse_auditd",
@@ -2601,7 +3640,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -2626,7 +3665,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Binary file to open.",
                 "required": true
             },
@@ -2652,7 +3691,10 @@
                 "description": "Start parsing from this offset"
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_csv",
@@ -2661,7 +3703,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "CSV files to open",
                 "repeated": true,
                 "required": true
@@ -2679,10 +3721,24 @@
             {
                 "name": "separator",
                 "type": "string",
-                "description": "Comma separator"
+                "description": "Comma separator (default ',')"
+            },
+            {
+                "name": "comment",
+                "type": "string",
+                "description": "The single character that should be considered a comment"
+            },
+            {
+                "name": "columns",
+                "type": "string",
+                "description": "The columns to use",
+                "repeated": true
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_ese",
@@ -2691,7 +3747,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "required": true
             },
             {
@@ -2706,17 +3762,19 @@
                 "required": true
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_ese_catalog",
-        "category": "parsers",
         "description": "Opens an ESE file and dump the schema.",
         "type": "Plugin",
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "required": true
             },
             {
@@ -2724,7 +3782,11 @@
                 "type": "string",
                 "description": "The accessor to use."
             }
-        ]
+        ],
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_evtx",
@@ -2733,7 +3795,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
@@ -2749,7 +3811,10 @@
                 "description": "A Message database from https://github.com/Velocidex/evtx-data."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_float",
@@ -2814,7 +3879,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "JSON file to open",
                 "required": true
             },
@@ -2824,7 +3889,10 @@
                 "description": "The accessor to use"
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_lines",
@@ -2833,7 +3901,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -2849,37 +3917,63 @@
                 "description": "Maximum size of line buffer."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_mft",
         "description": "Scan the $MFT from an NTFS volume.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "filename",
-                "type": "string",
-                "description": "A list of event log files to parse.",
+                "type": "OSPath",
+                "description": "The MFT file.",
                 "required": true
             },
             {
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "prefix",
+                "type": "OSPath",
+                "description": "If specified we prefix all paths with this path."
+            },
+            {
+                "name": "start",
+                "type": "int64",
+                "description": "The first entry to scan."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_ntfs",
-        "description": "Parse an NTFS image file.",
+        "description": "Parse specific inodes from an NTFS image file or the raw device.",
         "type": "Function",
         "args": [
             {
                 "name": "device",
                 "type": "string",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
-                "required": true
+                "description": "The device file to open. This may be a full path for example C:\\Windows - we will figure out the device automatically."
+            },
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "A raw image to open. You can also provide the accessor if using a raw image file."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "inode",
@@ -2907,8 +4001,17 @@
             {
                 "name": "device",
                 "type": "string",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
-                "required": true
+                "description": "The device file to open. This may be a full path for example C:\\Windows - we will figure out the device automatically."
+            },
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "A raw image to open. You can also provide the accessor if using a raw image file."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "inode",
@@ -2936,8 +4039,17 @@
             {
                 "name": "device",
                 "type": "string",
-                "description": "The device file to open. This may be a full path - we will figure out the device automatically.",
-                "required": true
+                "description": "The device file to open. This may be a full path for example C:\\Windows - we will figure out the device automatically."
+            },
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "A raw image to open. You can also provide the accessor if using a raw image file."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "inode",
@@ -2964,7 +4076,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The PE file to open.",
                 "required": true
             },
@@ -2972,9 +4084,17 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "base_offset",
+                "type": "int64",
+                "description": "The offset in the file for the base address."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_pkcs7",
@@ -2987,7 +4107,8 @@
                 "description": "PKCS7 DER encoded string.",
                 "required": true
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "parse_records_with_regex",
@@ -2996,7 +4117,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of files to parse.",
                 "repeated": true,
                 "required": true
@@ -3019,7 +4140,10 @@
                 "description": "Maximum size of line buffer (default 64kb)."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_recyclebin",
@@ -3028,7 +4152,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Files to be parsed.",
                 "repeated": true,
                 "required": true
@@ -3039,7 +4163,10 @@
                 "description": "The accessor to use."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_string_with_regex",
@@ -3069,9 +4196,14 @@
         "args": [
             {
                 "name": "device",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The device file to open.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
             },
             {
                 "name": "start_offset",
@@ -3083,7 +4215,6 @@
     },
     {
         "name": "parse_x509",
-        "category": "parsers",
         "description": "Parse a DER encoded x509 string into an object.",
         "type": "Function",
         "args": [
@@ -3093,7 +4224,8 @@
                 "description": "X509 DER encoded string.",
                 "required": true
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "parse_xml",
@@ -3102,7 +4234,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "XML file to open.",
                 "required": true
             },
@@ -3112,17 +4244,19 @@
                 "description": "The accessor to use"
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "parse_yaml",
-        "category": "parsers",
         "description": "Parse yaml into an object.",
         "type": "Function",
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Yaml Filename",
                 "required": true
             },
@@ -3131,7 +4265,11 @@
                 "type": "string",
                 "description": "File accessor"
             }
-        ]
+        ],
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "partitions",
@@ -3145,6 +4283,24 @@
             }
         ],
         "category": "windows"
+    },
+    {
+        "name": "passwd",
+        "description": "Updates the user's password.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to set password for. If not set, changes the current user's password."
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "description": "The new password to set.",
+                "required": true
+            }
+        ]
     },
     {
         "name": "patch",
@@ -3177,7 +4333,7 @@
         "args": [
             {
                 "name": "components",
-                "type": "string",
+                "type": "Any",
                 "description": "Path components to join.",
                 "repeated": true,
                 "required": true
@@ -3186,6 +4342,11 @@
                 "name": "sep",
                 "type": "string",
                 "description": "Separator to use (default /)"
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windows')"
             }
         ],
         "category": "basic"
@@ -3197,12 +4358,165 @@
         "args": [
             {
                 "name": "path",
-                "type": "string",
+                "type": "Any",
                 "description": "Path to split into components.",
                 "required": true
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path (e.g. 'windows')"
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "pathspec",
+        "description": "Create a structured path spec to pass to certain accessors.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "DelegateAccessor",
+                "type": "string",
+                "description": "An accessor to use."
+            },
+            {
+                "name": "DelegatePath",
+                "type": "string",
+                "description": "A delegate to pass to the accessor."
+            },
+            {
+                "name": "Path",
+                "type": "Any",
+                "description": "A path to open."
+            },
+            {
+                "name": "parse",
+                "type": "string",
+                "description": "Alternatively parse the pathspec from this string."
+            },
+            {
+                "name": "path_type",
+                "type": "string",
+                "description": "Type of path this is (windows,linux,registry,ntfs)."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use to parse the path with"
+            }
+        ],
+        "category": "plugin"
+    },
+    {
+        "name": "pe_dump",
+        "description": "Dump a PE file from process memory.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "pid",
+                "type": "uint64",
+                "description": "The pid to dump.",
+                "required": true
+            },
+            {
+                "name": "base_offset",
+                "type": "int64",
+                "description": "The offset in the file for the base address.",
+                "required": true
+            },
+            {
+                "name": "in_memory",
+                "type": "uint64",
+                "description": "By default we store to a tempfile and return the path. If this option is larger than 0, we prepare the file in a memory buffer at the specified limit, to avoid AV alerts on disk access."
+            }
+        ],
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
+        "name": "pipe",
+        "description": "A pipe allows plugins that use files to read data from a vql\nquery. This is needed to be able to use the \"pipe\" accessor.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name to call the pipe"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generator data - the first column will be appended to pipe data."
+            },
+            {
+                "name": "sep",
+                "type": "string",
+                "description": "The separator that will be used to split each read (default: no separator will be used)"
+            }
+        ],
+        "category": "plugin"
+    },
+    {
+        "name": "pk_decrypt",
+        "description": "Decrypt files using pubkey encryption",
+        "type": "Function",
+        "args": [
+            {
+                "name": "data",
+                "type": "string",
+                "description": "The data to decrypt",
+                "required": true
+            },
+            {
+                "name": "signing_key",
+                "type": "string",
+                "description": "Public key to verify signature"
+            },
+            {
+                "name": "private_key",
+                "type": "string",
+                "description": "Private key to decrypt with. Defaults to server private key"
+            },
+            {
+                "name": "scheme",
+                "type": "string",
+                "description": "Encryption scheme to use. Defaults to RSA. Currently supported: PGP,RSA"
+            }
+        ]
+    },
+    {
+        "name": "pk_encrypt",
+        "description": "Encrypt files using pubkey encryption",
+        "type": "Function",
+        "args": [
+            {
+                "name": "data",
+                "type": "string",
+                "description": "The data to encrypt",
+                "required": true
+            },
+            {
+                "name": "signing_key",
+                "type": "string",
+                "description": "Private key to sign with"
+            },
+            {
+                "name": "public_key",
+                "type": "string",
+                "description": "Public key to encrypt with. Defaults to server public key"
+            },
+            {
+                "name": "scheme",
+                "type": "string",
+                "description": "Encryption scheme to use. Defaults to X509. Currently supported: PGP,X509"
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "plist",
@@ -3211,7 +4525,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of files to parse.",
                 "required": true
             },
@@ -3221,7 +4535,10 @@
                 "description": "The accessor to use."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "plist",
@@ -3230,7 +4547,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of files to parse.",
                 "repeated": true,
                 "required": true
@@ -3241,7 +4558,10 @@
                 "description": "The accessor to use."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "prefetch",
@@ -3250,7 +4570,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
@@ -3261,7 +4581,10 @@
                 "description": "The accessor to use."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "proc_dump",
@@ -3303,9 +4626,131 @@
                 "name": "key",
                 "type": "string",
                 "description": "If set use this key to cache the  yara rules."
+            },
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "The Yara namespece to use."
+            },
+            {
+                "name": "vars",
+                "type": "ordereddict.Dict",
+                "description": "The Yara variables to use."
+            },
+            {
+                "name": "number",
+                "type": "int64",
+                "description": "Stop after this many hits (1)."
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
+        "name": "process_tracker",
+        "description": "Install a global process tracker.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "sync_query",
+                "type": "StoredQuery",
+                "description": "Source for full tracker updates. Query must emit rows with the ProcessTrackerUpdate shape - usually uses pslist() to form a full sync."
+            },
+            {
+                "name": "sync_period",
+                "type": "int64",
+                "description": "How often to do a full sync (default 5000 msec)."
+            },
+            {
+                "name": "update_query",
+                "type": "StoredQuery",
+                "description": "An Event query that produces live updates of the tracker state."
+            },
+            {
+                "name": "max_size",
+                "type": "int64",
+                "description": "Maximum size of process tracker LRU."
+            },
+            {
+                "name": "enrichments",
+                "type": "string",
+                "description": "One or more VQL lambda functions that can enrich the data for the process.",
+                "repeated": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_all",
+        "description": "Get all processes stored in the tracker.",
+        "type": "Function"
+    },
+    {
+        "name": "process_tracker_callchain",
+        "description": "Get a call chain from the global process tracker.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_children",
+        "description": "Get all children of a process.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_get",
+        "description": "Get a single process from the global tracker.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID.",
+                "required": true
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_pslist",
+        "description": "List all processes from the process tracker.",
+        "type": "Plugin"
+    },
+    {
+        "name": "process_tracker_tree",
+        "description": "Get the full process tree under the process id.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "id",
+                "type": "string",
+                "description": "Process ID."
+            },
+            {
+                "name": "data_callback",
+                "type": "Lambda",
+                "description": "A VQL Lambda function to that receives a ProcessEntry and returns the data node for each process."
+            }
+        ]
+    },
+    {
+        "name": "process_tracker_updates",
+        "description": "Get the process tracker update events from the global process tracker.",
+        "type": "Plugin"
     },
     {
         "name": "profile",
@@ -3373,7 +4818,26 @@
                 "description": "Duration of samples (default 30 sec)"
             }
         ],
-        "category": "plugins"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
+        "name": "pskill",
+        "description": "Kill the specified process.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "pid",
+                "type": "int64",
+                "description": "A pid to kill.",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "EXECVE"
+        }
     },
     {
         "name": "pslist",
@@ -3386,20 +4850,23 @@
                 "description": "A pid to list. If this is provided we are able to operate much faster by only opening a single process."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "query",
-        "category": "basic",
         "description": "Launch a subquery and materialize it into a list of rows.",
         "type": "Function",
         "args": [
             {
                 "name": "vql",
-                "type": "vfilter.StoredQuery",
+                "type": "StoredQuery",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "query",
@@ -3408,7 +4875,7 @@
         "args": [
             {
                 "name": "query",
-                "type": "string",
+                "type": "Any",
                 "description": "A VQL Query to parse and execute.",
                 "required": true
             },
@@ -3416,8 +4883,41 @@
                 "name": "env",
                 "type": "ordereddict.Dict",
                 "description": "A dict of args to insert into the scope."
+            },
+            {
+                "name": "cpu_limit",
+                "type": "float64",
+                "description": "Average CPU usage in percent of a core."
+            },
+            {
+                "name": "iops_limit",
+                "type": "float64",
+                "description": "Average IOPs to target."
+            },
+            {
+                "name": "timeout",
+                "type": "float64",
+                "description": "Cancel the query after this many seconds"
+            },
+            {
+                "name": "progress_timeout",
+                "type": "float64",
+                "description": "If no progress is detected in this many seconds, we terminate the query and output debugging information"
+            },
+            {
+                "name": "org_id",
+                "type": "string",
+                "description": "If specified, the query will run in the specified org space (Use 'root' to refer to the root org)"
+            },
+            {
+                "name": "runas",
+                "type": "string",
+                "description": "If specified, the query will run as the specified user"
             }
-        ]
+        ],
+        "metadata": {
+            "permissions": "IMPERSONATION"
+        }
     },
     {
         "name": "rand",
@@ -3434,15 +4934,13 @@
     },
     {
         "name": "range",
-        "category": "basic",
         "description": "Iterate over range.",
         "type": "Plugin",
         "args": [
             {
                 "name": "start",
                 "type": "int64",
-                "description": "Start index (0 based)",
-                "required": true
+                "description": "Start index (0 based - default 0)"
             },
             {
                 "name": "end",
@@ -3453,10 +4951,10 @@
             {
                 "name": "step",
                 "type": "int64",
-                "description": "End index (0 based)",
-                "required": true
+                "description": "Step (default 1)"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "rate",
@@ -3495,7 +4993,7 @@
             },
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "One or more files to open.",
                 "required": true
             },
@@ -3505,7 +5003,10 @@
                 "description": "An accessor to use."
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "read_file",
@@ -3524,7 +5025,7 @@
             },
             {
                 "name": "filenames",
-                "type": "string",
+                "type": "OSPath",
                 "description": "One or more files to open.",
                 "repeated": true,
                 "required": true
@@ -3535,7 +5036,10 @@
                 "description": "An accessor to use."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "read_reg_key",
@@ -3546,20 +5050,23 @@
                 "name": "globs",
                 "type": "string",
                 "description": "Glob expressions to apply.",
-                "repeated": true,
-                "required": true
+                "repeated": true
             },
             {
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use."
+            },
+            {
+                "name": "root",
+                "type": "OSPath",
+                "description": "The root directory to glob from (default '/')."
             }
         ],
         "category": "windows"
     },
     {
         "name": "reg_rm_key",
-        "category": "client",
         "description": "Removes a key and all its values from the registry.",
         "type": "Function",
         "args": [
@@ -3569,11 +5076,11 @@
                 "description": "Registry key path.",
                 "required": true
             }
-        ]
+        ],
+        "category": "plugin"
     },
     {
         "name": "reg_rm_value",
-        "category": "client",
         "description": "Removes a value in the registry.",
         "type": "Function",
         "args": [
@@ -3583,11 +5090,11 @@
                 "description": "Registry value path.",
                 "required": true
             }
-        ]
+        ],
+        "category": "plugin"
     },
     {
         "name": "reg_set_value",
-        "category": "client",
         "description": "Set a value in the registry.",
         "type": "Function",
         "args": [
@@ -3614,7 +5121,8 @@
                 "type": "bool",
                 "description": "Set to create missing intermediate keys"
             }
-        ]
+        ],
+        "category": "plugin"
     },
     {
         "name": "regex_replace",
@@ -3630,8 +5138,12 @@
             {
                 "name": "replace",
                 "type": "string",
-                "description": "The substitute string.",
-                "required": true
+                "description": "The substitute string."
+            },
+            {
+                "name": "replace_lambda",
+                "type": "string",
+                "description": "Optionally the replacement can be a lambda."
             },
             {
                 "name": "re",
@@ -3644,7 +5156,6 @@
     },
     {
         "name": "regex_transform",
-        "category": "basic",
         "description": "Search and replace a string with multiple regex. Note you can use $1\nto replace the capture string.",
         "type": "Function",
         "args": [
@@ -3665,11 +5176,26 @@
                 "type": "string",
                 "description": "A key for caching"
             }
-        ]
+        ],
+        "category": "basic"
+    },
+    {
+        "name": "rekey",
+        "description": "Causes the client to rekey and regenerate a new client ID. DANGEROUS! This will change the client's identity and it will appear as a new client in the GUI.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "wait",
+                "type": "int64",
+                "description": "Wait this long before rekeying the client."
+            }
+        ],
+        "metadata": {
+            "permissions": "EXECVE"
+        }
     },
     {
         "name": "relpath",
-        "category": "basic",
         "description": "Return the relative path of .",
         "type": "Function",
         "args": [
@@ -3690,11 +5216,83 @@
                 "type": "string",
                 "description": "Separator to use (default native)"
             }
+        ],
+        "category": "basic"
+    },
+    {
+        "name": "remap",
+        "description": "Apply a remapping configuration to the root scope.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "config",
+                "type": "string",
+                "description": "A Valid remapping configuration in YAML format",
+                "required": true
+            },
+            {
+                "name": "copy",
+                "type": "string",
+                "description": "Accessors to copy to the new scope",
+                "repeated": true
+            },
+            {
+                "name": "clear",
+                "type": "bool",
+                "description": "If set we clear all accessors from the device manager"
+            }
         ]
     },
     {
+        "name": "repack",
+        "description": "Repack and upload a repacked binary or MSI to the server.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "target",
+                "type": "string",
+                "description": "The name of the target OS to repack (VelociraptorWindows, VelociraptorLinux, VelociraptorDarwin)"
+            },
+            {
+                "name": "version",
+                "type": "string",
+                "description": "Velociraptor Version to repack"
+            },
+            {
+                "name": "exe",
+                "type": "OSPath",
+                "description": "Alternative a path to the executable to repack"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use to read the file."
+            },
+            {
+                "name": "binaries",
+                "type": "string",
+                "description": "List of tool names that will be repacked into the target",
+                "repeated": true
+            },
+            {
+                "name": "config",
+                "type": "string",
+                "description": "The config to be repacked in the form of a json or yaml string",
+                "required": true
+            },
+            {
+                "name": "upload_name",
+                "type": "string",
+                "description": "The name of the upload to create",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
+    },
+    {
         "name": "rm",
-        "category": "client",
         "description": "Remove a file from the filesystem using the API.",
         "type": "Function",
         "args": [
@@ -3704,7 +5302,11 @@
                 "description": "Filename to remove.",
                 "required": true
             }
-        ]
+        ],
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "rm_client_monitoring",
@@ -3728,7 +5330,10 @@
                 "description": "Add this artifact to this label group (default all)"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_CLIENT"
+        }
     },
     {
         "name": "rm_server_monitoring",
@@ -3747,7 +5352,10 @@
                 "description": "A dict of artifact parameters"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
     },
     {
         "name": "rot13",
@@ -3795,7 +5403,6 @@
     },
     {
         "name": "send_event",
-        "category": "event",
         "description": "Sends an event to a server event monitoring queue.",
         "type": "Function",
         "args": [
@@ -3811,11 +5418,14 @@
                 "description": "The row to send to the artifact",
                 "required": true
             }
-        ]
+        ],
+        "category": "event",
+        "metadata": {
+            "permissions": "SERVER_ADMIN,PUBLISH"
+        }
     },
     {
         "name": "sequence",
-        "category": "experimental",
         "description": "Combines the output of many queries into an in memory fifo. After\neach row is received from any subquery runs the query specified in\nthe 'query' parameter to retrieve rows from the memory SEQUENCE\nobject.",
         "type": "Plugin",
         "args": [
@@ -3830,7 +5440,8 @@
                 "type": "int64",
                 "description": "Maximum number of seconds to hold rows in the sequence."
             }
-        ]
+        ],
+        "category": "experimental"
     },
     {
         "name": "serialize",
@@ -3846,10 +5457,18 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "Encoding format (csv,json)"
+                "description": "Encoding format (csv,json,yaml,hex,base64)"
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "server_frontend_cert",
+        "description": "Get Server Frontend Certificate",
+        "type": "Function",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "server_metadata",
@@ -3862,35 +5481,39 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        }
     },
     {
         "name": "server_set_metadata",
-        "description": "Sets client metadata. Client metadata is a set of free form key/value data",
+        "description": "Sets server metadata. Server metadata is a set of free form\nkey/value data, usually used for configuration of artifacts.",
         "type": "Function",
         "args": [
             {
-                "name": "client_id",
-                "type": "string",
-                "required": true
+                "name": "metadata",
+                "type": "ordereddict.Dict",
+                "description": "A dict containing metadata. If not specified we use kwargs."
             }
         ],
         "category": "server"
     },
     {
         "name": "set",
-        "category": "basic",
         "description": "Sets the member field of the item. If item is omitted sets the scope.",
         "type": "Function",
         "args": [
             {
                 "name": "item",
                 "type": "Any",
+                "description": "A dict to set",
                 "required": true
             },
             {
                 "name": "field",
                 "type": "string",
+                "description": "The field to set",
                 "required": true
             },
             {
@@ -3898,7 +5521,8 @@
                 "type": "Any",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "set_client_monitoring",
@@ -3912,7 +5536,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_CLIENT"
+        }
     },
     {
         "name": "set_server_monitoring",
@@ -3926,7 +5553,10 @@
                 "required": true
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
     },
     {
         "name": "sleep",
@@ -3948,7 +5578,6 @@
     },
     {
         "name": "slice",
-        "category": "basic",
         "description": "Slice an array.",
         "type": "Function",
         "args": [
@@ -3970,7 +5599,8 @@
                 "description": "End index (0 based)",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "source",
@@ -4038,7 +5668,10 @@
                 "description": "Maximum number of clients to fetch (default unlimited)'"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "split",
@@ -4054,8 +5687,12 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The separator that will be used to split",
-                "required": true
+                "description": "The separator that will be used to split"
+            },
+            {
+                "name": "sep_string",
+                "type": "string",
+                "description": "The separator as string that will be used to split"
             }
         ],
         "category": "basic"
@@ -4067,7 +5704,7 @@
         "args": [
             {
                 "name": "filenames",
-                "type": "string",
+                "type": "OSPath",
                 "description": "Files to parse.",
                 "repeated": true,
                 "required": true
@@ -4080,8 +5717,7 @@
             {
                 "name": "regex",
                 "type": "string",
-                "description": "The split regular expression (e.g. a comma)",
-                "required": true
+                "description": "The split regular expression (e.g. a comma, default whitespace)"
             },
             {
                 "name": "columns",
@@ -4098,9 +5734,22 @@
                 "name": "count",
                 "type": "int",
                 "description": "Only split into this many columns if possible."
+            },
+            {
+                "name": "record_regex",
+                "type": "string",
+                "description": "A regex to split data into records (default "
+            },
+            {
+                "name": "buffer_size",
+                "type": "int",
+                "description": "Maximum size of line buffer (default 64kb)."
             }
         ],
-        "category": "parsers"
+        "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "splunk_upload",
@@ -4155,16 +5804,38 @@
                 "description": "Skip SSL verification(default: False)."
             },
             {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to skip_verify, allows root ca certs to be added here."
+            },
+            {
                 "name": "wait_time",
                 "type": "int64",
                 "description": "Batch splunk upload this long (2 sec)."
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "Hostname for Splunk Events. Defaults to server hostname."
+            },
+            {
+                "name": "timestamp_field",
+                "type": "string",
+                "description": "Field to use as event timestamp."
+            },
+            {
+                "name": "hostname_field",
+                "type": "string",
+                "description": "Field to use as event hostname. Overrides hostname parameter."
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
     },
     {
         "name": "sql",
-        "category": "client",
         "description": "Run queries against sqlite, mysql, and postgres databases",
         "type": "Plugin",
         "args": [
@@ -4198,7 +5869,11 @@
                 "name": "args",
                 "type": "Any"
             }
-        ]
+        ],
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "sqlite",
@@ -4234,7 +5909,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "required": true
             },
             {
@@ -4252,7 +5927,6 @@
     },
     {
         "name": "starl",
-        "category": "parsers",
         "description": "Compile a starlark code block - returns a module usable in VQL",
         "type": "Function",
         "args": [
@@ -4272,18 +5946,19 @@
                 "type": "Any",
                 "description": "Dictionary of values to feed into Starlark environment"
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "stat",
         "description": "Get file information. Unlike glob() this does not support wildcards.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "One or more files to open.",
-                "repeated": true,
                 "required": true
             },
             {
@@ -4292,7 +5967,10 @@
                 "description": "An accessor to use."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "str",
@@ -4323,13 +6001,17 @@
                 "name": "prefix",
                 "type": "string",
                 "description": "The prefix to strip"
+            },
+            {
+                "name": "suffix",
+                "type": "string",
+                "description": "The suffix to strip"
             }
         ],
         "category": "basic"
     },
     {
         "name": "substr",
-        "category": "basic",
         "description": "Create a substring from a string",
         "type": "Function",
         "args": [
@@ -4349,11 +6031,11 @@
                 "type": "int",
                 "description": "End index of substring"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "sum",
-        "category": "basic",
         "description": "Sums the items.",
         "type": "Function",
         "args": [
@@ -4362,7 +6044,8 @@
                 "type": "int64",
                 "required": true
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "switch",
@@ -4381,7 +6064,10 @@
                 "description": "If set we delay removal as much as possible."
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "tempfile",
@@ -4410,11 +6096,13 @@
                 "description": "If set we delay removal as much as possible."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "timeline",
-        "category": "server",
         "description": "Read a timeline. You can create a timeline with the timeline_add() function",
         "type": "Plugin",
         "args": [
@@ -4440,11 +6128,14 @@
                 "type": "string",
                 "description": "The notebook ID the timeline is stored in."
             }
-        ]
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "timeline_add",
-        "category": "server",
         "description": "Add a new query to a timeline.",
         "type": "Function",
         "args": [
@@ -4477,7 +6168,11 @@
                 "type": "string",
                 "description": "The notebook ID the timeline is stored in."
             }
-        ]
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "timestamp",
@@ -4514,10 +6209,31 @@
             {
                 "name": "format",
                 "type": "string",
-                "description": "A format specifier as per Golang's time.Parse"
+                "description": "A format specifier as per the Golang time.Parse"
             }
         ],
         "category": "basic"
+    },
+    {
+        "name": "tlsh_hash",
+        "description": "Calculate the tlsh hash of a file.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "path",
+                "type": "OSPath",
+                "description": "Path to open and hash.",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "to_dict",
@@ -4546,8 +6262,13 @@
         "category": "windows"
     },
     {
+        "name": "trace",
+        "description": "Upload a trace file.",
+        "type": "Function",
+        "version": 1
+    },
+    {
         "name": "unhex",
-        "category": "basic",
         "description": "Apply hex decoding to the string.",
         "type": "Function",
         "args": [
@@ -4556,17 +6277,17 @@
                 "type": "string",
                 "description": "Hex string to decode"
             }
-        ]
+        ],
+        "category": "basic"
     },
     {
         "name": "unzip",
-        "category": "client",
-        "description": "Unzips a file into a directory",
+        "description": "Unzips a file into a directory.",
         "type": "Plugin",
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "File to unzip.",
                 "required": true
             },
@@ -4578,15 +6299,24 @@
             {
                 "name": "filename_filter",
                 "type": "string",
-                "description": "Only extract members matching this filter."
+                "description": "Only extract members matching this regex filter."
             },
             {
                 "name": "output_directory",
                 "type": "string",
                 "description": "Where to unzip to",
                 "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "The type of file (default autodetected from file extension - zip or tgz or tar.gz)."
             }
-        ]
+        ],
+        "category": "basic",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE,FILESYSTEM_READ"
+        }
     },
     {
         "name": "upcase",
@@ -4608,13 +6338,13 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The name of the file that should be stored on the server"
             },
             {
@@ -4643,7 +6373,10 @@
                 "description": "Birth time to record"
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "upload",
@@ -4671,20 +6404,51 @@
         "category": "plugin"
     },
     {
-        "name": "upload_directory",
-        "category": "server",
-        "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
+        "name": "upload_azure",
+        "description": "Upload files to Azure Blob Storage Service.",
         "type": "Function",
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
                 "type": "string",
+                "description": "The name of the file that should be stored on the server"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "sas_url",
+                "type": "string",
+                "description": "A SAS URL to use for upload to the container.",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
+        "name": "upload_directory",
+        "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "file",
+                "type": "OSPath",
+                "description": "The file to upload",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "OSPath",
                 "description": "Filename to be stored within the output directory"
             },
             {
@@ -4718,7 +6482,11 @@
                 "type": "Any",
                 "description": "Birth time to set the output file."
             }
-        ]
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "upload_gcs",
@@ -4727,7 +6495,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -4760,7 +6528,10 @@
                 "required": true
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "upload_s3",
@@ -4769,7 +6540,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -4816,12 +6587,30 @@
                 "description": "The server side encryption method to use"
             },
             {
+                "name": "kmsencryptionkey",
+                "type": "string",
+                "description": "The server side KMS key to use"
+            },
+            {
+                "name": "s3uploadroot",
+                "type": "string",
+                "description": "Prefix for the S3 object"
+            },
+            {
                 "name": "noverifycert",
+                "type": "bool",
+                "description": "Skip TLS Verification (deprecated in favor of SkipVerify)"
+            },
+            {
+                "name": "skip_verify",
                 "type": "bool",
                 "description": "Skip TLS Verification"
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "upload_sftp",
@@ -4830,14 +6619,14 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
             {
                 "name": "name",
                 "type": "string",
-                "description": "The name of the file that should be stored on the server"
+                "description": "The name of the file that should be stored on the server (may contain the path)"
             },
             {
                 "name": "user",
@@ -4848,8 +6637,7 @@
             {
                 "name": "path",
                 "type": "string",
-                "description": "Path on server to upload file to",
-                "required": true
+                "description": "Path on server to upload file to (will be prepended to name)"
             },
             {
                 "name": "accessor",
@@ -4865,7 +6653,7 @@
             {
                 "name": "endpoint",
                 "type": "string",
-                "description": "The Endpoint to use",
+                "description": "The Endpoint to use including port number (e.g. 192.168.1.1:22 )",
                 "required": true
             },
             {
@@ -4874,7 +6662,52 @@
                 "description": "Host key to verify. Blank to disable"
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
+        "name": "upload_smb",
+        "description": "Upload files using the SMB file share protocol.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "file",
+                "type": "OSPath",
+                "description": "The file to upload",
+                "required": true
+            },
+            {
+                "name": "name",
+                "type": "OSPath",
+                "description": "The name of the file that should be stored on the server"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "username",
+                "type": "string",
+                "description": "The SMB username to login as (if not provided we use the SMB_CREDENTIALS env)"
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "description": "The SMB password to login as (if not provided we use the SMB_CREDENTIALS env)"
+            },
+            {
+                "name": "server_address",
+                "type": "string",
+                "description": "The SMB server address and optionally port followed by the share name (e.g. \\\\192.168.1.1:445\\ShareName)",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "upload_webdav",
@@ -4883,7 +6716,7 @@
         "args": [
             {
                 "name": "file",
-                "type": "string",
+                "type": "OSPath",
                 "description": "The file to upload",
                 "required": true
             },
@@ -4916,10 +6749,18 @@
             {
                 "name": "noverifycert",
                 "type": "bool",
+                "description": "Skip TLS Verification (deprecated in favor of SkipVerify)"
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool",
                 "description": "Skip TLS Verification"
             }
         ],
-        "category": "basic"
+        "category": "basic",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "uploads",
@@ -4935,9 +6776,17 @@
                 "name": "flow_id",
                 "type": "string",
                 "description": "A flow ID (client or server artifacts)"
+            },
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "A hunt ID"
             }
         ],
-        "category": "server"
+        "category": "server",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "url",
@@ -4965,6 +6814,11 @@
                 "description": "The fragment"
             },
             {
+                "name": "query",
+                "type": "Any",
+                "description": "A dict representing a query string"
+            },
+            {
                 "name": "parse",
                 "type": "string",
                 "description": "A url to parse"
@@ -4973,38 +6827,107 @@
         "category": "basic"
     },
     {
+        "name": "user",
+        "description": "Retrieves information about the Velociraptor user.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to create or update.",
+                "required": true
+            },
+            {
+                "name": "org",
+                "type": "string",
+                "description": "The org under which we query the user's ACL."
+            }
+        ]
+    },
+    {
         "name": "user_create",
-        "category": "server",
         "description": "Creates a new user from the server, or updates their permissions or reset their password.",
         "type": "Function",
         "args": [
             {
                 "name": "user",
                 "type": "string",
+                "description": "The user to create or update.",
                 "required": true
             },
             {
                 "name": "roles",
                 "type": "string",
+                "description": "List of roles to give the user.",
                 "repeated": true,
                 "required": true
             },
             {
                 "name": "password",
-                "type": "string"
+                "type": "string",
+                "description": "A password to set for the user (If not using SSO this might be needed)."
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "One or more org IDs to grant access to. If empty we use the current org.",
+                "repeated": true
             }
-        ]
+        ],
+        "category": "server"
     },
     {
         "name": "user_delete",
-        "category": "server",
         "description": "Deletes a user from the server.",
         "type": "Function",
         "args": [
             {
                 "name": "user",
                 "type": "string",
+                "description": "The user to delete.",
                 "required": true
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "If set we only delete from these orgs, otherwise we delete from the current org.",
+                "repeated": true
+            },
+            {
+                "name": "really_do_it",
+                "type": "bool",
+                "description": "If not specified, just show what user will be removed"
+            }
+        ],
+        "category": "server"
+    },
+    {
+        "name": "user_grant",
+        "description": "Grants the user the specified roles.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to create or update.",
+                "required": true
+            },
+            {
+                "name": "roles",
+                "type": "string",
+                "description": "List of roles to give the user.",
+                "repeated": true
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "One or more org IDs to grant access to. If not specified we use current org",
+                "repeated": true
+            },
+            {
+                "name": "policy",
+                "type": "ordereddict.Dict",
+                "description": "A dict of permissions to set (e.g. as obtained from the gui_users() function)."
             }
         ]
     },
@@ -5079,13 +7002,45 @@
         "category": "basic"
     },
     {
+        "name": "vfs_ls",
+        "description": "List directory and build a VFS object.",
+        "type": "Plugin",
+        "version": 1,
+        "args": [
+            {
+                "name": "path",
+                "type": "OSPath",
+                "description": "The directory to refresh."
+            },
+            {
+                "name": "components",
+                "type": "string",
+                "description": "Alternatively a list of path components can be given.",
+                "repeated": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "An accessor to use."
+            },
+            {
+                "name": "depth",
+                "type": "int64",
+                "description": "Depth of directory to list (default 0)."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
         "name": "watch_auditd",
         "description": "Watch log files generated by auditd.",
         "type": "Plugin",
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -5110,7 +7065,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "CSV files to open",
                 "repeated": true,
                 "required": true
@@ -5128,10 +7083,24 @@
             {
                 "name": "separator",
                 "type": "string",
-                "description": "Comma separator"
+                "description": "Comma separator (default ',')"
+            },
+            {
+                "name": "comment",
+                "type": "string",
+                "description": "The single character that should be considered a comment"
+            },
+            {
+                "name": "columns",
+                "type": "string",
+                "description": "The columns to use",
+                "repeated": true
             }
         ],
-        "category": "event"
+        "category": "event",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "watch_etw",
@@ -5174,7 +7143,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of event log files to parse.",
                 "repeated": true,
                 "required": true
@@ -5190,7 +7159,10 @@
                 "description": "A Message database from https://github.com/Velocidex/evtx-data."
             }
         ],
-        "category": "event"
+        "category": "event",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "watch_monitoring",
@@ -5203,7 +7175,10 @@
                 "description": "The artifact to watch"
             }
         ],
-        "category": "event"
+        "category": "event",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
     },
     {
         "name": "watch_syslog",
@@ -5212,7 +7187,7 @@
         "args": [
             {
                 "name": "filename",
-                "type": "string",
+                "type": "OSPath",
                 "description": "A list of log files to parse.",
                 "repeated": true,
                 "required": true
@@ -5228,7 +7203,10 @@
                 "description": "Maximum size of line buffer."
             }
         ],
-        "category": "event"
+        "category": "event",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "watch_usn",
@@ -5238,7 +7216,7 @@
             {
                 "name": "device",
                 "type": "string",
-                "description": "The device file to open.",
+                "description": "The device file to open (as an NTFS device).",
                 "required": true
             }
         ],
@@ -5246,9 +7224,9 @@
     },
     {
         "name": "whoami",
-        "category": "client",
         "description": "Returns the username that is running the query.",
-        "type": "Function"
+        "type": "Function",
+        "category": "plugin"
     },
     {
         "name": "winobj",
@@ -5331,11 +7309,40 @@
                 "required": true
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
+    },
+    {
+        "name": "write_jsonl",
+        "description": "Write a query into a JSONL file.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "CSV files to open",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "query to write into the file.",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "xor",
-        "category": "parsers",
         "description": "Apply xor to the string and key.",
         "type": "Function",
         "args": [
@@ -5351,7 +7358,8 @@
                 "description": "Xor key.",
                 "required": true
             }
-        ]
+        ],
+        "category": "parsers"
     },
     {
         "name": "yara",
@@ -5366,7 +7374,7 @@
             },
             {
                 "name": "files",
-                "type": "string",
+                "type": "Any",
                 "description": "The list of files to scan.",
                 "repeated": true,
                 "required": true
@@ -5374,7 +7382,7 @@
             {
                 "name": "accessor",
                 "type": "string",
-                "description": "Accessor (e.g. NTFS)"
+                "description": "Accessor (e.g. ntfs,file)"
             },
             {
                 "name": "context",
@@ -5405,8 +7413,21 @@
                 "name": "key",
                 "type": "string",
                 "description": "If set use this key to cache the  yara rules."
+            },
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "The Yara namespece to use."
+            },
+            {
+                "name": "vars",
+                "type": "ordereddict.Dict",
+                "description": "The Yara variables to use."
             }
         ],
-        "category": "plugin"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     }
 ]

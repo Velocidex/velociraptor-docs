@@ -3,12 +3,13 @@ import json
 import yaml
 import re
 import os
-from zipfile import ZipFile
+import zipfile
 
 # Where we generate the search index.
 commits_url = "https://api.github.com/repos/Velocidex/velociraptor-docs/commits"
 output_data_path = "static/exchange/data.json"
-archive_path = "static/exchange/artifact_exchange.zip"
+archive_path_v2 = "static/exchange/artifact_exchange_v2.zip"
+archive_path_v1 = "static/exchange/artifact_exchange.zip"
 artifact_root_directory = "content/exchange/artifacts"
 artifact_page_directory = "content/exchange/artifacts/pages"
 
@@ -19,6 +20,7 @@ project = "velociraptor-docs"
 template = """---
 title: %s
 hidden: true
+tags: %s
 editURL: https://github.com/%s/%s/edit/master/%s
 ---
 
@@ -40,7 +42,9 @@ date_regex = re.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}")
 hash_regex = re.compile("#([0-9_a-z]+)", re.I | re.M | re.S)
 
 def cleanDescription(description):
-  return hash_regex.sub("", description)
+  description = description.replace("\r\n", "\n")
+  top_paragraph = description.split("\n\n")[0]
+  return top_paragraph
 
 def cleanupDate(date):
   try:
@@ -62,12 +66,19 @@ def getAuthor(record, yaml_filename):
   # If the record already exists, just keep it the same
   title = record["title"]
   for item in previous_data:
-    if item["title"] == title:
+    if item["title"] == title and item.get("author"):
+      item["description"] = record["description"]
       return item
 
   # Get commit details for this file.
   path = yaml_filename.replace("\\", "/")
-  commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+
+  commits = None
+  try:
+    commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+  except urllib.error.HTTPError as e:
+    print("HTTPError: %s" %e)
+
   print("Checking commit for %s\n" % path)
 
   # Commit is not yet know.
@@ -89,14 +100,44 @@ def getAuthor(record, yaml_filename):
   return record
 
 # Create a zip file with all the artifacts in it.
-def make_archive():
-  with ZipFile(archive_path, mode='w') as archive:
+def make_archive(archive_path):
+  with zipfile.ZipFile(archive_path, mode='w',
+                       compression=zipfile.ZIP_DEFLATED) as archive:
     for root, dirs, files in os.walk(artifact_root_directory):
       for name in files:
         if not name.endswith(".yaml"):
           continue
 
         archive.write(os.path.join(root, name))
+
+def make_archive_v1(archive_path):
+  with zipfile.ZipFile(archive_path, mode='w',
+                       compression=zipfile.ZIP_DEFLATED) as archive:
+    for root, dirs, files in os.walk(artifact_root_directory):
+      for name in files:
+        if not name.endswith(".yaml"):
+          continue
+
+        filename = os.path.join(root, name)
+        with open(filename) as fd:
+          data = fd.read()
+
+        archive.writestr(filename, convert_to_v1(data))
+
+# For version 1 we drop all newer fields. This is suitable for older
+# Velociraptor versions which do not support expected_hash or version
+# in tool definitions.
+def convert_to_v1(data):
+  result = []
+  for line in data.splitlines():
+    if re.match("^\\s+(expected_hash|version):", line):
+      continue
+
+    result.append(line)
+
+  return "\n".join(result)
+
+
 
 def build_markdown():
   index = []
@@ -119,20 +160,27 @@ def build_markdown():
 
         description = data.get("description", "")
 
-        index.append(getAuthor({
+        record = {
           "title": data["name"],
           "author": data.get("author"),
           "description": cleanDescription(description),
           "link": os.path.join("/exchange/artifacts/pages/",
                                base_name.lower()).replace("\\", "/"),
           "tags": getTags(description),
-        }, yaml_filename))
+        }
+
+        record_with_author = getAuthor(record, yaml_filename)
+
+        index.append(record_with_author)
 
         md_filename = filename_name + ".md"
         with open(md_filename, "w") as fd:
-           fd.write(template % (data["name"], org, project,
-                                yaml_filename,
-                                data["description"], content))
+           fd.write(template % (
+             data["name"],
+             json.dumps(record_with_author["tags"]),
+             org, project,
+             yaml_filename,
+             data["description"], content))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)
@@ -143,7 +191,8 @@ def build_markdown():
 
 if __name__ == "__main__":
   build_markdown()
-  make_archive()
+  make_archive(archive_path_v2)
+  make_archive_v1(archive_path_v1)
 
 
 if os.getenv('CI'):

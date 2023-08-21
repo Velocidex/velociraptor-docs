@@ -146,7 +146,7 @@ words we need to reverse the above transformation from the ECS fields
 mentioned in the EQL query back to the original event log fields found
 on the endpoint.
 
-### The eql2vql project
+### The `eql2vql` project
 
 Let me introduce a new project to automatically convert EQL detection
 rules to VQL artifacts: https://github.com/Velocidex/eql2vql
@@ -275,7 +275,7 @@ for Windows]({{< ref
 
 ### Using EQL detections with real time monitoring
 
-The eql2vql project contains a second provider that reads Sysmon
+The `eql2vql` project contains a second provider that reads Sysmon
 events directly from ETW sources. This bypasses the windows event log
 system completely, and applies the VQL directly on real time ETW
 events.

@@ -1,0 +1,155 @@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="row searchbar">
+  <div class="input-group col-lg-8 pull-left">
+    <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+           placeholder="Search the knowledge base" aria-describedby="basic-addon2">
+    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+  </div>
+  <div class="col-lg-3 pull-right exchange-contribute">
+    <button type="button" class="btn btn-default btn-lg pull-right"
+            data-toggle="modal" data-target="#myModal">
+      <i class="fas fa-external-link-alt"></i>
+      Share your own tip
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog E wide" role="document">
+    <div class="modal-content E">
+      <div class="modal-header E">
+        <button type="button" class="close"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title E">Share a tip</h4>
+      </div>
+      <div class="modal-body E">
+        <p>
+          A knowledge base tip aims to help users answer a specific
+          question.
+        </p>
+        <p>
+          Clicking "Contribute" below will allow you to add a new kb
+          article to this repository. You will be taken to Github
+          where you can create a new article using the knowledge base
+          template described below.
+        </p>
+        <p>
+          Please provide a name for the file above prior to preparing
+          a pull request. This file is in markdown
+          format.  <b>Remember</b>: The aim of this article is to
+          quickly answer an immediate need for users who may not be
+          familiar with Velociraptor or DFIR in general. It should
+          have pointers for further research or links to other
+          knowledge base articles.
+        </p>
+        <p>
+          <pre class="code">
+# The article should begin with a title (start with #)...
+<br>
+The title should be in the form of a question or task - for example: <b>"How do I search for malicious downloaded files?"</b> (The website will use the first heading as the searchable title.)
+
+The first paragraph after the title should be a short description of the kb article. It will be searchable on the main knowledge base page.
+
+The rest of the article is normal markdown. You can also include screenshots by simply pasting them into the github editor.
+
+You can tag your tip using the following syntax. A line starting with Tags: will be removed from the final text. For example:
+
+Tags: #deployment, #vql
+
+Once you finish writing the article, simply save it to a local branch and send a pull request.
+          </pre>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/knowledge_base/tips"
+           target="_blank"
+           class="btn btn-primary btn-lg right">
+          <i class="fab fa-github"></i>&nbsp;Contribute
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+<div class="row search_results"></div>
+
+<script>
+let all_data = [];
+
+$.ajax({
+  url: "/kb/data.json",
+}).done(function( data ) {
+  all_data = data;
+  DrawResults(data);
+});
+
+function doSearch() {
+  // Declare variables
+  let input = document.getElementById('myInput');
+  let filter = input.value.toUpperCase();
+
+  let result = [];
+  for(let i=0;i<all_data.length; i++) {
+    let item = all_data[i];
+
+    if (item.title.toUpperCase().includes(filter)) {
+      result.push(item);
+    }
+  };
+  DrawResults(result);
+}
+
+function DrawResults(data) {
+  $(".search_results").empty();
+
+  for(let i=0;i<data.length; i++) {
+    let item = data[i];
+    let template = $(`
+<div class="well well-sm color container-fluid">
+  <div class="row">
+    <div class="col-md-10">
+      <div class="row">
+         <div class="col-md-12">
+           <a class="title" href=""><h3 class="panel-title color " ></h3></a>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-12 kb-tag">
+           <div class="idea-tag"/>
+         </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <span class="user-name" href=""></span>
+      <span class="date"></span>
+      <a class="user-name-link"></a>
+      <img class="user-avatar inline">
+    </div>
+  </div>
+</div>`);
+
+    template.find(".title").append(item.title);
+    template.find(".user-name-link").append(item.author);
+    template.find(".description").append(item.description);
+    template.find(".user-name-link").attr("href", item.author_link);
+    template.find(".user-avatar").attr("src", item.author_avatar);
+    template.find(".title").attr("href", item.link);
+    template.find(".date").append(item.date)
+
+    for (let j=0; j<item.tags.length; j++) {
+        let tag = item.tags[j];
+        template.find(".idea-tag").
+            append($(`<a class="tag">`).attr("href", "/tags/" + tag).
+                   append(`<i class="linkcolour tag label label-success">` + tag + `</i>&nbsp;`));
+    }
+    let new_item = $(".search_results").append(template);
+  }
+};
+</script>

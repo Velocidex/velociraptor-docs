@@ -1,0 +1,127 @@
+name: Windows.KapeFiles.Remapping
+description: |
+   This artifact automates the rebuilding of remapping rules to be able to easily
+   post process the results of the Windows.KapeFiles.Targets.
+
+   Use as follows in the flow notebook cell of a collection:
+
+   LET _ <=
+      SELECT * FROM Artifact.Windows.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
+
+   SELECT * FROM Artifact.Windows.System.TaskScheduler()
+
+   NOTE: Not all plugins are enabled in this mode for obvious reasons (e.g. pslist, wmi etc).
+
+type: CLIENT
+
+parameters:
+   - name: ClientId
+     description: The ClientID of the collection we need to remap
+   - name: FlowId
+     description: The FlowID of the collection
+
+export: |
+        LET BasePath = regex_transform(source="/clients/ClientId/collections/FlowId/uploads",
+            map=dict(FlowId=FlowId, ClientId=ClientId))
+
+        LET HiveMount(BasePath, UserSID) = regex_transform(source='''
+                - type: mount
+                  from:
+                    accessor: raw_reg
+                    prefix: |-
+                      {
+                        "Path": "/",
+                        "DelegateAccessor": "fs",
+                        "DelegatePath": "BasePath"
+                      }
+                    path_type: registry
+                  "on":
+                    accessor: registry
+                    prefix: Target
+                    path_type: registry
+        ''', map=dict(BasePath=BasePath, Target=Target), key=Target)
+
+        LET AccessorMount(Accessor) = regex_transform(source='''
+                - type: mount
+                  from:
+                    accessor: fs
+                    prefix: "BasePath/AccessorName"
+                  "on":
+                    accessor: AccessorName
+                    prefix: ""
+                    path_type: AccessorName
+        ''', map=dict(BasePath=BasePath, AccessorName=Accessor), key=Accessor)
+
+        LET ShadowMount(Accessor) = regex_transform(source='''
+                - type: shadow
+                  from:
+                    accessor: AccessorName
+                  "on":
+                    accessor: AccessorName
+        ''', map=dict(AccessorName=Accessor), key=Accessor)
+
+        LET CommonMount = '''
+        remappings:
+                - type: permissions
+                  permissions:
+                  - COLLECT_CLIENT
+                  - FILESYSTEM_READ
+                  - FILESYSTEM_WRITE
+                  - READ_RESULTS
+                  - MACHINE_STATE
+                  - SERVER_ADMIN
+                - type: impersonation
+                  os: windows
+                  hostname: Virtual Host
+                  env:
+                  - key: SystemRoot
+                    value: C:\Windows
+                  - key: WinDir
+                    value: C:\Windows
+                  disabled_functions:
+                  - amsi
+                  - lookupSID
+                  - token
+                  disabled_plugins:
+                  - users
+                  - certificates
+                  - handles
+                  - pslist
+                  - interfaces
+                  - modules
+                  - netstat
+                  - partitions
+                  - proc_dump
+                  - proc_yara
+                  - vad
+                  - winobj
+                  - wmi
+        '''
+
+sources:
+  - query: |
+        -- Build remapping parts by searching for registry hives to mount.
+        LET Parts = SELECT * FROM chain(
+        a={
+          SELECT OSPath,
+            HiveMount(BasePath=OSPath.String, Target="HKEY_USERS/" + OSPath[-2]) AS Mount
+          FROM glob(globs="*/C:/Users/*/ntuser.dat", accessor="fs", root=BasePath)
+          WHERE NOT OSPath.Basename =~ "idx$"
+        }, b={
+          SELECT OSPath,
+            HiveMount(BasePath=OSPath.String, Target="HKEY_LOCAL_MACHINE/" + OSPath[-1]) AS Mount
+          FROM glob(globs="*/C:/Windows/System32/Config/{SOFTWARE,SYSTEM}", accessor="fs", root=BasePath)
+          WHERE NOT OSPath.Basename =~ "idx$"
+        }, c={
+          SELECT NULL AS OSPath, AccessorMount(BasePath=BasePath, Accessor="auto") AS Mount
+          FROM scope()
+        }, d={
+          SELECT NULL AS OSPath, AccessorMount(BasePath=BasePath, Accessor="ntfs") AS Mount
+          FROM scope()
+        }, e={
+            SELECT ShadowMount(Accessor=_value) AS Mount
+            FROM foreach(row=["raw_reg", "zip", "data", "scope", "gzip"])
+        })
+
+        SELECT remap(clear=TRUE, config=CommonMount + join(array=Parts.Mount))
+        FROM scope()

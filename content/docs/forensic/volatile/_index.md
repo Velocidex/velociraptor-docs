@@ -72,7 +72,7 @@ further enrich the output from WMI providers.
 
 ## Mutants
 
-Malware typically need to persist using multiple persistance
+Malware typically need to persist using multiple persistence
 mechanisms - in case one mechanism is detected and removed, often
 other mechanisms will re-infect the machine. This leaves a common
 problem: How to avoid multiple copies of the same malware from
@@ -106,7 +106,7 @@ if ($createdNew) {
 
 The first time it is run, the mutant will be "acquired" and the
 program will simply go to sleep. Further instances of the script will
-be unable to acquire the mutant and will exist immediately.
+be unable to acquire the mutant and will exit immediately.
 
 ### Enumerate the mutants
 

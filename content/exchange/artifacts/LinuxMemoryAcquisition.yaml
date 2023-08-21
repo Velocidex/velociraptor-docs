@@ -1,12 +1,12 @@
 name: Linux.Memory.Acquisition
 author: URCA (Corentin Garcia / Emmanuel Mesnard)
 description: |
-  Acquires a full memory image. We download LiME and use it to
-  acquire a full memory image.
+  Acquires a full memory image. We download LiME and use it to acquire
+  a full memory image.
 
   NOTE: This artifact usually transfers a lot of data. You should
-  increase the default timeout to allow it to complete.
-  ( Example : 2Gb of memory time takes about 50s )
+  increase the default timeout to allow it to complete.  ( Example :
+  2Gb of memory time takes about 50s )
 
 
 required_permissions:
@@ -35,12 +35,12 @@ precondition: SELECT OS From info() where OS = 'linux'
 
 sources:
   - queries:
-    - LET Volatility = SELECT * FROM Artifact.Linux.Volatility.Create.Profile(Zipname=Zipname)
-    
+    - LET Volatility = SELECT * FROM Artifact.Exchange.Linux.Volatility.Create.Profile(Zipname=Zipname)
+
       LET Lime = SELECT FullPath, Stdout, Stderr, if(condition=Complete, then=upload(file="/tmp/" + Dumpname + ".raw", name=Dumpname + ".raw")) As Upload FROM execve(argv=['bash', '-c', 'mv /tmp/master.zip /tmp/lime-master.zip ; unzip -o /tmp/lime-master.zip -d /tmp/ ; cd /tmp/LiME-master/src/ ; apt-get -y install build-essential linux-headers-$(uname -r) ; make ; insmod /tmp/LiME-master/src/lime-*.ko "path=/tmp/"' + Dumpname + '".raw format=lime"'])
-    
+
       LET dirtmp = tempdir(remove_last=true)
-    
+
       SELECT * FROM foreach(
           row={
             SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="LiME")
@@ -54,5 +54,5 @@ sources:
                 then=Volatility,
                 else=scope()
             )}
-            )  
+            )
           })

@@ -1,16 +1,22 @@
 name: Linux.Collection.CatScale
 author: Wes Lambert -- @therealwlambert
 description: |
-    This is a simple artifact that leverages Cat-Scale to collect many different artifacts from a Linux host, then uploads the results to the Velociraptor server. 
-    
+    This is a simple artifact that leverages Cat-Scale to collect many
+    different artifacts from a Linux host, then uploads the results to
+    the Velociraptor server.
+
     From the project's description:
-    
-    "Linux CatScale is a bash script that uses live of the land tools to collect extensive data from Linux based hosts. The data aims to help DFIR professionals triage and scope incidents. An Elk Stack instance also is configured to consume the output and assist the analysis process."
-    
+
+    "Linux CatScale is a bash script that uses live of the land tools
+    to collect extensive data from Linux based hosts. The data aims to
+    help DFIR professionals triage and scope incidents. An Elk Stack
+    instance also is configured to consume the output and assist the
+    analysis process."
+
     https://github.com/FSecureLABS/LinuxCatScale
-    
+
     https://labs.f-secure.com/tools/cat-scale-linux-incident-response-collection/
-    
+
 tools:
   - name: CatScale
     url: https://raw.githubusercontent.com/FSecureLABS/LinuxCatScale/master/Cat-Scale.sh
@@ -33,11 +39,11 @@ sources:
   - query: |
         LET CS <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="CatScale", IsExecutable=TRUE)
         LET TmpDir <= tempdir(remove_last=TRUE)
-        Let RunIt = SELECT *, TmpDir + '/' + OutfilePrefix + Outfile + '.tar.gz' AS TarFile  
-                    FROM execve(argv=[  
+        Let RunIt = SELECT *, TmpDir + '/' + OutfilePrefix + Outfile + '.tar.gz' AS TarFile
+                    FROM execve(argv=[
                         CS.FullPath[0],
-                        "-d", Outdir, 
-                        "-o", TmpDir, 
+                        "-d", OutDir,
+                        "-o", TmpDir,
                         "-f", Outfile,
                         "-p", OutfilePrefix
                      ])

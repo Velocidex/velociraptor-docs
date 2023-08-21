@@ -6,32 +6,37 @@ description: |
         
     https://github.com/wagga40/Zircolite
         
-    This artifact currently supports usage of the built-in rulesets. Support for custom ruleset usage will be added in the future. 
-        
-    NOTE: This artifact may take several minutes to run, depending on the size of EVTZ files being analyzed.
+    NOTE: This artifact may take several minutes to run, depending on the size of EVTX files being analyzed.
+    
 author: Wes Lambert -- @therealwlambert
 tools:
   - name: Zircolite
-    url: https://github.com/wagga40/Zircolite/releases/download/2.6.0/zircolite_win10_nuitka_embedded.exe
+    url: https://github.com/wagga40/Zircolite/releases/download/2.8.1/zircolite_win10.exe
 parameters:
   - name: EVTXPath
     default: 'C:\Windows\System32\winevt\Logs'
-  - name: Ruleset
-    type: choices
-    default: --generic
-    choices:
-      - '--generic'
-      - '--sysmon'
-      - '--ruleslinux'
+  - name: Rules
+    type: upload
+    description: Ruleset to be used (defaults to Zircolite generic ruleset)
+    default: https://raw.githubusercontent.com/wagga40/Zircolite/master/rules/rules_windows_generic.json
+  - name: Mappings
+    type: upload
+    default: https://raw.githubusercontent.com/wagga40/Zircolite/master/config/fieldMappings.json
+    description: Mappings for ruleset (defaults to Zircolite field mappings)
+    
 sources:
   - query: |
         LET TmpResults <= tempfile(remove_last=True)
         LET Results =  SELECT * FROM read_file(filenames=TmpResults)
         LET Zlite <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="Zircolite", IsExecutable=FALSE)
+        LET RulesFile <= tempfile(data=Rules, remove_last=True, extension=".json")
+        Let MappingsFile <= tempfile(data=Mappings, remove_last=True, extension=".json")
         LET ExecZlite <= SELECT * FROM execve(argv=[
                         Zlite.FullPath[0], 
                         "--evtx", EVTXPath, 
-                        Ruleset, "--noexternal",
+                        "--ruleset", RulesFile,
+                        "--config", MappingsFile,
+                        "--noexternal",
                         "--outfile", TmpResults])
         LET Data = SELECT * FROM foreach(row=Results, query={SELECT parse_json_array(data=Data) AS Content FROM scope()})
         SELECT * FROM foreach(row=Data, query={
@@ -45,4 +50,3 @@ sources:
                 get(member="sigma") AS _Sigma
             FROM Content    
         })
-        

@@ -1,0 +1,98 @@
+---
+title: Windows.EventLogs.ServiceCreationComspec
+hidden: true
+tags: [Client Artifact]
+---
+
+
+This Detection hts on the string "COMSPEC" (nocase) in Windows Service
+Creation events. That is: EventID 7045 from the System event log.
+
+This detects many hack tools that leverage SCM based lateral movement
+including smbexec.
+
+SearchVSS allows querying VSS instances of EventLog Path with event
+deduplication.
+
+
+```yaml
+name: Windows.EventLogs.ServiceCreationComspec
+description: |
+
+  This Detection hts on the string "COMSPEC" (nocase) in Windows Service
+  Creation events. That is: EventID 7045 from the System event log.
+
+  This detects many hack tools that leverage SCM based lateral movement
+  including smbexec.
+
+  SearchVSS allows querying VSS instances of EventLog Path with event
+  deduplication.
+
+author: Matt Green - @mgreen27
+
+parameters:
+  - name: EventLog
+    default: C:\Windows\system32\winevt\logs\System.evtx
+  - name: ComspecRegex
+    default: "(COMSPEC|cmd.exe|ADMIN\\$)"
+    type: regex
+
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
+
+sources:
+  - name: ServiceCreation
+    query: |
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+
+      // Extract all target paths from glob
+      LET files = SELECT OSPath
+      FROM glob(globs=EventLog, accessor=Accessor)
+
+      // Parse all target files, order by source and add dedupe string
+      LET hits = SELECT * FROM foreach(
+              row=files,
+              query={
+                SELECT timestamp(epoch=System.TimeCreated.SystemTime) as EventTime,
+                  System.EventID.Value as EventID,
+                  System.Computer as Computer,
+                  System.Security.UserID as SecurityID,
+                  EventData.AccountName as ServiceAccount,
+                  EventData.ServiceName as ServiceName,
+                  EventData.ImagePath as ImagePath,
+                  EventData.ServiceType as ServiceType,
+                  EventData.StartType as StartType,
+                  System.EventRecordID as EventRecordID,
+                  System.Level as Level,
+                  System.Opcode as Opcode,
+                  System.Task as Task,
+                  OSPath AS Source
+                FROM parse_evtx(filename=OSPath, accessor=Accessor)
+                WHERE System.EventID.Value = 7045 and
+                  EventData.ImagePath =~ ComspecRegex
+            })
+            ORDER BY Source DESC
+
+      SELECT
+            EventTime,
+            EventID,
+            Computer,
+            SecurityID,
+            ServiceAccount,
+            ServiceName,
+            ImagePath,
+            ServiceType,
+            StartType,
+            EventRecordID,
+            Source
+        FROM hits
+        GROUP BY EventRecordID, Channel
+
+```

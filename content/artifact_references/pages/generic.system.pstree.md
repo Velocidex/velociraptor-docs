@@ -1,0 +1,83 @@
+---
+title: Generic.System.Pstree
+hidden: true
+tags: [Client Artifact]
+---
+
+This artifact displays the call chain for every process on the
+system by traversing the process's parent ID.
+
+It is useful for establishing where a process came from - for
+example, if a powershell process is spawned from Winword (event via
+a number of intemediary processes) it could mean word was
+compromised.
+
+This artifact uses the process tracker which was introduced in
+release 0.6.5. (Import an older version of this artifact using the
+Server.Import.PreviousReleases if your client is older than this).
+
+A more accurate call chain will be available when the
+Windows.Events.TrackProcesses artifact is collected (required
+Sysmon) or Windows.Events.TrackProcessesBasic (does not require
+Sysmon)
+
+Minimum Version: 0.6.6
+
+
+```yaml
+name: Generic.System.Pstree
+description: |
+  This artifact displays the call chain for every process on the
+  system by traversing the process's parent ID.
+
+  It is useful for establishing where a process came from - for
+  example, if a powershell process is spawned from Winword (event via
+  a number of intemediary processes) it could mean word was
+  compromised.
+
+  This artifact uses the process tracker which was introduced in
+  release 0.6.5. (Import an older version of this artifact using the
+  Server.Import.PreviousReleases if your client is older than this).
+
+  A more accurate call chain will be available when the
+  Windows.Events.TrackProcesses artifact is collected (required
+  Sysmon) or Windows.Events.TrackProcessesBasic (does not require
+  Sysmon)
+
+  Minimum Version: 0.6.6
+
+parameters:
+  - name: CommandlineRegex
+    default: .
+    type: regex
+
+  - name: PidFilter
+    description: Filter pids by this regex
+    default: .
+    type: regex
+
+  - name: CallChainFilter
+    default: .
+    type: regex
+
+  - name: CallChainSep
+    default: " -> "
+
+  - name: IncludePstree
+    type: bool
+
+sources:
+  - query: |
+      SELECT Pid, Ppid, Name, Username, Exe, CommandLine, StartTime, EndTime,
+          join(array=process_tracker_callchain(id=Pid).Data.Name, sep=CallChainSep) AS CallChain,
+          if(condition=IncludePstree, then=process_tracker_tree(id=Pid)) AS PSTree
+      FROM process_tracker_pslist()
+      WHERE CommandLine =~ CommandlineRegex
+        AND CallChain =~ CallChainFilter
+        AND Pid =~ PidFilter
+
+column_types:
+  - name: PSTree
+    type: tree
+
+```

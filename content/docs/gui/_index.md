@@ -13,9 +13,9 @@ Let's take a quick tour of the GUI.
 
 ## Themes
 
-Velociraptor offers two major themes: Light mode and Dark mode. You
-can change between the two by clicking on the user's avatar at the top
-right corner.
+Velociraptor offers many themes. You can change between them by
+clicking on the user's avatar at the top right corner to show the user
+preferences, and select your favorite theme.
 
 ![Velociraptor Themes](modes.png?classes=shadow&width=80pc)
 

@@ -1,0 +1,62 @@
+name: Splunk.Events.Clients
+author: "@jurelou"
+description: |
+  This server monitoring artifact will watch a selection of client
+  monitoring artifacts for new events and push those to a splunk
+  index.
+
+  NOTE: You must ensure you are collecting these artifacts from the
+  clients by adding them to the "Client Events" GUI.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: WindowsDetectionPsexecService
+    description: Upload Windows.Detection.PsexecService to Splunk
+    type: bool
+  - name: WindowsEventsDNSQueries
+    description: Upload Windows.Events.DNSQueries to Splunk
+    type: bool
+  - name: WindowsEventsProcessCreation
+    description: Upload Windows.Events.ProcessCreation to Splunk
+    type: bool
+  - name: WindowsEventsServiceCreation
+    description: Upload Windows.Events.ServiceCreation to Splunk
+    type: bool
+  - name: splunkAddress
+    default: http://1.2.3.4:8088/services/collector
+  - name: splunkIndex
+    default: velociraptor
+  - name: splunkToken
+    default: Splunk ****-56664***5
+  - name: artifactParameterMap
+    type: hidden
+    default: |
+      Artifact,Parameter
+      Windows.Detection.PsexecService,WindowsDetectionPsexecService
+      Windows.Events.DNSQueries,WindowsEventsDNSQueries
+      Windows.Events.ProcessCreation,WindowsEventsProcessCreation
+      Windows.Events.ServiceCreation,WindowsEventsServiceCreation
+
+sources:
+  - query: |
+      LET artifacts_to_watch = SELECT Artifact FROM parse_csv(
+             filename=artifactParameterMap, accessor='data')
+        WHERE get(item=scope(), member=Parameter) AND log(
+          message="Uploading artifact " + Artifact + " to Splunk")
+      LET events = SELECT * FROM foreach(
+          row=artifacts_to_watch,
+          async=TRUE,   // Required for event queries in foreach()
+          query={
+             SELECT *, "Artifact_" + Artifact as _index,
+                    Artifact,
+                    timestamp(epoch=now()) AS timestamp
+             FROM watch_monitoring(artifact=Artifact)
+          })
+      SELECT * FROM splunk_upload(
+          query=events,
+          url=splunkAddress,
+          index=splunkIndex,
+          skip_verify=True,
+          wait_time=5,
+          token=splunkToken)

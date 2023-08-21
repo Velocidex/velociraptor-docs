@@ -28,6 +28,9 @@
 
     --CODE-SECTION-BG-color: #f4f4f4;
 
+    --REFERENCE-value-color: #00000054;
+    --REFERENCE-border-color: #00000026;
+
     --footer-color: #183f81;
     --vql: red;
     --MAIN-Author: red;
@@ -55,4 +58,9 @@
 
 body.light div.btn.lightmode {
     display: none !important;
+}
+
+.featherlight-content {
+    min-width: 60%;
+    max-height: 100%;
 }

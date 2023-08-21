@@ -72,19 +72,19 @@ This [relatively new](https://github.com/Velocidex/velociraptor/pull/1087) featu
 * Locate evtx and exe files on the client based on file magic [("magic bytes")](https://www.netspi.com/blog/technical/web-application-penetration-testing/magic-bytes-identifying-common-file-formats-at-a-glance/?print=print) using Yara rather than using explicit file paths or file name
     - Artifact: Custom.Client.FindByMagics
 
-* Have the Velociraptor server create a client-side flow to run [GENE](https://github.com/0xrawsec/gene) analysis against each evtx file.
+* Have the Velociraptor server create a client-side flow to run [`GENE`](https://github.com/0xrawsec/gene) analysis against each evtx file.
 
-* Have the Velociraptor server create a client-side flow to run [CAPA](https://github.com/fireeye/capa) analysis against each executable (pe32) file.
-    * Artifact: Custom.Server.DispatchTriage
-    * Artifact: Custom.Client.TriageGene
-    * Artifact: Custom.Client.TriageCapa
+* Have the Velociraptor server create a client-side flow to run [`CAPA`](https://github.com/fireeye/capa) analysis against each executable (pe32) file.
+    * Artifact: `Custom.Server.DispatchTriage`
+    * Artifact: `Custom.Client.TriageGene`
+    * Artifact: `Custom.Client.TriageCapa`
 
 * Have the server interpret the results and create more client-side flows to do something else in response to the triaging artifacts’ results. Perhaps upload these specific files back to the server to preserve evidence contained in them.
-    * Artifact: Custom.Server.DispatchUpload
-    * Artifact: Custom.Client.TriageUpload
+    * Artifact: `Custom.Server.DispatchUpload`
+    * Artifact: `Custom.Client.TriageUpload`
 
 * Bonus points: Hijacking the VFS browser “upload” function to allow us to kick off the above workflow from the VFS browser. 🤠
-    * Artifact: System.VFS.DownloadFile
+    * Artifact: `System.VFS.DownloadFile`
 
 In a nutshell:
 ***We want to run a single artifact and then let Velociraptor decide what the next steps should be… and then iterate that process.***
@@ -145,7 +145,7 @@ The tools in this repo are all the latest release versions from the author’s r
 
 * GENE rules: [https://github.com/0xrawsec/gene-rules/blob/master/compiled.gen](https://github.com/0xrawsec/gene-rules/blob/master/compiled.gen)
 
-* CAPA binaries: [https://github.com/fireeye/capa](https://github.com/fireeye/capa)
+* `CAPA` binaries: [https://github.com/fireeye/capa](https://github.com/fireeye/capa)
 
 {{% notice tip %}}
 For testing purposes you can also download some evtx files from [here](https://github.com/sans-blue-team/DeepBlueCLI) which contain events from simulated malicious activity.
@@ -172,7 +172,7 @@ In addition to freeing us up from the annoying dependency on path specifications
 
 
 {{% notice note %}}
-More fancy filtering could be implemented but we’re trying to keep it simple. The goal of this artifact is to identify relevant files and report back with their path. Subsequent artifacts could apply additional targeting logic based on things like timestamps or file content for example. In this case we are going to do more in-depth analysis with [GENE](https://github.com/0xrawsec/gene) and [CAPA](https://github.com/fireeye/capa) and use these tools to identify a subset of files that are more significant than the rest.
+More fancy filtering could be implemented but we’re trying to keep it simple. The goal of this artifact is to identify relevant files and report back with their path. Subsequent artifacts could apply additional targeting logic based on things like timestamps or file content for example. In this case we are going to do more in-depth analysis with [GENE](https://github.com/0xrawsec/gene) and [`CAPA`](https://github.com/fireeye/capa) and use these tools to identify a subset of files that are more significant than the rest.
 {{% /notice %}}
 
 
@@ -188,7 +188,7 @@ We have embedded the 2 Yara rules inside the artifact parameters, however if we 
 
 ## Step 2: Have Velociraptor server decide what the client should do next
 
-### Artifact: [Custom.Server.DispatchTriage](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Server.DispatchTriage.yaml)
+### Artifact: [`Custom.Server.DispatchTriage`](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Server.DispatchTriage.yaml)
 
 ![](0udXI_u4F2ICHqTpw.png)
 
@@ -212,9 +212,9 @@ You can also set up your own mappings of file magics -> response artifacts. One 
 
 ## Step 3: Send new orders to the client
 
-### Artifact: [Custom.Client.TriageGene](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageGene.yaml)
+### Artifact: [`Custom.Client.TriageGene`](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageGene.yaml)
 
-### Artifact: [Custom.Client.TriageCapa](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageCapa.yaml)
+### Artifact: [`Custom.Client.TriageCapa`](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageCapa.yaml)
 
 These artifacts are probably not as good as they could be, but their main purpose is to illustrate that more in-depth analysis can be scheduled on a client based on the results of a previously run artifact. This process can be iterative and involve branching logic.
 
@@ -228,15 +228,15 @@ The key things to notice about these artifacts are:
 
 1. We set the artifact parameters to “hidden” because we don’t intend these artifacts to be used standalone.
 
-1. We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analysed “offline”. Also Capa is written in Python and slow as molasses.
+1. We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analysed “offline”. Also `Capa` is written in Python and slow as molasses.
 
 {{% notice note %}}
-Windows Defender will probably prevent Capa from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.
+Windows Defender will probably prevent `Capa` from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.
 {{% /notice %}}
 
 ## Step 4: Have Velociraptor server decide what the client should do next
 
-### Artifact: [Custom.Server.DispatchUpload](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Server.DispatchUpload.yaml)
+### Artifact: [`Custom.Server.DispatchUpload`](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Server.DispatchUpload.yaml)
 
 The triaging artifacts in the previous step have now looked at the target files in more depth and given some sort of risk-rating or assessment based on the information in (or about) each file.
 
@@ -244,11 +244,11 @@ Similarly to Step 2, the server can now collate that information and conditional
 
 ![](0MeJqIkpWMmr0fjtY.png)
 
-The client artifact we will dispatch here is Custom.Server.DispatchUpload, which is described in the next step.
+The client artifact we will dispatch here is `Custom.Server.DispatchUpload`, which is described in the next step.
 
 ## Step 5: Send new orders to the client
 
-### Artifact: [Custom.Client.TriageUpload](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageUpload.yaml)
+### Artifact: [`Custom.Client.TriageUpload`](https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageUpload.yaml)
 
 This artifact is a simple one that just uploads the files identified by the previous steps as containing relevant information.
 
