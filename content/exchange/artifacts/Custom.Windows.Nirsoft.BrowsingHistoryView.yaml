@@ -1,0 +1,47 @@
+name: Custom.Windows.Nirsoft.BrowsingHistoryView
+description: |
+        BrowsingHistoryView is a utility that reads the history data of different Web browsers (Mozilla Firefox, Google Chrome, Internet Explorer, Microsoft Edge, Opera) and displays the browsing history of all these Web browsers in one table. The browsing history table includes the following information: Visited URL, Title, Visit Time, Visit Count, Web browser and User Profile. BrowsingHistoryView allows you to watch the browsing history of all user profiles in a running system, as well as to get the browsing history from external hard drive.
+        
+
+author: Pedro Sánchez Cordero @ conexioninversa
+
+tools:
+ - name: BrowsingHistoryView
+   url: https://www.nirsoft.net/utils/browsinghistoryview-x64.zip
+   
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+ - name: Upload
+   query: |
+   
+        LET Hostname <= SELECT Hostname as Host FROM info()
+        
+        -- Fetch the binary
+        LET Toolzip <= SELECT FullPath
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="BrowsingHistoryView", IsExecutable=FALSE)
+
+        LET TmpDir <= tempdir()
+
+        -- Unzip the binary
+        LET _ <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+
+        -- Set EXE
+        LET BrowsingHistoryViewExe <= TmpDir + '\\BrowsingHistoryView.exe'
+        
+        -- Build the exec command
+        LET BrowsingHistoryViewCmd <= filter(list=(BrowsingHistoryViewExe, "/scomma", TmpDir + "\\" + Hostname.Host[0] + "-BrowsingHistoryView.csv" )
+        ,  regex=".+")
+        
+        -- Run the tool.
+        LET BrowsingHistoryViewView <= SELECT *
+        FROM execve(argv=BrowsingHistoryViewCmd,sep="\n", length=10000)
+        
+        -- Upload CSV to the hunt
+        LET Upload <= SELECT Name, upload(file=FullPath,name=relpath(base=TmpDir + Hostname.Host[0] + "-BrowsingHistoryView.csv", path=FullPath)) as FileDetails
+        FROM glob(globs="/**", root=TmpDir)
+        WHERE Name =~ "(csv)$"
+        
+        -- Parse CSV to Notebook
+        SELECT * FROM parse_csv(filename= TmpDir + "\\" + Hostname.Host[0] + "-BrowsingHistoryView.csv")
+
