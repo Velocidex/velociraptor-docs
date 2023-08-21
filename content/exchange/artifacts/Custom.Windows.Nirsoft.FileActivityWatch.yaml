@@ -1,0 +1,47 @@
+name: Custom.Windows.Nirsoft.FileActivityWatch
+description: |
+        FileActivityWatch is a tool for Windows that displays information about every read/write/delete operation of files occurs on your system. For every file, FileActivityWatch displays the number of read/write bytes, number of read/write/delete operations, first and last read/write timestamp, and the name/ID of the process responsible for the file operation.
+        
+
+author: Pedro Sánchez Cordero @ conexioninversa
+
+tools:
+ - name: FileActivityWatch
+   url: https://www.nirsoft.net/utils/fileactivitywatch-x64.zip
+   
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+ - name: Upload
+   query: |
+   
+        LET Hostname <= SELECT Hostname as Host FROM info()
+        
+        -- Fetch the binary
+        LET Toolzip <= SELECT FullPath
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="FileActivityWatch", IsExecutable=FALSE)
+
+        LET TmpDir <= tempdir()
+
+        -- Unzip the binary
+        LET _ <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+
+        -- Set EXE
+        LET FileActivityWatchExe <= TmpDir + '\\FileActivityWatch.exe'
+        
+        -- Build the exec command
+        LET FileActivityWatchCmd <= filter(list=(FileActivityWatchExe, "/scomma", TmpDir + "\\" + Hostname.Host[0] + "-FileActivityWatch.csv" )
+        ,  regex=".+")
+        
+        -- Run the tool.
+        LET ExeFileActivityWatchView <= SELECT *
+        FROM execve(argv=FileActivityWatchCmd,sep="\n", length=10000)
+        
+        -- Upload CSV to the hunt
+        LET Upload <= SELECT Name, upload(file=FullPath,name=relpath(base=TmpDir + Hostname.Host[0] + "-FileActivityWatch.csv", path=FullPath)) as FileDetails
+        FROM glob(globs="/**", root=TmpDir)
+        WHERE Name =~ "(csv)$"
+        
+        -- Parse CSV to Notebook
+        SELECT * FROM parse_csv(filename= TmpDir + "\\" + Hostname.Host[0] + "-FileActivityWatch.csv")
+
