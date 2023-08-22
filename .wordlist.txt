@@ -1378,3 +1378,8 @@ uploadroot
 SQLiteHunter
 deduplicates
 leveldb
+
+# <url-free> content/vql_reference/misc/_index.md
+LogScale
+logscale
+apibaseurl
