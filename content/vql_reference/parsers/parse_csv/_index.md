@@ -52,7 +52,7 @@ or to stack using group by.
 The following stacks the result from a
 `Windows.Applications.Chrome.Extensions` artifact:
 
-```sql
+```vql
 SELECT count(items=User) As TotalUsers, Name
 FROM parse_csv(filename="All Windows.Applications.Chrome.Extensions.csv")
 Order By TotalUsers

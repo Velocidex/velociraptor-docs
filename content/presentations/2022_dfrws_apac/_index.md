@@ -54,6 +54,6 @@ take too long to download.
 
 https://dfrws.org/presentation/velociraptor/
 
-<iframe width="980px" height="600px" src="https://present.velocidex.com/dfrws_apac_2022/" frameborder="0" ></iframe>
+<iframe width="980px" height="600px" src="https://present.velocidex.com/presentations/dfrws_apac_2022/" frameborder="0" ></iframe>
 
-[Full Screen](https://present.velocidex.com/dfrws_apac_2022/)
+[Full Screen](https://present.velocidex.com/presentations/dfrws_apac_2022/)

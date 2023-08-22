@@ -30,7 +30,9 @@ fan_out|Wait for this many listeners to connect before starting the query|int64
 Create a named generator that receives rows from the query.
 
 This plugin allow multiple queries to efficiently filter rows from
-the same query. For example:
+the same query. 
+
+### Example
 
 ```vql
 LET SystemLog = generate(query={
@@ -52,22 +54,22 @@ a={
 })
 ```
 
-NOTE: The generate() function produces a stored query that can be
+NOTE: The `generate()` function produces a stored query that can be
 used as the target of any `SELECT ... FROM` statement. Therefore
-it does not make sense to materialize the output of generate()
+it does not make sense to materialize the output of `generate()`
 because it is equivalent to materializing the actual target query
 itself.
 
 In other words this:
 
-```
+```vql
 LET X <= generate(query={ SELECT * FROM watch_etw(...) })
 ```
 
 Will attempt to enumerate the target query into an array and is
 equivalent to:
 
-```
+```vql
 LET X <= SELECT * FROM watch_etw(...)
 ```
 

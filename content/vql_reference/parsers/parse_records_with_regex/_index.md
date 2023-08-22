@@ -87,7 +87,7 @@ uses parse_records_with_regex() to extract records in blocks, while
 using parse_string_with_regex() to further break the block into
 fields.
 
-```sql
+```vql
 SELECT parse_string_with_regex(
    string=Record,
    regex=['Package:\\s(?P<Package>.+)',

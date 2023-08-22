@@ -14,7 +14,7 @@ Here are the talks and recordings from the day.
 ## Velociraptor year in review
 By Mike Cohen
 
-<a href="https://present.velocidex.com/velocon_2022_year_in_review/" target="_blank">
+<a href="https://present.velocidex.com/presentations/velocon_2022_year_in_review/" target="_blank">
     Slides!
 </a>
 <p>
@@ -194,7 +194,7 @@ implementation. Nevertheless, having an additional, highly scalable
 version of Velociraptor that can be used in some situations is very
 useful to the Velociraptor ecosystem.
 
-<a href="https://present.velocidex.com/velocon_2022_cloud_velo/" target="_blank">
+<a href="https://present.velocidex.com/presentations/velocon_2022_cloud_velo/" target="_blank">
     Slides!
 </a>
 <p>

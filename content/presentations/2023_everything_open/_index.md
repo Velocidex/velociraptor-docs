@@ -35,6 +35,6 @@ network connections and even bash instrumentation of the command line,
 all done at scale with the click of a few buttons.
 
 
-<iframe src="https://present.velocidex.com/everything_open_2023/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://present.velocidex.com/presentations/everything_open_2023/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
-[Full Screen](https://present.velocidex.com/everything_open_2023/index.html)
+[Full Screen](https://present.velocidex.com/presentations/everything_open_2023/index.html)

@@ -14,13 +14,6 @@ no_edit: true
 <span class='vql_type pull-right page-header'>Plugin</span>
 
 
-
-<div class="vqlargs"></div>
-
-Arg | Description | Type
-----|-------------|-----
-all|If specified list all Partitions|bool
-
 ### Description
 
 List all partitions

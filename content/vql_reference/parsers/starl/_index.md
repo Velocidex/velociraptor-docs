@@ -32,7 +32,7 @@ we need some small functions with more complex needs. We can use a
 more powerful language to create small functions to transform
 certain fields etc.
 
-## Example
+### Example
 
 In the following example we define a Starl code block and compile
 it into a module. VQL code can then reference any functions

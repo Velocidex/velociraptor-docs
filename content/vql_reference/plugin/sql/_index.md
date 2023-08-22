@@ -21,7 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 driver|sqlite, mysql,or postgres|string (required)
 connstring|SQL Connection String|string
-file|Required if using sqlite driver|string
+file|Required if using sqlite driver|OSPath
 accessor|The accessor to use if using sqlite|string
 query||string (required)
 args||Any

@@ -37,7 +37,7 @@ object. You can access its unix epoch time with the Sec column.
 
 The following will generate an event every 10 seconds.
 
-```sql
+```vql
 SELECT Second FROM clock(period=10)
 ```
 

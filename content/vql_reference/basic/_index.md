@@ -38,7 +38,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[enumerate](enumerate)|<span class='vql_type'>Function</span>|Collect all the items in each group by bin|
 |[environ](environ)|<span class='vql_type'>Function</span>|Get an environment variable|
 |[expand](expand)|<span class='vql_type'>Function</span>|Expand the path using the environment|
-|[filter](filter)|<span class='vql_type'>Function</span>|Filters a strings array by regex|
+|[filter](filter)|<span class='vql_type'>Function</span>|Filters an array by regex or condition|
 |[format](format)|<span class='vql_type'>Function</span>|Format one or more items according to a format string|
 |[generate](generate)|<span class='vql_type'>Function</span>|Create a named generator that receives rows from the query|
 |[get](get)|<span class='vql_type'>Function</span>|Gets the member field from item|

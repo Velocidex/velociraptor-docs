@@ -83,7 +83,7 @@ This plugin will emit rows with the following columns:
 The following VQL returns the client's external IP as seen by the
 externalip service.
 
-```sql
+```vql
 SELECT Content as IP from http_client(url='http://www.myexternalip.com/raw')
 ```
 

@@ -16,7 +16,7 @@ Available filters include:
 
   - SHA1regex - regex entries to filter by SHA1.
   - PathRegex - filter on path if available.
-  - NameRegex - filter on EntryName / binary.
+  - NameRegex - filter on EntryName OR OriginalFileName.
 
 NOTE:
 
@@ -44,7 +44,7 @@ description: |
 
       - SHA1regex - regex entries to filter by SHA1.
       - PathRegex - filter on path if available.
-      - NameRegex - filter on EntryName / binary.
+      - NameRegex - filter on EntryName OR OriginalFileName.
 
     NOTE:
 
@@ -140,11 +140,10 @@ sources:
                     WHERE SHA1
                         AND SHA1 =~ SHA1Regex
                         AND if(condition= NameRegex,
-                            then= EntryName =~ NameRegex,
-                            else= True)
+                                then= EntryName =~ NameRegex OR OriginalFileName =~ NameRegex,
+                                else= True)
                         AND if(condition= PathRegex,
                             then= EntryPath =~ PathRegex,
                             else= True)
             })
-
 ```

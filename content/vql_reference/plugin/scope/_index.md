@@ -23,7 +23,7 @@ dont want to actually run anything.
 
 ### Example
 
-```sql
+```vql
 SELECT 1+1 As Two FROM scope()
 ```
 

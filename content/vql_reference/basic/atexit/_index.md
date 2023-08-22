@@ -28,7 +28,7 @@ timeout|How long to wait for destructors to run (default 60 seconds).|uint64
 Install a query to run when the query is unwound. This is used to
 clean up when the query ends.
 
-For example:
+### Example
 
 ```vql
 LET _ <= atexit(query={

@@ -19,12 +19,17 @@ no_edit: true
 Create an array with all the args.
 
 This function accepts arbitrary arguments and creates an array by
-flattening the arguments. For example `array(a=1, b=2)` will return
-`[1, 2]`.
+flattening the arguments. 
+
+### Examples
+
+```vql
+array(a=1, b=2) -> [1, 2]
+```
 
 You can use this to flatten a subquery as well:
 
-```sql
+```vql
 SELECT array(a1={ SELECT User FROM Artifact.Windows.System.Users() }) as Users FROM scope()
 ```
 
