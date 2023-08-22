@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|CSV files to open|string (required)
+filename|CSV files to open|OSPath (required)
 accessor|The accessor to use|string
 query|query to write into the file.|StoredQuery (required)
 

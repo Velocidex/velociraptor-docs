@@ -29,6 +29,4 @@ Required Permissions:
 
 Delete all information related to a client from the filestore.
 
-This required the SERVER_ADMIN permission.
-
 

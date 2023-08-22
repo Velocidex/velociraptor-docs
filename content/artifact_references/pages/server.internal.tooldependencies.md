@@ -30,8 +30,13 @@ tools:
     serve_locally: true
     version: 0.7.0-rc1
 
-  - name: VelociraptorDarwin
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.7.0/velociraptor-v0.7.0-rc1-darwin-amd64
+  # On MacOS we can not embed the config in the binary so we use a
+  # shell script stub instead. See
+  # https://github.com/Velocidex/velociraptor/issues/2898
+
+  # A Generic collector to be used with the --embedded_config flag.
+  - name: VelociraptorCollector
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.7.0/velociraptor-collector
     serve_locally: true
     version: 0.7.0-rc1
 
@@ -41,7 +46,7 @@ tools:
     version: 0.7.0-rc1
 
   - name: VelociraptorWindows_x86MSI
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.7.0-rc1/velociraptor-v0.7.0-rc1-windows-386.msi
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.7.0/velociraptor-v0.7.0-rc1-windows-386.msi
     serve_locally: true
     version: 0.7.0-rc1
 

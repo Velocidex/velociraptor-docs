@@ -71,7 +71,7 @@ query as a dict instead of a row. This is useful when the query
 produces unpredictable columns or you need to operate over the
 column names somehow.
 
-For example:
+### Example
 
 ```vql
 SELECT * FROM items(item={ SELECT * FROM info() })

@@ -33,7 +33,7 @@ Sets client metadata.
 Client metadata is a set of free form key/value data (see
 client_metadata() function).
 
-Example:
+### Example
 
 ```vql
 SELECT client_set_metadata(ClientId="C.1234", Foo="Bar")

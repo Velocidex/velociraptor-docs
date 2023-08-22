@@ -41,7 +41,7 @@ You should probably almost always filter by one or more event ids
 
 ### Example
 
-```sql
+```vql
 SELECT System.TimeCreated.SystemTime as Timestamp,
        System.EventID.Value as EventID,
        EventData.ImagePath as ImagePath,

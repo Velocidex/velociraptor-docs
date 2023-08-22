@@ -36,7 +36,7 @@ entry including listing all its attributes.
 It can either operate on an image file or the raw device (on
 windows).
 
-## Example:
+### Example:
 
 ```vql
 SELECT parse_ntfs(

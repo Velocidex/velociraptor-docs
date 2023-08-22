@@ -60,7 +60,7 @@ Glob expressions are case insensitive and may contain the following wild cards:
 By default globs do not expand environment variables. If you need to
 expand environment variables use the `expand()` function explicitly:
 
-```sql
+```vql
 glob(globs=expand(string="%SystemRoot%\System32\Winevt\Logs\*"))
 ```
 
@@ -68,7 +68,7 @@ glob(globs=expand(string="%SystemRoot%\System32\Winevt\Logs\*"))
 
 The following searches the raw NTFS disk for event logs.
 
-```sql
+```vql
 SELECT FullPath FROM glob(
 globs="C:\Windows\System32\Winevt\Logs\*.evtx",
 accessor="ntfs")

@@ -34,7 +34,7 @@ This currently does not support IPv6 addresses. Those are usually
 encoded as an array of 8 bytes which makes it easy to format using the
 `format()` function:
 
-```
+```vql
   format(format="%x:%x:%x:%x:%x:%x:%x:%x", value)
 ```
 

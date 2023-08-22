@@ -26,7 +26,7 @@ metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict
 Sets server metadata. Server metadata is a set of free form
 key/value data, usually used for configuration of artifacts.
 
-Example:
+### Example
 
 ```vql
 SELECT server_set_metadata(`Slack Token`="X12233")
