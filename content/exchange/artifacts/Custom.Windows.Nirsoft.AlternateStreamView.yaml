@@ -1,0 +1,47 @@
+name: Custom.Windows.Nirsoft.AlternateStreamView
+description: |
+        AlternateStreamView is a small utility that allows you to scan your NTFS drive, and find all hidden alternate streams stored in the file system. After scanning and finding the alternate streams, you can extract these streams into the specified folder, delete unwanted streams
+        
+
+author: Pedro Sanchez Cordero @ conexioninversa
+
+tools:
+ - name: AlternateStreamView
+   url: https://www.nirsoft.net/utils/alternatestreamview-x64.zip
+   
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+ - name: Upload
+   query: |
+   
+        LET Hostname <= SELECT Hostname as Host FROM info()
+        
+        -- Fetch the binary
+        LET Toolzip <= SELECT FullPath
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="AlternateStreamView", IsExecutable=FALSE)
+
+        LET TmpDir <= tempdir()
+
+        -- Unzip the binary
+        LET _ <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+
+        -- Set EXE
+        LET AlternateStreamViewExe <= TmpDir + '\\AlternateStreamView.exe'
+        
+        -- Build the exec command
+        LET AlternateStreamViewCmd <= filter(list=(AlternateStreamViewExe, "/scomma", TmpDir + "\\" + Hostname.Host[0] + "-AlternateStreamView.csv" )
+        ,  regex=".+")
+        
+        -- Run the tool.
+        LET ExecAlternateStreamView <= SELECT *
+        FROM execve(argv=AlternateStreamViewCmd,sep="\n", length=10000)
+        
+        -- Upload CSV to the hunt
+        LET Upload <= SELECT Name, upload(file=FullPath,name=relpath(base=TmpDir + Hostname.Host[0] + "-AlternateStreamView.csv", path=FullPath)) as FileDetails
+        FROM glob(globs="/**", root=TmpDir)
+        WHERE Name =~ "(csv)$"
+        
+        -- Parse CSV to Notebook
+        SELECT * FROM parse_csv(filename= TmpDir + "\\" + Hostname.Host[0] + "-AlternateStreamView.csv")
+
