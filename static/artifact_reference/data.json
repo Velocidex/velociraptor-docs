@@ -891,6 +891,15 @@
         ]
     },
     {
+        "title": "Server.Alerts.Notification",
+        "description": "This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.\n",
+        "link": "/artifact_references/pages/server.alerts.notification",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Server.Alerts.ProcessCreation",
         "description": "This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).\n",
         "link": "/artifact_references/pages/server.alerts.processcreation",
@@ -1980,6 +1989,15 @@
         ]
     },
     {
+        "title": "Windows.Detection.Registry",
+        "description": "This artifact detects registry changes and triggers an alert. \n",
+        "link": "/artifact_references/pages/windows.detection.registry",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
         "title": "Windows.Detection.Service.Upload",
         "description": "When a new service is installed, upload the service binary to the server\n",
         "link": "/artifact_references/pages/windows.detection.service.upload",
@@ -2289,6 +2307,15 @@
         "title": "Windows.Events.Kerberoasting",
         "description": "**Description**:\nThis Artifact will monitor all successful Kerberos TGS Ticket events for\nService Accounts (SPN attribute) implemented with weak encryption. These\ntickets are vulnerable to brute force attack and this event is an indicator\nof a Kerberoasting attack.",
         "link": "/artifact_references/pages/windows.events.kerberoasting",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.Mutants",
+        "description": "This artifact detects creation of Mutants and triggers an alert. \n",
+        "link": "/artifact_references/pages/windows.events.mutants",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"

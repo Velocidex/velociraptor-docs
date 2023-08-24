@@ -35,7 +35,7 @@ plugin.
 
 For example the following can chose from a legacy query or a
 modern query based on the plugin version:
-```
+```vql
  SELECT * FROM if(
   condition=version(plugin="glob") >= 1,
   then=NewQuery,

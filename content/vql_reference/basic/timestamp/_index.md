@@ -50,7 +50,7 @@ FROM scope()
 You can also provide a string, and `timestamp()` will try to parse
 it by guessing what it represents. For example
 
-```
+```vql
 SELECT timestamp(string='March 3 2019'),
        timestamp(string='07/25/2019 5pm')
 FROM scope()

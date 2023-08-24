@@ -38,7 +38,7 @@ multiple event plugins into the same artifact output.
 The following returns the rows from the first query then the rows from
 the second query.
 
-```sql
+```vql
 SELECT * FROM chain(
   a={ SELECT ...},
   b={ SELECT ...},

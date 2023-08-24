@@ -28,8 +28,9 @@ query|Run this query over the item.|StoredQuery (required)
 Batches query rows into multiple arrays.
 
 This is useful for batching multiple rows from a query into
-another query (for example sending into an API endpoint). For
-example:
+another query, such as sending results to an API endpoint.
+
+### Example
 
 ```vql
 SELECT * FROM batch(query={

@@ -20,7 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 message|Message to log.|string (required)
-dedup|Suppress same message in this many seconds (default 60 sec).|int64
+dedup|Suppress same message in this many seconds (default 60 sec). Use -1 to disable dedup.|int64
 args|An array of elements to apply into the format string.|Any
 level|Level to log at (DEFAULT, WARN, ERROR, INFO).|string
 
@@ -36,7 +36,7 @@ Since `log()` always returns TRUE it is easy to use in a WHERE
 clause as a form of debugging (It is basically equivalent to the
 print statement of other languages).
 
-```sql
+```vql
 SELECT * FROM glob(...)
 WHERE log(message="Value of OSPath is %v", args=OSPath)
 ```

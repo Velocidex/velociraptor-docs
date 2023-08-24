@@ -25,6 +25,13 @@ condition|A VQL lambda to use to filter elements|string
 
 ### Description
 
-Filters a strings array by regex.
+Filters an array by regex or condition.
+
+### Examples
+```vql
+filter(list=["AA", "AB", "BA", "BB"], regex="^A") -> ["AA", "AB"]
+
+filter(list=[1, 2, 3, 4, 5, 6], condition="x=>x > 3") -> [4, 5, 6]
+```
 
 

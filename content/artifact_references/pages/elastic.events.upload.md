@@ -17,6 +17,7 @@ artifacts, the "Server Events" GUI.
 name: Elastic.Events.Upload
 aliases:
 - Elastic.Events.Clients
+
 description: |
   This server monitoring artifact will watch a selection of client or
   server monitoring artifacts for new events and push those to an

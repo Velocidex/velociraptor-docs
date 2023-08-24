@@ -42,7 +42,7 @@ basic magic signatures.
 You can also write your own signatures using the magic syntax (see
 https://man7.org/linux/man-pages/man4/magic.4.html )
 
-## Example
+### Example
 
 The following will check all files in /var/lib applying a custom
 magic rule.

@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file||string (required)
+file||OSPath (required)
 accessor|The accessor to use.|string
 query||string (required)
 args||Any

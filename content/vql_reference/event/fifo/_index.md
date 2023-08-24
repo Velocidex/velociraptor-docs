@@ -47,7 +47,7 @@ can check the recent failed ones in its queue.
 The following checks for 5 failed logons followed by a successful
 logon.
 
-```sql
+```vql
 LET failed_logon = SELECT EventData as FailedEventData,
    System as FailedSystem
 FROM watch_evtx(filename=securityLogFile)

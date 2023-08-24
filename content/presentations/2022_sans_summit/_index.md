@@ -26,6 +26,6 @@ We will also discuss the advantages and disadvantages of the
 Velociraptor philosophy: Push processing to the endpoint rather than
 transfer raw data for local processing.
 
-<iframe src="https://present.velocidex.com/sans_2022/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://present.velocidex.com/presentations/sans_2022/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
-[Full Screen](https://present.velocidex.com/sans_2022/index.html)
+[Full Screen](https://present.velocidex.com/presentations/sans_2022/index.html)

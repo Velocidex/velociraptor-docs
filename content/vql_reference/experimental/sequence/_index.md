@@ -34,7 +34,7 @@ events from multiple queries - for example, say a process execution
 query and a network query. The `query` can then search for relevant
 network event closely followed by a process event.
 
-For example:
+### Example
 ```vql
 SELECT * FROM sequence(
 network={

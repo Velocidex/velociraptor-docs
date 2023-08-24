@@ -37,6 +37,6 @@ network connections and even bash instrumentation of the command line,
 all done at scale with the click of a few buttons.
 
 
-<iframe src="https://present.velocidex.com/2023-auscert/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe src="https://present.velocidex.com/presentations/2023-auscert/index.html" frameborder="0" width="980px" height="600px" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
-[Full Screen](https://present.velocidex.com/2023-auscert/index.html)
+[Full Screen](https://present.velocidex.com/presentations/2023-auscert/index.html)
