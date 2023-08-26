@@ -1,0 +1,25 @@
+name: MacOS.ExecPolicy.ScanTargetsv2
+description: |
+  This database is extensively used by Gatekeeper, and the scan cache tables are updated with the results of any scan that occurs.
+  https://redcanary.com/blog/gatekeeper/
+
+parameters:
+  - name: ExecPolicyDB
+    default: "/Private/var/db/SystemPolicyConfiguration/ExecPolicy"
+  - name: Query
+    default: |
+        SELECT * 
+        FROM scan_targets_v2
+
+precondition: SELECT OS From info() where OS = 'darwin'
+
+sources:
+  - query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs="/Private/var/db/SystemPolicyConfiguration/ExecPolicy")
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT *
+            FROM sqlite(
+                file=FullPath,
+                query=Query)
+            })
