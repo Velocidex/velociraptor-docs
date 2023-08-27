@@ -1,0 +1,25 @@
+name: MacOS.GateKeeper.Detections
+description: |
+   GateKeeper behavioral detections
+   https://www.huntress.com/blog/dmxprotect-stop-drop-shut-malware-down-before-it-opens-up-shop
+
+parameters:
+  - name: XProtectDBPath
+    default: "/private/var/protected/xprotect/XPdb"
+  - name: EventsQuery
+    default: |
+        SELECT *
+        FROM events
+
+precondition: SELECT OS From info() where OS = 'darwin'
+
+sources:
+  - query: |
+        LET XProtectDB = SELECT FullPath FROM glob(globs="/private/var/protected/xprotect/XPdb")
+        SELECT * FROM foreach(row=XProtectDB,
+          query={
+            SELECT dt AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query="SELECT * FROM events")
+            })
