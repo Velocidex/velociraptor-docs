@@ -18,7 +18,7 @@ sources:
         LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs="/Private/var/db/SystemPolicyConfiguration/ExecPolicy")
         SELECT * FROM foreach(row=SystemPolicyExecDB,
           query={
-            SELECT *
+            SELECT timestamp(string=timestamp) AS time, *
             FROM sqlite(
                 file=FullPath,
                 query=Query)
