@@ -1,6 +1,6 @@
 name: MacOS.ExecPolicy.ProvenanceTracking
 description: |
-   Contains information files with the com.apple.provenance extended attribute. This xattr is added when quarantine attribute is cleared.
+   Contains information files with the com.apple.provenance extended attribute. This xattr is added when the quarantine attribute is cleared.
    https://eclecticlight.co/2023/03/13/ventura-has-changed-app-quarantine-with-a-new-xattr/
 
 parameters:
@@ -9,7 +9,7 @@ parameters:
   - name: Query
     default: |
         SELECT * 
-        FROM scan_targets_v2
+        FROM provenance_tracking
 
 precondition: SELECT OS From info() where OS = 'darwin'
 
@@ -18,7 +18,7 @@ sources:
         LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs="/Private/var/db/SystemPolicyConfiguration/ExecPolicy")
         SELECT * FROM foreach(row=SystemPolicyExecDB,
           query={
-            SELECT *
+            SELECT timestamp(string=timestamp) AS time, *
             FROM sqlite(
                 file=FullPath,
                 query="select * from provenance_tracking")
