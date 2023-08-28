@@ -103,7 +103,10 @@ browsers use SQLite files heavily.
 
 This release incorporates the SQLiteHunter artifact. A one stop shop
 for finding and analyzing SQLite files such as browser artifacts and
-OS internal files.
+OS internal files. Although the project started with SQLite files, it
+now automates a lot of artifacts such as `WebCacheV01` parsing and the
+Windows Search Service - aka `Windows.edb` (which are `ESE` based
+parsers).
 
 This one artifact combines and obsoletes many distinct older
 artifacts.
@@ -122,6 +125,14 @@ chosen.
 In this release, the glob plugin reports the list of glob expressions
 that caused the match to be reported. This allows callers to more
 easily combine several file searches into the same plugin call.
+
+### URL style paths
+
+In very old versions of Velociraptor nested paths could be represented
+as URL objects. Until now a backwards compatible layer was used to
+continue supporting this behavior. In the latest release URL style
+paths are no longer supported - use the `pathspec()` function to build
+proper `OSPath` objects.
 
 ## Server improvements
 
@@ -142,6 +153,46 @@ This filtering only applies to the GUI and forms an additional layer
 of security protecting the GUI application (in addition to the usual
 authentication methods).
 
+### Better handling of out of disk errors
+
+Velociraptor can collect data very quickly and sometimes this can
+results in a full disk. Previously a full disk error could cause file
+corruption and data loss. In this release the server monitors its free
+disk level and disables file writing when the disk is too full. This
+avoids data corruption when the disk fills up. When space is freed the
+server will automatically start writing again.
+
+## The offline collector
+
+The offline collected is a pre-configured binary which can be used to
+automatically collect any artifacts into a ZIP file and optionally
+upload the file to a remote system like a cloud bucket or SMB share.
+
+Previously, Velociraptor would embed the configuration file into the
+binary so it only needed to be executed (e.g. double clicked). While
+this method is still supported on Windows, it turned out that on MacOS
+this is no longer supported as binaries can not be modified after
+build. Even on Windows, embedding the configuration will invalidate
+the signature.
+
+In this release a new type of collector is available `Generic`
+
+![](generic_collector.png)
+
+This will embed the configuration into a shell script instead of the
+Velociraptor binary. Users can then launch the offline collector using
+the unmodified official binary by specifying the `--embedded_config`
+flag:
+
+```
+velociraptor-v0.7.0-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
+```
+
+![](generic_collector_running.png)
+
+While the method is required for MacOS, it can also be used for
+Windows in order to preserve the binary signature.
+
 ## Conclusions
 
 There are many more new features and bug fixes in the latest
@@ -155,10 +206,3 @@ on the bug tracker or ask questions on our mailing list
 . You can also chat with us directly on discord
 [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
 .
-
-If you want to master Velociraptor, consider joining us at the full
-Velociraptor training course held this year at the Blackhat
-Conference and delivered by the Velociraptor developers themselves.
-
-Details here:
-https://docs.velociraptor.app/announcements/2023-trainings/
