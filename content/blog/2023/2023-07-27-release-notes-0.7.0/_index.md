@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.7.0 Release"
 description: |
-   Velociraptor Release 0.7.0 is now in Release Candidate status.
+   Velociraptor Release 0.7.0 is now released
    This post discusses some of the new features.
 
 tags:
@@ -12,7 +12,7 @@ date: 2023-07-27
 ---
 
 I am very excited to announce the latest Velociraptor release 0.7.0 is
-now in release candidate status. Please test and report any issues on the Github issue board.
+now released.
 
 In this post I will discuss some of the interesting new features.
 
