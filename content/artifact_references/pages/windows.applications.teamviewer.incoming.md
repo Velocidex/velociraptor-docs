@@ -30,21 +30,21 @@ parameters:
   - name: FileGlob
     default: C:\Program Files (x86)\TeamViewer\Connections_incoming.txt
   - name: DateAfter
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: DateBefore
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: TeamViewerIDRegex
-    description: "Regex of TeamViewer ID"
+    description: &quot;Regex of TeamViewer ID&quot;
     default: .
     type: regex
   - name: SourceHostRegex
-    description: "Regex of source host"
+    description: &quot;Regex of source host&quot;
     default: .
     type: regex
   - name: UserRegex
-    description: "Regex of user"
+    description: &quot;Regex of user&quot;
     default: .
     type: regex
 
@@ -59,29 +59,29 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- Build time bounds
-      LET DateAfterTime <= if(condition=DateAfter,
-        then=DateAfter, else="1600-01-01")
-      LET DateBeforeTime <= if(condition=DateBefore,
-        then=DateBefore, else="2200-01-01")
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then=DateAfter, else=&quot;1600-01-01&quot;)
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then=DateBefore, else=&quot;2200-01-01&quot;)
 
       -- expand provided glob into a list of paths on the file system (fs)
-      LET fspaths <= SELECT OSPath FROM glob(
+      LET fspaths &lt;= SELECT OSPath FROM glob(
          globs=expand(path=FileGlob), accessor=Accessor)
 
       LET parse_log(OSPath, Accessor) = SELECT OSPath,
           parse_string_with_regex(
             string=Line,
-            regex="^(?P<TeamViewerID>^\\d+)\\s+"+
-              "(?P<SourceHost>.+)\\s" +
-              "(?P<StartTime>\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
-              "(?P<EndTime>\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
-              "(?P<User>.+)\\s+" +
-              "(?P<ConnectionType>[^\\s]+)\\s+" +
-              "(?P<ConnectionID>.+)$") as Record
+            regex=&quot;^(?P&lt;TeamViewerID&gt;^\\d+)\\s+&quot;+
+              &quot;(?P&lt;SourceHost&gt;.+)\\s&quot; +
+              &quot;(?P&lt;StartTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s&quot; +
+              &quot;(?P&lt;EndTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s&quot; +
+              &quot;(?P&lt;User&gt;.+)\\s+&quot; +
+              &quot;(?P&lt;ConnectionType&gt;[^\\s]+)\\s+&quot; +
+              &quot;(?P&lt;ConnectionID&gt;.+)$&quot;) as Record
         FROM parse_lines(filename=OSPath, accessor=Accessor)
         WHERE Line
           AND Record.TeamViewerID =~ TeamViewerIDRegex
@@ -93,14 +93,14 @@ sources:
             row=PathList,
             query={
                SELECT *, timestamp(epoch=Record.StartTime,
-                                format="02-01-2006 15:04:05") AS StartTime,
+                                format=&quot;02-01-2006 15:04:05&quot;) AS StartTime,
                       timestamp(epoch=Record.EndTime,
-                                format="02-01-2006 15:04:05") AS EndTime
+                                format=&quot;02-01-2006 15:04:05&quot;) AS EndTime
                FROM parse_log(OSPath=OSPath, Accessor=Accessor)
-               WHERE StartTime < DateBeforeTime
-                    AND StartTime > DateAfterTime
-                    AND EndTime < DateBeforeTime
-                    AND EndTime > DateAfterTime
+               WHERE StartTime &lt; DateBeforeTime
+                    AND StartTime &gt; DateAfterTime
+                    AND EndTime &lt; DateBeforeTime
+                    AND EndTime &gt; DateAfterTime
             })
 
       SELECT

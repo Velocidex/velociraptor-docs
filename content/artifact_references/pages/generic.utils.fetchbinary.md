@@ -30,13 +30,13 @@ description: |
    This artifact is designed to be called from other artifacts. The
    binary path will be emitted in the OSPath column.
 
-   As a result of launching an artifact with declared "tools"
+   As a result of launching an artifact with declared &quot;tools&quot;
    field, the server will populate the following environment
    variables.
 
-   Tool_<ToolName>_HASH     - The hash of the binary
-   Tool_<ToolName>_FILENAME - The filename to store it.
-   Tool_<ToolName>_URL      - The URL.
+   Tool_&lt;ToolName&gt;_HASH     - The hash of the binary
+   Tool_&lt;ToolName&gt;_FILENAME - The filename to store it.
+   Tool_&lt;ToolName&gt;_URL      - The URL.
 
 parameters:
   - name: ToolName
@@ -48,7 +48,7 @@ parameters:
     description: Set to Y if the file needs to be executable (on windows it will have .exe extension)
 
   - name: SleepDuration
-    default: "20"
+    default: &quot;20&quot;
     type: int
     description: A time to sleep before fetching the binary.
 
@@ -71,35 +71,35 @@ sources:
       -- running on the client and it needs to be compatibile with
       -- clients at least back to 0.3.9
 
-      LET info_cache <= SELECT * FROM info()
+      LET info_cache &lt;= SELECT * FROM info()
       LET inventory_item = SELECT inventory_get(
          tool=ToolName, version=Version) AS Item FROM scope()
 
-      LET args <= SELECT * FROM switch(
+      LET args &lt;= SELECT * FROM switch(
         // Try to get info from the ToolInfo parameter.
-        a={SELECT get(field="Tool_" + ToolName + "_HASH", item=ToolInfo) AS ToolHash,
-                  get(field="Tool_" + ToolName + "_FILENAME", item=ToolInfo) AS ToolFilename,
-                  get(field="Tool_" + ToolName + "_URL", item=ToolInfo) AS ToolURL,
-                  get(field="Tool_" + ToolName + "_PATH", item=ToolInfo) AS ToolPath
+        a={SELECT get(field=&quot;Tool_&quot; + ToolName + &quot;_HASH&quot;, item=ToolInfo) AS ToolHash,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_FILENAME&quot;, item=ToolInfo) AS ToolFilename,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_URL&quot;, item=ToolInfo) AS ToolURL,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_PATH&quot;, item=ToolInfo) AS ToolPath
            FROM scope()  WHERE ToolFilename},
 
         // Failing this - get it from the scope()
-        b={SELECT get(field="Tool_" + ToolName + "_HASH", item=scope()) AS ToolHash,
-                  get(field="Tool_" + ToolName + "_FILENAME", item=scope()) AS ToolFilename,
-                  get(field="Tool_" + ToolName + "_URL", item=scope()) AS ToolURL,
-                  get(field="Tool_" + ToolName + "_PATH", item=ToolInfo) AS ToolPath
+        b={SELECT get(field=&quot;Tool_&quot; + ToolName + &quot;_HASH&quot;, item=scope()) AS ToolHash,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_FILENAME&quot;, item=scope()) AS ToolFilename,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_URL&quot;, item=scope()) AS ToolURL,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_PATH&quot;, item=ToolInfo) AS ToolPath
            FROM scope()  WHERE ToolFilename},
 
         // Failing this - try to get it from the inventory service directly.
-        c={SELECT get(field="Tool_" + ToolName + "_HASH", item=(inventory_item[0]).Item) AS ToolHash,
-                  get(field="Tool_" + ToolName + "_FILENAME", item=(inventory_item[0]).Item) AS ToolFilename,
-                  get(field="Tool_" + ToolName + "_URL", item=(inventory_item[0]).Item) AS ToolURL
+        c={SELECT get(field=&quot;Tool_&quot; + ToolName + &quot;_HASH&quot;, item=(inventory_item[0]).Item) AS ToolHash,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_FILENAME&quot;, item=(inventory_item[0]).Item) AS ToolFilename,
+                  get(field=&quot;Tool_&quot; + ToolName + &quot;_URL&quot;, item=(inventory_item[0]).Item) AS ToolURL
            FROM scope()  WHERE ToolFilename}
       )
 
       // Keep the binaries cached in the temp directory. We verify the
       // hashes all the time so this should be safe.
-      LET binpath <= SELECT Path FROM switch(
+      LET binpath &lt;= SELECT Path FROM switch(
 
           -- Allow user to specify a temporary directory which
           -- will be cleaned up.
@@ -111,51 +111,51 @@ sources:
           b={SELECT dirname(path=tempfile()) AS Path
              FROM scope() WHERE Path },
 
-          c={SELECT "/tmp" AS Path FROM info_cache WHERE OS = "linux" }
+          c={SELECT &quot;/tmp&quot; AS Path FROM info_cache WHERE OS = &quot;linux&quot; }
         )
 
       // Where we should save the file.
-      LET ToolPath <= SELECT path_join(components=[
+      LET ToolPath &lt;= SELECT path_join(components=[
            (binpath[0]).Path, (args[0]).ToolFilename]) AS Path FROM scope()
 
       // Support tools locally served from disk
       LET local_file =
           SELECT hash(path=(args[0]).ToolPath) as Hash,
                  (args[0]).ToolFilename AS Name,
-                 "Downloaded" AS DownloadStatus,
+                 &quot;Downloaded&quot; AS DownloadStatus,
                  (args[0]).ToolPath AS OSPath
           FROM scope()
           WHERE (args[0]).ToolPath AND
-                log(message="File served from " + (args[0]).ToolPath)
+                log(message=&quot;File served from &quot; + (args[0]).ToolPath)
 
       // Download the file from the binary URL and store in the local
       // binary cache.
       LET download = SELECT * FROM if(condition=log(
-             message="URL for " + (args[0]).ToolFilename +
-                " is at " + (args[0]).ToolURL + " and has hash of " + (args[0]).ToolHash)
+             message=&quot;URL for &quot; + (args[0]).ToolFilename +
+                &quot; is at &quot; + (args[0]).ToolURL + &quot; and has hash of &quot; + (args[0]).ToolHash)
              AND binpath AND (args[0]).ToolHash AND (args[0]).ToolURL,
         then={
           SELECT hash(path=Content) as Hash,
               (args[0]).ToolFilename AS Name,
-              "Downloaded" AS DownloadStatus,
+              &quot;Downloaded&quot; AS DownloadStatus,
               copy(filename=Content, dest=(ToolPath[0]).Path,
-                   permissions=if(condition=IsExecutable, then="x")) AS OSPath
-          FROM http_client(url=(args[0]).ToolURL, tempfile_extension=".exe")
-          WHERE log(message=format(format="downloaded hash of %v: %v, expected %v", args=[
+                   permissions=if(condition=IsExecutable, then=&quot;x&quot;)) AS OSPath
+          FROM http_client(url=(args[0]).ToolURL, tempfile_extension=&quot;.exe&quot;)
+          WHERE log(message=format(format=&quot;downloaded hash of %v: %v, expected %v&quot;, args=[
                     Content, Hash.SHA256, (args[0]).ToolHash]))
                 AND Hash.SHA256 = (args[0]).ToolHash
         }, else={
            SELECT * FROM scope()
-           WHERE NOT log(message="No valid setup - is tool " + ToolName +
-                        " configured in the server inventory?")
+           WHERE NOT log(message=&quot;No valid setup - is tool &quot; + ToolName +
+                        &quot; configured in the server inventory?&quot;)
         })
 
       // Check if the existing file in the binary file cache matches
       // the hash.
       LET existing = SELECT OSPath, hash(path=OSPath) AS Hash, Name,
-                    "Cached" AS DownloadStatus
+                    &quot;Cached&quot; AS DownloadStatus
         FROM stat(filename=(ToolPath[0]).Path)
-        WHERE log(message=format(format="Local hash of %v: %v, expected %v", args=[
+        WHERE log(message=format(format=&quot;Local hash of %v: %v, expected %v&quot;, args=[
             OSPath, Hash.SHA256, (args[0]).ToolHash]))
         AND Hash.SHA256 = (args[0]).ToolHash
 
@@ -171,7 +171,7 @@ sources:
            SELECT rand(range=SleepDuration) AS timeout
            FROM scope()
            WHERE args AND (args[0]).ToolURL AND
-              log(message=format(format='Sleeping %v Seconds',
+              log(message=format(format=&#x27;Sleeping %v Seconds&#x27;,
                  args=[timeout])) AND sleep(time=timeout) AND FALSE
         },
         d=download)

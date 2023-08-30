@@ -25,14 +25,14 @@ reference:
 
 parameters:
   - name: programKeys
-    default: >-
+    default: &gt;-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Uninstall\*
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     queries:
       - |
         SELECT Key.Name as KeyName,
@@ -46,8 +46,8 @@ sources:
                UninstallString,
                InstallDate,
                Key.OSPath as KeyPath
-        FROM read_reg_key(globs=split(string=programKeys, sep=',[\\s]*'),
-                          accessor="registry")
+        FROM read_reg_key(globs=split(string=programKeys, sep=&#x27;,[\\s]*&#x27;),
+                          accessor=&quot;registry&quot;)
 
 </code></pre>
 

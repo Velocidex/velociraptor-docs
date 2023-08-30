@@ -37,7 +37,7 @@ parameters:
     default: .
     type: regex
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |

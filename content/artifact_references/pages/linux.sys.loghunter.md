@@ -15,7 +15,7 @@ targetting includes symlink files.
 
 <pre><code class="language-yaml">
 name: Linux.Sys.LogHunter
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 description: |
   This artifact enables grep of Linux, MacOS and Windows logs.
   Parameters include SearchRegex and WhitelistRegex as regex terms.
@@ -27,36 +27,36 @@ description: |
 
 parameters:
   - name: TargetFiles
-    default: '/var/log/**'
+    default: &#x27;/var/log/**&#x27;
   - name: SearchRegex
-    description: "Regex of strings to search in log line."
-    default: ' POST '
+    description: &quot;Regex of strings to search in log line.&quot;
+    default: &#x27; POST &#x27;
     type: regex
   - name: FilterRegex
-    description: "Regex of strings to leave out of output."
+    description: &quot;Regex of strings to leave out of output.&quot;
     default:
     type: regex
   - name: ExcludeDirectoryRegex
     type: regex
-    description: "Does not descend into directories that match this Regex."
-    default: "^/(shared|proc|snap)"
+    description: &quot;Does not descend into directories that match this Regex.&quot;
+    default: &quot;^/(shared|proc|snap)&quot;
   - name: ExcludePathRegex
-    description: "Regex of paths to exclude from scanning."
-    default: '\.journal$'
+    description: &quot;Regex of paths to exclude from scanning.&quot;
+    default: &#x27;\.journal$&#x27;
     type: regex
 
 sources:
   - query: |
-      LET RecursionCB <= if(condition= ExcludeDirectoryRegex,
-         then="x => NOT x.OSPath =~ ExcludeDirectoryRegex",
-         else="x => NOT x.OSPath =~ '^/proc' ")
+      LET RecursionCB &lt;= if(condition= ExcludeDirectoryRegex,
+         then=&quot;x =&gt; NOT x.OSPath =~ ExcludeDirectoryRegex&quot;,
+         else=&quot;x =&gt; NOT x.OSPath =~ &#x27;^/proc&#x27; &quot;)
 
       LET files = SELECT OSPath
         FROM glob(globs=TargetFiles,
             nosymlink=TRUE,
             recursion_callback=RecursionCB)
         WHERE NOT IsDir AND NOT OSPath =~ ExcludePathRegex
-          AND log(message="Scanning %v", args=OSPath)
+          AND log(message=&quot;Scanning %v&quot;, args=OSPath)
 
       LET hits = SELECT * FROM foreach(row=files,
           query={

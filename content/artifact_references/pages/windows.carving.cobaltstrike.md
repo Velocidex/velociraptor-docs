@@ -89,12 +89,12 @@ parameters:
         rule cobalt_strike_shellcode {
             strings:
                 $header = { FC }
-                $s1 = "hwini"
-                $s2 = "hws2_"
-                $s3 = "wininet"
+                $s1 = &quot;hwini&quot;
+                $s2 = &quot;hws2_&quot;
+                $s3 = &quot;wininet&quot;
 
             condition:
-                ( $header at 0 and filesize < 4096 )
+                ( $header at 0 and filesize &lt; 4096 )
                 or any of ($s*) // we enact offset limits in VQL ( 0..4096 )
         }
   - name: FindSleepFunction
@@ -110,316 +110,316 @@ parameters:
         }
 
 export: |
-  LET PROFILE = '''[
+  LET PROFILE = &#x27;&#x27;&#x27;[
     [CobaltConfig, 0, [
         # 0x0001:BeaconType, 0x0001:Type, 0x0002:Length
-        ["BeaconType", 6, "Enumeration", {
-            "type": "uint16b",
-            "choices": {
-                 "0": "windows-beacon_http-reverse_http",
-                 "1": "windows-beacon_dns-reverse_http",
-                 "2": "windows-beacon_smb-bind_pipe",
-                 "8": "windows-beacon_https-reverse_https",
-                 "16": "windows-beacon_tcp-bind_tcp"
+        [&quot;BeaconType&quot;, 6, &quot;Enumeration&quot;, {
+            &quot;type&quot;: &quot;uint16b&quot;,
+            &quot;choices&quot;: {
+                 &quot;0&quot;: &quot;windows-beacon_http-reverse_http&quot;,
+                 &quot;1&quot;: &quot;windows-beacon_dns-reverse_http&quot;,
+                 &quot;2&quot;: &quot;windows-beacon_smb-bind_pipe&quot;,
+                 &quot;8&quot;: &quot;windows-beacon_https-reverse_https&quot;,
+                 &quot;16&quot;: &quot;windows-beacon_tcp-bind_tcp&quot;
             }
         }],
 
         # 0x0002:Port, 0x0001:Type, 0x0002:Length
-        ["__port_prefix", 0, "String",{"term_hex": "000200010002", length: 10000, max_length: 10000}],
-        ["Port", "x=>len(list=x.__port_prefix) + 6", "uint16b"],
+        [&quot;__port_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000200010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;Port&quot;, &quot;x=&gt;len(list=x.__port_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0003:Sleeptime,0x0002:Type, 0x0004:Length
-        ["__sleeptime_prefix", 0, "String", {"term_hex": "000300020004", length: 10000, max_length: 10000}],
-        ["Sleeptime", "x=>len(list=x.__sleeptime_prefix) + 6", "uint32b"],
+        [&quot;__sleeptime_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;000300020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;Sleeptime&quot;, &quot;x=&gt;len(list=x.__sleeptime_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x0004:Maxgetsize, 0x0002:Type, 0x0004:Length
-        ["__maxgetsize_prefix", 0, "String",{"term_hex": "000400020004", length: 10000, max_length: 10000}],
-        ["Maxgetsize", "x=>len(list=x.__maxgetsize_prefix) + 6", "uint32b"],
+        [&quot;__maxgetsize_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000400020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;Maxgetsize&quot;, &quot;x=&gt;len(list=x.__maxgetsize_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x0005:Jitter, 0x0001:Type, 0x0002:Length
-        ["__jitter_prefix", 0, "String",{"term_hex": "000500010002", length: 10000, max_length: 10000}],
-        ["Jitter", "x=>len(list=x.__jitter_prefix) + 6", "uint16b"],
+        [&quot;__jitter_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000500010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;Jitter&quot;, &quot;x=&gt;len(list=x.__jitter_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0006:MaxDns, 0x0001:Type, 0x0002:Length
-        ["__maxdns_prefix", 0, "String",{"term_hex": "000600010002", length: 10000, max_length: 10000}],
-        ["MaxDns", "x=>len(list=x.__maxdns_prefix) + 6", "uint16b"],
+        [&quot;__maxdns_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000600010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;MaxDns&quot;, &quot;x=&gt;len(list=x.__maxdns_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0007:Publickey,0x0003:Type,
-        ["__publickey_prefix", 0, "String",{"term_hex": "000700030100", length: 10000, max_length: 10000}],
-        ["__publickey_raw", "x=>len(list=x.__publickey_prefix) + 6", "String",{"term_hex":"00000008"}],
-        ["PublicKey", "x=>len(list=x.__publickey_prefix) + 6", "Value",{"value":"x=>format(format='% x',args=x.__publickey_raw)"}],
+        [&quot;__publickey_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000700030100&quot;, length: 10000, max_length: 10000}],
+        [&quot;__publickey_raw&quot;, &quot;x=&gt;len(list=x.__publickey_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;00000008&quot;}],
+        [&quot;PublicKey&quot;, &quot;x=&gt;len(list=x.__publickey_prefix) + 6&quot;, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;format(format=&#x27;% x&#x27;,args=x.__publickey_raw)&quot;}],
 
         # 0x0008:server/get-uri,0x0003:Type,
-        ["__c2server_prefix", 0, "String",{"term_hex": "00080003", length: 10000, max_length: 10000}],
-        ["C2Server", "x=>len(list=x.__c2server_prefix) + 6", "String"],
+        [&quot;__c2server_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00080003&quot;, length: 10000, max_length: 10000}],
+        [&quot;C2Server&quot;, &quot;x=&gt;len(list=x.__c2server_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0009:useragent,0x0003:Type,
-        ["__useragent_prefix", 0, "String",{"term_hex": "00090003", length: 10000, max_length: 10000}],
-        ["UserAgent", "x=>len(list=x.__useragent_prefix) + 6", "String"],
+        [&quot;__useragent_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00090003&quot;, length: 10000, max_length: 10000}],
+        [&quot;UserAgent&quot;, &quot;x=&gt;len(list=x.__useragent_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x000a:PostUri,0x0003:Type,
-        ["__PostUri_prefix", 0, "String", {"term_hex": "000a0003", length: 10000, max_length: 10000}],
-        ["PostURI", "x=>len(list=x.__PostUri_prefix) + 6", "String"],
+        [&quot;__PostUri_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;000a0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;PostURI&quot;, &quot;x=&gt;len(list=x.__PostUri_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x000b:Malleable_C2_Instructions,0x0003:Type, adding length check as not sure if we can rely on termination
-        ["__Malleable_C2_Instructions_prefix", 0, "String",{"term_hex": "000b0003", length: 10000, max_length: 10000}],
-        ["__Malleable_C2_Instructions_length","x=>len(list=x.__Malleable_C2_Instructions_prefix) + 4","uint16b"],
-        ["__Malleable_C2_Instructions", "x=>len(list=x.__Malleable_C2_Instructions_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__Malleable_C2_Instructions_length"}],
-        ["MalleableC2Instructions",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__Malleable_C2_Instructions, re='[^ -~\\r\\n]', replace='')])" }],
-        #["Malleable_C2_Instructions",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__Malleable_C2_Instructions)" }], #uncomment to return base64 encoded raw Malleable_C2_Instructions
+        [&quot;__Malleable_C2_Instructions_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000b0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__Malleable_C2_Instructions_length&quot;,&quot;x=&gt;len(list=x.__Malleable_C2_Instructions_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__Malleable_C2_Instructions&quot;, &quot;x=&gt;len(list=x.__Malleable_C2_Instructions_prefix) + 6&quot;, &quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__Malleable_C2_Instructions_length&quot;}],
+        [&quot;MalleableC2Instructions&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__Malleable_C2_Instructions, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;Malleable_C2_Instructions&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__Malleable_C2_Instructions)&quot; }], #uncomment to return base64 encoded raw Malleable_C2_Instructions
 
         # 0x000c:HttpGetHeader,0x0003:Type, adding length check as we can not rely on termination
-        ["__HttpGetHeader_prefix", 0, "String",{"term_hex": "000c0003", length: 10000, max_length: 10000}],
-        ["__HttpGetHeader_length","x=>len(list=x.__HttpGetHeader_prefix) + 4","uint16b"],
-        ["__HttpGetHeader","x=>len(list=x.__HttpGetHeader_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=> x.__HttpGetHeader_length"}],
-        ["HttpGetHeader",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__HttpGetHeader, re='[^ -~\\r\\n]', replace='')])" }],
-        #["HttpGetHeader",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__HttpGetHeader)" }], #uncomment to return base64 encoded raw HttpGetHeader
+        [&quot;__HttpGetHeader_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000c0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__HttpGetHeader_length&quot;,&quot;x=&gt;len(list=x.__HttpGetHeader_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__HttpGetHeader&quot;,&quot;x=&gt;len(list=x.__HttpGetHeader_prefix) + 6&quot;,&quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__HttpGetHeader_length&quot;}],
+        [&quot;HttpGetHeader&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__HttpGetHeader, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;HttpGetHeader&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__HttpGetHeader)&quot; }], #uncomment to return base64 encoded raw HttpGetHeader
 
         # 0x000d:HttpPostHeader,0x0003:Type, adding length check as we can not rely on termination
-        ["__http_post_header_prefix", 0, "String",{"term_hex": "000d0003", length: 10000, max_length: 10000}],
-        ["__HttpPostHeader_length","x=>len(list=x.__http_post_header_prefix) + 4","uint16b"],
-        ["__HttpPostHeader","x=>len(list=x.__http_post_header_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=> x.__HttpPostHeader_length"}],
-        ["HttpPostHeader",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__HttpPostHeader, re='[^ -~\\r\\n]', replace='')])" }],
-        #["HttpPostHeader",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__HttpPostHeader)" }], #uncomment to return base64 encoded raw HttpPostHeader
+        [&quot;__http_post_header_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000d0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__HttpPostHeader_length&quot;,&quot;x=&gt;len(list=x.__http_post_header_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__HttpPostHeader&quot;,&quot;x=&gt;len(list=x.__http_post_header_prefix) + 6&quot;,&quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__HttpPostHeader_length&quot;}],
+        [&quot;HttpPostHeader&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__HttpPostHeader, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;HttpPostHeader&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__HttpPostHeader)&quot; }], #uncomment to return base64 encoded raw HttpPostHeader
 
         # 0x000e:SpawnTo,0x0003:Type # Adding length check as we can not rely on termination
-        ["__SpawnTo_header_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        ["__SpawnTo_header_length","x=>len(list=x.__SpawnTo_header_prefix) + 4","uint16b"],
-        ["__SpawnTo", "x=>len(list=x.__SpawnTo_header_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__SpawnTo_header_length"}],
-        ["SpawnTo",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__SpawnTo, re='[^ -~\\r\\n]', replace='')])" }],
-        #["SpawnTo",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__SpawnTo)" }], #uncomment to return base64 encoded raw SpawnTo
+        [&quot;__SpawnTo_header_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000e0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__SpawnTo_header_length&quot;,&quot;x=&gt;len(list=x.__SpawnTo_header_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__SpawnTo&quot;, &quot;x=&gt;len(list=x.__SpawnTo_header_prefix) + 6&quot;, &quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__SpawnTo_header_length&quot;}],
+        [&quot;SpawnTo&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__SpawnTo, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;SpawnTo&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__SpawnTo)&quot; }], #uncomment to return base64 encoded raw SpawnTo
 
         # 0x000f:PipeName,0x0003:Type
-        ["__pipename_prefix", 0, "String",{"term_hex": "000f0003", length: 10000, max_length: 10000}],
-        ["Pipename", "x=>len(list=x.__pipename_prefix) + 6", "String",{"term_hex":"0000"}],
+        [&quot;__pipename_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000f0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;Pipename&quot;, &quot;x=&gt;len(list=x.__pipename_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;0000&quot;}],
 
         # 0x0010:KillDateYear, 0x0001:Type, 0x0002:Length
-        ["__KillDateYear_prefix", 0, "String",{"term_hex": "001000010002", length: 10000, max_length: 10000}],
-        ["KillDateYear", "x=>len(list=x.__KillDateYear_prefix) + 6", "uint16b"],
+        [&quot;__KillDateYear_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001000010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;KillDateYear&quot;, &quot;x=&gt;len(list=x.__KillDateYear_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0011:KillDateMonth, 0x0001:Type, 0x0002:Length
-        ["__KillDateMonth_prefix", 0, "String",{"term_hex": "001200010002", length: 10000, max_length: 10000}],
-        ["KillDateMonth", "x=>len(list=x.__KillDateMonth_prefix) + 6", "uint16b"],
+        [&quot;__KillDateMonth_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001200010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;KillDateMonth&quot;, &quot;x=&gt;len(list=x.__KillDateMonth_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0012:KillDateDay, 0x0001:Type, 0x0002:Length
-        ["__KillDateDay_prefix", 0, "String",{"term_hex": "001200010002", length: 10000, max_length: 10000}],
-        ["KillDateDay", "x=>len(list=x.__KillDateDay_prefix) + 6", "uint16b"],
+        [&quot;__KillDateDay_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001200010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;KillDateDay&quot;, &quot;x=&gt;len(list=x.__KillDateDay_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0013:DNSIdle, 0x0002:Type, 0x0004:Length
-        ["__DNSIdle_prefix", 0, "String",{"term_hex": "001300020004", length: 10000, max_length: 10000}],
-        ["__DNSIdle1", "x=>len(list=x.__DNSIdle_prefix) + 6", "uint8"],
-        ["__DNSIdle2", "x=>len(list=x.__DNSIdle_prefix) + 7", "uint8"],
-        ["__DNSIdle3", "x=>len(list=x.__DNSIdle_prefix) + 8", "uint8"],
-        ["__DNSIdle4", "x=>len(list=x.__DNSIdle_prefix) + 9", "uint8"],
-        ["DNSIdle", 0, "Value", {
-            "value": "x=> str(str=x.__DNSIdle1) + '.' + str(str=x.__DNSIdle2) + '.' + str(str=x.__DNSIdle3) + '.' + str(str=x.__DNSIdle4)"
+        [&quot;__DNSIdle_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001300020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;__DNSIdle1&quot;, &quot;x=&gt;len(list=x.__DNSIdle_prefix) + 6&quot;, &quot;uint8&quot;],
+        [&quot;__DNSIdle2&quot;, &quot;x=&gt;len(list=x.__DNSIdle_prefix) + 7&quot;, &quot;uint8&quot;],
+        [&quot;__DNSIdle3&quot;, &quot;x=&gt;len(list=x.__DNSIdle_prefix) + 8&quot;, &quot;uint8&quot;],
+        [&quot;__DNSIdle4&quot;, &quot;x=&gt;len(list=x.__DNSIdle_prefix) + 9&quot;, &quot;uint8&quot;],
+        [&quot;DNSIdle&quot;, 0, &quot;Value&quot;, {
+            &quot;value&quot;: &quot;x=&gt; str(str=x.__DNSIdle1) + &#x27;.&#x27; + str(str=x.__DNSIdle2) + &#x27;.&#x27; + str(str=x.__DNSIdle3) + &#x27;.&#x27; + str(str=x.__DNSIdle4)&quot;
         }],
 
-        # 0x0014:DNSSleep', 0x0002:Type, 0x0004:Length
-        ["__DNSSleep_prefix", 0, "String",{"term_hex": "001400020004", length: 10000, max_length: 10000}],
-        ["DNSSleep", "x=>len(list=x.__DNSSleep_prefix) + 6", "uint32b"],
+        # 0x0014:DNSSleep&#x27;, 0x0002:Type, 0x0004:Length
+        [&quot;__DNSSleep_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001400020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;DNSSleep&quot;, &quot;x=&gt;len(list=x.__DNSSleep_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x0015:SSH_1, to complete - didnt find any examples assuming zero terminated
-        ["__SSH_1_prefix", 0, "String",{"term_hex": "00150003", length: 10000, max_length: 10000}],
-        ["SSH_1", "x=>len(list=x.__SSH_1_prefix) + 6", "String"],
+        [&quot;__SSH_1_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00150003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SSH_1&quot;, &quot;x=&gt;len(list=x.__SSH_1_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0016:SSH_2, to complete - didnt find any examples assuming zero terminated
-        ["__SSH_2_prefix", 0, "String",{"term_hex": "00160003", length: 10000, max_length: 10000}],
-        ["SSH_2", "x=>len(list=x.__SSH_2_prefix) + 6", "String"],
+        [&quot;__SSH_2_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00160003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SSH_2&quot;, &quot;x=&gt;len(list=x.__SSH_2_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0017:SSH_3, to complete - didnt find any examples assuming zero terminated
-        ["__SSH_3_prefix", 0, "String",{"term_hex": "00170003", length: 10000, max_length: 10000}],
-        ["SSH_3", "x=>len(list=x.__SSH_3_prefix) + 6", "String"],
+        [&quot;__SSH_3_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00170003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SSH_3&quot;, &quot;x=&gt;len(list=x.__SSH_3_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0018:SSH_4, to complete - didnt find any examples assuming zero terminated
-        ["__SSH_4_prefix", 0, "String",{"term_hex": "00180003", length: 10000, max_length: 10000}],
-        ["SSH_4", "x=>len(list=x.__SSH_4_prefix) + 6", "String"],
+        [&quot;__SSH_4_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00180003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SSH_4&quot;, &quot;x=&gt;len(list=x.__SSH_4_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0019:SSH_5, to complete - didnt find any examples assuming zero terminated
-        ["__SSH_5_prefix", 0, "String",{"term_hex": "00190003", length: 10000, max_length: 10000}],
-        ["SSH_5", "x=>len(list=x.__SSH_5_prefix) + 6", "String"],
+        [&quot;__SSH_5_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00190003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SSH_5&quot;, &quot;x=&gt;len(list=x.__SSH_5_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x001a:GetVerb,0x0003:Type
-        ["__GetVerb_prefix", 0, "String",{"term_hex": "001a0003"}],
-        ["GetVerb", "x=>len(list=x.__GetVerb_prefix) + 6", "String",{"term_hex":"0000"}],
+        [&quot;__GetVerb_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001a0003&quot;}],
+        [&quot;GetVerb&quot;, &quot;x=&gt;len(list=x.__GetVerb_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;0000&quot;}],
 
         # 0x001b: PostVerb, 0x0003:Type
-        ["__PostVerb_prefix", 0, "String",{"term_hex": "001b0003"}],
-        ["PostVerb", "x=>len(list=x.__PostVerb_prefix) + 6", "String",{"term_hex":"0000"}],
+        [&quot;__PostVerb_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001b0003&quot;}],
+        [&quot;PostVerb&quot;, &quot;x=&gt;len(list=x.__PostVerb_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;0000&quot;}],
 
         # 0x001c:HttpPostChunk,0x0002:Type, 0x0004:Length
-        ["__HttpPostChunk_prefix", 0, "String", {"term_hex": "001c00020004"}],
-        ["HttpPostChunk", "x=>len(list=x.__HttpPostChunk_prefix) + 6", "uint32b"],
+        [&quot;__HttpPostChunk_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;001c00020004&quot;}],
+        [&quot;HttpPostChunk&quot;, &quot;x=&gt;len(list=x.__HttpPostChunk_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x001d:spawnto_x86,0x0003:Type
-        ["__spawnx86_prefix", 0, "String",{"term_hex": "001d0003", length: 10000, max_length: 10000}],
-        ["SpawnTox86", "x=>len(list=x.__spawnx86_prefix) + 6", "String",{"term_hex":"0000"}],
+        [&quot;__spawnx86_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001d0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SpawnTox86&quot;, &quot;x=&gt;len(list=x.__spawnx86_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;0000&quot;}],
 
         # 0x001e:spawn_to_x64,0x0003:Type
-        ["__spawnx64_prefix", 0, "String",{"term_hex": "001e0003", length: 10000, max_length: 10000}],
-        ["SpawnTox64", "x=>len(list=x.__spawnx64_prefix) + 6", "String",{"term_hex":"0000"}],
+        [&quot;__spawnx64_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001e0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;SpawnTox64&quot;, &quot;x=&gt;len(list=x.__spawnx64_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;0000&quot;}],
 
         # 0x001f:CryptoScheme, 0x0001:Type, 0x0002:Length
-        ["__CryptoScheme_prefix", 0, "String",{"term_hex": "001f00010002", length: 10000, max_length: 10000}],
-        ["CryptoScheme", "x=>len(list=x.__CryptoScheme_prefix) + 6", "uint16b"],
+        [&quot;__CryptoScheme_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;001f00010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;CryptoScheme&quot;, &quot;x=&gt;len(list=x.__CryptoScheme_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0020:Proxy, 0x0003:Type
-        ["__Proxy_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        #["__Proxy_length","x=>len(list=x.__Proxy_prefix) + 4","uint16b"],
-        ["Proxy", "x=>len(list=x.__Proxy_prefix) + 6", "String"],
+        [&quot;__Proxy_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000e0003&quot;, length: 10000, max_length: 10000}],
+        #[&quot;__Proxy_length&quot;,&quot;x=&gt;len(list=x.__Proxy_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;Proxy&quot;, &quot;x=&gt;len(list=x.__Proxy_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0021:ProxyUsername, 0x0003:Type
-        ["__ProxyUsername_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        ["__ProxyUsername_length","x=>len(list=x.__ProxyUsername_prefix) + 4","uint16b"],
-        ["ProxyUsername", "x=>len(list=x.__ProxyUsername_prefix) + 6", "String"],
+        [&quot;__ProxyUsername_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000e0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ProxyUsername_length&quot;,&quot;x=&gt;len(list=x.__ProxyUsername_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;ProxyUsername&quot;, &quot;x=&gt;len(list=x.__ProxyUsername_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0022:ProxyPassword, 0x0003:Type
-        ["__ProxyPassword_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        ["__ProxyPassword_length","x=>len(list=x.__ProxyPassword_prefix) + 4","uint16b"],
-        ["ProxyPassword", "x=>len(list=x.__ProxyPassword_prefix) + 6", "String"],
+        [&quot;__ProxyPassword_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;000e0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ProxyPassword_length&quot;,&quot;x=&gt;len(list=x.__ProxyPassword_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;ProxyPassword&quot;, &quot;x=&gt;len(list=x.__ProxyPassword_prefix) + 6&quot;, &quot;String&quot;],
 
         # 0x0023:ProxyType, 0x0001:Type, 0x0002:Length
-        ["__ProxyType", 0, "String",{"term_hex": "002300010002", length: 10000, max_length: 10000}],
-        ["ProxyType", "x=>len(list=x.__ProxyType) + 6", "Enumeration", {
-            "type": "uint16b",
-            "choices": {
-                 "1": "No proxy",
-                 "2": "IE settings",
-                 "4": "Hardcoded proxy"}
+        [&quot;__ProxyType&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002300010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;ProxyType&quot;, &quot;x=&gt;len(list=x.__ProxyType) + 6&quot;, &quot;Enumeration&quot;, {
+            &quot;type&quot;: &quot;uint16b&quot;,
+            &quot;choices&quot;: {
+                 &quot;1&quot;: &quot;No proxy&quot;,
+                 &quot;2&quot;: &quot;IE settings&quot;,
+                 &quot;4&quot;: &quot;Hardcoded proxy&quot;}
         }],
 
         # 0x0024:Deprecated, 0x0001:Type, 0x0002:Length
-        ["__Deprecated_prefix", 0, "String",{"term_hex": "002400010002", length: 10000, max_length: 10000}],
-        ["Deprecated", "x=>len(list=x.__Deprecated_prefix) + 6", "uint16b"],
+        [&quot;__Deprecated_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002400010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;Deprecated&quot;, &quot;x=&gt;len(list=x.__Deprecated_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0025:LicenseId,0x0002:Type, 0x0004:Length
-        ["__LicenseId_prefix", 0, "String", {"term_hex": "002500020004", length: 10000, max_length: 10000}],
-        ["LicenseId", "x=>len(list=x.__LicenseId_prefix) + 6", "uint32b"],
+        [&quot;__LicenseId_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;002500020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;LicenseId&quot;, &quot;x=&gt;len(list=x.__LicenseId_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x0026:bStageCleanup, 0x0001:Type, 0x0002:Length
-        ["__bStageCleanup_prefix", 0, "String",{"term_hex": "002600010002", length: 10000, max_length: 10000}],
-        ["bStageCleanup", "x=>len(list=x.__bStageCleanup_prefix) + 6", "uint16b"],
+        [&quot;__bStageCleanup_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002600010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;bStageCleanup&quot;, &quot;x=&gt;len(list=x.__bStageCleanup_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0027:bCFGCaution, 0x0001:Type, 0x0002:Length
-        ["__bCFGCaution_prefix", 0, "String",{"term_hex": "002700010002", length: 10000, max_length: 10000}],
-        ["bCFGCaution", "x=>len(list=x.__bCFGCaution_prefix) + 6", "uint16b"],
+        [&quot;__bCFGCaution_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002700010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;bCFGCaution&quot;, &quot;x=&gt;len(list=x.__bCFGCaution_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0028:KillDate,0x0002:Type, 0x0004:Length
-        ["__KillDate_prefix", 0, "String", {"term_hex": "002800020004", length: 10000, max_length: 10000}],
-        ["KillDate", "x=>len(list=x.__KillDate_prefix) + 6", "uint32b"],
+        [&quot;__KillDate_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;002800020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;KillDate&quot;, &quot;x=&gt;len(list=x.__KillDate_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x0029:TextSectionEnd,0x0002:Type, 0x0004:Length
-        ["__TextSectionEnd_prefix", 0, "String", {"term_hex": "002900020004", length: 10000, max_length: 10000}],
-        ["TextSectionEnd", "x=>len(list=x.__TextSectionEnd_prefix) + 6", "uint32b"],
+        [&quot;__TextSectionEnd_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;002900020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;TextSectionEnd&quot;, &quot;x=&gt;len(list=x.__TextSectionEnd_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x002a:ObfuscateSectionsInfo,0x0003:Type # Adding length check as we can not rely on termination
-        ["__ObfuscateSectionsInfo_prefix", 0, "String",{"term_hex": "002a0003", length: 10000, max_length: 10000}],
-        ["__ObfuscateSectionsInfo_length","x=>len(list=x.__ObfuscateSectionsInfo_prefix) + 4","uint16b"],
-        ["__ObfuscateSectionsInfo", "x=>len(list=x.__ObfuscateSectionsInfo_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ObfuscateSectionsInfo_length"}],
-        ["ObfuscateSectionsInfo",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ObfuscateSectionsInfo, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ObfuscateSectionsInfo",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ObfuscateSectionsInfo)" }], #uncomment to return base64 encoded raw ObfuscateSectionsInfo
+        [&quot;__ObfuscateSectionsInfo_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002a0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ObfuscateSectionsInfo_length&quot;,&quot;x=&gt;len(list=x.__ObfuscateSectionsInfo_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__ObfuscateSectionsInfo&quot;, &quot;x=&gt;len(list=x.__ObfuscateSectionsInfo_prefix) + 6&quot;, &quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__ObfuscateSectionsInfo_length&quot;}],
+        [&quot;ObfuscateSectionsInfo&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__ObfuscateSectionsInfo, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;ObfuscateSectionsInfo&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__ObfuscateSectionsInfo)&quot; }], #uncomment to return base64 encoded raw ObfuscateSectionsInfo
 
         #0x002b:ProcessInjectStartRWX, 0x0001:Type, 0x0002:Length
-        ["__ProcessInjectStartRWX", 0, "String",{"term_hex": "002b00010002", length: 10000, max_length: 10000}],
-        ["ProcessInjectStartRWX", "x=>len(list=x.__ProcessInjectStartRWX) + 6", "Enumeration", {
-            "type": "uint16b",
-            "choices": {
-                 "0x1": "PAGE_NOACCESS",
-                 "0x2": "PAGE_READONLY",
-                 "0x4": "PAGE_READWRITE",
-                 "0x8": "PAGE_WRITECOPY",
-                "0x10": "PAGE_EXECUTE",
-                "0x20": "PAGE_EXECUTE_READ",
-                "0x40": "PAGE_EXECUTE_READWRITE",
-                "0x80": "PAGE_EXECUTE_WRITECOPY"}
+        [&quot;__ProcessInjectStartRWX&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002b00010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;ProcessInjectStartRWX&quot;, &quot;x=&gt;len(list=x.__ProcessInjectStartRWX) + 6&quot;, &quot;Enumeration&quot;, {
+            &quot;type&quot;: &quot;uint16b&quot;,
+            &quot;choices&quot;: {
+                 &quot;0x1&quot;: &quot;PAGE_NOACCESS&quot;,
+                 &quot;0x2&quot;: &quot;PAGE_READONLY&quot;,
+                 &quot;0x4&quot;: &quot;PAGE_READWRITE&quot;,
+                 &quot;0x8&quot;: &quot;PAGE_WRITECOPY&quot;,
+                &quot;0x10&quot;: &quot;PAGE_EXECUTE&quot;,
+                &quot;0x20&quot;: &quot;PAGE_EXECUTE_READ&quot;,
+                &quot;0x40&quot;: &quot;PAGE_EXECUTE_READWRITE&quot;,
+                &quot;0x80&quot;: &quot;PAGE_EXECUTE_WRITECOPY&quot;}
         }],
 
         #0x002c:ProcessInjectUseRWX, 0x0001:Type, 0x0002:Length
-        ["__ProcessInjectUseRWX", 0, "String",{"term_hex": "002c00010002", length: 10000, max_length: 10000}],
-        ["ProcessInjectUseRWX", "x=>len(list=x.__ProcessInjectUseRWX) + 6", "Enumeration", {
-            "type": "uint16b",
-            "choices": {
-                 "0x1": "PAGE_NOACCESS",
-                 "0x2": "PAGE_READONLY",
-                 "0x4": "PAGE_READWRITE",
-                 "0x8": "PAGE_WRITECOPY",
-                "0x10": "PAGE_EXECUTE",
-                "0x20": "PAGE_EXECUTE_READ",
-                "0x40": "PAGE_EXECUTE_READWRITE",
-                "0x80": "PAGE_EXECUTE_WRITECOPY"}
+        [&quot;__ProcessInjectUseRWX&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002c00010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;ProcessInjectUseRWX&quot;, &quot;x=&gt;len(list=x.__ProcessInjectUseRWX) + 6&quot;, &quot;Enumeration&quot;, {
+            &quot;type&quot;: &quot;uint16b&quot;,
+            &quot;choices&quot;: {
+                 &quot;0x1&quot;: &quot;PAGE_NOACCESS&quot;,
+                 &quot;0x2&quot;: &quot;PAGE_READONLY&quot;,
+                 &quot;0x4&quot;: &quot;PAGE_READWRITE&quot;,
+                 &quot;0x8&quot;: &quot;PAGE_WRITECOPY&quot;,
+                &quot;0x10&quot;: &quot;PAGE_EXECUTE&quot;,
+                &quot;0x20&quot;: &quot;PAGE_EXECUTE_READ&quot;,
+                &quot;0x40&quot;: &quot;PAGE_EXECUTE_READWRITE&quot;,
+                &quot;0x80&quot;: &quot;PAGE_EXECUTE_WRITECOPY&quot;}
         }],
 
         # 0x002d:ProcessInjectMinAlloc,0x0002:Type, 0x0004:Length
-        ["__ProcessInjectMinAlloc_prefix", 0, "String", {"term_hex": "002d00020004", length: 10000, max_length: 10000}],
-        ["ProcessInjectMinAlloc", "x=>len(list=x.__ProcessInjectMinAlloc_prefix) + 6", "uint32b"],
+        [&quot;__ProcessInjectMinAlloc_prefix&quot;, 0, &quot;String&quot;, {&quot;term_hex&quot;: &quot;002d00020004&quot;, length: 10000, max_length: 10000}],
+        [&quot;ProcessInjectMinAlloc&quot;, &quot;x=&gt;len(list=x.__ProcessInjectMinAlloc_prefix) + 6&quot;, &quot;uint32b&quot;],
 
         # 0x002e:ProcessInjectTransformx86, 0x0003:Type, # Adding length check as we can not rely on termination
-        ["__ProcessInjectTransformx86_prefix", 0, "String",{"term_hex": "002e0003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectTransformx86_length","x=>len(list=x.__ProcessInjectTransformx86_prefix) + 4","uint16b"],
-        ["__ProcessInjectTransformx86", "x=>len(list=x.__ProcessInjectTransformx86_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ProcessInjectTransformx86_length"}],
-        ["ProcessInjectTransformx86",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx86, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ProcessInjectTransformx86",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ProcessInjectTransformx86)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx86
+        [&quot;__ProcessInjectTransformx86_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002e0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ProcessInjectTransformx86_length&quot;,&quot;x=&gt;len(list=x.__ProcessInjectTransformx86_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__ProcessInjectTransformx86&quot;, &quot;x=&gt;len(list=x.__ProcessInjectTransformx86_prefix) + 6&quot;, &quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__ProcessInjectTransformx86_length&quot;}],
+        [&quot;ProcessInjectTransformx86&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__ProcessInjectTransformx86, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;ProcessInjectTransformx86&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__ProcessInjectTransformx86)&quot; }],#uncomment to return base64 encoded raw ProcessInjectTransformx86
 
 
         # 0x002f:ProcessInjectTransformx64, 0x0003:Type, # Adding length check as we can not rely on termination
-        ["__ProcessInjectTransformx64_prefix", 0, "String",{"term_hex": "002f0003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectTransformx64_length","x=>len(list=x.__ProcessInjectTransformx64_prefix) + 4","uint16b"],
-        ["__ProcessInjectTransformx64", "x=>len(list=x.__ProcessInjectTransformx64_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ProcessInjectTransformx64_length"}],
-        ["ProcessInjectTransformx64",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx64, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ProcessInjectTransformx64",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ProcessInjectTransformx64)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx64
+        [&quot;__ProcessInjectTransformx64_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;002f0003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ProcessInjectTransformx64_length&quot;,&quot;x=&gt;len(list=x.__ProcessInjectTransformx64_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__ProcessInjectTransformx64&quot;, &quot;x=&gt;len(list=x.__ProcessInjectTransformx64_prefix) + 6&quot;, &quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__ProcessInjectTransformx64_length&quot;}],
+        [&quot;ProcessInjectTransformx64&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__ProcessInjectTransformx64, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;ProcessInjectTransformx64&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__ProcessInjectTransformx64)&quot; }],#uncomment to return base64 encoded raw ProcessInjectTransformx64
 
         # 0x0032:UsesCookies, 0x0001:Type, 0x0002:Length
-        ["__UsesCookies_prefix", 0, "String",{"term_hex": "003200010002", length: 10000, max_length: 10000}],
-        ["UsesCookies", "x=>len(list=x.__UsesCookies_prefix) + 6", "uint16b"],
+        [&quot;__UsesCookies_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;003200010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;UsesCookies&quot;, &quot;x=&gt;len(list=x.__UsesCookies_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0033:ProcessInjectExecute, 0x0003:Type # Adding length check as we can not rely on termination
-        ["__ProcessInjectExecute_prefix", 0, "String",{"term_hex": "00330003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectExecute_length","x=>len(list=x.__ProcessInjectExecute_prefix) + 4","uint16b"],
-        ["__ProcessInjectExecute", "x=>len(list=x.__ProcessInjectExecute_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ProcessInjectExecute_length"}],
-        ["ProcessInjectExecute",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ProcessInjectExecute, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ProcessInjectExecute",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ProcessInjectExecute)" }], #uncomment to return base64 encoded raw ProcessInjectExecute
+        [&quot;__ProcessInjectExecute_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00330003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ProcessInjectExecute_length&quot;,&quot;x=&gt;len(list=x.__ProcessInjectExecute_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__ProcessInjectExecute&quot;, &quot;x=&gt;len(list=x.__ProcessInjectExecute_prefix) + 6&quot;, &quot;String&quot;,{&quot;term&quot;:&quot;***NOTERM***&quot;, &quot;length&quot;: &quot;x=&gt; x.__ProcessInjectExecute_length&quot;}],
+        [&quot;ProcessInjectExecute&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;%s&#x27;, args=[regex_replace(source=x.__ProcessInjectExecute, re=&#x27;[^ -~\\r\\n]&#x27;, replace=&#x27;&#x27;)])&quot; }],
+        #[&quot;ProcessInjectExecute&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;&#x27;base64:&#x27; + base64encode(string=x.__ProcessInjectExecute)&quot; }], #uncomment to return base64 encoded raw ProcessInjectExecute
 
         # 0x0034:ProcessInjectAllocationMethod, 0x0001:Type, 0x0002:Length
-        ["__ProcessInjectAllocationMethod_prefix", 0, "String",{"term_hex": "003400010002", length: 10000, max_length: 10000}],
-        ["ProcessInjectAllocationMethod", "x=>len(list=x.__ProcessInjectAllocationMethod_prefix) + 6", "uint16b"],
+        [&quot;__ProcessInjectAllocationMethod_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;003400010002&quot;, length: 10000, max_length: 10000}],
+        [&quot;ProcessInjectAllocationMethod&quot;, &quot;x=&gt;len(list=x.__ProcessInjectAllocationMethod_prefix) + 6&quot;, &quot;uint16b&quot;],
 
         # 0x0035:ProcessInjectStub, 0x0003:Type # Adding length check as we can not rely on termination
-        ["__ProcessInjectStub_prefix", 0, "String",{"term_hex": "00350003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectStub_length","x=>len(list=x.__ProcessInjectStub_prefix) + 4","uint16b"],
-        ["__ProcessInjectStub", "x=>len(list=x.__ProcessInjectStub_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=> x.__ProcessInjectStub_length"}],
-        ["ProcessInjectStub",0,"Value",{ "value": "x=>format(format='% x', args=x.__ProcessInjectStub)" }],
+        [&quot;__ProcessInjectStub_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00350003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__ProcessInjectStub_length&quot;,&quot;x=&gt;len(list=x.__ProcessInjectStub_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;__ProcessInjectStub&quot;, &quot;x=&gt;len(list=x.__ProcessInjectStub_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;00000000&quot;, &quot;length&quot;: &quot;x=&gt; x.__ProcessInjectStub_length&quot;}],
+        [&quot;ProcessInjectStub&quot;,0,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;format(format=&#x27;% x&#x27;, args=x.__ProcessInjectStub)&quot; }],
 
         # 0x0036:HostHeader, 0x0003:Type # Adding length check as we can not rely on termination
-        ["__HostHeader_prefix", 0, "String",{"term_hex": "00360003", length: 10000, max_length: 10000}],
-        ["__HostHeader_length","x=>len(list=x.__HostHeader_prefix) + 4","uint16b"],
-        ["HostHeader", "x=>len(list=x.__HostHeader_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=> x.__HostHeader_length"}],
+        [&quot;__HostHeader_prefix&quot;, 0, &quot;String&quot;,{&quot;term_hex&quot;: &quot;00360003&quot;, length: 10000, max_length: 10000}],
+        [&quot;__HostHeader_length&quot;,&quot;x=&gt;len(list=x.__HostHeader_prefix) + 4&quot;,&quot;uint16b&quot;],
+        [&quot;HostHeader&quot;, &quot;x=&gt;len(list=x.__HostHeader_prefix) + 6&quot;, &quot;String&quot;,{&quot;term_hex&quot;:&quot;00000000&quot;, &quot;length&quot;: &quot;x=&gt; x.__HostHeader_length&quot;}],
 
     ]],
     [Shellcode, 0, [
-        ["__Position", 0, "Value",{"value":"x=>unhex(string=position(data=_Data))"}],
-        ["Server", 0, "Value",{"value":"x=>regex_replace(source=regex_replace(source=x.__Position,re='\\x{00}.{4}[^$]*$',replace=''),re='\u0000',replace='')"}],
-        ["TargetUri", 0, "Value",{"value":"x=>find_strings(data=_Data,length=5,filter='^/').Strings[0]"}],
-        ["__LicenseBytes", 0, "Value",{"value":"x=>read_file(accessor='data',filename=x.__Position || '', offset=len(list=x.Server) + 1 ,length=4)"}],
-        ["License", 0, "Value",{"value":"x=>parse_binary(accessor='data', filename=x.__LicenseBytes,struct='uint32b')"}],
-        ["Strings", 0, "Value",{"value":"x=>find_strings(data=_Data,length=5,filter='.').Strings"}],
+        [&quot;__Position&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;unhex(string=position(data=_Data))&quot;}],
+        [&quot;Server&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;regex_replace(source=regex_replace(source=x.__Position,re=&#x27;\\x{00}.{4}[^$]*$&#x27;,replace=&#x27;&#x27;),re=&#x27;\u0000&#x27;,replace=&#x27;&#x27;)&quot;}],
+        [&quot;TargetUri&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;find_strings(data=_Data,length=5,filter=&#x27;^/&#x27;).Strings[0]&quot;}],
+        [&quot;__LicenseBytes&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;read_file(accessor=&#x27;data&#x27;,filename=x.__Position || &#x27;&#x27;, offset=len(list=x.Server) + 1 ,length=4)&quot;}],
+        [&quot;License&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;parse_binary(accessor=&#x27;data&#x27;, filename=x.__LicenseBytes,struct=&#x27;uint32b&#x27;)&quot;}],
+        [&quot;Strings&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;find_strings(data=_Data,length=5,filter=&#x27;.&#x27;).Strings&quot;}],
     ]],
 
-    ["EmbeddedPE", 0, [
-        ["__PayloadType", 0, "uint32"],
-        ["PayloadType", 0, "Value",{"value":"x=>format(format='0x%08x',args=x.__PayloadType)"}],
-        ["__PayloadSize", 4, "uint32"],
-        #["PayloadSize", 4, "Value",{"value":"x=>format(format='0x%08x',args=x.__PayloadSize)"}],
-        ["__XorKey", 8, "uint32b"],
-        ["XorKey", 8, "Value",{"value":"x=>format(format='0x%08x',args=x.__XorKey)"}],
-        ["__Id2", 12, "uint32"],
-        ["Id2", 12, "Value",{"value":"x=>format(format='0x%08x',args=x.__Id2)"}],
-        ["__Payload", 16, "Value",{"value":"x=>read_file(accessor='data',filename=embedded_section(path=TargetBytes || OSPath,
-                type=if(condition=TargetBytes,then='data',else='auto'))[0].Data || '', offset=16,length=x.__PayloadSize)"}],
-        #["__Payload", 16, "String",{"term_hex":"",length=x.__PayloadSize)"}],
-        ["DecodedPayload", 16, "Value",{"value":"x=>xor(string=x.__Payload,key=unhex(string=x.XorKey))"}],
-        ["PayloadHash", 16, "Value",{"value":"x=>hash(path=xor(string=x.__Payload,key=unhex(string=x.XorKey)),accessor='data')"}],
-        ["OriginalFileHash", 16, "Value",{"value":"x=>hash(path=OSPath)"}],
-    ]]]'''
+    [&quot;EmbeddedPE&quot;, 0, [
+        [&quot;__PayloadType&quot;, 0, &quot;uint32&quot;],
+        [&quot;PayloadType&quot;, 0, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;format(format=&#x27;0x%08x&#x27;,args=x.__PayloadType)&quot;}],
+        [&quot;__PayloadSize&quot;, 4, &quot;uint32&quot;],
+        #[&quot;PayloadSize&quot;, 4, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;format(format=&#x27;0x%08x&#x27;,args=x.__PayloadSize)&quot;}],
+        [&quot;__XorKey&quot;, 8, &quot;uint32b&quot;],
+        [&quot;XorKey&quot;, 8, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;format(format=&#x27;0x%08x&#x27;,args=x.__XorKey)&quot;}],
+        [&quot;__Id2&quot;, 12, &quot;uint32&quot;],
+        [&quot;Id2&quot;, 12, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;format(format=&#x27;0x%08x&#x27;,args=x.__Id2)&quot;}],
+        [&quot;__Payload&quot;, 16, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;read_file(accessor=&#x27;data&#x27;,filename=embedded_section(path=TargetBytes || OSPath,
+                type=if(condition=TargetBytes,then=&#x27;data&#x27;,else=&#x27;auto&#x27;))[0].Data || &#x27;&#x27;, offset=16,length=x.__PayloadSize)&quot;}],
+        #[&quot;__Payload&quot;, 16, &quot;String&quot;,{&quot;term_hex&quot;:&quot;&quot;,length=x.__PayloadSize)&quot;}],
+        [&quot;DecodedPayload&quot;, 16, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;xor(string=x.__Payload,key=unhex(string=x.XorKey))&quot;}],
+        [&quot;PayloadHash&quot;, 16, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;hash(path=xor(string=x.__Payload,key=unhex(string=x.XorKey)),accessor=&#x27;data&#x27;)&quot;}],
+        [&quot;OriginalFileHash&quot;, 16, &quot;Value&quot;,{&quot;value&quot;:&quot;x=&gt;hash(path=OSPath)&quot;}],
+    ]]]&#x27;&#x27;&#x27;
 
 
 sources:
@@ -428,17 +428,17 @@ sources:
       LET unique(values) = SELECT _value as value FROM foreach(row=values) GROUP BY _value
 
       -- section to dynamically generate Xor configuration yara hunt strings
-      LET a <= unhex(string='01')
-      LET b <= unhex(string='02')
-      LET c <= unhex(string='03')
+      LET a &lt;= unhex(string=&#x27;01&#x27;)
+      LET b &lt;= unhex(string=&#x27;02&#x27;)
+      LET c &lt;= unhex(string=&#x27;03&#x27;)
 
-      LET XorChars <=
-        SELECT format(format="%#02x", args=_value) AS H,
-            unhex(string=format(format="%02x", args=_value)) as X
+      LET XorChars &lt;=
+        SELECT format(format=&quot;%#02x&quot;, args=_value) AS H,
+            unhex(string=format(format=&quot;%02x&quot;, args=_value)) as X
         FROM range(start=0, end=256, step=1)
         WHERE if(condition=BruteXor,
                     then=True,
-                    else= H=~ '0x2e|0x69')
+                    else= H=~ &#x27;0x2e|0x69&#x27;)
 
       Let XorCharsStep2 =
         SELECT H, X,
@@ -451,16 +451,16 @@ sources:
       LET YaraStrings =
         SELECT -- { 00 01 00 01 00 02 ?? ?? 00 02 00 01 00 02 ?? ?? 00 03 }
             X,H,
-            H + ' = { ' + format(format='% x', args=X + aXor + X + aXor + X + bXor) +
-            ' ?? ?? ' + format(format='% x', args=X + bXor + X + aXor + X + bXor) +
-            ' ?? ?? ' + format(format='% x', args=X + cXor) + ' }'  as Line
+            H + &#x27; = { &#x27; + format(format=&#x27;% x&#x27;, args=X + aXor + X + aXor + X + bXor) +
+            &#x27; ?? ?? &#x27; + format(format=&#x27;% x&#x27;, args=X + bXor + X + aXor + X + bXor) +
+            &#x27; ?? ?? &#x27; + format(format=&#x27;% x&#x27;, args=X + cXor) + &#x27; }&#x27;  as Line
         FROM XorCharsStep2
 
       LET FindConfig =
             regex_replace(
                 source=FindConfigTemplate,
-                re='REPLACEME',
-                replace=join(array=YaraStrings.Line, sep=" $$"))
+                re=&#x27;REPLACEME&#x27;,
+                replace=join(array=YaraStrings.Line, sep=&quot; $$&quot;))
 
 
       -- function to extract potential additional encoded PE in data section
@@ -477,72 +477,72 @@ sources:
                       offset=_value.FileOffset,
                       length=_value.Size) as Data
         FROM foreach(row= parse_pe(file=path,accessor=type).Sections)
-        WHERE Name = '.data' AND Size > 15
+        WHERE Name = &#x27;.data&#x27; AND Size &gt; 15
 
 
       -- scan DataBytes for CobaltStrike config
       LET ByteConfiguration = SELECT Rule,
                 len(list=TargetBytes) as Size,
-                hash(path=TargetBytes,accessor='data') as Hash,
-                format(format="%v_%v.bin", args=[Rule,String.Offset]) as _DecodedDataName,
+                hash(path=TargetBytes,accessor=&#x27;data&#x27;) as Hash,
+                format(format=&quot;%v_%v.bin&quot;, args=[Rule,String.Offset]) as _DecodedDataName,
                 Xor,_Data,
                 Rule  as _Group
             FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                 beacon = {
                     SELECT *,
                         substr(start=0,end=1,str=String.Data) as Xor,
-                        read_file(accessor='data',
+                        read_file(accessor=&#x27;data&#x27;,
                                   filename=TargetBytes,
                                   offset= String.Offset,
                                   length=ExtractBytes) as _Data
-                    FROM yara(accessor='data',files=TargetBytes || "",
+                    FROM yara(accessor=&#x27;data&#x27;,files=TargetBytes || &quot;&quot;,
                               rules=FindConfig, number=99)
                 },
                 shellcode = {
-                    SELECT *, '' as Xor,
-                        read_file(accessor='data',
+                    SELECT *, &#x27;&#x27; as Xor,
+                        read_file(accessor=&#x27;data&#x27;,
                                   filename=TargetBytes,
                                   offset=String.Offset,length=4096) as _Data
-                    FROM yara(accessor='data',
+                    FROM yara(accessor=&#x27;data&#x27;,
                               files=TargetBytes,
                               rules=FindShellcode, number=99)
                 },
                 section_encoded_pe = {
                     SELECT *,
-                        'Embedded data section: ' + Rule as Rule,
+                        &#x27;Embedded data section: &#x27; + Rule as Rule,
                         substr(start=0,end=1,str=String.Data) as Xor,
-                        read_file(accessor='data',
+                        read_file(accessor=&#x27;data&#x27;,
                                   filename=File.OSPath,
                                   offset=String.Offset,
                                   length=ExtractBytes) as _Data
                     FROM yara(files=parse_binary(
-                                accessor='data',
+                                accessor=&#x27;data&#x27;,
                                 filename= embedded_section(
-                                     path=TargetBytes, type='data')[0].Data || "",
+                                     path=TargetBytes, type=&#x27;data&#x27;)[0].Data || &quot;&quot;,
                                 profile=PROFILE,
-                                struct="EmbeddedPE").DecodedPayload,
-                              accessor='data', rules=FindConfig, number=99)
+                                struct=&quot;EmbeddedPE&quot;).DecodedPayload,
+                              accessor=&#x27;data&#x27;, rules=FindConfig, number=99)
                 },
                     section_encoded_stager = {
                         SELECT *,
-                            '' as Xor,
-                            'Embedded data section: ' + Rule as Rule,
-                            read_file(accessor='data',
+                            &#x27;&#x27; as Xor,
+                            &#x27;Embedded data section: &#x27; + Rule as Rule,
+                            read_file(accessor=&#x27;data&#x27;,
                                       filename=File.OSPath) as _Data
                         FROM yara(files=parse_binary(
-                                     accessor='data',
+                                     accessor=&#x27;data&#x27;,
                                      filename= embedded_section(
-                                          path=TargetBytes,type='data')[0].Data || "",
+                                          path=TargetBytes,type=&#x27;data&#x27;)[0].Data || &quot;&quot;,
                                      profile=PROFILE,
-                                     struct="EmbeddedPE").DecodedPayload,
-                                  accessor='data', rules=FindShellcode, number=99)
+                                     struct=&quot;EmbeddedPE&quot;).DecodedPayload,
+                                  accessor=&#x27;data&#x27;, rules=FindShellcode, number=99)
                     },
                 sleepfunction = {
-                    SELECT *, '' as Xor,
-                    if(condition= String.Name= '$x86',
-                            then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
-                            else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data
-                    FROM yara(accessor='data',files=TargetBytes, rules=FindSleepFunction, number=1)
+                    SELECT *, &#x27;&#x27; as Xor,
+                    if(condition= String.Name= &#x27;$x86&#x27;,
+                            then= &#x27;Sleep mask 32-bit 4.2 deobfuscation routine found.&#x27;,
+                            else= &#x27;Sleep mask 64-bit 4.2 deobfuscation routine found.&#x27;) as _Data
+                    FROM yara(accessor=&#x27;data&#x27;,files=TargetBytes, rules=FindSleepFunction, number=1)
                 })
 
       -- find target files
@@ -558,8 +558,8 @@ sources:
                     OSPath, Size,
                     hash(path=OSPath) as Hash,
                     Xor,_Data,
-                    Rule + '|' + OSPath.String as _Group,
-                    format(format="%v_%v_%v.bin", args=[Rule,OSPath,String.Offset]) as _DecodedDataName
+                    Rule + &#x27;|&#x27; + OSPath.String as _Group,
+                    format(format=&quot;%v_%v_%v.bin&quot;, args=[Rule,OSPath,String.Offset]) as _DecodedDataName
                 FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                     beacon = {
                         SELECT *,
@@ -572,50 +572,50 @@ sources:
                     },
 
                     shellcode = {
-                        SELECT *, '' as Xor,
+                        SELECT *, &#x27;&#x27; as Xor,
                             read_file(filename=OSPath,length=4096) as _Data
                         FROM yara(files=OSPath, rules=FindShellcode, number=99)
                     },
 
                     section_encoded_pe = {
                         SELECT *,
-                            'Embedded data section: ' + Rule as Rule,
+                            &#x27;Embedded data section: &#x27; + Rule as Rule,
                             substr(start=0,end=1,str=String.Data) as Xor,
-                            read_file(accessor='data',filename=File.OSPath,
+                            read_file(accessor=&#x27;data&#x27;,filename=File.OSPath,
                                       offset=String.Offset,length=ExtractBytes) as _Data
                         FROM yara(files=parse_binary(
-                                      accessor='data',
-                                      filename= embedded_section(path=OSPath,type='auto')[0].Data || "",
+                                      accessor=&#x27;data&#x27;,
+                                      filename= embedded_section(path=OSPath,type=&#x27;auto&#x27;)[0].Data || &quot;&quot;,
                                       profile=PROFILE,
-                                      struct="EmbeddedPE").DecodedPayload,
-                                  accessor='data', rules=FindConfig, number=99)
+                                      struct=&quot;EmbeddedPE&quot;).DecodedPayload,
+                                  accessor=&#x27;data&#x27;, rules=FindConfig, number=99)
                     },
                     section_encoded_stager = {
                         SELECT *,
-                            '' as Xor,
-                            'Embedded data section: ' + Rule as Rule,
-                            read_file(accessor='data',
+                            &#x27;&#x27; as Xor,
+                            &#x27;Embedded data section: &#x27; + Rule as Rule,
+                            read_file(accessor=&#x27;data&#x27;,
                                       filename=File.OSPath,
                                       length=ExtractBytes) as _Data
                         FROM yara(files=parse_binary(
-                                      accessor='data',
-                                      filename= embedded_section(path=OSPath,type='auto')[0].Data || "",
+                                      accessor=&#x27;data&#x27;,
+                                      filename= embedded_section(path=OSPath,type=&#x27;auto&#x27;)[0].Data || &quot;&quot;,
                                       profile=PROFILE,
-                                      struct="EmbeddedPE").DecodedPayload,
-                                  accessor='data', rules=FindShellcode, number=99)
+                                      struct=&quot;EmbeddedPE&quot;).DecodedPayload,
+                                  accessor=&#x27;data&#x27;, rules=FindShellcode, number=99)
                     },
                     sleepfunction = {
-                        SELECT *, '' as Xor,
-                            if(condition= String.Name= '$x86',
-                                then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
-                                else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data
+                        SELECT *, &#x27;&#x27; as Xor,
+                            if(condition= String.Name= &#x27;$x86&#x27;,
+                                then= &#x27;Sleep mask 32-bit 4.2 deobfuscation routine found.&#x27;,
+                                else= &#x27;Sleep mask 64-bit 4.2 deobfuscation routine found.&#x27;) as _Data
                         FROM yara(files=OSPath, rules=FindSleepFunction, number=1)
                     })
             })
 
 
       -- find velociraptor process
-      LET me <= SELECT * FROM if(condition= NOT ( TargetFileGlob OR TargetBytes ),
+      LET me &lt;= SELECT * FROM if(condition= NOT ( TargetFileGlob OR TargetBytes ),
                     then = { SELECT Pid FROM pslist(pid=getpid()) })
 
 
@@ -624,7 +624,7 @@ sources:
         FROM pslist()
         WHERE
             Name =~ ProcessRegex
-            AND format(format="%d", args=Pid) =~ PidRegex
+            AND format(format=&quot;%d&quot;, args=Pid) =~ PidRegex
             AND NOT Pid in me.Pid
 
       -- scan processes in scope with our rule
@@ -633,62 +633,62 @@ sources:
         query={
             SELECT Rule,
                 Pid, ProcessName, CommandLine,
-                format(format="%v_%v_%v_%v.bin", args=[Rule,ProcessName,Pid,String.Offset]) as _DecodedDataName,
+                format(format=&quot;%v_%v_%v_%v.bin&quot;, args=[Rule,ProcessName,Pid,String.Offset]) as _DecodedDataName,
                 Xor,_Data,_Group
             FROM switch( -- switchcase will find beacon as priority, then search for shellcode
                 beacon = {
                     SELECT *,
                         substr(start=0,end=1,str=String.Data) as Xor,
-                        read_file(accessor='process',
+                        read_file(accessor=&#x27;process&#x27;,
                                   filename=str(str=Pid),
                                   offset= String.Offset,
                                   length=ExtractBytes) as _Data,
-                        Rule +'|'+ str(str=Pid) +'|'+ ProcessName +'|'+ CommandLine as _Group
-                    FROM yara(accessor='process',files=str(str=Pid), rules=FindConfig, number=99)
+                        Rule +&#x27;|&#x27;+ str(str=Pid) +&#x27;|&#x27;+ ProcessName +&#x27;|&#x27;+ CommandLine as _Group
+                    FROM yara(accessor=&#x27;process&#x27;,files=str(str=Pid), rules=FindConfig, number=99)
                 },
                 shellcode = {
-                    SELECT *, '' as Xor,
-                        read_file(accessor='process',
+                    SELECT *, &#x27;&#x27; as Xor,
+                        read_file(accessor=&#x27;process&#x27;,
                                   filename=str(str=Pid),
                                   offset=String.Offset,length=4096) as _Data,
-                        Rule +'|'+ str(str=Pid) +'|'+ ProcessName +'|'+ CommandLine as _Group
-                    FROM yara(accessor='process',files=str(str=Pid), rules=FindShellcode, number=99)
+                        Rule +&#x27;|&#x27;+ str(str=Pid) +&#x27;|&#x27;+ ProcessName +&#x27;|&#x27;+ CommandLine as _Group
+                    FROM yara(accessor=&#x27;process&#x27;,files=str(str=Pid), rules=FindShellcode, number=99)
                 },
                 sleepfunction = {
-                    SELECT *, '' as Xor,
-                        if(condition= String.Name= '$x86',
-                            then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
-                            else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data,
-                        '' as _Group
-                    FROM yara(accessor='process',files=str(str=Pid), rules=FindSleepFunction, number=1)
+                    SELECT *, &#x27;&#x27; as Xor,
+                        if(condition= String.Name= &#x27;$x86&#x27;,
+                            then= &#x27;Sleep mask 32-bit 4.2 deobfuscation routine found.&#x27;,
+                            else= &#x27;Sleep mask 64-bit 4.2 deobfuscation routine found.&#x27;) as _Data,
+                        &#x27;&#x27; as _Group
+                    FROM yara(accessor=&#x27;process&#x27;,files=str(str=Pid), rules=FindSleepFunction, number=1)
                 })
         })
 
 
       -- Add dynamic functions for shellcode parsing
-      LET position(data) = if(condition= len(list=split(string=format(format='%x',args=data),sep='ffff')) > 1,
-            then= split(string=format(format='%x',args=data),sep='ffff')[-1],
+      LET position(data) = if(condition= len(list=split(string=format(format=&#x27;%x&#x27;,args=data),sep=&#x27;ffff&#x27;)) &gt; 1,
+            then= split(string=format(format=&#x27;%x&#x27;,args=data),sep=&#x27;ffff&#x27;)[-1],
             else= False )
       LET find_strings(data,length,filter) = SELECT Strings
-        FROM parse_records_with_regex(file=data,accessor='data',regex='(?P<Strings>[ -~]+)')
-        WHERE len(list=Strings) > length - 1
+        FROM parse_records_with_regex(file=data,accessor=&#x27;data&#x27;,regex=&#x27;(?P&lt;Strings&gt;[ -~]+)&#x27;)
+        WHERE len(list=Strings) &gt; length - 1
             AND Strings =~ filter
-            AND NOT Strings =~ '^\\s+$'
+            AND NOT Strings =~ &#x27;^\\s+$&#x27;
         LIMIT 150
 
 
       -- generate results remove any FPs
-      LET results <= SELECT *,
-            if(condition= Rule=~'cobalt_strike_beacon$',
-                then= format(format='0x%x',args=Xor),else='0x00') as Xor,
-            if(condition= Rule=~'cobalt_strike_beacon',
-                then= parse_binary(accessor='data',
-                    filename= xor(string=_Data || "" ,key=Xor),
-                    profile = PROFILE,struct  = "CobaltConfig"),
-                else= if(condition= Rule=~'cobalt_strike_shellcode',
-                    then= parse_binary(accessor='data',
-                        filename= _Data || "",
-                        profile = PROFILE,struct="Shellcode"),
+      LET results &lt;= SELECT *,
+            if(condition= Rule=~&#x27;cobalt_strike_beacon$&#x27;,
+                then= format(format=&#x27;0x%x&#x27;,args=Xor),else=&#x27;0x00&#x27;) as Xor,
+            if(condition= Rule=~&#x27;cobalt_strike_beacon&#x27;,
+                then= parse_binary(accessor=&#x27;data&#x27;,
+                    filename= xor(string=_Data || &quot;&quot; ,key=Xor),
+                    profile = PROFILE,struct  = &quot;CobaltConfig&quot;),
+                else= if(condition= Rule=~&#x27;cobalt_strike_shellcode&#x27;,
+                    then= parse_binary(accessor=&#x27;data&#x27;,
+                        filename= _Data || &quot;&quot;,
+                        profile = PROFILE,struct=&quot;Shellcode&quot;),
                     else= _Data )) AS DecodedConfig
         FROM if(condition=TargetBytes,
             then=ByteConfiguration,
@@ -697,15 +697,15 @@ sources:
                 else= ProcessConfiguration))
         WHERE _Data
             AND
-              (( DecodedConfig.C2Server =~ '^[ -~]+$' AND DecodedConfig.BeaconType )
-            OR ( DecodedConfig.Pipename =~ '^[ -~]+$' AND DecodedConfig.BeaconType )
-            OR DecodedConfig.Server =~ '^[ -~]+' -- AND DecodedConfig.TargetUri )
-            OR Rule='cobalt_strike_sleepfunction' )
+              (( DecodedConfig.C2Server =~ &#x27;^[ -~]+$&#x27; AND DecodedConfig.BeaconType )
+            OR ( DecodedConfig.Pipename =~ &#x27;^[ -~]+$&#x27; AND DecodedConfig.BeaconType )
+            OR DecodedConfig.Server =~ &#x27;^[ -~]+&#x27; -- AND DecodedConfig.TargetUri )
+            OR Rule=&#x27;cobalt_strike_sleepfunction&#x27; )
 
       -- add decoded data seperate to keep pretty output
       LET output_decoded_data = SELECT *,
-            upload(accessor = 'data',
-                file = if(condition = Rule='cobalt_strike_beacon',
+            upload(accessor = &#x27;data&#x27;,
+                file = if(condition = Rule=&#x27;cobalt_strike_beacon&#x27;,
                             then = xor(string=_Data,key=unhex(string=Xor)),
                             else = _Data),
                 name = _DecodedDataName) as DecodedData
@@ -715,26 +715,26 @@ sources:
             {
                 SELECT _key, _value
                 FROM items(item=config)
-                WHERE NOT _key =~ '^__'  AND ( _value  OR _key =~ '^license' )
+                WHERE NOT _key =~ &#x27;^__&#x27;  AND ( _value  OR _key =~ &#x27;^license&#x27; )
             })
 
       -- output rows, standard config priority, exclude _Data
       SELECT *,
-        if(condition= format(format='%T',args=DecodedConfig)='string',
+        if(condition= format(format=&#x27;%T&#x27;,args=DecodedConfig)=&#x27;string&#x27;,
             then= DecodedConfig,
             else= cleanup(config=DecodedConfig)) as DecodedConfig
       FROM column_filter(
         query={
             SELECT * ,
                  -- NOTE: some junk strings for shellcode _Group are removed in GROUP BY
-                if(condition= Rule='cobalt_strike_beacon',
-                    then= _Group +'|'+ str(str=DecodedConfig),
-                    else= _Group +'|'+ str(str=DecodedConfig.Server) +'|'+ str(str=DecodedConfig.TargetUri) +'|'+ str(str=DecodedConfig.Licence) ) as _Group
+                if(condition= Rule=&#x27;cobalt_strike_beacon&#x27;,
+                    then= _Group +&#x27;|&#x27;+ str(str=DecodedConfig),
+                    else= _Group +&#x27;|&#x27;+ str(str=DecodedConfig.Server) +&#x27;|&#x27;+ str(str=DecodedConfig.TargetUri) +&#x27;|&#x27;+ str(str=DecodedConfig.Licence) ) as _Group
             FROM if(condition=IncludeDecodedData,
                 then= output_decoded_data,
                 else= results)
             GROUP BY _Group
-        }, exclude=["_Data","_Group"])
+        }, exclude=[&quot;_Data&quot;,&quot;_Group&quot;])
 
 column_types:
   - name: DecodedData

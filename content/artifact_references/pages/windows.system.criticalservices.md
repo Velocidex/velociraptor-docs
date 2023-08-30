@@ -21,10 +21,10 @@ description: |
   installed at all, it will not be shown.
 
 reference:
-  - "ATT&CK: T1089"
+  - &quot;ATT&amp;CK: T1089&quot;
   - https://github.com/teoseller/osquery-attck/blob/master/windows_critical_service_status.conf
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: lookupTable
@@ -45,7 +45,7 @@ sources:
             SELECT * FROM lookupTable WHERE Name =~ ServiceName
          } AS Critical
          FROM Artifact.Windows.System.Services()
-         WHERE Critical AND State != "Running"
+         WHERE Critical AND State != &quot;Running&quot;
 
 </code></pre>
 

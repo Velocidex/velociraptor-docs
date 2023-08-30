@@ -43,13 +43,13 @@ parameters:
     default:
     
 precondition:
-  SELECT * FROM info() where OS = 'linux'
+  SELECT * FROM info() where OS = &#x27;linux&#x27;
 
 sources:
     - query: |
-            LET pcap <= tempfile(extension=".pcap")
+            LET pcap &lt;= tempfile(extension=&quot;.pcap&quot;)
             SELECT *, upload(file=pcap) AS PCAP
-              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) & sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+              FROM execve(argv=[&#x27;bash&#x27;, &#x27;-c&#x27;, format(format=&#x27;&#x27;&#x27;(tcpdump -nni %v -w %v %v) &amp; sleep %v; kill $!&#x27;&#x27;&#x27;, args=[Interface, pcap, BPF, Duration])], length=1000000)
 
 </code></pre>
 

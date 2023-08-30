@@ -14,7 +14,7 @@ description: |
 
 type: CLIENT_EVENT
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |
@@ -23,8 +23,8 @@ sources:
       // with two options - either quoted or not.
       SELECT ServiceName, upload(file=regex_replace(
                     source=ImagePath,
-                    replace="$2",
-                    re='^("([^"]+)" .+|([^ ]+) .+)')) AS Upload,
+                    replace=&quot;$2&quot;,
+                    re=&#x27;^(&quot;([^&quot;]+)&quot; .+|([^ ]+) .+)&#x27;)) AS Upload,
                Timestamp, _EventData, _System
       FROM Artifact.Windows.Events.ServiceCreation()
 

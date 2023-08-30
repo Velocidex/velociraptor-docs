@@ -31,7 +31,7 @@ parameters:
     description: A client ID or a Hostname
     default: C.1234
   - name: Parameters
-    default: "{}"
+    default: &quot;{}&quot;
     description: A key/value JSON object specifying parameters for the artifact
     type: json
 
@@ -40,19 +40,19 @@ sources:
       -- Find a client to collect from by applying the search
       -- critertia and picking the first hit
       LET clients = SELECT client_id FROM clients(search=Client) LIMIT 1
-      LET client_id <= clients[0].client_id
+      LET client_id &lt;= clients[0].client_id
 
       -- If we found something then schedule the collection.
-      LET collection <= if(condition=client_id,
+      LET collection &lt;= if(condition=client_id,
           then=collect_client(client_id=client_id,
                               artifacts=ArtifactName, env=Parameters),
-          else=log(message="No clients found to match search " + Client) AND FALSE)
+          else=log(message=&quot;No clients found to match search &quot; + Client) AND FALSE)
 
       -- Wait for the collection to finish - if the client is
       -- currently connected this wont take long
-      LET flow_results <= SELECT * FROM if(condition=collection,
+      LET flow_results &lt;= SELECT * FROM if(condition=collection,
       then={
-         SELECT * FROM watch_monitoring(artifact='System.Flow.Completion')
+         SELECT * FROM watch_monitoring(artifact=&#x27;System.Flow.Completion&#x27;)
          WHERE FlowId = collection.flow_id
          LIMIT 1
       })

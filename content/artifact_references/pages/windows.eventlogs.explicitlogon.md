@@ -37,32 +37,32 @@ description: |
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: EvtxGlob
-    default: '%SystemRoot%\System32\Winevt\Logs\Security.evtx'
+    default: &#x27;%SystemRoot%\System32\Winevt\Logs\Security.evtx&#x27;
   - name: UsernameRegex
-    description: "Target username Regex"
+    description: &quot;Target username Regex&quot;
     default: .
     type: regex
   - name: UsernameWhitelist
-    description: "Target username witelist Regex"
-    default: '\\$$'
+    description: &quot;Target username witelist Regex&quot;
+    default: &#x27;\\$$&#x27;
     type: regex
   - name: ServerRegex
-    description: "Target server regex"
+    description: &quot;Target server regex&quot;
     default: .
     type: regex
   - name: ServerWhitelist
-    description: "Target server whitelist regex"
-    default: 'localhost'
+    description: &quot;Target server whitelist regex&quot;
+    default: &#x27;localhost&#x27;
     type: regex
   - name: ProcessNameRegex
-    description: "Target process Regex"
+    description: &quot;Target process Regex&quot;
     default: .
   - name: ProcessNameWhitelist
-    description: "Target process whitelist Regex"
+    description: &quot;Target process whitelist Regex&quot;
     type: regex
 
   - name: VSSAnalysisAge
@@ -76,22 +76,22 @@ parameters:
 
   - name: DateAfter
     type: timestamp
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
   - name: DateBefore
     type: timestamp
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
 
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
-        then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
-        then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -118,8 +118,8 @@ sources:
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE
                     EventID = 4648
-                    AND EventTime < DateBeforeTime
-                    AND EventTime > DateAfterTime
+                    AND EventTime &lt; DateBeforeTime
+                    AND EventTime &gt; DateAfterTime
                     AND TargetUserName =~ UsernameRegex
                     AND NOT if(condition=UsernameWhitelist,
                         then= TargetUserName =~ UsernameWhitelist,

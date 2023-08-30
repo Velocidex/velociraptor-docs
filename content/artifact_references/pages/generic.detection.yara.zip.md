@@ -34,7 +34,7 @@ that are not containers.
 
 <pre><code class="language-yaml">
 name: Generic.Detection.Yara.Zip
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 description: |
     This artifact enables running Yara on embeded compressed files.
 
@@ -65,9 +65,9 @@ description: |
 
 parameters:
   - name: TargetGlob
-    default: "**/*.{zip,jar,war,ear}"
+    default: &quot;**/*.{zip,jar,war,ear}&quot;
   - name: ZipFilenameRegex
-    default: ".(zip|jar|war|ear)$"
+    default: &quot;.(zip|jar|war|ear)$&quot;
     description: Regex of FileName inside container files we would like to recursively scan.
   - name: MaxRecursions
     description: Number of recursions to allow checking inside archives. Default is 10 layers.
@@ -82,9 +82,9 @@ parameters:
     default: |
         rule IsPE:TestRule {
            meta:
-              author = "the internet"
-              date = "2021-03-04"
-              description = "A simple PE rule to test yara features"
+              author = &quot;the internet&quot;
+              date = &quot;2021-03-04&quot;
+              description = &quot;A simple PE rule to test yara features&quot;
           condition:
              uint16(0) == 0x5A4D and
              uint32(uint32(0x3C)) == 0x00004550
@@ -104,19 +104,19 @@ sources:
       LET target_files = SELECT *,
             read_file(filename=OSPath,offset=0,length=2) as _Header
         FROM glob(globs=TargetGlob,nosymlink=True)
-        WHERE _Header = 'PK'
+        WHERE _Header = &#x27;PK&#x27;
 
       -- recursive search function
       LET Recurse(Container, File, Accessor, RecursionRounds) = SELECT * FROM if(
-        condition=RecursionRounds < MaxRecursions,
+        condition=RecursionRounds &lt; MaxRecursions,
         then={
            SELECT * FROM foreach(
                 row={
                     SELECT *
-                    FROM glob(accessor='zip',
+                    FROM glob(accessor=&#x27;zip&#x27;,
                        root=pathspec(DelegatePath=File, DelegateAccessor=Accessor),
-                       globs='**')
-                    WHERE NOT IsDir AND Size > 0
+                       globs=&#x27;**&#x27;)
+                    WHERE NOT IsDir AND Size &gt; 0
                 },
                 query={
                     SELECT *
@@ -126,7 +126,7 @@ sources:
                                 FROM Recurse(
                                     Container = Container,
                                     File=OSPath,
-                                    Accessor="zip",
+                                    Accessor=&quot;zip&quot;,
                                     RecursionRounds = RecursionRounds + 1)
                             },
                             else={
@@ -134,18 +134,18 @@ sources:
                                 Container,
                                 OSPath.HumanString as ExtractedPath,
                                 OSPath.Path as FilePath,
-                                hash(accessor='zip',path=OSPath) as Hash,
+                                hash(accessor=&#x27;zip&#x27;,path=OSPath) as Hash,
                                 File.Size AS Size,
                                 Mtime, Atime, Ctime, Btime,
                                 Rule, Tags, Meta,
                                 String.Name as YaraString,
                                 String.Offset as HitOffset,
-                                upload( accessor='scope',
-                                    file='String.Data',
-                                    name=format(format="%v_%v",
+                                upload( accessor=&#x27;scope&#x27;,
+                                    file=&#x27;String.Data&#x27;,
+                                    name=format(format=&quot;%v_%v&quot;,
                                     args=[ OSPath.HumanString, String.Offset ]
                                         )) as HitContext
-                              FROM yara(accessor='zip',files=OSPath,rules=YaraRule,
+                              FROM yara(accessor=&#x27;zip&#x27;,files=OSPath,rules=YaraRule,
                                 context=ContextBytes, number=NumberOfHits)
                             })
                     })
@@ -154,7 +154,7 @@ sources:
       LET hits = SELECT * FROM foreach(row=target_files,
             query={
                 SELECT *
-                FROM Recurse(Container=OSPath,File=OSPath, Accessor="auto", RecursionRounds=0)
+                FROM Recurse(Container=OSPath,File=OSPath, Accessor=&quot;auto&quot;, RecursionRounds=0)
             })
 
       -- upload files that have hit

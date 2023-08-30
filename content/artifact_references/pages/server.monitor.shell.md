@@ -28,7 +28,7 @@ description: |
    Obviously being able to run arbitrary commands on the end point is
    a powerful feature and should be used sparingly. There is an audit
    trail for shell commands executed and their output available by
-   streaming all shell commands to the "Shell" client evnt monitoring
+   streaming all shell commands to the &quot;Shell&quot; client evnt monitoring
    artifact.
 
    This server event artifact centralizes all shell access from all
@@ -41,8 +41,8 @@ sources:
   - query: |
       -- Watch for shell flow completions.
       LET collections = SELECT Flow
-         FROM watch_monitoring(artifact="System.Flow.Completion")
-         WHERE Flow.artifacts_with_results =~ "Windows.System.PowerShell|Windows.System.CmdShell"
+         FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
+         WHERE Flow.artifacts_with_results =~ &quot;Windows.System.PowerShell|Windows.System.CmdShell&quot;
 
       -- Dump the command and the results.
       SELECT * FROM foreach(row=collections,
@@ -67,15 +67,15 @@ reports:
     template: |
       {{ .Description }}
 
-      {{ $rows := Query "SELECT ClientId, Hostname, \
-           timestamp(epoch=LastActive) AS Timestamp, Command, Stdout FROM source()" }}
+      {{ $rows := Query &quot;SELECT ClientId, Hostname, \
+           timestamp(epoch=LastActive) AS Timestamp, Command, Stdout FROM source()&quot; }}
 
       {{ range $row := $rows }}
 
-      * On {{ Get $row "Timestamp" }} we ran {{ Get $row "Command" }} on {{ Get $row "Hostname" }}
+      * On {{ Get $row &quot;Timestamp&quot; }} we ran {{ Get $row &quot;Command&quot; }} on {{ Get $row &quot;Hostname&quot; }}
 
       ```text
-      {{ Get $row "Stdout" }}
+      {{ Get $row &quot;Stdout&quot; }}
       ```
 
       {{end}}

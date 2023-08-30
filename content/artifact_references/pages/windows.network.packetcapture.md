@@ -15,7 +15,7 @@ convert the .etl to a PCAP and upload it.
 
 <pre><code class="language-yaml">
 name: Windows.Network.PacketCapture
-author: Cybereason <omer.yampel@cybereason.com>
+author: Cybereason &lt;omer.yampel@cybereason.com&gt;
 description: |
   Run this artifact twice, the first time, set the StartTrace flag to
   True to start the PCAP collection, this will have the VQL return a
@@ -25,7 +25,7 @@ description: |
   created in the previous step in the TraceFile. This will then
   convert the .etl to a PCAP and upload it.
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 tools:
     - name: etl2pcapng
@@ -42,24 +42,24 @@ parameters:
 sources:
     - query: |
         LET tool_zip = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-            ToolName="etl2pcapng", IsExecutable=FALSE)
+            ToolName=&quot;etl2pcapng&quot;, IsExecutable=FALSE)
 
-        LET ExePath <= tempfile(extension='.exe')
+        LET ExePath &lt;= tempfile(extension=&#x27;.exe&#x27;)
 
-        LET etl2pcapbin <= SELECT
+        LET etl2pcapbin &lt;= SELECT
             copy(
               filename=pathspec(
                  DelegatePath=tool_zip[0].OSPath,
-                 Path="etl2pcapng/x64/etl2pcapng.exe"),
+                 Path=&quot;etl2pcapng/x64/etl2pcapng.exe&quot;),
               dest=ExePath,
-              accessor='zip'
+              accessor=&#x27;zip&#x27;
             ) AS file
         FROM scope()
 
-        LET outfile <= tempfile(extension=".pcapng")
+        LET outfile &lt;= tempfile(extension=&quot;.pcapng&quot;)
 
         LET stop_trace = SELECT * FROM execve(
-             argv=['netsh', 'trace', 'stop'])
+             argv=[&#x27;netsh&#x27;, &#x27;trace&#x27;, &#x27;stop&#x27;])
 
         LET convert_pcap = SELECT * FROM execve(
              argv=[etl2pcapbin[0].file, TraceFile, outfile])
@@ -75,10 +75,10 @@ sources:
                 SELECT
                     split(string=split(
                         string=Stdout,
-                        sep="Trace File: ")[1],
-                    sep="\r\nAppend:")[0] as etl_file
-                FROM execve(argv=["netsh", "trace", "start", "capture=yes"])
-                WHERE log(message="stderr: " + Stderr), log(message="stdout: " + Stdout)
+                        sep=&quot;Trace File: &quot;)[1],
+                    sep=&quot;\r\nAppend:&quot;)[0] as etl_file
+                FROM execve(argv=[&quot;netsh&quot;, &quot;trace&quot;, &quot;start&quot;, &quot;capture=yes&quot;])
+                WHERE log(message=&quot;stderr: &quot; + Stderr), log(message=&quot;stdout: &quot; + Stdout)
 
         SELECT * FROM if(
                 condition=StartTrace,

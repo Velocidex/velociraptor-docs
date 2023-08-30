@@ -39,7 +39,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
         LET parsed_cats = SELECT Name, parse_pkcs7(data=read_file(filename=OSPath)) AS PKCS7

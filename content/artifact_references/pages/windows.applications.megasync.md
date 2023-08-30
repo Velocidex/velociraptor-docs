@@ -20,22 +20,22 @@ description: |
   With UploadLogs selected a copy of the logs are uploaded to the server.
   SearchVSS enables search over VSS and dedup support.
 
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 
 reference:
   - https://attack.mitre.org/techniques/T1567/002/
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: LogFiles
-    default: 'C:\Users\*\AppData\Local\Mega Limited\MEGAsync\logs\*.log'
+    default: &#x27;C:\Users\*\AppData\Local\Mega Limited\MEGAsync\logs\*.log&#x27;
   - name: SearchRegex
-    description: "Regex of strings to search in line."
-    default: 'Transfer\s\(UPLOAD\)|upload\squeue|local\sfile\saddition\sdetected|Sync\s-\ssending\sfile|\"user\"'
+    description: &quot;Regex of strings to search in line.&quot;
+    default: &#x27;Transfer\s\(UPLOAD\)|upload\squeue|local\sfile\saddition\sdetected|Sync\s-\ssending\sfile|\&quot;user\&quot;&#x27;
     type: regex
   - name: WhitelistRegex
-    description: "Regex of strings to leave out of output."
+    description: &quot;Regex of strings to leave out of output.&quot;
     default:
     type: regex
 
@@ -49,13 +49,13 @@ parameters:
       for everything which will be much slower.
 
   - name: UploadLogs
-    description: "Upload MEGASync logs."
+    description: &quot;Upload MEGASync logs.&quot;
     type: bool
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- Find target files
       LET files = SELECT *, OSPath as Source
@@ -69,7 +69,7 @@ sources:
                 Atime,
                 Ctime,
                 Size
-              FROM parse_lines(filename=OSPath,accessor='file')
+              FROM parse_lines(filename=OSPath,accessor=&#x27;file&#x27;)
               WHERE TRUE
                 AND Line =~ SearchRegex
                 AND NOT if(condition= WhitelistRegex,
@@ -91,7 +91,7 @@ sources:
             if(condition=UploadLogs,
                 then= upload(file=OSPath, accessor=Accessor)
                 ) as Upload,
-            'MEGAsync logfile' as Description,
+            &#x27;MEGAsync logfile&#x27; as Description,
             Mtime,
             Atime,
             Ctime,

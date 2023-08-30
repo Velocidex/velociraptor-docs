@@ -41,17 +41,17 @@ parameters:
      description: Only select flows created before this date. If not set we choose all flows.
      type: timestamp
    - name: CreatorRegex
-     default: "H\\..+"
+     default: &quot;H\\..+&quot;
      type: regex
      description: |
-       Match flows created by this user (e.g. hunts all start with "H.")
+       Match flows created by this user (e.g. hunts all start with &quot;H.&quot;)
    - name: ReallyDoIt
      type: bool
      description: Does not delete until you press the ReallyDoIt button!
 
 sources:
   - query: |
-        LET DateBefore <= DateBefore || now()
+        LET DateBefore &lt;= DateBefore || now()
         LET hits = SELECT * FROM foreach(row={
             SELECT client_id,
                    os_info.hostname AS hostname
@@ -66,7 +66,7 @@ sources:
           FROM flows(client_id=client_id)
           WHERE creator =~ CreatorRegex
              AND artifacts =~ ArtifactRegex
-             AND created < DateBefore
+             AND created &lt; DateBefore
         }, workers=10)
 
         SELECT * FROM if(condition=ReallyDoIt,
@@ -77,7 +77,7 @@ sources:
                        session_id, artifacts, created, Type, Data, Error
                 FROM delete_flow(client_id=client_id,
                         flow_id=session_id, really_do_it=ReallyDoIt)
-                WHERE log(message=format(format="Deleting flow %v from %v",
+                WHERE log(message=format(format=&quot;Deleting flow %v from %v&quot;,
                    args=[session_id, hostname]))
             }, workers=10)
         }, else={

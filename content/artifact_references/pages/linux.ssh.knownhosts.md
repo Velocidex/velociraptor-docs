@@ -11,9 +11,9 @@ name: Linux.Ssh.KnownHosts
 description: Find and parse ssh known hosts files.
 parameters:
   - name: sshKnownHostsFiles
-    default: '.ssh/known_hosts*'
+    default: &#x27;.ssh/known_hosts*&#x27;
 
-precondition: SELECT OS From info() where OS = 'linux'
+precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
 
 sources:
   - query: |
@@ -35,29 +35,29 @@ sources:
           query={
             SELECT Uid, User, OSPath, Hostname, Type, PublicKey
             FROM split_records(
-               filenames=OSPath, regex=" ", record_regex="\n",
-               columns=["Hostname", "Type", "PublicKey"])
+               filenames=OSPath, regex=&quot; &quot;, record_regex=&quot;\n&quot;,
+               columns=[&quot;Hostname&quot;, &quot;Type&quot;, &quot;PublicKey&quot;])
             /* Ignore comment lines. */
-            WHERE not Hostname =~ "^[^#]+#"
+            WHERE not Hostname =~ &quot;^[^#]+#&quot;
           })
 
   - name: HostPublicKeys
     query: |
-      LET Me <= SELECT * FROM info()
+      LET Me &lt;= SELECT * FROM info()
 
       SELECT * FROM foreach(row={
         SELECT OSPath
-        FROM glob(globs="/etc/ssh/ssh_host*.pub")
+        FROM glob(globs=&quot;/etc/ssh/ssh_host*.pub&quot;)
       }, query={
         SELECT *, Me[0].Fqdn AS Fqdn
-        FROM split_records(columns=["Type", "PublicKey", "KeyName"],
+        FROM split_records(columns=[&quot;Type&quot;, &quot;PublicKey&quot;, &quot;KeyName&quot;],
                    filenames=OSPath,
-                   regex=" +")
+                   regex=&quot; +&quot;)
       })
 
     notebook:
       - type: vql_suggestion
-        name: "Resolve Known Hosts"
+        name: &quot;Resolve Known Hosts&quot;
         template: |
           /*
           # Resolve Hostnames
@@ -74,15 +74,15 @@ sources:
           one machine to another machine.
           */
 
-          LET lookup <= memoize(
-             key="PublicKey",
+          LET lookup &lt;= memoize(
+             key=&quot;PublicKey&quot;,
              query={
                SELECT *
-               FROM source(artifact="Linux.Ssh.KnownHosts/HostPublicKeys")
+               FROM source(artifact=&quot;Linux.Ssh.KnownHosts/HostPublicKeys&quot;)
           })
 
           SELECT *, get(item=lookup, field=PublicKey) AS Hostname
-          FROM source(artifact="Linux.Ssh.KnownHosts")
+          FROM source(artifact=&quot;Linux.Ssh.KnownHosts&quot;)
 
 </code></pre>
 

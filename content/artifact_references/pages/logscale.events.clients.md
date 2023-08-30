@@ -20,7 +20,7 @@ description: |
   Humio) ingestion endpoint
 
   NOTE: You must ensure you are collecting these artifacts from the
-  clients by adding them to the "Client Events" GUI.
+  clients by adding them to the &quot;Client Events&quot; GUI.
 
 type: SERVER_EVENT
 
@@ -33,7 +33,7 @@ parameters:
     description: Ingest token for API
     type: string
   - name: tagFields
-    description: Comma-separated list of field names to use as tags in the message; Can be renamed with <oldname>=<newname>.
+    description: Comma-separated list of field names to use as tags in the message; Can be renamed with &lt;oldname&gt;=&lt;newname&gt;.
     default:
     type: string
   - name: numThreads
@@ -68,7 +68,7 @@ parameters:
 sources:
   - query: |
       LET artifacts_to_watch = SELECT Artifact FROM Artifacts
-        WHERE log(message="Uploading artifact " + Artifact + " to LogScale")
+        WHERE log(message=&quot;Uploading artifact &quot; + Artifact + &quot; to LogScale&quot;)
 
       LET events = SELECT * FROM foreach(
           row=artifacts_to_watch,
@@ -83,7 +83,7 @@ sources:
           apibaseurl=ingestApiBase,
           ingest_token=ingestToken,
           threads=numThreads,
-          tag_fields=split(string=tagFields, sep=","),
+          tag_fields=split(string=tagFields, sep=&quot;,&quot;),
           batching_timeout_ms=batchingTimeoutMs,
           event_batch_size=eventBatchSize,
           http_timeout=httpTimeout,

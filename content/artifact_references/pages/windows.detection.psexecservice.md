@@ -34,7 +34,7 @@ parameters:
     default: |
         rule Hit {
            strings:
-             $a = "psexec" nocase wide ascii
+             $a = &quot;psexec&quot; nocase wide ascii
            condition:
              any of them
         }
@@ -62,9 +62,9 @@ sources:
             Parse.TargetInstance.ServiceType As ServiceType,
             Parse.TargetInstance.ProcessId AS PID
         FROM wmi_events(
-           query="SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'",
+           query=&quot;SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA &#x27;Win32_Service&#x27;&quot;,
            wait=5000000,
-           namespace="ROOT/CIMV2")
+           namespace=&quot;ROOT/CIMV2&quot;)
 
         SELECT * FROM foreach(
           row=service_creation,

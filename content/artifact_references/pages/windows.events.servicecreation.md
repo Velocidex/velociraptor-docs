@@ -31,12 +31,12 @@ type: CLIENT_EVENT
 
 parameters:
   - name: systemLogFile
-    default: >-
+    default: &gt;-
       C:/Windows/System32/Winevt/Logs/System.evtx
 
 sources:
  - precondition:
-     SELECT OS from info() where OS = "windows"
+     SELECT OS from info() where OS = &quot;windows&quot;
 
    query: |
         SELECT System.TimeCreated.SystemTime as Timestamp,

@@ -34,7 +34,7 @@ parameters:
       C:/Users/*/NTUSER.dat,\Software\Microsoft\Windows\Shell\BagMRU\**
       C:/Users/*/AppData/Local/Microsoft/Windows/UsrClass.dat,\Local Settings\Software\Microsoft\Windows\Shell\BagMRU\**
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 imports:
   # Link files use the same internal format as shellbags so we import
@@ -47,7 +47,7 @@ sources:
         query={
             SELECT OSPath AS HivePath, KeyGlob
             FROM glob(globs=HiveGlob)
-            WHERE log(message="Inspecting hive " + HivePath)
+            WHERE log(message=&quot;Inspecting hive &quot; + HivePath)
         })
 
       LET ShellValues = SELECT * FROM foreach(row=AllHives,
@@ -56,18 +56,18 @@ sources:
            FROM glob(
               root=pathspec(DelegatePath=HivePath),
               globs=KeyGlob,
-              accessor="raw_reg")
-           WHERE Data.type =~ "BINARY" AND OSPath.Path =~ "[0-9]$"
+              accessor=&quot;raw_reg&quot;)
+           WHERE Data.type =~ &quot;BINARY&quot; AND OSPath.Path =~ &quot;[0-9]$&quot;
         })
 
       LET ParsedValues = SELECT
           OSPath AS KeyPath,
           parse_binary(profile=Profile, filename=Data.value,
-                       accessor="data", struct="ItemIDList") as _Parsed,
+                       accessor=&quot;data&quot;, struct=&quot;ItemIDList&quot;) as _Parsed,
           base64encode(string=Data.value) AS _RawData, ModTime
       FROM ShellValues
 
-      LET AllResults <= SELECT KeyPath,
+      LET AllResults &lt;= SELECT KeyPath,
         _Parsed.ShellBag.Description AS Description,
         _Parsed, _RawData, ModTime
       FROM ParsedValues
@@ -75,12 +75,12 @@ sources:
       // Recursive function to join path components together.
       // Limit recursion depth just in case.
       LET FormPath(MRUPath, Description, Depth) = SELECT * FROM if(
-        condition=Depth < 20,
+        condition=Depth &lt; 20,
         then={SELECT * FROM chain(
           b={
             SELECT MRUPath, Description, Depth,
               -- Signify unknown component as ?
-              Description.LongName || Description.ShortName || "?" AS Name
+              Description.LongName || Description.ShortName || &quot;?&quot; AS Name
             FROM scope()
           },
           c={
@@ -109,7 +109,7 @@ sources:
            KeyPath AS _OSPath,
            KeyPath.DelegatePath AS Hive,
            KeyPath.Path AS KeyPath, Description,
-               join(array=Chain.Name, sep=" -> ") AS Path,
+               join(array=Chain.Name, sep=&quot; -&gt; &quot;) AS Path,
                _RawData, _Parsed
         FROM ReconstructedPath
         ORDER BY Path

@@ -26,9 +26,9 @@ parameters:
    - name: CCAddress
      default:
    - name: Subject
-     default: "Deployment statistics for Velociraptor"
+     default: &quot;Deployment statistics for Velociraptor&quot;
    - name: Period
-     default: "3600"
+     default: &quot;3600&quot;
 
 sources:
   - query: |
@@ -45,7 +45,7 @@ sources:
                 subject=Subject,
                 period=60,
                 skip_verify=SkipVerify,
-                body=format(format='Total clients currently connected %v',
+                body=format(format=&#x27;Total clients currently connected %v&#x27;,
                      args=[metrics.client_comms_current_connections])
             )
         })

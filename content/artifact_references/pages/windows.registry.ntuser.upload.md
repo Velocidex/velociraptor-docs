@@ -19,10 +19,10 @@ to the server.
 <pre><code class="language-yaml">
 name: Windows.Registry.NTUser.Upload
 description: |
-  This artifact collects all the user's NTUser.dat registry hives.
+  This artifact collects all the user&#x27;s NTUser.dat registry hives.
 
   When a user logs into a windows machine the system creates their own
-  "profile" which consists of a registry hive mapped into the
+  &quot;profile&quot; which consists of a registry hive mapped into the
   HKEY_USERS hive. This hive file is locked as long as the user is
   logged in.
 
@@ -37,7 +37,7 @@ parameters:
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
         LET users = SELECT
             Name,
@@ -45,8 +45,8 @@ sources:
         FROM Artifact.Windows.Sys.Users()
         WHERE HomeDir AND Name =~ userRegex
 
-        SELECT upload(file=HomeDir + "\\ntuser.dat",
-                      accessor="auto") as Upload
+        SELECT upload(file=HomeDir + &quot;\\ntuser.dat&quot;,
+                      accessor=&quot;auto&quot;) as Upload
         FROM users
 
 </code></pre>

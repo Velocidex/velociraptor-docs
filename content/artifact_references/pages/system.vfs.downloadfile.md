@@ -18,8 +18,8 @@ name: System.VFS.DownloadFile
 description: |
   This is an internal artifact used by the GUI to populate the
   VFS. You may run it manually if you like, but typically it is
-  launched by the GUI when the user clicks the "Collect from client"
-  button at the file "Stats" tab.
+  launched by the GUI when the user clicks the &quot;Collect from client&quot;
+  button at the file &quot;Stats&quot; tab.
 
   If you run it yourself (or via the API) the results will also be
   shown in the VFS view.
@@ -42,7 +42,7 @@ parameters:
 sources:
   - query: |
       LET download_one_file = if(
-         condition=version(plugin="stat") > 1,
+         condition=version(plugin=&quot;stat&quot;) &gt; 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -55,18 +55,18 @@ sources:
         })
 
       LET download_recursive = if(
-         condition=version(plugin="stat") > 1,
+         condition=version(plugin=&quot;stat&quot;) &gt; 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
-           FROM glob(globs="**", root=Components,
+           FROM glob(globs=&quot;**&quot;, root=Components,
                      accessor=Accessor, nosymlink=TRUE)
            WHERE Mode.IsRegular
         },
         else={
           SELECT OSPath AS Path, Accessor,
             Size, upload(file=OSPath, accessor=Accessor) AS Upload
-          FROM glob(globs="**", root=Path, accessor=Accessor)
+          FROM glob(globs=&quot;**&quot;, root=Path, accessor=Accessor)
           WHERE Mode.IsRegular
        })
 

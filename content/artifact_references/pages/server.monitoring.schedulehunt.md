@@ -23,10 +23,10 @@ parameters:
     default: Tuesday
     type: regex
   - name: ScheduleTimeRegex
-    default: "01:28:"
+    default: &quot;01:28:&quot;
     type: regex
   - name: HuntDescription
-    default: "Periodic info hunt"
+    default: &quot;Periodic info hunt&quot;
 
 sources:
   - query: |
@@ -36,9 +36,9 @@ sources:
       FROM clock(period=60)
       WHERE Now =~ ScheduleTimeRegex
         AND Today =~ ScheduleDayRegex
-        AND log(message="Launching at time " + Now)
+        AND log(message=&quot;Launching at time &quot; + Now)
 
-      SELECT hunt(artifacts=["Generic.Client.Info"],
+      SELECT hunt(artifacts=[&quot;Generic.Client.Info&quot;],
                   spec=dict(`Generic.Client.Info`=dict()),
                   description=HuntDescription)
       FROM schedule

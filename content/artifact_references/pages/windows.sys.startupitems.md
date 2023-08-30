@@ -49,15 +49,15 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
-        LET approved <=
+        LET approved &lt;=
            SELECT Name as ApprovedName,
-                  encode(string=Data, type="hex") as Enabled
+                  encode(string=Data, type=&quot;hex&quot;) as Enabled
            FROM glob(globs=startupApprovedGlobs.KeyGlobs,
-                     accessor="registry")
-           WHERE Enabled =~ "^0[0-9]0+$"
+                     accessor=&quot;registry&quot;)
+           WHERE Enabled =~ &quot;^0[0-9]0+$&quot;
 
         LET registry_runners = SELECT Name,
           OSPath, Data.value as Details,
@@ -66,18 +66,18 @@ sources:
                 SELECT Enabled from approved
                 WHERE Name = ApprovedName
            },
-           then="enabled", else="disabled") as Enabled,
-           "" AS Upload
+           then=&quot;enabled&quot;, else=&quot;disabled&quot;) as Enabled,
+           &quot;&quot; AS Upload
           FROM glob(
            globs=runKeyGlobs.KeyGlobs,
-           accessor="registry")
+           accessor=&quot;registry&quot;)
 
         LET enrich_file(OSPath) = SELECT * FROM switch(
         ini={
-            SELECT regex_replace(re="[^0-9a-z_]", replace=".",
+            SELECT regex_replace(re=&quot;[^0-9a-z_]&quot;, replace=&quot;.&quot;,
                  source=read_file(filename=OSPath, length=1024)) AS Details
             FROM scope()
-            WHERE OSPath.Basename =~ ".(bat|ini|ps1)$"
+            WHERE OSPath.Basename =~ &quot;.(bat|ini|ps1)$&quot;
         }, lnk={
             SELECT { 
                   SELECT SourceFile, ShellLinkHeader, LinkInfo, LinkTarget, StringData, ExtraData 
@@ -92,7 +92,7 @@ sources:
         LET file_runners =
           SELECT Name, OSPath,
                  enrich_file(OSPath=OSPath)[0].Details AS Details,
-                 "enable" as Enabled,
+                 &quot;enable&quot; as Enabled,
                  if(condition=AlsoUpload, then=upload(file=OSPath)) AS Upload
           FROM glob(globs=startupFolderDirectories.FileGlobs)
 

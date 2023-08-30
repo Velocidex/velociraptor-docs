@@ -68,7 +68,7 @@ description: |
 
 
 precondition:
-  SELECT * FROM info() where OS = 'windows'
+  SELECT * FROM info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: SearchFilesGlob
@@ -106,23 +106,23 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
   - name: ModifiedBefore
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
 
 sources:
   - query: |
       LET file_search = SELECT OSPath,
-               get(item=Data, field="mft") as Inode,
+               get(item=Data, field=&quot;mft&quot;) as Inode,
                Mode.String AS Mode, Size,
                Mtime AS MTime,
                Atime AS ATime,
                Btime AS BTime,
-               Ctime AS CTime, "" AS Keywords,
+               Ctime AS CTime, &quot;&quot; AS Keywords,
                IsDir, Data
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   accessor=Accessor)
@@ -131,15 +131,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(
@@ -156,7 +156,7 @@ sources:
                       str(str=String.Data) As Keywords, IsDir, Data
 
                FROM yara(files=OSPath,
-                         key="A",
+                         key=&quot;A&quot;,
                          rules=YaraRule,
                          accessor=Accessor)
             })

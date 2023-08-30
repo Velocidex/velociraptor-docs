@@ -24,7 +24,7 @@ required_permissions:
 parameters:
  - name: script
    default: |
-     Unregister-ScheduledTask -TaskName "%s" -Confirm:$false
+     Unregister-ScheduledTask -TaskName &quot;%s&quot; -Confirm:$false
  - name: TasksPath
    default: c:/Windows/System32/Tasks/**
  - name: ArgumentRegex
@@ -34,14 +34,14 @@ parameters:
    default: ThisIsAUniqueName
    type: regex
  - name: PowerShellExe
-   default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+   default: &quot;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe&quot;
  - name: ReallyDoIt
    type: bool
    default: N
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       LET task_paths = SELECT Name, OSPath
@@ -49,11 +49,11 @@ sources:
         WHERE NOT IsDir
 
       LET parse_task = select OSPath, Name, parse_xml(
-               accessor='data',
+               accessor=&#x27;data&#x27;,
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='<[?].+?>',
-                    replace='')) AS XML
+                    re=&#x27;&lt;[?].+?&gt;&#x27;,
+                    replace=&#x27;&#x27;)) AS XML
       FROM read_file(filenames=OSPath)
 
       LET tasks = SELECT OSPath, Name,
@@ -64,15 +64,15 @@ sources:
             XML as _XML
       FROM foreach(row=task_paths, query=parse_task)
       WHERE (Arguments =~ ArgumentRegex AND Command =~ CommandRegEx)  AND
-      log(message="Removing task " + Name)
+      log(message=&quot;Removing task &quot; + Name)
 
       SELECT * FROM foreach(row=tasks,
         query={
-          SELECT * FROM if(condition= ReallyDoIt='Y',
+          SELECT * FROM if(condition= ReallyDoIt=&#x27;Y&#x27;,
             then={
               SELECT OSPath, Name, Command, Arguments, ComHandler, UserId, _XML
               FROM execve(argv=[PowerShellExe,
-                 "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+                 &quot;-ExecutionPolicy&quot;, &quot;Unrestricted&quot;, &quot;-encodedCommand&quot;,
                     base64encode(string=utf16_encode(
                     string=format(format=script, args=[Name])))
               ])

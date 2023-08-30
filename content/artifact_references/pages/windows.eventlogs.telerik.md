@@ -46,13 +46,13 @@ reference:
 
 parameters:
   - name: EvtxGlob
-    default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
+    default: &#x27;%SystemRoot%\System32\Winevt\Logs\Application.evtx&#x27;
   - name: IocRegex
-    description: "IOC Regex"
+    description: &quot;IOC Regex&quot;
     default: telerik.*\\?type=rau
     type: regex
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: &quot;Regex of string to witelist&quot;
     type: regex
   - name: VSSAnalysisAge
     type: int
@@ -64,23 +64,23 @@ parameters:
       for everything which will be much slower.
   - name: DateAfter
     type: timestamp
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
   - name: DateBefore
     type: timestamp
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
 
 sources:
-  - precondition: SELECT OS From info() where OS = 'windows'
+  - precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
-        then = DateAfter, else = "1600-01-01" )
-      LET DateBeforeTime <= if(condition=DateBefore,
-        then = DateBefore, else = "2200-01-01" )
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then = DateAfter, else = &quot;1600-01-01&quot; )
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then = DateBefore, else = &quot;2200-01-01&quot; )
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -106,11 +106,11 @@ sources:
                     OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE EventID = 1309
-                    AND format(format='%v',args=EventData.Data) =~ IocRegex
+                    AND format(format=&#x27;%v&#x27;,args=EventData.Data) =~ IocRegex
                     AND NOT if(condition=WhitelistRegex,
-                        then= format(format='%v',args=EventData.Data) =~ WhitelistRegex,
+                        then= format(format=&#x27;%v&#x27;,args=EventData.Data) =~ WhitelistRegex,
                         else= FALSE )
-                    AND EventTime >= DateAfterTime AND EventTime <= DateBeforeTime
+                    AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
             }
           )
 

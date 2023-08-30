@@ -31,7 +31,7 @@ sources:
   - query: |
       LET all_flows = SELECT Flow.client_id AS client_id, Flow.session_id AS flow_id
       FROM hunt_flows(hunt_id=HuntId)
-      WHERE Flow.state = "RUNNING"
+      WHERE Flow.state = &quot;RUNNING&quot;
 
       LET cancellations = SELECT client_id, flow_id,
              cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
@@ -40,7 +40,7 @@ sources:
       SELECT * FROM if(condition=HuntId, then=cancellations,
       else={
          SELECT * FROM scope()
-         WHERE log(message="Hunt ID must be specified.") AND NULL
+         WHERE log(message=&quot;Hunt ID must be specified.&quot;) AND NULL
       })
 
 </code></pre>

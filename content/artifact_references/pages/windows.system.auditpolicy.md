@@ -27,16 +27,16 @@ author: Zach Stanford - @svch0st
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       LET output = SELECT * FROM execve(
-        argv=["auditpol.exe","/get","/category:*","/r"])
+        argv=[&quot;auditpol.exe&quot;,&quot;/get&quot;,&quot;/category:*&quot;,&quot;/r&quot;])
       
       SELECT * FROM foreach(
         row=output,
         query={
-            SELECT * FROM parse_csv(filename=Stdout,accessor="data")
+            SELECT * FROM parse_csv(filename=Stdout,accessor=&quot;data&quot;)
         }
       )
 

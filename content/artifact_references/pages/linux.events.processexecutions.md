@@ -26,7 +26,7 @@ description: |
   apt-get install auditd
   ```
 
-precondition: SELECT OS From info() where OS = 'linux'
+precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
 
 type: CLIENT_EVENT
 
@@ -41,8 +41,8 @@ parameters:
 sources:
   - query: |
      // Install the auditd rule if possible.
-     LET _ <= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
-          "exit,always", "-F", "arch=b64", "-S", "execve", "-k", "procmon"])
+     LET _ &lt;= SELECT * FROM execve(argv=[pathToAuditctl, &quot;-a&quot;,
+          &quot;exit,always&quot;, &quot;-F&quot;, &quot;arch=b64&quot;, &quot;-S&quot;, &quot;execve&quot;, &quot;-k&quot;, &quot;procmon&quot;])
 
      LET exec_log = SELECT timestamp(string=Timestamp) AS Time, Sequence,
            atoi(string=Process.PID) AS Pid,
@@ -53,17 +53,17 @@ sources:
            Process.Exe AS Exe,
            Process.CWD AS CWD
        FROM audit()
-       WHERE "procmon" in Tags AND Result = 'success'
+       WHERE &quot;procmon&quot; in Tags AND Result = &#x27;success&#x27;
 
-     // Cache Uid -> Username mapping.
-     LET users <= SELECT User, atoi(string=Uid) AS Uid
+     // Cache Uid -&gt; Username mapping.
+     LET users &lt;= SELECT User, atoi(string=Uid) AS Uid
        FROM Artifact.Linux.Sys.Users()
 
      // Enrich the original artifact with more data.
      SELECT Time, Pid, Ppid, UserId,
               { SELECT User from users WHERE Uid = UserId} AS User,
-              regex_replace(source=read_file(filename= "/proc/" + PPID + "/cmdline"),
-                            replace=" ", re="[\\0]") AS Parent,
+              regex_replace(source=read_file(filename= &quot;/proc/&quot; + PPID + &quot;/cmdline&quot;),
+                            replace=&quot; &quot;, re=&quot;[\\0]&quot;) AS Parent,
               CmdLine,
               Exe, CWD
        FROM exec_log

@@ -48,7 +48,7 @@ description: |
   a process or thread. The information in a token includes the
   identity and privileges of the user account associated with the
   process or thread. When a user logs on, the system verifies the
-  user's password by comparing it with information stored in a
+  user&#x27;s password by comparing it with information stored in a
   security database.
 
   Every process has a primary token that describes the security
@@ -56,7 +56,7 @@ description: |
   the system uses the primary token when a thread of the process
   interacts with a securable object. Moreover, a thread can
   impersonate a client account. Impersonation allows the thread to
-  interact with securable objects using the client's security
+  interact with securable objects using the client&#x27;s security
   context. A thread that is impersonating a client has both a primary
   token and an impersonation token.
 
@@ -67,7 +67,7 @@ description: |
 
   ```
   mimikatz # privilege::debug
-  Privilege '20' OK
+  Privilege &#x27;20&#x27; OK
 
   mimikatz # token::elevate
   Token Id  : 0
@@ -75,7 +75,7 @@ description: |
   SID name  : NT AUTHORITY\SYSTEM
 
   688     {0;000003e7} 1 D 42171          NT AUTHORITY\SYSTEM     S-1-5-18        (04g,21p)       Primary
-  -> Impersonated !
+  -&gt; Impersonated !
   * Process Token : {0;000195ad} 1 F 757658339   DESKTOP-NHNHT65\mic     S-1-5-21-2310288903-2791442386-3035081252-1001  (15g,24p)       Primary
   * Thread Token  : {0;000003e7} 1 D 759094260   NT AUTHORITY\SYSTEM     S-1-5-18        (04g,21p)       Impersonation (Delegation)
   ```
@@ -83,7 +83,7 @@ reference:
   - https://github.com/kslgroup/TokenImp-Token_Impersonation_Detection/blob/master/TokenImp%20documentation.pdf
 
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |
@@ -91,7 +91,7 @@ sources:
                Username, OwnerSid, TokenIsElevated,
                CommandLine, Exe
         FROM pslist()
-        WHERE log(message=format(format="Inspecting %s (%v)", args=[ProcName, Pid]))
+        WHERE log(message=format(format=&quot;Inspecting %s (%v)&quot;, args=[ProcName, Pid]))
 
       SELECT * FROM foreach(row=processes,
           query={
@@ -99,7 +99,7 @@ sources:
              // same as the process token.
              SELECT ProcPid, ProcName, Username, OwnerSid, TokenIsElevated,
                CommandLine, Exe, ThreadInfo.TokenInfo AS ImpersonationToken
-             FROM handles(pid=ProcPid, types='Thread')
+             FROM handles(pid=ProcPid, types=&#x27;Thread&#x27;)
              WHERE ImpersonationToken.User AND ImpersonationToken.User != OwnerSid
           })
 

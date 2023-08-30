@@ -15,13 +15,13 @@ parameters:
     description: The location of the password file.
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = &#x27;linux&#x27;
     query: |
       SELECT User, Description, Uid, Gid, Homedir, Shell
       FROM split_records(
             filenames=PasswordFile,
-            regex=":", record_regex="\n",
-            columns=["User", "X", "Uid", "Gid", "Description", "Homedir", "Shell"])
+            regex=&quot;:&quot;, record_regex=&quot;\n&quot;,
+            columns=[&quot;User&quot;, &quot;X&quot;, &quot;Uid&quot;, &quot;Gid&quot;, &quot;Description&quot;, &quot;Homedir&quot;, &quot;Shell&quot;])
 
 </code></pre>
 

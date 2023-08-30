@@ -42,14 +42,14 @@ description: |
    do not need them.
 
    This artifact is implicitly collected by the GUI when pressing the
-   "Delete Hunt" Button.
+   &quot;Delete Hunt&quot; Button.
 
 type: SERVER
 
 parameters:
   - name: HuntId
     description: hunt_id you would like to kill all associated flows.
-    default: "H.XXXXXX"
+    default: &quot;H.XXXXXX&quot;
   - name: DeleteAllFiles
     description: Also delete all collected files
     type: bool
@@ -66,7 +66,7 @@ sources:
       // Only cancel running flows.
       SELECT *, cancel_flow(client_id=ClientId, flow_id=FlowId) as cancel_flow
       FROM flows
-      WHERE FlowState = "RUNNING"
+      WHERE FlowState = &quot;RUNNING&quot;
 
   - name: HuntFiles
     query: |

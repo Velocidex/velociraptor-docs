@@ -14,12 +14,12 @@ parameters:
     default: /proc/net/arp
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = &#x27;linux&#x27;
 
     query: |
         SELECT * from split_records(
            filenames=ProcNetArp,
-           regex='\\s{3,20}',
+           regex=&#x27;\\s{3,20}&#x27;,
            first_row_is_headers=true)
 
 </code></pre>

@@ -25,7 +25,7 @@ description: |
 type: CLIENT_EVENT
 
 precondition:
-  SELECT * FROM info() WHERE OS =~ "windows"
+  SELECT * FROM info() WHERE OS =~ &quot;windows&quot;
 
 parameters:
   - name: Period
@@ -34,25 +34,25 @@ parameters:
 
 sources:
   - query: |
-      LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
+      LET Publishers = &quot;HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@&quot;
 
-      LET ProviderNames <= memoize(key="GUID", query={
+      LET ProviderNames &lt;= memoize(key=&quot;GUID&quot;, query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
-        FROM glob(globs=Publishers, accessor="registry")
+        FROM glob(globs=Publishers, accessor=&quot;registry&quot;)
       })
 
-      LET Key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*"
+      LET Key = &quot;HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*&quot;
 
       LET Query = SELECT Key.Mtime AS Mtime,
            Key.OSPath[-1] AS ChannelName,
-           format(format="%s/%v", args=[Key.OSPath[-1], Enabled]) AS QueryKey ,
+           format(format=&quot;%s/%v&quot;, args=[Key.OSPath[-1], Enabled]) AS QueryKey ,
            Key.OSPath AS _Key,
            get(item=ProviderNames, field=OwningPublisher).Name AS Publisher, Enabled
       FROM read_reg_key(globs=Key)
 
-      SELECT * FROM diff(query=Query, period=Period, key="QueryKey")
-      WHERE Diff =~ "added"
+      SELECT * FROM diff(query=Query, period=Period, key=&quot;QueryKey&quot;)
+      WHERE Diff =~ &quot;added&quot;
 
 </code></pre>
 

@@ -38,7 +38,7 @@ sources:
   - name: Analysis
     query: |
       LET Uploads = SELECT Name, OSPath, if(
-           condition=AlsoUpload='Y',
+           condition=AlsoUpload=&#x27;Y&#x27;,
            then=upload(file=OSPath)) as Upload
         FROM glob(globs=TasksPath)
         WHERE NOT IsDir
@@ -46,11 +46,11 @@ sources:
       // Job files contain invalid XML which confuses the parser - we
       // use regex to remove the invalid tags.
       LET parse_task = select OSPath, parse_xml(
-               accessor='data',
+               accessor=&#x27;data&#x27;,
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='<[?].+?>',
-                    replace='')) AS XML
+                    re=&#x27;&lt;[?].+?&gt;&#x27;,
+                    replace=&#x27;&#x27;)) AS XML
         FROM read_file(filenames=OSPath)
 
       SELECT OSPath,

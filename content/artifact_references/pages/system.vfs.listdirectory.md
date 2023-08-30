@@ -15,13 +15,13 @@ name: System.VFS.ListDirectory
 description: |
   This is an internal artifact used by the GUI to populate the
   VFS. You may run it manually if you like, but typically it is
-  launched by the GUI when a user clicks the "Refresh this directory"
+  launched by the GUI when a user clicks the &quot;Refresh this directory&quot;
   button.
 
 parameters:
   - name: Path
     description: The path of the file to download.
-    default: "/"
+    default: &quot;/&quot;
 
   - name: Components
     type: json_array
@@ -37,14 +37,14 @@ parameters:
 export: |
       -- Make the generator unique with the session id - so it can
       -- only be shared by the two sources in this collection.
-      LET VFSGenerator = generate(name="vfs-" + _SessionId, query={
+      LET VFSGenerator = generate(name=&quot;vfs-&quot; + _SessionId, query={
          SELECT * FROM vfs_ls(
-            path="/", components=Components,
+            path=&quot;/&quot;, components=Components,
             accessor=Accessor, depth=Depth)
       }, delay=500)  -- wait a while for both sources to connect.
 
 sources:
-  - precondition: SELECT * FROM info() WHERE version(plugin="vfs_ls") = 1
+  - precondition: SELECT * FROM info() WHERE version(plugin=&quot;vfs_ls&quot;) = 1
     name: Listing
     description: File listing of multiple directories in a single table.
     query: |
@@ -61,7 +61,7 @@ sources:
       FROM VFSGenerator
       WHERE Stats = NULL
 
-  - precondition: SELECT * FROM info() WHERE version(plugin="vfs_ls") = 1
+  - precondition: SELECT * FROM info() WHERE version(plugin=&quot;vfs_ls&quot;) = 1
     name: Stats
     description: |
       A list of summary objects dividing the Listing source into
@@ -73,10 +73,10 @@ sources:
       FROM VFSGenerator
       WHERE Stats != NULL
 
-  - precondition: SELECT * FROM info() WHERE NOT version(plugin="vfs_ls")
+  - precondition: SELECT * FROM info() WHERE NOT version(plugin=&quot;vfs_ls&quot;)
     query: |
-      // Glob > v2 accepts a component list for the root parameter.
-      LET Path <= if(condition=version(plugin="glob") > 2 AND Components,
+      // Glob &gt; v2 accepts a component list for the root parameter.
+      LET Path &lt;= if(condition=version(plugin=&quot;glob&quot;) &gt; 2 AND Components,
         then=Components, else=Path)
 
       // Old versions do not have the root parameter to glob()
@@ -89,7 +89,7 @@ sources:
            Atime as atime,
            Ctime as ctime
         FROM glob(globs=Path + if(condition=Depth,
-             then=format(format='/**%v', args=Depth), else='/*'),
+             then=format(format=&#x27;/**%v&#x27;, args=Depth), else=&#x27;/*&#x27;),
              accessor=Accessor)
 
       LET NewQuery = SELECT OSPath as _OSPath,
@@ -102,13 +102,13 @@ sources:
            Btime AS btime
         FROM glob(
              globs=if(condition=Depth,
-                then=format(format='/**%v', args=Depth),
-                else='/*'),
+                then=format(format=&#x27;/**%v&#x27;, args=Depth),
+                else=&#x27;/*&#x27;),
              root=Path,
              accessor=Accessor)
 
       SELECT * FROM if(
-       condition=version(plugin="glob") >= 1,
+       condition=version(plugin=&quot;glob&quot;) &gt;= 1,
        then=NewQuery,
        else=LegacyQuery)
 

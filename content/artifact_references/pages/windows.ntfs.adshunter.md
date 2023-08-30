@@ -23,7 +23,7 @@ added by default. The artifact also exlcudes NTFS system files by default.
 
 <pre><code class="language-yaml">
 name: Windows.NTFS.ADSHunter
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 description: |
    This artifact hunts
    for Alternate Data Streams on NTFS file systems. 
@@ -52,10 +52,10 @@ parameters:
    default: C:\
  - name: AdsNameGlob
    description: AdsName in glob format. e.g *, Zone.Identifier or Zone.*
-   default: '*'
+   default: &#x27;*&#x27;
  - name: AdsNameExclusion
    description: Regex of ADS name to exclude.
-   default: 'SmartScreen|WofCompressedData|encryptable|favicon|AFP_AfpInfo|OECustomProperty|Win32App_1|com\.dropbox|icasource|\{\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\}\.(MetaData|SyncRootIdentity)'
+   default: &#x27;SmartScreen|WofCompressedData|encryptable|favicon|AFP_AfpInfo|OECustomProperty|Win32App_1|com\.dropbox|icasource|\{\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\}\.(MetaData|SyncRootIdentity)&#x27;
    type: regex
  - name: AdsContentRegex
    description: ADS content to search for by regex.
@@ -79,21 +79,21 @@ sources:
  - query: |
       -- Collect ADS entries using glob but exclude ntfs objects that contain ads
       LET ads_entries = SELECT OSPath,
-            split(string=Name,sep=':')[1] as AdsName,
+            split(string=Name,sep=&#x27;:&#x27;)[1] as AdsName,
             Data.mft as Inode,
             Size,
-            OSPath.Dirname + split(string=Name,sep=':')[0] as HostObject,
+            OSPath.Dirname + split(string=Name,sep=&#x27;:&#x27;)[0] as HostObject,
             dict(Mtime=Mtime,Atime=Atime,Ctime=Ctime,Btime=Btime) as HostTimestampsSI
-        FROM glob(globs=TargetFolder + "/**/*:" + AdsNameGlob, 
-                  accessor="ntfs",
-                  nosymlink='Y')
+        FROM glob(globs=TargetFolder + &quot;/**/*:&quot; + AdsNameGlob, 
+                  accessor=&quot;ntfs&quot;,
+                  nosymlink=&#x27;Y&#x27;)
         WHERE 
-            NOT OSPath.Basename =~ '\\$Secure:\\$SDS|\\$Repair|\\$BadClus|\\$Bitmap|\\$UpCase'
+            NOT OSPath.Basename =~ &#x27;\\$Secure:\\$SDS|\\$Repair|\\$BadClus|\\$Bitmap|\\$UpCase&#x27;
             AND if(condition=MinSize,
-                    then= Size > MinSize,
+                    then= Size &gt; MinSize,
                     else= True )
             AND if(condition= MaxSize,
-                    then= Size < MaxSize,
+                    then= Size &lt; MaxSize,
                     else= True )
             AND NOT if(condition=AdsNameExclusion,
                         then= AdsName =~ AdsNameExclusion,
@@ -101,7 +101,7 @@ sources:
       
       -- Extract content and filter
       LET hits = SELECT *,
-            read_file(filename=OSPath[0]+Inode, accessor="mft",offset=0,length=1024) as AdsContent -- only upload first 1k of each hit
+            read_file(filename=OSPath[0]+Inode, accessor=&quot;mft&quot;,offset=0,length=1024) as AdsContent -- only upload first 1k of each hit
         FROM ads_entries
         WHERE AdsContent =~ AdsContentRegex
             AND NOT if(condition=AdsContentExclusion,
@@ -110,7 +110,7 @@ sources:
                     
       -- upload hits
       LET upload_hits = SELECT *, 
-            upload(file=OSPath,accessor='ntfs') as Upload
+            upload(file=OSPath,accessor=&#x27;ntfs&#x27;) as Upload
         FROM hits
       
       -- output rows 

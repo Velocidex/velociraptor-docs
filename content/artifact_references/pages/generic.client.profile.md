@@ -106,19 +106,19 @@ parameters:
     type: bool
   - name: Duration
     description: Duration of sampling for Profile and Trace.
-    default: "30"
+    default: &quot;30&quot;
 
 export: |
     LET CleanUp(Name) = regex_replace(
-        re="www.velocidex.com/golang/velociraptor/",
-        replace="", source=Name)
+        re=&quot;www.velocidex.com/golang/velociraptor/&quot;,
+        replace=&quot;&quot;, source=Name)
 
 sources:
   - query: |
       SELECT Type,
-             if(condition=get(field="OSPath"),
-                then=upload(name=Type + ".bin", file=OSPath)) AS File,
-             get(member="Line") AS Line
+             if(condition=get(field=&quot;OSPath&quot;),
+                then=upload(name=Type + &quot;.bin&quot;, file=OSPath)) AS File,
+             get(member=&quot;Line&quot;) AS Line
       FROM profile(allocs=Allocs, block=Block, goroutine=Goroutine,
                    heap=Heap, mutex=Mutex, profile=Profile, trace=Trace,
                    logs=Logs, queries=QueryLogs, metrics=Metrics,
@@ -128,10 +128,10 @@ sources:
   - name: Goroutines
     query: |
       SELECT *, {
-         SELECT format(format="%v (%v:%v)",
+         SELECT format(format=&quot;%v (%v:%v)&quot;,
              args=[CleanUp(Name=Name), basename(path=File), Line])
          FROM CallStack
-         WHERE File =~ 'velociraptor|vfilter|go-ntfs'
+         WHERE File =~ &#x27;velociraptor|vfilter|go-ntfs&#x27;
          LIMIT 10
       } AS CallStack
       FROM profile_goroutines()
@@ -140,10 +140,10 @@ sources:
   - name: Memory
     query: |
       SELECT InUseBytes, InUseObjects, {
-          SELECT format(format="%v (%v:%v)",
+          SELECT format(format=&quot;%v (%v:%v)&quot;,
             args=[CleanUp(Name=Name), basename(path=File), Line])
           FROM CallStack
-          WHERE File =~ 'velociraptor|vfilter|go-ntfs'
+          WHERE File =~ &#x27;velociraptor|vfilter|go-ntfs&#x27;
           LIMIT 10
       } AS CallStack
       FROM profile_memory()

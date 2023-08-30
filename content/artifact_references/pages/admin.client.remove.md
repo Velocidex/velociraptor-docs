@@ -23,7 +23,7 @@ type: SERVER
 parameters:
   - name: Age
     description: Remove clients older than this many days
-    default: "7"
+    default: &quot;7&quot;
 
   - name: ReallyDoIt
     type: bool
@@ -32,7 +32,7 @@ sources:
   - query: |
       LET old_clients = SELECT os_info.fqdn AS Fqdn, client_id,
              timestamp(epoch=last_seen_at/1000000) AS LastSeen FROM clients()
-      WHERE LastSeen < now() - ( atoi(string=Age) * 3600 * 24 )
+      WHERE LastSeen &lt; now() - ( atoi(string=Age) * 3600 * 24 )
 
       SELECT * FROM foreach(row=old_clients,
       query={

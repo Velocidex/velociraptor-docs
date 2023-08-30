@@ -40,10 +40,10 @@ type: CLIENT
 
 parameters:
   - name: UserProfileGlob
-    default: '\Documents\{WindowsPowerShell,Powershell}\{Profile,Microsoft.*_profile}.ps1'
+    default: &#x27;\Documents\{WindowsPowerShell,Powershell}\{Profile,Microsoft.*_profile}.ps1&#x27;
     description: Glob for Powershell user profiles.
   - name: PSHomeProfileGlob
-    default: 'C:\Windows\System32\{WindowsPowerShell,Powershell}\v1.0\{Profile,Microsoft.*_profile}.ps1'
+    default: &#x27;C:\Windows\System32\{WindowsPowerShell,Powershell}\v1.0\{Profile,Microsoft.*_profile}.ps1&#x27;
     description: Glob for Powershell PSHome profiles.
   - name: SearchStrings
     default: .
@@ -56,7 +56,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
         -- First extract potential glob path for each user

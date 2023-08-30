@@ -34,7 +34,7 @@ type: CLIENT_EVENT
 
 parameters:
   - name: officeExtensions
-    default: "\\.(xls|xlsm|doc|docx|ppt|pptm)$"
+    default: &quot;\\.(xls|xlsm|doc|docx|ppt|pptm)$&quot;
     type: regex
 
 sources:

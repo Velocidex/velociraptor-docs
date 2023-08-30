@@ -62,11 +62,11 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       // Make sure sysmon is installed.
-      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       SELECT *, { SELECT Hostname FROM info() } as Hostname FROM Artifact.Windows.Sysinternals.SysmonLogForward()

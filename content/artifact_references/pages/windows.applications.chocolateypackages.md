@@ -11,18 +11,18 @@ name: Windows.Applications.ChocolateyPackages
 description: Chocolatey packages installed in a system.
 parameters:
   - name: ChocolateyInstall
-    default: ""
+    default: &quot;&quot;
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
       LET SearchGlob = if(
              condition=ChocolateyInstall,
              then=ChocolateyInstall,
 
              -- Otherwise just use the environment.
-             else=environ(var='ChocolateyInstall')) + '/lib/*/*.nuspec'
+             else=environ(var=&#x27;ChocolateyInstall&#x27;)) + &#x27;/lib/*/*.nuspec&#x27;
 
       LET files = SELECT OSPath,
               parse_xml(file=OSPath) AS Metadata
@@ -33,7 +33,7 @@ sources:
       SELECT * FROM if(
         condition=if(condition=ChocolateyInstall,
                      then=ChocolateyInstall,
-                     else=environ(var="ChocolateyInstall")),
+                     else=environ(var=&quot;ChocolateyInstall&quot;)),
         then={
             SELECT OSPath,
                    Metadata.package.metadata.id as Name,

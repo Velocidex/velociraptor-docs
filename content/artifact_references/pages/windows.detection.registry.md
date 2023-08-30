@@ -17,7 +17,7 @@ author: Jos Clephas - @DfirJos
 type: CLIENT_EVENT
 
 precondition:
-  SELECT * FROM info() WHERE OS =~ "windows"
+  SELECT * FROM info() WHERE OS =~ &quot;windows&quot;
 
 parameters:
   - name: Period
@@ -29,7 +29,7 @@ parameters:
     type: regex
     default: .
   - name: AlertName
-    default: "T1112 - Suspicious registry key modification"
+    default: &quot;T1112 - Suspicious registry key modification&quot;
   - name: diff
     default: added
   - name: CertificateInfo
@@ -52,16 +52,16 @@ sources:
 
         LET query_registry = SELECT *, OSPath.String + Data.value AS FullPath, 
                                     expand(path=Data.value) AS Datavalue
-                            FROM glob(globs=RegistryPath, accessor="registry") WHERE Data.value =~ RegistryData
+                            FROM glob(globs=RegistryPath, accessor=&quot;registry&quot;) WHERE Data.value =~ RegistryData
 
         LET query_diff = SELECT *, commandline_split(command=Datavalue) as AbsolutePath
-              FROM diff(query=query_registry, period=Period, key="FullPath")
+              FROM diff(query=query_registry, period=Period, key=&quot;FullPath&quot;)
               WHERE Diff = diff
 
         SELECT *,
             alert(name=AlertName, Key=OSPath, Value=Datavalue, RegistryValue=Diff) as AlertSent,
             if(condition=Calculate_hashes,
-                then=hash(path=AbsolutePath[0], accessor="auto")) AS Hash,
+                then=hash(path=AbsolutePath[0], accessor=&quot;auto&quot;)) AS Hash,
             if(condition=CertificateInfo,
                 then=authenticode(filename=AbsolutePath[0])) AS Certinfo
         FROM query_diff 
@@ -69,7 +69,7 @@ sources:
               AND Hash.SHA256 =~ regex_sha256 
               AND Certinfo.IssuerName=~regex_IssuerName
               AND NOT if(condition= UntrustedAuthenticode,
-                        then= Certinfo.Trusted = 'trusted',
+                        then= Certinfo.Trusted = &#x27;trusted&#x27;,
                         else= False )
 
 </code></pre>

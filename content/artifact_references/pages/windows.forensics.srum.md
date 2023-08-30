@@ -26,31 +26,31 @@ parameters:
   - name: ExecutableRegex
     default: .
   - name: NetworkConnectionsGUID
-    default: "{DD6636C4-8929-4683-974E-22C046A43763}"
+    default: &quot;{DD6636C4-8929-4683-974E-22C046A43763}&quot;
     type: hidden
   - name: ApplicationResourceUsageGUID
-    default: "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}"
+    default: &quot;{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}&quot;
     type: hidden
   - name: ExecutionGUID
-    default: "{5C8CF1C7-7257-4F13-B223-970EF5939312}"
+    default: &quot;{5C8CF1C7-7257-4F13-B223-970EF5939312}&quot;
     type: hidden
   - name: NetworkUsageGUID
-    default: "{973F5D5C-1D90-4944-BE8E-24B94231A174}"
+    default: &quot;{973F5D5C-1D90-4944-BE8E-24B94231A174}&quot;
     type: hidden
   - name: Upload
-    description: Select to Upload the SRUM database file 'srudb.dat'
+    description: Select to Upload the SRUM database file &#x27;srudb.dat&#x27;
     type: bool
 
 export: |
   LET resolveESEId(OSPath, Accessor, Id) = cache(
-      name="ESE",
+      name=&quot;ESE&quot;,
       func=srum_lookup_id(file=OSPath, accessor=Accessor, id=Id),
-      key=format(format="%v-%v-%v", args=[OSPath, Accessor, Id]))
+      key=format(format=&quot;%v-%v-%v&quot;, args=[OSPath, Accessor, Id]))
 
   LET lookupSIDCache(OSPath, Accessor, Id) = cache(
-      name="SID",
+      name=&quot;SID&quot;,
       func=lookupSID(sid=srum_lookup_id(file=OSPath, accessor=Accessor, id=Id)),
-      key=format(format="%v-%v-%v", args=[OSPath, Accessor, Id]))
+      key=format(format=&quot;%v-%v-%v&quot;, args=[OSPath, Accessor, Id]))
 
 sources:
   - name: Upload
@@ -62,7 +62,7 @@ sources:
 
   - name: Execution Stats
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT  AutoIncId AS ID,
                 TimeStamp,
@@ -81,7 +81,7 @@ sources:
 
   - name: Application Resource Usage
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
                TimeStamp,
@@ -112,7 +112,7 @@ sources:
 
   - name: Network Connections
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
              TimeStamp,
@@ -131,7 +131,7 @@ sources:
 
   - name: Network Usage
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
              TimeStamp,
@@ -167,7 +167,7 @@ sources:
                   sum(item=BytesSent) as TotalSent,
                   sum(item=BytesRecvd) as TotalRecvd,
                   InterfaceLuid
-              FROM source(artifact="Windows.Forensics.SRUM/Network Usage")
+              FROM source(artifact=&quot;Windows.Forensics.SRUM/Network Usage&quot;)
               GROUP BY App, User,InterfaceLuid
               ORDER BY TotalSent DESC
 

@@ -86,44 +86,44 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
   - name: ModifiedBefore
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
 
 sources:
   - query: |
-      LET SMB_CREDENTIALS <= set(item=dict(), field=ServerName,
-         value=format(format="%s:%s", args=[Username, Password]))
+      LET SMB_CREDENTIALS &lt;= set(item=dict(), field=ServerName,
+         value=format(format=&quot;%s:%s&quot;, args=[Username, Password]))
 
       LET file_search = SELECT OSPath,
-               get(item=Data, field="mft") as Inode,
+               get(item=Data, field=&quot;mft&quot;) as Inode,
                Mode.String AS Mode, Size,
                Mtime AS MTime,
                Atime AS ATime,
                Btime AS BTime,
-               Ctime AS CTime, "" AS Keywords,
+               Ctime AS CTime, &quot;&quot; AS Keywords,
                IsDir, Data
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   root=ServerName,
-                  accessor="smb")
+                  accessor=&quot;smb&quot;)
 
       LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(
@@ -140,18 +140,18 @@ sources:
                       str(str=String.Data) As Keywords, IsDir, Data
 
                FROM yara(files=OSPath,
-                         key="A",
+                         key=&quot;A&quot;,
                          rules=YaraRule,
-                         accessor="smb")
+                         accessor=&quot;smb&quot;)
             })
         }, else=modified_before)
 
       SELECT OSPath, Inode, Mode, Size, MTime, ATime,
              CTime, BTime, Keywords, IsDir,
                if(condition=Upload_File and NOT IsDir,
-                  then=upload(file=OSPath, accessor="smb")) AS Upload,
+                  then=upload(file=OSPath, accessor=&quot;smb&quot;)) AS Upload,
                if(condition=Calculate_Hash and NOT IsDir,
-                  then=hash(path=OSPath, accessor="smb")) AS Hash,
+                  then=hash(path=OSPath, accessor=&quot;smb&quot;)) AS Hash,
             Data
       FROM keyword_search
 

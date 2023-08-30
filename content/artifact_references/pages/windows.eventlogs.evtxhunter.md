@@ -41,7 +41,7 @@ description: |
   The idea is a user can search for any IOC or other string of interest and
   return all results across the Event Log ecosystem.
 
-  There are several parameter's available for search leveraging regex.
+  There are several parameter&#x27;s available for search leveraging regex.
     - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.
     - dateAfter enables search for events after this date.
     - dateBefore enables search for events before this date.
@@ -62,27 +62,27 @@ description: |
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: EvtxGlob
-    default: '%SystemRoot%\System32\Winevt\Logs\*.evtx'
+    default: &#x27;%SystemRoot%\System32\Winevt\Logs\*.evtx&#x27;
   - name: IocRegex
     type: regex
-    description: "IOC Regex"
+    description: &quot;IOC Regex&quot;
     default:
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: &quot;Regex of string to witelist&quot;
     type: regex
   - name: PathRegex
-    description: "Event log Regex to enable filtering on path"
+    description: &quot;Event log Regex to enable filtering on path&quot;
     default: .
     type: regex
   - name: ChannelRegex
-    description: "Channel Regex to enable filtering on path"
+    description: &quot;Channel Regex to enable filtering on path&quot;
     default: .
   - name: ProviderRegex
-    description: "Provider Regex to enable filtering on provider"
+    description: &quot;Provider Regex to enable filtering on provider&quot;
     default: .
     type: regex
   - name: IdRegex
@@ -98,21 +98,21 @@ parameters:
       for everything which will be much slower.
   - name: DateAfter
     type: timestamp
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
   - name: DateBefore
     type: timestamp
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
-        then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
-        then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -132,21 +132,21 @@ sources:
                     System.EventRecordID as EventRecordID,
                     System.Security.UserID as UserSID,
                     lookupSID(sid=System.Security.UserID) as Username,
-                    get(field="EventData") as EventData,
-                    get(field="UserData") as UserData,
-                    get(field="Message") as Message,
+                    get(field=&quot;EventData&quot;) as EventData,
+                    get(field=&quot;UserData&quot;) as UserData,
+                    get(field=&quot;Message&quot;) as Message,
                     OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE ( EventData OR UserData OR Message )
-                    AND EventTime < DateBeforeTime
-                    AND EventTime > DateAfterTime
+                    AND EventTime &lt; DateBeforeTime
+                    AND EventTime &gt; DateAfterTime
                     AND Channel =~ ChannelRegex
                     AND Provider =~ ProviderRegex
                     AND str(str=EventID) =~ IdRegex
-                    AND format(format='%v %v %v', args=[
+                    AND format(format=&#x27;%v %v %v&#x27;, args=[
                                EventData, UserData, Message]) =~ IocRegex
                     AND if(condition=WhitelistRegex,
-                        then= NOT format(format='%v %v %v', args=[
+                        then= NOT format(format=&#x27;%v %v %v&#x27;, args=[
                                EventData, UserData, Message]) =~ WhitelistRegex,
                         else= True)
             }

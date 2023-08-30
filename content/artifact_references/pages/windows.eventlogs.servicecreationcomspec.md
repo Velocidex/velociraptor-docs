@@ -19,7 +19,7 @@ deduplication.
 name: Windows.EventLogs.ServiceCreationComspec
 description: |
 
-  This Detection hts on the string "COMSPEC" (nocase) in Windows Service
+  This Detection hts on the string &quot;COMSPEC&quot; (nocase) in Windows Service
   Creation events. That is: EventID 7045 from the System event log.
 
   This detects many hack tools that leverage SCM based lateral movement
@@ -34,7 +34,7 @@ parameters:
   - name: EventLog
     default: C:\Windows\system32\winevt\logs\System.evtx
   - name: ComspecRegex
-    default: "(COMSPEC|cmd.exe|ADMIN\\$)"
+    default: &quot;(COMSPEC|cmd.exe|ADMIN\\$)&quot;
     type: regex
 
   - name: VSSAnalysisAge
@@ -49,8 +49,8 @@ parameters:
 sources:
   - name: ServiceCreation
     query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       // Extract all target paths from glob
       LET files = SELECT OSPath

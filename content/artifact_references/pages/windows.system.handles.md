@@ -32,15 +32,15 @@ parameters:
 
 sources:
   - query: |
-      LET tokens <= SELECT * FROM chain(
-          a={SELECT "File" AS Type FROM scope() WHERE Files = 'Y'},
-          a2={SELECT "Section" AS Type FROM scope() WHERE Files = 'Y'},
-          b={SELECT "Key" AS Type FROM scope() WHERE Key = 'Y'}
+      LET tokens &lt;= SELECT * FROM chain(
+          a={SELECT &quot;File&quot; AS Type FROM scope() WHERE Files = &#x27;Y&#x27;},
+          a2={SELECT &quot;Section&quot; AS Type FROM scope() WHERE Files = &#x27;Y&#x27;},
+          b={SELECT &quot;Key&quot; AS Type FROM scope() WHERE Key = &#x27;Y&#x27;}
         )
 
       LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM pslist()
-        WHERE ProcName =~ processRegex AND ProcPid > 0
+        WHERE ProcName =~ processRegex AND ProcPid &gt; 0
 
       SELECT * FROM foreach(
           row=processes,

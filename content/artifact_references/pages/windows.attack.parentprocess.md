@@ -15,7 +15,7 @@ processes.
 <pre><code class="language-yaml">
 name: Windows.Attack.ParentProcess
 description: |
-  Maps the Mitre Att&ck framework process executions into artifacts.
+  Maps the Mitre Att&amp;ck framework process executions into artifacts.
 
   NOTE: This artifact uses the process tracker. If you also enable the
   Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
@@ -26,7 +26,7 @@ reference:
   - https://www.sans.org/security-resources/posters/hunt-evil/165/download
   - https://github.com/teoseller/osquery-attck/blob/master/windows-incorrect_parent_process.conf
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: lookupTable
@@ -65,7 +65,7 @@ sources:
                   ParentRegex as ExpectedParentName,
                   Username,
                   join(array=process_tracker_callchain(id=Pid).Data.Name,
-                       sep=" -> ") AS CallChain
+                       sep=&quot; -&gt; &quot;) AS CallChain
            FROM process_tracker_pslist()
            WHERE ActualProcessName =~ ProcessName
              AND ActualParentName

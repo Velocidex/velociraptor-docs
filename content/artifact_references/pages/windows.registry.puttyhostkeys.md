@@ -24,8 +24,8 @@ description: |
    records the host key for each server connected to, in the Windows Registry.
    
    - Output KeyName: ssh-ed12345@22:27.27.27.27
-   - To search for a specific IP: TargetKeyName =~ ':\<IP\>$'
-   - To search for a specific PORT: TargetKeyName =~ '@\<PORT\>:.+$'
+   - To search for a specific IP: TargetKeyName =~ &#x27;:\&lt;IP\&gt;$&#x27;
+   - To search for a specific PORT: TargetKeyName =~ &#x27;@\&lt;PORT\&gt;:.+$&#x27;
    
    
 type: CLIENT
@@ -42,10 +42,10 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows' 
+      SELECT OS From info() where OS = &#x27;windows&#x27; 
 
     query: |
-      LET HKEY_USERS <= pathspec(path_type="registry", Path="HKEY_USERS")
+      LET HKEY_USERS &lt;= pathspec(path_type=&quot;registry&quot;, Path=&quot;HKEY_USERS&quot;)
 
       SELECT 
         Mtime,

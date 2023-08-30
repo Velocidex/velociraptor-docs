@@ -28,10 +28,10 @@ sources:
           string=base64decode(
              string=parse_string_with_regex(
                 string=CommandLine,
-                regex='-((?i)(en|enc|encode|encodedCommand)) (?P<Encoded>[^ ]+)'
+                regex=&#x27;-((?i)(en|enc|encode|encodedCommand)) (?P&lt;Encoded&gt;[^ ]+)&#x27;
              ).Encoded)) AS Script
-        FROM watch_monitoring(artifact='Windows.Events.ProcessCreation')
-        WHERE CommandLine =~ '-(en|enc|encode|encodedCommand)'
+        FROM watch_monitoring(artifact=&#x27;Windows.Events.ProcessCreation&#x27;)
+        WHERE CommandLine =~ &#x27;-(en|enc|encode|encodedCommand)&#x27;
 
 reports:
   - type: SERVER_EVENT
@@ -44,7 +44,7 @@ reports:
 
       ## Decoded Powershell commands.
 
-      {{ Query "SELECT ClientId, { SELECT os_info.fqdn from clients(client_id=ClientId) } AS FQDN, Script FROM source()" | Table }}
+      {{ Query &quot;SELECT ClientId, { SELECT os_info.fqdn from clients(client_id=ClientId) } AS FQDN, Script FROM source()&quot; | Table }}
 
 </code></pre>
 

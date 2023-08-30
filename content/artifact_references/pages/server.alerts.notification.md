@@ -27,17 +27,17 @@ sources:
            then=SlackToken,
            else=server_metadata().SlackToken)
 
-        LET hits = SELECT * from watch_monitoring(artifact='Server.Internal.Alerts')
+        LET hits = SELECT * from watch_monitoring(artifact=&#x27;Server.Internal.Alerts&#x27;)
 
         SELECT * FROM foreach(row=hits,
         query={
            SELECT * FROM http_client(
             data=serialize(item=dict(
-                text=format(format="Alert: %v | Details: %v | Artifact: %v | ClientId: %v | Timestamp: %v)",
+                text=format(format=&quot;Alert: %v | Details: %v | Artifact: %v | ClientId: %v | Timestamp: %v)&quot;,
                             args=[name, event_data, artifact, client_id, timestamp])),
-                format="json"),
-            headers=dict(`Content-Type`="application/json"),
-            method="POST",
+                format=&quot;json&quot;),
+            headers=dict(`Content-Type`=&quot;application/json&quot;),
+            method=&quot;POST&quot;,
             url=token_url)
         })
 

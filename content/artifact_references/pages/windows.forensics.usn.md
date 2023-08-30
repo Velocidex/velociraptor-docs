@@ -49,7 +49,7 @@ type: CLIENT
 parameters:
   - name: Device
     description: The NTFS drive to parse
-    default: "C:\\"
+    default: &quot;C:\\&quot;
   - name: AllDrives
     description: Dump USN from all drives and VSC
     type: bool
@@ -70,24 +70,24 @@ parameters:
     type: regex
   - name: DateAfter
     type: timestamp
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
   - name: DateBefore
     type: timestamp
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
 sources:
   - precondition:
-      SELECT OS From info() where OS =~ 'windows'
+      SELECT OS From info() where OS =~ &#x27;windows&#x27;
 
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
-            then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
-            then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+            then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+            then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
 
       LET all_drives = SELECT OSPath.Components[0] AS Drive
-        FROM glob(globs="/*/$Extend/$UsnJrnl:$J", accessor="ntfs")
-        WHERE log(message="Processing " + Drive)
+        FROM glob(globs=&quot;/*/$Extend/$UsnJrnl:$J&quot;, accessor=&quot;ntfs&quot;)
+        WHERE log(message=&quot;Processing &quot; + Drive)
 
       SELECT
             Timestamp,
@@ -108,22 +108,22 @@ sources:
             query={
               SELECT *, Drive AS Device
               FROM parse_usn(
-                 device=Drive, accessor="ntfs")
+                 device=Drive, accessor=&quot;ntfs&quot;)
               WHERE Filename =~ FileNameRegex
                 AND str(str=_FileMFTID) =~ MFT_ID_Regex
                 AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
-                AND Timestamp < DateBeforeTime
-                AND Timestamp > DateAfterTime
+                AND Timestamp &lt; DateBeforeTime
+                AND Timestamp &gt; DateAfterTime
                 AND _Links =~ PathRegex
             })
           }, else={
             SELECT *, Device
-            FROM parse_usn(device=Device, accessor="ntfs")
+            FROM parse_usn(device=Device, accessor=&quot;ntfs&quot;)
             WHERE Filename =~ FileNameRegex
                 AND str(str=_FileMFTID) =~ MFT_ID_Regex
                 AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
-                AND Timestamp < DateBeforeTime
-                AND Timestamp > DateAfterTime
+                AND Timestamp &lt; DateBeforeTime
+                AND Timestamp &gt; DateAfterTime
                 AND _Links =~ PathRegex
           })
 

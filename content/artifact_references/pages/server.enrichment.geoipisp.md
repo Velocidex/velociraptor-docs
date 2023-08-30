@@ -28,7 +28,7 @@ description: |
   https://www.maxmind.com/ or you can pay for a more accurate option.
 
   After storing the database somewhere on your server, you should the
-  location in the server metadata screen to it under the key "GeoIPISPDB"
+  location in the server metadata screen to it under the key &quot;GeoIPISPDB&quot;
   (for example `/usr/shared/GeoIP2-City_20210910/GeoIP2-ISP.mmdb`)
 
   Alternatively you can import this artifact to gain access to the

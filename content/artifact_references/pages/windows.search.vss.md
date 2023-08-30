@@ -18,11 +18,11 @@ description: |
   used to out deduplicated paths for processing by other artifacts.
 
   NOTE: This used to be more complicated but now delegates to the
-  "ntfs_vss" accessor to do all the work.
+  &quot;ntfs_vss&quot; accessor to do all the work.
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT * FROM info() where OS = 'windows'
+precondition: SELECT * FROM info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: SearchFilesGlob
@@ -37,7 +37,7 @@ parameters:
 
 sources:
   - query: |
-      SELECT * FROM glob(globs=SearchFilesGlob, accessor="ntfs_vss")
+      SELECT * FROM glob(globs=SearchFilesGlob, accessor=&quot;ntfs_vss&quot;)
       ORDER BY OSPath
 
 </code></pre>

@@ -30,7 +30,7 @@ parameters:
     default: |
         rule Hit {
            strings:
-             $a = "psexec" nocase wide ascii
+             $a = &quot;psexec&quot; nocase wide ascii
            condition:
              any of them
         }
@@ -42,7 +42,7 @@ sources:
           query={
              SELECT ServiceName, PathName, Modified, FileSize, Timestamp,
                     ServiceType, ChildProcess, Stdout, Stderr FROM execve(
-               argv=["taskkill", "/PID", PID, "/T", "/F"])
+               argv=[&quot;taskkill&quot;, &quot;/PID&quot;, PID, &quot;/T&quot;, &quot;/F&quot;])
         })
 
 </code></pre>

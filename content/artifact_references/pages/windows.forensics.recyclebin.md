@@ -34,7 +34,7 @@ description: |
   obtain the time of deletion and the original path and file name.
 
   Supports Recycle Bin format found in Vista onwards. This will not parse INFO2
-  files found in the "Recycler" folder from XP and below.
+  files found in the &quot;Recycler&quot; folder from XP and below.
 
   The layout of the Recycle Bin folder is in the in the form:
   ```
@@ -43,7 +43,7 @@ description: |
   Each folder contains the following files:
   ```
   $R###### files; the original data
-  $I###### files; the "Recycled" file's metadata
+  $I###### files; the &quot;Recycled&quot; file&#x27;s metadata
   ```
   The first file begins with the value `$R` followed by a random string
   – this file contains the actual contents of the recycled file.
@@ -52,7 +52,7 @@ description: |
 
   Limitations: This artifact uses the API to read available $I data. There may be additional unallocated but readable $I files referenced in the MFT that may be recoverable.
 
-author: "Zach Stanford - @svch0st"
+author: &quot;Zach Stanford - @svch0st&quot;
 
 reference:
   - https://forensicswiki.xyz/wiki/index.php?title=Windows#Recycle_Bin
@@ -67,7 +67,7 @@ parameters:
       type: bool
       description: Also upload recovered files.
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |
@@ -82,9 +82,9 @@ sources:
                     FilePath as OriginalFilePath,
                     FileSize,
                     OSPath,
-                    regex_replace(source=OSPath, re="\\\\\\$I", replace="\\$$R") AS RecyclePath,
+                    regex_replace(source=OSPath, re=&quot;\\\\\\$I&quot;, replace=&quot;\\$$R&quot;) AS RecyclePath,
                     if(condition=AlsoUpload, then=upload(
-                         file=regex_replace(source=OSPath, re="\\\\\\$I", replace="\\$$R"),
+                         file=regex_replace(source=OSPath, re=&quot;\\\\\\$I&quot;, replace=&quot;\\$$R&quot;),
                          name=FilePath
                     )) AS Upload
                  FROM parse_recyclebin(filename=OSPath)

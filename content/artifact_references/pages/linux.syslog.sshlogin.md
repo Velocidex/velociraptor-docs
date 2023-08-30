@@ -23,7 +23,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: >-
+    default: &gt;-
       %{SYSLOGTIMESTAMP:Timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
 sources:
@@ -41,7 +41,7 @@ sources:
           }, query={
               SELECT grok(grok=SSHGrok, data=Line) AS Event, OSPath
               FROM parse_lines(filename=OSPath)
-              WHERE Event.program = "sshd"
+              WHERE Event.program = &quot;sshd&quot;
           })
 
 </code></pre>

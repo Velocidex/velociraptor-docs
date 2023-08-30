@@ -25,16 +25,16 @@ reference:
   - https://www.forensicfocus.com/forums/general/forensics-windows-registry-program-launch-history/
   - https://thinkdfir.com/2020/10/23/when-did-recentapps-go/
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: UserFilter
-    default: ""
+    default: &quot;&quot;
     description: If specified we filter by this user ID.
     type: regex
 
   - name: ExecutionTimeAfter
-    default: ""
+    default: &quot;&quot;
     type: timestamp
     description: If specified only show executions after this time.
 
@@ -56,13 +56,13 @@ sources:
                    timestamp(winfiletime=LastAccessedTime).Unix AS LastExecutionTS,
                    parse_string_with_regex(
                       string=Key.OSPath,
-                      regex="/Users/(?P<User>[^/]+)/ntuser.dat").User AS User
+                      regex=&quot;/Users/(?P&lt;User&gt;[^/]+)/ntuser.dat&quot;).User AS User
             FROM read_reg_key(
                globs=RecentAppsKey,
                root=pathspec(
-                 DelegateAccessor="ntfs",
+                 DelegateAccessor=&quot;ntfs&quot;,
                  DelegatePath=OSPath),
-               accessor="raw_reg")
+               accessor=&quot;raw_reg&quot;)
          })
 
       LET A1 = SELECT * FROM if(
@@ -74,7 +74,7 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
 
 </code></pre>

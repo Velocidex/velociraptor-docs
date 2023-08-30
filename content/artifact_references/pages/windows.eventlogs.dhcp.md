@@ -83,10 +83,10 @@ sources:
            query={
               SELECT System.TimeCreated.SystemTime as Time,
                      System.Computer AS Computer,
-                     format(format="%x:%x:%x:%x:%x:%x", args=[EventData.HWAddress]) AS MAC,
+                     format(format=&quot;%x:%x:%x:%x:%x:%x&quot;, args=[EventData.HWAddress]) AS MAC,
                      ip(netaddr4_le=EventData.Address1) AS ClientIP,
                      ip(netaddr4_le=EventData.Address2) AS DHCPServer,
-                     "Lease Rejected" AS Type
+                     &quot;Lease Rejected&quot; AS Type
               FROM parse_evtx(filename=OSPath, accessor=accessor)
               WHERE System.EventID.Value = 1002
            })
@@ -103,7 +103,7 @@ sources:
                      EventData.InterfaceGuid AS MAC,
                      ip(netaddr4_le=EventData.Address1) AS ClientIP,
                      ip(netaddr4_le=EventData.Address2) AS DHCPServer,
-                     "Lease Assigned" AS Type
+                     &quot;Lease Assigned&quot; AS Type
               FROM parse_evtx(filename=OSPath, accessor=accessor)
               WHERE System.EventID.Value = 60000
            })
@@ -117,22 +117,22 @@ reports:
 
       {{ .Description }}
 
-      {{ define "assigned_dhcp" }}
+      {{ define &quot;assigned_dhcp&quot; }}
             SELECT Computer, ClientIP,
                    count(items=Timestamp) AS Total,
                    enumerate(items=Timestamp) AS Times
-            FROM source(source='AssignedDHCP')
+            FROM source(source=&#x27;AssignedDHCP&#x27;)
             GROUP BY ClientIP
       {{ end }}
-      {{ define "rejected_dhcp" }}
+      {{ define &quot;rejected_dhcp&quot; }}
             SELECT Computer, ClientIP,
                    count(items=Timestamp) AS Total,
                    enumerate(items=Timestamp) AS Times
-            FROM source(source='RejectedDHCP')
+            FROM source(source=&#x27;RejectedDHCP&#x27;)
             GROUP BY ClientIP
       {{ end }}
 
-      {{ $assigned := Query "assigned_dhcp"}}
+      {{ $assigned := Query &quot;assigned_dhcp&quot;}}
       {{ if $assigned }}
       ## Operational logs
 
@@ -142,7 +142,7 @@ reports:
 
       ## Timeline
 
-      {{ Query "SELECT _Time * 1000, ClientIP FROM source(source='AssignedDHCP')" | Timeline }}
+      {{ Query &quot;SELECT _Time * 1000, ClientIP FROM source(source=&#x27;AssignedDHCP&#x27;)&quot; | Timeline }}
 
       {{ end }}
 
@@ -154,9 +154,9 @@ reports:
       environment. For example, the machine has been moved to a
       different network.
 
-      {{ Query "rejected_dhcp" | Table }}
+      {{ Query &quot;rejected_dhcp&quot; | Table }}
 
-      {{ Query "SELECT _Time * 1000, ClientIP FROM source(source='RejectedDHCP')" | Timeline }}
+      {{ Query &quot;SELECT _Time * 1000, ClientIP FROM source(source=&#x27;RejectedDHCP&#x27;)&quot; | Timeline }}
 
 </code></pre>
 

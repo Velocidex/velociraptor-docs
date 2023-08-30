@@ -31,7 +31,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       -- output rows and dedup on unique values for each
@@ -39,8 +39,8 @@ sources:
         Name as KeyName,
         Data.value as KeyValue,
         Data.type as KeyType
-      FROM glob(globs=KeyGlob, accessor="registry")
-      WHERE NOT KeyType ='key'
+      FROM glob(globs=KeyGlob, accessor=&quot;registry&quot;)
+      WHERE NOT KeyType =&#x27;key&#x27;
       GROUP BY ModTime, KeyName,KeyValue,KeyType
 
 </code></pre>

@@ -11,12 +11,12 @@ name: Linux.Ssh.AuthorizedKeys
 description: Find and parse ssh authorized keys files.
 parameters:
   - name: sshKeyFiles
-    default: '.ssh/authorized_keys*'
-    description: Glob of authorized_keys file relative to a user's home directory.
+    default: &#x27;.ssh/authorized_keys*&#x27;
+    description: Glob of authorized_keys file relative to a user&#x27;s home directory.
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = &#x27;linux&#x27;
 
     query: |
       LET authorized_keys = SELECT * from foreach(
@@ -33,8 +33,8 @@ sources:
           query={
             SELECT Uid, User, OSPath, Key, Comment, Mtime
             FROM split_records(
-               filenames=OSPath, regex=" +", columns=["Type", "Key", "Comment"])
-               WHERE Type =~ "ssh"
+               filenames=OSPath, regex=&quot; +&quot;, columns=[&quot;Type&quot;, &quot;Key&quot;, &quot;Comment&quot;])
+               WHERE Type =~ &quot;ssh&quot;
           })
 
 </code></pre>

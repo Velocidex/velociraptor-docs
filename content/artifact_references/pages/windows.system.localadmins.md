@@ -22,26 +22,26 @@ required_permissions:
 
 parameters:
  - name: PowerShellExe
-   default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+   default: &quot;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe&quot;
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
-      LET script <= 'Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json'
+      LET script &lt;= &#x27;Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json&#x27;
 
       LET out = SELECT parse_json_array(data=Stdout) AS Output
           FROM execve(argv=[PowerShellExe,
-               "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+               &quot;-ExecutionPolicy&quot;, &quot;Unrestricted&quot;, &quot;-encodedCommand&quot;,
                   base64encode(string=utf16_encode(
                   string=script))
             ], length=1000000)
       SELECT * FROM foreach(row=out.Output[0],
       query={
           SELECT Name, Value AS SID, if(condition=PrincipalSource=1,
-            then="Local", else=if(condition=PrincipalSource=2,
-            then="Domain", else=PrincipalSource)) AS PrincipalSource
+            then=&quot;Local&quot;, else=if(condition=PrincipalSource=2,
+            then=&quot;Domain&quot;, else=PrincipalSource)) AS PrincipalSource
           FROM scope()
       })
 

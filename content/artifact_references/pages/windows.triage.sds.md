@@ -23,20 +23,20 @@ description: |
 parameters:
   - name: Drive
     description: The Drive letter to analyze
-    default: "C:"
+    default: &quot;C:&quot;
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
-      LET Device <= pathspec(parse=Drive)
+      LET Device &lt;= pathspec(parse=Drive)
 
-      SELECT *, upload(accessor="mft",
+      SELECT *, upload(accessor=&quot;mft&quot;,
                        file=Device + Inode,
                        name=pathspec(Path=Name)) AS Upload
-      FROM foreach(row=parse_ntfs(device=Device, mft=9).Attributes, column="_value")
-      WHERE Name =~ "\\$S" AND TypeId IN (128, 160)
+      FROM foreach(row=parse_ntfs(device=Device, mft=9).Attributes, column=&quot;_value&quot;)
+      WHERE Name =~ &quot;\\$S&quot; AND TypeId IN (128, 160)
 
 </code></pre>
 

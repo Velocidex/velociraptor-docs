@@ -32,15 +32,15 @@ sources:
         FROM foreach(row={
           SELECT Content FROM http_client(
              remove_last=TRUE,
-             tempfile_extension=".zip", url=ExchangeURL)
+             tempfile_extension=&quot;.zip&quot;, url=ExchangeURL)
         }, query={
-          SELECT read_file(accessor="zip", filename=OSPath) AS Definition
+          SELECT read_file(accessor=&quot;zip&quot;, filename=OSPath) AS Definition
           FROM glob(
-             globs='/**/*.yaml',
+             globs=&#x27;/**/*.yaml&#x27;,
              root=pathspec(
-                DelegateAccessor="auto",
+                DelegateAccessor=&quot;auto&quot;,
                 DelegatePath=Content),
-             accessor="zip")
+             accessor=&quot;zip&quot;)
         })
 
         SELECT Definition.name AS Name,

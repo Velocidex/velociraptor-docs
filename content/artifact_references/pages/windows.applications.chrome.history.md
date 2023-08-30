@@ -51,17 +51,17 @@ parameters:
              U.typed_count,
              U.last_visit_time, U.hidden,
              CASE VS.source
-                WHEN 0 THEN 'Synced'
-                WHEN 1 THEN 'Local'
-                WHEN 2 THEN 'Extension'
-                WHEN 3 THEN 'ImportFromFirefox'
-                WHEN 4 THEN 'ImportFromSafari'
-                WHEN 6 THEN 'ImportFromChrome/Edge'
-                WHEN 7 THEN 'ImportFromEdgeHTML'
-                ELSE 'Local'
+                WHEN 0 THEN &#x27;Synced&#x27;
+                WHEN 1 THEN &#x27;Local&#x27;
+                WHEN 2 THEN &#x27;Extension&#x27;
+                WHEN 3 THEN &#x27;ImportFromFirefox&#x27;
+                WHEN 4 THEN &#x27;ImportFromSafari&#x27;
+                WHEN 6 THEN &#x27;ImportFromChrome/Edge&#x27;
+                WHEN 7 THEN &#x27;ImportFromEdgeHTML&#x27;
+                ELSE &#x27;Local&#x27;
              END Source,
              V.from_visit,
-             strftime('%H:%M:%f',V.visit_duration/1000000.0, 'unixepoch') as visit_duration,
+             strftime(&#x27;%H:%M:%f&#x27;,V.visit_duration/1000000.0, &#x27;unixepoch&#x27;) as visit_duration,
              V.transition
       FROM urls AS U
       JOIN visits AS V ON U.id = V.url
@@ -73,7 +73,7 @@ parameters:
     default: .
     type: regex
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |

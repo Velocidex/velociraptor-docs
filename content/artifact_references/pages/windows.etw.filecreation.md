@@ -42,11 +42,11 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
         LET Y = SELECT *
-          FROM watch_etw(guid="{EDD08927-9CC4-4E65-B970-C2560FB5C289}", any=4096)
+          FROM watch_etw(guid=&quot;{EDD08927-9CC4-4E65-B970-C2560FB5C289}&quot;, any=4096)
           WHERE EventData.FileName =~ FilePathFilter
 
         -- Implement a delay to ensure we get the process event stream

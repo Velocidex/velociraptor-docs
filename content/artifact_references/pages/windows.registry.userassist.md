@@ -51,16 +51,16 @@ description: |
 reference:
   - https://www.aldeid.com/wiki/Windows-userassist-keys
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: UserFilter
-    default: ""
+    default: &quot;&quot;
     description: If specified we filter by this username.
     type: regex
 
   - name: ExecutionTimeAfter
-    default: ""
+    default: &quot;&quot;
     type: timestamp
     description: If specified only show executions after this time.
 
@@ -68,27 +68,27 @@ parameters:
     default: Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\*\Count\*
 
 export:
-  LET userAssistProfile = '''
+  LET userAssistProfile = &#x27;&#x27;&#x27;
       [
-        ["Header", 0, [
-          ["NumberOfExecutions", 4, "uint32"],
-          ["LastExecution", 60, "uint64"]
+        [&quot;Header&quot;, 0, [
+          [&quot;NumberOfExecutions&quot;, 4, &quot;uint32&quot;],
+          [&quot;LastExecution&quot;, 60, &quot;uint64&quot;]
         ]]
       ]
-    '''
+    &#x27;&#x27;&#x27;
 
 sources:
   - query: |
       LET TMP = SELECT OSPath.Path AS _KeyPath,
           parse_string_with_regex(
                 string=OSPath.Path,
-                regex="^.+Count\\\\\"?(?P<Name>.+?)\"?$") AS Name,
+                regex=&quot;^.+Count\\\\\&quot;?(?P&lt;Name&gt;.+?)\&quot;?$&quot;) AS Name,
             OSPath,
             parse_binary(
                filename=Data.value,
-               accessor="data",
+               accessor=&quot;data&quot;,
                profile=userAssistProfile,
-               struct="Header"
+               struct=&quot;Header&quot;
              ) As ParsedUserAssist,
              Username AS User
       FROM Artifact.Windows.Registry.NTUser(KeyGlob=UserAssistKey)
@@ -113,7 +113,7 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
           },
           else={ SELECT * FROM A1})
 

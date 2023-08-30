@@ -27,22 +27,22 @@ parameters:
   - name: HostsFile
     default: C:\Windows\System32\drivers\etc\hosts
   - name: HostnameRegex
-    description: "Hostname target Regex in Hostsfile"
+    description: &quot;Hostname target Regex in Hostsfile&quot;
     default: .
     type: regex
 
   - name: ResolutionRegex
-    description: "Resolution target Regex in Hostsfile"
+    description: &quot;Resolution target Regex in Hostsfile&quot;
     default: .
     type: regex
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       -- Parse hosts file
-      Let lines = SELECT split(string=Data,sep='\\r?\\n|\\r') as List
+      Let lines = SELECT split(string=Data,sep=&#x27;\\r?\\n|\\r&#x27;) as List
         FROM read_file(filenames=HostsFile)
 
       -- extract into fields
@@ -51,13 +51,13 @@ sources:
                     SELECT parse_string_with_regex(
                         string=_value,
                         regex=[
-                            "^\\s*(?P<Resolution>[^\\s]+)\\s+" +
-                            "(?P<Hostname>[^\\#]+)\\s*" +
-                            "#*\\s*(?P<Comment>.*)$"
+                            &quot;^\\s*(?P&lt;Resolution&gt;[^\\s]+)\\s+&quot; +
+                            &quot;(?P&lt;Hostname&gt;[^\\#]+)\\s*&quot; +
+                            &quot;#*\\s*(?P&lt;Comment&gt;.*)$&quot;
                         ]) as Record
                     FROM foreach(row=List)
                     WHERE _value
-                        AND NOT _value =~ '^\\s*#'
+                        AND NOT _value =~ &#x27;^\\s*#&#x27;
                         AND _value =~ HostnameRegex
                         AND _value =~ ResolutionRegex
                 })
@@ -65,10 +65,10 @@ sources:
       -- clean up hostname output
       LET hostlist(string)=
             if(condition= len(list=split(string=regex_replace(source=string,
-                    re='\\s+$', replace=''), sep='\\s+')) = 1,
-                then= regex_replace(source=string,re='\\s+$', replace=''),
-                else= split(string=regex_replace(source=string,re='\\s+$',
-                  replace=''), sep='\\s+'))
+                    re=&#x27;\\s+$&#x27;, replace=&#x27;&#x27;), sep=&#x27;\\s+&#x27;)) = 1,
+                then= regex_replace(source=string,re=&#x27;\\s+$&#x27;, replace=&#x27;&#x27;),
+                else= split(string=regex_replace(source=string,re=&#x27;\\s+$&#x27;,
+                  replace=&#x27;&#x27;), sep=&#x27;\\s+&#x27;))
 
       -- output rows
       SELECT

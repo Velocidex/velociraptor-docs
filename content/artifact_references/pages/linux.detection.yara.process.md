@@ -60,7 +60,7 @@ parameters:
     default: |
       rule keyword_search {
          strings:
-           $a = "velociraptor" ascii
+           $a = &quot;velociraptor&quot; ascii
 
         condition:
             any of them
@@ -80,11 +80,11 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = &#x27;linux&#x27;
 
     query: |
       -- check which Yara to use
-      LET yara_rules <= YaraUrl || YaraRule
+      LET yara_rules &lt;= YaraUrl || YaraRule
 
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
@@ -96,11 +96,11 @@ sources:
         FROM pslist()
         WHERE
             Name =~ ProcessRegex
-            AND format(format="%d", args=Pid) =~ PidRegex
+            AND format(format=&quot;%d&quot;, args=Pid) =~ PidRegex
             AND NOT Pid in me.Pid
             AND NOT if(condition=ExePathWhitelist,
                     then= Exe=~ExePathWhitelist)
-            AND log(message=format(format="Scanning pid %v: %v", args=[
+            AND log(message=format(format=&quot;Scanning pid %v: %v&quot;, args=[
                 Pid, CommandLine]))
 
       -- scan processes in scope with our rule, limit 1 hit
@@ -116,25 +116,25 @@ sources:
                 Meta,
                 String.Name as YaraString,
                 String.Offset as HitOffset,
-                upload( accessor='scope', 
-                    file='String.Data', 
-                    name=format(format="%v-%v_%v_%v", 
+                upload( accessor=&#x27;scope&#x27;, 
+                    file=&#x27;String.Data&#x27;, 
+                    name=format(format=&quot;%v-%v_%v_%v&quot;, 
                     args=[ ProcessName, Pid, String.Offset, ContextBytes ]
                         )) as HitContext
-             FROM yara(files=format(format="/%d", args=Pid),
-                       accessor='process',rules=yara_rules,
+             FROM yara(files=format(format=&quot;/%d&quot;, args=Pid),
+                       accessor=&#x27;process&#x27;,rules=yara_rules,
                        context=ContextBytes, number=NumberOfHits )
           })
 
       -- upload hits using the process accessor
       LET upload_hits = SELECT *,
           upload(
-            accessor="process",
-            file=format(format="/%v", args=Pid),
-            name=pathspec(Path=format(format='%v-%v.dmp',
+            accessor=&quot;process&quot;,
+            file=format(format=&quot;/%v&quot;, args=Pid),
+            name=pathspec(Path=format(format=&#x27;%v-%v.dmp&#x27;,
                           args= [ ProcessName, Pid ]))) as ProcessDump
       FROM hits
-      WHERE log(message=format(format='Will upload %v: %v', args=[Pid, ProcessName]))
+      WHERE log(message=format(format=&#x27;Will upload %v: %v&#x27;, args=[Pid, ProcessName]))
 
       -- return rows
       SELECT * FROM if(condition=UploadHits,

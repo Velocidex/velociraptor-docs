@@ -41,78 +41,78 @@ parameters:
   description: If set we also upload the raw files.
 
 export: |
-    LET JournalProfile = '''[
-    ["Header", "x=>x.header_size", [
-      ["Signature", 0, "String", {
-          "length": 8,
+    LET JournalProfile = &#x27;&#x27;&#x27;[
+    [&quot;Header&quot;, &quot;x=&gt;x.header_size&quot;, [
+      [&quot;Signature&quot;, 0, &quot;String&quot;, {
+          &quot;length&quot;: 8,
       }],
-      ["header_size", 88, "uint64"],
-      ["arena_size", 96, "uint64"],
-      ["n_objects", 144, uint64],
-      ["n_entries", 152, uint64],
-      ["Objects", "x=>x.header_size", "Array", {
-          "type": "ObjectHeader",
-          "count": "x=>x.n_objects",
-          "max_count": 100000
+      [&quot;header_size&quot;, 88, &quot;uint64&quot;],
+      [&quot;arena_size&quot;, 96, &quot;uint64&quot;],
+      [&quot;n_objects&quot;, 144, uint64],
+      [&quot;n_entries&quot;, 152, uint64],
+      [&quot;Objects&quot;, &quot;x=&gt;x.header_size&quot;, &quot;Array&quot;, {
+          &quot;type&quot;: &quot;ObjectHeader&quot;,
+          &quot;count&quot;: &quot;x=&gt;x.n_objects&quot;,
+          &quot;max_count&quot;: 100000
       }]
     ]],
 
-    ["ObjectHeader", "x=>x.size", [
-     ["Offset", 0, "Value", {
-        "value": "x=>x.StartOf",
+    [&quot;ObjectHeader&quot;, &quot;x=&gt;x.size&quot;, [
+     [&quot;Offset&quot;, 0, &quot;Value&quot;, {
+        &quot;value&quot;: &quot;x=&gt;x.StartOf&quot;,
      }],
-     ["type", 0, "Enumeration",{
-         "type": "uint8",
-         "choices": {
-          "0": OBJECT_UNUSED,
-          "1": OBJECT_DATA,
-          "2": OBJECT_FIELD,
-          "3": OBJECT_ENTRY,
-          "4": OBJECT_DATA_HASH_TABLE,
-          "5": OBJECT_FIELD_HASH_TABLE,
-          "6": OBJECT_ENTRY_ARRAY,
-          "7": OBJECT_TAG,
+     [&quot;type&quot;, 0, &quot;Enumeration&quot;,{
+         &quot;type&quot;: &quot;uint8&quot;,
+         &quot;choices&quot;: {
+          &quot;0&quot;: OBJECT_UNUSED,
+          &quot;1&quot;: OBJECT_DATA,
+          &quot;2&quot;: OBJECT_FIELD,
+          &quot;3&quot;: OBJECT_ENTRY,
+          &quot;4&quot;: OBJECT_DATA_HASH_TABLE,
+          &quot;5&quot;: OBJECT_FIELD_HASH_TABLE,
+          &quot;6&quot;: OBJECT_ENTRY_ARRAY,
+          &quot;7&quot;: OBJECT_TAG,
          }
      }],
-     ["flags", 1, "uint8"],
-     ["__real_size", 8, "uint64"],
-     ["__round_size", 8, "Value", {
-         "value": "x=>int(int=x.__real_size / 8) * 8",
+     [&quot;flags&quot;, 1, &quot;uint8&quot;],
+     [&quot;__real_size&quot;, 8, &quot;uint64&quot;],
+     [&quot;__round_size&quot;, 8, &quot;Value&quot;, {
+         &quot;value&quot;: &quot;x=&gt;int(int=x.__real_size / 8) * 8&quot;,
      }],
-     ["size", 0, "Value", {
-         "value": "x=>if(condition=x.__real_size = x.__round_size, then=x.__round_size, else=x.__round_size + 8)",
+     [&quot;size&quot;, 0, &quot;Value&quot;, {
+         &quot;value&quot;: &quot;x=&gt;if(condition=x.__real_size = x.__round_size, then=x.__round_size, else=x.__round_size + 8)&quot;,
      }],
-     ["payload", 16, Union, {
-         "selector": "x=>x.type",
-         "choices": {
-             "OBJECT_DATA": DataObject,
-             "OBJECT_ENTRY": EntryObject,
+     [&quot;payload&quot;, 16, Union, {
+         &quot;selector&quot;: &quot;x=&gt;x.type&quot;,
+         &quot;choices&quot;: {
+             &quot;OBJECT_DATA&quot;: DataObject,
+             &quot;OBJECT_ENTRY&quot;: EntryObject,
          }
      }]
     ]],
-    ["DataObject", 0, [
-      ["payload", 48, String]
+    [&quot;DataObject&quot;, 0, [
+      [&quot;payload&quot;, 48, String]
     ]],
 
     # This is basically a single log line -
     # it is really a list of references to data Objects
-    ["EntryObject", 0, [
-      ["seqnum", 0, "uint64"],
-      ["realtime", 8, "uint64"],
-      ["monotonic", 16, "uint64"],
-      ["items", 48, Array, {
-          "type": EntryItem,
-          "count": 50,
-          "sentinel": "x=>x.object.payload = NULL",
+    [&quot;EntryObject&quot;, 0, [
+      [&quot;seqnum&quot;, 0, &quot;uint64&quot;],
+      [&quot;realtime&quot;, 8, &quot;uint64&quot;],
+      [&quot;monotonic&quot;, 16, &quot;uint64&quot;],
+      [&quot;items&quot;, 48, Array, {
+          &quot;type&quot;: EntryItem,
+          &quot;count&quot;: 50,
+          &quot;sentinel&quot;: &quot;x=&gt;x.object.payload = NULL&quot;,
       }]
     ]],
-    ["EntryItem", 16, [
-     ["object", 0, "Pointer", {
-         "type": "ObjectHeader",
+    [&quot;EntryItem&quot;, 16, [
+     [&quot;object&quot;, 0, &quot;Pointer&quot;, {
+         &quot;type&quot;: &quot;ObjectHeader&quot;,
      }],
     ]]
     ]
-    '''
+    &#x27;&#x27;&#x27;
 
     -- We make a quick pass over the file to get all the OBJECT_ENTRY
     -- objects which are all we care about. By extracting Just the
@@ -120,14 +120,14 @@ export: |
     -- free memory we wont need.
     LET Offsets(File) = SELECT Offset
       FROM foreach(row=parse_binary(filename=File, profile=JournalProfile,
-         struct="Header").Objects)
-      WHERE type = "OBJECT_ENTRY"
+         struct=&quot;Header&quot;).Objects)
+      WHERE type = &quot;OBJECT_ENTRY&quot;
 
     -- Now parse the ObjectEntry in each offset
     LET _ParseFile(File) = SELECT Offset,
         parse_binary(
          filename=File, profile=JournalProfile,
-         struct="ObjectHeader", offset=Offset) AS Parsed
+         struct=&quot;ObjectHeader&quot;, offset=Offset) AS Parsed
     FROM Offsets(File=File)
 
     -- Extract the timestamps and all the attributes
@@ -142,7 +142,7 @@ sources:
       SELECT OSPath FROM glob(globs=JournalGlob)
     }, query={
       SELECT *, if(condition=OnlyShowMessage,
-          then=filter(list=Data, regex="^MESSAGE=")[0], else=Data) AS Data,
+          then=filter(list=Data, regex=&quot;^MESSAGE=&quot;)[0], else=Data) AS Data,
           if(condition=AlsoUpload, then=upload(file=File)) AS Upload
       FROM ParseFile(File=OSPath)
     })

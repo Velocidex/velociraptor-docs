@@ -17,53 +17,53 @@ parameters:
     default: HKEY_LOCAL_MACHINE\HARDWARE\RESOURCEMAP\System Resources\Physical Memory\.Translated
 
 export: |
-  LET Profile = '''
+  LET Profile = &#x27;&#x27;&#x27;
       [
-        ["CM_RESOURCE_LIST", 0, [
-          ["Count", 0, "uint32"],
-          ["List", 4, "CM_FULL_RESOURCE_DESCRIPTOR"]
+        [&quot;CM_RESOURCE_LIST&quot;, 0, [
+          [&quot;Count&quot;, 0, &quot;uint32&quot;],
+          [&quot;List&quot;, 4, &quot;CM_FULL_RESOURCE_DESCRIPTOR&quot;]
         ]],
-        ["CM_FULL_RESOURCE_DESCRIPTOR", 0, [
-           ["PartialResourceList", 8, "CM_PARTIAL_RESOURCE_LIST"]
+        [&quot;CM_FULL_RESOURCE_DESCRIPTOR&quot;, 0, [
+           [&quot;PartialResourceList&quot;, 8, &quot;CM_PARTIAL_RESOURCE_LIST&quot;]
         ]],
 
-        ["CM_PARTIAL_RESOURCE_LIST", 0, [
-           ["Version", 0, "uint16"],
-           ["Revision", 2, "uint16"],
-           ["Count", 4, "uint32"],
-           ["PartialDescriptors", 8, "Array", {
-              "type": "CM_PARTIAL_RESOURCE_DESCRIPTOR",
-              "count": "x=>x.Count"
+        [&quot;CM_PARTIAL_RESOURCE_LIST&quot;, 0, [
+           [&quot;Version&quot;, 0, &quot;uint16&quot;],
+           [&quot;Revision&quot;, 2, &quot;uint16&quot;],
+           [&quot;Count&quot;, 4, &quot;uint32&quot;],
+           [&quot;PartialDescriptors&quot;, 8, &quot;Array&quot;, {
+              &quot;type&quot;: &quot;CM_PARTIAL_RESOURCE_DESCRIPTOR&quot;,
+              &quot;count&quot;: &quot;x=&gt;x.Count&quot;
            }]
         ]],
 
-        ["CM_PARTIAL_RESOURCE_DESCRIPTOR", 20, [
-           ["Type", 0, "char"],
-           ["ShareDisposition", 1, "char"],
-           ["Flags",2, "uint16"],
-           ["Start",4, "int64"],
-           ["Length",12, "uint32"]
+        [&quot;CM_PARTIAL_RESOURCE_DESCRIPTOR&quot;, 20, [
+           [&quot;Type&quot;, 0, &quot;char&quot;],
+           [&quot;ShareDisposition&quot;, 1, &quot;char&quot;],
+           [&quot;Flags&quot;,2, &quot;uint16&quot;],
+           [&quot;Start&quot;,4, &quot;int64&quot;],
+           [&quot;Length&quot;,12, &quot;uint32&quot;]
         ]]
       ]
-  '''
+  &#x27;&#x27;&#x27;
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
       SELECT * FROM foreach(
-         row={SELECT Data from stat(filename=physicalMemoryKey, accessor="registry")},
+         row={SELECT Data from stat(filename=physicalMemoryKey, accessor=&quot;registry&quot;)},
          query={
             SELECT * FROM foreach(
                row=parse_binary(
                   filename=Data.value,
-                  accessor="data",
+                  accessor=&quot;data&quot;,
                   profile=Profile,
-                  struct="CM_RESOURCE_LIST").List.PartialResourceList.PartialDescriptors,
+                  struct=&quot;CM_RESOURCE_LIST&quot;).List.PartialResourceList.PartialDescriptors,
                query={
                   SELECT Type,
-                         format(format="%#0x", args=Start) AS Start,
-                         format(format="%#0x", args=Length) AS Length
+                         format(format=&quot;%#0x&quot;, args=Start) AS Start,
+                         format(format=&quot;%#0x&quot;, args=Length) AS Length
                   FROM scope()
               })
       })

@@ -19,14 +19,14 @@ parameters:
     default: |
       SELECT U.id AS id, U.url AS url, V.visit_time as visit_time,
       U.title AS title, U.visit_count, U.typed_count,
-      U.last_visit_time, U.hidden, V.from_visit, strftime('%H:%M:%f',
-      V.visit_duration/1000000.0, 'unixepoch') as visit_duration,
+      U.last_visit_time, U.hidden, V.from_visit, strftime(&#x27;%H:%M:%f&#x27;,
+      V.visit_duration/1000000.0, &#x27;unixepoch&#x27;) as visit_duration,
       V.transition FROM urls AS U JOIN visits AS V ON U.id = V.url
   - name: userRegex
     default: .
     type: regex
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |

@@ -15,40 +15,40 @@ description: |
 type: CLIENT
 
 precondition:
-  SELECT OS From info() where OS = 'linux'
+  SELECT OS From info() where OS = &#x27;linux&#x27;
 
 parameters:
   - name: IPRegex
-    description: "regex search over IP address fields."
-    default:  "."
+    description: &quot;regex search over IP address fields.&quot;
+    default:  &quot;.&quot;
     type: regex
   - name: PortRegex
-    description: "regex search over port fields."
-    default: "."
+    description: &quot;regex search over port fields.&quot;
+    default: &quot;.&quot;
     type: regex
   - name: ProcessNameRegex
-    description: "regex search over source process name"
-    default: "."
+    description: &quot;regex search over source process name&quot;
+    default: &quot;.&quot;
     type: regex
   - name: UsernameRegex
-    description: "regex search over source process user context"
-    default: "."
+    description: &quot;regex search over source process user context&quot;
+    default: &quot;.&quot;
     type: regex
   - name: ConnectionStatusRegex
-    description: "regex search over connection status"
-    default: "LISTEN|ESTABLISHED"
+    description: &quot;regex search over connection status&quot;
+    default: &quot;LISTEN|ESTABLISHED&quot;
     type: regex
   - name: ProcessPathRegex
-    description: "regex search over source process path"
-    default: "."
+    description: &quot;regex search over source process path&quot;
+    default: &quot;.&quot;
     type: regex
   - name: CommandLineRegex
-    description: "regex search over source process commandline"
-    default: "."
+    description: &quot;regex search over source process commandline&quot;
+    default: &quot;.&quot;
     type: regex
   - name: CallChainRegex
-    description: "regex search over the process callchain"
-    default: "."
+    description: &quot;regex search over the process callchain&quot;
+    default: &quot;.&quot;
     type: regex
 
 
@@ -61,7 +61,7 @@ sources:
              Pid,
              Status,
              process_tracker_get(id=Pid).Data AS ProcInfo,
-             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=" -> ") AS CallChain,
+             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=&quot; -&gt; &quot;) AS CallChain,
              process_tracker_tree(id=Pid) AS ChildrenTree
       FROM connections()
       WHERE Status =~ ConnectionStatusRegex

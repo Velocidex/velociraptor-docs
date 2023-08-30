@@ -26,7 +26,7 @@ reference:
 required_permissions:
   - EXECVE
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 tools:
   - name: OSQueryWindows
@@ -35,15 +35,15 @@ tools:
 
 parameters:
   - name: Query
-    default: "SELECT * FROM osquery_info"
+    default: &quot;SELECT * FROM osquery_info&quot;
 
 sources:
   - query: |
-      LET binary <= SELECT OSPath
-      FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryWindows")
+      LET binary &lt;= SELECT OSPath
+      FROM Artifact.Generic.Utils.FetchBinary(ToolName=&quot;OSQueryWindows&quot;)
 
       LET result = SELECT * FROM execve(
-         argv=[binary[0].OSPath, "--json", Query],
+         argv=[binary[0].OSPath, &quot;--json&quot;, Query],
          length=1000000)
 
       SELECT * FROM foreach(row=result,

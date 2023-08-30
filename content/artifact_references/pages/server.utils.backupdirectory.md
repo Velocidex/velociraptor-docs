@@ -18,7 +18,7 @@ type: SERVER_EVENT
 
 parameters:
    - name: ArtifactNameRegex
-     default: "."
+     default: &quot;.&quot;
      description: A regular expression to select which artifacts to upload
      type: regex
 
@@ -38,14 +38,14 @@ sources:
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
              flow_id=FlowId, wait=TRUE) AS FlowDownload
-      FROM watch_monitoring(artifact="System.Flow.Completion")
+      FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
       WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       SELECT upload_directory(
          output=BackupDirectoryPath,
-         name=format(format="Host %v %v %v.zip",
+         name=format(format=&quot;Host %v %v %v.zip&quot;,
                      args=[Fqdn, FlowId, timestamp(epoch=now())]),
-         accessor="fs",
+         accessor=&quot;fs&quot;,
          file=FlowDownload) AS Upload
       FROM completions
       WHERE Upload OR

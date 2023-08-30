@@ -17,7 +17,7 @@ the artifact leverages the 'auto' data accessor but can also be changed as desir
 
 <pre><code class="language-yaml">
 name: Generic.Detection.HashHunter
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 description: |
     This artifact enables searching for hashes.
     
@@ -27,12 +27,12 @@ description: |
     Note: this artifacts filters are cumulative so a hash based hit will return 
     no results if the file is filtered out by other filters.  
     For most performant searches leverage path, size and and date filters. By default 
-    the artifact leverages the 'auto' data accessor but can also be changed as desired.  
+    the artifact leverages the &#x27;auto&#x27; data accessor but can also be changed as desired.  
 
 parameters:
   - name: TargetGlob
     description: Glob to target.
-    default: "C:/Users/**/*"
+    default: &quot;C:/Users/**/*&quot;
   - name: Accessor
     description: Velociraptor accessor to use. Changing to ntfs will increase scan time.
     default: auto
@@ -63,50 +63,50 @@ parameters:
 sources:
   - query: |
       -- setup hash lists
-      LET MD5List <= if(condition= MD5List,
-                        then= split(sep='\\s+',string=MD5List), else=Null)
-      LET SHA1List <= if(condition= SHA1List,
-                        then= split(sep='\\s+',string=SHA1List), else=Null)
-      LET SHA256List <= if(condition= SHA256List,
-                        then= split(sep='\\s+',string=SHA256List), else=Null)
+      LET MD5List &lt;= if(condition= MD5List,
+                        then= split(sep=&#x27;\\s+&#x27;,string=MD5List), else=Null)
+      LET SHA1List &lt;= if(condition= SHA1List,
+                        then= split(sep=&#x27;\\s+&#x27;,string=SHA1List), else=Null)
+      LET SHA256List &lt;= if(condition= SHA256List,
+                        then= split(sep=&#x27;\\s+&#x27;,string=SHA256List), else=Null)
       
       -- set hash selector for optimised hash calculation
-      LET HashSelector <= SELECT * FROM chain(
-          a={ SELECT "MD5" AS Hash FROM scope() WHERE MD5List },
-          b={ SELECT "SHA1" AS Hash FROM scope() WHERE SHA1List },
-          c={ SELECT "SHA256" AS Hash FROM scope() WHERE SHA256List })
+      LET HashSelector &lt;= SELECT * FROM chain(
+          a={ SELECT &quot;MD5&quot; AS Hash FROM scope() WHERE MD5List },
+          b={ SELECT &quot;SHA1&quot; AS Hash FROM scope() WHERE SHA1List },
+          c={ SELECT &quot;SHA256&quot; AS Hash FROM scope() WHERE SHA256List })
       
       -- firstly find files in scope with performance
       LET find_files = SELECT * FROM if(condition=DateBefore AND DateAfter,
             then={
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
-                FROM glob(globs=TargetGlob,accessor=Accessor,nosymlink='True')
+                FROM glob(globs=TargetGlob,accessor=Accessor,nosymlink=&#x27;True&#x27;)
                 WHERE NOT IsDir AND NOT IsLink
-                    AND Size > SizeMin AND Size < SizeMax
-                    AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
-                    AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
+                    AND Size &gt; SizeMin AND Size &lt; SizeMax
+                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
             }, 
             else={ SELECT * FROM  if(condition=DateBefore,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=OSPath,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
-                        AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
                 },
                 else={ SELECT * FROM  if(condition=DateAfter,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
-                        AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
                 },
                 else={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
                 })})})
       
       

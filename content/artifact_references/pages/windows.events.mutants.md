@@ -17,7 +17,7 @@ author: Jos Clephas - @DfirJos
 type: CLIENT_EVENT
 
 precondition:
-  SELECT * FROM info() WHERE OS =~ "windows"
+  SELECT * FROM info() WHERE OS =~ &quot;windows&quot;
 
 parameters:
   - name: processRegex
@@ -31,7 +31,7 @@ parameters:
     default: EvilMutant
     type: regex
   - name: AlertName
-    default: "Suspicious mutex created"
+    default: &quot;Suspicious mutex created&quot;
   - name: diff
     default: added
   - name: enrich
@@ -42,21 +42,21 @@ parameters:
 sources:
     - query: |
     
-        LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) > 0
+        LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) &gt; 0
 
-        LET query_mutant = SELECT * FROM winobj() WHERE Type = "Mutant" AND Name =~ MutantNameRegex 
+        LET query_mutant = SELECT * FROM winobj() WHERE Type = &quot;Mutant&quot; AND Name =~ MutantNameRegex 
 
         LET query_enriched = SELECT * FROM foreach(
           row=processes,
           query={
             SELECT ProcPid, ProcName, Exe, Type, Name, Handle
-            FROM handles(pid=int(int=ProcPid), types="Mutant")
+            FROM handles(pid=int(int=ProcPid), types=&quot;Mutant&quot;)
           })
-        WHERE Type = "Mutant" AND Name =~ MutantNameRegex
+        WHERE Type = &quot;Mutant&quot; AND Name =~ MutantNameRegex
         
         LET query_diff = if(condition=enrich, then=query_enriched, else=query_mutant) 
         
-        SELECT *, alert(name=AlertName, Name=Name, Type=Type, Exe=Exe) as AlertSent FROM diff(query=query_diff, period=Period, key="Name") WHERE Diff = diff
+        SELECT *, alert(name=AlertName, Name=Name, Type=Type, Exe=Exe) as AlertSent FROM diff(query=query_diff, period=Period, key=&quot;Name&quot;) WHERE Diff = diff
 
 </code></pre>
 

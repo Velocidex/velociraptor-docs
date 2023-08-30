@@ -20,7 +20,7 @@ the artifact leverages the 'auto' data accessor but can also be changed as desir
 
 <pre><code class="language-yaml">
 name: Windows.Detection.BinaryHunter
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 description: |
     This artifact enables hunting for binary attributes.
 
@@ -33,17 +33,17 @@ description: |
     Note: this artifacts filters are cumulative so a hash based hit will return
     no results if the file is filtered out by other filters.
     For most performant searches leverage path, size and and date filters. By default
-    the artifact leverages the 'auto' data accessor but can also be changed as desired.
+    the artifact leverages the &#x27;auto&#x27; data accessor but can also be changed as desired.
 
 parameters:
   - name: TargetGlob
     description: Glob to target.
-    default: "C:/Users/**/*"
+    default: &quot;C:/Users/**/*&quot;
   - name: Accessor
     description: Velociraptor accessor to use. Changing to ntfs will increase scan time.
     default: auto
   - name: UnexpectedExtension
-    description: "Exclude binaries with expected extension: com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd"
+    description: &quot;Exclude binaries with expected extension: com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd&quot;
     type: bool
   - name: ExcludeTrusted
     description: Exclude binaries with Trusted Authenticode certificates.
@@ -91,9 +91,9 @@ parameters:
 sources:
   - query: |
       -- setup hash lists if needed
-      LET MD5Array <= split(sep='\\s+',string=MD5List)
-      LET SHA1Array <=  split(sep='\\s+',string=SHA1List)
-      LET SHA256Array <= split(sep='\\s+',string=SHA256List)
+      LET MD5Array &lt;= split(sep=&#x27;\\s+&#x27;,string=MD5List)
+      LET SHA1Array &lt;=  split(sep=&#x27;\\s+&#x27;,string=SHA1List)
+      LET SHA256Array &lt;= split(sep=&#x27;\\s+&#x27;,string=SHA256List)
 
       -- firstly find files in scope with performance
       LET find_files = SELECT *,
@@ -103,35 +103,35 @@ sources:
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                 FROM glob(globs=TargetGlob,accessor=Accessor)
                 WHERE NOT IsDir AND NOT IsLink
-                    AND Size > SizeMin AND Size < SizeMax
-                    AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
-                    AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
+                    AND Size &gt; SizeMin AND Size &lt; SizeMax
+                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
             },
             else={ SELECT * FROM  if(condition=DateBefore,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=OSPath,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
-                        AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
                 },
                 else={ SELECT * FROM  if(condition=DateAfter,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
-                        AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
                 },
                 else={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
                 })})})
-        WHERE _Header = 'MZ'
+        WHERE _Header = &#x27;MZ&#x27;
             AND if(condition= UnexpectedExtension,
-                then= NOT Name =~ '\.(com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd)$',
+                then= NOT Name =~ &#x27;\.(com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd)$&#x27;,
                 else= True)
 
 
@@ -154,7 +154,7 @@ sources:
             then= serialize(item=PE) =~ PEInformationWhitelistRegex,
             else= False)
         AND if(condition= ExcludeTrusted,
-                then= NOT Authenticode.Trusted = "trusted",
+                then= NOT Authenticode.Trusted = &quot;trusted&quot;,
                 else= True)
         AND if(condition= MD5List OR SHA1List OR SHA256List,
             then=(

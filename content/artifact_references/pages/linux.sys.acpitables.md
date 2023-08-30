@@ -16,10 +16,10 @@ parameters:
     default: /sys/firmware/acpi/tables
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = &#x27;linux&#x27;
     query: |
         LET hashes = SELECT Name, Size, hash(path=OSPath) as Hash
-                     FROM glob(globs="*", root=kLinuxACPIPath)
+                     FROM glob(globs=&quot;*&quot;, root=kLinuxACPIPath)
 
         SELECT Name, Size, Hash.MD5, Hash.SHA1, Hash.SHA256 from hashes
 

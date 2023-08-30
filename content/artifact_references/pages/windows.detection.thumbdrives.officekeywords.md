@@ -36,7 +36,7 @@ type: CLIENT_EVENT
 
 parameters:
   - name: officeExtensions
-    default: "\\.(xls|xlsm|doc|docx|ppt|pptm)$"
+    default: &quot;\\.(xls|xlsm|doc|docx|ppt|pptm)$&quot;
     type: regex
 
   - name: yaraRule
@@ -45,8 +45,8 @@ parameters:
     default: |
       rule Hit {
         strings:
-          $a = "this is my secret" wide nocase
-          $b = "this is my secret" nocase
+          $a = &quot;this is my secret&quot; wide nocase
+          $b = &quot;this is my secret&quot; nocase
 
         condition:
           any of them
@@ -61,7 +61,7 @@ sources:
           },
           query = {
             SELECT * FROM Artifact.Generic.Applications.Office.Keywords(
-              yaraRule=yaraRule, searchGlob=OSPath, documentGlobs="")
+              yaraRule=yaraRule, searchGlob=OSPath, documentGlobs=&quot;&quot;)
           })
 
 </code></pre>

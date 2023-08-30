@@ -28,10 +28,10 @@ parameters:
     default: C:\Windows\System32\Winevt\Logs\{System,Security}.evtx
   - name: DateAfter
     type: timestamp
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
   - name: DateBefore
     type: timestamp
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
 
   - name: VSSAnalysisAge
     type: int
@@ -48,7 +48,7 @@ sources:
         EventTime,
         UserData.LogFileCleared.Channel || Channel as ClearedLog,
         Message,
-        UserData.LogFileCleared.SubjectDomainName + "\\" + UserData.LogFileCleared.SubjectUserName as Username,
+        UserData.LogFileCleared.SubjectDomainName + &quot;\\&quot; + UserData.LogFileCleared.SubjectUserName as Username,
         UserData.LogFileCleared.SubjectUserSid || UserSID as UserSID,
         dict(
             EventTime=EventTime,
@@ -60,9 +60,9 @@ sources:
             UserData=UserData
         ) as EventData
       FROM Artifact.Windows.EventLogs.EvtxHunter(EvtxGlob=TargetGlob,
-            ChannelRegex='^(Security|System)$',
-            IdRegex='^(1102|104)',
-            IocRegex='clear|cleared',
+            ChannelRegex=&#x27;^(Security|System)$&#x27;,
+            IdRegex=&#x27;^(1102|104)&#x27;,
+            IocRegex=&#x27;clear|cleared&#x27;,
             DateAfter=DateAfter,
             DateBefore=DateBefore,
             VSSAnalysisAge=VSSAnalysisAge)

@@ -26,20 +26,20 @@ tools:
     github_asset_regex: winpmem_mini_x64.+exe
     serve_locally: true
 
-precondition: SELECT OS From info() where OS = 'windows' AND Architecture = "amd64"
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27; AND Architecture = &quot;amd64&quot;
 
 sources:
   - query: |
       SELECT * FROM foreach(
           row={
-            SELECT OSPath, tempfile(extension=".raw", remove_last=TRUE) AS Tempfile
-            FROM Artifact.Generic.Utils.FetchBinary(ToolName="WinPmem64")
+            SELECT OSPath, tempfile(extension=&quot;.raw&quot;, remove_last=TRUE) AS Tempfile
+            FROM Artifact.Generic.Utils.FetchBinary(ToolName=&quot;WinPmem64&quot;)
           },
           query={
             SELECT Stdout, Stderr,
                    if(condition=Complete,
-                      then=upload(file=Tempfile, name="PhysicalMemory.raw")) As Upload
-            FROM execve(argv=[OSPath, Tempfile], sep="\r\n")
+                      then=upload(file=Tempfile, name=&quot;PhysicalMemory.raw&quot;)) As Upload
+            FROM execve(argv=[OSPath, Tempfile], sep=&quot;\r\n&quot;)
         })
 
 </code></pre>

@@ -29,7 +29,7 @@ Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit P
 <pre><code class="language-yaml">
 name: Windows.Events.FailedLogBeforeSuccess
 description: |
-  Sometimes attackers will brute force an local user's account's
+  Sometimes attackers will brute force an local user&#x27;s account&#x27;s
   password. If the account password is strong, brute force attacks are
   not effective and might not represent a high value event in
   themselves.
@@ -53,7 +53,7 @@ type: CLIENT_EVENT
 
 parameters:
   - name: securityLogFile
-    default: >-
+    default: &gt;-
       C:/Windows/System32/Winevt/Logs/Security.evtx
 
   - name: failureCount
@@ -65,7 +65,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS FROM info() where OS = 'windows'
+      SELECT OS FROM info() where OS = &#x27;windows&#x27;
     query: |
       LET failed_logon = SELECT EventData as FailedEventData,
            System as FailedSystem
@@ -79,7 +79,7 @@ sources:
                       max_age=atoi(string=failedLogonTimeWindow))
 
       // Force the fifo to materialize.
-      LET foo <= SELECT * FROM last_5_events
+      LET foo &lt;= SELECT * FROM last_5_events
 
       LET success_logon = SELECT EventData as SuccessEventData,
            System as SuccessSystem
@@ -96,7 +96,7 @@ sources:
            FROM last_5_events
            WHERE FailedEventData.SubjectUserName = SuccessEventData.SubjectUserName
            GROUP BY LogonTime
-          })  WHERE Count > atoi(string=failureCount)
+          })  WHERE Count &gt; atoi(string=failureCount)
 
 </code></pre>
 

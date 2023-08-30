@@ -28,7 +28,7 @@ description: |
   Powershell 5 on Windows 10 default configuration saves a copy of the console
   history to disk.
 
-  There are several parameter's available for search leveraging regex.
+  There are several parameter&#x27;s available for search leveraging regex.
   - SearchStrings enables regex search over a PSReadline line.
   - StringWhiteList enables a regex whitelist for results.
   - UserRegex enables a regex search on Username
@@ -56,11 +56,11 @@ parameters:
     default: .
     type: regex
   - name: UploadFiles
-    description: "Upload ConsoleHost_history.txt files in scope"
+    description: &quot;Upload ConsoleHost_history.txt files in scope&quot;
     type: bool
 
 precondition:
-  SELECT OS From info() where OS = 'windows'
+  SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |

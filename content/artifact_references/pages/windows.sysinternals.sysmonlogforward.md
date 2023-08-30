@@ -14,7 +14,7 @@ description: |
 
 type: CLIENT_EVENT
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 tools:
   - name: SysmonBinary
@@ -33,15 +33,15 @@ parameters:
 sources:
 - query: |
     // First ensure that sysmon is actually installed.
-    LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+    LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
         SysmonFileLocation=SysmonFileLocation)
 
     // Just parse and forward events. Use ETW rather than watch_evtx()
     // because it is a little bit faster.
     SELECT System.ID AS ID,
            System.TimeStamp AS Timestamp,
-           get(member='EventData') AS EventData
-    FROM watch_etw(guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
+           get(member=&#x27;EventData&#x27;) AS EventData
+    FROM watch_etw(guid=&#x27;{5770385f-c22a-43e0-bf4c-06f5698ffbd9}&#x27;)
 
 </code></pre>
 

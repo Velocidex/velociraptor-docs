@@ -15,10 +15,10 @@ description: |
 required_permissions:
   - EXECVE
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 parameters:
   - name: SessionRegex
-    default: "Velociraptor"
+    default: &quot;Velociraptor&quot;
     type: regex
   - name: KillMatching
     type: bool
@@ -28,13 +28,13 @@ parameters:
 sources:
   - query: |
       SELECT * FROM foreach(row={
-         SELECT Stdout, parse_string_with_regex(string=Stdout, regex="(^[^ ]+)").g1 AS SessionName
-         from execve(argv=["logman", "query", "-ets"], sep="\n")
-         WHERE Stdout =~ "Running" AND SessionName =~ SessionRegex
+         SELECT Stdout, parse_string_with_regex(string=Stdout, regex=&quot;(^[^ ]+)&quot;).g1 AS SessionName
+         from execve(argv=[&quot;logman&quot;, &quot;query&quot;, &quot;-ets&quot;], sep=&quot;\n&quot;)
+         WHERE Stdout =~ &quot;Running&quot; AND SessionName =~ SessionRegex
       }, query={
          SELECT * FROM if(condition=KillMatching,
          then={
-             SELECT SessionName, Stdout FROM execve(argv=["logman", "stop", SessionName, "-ets"])
+             SELECT SessionName, Stdout FROM execve(argv=[&quot;logman&quot;, &quot;stop&quot;, SessionName, &quot;-ets&quot;])
          }, else={
              SELECT SessionName FROM scope()
          })

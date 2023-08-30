@@ -14,22 +14,22 @@ description: |
   This artifact enables grep of IISLogs.
   Parameters include SearchRegex and WhitelistRegex as regex terms.
 
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 
 parameters:
   - name: IISLogFiles
-    default: '*:/inetpub/logs/**3/*.log'
+    default: &#x27;*:/inetpub/logs/**3/*.log&#x27;
   - name: SearchRegex
-    description: "Regex of strings to search in line."
-    default: ' POST '
+    description: &quot;Regex of strings to search in line.&quot;
+    default: &#x27; POST &#x27;
     type: regex
   - name: WhitelistRegex
-    description: "Regex of strings to leave out of output."
+    description: &quot;Regex of strings to leave out of output.&quot;
     default:
     type: regex
 
 sources:
-  - precondition: SELECT OS From info() where OS = 'windows'
+  - precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       LET files = SELECT OSPath FROM glob(globs=IISLogFiles)
@@ -55,9 +55,9 @@ sources:
             suggestions. Comment in preffered or add your modify your own.
             */
 
-            LET target_grok = "%{TIMESTAMP_ISO8601:LogTimeStamp} %{IPORHOST:Site} %{WORD:Method} %{URIPATH:UriPath} %{NOTSPACE:QueryString} %{NUMBER:Port} %{NOTSPACE:Username} %{IPORHOST:Clienthost} %{NOTSPACE:Useragent} %{NOTSPACE:Referrer} %{NUMBER:Response} %{NUMBER:Subresponse} %{NUMBER:Win32status} %{NUMBER:Timetaken:int}"
-            --LET target_grok = "%{TIMESTAMP_ISO8601:log_timestamp} %{IPORHOST:site} %{WORD:method} %{URIPATH:page} %{NOTSPACE:querystring} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clienthost} %{NOTSPACE:useragent} %{NOTSPACE:referer} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:scstatus} %{NUMBER:timetaken:int}"
-            --LET target_grok = "%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:iisSite} %{NOTSPACE:computername} %{IPORHOST:site} %{WORD:method} %{URIPATH:page} %{NOTSPACE:querystring} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clienthost} %{NOTSPACE:protocol} %{NOTSPACE:useragent} %{NOTSPACE:referer} %{IPORHOST:cshost} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:scstatus} %{NUMBER:bytessent:int} %{NUMBER:bytesrecvd:int} %{NUMBER:timetaken:int}"
+            LET target_grok = &quot;%{TIMESTAMP_ISO8601:LogTimeStamp} %{IPORHOST:Site} %{WORD:Method} %{URIPATH:UriPath} %{NOTSPACE:QueryString} %{NUMBER:Port} %{NOTSPACE:Username} %{IPORHOST:Clienthost} %{NOTSPACE:Useragent} %{NOTSPACE:Referrer} %{NUMBER:Response} %{NUMBER:Subresponse} %{NUMBER:Win32status} %{NUMBER:Timetaken:int}&quot;
+            --LET target_grok = &quot;%{TIMESTAMP_ISO8601:log_timestamp} %{IPORHOST:site} %{WORD:method} %{URIPATH:page} %{NOTSPACE:querystring} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clienthost} %{NOTSPACE:useragent} %{NOTSPACE:referer} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:scstatus} %{NUMBER:timetaken:int}&quot;
+            --LET target_grok = &quot;%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:iisSite} %{NOTSPACE:computername} %{IPORHOST:site} %{WORD:method} %{URIPATH:page} %{NOTSPACE:querystring} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clienthost} %{NOTSPACE:protocol} %{NOTSPACE:useragent} %{NOTSPACE:referer} %{IPORHOST:cshost} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:scstatus} %{NUMBER:bytessent:int} %{NUMBER:bytesrecvd:int} %{NUMBER:timetaken:int}&quot;
 
 
             LET parsed = SELECT Fqdn, ClientId as _ClientId, Line as _Raw,

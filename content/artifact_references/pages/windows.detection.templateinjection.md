@@ -42,7 +42,7 @@ description: |
     via a resource file masquerading as an office template. The OOXML artifact structure
     will also detect MSHTML RCE Vulnerability #CVE-2021-40444 which has a similar payload technique.
     For RTF documents a malicious payload can be delivered by modifying document
-    formatting control via the "\\\*\template" structure.
+    formatting control via the &quot;\\\*\template&quot; structure.
 
 
     This artifact can be modified to search for other suspicious rels files:
@@ -53,8 +53,8 @@ description: |
     - header#.xml.rels and footer#.xml.rels and others has also been observed
     hosting image files for canary files or abused for NetNTLM hash collection.
 
-    Change TemplateFileRegex to '\\.xml\\.rels$' for looser file selection.
-    Change TemplateTargetRegex to '^(https?|smb|\\\\|//|mhtml|file)' for looser
+    Change TemplateFileRegex to &#x27;\\.xml\\.rels$&#x27; for looser file selection.
+    Change TemplateTargetRegex to &#x27;^(https?|smb|\\\\|//|mhtml|file)&#x27; for looser
     Target selection.
 
     This artifact can also be modified to quickly deploy yara based detections on
@@ -75,11 +75,11 @@ parameters:
     default: C:\Users\**\*.{rtf,doc,dot,docx,docm,dotx,dotm,docb,xls,xlt,xlm,xlsx,xlsm,xltx,xltm,xlsb,ppt,pptx,pptm,potx,potm}
   - name: TemplateFileRegex
     description: Regex to search inside resource section.
-    default: '(document|settings)\.xml\.rels$'
+    default: &#x27;(document|settings)\.xml\.rels$&#x27;
     type: regex
   - name: TemplateTargetRegex
     description: Regex to search inside resource section.
-    default: '^(https?|smb|\\\\|//|mhtml)'
+    default: &#x27;^(https?|smb|\\\\|//|mhtml)&#x27;
     type: regex
   - name: UploadDocument
     type: bool
@@ -89,8 +89,8 @@ parameters:
     default: |
         rule RTF_TemplateInjection {
             meta:
-                author = "Matt Green - @mgreen27"
-                description = "Yara for RTF template injection. Using regex match to extract template information"
+                author = &quot;Matt Green - @mgreen27&quot;
+                description = &quot;Yara for RTF template injection. Using regex match to extract template information&quot;
 
             strings:
                 $regex1 = /\{\\\*\\template\s+http[^\}]+\}/ nocase
@@ -104,15 +104,15 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       -- Find target docs
       LET office_docs = SELECT OSPath, Mtime, Size
         FROM glob(globs=SearchGlob)
-        WHERE NOT IsDir and Size > 0
+        WHERE NOT IsDir and Size &gt; 0
 
-      LET rtf_injection <= SELECT * FROM foreach(
+      LET rtf_injection &lt;= SELECT * FROM foreach(
          row=office_docs,
          query={
                 SELECT
@@ -120,12 +120,12 @@ sources:
                     hash(path=OSPath) as DocumentHash,
                     Mtime,
                     Size,
-                    'YaraHit: ' + Rule  as Section,
+                    &#x27;YaraHit: &#x27; + Rule  as Section,
                     regex_replace(
                       source=String.Data,
-                      re='\{...template\s*|\}',replace='') as TemplateTarget
+                      re=&#x27;\{...template\s*|\}&#x27;,replace=&#x27;&#x27;) as TemplateTarget
                 FROM yara(files=OSPath, rules=RtfYara)
-                WHERE NOT TemplateTarget =~ '^http(s|)://schemas\.microsoft\.com/'
+                WHERE NOT TemplateTarget =~ &#x27;^http(s|)://schemas\.microsoft\.com/&#x27;
 
             })
 
@@ -146,11 +146,11 @@ sources:
                     OSPath.Path AS ZipMemberPath,
                     OfficePath
                 FROM glob(
-                  globs="/**",
+                  globs=&quot;/**&quot;,
                   root=pathspec(DelegatePath=OfficePath),
-                  accessor='zip')
+                  accessor=&#x27;zip&#x27;)
                 WHERE not IsDir
-                  AND Size > 0
+                  AND Size &gt; 0
                   AND ZipMemberPath =~ TemplateFileRegex
             })
 
@@ -163,12 +163,12 @@ sources:
                 OSPath.Path as Section,
                 parse_string_with_regex(
                     string=Line,
-                    regex=['\\s+Target="(?P<Target>[^"]+)"\\s+TargetMode='
+                    regex=[&#x27;\\s+Target=&quot;(?P&lt;Target&gt;[^&quot;]+)&quot;\\s+TargetMode=&#x27;
                         ]).Target as TemplateTarget,
                 Mtime as SectionMtime,
                 Atime as SectionAtime,
                 Ctime as SectionCtime
-            FROM parse_lines(filename=OSPath, accessor='zip')
+            FROM parse_lines(filename=OSPath, accessor=&#x27;zip&#x27;)
             WHERE TemplateTarget
         })
 
@@ -185,15 +185,15 @@ sources:
                         Size,
                         Section,
                         regex_replace(source=TemplateTarget,
-                            re='.*Target="(mhtml)',
-                            replace='mhtml') as TemplateTarget,
+                            re=&#x27;.*Target=&quot;(mhtml)&#x27;,
+                            replace=&#x27;mhtml&#x27;) as TemplateTarget,
                         SectionMtime,
-                        hash(path=SectionPath,accessor='zip') as SectionHash
+                        hash(path=SectionPath,accessor=&#x27;zip&#x27;) as SectionHash
                     FROM stat(filename=Document)
                     WHERE
                         TemplateTarget =~ TemplateTargetRegex
-                         AND (( Section=~'/document.xml.rels$' AND TemplateTarget=~'^mhtml:' )
-                                OR NOT Section=~'/document.xml.rels$' )
+                         AND (( Section=~&#x27;/document.xml.rels$&#x27; AND TemplateTarget=~&#x27;^mhtml:&#x27; )
+                                OR NOT Section=~&#x27;/document.xml.rels$&#x27; )
                 })
         })
 

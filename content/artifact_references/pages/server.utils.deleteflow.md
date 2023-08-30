@@ -15,7 +15,7 @@ users with the administrator role can run it.
 <pre><code class="language-yaml">
 name: Server.Utils.DeleteFlow
 description: |
-  This artifact permanently deletes a flow including it's metadata and
+  This artifact permanently deletes a flow including it&#x27;s metadata and
   uploaded files.
 
   NOTE: This action can not be undone! The collection is deleted

@@ -15,15 +15,15 @@ parameters:
     default: /proc/mounts
 
 precondition: |
-   SELECT OS From info() where OS = 'linux'
+   SELECT OS From info() where OS = &#x27;linux&#x27;
 
 sources:
   - query: |
-      SELECT Device, Mount, FSType, split(string=Opts, sep=",") As Options
+      SELECT Device, Mount, FSType, split(string=Opts, sep=&quot;,&quot;) As Options
       FROM parse_records_with_regex(
          file=ProcMounts,
-         regex='(?m)^(?P<Device>[^ ]+) (?P<Mount>[^ ]+) (?P<FSType>[^ ]+) '+
-             '(?P<Opts>[^ ]+)')
+         regex=&#x27;(?m)^(?P&lt;Device&gt;[^ ]+) (?P&lt;Mount&gt;[^ ]+) (?P&lt;FSType&gt;[^ ]+) &#x27;+
+             &#x27;(?P&lt;Opts&gt;[^ ]+)&#x27;)
 
 
 reports:
@@ -31,7 +31,7 @@ reports:
     template: |
       # Mounted filesystems
 
-      {{ Query "SELECT * FROM source()" | Table }}
+      {{ Query &quot;SELECT * FROM source()&quot; | Table }}
 
 </code></pre>
 

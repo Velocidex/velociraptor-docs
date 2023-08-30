@@ -36,7 +36,7 @@ parameters:
     description: A list of artifacts to collect
     type: json_array
     default: |
-      ["Generic.Client.Info"]
+      [&quot;Generic.Client.Info&quot;]
 
   - name: encryption_scheme
     description: |
@@ -70,7 +70,7 @@ parameters:
   - name: target_args
     description: Type Dependent args
     type: json
-    default: "{}"
+    default: &quot;{}&quot;
 
   - name: opt_verbose
     default: Y
@@ -97,33 +97,33 @@ parameters:
     description: A directory to write tempfiles in
 
   - name: opt_level
-    default: "4"
+    default: &quot;4&quot;
     type: int
     description: Compression level (0=no compression).
 
   - name: opt_format
-    default: "jsonl"
+    default: &quot;jsonl&quot;
     description: Output format (jsonl or csv)
 
   - name: opt_output_directory
-    default: ""
+    default: &quot;&quot;
     description: Where we actually write the collection to. You can specify this as a mapped drive to write over the network.
 
   - name: opt_filename_template
-    default: "Collection-%FQDN%-%TIMESTAMP%"
+    default: &quot;Collection-%FQDN%-%TIMESTAMP%&quot;
     description: |
       The filename to use. You can expand environment variables as
       well as the following %FQDN% and %TIMESTAMP%.
 
   - name: opt_cpu_limit
-    default: "0"
+    default: &quot;0&quot;
     type: int
     description: |
       A number between 0 to 100 representing the target maximum CPU
       utilization during running of this artifact.
 
   - name: opt_progress_timeout
-    default: "1800"
+    default: &quot;1800&quot;
     type: int
     description: |
       If specified the collector is terminated if it made no progress
@@ -131,14 +131,14 @@ parameters:
       each time any result is produced this counter is reset.
 
   - name: opt_timeout
-    default: "0"
+    default: &quot;0&quot;
     type: int
     description: |
       If specified the collection must complete in the given time. It
       will be cancelled if the collection exceeds this time.
 
   - name: opt_version
-    default: ""
+    default: &quot;&quot;
     type: string
     description: |
       If specified the collection will be packed with the specified
@@ -149,7 +149,7 @@ parameters:
   - name: StandardCollection
     type: hidden
     default: |
-      LET _ <= log(message="Will collect package %v", args=zip_filename)
+      LET _ &lt;= log(message=&quot;Will collect package %v&quot;, args=zip_filename)
 
       SELECT * FROM collect(artifacts=Artifacts,
             args=Parameters, output=zip_filename,
@@ -182,7 +182,7 @@ parameters:
   - name: GCSCollection
     type: hidden
     default: |
-      LET GCSBlob <= parse_json(data=target_args.GCSKey)
+      LET GCSBlob &lt;= parse_json(data=target_args.GCSKey)
 
       // A utility function to upload the file.
       LET upload_file(filename, name, accessor) = upload_gcs(
@@ -232,20 +232,20 @@ parameters:
     type: hidden
     default: |
       // Add all the tools we are going to use to the inventory.
-      LET _ <= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
-       FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
-       WHERE log(message="Adding tool " + ToolName)
+      LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
+       FROM parse_csv(filename=&quot;/uploads/inventory.csv&quot;, accessor=&quot;me&quot;)
+       WHERE log(message=&quot;Adding tool &quot; + ToolName)
 
-      LET baseline <= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
+      LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
          scope().CWD AS CWD FROM info()
 
-      LET OutputPrefix <= if(condition= OutputPrefix,
+      LET OutputPrefix &lt;= if(condition= OutputPrefix,
         then=pathspec(parse=OutputPrefix),
         else= if(condition= baseline[0].CWD,
           then=pathspec(parse= baseline[0].CWD),
           else=pathspec(parse= baseline[0].ExePath)))
 
-      LET _ <= log(message="Output Prefix : %v", args= OutputPrefix)
+      LET _ &lt;= log(message=&quot;Output Prefix : %v&quot;, args= OutputPrefix)
 
       LET FormatMessage(Message) = regex_transform(
           map=dict(`%FQDN%`=baseline[0].Fqdn,
@@ -254,18 +254,18 @@ parameters:
 
       // Format the filename safely according to the filename
       // template. This will be the name uploaded to the bucket.
-      LET formatted_zip_name <= regex_replace(
+      LET formatted_zip_name &lt;= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
-          re="[^0-9A-Za-z\\-]", replace="_") + ".zip"
+          re=&quot;[^0-9A-Za-z\\-]&quot;, replace=&quot;_&quot;) + &quot;.zip&quot;
 
       // This is where we write the files on the endpoint.
-      LET zip_filename <= OutputPrefix + formatted_zip_name
+      LET zip_filename &lt;= OutputPrefix + formatted_zip_name
 
       // The log is always written to the executable path
-      LET log_filename <= pathspec(parse= baseline[0].Exe + ".log")
+      LET log_filename &lt;= pathspec(parse= baseline[0].Exe + &quot;.log&quot;)
 
       -- Make a random hex string as a random password
-      LET RandomPassword <= SELECT format(format="%02x",
+      LET RandomPassword &lt;= SELECT format(format=&quot;%02x&quot;,
             args=rand(range=255)) AS A
       FROM range(end=25)
 
@@ -273,15 +273,15 @@ parameters:
 
          -- For X509 encryption we use a random session password.
          SELECT join(array=RandomPassword.A) as Pass From scope()
-         WHERE encryption_scheme =~ "pgp|x509"
-          AND log(message="I will generate a container password using the %v scheme",
+         WHERE encryption_scheme =~ &quot;pgp|x509&quot;
+          AND log(message=&quot;I will generate a container password using the %v scheme&quot;,
                   args=encryption_scheme)
 
       }, b={
 
          -- Otherwise the user specified the password.
          SELECT encryption_args.password as Pass FROM scope()
-         WHERE encryption_scheme =~ "password"
+         WHERE encryption_scheme =~ &quot;password&quot;
 
       }, c={
 
@@ -303,25 +303,25 @@ parameters:
   - name: CloudCollection
     type: hidden
     default: |
-      LET TargetArgs <= target_args
+      LET TargetArgs &lt;= target_args
 
       // When uploading to the cloud it is allowed to use directory //
       // separators and we trust the filename template to be a valid
       // filename.
-      LET upload_name <= regex_replace(
+      LET upload_name &lt;= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
-          re="[^0-9A-Za-z\\-/]", replace="_")
+          re=&quot;[^0-9A-Za-z\\-/]&quot;, replace=&quot;_&quot;)
 
-      LET _ <= log(message="Will collect package %v and upload to cloud bucket %v",
+      LET _ &lt;= log(message=&quot;Will collect package %v and upload to cloud bucket %v&quot;,
          args=[zip_filename, TargetArgs.bucket])
 
-      LET Result <= SELECT
+      LET Result &lt;= SELECT
           upload_file(filename=Container,
-                      name= upload_name + ".zip",
-                      accessor="file") AS Upload,
+                      name= upload_name + &quot;.zip&quot;,
+                      accessor=&quot;file&quot;) AS Upload,
           upload_file(filename=log_filename,
-                      name= upload_name + ".log",
-                      accessor="file") AS LogUpload
+                      name= upload_name + &quot;.log&quot;,
+                      accessor=&quot;file&quot;) AS LogUpload
 
       FROM collect(artifacts=Artifacts,
           args=Parameters,
@@ -334,9 +334,9 @@ parameters:
           level=Level,
           metadata=ContainerMetadata)
 
-      LET _ <= if(condition=NOT Result[0].Upload.Path,
-         then=log(message="<red>Failed to upload to cloud bucket!</> Leaving the collection behind for manual upload!"),
-         else=log(message="<green>Collection Complete!</> Please remove %v when you are sure it was properly transferred", args=zip_filename))
+      LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
+         then=log(message=&quot;&lt;red&gt;Failed to upload to cloud bucket!&lt;/&gt; Leaving the collection behind for manual upload!&quot;),
+         else=log(message=&quot;&lt;green&gt;Collection Complete!&lt;/&gt; Please remove %v when you are sure it was properly transferred&quot;, args=zip_filename))
 
       SELECT * FROM Result
 
@@ -348,28 +348,28 @@ parameters:
        grabs files from the local archive.
 
     default: |
-       LET RequiredTool <= ToolName
+       LET RequiredTool &lt;= ToolName
 
-       LET matching_tools <= SELECT ToolName, Filename
-       FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
+       LET matching_tools &lt;= SELECT ToolName, Filename
+       FROM parse_csv(filename=&quot;/uploads/inventory.csv&quot;, accessor=&quot;me&quot;)
        WHERE RequiredTool = ToolName
 
        LET get_ext(filename) = parse_string_with_regex(
-             regex="(\\.[a-z0-9]+)$", string=filename).g1
+             regex=&quot;(\\.[a-z0-9]+)$&quot;, string=filename).g1
 
-       LET temp_binary <= if(condition=matching_tools,
+       LET temp_binary &lt;= if(condition=matching_tools,
        then=tempfile(
                 extension=get_ext(filename=matching_tools[0].Filename),
                 remove_last=TRUE,
-                permissions=if(condition=IsExecutable, then="x")))
+                permissions=if(condition=IsExecutable, then=&quot;x&quot;)))
 
-       SELECT copy(filename=Filename, accessor="me", dest=temp_binary) AS OSPath,
+       SELECT copy(filename=Filename, accessor=&quot;me&quot;, dest=temp_binary) AS OSPath,
               Filename AS Name
        FROM matching_tools
 
 sources:
   - query: |
-      LET Binaries <= SELECT * FROM foreach(
+      LET Binaries &lt;= SELECT * FROM foreach(
           row={
              SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
           }, query={
@@ -381,92 +381,92 @@ sources:
 
       // Choose the right target binary depending on the target OS
       LET tool_name = SELECT * FROM switch(
-       a={ SELECT "VelociraptorWindows" AS Type FROM scope() WHERE OS = "Windows"},
-       b={ SELECT "VelociraptorWindows_x86" AS Type FROM scope() WHERE OS = "Windows_x86"},
-       c={ SELECT "VelociraptorLinux" AS Type FROM scope() WHERE OS = "Linux"},
-       d={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOS"},
-       e={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOSArm"},
-       f={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "Generic"},
-       g={ SELECT "" AS Type FROM scope()
-           WHERE NOT log(message="Unknown target type " + OS) }
+       a={ SELECT &quot;VelociraptorWindows&quot; AS Type FROM scope() WHERE OS = &quot;Windows&quot;},
+       b={ SELECT &quot;VelociraptorWindows_x86&quot; AS Type FROM scope() WHERE OS = &quot;Windows_x86&quot;},
+       c={ SELECT &quot;VelociraptorLinux&quot; AS Type FROM scope() WHERE OS = &quot;Linux&quot;},
+       d={ SELECT &quot;VelociraptorCollector&quot; AS Type FROM scope() WHERE OS = &quot;MacOS&quot;},
+       e={ SELECT &quot;VelociraptorCollector&quot; AS Type FROM scope() WHERE OS = &quot;MacOSArm&quot;},
+       f={ SELECT &quot;VelociraptorCollector&quot; AS Type FROM scope() WHERE OS = &quot;Generic&quot;},
+       g={ SELECT &quot;&quot; AS Type FROM scope()
+           WHERE NOT log(message=&quot;Unknown target type &quot; + OS) }
       )
 
-      LET Target <= tool_name[0].Type
+      LET Target &lt;= tool_name[0].Type
 
       // This is what we will call it.
-      LET CollectorName <= format(
-          format='Collector_%v',
+      LET CollectorName &lt;= format(
+          format=&#x27;Collector_%v&#x27;,
           args=inventory_get(tool=Target).Definition.filename)
 
-      LET CollectionArtifact <= SELECT Value FROM switch(
+      LET CollectionArtifact &lt;= SELECT Value FROM switch(
         a = { SELECT CommonCollections + StandardCollection AS Value
               FROM scope()
-              WHERE target = "ZIP" },
+              WHERE target = &quot;ZIP&quot; },
         b = { SELECT S3Collection + CommonCollections + CloudCollection AS Value
               FROM scope()
-              WHERE target = "S3" },
+              WHERE target = &quot;S3&quot; },
         c = { SELECT GCSCollection + CommonCollections + CloudCollection AS Value
               FROM scope()
-              WHERE target = "GCS" },
+              WHERE target = &quot;GCS&quot; },
         d = { SELECT SFTPCollection + CommonCollections + CloudCollection AS Value
               FROM scope()
-              WHERE target = "SFTP" },
+              WHERE target = &quot;SFTP&quot; },
         e = { SELECT AzureSASURL + CommonCollections + CloudCollection AS Value
               FROM scope()
-              WHERE target = "Azure" },
+              WHERE target = &quot;Azure&quot; },
         f = { SELECT SMBCollection + CommonCollections + CloudCollection AS Value
               FROM scope()
-              WHERE target = "SMBShare" },
-        z = { SELECT "" AS Value  FROM scope()
-              WHERE log(message="Unknown collection type " + target) }
+              WHERE target = &quot;SMBShare&quot; },
+        z = { SELECT &quot;&quot; AS Value  FROM scope()
+              WHERE log(message=&quot;Unknown collection type &quot; + target) }
       )
 
-      LET use_server_cert = encryption_scheme =~ "x509"
-         AND NOT encryption_args.public_key =~ "----BEGIN CERTIFICATE-----"
-         AND log(message="Pubkey encryption specified, but no cert/key provided. Defaulting to server frontend cert")
+      LET use_server_cert = encryption_scheme =~ &quot;x509&quot;
+         AND NOT encryption_args.public_key =~ &quot;----BEGIN CERTIFICATE-----&quot;
+         AND log(message=&quot;Pubkey encryption specified, but no cert/key provided. Defaulting to server frontend cert&quot;)
 
       -- For x509, if no public key cert is specified, we use the
-      -- server's own key. This makes it easy for the server to import
+      -- server&#x27;s own key. This makes it easy for the server to import
       -- the file again.
-      LET updated_encryption_args <= if(
+      LET updated_encryption_args &lt;= if(
          condition=use_server_cert,
          then=dict(public_key=server_frontend_cert(),
-                   scheme="x509"),
+                   scheme=&quot;x509&quot;),
          else=encryption_args
       )
 
       -- Add custom definition if needed. Built in definitions are not added
-      LET definitions <= SELECT * FROM chain(
+      LET definitions &lt;= SELECT * FROM chain(
       a = { SELECT name, description, tools, parameters, sources
             FROM artifact_definitions(deps=TRUE, names=artifacts)
             WHERE NOT compiled_in AND
-              log(message="Adding artifact_definition for " + name) },
+              log(message=&quot;Adding artifact_definition for &quot; + name) },
 
       // Create the definition of the Collector artifact.
-      b = { SELECT "Collector" AS name, (
-                    dict(name="Artifacts",
-                         default=serialize(format='json', item=artifacts),
-                         type="json_array"),
-                    dict(name="Parameters",
-                         default=serialize(format='json', item=parameters),
-                         type="json"),
-                    dict(name="encryption_scheme", default=encryption_scheme),
-                    dict(name="encryption_args",
-                         default=serialize(format='json', item=updated_encryption_args),
-                         type="json"
+      b = { SELECT &quot;Collector&quot; AS name, (
+                    dict(name=&quot;Artifacts&quot;,
+                         default=serialize(format=&#x27;json&#x27;, item=artifacts),
+                         type=&quot;json_array&quot;),
+                    dict(name=&quot;Parameters&quot;,
+                         default=serialize(format=&#x27;json&#x27;, item=parameters),
+                         type=&quot;json&quot;),
+                    dict(name=&quot;encryption_scheme&quot;, default=encryption_scheme),
+                    dict(name=&quot;encryption_args&quot;,
+                         default=serialize(format=&#x27;json&#x27;, item=updated_encryption_args),
+                         type=&quot;json&quot;
                          ),
-                    dict(name="Level", default=opt_level, type="int"),
-                    dict(name="Format", default=opt_format),
-                    dict(name="OutputPrefix", default=opt_output_directory),
-                    dict(name="FilenameTemplate", default=opt_filename_template),
-                    dict(name="CpuLimit", type="int",
+                    dict(name=&quot;Level&quot;, default=opt_level, type=&quot;int&quot;),
+                    dict(name=&quot;Format&quot;, default=opt_format),
+                    dict(name=&quot;OutputPrefix&quot;, default=opt_output_directory),
+                    dict(name=&quot;FilenameTemplate&quot;, default=opt_filename_template),
+                    dict(name=&quot;CpuLimit&quot;, type=&quot;int&quot;,
                          default=opt_cpu_limit),
-                    dict(name="ProgressTimeout", type="int",
+                    dict(name=&quot;ProgressTimeout&quot;, type=&quot;int&quot;,
                          default=opt_progress_timeout),
-                    dict(name="Timeout", default=opt_timeout, type="int"),
-                    dict(name="target_args",
-                         default=serialize(format='json', item=target_args),
-                         type="json"),
+                    dict(name=&quot;Timeout&quot;, default=opt_timeout, type=&quot;int&quot;),
+                    dict(name=&quot;target_args&quot;,
+                         default=serialize(format=&#x27;json&#x27;, item=target_args),
+                         type=&quot;json&quot;),
                 ) AS parameters,
                 (
                   dict(query=CollectionArtifact[0].Value),
@@ -474,12 +474,12 @@ sources:
             FROM scope() },
 
       // Override FetchBinary to get files from the executable.
-      c = { SELECT "Generic.Utils.FetchBinary" AS name,
+      c = { SELECT &quot;Generic.Utils.FetchBinary&quot; AS name,
             (
-               dict(name="SleepDuration", type="int", default="0"),
-               dict(name="ToolName"),
-               dict(name="ToolInfo"),
-               dict(name="IsExecutable", type="bool", default="Y"),
+               dict(name=&quot;SleepDuration&quot;, type=&quot;int&quot;, default=&quot;0&quot;),
+               dict(name=&quot;ToolName&quot;),
+               dict(name=&quot;ToolInfo&quot;),
+               dict(name=&quot;IsExecutable&quot;, type=&quot;bool&quot;, default=&quot;Y&quot;),
             ) AS parameters,
             (
                dict(query=FetchBinaryOverride),
@@ -487,19 +487,19 @@ sources:
       )
 
       LET optional_cmdline = SELECT * FROM chain(
-        a={ SELECT "-v" AS Opt FROM scope() WHERE opt_verbose},
-        b={ SELECT "--nobanner" AS Opt FROM scope() WHERE NOT opt_banner},
-        c={ SELECT "--require_admin" AS Opt FROM scope() WHERE opt_admin},
-        d={ SELECT "--prompt" AS Opt FROM scope() WHERE opt_prompt},
-        e={ SELECT "--tempdir" AS Opt FROM scope() WHERE opt_tempdir},
+        a={ SELECT &quot;-v&quot; AS Opt FROM scope() WHERE opt_verbose},
+        b={ SELECT &quot;--nobanner&quot; AS Opt FROM scope() WHERE NOT opt_banner},
+        c={ SELECT &quot;--require_admin&quot; AS Opt FROM scope() WHERE opt_admin},
+        d={ SELECT &quot;--prompt&quot; AS Opt FROM scope() WHERE opt_prompt},
+        e={ SELECT &quot;--tempdir&quot; AS Opt FROM scope() WHERE opt_tempdir},
         f={ SELECT opt_tempdir AS Opt FROM scope() WHERE opt_tempdir}
       )
 
-      // Build the autoexec config file depending on the user's
+      // Build the autoexec config file depending on the user&#x27;s
       // collection type choices.
-      LET autoexec <= dict(autoexec=dict(
-          argv=("artifacts", "collect", "Collector",
-                "--logfile", CollectorName + ".log") + optional_cmdline.Opt,
+      LET autoexec &lt;= dict(autoexec=dict(
+          argv=(&quot;artifacts&quot;, &quot;collect&quot;, &quot;Collector&quot;,
+                &quot;--logfile&quot;, CollectorName + &quot;.log&quot;) + optional_cmdline.Opt,
           artifact_definitions=definitions)
       )
 
@@ -509,7 +509,7 @@ sources:
            target=tool_name[0].Type,
            binaries=Binaries.Binary,
            version=opt_version,
-           config=serialize(format='json', item=autoexec))
+           config=serialize(format=&#x27;json&#x27;, item=autoexec))
       FROM scope()
 
 </code></pre>

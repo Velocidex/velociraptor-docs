@@ -23,15 +23,15 @@ sources:
 - query: |
     LET Build(Target) = repack(
         upload_name=format(
-          format='Org_%v_%v',
+          format=&#x27;Org_%v_%v&#x27;,
           args=[org().name, inventory_get(tool=Target).Definition.filename]),
         target=Target,
-        config=serialize(format='yaml', item=org()._client_config))
+        config=serialize(format=&#x27;yaml&#x27;, item=org()._client_config))
 
     SELECT * FROM chain(a={
-       SELECT Build(Target="VelociraptorWindowsMSI") FROM scope()
+       SELECT Build(Target=&quot;VelociraptorWindowsMSI&quot;) FROM scope()
     }, b={
-       SELECT Build(Target="VelociraptorWindows_x86MSI") FROM scope()
+       SELECT Build(Target=&quot;VelociraptorWindows_x86MSI&quot;) FROM scope()
        WHERE AlsoBuild_x86
     })
 

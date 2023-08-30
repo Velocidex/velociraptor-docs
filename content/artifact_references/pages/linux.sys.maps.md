@@ -19,10 +19,10 @@ description: |
   space. These shared objects contain exported functions which may be
   used by the binary.
 
-  This artifact parses the /proc/<pid>/maps to emit all mapped files
+  This artifact parses the /proc/&lt;pid&gt;/maps to emit all mapped files
   into the process.
 
-precondition: SELECT OS From info() where OS = 'linux'
+precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
 
 parameters:
   - name: processRegex
@@ -37,11 +37,11 @@ sources:
         WHERE Name =~ processRegex
 
       SELECT Pid, Name, Username,
-               "0x" + Record.Start AS StartHex,
-               "0x" + Record.End AS EndHex,
+               &quot;0x&quot; + Record.Start AS StartHex,
+               &quot;0x&quot; + Record.End AS EndHex,
                Record.Perm AS Perm,
-               atoi(string="0x" + Record.Size) AS Size,
-               "0x" + Record.Size AS SizeHex,
+               atoi(string=&quot;0x&quot; + Record.Size) AS Size,
+               &quot;0x&quot; + Record.Size AS SizeHex,
                Record.Filename AS Filename,
                if(condition=Record.Deleted, then=TRUE, else=FALSE) AS Deleted
       FROM foreach(
@@ -49,11 +49,11 @@ sources:
           query={
             SELECT parse_string_with_regex(
                     string=Line,
-                    regex="(?P<Start>^[^-]+)-(?P<End>[^\\s]+)\\s+(?P<Perm>[^\\s]+)\\s+(?P<Size>[^\\s]+)\\s+[^\\s]+\\s+(?P<PermInt>[^\\s]+)\\s+(?P<Filename>.+?)(?P<Deleted> \\(deleted\\))?$") AS Record,
+                    regex=&quot;(?P&lt;Start&gt;^[^-]+)-(?P&lt;End&gt;[^\\s]+)\\s+(?P&lt;Perm&gt;[^\\s]+)\\s+(?P&lt;Size&gt;[^\\s]+)\\s+[^\\s]+\\s+(?P&lt;PermInt&gt;[^\\s]+)\\s+(?P&lt;Filename&gt;.+?)(?P&lt;Deleted&gt; \\(deleted\\))?$&quot;) AS Record,
                   Pid, Name, Username
             FROM parse_lines(
-               filename=format(format="/proc/%d/maps", args=[Pid]),
-               accessor='file'
+               filename=format(format=&quot;/proc/%d/maps&quot;, args=[Pid]),
+               accessor=&#x27;file&#x27;
             )
           })
 

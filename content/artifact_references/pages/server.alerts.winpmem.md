@@ -34,17 +34,17 @@ sources:
         SELECT * FROM foreach(
           row={
             SELECT * from watch_monitoring(
-              artifact='Windows.Events.ServiceCreation')
-            WHERE ServiceName =~ 'pmem'
+              artifact=&#x27;Windows.Events.ServiceCreation&#x27;)
+            WHERE ServiceName =~ &#x27;pmem&#x27;
           },
           query={
             SELECT * FROM mail(
               to=EmailAddress,
-              subject='Pmem launched on host',
+              subject=&#x27;Pmem launched on host&#x27;,
               period=60,
               skip_verify=SkipVerify,
               body=format(
-                 format="WinPmem execution detected at %s for client %v",
+                 format=&quot;WinPmem execution detected at %s for client %v&quot;,
                  args=[Timestamp, ClientId]
               )
           )

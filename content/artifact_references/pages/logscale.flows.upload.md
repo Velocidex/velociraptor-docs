@@ -27,7 +27,7 @@ parameters:
     description: Ingest token for API
     type: string
   - name: tagFields
-    description: Comma-separated list of field names to use as tags in the message; Can be renamed with <oldname>=<newname>.
+    description: Comma-separated list of field names to use as tags in the message; Can be renamed with &lt;oldname&gt;=&lt;newname&gt;.
     default:
     type: string
   - name: numThreads
@@ -62,7 +62,7 @@ parameters:
 sources:
   - query: |
       LET completions = SELECT * FROM watch_monitoring(
-             artifact="System.Flow.Completion")
+             artifact=&quot;System.Flow.Completion&quot;)
              WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       LET documents = SELECT * FROM foreach(row=completions,
@@ -85,7 +85,7 @@ sources:
           apibaseurl=ingestApiBase,
           ingest_token=ingestToken,
           threads=numThreads,
-          tag_fields=split(string=tagFields, sep=","),
+          tag_fields=split(string=tagFields, sep=&quot;,&quot;),
           batching_timeout_ms=batchingTimeoutMs,
           event_batch_size=eventBatchSize,
           http_timeout=httpTimeout,

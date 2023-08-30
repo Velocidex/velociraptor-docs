@@ -21,39 +21,39 @@ reference:
 
 parameters:
   - name: shimKeys
-    default: >-
+    default: &gt;-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB\*
   - name: customKeys
-    default: >-
+    default: &gt;-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom\*\*
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
-        LET installed_sdb <=
+        LET installed_sdb &lt;=
            SELECT Key, Key.Name as SdbGUID, DatabasePath,
                   DatabaseType, DatabaseDescription,
                   -- Convert windows file time to unix epoch.
                   (DatabaseInstallTimeStamp / 10000000) - 11644473600 AS DatabaseInstallTimeStamp
            FROM read_reg_key(
-             globs=split(string=shimKeys, sep=",[\\s]*"),
-             accessor="registry")
+             globs=split(string=shimKeys, sep=&quot;,[\\s]*&quot;),
+             accessor=&quot;registry&quot;)
 
         LET result = SELECT * from foreach(
           row={
             SELECT regex_replace(
                source=OSPath,
-               replace="$1",
-               re="^.+\\\\([^\\\\]+)\\\\[^\\\\]+$") as Executable,
+               replace=&quot;$1&quot;,
+               re=&quot;^.+\\\\([^\\\\]+)\\\\[^\\\\]+$&quot;) as Executable,
               regex_replace(
                source=Name,
-               replace="$1",
-               re="(\\{[^}]+\\}).*$") as SdbGUIDRef,
+               replace=&quot;$1&quot;,
+               re=&quot;(\\{[^}]+\\}).*$&quot;) as SdbGUIDRef,
                Name as ExeName
             FROM glob(
-              globs=split(string=customKeys, sep=",[\\s]*"),
-              accessor="registry")
+              globs=split(string=customKeys, sep=&quot;,[\\s]*&quot;),
+              accessor=&quot;registry&quot;)
           },
           query={
             SELECT Executable, DatabasePath, DatabaseType,

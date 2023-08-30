@@ -68,7 +68,7 @@ description: |
 
 
 precondition:
-  SELECT * FROM info() where OS = 'darwin'
+  SELECT * FROM info() where OS = &#x27;darwin&#x27;
 
 parameters:
   - name: SearchFilesGlob
@@ -96,11 +96,11 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
   - name: ModifiedBefore
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
   - name: DoNotFollowSymlinks
@@ -118,13 +118,13 @@ sources:
                Ctime AS CTime,
                IsDir, Mode
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
-                  accessor="file", nosymlink=DoNotFollowSymlinks)
+                  accessor=&quot;file&quot;, nosymlink=DoNotFollowSymlinks)
 
     LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         },
         else={ SELECT * FROM file_search})
 
@@ -132,8 +132,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         },
         else={SELECT * FROM more_recent})
 
@@ -151,21 +151,21 @@ sources:
                       str(str=String.Data) As Keywords
 
                FROM yara(files=OSPath,
-                         key="A",
+                         key=&quot;A&quot;,
                          rules=YaraRule,
-                         accessor="file")
+                         accessor=&quot;file&quot;)
             })
         },
         else={SELECT * FROM modified_before})
 
     SELECT OSPath, Inode, Mode, Size, ATime,
-             MTime, CTime, get(field='Keywords') AS Keywords,
+             MTime, CTime, get(field=&#x27;Keywords&#x27;) AS Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
-                              accessor="file")) AS Upload,
+                              accessor=&quot;file&quot;)) AS Upload,
                if(condition=Calculate_Hash and Mode.IsRegular,
                   then=hash(path=OSPath,
-                            accessor="file")) AS Hash
+                            accessor=&quot;file&quot;)) AS Hash
     FROM keyword_search
 
 column_types:

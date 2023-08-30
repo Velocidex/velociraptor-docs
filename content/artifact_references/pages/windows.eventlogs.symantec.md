@@ -37,38 +37,38 @@ parameters:
   - name: SymantecEventLog
     default: C:\Windows\system32\winevt\logs\Symantec Endpoint Protection Client.evtx
   - name: RegexEventIds
-    description: "Regex of Event IDs to hunt for. Consider EID 45 for Tamper Protection Detection"
+    description: &quot;Regex of Event IDs to hunt for. Consider EID 45 for Tamper Protection Detection&quot;
     type: regex
     default: ^51$
   - name: TargetRegex
-    description: "Regex to hunt for - default is high value SEP detections"
-    default: "Infostealer|Hacktool|Mimi|SecurityRisk|WinCredEd|NetCat|Backdoor|Pwdump|SuperScan|XScan|PasswordRevealer|Trojan|Malscript|Agent|Malware|Exploit|webshell|cobalt|Mpreter|sploit|Meterpreter|RAR|7z|encrypted|tsclient|PerfLogs"
+    description: &quot;Regex to hunt for - default is high value SEP detections&quot;
+    default: &quot;Infostealer|Hacktool|Mimi|SecurityRisk|WinCredEd|NetCat|Backdoor|Pwdump|SuperScan|XScan|PasswordRevealer|Trojan|Malscript|Agent|Malware|Exploit|webshell|cobalt|Mpreter|sploit|Meterpreter|RAR|7z|encrypted|tsclient|PerfLogs&quot;
     type: regex
   - name: IgnoreRegex
-    description: "Regex to ignore events with EventData strings matching."
+    description: &quot;Regex to ignore events with EventData strings matching.&quot;
     type: regex
   - name: DateAfter
     type: timestamp
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
   - name: DateBefore
     type: timestamp
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
 
 sources:
     - query: |
-       LET DateAfterTime <= if(condition=DateAfter,
-            then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-       LET DateBeforeTime <= if(condition=DateBefore,
-            then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+       LET DateAfterTime &lt;= if(condition=DateAfter,
+            then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+       LET DateBeforeTime &lt;= if(condition=DateBefore,
+            then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
        SELECT timestamp(epoch=System.TimeCreated.SystemTime) As EventTime,
               System.EventID.Value as EventId,
               System.Computer as Computer,
               EventData.Data[0] as EventData
        FROM parse_evtx(filename=SymantecEventLog)
        WHERE
-            EventTime < DateBeforeTime AND
-            EventTime > DateAfterTime AND
-            format(format="%v",args=System.EventID.Value) =~ RegexEventIds AND
+            EventTime &lt; DateBeforeTime AND
+            EventTime &gt; DateAfterTime AND
+            format(format=&quot;%v&quot;,args=System.EventID.Value) =~ RegexEventIds AND
             EventData =~ TargetRegex AND
             if(condition=IgnoreRegex,
                 then= NOT EventData=~IgnoreRegex,

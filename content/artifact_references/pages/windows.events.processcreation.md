@@ -26,15 +26,15 @@ type: CLIENT_EVENT
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
       -- Add a small delay to allow the process tracker to catch up
       -- for enrichments.
       LET Delayed = SELECT * FROM delay(query={
          SELECT * FROM wmi_events(
-             query="SELECT * FROM Win32_ProcessStartTrace",
+             query=&quot;SELECT * FROM Win32_ProcessStartTrace&quot;,
              wait=5000000,   // Do not time out.
-             namespace="ROOT/CIMV2")
+             namespace=&quot;ROOT/CIMV2&quot;)
       }, delay=2)
 
       // Convert the timestamp from WinFileTime to Epoch.
@@ -45,7 +45,7 @@ sources:
           process_tracker_get(id=Parse.ProcessID).Data.CommandLine AS CommandLine,
           process_tracker_get(id=Parse.ParentProcessID).Data.CommandLine AS ParentCommandLine,
           join(array=process_tracker_callchain(id=Parse.ProcessID).Data.Name,
-               sep=" <- ") AS CallChain
+               sep=&quot; &lt;- &quot;) AS CallChain
       FROM Delayed
 
 </code></pre>

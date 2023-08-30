@@ -28,19 +28,19 @@ description: |
 
 parameters:
   - name: UserFilter
-    default: ""
+    default: &quot;&quot;
     description: If specified we filter by this user ID.
     type: regex
 
   - name: ExecutionTimeAfter
-    default: ""
+    default: &quot;&quot;
     type: timestamp
     description: If specified only show executions after this time.
 
   - name: Win10TimelineGlob
     default: C:\Users\*\AppData\Local\ConnectedDevicesPlatform\*\ActivitiesCache.db
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |
@@ -51,15 +51,15 @@ sources:
          },
          query={
             SELECT AppId, OSPath, LastModifiedTime
-            FROM sqlite(file=OSPath, query="SELECT * FROM Activity")
+            FROM sqlite(file=OSPath, query=&quot;SELECT * FROM Activity&quot;)
          })
 
       LET TMP = SELECT get(
       item=parse_json_array(data=AppId).application,
-               member="0") AS Application,
+               member=&quot;0&quot;) AS Application,
              parse_string_with_regex(
                string=OSPath,
-               regex="\\\\L.(?P<User>[^\\\\]+)\\\\").User AS User,
+               regex=&quot;\\\\L.(?P&lt;User&gt;[^\\\\]+)\\\\&quot;).User AS User,
                LastModifiedTime,
                LastModifiedTime.Unix as LastExecutionTS
         FROM timeline
@@ -73,7 +73,7 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
 
 </code></pre>

@@ -29,7 +29,7 @@ MITRE ATT&CK ID: TA0009 - Collection
 <pre><code class="language-yaml">
 name: Windows.Applications.SBECmd
 description: |
-    Execute Eric Zimmerman's SBECmd and return output for analysis.
+    Execute Eric Zimmerman&#x27;s SBECmd and return output for analysis.
 
     SBECmd is a CLI for analyzing shellbags data.
 
@@ -48,7 +48,7 @@ description: |
     NOTE: Velociraptor can now parse Shellbags natively with the
     Windows.Forensics.Shellbags artifact.
 
-    MITRE ATT&CK ID: TA0009 - Collection
+    MITRE ATT&amp;CK ID: TA0009 - Collection
 
 author: Eduardo Mattos - @eduardfir
 
@@ -61,7 +61,7 @@ tools:
   - name: SBECmd
     url: https://github.com/Velocidex/Tools/raw/main/SBECmd/ShellBagsExplorer/SBECmd.exe
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: userRegex
@@ -69,46 +69,46 @@ parameters:
     type: regex
 
   - name: UploadFiles
-    description: "Select to Upload SBECmd Output files."
+    description: &quot;Select to Upload SBECmd Output files.&quot;
     type: bool
 
   - name: RemovePayload
-    description: "Select to Remove Payload after execution."
+    description: &quot;Select to Remove Payload after execution.&quot;
     type: bool
 
 
 sources:
   - query: |
       -- get context on target binary
-      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-                    ToolName="SBECmd", IsExecutable=TRUE)
+      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+                    ToolName=&quot;SBECmd&quot;, IsExecutable=TRUE)
 
       -- build tempfolder for output
-      LET tempfolder <= tempdir(remove_last=TRUE)
+      LET tempfolder &lt;= tempdir(remove_last=TRUE)
 
       -- get users with profiles
       LET UserProfiles = SELECT
          Uid, Name,
          expand(path=Directory) AS HomeDirectory, UUID, Mtime
       FROM Artifact.Windows.Sys.Users()
-      WHERE Name =~ userRegex and HomeDirectory =~ "Users"
+      WHERE Name =~ userRegex and HomeDirectory =~ &quot;Users&quot;
 
       -- execute payload
-      LET deploy <= SELECT * FROM foreach(row=UserProfiles,
+      LET deploy &lt;= SELECT * FROM foreach(row=UserProfiles,
                     query={
                         SELECT *, Name
                         FROM execve(argv=[
                             payload.OSPath[0],
-                            "-d", HomeDirectory,
-                            "--csv", tempfolder + "\\" + Name,
-                            "--dedupe"])
+                            &quot;-d&quot;, HomeDirectory,
+                            &quot;--csv&quot;, tempfolder + &quot;\\&quot; + Name,
+                            &quot;--dedupe&quot;])
                     })
 
       -- parse csvs
       SELECT * FROM foreach(row=deploy,
       query={
         SELECT *, Name as UserName
-        FROM parse_csv(filename=tempfolder + "\\" + Name + "\\Deduplicated.csv")
+        FROM parse_csv(filename=tempfolder + &quot;\\&quot; + Name + &quot;\\Deduplicated.csv&quot;)
       })
 
   - name: Uploads
@@ -120,18 +120,18 @@ sources:
            then={
              SELECT Name, upload(file=OSPath,
                                  name=relpath(base=tempfile, path=OSPath)) as FileDetails
-             FROM glob(globs="/**", root=tempfolder)
+             FROM glob(globs=&quot;/**&quot;, root=tempfolder)
            })
       },
       b={
          SELECT * FROM if(
            condition=RemovePayload,
            then={
-             SELECT * FROM execve(argv=['powershell','Remove-Item',
-                                             payload.OSPath[0],'-Force' ])
+             SELECT * FROM execve(argv=[&#x27;powershell&#x27;,&#x27;Remove-Item&#x27;,
+                                             payload.OSPath[0],&#x27;-Force&#x27; ])
            })
       })
-      WHERE Stdout =~ "SBECmd"
+      WHERE Stdout =~ &quot;SBECmd&quot;
 
 </code></pre>
 

@@ -35,7 +35,7 @@ description: |
 
   ```vql
   SELECT *, send_event(
-      artifact="Generic.Forensic.HashLookup",
+      artifact=&quot;Generic.Forensic.HashLookup&quot;,
       row=dict(SHA256=Sha256, ClientId=ClientId))
   FROM source()
   ```
@@ -51,12 +51,12 @@ sources:
         SELECT * FROM foreach(
           row={
             SELECT ClientId, FlowId
-            FROM watch_monitoring(artifact="System.Flow.Completion")
-            WHERE Flow.artifacts_with_results =~ "System.VFS.DownloadFile"
+            FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
+            WHERE Flow.artifacts_with_results =~ &quot;System.VFS.DownloadFile&quot;
           }, query={
             SELECT ClientId, Sha256 AS SHA256
             FROM source(
-              artifact="System.VFS.DownloadFile",
+              artifact=&quot;System.VFS.DownloadFile&quot;,
               client_id=ClientId, flow_id=FlowId)
          })
       }, async=TRUE)

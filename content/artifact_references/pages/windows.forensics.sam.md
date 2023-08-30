@@ -14,7 +14,7 @@ name: Windows.Forensics.SAM
 description: |
    Parses user account information from the SAM hive.
 
-   Based on Omer Yampel's parser
+   Based on Omer Yampel&#x27;s parser
 
 reference:
   - https://github.com/yampelo/samparser/blob/master/samparser.py
@@ -26,123 +26,123 @@ parameters:
 
 export: |
      // Reference: https://github.com/yampelo/samparser/blob/master/samparser.py
-     LET Profile = '''
+     LET Profile = &#x27;&#x27;&#x27;
      [
-       ["F", 0, [
-         ["LastLoginDate", 8, "WinFileTime"],
-         ["PasswordResetDate", 24, "WinFileTime"],
-         ["PasswordFailDate", 40, "WinFileTime"],
-         ["RID", 48, "uint32"],
-         ["Flags", 56, "Flags", {
-             "type": "uint16",
-             "bitmap": {
-              "Account Disabled": 0,
-              "Home directory required": 1,
-              "Password not required": 2,
-              "Temporary duplicate account": 3,
-              "Normal user account": 4,
-              "MNS logon user account": 5,
-              "Interdomain trust account": 6,
-              "Workstation trust account": 7,
-              "Server trust account": 8,
-              "Password does not expire": 9,
-              "Account auto locked": 10
+       [&quot;F&quot;, 0, [
+         [&quot;LastLoginDate&quot;, 8, &quot;WinFileTime&quot;],
+         [&quot;PasswordResetDate&quot;, 24, &quot;WinFileTime&quot;],
+         [&quot;PasswordFailDate&quot;, 40, &quot;WinFileTime&quot;],
+         [&quot;RID&quot;, 48, &quot;uint32&quot;],
+         [&quot;Flags&quot;, 56, &quot;Flags&quot;, {
+             &quot;type&quot;: &quot;uint16&quot;,
+             &quot;bitmap&quot;: {
+              &quot;Account Disabled&quot;: 0,
+              &quot;Home directory required&quot;: 1,
+              &quot;Password not required&quot;: 2,
+              &quot;Temporary duplicate account&quot;: 3,
+              &quot;Normal user account&quot;: 4,
+              &quot;MNS logon user account&quot;: 5,
+              &quot;Interdomain trust account&quot;: 6,
+              &quot;Workstation trust account&quot;: 7,
+              &quot;Server trust account&quot;: 8,
+              &quot;Password does not expire&quot;: 9,
+              &quot;Account auto locked&quot;: 10
              }
          }],
-         ["FailedLoginCount", 64, "uint16"],
-         ["LoginCount", 66, "uint16"],
+         [&quot;FailedLoginCount&quot;, 64, &quot;uint16&quot;],
+         [&quot;LoginCount&quot;, 66, &quot;uint16&quot;],
        ]],
-       ["V", 0, [
-        ["AccountType", 4, "Enumeration", {
-            "type": "uint32",
-            "choices": {
-               "188" : "Default Admin User",
-               "212" : "Custom Limited Acct",
-               "176" : "Default Guest Acct"
+       [&quot;V&quot;, 0, [
+        [&quot;AccountType&quot;, 4, &quot;Enumeration&quot;, {
+            &quot;type&quot;: &quot;uint32&quot;,
+            &quot;choices&quot;: {
+               &quot;188&quot; : &quot;Default Admin User&quot;,
+               &quot;212&quot; : &quot;Custom Limited Acct&quot;,
+               &quot;176&quot; : &quot;Default Guest Acct&quot;
             }
         }],
-        ["__username_offset", 12, "uint32"],
-        ["__username_length", 16, "uint32"],
-        ["username", "x=>x.__username_offset + 0xcc", "String", {
-            "length": "x=>x.__username_length",
-            "encoding": "utf16",
+        [&quot;__username_offset&quot;, 12, &quot;uint32&quot;],
+        [&quot;__username_length&quot;, 16, &quot;uint32&quot;],
+        [&quot;username&quot;, &quot;x=&gt;x.__username_offset + 0xcc&quot;, &quot;String&quot;, {
+            &quot;length&quot;: &quot;x=&gt;x.__username_length&quot;,
+            &quot;encoding&quot;: &quot;utf16&quot;,
         }],
-        ["__fullname_offset", 24, "uint32"],
-        ["__fullname_length", 28, "uint32"],
-        ["fullname", "x=>x.__fullname_offset + 0xcc", "String", {
-            "length": "x=>x.__fullname_length",
-            "encoding": "utf16",
+        [&quot;__fullname_offset&quot;, 24, &quot;uint32&quot;],
+        [&quot;__fullname_length&quot;, 28, &quot;uint32&quot;],
+        [&quot;fullname&quot;, &quot;x=&gt;x.__fullname_offset + 0xcc&quot;, &quot;String&quot;, {
+            &quot;length&quot;: &quot;x=&gt;x.__fullname_length&quot;,
+            &quot;encoding&quot;: &quot;utf16&quot;,
         }],
-        ["__comment_offset", 36, "uint32"],
-        ["__comment_length", 40, "uint32"],
-        ["comment", "x=>x.__comment_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__comment_length",
-        }],
-
-        ["__driveletter_offset", 84, "uint32"],
-        ["__driveletter_length", 88, "uint32"],
-        ["driveletter", "x=>x.__driveletter_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__driveletter_length",
+        [&quot;__comment_offset&quot;, 36, &quot;uint32&quot;],
+        [&quot;__comment_length&quot;, 40, &quot;uint32&quot;],
+        [&quot;comment&quot;, &quot;x=&gt;x.__comment_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__comment_length&quot;,
         }],
 
-        ["__logon_script_offset", 96, "uint32"],
-        ["__logon_script_length", 100, "uint32"],
-        ["logon_script", "x=>x.__logon_script_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__logon_script_length",
+        [&quot;__driveletter_offset&quot;, 84, &quot;uint32&quot;],
+        [&quot;__driveletter_length&quot;, 88, &quot;uint32&quot;],
+        [&quot;driveletter&quot;, &quot;x=&gt;x.__driveletter_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__driveletter_length&quot;,
         }],
 
-        ["__profile_path_offset", 108, "uint32"],
-        ["__profile_path_length", 112, "uint32"],
-        ["profile_path", "x=>x.__profile_path_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__profile_path_length",
+        [&quot;__logon_script_offset&quot;, 96, &quot;uint32&quot;],
+        [&quot;__logon_script_length&quot;, 100, &quot;uint32&quot;],
+        [&quot;logon_script&quot;, &quot;x=&gt;x.__logon_script_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__logon_script_length&quot;,
         }],
 
-        ["__workstation_offset", 120, "uint32"],
-        ["__workstation_length", 124, "uint32"],
-        ["workstation", "x=>x.__workstation_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__workstation_length",
+        [&quot;__profile_path_offset&quot;, 108, &quot;uint32&quot;],
+        [&quot;__profile_path_length&quot;, 112, &quot;uint32&quot;],
+        [&quot;profile_path&quot;, &quot;x=&gt;x.__profile_path_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__profile_path_length&quot;,
         }],
 
-        ["__lmpwd_hash_offset", 156, "uint32"],
-        ["__lmpwd_hash_length", 160, "uint32"],
-        ["lmpwd_hash", "x=>x.__lmpwd_hash_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__lmpwd_hash_length",
+        [&quot;__workstation_offset&quot;, 120, &quot;uint32&quot;],
+        [&quot;__workstation_length&quot;, 124, &quot;uint32&quot;],
+        [&quot;workstation&quot;, &quot;x=&gt;x.__workstation_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__workstation_length&quot;,
         }],
 
-        ["__ntpwd_hash_offset", 168, "uint32"],
-        ["__ntpwd_hash_length", 172, "uint32"],
-        ["ntpwd_hash", "x=>x.__ntpwd_hash_offset + 0xcc", "String", {
-            encoding: "utf16",
-            length: "x=>x.__ntpwd_hash_length",
+        [&quot;__lmpwd_hash_offset&quot;, 156, &quot;uint32&quot;],
+        [&quot;__lmpwd_hash_length&quot;, 160, &quot;uint32&quot;],
+        [&quot;lmpwd_hash&quot;, &quot;x=&gt;x.__lmpwd_hash_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__lmpwd_hash_length&quot;,
+        }],
+
+        [&quot;__ntpwd_hash_offset&quot;, 168, &quot;uint32&quot;],
+        [&quot;__ntpwd_hash_length&quot;, 172, &quot;uint32&quot;],
+        [&quot;ntpwd_hash&quot;, &quot;x=&gt;x.__ntpwd_hash_offset + 0xcc&quot;, &quot;String&quot;, {
+            encoding: &quot;utf16&quot;,
+            length: &quot;x=&gt;x.__ntpwd_hash_length&quot;,
         }]
        ]]
      ]
-     '''
+     &#x27;&#x27;&#x27;
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
         SELECT Key.OSPath.Path AS Key,
            Key.OSPath.DelegatePath AS Hive,
-           get(field="F") AS _F,
-           get(field="V") AS _V,
-           get(field="SupplementalCredentials") AS _SupplementalCredentials,
-           parse_binary(accessor="data", filename=F,
-                        profile=Profile, struct="F") AS ParsedF,
-           parse_binary(accessor="data", filename=V,
-                        profile=Profile, struct="V") AS ParsedV
+           get(field=&quot;F&quot;) AS _F,
+           get(field=&quot;V&quot;) AS _V,
+           get(field=&quot;SupplementalCredentials&quot;) AS _SupplementalCredentials,
+           parse_binary(accessor=&quot;data&quot;, filename=F,
+                        profile=Profile, struct=&quot;F&quot;) AS ParsedF,
+           parse_binary(accessor=&quot;data&quot;, filename=V,
+                        profile=Profile, struct=&quot;V&quot;) AS ParsedV
         FROM read_reg_key(
-           globs='SAM\\Domains\\Account\\Users\\0*',
+           globs=&#x27;SAM\\Domains\\Account\\Users\\0*&#x27;,
            root=pathspec(DelegatePath=SAMPath),
-           accessor="raw_reg")
+           accessor=&quot;raw_reg&quot;)
         WHERE _F AND _V
 
 column_types:

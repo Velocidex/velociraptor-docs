@@ -26,7 +26,7 @@ description: |
   system. Velociraptor will watch for this artifact and populate its
   internal indexes from this artifact as well.
 
-  You can edit this artifact to enhance the client's interrogation
+  You can edit this artifact to enhance the client&#x27;s interrogation
   information as required, by adding new sources.
 
   NOTE: Do not modify the BasicInformation source since it is used to
@@ -38,7 +38,7 @@ sources:
       This source is used internally to populate agent info. Do not
       modify or remove this query.
     query: |
-        LET Interfaces = SELECT format(format='%02x:%02x:%02x:%02x:%02x:%02x',
+        LET Interfaces = SELECT format(format=&#x27;%02x:%02x:%02x:%02x:%02x:%02x&#x27;,
             args=HardwareAddr) AS MAC
         FROM interfaces()
         WHERE HardwareAddr
@@ -56,50 +56,50 @@ sources:
 
   - name: WindowsInfo
     description: Windows specific information about the host
-    precondition: SELECT OS From info() where OS = 'windows'
+    precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
-      LET DomainLookup <= dict(
-         `0`='Standalone Workstation',
-         `1`='Member Workstation',
-         `2`='Standalone Server',
-         `3`='Member Server',
-         `4`='Backup Domain Controller',
-         `5`='Primary Domain Controller')
+      LET DomainLookup &lt;= dict(
+         `0`=&#x27;Standalone Workstation&#x27;,
+         `1`=&#x27;Member Workstation&#x27;,
+         `2`=&#x27;Standalone Server&#x27;,
+         `3`=&#x27;Member Server&#x27;,
+         `4`=&#x27;Backup Domain Controller&#x27;,
+         `5`=&#x27;Primary Domain Controller&#x27;)
 
       SELECT
           {
             SELECT DNSHostName, Name, Domain, TotalPhysicalMemory,
                    get(item=DomainLookup,
-                       field=str(str=DomainRole), default="Unknown") AS DomainRole
+                       field=str(str=DomainRole), default=&quot;Unknown&quot;) AS DomainRole
             FROM wmi(
-               query='SELECT * FROM win32_computersystem')
+               query=&#x27;SELECT * FROM win32_computersystem&#x27;)
           } AS `Computer Info`,
           {
             SELECT Caption,
-               join(array=IPAddress, sep=", ") AS IPAddresses,
-               join(array=IPSubnet, sep=", ") AS IPSubnet,
+               join(array=IPAddress, sep=&quot;, &quot;) AS IPAddresses,
+               join(array=IPSubnet, sep=&quot;, &quot;) AS IPSubnet,
                MACAddress,
-               join(array=DefaultIPGateway, sep=", ") AS DefaultIPGateway,
+               join(array=DefaultIPGateway, sep=&quot;, &quot;) AS DefaultIPGateway,
                DNSHostName,
-               join(array=DNSServerSearchOrder, sep=", ") AS DNSServerSearchOrder
+               join(array=DNSServerSearchOrder, sep=&quot;, &quot;) AS DNSServerSearchOrder
             FROM wmi(
-               query="SELECT * from Win32_NetworkAdapterConfiguration" )
+               query=&quot;SELECT * from Win32_NetworkAdapterConfiguration&quot; )
             WHERE IPAddress
           } AS `Network Info`
       FROM scope()
 
     notebook:
       - type: vql_suggestion
-        name: "Enumerate Domain Roles"
+        name: &quot;Enumerate Domain Roles&quot;
         template: |
           /*
           # Enumerate Domain Roles
 
-          Search all clients' enrollment information for their domain roles.
+          Search all clients&#x27; enrollment information for their domain roles.
           */
           --
           -- Remove the below comments to label Domain Controllers
-          SELECT *--, label(client_id=client_id, labels="DomainController", op="set") AS Label
+          SELECT *--, label(client_id=client_id, labels=&quot;DomainController&quot;, op=&quot;set&quot;) AS Label
           FROM foreach(row={
              SELECT * FROM clients()
           }, query={
@@ -108,12 +108,12 @@ sources:
                 `Computer Info`.DomainRole AS DomainRole
               FROM source(client_id=client_id,
                   flow_id=last_interrogate_flow_id,
-                  artifact="Generic.Client.Info/WindowsInfo")
+                  artifact=&quot;Generic.Client.Info/WindowsInfo&quot;)
           })
-          -- WHERE DomainRole =~ "Controller"
+          -- WHERE DomainRole =~ &quot;Controller&quot;
 
   - name: Users
-    precondition: SELECT OS From info() where OS = 'windows'
+    precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
       SELECT Name, Description, Mtime AS LastLogin
       FROM Artifact.Windows.Sys.Users()
@@ -121,41 +121,41 @@ sources:
 reports:
   - type: CLIENT
     template: |
-      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" | Expand }}
+      {{ $client_info := Query &quot;SELECT * FROM clients(client_id=ClientId) LIMIT 1&quot; | Expand }}
 
-      {{ $flow_id := Query "SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)" | Expand }}
+      {{ $flow_id := Query &quot;SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)&quot; | Expand }}
 
-      # {{ Get $client_info "0.os_info.fqdn" }} ( {{ Get $client_info "0.client_id" }} ) @ {{ Get $flow_id "0.Timestamp" }}
+      # {{ Get $client_info &quot;0.os_info.fqdn&quot; }} ( {{ Get $client_info &quot;0.client_id&quot; }} ) @ {{ Get $flow_id &quot;0.Timestamp&quot; }}
 
-      {{ Query "SELECT * FROM source(source='BasicInformation')" | Table }}
+      {{ Query &quot;SELECT * FROM source(source=&#x27;BasicInformation&#x27;)&quot; | Table }}
 
       # Memory and CPU footprint over the past 24 hours
 
-      {{ define "resources" }}
+      {{ define &quot;resources&quot; }}
        SELECT * FROM sample(
          n=4,
          query={
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
-           FROM source(artifact="Generic.Client.Stats",
+           FROM source(artifact=&quot;Generic.Client.Stats&quot;,
                        client_id=ClientId,
                        start_time=now() - 86400)
-           WHERE CPUPercent >= 0
+           WHERE CPUPercent &gt;= 0
          })
       {{ end }}
 
-      <div>
-      {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
-      </div>
+      &lt;div&gt;
+      {{ Query &quot;resources&quot; | LineChart &quot;xaxis_mode&quot; &quot;time&quot; &quot;RSS.yaxis&quot; 2 }}
+      &lt;/div&gt;
 
-      {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
+      {{ $windows_info := Query &quot;SELECT * FROM source(source=&#x27;WindowsInfo&#x27;)&quot; }}
       {{ if $windows_info }}
       # Windows agent information
         {{ $windows_info | Table }}
       {{ end }}
 
       # Active Users
-      {{ Query "SELECT * FROM source(source='Users')" | Table }}
+      {{ Query &quot;SELECT * FROM source(source=&#x27;Users&#x27;)&quot; | Table }}
 
 
 column_types:

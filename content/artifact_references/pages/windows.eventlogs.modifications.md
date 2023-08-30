@@ -23,17 +23,17 @@ description: |
   registry and attempts to detect when event logs were disabled.
 
 precondition:
-  SELECT * FROM info() WHERE OS =~ "windows"
+  SELECT * FROM info() WHERE OS =~ &quot;windows&quot;
 
 parameters:
   - name: ProviderRegex
     default: .
     type: regex
   - name: DateAfter
-    description: "search for modifications after this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for modifications after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: DateBefore
-    description: "search for modifications before this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for modifications before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
 
 sources:
@@ -41,12 +41,12 @@ sources:
     description: Detects status of log channels (event log files).
     query: |
       -- Build time bounds
-      LET DateAfterTime <= if(condition=DateAfter,
-            then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
-            then=DateBefore, else=timestamp(epoch="2200-01-01"))
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+            then=DateAfter, else=timestamp(epoch=&quot;1600-01-01&quot;))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+            then=DateBefore, else=timestamp(epoch=&quot;2200-01-01&quot;))
 
-      LET Key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*"
+      LET Key = &quot;HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*&quot;
 
       SELECT Key.Mtime AS Mtime,
              basename(path=Key.OSPath) AS ChannelName,
@@ -54,19 +54,19 @@ sources:
              OwningPublisher, Enabled
       FROM read_reg_key(globs=Key)
       WHERE ChannelName =~ ProviderRegex
-        AND Mtime > DateAfterTime
-        AND Mtime < DateBeforeTime
+        AND Mtime &gt; DateAfterTime
+        AND Mtime &lt; DateBeforeTime
 
   - name: Providers
     description: Inspect the state of each provider
     query: |
-      LET Key = "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-System\\**\\Enabled"
-      LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
+      LET Key = &quot;HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-System\\**\\Enabled&quot;
+      LET Publishers = &quot;HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@&quot;
 
-      LET ProviderNames <= memoize(key="GUID", query={
+      LET ProviderNames &lt;= memoize(key=&quot;GUID&quot;, query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
-        FROM glob(globs=Publishers, accessor="registry")
+        FROM glob(globs=Publishers, accessor=&quot;registry&quot;)
       })
 
       LET X = SELECT Mtime,
@@ -76,18 +76,18 @@ sources:
                      to_dict(item={
                         SELECT Name AS _key, Data.value AS _value
                         FROM glob(root=OSPath.Dirname,
-                                  globs="/*",
-                                  accessor="registry")
+                                  globs=&quot;/*&quot;,
+                                  accessor=&quot;registry&quot;)
                      }) AS Content
-        FROM glob(globs=Key, accessor="registry")
+        FROM glob(globs=Key, accessor=&quot;registry&quot;)
 
       SELECT Mtime, GUID, Key AS _RegKey,
          get(item=ProviderNames, member=GUID).Name AS ProviderName,
          Enabled, Content
       FROM X
       WHERE ProviderName =~ ProviderRegex
-        AND Mtime > DateAfterTime
-        AND Mtime < DateBeforeTime
+        AND Mtime &gt; DateAfterTime
+        AND Mtime &lt; DateBeforeTime
       ORDER BY ProviderName
 
 </code></pre>

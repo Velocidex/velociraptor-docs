@@ -22,7 +22,7 @@ type: CLIENT
 
 author: Wes Lambert - @therealwlambert
 
-precondition: SELECT OS FROM info() WHERE OS =~ 'darwin'
+precondition: SELECT OS FROM info() WHERE OS =~ &#x27;darwin&#x27;
 
 parameters:
   - name: PlistGlob

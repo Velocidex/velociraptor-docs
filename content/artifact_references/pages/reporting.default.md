@@ -47,46 +47,46 @@ reports:
   - name: Templates
     type: TEMPLATES
     template: |
-       {{ define "fold_start" }}
-       <div role="button" class="btn btn-primary btn-block row collapsible">View Details</div>
-       <div class="collapse row"><div class="card card-body overflow-auto">
+       {{ define &quot;fold_start&quot; }}
+       &lt;div role=&quot;button&quot; class=&quot;btn btn-primary btn-block row collapsible&quot;&gt;View Details&lt;/div&gt;
+       &lt;div class=&quot;collapse row&quot;&gt;&lt;div class=&quot;card card-body overflow-auto&quot;&gt;
        {{end}}
-       {{ define "fold_end" }}
-       </div></div>
+       {{ define &quot;fold_end&quot; }}
+       &lt;/div&gt;&lt;/div&gt;
        {{ end }}
 
-       {{ define "hidden_paragraph_start" }}
+       {{ define &quot;hidden_paragraph_start&quot; }}
        {{- if .description -}}
-       <div><a href="#" class="collapsible">{{ .description }} ...</a>
+       &lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;collapsible&quot;&gt;{{ .description }} ...&lt;/a&gt;
        {{- else -}}
-       <div><a href="#" class="collapsible">More ...</a>
+       &lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;collapsible&quot;&gt;More ...&lt;/a&gt;
        {{- end -}}
-       <div class="collapse">
+       &lt;div class=&quot;collapse&quot;&gt;
        {{end}}
 
-       {{ define "hidden_paragraph_end" }}
-       </div></div>
+       {{ define &quot;hidden_paragraph_end&quot; }}
+       &lt;/div&gt;&lt;/div&gt;
        {{ end }}
 
 
   - type: HTML
     template: |
-      {{ import "Reporting.Default" "Templates" }}
+      {{ import &quot;Reporting.Default&quot; &quot;Templates&quot; }}
 
-      <!doctype html>
-       <html lang="en-US">
-         <head>
-         {{ $hostinfo := Query "SELECT timestamp(epoch=now()).UTC.String AS Time, \
-             OS, Fqdn FROM info()" | Expand }}
+      &lt;!doctype html&gt;
+       &lt;html lang=&quot;en-US&quot;&gt;
+         &lt;head&gt;
+         {{ $hostinfo := Query &quot;SELECT timestamp(epoch=now()).UTC.String AS Time, \
+             OS, Fqdn FROM info()&quot; | Expand }}
 
-           <meta charset="utf-8">
-           <meta http-equiv="X-UA-Compatible" content="IE=edge">
-           <meta name="viewport" content="width=device-width, initial-scale=1">
+           &lt;meta charset=&quot;utf-8&quot;&gt;
+           &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+           &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
 
-           <!-- Name of the scan -->
-           <title>{{ Get $hostinfo "0.Fqdn" }} Artifact Collection</title>
-           <style>
-             @charset "UTF-8";
+           &lt;!-- Name of the scan --&gt;
+           &lt;title&gt;{{ Get $hostinfo &quot;0.Fqdn&quot; }} Artifact Collection&lt;/title&gt;
+           &lt;style&gt;
+             @charset &quot;UTF-8&quot;;
            body {
              padding-top: 57px;
            }
@@ -135,7 +135,7 @@ reports:
                color: #FFFFFF;
                font-size: 24px;
                background-color: #00aa00;
-               font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+               font-family: Gotham, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;
                font-variant: normal;
                padding-top: 15px;
                padding-bottom: 15px;
@@ -217,184 +217,184 @@ reports:
            /* GenericTraceback */  .chromagt { color: #aa0000 }
            /* TextWhitespace */  .chromaw { color: #bbbbbb }
 
-           </style>
-           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+           &lt;/style&gt;
+           &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
 
-           <!-- Bootstrap core CSS -->
-           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-           <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" >
+           &lt;!-- Bootstrap core CSS --&gt;
+           &lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css&quot; integrity=&quot;sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh&quot; crossorigin=&quot;anonymous&quot;&gt;
+           &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css&quot; &gt;
 
-           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-           <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-           <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-         </head>
-         <body>
-           <nav class="header navbar navbar-expand-lg navbar-dark fixed-top">
-             <a class="navbar-brand" href="#" aria-label="CyberCX">
-               <img src="https://www.velocidex.com/images/logos/velo_word_on_side.svg" class="logo"/>
-             </a>
-             <button class="navbar-toggler" type="button"
-                     data-toggle="collapse"
-                     data-target="#navbarSupportedContent"
-                     aria-controls="navbarSupportedContent"
-                     aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>
-             </button>
-             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-               <ul class="navbar-nav mr-auto">
-                 <li class="nav-item active">
-                   <a class="nav-link" href="#">Top <span class="sr-only">(top)</span></a>
-                 </li>
-                 <li class="nav-item">
-                   <a class="nav-link" href="https://github.com/Velocidex/velociraptor">GitHub</a>
-                 </li>
-                 <li class="nav-item">
-                   <a class="nav-link" href="#" id="print-button">Print</a>
-                 </li>
+           &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+           &lt;script src=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js&quot; integrity=&quot;sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+           &lt;script src=&quot;https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js&quot;&gt;&lt;/script&gt;
+         &lt;/head&gt;
+         &lt;body&gt;
+           &lt;nav class=&quot;header navbar navbar-expand-lg navbar-dark fixed-top&quot;&gt;
+             &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot; aria-label=&quot;CyberCX&quot;&gt;
+               &lt;img src=&quot;https://www.velocidex.com/images/logos/velo_word_on_side.svg&quot; class=&quot;logo&quot;/&gt;
+             &lt;/a&gt;
+             &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot;
+                     data-toggle=&quot;collapse&quot;
+                     data-target=&quot;#navbarSupportedContent&quot;
+                     aria-controls=&quot;navbarSupportedContent&quot;
+                     aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
+               &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+             &lt;/button&gt;
+             &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarSupportedContent&quot;&gt;
+               &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+                 &lt;li class=&quot;nav-item active&quot;&gt;
+                   &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;Top &lt;span class=&quot;sr-only&quot;&gt;(top)&lt;/span&gt;&lt;/a&gt;
+                 &lt;/li&gt;
+                 &lt;li class=&quot;nav-item&quot;&gt;
+                   &lt;a class=&quot;nav-link&quot; href=&quot;https://github.com/Velocidex/velociraptor&quot;&gt;GitHub&lt;/a&gt;
+                 &lt;/li&gt;
+                 &lt;li class=&quot;nav-item&quot;&gt;
+                   &lt;a class=&quot;nav-link&quot; href=&quot;#&quot; id=&quot;print-button&quot;&gt;Print&lt;/a&gt;
+                 &lt;/li&gt;
 
-                 <li class="nav-item dropdown">
-                   <a class="nav-link dropdown-toggle" href="#"
-                   id="navbarDropdown" role="button"
-                   data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                 &lt;li class=&quot;nav-item dropdown&quot;&gt;
+                   &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot;
+                   id=&quot;navbarDropdown&quot; role=&quot;button&quot;
+                   data-toggle=&quot;dropdown&quot;
+                   aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
                      Artifacts Collected
-                   </a>
-                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                   &lt;/a&gt;
+                   &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;navbarDropdown&quot;&gt;
                      {{ range .parts }}
-                     <a class="dropdown-item" href="#{{- .Artifact.Name -}}">
+                     &lt;a class=&quot;dropdown-item&quot; href=&quot;#{{- .Artifact.Name -}}&quot;&gt;
                          {{ .Artifact.Name }}
-                     </a>
+                     &lt;/a&gt;
                      {{ end }}
-                   </div>
-                 </li>
-               </ul>
-             </div>
-           </nav>
+                   &lt;/div&gt;
+                 &lt;/li&gt;
+               &lt;/ul&gt;
+             &lt;/div&gt;
+           &lt;/nav&gt;
 
-           <main role="main" class="container">
-             <div class="row section top-section">
-               <div class="col">
-                 {{ $data := Query "SELECT timestamp(epoch=now()).UTC.String AS Time, OS, Fqdn FROM info()" | Expand }}
-                 {{ Get $hostinfo "0.Fqdn" }} Artifact Collection
-               </div>
-               <div class="col">{{- Get $data "0" -}}</div>
-             </div>
+           &lt;main role=&quot;main&quot; class=&quot;container&quot;&gt;
+             &lt;div class=&quot;row section top-section&quot;&gt;
+               &lt;div class=&quot;col&quot;&gt;
+                 {{ $data := Query &quot;SELECT timestamp(epoch=now()).UTC.String AS Time, OS, Fqdn FROM info()&quot; | Expand }}
+                 {{ Get $hostinfo &quot;0.Fqdn&quot; }} Artifact Collection
+               &lt;/div&gt;
+               &lt;div class=&quot;col&quot;&gt;{{- Get $data &quot;0&quot; -}}&lt;/div&gt;
+             &lt;/div&gt;
 
              {{ range .parts }}
 
-             <div class="">
-               <a class="anchor" name="{{- .Artifact.Name -}}"></a>
-               <!-- If the artifact has its own report, just include it as is -->
+             &lt;div class=&quot;&quot;&gt;
+               &lt;a class=&quot;anchor&quot; name=&quot;{{- .Artifact.Name -}}&quot;&gt;&lt;/a&gt;
+               &lt;!-- If the artifact has its own report, just include it as is --&gt;
                {{ if .HTML }}
                  {{ .HTML }}
                {{ else }}
-                 <!-- Default report in case the artifact does not have one -->
-                 <h1>{{ .Artifact.Name }}
-                     <div class="btn btn-primary-outline float-right">{{ .Artifact.Author }}
-                     </div>
-                 </h1>
+                 &lt;!-- Default report in case the artifact does not have one --&gt;
+                 &lt;h1&gt;{{ .Artifact.Name }}
+                     &lt;div class=&quot;btn btn-primary-outline float-right&quot;&gt;{{ .Artifact.Author }}
+                     &lt;/div&gt;
+                 &lt;/h1&gt;
 
                  {{ $name := .Artifact.Name }}
 
-                 {{ template "hidden_paragraph_start" dict "description" "View Artifact Description" }}
+                 {{ template &quot;hidden_paragraph_start&quot; dict &quot;description&quot; &quot;View Artifact Description&quot; }}
                    {{ Markdown .Artifact.Description }}
 
                    {{ if .Artifact.Reference }}
-                     <h3>References</h3>
-                     <ul>
+                     &lt;h3&gt;References&lt;/h3&gt;
+                     &lt;ul&gt;
                        {{ range .Artifact.Reference }}
-                       <li><a href="{{ . }}">{{ . }}</a></li>
+                       &lt;li&gt;&lt;a href=&quot;{{ . }}&quot;&gt;{{ . }}&lt;/a&gt;&lt;/li&gt;
                        {{ end }}
-                     </ul>
+                     &lt;/ul&gt;
                    {{ end }}
-                 {{ template "hidden_paragraph_end" }}
+                 {{ template &quot;hidden_paragraph_end&quot; }}
 
                  {{ range .Artifact.Sources }}
-                    {{ $source := print "source(\n  source='" .Name "', artifact='" $name "')" }}
-                    {{ $query := print "SELECT * FROM " $source " \nLIMIT 100" }}
+                    {{ $source := print &quot;source(\n  source=&#x27;&quot; .Name &quot;&#x27;, artifact=&#x27;&quot; $name &quot;&#x27;)&quot; }}
+                    {{ $query := print &quot;SELECT * FROM &quot; $source &quot; \nLIMIT 100&quot; }}
 
-                    <!-- There could be a huge number of rows just to get the count, so we cap at 10000 -->
-                    {{ $count := Get ( Query (print "LET X = SELECT * FROM " $source \
-                       " LIMIT 10000 SELECT 1 AS ALL, count() AS Count FROM X Group BY ALL") | Expand ) \
-                       "0.Count" }}
+                    &lt;!-- There could be a huge number of rows just to get the count, so we cap at 10000 --&gt;
+                    {{ $count := Get ( Query (print &quot;LET X = SELECT * FROM &quot; $source \
+                       &quot; LIMIT 10000 SELECT 1 AS ALL, count() AS Count FROM X Group BY ALL&quot;) | Expand ) \
+                       &quot;0.Count&quot; }}
 
                     {{ if $count }}
                       {{ if .Name }}
-                        <h3>Source {{ $name }}/{{ .Name }}</h3>
+                        &lt;h3&gt;Source {{ $name }}/{{ .Name }}&lt;/h3&gt;
                         {{ Markdown .Description }}
                       {{ end }}
 
-                      <!-- Show the artifact source if required. -->
-                      {{ template "hidden_paragraph_start" dict "description" "Source" }}
-                      <div class="row card card-body noprint">
+                      &lt;!-- Show the artifact source if required. --&gt;
+                      {{ template &quot;hidden_paragraph_start&quot; dict &quot;description&quot; &quot;Source&quot; }}
+                      &lt;div class=&quot;row card card-body noprint&quot;&gt;
                         {{ if .Query }}
-                          {{ Markdown ( print "```vql\n" .Query  "```\n") }}
+                          {{ Markdown ( print &quot;```vql\n&quot; .Query  &quot;```\n&quot;) }}
                         {{ else }}
                           {{ range .Queries }}
-                            {{ Markdown ( print "```vql\n" .  "```\n") }}
+                            {{ Markdown ( print &quot;```vql\n&quot; .  &quot;```\n&quot;) }}
                           {{ end }}
                         {{ end }}
-                      </div>
-                      {{ template "hidden_paragraph_end" }}
+                      &lt;/div&gt;
+                      {{ template &quot;hidden_paragraph_end&quot; }}
 
-                      <!-- If this is a flow show the parameters. -->
-                      {{ $flow := Query "LET X = SELECT Request.Parameters.env AS Env FROM flows(client_id=ClientId, flow_id=FlowId)" \
-                      "SELECT * FROM foreach(row=X[0].Env, query={ SELECT Key, Value FROM scope()})" | Expand }}
+                      &lt;!-- If this is a flow show the parameters. --&gt;
+                      {{ $flow := Query &quot;LET X = SELECT Request.Parameters.env AS Env FROM flows(client_id=ClientId, flow_id=FlowId)&quot; \
+                      &quot;SELECT * FROM foreach(row=X[0].Env, query={ SELECT Key, Value FROM scope()})&quot; | Expand }}
                       {{ if $flow }}
-                        {{ template "hidden_paragraph_start" dict "description" "Parameters" }}
-                        <div class="row card card-body noprint">
-                          <h3> Parameters </h3>
+                        {{ template &quot;hidden_paragraph_start&quot; dict &quot;description&quot; &quot;Parameters&quot; }}
+                        &lt;div class=&quot;row card card-body noprint&quot;&gt;
+                          &lt;h3&gt; Parameters &lt;/h3&gt;
 
-                          <table class="table"><thead><th>Key</th><th>Value</th></thead>
-                            <tbody>
+                          &lt;table class=&quot;table&quot;&gt;&lt;thead&gt;&lt;th&gt;Key&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/thead&gt;
+                            &lt;tbody&gt;
                               {{ range $flow }}
-                                <tr><td>{{ Get . "Key" }}</td><td>{{ Get . "Value" }}</td></tr>
+                                &lt;tr&gt;&lt;td&gt;{{ Get . &quot;Key&quot; }}&lt;/td&gt;&lt;td&gt;{{ Get . &quot;Value&quot; }}&lt;/td&gt;&lt;/tr&gt;
                               {{ end }}
-                            </tbody>
-                          </table>
-                        </div>
-                        {{ template "hidden_paragraph_end" }}
+                            &lt;/tbody&gt;
+                          &lt;/table&gt;
+                        &lt;/div&gt;
+                        {{ template &quot;hidden_paragraph_end&quot; }}
                       {{ end }}
 
                       {{ if gt $count 9999 }}
-                        <p>The source produced more than {{ $count }} rows.</p>
+                        &lt;p&gt;The source produced more than {{ $count }} rows.&lt;/p&gt;
                       {{ else }}
-                        <p>The source retrieved a total of {{ $count }} rows.</p>
+                        &lt;p&gt;The source retrieved a total of {{ $count }} rows.&lt;/p&gt;
                       {{ end }}
 
-                      {{ template "fold_start" }}
-                      <div class="noprint">
-                        <p> Below you will find a table of the first 100 rows, obtained by the VQL query:
-                        </p>
-                        {{ Markdown (print "```vql\n" $query "\n```\n" ) }}
-                      </div>
+                      {{ template &quot;fold_start&quot; }}
+                      &lt;div class=&quot;noprint&quot;&gt;
+                        &lt;p&gt; Below you will find a table of the first 100 rows, obtained by the VQL query:
+                        &lt;/p&gt;
+                        {{ Markdown (print &quot;```vql\n&quot; $query &quot;\n```\n&quot; ) }}
+                      &lt;/div&gt;
                       {{ Query $query | Table }}
-                      {{ template "fold_end" }}
+                      {{ template &quot;fold_end&quot; }}
 
                     {{ else }}
-                      <p>No rows returned</p>
+                      &lt;p&gt;No rows returned&lt;/p&gt;
                     {{ end }}
                  {{ end }}
                {{ end }}
-             </div>
+             &lt;/div&gt;
 
            {{ end }}
-           </main>
-           <script>
-             $(".collapsible").click(function() {
-               $(this).next().toggle("slow");
+           &lt;/main&gt;
+           &lt;script&gt;
+             $(&quot;.collapsible&quot;).click(function() {
+               $(this).next().toggle(&quot;slow&quot;);
                try {
-                 $("table.table-striped").DataTable().columns.adjust();
+                 $(&quot;table.table-striped&quot;).DataTable().columns.adjust();
                } catch(e) {
 
                };
              });
 
-             $("#print-button").click(function() {
-                $(".collapse").removeClass("collapse");
-                $('table.table-striped').DataTable().destroy();
-                $(".collapsible").hide();
-                $(".noprint").hide();
+             $(&quot;#print-button&quot;).click(function() {
+                $(&quot;.collapse&quot;).removeClass(&quot;collapse&quot;);
+                $(&#x27;table.table-striped&#x27;).DataTable().destroy();
+                $(&quot;.collapsible&quot;).hide();
+                $(&quot;.noprint&quot;).hide();
                 setTimeout(function() {
                    window.print();
                    location.reload();
@@ -403,16 +403,16 @@ reports:
 
              $(document).ready( function () {
                 try {
-                   $('table.table-striped').DataTable({
-                      "scrollY": 400,
-                      "scrollX": true,
-                      "autoWidth": false,
+                   $(&#x27;table.table-striped&#x27;).DataTable({
+                      &quot;scrollY&quot;: 400,
+                      &quot;scrollX&quot;: true,
+                      &quot;autoWidth&quot;: false,
                    });
                 } catch(e) {};
              });
-           </script>
-        </body>
-       </html>
+           &lt;/script&gt;
+        &lt;/body&gt;
+       &lt;/html&gt;
 
 </code></pre>
 

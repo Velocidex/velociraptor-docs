@@ -24,14 +24,14 @@ description: |
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
         // Cache the pslist output in memory.
-        LET processes <= SELECT Pid, Ppid, Name, Exe FROM pslist()
+        LET processes &lt;= SELECT Pid, Ppid, Name, Exe FROM pslist()
 
         // Get the pids of all procecesses named services.exe
-        LET services <= SELECT Pid FROM processes where Name =~ "services.exe"
+        LET services &lt;= SELECT Pid FROM processes where Name =~ &quot;services.exe&quot;
 
         // The interesting processes are those which are not spawned by services.exe
         LET suspicious = SELECT Pid As SVCHostPid,
@@ -39,7 +39,7 @@ sources:
             Exe as SVCHostExe,
             CommandLine as SVCHostCommandLine
         FROM processes
-        WHERE Name =~ "svchost" AND NOT Ppid in services.Pid
+        WHERE Name =~ &quot;svchost&quot; AND NOT Ppid in services.Pid
 
         // Now for each such process we display its actual parent.
         SELECT * from foreach(

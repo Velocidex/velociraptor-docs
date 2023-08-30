@@ -43,7 +43,7 @@ description: |
   client (i.e. post processed through the notebook interface), except
   it was collected via the Sneakernet.
 
-  NOTE: This artifact reads the collection ZIP from the server's
+  NOTE: This artifact reads the collection ZIP from the server&#x27;s
   filesystem. It is up to you to arrange for the file to be stored on
   the server (e.g. scp it over).
 
@@ -57,7 +57,7 @@ parameters:
     default: auto
     description: |
       The client id to upload this collection into. The
-      default is "auto" which will create a new client id.
+      default is &quot;auto&quot; which will create a new client id.
   - name: Hostname
     description: If creating a new client, this must contain the hostname.
   - name: Path

@@ -68,7 +68,7 @@ description: |
 
 
 precondition:
-  SELECT * FROM info() where OS = 'linux'
+  SELECT * FROM info() where OS = &#x27;linux&#x27;
 
 parameters:
   - name: SearchFilesGlob
@@ -96,15 +96,15 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
   - name: ModifiedBefore
-    default: ""
+    default: &quot;&quot;
     type: timestamp
 
   - name: ExcludePathRegex
-    default: "^/(proc|sys|run|snap)"
+    default: &quot;^/(proc|sys|run|snap)&quot;
     type: regex
     description: If this regex matches the path of any directory we do not even descend inside of it.
 
@@ -128,7 +128,7 @@ sources:
     -- This list comes from cat /proc/devices and represents actual
     -- devices. Most virtual devices like /proc, fuse and network
     -- filesystems have a major number of 0.
-    LET LocalDeviceMajor <= (
+    LET LocalDeviceMajor &lt;= (
        253,
        7,   -- loop
        8,   -- sd
@@ -158,11 +158,11 @@ sources:
     LET RecursionCallback = if(
        condition=LocalFilesystemOnly,
          then=if(condition=ExcludePathRegex,
-                 then="x=>x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
-                 else="x=>x.Data.DevMajor IN LocalDeviceMajor"),
+                 then=&quot;x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex&quot;,
+                 else=&quot;x=&gt;x.Data.DevMajor IN LocalDeviceMajor&quot;),
          else=if(condition=ExcludePathRegex,
-                 then="x=>NOT x.OSPath =~ ExcludePathRegex",
-                 else=""))
+                 then=&quot;x=&gt;NOT x.OSPath =~ ExcludePathRegex&quot;,
+                 else=&quot;&quot;))
 
     LET file_search = SELECT OSPath,
                Sys.mft as Inode,
@@ -174,13 +174,13 @@ sources:
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   recursion_callback=RecursionCallback,
                   one_filesystem=OneFilesystem,
-                  accessor="file", nosymlink=DoNotFollowSymlinks)
+                  accessor=&quot;file&quot;, nosymlink=DoNotFollowSymlinks)
 
     LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else={
           SELECT * FROM file_search
         })
@@ -189,8 +189,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-            AND MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+            AND MTime &gt; MoreRecentThan
         }, else={
           SELECT * FROM more_recent
         })
@@ -209,9 +209,9 @@ sources:
                       str(str=String.Data) As Keywords
 
                FROM yara(files=OSPath,
-                         key="A",
+                         key=&quot;A&quot;,
                          rules=YaraRule,
-                         accessor="file")
+                         accessor=&quot;file&quot;)
             })
         }, else={
           SELECT *, NULL AS Keywords FROM modified_before
@@ -221,10 +221,10 @@ sources:
              MTime, CTime, Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
-                              accessor="file")) AS Upload,
+                              accessor=&quot;file&quot;)) AS Upload,
                if(condition=Calculate_Hash and Mode.IsRegular,
                   then=hash(path=OSPath,
-                            accessor="file")) AS Hash
+                            accessor=&quot;file&quot;)) AS Hash
     FROM keyword_search
 
 column_types:

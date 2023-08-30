@@ -29,7 +29,7 @@ description: |
   determine when binaries are run in the past. On Windows10 we can see
   the last 8 execution times and creation time (9 potential executions).
 
-  There are several parameter's available for this artifact.
+  There are several parameter&#x27;s available for this artifact.
     - dateAfter enables search for prefetch evidence after this date.
     - dateBefore enables search for prefetch evidence before this date.
     - binaryRegex enables to filter on binary name, e.g evil.exe.
@@ -46,286 +46,286 @@ parameters:
     - name: prefetchGlobs
       default: C:\Windows\Prefetch\*.pf
     - name: dateAfter
-      description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+      description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
       type: timestamp
     - name: dateBefore
-      description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+      description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
       type: timestamp
     - name: binaryRegex
-      description: "Regex of executable name."
+      description: &quot;Regex of executable name.&quot;
       type: regex
     - name: hashRegex
-      description: "Regex of prefetch hash."
+      description: &quot;Regex of prefetch hash.&quot;
       type: regex
     - name: IncludeFilesAccessed
       description: Include all accessed files
       type: bool
 
 export: |
-        LET PrefetchProfile = '''[
-        ["Header", 8, [
-          ["Signature", 0, "String", {"length": 3}],
-          ["UncompressedSize", 4, "unsigned long"],
-          ["Data", 8, String, {
-              length: "x=>x.UncompressedSize",
-              term: "",
+        LET PrefetchProfile = &#x27;&#x27;&#x27;[
+        [&quot;Header&quot;, 8, [
+          [&quot;Signature&quot;, 0, &quot;String&quot;, {&quot;length&quot;: 3}],
+          [&quot;UncompressedSize&quot;, 4, &quot;unsigned long&quot;],
+          [&quot;Data&quot;, 8, String, {
+              length: &quot;x=&gt;x.UncompressedSize&quot;,
+              term: &quot;&quot;,
               max_length: 10000000,
           }],
-          ["Decompressed", 0, "Value", {
-              value: "x=>lzxpress_decompress(data=x.Data)"
+          [&quot;Decompressed&quot;, 0, &quot;Value&quot;, {
+              value: &quot;x=&gt;lzxpress_decompress(data=x.Data)&quot;
           }],
         ]],
-        ["SCCAHeader", 84, [
-         ["Version", 0, "Enumeration", {
-             type: "unsigned int",
+        [&quot;SCCAHeader&quot;, 84, [
+         [&quot;Version&quot;, 0, &quot;Enumeration&quot;, {
+             type: &quot;unsigned int&quot;,
              choices: {
-               "17": "WinXP (17)",
-               "23": "Vista (23)",
-               "26": "Win8.1 (26)",
-               "30": "Win10 (30)"
+               &quot;17&quot;: &quot;WinXP (17)&quot;,
+               &quot;23&quot;: &quot;Vista (23)&quot;,
+               &quot;26&quot;: &quot;Win8.1 (26)&quot;,
+               &quot;30&quot;: &quot;Win10 (30)&quot;
              }
          }],
-         ["Signature", 4, "String", {"length": 4}],
-         ["FileSize", 12, "unsigned long"],
-         ["Executable", 16, "String", {
-             encoding: "utf16",
+         [&quot;Signature&quot;, 4, &quot;String&quot;, {&quot;length&quot;: 4}],
+         [&quot;FileSize&quot;, 12, &quot;unsigned long&quot;],
+         [&quot;Executable&quot;, 16, &quot;String&quot;, {
+             encoding: &quot;utf16&quot;,
          }],
-         ["Hash", 76, "unsigned long"],
+         [&quot;Hash&quot;, 76, &quot;unsigned long&quot;],
 
          # Hash is followed by a version specific info struct.
-         ["Info", 84, "Union", {
-             selector: "x=>x.Version",
+         [&quot;Info&quot;, 84, &quot;Union&quot;, {
+             selector: &quot;x=&gt;x.Version&quot;,
              choices: {
-                 "WinXP (17)": "FileInformationWinXP",
-                 "Vista (23)": "FileInformationVista",
-                 "Win8.1 (26)": "FileInformationWin81",
-                 "Win10 (30)": "FileInformationWin10",
+                 &quot;WinXP (17)&quot;: &quot;FileInformationWinXP&quot;,
+                 &quot;Vista (23)&quot;: &quot;FileInformationVista&quot;,
+                 &quot;Win8.1 (26)&quot;: &quot;FileInformationWin81&quot;,
+                 &quot;Win10 (30)&quot;: &quot;FileInformationWin10&quot;,
              }
          }]
         ]],
 
-        ["FileInformationWinXP", 68, [
-         ["__FileMetricsOffset", 0, "unsigned long"],
-         ["__NumberOfFileMetrics", 4, "unsigned long"],
-         ["__TraceChainsArrayOffset", 8, "unsigned long"],
-         ["__NumberOfTraceChains", 12, "unsigned long"],
-         ["__FilenameOffset", 16, "unsigned long"],
-         ["__FilenameSize", 20, "unsigned long"],
-         ["__VolumesInformationOffset", 24, "unsigned long"],
-         ["__NumberOfVolumes", 28, "unsigned long"],
-         ["__VolumesInformationSize", 32, "unsigned long"],
+        [&quot;FileInformationWinXP&quot;, 68, [
+         [&quot;__FileMetricsOffset&quot;, 0, &quot;unsigned long&quot;],
+         [&quot;__NumberOfFileMetrics&quot;, 4, &quot;unsigned long&quot;],
+         [&quot;__TraceChainsArrayOffset&quot;, 8, &quot;unsigned long&quot;],
+         [&quot;__NumberOfTraceChains&quot;, 12, &quot;unsigned long&quot;],
+         [&quot;__FilenameOffset&quot;, 16, &quot;unsigned long&quot;],
+         [&quot;__FilenameSize&quot;, 20, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationOffset&quot;, 24, &quot;unsigned long&quot;],
+         [&quot;__NumberOfVolumes&quot;, 28, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationSize&quot;, 32, &quot;unsigned long&quot;],
 
          # This is realy just one time but we make it an
          # array to be compatible with the others.
-         ["LastRunTimes", 36, "Array", {
-              "type": "Timestamp",
-              "count": 1
+         [&quot;LastRunTimes&quot;, 36, &quot;Array&quot;, {
+              &quot;type&quot;: &quot;Timestamp&quot;,
+              &quot;count&quot;: 1
            }],
-         ["RunCount", 60, "unsigned long"],
+         [&quot;RunCount&quot;, 60, &quot;unsigned long&quot;],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
-             type: "FileMetricsEntryV17",
-             count: "x=>x.__NumberOfFileMetrics",
+         [&quot;Metrics&quot;, &quot;x=&gt;x.__FileMetricsOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;FileMetricsEntryV17&quot;,
+             count: &quot;x=&gt;x.__NumberOfFileMetrics&quot;,
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
-             type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+         [&quot;VolumeInfo&quot;, &quot;x=&gt;x.__VolumesInformationOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;VolumeInformation&quot;,
+             count: &quot;x=&gt;x.__NumberOfVolumes&quot;,
           }],
         ]],
 
-        ["FileInformationVista", 156, [
-         ["__FileMetricsOffset", 0, "unsigned long"],
-         ["__NumberOfFileMetrics", 4, "unsigned long"],
-         ["__TraceChainsArrayOffset", 8, "unsigned long"],
-         ["__NumberOfTraceChains", 12, "unsigned long"],
-         ["__FilenameOffset", 16, "unsigned long"],
-         ["__FilenameSize", 20, "unsigned long"],
-         ["__VolumesInformationOffset", 24, "unsigned long"],
-         ["__NumberOfVolumes", 28, "unsigned long"],
-         ["__VolumesInformationSize", 32, "unsigned long"],
+        [&quot;FileInformationVista&quot;, 156, [
+         [&quot;__FileMetricsOffset&quot;, 0, &quot;unsigned long&quot;],
+         [&quot;__NumberOfFileMetrics&quot;, 4, &quot;unsigned long&quot;],
+         [&quot;__TraceChainsArrayOffset&quot;, 8, &quot;unsigned long&quot;],
+         [&quot;__NumberOfTraceChains&quot;, 12, &quot;unsigned long&quot;],
+         [&quot;__FilenameOffset&quot;, 16, &quot;unsigned long&quot;],
+         [&quot;__FilenameSize&quot;, 20, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationOffset&quot;, 24, &quot;unsigned long&quot;],
+         [&quot;__NumberOfVolumes&quot;, 28, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationSize&quot;, 32, &quot;unsigned long&quot;],
 
          # This is realy just one time but we make it an
          # array to be compatible with the others.
-         ["LastRunTimes", 44, "Array", {
-              "type": "Timestamp",
-              "count": 1
+         [&quot;LastRunTimes&quot;, 44, &quot;Array&quot;, {
+              &quot;type&quot;: &quot;Timestamp&quot;,
+              &quot;count&quot;: 1
            }],
-         ["RunCount", 68, "unsigned long"],
+         [&quot;RunCount&quot;, 68, &quot;unsigned long&quot;],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
-             type: "FileMetricsEntryV23",
-             count: "x=>x.__NumberOfFileMetrics",
+         [&quot;Metrics&quot;, &quot;x=&gt;x.__FileMetricsOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;FileMetricsEntryV23&quot;,
+             count: &quot;x=&gt;x.__NumberOfFileMetrics&quot;,
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
-             type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+         [&quot;VolumeInfo&quot;, &quot;x=&gt;x.__VolumesInformationOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;VolumeInformation&quot;,
+             count: &quot;x=&gt;x.__NumberOfVolumes&quot;,
           }],
         ]],
 
 
-        ["FileInformationWin81", 224, [
-         ["__FileMetricsOffset", 0, "unsigned long"],
-         ["__NumberOfFileMetrics", 4, "unsigned long"],
-         ["__TraceChainsArrayOffset", 8, "unsigned long"],
-         ["__NumberOfTraceChains", 12, "unsigned long"],
-         ["__FilenameOffset", 16, "unsigned long"],
-         ["__FilenameSize", 20, "unsigned long"],
-         ["__VolumesInformationOffset", 24, "unsigned long"],
-         ["__NumberOfVolumes", 28, "unsigned long"],
-         ["__VolumesInformationSize", 32, "unsigned long"],
+        [&quot;FileInformationWin81&quot;, 224, [
+         [&quot;__FileMetricsOffset&quot;, 0, &quot;unsigned long&quot;],
+         [&quot;__NumberOfFileMetrics&quot;, 4, &quot;unsigned long&quot;],
+         [&quot;__TraceChainsArrayOffset&quot;, 8, &quot;unsigned long&quot;],
+         [&quot;__NumberOfTraceChains&quot;, 12, &quot;unsigned long&quot;],
+         [&quot;__FilenameOffset&quot;, 16, &quot;unsigned long&quot;],
+         [&quot;__FilenameSize&quot;, 20, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationOffset&quot;, 24, &quot;unsigned long&quot;],
+         [&quot;__NumberOfVolumes&quot;, 28, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationSize&quot;, 32, &quot;unsigned long&quot;],
 
          # This is realy just one time but we make it an
          # array to be compatible with the others.
-         ["LastRunTimes", 44, "Array", {
-              "type": "Timestamp",
-              "count": 8,
+         [&quot;LastRunTimes&quot;, 44, &quot;Array&quot;, {
+              &quot;type&quot;: &quot;Timestamp&quot;,
+              &quot;count&quot;: 8,
            }],
-         ["RunCount", 124, "unsigned long"],
+         [&quot;RunCount&quot;, 124, &quot;unsigned long&quot;],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
-             type: "FileMetricsEntryV23",
-             count: "x=>x.__NumberOfFileMetrics",
+         [&quot;Metrics&quot;, &quot;x=&gt;x.__FileMetricsOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;FileMetricsEntryV23&quot;,
+             count: &quot;x=&gt;x.__NumberOfFileMetrics&quot;,
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
-             type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+         [&quot;VolumeInfo&quot;, &quot;x=&gt;x.__VolumesInformationOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;VolumeInformation&quot;,
+             count: &quot;x=&gt;x.__NumberOfVolumes&quot;,
           }],
         ]],
 
-        ["FileInformationWin10", 224, [
-         ["__FileMetricsOffset", 0, "unsigned long"],
-         ["__NumberOfFileMetrics", 4, "unsigned long"],
-         ["__TraceChainsArrayOffset", 8, "unsigned long"],
-         ["__NumberOfTraceChains", 12, "unsigned long"],
-         ["__FilenameOffset", 16, "unsigned long"],
-         ["__FilenameSize", 20, "unsigned long"],
-         ["__VolumesInformationOffset", 24, "unsigned long"],
-         ["__NumberOfVolumes", 28, "unsigned long"],
-         ["__VolumesInformationSize", 32, "unsigned long"],
-         ["__TotalDirectoryCount", 36, "unsigned long"],
-         ["LastRunTimes", 44, "Array", {
-              "type": "Timestamp",
-              "count": 8
+        [&quot;FileInformationWin10&quot;, 224, [
+         [&quot;__FileMetricsOffset&quot;, 0, &quot;unsigned long&quot;],
+         [&quot;__NumberOfFileMetrics&quot;, 4, &quot;unsigned long&quot;],
+         [&quot;__TraceChainsArrayOffset&quot;, 8, &quot;unsigned long&quot;],
+         [&quot;__NumberOfTraceChains&quot;, 12, &quot;unsigned long&quot;],
+         [&quot;__FilenameOffset&quot;, 16, &quot;unsigned long&quot;],
+         [&quot;__FilenameSize&quot;, 20, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationOffset&quot;, 24, &quot;unsigned long&quot;],
+         [&quot;__NumberOfVolumes&quot;, 28, &quot;unsigned long&quot;],
+         [&quot;__VolumesInformationSize&quot;, 32, &quot;unsigned long&quot;],
+         [&quot;__TotalDirectoryCount&quot;, 36, &quot;unsigned long&quot;],
+         [&quot;LastRunTimes&quot;, 44, &quot;Array&quot;, {
+              &quot;type&quot;: &quot;Timestamp&quot;,
+              &quot;count&quot;: 8
            }],
-         ["__RunCount1", 124, "unsigned long"],
-         ["__RunCountPre", 120, "unsigned long"],
-         ["__RunCount2", 116, "unsigned long"],
-         ["RunCount", 0, Value, {
-            value: "x=>if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)",
+         [&quot;__RunCount1&quot;, 124, &quot;unsigned long&quot;],
+         [&quot;__RunCountPre&quot;, 120, &quot;unsigned long&quot;],
+         [&quot;__RunCount2&quot;, 116, &quot;unsigned long&quot;],
+         [&quot;RunCount&quot;, 0, Value, {
+            value: &quot;x=&gt;if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)&quot;,
          }],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
-             type: "FileMetricsEntryV30",
-             count: "x=>x.__NumberOfFileMetrics",
+         [&quot;Metrics&quot;, &quot;x=&gt;x.__FileMetricsOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;FileMetricsEntryV30&quot;,
+             count: &quot;x=&gt;x.__NumberOfFileMetrics&quot;,
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
-             type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+         [&quot;VolumeInfo&quot;, &quot;x=&gt;x.__VolumesInformationOffset - x.StartOf&quot;, &quot;Array&quot;, {
+             type: &quot;VolumeInformation&quot;,
+             count: &quot;x=&gt;x.__NumberOfVolumes&quot;,
           }],
         ]],
 
-        ["Timestamp", 8, [
-          ["Date", 0, "WinFileTime"],
-          ["Int", 0, "unsigned long long"]
+        [&quot;Timestamp&quot;, 8, [
+          [&quot;Date&quot;, 0, &quot;WinFileTime&quot;],
+          [&quot;Int&quot;, 0, &quot;unsigned long long&quot;]
         ]],
 
-        ["FileMetricsEntryV17", 20, [
-          ["__FilenameOffset", 8, "unsigned long"],
-           ["__FilenameLength", 12, "unsigned long"],
-           ["Filename", 0, "Profile", {
-               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
-               type: "String",
+        [&quot;FileMetricsEntryV17&quot;, 20, [
+          [&quot;__FilenameOffset&quot;, 8, &quot;unsigned long&quot;],
+           [&quot;__FilenameLength&quot;, 12, &quot;unsigned long&quot;],
+           [&quot;Filename&quot;, 0, &quot;Profile&quot;, {
+               offset: &quot;x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset&quot;,
+               type: &quot;String&quot;,
                type_options: {
-                   encoding: "utf16",
+                   encoding: &quot;utf16&quot;,
                    length: 1024,
                }
            }]
         ]],
 
 
-        ["FileMetricsEntryV23", 32, [
-          ["__FilenameOffset", 12, "unsigned long"],
-          ["__FilenameLength", 16, "unsigned long"],
-          ["__MFTFileReference", 24, "unsigned long"],
-          ["Filename", 0, "Profile", {
-               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
-               type: "String",
+        [&quot;FileMetricsEntryV23&quot;, 32, [
+          [&quot;__FilenameOffset&quot;, 12, &quot;unsigned long&quot;],
+          [&quot;__FilenameLength&quot;, 16, &quot;unsigned long&quot;],
+          [&quot;__MFTFileReference&quot;, 24, &quot;unsigned long&quot;],
+          [&quot;Filename&quot;, 0, &quot;Profile&quot;, {
+               offset: &quot;x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset&quot;,
+               type: &quot;String&quot;,
                type_options: {
-                   encoding: "utf16",
+                   encoding: &quot;utf16&quot;,
                    length: 1024,
                }
            }]
         ]],
 
-        ["FileMetricsEntryV30", 32, [
-           ["__FilenameOffset", 12, "unsigned long"],
-           ["__FilenameLength", 16, "unsigned long"],
-           ["__MFTFileReference", 24, "unsigned long"],
-           ["Filename", 0, "Profile", {
-               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
-               type: "String",
+        [&quot;FileMetricsEntryV30&quot;, 32, [
+           [&quot;__FilenameOffset&quot;, 12, &quot;unsigned long&quot;],
+           [&quot;__FilenameLength&quot;, 16, &quot;unsigned long&quot;],
+           [&quot;__MFTFileReference&quot;, 24, &quot;unsigned long&quot;],
+           [&quot;Filename&quot;, 0, &quot;Profile&quot;, {
+               offset: &quot;x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset&quot;,
+               type: &quot;String&quot;,
                type_options: {
-                   encoding: "utf16",
+                   encoding: &quot;utf16&quot;,
                    length: 1024,
                }
            }]
         ]],
 
-        ["VolumeInformation", 40, [
-          ["__DeviceOffset", 0, "unsigned long"],
-          ["DeviceName", "x=>x.__DeviceOffset", "String", {
+        [&quot;VolumeInformation&quot;, 40, [
+          [&quot;__DeviceOffset&quot;, 0, &quot;unsigned long&quot;],
+          [&quot;DeviceName&quot;, &quot;x=&gt;x.__DeviceOffset&quot;, &quot;String&quot;, {
               encoding: utf16,
-              length: "x=>x.__DeviceSize * 2",
+              length: &quot;x=&gt;x.__DeviceSize * 2&quot;,
           }],
-          ["__DeviceSize", 4, "unsigned long"],
-          ["DeviceCreationTime", 8, "WinFileTime"],
-          ["VolumeSerialNumber", 12, "unsigned long"],
-          ["VolumeSerialNumberHex", 0, Value, {
-              value: "x=>format(format='%#x', args=x.VolumeSerialNumber)",
+          [&quot;__DeviceSize&quot;, 4, &quot;unsigned long&quot;],
+          [&quot;DeviceCreationTime&quot;, 8, &quot;WinFileTime&quot;],
+          [&quot;VolumeSerialNumber&quot;, 12, &quot;unsigned long&quot;],
+          [&quot;VolumeSerialNumberHex&quot;, 0, Value, {
+              value: &quot;x=&gt;format(format=&#x27;%#x&#x27;, args=x.VolumeSerialNumber)&quot;,
           }],
-          ["__FileReferenceOffset", 20, "unsigned long"],
-          ["__FileReferenceDataSize", 24, "unsigned long"],
-          ["__DirectoryStringsOffset", 28, "unsigned long"],
-          ["__NumDirectoryStrings", 32, "unsigned long"],
-          ["__Directories", "x=>x.__DirectoryStringsOffset", "Array", {
-              type: "DirectoryName",
-              count: "x=>x.__NumDirectoryStrings",
+          [&quot;__FileReferenceOffset&quot;, 20, &quot;unsigned long&quot;],
+          [&quot;__FileReferenceDataSize&quot;, 24, &quot;unsigned long&quot;],
+          [&quot;__DirectoryStringsOffset&quot;, 28, &quot;unsigned long&quot;],
+          [&quot;__NumDirectoryStrings&quot;, 32, &quot;unsigned long&quot;],
+          [&quot;__Directories&quot;, &quot;x=&gt;x.__DirectoryStringsOffset&quot;, &quot;Array&quot;, {
+              type: &quot;DirectoryName&quot;,
+              count: &quot;x=&gt;x.__NumDirectoryStrings&quot;,
           }],
-          ["Directories", 0, Value, {
-              value: "x=>x.__Directories.Name"
+          [&quot;Directories&quot;, 0, Value, {
+              value: &quot;x=&gt;x.__Directories.Name&quot;
           }],
         ]],
-        ["DirectoryName", "x=>x.Size * 2 + 4", [
-          ["Size", 0, "uint8"],
-          ["Name", 2, "String", {
-              encoding: "utf16",
-              length: "x=>x.Size * 2"
+        [&quot;DirectoryName&quot;, &quot;x=&gt;x.Size * 2 + 4&quot;, [
+          [&quot;Size&quot;, 0, &quot;uint8&quot;],
+          [&quot;Name&quot;, 2, &quot;String&quot;, {
+              encoding: &quot;utf16&quot;,
+              length: &quot;x=&gt;x.Size * 2&quot;
           }]
         ]]
         ]
-        '''
+        &#x27;&#x27;&#x27;
 
         LET ParsePrefetch(PrefetchFile) = SELECT
-          parse_binary(accessor="data", filename=Data,
-            profile=PrefetchProfile, struct="SCCAHeader") AS SCCAHeader
+          parse_binary(accessor=&quot;data&quot;, filename=Data,
+            profile=PrefetchProfile, struct=&quot;SCCAHeader&quot;) AS SCCAHeader
         FROM switch(a={
             -- Handle compressed MAM prefetch files.
             SELECT
-              parse_binary(filename=PrefetchFile, profile=PrefetchProfile, struct="Header") AS Header,
-              parse_binary(filename=PrefetchFile, profile=PrefetchProfile, struct="Header").Decompressed AS Data
+              parse_binary(filename=PrefetchFile, profile=PrefetchProfile, struct=&quot;Header&quot;) AS Header,
+              parse_binary(filename=PrefetchFile, profile=PrefetchProfile, struct=&quot;Header&quot;).Decompressed AS Data
             FROM scope()
-            WHERE Header.Signature = "MAM"
+            WHERE Header.Signature = &quot;MAM&quot;
         },
         b={
             -- Handle uncompressed files
             SELECT read_file(filename=PrefetchFile, length=1024*1024) AS Data
             FROM scope()
         })
-        WHERE SCCAHeader.Signature = "SCCA"
+        WHERE SCCAHeader.Signature = &quot;SCCA&quot;
 
 sources:
   - query: |
@@ -338,15 +338,15 @@ sources:
                 SELECT SCCAHeader AS _SCCAHeader,
                   SCCAHeader.Executable AS Executable,
                   SCCAHeader.FileSize AS FileSize,
-                  format(format="%#X", args=SCCAHeader.Hash) AS Hash,
+                  format(format=&quot;%#X&quot;, args=SCCAHeader.Hash) AS Hash,
                   SCCAHeader.Version AS Version,
-                  filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=>x.Unix > 0") AS LastRunTimes,
+                  filter(list=SCCAHeader.Info.LastRunTimes.Date, condition=&quot;x=&gt;x.Unix &gt; 0&quot;) AS LastRunTimes,
                   SCCAHeader.Info.RunCount AS RunCount,
                   OSPath,
                   Name AS PrefetchFileName,
                   Btime as CreationTime,
                   Mtime as ModificationTime,
-                  filter(list=SCCAHeader.Info.Metrics.Filename, regex=".exe$")[0] AS Binary,
+                  filter(list=SCCAHeader.Info.Metrics.Filename, regex=&quot;.exe$&quot;)[0] AS Binary,
                   if(condition= IncludeFilesAccessed, then=SCCAHeader.Info.Metrics.Filename) AS FilesAccessed,
                   if(condition= IncludeFilesAccessed, then=SCCAHeader.Info.VolumeInfo) AS VolumeInfo
                 FROM ParsePrefetch(PrefetchFile=OSPath)
@@ -364,9 +364,9 @@ sources:
                     FROM pf
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                     else=TRUE)
         LET creationTimes = SELECT * FROM flatten(
                 query = {
@@ -374,12 +374,12 @@ sources:
                         OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
-                    WHERE RunCount > 8
+                    WHERE RunCount &gt; 8
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                         else=TRUE)
             GROUP BY ExecutionTime
 

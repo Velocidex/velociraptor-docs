@@ -22,9 +22,9 @@ description: |
   HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMailRules = 0 (expected)
   https://support.microsoft.com/en-us/help/3191893/how-to-control-the-rule-actions-to-start-an-application-or-run-a-macro
 
-author: "@mgreen27"
+author: &quot;@mgreen27&quot;
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
    - name: KeyGlob
@@ -38,7 +38,7 @@ sources:
         LET UserProfiles = Select Name as Username,
             {
                 SELECT OSPath FROM glob(root=expand(path=Directory),
-                   globs="/NTUSER.DAT", accessor="auto")
+                   globs=&quot;/NTUSER.DAT&quot;, accessor=&quot;auto&quot;)
             } as NTUser,
             expand(path=Directory) as Directory
         FROM Artifact.Windows.Sys.Users()
@@ -58,7 +58,7 @@ sources:
               FROM read_reg_key(
                  globs=KeyGlob,
                  root=pathspec(DelegatePath=OSPath),
-                 accessor="raw_reg")
+                 accessor=&quot;raw_reg&quot;)
               WHERE EnableUnsafeClientMailRules = 1
            })
 

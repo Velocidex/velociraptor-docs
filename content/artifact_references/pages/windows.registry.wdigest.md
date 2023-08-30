@@ -50,15 +50,15 @@ description: |
     “UseLogonCredential” DWORD value, so the key needs to be
     added. The existence of the key is suspicious, if not expected.
 
-    * ATT&CK tactic: Defense Evasion, Credential Access
-    * ATT&CK technique: T1112, T1003.001
+    * ATT&amp;CK tactic: Defense Evasion, Credential Access
+    * ATT&amp;CK technique: T1112, T1003.001
 
 reference:
     - https://medium.com/blue-team/preventing-mimikatz-attacks-ed283e7ebdd5
 
 type: CLIENT
 precondition:
-  SELECT * FROM info() where OS = 'windows'
+  SELECT * FROM info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: WDigestGlob
@@ -77,15 +77,15 @@ sources:
             Name as KeyName,
             Data.type as KeyType,
             Data.value as KeyValue
-        FROM glob(globs=WDigestGlob, accessor="registry")
-        WHERE KeyType = "DWORD"
-            AND KeyName =~ "UseLogonCredential|Negotiate"
+        FROM glob(globs=WDigestGlob, accessor=&quot;registry&quot;)
+        WHERE KeyType = &quot;DWORD&quot;
+            AND KeyName =~ &quot;UseLogonCredential|Negotiate&quot;
             AND NOT if(condition= ShowAllValues,
                         then= False,
                         else= KeyValue = 0)
         GROUP BY LastModified, KeyName, KeyType, KeyValue,
             regex_replace(source=OSPath,
-                re='''[^\\]+ControlSet[^\\]+''',replace='CurrentControlSet')
+                re=&#x27;&#x27;&#x27;[^\\]+ControlSet[^\\]+&#x27;&#x27;&#x27;,replace=&#x27;CurrentControlSet&#x27;)
 
 column_types:
   - name: LastModified

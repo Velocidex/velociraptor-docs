@@ -52,29 +52,29 @@ parameters:
     type: hidden
     default: Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\**
   - name: HiveGlob
-    description: "optional hive glob to target for offline processing."
+    description: &quot;optional hive glob to target for offline processing.&quot;
   - name: DateAfter
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
     type: timestamp
   - name: DateBefore
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
     type: timestamp
   - name: EntryRegex
     default: .
-    description: "regex filter for document/entry name."
+    description: &quot;regex filter for document/entry name.&quot;
   - name: UserRegex
     default: .
-    description: "regex filter for username over standard query."
+    description: &quot;regex filter for username over standard query.&quot;
   - name: SidRegex
     default: .
-    description: "regex filter for user SID over standard query."
+    description: &quot;regex filter for user SID over standard query.&quot;
   - name: Profile
     type: hidden
     default: |
         [
-            ["Target", 0, [
-              ["Filename", 0, "String", {
-                  encoding: "utf16",
+            [&quot;Target&quot;, 0, [
+              [&quot;Filename&quot;, 0, &quot;String&quot;, {
+                  encoding: &quot;utf16&quot;,
               }],
             ]]
         ]
@@ -84,22 +84,22 @@ sources:
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp < DateBefore AND stamp > DateAfter,
+                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp < DateBefore,
+                then= stamp &lt; DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp > DateAfter,
+                then= stamp &gt; DateAfter,
                 else= True
             )))
 
 
       -- dynamic function to extract RecentDocs order from MRUListEx data value
       LET find_order(value) = SELECT
-            parse_binary(accessor='data',
+            parse_binary(accessor=&#x27;data&#x27;,
                 filename=substr(str=value,start=_value,end=_value + 4),
-                struct='uint32') as Int
+                struct=&#x27;uint32&#x27;) as Int
         FROM range(end=len(list=value),start=0,step=4)
         WHERE NOT Int = 4294967295
 
@@ -108,12 +108,12 @@ sources:
             Mtime,
             OSPath.Components[-2] AS Type,
             OSPath.Components[-1] AS Name,
-            if(condition= OSPath.Basename = 'MRUListEx',
+            if(condition= OSPath.Basename = &#x27;MRUListEx&#x27;,
                then= find_order(value=Data.value).Int,
                else= parse_binary(
-                  accessor="data",
+                  accessor=&quot;data&quot;,
                   filename=Data.value,
-                  profile=Profile, struct="Target").Filename ) as Value,
+                  profile=Profile, struct=&quot;Target&quot;).Filename ) as Value,
             Data,
             OSPath.DelegatePath as HiveName,
             OSPath,
@@ -122,7 +122,7 @@ sources:
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
         WHERE Username =~ UserRegex
             AND UUID =~ SidRegex
-            AND Data.type =~ 'BINARY'
+            AND Data.type =~ &#x27;BINARY&#x27;
 
 
       -- Glob method allows offline processing but can not filter by user
@@ -130,46 +130,46 @@ sources:
             Mtime,
             OSPath.Components[-2] AS Type,
             OSPath.Components[-1] AS Name,
-            if(condition= OSPath.Basename = 'MRUListEx',
+            if(condition= OSPath.Basename = &#x27;MRUListEx&#x27;,
                then= find_order(value=Data.value).Int,
                else= parse_binary(
-                  accessor="data",
+                  accessor=&quot;data&quot;,
                   filename=Data.value,
                   profile=Profile,
-                  struct="Target").Filename ) as Value,
+                  struct=&quot;Target&quot;).Filename ) as Value,
             Data,
             OSPath.DelegatePath as HiveName,
             OSPath
         FROM glob(
            globs=KeyGlob,
            root=pathspec(DelegatePath=HiveGlob),
-           accessor="raw_reg")
-        WHERE Data.type =~ 'BINARY'
+           accessor=&quot;raw_reg&quot;)
+        WHERE Data.type =~ &#x27;BINARY&#x27;
 
       -- precalculate all hive values for performance
-      LET AllValues <= SELECT * FROM if(condition= HiveGlob,
+      LET AllValues &lt;= SELECT * FROM if(condition= HiveGlob,
                                         then={ SELECT * FROM GlobValues},
                                         else={ SELECT * FROM NTUserValues} )
             WHERE time_test(stamp=Mtime)
 
 
       -- memorise for lookup / performance
-      LET Items <= memoize(query={
+      LET Items &lt;= memoize(query={
             SELECT Type, Name, Value,
-                Type + ':' + Name + ':' + HiveName  AS Key
+                Type + &#x27;:&#x27; + Name + &#x27;:&#x27; + HiveName  AS Key
             FROM AllValues
-        }, key="Key")
+        }, key=&quot;Key&quot;)
 
 
       -- flattern output then add lookup of processed data
       LET flat_data(type,hivename) = SELECT *,
-            str(str=Value) + ' := ' +
-              get(item=Items, field=str(str=Type) + ':' +
-              str(str=Value) + ':' + str(str=hivename) ).Value  AS Value
+            str(str=Value) + &#x27; := &#x27; +
+              get(item=Items, field=str(str=Type) + &#x27;:&#x27; +
+              str(str=Value) + &#x27;:&#x27; + str(str=hivename) ).Value  AS Value
         FROM flatten(query={
             SELECT Mtime, Type, Name, Value,HiveName
             FROM AllValues
-            WHERE Name = 'MRUListEx'
+            WHERE Name = &#x27;MRUListEx&#x27;
             AND Type = type AND HiveName = hivename
           })
          GROUP BY Value
@@ -181,11 +181,11 @@ sources:
             OSPath.Path as Key,
             HiveName,
             if(condition=HiveGlob,
-                then='', else=Username) as Username,
+                then=&#x27;&#x27;, else=Username) as Username,
             if(condition=HiveGlob,
-                then='', else=UUID) as UUID
+                then=&#x27;&#x27;, else=UUID) as UUID
           FROM AllValues
-          WHERE Name = 'MRUListEx'
+          WHERE Name = &#x27;MRUListEx&#x27;
 
 
       -- print rows, remove Username/SID from offline
@@ -206,7 +206,7 @@ sources:
                 Key, HiveName, Username, UUID
             FROM results
         })
-      WHERE format(format='%v', args=MruEntries) =~ EntryRegex
+      WHERE format(format=&#x27;%v&#x27;, args=MruEntries) =~ EntryRegex
 
 </code></pre>
 

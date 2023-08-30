@@ -32,7 +32,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       SELECT * FROM foreach(
@@ -58,8 +58,8 @@ sources:
           this artifact we look for processes with unusual sets of
           environment variables.
 
-          {{ $unusual := Query "SELECT * FROM source() WHERE \
-              Var =~ 'COR_PROFILER|COMPlus_ETWEnabled'" | Expand }}
+          {{ $unusual := Query &quot;SELECT * FROM source() WHERE \
+              Var =~ &#x27;COR_PROFILER|COMPlus_ETWEnabled&#x27;&quot; | Expand }}
 
           {{ if $unusual }}
           ## Some unusual environment variables.
@@ -71,8 +71,8 @@ sources:
 
           {{ end }}
 
-          {{ $unusual = Query "SELECT * FROM source() WHERE \
-              Var =~ 'COMSPEC' AND NOT Value =~ 'cmd.exe$'" | Expand }}
+          {{ $unusual = Query &quot;SELECT * FROM source() WHERE \
+              Var =~ &#x27;COMSPEC&#x27; AND NOT Value =~ &#x27;cmd.exe$&#x27;&quot; | Expand }}
           {{ if $unusual }}
 
           ## Unusual COMSPEC setting.

@@ -24,8 +24,8 @@ description: |
   elastic index.
 
   NOTE: You must ensure you are collecting these artifacts from the
-  clients by adding them to the "Client Events" GUI, or for server
-  artifacts, the "Server Events" GUI.
+  clients by adding them to the &quot;Client Events&quot; GUI, or for server
+  artifacts, the &quot;Server Events&quot; GUI.
 
 type: SERVER_EVENT
 
@@ -70,14 +70,14 @@ sources:
       LET artifacts_to_watch = SELECT * FROM chain(
         a={SELECT Artifact FROM ClientArtifactsToWatch},
         b={SELECT Artifact FROM ServerArtifactsToWatch})
-      WHERE NOT Artifact =~ "Elastic.Events.Upload"
-        AND log(message="Uploading artifact " + Artifact + " to Elastic")
+      WHERE NOT Artifact =~ &quot;Elastic.Events.Upload&quot;
+        AND log(message=&quot;Uploading artifact &quot; + Artifact + &quot; to Elastic&quot;)
 
       LET events = SELECT * FROM foreach(
           row=artifacts_to_watch,
           async=TRUE,   // Required for event queries in foreach()
           query={
-             SELECT *, "Artifact_" + Artifact as _index,
+             SELECT *, &quot;Artifact_&quot; + Artifact as _index,
                     Artifact,
                     client_info(client_id=ClientId).os_info.hostname AS Hostname,
                     timestamp(epoch=now()) AS timestamp
@@ -88,15 +88,15 @@ sources:
           query=events,
           threads=Threads,
           chunk_size=ChunkSize,
-          addresses=split(string=ElasticAddresses, sep=","),
-          index="velociraptor",
+          addresses=split(string=ElasticAddresses, sep=&quot;,&quot;),
+          index=&quot;velociraptor&quot;,
           password=Password,
           username=Username,
           cloud_id=CloudID,
           api_key=APIKey,
           root_ca=RootCA,
           disable_ssl_security=DisableSSLSecurity,
-          type="ClientEvents")
+          type=&quot;ClientEvents&quot;)
 
 </code></pre>
 

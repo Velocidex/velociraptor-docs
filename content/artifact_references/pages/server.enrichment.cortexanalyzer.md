@@ -22,7 +22,7 @@ description: |
 
   Ex.
 
-    `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
+    `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType=&#x27;hash&#x27;)`
 
 reference:
   - https://github.com/TheHive-Project/Cortex
@@ -42,11 +42,11 @@ parameters:
      description: TLP for the job submitted to Cortex
      default: 0
    - name: CortexURL
-     description: URL used for Cortex job submission. It is recommended to use the <a href="#/host/server">server metadata store</a> for this.
-     default: ''
+     description: URL used for Cortex job submission. It is recommended to use the &lt;a href=&quot;#/host/server&quot;&gt;server metadata store&lt;/a&gt; for this.
+     default: &#x27;&#x27;
    - name: CortexKey
-     description: API key used for authentication to Cortex. It is recommended to use the <a href="#/host/server">server metadata store</a> for this.
-     default: ''
+     description: API key used for authentication to Cortex. It is recommended to use the &lt;a href=&quot;#/host/server&quot;&gt;server metadata store&lt;/a&gt; for this.
+     default: &#x27;&#x27;
    - name: DisableSSLVerify
      type: bool
      description: Disable SSL Verification
@@ -60,9 +60,9 @@ parameters:
 
 sources:
   - query: |
-        LET OBSERVABLE <= Observable
-        LET OBSERVABLE_DATATYPE <= ObservableType
-        LET URL <= if(
+        LET OBSERVABLE &lt;= Observable
+        LET OBSERVABLE_DATATYPE &lt;= ObservableType
+        LET URL &lt;= if(
                 condition=CortexURL,
             then=CortexURL,
             else=server_metadata().CortexURL)
@@ -73,25 +73,25 @@ sources:
             else=server_metadata().CortexKey)
         LET ENABLED_ANALYZERS = SELECT Content FROM 
             http_client(
-                url=URL + '/analyzer', 
-                method='GET', 
+                url=URL + &#x27;/analyzer&#x27;, 
+                method=&#x27;GET&#x27;, 
                 disable_ssl_security=DisableSSLVerify, 
                 headers=dict(
-                    `Authorization`=format(format="Bearer %v", args=[cortex_key])))
+                    `Authorization`=format(format=&quot;Bearer %v&quot;, args=[cortex_key])))
         LET ANALYZERS_SUPPORTED = SELECT name AS AnalyzerName, id AS ID, dataTypeList AS DList FROM parse_json_array(data=ENABLED_ANALYZERS.Content)
         LET ANALYZERS_MATCH_TYPE = SELECT ID  FROM foreach(row=ANALYZERS_SUPPORTED, query={ SELECT AnalyzerName, ID, _value AS Match FROM 
             if(
                 condition= filter(list=DList, regex=OBSERVABLE_DATATYPE),
-            then="yes",
-            else="no")}) WHERE Match = "yes"
+            then=&quot;yes&quot;,
+            else=&quot;no&quot;)}) WHERE Match = &quot;yes&quot;
         LET ANALYZER_RUN = SELECT parse_json(data=Content) AS Resp FROM 
             http_client(
-                url=URL + '/analyzer/'+ ID + '/run' , 
-                method='POST', 
+                url=URL + &#x27;/analyzer/&#x27;+ ID + &#x27;/run&#x27; , 
+                method=&#x27;POST&#x27;, 
                 disable_ssl_security=DisableSSLVerify, 
                 headers=dict(
-                    `Content-Type`="application/json", 
-                    `Authorization`=format(format="Bearer %v", 
+                    `Content-Type`=&quot;application/json&quot;, 
+                    `Authorization`=format(format=&quot;Bearer %v&quot;, 
                     args=[cortex_key])),
                     data=serialize(item=dict(
                         data=OBSERVABLE, dataType=OBSERVABLE_DATATYPE, tlp=TLP, message=JobMessage
@@ -100,12 +100,12 @@ sources:
         LET JOBID = SELECT Resp.id AS JobID from foreach(row=ANALYZER_RUN)
         LET GETREPORT = SELECT Content AS Resp FROM 
             http_client(
-                url=format(format="%v/job/%v/waitreport?atMost=%v", args=[URL,JOBID.JobID[0], JobWaitTime]),
-                method='GET', 
+                url=format(format=&quot;%v/job/%v/waitreport?atMost=%v&quot;, args=[URL,JOBID.JobID[0], JobWaitTime]),
+                method=&#x27;GET&#x27;, 
                 disable_ssl_security=DisableSSLVerify, 
                 headers=dict(
-                    `Content-Type`="application/json", 
-                    `Authorization`=format(format="Bearer %v", 
+                    `Content-Type`=&quot;application/json&quot;, 
+                    `Authorization`=format(format=&quot;Bearer %v&quot;, 
                     args=[cortex_key])
                 )
             )

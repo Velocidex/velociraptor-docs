@@ -37,7 +37,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: >-
+    default: &gt;-
       %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
   - name: MinimumFailedLogins
@@ -50,25 +50,25 @@ sources:
       LET failed_login = SELECT grok(grok=SSHGrok, data=Line) AS FailedEvent,
             Line as FailedLine
         FROM watch_syslog(filename=syslogAuthLogPath)
-        WHERE FailedEvent.program = "sshd" AND FailedEvent.event = "Failed"
-              AND FailedEvent.method = "password"
+        WHERE FailedEvent.program = &quot;sshd&quot; AND FailedEvent.event = &quot;Failed&quot;
+              AND FailedEvent.method = &quot;password&quot;
 
       LET last_failed_events = SELECT * FROM fifo(
               query=failed_login, max_rows=50, max_age=3600)
 
-      LET _ <= SELECT * FROM last_failed_events
+      LET _ &lt;= SELECT * FROM last_failed_events
 
       LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
         FROM watch_syslog(filename=syslogAuthLogPath)
-        WHERE Event.program = "sshd" AND Event.event = "Accepted"
-              AND Event.method = "password"
+        WHERE Event.program = &quot;sshd&quot; AND Event.event = &quot;Accepted&quot;
+              AND Event.method = &quot;password&quot;
 
       SELECT Event, Line, {
            SELECT FailedLine FROM last_failed_events
            WHERE Event.user = FailedEvent.user
         } AS Failures
         FROM success_login
-        WHERE len(list=Failures) > int(int=MinimumFailedLogins)
+        WHERE len(list=Failures) &gt; int(int=MinimumFailedLogins)
 
 </code></pre>
 

@@ -26,13 +26,13 @@ name: Windows.Applications.Chrome.Cookies
 description: |
   Enumerate the users chrome cookies.
 
-  The cookies are typically encrypted by the DPAPI using the user's
+  The cookies are typically encrypted by the DPAPI using the user&#x27;s
   credentials. Since Velociraptor is typically not running in the user
   context we can not decrypt these. It may be possible to decrypt the
   cookies off line.
 
   The pertinant information from a forensic point of view is the
-  user's Created and LastAccess timestamp and the fact that the user
+  user&#x27;s Created and LastAccess timestamp and the fact that the user
   has actually visited the site and obtained a cookie.
 
   ## NOTES:
@@ -52,7 +52,7 @@ parameters:
     default: .
     type: regex
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |

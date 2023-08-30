@@ -16,10 +16,10 @@ parameters:
     default: /var/run/docker.sock
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = &#x27;linux&#x27;
     query: |
         LET data = SELECT parse_json(data=Content) as JSON
-        FROM http_client(url=dockerSocket + ":unix/version")
+        FROM http_client(url=dockerSocket + &quot;:unix/version&quot;)
 
         SELECT JSON.Version as Version,
                JSON.ApiVersion as ApiVersion,

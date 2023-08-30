@@ -37,12 +37,12 @@ description: |
 parameters:
   - name: processNamesRegex
     description: A regex to select running processes which we consider should be trusted.
-    default: "lsass|svchost|conhost|taskmgr|winlogon|wmiprv|dwm|csrss|velociraptor"
+    default: &quot;lsass|svchost|conhost|taskmgr|winlogon|wmiprv|dwm|csrss|velociraptor&quot;
     type: regex
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
         LET binaries = SELECT lowcase(string=Exe) As Binary
           FROM pslist()

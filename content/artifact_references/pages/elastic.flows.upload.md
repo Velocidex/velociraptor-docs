@@ -55,7 +55,7 @@ parameters:
 sources:
   - query: |
       LET completions = SELECT * FROM watch_monitoring(
-             artifact="System.Flow.Completion")
+             artifact=&quot;System.Flow.Completion&quot;)
              WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       LET documents = SELECT * FROM foreach(row=completions,
@@ -67,8 +67,8 @@ sources:
                             client_info(client_id=ClientId).os_info.hostname AS Hostname,
                             timestamp(epoch=now()) AS timestamp,
                             ClientId, Flow.session_id AS FlowId,
-                            "artifact_" + regex_replace(source=_value,
-                               re='[/.]', replace='_') as _index
+                            &quot;artifact_&quot; + regex_replace(source=_value,
+                               re=&#x27;[/.]&#x27;, replace=&#x27;_&#x27;) as _index
                      FROM source(
                         client_id=ClientId,
                         flow_id=Flow.session_id,
@@ -80,15 +80,15 @@ sources:
             query=documents,
             threads=Threads,
             chunk_size=ChunkSize,
-            addresses=split(string=elasticAddresses, sep=","),
-            index="velociraptor",
+            addresses=split(string=elasticAddresses, sep=&quot;,&quot;),
+            index=&quot;velociraptor&quot;,
             password=Password,
             username=Username,
             cloud_id=CloudID,
             api_key=APIKey,
             root_ca=RootCA,
             disable_ssl_security=DisableSSLSecurity,
-            type="artifact")
+            type=&quot;artifact&quot;)
 
 </code></pre>
 

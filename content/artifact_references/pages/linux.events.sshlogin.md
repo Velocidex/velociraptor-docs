@@ -25,7 +25,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: >-
+    default: &gt;-
       %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
 sources:
@@ -33,7 +33,7 @@ sources:
       -- Basic syslog parsing via GROK expressions.
       LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
         FROM watch_syslog(filename=syslogAuthLogPath)
-        WHERE Event.program = "sshd" AND Event.event = "Accepted"
+        WHERE Event.program = &quot;sshd&quot; AND Event.event = &quot;Accepted&quot;
 
       SELECT timestamp(string=Event.timestamp) AS Time,
               Event.user AS User,

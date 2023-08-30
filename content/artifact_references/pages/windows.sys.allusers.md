@@ -28,13 +28,13 @@ description: |
   the `NetUserEnum` API (termed `local` users) and the list of SIDs in
   the registry (termed `remote` users).
 
-  In this artifact, 'remote' means that user profile was cached in the
+  In this artifact, &#x27;remote&#x27; means that user profile was cached in the
   registry, but the user does not appear in the output of the
   `NetUserEnum` API - this normally happens for users remotely logging
   into the system using domain credentials.
 
   On Domain Controllers the `NetUserEnum` API will return the contents
-  of the entire ActiveDirectory as a list of 'local' users, however
+  of the entire ActiveDirectory as a list of &#x27;local&#x27; users, however
   this does not mean that the users have logged into the DC
   locally. In this artifact we limit the number of users to 1000. If
   you need to obtain the full list from the AD, customize this
@@ -46,17 +46,17 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
         LET GetTimestamp(High, Low) = if(condition=High,
                 then=timestamp(winfiletime=High * 4294967296 + Low))
 
         -- lookupSID() may not be available on deaddisk analysis
-        LET roaming_users <= memoize(query={
+        LET roaming_users &lt;= memoize(query={
           SELECT
-             split(string=Key.OSPath.Basename, sep="-")[-1] as Uid,
-             "" AS Gid,
-             lookupSID(sid=Key.OSPath.Basename) || "" AS Name,
+             split(string=Key.OSPath.Basename, sep=&quot;-&quot;)[-1] as Uid,
+             &quot;&quot; AS Gid,
+             lookupSID(sid=Key.OSPath.Basename) || &quot;&quot; AS Name,
              Key.OSPath as Description,
              ProfileImagePath as Directory,
              Key.OSPath.Basename as UUID,
@@ -70,8 +70,8 @@ sources:
                 ProfileUnloadTime=GetTimestamp(
                   High=LocalProfileUnloadTimeHigh, Low=LocalProfileUnloadTimeLow)
              ) AS Data
-           FROM read_reg_key(globs=remoteRegKey, accessor="registry")
-        }, key="UUID")
+           FROM read_reg_key(globs=remoteRegKey, accessor=&quot;registry&quot;)
+        }, key=&quot;UUID&quot;)
 
         -- On a DC the NetUserEnum API will return the entire domain!
         LET local_users = select User_id as Uid,
@@ -82,7 +82,7 @@ sources:
         FROM users()
         LIMIT 1000
 
-        -- Populate the mtime from the user's home directory.
+        -- Populate the mtime from the user&#x27;s home directory.
         LET local_users_with_mtime = SELECT Uid, Gid, Name, Description,
             RoamingData.Directory AS Directory,
             UUID,
@@ -109,12 +109,12 @@ reports:
       compromised and the attackers are laterally moving through the
       network.
 
-      {{ define "users" }}
+      {{ define &quot;users&quot; }}
          SELECT Name, UUID, Fqdn, Mtime as LastMod FROM source()
-         WHERE NOT UUID =~ "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"
+         WHERE NOT UUID =~ &quot;(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)&quot;
       {{ end }}
 
-      {{ Query "users" | Table }}
+      {{ Query &quot;users&quot; | Table }}
 
   - type: CLIENT
     template: |
@@ -131,11 +131,11 @@ reports:
 
       * Local users show the mtime of their home directory.
 
-      {{ define "users" }}
-         LET users <= SELECT Name, UUID, Type, Mtime
+      {{ define &quot;users&quot; }}
+         LET users &lt;= SELECT Name, UUID, Type, Mtime
          FROM source()
       {{ end }}
-      {{ Query "users" "SELECT Name, UUID, Type, Mtime FROM users" | Table }}
+      {{ Query &quot;users&quot; &quot;SELECT Name, UUID, Type, Mtime FROM users&quot; | Table }}
 
 </code></pre>
 

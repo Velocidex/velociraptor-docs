@@ -39,9 +39,9 @@ parameters:
   - name: UsnCheckPeriod
     type: int
     description: Dedup all file operations that occur within this period
-    default: "10"
+    default: &quot;10&quot;
 
-precondition: SELECT OS from info() where OS = "windows"
+precondition: SELECT OS from info() where OS = &quot;windows&quot;
 
 sources:
   - query: |
@@ -49,15 +49,15 @@ sources:
       LET NTFS_CACHE_TIME = 30
       LET USN_FREQUENCY = 60
 
-      LET hash_db <= SELECT OSPath
+      LET hash_db &lt;= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
-      LET path <= hash_db[0].OSPath
+      LET path &lt;= hash_db[0].OSPath
 
-      LET _ <= log(message="Will use local hash database " + path)
+      LET _ &lt;= log(message=&quot;Will use local hash database &quot; + path)
 
       LET file_modifications = SELECT Device + OSPath AS OSPath
-      FROM watch_usn(device=Device, accessor="ntfs")
+      FROM watch_usn(device=Device, accessor=&quot;ntfs&quot;)
       WHERE OSPath =~ PathRegex
 
       -- The USN journal may contain multiple entries for the same
@@ -88,7 +88,7 @@ sources:
       -- For each file hashed, insert to the local database
       LET insertion = SELECT OSPath, Hash, Size, Time, {
          SELECT * FROM sqlite(file=path,
-            query="INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)",
+            query=&quot;INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)&quot;,
             args=[OSPath, Hash, Time, Size])
       } AS Insert
       FROM files

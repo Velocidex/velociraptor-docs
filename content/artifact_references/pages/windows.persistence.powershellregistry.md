@@ -22,9 +22,9 @@ description: |
   registry hive, using powershell. When the user logs in, the
   powershell script downloads a payload and executes it.
 
-  This artifact searches the user's profile registry hive for
+  This artifact searches the user&#x27;s profile registry hive for
   signatures related to general Powershell execution. We use a yara
-  signature specifically targeting the user's profile which we extract
+  signature specifically targeting the user&#x27;s profile which we extract
   using raw NTFS parsing (in case the user is currently logged on and
   the registry hive is locked).
 
@@ -45,7 +45,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
     query: |
         SELECT * from foreach(
         row={
@@ -58,9 +58,9 @@ sources:
           SELECT File.OSPath As OSPath,
                  String.Offset AS Off,
                  String.HexData As Hex,
-                 upload(file=File.FullPath, accessor="auto") AS Upload
+                 upload(file=File.FullPath, accessor=&quot;auto&quot;) AS Upload
               FROM yara(
-              files=HomeDir + "\\ntuser.dat",
+              files=HomeDir + &quot;\\ntuser.dat&quot;,
               rules=yaraRule, context=50)
         })
 

@@ -29,7 +29,7 @@ description: |
   the last 8 execution times and creation time (9 potential executions).
 
   This artifact is a timelined output version of the standard Prefetch
-  artifact. There are several parameter's availible.
+  artifact. There are several parameter&#x27;s availible.
     - dateAfter enables search for prefetch evidence after this date.
     - dateBefore enables search for prefetch evidence before this date.
     - binaryRegex enables to filter on binary name, e.g evil.exe.
@@ -42,23 +42,23 @@ parameters:
     - name: prefetchGlobs
       default: C:\Windows\Prefetch\*.pf
     - name: dateAfter
-      description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+      description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
       type: timestamp
     - name: dateBefore
-      description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+      description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
       type: timestamp
     - name: binaryRegex
-      description: "Regex of executable name."
+      description: &quot;Regex of executable name.&quot;
       type: regex
     - name: hashRegex
-      description: "Regex of prefetch hash."
+      description: &quot;Regex of prefetch hash.&quot;
       type: regex
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |
-      LET hostname <= SELECT Fqdn FROM info()
+      LET hostname &lt;= SELECT Fqdn FROM info()
 
       -- Parse prefetch files and apply non time filters
       LET pf = SELECT * FROM foreach(
@@ -94,9 +94,9 @@ sources:
                     FROM pf
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                     else=TRUE)
             GROUP BY ExecutionTime
       LET creationTimes = SELECT * FROM flatten(
@@ -105,12 +105,12 @@ sources:
                         OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
-                    WHERE RunCount > 8
+                    WHERE RunCount &gt; 8
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                         else=TRUE)
             GROUP BY ExecutionTime
 
@@ -118,8 +118,8 @@ sources:
       LET flatOutput = SELECT
                     ExecutionTime as event_time,
                     hostname.Fqdn[0] as hostname,
-                    "Prefetch" as parser,
-                    "Evidence of Execution: " + Executable + format(format=" Prefetch run count %v", args=RunCount) as message,
+                    &quot;Prefetch&quot; as parser,
+                    &quot;Evidence of Execution: &quot; + Executable + format(format=&quot; Prefetch run count %v&quot;, args=RunCount) as message,
                     FilteredPath as source,
                     Executable as file_name,
                     CreationTime as prefetch_ctime,

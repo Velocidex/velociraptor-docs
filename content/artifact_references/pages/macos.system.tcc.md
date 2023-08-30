@@ -35,15 +35,15 @@ parameters:
   default: /Library/Application Support/com.apple.TCC/TCC.db,/Users/*/Library/Application Support/com.apple.TCC/TCC.db
 
 precondition:
-      SELECT OS From info() where OS = 'darwin'
+      SELECT OS From info() where OS = &#x27;darwin&#x27;
 
 sources:
   - query: |
       LET TCCList = SELECT OSPath
-       FROM glob(globs=split(string=TCCGlob, sep=","))
+       FROM glob(globs=split(string=TCCGlob, sep=&quot;,&quot;))
 
       LET TCCAccess = SELECT *
-       FROM sqlite(file=OSPath, query="SELECT * from access")
+       FROM sqlite(file=OSPath, query=&quot;SELECT * from access&quot;)
 
       LET TCCAccessDetails =
           SELECT * FROM foreach(
@@ -52,9 +52,9 @@ sources:
                     timestamp(epoch=last_modified) AS LastModified,
                     service AS Service,
                     client AS Client,
-                    if(condition= client_type= 0, then="Console", else=if(condition= client_type= 1, then="Service/Script", else="Other")) AS ClientType,
-                    if(condition= auth_value= 2, then="Yes", else="No") AS Allowed,
-                    if(condition= OSPath =~ "Users", then=path_split(path=OSPath)[-5], else="System") AS User,
+                    if(condition= client_type= 0, then=&quot;Console&quot;, else=if(condition= client_type= 1, then=&quot;Service/Script&quot;, else=&quot;Other&quot;)) AS ClientType,
+                    if(condition= auth_value= 2, then=&quot;Yes&quot;, else=&quot;No&quot;) AS Allowed,
+                    if(condition= OSPath =~ &quot;Users&quot;, then=path_split(path=OSPath)[-5], else=&quot;System&quot;) AS User,
                     auth_reason AS _AuthReason,
                     auth_version AS _AuthVersion,
                     csreq AS _CSReq,

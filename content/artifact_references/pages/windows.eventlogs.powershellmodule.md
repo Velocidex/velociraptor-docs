@@ -27,7 +27,7 @@ description: |
   Powershell is commonly used by attackers across all stages of the attack
   lifecycle. Although quite noisy Module logging can provide valuable insight.
 
-  There are several parameter's available for search leveraging regex.
+  There are several parameter&#x27;s available for search leveraging regex.
     - DateAfter enables search for events after this date.
     - DateBefore enables search for events before this date.
     - ContextRegex enables regex search over ContextInfo text field.
@@ -45,16 +45,16 @@ parameters:
   - name: EventLog
     default: C:\Windows\system32\winevt\logs\Microsoft-Windows-PowerShell%4Operational.evtx
   - name: DateAfter
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: DateBefore
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: ContextRegex
-    description: "regex search over Payload text field."
+    description: &quot;regex search over Payload text field.&quot;
     type: regex
   - name: PayloadRegex
-    description: "regex search over Payload text field."
+    description: &quot;regex search over Payload text field.&quot;
     type: regex
 
   - name: VSSAnalysisAge
@@ -68,14 +68,14 @@ parameters:
 
 sources:
   - query: |
-        LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-        LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+        LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+        LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
         -- Build time bounds
-        LET DateAfterTime <= if(condition=DateAfter,
-            then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-        LET DateBeforeTime <= if(condition=DateBefore,
-            then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+        LET DateAfterTime &lt;= if(condition=DateAfter,
+            then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+        LET DateBeforeTime &lt;= if(condition=DateBefore,
+            then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
 
         -- Determine target files
         LET files =
@@ -101,8 +101,8 @@ sources:
                 Source
               FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE EventID = 4103
-                AND EventTime > DateAfterTime
-                AND EventTime < DateBeforeTime
+                AND EventTime &gt; DateAfterTime
+                AND EventTime &lt; DateBeforeTime
                 AND if(condition=ContextRegex,
                     then=ContextInfo=~ContextRegex,else=TRUE)
                 AND if(condition=PayloadRegex,

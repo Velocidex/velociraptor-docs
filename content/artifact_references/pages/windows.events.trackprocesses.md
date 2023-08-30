@@ -59,31 +59,31 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows'
+      SELECT OS From info() where OS = &#x27;windows&#x27;
 
     query: |
       // Make sure sysmon is installed.
-      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       LET UpdateQuery =
             SELECT * FROM foreach(row={
               SELECT *,
-                     get(member='EventData') AS EventData
-              FROM watch_etw(guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
+                     get(member=&#x27;EventData&#x27;) AS EventData
+              FROM watch_etw(guid=&#x27;{5770385f-c22a-43e0-bf4c-06f5698ffbd9}&#x27;)
             }, query={
               SELECT * FROM switch(
               start={
                 SELECT EventData.ProcessId AS id,
                        EventData.ParentProcessId AS parent_id,
-                       "start" AS update_type,
+                       &quot;start&quot; AS update_type,
 
                        -- We need to manually build the dict here so
                        -- we can maintain column ordering.
                        dict(
                            Pid=EventData.ProcessId,
                            Ppid=EventData.ParentProcessId,
-                           Name=split(sep_string="\\", string=EventData.Image)[-1],
+                           Name=split(sep_string=&quot;\\&quot;, string=EventData.Image)[-1],
                            StartTime=EventData.UtcTime,
                            EndTime=NULL,
                            Username=EventData.User,
@@ -99,9 +99,9 @@ sources:
                            TerminalSessionId= EventData.TerminalSessionId,
                            IntegrityLevel= EventData.IntegrityLevel,
                            Hashes=parse_string_with_regex(regex=[
-                             "SHA256=(?P<SHA256>[^,]+)",
-                             "MD5=(?P<MD5>[^,]+)",
-                             "IMPHASH=(?P<IMPHASH>[^,]+)"],
+                             &quot;SHA256=(?P&lt;SHA256&gt;[^,]+)&quot;,
+                             &quot;MD5=(?P&lt;MD5&gt;[^,]+)&quot;,
+                             &quot;IMPHASH=(?P&lt;IMPHASH&gt;[^,]+)&quot;],
                            string=EventData.Hashes)
                        ) AS data,
                        EventData.UtcTime AS start_time,
@@ -112,7 +112,7 @@ sources:
               end={
                 SELECT EventData.ProcessId AS id,
                        NULL AS parent_id,
-                       "exit" AS update_type,
+                       &quot;exit&quot; AS update_type,
                        dict() AS data,
                        NULL AS start_time,
                        EventData.UtcTime AS end_time
@@ -132,20 +132,20 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker <= process_tracker(
+      LET Tracker &lt;= process_tracker(
          enrichments=if(condition=AddEnrichments, then=[
-           '''x=>if(
+           &#x27;&#x27;&#x27;x=&gt;if(
                 condition=NOT x.Data.VersionInformation AND x.Data.Image,
                 then=dict(VersionInformation=parse_pe(file=x.Data.Image).VersionInformation))
-           ''',
-           '''x=>if(
-                condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = '-',
+           &#x27;&#x27;&#x27;,
+           &#x27;&#x27;&#x27;x=&gt;if(
+                condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = &#x27;-&#x27;,
                 then=dict(OriginalFilename=x.Data.VersionInformation.OriginalFilename))
-           '''], else=[]),
+           &#x27;&#x27;&#x27;], else=[]),
         sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
 
       SELECT * FROM process_tracker_updates()
-      WHERE update_type = "stats" OR AlsoForwardUpdates
+      WHERE update_type = &quot;stats&quot; OR AlsoForwardUpdates
 
 </code></pre>
 

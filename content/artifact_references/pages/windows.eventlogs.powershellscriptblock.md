@@ -35,7 +35,7 @@ description: |
   lifecycle. A valuable hunt is to search Scriptblock logs for signs of
   malicious content.
 
-  There are several parameter's available for search leveraging regex.
+  There are several parameter&#x27;s available for search leveraging regex.
     - DateAfter enables search for events after this date.
     - DateBefore enables search for events before this date.
     - SearchStrings enables regex search over scriptblock text field.
@@ -52,24 +52,24 @@ reference:
 
 parameters:
   - name: EvtxGlob
-    default: '%SystemRoot%\System32\winevt\logs\Microsoft-Windows-PowerShell%4Operational.evtx'
+    default: &#x27;%SystemRoot%\System32\winevt\logs\Microsoft-Windows-PowerShell%4Operational.evtx&#x27;
   - name: DateAfter
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: DateBefore
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: SearchStrings
     type: regex
-    description: "regex search over scriptblock text field."
+    description: &quot;regex search over scriptblock text field.&quot;
   - name: StringWhitelist
-    description: "Regex of string to witelist"
+    description: &quot;Regex of string to witelist&quot;
     type: regex
   - name: PathWhitelist
-    description: "Regex of path to whitelist."
+    description: &quot;Regex of path to whitelist.&quot;
     type: regex
   - name: LogLevel
-    description: "Log level. Warning is Powershell default bad keyword list."
+    description: &quot;Log level. Warning is Powershell default bad keyword list.&quot;
     type: choices
     default: Warning
     choices:
@@ -80,9 +80,9 @@ parameters:
     type: hidden
     default: |
       Choice,Regex
-      All,"."
-      Warning,"3"
-      Verbose,"5"
+      All,&quot;.&quot;
+      Warning,&quot;3&quot;
+      Verbose,&quot;5&quot;
 
   - name: VSSAnalysisAge
     type: int
@@ -95,18 +95,18 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
-        then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
-        then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
 
       -- Parse Log level dropdown selection
-      LET LogLevelRegex <= SELECT format(format="%v", args=Regex) as value
-        FROM parse_csv(filename=LogLevelMap, accessor="data")
+      LET LogLevelRegex &lt;= SELECT format(format=&quot;%v&quot;, args=Regex) as value
+        FROM parse_csv(filename=LogLevelMap, accessor=&quot;data&quot;)
         WHERE Choice=LogLevel LIMIT 1
 
       -- expand provided glob into a list of paths on the file system (fs)
@@ -126,7 +126,7 @@ sources:
                   EventData.Path as Path,
                   EventData.ScriptBlockId as ScriptBlockId,
                   EventData.ScriptBlockText as ScriptBlockText,
-                  get(field="Message") as Message,
+                  get(field=&quot;Message&quot;) as Message,
                   System.EventRecordID as EventRecordID,
                   System.Level as Level,
                   System.Opcode as Opcode,
@@ -134,9 +134,9 @@ sources:
                   OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE System.EventID.Value = 4104
-                    AND EventTime < DateBeforeTime
-                    AND EventTime > DateAfterTime
-                    AND  format(format="%d", args=System.Level) =~ LogLevelRegex.value[0]
+                    AND EventTime &lt; DateBeforeTime
+                    AND EventTime &gt; DateAfterTime
+                    AND  format(format=&quot;%d&quot;, args=System.Level) =~ LogLevelRegex.value[0]
                     AND if(condition=SearchStrings,
                       then=ScriptBlockText =~ SearchStrings,
                       else=TRUE)

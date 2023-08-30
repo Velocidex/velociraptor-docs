@@ -23,98 +23,98 @@ parameters:
     type: hidden
     default: |
       {
-      "0": "Reserved",
-      "1": "A",
-      "2": "NS",
-      "3": "MD",
-      "4": "MF",
-      "5": "CNAME",
-      "6": "SOA",
-      "7": "MB",
-      "8": "MG",
-      "9": "MR",
-      "10": "NULL",
-      "11": "WKS",
-      "12": "PTR",
-      "13": "HINFO",
-      "14": "MINFO",
-      "15": "MX",
-      "16": "TXT",
-      "17": "RP",
-      "18": "AFSDB",
-      "19": "X25",
-      "20": "ISDN",
-      "21": "RT",
-      "22": "NSAP",
-      "23": "NSAP-PTR",
-      "24": "SIG",
-      "25": "KEY",
-      "26": "PX",
-      "27": "GPOS",
-      "28": "AAAA",
-      "29": "LOC",
-      "30": "NXT",
-      "31": "EID",
-      "32": "NIMLOC",
-      "33": "SRV",
-      "34": "ATMA",
-      "35": "NAPTR",
-      "36": "KX",
-      "37": "CERT",
-      "38": "A6",
-      "39": "DNAME",
-      "40": "SINK",
-      "41": "OPT",
-      "42": "APL",
-      "43": "DS",
-      "44": "SSHFP",
-      "45": "IPSECKEY",
-      "46": "RRSIG",
-      "47": "NSEC",
-      "48": "DNSKEY",
-      "49": "DHCID",
-      "50": "NSEC3",
-      "51": "NSEC3PARAM",
-      "52": "TLSA",
-      "53": "SMIMEA",
-      "54": "Unassigned",
-      "55": "HIP",
-      "56": "NINFO",
-      "57": "RKEY",
-      "58": "TALINK",
-      "59": "CDS",
-      "60": "CDNSKEY",
-      "61": "OPENPGPKEY",
-      "62": "CSYNC",
-      "63": "ZONEMD",
-      "64": "SVCB",
-      "65": "HTTPS",
-      "99": "SPF",
-      "100": "UINFO",
-      "101": "UID",
-      "102": "GID",
-      "103": "UNSPEC",
-      "104": "NID",
-      "105": "L32",
-      "106": "L64",
-      "107": "LP",
-      "108": "EUI48",
-      "109": "EUI64",
-      "249": "TKEY",
-      "250": "TSIG",
-      "251": "IXFR",
-      "252": "AXFR",
-      "253": "MAILB",
-      "254": "MAILA",
-      "255": "*",
-      "256": "URI",
-      "257": "CAA",
-      "258": "AVC",
-      "259": "DOA",
-      "260": "AMTRELAY",
-      "32768": "TA",
-      "32769": "DLV",
-      "65535": "Reserved"
+      &quot;0&quot;: &quot;Reserved&quot;,
+      &quot;1&quot;: &quot;A&quot;,
+      &quot;2&quot;: &quot;NS&quot;,
+      &quot;3&quot;: &quot;MD&quot;,
+      &quot;4&quot;: &quot;MF&quot;,
+      &quot;5&quot;: &quot;CNAME&quot;,
+      &quot;6&quot;: &quot;SOA&quot;,
+      &quot;7&quot;: &quot;MB&quot;,
+      &quot;8&quot;: &quot;MG&quot;,
+      &quot;9&quot;: &quot;MR&quot;,
+      &quot;10&quot;: &quot;NULL&quot;,
+      &quot;11&quot;: &quot;WKS&quot;,
+      &quot;12&quot;: &quot;PTR&quot;,
+      &quot;13&quot;: &quot;HINFO&quot;,
+      &quot;14&quot;: &quot;MINFO&quot;,
+      &quot;15&quot;: &quot;MX&quot;,
+      &quot;16&quot;: &quot;TXT&quot;,
+      &quot;17&quot;: &quot;RP&quot;,
+      &quot;18&quot;: &quot;AFSDB&quot;,
+      &quot;19&quot;: &quot;X25&quot;,
+      &quot;20&quot;: &quot;ISDN&quot;,
+      &quot;21&quot;: &quot;RT&quot;,
+      &quot;22&quot;: &quot;NSAP&quot;,
+      &quot;23&quot;: &quot;NSAP-PTR&quot;,
+      &quot;24&quot;: &quot;SIG&quot;,
+      &quot;25&quot;: &quot;KEY&quot;,
+      &quot;26&quot;: &quot;PX&quot;,
+      &quot;27&quot;: &quot;GPOS&quot;,
+      &quot;28&quot;: &quot;AAAA&quot;,
+      &quot;29&quot;: &quot;LOC&quot;,
+      &quot;30&quot;: &quot;NXT&quot;,
+      &quot;31&quot;: &quot;EID&quot;,
+      &quot;32&quot;: &quot;NIMLOC&quot;,
+      &quot;33&quot;: &quot;SRV&quot;,
+      &quot;34&quot;: &quot;ATMA&quot;,
+      &quot;35&quot;: &quot;NAPTR&quot;,
+      &quot;36&quot;: &quot;KX&quot;,
+      &quot;37&quot;: &quot;CERT&quot;,
+      &quot;38&quot;: &quot;A6&quot;,
+      &quot;39&quot;: &quot;DNAME&quot;,
+      &quot;40&quot;: &quot;SINK&quot;,
+      &quot;41&quot;: &quot;OPT&quot;,
+      &quot;42&quot;: &quot;APL&quot;,
+      &quot;43&quot;: &quot;DS&quot;,
+      &quot;44&quot;: &quot;SSHFP&quot;,
+      &quot;45&quot;: &quot;IPSECKEY&quot;,
+      &quot;46&quot;: &quot;RRSIG&quot;,
+      &quot;47&quot;: &quot;NSEC&quot;,
+      &quot;48&quot;: &quot;DNSKEY&quot;,
+      &quot;49&quot;: &quot;DHCID&quot;,
+      &quot;50&quot;: &quot;NSEC3&quot;,
+      &quot;51&quot;: &quot;NSEC3PARAM&quot;,
+      &quot;52&quot;: &quot;TLSA&quot;,
+      &quot;53&quot;: &quot;SMIMEA&quot;,
+      &quot;54&quot;: &quot;Unassigned&quot;,
+      &quot;55&quot;: &quot;HIP&quot;,
+      &quot;56&quot;: &quot;NINFO&quot;,
+      &quot;57&quot;: &quot;RKEY&quot;,
+      &quot;58&quot;: &quot;TALINK&quot;,
+      &quot;59&quot;: &quot;CDS&quot;,
+      &quot;60&quot;: &quot;CDNSKEY&quot;,
+      &quot;61&quot;: &quot;OPENPGPKEY&quot;,
+      &quot;62&quot;: &quot;CSYNC&quot;,
+      &quot;63&quot;: &quot;ZONEMD&quot;,
+      &quot;64&quot;: &quot;SVCB&quot;,
+      &quot;65&quot;: &quot;HTTPS&quot;,
+      &quot;99&quot;: &quot;SPF&quot;,
+      &quot;100&quot;: &quot;UINFO&quot;,
+      &quot;101&quot;: &quot;UID&quot;,
+      &quot;102&quot;: &quot;GID&quot;,
+      &quot;103&quot;: &quot;UNSPEC&quot;,
+      &quot;104&quot;: &quot;NID&quot;,
+      &quot;105&quot;: &quot;L32&quot;,
+      &quot;106&quot;: &quot;L64&quot;,
+      &quot;107&quot;: &quot;LP&quot;,
+      &quot;108&quot;: &quot;EUI48&quot;,
+      &quot;109&quot;: &quot;EUI64&quot;,
+      &quot;249&quot;: &quot;TKEY&quot;,
+      &quot;250&quot;: &quot;TSIG&quot;,
+      &quot;251&quot;: &quot;IXFR&quot;,
+      &quot;252&quot;: &quot;AXFR&quot;,
+      &quot;253&quot;: &quot;MAILB&quot;,
+      &quot;254&quot;: &quot;MAILA&quot;,
+      &quot;255&quot;: &quot;*&quot;,
+      &quot;256&quot;: &quot;URI&quot;,
+      &quot;257&quot;: &quot;CAA&quot;,
+      &quot;258&quot;: &quot;AVC&quot;,
+      &quot;259&quot;: &quot;DOA&quot;,
+      &quot;260&quot;: &quot;AMTRELAY&quot;,
+      &quot;32768&quot;: &quot;TA&quot;,
+      &quot;32769&quot;: &quot;DLV&quot;,
+      &quot;65535&quot;: &quot;Reserved&quot;
       }
 
   - name: kMapOfStatus
@@ -123,9 +123,9 @@ parameters:
     type: hidden
     default: |
       {
-      "0": "Success",
-      "9003": "NotExist",
-      "9701": "NoRecords"
+      &quot;0&quot;: &quot;Success&quot;,
+      &quot;9003&quot;: &quot;NotExist&quot;,
+      &quot;9701&quot;: &quot;NoRecords&quot;
       }
 
   - name: kMapOfSection
@@ -134,23 +134,23 @@ parameters:
     type: hidden
     default: |
       {
-      "1": "Answer",
-      "2": "Authority",
-      "3": "Additional"
+      &quot;1&quot;: &quot;Answer&quot;,
+      &quot;2&quot;: &quot;Authority&quot;,
+      &quot;3&quot;: &quot;Additional&quot;
       }
 
 sources:
   - precondition: |
-      SELECT OS from info() where OS = "windows"
+      SELECT OS from info() where OS = &quot;windows&quot;
     query: |
-      LET wmiQuery <= '''
+      LET wmiQuery &lt;= &#x27;&#x27;&#x27;
          SELECT Data, Entry, Status, TimeToLive, Type, Section
          FROM MSFT_DNSClientCache
-      '''
-      LET wmiNamespace <= "root/StandardCimv2"
-      LET MapOfRecordType <= parse_json(data=kMapOfRecordType)
-      LET MapOfStatus <= parse_json(data=kMapOfStatus)
-      LET MapOfSection <= parse_json(data=kMapOfSection)
+      &#x27;&#x27;&#x27;
+      LET wmiNamespace &lt;= &quot;root/StandardCimv2&quot;
+      LET MapOfRecordType &lt;= parse_json(data=kMapOfRecordType)
+      LET MapOfStatus &lt;= parse_json(data=kMapOfStatus)
+      LET MapOfSection &lt;= parse_json(data=kMapOfSection)
 
       LET dns_cache_entries = SELECT
           Entry AS Name,

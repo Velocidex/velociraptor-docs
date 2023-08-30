@@ -37,13 +37,13 @@ sources:
         SELECT * FROM foreach(
           row={
             SELECT * from watch_monitoring(
-              artifact='Windows.Events.ProcessCreation')
-            WHERE Name =~ 'psexesvc'
+              artifact=&#x27;Windows.Events.ProcessCreation&#x27;)
+            WHERE Name =~ &#x27;psexesvc&#x27;
           },
           query={
             SELECT * FROM mail(
               to=EmailAddress,
-              subject='PsExec launched on host',
+              subject=&#x27;PsExec launched on host&#x27;,
               period=60,
               skip_verify=SkipVerify,
               body=format(

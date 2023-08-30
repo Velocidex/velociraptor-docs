@@ -38,35 +38,35 @@ parameters:
 
 sources:
   - query: |
-      LET Profile = '
+      LET Profile = &#x27;
        [
-         ["Header", 0, [
-           ["Signature", 0, "String", {"length": 13}],
-           ["CountOfEntries", 14, "uint32"],
-           ["Entries", 18, "Array",
-                 {"type": "Entry", "count": "x => x.CountOfEntries"}]
+         [&quot;Header&quot;, 0, [
+           [&quot;Signature&quot;, 0, &quot;String&quot;, {&quot;length&quot;: 13}],
+           [&quot;CountOfEntries&quot;, 14, &quot;uint32&quot;],
+           [&quot;Entries&quot;, 18, &quot;Array&quot;,
+                 {&quot;type&quot;: &quot;Entry&quot;, &quot;count&quot;: &quot;x =&gt; x.CountOfEntries&quot;}]
          ]],
 
-         ["Entry", "x=>x.Func.SizeOf + x.ModuleLength + 20", [
-           ["Offset", 0, "Value", {"value": "x => x.StartOf"}],
-           ["TimestampTicks", 0, "uint64"],
-           ["ModuleLength", 8, "uint32"],
-           ["ModuleName", 12, "String", {"length": "x => x.ModuleLength"}],
-           ["CommandCount", "x => x.ModuleLength + 12", "uint32"],
-           ["Func", "x => x.ModuleLength + 16", "Array",
-                  {"type": "FunctionInfo", "count": "x => x.CommandCount"}],
-           ["CountOfTypes", "x => x.Func.EndOf", "uint32"]
+         [&quot;Entry&quot;, &quot;x=&gt;x.Func.SizeOf + x.ModuleLength + 20&quot;, [
+           [&quot;Offset&quot;, 0, &quot;Value&quot;, {&quot;value&quot;: &quot;x =&gt; x.StartOf&quot;}],
+           [&quot;TimestampTicks&quot;, 0, &quot;uint64&quot;],
+           [&quot;ModuleLength&quot;, 8, &quot;uint32&quot;],
+           [&quot;ModuleName&quot;, 12, &quot;String&quot;, {&quot;length&quot;: &quot;x =&gt; x.ModuleLength&quot;}],
+           [&quot;CommandCount&quot;, &quot;x =&gt; x.ModuleLength + 12&quot;, &quot;uint32&quot;],
+           [&quot;Func&quot;, &quot;x =&gt; x.ModuleLength + 16&quot;, &quot;Array&quot;,
+                  {&quot;type&quot;: &quot;FunctionInfo&quot;, &quot;count&quot;: &quot;x =&gt; x.CommandCount&quot;}],
+           [&quot;CountOfTypes&quot;, &quot;x =&gt; x.Func.EndOf&quot;, &quot;uint32&quot;]
          ]],
 
-         ["FunctionInfo", "x => x.NameLen + 8", [
-           ["NameLen", 0, "uint32"],
-           ["Name", 4, "String", {"length": "x => x.NameLen"}],
-           ["Count", "x => x.NameLen + 4", "uint32"]
+         [&quot;FunctionInfo&quot;, &quot;x =&gt; x.NameLen + 8&quot;, [
+           [&quot;NameLen&quot;, 0, &quot;uint32&quot;],
+           [&quot;Name&quot;, 4, &quot;String&quot;, {&quot;length&quot;: &quot;x =&gt; x.NameLen&quot;}],
+           [&quot;Count&quot;, &quot;x =&gt; x.NameLen + 4&quot;, &quot;uint32&quot;]
          ]]
        ]
-      '
+      &#x27;
       LET parsed = SELECT OSPath,
-         parse_binary(filename=OSPath, profile=Profile, struct="Header") AS Header
+         parse_binary(filename=OSPath, profile=Profile, struct=&quot;Header&quot;) AS Header
       FROM glob(globs=GlobLookup)
 
       SELECT * FROM foreach(row=parsed,

@@ -41,7 +41,7 @@ description: |
   tickets are vulnerable to brute force attack and this event is an indicator
   of a Kerberoasting attack.
 
-  **ATT&CK**: [T1208 - Kerberoasting](https://attack.mitre.org/techniques/T1208/)
+  **ATT&amp;CK**: [T1208 - Kerberoasting](https://attack.mitre.org/techniques/T1208/)
   Typical attacker methodology is to firstly request accounts in the domain
   with SPN attributes, then request an insecure TGS ticket for brute forcing.
   This attack is particularly effective as any domain credentials can be used
@@ -82,10 +82,10 @@ sources:
               EventData.ServiceName as ServiceName,
               EventData.ServiceSid as ServiceSid,
               EventData.TargetUserName as TargetUserName,
-              "0x" + format(format="%x", args=EventData.Status) as Status,
+              &quot;0x&quot; + format(format=&quot;%x&quot;, args=EventData.Status) as Status,
               EventData.TargetDomainName as TargetDomainName,
-              "0x" + format(format="%x", args=EventData.TicketEncryptionType) as TicketEncryptionType,
-              "0x" + format(format="%x", args=EventData.TicketOptions) as TicketOptions,
+              &quot;0x&quot; + format(format=&quot;%x&quot;, args=EventData.TicketEncryptionType) as TicketEncryptionType,
+              &quot;0x&quot; + format(format=&quot;%x&quot;, args=EventData.TicketOptions) as TicketOptions,
               EventData.TransmittedServices as TransmittedServices,
               EventData.IpAddress as IpAddress,
               EventData.IpPort as IpPort
@@ -98,8 +98,8 @@ sources:
             WHERE System.EventID.Value = 4769
                 AND EventData.TicketEncryptionType = 23
                 AND EventData.Status = 0
-                AND NOT EventData.ServiceName =~ "krbtgt|\\$$"
-                AND NOT EventData.TargetUserName =~ "\\$@"
+                AND NOT EventData.ServiceName =~ &quot;krbtgt|\\$$&quot;
+                AND NOT EventData.TargetUserName =~ &quot;\\$@&quot;
         })
 
 </code></pre>

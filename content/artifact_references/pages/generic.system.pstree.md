@@ -28,7 +28,7 @@ Minimum Version: 0.6.6
 name: Generic.System.Pstree
 description: |
   This artifact displays the call chain for every process on the
-  system by traversing the process's parent ID.
+  system by traversing the process&#x27;s parent ID.
 
   It is useful for establishing where a process came from - for
   example, if a powershell process is spawned from Winword (event via
@@ -61,7 +61,7 @@ parameters:
     type: regex
 
   - name: CallChainSep
-    default: " -> "
+    default: &quot; -&gt; &quot;
 
   - name: IncludePstree
     type: bool

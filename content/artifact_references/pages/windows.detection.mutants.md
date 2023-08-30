@@ -34,13 +34,13 @@ sources:
     query: |
         LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM pslist()
-        WHERE ProcName =~ processRegex AND ProcPid > 0
+        WHERE ProcName =~ processRegex AND ProcPid &gt; 0
 
         SELECT * FROM foreach(
           row=processes,
           query={
             SELECT ProcPid, ProcName, Exe, Type, Name, Handle
-            FROM handles(pid=ProcPid, types="Mutant")
+            FROM handles(pid=ProcPid, types=&quot;Mutant&quot;)
           })
         WHERE Name =~ MutantNameRegex
             AND if(condition= MutantWhitelistRegex,
@@ -51,7 +51,7 @@ sources:
     description: Reveals all Mutant objects in the Windows Object Manager namespace.
     query: |
         SELECT Name, Type FROM winobj()
-        WHERE Type = 'Mutant' AND Name =~ MutantNameRegex
+        WHERE Type = &#x27;Mutant&#x27; AND Name =~ MutantNameRegex
             AND if(condition= MutantWhitelistRegex,
                 then= NOT Name =~ MutantWhitelistRegex,
                 else= True )

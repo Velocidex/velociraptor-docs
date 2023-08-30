@@ -32,7 +32,7 @@ type: SERVER_EVENT
 
 parameters:
    - name: ArtifactNameRegex
-     default: "."
+     default: &quot;.&quot;
      description: A regular expression to select which artifacts to upload
      type: regex
 
@@ -49,20 +49,20 @@ parameters:
 sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or the server metadata.
-      LET bucket <= if(condition=Bucket, then=Bucket,
+      LET bucket &lt;= if(condition=Bucket, then=Bucket,
            else=server_metadata().DefaultBucket)
-      LET credentialskey <= if(condition=CredentialsKey, then=CredentialsKey,
+      LET credentialskey &lt;= if(condition=CredentialsKey, then=CredentialsKey,
            else=server_metadata().S3AccessKeyId)
-      LET region <= if(condition=Region, then=Region,
+      LET region &lt;= if(condition=Region, then=Region,
            else=server_metadata().DefaultRegion)
-      LET credentialssecret <= if(condition=CredentialsSecret,
+      LET credentialssecret &lt;= if(condition=CredentialsSecret,
               then=CredentialsSecret, else=server_metadata().S3AccessSecret)
 
       LET completions = SELECT *,
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
              flow_id=FlowId, wait=TRUE) AS FlowDownload
-      FROM watch_monitoring(artifact="System.Flow.Completion")
+      FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
       WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       SELECT upload_s3(
@@ -71,8 +71,8 @@ sources:
          credentialssecret=credentialssecret,
          region=region,
          file=FlowDownload,
-         accessor="fs",
-         name=format(format="Host %v %v %v.zip",
+         accessor=&quot;fs&quot;,
+         name=format(format=&quot;Host %v %v %v.zip&quot;,
                      args=[Fqdn, FlowId, timestamp(epoch=now())])) AS Upload
       FROM completions
       WHERE Upload OR

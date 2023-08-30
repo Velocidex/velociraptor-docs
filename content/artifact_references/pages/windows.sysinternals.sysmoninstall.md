@@ -33,7 +33,7 @@ tools:
     url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
     serve_locally: true
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 required_permissions:
 - EXECVE
@@ -45,32 +45,32 @@ parameters:
 
 sources:
 - query: |
-    LET bin <= SELECT * FROM switch(
+    LET bin &lt;= SELECT * FROM switch(
     a={
       SELECT * FROM glob(globs=SysmonFileLocation)
     }, b={
       SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-       ToolName="SysmonBinary")
+       ToolName=&quot;SysmonBinary&quot;)
     })
 
     LET existing_hash = SELECT lowcase(
        string=parse_string_with_regex(
-          string=Stdout, regex="hash:.+SHA256=([^\\n\\r]+)").g1) AS Hash
-    FROM execve(argv=[bin[0].OSPath, "-c"])
+          string=Stdout, regex=&quot;hash:.+SHA256=([^\\n\\r]+)&quot;).g1) AS Hash
+    FROM execve(argv=[bin[0].OSPath, &quot;-c&quot;])
 
     LET sysmon_config = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-       ToolName="SysmonConfig", IsExecutable=FALSE)
+       ToolName=&quot;SysmonConfig&quot;, IsExecutable=FALSE)
 
     LET ensure_service_running =
-       SELECT * FROM execve(argv=["sc.exe", "start", "sysmon64"])
+       SELECT * FROM execve(argv=[&quot;sc.exe&quot;, &quot;start&quot;, &quot;sysmon64&quot;])
 
     LET doit = SELECT * FROM chain(
     a={
        // First force an uninstall to clear the config
-       SELECT * FROM execve(argv= [ bin[0].OSPath, "-accepteula", "-u"], length=10000000)
+       SELECT * FROM execve(argv= [ bin[0].OSPath, &quot;-accepteula&quot;, &quot;-u&quot;], length=10000000)
     }, b={
        SELECT * FROM execve(argv= [ bin[0].OSPath,
-           "-accepteula", "-i", sysmon_config[0].OSPath ], length=10000000)
+           &quot;-accepteula&quot;, &quot;-i&quot;, sysmon_config[0].OSPath ], length=10000000)
     }, c=ensure_service_running)
 
     // Only install sysmon if the existing config hash is not the same
@@ -78,12 +78,12 @@ sources:
     SELECT * FROM if(
     condition=if(
         condition=bin AND sysmon_config,
-        else=log(message="Failed to fetch sysmon tools!"),
+        else=log(message=&quot;Failed to fetch sysmon tools!&quot;),
         then=if(
            condition=existing_hash[0].Hash != Tool_SysmonConfig_HASH,
-           then=log(message="Sysmon config hash has changed (%v vs %v) - reinstalling",
+           then=log(message=&quot;Sysmon config hash has changed (%v vs %v) - reinstalling&quot;,
                     args=[existing_hash[0].Hash, Tool_SysmonConfig_HASH]),
-           else=log(message="Existing sysmon config hash has not changed (%v) - skipping reinstall",
+           else=log(message=&quot;Existing sysmon config hash has not changed (%v) - skipping reinstall&quot;,
                     args=Tool_SysmonConfig_HASH) AND FALSE
           )
         ),

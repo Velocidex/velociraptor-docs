@@ -37,9 +37,9 @@ sources:
   - query: |
       let clients_list = SELECT ClientId
       FROM parse_records_with_regex(
-          accessor="data", file=ClientIdList,
-          regex="(?P<ClientId>C\\.[0-9a-z-]+)")
-      WHERE log(message="Deleting client " + ClientId)
+          accessor=&quot;data&quot;, file=ClientIdList,
+          regex=&quot;(?P&lt;ClientId&gt;C\\.[0-9a-z-]+)&quot;)
+      WHERE log(message=&quot;Deleting client &quot; + ClientId)
 
       SELECT * FROM foreach(row=clients_list,
       query={

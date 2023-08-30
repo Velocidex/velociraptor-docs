@@ -65,16 +65,7 @@ body.light div.btn.lightmode {
     max-height: 100%;
 }
 
-::selection {
-    background: green;
-    color: yellow;
-}
-
-::selection {
-    background: green;
-    color: yellow;
-}
-
-::selection {
-    color: red;
+.hljs span::selection {
+    color: var(--MAIN-TEXT-background-color);
+    background: var(--MAIN-TEXT-color);
 }

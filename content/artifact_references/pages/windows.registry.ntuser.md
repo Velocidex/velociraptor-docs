@@ -35,11 +35,11 @@ to access user data.
 <pre><code class="language-yaml">
 name: Windows.Registry.NTUser
 description: |
-  This artifact searches for keys or values within the user's
+  This artifact searches for keys or values within the user&#x27;s
   NTUser.dat registry hives.
 
   When a user logs into a windows machine the system creates their own
-  "profile" which consists of a registry hive mapped into the
+  &quot;profile&quot; which consists of a registry hive mapped into the
   HKEY_USERS hive. This hive file is locked as long as the user is
   logged in. If the user is not logged in, the file is not mapped at
   all.
@@ -62,7 +62,7 @@ description: |
 
   {{% /notice %}}
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
  - name: KeyGlob
@@ -76,45 +76,45 @@ export: |
     -- RegistryPath: The path in the registry to mount the hive
     -- RegMountPoint: The path inside the hive to mount (usually /)
     LET _map_file_to_reg_path(HivePath, RegistryPath, RegMountPoint) = dict(
-       type="mount",
-       `from`=dict(accessor='raw_reg',
+       type=&quot;mount&quot;,
+       `from`=dict(accessor=&#x27;raw_reg&#x27;,
                    prefix=pathspec(
                       Path=RegMountPoint,
-                      DelegateAccessor='ntfs',
+                      DelegateAccessor=&#x27;ntfs&#x27;,
                       DelegatePath=HivePath),
-                   path_type='registry'),
-        `on`=dict(accessor='registry',
+                   path_type=&#x27;registry&#x27;),
+        `on`=dict(accessor=&#x27;registry&#x27;,
                   prefix=RegistryPath,
-                  path_type='registry'))
+                  path_type=&#x27;registry&#x27;))
 
     LET _standard_mappings = (
        _map_file_to_reg_path(
-          HivePath="C:/Windows/System32/Config/SOFTWARE",
-          RegistryPath="HKEY_LOCAL_MACHINE\\Software",
-          RegMountPoint="/"),
+          HivePath=&quot;C:/Windows/System32/Config/SOFTWARE&quot;,
+          RegistryPath=&quot;HKEY_LOCAL_MACHINE\\Software&quot;,
+          RegMountPoint=&quot;/&quot;),
        _map_file_to_reg_path(
-          HivePath="C:/Windows/System32/Config/System",
-          RegistryPath="HKEY_LOCAL_MACHINE\\System",
-          RegMountPoint="/"),
+          HivePath=&quot;C:/Windows/System32/Config/System&quot;,
+          RegistryPath=&quot;HKEY_LOCAL_MACHINE\\System&quot;,
+          RegMountPoint=&quot;/&quot;),
        _map_file_to_reg_path(
-          HivePath="C:/Windows/System32/Config/SYSTEM",
-          RegistryPath="HKEY_LOCAL_MACHINE\\System\\CurrentControlSet",
-          RegMountPoint="/ControlSet001"))
+          HivePath=&quot;C:/Windows/System32/Config/SYSTEM&quot;,
+          RegistryPath=&quot;HKEY_LOCAL_MACHINE\\System\\CurrentControlSet&quot;,
+          RegMountPoint=&quot;/ControlSet001&quot;))
 
     LET _make_ntuser_mappings = SELECT _map_file_to_reg_path(
       HivePath=NTUserPath,
-      RegMountPoint="/",
+      RegMountPoint=&quot;/&quot;,
       -- This is technically the SID but it is clearer to just use the username
-      RegistryPath="HKEY_USERS/" + NTUserPath[-2]) AS Mapping
+      RegistryPath=&quot;HKEY_USERS/&quot; + NTUserPath[-2]) AS Mapping
     FROM foreach(row={
-       SELECT pathspec(parse=expand(path=Directory), path_type="windows") + "NTUser.dat"  AS NTUserPath
+       SELECT pathspec(parse=expand(path=Directory), path_type=&quot;windows&quot;) + &quot;NTUser.dat&quot;  AS NTUserPath
        FROM Artifact.Windows.Sys.Users(OnlyRemote=TRUE)
     }, query={
         -- Verify the file actually exists
         SELECT NTUserPath FROM stat(filename=NTUserPath)
     })
 
-    // Use this like `LET _ <= MapRawRegistryHives`
+    // Use this like `LET _ &lt;= MapRawRegistryHives`
     LET MapRawRegistryHives =remap(config=dict(
        remappings=_make_ntuser_mappings.Mapping + _standard_mappings))
 
@@ -122,14 +122,14 @@ sources:
  - query: |
        LET UserProfiles = SELECT Uid,
             Gid,
-            Name || "" as Username,
+            Name || &quot;&quot; as Username,
             Description,
             UUID,
             {
                 SELECT OSPath FROM glob(
                    root=expand(path=Directory),
-                   globs="/NTUSER.DAT",
-                   accessor="auto")
+                   globs=&quot;/NTUSER.DAT&quot;,
+                   accessor=&quot;auto&quot;)
             } as OSPath,
             expand(path=Directory) as Directory
        FROM Artifact.Windows.Sys.Users()
@@ -145,10 +145,10 @@ sources:
                 FROM glob(
                     globs=KeyGlob,
                     root=pathspec(
-                       DelegateAccessor="ntfs",
+                       DelegateAccessor=&quot;ntfs&quot;,
                        DelegatePath=OSPath,
-                       Path="/"),
-                    accessor="raw_reg")
+                       Path=&quot;/&quot;),
+                    accessor=&quot;raw_reg&quot;)
             })
 
 </code></pre>

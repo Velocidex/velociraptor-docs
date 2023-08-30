@@ -50,9 +50,9 @@ description: |
   log channel.
   See: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Object Access
 
-author: "@mgreen27 - Matt Green"
+author: &quot;@mgreen27 - Matt Green&quot;
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 reference:
   - https://attack.mitre.org/techniques/T1053/005/
@@ -61,15 +61,15 @@ reference:
 parameters:
   - name: Security
     description: path to Security event log.
-    default: '%SystemRoot%\System32\Winevt\Logs\Security.evtx'
+    default: &#x27;%SystemRoot%\System32\Winevt\Logs\Security.evtx&#x27;
   - name: TaskScheduler
     description: path to the TaskScheduler/Operational event log
-    default: '%SystemRoot%\System32\Winevt\Logs\Microsoft-Windows-TaskScheduler%4Operational.evtx'
+    default: &#x27;%SystemRoot%\System32\Winevt\Logs\Microsoft-Windows-TaskScheduler%4Operational.evtx&#x27;
   - name: DateAfter
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: DateBefore
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: TaskSchedulerEventRegex
     description: Regex of TaskScheduler log event ids.
@@ -78,7 +78,7 @@ parameters:
   - name: SecurityEventRegex
     description: regex of Security log event ids.
     type: regex
-    default: '^(4698|4699|4700|4701|4702)$'
+    default: &#x27;^(4698|4699|4700|4701|4702)$&#x27;
   - name: TaskNameRegex
     description: regex of target task name.
     default: .
@@ -116,22 +116,22 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
-        then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
-        then=DateBefore, else=timestamp(epoch="2200-01-01"))
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then=DateAfter, else=timestamp(epoch=&quot;1600-01-01&quot;))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then=DateBefore, else=timestamp(epoch=&quot;2200-01-01&quot;))
 
       -- Lookup what each task ID means (sadly dict keys are always strings).
-      LET TaskIDLookup <= dict(
-        `4698`="A scheduled task was created.",
-        `4699`="A scheduled task was deleted.",
-        `4700`="A scheduled task was enabled.",
-        `4701`="A scheduled task was disabled.",
-        `4702`="A scheduled task was updated.")
+      LET TaskIDLookup &lt;= dict(
+        `4698`=&quot;A scheduled task was created.&quot;,
+        `4699`=&quot;A scheduled task was deleted.&quot;,
+        `4700`=&quot;A scheduled task was enabled.&quot;,
+        `4701`=&quot;A scheduled task was disabled.&quot;,
+        `4702`=&quot;A scheduled task was updated.&quot;)
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -146,14 +146,14 @@ sources:
          SubjectLogonId=data.SubjectLogonId,
          TaskName=data.TaskName,
          TaskContent=parse_xml(
-            accessor='data',
+            accessor=&#x27;data&#x27;,
             file=regex_replace(
               source= if(condition= data.TaskContentNew,
                  then= data.TaskContentNew,
                  else= if(condition= data.TaskContent,
                     then= data.TaskContent)),
-                       re='<[?].+?>',
-                       replace='')).Task,
+                       re=&#x27;&lt;[?].+?&gt;&#x27;,
+                       replace=&#x27;&#x27;)).Task,
 
          ClientProcessStartKey=data.ClientProcessStartKey,
          ClientProcessId=data.ClientProcessId,
@@ -177,25 +177,25 @@ sources:
                         else= if(condition=EventData.UserContext,
                             then=EventData.UserContext,
                             else= if(condition=EventData.SubjectUserName,
-                                then= EventData.SubjectDomainName + '\\' + EventData.SubjectUserName,
-                                else= 'N/A' ))) as UserName,
+                                then= EventData.SubjectDomainName + &#x27;\\&#x27; + EventData.SubjectUserName,
+                                else= &#x27;N/A&#x27; ))) as UserName,
                     if(condition=EventData.TaskName,
                         then= EventData.TaskName) as TaskName,
                     if(condition=EventData.ActionName,
                         then= EventData.ActionName,
                         else= if(condition=EventData.Path,
                             then= EventData.Path,
-                            else= 'N/A' )) as TaskAction,
+                            else= &#x27;N/A&#x27; )) as TaskAction,
                     if(condition=EventData.TaskContent OR EventData.TaskContentNew,
                             then= parse_task(data=EventData),
                             else= EventData) as EventData,
-                    get(field="Message") as Message,
+                    get(field=&quot;Message&quot;) as Message,
                     OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE
-                    (( Channel = 'Microsoft-Windows-TaskScheduler/Operational'
+                    (( Channel = &#x27;Microsoft-Windows-TaskScheduler/Operational&#x27;
                         AND str(str=EventID) =~ TaskSchedulerEventRegex )
-                    OR ( Channel = 'Security'
+                    OR ( Channel = &#x27;Security&#x27;
                         AND str(str=EventID) =~ SecurityEventRegex ))
                     AND TaskName =~ TaskNameRegex
                     AND NOT if(condition= TaskNameWhitelist,
@@ -206,9 +206,9 @@ sources:
                         then= TaskName =~ TaskActionWhitelist,
                         else= False)
                     AND UserName =~ UserNameRegex
-                    AND format(format='%v %v %v %v', args=[
+                    AND format(format=&#x27;%v %v %v %v&#x27;, args=[
                             EventData, UserData, Message, System]) =~ IocRegex
-                    AND EventTime >= DateAfterTime AND EventTime <= DateBeforeTime
+                    AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
             }
           )
 
@@ -220,17 +220,17 @@ sources:
         EventRecordID,
         UserName,
         TaskName,
-        if(condition= Channel = 'Microsoft-Windows-TaskScheduler/Operational',
+        if(condition= Channel = &#x27;Microsoft-Windows-TaskScheduler/Operational&#x27;,
             then= Message,
             else=get(item=TaskIDLookup, member=str(str=EventID))) as Message,
-        if(condition= EventID =~'^(4698|4699|4700|4701|4702)$',
+        if(condition= EventID =~&#x27;^(4698|4699|4700|4701|4702)$&#x27;,
         then= if(condition= EventData.TaskContent.Actions,
             then= if(condition= EventData.TaskContent.Actions.Exec,
                 then= if(condition= EventData.TaskContent.Actions.Exec.Arguments,
-                    then= EventData.TaskContent.Actions.Exec.Command + ' ' + EventData.TaskContent.Actions.Exec.Arguments,
+                    then= EventData.TaskContent.Actions.Exec.Command + &#x27; &#x27; + EventData.TaskContent.Actions.Exec.Arguments,
                     else=  EventData.TaskContent.Actions.Exec.Command),
                 else= if(condition=EventData.TaskContent.Actions.ComHandler.ClassId,
-                    then= 'ClassId: ' + EventData.TaskContent.Actions.ComHandler.ClassId))),
+                    then= &#x27;ClassId: &#x27; + EventData.TaskContent.Actions.ComHandler.ClassId))),
             else= TaskAction) as TaskAction,
         EventData,
         OSPath

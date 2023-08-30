@@ -123,15 +123,15 @@ description: |
   All known option names are transformed to the plural PascalCase
   variants as listed in the sources.list man page. Any undocumented
   options will still be included in the results, with names unchanged.
-  Options in the one-line format of the form "lang+=de"/"arch-=i386"
-  will be in columns like "Languages-Add"/"Architectures-Remove", matching
+  Options in the one-line format of the form &quot;lang+=de&quot;/&quot;arch-=i386&quot;
+  will be in columns like &quot;Languages-Add&quot;/&quot;Architectures-Remove&quot;, matching
   the option names having the same effect in deb822.
 
   Entries in deb822 sources files may be disabled by including
-  "Enabled: no" instead of commenting out all lines. If this field
+  &quot;Enabled: no&quot; instead of commenting out all lines. If this field
   is not present with a falsly value, the entry is enabled. Use the
   exported functions DebTrue()/DebFalse() to correctly parse all
-  accepted true/false strings, or use the VQL suggestion "Enabled"
+  accepted true/false strings, or use the VQL suggestion &quot;Enabled&quot;
   to filter on this column (true), if present.
 
   If the GPG key is embedded in a .sources file, the whole GPG key
@@ -155,59 +155,59 @@ reference:
 export: |
         /* Remove whitespace from the beginning and end of a string: */
         LET Trim(string) = regex_transform(source=string, map=dict(
-            `(?m)^\\s+`='',
-            `(?m)\\s+$`=''
+            `(?m)^\\s+`=&#x27;&#x27;,
+            `(?m)\\s+$`=&#x27;&#x27;
         ))
 
         /* Replace any repeating whitespace with a single space: */
-        LET Simplify(string) = regex_replace(source=string, re='''\s+''', replace=' ')
+        LET Simplify(string) = regex_replace(source=string, re=&#x27;&#x27;&#x27;\s+&#x27;&#x27;&#x27;, replace=&#x27; &#x27;)
 
         /* The syntax in lists (deb822) and sources (one-line) files varies a bit,
            and deb822 is case-insensitive. Normalise all known fields (as per
            the man page): */
         LET NormaliseOpts(string) = regex_transform(source=string, map=dict(
-            `(?i)types|type`='Types',
-            `(?i)uris|uri`='URIs',
-            `(?i)suites|suite`='Suites',
-            `(?i)components|component`='Components',
-            `(?i)architectures$|arch$`='Architectures',
-            `(?i)architectures-add`='Architectures-Add',
-            `(?i)architectures-remove`='Architectures-Remove',
-            `(?i)languages$|lang$`='Languages',
-            `(?i)languages-add`='Languages-Add',
-            `(?i)languages-remove`='Languages-Remove',
-            `(?i)targets$|target$`='Targets',
-            `(?i)targets-add`='Targets-Add',
-            `(?i)targets-remove`='Targets-Remove',
-            `(?i)pdiffs`='PDiffs',
-            `(?i)by-hash`='By-Hash',
-            `(?i)allow-insecure`='Allow-Insecure',
-            `(?i)allow-weak`='Allow-Weak',
-            `(?i)allow-downgrade-to-insecure`='Allow-Downgrade-To-Insecure',
-            `(?i)trusted`='Trusted',
-            `(?i)signed-by`='Signed-By',
-            `(?i)check-valid-until`='Check-Valid-Until',
-            `(?i)valid-until-min`='Valid-Until-Min',
-            `(?i)valid-until-max`='Valid-Until-Max',
-            `(?i)check-date`='Check-Date',
-            `(?i)date-max-future`='Date-Max-Future',
-            `(?i)inrelease-path`='InRelease-Path',
-            `(?i)enabled`='Enabled'
+            `(?i)types|type`=&#x27;Types&#x27;,
+            `(?i)uris|uri`=&#x27;URIs&#x27;,
+            `(?i)suites|suite`=&#x27;Suites&#x27;,
+            `(?i)components|component`=&#x27;Components&#x27;,
+            `(?i)architectures$|arch$`=&#x27;Architectures&#x27;,
+            `(?i)architectures-add`=&#x27;Architectures-Add&#x27;,
+            `(?i)architectures-remove`=&#x27;Architectures-Remove&#x27;,
+            `(?i)languages$|lang$`=&#x27;Languages&#x27;,
+            `(?i)languages-add`=&#x27;Languages-Add&#x27;,
+            `(?i)languages-remove`=&#x27;Languages-Remove&#x27;,
+            `(?i)targets$|target$`=&#x27;Targets&#x27;,
+            `(?i)targets-add`=&#x27;Targets-Add&#x27;,
+            `(?i)targets-remove`=&#x27;Targets-Remove&#x27;,
+            `(?i)pdiffs`=&#x27;PDiffs&#x27;,
+            `(?i)by-hash`=&#x27;By-Hash&#x27;,
+            `(?i)allow-insecure`=&#x27;Allow-Insecure&#x27;,
+            `(?i)allow-weak`=&#x27;Allow-Weak&#x27;,
+            `(?i)allow-downgrade-to-insecure`=&#x27;Allow-Downgrade-To-Insecure&#x27;,
+            `(?i)trusted`=&#x27;Trusted&#x27;,
+            `(?i)signed-by`=&#x27;Signed-By&#x27;,
+            `(?i)check-valid-until`=&#x27;Check-Valid-Until&#x27;,
+            `(?i)valid-until-min`=&#x27;Valid-Until-Min&#x27;,
+            `(?i)valid-until-max`=&#x27;Valid-Until-Max&#x27;,
+            `(?i)check-date`=&#x27;Check-Date&#x27;,
+            `(?i)date-max-future`=&#x27;Date-Max-Future&#x27;,
+            `(?i)inrelease-path`=&#x27;InRelease-Path&#x27;,
+            `(?i)enabled`=&#x27;Enabled&#x27;
         ))
 
         LET DebTrue(string) = if(
-            condition=string=~'(?i)^(?:yes|true|with|on|enable)$',
+            condition=string=~&#x27;(?i)^(?:yes|true|with|on|enable)$&#x27;,
             then=true, else=false)
         LET DebFalse(string) = if(
-            condition=string=~'(?i)^(?:no|false|without|off|disable)$',
+            condition=string=~&#x27;(?i)^(?:no|false|without|off|disable)$&#x27;,
             then=true, else=false)
 
         /* Extract Key–Value pairs from option string. If assignment is -=/+=,
            the -/+ operator is captured in Op: */
         LET OptStringToKeyValues__(string) = SELECT *
             FROM parse_records_with_regex(
-                regex='''(?P<Key>[^ ]+?)(?P<Op>-|\+)?=(?P<Value>[^ ]+)''',
-                accessor='data', file=string
+                regex=&#x27;&#x27;&#x27;(?P&lt;Key&gt;[^ ]+?)(?P&lt;Op&gt;-|\+)?=(?P&lt;Value&gt;[^ ]+)&#x27;&#x27;&#x27;,
+                accessor=&#x27;data&#x27;, file=string
         )
 
         /* Since option values may have multiple words, split them and flatten
@@ -216,7 +216,7 @@ export: |
             FROM flatten(query={
                 SELECT Key,
                     Op,
-                    split(sep_string=',', string=Value) AS Value
+                    split(sep_string=&#x27;,&#x27;, string=Value) AS Value
                     FROM OptStringToKeyValues__(string=string)
             })
 
@@ -230,19 +230,19 @@ export: |
 
         /* When an option is specified with +/-, represent this by appending
            -Add/-Remove to the option name. These names match the syntax in
-           the deb822 format (i.e. "arch-=i386" == "Arhitectures-Remove: i386").
+           the deb822 format (i.e. &quot;arch-=i386&quot; == &quot;Arhitectures-Remove: i386&quot;).
            The purpose of these assignments is to keep the default values
            (rather than overriding them), but add or remove one or several
            values: */
-        LET OpName(op) = if(condition=op='+',then='-Add',else=
-            if(condition=op='-',then='-Remove',else=''))
+        LET OpName(op) = if(condition=op=&#x27;+&#x27;,then=&#x27;-Add&#x27;,else=
+            if(condition=op=&#x27;-&#x27;,then=&#x27;-Remove&#x27;,else=&#x27;&#x27;))
 
         /* Convert a string of key–value pairs to a dict, and use consistent
            option names: */
         LET OptStringToDict(string, flatten) = to_dict(item={
             SELECT NormaliseOpts(string=Key)+OpName(op=Op) AS _key,
                 if(condition=flatten, then=Value,
-                    else=join(array=Value, sep=' ')) AS _value
+                    else=join(array=Value, sep=&#x27; &#x27;)) AS _value
             FROM OptStringToKeyValues(string=string)
         })
 
@@ -255,12 +255,12 @@ export: |
                 file=OSPath,
                 /* This regex attemps to cover most of the ways a sources
                    line can be written without being overly complex. Quotes
-                   ("" and []) are actually allowed to certain degree by the
+                   (&quot;&quot; and []) are actually allowed to certain degree by the
                    apt source code, but this is considered obscure syntax and
                    is not expected to be found in the wild. The exception is
-                   "cdrom:[word word…]", which is capture correctly in order
+                   &quot;cdrom:[word word…]&quot;, which is capture correctly in order
                    to not end up with incorrectly captured words: */
-                regex='''(?m)^\s*(?P<Type>deb(-src)?)(?:\s+\[(?P<Options>[^\]#]+)(?:#[^\]]+)?\])?\s+"?(?P<URI>(?P<Transport>[^:]+):(?://)?(?P<URIBase>\[.+?\]|\S+?))"?\s+(?P<Suite>\S+)\s+(?P<Components>[^\n#]+)'''
+                regex=&#x27;&#x27;&#x27;(?m)^\s*(?P&lt;Type&gt;deb(-src)?)(?:\s+\[(?P&lt;Options&gt;[^\]#]+)(?:#[^\]]+)?\])?\s+&quot;?(?P&lt;URI&gt;(?P&lt;Transport&gt;[^:]+):(?://)?(?P&lt;URIBase&gt;\[.+?\]|\S+?))&quot;?\s+(?P&lt;Suite&gt;\S+)\s+(?P&lt;Components&gt;[^\n#]+)&#x27;&#x27;&#x27;
             )
 
         /* Parse a one-line deb sources.list file and output a dict: */
@@ -269,7 +269,7 @@ export: |
                 query={SELECT _value +
                         OptStringToDict(string=Options, flatten=flatten) AS Contents
                     FROM items(item={SELECT Types, URIs, _Transport, _URIBase, Suites,
-                        if(condition=flatten, then=split(sep_string=' ',
+                        if(condition=flatten, then=split(sep_string=&#x27; &#x27;,
                             string=Components), else=Components) AS Components
                         FROM scope()
                     })
@@ -278,7 +278,7 @@ export: |
         /* Parse a one-line deb sources.list file with options in individual columns: */
         LET DebOneLine(OSPath) = SELECT OSPath, * FROM foreach(
             row=DebOneLine_Dict(OSPath=OSPath, flatten=false),
-            column='Contents'
+            column=&#x27;Contents&#x27;
         )
 
         /* Parse a one-line deb sources.list file with options in individual
@@ -286,13 +286,13 @@ export: |
         LET DebOneLine_Flattened(OSPath) = SELECT OSPath, * FROM flatten(
             query={SELECT * FROM foreach(
                 row=DebOneLine_Dict(OSPath=OSPath, flatten=true),
-                column='Contents'
+                column=&#x27;Contents&#x27;
                 )
             })
 
         /* Extract the transport/protocol and base from a URI: */
         LET URIComponents(URI) = parse_string_with_regex(
-            regex='''(?P<Transport>[^:]+):(?://)?(?P<URIBase>[^\s]+)''',
+            regex=&#x27;&#x27;&#x27;(?P&lt;Transport&gt;[^:]+):(?://)?(?P&lt;URIBase&gt;[^\s]+)&#x27;&#x27;&#x27;,
             string=URI
         )
 
@@ -303,8 +303,8 @@ export: |
            components:
         */
         LET MaybeReplaceComma(key, value) = if(
-            condition=key=~'(?i)^(?:arch|lang|targets)',
-            then=regex_replace(re='\s*,\s*', source=value, replace=' '),
+            condition=key=~&#x27;(?i)^(?:arch|lang|targets)&#x27;,
+            then=regex_replace(re=&#x27;\s*,\s*&#x27;, source=value, replace=&#x27; &#x27;),
             else=value)
 
         /* Parse a deb822 sources file section into a series of key–value pairs.
@@ -322,32 +322,32 @@ export: |
              - Values may be multi-line (like when containing an embedded GPG key),
                but following lines must be prefixed by whitespace. Multilines
                may contain comments (prefixed by whitespace or not). Empty lines
-               part of a multi-line value must be prefixed by whitespace and "."
+               part of a multi-line value must be prefixed by whitespace and &quot;.&quot;
              - A file may contain multiple entries, separated by empty lines.
                A file must be split into sections, fed individually to this function
         */
         LET Deb822_KeyValues___(section) = SELECT Key,
             /* Signed-By is special (it could be an embedded GPG key),and
-               shouldn't be split: */
-            if(condition=NormaliseOpts(string=Key)!='Signed-By',
-                then=split(sep_string=' ',
+               shouldn&#x27;t be split: */
+            if(condition=NormaliseOpts(string=Key)!=&#x27;Signed-By&#x27;,
+                then=split(sep_string=&#x27; &#x27;,
                 string=MaybeReplaceComma(key=Key,
                     value=Simplify(string=Trim(string=Value)))),
                 else=Value) AS Value
             FROM parse_records_with_regex(
-                accessor='data',
+                accessor=&#x27;data&#x27;,
                 /* A key is anything but whitespace up to a colon
                    Values can continue on several lines, but only if the following
                    lines are indented with whitespace
                 */
-                regex='''(?m)^(?P<Key>[^#:\s]+)\s*:[^\S\n]*(?P<Value>[^\n]*(?:\n[^\S\n]+[^\n]+)*)''',
+                regex=&#x27;&#x27;&#x27;(?m)^(?P&lt;Key&gt;[^#:\s]+)\s*:[^\S\n]*(?P&lt;Value&gt;[^\n]*(?:\n[^\S\n]+[^\n]+)*)&#x27;&#x27;&#x27;,
                 /* Before parsing the key–values, remove all comments from the file
                    (otherwise forming a regex without lookarounds would be very
                    difficult, if not impossible), Luckily, comments follow strict
                    rules and must start with ^#.
                 */
                 file=regex_replace(
-                    re='''(?m)^#.+\n''',
+                    re=&#x27;&#x27;&#x27;(?m)^#.+\n&#x27;&#x27;&#x27;,
                     source=section
                 )
             )
@@ -367,18 +367,18 @@ export: |
             item={
                 SELECT NormaliseOpts(string=Key) as _key,
                     if(condition=flatten, then=Value,
-                        else=join(array=Value, sep=' ')) AS _value
+                        else=join(array=Value, sep=&#x27; &#x27;)) AS _value
                 FROM Deb822_KeyValues_(section=section)
             }) AS Contents
             FROM scope()
 
         /* Split paragraphs in a file (separated by one or several empty
-           lines) into rows. ('regex' is just anything that is illegal in Deb822Sections
+           lines) into rows. (&#x27;regex&#x27; is just anything that is illegal in Deb822Sections
            to prevent splitting data into records.): */
         LET Deb822Sections(OSPath) = SELECT OSPath,* FROM split_records(
             filenames=OSPath,
-            columns='Section',
-            regex='^ #', record_regex='''\n{2,}'''
+            columns=&#x27;Section&#x27;,
+            regex=&#x27;^ #&#x27;, record_regex=&#x27;&#x27;&#x27;\n{2,}&#x27;&#x27;&#x27;
         )
         /* Sections may be empty due to several newlines or comments on their own
            separated by newlines. Ensure that at least one field is present
@@ -390,7 +390,7 @@ export: |
             query={SELECT OSPath, * FROM flatten(query={
                 SELECT * FROM foreach(
                     row=Deb822_KeyValues(section=Section, flatten=true),
-                    column='Contents'
+                    column=&#x27;Contents&#x27;
                 )
             })}
         )
@@ -403,7 +403,7 @@ export: |
             row=Deb822Sections(OSPath=OSPath),
             query={SELECT OSPath, * FROM foreach(
                 row=Deb822_KeyValues(section=Section, flatten=false),
-                column='Contents'
+                column=&#x27;Contents&#x27;
             )}
         )
 
@@ -416,7 +416,7 @@ export: |
 
         /* Parse an apt sources/list file */
         LET parse_aptsources(OSPath, flatten) = if(
-            condition=OSPath=~'.list$',
+            condition=OSPath=~&#x27;.list$&#x27;,
             then=if(condition=flatten,
                 then=DebOneLine_Flattened(OSPath=OSPath),
                 else=DebOneLine(OSPath=OSPath)
@@ -448,7 +448,7 @@ parameters:
     default: /var/lib/apt/lists/
 
 precondition:
-    SELECT OS From info() where OS = 'linux'
+    SELECT OS From info() where OS = &#x27;linux&#x27;
 
 sources:
   - name: Sources
@@ -461,14 +461,14 @@ sources:
       - type: vql_suggestion
         name: Only enabled sources
         template: |
-            SELECT * FROM source(artifact='Custom.Linux.Debian.AptSources/Sources')
-            WHERE get(field='Enabled', default='yes') =~ '(?i)^(?:yes|true|with|on|enable)$'
+            SELECT * FROM source(artifact=&#x27;Custom.Linux.Debian.AptSources/Sources&#x27;)
+            WHERE get(field=&#x27;Enabled&#x27;, default=&#x27;yes&#x27;) =~ &#x27;(?i)^(?:yes|true|with|on|enable)$&#x27;
 
       - type: vql_suggestion
         name: Trusted sources (apt-secure bypassed)
         template: |
-            SELECT * FROM source(artifact='Custom.Linux.Debian.AptSources/Sources')
-            WHERE get(field='Trusted', default='') =~ '(?i)^(?:yes|true|with|on|enable)$'
+            SELECT * FROM source(artifact=&#x27;Custom.Linux.Debian.AptSources/Sources&#x27;)
+            WHERE get(field=&#x27;Trusted&#x27;, default=&#x27;&#x27;) =~ &#x27;(?i)^(?:yes|true|with|on|enable)$&#x27;
 
   - name: SourcesFlattened
     query: |
@@ -482,14 +482,14 @@ sources:
            Strip the last component off, convert / and space to _ and
            add _Release/_InRelease to get the filename.
         */
-        LET parsed_apt_lines = SELECT get(field='Architectures', default='') AS Architectures, URIs,
-            _URIBase + " " + Suites + " " + Components as Name, Types,
+        LET parsed_apt_lines = SELECT get(field=&#x27;Architectures&#x27;, default=&#x27;&#x27;) AS Architectures, URIs,
+            _URIBase + &quot; &quot; + Suites + &quot; &quot; + Components as Name, Types,
             OSPath as Source, aptCacheDirectory + regex_replace(
-              replace="_",
-              re="_+",
+              replace=&quot;_&quot;,
+              re=&quot;_+&quot;,
               source=regex_replace(
-                replace="_", re="[ /]",
-                source=_URIBase + "_dists_" + Suites
+                replace=&quot;_&quot;, re=&quot;[ /]&quot;,
+                source=_URIBase + &quot;_dists_&quot; + Suites
               )) as cache_file
         FROM deb_sources
         GROUP BY URIs, Suites
@@ -500,14 +500,14 @@ sources:
         LET parsed_cache_files(file) = SELECT Name, Architectures, URIs, Types,
             Source, parse_string_with_regex(
                 string=regex_replace(source=Record,
-                    re='(?m)^Version: GnuPG v.+$', replace=''
+                    re=&#x27;(?m)^Version: GnuPG v.+$&#x27;, replace=&#x27;&#x27;
                 ),
-                regex=["Codename: (?P<Release>[^\\n]+)",
-                       "Version: (?P<Version>[^\\n]+)",
-                       "Origin: (?P<Origin>[^\\n]+)",
-                       "Architectures: (?P<Architectures>[^\\n]+)",
-                       "Components: (?P<Components>[^\\n]+)"]) as Record
-           FROM parse_records_with_regex(file=file, regex="(?sm)(?P<Record>.+)")
+                regex=[&quot;Codename: (?P&lt;Release&gt;[^\\n]+)&quot;,
+                       &quot;Version: (?P&lt;Version&gt;[^\\n]+)&quot;,
+                       &quot;Origin: (?P&lt;Origin&gt;[^\\n]+)&quot;,
+                       &quot;Architectures: (?P&lt;Architectures&gt;[^\\n]+)&quot;,
+                       &quot;Components: (?P&lt;Components&gt;[^\\n]+)&quot;]) as Record
+           FROM parse_records_with_regex(file=file, regex=&quot;(?sm)(?P&lt;Record&gt;.+)&quot;)
 
          // Foreach row in the parsed cache file, collect the FileInfo too.
          LET add_stat_to_parsed_cache_file(file) = SELECT * from foreach(
@@ -526,14 +526,14 @@ sources:
          */
          LET parse_cache_or_pass = SELECT * from if(
            condition={
-              SELECT * from stat(filename=cache_file + '_InRelease')
+              SELECT * from stat(filename=cache_file + &#x27;_InRelease&#x27;)
            },
-           then=add_stat_to_parsed_cache_file(file=cache_file + '_InRelease'),
+           then=add_stat_to_parsed_cache_file(file=cache_file + &#x27;_InRelease&#x27;),
            else={SELECT * FROM if(
             condition={
-              SELECT * from stat(filename=cache_file + '_Release')
+              SELECT * from stat(filename=cache_file + &#x27;_Release&#x27;)
             },
-            then=add_stat_to_parsed_cache_file(file=cache_file + '_Release'),
+            then=add_stat_to_parsed_cache_file(file=cache_file + &#x27;_Release&#x27;),
             else={
             SELECT Source, NULL AS OSPath, Null as Mtime, Null as Ctime,
                Null as Atime, Types,

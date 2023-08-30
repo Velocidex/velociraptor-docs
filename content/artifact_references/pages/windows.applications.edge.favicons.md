@@ -26,10 +26,10 @@ description: |
 
   Tested against Chrome as well, replace Microsoft Edge with Google Chrome in the faviconsGlob
 
-  Chrome Favicons are stored in the 'Favicons' SQLite database, within
-  the 'favicons', 'favicon_bitmaps' and 'icon_mapping' tables. Older
-  versions of Chrome stored Favicons in a 'Thumbnails' SQLite
-  database, within the 'favicons' table.
+  Chrome Favicons are stored in the &#x27;Favicons&#x27; SQLite database, within
+  the &#x27;favicons&#x27;, &#x27;favicon_bitmaps&#x27; and &#x27;icon_mapping&#x27; tables. Older
+  versions of Chrome stored Favicons in a &#x27;Thumbnails&#x27; SQLite
+  database, within the &#x27;favicons&#x27; table.
 
   ## NOTES:
 
@@ -51,7 +51,7 @@ parameters:
              favicon_bitmaps.icon_id AS IconID,
              favicon_bitmaps.image_data as _image,
              HEX(favicon_bitmaps.image_data) as _image_hex,
-             datetime( favicon_bitmaps.last_updated / 1000000 + ( strftime( '%s', '1601-01-01' ) ), 'unixepoch', 'localtime' ) AS LastUpdated,
+             datetime( favicon_bitmaps.last_updated / 1000000 + ( strftime( &#x27;%s&#x27;, &#x27;1601-01-01&#x27; ) ), &#x27;unixepoch&#x27;, &#x27;localtime&#x27; ) AS LastUpdated,
              icon_mapping.page_url AS PageURL,
              favicons.url AS FaviconURL
              FROM favicons
@@ -65,7 +65,7 @@ parameters:
     type: regex
 
 precondition: |
-  SELECT OS From info() where OS = 'windows'
+  SELECT OS From info() where OS = &#x27;windows&#x27;
 
 sources:
   - query: |
@@ -84,9 +84,9 @@ sources:
         SELECT * FROM foreach(row=favicons_files,
           query={
             SELECT ID, IconID, LastUpdated, PageURL, FaviconURL,
-                   upload(accessor="data",
+                   upload(accessor=&quot;data&quot;,
                           file=_image,
-                          name=format(format="Image%v.png", args=ID)) AS Image, _image_hex, OSPath as _OSPath
+                          name=format(format=&quot;Image%v.png&quot;, args=ID)) AS Image, _image_hex, OSPath as _OSPath
             FROM sqlite(
               file=OSPath,
               query=faviconsQuery)

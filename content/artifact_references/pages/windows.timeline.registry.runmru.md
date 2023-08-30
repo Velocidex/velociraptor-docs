@@ -25,7 +25,7 @@ name: Windows.Timeline.Registry.RunMRU
 description: |
     # Output all available RunMRU registry keys in timeline format.
 
-    RunMRU is when a user enters a command into the START > Run prompt.
+    RunMRU is when a user enters a command into the START &gt; Run prompt.
     Entries will be logged in the user hive under:    Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU
 
     The artifact numbers all entries with the most recent at
@@ -40,35 +40,35 @@ description: |
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
   - name: KeyGlob
     type: hidden
     default: Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU\MRUList
   - name: dateAfter
-    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: dateBefore
-    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
     type: timestamp
   - name: targetUser
-    description: "target user regex"
+    description: &quot;target user regex&quot;
     type: regex
   - name: regexValue
-    description: "regex search over RunMRU values."
+    description: &quot;regex search over RunMRU values.&quot;
     type: regex
   - name: groupResults
-    description: "groups MRU entries to one message line"
+    description: &quot;groups MRU entries to one message line&quot;
     type: bool
 
 sources:
  - query: |
-        LET hostname_lu <= SELECT Fqdn FROM info()
-        LET HKEY_USERS <= pathspec(parse="HKEY_USERS", path_type="registry")
+        LET hostname_lu &lt;= SELECT Fqdn FROM info()
+        LET HKEY_USERS &lt;= pathspec(parse=&quot;HKEY_USERS&quot;, path_type=&quot;registry&quot;)
 
         // First we need to extract populated RunMRU
-        LET MRUList <= SELECT OSPath,
+        LET MRUList &lt;= SELECT OSPath,
            Data.value as RunMruOrder,
            len(list=Data.value) as RunMruLength,
            Username,
@@ -76,7 +76,7 @@ sources:
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
 
         // Now extract RunMRU entries and order
-        LET results <= SELECT * FROM foreach(
+        LET results &lt;= SELECT * FROM foreach(
            row=MRUList,
            query={
              SELECT
@@ -86,38 +86,38 @@ sources:
                 OSPath.Basename as reg_name,
                 HKEY_USERS + UUID + OSPath.Dirname.Path as reg_key,
 
-                -- Value data is similar to 'cmd.exe\1' so we just need the bit before the \
-                regex_replace(source=Data.value, re="\\\\1$", replace="") as reg_value,
+                -- Value data is similar to &#x27;cmd.exe\1&#x27; so we just need the bit before the \
+                regex_replace(source=Data.value, re=&quot;\\\\1$&quot;, replace=&quot;&quot;) as reg_value,
                 Data.type as reg_type,
                 RunMruLength - 1 - len(list=regex_replace(
                    source=RunMruOrder,
-                   re="^.*" + OSPath.Basename,
-                   replace="")) as mru_order,
+                   re=&quot;^.*&quot; + OSPath.Basename,
+                   replace=&quot;&quot;)) as mru_order,
                 RunMruOrder
-             FROM glob(globs='*', root=OSPath.Dirname, accessor="raw_reg")
-             WHERE not reg_name = "MRUList" AND
+             FROM glob(globs=&#x27;*&#x27;, root=OSPath.Dirname, accessor=&quot;raw_reg&quot;)
+             WHERE not reg_name = &quot;MRUList&quot; AND
                     if(condition=targetUser, then=Username =~ targetUser,
                         else=TRUE) AND
-                    if(condition=dateAfter, then=reg_mtime > timestamp(string=dateAfter),
+                    if(condition=dateAfter, then=reg_mtime &gt; timestamp(string=dateAfter),
                         else=TRUE) AND
-                    if(condition=dateBefore, then=reg_mtime < timestamp(string=dateBefore),
+                    if(condition=dateBefore, then=reg_mtime &lt; timestamp(string=dateBefore),
                         else=TRUE)
                     AND log(message=UUID)
              ORDER BY mru_order
           })
 
         // join mru values and order for presentation
-        LET usercommands <= SELECT Username as user, mru_order,
-                format(format="MRU%v: %v", args=[mru_order,reg_value]) as mru_grouped
+        LET usercommands &lt;= SELECT Username as user, mru_order,
+                format(format=&quot;MRU%v: %v&quot;, args=[mru_order,reg_value]) as mru_grouped
         FROM results
 
         // Prepare join use case
         LET joinOut = SELECT
                 reg_mtime as event_time,
                 hostname_lu[0].Fqdn as hostname,
-                "RunMRU" as parser,
-                "RunMRU evidence user: " + Username + ", " +
-                  join(array=mru_grouped, sep=" | ")  + "'" as message,
+                &quot;RunMRU&quot; as parser,
+                &quot;RunMRU evidence user: &quot; + Username + &quot;, &quot; +
+                  join(array=mru_grouped, sep=&quot; | &quot;)  + &quot;&#x27;&quot; as message,
                 source,
                 Username as user
         FROM foreach(row=usercommands,
@@ -138,10 +138,10 @@ sources:
         LET splitOut = SELECT
                     reg_mtime as event_time,
                     hostname_lu.Fqdn[0] as hostname,
-                    "RunMRU" as parser,
-                    "RunMRU evidence user: " + Username +
-                        format(format=", order: %v, command: %v", args=[mru_order,reg_value])
-                            + "'" as message,
+                    &quot;RunMRU&quot; as parser,
+                    &quot;RunMRU evidence user: &quot; + Username +
+                        format(format=&quot;, order: %v, command: %v&quot;, args=[mru_order,reg_value])
+                            + &quot;&#x27;&quot; as message,
                     source,
                     Username as user,
                     reg_key,

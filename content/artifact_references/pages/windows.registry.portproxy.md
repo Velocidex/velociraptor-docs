@@ -20,14 +20,14 @@ description: |
 
 reference:
   - Port Proxy detection(http://www.dfirnotes.net/portproxy_detection/)
-  - ATT&CK T1090 - Connection Proxy(https://attack.mitre.org/techniques/T1090/)
+  - ATT&amp;CK T1090 - Connection Proxy(https://attack.mitre.org/techniques/T1090/)
     Adversaries may use a connection proxy to direct network traffic between
     systems or act as an intermediary for network communications to a command
     and control server to avoid direct connections to their infrastructure.
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = 'windows'
+precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
 
 parameters:
  - name: KeyGlob
@@ -39,11 +39,11 @@ sources:
      SELECT OSPath,
          OSPath[-3] AS ProxyType,
          OSPath[-2] AS Protocol,
-         regex_replace(source=OSPath.Basename, re="/", replace=":") as Listening,
-         regex_replace(source=Data.value, re="/", replace=":") as Destination,
+         regex_replace(source=OSPath.Basename, re=&quot;/&quot;, replace=&quot;:&quot;) as Listening,
+         regex_replace(source=Data.value, re=&quot;/&quot;, replace=&quot;:&quot;) as Destination,
          Mtime as ModifiedTime,
          Type
-       FROM glob(globs=KeyGlob, accessor="registry")
+       FROM glob(globs=KeyGlob, accessor=&quot;registry&quot;)
        WHERE Type
 
 
@@ -55,18 +55,18 @@ reports:
       ==========================
       {{ .Description }}
 
-      {{ define "report" }}
+      {{ define &quot;report&quot; }}
          LET report = SELECT Protocol,
             ProxyType,
             Listening,
             Destination,
             ModifiedTime,
             ProxyType + Protocol + Listening + Destination as ServiceKey
-         FROM source(source='PortProxy')
+         FROM source(source=&#x27;PortProxy&#x27;)
          GROUP BY ServiceKey
       {{ end }}
 
-      {{ Query "report"  "SELECT ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
+      {{ Query &quot;report&quot;  &quot;SELECT ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report&quot; | Table }}
 
   - type: HUNT
     template: |
@@ -75,7 +75,7 @@ reports:
       ==========================
       {{ .Description }}
 
-      {{ define "report" }}
+      {{ define &quot;report&quot; }}
          LET report = SELECT Fqdn,
             Protocol,
             ProxyType,
@@ -83,11 +83,11 @@ reports:
             Destination,
             ModifiedTime,
             ProxyType + Protocol + Listening + Destination as ServiceKey
-         FROM source(source='PortProxy')
+         FROM source(source=&#x27;PortProxy&#x27;)
          GROUP BY ServiceKey
       {{ end }}
 
-      {{ Query "report"  "SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
+      {{ Query &quot;report&quot;  &quot;SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report&quot; | Table }}
 
 </code></pre>
 

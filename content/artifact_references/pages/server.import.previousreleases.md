@@ -59,8 +59,8 @@ parameters:
 
 sources:
   - query: |
-      LET Prefix <= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
-      LET ExchangeURL = "https://docs.velociraptor.app/release_artifacts/release_artifacts_" + VelociraptorRelease + ".zip"
+      LET Prefix &lt;= regex_replace(source=VelociraptorRelease, re=&#x27;\\.&#x27;, replace=&quot;&quot;) + &quot;.&quot;
+      LET ExchangeURL = &quot;https://docs.velociraptor.app/release_artifacts/release_artifacts_&quot; + VelociraptorRelease + &quot;.zip&quot;
 
       LET X = SELECT artifact_set(
            prefix=Prefix,
@@ -68,20 +68,20 @@ sources:
         FROM foreach(row={
           SELECT Content FROM http_client(
              remove_last=TRUE,
-             tempfile_extension=".zip", url=ExchangeURL)
+             tempfile_extension=&quot;.zip&quot;, url=ExchangeURL)
         }, query={
           -- Replace internal references to use the same version so
           -- artifacts are still internally consistent.
-          SELECT regex_replace(source=read_file(accessor="zip", filename=OSPath),
-             re='''(?sm) Artifact\.([a-z0-9._]+?[(])''',
-             replace=" Artifact." + Prefix + "$1") AS Definition
+          SELECT regex_replace(source=read_file(accessor=&quot;zip&quot;, filename=OSPath),
+             re=&#x27;&#x27;&#x27;(?sm) Artifact\.([a-z0-9._]+?[(])&#x27;&#x27;&#x27;,
+             replace=&quot; Artifact.&quot; + Prefix + &quot;$1&quot;) AS Definition
           FROM glob(
-             globs='/**/*.yaml',
+             globs=&#x27;/**/*.yaml&#x27;,
              root=pathspec(
-                DelegateAccessor="auto",
+                DelegateAccessor=&quot;auto&quot;,
                 DelegatePath=Content),
-             accessor="zip")
-          WHERE NOT Definition =~ "(?ms)type: +INTERNAL"
+             accessor=&quot;zip&quot;)
+          WHERE NOT Definition =~ &quot;(?ms)type: +INTERNAL&quot;
         })
 
         SELECT Definition.name AS Name,

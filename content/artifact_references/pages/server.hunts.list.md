@@ -18,7 +18,7 @@ sources:
   - query: |
       SELECT hunt_id,
              timestamp(epoch=create_time) as Created,
-             join(array=start_request.artifacts, sep=",") as Artifact,
+             join(array=start_request.artifacts, sep=&quot;,&quot;) as Artifact,
              state
       FROM hunts()
 

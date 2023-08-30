@@ -36,7 +36,7 @@ parameters:
     description: If set we use the process tracker.
 
 sources:
-  - precondition: SELECT OS From info() where OS = 'windows'
+  - precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
     
     query: |
         LET ProcList = SELECT * FROM if(condition=UseTracker,
@@ -60,7 +60,7 @@ sources:
             AND CommandLine =~ CommandLineRegex
             AND Username =~ UsernameRegex
             AND NOT if(condition= UntrustedAuthenticode,
-                        then= Authenticode.Trusted = 'trusted' OR NOT Exe,
+                        then= Authenticode.Trusted = &#x27;trusted&#x27; OR NOT Exe,
                         else= False )
 
 </code></pre>

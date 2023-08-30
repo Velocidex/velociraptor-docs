@@ -20,7 +20,7 @@ all sections and ProtectionRegex can override selection.
 
 <pre><code class="language-yaml">
 name: Windows.System.VAD
-author: "Matt Green - @mgreen27"
+author: &quot;Matt Green - @mgreen27&quot;
 description: |
   This artifact enables enumeration of process memory sections via the Virtual
   Address Descriptor (VAD). The VAD is used by the Windows memory manager to
@@ -75,20 +75,20 @@ sources:
               Name, Exe, CommandLine, CreateTime
         FROM process_tracker_pslist()
         WHERE Name =~ ProcessRegex
-            AND format(format="%d", args=Pid) =~ PidRegex
-            AND log(message="Scanning pid %v : %v", args=[Pid, Name])
+            AND format(format=&quot;%d&quot;, args=Pid) =~ PidRegex
+            AND log(message=&quot;Scanning pid %v : %v&quot;, args=[Pid, Name])
 
       -- next find sections in scope
       LET sections = SELECT * FROM foreach(
           row=processes,
           query={
             SELECT CreateTime as ProcessCreateTime,Pid, Name,MappingName  ,
-                format(format='%x-%x', args=[Address, Address+Size]) AS AddressRange,
+                format(format=&#x27;%x-%x&#x27;, args=[Address, Address+Size]) AS AddressRange,
                 Address as _Address,
                 State,Type,ProtectionMsg,Protection,
                 Size as SectionSize,
                 pathspec(
-                    DelegateAccessor="process",
+                    DelegateAccessor=&quot;process&quot;,
                     DelegatePath=Pid,
                     Path=Address) AS _PathSpec
             FROM vad(pid=Pid)
@@ -97,19 +97,19 @@ sources:
                     else= True)
                 AND if(condition = ProtectionRegex,
                     then= Protection=~ProtectionRegex,
-                    else= if(condition= ProtectionChoice='Any',
+                    else= if(condition= ProtectionChoice=&#x27;Any&#x27;,
                         then= TRUE,
-                    else= if(condition= ProtectionChoice='Execute, read and write',
-                        then= Protection= 'xrw',
-                    else= if(condition= ProtectionChoice='Any executable',
-                        then= Protection=~'x'))))
+                    else= if(condition= ProtectionChoice=&#x27;Execute, read and write&#x27;,
+                        then= Protection= &#x27;xrw&#x27;,
+                    else= if(condition= ProtectionChoice=&#x27;Any executable&#x27;,
+                        then= Protection=~&#x27;x&#x27;))))
           })
 
       -- if suspicious yara added, search for it
       LET yara_sections = SELECT *
         FROM foreach(row={
                 SELECT * FROM sections
-                WHERE NOT State =~ "RESERVE"
+                WHERE NOT State =~ &quot;RESERVE&quot;
             }, query={
                 SELECT
                     ProcessCreateTime, Pid, Name,MappingName,
@@ -120,24 +120,24 @@ sources:
                          Tags=Tags,
                          Offset=String.Offset,
                          Name=String.Name) as YaraHit,
-                    upload( accessor='scope',
-                            file='String.Data',
-                            name=format(format="%v-%v_%v.bin-%v-%v",
+                    upload( accessor=&#x27;scope&#x27;,
+                            file=&#x27;String.Data&#x27;,
+                            name=format(format=&quot;%v-%v_%v.bin-%v-%v&quot;,
                             args=[
                                 Name, Pid, AddressRange,
-                                if(condition= String.Offset - ContextBytes < 0,
+                                if(condition= String.Offset - ContextBytes &lt; 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes > SectionSize,
+                                if(condition= String.Offset + ContextBytes &gt; SectionSize,
                                     then= SectionSize,
                                     else= String.Offset + ContextBytes ) ])
                             ) as HitContext,
                     _PathSpec, _Address
                 FROM yara(
-                            accessor='offset',
+                            accessor=&#x27;offset&#x27;,
                             files=_PathSpec,
                             rules=SuspiciousContent,
-                            end=SectionSize,  key='X',
+                            end=SectionSize,  key=&#x27;X&#x27;,
                             number=1,
                             context=ContextBytes
                         )
@@ -152,14 +152,14 @@ sources:
 
       -- upload sections if selected
       LET upload_results = SELECT *,
-        upload(accessor='sparse',
+        upload(accessor=&#x27;sparse&#x27;,
                file=pathspec(
-                    DelegateAccessor="process",
+                    DelegateAccessor=&quot;process&quot;,
                     DelegatePath=Pid,
                     Path=[dict(Offset=_Address, Length=SectionSize),]),
                 name=pathspec(
                     Path=format(
-                        format='%v-%v_%v.bin',
+                        format=&#x27;%v-%v_%v.bin&#x27;,
                         args= [ Name, Pid, AddressRange ]))) as SectionDump
             FROM results
 

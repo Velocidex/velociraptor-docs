@@ -23,17 +23,17 @@ description: |
 sources:
 - query: |
     LET NonWindows = SELECT * FROM foreach(row={
-      SELECT regex_replace(source=Stdout, re="( on| +)", replace=" ") AS Stdout
-      FROM execve(argv=["df", "-h"], length=10000)
+      SELECT regex_replace(source=Stdout, re=&quot;( on| +)&quot;, replace=&quot; &quot;) AS Stdout
+      FROM execve(argv=[&quot;df&quot;, &quot;-h&quot;], length=10000)
     }, query={
-      SELECT * FROM parse_csv(accessor="data", filename=Stdout, separator=" ")
+      SELECT * FROM parse_csv(accessor=&quot;data&quot;, filename=Stdout, separator=&quot; &quot;)
     })
 
     -- WMI returns these as strings, we need to convert to ints
     LET wmi_query = SELECT *,
          int(int=FreeSpace) AS FreeSpace,
          int(int=Size) AS Size
-      FROM wmi(query="SELECT * FROM Win32_LogicalDisk")
+      FROM wmi(query=&quot;SELECT * FROM Win32_LogicalDisk&quot;)
 
     LET Windows = SELECT DeviceID, Description,
            VolumeName, VolumeSerialNumber,
@@ -43,7 +43,7 @@ sources:
     FROM wmi_query
 
     SELECT * FROM if(condition={
-      SELECT OS FROM info() WHERE OS =~ "windows"
+      SELECT OS FROM info() WHERE OS =~ &quot;windows&quot;
     },
     then={ SELECT * FROM Windows},
     else={ SELECT * FROM NonWindows})

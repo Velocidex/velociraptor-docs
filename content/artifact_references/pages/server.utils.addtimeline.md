@@ -38,7 +38,7 @@ sources:
          name=ChildName,
          query={
            SELECT * FROM query(query=if(condition=RemoveLimit,
-             then=regex_replace(re="(?i)LIMIT [0-9]+", replace="", source=Query),
+             then=regex_replace(re=&quot;(?i)LIMIT [0-9]+&quot;, replace=&quot;&quot;, source=Query),
              else=Query), env=Env)
          },
          key=Key), RemoveLimit
