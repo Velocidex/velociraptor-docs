@@ -9,7 +9,7 @@ to be collected from endpoints and automatically posts those to a
 LogScale (formerly Humio) ingestion endpoint.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: LogScale.Flows.Upload
 description: |
   This server side event monitoring artifact waits for new artifacts
@@ -92,4 +92,5 @@ sources:
           debug=debug,
           stats_interval=statsInterval)
 
-```
+</code></pre>
+

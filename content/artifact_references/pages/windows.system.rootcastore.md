@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Enumerate the root certificates in the Windows Root store.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.RootCAStore
 description: |
    Enumerate the root certificates in the Windows Root store.
@@ -78,4 +78,5 @@ sources:
           FROM glob(globs=Glob, accessor=Accessor)
         })
 
-```
+</code></pre>
+

@@ -14,7 +14,7 @@ NOTE: This artifact uses the process tracker so it works a lot
 better when the process tracker is enabled.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.FileCreation
 description: |
    This artifact watches the Microsoft-Windows-Kernel-File provider
@@ -68,4 +68,5 @@ sources:
         WHERE ProcessName =~ ProcessNameFilter
           AND ProcessExecutable =~ ProcessExecutableFilter
 
-```
+</code></pre>
+

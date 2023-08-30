@@ -1,5 +1,235 @@
 [
     {
+        "title": "Linux.Debian.GPGKeys",
+        "author": "misje",
+        "description": "Extract keys, fingerprints and identities from GPG keys.",
+        "link": "/exchange/artifacts/pages/linux.debian.gpgkeys",
+        "tags": [],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2023-08-18"
+    },
+    {
+        "title": "Windows.Events.TrackProcesses.UseExistingSysmonOnly",
+        "author": "SBattaglia-R7",
+        "description": "**This is a modified version of Windows.Events.TrackProcesses for servers\nthat do not use the Inventory service.  It assumes that Sysmon\nis already installed and running. The option to forward updates to the server\nis also removed.**",
+        "link": "/exchange/artifacts/pages/windows.events.trackprocesses.useexistingsysmononly",
+        "tags": [],
+        "author_link": "https://github.com/SBattaglia-R7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/40576678?v=4",
+        "date": "2023-08-14"
+    },
+    {
+        "title": "Linux.PrivilegeEscalationDetection",
+        "author": "leogrossi",
+        "description": "This artifact searches for potential privilege escalation indicators on Linux systems. It identifies processes running as root that were spawned by processes not running as root, which could indicate unauthorized privilege escalation. Created by Leonardo Grossi.\n",
+        "link": "/exchange/artifacts/pages/linux.privilegeescalationdetection",
+        "tags": [],
+        "author_link": "https://github.com/leogrossi",
+        "author_avatar": "https://avatars.githubusercontent.com/u/69981202?v=4",
+        "date": "2023-08-01"
+    },
+    {
+        "title": "Generic.Forensics.CyLR",
+        "author": "tsauter",
+        "description": "Uses CyLR tool to do live forensic on the host.",
+        "link": "/exchange/artifacts/pages/generic.forensics.cylr",
+        "tags": [],
+        "author_link": "https://github.com/tsauter",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9928251?v=4",
+        "date": "2023-07-29"
+    },
+    {
+        "title": "Windows.Registry.DefenderConfig",
+        "author": "mgreen27",
+        "description": "Thit artifact enables extracting Windows Defender configuration from \nSOFTWARE registry hive.",
+        "link": "/exchange/artifacts/pages/defenderconfig",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2023-07-25"
+    },
+    {
+        "title": "Server.Alerts.Mattermost",
+        "author": "misje",
+        "description": "Create a Slack/Mattermost notification when a client Flow (with artifacts of interest) has finished. Cancelled collections and collections with artifacts that don't satisfy preconditions do not create notifications when they are stopped.\n",
+        "link": "/exchange/artifacts/pages/server.alerts.mattermost",
+        "tags": [],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2023-07-16"
+    },
+    {
+        "title": "Custom.Windows.Nirsoft.LastActivityView",
+        "author": "hasamba",
+        "description": "LastActivityView is a tool for Windows operating system that collects information from various sources on a running system, and displays a log of actions made by the user and events occurred on this computer. The activity displayed by LastActivityView includes: Running .exe file, Opening open/save dialog-box, Opening file/folder from Explorer or other software, software installation, system shutdown/start, application or system crash, network connection/disconnection and more...\n",
+        "link": "/exchange/artifacts/pages/windows.nirsoft.lastactivityview",
+        "tags": [],
+        "author_link": "https://github.com/hasamba",
+        "author_avatar": "https://avatars.githubusercontent.com/u/7392290?v=4",
+        "date": "2023-07-16"
+    },
+    {
+        "title": "Windows.Registry.PrintNightmare",
+        "author": "DakshGajjar",
+        "description": "CVE-2021-34527 or Windows Print Spooler Remote Code Execution Vulnerability",
+        "link": "/exchange/artifacts/pages/windows.registry.printnightmare",
+        "tags": [],
+        "author_link": "https://github.com/DakshGajjar",
+        "author_avatar": "https://avatars.githubusercontent.com/u/91525283?v=4",
+        "date": "2023-07-03"
+    },
+    {
+        "title": "Exchange.Linux.Kunai",
+        "author": "weslambert",
+        "description": "Kunai is a Linux-based security monitoring and threat hunting tool written in Rust.  This artifact parses the Kunai log file. \n",
+        "link": "/exchange/artifacts/pages/linux.kunai",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2023-06-30"
+    },
+    {
+        "title": "Linux.Detection.SSHKeyFileCmd",
+        "author": "4ltern4te",
+        "description": "This artifact will parse ~/.ssh/authorized_keys and ~/.ssh/id_*.pub looking for the command option\nto detect potential persistence\n",
+        "link": "/exchange/artifacts/pages/linux.detection.sshkeyfilecmd",
+        "tags": [],
+        "author_link": "https://github.com/4ltern4te",
+        "author_avatar": "https://avatars.githubusercontent.com/u/5027220?v=4",
+        "date": "2023-06-19"
+    },
+    {
+        "title": "Linux.Detection.MemFD",
+        "author": "4ltern4te",
+        "description": "This artifact will parse /proc/*/exe files and look for processes \n that have been executed from memory via memfd_create()\n",
+        "link": "/exchange/artifacts/pages/linux.detection.memfd",
+        "tags": [],
+        "author_link": "https://github.com/4ltern4te",
+        "author_avatar": "https://avatars.githubusercontent.com/u/5027220?v=4",
+        "date": "2023-06-12"
+    },
+    {
+        "title": "IRIS.Timeline.Add",
+        "author": "BadBloopZ",
+        "description": "This artifact adds Velociraptor rows as timeline entries to DFIR-IRIS (https://dfir-iris.org/). It will link the assets and IOCs as specified in the parameters. Additionally, if the client is not yet existing in Iris, this artifact will leverage the IRIS.Sync.Asset artifact to add the asset to Iris first and link it in the event.",
+        "link": "/exchange/artifacts/pages/iris.timeline.add",
+        "tags": [],
+        "author_link": "https://github.com/BadBloopZ",
+        "author_avatar": "https://avatars.githubusercontent.com/u/29574367?v=4",
+        "date": "2023-06-09"
+    },
+    {
+        "title": "Windows.EventLogs.MoveIt",
+        "author": "mgreen27",
+        "description": "This Artifact enables scoping EventLogs from Progress Software's MoveIT File \nTransfer. It is designed to assist in identifying exfiltration resulting from\nthe exploitation of CVE-2023-34362",
+        "link": "/exchange/artifacts/pages/moveitevtx",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2023-06-05"
+    },
+    {
+        "title": "Windows.Detection.MoveIt",
+        "author": "mgreen27",
+        "description": "This is an artifact to detect exploitation of a MoveIt critical vulnerability \nobserved in the wild. CVE-2023-34362",
+        "link": "/exchange/artifacts/pages/moveit",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2023-06-02"
+    },
+    {
+        "title": "Server.Enrichment.Strelka.FileScan",
+        "author": "weslambert",
+        "description": "Submit a file to Strelka for analysis using `strelka-oneshot`.",
+        "link": "/exchange/artifacts/pages/server.enrichment.strelka.filescan",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2023-05-23"
+    },
+    {
+        "title": "Windows.Forensics.RecentFileCache",
+        "author": "BadBloopZ",
+        "description": "Parses the RecentFileCache as evidence of execution artifact existing on older Windows systems (<= Win 7).",
+        "link": "/exchange/artifacts/pages/windows.forensics.recentfilecache",
+        "tags": [],
+        "author_link": "https://github.com/BadBloopZ",
+        "author_avatar": "https://avatars.githubusercontent.com/u/29574367?v=4",
+        "date": "2023-05-23"
+    },
+    {
+        "title": "Windows.Applications.LECmd",
+        "author": "CarlosCajigas",
+        "description": "Execute Eric Zimmerman's LECmd and return output for analysis.\nCreated using @eduardfir SBECmd VQL as a quide.  \nLECmd is a CLI tool for analyzing lnk data. Learn more - https://github.com/EricZimmerman/LECmd\n",
+        "link": "/exchange/artifacts/pages/windows.applications.lecmd",
+        "tags": [],
+        "author_link": "https://github.com/CarlosCajigas",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9010359?v=4",
+        "date": "2023-05-20"
+    },
+    {
+        "title": "PSList.VTLookup",
+        "author": "Shad0wCell",
+        "description": "Combination of PSList with Virus Total reputation lookup using the Virus Total Server Enrichment Artifact by Wes Lambert.\n",
+        "link": "/exchange/artifacts/pages/pslist.vtlookup",
+        "tags": [],
+        "author_link": "https://github.com/Shad0wCell",
+        "author_avatar": "https://avatars.githubusercontent.com/u/80175648?v=4",
+        "date": "2023-05-18"
+    },
+    {
+        "title": "Server.Alerts.Monitor.IRIS",
+        "author": "weslambert",
+        "description": "Create an IRIS alert when monitored artifacts complete with results. Alerts are available starting in version 2.1.0 of IRIS.\nhttps://github.com/dfir-iris/iris-web/releases/tag/v2.1.0",
+        "link": "/exchange/artifacts/pages/server.alerts.monitor.iris",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2023-05-18"
+    },
+    {
+        "title": "Server.Notification.Mattermost",
+        "author": "hillu",
+        "description": "Send notification via Mattermost webhook as described in <https://developers.mattermost.com/integrate/webhooks/incoming/>\n",
+        "link": "/exchange/artifacts/pages/server.notification.mattermost",
+        "tags": [],
+        "author_link": "https://github.com/hillu",
+        "author_avatar": "https://avatars.githubusercontent.com/u/173211?v=4",
+        "date": "2023-05-18"
+    },
+    {
+        "title": "Windows.PersistenceSniper",
+        "author": "Shad0wCell",
+        "description": "PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident Responders and System Administrators to hunt persistences implanted in Windows machines. It is also available on Powershell Gallery and it is digitally signed with a valid code signing certificate. The tool is under active development with new releases coming out by the week, so make sure to use the up-to-date version. https://github.com/last-byte/PersistenceSniper",
+        "link": "/exchange/artifacts/pages/windows.persistencesniper",
+        "tags": [],
+        "author_link": "https://github.com/Shad0wCell",
+        "author_avatar": "https://avatars.githubusercontent.com/u/80175648?v=4",
+        "date": "2023-05-18"
+    },
+    {
+        "title": "MacOS.System.Man",
+        "author": "weslambert",
+        "description": "`man` is typically used to provide information about how to use various commands. It's configuration file is located at `/private/etc/man.conf` on most macOS systems.",
+        "link": "/exchange/artifacts/pages/macos.system.man",
+        "tags": [],
+        "author_link": "https://github.com/weslambert",
+        "author_avatar": "https://avatars.githubusercontent.com/u/16829864?v=4",
+        "date": "2023-05-16"
+    },
+    {
+        "title": "Windows.Generic.Internet.BlockAccess",
+        "author": "tuedenn",
+        "description": "Simply adds a new inbound or outbound firewall rule that filters traffic by allowing or blocking network packets that match the specified criteria via `netsh advfirewall add rule` command. Applicable in case of blocking Internet access.",
+        "link": "/exchange/artifacts/pages/windows.generic.internet.blockaccess",
+        "tags": [],
+        "author_link": "https://github.com/tuedenn",
+        "author_avatar": "https://avatars.githubusercontent.com/u/25119013?v=4",
+        "date": "2023-05-05"
+    },
+    {
         "title": "Windows.Forensics.Clipboard",
         "author": "h-adwan",
         "description": "This artifact will show the Clipboard activity.",

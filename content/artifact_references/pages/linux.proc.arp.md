@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 ARP table via /proc/net/arp.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Proc.Arp
 description: ARP table via /proc/net/arp.
 parameters:
@@ -22,4 +22,5 @@ sources:
            regex='\\s{3,20}',
            first_row_is_headers=true)
 
-```
+</code></pre>
+

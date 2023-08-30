@@ -8,7 +8,7 @@ This artifact creates an SQLite database on the endpoint to hold
 local file hashes. These hashes can then be queried quickly.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Forensic.LocalHashes.Init
 description: |
    This artifact creates an SQLite database on the endpoint to hold
@@ -43,4 +43,5 @@ sources:
 
       SELECT hash_db AS OSPath FROM scope()
 
-```
+</code></pre>
+

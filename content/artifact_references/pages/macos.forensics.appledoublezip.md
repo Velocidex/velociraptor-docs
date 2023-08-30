@@ -27,7 +27,7 @@ files created by MacOS users can end up on other systems, and
 contain sensitive URLs embedded within them.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Forensics.AppleDoubleZip
 description: |
   Search for zip files containing leaked download URLs included by
@@ -154,4 +154,5 @@ sources:
        FROM ParseAppleDouble(double_data=read_file(filename=OSPath, accessor="zip"))
      })
 
-```
+</code></pre>
+

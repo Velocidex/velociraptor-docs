@@ -27,7 +27,7 @@ added. The existence of the key is suspicious, if not expected.
 * ATT&CK technique: T1112, T1003.001
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.WDigest
 author: Eduardo Mattos - @eduardfir, Matt Green - @mgreen27
 description: |
@@ -91,4 +91,5 @@ column_types:
   - name: LastModified
     type: timestamp
 
-```
+</code></pre>
+

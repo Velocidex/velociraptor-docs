@@ -15,7 +15,7 @@ SearchVSS allows querying VSS instances of EventLog Path with event
 deduplication.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.ServiceCreationComspec
 description: |
 
@@ -95,4 +95,5 @@ sources:
         FROM hits
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

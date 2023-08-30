@@ -33,7 +33,7 @@ journal file.
    Windows.Carving.USNFiles artifact instead.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Carving.USN
 description: |
   Carve URN Journal records from the disk.
@@ -224,4 +224,5 @@ sources:
                ParentMFTId, Reason
         FROM FlatHits
 
-```
+</code></pre>
+

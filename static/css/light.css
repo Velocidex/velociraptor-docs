@@ -64,3 +64,17 @@ body.light div.btn.lightmode {
     min-width: 60%;
     max-height: 100%;
 }
+
+::selection {
+    background: green;
+    color: yellow;
+}
+
+::selection {
+    background: green;
+    color: yellow;
+}
+
+::selection {
+    color: red;
+}

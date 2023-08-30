@@ -32,7 +32,7 @@ symlinks. Yara is not applied to the containers, only contained contents
 that are not containers.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Detection.Yara.Zip
 author: "Matt Green - @mgreen27"
 description: |
@@ -168,4 +168,5 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
-```
+</code></pre>
+

@@ -31,7 +31,7 @@ other documents. Simply replace RtfYara with yara of interest and modify glob
 for targeting.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.TemplateInjection
 author: Matt Green - @mgreen27
 description: |
@@ -206,4 +206,5 @@ sources:
             then= { SELECT * FROM upload_hits},
             else= { SELECT * FROM hits})
 
-```
+</code></pre>
+

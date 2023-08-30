@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact pack collects various persistence mechanisms in Windows.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Packs.Persistence
 description: |
   This artifact pack collects various persistence mechanisms in Windows.
@@ -41,4 +41,5 @@ sources:
     query: |
       SELECT * FROM Artifact.Windows.Persistence.Debug()
 
-```
+</code></pre>
+

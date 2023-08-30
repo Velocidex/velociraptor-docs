@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact searches for all signed files and stacks them by signer.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Signers
 description: |
    This artifact searches for all signed files and stacks them by signer.
@@ -38,4 +38,5 @@ sources:
             ORDER BY Count DESC
         })
 
-```
+</code></pre>
+

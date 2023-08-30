@@ -21,7 +21,7 @@ to recursively search.
 added by default. The artifact also exlcudes NTFS system files by default.    
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.NTFS.ADSHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -117,4 +117,5 @@ sources:
       SELECT * FROM if(condition=UploadDataStream,
                         then= upload_hits,
                         else= hits)
-```
+</code></pre>
+

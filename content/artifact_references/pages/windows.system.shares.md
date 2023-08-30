@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact will extract network shares per machine.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Shares
 author: 'Matt Green - @mgreen27'
 description: |
@@ -33,4 +33,5 @@ sources:
         SELECT Name, Path, Caption, Status,MaximumAllowed,AllowMaximum,InstallDate
         FROM wmi(query='SELECT * FROM Win32_Share',namespace='root/cimv2')
         WHERE Name =~ NameRegex AND Path =~ PathRegex
-```
+</code></pre>
+

@@ -14,7 +14,7 @@ apt-get install auditd
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Events.ProcessExecutions
 description: |
   This artifact collects process execution logs from the Linux kernel.
@@ -68,4 +68,5 @@ sources:
               Exe, CWD
        FROM exec_log
 
-```
+</code></pre>
+

@@ -9,7 +9,7 @@ Enumerate the handles from selected processes.
 Uncheck all the handle types below to fetch all handle types.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Handles
 description: |
   Enumerate the handles from selected processes.
@@ -49,4 +49,5 @@ sources:
             FROM handles(pid=ProcPid, types=tokens.Type)
           })
 
-```
+</code></pre>
+

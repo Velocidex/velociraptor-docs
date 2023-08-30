@@ -22,7 +22,7 @@ seems to miss a lot of registry events.
 This artifact is experimental.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.Registry
 description: |
   Windows Registry access is a great source of visibility into system
@@ -93,4 +93,5 @@ sources:
     FROM hits
     WHERE ProcessName =~ ProcessRegex
 
-```
+</code></pre>
+

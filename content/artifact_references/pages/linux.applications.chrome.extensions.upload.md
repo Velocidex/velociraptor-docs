@@ -10,7 +10,7 @@ We dont bother actually parsing anything here, we just grab all the
 extension files in user's home directory.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Applications.Chrome.Extensions.Upload
 description: |
   Upload all users chrome extension.
@@ -37,4 +37,5 @@ sources:
              FROM glob(globs=extensionGlobs, root=Homedir)
           })
 
-```
+</code></pre>
+

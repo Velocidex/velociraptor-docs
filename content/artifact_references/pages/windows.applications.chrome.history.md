@@ -19,7 +19,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Chrome.History
 description: |
   Enumerates a targets chrome history. Source based on Hindsight and
@@ -109,4 +109,5 @@ sources:
           })
           WHERE visited_url =~ URLRegex
 
-```
+</code></pre>
+

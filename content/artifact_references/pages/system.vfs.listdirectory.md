@@ -10,7 +10,7 @@ launched by the GUI when a user clicks the "Refresh this directory"
 button.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: System.VFS.ListDirectory
 description: |
   This is an internal artifact used by the GUI to populate the
@@ -112,4 +112,5 @@ sources:
        then=NewQuery,
        else=LegacyQuery)
 
-```
+</code></pre>
+

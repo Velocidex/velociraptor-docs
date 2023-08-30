@@ -18,7 +18,7 @@ artifacts that came bundled with previous versions. These should be
 compatible with older clients.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Import.PreviousReleases
 description: |
   When upgrading the Velociraptor server the built in artifacts may
@@ -89,4 +89,5 @@ sources:
                Definition.author AS Author
         FROM X
 
-```
+</code></pre>
+

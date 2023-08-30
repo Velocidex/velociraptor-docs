@@ -24,7 +24,7 @@ Sysmon)
 Minimum Version: 0.6.6
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.System.Pstree
 description: |
   This artifact displays the call chain for every process on the
@@ -80,4 +80,5 @@ column_types:
   - name: PSTree
     type: tree
 
-```
+</code></pre>
+

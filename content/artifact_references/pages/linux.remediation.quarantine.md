@@ -17,7 +17,7 @@ except those for DNS lookup and velociraptor itself.
 To unquarantine the system, set the *RemovePolicy* parameter to *True*.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Remediation.Quarantine
 description: |
   This artifact applies quarantine to Linux systems via nftables.
@@ -250,4 +250,5 @@ sources:
             AND FALSE
        })
 
-```
+</code></pre>
+

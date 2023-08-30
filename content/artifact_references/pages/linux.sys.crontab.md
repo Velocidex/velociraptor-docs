@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Displays parsed information from crontab.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.Crontab
 description: |
   Displays parsed information from crontab.
@@ -70,4 +70,5 @@ sources:
       SELECT OSPath, upload(file=OSPath) AS Upload
       FROM glob(globs=split(string=cronTabGlob + "," + cronTabScripts, sep=","))
 
-```
+</code></pre>
+

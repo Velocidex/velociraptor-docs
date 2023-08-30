@@ -10,7 +10,7 @@ depenencies. Velociraptor releases for offline collector
 NOTE: Do not modify - this artifact is generated during build in magefile.go
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.ToolDependencies
 description: |
   An internal artifact that defines some tool
@@ -53,4 +53,5 @@ tools:
     serve_locally: true
     version: 0.7.0
 
-```
+</code></pre>
+

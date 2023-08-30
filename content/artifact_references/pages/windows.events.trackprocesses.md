@@ -15,7 +15,7 @@ possible to run many other artifacts that depend on the process
 tracker.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.TrackProcesses
 description: |
   This artifact uses sysmon and pslist to keep track of running
@@ -147,4 +147,5 @@ sources:
       SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats" OR AlsoForwardUpdates
 
-```
+</code></pre>
+

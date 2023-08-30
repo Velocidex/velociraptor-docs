@@ -8,7 +8,7 @@ Displays information from /proc/stat file about the time the cpu
 cores spent in different parts of the system.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.CPUTime
 description: |
   Displays information from /proc/stat file about the time the cpu
@@ -40,4 +40,5 @@ sources:
                atoi(string=guest) as Guest,
                atoi(string=guest_nice) as GuestNice FROM raw
 
-```
+</code></pre>
+

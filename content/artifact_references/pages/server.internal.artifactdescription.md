@@ -6,7 +6,7 @@ tags: [Internal Artifact]
 
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.ArtifactDescription
 
 type: INTERNAL
@@ -127,4 +127,5 @@ reports:
 
       {{ end }}
 
-```
+</code></pre>
+

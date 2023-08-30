@@ -12,7 +12,7 @@ This artifact parses the /proc/<pid>/maps to emit all mapped files
 into the process.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.Maps
 description: |
   A running binary may link other binaries into its address
@@ -57,4 +57,5 @@ sources:
             )
           })
 
-```
+</code></pre>
+

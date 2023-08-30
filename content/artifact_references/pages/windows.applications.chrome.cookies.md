@@ -21,7 +21,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Chrome.Cookies
 description: |
   Enumerate the users chrome cookies.
@@ -80,4 +80,5 @@ sources:
               query=cookieSQLQuery)
           })
 
-```
+</code></pre>
+

@@ -18,7 +18,7 @@ and prints the content of Zone.Identifier alternate stream as it
 could contain useful info in some cases.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Analysis.EvidenceOfDownload
 description: |
    Simple artifact to find evidence of user download activity.
@@ -70,4 +70,5 @@ sources:
              parse_string_with_regex(regex="ReferrerUrl=(.+)", string=_ZoneIdentifierContent).g1 AS ReferrerUrl
       FROM X
 
-```
+</code></pre>
+

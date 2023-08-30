@@ -18,7 +18,7 @@ activity to other machines from commonly abused lolbins or explicit logon
 events from unusual processes.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.ExplicitLogon
 description: |
     This artifact enables querying for explicit logon events.  i.e Event ID 4648:
@@ -138,4 +138,5 @@ sources:
         SELECT * FROM evtxsearch(PathList=fspaths)
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

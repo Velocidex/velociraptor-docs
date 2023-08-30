@@ -9,7 +9,7 @@ hashes. It is then possible to query this database using the
 Generic.Forensic.LocalHashes.Query artifact
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.LocalHashes.Usn
 description: |
   This artifact maintains a local (client side) database of file
@@ -109,4 +109,5 @@ column_types:
   - name: ClientId
     type: client_id
 
-```
+</code></pre>
+

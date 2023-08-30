@@ -10,7 +10,7 @@ returned for quick review.  If more advanced parsing is desired, the artifact ca
 and modified.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.Plist
 description: |
   This artifact collects and/or parses MacOS .plist files.  While simple,
@@ -46,4 +46,5 @@ sources:
                        btime=Btime)) AS Upload
       FROM glob(globs=PlistGlob)
 
-```
+</code></pre>
+

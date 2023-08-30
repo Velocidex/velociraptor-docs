@@ -25,7 +25,7 @@ obtain the expected results.
 Unpacking later version.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Carving.CobaltStrike
 author: Matt Green - @mgreen27
 description: |
@@ -740,4 +740,5 @@ column_types:
   - name: DecodedData
     type: preview_upload
 
-```
+</code></pre>
+

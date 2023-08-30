@@ -12,7 +12,7 @@ This artifact reads the state of the event log system from the
 registry and attempts to detect when event logs were disabled.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.Modifications
 description: |
   It is possible to disable windows event logs on a per channel or per
@@ -90,4 +90,5 @@ sources:
         AND Mtime < DateBeforeTime
       ORDER BY ProviderName
 
-```
+</code></pre>
+

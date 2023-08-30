@@ -18,7 +18,7 @@ Note that unfortunately Microsoft does not sign all their common
 binaries so many will not be signed (e.g. conhost.exe).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.UntrustedBinaries
 description: |
   Windows runs a number of services and binaries as part of the
@@ -57,4 +57,5 @@ sources:
                Authenticode.SubjectName as Subject,
                Authenticode.Trusted as Trusted from auth
 
-```
+</code></pre>
+

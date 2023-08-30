@@ -9,7 +9,7 @@ Dump process memory and upload to the server.
 Previously named Windows.Triage.ProcessMemory
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Memory.ProcessDump
 description: |
   Dump process memory and upload to the server.
@@ -66,4 +66,5 @@ sources:
              SELECT * FROM UploadDump(Pid=Pid, ProcessName = ProcessName, CommandLine = CommandLine)
           })
 
-```
+</code></pre>
+

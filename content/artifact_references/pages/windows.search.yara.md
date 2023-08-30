@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Searches for a specific malicious file or set of files by a Yara rule.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Search.Yara
 description: |
   Searches for a specific malicious file or set of files by a Yara rule.
@@ -76,4 +76,5 @@ sources:
         SELECT *, if(condition=AlsoUpload, then=upload(file=FileName)) AS Upload
         FROM foreach(row=fileList, query=search)
 
-```
+</code></pre>
+

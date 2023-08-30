@@ -14,7 +14,7 @@ alert might provide sufficient time for admins to lock down the
 account before attackers can exploit the weak password.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Events.SSHBruteforce
 description: |
   This is a monitoring artifact which detects a successful SSH login
@@ -70,4 +70,5 @@ sources:
         FROM success_login
         WHERE len(list=Failures) > int(int=MinimumFailedLogins)
 
-```
+</code></pre>
+

@@ -19,7 +19,7 @@ physical memory and remove the driver.
 NOTE: This artifact is experimental and can crash the system!
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Yara.PhysicalMemory
 description: |
   This artifact enables running Yara over physical memory.
@@ -134,4 +134,5 @@ sources:
       FROM yara(files=SparsePath, accessor='sparse',
                 rules=yara_rules, context=ContextBytes, number=NumberOfHits)
 
-```
+</code></pre>
+

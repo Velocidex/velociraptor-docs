@@ -15,7 +15,7 @@ Detection (this will be noisy so whitelist is required).
 IgnoreRegex allows filtering out events relevant to the target environment.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.Symantec
 description: |
   Query the Symantec Endpoint Protection Event Logs. The default artifact will
@@ -74,4 +74,5 @@ sources:
                 then= NOT EventData=~IgnoreRegex,
                 else= True)
 
-```
+</code></pre>
+

@@ -10,7 +10,7 @@ Recent updates include filters by regex to enable targeted hunting
 use cases.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Powershell.ModuleAnalysisCache
 description: |
     ModuleAnalysisCache stores metadata about loaded Powershell modules.
@@ -85,4 +85,5 @@ sources:
          })
       })
 
-```
+</code></pre>
+

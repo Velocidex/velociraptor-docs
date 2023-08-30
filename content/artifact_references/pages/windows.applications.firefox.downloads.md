@@ -12,7 +12,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Firefox.Downloads
 description: |
   Enumerate the users Firefox downloads.
@@ -95,4 +95,5 @@ sources:
           })
           WHERE url =~ URLRegex
 
-```
+</code></pre>
+

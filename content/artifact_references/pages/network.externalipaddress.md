@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Detect the external ip address of the end point.
 
-```yaml
+<pre><code class="language-yaml">
 name: Network.ExternalIpAddress
 description: Detect the external ip address of the end point.
 parameters:
@@ -18,4 +18,5 @@ sources:
     query: |
         SELECT Content as IP from http_client(url=externalUrl)
 
-```
+</code></pre>
+

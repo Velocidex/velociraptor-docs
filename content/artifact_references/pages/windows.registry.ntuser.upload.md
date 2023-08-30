@@ -16,7 +16,7 @@ registry hives using raw NTFS parsing. We then just upload all hives
 to the server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.NTUser.Upload
 description: |
   This artifact collects all the user's NTUser.dat registry hives.
@@ -49,4 +49,5 @@ sources:
                       accessor="auto") as Upload
         FROM users
 
-```
+</code></pre>
+

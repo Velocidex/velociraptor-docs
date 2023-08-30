@@ -13,7 +13,7 @@ NOTE: nosymlink feature of glob is set so unexpected results may occur if
 targetting includes symlink files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.LogHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -73,4 +73,5 @@ sources:
            SELECT * FROM hits
         })
 
-```
+</code></pre>
+

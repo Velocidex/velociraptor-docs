@@ -12,7 +12,7 @@ artifacts, this will be able to retrieve information about exited
 processes.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Attack.ParentProcess
 description: |
   Maps the Mitre Att&ck framework process executions into artifacts.
@@ -72,4 +72,5 @@ sources:
              AND NOT ActualParentName =~ ParentRegex
          })
 
-```
+</code></pre>
+

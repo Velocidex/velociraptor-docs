@@ -26,7 +26,7 @@ log channel.
 See: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Object Access
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.ScheduledTasks
 description: |
   This artifact will extract Event Logs related to ScheduledTasks and provide
@@ -236,4 +236,5 @@ sources:
         OSPath
       FROM evtxsearch(PathList=fspaths)
 
-```
+</code></pre>
+

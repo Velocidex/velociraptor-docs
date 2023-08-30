@@ -74,7 +74,7 @@ metadata. The modification timestamps may tell when the package
 lists where last updated.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Debian.AptSources
 description: |
   Parse Debian apt sources.
@@ -550,4 +550,5 @@ sources:
                 SELECT * FROM parse_cache_or_pass
               })
 
-```
+</code></pre>
+

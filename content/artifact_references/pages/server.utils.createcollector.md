@@ -11,7 +11,7 @@ that is the recommended way to launch it. You can find the Offline
 collector builder in the `Server Artifacts` section of the GUI.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.CreateCollector
 description: |
   A utility artifact to create a stand alone collector.
@@ -512,4 +512,5 @@ sources:
            config=serialize(format='json', item=autoexec))
       FROM scope()
 
-```
+</code></pre>
+

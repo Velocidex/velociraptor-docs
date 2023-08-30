@@ -12,7 +12,7 @@ reliable to use Sysmon instead via the
 Windows.Sysinternals.SysmonLogForward artifact instead.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.ProcessCreation
 description: |
   Collect all process creation events.
@@ -48,4 +48,5 @@ sources:
                sep=" <- ") AS CallChain
       FROM Delayed
 
-```
+</code></pre>
+

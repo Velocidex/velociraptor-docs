@@ -18,7 +18,7 @@ There are several parameter's available for search leveraging regex.
 - UploadFiles enables upload ConsoleHost_history.txt in scope
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Powershell.PSReadline
 description: |
   This Artifact will search and extract lines from PSReadline history file.
@@ -99,4 +99,5 @@ sources:
                 FROM targets
             })
 
-```
+</code></pre>
+

@@ -7,11 +7,12 @@ tags: [Internal Artifact]
 An internal artifact to listen to inventory (tools) changes.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Inventory
 description: |
   An internal artifact to listen to inventory (tools) changes.
 
 type: INTERNAL
 
-```
+</code></pre>
+

@@ -15,7 +15,7 @@ wmic process call create cmd.exe
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.WMIProcessCreation
 description: |
   WMI Process creation is a common lateral movement technique. The
@@ -37,4 +37,5 @@ sources:
           namespace="ROOT/CIMV2",
           wait=50000000)
 
-```
+</code></pre>
+

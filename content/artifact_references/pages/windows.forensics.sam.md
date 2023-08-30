@@ -9,7 +9,7 @@ Parses user account information from the SAM hive.
 Based on Omer Yampel's parser
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.SAM
 description: |
    Parses user account information from the SAM hive.
@@ -151,4 +151,5 @@ column_types:
   - name: V
     type: hex
 
-```
+</code></pre>
+

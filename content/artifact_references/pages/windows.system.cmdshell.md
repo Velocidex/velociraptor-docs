@@ -22,7 +22,7 @@ arguments with special characters. Using Windows.System.PowerShell
 artifact is likely a better option in these cases.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.CmdShell
 description: |
   This artifact allows running arbitrary commands through the system
@@ -56,4 +56,5 @@ sources:
   - query: |
       SELECT * FROM execve(argv=["cmd.exe", "/c", Command])
 
-```
+</code></pre>
+

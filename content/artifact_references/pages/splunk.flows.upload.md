@@ -64,7 +64,7 @@ completed prior to setting up this event:
      accessing your Splunk instance by IP, `Enable SSL` should be set to OFF.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Splunk.Flows.Upload
 
 description: |
@@ -199,4 +199,5 @@ sources:
         timestamp_field=TimestampField
         )
 
-```
+</code></pre>
+

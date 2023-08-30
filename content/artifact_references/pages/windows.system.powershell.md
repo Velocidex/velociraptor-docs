@@ -33,7 +33,7 @@ spaces in it:
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.PowerShell
 description: |
   This artifact allows running arbitrary commands through the system
@@ -83,4 +83,5 @@ sources:
         base64encode(string=utf16_encode(string=Command))
       ])
 
-```
+</code></pre>
+

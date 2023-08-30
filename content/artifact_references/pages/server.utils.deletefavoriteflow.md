@@ -8,7 +8,7 @@ This artifact allows the user to delete a previously saved
 favorite. It will only addect the current user.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteFavoriteFlow
 description: |
   This artifact allows the user to delete a previously saved
@@ -32,4 +32,5 @@ sources:
       SELECT favorites_delete(name=Name, type=Type)
       FROM scope()
 
-```
+</code></pre>
+

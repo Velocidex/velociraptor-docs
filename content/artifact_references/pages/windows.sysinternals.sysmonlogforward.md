@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 A client side event forwarder to forward sysmon events to the server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sysinternals.SysmonLogForward
 description: |
   A client side event forwarder to forward sysmon events to the server.
@@ -43,4 +43,5 @@ sources:
            get(member='EventData') AS EventData
     FROM watch_etw(guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
 
-```
+</code></pre>
+

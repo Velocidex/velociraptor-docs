@@ -907,7 +907,7 @@ td {
     position: relative;
 }
 .hljs::selection, .hljs span::selection {
-    background: #b7b7b7;
+    filter: invert(1);
 }
 .lightbox-active #body {
     overflow: visible;

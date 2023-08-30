@@ -11,7 +11,7 @@ account for changes in DNS/connectivity details. When the query is
 terminated, we undo the quarantine.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Remediation.QuarantineMonitor
 description: |
   An event query that will ensure the client is quarantined.
@@ -68,4 +68,5 @@ sources:
             MessageBox=MessageBox)
        })
 
-```
+</code></pre>
+

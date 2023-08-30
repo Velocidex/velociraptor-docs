@@ -9,7 +9,7 @@ Windows maintains DNS lookups for a short time in the DNS cache.
 This artifact collects DNS cache entries using the WMI class MSFT_DNSClientCache.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.DNSCache
 description: |
   Windows maintains DNS lookups for a short time in the DNS cache.
@@ -169,4 +169,5 @@ sources:
 
       SELECT * FROM dns_cache_entries
 
-```
+</code></pre>
+

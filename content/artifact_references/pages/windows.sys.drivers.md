@@ -8,7 +8,7 @@ Details for in-use Windows device drivers. This does not display
 installed but unused drivers.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.Drivers
 description: |
   Details for in-use Windows device drivers. This does not display
@@ -58,4 +58,5 @@ sources:
           WHERE NOT Issuer =~ "Microsoft"
           GROUP BY Issuer
 
-```
+</code></pre>
+

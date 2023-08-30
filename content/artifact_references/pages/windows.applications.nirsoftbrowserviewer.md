@@ -18,7 +18,7 @@ BrowsingHistoryView v2.55 - View browsing history of your Web browsers
 Copyright (c) 2012 - 2023 Nir Sofer
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.NirsoftBrowserViewer
 description: |
   This artifact wraps the Nirsoft BrowsingHistoryView tool - a tool
@@ -105,4 +105,5 @@ sources:
             Visited > DateAfterTime AND
             Visited < DateBeforeTime
 
-```
+</code></pre>
+

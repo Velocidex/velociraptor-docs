@@ -16,7 +16,7 @@ those locale files. We then resolve the extension's name and
 description from there.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Applications.Chrome.Extensions
 description: |
   Fetch Chrome extensions.
@@ -144,4 +144,5 @@ sources:
 
         FROM parsed_manifest_files
 
-```
+</code></pre>
+

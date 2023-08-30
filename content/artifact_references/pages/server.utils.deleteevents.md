@@ -12,7 +12,7 @@ permanently. Since this is a sensitive operation, typically only
 users with the administrator role can run it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteEvents
 description: |
   This artifact permanently deletes Event files for client or
@@ -52,4 +52,5 @@ sources:
          start_time=StartTime, end_time=EndTime,
          really_do_it=ReallyDoIt)
 
-```
+</code></pre>
+

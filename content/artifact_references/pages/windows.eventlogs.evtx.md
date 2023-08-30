@@ -38,7 +38,7 @@ Consider filtering results using path, channel, and ID regexes if necessary.
 Inspired by others in `Windows.EventLogs.*`, many by Matt Green (@mgreen27).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.Evtx
 
 description: |
@@ -142,4 +142,5 @@ sources:
       SELECT * FROM evtxsearch(pathList=fspaths)
       GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

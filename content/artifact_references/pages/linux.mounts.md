@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 List mounted filesystems by reading /proc/mounts
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Mounts
 description: List mounted filesystems by reading /proc/mounts
 
@@ -33,4 +33,5 @@ reports:
 
       {{ Query "SELECT * FROM source()" | Table }}
 
-```
+</code></pre>
+

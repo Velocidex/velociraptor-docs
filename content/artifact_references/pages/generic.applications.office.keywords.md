@@ -27,7 +27,7 @@ https://en.wikipedia.org/wiki/List_of_Microsoft_Office_filename_extensions
 https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/File_formats
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Applications.Office.Keywords
 description: |
   Microsoft Office documents among other document format (such as
@@ -104,4 +104,5 @@ sources:
                  accessor='zip')
         })
 
-```
+</code></pre>
+

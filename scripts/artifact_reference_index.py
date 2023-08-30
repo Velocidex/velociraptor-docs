@@ -27,9 +27,10 @@ tags: [%s]
 
 %s
 
-```yaml
+<pre><code class="language-yaml">
 %s
-```
+</code></pre>
+
 """
 
 def getTag(t):

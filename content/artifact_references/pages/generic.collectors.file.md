@@ -9,7 +9,7 @@ device. The globs will be searched in one pass - so you can provide
 many globs at the same time.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Collectors.File
 description: |
    Collects files using a set of globs. All globs must be on the same
@@ -97,4 +97,5 @@ sources:
                Created, Modified, LastAccessed
         FROM uploaded_files
 
-```
+</code></pre>
+

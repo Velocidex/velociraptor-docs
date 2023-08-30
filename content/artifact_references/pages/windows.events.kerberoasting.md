@@ -32,7 +32,7 @@ Note: There are potential false positives so whitelist normal source IPs and
 manage risk of insecure ticket generation.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.Kerberoasting
 description: |
   **Description**:
@@ -102,4 +102,5 @@ sources:
                 AND NOT EventData.TargetUserName =~ "\\$@"
         })
 
-```
+</code></pre>
+

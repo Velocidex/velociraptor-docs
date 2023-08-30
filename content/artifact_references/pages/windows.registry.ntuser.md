@@ -32,7 +32,7 @@ to access user data.
 {{% /notice %}}
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.NTUser
 description: |
   This artifact searches for keys or values within the user's
@@ -151,4 +151,5 @@ sources:
                     accessor="raw_reg")
             })
 
-```
+</code></pre>
+

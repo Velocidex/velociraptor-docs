@@ -32,7 +32,7 @@ If upload is selected NumberOfHits is redundant and not advised as hits are
 grouped by path to ensure files only downloaded once.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Yara.NTFS
 author: Matt Green - @mgreen27
 description: |
@@ -186,4 +186,5 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
-```
+</code></pre>
+

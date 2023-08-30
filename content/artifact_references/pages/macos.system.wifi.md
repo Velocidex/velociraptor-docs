@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact looks for all Wifi networks to which a host has joined.  This can be useful in determining where a machine has been, or if a user has joined an illegitimate or unauthorized wireless network.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.Wifi
 description: |
    This artifact looks for all Wifi networks to which a host has joined.  This can be useful in determining where a machine has been, or if a user has joined an illegitimate or unauthorized wireless network.
@@ -44,4 +44,5 @@ sources:
              Value AS _Data
       FROM EachNetwork
 
-```
+</code></pre>
+

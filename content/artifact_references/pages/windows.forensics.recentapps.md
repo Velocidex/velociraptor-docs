@@ -11,7 +11,7 @@ NOTE: This artifact is available up from Windows 10 1607 to 1709.
 After that, the RecentApps key is no longer populated in the referenced location. Previously existing data is not removed.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.RecentApps
 description: |
   GUI Program execution launched on the Win10 system is tracked in the
@@ -77,4 +77,5 @@ sources:
             SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
 
-```
+</code></pre>
+

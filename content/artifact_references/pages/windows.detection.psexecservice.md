@@ -14,7 +14,7 @@ NOTE that if the service is very quick we are unable to examine
 the service binary in time and will miss it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.PsexecService
 description: |
   PSExec works by installing a new service in the system. The service
@@ -70,4 +70,5 @@ sources:
           row=service_creation,
           query=file_scan)
 
-```
+</code></pre>
+

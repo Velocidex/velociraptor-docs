@@ -11,7 +11,7 @@ to work equally on all architectures:
   2. On Windows we use WMI
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Client.DiskSpace
 description: |
   This artifact reports the amount of free disk space. It is designed
@@ -48,4 +48,5 @@ sources:
     then={ SELECT * FROM Windows},
     else={ SELECT * FROM NonWindows})
 
-```
+</code></pre>
+

@@ -12,7 +12,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Firefox.History
 description: |
   Enumerate the users Firefox history.
@@ -64,4 +64,5 @@ sources:
           })
           WHERE url_visited =~ URLRegex
 
-```
+</code></pre>
+

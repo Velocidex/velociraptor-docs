@@ -18,7 +18,7 @@ This server event artifact centralizes all shell access from all
 clients into the same log file.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitor.Shell
 description: |
    Velociraptor can get an interactive shell on the endpoint by using
@@ -80,4 +80,5 @@ reports:
 
       {{end}}
 
-```
+</code></pre>
+

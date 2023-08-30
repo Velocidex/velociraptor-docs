@@ -16,7 +16,7 @@ Windows.NTFS.I30 artifact and identify MFT entries of interest. This
 is artifact can be used to attempt to recover some data.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.NTFS.Recover
 description: |
   Attempt to recover deleted files.
@@ -45,7 +45,7 @@ sources:
        LET Parsed <= parse_ntfs(device=Drive, inode=MFTId)
 
        SELECT *, upload(accessor="mft", file=Drive + Inode,
-                        name=pathspec(Path=Parsed.OSPath + "/" + Inode)) AS IndexUpload
+                        name=Parsed.OSPath + Inode) AS IndexUpload
        FROM foreach(
             row=Parsed.Attributes,
             query={
@@ -58,4 +58,5 @@ sources:
               FROM scope()
             })
 
-```
+</code></pre>
+

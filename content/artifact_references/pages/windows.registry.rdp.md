@@ -17,7 +17,7 @@ this user.
 UserRegex and SidRegex can be used to target a specific user.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.RDP
 author: Matt Green - @mgreen27
 description: |
@@ -121,4 +121,5 @@ sources:
         LastWriteTime,
         find_mru(sid=SID).KeyValue as Mru
       FROM results
-```
+</code></pre>
+

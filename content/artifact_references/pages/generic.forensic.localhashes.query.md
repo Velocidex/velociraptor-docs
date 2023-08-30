@@ -17,7 +17,7 @@ like this:
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Forensic.LocalHashes.Query
 description: |
   This artifact maintains a local (client side) database of file
@@ -74,4 +74,5 @@ sources:
                      args=Hash)
       })
 
-```
+</code></pre>
+

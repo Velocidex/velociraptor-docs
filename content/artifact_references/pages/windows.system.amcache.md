@@ -14,7 +14,7 @@ can then be used to find the executed program.
 This artifact works on Windows 10 1607 version.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Amcache
 description: |
   Get information from the system's amcache.
@@ -130,4 +130,5 @@ reports:
 
       {{ Query "timeline" | Table }}
 
-```
+</code></pre>
+

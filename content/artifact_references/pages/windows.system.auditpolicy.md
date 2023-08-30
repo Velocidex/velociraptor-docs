@@ -11,7 +11,7 @@ Use this artifact to determine what Windows event logs are audited
 and if there are any discrepancies across the environment.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.AuditPolicy
 
 description: |
@@ -40,4 +40,5 @@ sources:
         }
       )
 
-```
+</code></pre>
+

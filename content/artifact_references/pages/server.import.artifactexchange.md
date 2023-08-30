@@ -8,7 +8,7 @@ This artifact will automatically import the latest
 artifact exchange bundle into the current server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Import.ArtifactExchange
 description: |
    This artifact will automatically import the latest
@@ -48,4 +48,5 @@ sources:
                Definition.author AS Author
         FROM X
 
-```
+</code></pre>
+

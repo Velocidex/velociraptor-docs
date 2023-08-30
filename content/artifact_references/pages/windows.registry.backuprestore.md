@@ -11,7 +11,7 @@ these keys to communicate with each other or with features such as the
 Volume Shadow Copy Service (VSS) and Windows Backup.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.BackupRestore
 author: Matt Green - @mgreen27
 description: |
@@ -43,4 +43,5 @@ sources:
       WHERE NOT KeyType ='key'
       GROUP BY ModTime, KeyName,KeyValue,KeyType
 
-```
+</code></pre>
+

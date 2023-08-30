@@ -17,7 +17,7 @@ Best use of this artifact is to collect RDP and Authentication events around
 a timeframe of interest and order by EventTime to scope RDP activity.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.RDPAuth
 author: "Matt Green - @mgreen27"
 description: |
@@ -195,4 +195,5 @@ sources:
         SELECT * FROM evtxsearch(PathList=fspaths)
       })
 
-```
+</code></pre>
+

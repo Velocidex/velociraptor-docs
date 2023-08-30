@@ -7,7 +7,7 @@ tags: [Client Artifact]
 List processes and their running binaries.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.Pslist
 description: |
   List processes and their running binaries.
@@ -33,4 +33,5 @@ sources:
         FROM process_tracker_pslist()
         WHERE Name =~ processRegex
 
-```
+</code></pre>
+

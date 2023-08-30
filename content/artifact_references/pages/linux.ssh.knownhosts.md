@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Find and parse ssh known hosts files.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Ssh.KnownHosts
 description: Find and parse ssh known hosts files.
 parameters:
@@ -84,4 +84,5 @@ sources:
           SELECT *, get(item=lookup, field=PublicKey) AS Hostname
           FROM source(artifact="Linux.Ssh.KnownHosts")
 
-```
+</code></pre>
+

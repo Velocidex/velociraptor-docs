@@ -13,7 +13,7 @@ while using the root org (You might need to switch to the root org
 in the GUI before collecting this artifact).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Orgs.ListOrgs
 description: |
   This server artifact will list all currently configured orgs on the
@@ -43,4 +43,5 @@ sources:
       SELECT * FROM orgs()
     })
 
-```
+</code></pre>
+

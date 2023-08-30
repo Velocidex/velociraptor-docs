@@ -10,7 +10,7 @@ takes, for example, starting a new collection, creating a new hunt,
 updating an artifact definition etc.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Audit.Logs
 description: |
   This internal event artifact collects relevant audit events from the
@@ -20,4 +20,5 @@ description: |
 
 type: SERVER_EVENT
 
-```
+</code></pre>
+

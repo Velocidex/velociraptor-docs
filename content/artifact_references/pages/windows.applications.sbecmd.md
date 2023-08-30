@@ -26,7 +26,7 @@ Windows.Forensics.Shellbags artifact.
 MITRE ATT&CK ID: TA0009 - Collection
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.SBECmd
 description: |
     Execute Eric Zimmerman's SBECmd and return output for analysis.
@@ -133,4 +133,5 @@ sources:
       })
       WHERE Stdout =~ "SBECmd"
 
-```
+</code></pre>
+

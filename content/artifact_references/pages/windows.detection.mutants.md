@@ -9,7 +9,7 @@ Enumerate the mutants from selected processes.
 Mutants are often used by malware to prevent re-infection.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Mutants
 description: |
   Enumerate the mutants from selected processes.
@@ -56,4 +56,5 @@ sources:
                 then= NOT Name =~ MutantWhitelistRegex,
                 else= True )
 
-```
+</code></pre>
+

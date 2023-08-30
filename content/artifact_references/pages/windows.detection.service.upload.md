@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 When a new service is installed, upload the service binary to the server
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Service.Upload
 description: |
   When a new service is installed, upload the service binary to the server
@@ -28,4 +28,5 @@ sources:
                Timestamp, _EventData, _System
       FROM Artifact.Windows.Events.ServiceCreation()
 
-```
+</code></pre>
+

@@ -26,7 +26,7 @@ You can set the policy in group policy management console (gpmc):
 Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.FailedLogBeforeSuccess
 description: |
   Sometimes attackers will brute force an local user's account's
@@ -98,4 +98,5 @@ sources:
            GROUP BY LogonTime
           })  WHERE Count > atoi(string=failureCount)
 
-```
+</code></pre>
+

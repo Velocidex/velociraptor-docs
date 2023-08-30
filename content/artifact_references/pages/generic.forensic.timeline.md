@@ -9,7 +9,7 @@ format. We currently do not calculate the md5 because it is quite
 expensive.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Forensic.Timeline
 description: |
   This artifact generates a timeline of a file glob in bodyfile
@@ -44,4 +44,5 @@ sources:
                Atime, Mtime, Ctime
         FROM glob(globs=timelineGlob, accessor=timelineAccessor)
 
-```
+</code></pre>
+

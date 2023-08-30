@@ -7,7 +7,7 @@ tags: [Internal Artifact]
 An internal queue for Ping replies
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Pong
 description: |
   An internal queue for Ping replies
@@ -18,4 +18,5 @@ column_types:
   - name: ClientId
   - name: Connected
 
-```
+</code></pre>
+

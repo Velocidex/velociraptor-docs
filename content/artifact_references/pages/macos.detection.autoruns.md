@@ -10,7 +10,7 @@ This code is based on
 https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.py
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Detection.Autoruns
 description: |
    This artifact collects evidence of autoruns. We also capture the files and upload them.
@@ -155,4 +155,5 @@ sources:
            upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LoginItemsGlobs))
 
-```
+</code></pre>
+

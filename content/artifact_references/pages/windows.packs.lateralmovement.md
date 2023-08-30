@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Detect evidence of lateral movement.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Packs.LateralMovement
 description: |
   Detect evidence of lateral movement.
@@ -39,4 +39,5 @@ sources:
       SELECT * FROM Artifact.Windows.System.Amcache()
       WHERE Binary =~ "wmic.exe"
 
-```
+</code></pre>
+

@@ -8,7 +8,7 @@ Report information about the systems interfaces. This artifact
 simply parses the output from ipconfig /all.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.Interfaces
 description: |
   Report information about the systems interfaces. This artifact
@@ -40,4 +40,5 @@ sources:
         ]
      ) As Details FROM interfaces
 
-```
+</code></pre>
+

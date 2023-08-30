@@ -16,7 +16,7 @@ Note: the appcompatcache plugin does not currently support execution flag in
 Windows 7 and 8/8.1 Systems.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.AppCompatCache
 author: Matt Green - @mgreen27
 description: |
@@ -185,4 +185,5 @@ sources:
         },
         else= mutli_controlset )
 
-```
+</code></pre>
+

@@ -12,7 +12,7 @@ NOTE: You must ensure you are collecting these artifacts from the
 clients by adding them to the "Client Events" GUI.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: LogScale.Events.Clients
 description: |
   This server side event monitoring artifact will watch a selection of client
@@ -90,4 +90,5 @@ sources:
           debug=debug,
           stats_interval=statsInterval)
 
-```
+</code></pre>
+

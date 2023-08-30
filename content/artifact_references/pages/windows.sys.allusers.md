@@ -21,7 +21,7 @@ you need to obtain the full list from the AD, customize this
 artifact.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.AllUsers
 description: |
   List User accounts. We combine two data sources - the output from
@@ -137,4 +137,5 @@ reports:
       {{ end }}
       {{ Query "users" "SELECT Name, UUID, Type, Mtime FROM users" | Table }}
 
-```
+</code></pre>
+

@@ -11,7 +11,7 @@ This artifact looks for processes with known names that are being
 loaded from unexpected locations.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Attack.UnexpectedImagePath
 
 description: |
@@ -87,4 +87,5 @@ sources:
         } AS SubProcesses
         FROM suspicious_processes
 
-```
+</code></pre>
+

@@ -10,7 +10,7 @@ lolbin netsh.exe; Metaspoit and other common attack tools also have
 configuration modules.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.PortProxy
 description: |
     This artifact will return any items in the Windows PortProxy service
@@ -89,4 +89,5 @@ reports:
 
       {{ Query "report"  "SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
 
-```
+</code></pre>
+

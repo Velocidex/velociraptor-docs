@@ -9,7 +9,7 @@ tags: [Client Artifact]
 We can look for evidence of this dll by first performing a YARA search on the MFT across all drives, then applying an additional FireEye-supplied rule against the file found via MFT.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.SolarwindsSunburst
 
 description: |
@@ -90,4 +90,5 @@ sources:
         hash(path=FileName) AS Hash
       FROM yarahits
 
-```
+</code></pre>
+

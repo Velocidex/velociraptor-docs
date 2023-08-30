@@ -10,7 +10,7 @@ Much of this was borrowed from: https://gist.github.com/scudette/3a32abd19350c8f
 It is recommended to use the Server Metadata section to store credentials, instead of having to store directly inside the artifact.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Alerts.TheHive.Case
 description: |
    Create a TheHive case when monitored artifacts complete with results.  Add the ClientId, FlowId, and FQDN as tags to the case.  Add FQDN as an observable.
@@ -67,4 +67,5 @@ sources:
           url=format(format="%v/api/case/%v/artifact", args=[TheHiveURL, CaseID]))
        })
 
-```
+</code></pre>
+

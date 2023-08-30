@@ -12,7 +12,7 @@ This artifact lists all the processes named svchost.exe and their
 parents if the parent is not also named services.exe.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.SVCHost
 description: |
   Typically a windows system will have many svchost.exe
@@ -52,4 +52,5 @@ sources:
               WHERE Pid=SVCHostPpid
           })
 
-```
+</code></pre>
+

@@ -9,7 +9,7 @@ Remove malicious task from the Windows scheduled task list.
 Danger: You need to make sure to test this before running.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Remediation.ScheduledTasks
 description: |
    Remove malicious task from the Windows scheduled task list.
@@ -82,4 +82,5 @@ sources:
             })
         })
 
-```
+</code></pre>
+

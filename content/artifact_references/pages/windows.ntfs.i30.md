@@ -10,7 +10,7 @@ This can reveal previously deleted files. Optionally upload the I30
 stream to the server as well.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.NTFS.I30
 description: |
   Carve the $I30 index stream for a directory.
@@ -79,4 +79,5 @@ sources:
             WHERE IsSlack = true or NOT SlackOnly
        })
 
-```
+</code></pre>
+

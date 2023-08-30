@@ -8,7 +8,7 @@ This artifact enables grep of IISLogs.
 Parameters include SearchRegex and WhitelistRegex as regex terms.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.IISLogs
 description: |
   This artifact enables grep of IISLogs.
@@ -67,4 +67,5 @@ sources:
             SELECT * FROM foreach(row=parsed,
                   query={ SELECT *, Fqdn, _Raw FROM GrokParsed })
 
-```
+</code></pre>
+

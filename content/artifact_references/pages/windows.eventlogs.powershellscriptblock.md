@@ -23,7 +23,7 @@ There are several parameter's available for search leveraging regex.
   - SearchVSS enables VSS search.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.PowershellScriptblock
 author: Matt Green - @mgreen27
 
@@ -151,4 +151,5 @@ sources:
         SELECT * FROM evtxsearch(PathList=fspaths)
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

@@ -7,7 +7,7 @@ tags: [Client Artifact]
 List processes and their running binaries.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Pslist
 description: |
   List processes and their running binaries.
@@ -63,4 +63,5 @@ sources:
                         then= Authenticode.Trusted = 'trusted' OR NOT Exe,
                         else= False )
 
-```
+</code></pre>
+

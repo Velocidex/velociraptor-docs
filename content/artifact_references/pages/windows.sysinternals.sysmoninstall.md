@@ -13,7 +13,7 @@ we recommend you review the config file and override it in the GUI
 with one that better suits your needs.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sysinternals.SysmonInstall
 description: |
   Sysmon is a kernel level system monitor written by
@@ -90,4 +90,5 @@ sources:
     then={ SELECT * FROM doit },
     else={ SELECT * FROM ensure_service_running })
 
-```
+</code></pre>
+

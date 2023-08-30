@@ -8,7 +8,7 @@ Enumerate the DLLs loaded by a running process. It includes hash value
 and certificate information.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.DLLs
 description: |
   Enumerate the DLLs loaded by a running process. It includes hash value
@@ -81,4 +81,5 @@ sources:
                                         then= cert_nohash,
                                         else= results )))
 
-```
+</code></pre>
+

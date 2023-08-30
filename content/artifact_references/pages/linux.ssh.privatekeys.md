@@ -27,7 +27,7 @@ Change the glob to /** if you would like to search the entire filesystem.
 Be aware, this is an expensive operation.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Ssh.PrivateKeys
 description: |
   SSH Private keys can be either encrypted or unencrypted. Unencrypted
@@ -165,4 +165,5 @@ sources:
           })
       })
 
-```
+</code></pre>
+

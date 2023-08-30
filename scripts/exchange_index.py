@@ -26,9 +26,10 @@ editURL: https://github.com/%s/%s/edit/master/%s
 
 %s
 
-```yaml
+<pre><code class="language-yaml">
 %s
-```
+</code></pre>
+
 """
 
 previous_data = []

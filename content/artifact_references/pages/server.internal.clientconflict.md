@@ -13,7 +13,7 @@ message. The client id will be forwarded on this artifact as well so
 the server may take action.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.ClientConflict
 description: |
   This event artifact is an internal event stream receiving events
@@ -26,4 +26,5 @@ description: |
 
 type: INTERNAL
 
-```
+</code></pre>
+

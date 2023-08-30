@@ -23,7 +23,7 @@ file was later removed.
 Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Usn
 description: |
   This artifact parses the NTFS USN journal and allows filters to
@@ -127,4 +127,5 @@ sources:
                 AND _Links =~ PathRegex
           })
 
-```
+</code></pre>
+

@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.Trackaccount
 description: |
   Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'
@@ -55,4 +55,5 @@ sources:
                 AND EventData.LogonType in LogonTypeRegex
         })
 
-```
+</code></pre>
+

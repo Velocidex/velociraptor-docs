@@ -8,7 +8,7 @@ Checks for wow64cpu.dll replacement Autorun in Windows 10.
 http://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Persistence.Wow64cpu
 description: |
   Checks for wow64cpu.dll replacement Autorun in Windows 10.
@@ -32,4 +32,5 @@ sources:
       WHERE Data.value and
         not (Name = "@" and (Data.value =~ "(wow64cpu.dll|wowarmhw.dll|xtajit.dll)"))
 
-```
+</code></pre>
+

@@ -16,7 +16,7 @@ When using SSO (e.g. oauth) this password is not used and can be
 ignored (Becuase the SSO provider will do the authentication).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.AddUser
 description: |
   This server artifact is used to add new user to the Velociraptor
@@ -85,4 +85,5 @@ sources:
         WHERE log(message="A Username must be set") AND FALSE
       })
 
-```
+</code></pre>
+

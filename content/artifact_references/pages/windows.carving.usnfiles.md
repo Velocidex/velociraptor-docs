@@ -20,7 +20,7 @@ the MFT itself! In practice you should always prefer to collect
 `Windows.Forensics.Usn` rather than just the $J file.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Carving.USNFiles
 description: |
   The USN journal is an important source of information about when
@@ -102,4 +102,5 @@ sources:
               TimeStamp < DateBeforeTime AND
               TimeStamp > DateAfterTime
 
-```
+</code></pre>
+

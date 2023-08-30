@@ -8,7 +8,7 @@ An internal artifact that produces events for every flow completion
 in the system.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: System.Flow.Completion
 description: |
   An internal artifact that produces events for every flow completion
@@ -16,4 +16,5 @@ description: |
 
 type: CLIENT_EVENT
 
-```
+</code></pre>
+

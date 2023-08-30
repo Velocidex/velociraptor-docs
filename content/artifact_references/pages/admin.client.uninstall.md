@@ -17,7 +17,7 @@ NOTE: Be careful with the DisplayNameRegex to ensure you do not
 uninstall another package accidentally.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Admin.Client.Uninstall
 description: |
   Uninstall Velociraptor from the endpoint.
@@ -106,4 +106,5 @@ sources:
         SELECT * FROM execve(argv=[me[0].Exe, "service", "remove"])
       })
 
-```
+</code></pre>
+

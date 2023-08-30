@@ -27,7 +27,7 @@ The second file begins with `$I` and ends in the same string as the
 Limitations: This artifact uses the API to read available $I data. There may be additional unallocated but readable $I files referenced in the MFT that may be recoverable.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.RecycleBin
 description: |
   This artefact will parse the `$I` files found in the `$Recycle.Bin` folder to
@@ -90,4 +90,5 @@ sources:
                  FROM parse_recyclebin(filename=OSPath)
               })
 
-```
+</code></pre>
+

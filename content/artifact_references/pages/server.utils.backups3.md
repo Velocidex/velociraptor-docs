@@ -15,7 +15,7 @@ S3AccessKeyId, S3AccessSecret)
 Thanks to @shortxstack and @Recon_InfoSec
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.BackupS3
 description: |
    This server monitoring artifact will automatically zip and backup
@@ -79,4 +79,5 @@ sources:
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
 
-```
+</code></pre>
+

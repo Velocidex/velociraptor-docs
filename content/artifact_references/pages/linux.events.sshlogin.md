@@ -8,7 +8,7 @@ This monitoring artifact watches the auth.log file for new
 successful SSH login events and relays them back to the server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Events.SSHLogin
 description: |
   This monitoring artifact watches the auth.log file for new
@@ -42,4 +42,5 @@ sources:
               Event.pid AS Pid
         FROM success_login
 
-```
+</code></pre>
+

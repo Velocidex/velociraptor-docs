@@ -9,7 +9,7 @@ Uses Sysinternals autoruns to scan the host.
 Note this requires syncing the sysinternals binary from the host.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sysinternals.Autoruns
 description: |
   Uses Sysinternals autoruns to scan the host.
@@ -123,4 +123,5 @@ sources:
           })
       })
 
-```
+</code></pre>
+

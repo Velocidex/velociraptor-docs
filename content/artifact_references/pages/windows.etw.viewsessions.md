@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact enumerates all ETW sessions and optionally kills dangling ones
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.ViewSessions
 description: |
   This artifact enumerates all ETW sessions and optionally kills dangling ones
@@ -40,4 +40,5 @@ sources:
          })
       })
 
-```
+</code></pre>
+

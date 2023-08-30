@@ -9,7 +9,7 @@ update the client info indexes. Client send this automatically at
 startup and then every day.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.ClientInfo
 type: INTERNAL
 description: |
@@ -17,4 +17,5 @@ description: |
   update the client info indexes. Client send this automatically at
   startup and then every day.
 
-```
+</code></pre>
+
