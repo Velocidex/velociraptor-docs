@@ -1297,7 +1297,7 @@
     },
     {
         "title": "Server.Internal.ToolDependencies",
-        "description": "An internal artifact that defines some tool\ndepenencies. Velociraptor releases for offline collector\n",
+        "description": "An internal artifact that defines some tool\ndepenencies. Velociraptor releases for offline collector",
         "link": "/artifact_references/pages/server.internal.tooldependencies",
         "type": "client",
         "tags": [
@@ -2118,6 +2118,15 @@
         "title": "Windows.ETW.EdgeURLs",
         "description": "This client event artifact collects all URLs accessed by the Edge browser.",
         "link": "/artifact_references/pages/windows.etw.edgeurls",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.FileCreation",
+        "description": "This artifact watches the Microsoft-Windows-Kernel-File provider\nfor new file creation events.",
+        "link": "/artifact_references/pages/windows.etw.filecreation",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
