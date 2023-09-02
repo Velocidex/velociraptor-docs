@@ -20,7 +20,7 @@ NOTE: The Prefetch file format is described extensively in libscca
 and painstakingly reversed by Joachim Metz (Shouts and Thank you!).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Prefetch
 description: |
   Windows keeps a cache of prefetch files. When an executable is run,
@@ -412,4 +412,5 @@ column_types:
   - name: ModificationTime
     type: timestamp
 
-```
+</code></pre>
+

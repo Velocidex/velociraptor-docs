@@ -18,7 +18,7 @@ This artifact also has the same anomaly logic as AnalyzeMFT added to
 each row to assist analysis.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Timeline.MFT
 description: |
   # Output all filtered MFT records.
@@ -243,4 +243,5 @@ sources:
                     })
             })
 
-```
+</code></pre>
+

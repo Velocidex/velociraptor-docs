@@ -8,7 +8,7 @@ Report details about which client ran each hunt, how long it took
 and if it has completed.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Reporting.Hunts.Details
 description: |
   Report details about which client ran each hunt, how long it took
@@ -36,4 +36,5 @@ sources:
 
         SELECT * from foreach(row=hunts, query=flows)
 
-```
+</code></pre>
+

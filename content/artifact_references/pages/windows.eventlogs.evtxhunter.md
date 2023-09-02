@@ -31,7 +31,7 @@ There are several parameter's available for search leveraging regex.
   standard velociraptor escape. E.g C:\\FOLDER\\binary\\.exe
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.EvtxHunter
 description: |
   This Artifact will hunt the Event Log message field for a regex value.
@@ -155,4 +155,5 @@ sources:
         SELECT * FROM evtxsearch(PathList=fspaths)
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

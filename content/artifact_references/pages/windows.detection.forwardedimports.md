@@ -14,7 +14,7 @@ This artifact searches for dlls which are named the same as the DLL
 they are forwarding to.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.ForwardedImports
 description: |
   In Windows a common DLL hooking technique is to replace a dll with a
@@ -77,4 +77,5 @@ sources:
           WHERE ExportDLLName = DLLBareName
       })
 
-```
+</code></pre>
+

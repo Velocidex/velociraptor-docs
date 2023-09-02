@@ -28,7 +28,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Collectors.SQLECmd
 description: |
   Many applications maintain internal state using SQLite
@@ -5327,4 +5327,5 @@ sources:
       SQLQuery=SQLQuery, FileType=FileType,
       IdentifyQuery=IdentifyQuery, IdentifyValue=IdentifyValue)
 
-```
+</code></pre>
+

@@ -9,7 +9,7 @@ destination Current logged-on User Name Alternate User Name
 Destination Host Name/IP Process Name
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.AlternateLogon
 description: |
   Logon specifying alternate credentials - if NLA enabled on
@@ -39,4 +39,5 @@ sources:
       WHERE System.EventID.Value = 4648
         AND EventData
 
-```
+</code></pre>
+

@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Report network connections, and enrich with process information.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Network.NetstatEnriched
 description: |
   Report network connections, and enrich with process information.
@@ -77,4 +77,5 @@ column_types:
   - name: ChildrenTree
     type: tree
 
-```
+</code></pre>
+

@@ -15,7 +15,7 @@ them against some criteria. Flows that match are then removed.
   will match before using the ReallyDoIt option.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteManyFlows
 description: |
    Sometimes the Velociraptor server accumulates a lot of data that is
@@ -84,4 +84,5 @@ sources:
             SELECT * FROM hits
         })
 
-```
+</code></pre>
+

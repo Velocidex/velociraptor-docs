@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 This artifact detects creation of Mutants and triggers an alert. 
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.Mutants
 description: |
   This artifact detects creation of Mutants and triggers an alert. 
@@ -58,4 +58,5 @@ sources:
         
         SELECT *, alert(name=AlertName, Name=Name, Type=Type, Exe=Exe) as AlertSent FROM diff(query=query_diff, period=Period, key="Name") WHERE Diff = diff
 
-```
+</code></pre>
+

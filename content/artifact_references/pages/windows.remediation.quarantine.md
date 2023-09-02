@@ -27,7 +27,7 @@ policy accordingly and not rely on DNS lookups.
 is already enforced. Please configure at GPO level in this case.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Remediation.Quarantine
 description: |
       **Apply quarantine via Windows local IPSec policy**
@@ -318,4 +318,5 @@ sources:
                           h=final_check)
                   })
 
-```
+</code></pre>
+

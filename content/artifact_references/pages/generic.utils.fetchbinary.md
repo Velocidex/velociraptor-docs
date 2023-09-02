@@ -20,7 +20,7 @@ Tool_<ToolName>_FILENAME - The filename to store it.
 Tool_<ToolName>_URL      - The URL.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Utils.FetchBinary
 description: |
    A utility artifact which fetches a binary from a URL and caches it on disk.
@@ -176,4 +176,5 @@ sources:
         },
         d=download)
 
-```
+</code></pre>
+

@@ -18,7 +18,7 @@ all sections and ProtectionRegex can override selection.
 - To filter on unmapped sections the MappingNameRegex: ^$ can be used.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.VAD
 author: "Matt Green - @mgreen27"
 description: |
@@ -172,4 +172,5 @@ column_types:
   - name: HitContext
     type: preview_upload
 
-```
+</code></pre>
+

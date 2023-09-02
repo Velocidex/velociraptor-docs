@@ -17,7 +17,7 @@ optionally removes data older than the specified timestamp.
   will match before using the ReallyDoIt option.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteMonitoringData
 description: |
    Velociraptor collects monitoring data from endpoints all the time.
@@ -69,4 +69,5 @@ sources:
               AND Timestamp < DateBefore
         }, workers=10)
 
-```
+</code></pre>
+

@@ -13,7 +13,7 @@ Ex.
   `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.CortexAnalyzer
 description: |
   Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
@@ -112,4 +112,5 @@ sources:
         LET REPORT = SELECT parse_json(data=Resp) AS Details FROM GETREPORT
         SELECT Observable, Details.workerName as AnalyzerName, Details as _Details, Details.report AS Report FROM foreach(row=ANALYZERS_MATCH_TYPE, query={SELECT * FROM REPORT})
 
-```
+</code></pre>
+

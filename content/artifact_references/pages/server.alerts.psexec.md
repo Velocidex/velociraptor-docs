@@ -11,7 +11,7 @@ Note this requires that the Windows.Event.ProcessCreation
 monitoring artifact be collected from clients.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Alerts.PsExec
 description: |
    Send an email if execution of the psexec service was detected on
@@ -52,4 +52,5 @@ sources:
           )
         })
 
-```
+</code></pre>
+

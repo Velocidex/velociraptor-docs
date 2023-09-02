@@ -35,7 +35,7 @@ List of fields targeted by filter regex:
   NOTE: regex startof (^) and endof ($) line modifiers will not work.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Lnk
 author: Matt Green - @mgreen27
 description: |
@@ -1376,4 +1376,5 @@ column_types:
   - name: ShellLinkHeader.WriteTime
     type: timestamp
 
-```
+</code></pre>
+

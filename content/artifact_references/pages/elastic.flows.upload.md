@@ -13,7 +13,7 @@ to adjust the index size/lifetime according to the artifact it is
 holding.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Elastic.Flows.Upload
 description: |
   This server side event monitoring artifact waits for new artifacts
@@ -90,4 +90,5 @@ sources:
             disable_ssl_security=DisableSSLSecurity,
             type="artifact")
 
-```
+</code></pre>
+

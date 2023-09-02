@@ -18,7 +18,7 @@ artifact. There are several parameter's availible.
   - hashRegex enables to filter on prefetch hash.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Timeline.Prefetch
 author: Matt Green - @mgreen27
 description: |
@@ -134,4 +134,5 @@ sources:
                     b = { SELECT * FROM creationTimes  })
       SELECT * FROM flatOutput
 
-```
+</code></pre>
+

@@ -12,7 +12,7 @@ automatically re-enrol when it next connects. You will still be able
 to talk to it, it is just that old collected data is deleted.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteClient
 description: |
   This artifact completely removes a client from the data store.
@@ -47,4 +47,5 @@ sources:
             really_do_it=ReallyDoIt)
       })
 
-```
+</code></pre>
+

@@ -8,7 +8,7 @@ This artifact collects information about the local users on the
 system. The information is stored in plist files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.Users
 description: |
   This artifact collects information about the local users on the
@@ -48,4 +48,5 @@ sources:
       })
       WHERE NOT OnlyShowRealUsers OR NOT UserShell =~ 'false'
 
-```
+</code></pre>
+

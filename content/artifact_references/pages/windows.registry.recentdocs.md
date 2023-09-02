@@ -24,7 +24,7 @@ Note: both UserRegex and SidRegex does not work when using HiveGlob
      and all MRU will be returned.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.RecentDocs
 author: Matt Green - @mgreen27
 description: |
@@ -208,4 +208,5 @@ sources:
         })
       WHERE format(format='%v', args=MruEntries) =~ EntryRegex
 
-```
+</code></pre>
+

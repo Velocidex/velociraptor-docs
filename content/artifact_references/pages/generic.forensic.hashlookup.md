@@ -21,7 +21,7 @@ FROM source()
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Forensic.HashLookup
 description: |
   This artifact is a server event artifact that collects hashes from
@@ -61,4 +61,5 @@ sources:
          })
       }, async=TRUE)
 
-```
+</code></pre>
+

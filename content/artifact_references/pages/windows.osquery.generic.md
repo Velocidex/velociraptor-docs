@@ -10,7 +10,7 @@ three supported Velociraptor platform (Windows/Linux/MacOS).
 You can read more about OSQuery on https://osquery.io/
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.OSQuery.Generic
 description: |
   OSQuery is an excellent tool for querying system state across the
@@ -51,4 +51,5 @@ sources:
          SELECT * FROM parse_json_array(data=Stdout)
       })
 
-```
+</code></pre>
+

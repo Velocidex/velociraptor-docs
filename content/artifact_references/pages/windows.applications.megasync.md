@@ -11,7 +11,7 @@ With UploadLogs selected a copy of the logs are uploaded to the server.
 SearchVSS enables search over VSS and dedup support.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.MegaSync
 description: |
   This artifact will parse MEGASync logs and enables using regex to search for
@@ -99,4 +99,5 @@ sources:
         FROM output
         GROUP BY OSPath
 
-```
+</code></pre>
+

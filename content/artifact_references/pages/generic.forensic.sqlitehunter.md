@@ -17,7 +17,7 @@ This artifact can hunt for these artifacts in a mostly automated way.
 More info at https://github.com/Velocidex/SQLiteHunter
 
 
-```yaml
+<pre><code class="language-yaml">
 
 name: Generic.Forensic.SQLiteHunter
 description: |
@@ -745,4 +745,5 @@ sources:
 
 
 
-```
+</code></pre>
+

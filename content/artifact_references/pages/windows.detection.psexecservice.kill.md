@@ -12,7 +12,7 @@ NOTE: There is an inherent race between detection and response. If
 the psexec is very quick we will miss it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.PsexecService.Kill
 description: |
     Psexec can launch a service remotely. This artifact implements a
@@ -45,4 +45,5 @@ sources:
                argv=["taskkill", "/PID", PID, "/T", "/F"])
         })
 
-```
+</code></pre>
+

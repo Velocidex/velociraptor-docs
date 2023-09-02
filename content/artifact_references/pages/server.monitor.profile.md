@@ -32,7 +32,7 @@ goroutines and heap profiles as distinct sources in a more readable
 way.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitor.Profile
 description: |
   This artifact collects profiling information from the running
@@ -168,4 +168,5 @@ column_types:
   - name: InUseBytes
     type: mb
 
-```
+</code></pre>
+

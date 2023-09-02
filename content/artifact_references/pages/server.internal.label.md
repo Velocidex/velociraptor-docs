@@ -7,11 +7,12 @@ tags: [Internal Artifact]
 An internal artifact used to track new labeling events.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Label
 description: |
   An internal artifact used to track new labeling events.
 
 type: INTERNAL
 
-```
+</code></pre>
+

@@ -22,7 +22,7 @@ database. You can rate limit this artifact using the ops/sec setting
 to perform a slow update of the local file hash database.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Forensic.LocalHashes.Glob
 description: |
   This artifact maintains a local (client side) database of file
@@ -81,4 +81,5 @@ sources:
       FROM insertion
       WHERE NOT SuppressOutput
 
-```
+</code></pre>
+

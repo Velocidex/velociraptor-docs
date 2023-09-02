@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Chocolatey packages installed in a system.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.ChocolateyPackages
 description: Chocolatey packages installed in a system.
 parameters:
@@ -44,4 +44,5 @@ sources:
             FROM files
         })
 
-```
+</code></pre>
+

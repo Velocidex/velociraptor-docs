@@ -15,7 +15,7 @@ If a macro calls an external program (e.g. Powershell) this is very
 suspicious!
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.OfficeMacros
 description: |
   Office macros are a favourite initial infection vector. Many users
@@ -45,4 +45,5 @@ sources:
                SELECT * from olevba(file=OSPath)
            })
 
-```
+</code></pre>
+

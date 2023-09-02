@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Find and parse ssh authorized keys files.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Ssh.AuthorizedKeys
 description: Find and parse ssh authorized keys files.
 parameters:
@@ -37,4 +37,5 @@ sources:
                WHERE Type =~ "ssh"
           })
 
-```
+</code></pre>
+

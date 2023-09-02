@@ -23,7 +23,7 @@ conservatively with this artifact because we can upload really
 vast quantities of data very quickly.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.KapeFiles.CollectFromDirectory
 description: |
 
@@ -2520,4 +2520,5 @@ reports:
       {{ Query $query | Table }}
 
 
-```
+</code></pre>
+

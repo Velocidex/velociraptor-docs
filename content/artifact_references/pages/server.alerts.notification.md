@@ -7,7 +7,7 @@ tags: [Server Event Artifact]
 This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Alerts.Notification
 description: |
    This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
@@ -41,4 +41,5 @@ sources:
             url=token_url)
         })
 
-```
+</code></pre>
+

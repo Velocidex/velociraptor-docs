@@ -18,7 +18,7 @@ out. Therefore we do not expect to have holes in the produced binary
 as is often the case in memory analysis.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Memory.PEDump
 description: |
   This artifact dumps a PE file from memory and uploads the file to
@@ -65,4 +65,5 @@ sources:
      FROM vad(pid=9604)
      WHERE Header =~ "^MZ" AND MappingName =~ FilenameRegex
 
-```
+</code></pre>
+

@@ -19,7 +19,7 @@ is commonly explained in the references below. Velociraptor should
 have no trouble parsing these files on the live system.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.UserAccessLogs
 description: |
   Parse and collect the SUM database
@@ -163,4 +163,5 @@ sources:
         SELECT OSPath, if(condition=AlsoUpload, then=upload(file=OSPath))
         FROM glob(globs=SUMGlob)
 
-```
+</code></pre>
+

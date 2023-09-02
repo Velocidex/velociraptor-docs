@@ -19,7 +19,7 @@ no_edit: true
 Create an array with all the args.
 
 This function accepts arbitrary arguments and creates an array by
-flattening the arguments. 
+flattening the arguments.
 
 ### Examples
 

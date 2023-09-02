@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 This artifact detects registry changes and triggers an alert. 
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Registry
 description: |
   This artifact detects registry changes and triggers an alert. 
@@ -72,4 +72,5 @@ sources:
                         then= Certinfo.Trusted = 'trusted',
                         else= False )
 
-```
+</code></pre>
+

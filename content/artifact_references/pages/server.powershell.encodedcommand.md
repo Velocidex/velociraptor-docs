@@ -11,7 +11,7 @@ NOTE: The client must be running the Windows.Events.ProcessCreation
 event artifact to retrieve process execution logs.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Powershell.EncodedCommand
 description: |
   It is possible to pass powershell an encoded script. This artifact
@@ -46,4 +46,5 @@ reports:
 
       {{ Query "SELECT ClientId, { SELECT os_info.fqdn from clients(client_id=ClientId) } AS FQDN, Script FROM source()" | Table }}
 
-```
+</code></pre>
+

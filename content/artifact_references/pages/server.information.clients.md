@@ -13,7 +13,7 @@ the list of usernames may be outdated if that artifact was not
 collected recently.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Information.Clients
 description: |
   This artifact returns the total list of clients, their hostnames and
@@ -38,4 +38,5 @@ sources:
         FROM clients(count=100000)
         ORDER BY _LastSeenAt DESC
 
-```
+</code></pre>
+

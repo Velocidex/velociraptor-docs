@@ -18,7 +18,7 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.List
 description: |
   Users inserting Thumb drives or other Removable drive pose a
@@ -66,4 +66,5 @@ sources:
           period=10)
           WHERE Diff = "added"
 
-```
+</code></pre>
+

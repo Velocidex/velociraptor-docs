@@ -14,7 +14,7 @@ records the host key for each server connected to, in the Windows Registry.
 - To search for a specific PORT: TargetKeyName =~ '@\<PORT\>:.+$'
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.PuttyHostKeys
 author: Matt Green - @mgreen27
 description: |
@@ -59,4 +59,5 @@ sources:
         AND KeyValue =~ TargetKeyValue
 
 
-```
+</code></pre>
+

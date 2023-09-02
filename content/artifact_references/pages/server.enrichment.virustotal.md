@@ -15,7 +15,7 @@ Ex.
 `TO-DO`: Implement a timer to spread out requests
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.Virustotal
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -65,4 +65,5 @@ sources:
             VTData AS _Data
         FROM Data
 
-```
+</code></pre>
+

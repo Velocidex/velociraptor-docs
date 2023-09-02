@@ -12,7 +12,7 @@ This artifact allows the user to save the collection into a
 Favorites section, which may be used in future.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.SaveFavoriteFlow
 description: |
   Users may collect various artifacts from hosts. Sometimes it might
@@ -49,4 +49,5 @@ sources:
          type=Type)
       FROM scope()
 
-```
+</code></pre>
+

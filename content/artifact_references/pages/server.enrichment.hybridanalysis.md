@@ -13,7 +13,7 @@ Ex.
   `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.HybridAnalysis
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -69,4 +69,5 @@ sources:
                 FROM scope()
             })
 
-```
+</code></pre>
+

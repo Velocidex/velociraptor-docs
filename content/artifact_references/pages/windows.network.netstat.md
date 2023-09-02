@@ -8,7 +8,7 @@ Show information about open sockets. On windows the time when the
 socket was first bound is also shown.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.Netstat
 description: |
   Show information about open sockets. On windows the time when the
@@ -29,4 +29,5 @@ sources:
       Timestamp
     FROM netstat()
 
-```
+</code></pre>
+

@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Parses the auth logs to determine all SSH login attempts.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Syslog.SSHLogin
 description: |
   Parses the auth logs to determine all SSH login attempts.
@@ -44,4 +44,5 @@ sources:
               WHERE Event.program = "sshd"
           })
 
-```
+</code></pre>
+

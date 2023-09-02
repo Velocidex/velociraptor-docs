@@ -9,7 +9,7 @@ This artifact returns process information obtained by parsing the PEB directly.
 Renamed Windows.Forensics.ProcessInfo
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Memory.ProcessInfo
 description: |
    This artifact returns process information obtained by parsing the PEB directly.
@@ -107,4 +107,5 @@ sources:
             SELECT * FROM Calculate(PID=Pid)
         })
 
-```
+</code></pre>
+

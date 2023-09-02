@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Parse dpkg status file.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Debian.Packages
 description: Parse dpkg status file.
 parameters:
@@ -38,4 +38,5 @@ sources:
                Record.Source as Source,
                Record.Architecture as Architecture from packages
 
-```
+</code></pre>
+

@@ -8,7 +8,7 @@ Applications that will be started up from the various run key
 locations.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.StartupItems
 description: |
     Applications that will be started up from the various run key
@@ -101,4 +101,5 @@ sources:
            first=registry_runners,
            second=file_runners)
 
-```
+</code></pre>
+

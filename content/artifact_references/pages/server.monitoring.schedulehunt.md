@@ -9,7 +9,7 @@ artifact to schedule a hunt periodically. You can change it to
 launch other artifacts.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitoring.ScheduleHunt
 description: |
      Run client interrogation periodically. This is a sample event
@@ -43,4 +43,5 @@ sources:
                   description=HuntDescription)
       FROM schedule
 
-```
+</code></pre>
+

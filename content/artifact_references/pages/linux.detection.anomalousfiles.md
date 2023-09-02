@@ -15,7 +15,7 @@ An anomalous file is considered one that matches at least one criteria:
 - With SUID bit set.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Detection.AnomalousFiles
 
 description: |
@@ -60,4 +60,5 @@ sources:
       FROM glob(globs=split(string=PathsToSearch, sep_string=","))
       WHERE IsHidden OR IsLarge OR HasSUID
 
-```
+</code></pre>
+

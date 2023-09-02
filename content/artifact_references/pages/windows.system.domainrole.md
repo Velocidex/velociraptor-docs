@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact will extract Domain Role per machine.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.DomainRole
 author: 'Matt Green - @mgreen27'
 description: |
@@ -53,4 +53,5 @@ sources:
             DNSHostName =~ HostNameRegex
             AND Domain =~ DomainRegex
             AND DomainRole =~ RoleRegex
-```
+</code></pre>
+

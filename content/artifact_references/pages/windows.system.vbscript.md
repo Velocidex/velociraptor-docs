@@ -17,7 +17,7 @@ formatting issues when unicode characters are substituted. Copy script into
 a notepad, save as ASCII then try again.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.VBScript
 author: Matt Green - @mgreen27
 description: |
@@ -49,4 +49,5 @@ sources:
  
       SELECT Stdout 
       FROM execve(argv=['cscript.exe','//NoLogo','/E:vbs',temp_script], sep='\n')
-```
+</code></pre>
+

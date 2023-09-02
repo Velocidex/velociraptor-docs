@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Gets a list of local admin accounts.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.LocalAdmins
 description: |
    Gets a list of local admin accounts.
@@ -45,4 +45,5 @@ sources:
           FROM scope()
       })
 
-```
+</code></pre>
+

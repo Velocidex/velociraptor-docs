@@ -11,7 +11,7 @@ NOTE: For Hostname search is on the hostfile line and regex ^ or $
 is not reccomended.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.HostsFile
 author: Matt Green - @mgreen27
 description: |
@@ -77,4 +77,5 @@ sources:
         Record.Comment AS Comment
       FROM results
 
-```
+</code></pre>
+

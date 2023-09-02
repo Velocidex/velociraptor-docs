@@ -10,7 +10,7 @@ When inbound logging enabled, this file will show all inbound TeamViewer
 connections.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.TeamViewer.Incoming
 description: |
    Parses the TeamViewer Connections_incoming.txt log file.
@@ -114,4 +114,5 @@ sources:
         OSPath
       FROM logsearch(PathList=fspaths)
 
-```
+</code></pre>
+

@@ -14,7 +14,7 @@ binary format. The format is documented
 https://www.freedesktop.org/wiki/Software/systemd/journal-files/
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Forensics.Journal
 description: |
   Parses the binary journal logs. Systemd uses a binary log format to
@@ -147,4 +147,5 @@ sources:
       FROM ParseFile(File=OSPath)
     })
 
-```
+</code></pre>
+

@@ -16,7 +16,7 @@ You can use this to add important information to your specific
 deployment.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Welcome
 description: |
   This is the welcome screen in the Velociraptor GUI. You can
@@ -62,4 +62,5 @@ reports:
 
       </div></div></div>
 
-```
+</code></pre>
+

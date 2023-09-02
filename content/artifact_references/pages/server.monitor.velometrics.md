@@ -7,7 +7,7 @@ tags: [Server Artifact]
 Get Velociraptor server metrics.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitor.VeloMetrics
 description: |
   Get Velociraptor server metrics.
@@ -56,4 +56,5 @@ sources:
                      AS seven_day_active
         FROM stats
 
-```
+</code></pre>
+

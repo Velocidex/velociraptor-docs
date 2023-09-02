@@ -15,7 +15,7 @@ Ex.
   `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.GreyNoise
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -58,4 +58,5 @@ sources:
             GreyNoiseLookup AS _GreyNoiseLookup
         FROM Data
 
-```
+</code></pre>
+

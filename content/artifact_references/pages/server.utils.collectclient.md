@@ -12,7 +12,7 @@ performing all steps automatically:
 3. The results from the collection will be displayed.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.CollectClient
 description: |
   This artifact simplifies collecting from a specific client by
@@ -64,4 +64,5 @@ sources:
            FROM source(client_id=client_id, flow_id=collection.flow_id, artifact=_value)
       })
 
-```
+</code></pre>
+

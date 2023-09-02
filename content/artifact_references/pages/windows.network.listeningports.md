@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Processes with listening (bound) network sockets/ports.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.ListeningPorts
 description: Processes with listening (bound) network sockets/ports.
 sources:
@@ -27,4 +27,5 @@ sources:
             FROM process where Pid = PortPid
           })
 
-```
+</code></pre>
+

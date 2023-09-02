@@ -8,7 +8,7 @@ This server monitoring artifact will automatically export and
 backup selected collected artifacts to a directory on the server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.BackupDirectory
 description: |
    This server monitoring artifact will automatically export and
@@ -52,4 +52,5 @@ sources:
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
 
-```
+</code></pre>
+

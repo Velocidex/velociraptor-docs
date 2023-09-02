@@ -13,7 +13,7 @@ If you run it yourself (or via the API) the results will also be
 shown in the VFS view.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: System.VFS.DownloadFile
 description: |
   This is an internal artifact used by the GUI to populate the
@@ -81,4 +81,5 @@ sources:
         then={ SELECT * FROM download_recursive},
         else={ SELECT * FROM download_one_file})
 
-```
+</code></pre>
+

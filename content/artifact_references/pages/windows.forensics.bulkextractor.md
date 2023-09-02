@@ -40,7 +40,7 @@ endpoint.
 is not ideal from a forensic viewpoint.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.BulkExtractor
 description: |
     This content will execute bulk_extractor with record carving plugins from
@@ -214,4 +214,5 @@ sources:
       FROM glob(globs="/**", root=tempfolder)
       WHERE Upload
 
-```
+</code></pre>
+

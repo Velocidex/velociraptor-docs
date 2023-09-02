@@ -41,7 +41,7 @@ SID name  : NT AUTHORITY\SYSTEM
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Impersonation
 description: |
   An access token is an object that describes the security context of
@@ -103,4 +103,5 @@ sources:
              WHERE ImpersonationToken.User AND ImpersonationToken.User != OwnerSid
           })
 
-```
+</code></pre>
+

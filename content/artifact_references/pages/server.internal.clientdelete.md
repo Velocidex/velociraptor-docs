@@ -7,7 +7,7 @@ tags: [Server Event Artifact]
 An internal queue that receives events when a client is deleted.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.ClientDelete
 description: |
   An internal queue that receives events when a client is deleted.
@@ -20,4 +20,5 @@ column_types:
   - name: Principal
     description: The principal who initiated the deletion.
 
-```
+</code></pre>
+

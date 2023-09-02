@@ -33,7 +33,7 @@ velociraptor-v0.6.7-linux-amd64 artifacts collect Windows.KapeFiles.Extract --ar
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.KapeFiles.Extract
 description: |
   The Windows.KapeFiles.Targets artifact collects files into a Zip
@@ -113,4 +113,5 @@ sources:
           file=RootPathSpec + _Components) AS UploadedFile
       FROM ALLUploads
 
-```
+</code></pre>
+

@@ -17,7 +17,7 @@ permission). Typically it is only available with the `administrator`
 role.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.BashShell
 description: |
   This artifact allows running arbitrary commands through the system
@@ -43,4 +43,5 @@ sources:
   - query: |
       SELECT * FROM execve(argv=["/bin/bash", "-c", Command])
 
-```
+</code></pre>
+

@@ -19,7 +19,7 @@ Limitations: This queries the live registry and therefore does not
 parse data in Windows.old or Regback folders, or VSS.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Persistence.Debug
 description: |
   Windows allows specific configuration of various executables via a
@@ -54,4 +54,5 @@ sources:
         WHERE Debugger
         Order By KeyLastWriteTimestamp
 
-```
+</code></pre>
+

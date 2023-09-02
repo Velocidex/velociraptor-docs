@@ -21,7 +21,7 @@ dict:
    need the SERVER_ARTIFACT_WRITER permission.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Reporting.Default
 
 type: SERVER
@@ -414,4 +414,5 @@ reports:
         </body>
        </html>
 
-```
+</code></pre>
+

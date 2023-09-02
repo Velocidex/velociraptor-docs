@@ -29,7 +29,7 @@ Note: There are potential false positives so whitelist normal source IPs and
 manage risk of insecure ticket generation.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.Kerbroasting
 author: Matt Green - @mgreen27
 
@@ -115,4 +115,5 @@ sources:
         SELECT * FROM evtxsearch(PathList=fspaths)
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

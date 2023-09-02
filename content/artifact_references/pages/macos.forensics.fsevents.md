@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact parses the FSEvents log files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Forensics.FSEvents
 description: |
    This artifact parses the FSEvents log files.
@@ -103,4 +103,5 @@ sources:
       })
       WHERE path =~ PathRegex AND flags =~ FlagsRegex
 
-```
+</code></pre>
+

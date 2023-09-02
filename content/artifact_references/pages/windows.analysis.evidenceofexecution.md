@@ -11,7 +11,7 @@ an overview of all program execution artifacts. The associated
 report walks the user through the analysis of the findings.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Analysis.EvidenceOfExecution
 description: |
   In many investigations it is useful to find evidence of program execution.
@@ -45,4 +45,5 @@ sources:
     query: |
       SELECT * FROM Artifact.Windows.Forensics.RecentApps()
 
-```
+</code></pre>
+

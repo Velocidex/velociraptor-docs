@@ -16,7 +16,7 @@ Best combined with:
 - Windows.Registry.RDP to collect user RDP mru and server info
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.RDPCache
 author: Matt Green - @mgreen27
 description: |
@@ -59,4 +59,5 @@ sources:
       SELECT * FROM if(condition= UploadRDPCache,
         then= upload_results,
         else= results )
-```
+</code></pre>
+

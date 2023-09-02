@@ -12,7 +12,7 @@ has maintains a mapping between keys and values. The data is stored
 per website and can vary.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Applications.Chrome.SessionStorage
 description: |
   Session storage allows a web site to store permanent data in the
@@ -84,4 +84,5 @@ sources:
        FROM DumpSessionStorate(Data=Data)
     })
 
-```
+</code></pre>
+

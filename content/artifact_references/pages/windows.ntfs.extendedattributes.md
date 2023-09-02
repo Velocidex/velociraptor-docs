@@ -17,7 +17,7 @@ By default we only parse $EA and discard $EA_INFORMATION. $EA_INFORMATION
 typically is very small and available in NtfsMetadata field of output.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.NTFS.ExtendedAttributes
 author: "Matt Green - @mgreen27"
 description: |
@@ -158,4 +158,5 @@ sources:
         then=upload_hits,
         else=flatten_results)
 
-```
+</code></pre>
+

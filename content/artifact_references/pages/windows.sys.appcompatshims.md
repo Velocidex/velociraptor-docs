@@ -9,7 +9,7 @@ table presents the AppCompat Shim information from the registry in a
 nice format.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.AppcompatShims
 description: |
   Application Compatibility shims are a way to persist malware. This
@@ -64,4 +64,5 @@ sources:
 
         SELECT * from result
 
-```
+</code></pre>
+

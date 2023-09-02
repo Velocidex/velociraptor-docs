@@ -8,7 +8,7 @@ This artifact will parse /proc and reveal information
 about current network connections.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Network.Netstat
 description: |
    This artifact will parse /proc and reveal information
@@ -84,4 +84,5 @@ sources:
         WHERE sl =~ ":"  -- Remove header row
           AND State =~ StateRegex
 
-```
+</code></pre>
+

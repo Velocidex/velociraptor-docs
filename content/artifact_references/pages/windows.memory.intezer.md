@@ -14,7 +14,7 @@ Analyze: The collected modules are analyzed using Genetic Malware Analysis techn
 View results: https://analyze.intezer.com/ endpoint analysis report.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Memory.Intezer
 description: |
    This artifact will trigger an intezer agent scan on the endpoint.
@@ -55,4 +55,5 @@ sources:
       -- execute payload
       SELECT * FROM execve(argv=[ bin.OSPath[0], '-k', ApiKey ])
 
-```
+</code></pre>
+

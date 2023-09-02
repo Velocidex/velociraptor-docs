@@ -14,7 +14,7 @@ in place of the `auth_value`, `auth_reason`, and `auth_version`
 columns for Catalina and prior.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.TCC
 description: |
    This artifact provides details around the TCC (Transparency,
@@ -69,4 +69,5 @@ sources:
           )
       SELECT * FROM foreach(row=TCCList, query=TCCAccessDetails)
 
-```
+</code></pre>
+

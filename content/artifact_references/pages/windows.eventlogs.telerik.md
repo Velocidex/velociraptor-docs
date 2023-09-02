@@ -20,7 +20,7 @@ context for the hit.
 This Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.Telerik
 description: |
   This Artifact will hunt for evidence of Telerik exploitation in the Application
@@ -117,4 +117,5 @@ sources:
         SELECT * FROM evtxsearch(PathList=fspaths)
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

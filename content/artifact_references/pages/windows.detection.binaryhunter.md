@@ -18,7 +18,7 @@ For most performant searches leverage path, size and and date filters. By defaul
 the artifact leverages the 'auto' data accessor but can also be changed as desired.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.BinaryHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -166,4 +166,5 @@ sources:
                         then= Hash.SHA256 in SHA256Array)
             ), else = True )
 
-```
+</code></pre>
+

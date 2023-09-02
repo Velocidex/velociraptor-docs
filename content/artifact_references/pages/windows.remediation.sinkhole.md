@@ -20,7 +20,7 @@ disabled any sinkhole settings on the Velociraptor agent configuration
 but there are no rail guards on other domains. Use with caution.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Remediation.Sinkhole
 description: |
    **Apply a Sinkhole via Windows hosts file modification**
@@ -214,4 +214,5 @@ sources:
       -- Finally show resultant HostsFile
       SELECT * FROM Artifact.Windows.System.HostsFile(HostsFile=HostsFile)
 
-```
+</code></pre>
+

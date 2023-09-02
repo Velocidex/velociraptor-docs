@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Process the SRUM database.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.SRUM
 description: |
   Process the SRUM database.
@@ -171,4 +171,5 @@ sources:
               GROUP BY App, User,InterfaceLuid
               ORDER BY TotalSent DESC
 
-```
+</code></pre>
+

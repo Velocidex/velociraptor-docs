@@ -17,7 +17,7 @@ Management Task Force (DMTF).
 Please see the second reference link for an example of built in system classes.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.WMIQuery
 author: Matt Green - @mgreen27
 description: |
@@ -56,4 +56,5 @@ sources:
     query: |
        SELECT * FROM wmi(namespace=Namespace,query=WMIQuery)
 
-```
+</code></pre>
+

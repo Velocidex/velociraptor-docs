@@ -22,7 +22,7 @@ impact on the endpoint we recommend this artifact is collected with
 a rate limited way (about 20-50 ops per second).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Search.SMBFileFinder
 description: |
   Find files on a remote filesystem using the filename or content.
@@ -167,4 +167,5 @@ column_types:
   - name: Upload
     type: preview_upload
 
-```
+</code></pre>
+

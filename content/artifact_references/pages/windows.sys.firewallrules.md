@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 List Windows firewall rules.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.FirewallRules
 description: List Windows firewall rules.
 reference:
@@ -52,4 +52,5 @@ sources:
                Record.Name as Name
         FROM rules
 
-```
+</code></pre>
+

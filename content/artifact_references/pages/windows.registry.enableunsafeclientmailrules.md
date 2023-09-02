@@ -12,7 +12,7 @@ HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMail
 https://support.microsoft.com/en-us/help/3191893/how-to-control-the-rule-actions-to-start-an-application-or-run-a-macro
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.EnableUnsafeClientMailRules
 description: |
   Checks for Outlook EnableUnsafeClientMailRules = 1 (turned on).
@@ -62,4 +62,5 @@ sources:
               WHERE EnableUnsafeClientMailRules = 1
            })
 
-```
+</code></pre>
+

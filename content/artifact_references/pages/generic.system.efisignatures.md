@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Collect Efi Signature information from the client.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.System.EfiSignatures
 description: |
   Collect Efi Signature information from the client.
@@ -124,4 +124,5 @@ sources:
                   })
           })
 
-```
+</code></pre>
+

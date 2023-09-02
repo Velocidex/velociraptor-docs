@@ -53,7 +53,7 @@ Of course in the real artifact we would want to include more
 information than just times (i.e. who logged on to where etc).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Demo.Plugins.Fifo
 description: |
   This is a demo of the fifo() plugin. The Fifo plugin collects and
@@ -137,4 +137,5 @@ sources:
            FROM last_5_events GROUP BY SuccessTime
           }) WHERE Count > 3
 
-```
+</code></pre>
+

@@ -16,7 +16,7 @@ Currently handles only GPT (Most common) and Primary Dos partition
 tables
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.PartitionTable
 description: |
   Parses the raw disk for partition tables.
@@ -158,4 +158,5 @@ sources:
               offset=StartOffset, length=10240)) AS Magic
         FROM chain(a=PARTS, b=GPT)
 
-```
+</code></pre>
+

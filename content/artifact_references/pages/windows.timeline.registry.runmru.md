@@ -20,7 +20,7 @@ may exclude very recent entries in transaction (HKCU).  Future
 versions of this content will address this gap.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Timeline.Registry.RunMRU
 description: |
     # Output all available RunMRU registry keys in timeline format.
@@ -158,4 +158,5 @@ sources:
             else={ SELECT * FROM splitOut})
         WHERE if(condition=regexValue, then=message =~ regexValue, else=TRUE)
 
-```
+</code></pre>
+

@@ -10,7 +10,7 @@ There are several filteres availible to the user to filter out and target with
 regex, by default duplicate DNSCache requests are filtered out.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.DNS
 author: Matt Green - @mgreen27
 description: |
@@ -152,4 +152,5 @@ sources:
             AND Process.ImageName =~ ImageRegex
             AND Query =~ QueryRegex
             AND Answer =~ AnswerRegex
-```
+</code></pre>
+

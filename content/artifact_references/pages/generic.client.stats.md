@@ -6,7 +6,7 @@ tags: [Client Event Artifact]
 
 An Event artifact which generates client's CPU and memory statistics.
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Client.Stats
 description: An Event artifact which generates client's CPU and memory statistics.
 parameters:
@@ -108,4 +108,5 @@ column_types:
   - name: ClientId
     type: client_id
 
-```
+</code></pre>
+

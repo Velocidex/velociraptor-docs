@@ -10,7 +10,7 @@ collections to the interrogation service forcing a reindex.
 It should normally not be needed.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.ReIndex
 description: |
   This utility artifact replays all collected Generic.Client.Info
@@ -36,4 +36,5 @@ sources:
         LIMIT 1
       }, workers=10)
 
-```
+</code></pre>
+

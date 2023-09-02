@@ -12,7 +12,7 @@ registry hives around the filesystem for BagMRU keys. Different OS
 versions may have slightly different locations for the MRU keys.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Shellbags
 description: |
   Windows uses the Shellbag keys to store user preferences for GUI
@@ -118,4 +118,5 @@ column_types:
   - name: _RawData
     type: base64
 
-```
+</code></pre>
+

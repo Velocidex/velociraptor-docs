@@ -13,7 +13,7 @@ created in the previous step in the TraceFile. This will then
 convert the .etl to a PCAP and upload it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.PacketCapture
 author: Cybereason <omer.yampel@cybereason.com>
 description: |
@@ -86,4 +86,5 @@ sources:
                 else={ SELECT * FROM end_trace }
         )
 
-```
+</code></pre>
+

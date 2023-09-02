@@ -13,7 +13,7 @@ Alternatively, edit the Welcome screen at the
 `Server.Internal.Welcome` artifact.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitor.Health
 description: |
   This is the main server health dashboard. It is shown on the
@@ -106,4 +106,5 @@ reports:
 
       {{ Query "SELECT Version FROM config" | Table }}
 
-```
+</code></pre>
+

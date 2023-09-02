@@ -17,7 +17,7 @@ NOTE: Do not modify the BasicInformation source since it is used to
 interrogate the clients.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Client.Info
 description: |
   Collect basic information about the client.
@@ -164,4 +164,5 @@ column_types:
   - name: LastLogin
     type: timestamp
 
-```
+</code></pre>
+

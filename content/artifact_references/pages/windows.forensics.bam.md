@@ -12,7 +12,7 @@ It provides full path of the executable file that was run on the
 system and last execution date/time
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Bam
 description: |
   The Background Activity Moderator (BAM) is a Windows service that
@@ -55,4 +55,5 @@ sources:
         FROM glob(globs=bamKeys.KeyGlob, accessor="registry")
         WHERE Data.type =~ "BINARY"
 
-```
+</code></pre>
+

@@ -13,7 +13,7 @@ valuable metadata. This artifact parses this metadata to establish
 what was downloaded and when.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.CertUtil
 description: |
   The Windows Certutil binary is capable of downloading arbitrary
@@ -122,4 +122,5 @@ sources:
       FROM Files
       WHERE NOT URL =~ URLRegex
 
-```
+</code></pre>
+

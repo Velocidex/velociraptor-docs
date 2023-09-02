@@ -18,7 +18,7 @@ Please only use these switches after scoping as there are no guardrails on
 shooting yourself in the foot.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.NetstatEnriched
 author: "Matt Green - @mgreen27"
 description: |
@@ -245,4 +245,5 @@ sources:
             catch = results
         )
 
-```
+</code></pre>
+

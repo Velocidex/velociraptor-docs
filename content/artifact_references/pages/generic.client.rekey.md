@@ -21,7 +21,7 @@ client. Reduce this number if you need to rekey a lot of clients
 quickly.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Client.Rekey
 description: |
   This artifact forces the client to reinitialize it's client id.
@@ -53,4 +53,5 @@ sources:
   - query:
       SELECT rekey(wait=Wait) FROM scope()
 
-```
+</code></pre>
+

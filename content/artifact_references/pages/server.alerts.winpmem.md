@@ -11,7 +11,7 @@ Note this requires that the Windows.Event.ServiceCreation
 monitoring artifact be collected from clients.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Alerts.WinPmem
 description: |
    Send an email if the pmem service has been installed on any of the
@@ -50,4 +50,5 @@ sources:
           )
         })
 
-```
+</code></pre>
+

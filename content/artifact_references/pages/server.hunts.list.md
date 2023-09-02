@@ -7,7 +7,7 @@ tags: [Server Artifact]
 List Hunts currently scheduled on the server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Hunts.List
 description: |
   List Hunts currently scheduled on the server.
@@ -22,4 +22,5 @@ sources:
              state
       FROM hunts()
 
-```
+</code></pre>
+

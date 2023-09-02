@@ -15,7 +15,7 @@ profile: /{root,home/*}/.*_profile
 tags: .bash_history .bash_profile .bashrc
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.BashHistory
 author: "Matt Green - @mgreen27"
 description: |
@@ -56,4 +56,5 @@ sources:
                     else= FALSE)
           })
 
-```
+</code></pre>
+

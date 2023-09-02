@@ -9,7 +9,7 @@ replication service on the slave nodes which will notify the target
 specified.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Ping
 description: |
   An internal queue for Ping requests. The queue is watched by the
@@ -22,4 +22,5 @@ column_types:
   - name: ClientId
   - name: NotifyTarget
 
-```
+</code></pre>
+

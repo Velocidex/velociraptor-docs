@@ -16,7 +16,7 @@ files - we will just relay our stdout/stderr to the artifact's
 result set.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Admin.Events.PostProcessUploads
 description: |
   Sometimes we would like to post process uploads collected as part of
@@ -64,4 +64,5 @@ sources:
              FROM execve(argv=Argv)
           })
 
-```
+</code></pre>
+

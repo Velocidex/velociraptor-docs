@@ -9,7 +9,7 @@ information from the last time we collected Windows.Sys.Users. If we
 never collected it for this machine, there will be no results.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Information.Users
 description: |
   List the user names and SIDs on each machine. We get this
@@ -52,4 +52,5 @@ sources:
 
         SELECT * FROM foreach(row=clients, query=users)
 
-```
+</code></pre>
+

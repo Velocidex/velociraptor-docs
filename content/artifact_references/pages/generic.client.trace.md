@@ -15,7 +15,7 @@ until the timeout is reached.
 Minimum Version: 0.6.8
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Client.Trace
 description: |
   This artifact collects profiling information about the running
@@ -41,4 +41,5 @@ sources:
        FROM clock(start=0, period=FrequencySec)
     })
 
-```
+</code></pre>
+

@@ -21,7 +21,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Chrome.Extensions
 description: |
   Fetch Chrome extensions.
@@ -159,4 +159,5 @@ sources:
 
         FROM parsed_manifest_files
 
-```
+</code></pre>
+

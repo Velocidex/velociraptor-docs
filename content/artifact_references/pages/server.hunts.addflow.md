@@ -12,7 +12,7 @@ timeout. Then they can simply click the add flow to hunt button in
 the UI to add the flow to an existing time.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Hunts.AddFlow
 description: |
   This artifact adds an exisiting flow to a running hunt.
@@ -42,4 +42,5 @@ sources:
          log(message="<red>ERROR</>: You must set HuntId, ClientId and FlowId.") AND FALSE
       })
 
-```
+</code></pre>
+

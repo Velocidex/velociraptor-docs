@@ -12,7 +12,7 @@ permanently. Since this is a sensitive operation, typically only
 users with the administrator role can run it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteFlow
 description: |
   This artifact permanently deletes a flow including it's metadata and
@@ -43,4 +43,5 @@ sources:
        SELECT Type, Data.VFSPath AS VFSPath, Error
        FROM delete_flow(flow_id=FlowId, client_id=ClientId, really_do_it=ReallyDoIt)
 
-```
+</code></pre>
+

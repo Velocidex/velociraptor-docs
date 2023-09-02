@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Enumerate the users chrome history.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Edge.History
 description: |
   Enumerate the users chrome history.
@@ -34,4 +34,5 @@ sources:
          historyGlobs=historyGlobs, urlSQLQuery=urlSQLQuery,
          userRegex=userRegex)
 
-```
+</code></pre>
+

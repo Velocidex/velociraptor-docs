@@ -9,7 +9,7 @@ artifacts. This pack was generated from
 https://github.com/teoseller/osquery-attck
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Attack.Prefetch
 description: |
    Maps the Mitre Att&ck framework process executions into
@@ -93,4 +93,5 @@ reports:
 
       {{ Query "SELECT modified * 1000, Name FROM foreach(row=lookup, query={ SELECT * FROM data WHERE Name =~ signature})" | Timeline }}
 
-```
+</code></pre>
+

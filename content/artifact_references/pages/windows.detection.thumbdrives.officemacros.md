@@ -16,7 +16,7 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.OfficeMacros
 description: |
   Users inserting Thumb drives or other Removable drive pose a
@@ -48,4 +48,5 @@ sources:
             SELECT * from olevba(file=OSPath)
           })
 
-```
+</code></pre>
+

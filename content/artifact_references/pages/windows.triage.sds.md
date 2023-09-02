@@ -11,7 +11,7 @@ artifact which relies on globbing. Use this artifact to collect the
 $SDS stream.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Triage.SDS
 description: |
   Collects the $Secure:$SDS stream from the NTFS volume. The $Secure
@@ -38,4 +38,5 @@ sources:
       FROM foreach(row=parse_ntfs(device=Device, mft=9).Attributes, column="_value")
       WHERE Name =~ "\\$S" AND TypeId IN (128, 160)
 
-```
+</code></pre>
+

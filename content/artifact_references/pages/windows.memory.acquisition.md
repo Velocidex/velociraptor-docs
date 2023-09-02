@@ -11,7 +11,7 @@ NOTE: This artifact usually transfers a lot of data. You should
 increase the default timeout to allow it to complete.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Memory.Acquisition
 description: |
   Acquires a full memory image. We download winpmem and use it to
@@ -42,4 +42,5 @@ sources:
             FROM execve(argv=[OSPath, Tempfile], sep="\r\n")
         })
 
-```
+</code></pre>
+

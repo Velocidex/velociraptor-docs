@@ -16,7 +16,7 @@ This tracker DOES NOT require sysmon and is **incompatible** with
 Windows.Events.TrackProcesses (only one should be running).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.TrackProcessesBasic
 description: |
   This artifact is a basic Process tracker using a simple polled
@@ -60,4 +60,5 @@ sources:
       SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats"
 
-```
+</code></pre>
+

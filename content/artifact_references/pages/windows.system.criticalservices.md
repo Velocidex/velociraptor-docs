@@ -11,7 +11,7 @@ The default list contains virus scanners. If the software is not
 installed at all, it will not be shown.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.CriticalServices
 description: |
   This artifact returns information about any services which are
@@ -47,4 +47,5 @@ sources:
          FROM Artifact.Windows.System.Services()
          WHERE Critical AND State != "Running"
 
-```
+</code></pre>
+

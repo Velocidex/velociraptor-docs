@@ -15,7 +15,7 @@ using raw NTFS parsing (in case the user is currently logged on and
 the registry hive is locked).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Persistence.PowershellRegistry
 description: |
   A common way of persistence is to install a hook into a user profile
@@ -64,4 +64,5 @@ sources:
               rules=yaraRule, context=50)
         })
 
-```
+</code></pre>
+

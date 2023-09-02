@@ -18,7 +18,7 @@ There are several parameter's available for search leveraging regex.
   - SearchVSS enables VSS search
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.PowershellModule
 description: |
   This Artifact will search and extract Module events (Event ID 4103) from
@@ -127,4 +127,5 @@ sources:
         FROM hits
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

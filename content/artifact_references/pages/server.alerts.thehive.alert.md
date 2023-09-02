@@ -10,7 +10,7 @@ Much of this was borrowed from: https://gist.github.com/scudette/3a32abd19350c8f
 It is recommended to use the Server Metadata section to store credentials, instead of having to store directly inside the artifact.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Alerts.TheHive.Alert
 description: |
    Create a TheHive alert when monitored artifacts complete with results.
@@ -65,4 +65,5 @@ sources:
           url=format(format="%v/api/alert", args=[TheHiveURL]))
        })
 
-```
+</code></pre>
+

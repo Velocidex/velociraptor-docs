@@ -25,7 +25,7 @@ will not update the execution counter or time. Therefore there may be
 some executions that have a 0 time and 0 runcount.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.UserAssist
 description: |
   Windows systems maintain a set of keys in the registry database
@@ -117,4 +117,5 @@ sources:
           },
           else={ SELECT * FROM A1})
 
-```
+</code></pre>
+

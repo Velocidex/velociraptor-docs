@@ -34,7 +34,7 @@ This artifact is useful in the following scenarios:
     locate other similar files
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Search.FileFinder
 description: |
   Find files on the filesystem using the filename or content.
@@ -237,4 +237,5 @@ column_types:
   - name: Upload
     type: preview_upload
 
-```
+</code></pre>
+

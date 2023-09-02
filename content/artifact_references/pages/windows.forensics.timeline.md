@@ -14,7 +14,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Timeline
 description: |
   Win10 records recently used applications and files in a “timeline”
@@ -76,4 +76,5 @@ sources:
             SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
 
-```
+</code></pre>
+

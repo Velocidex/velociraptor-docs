@@ -21,7 +21,7 @@ is to run this artifact on only a handful of machines in a typical domain,
 then deduplicate output.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ActiveDirectory.BloodHound
 description: |
    This artifact allows deployment of the BloodHound collection tool Sharphound.
@@ -99,4 +99,5 @@ sources:
         },
         else=deploy)
 
-```
+</code></pre>
+

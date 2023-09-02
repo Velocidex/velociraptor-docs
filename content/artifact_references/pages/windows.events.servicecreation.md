@@ -15,7 +15,7 @@ This event monitor extracts the service creation events from the
 event log and records them on the server.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.ServiceCreation
 description: |
   Monitor for creation of new services.
@@ -49,4 +49,5 @@ sources:
                System as _System
         FROM watch_evtx(filename=systemLogFile) WHERE EventID = 7045
 
-```
+</code></pre>
+

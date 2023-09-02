@@ -19,7 +19,7 @@ WMI Eventing components:
 - __EventConsumer - payload
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Persistence.PermanentWMIEvents
 author: Matt Green - @mgreen27
 description: |
@@ -96,4 +96,5 @@ sources:
                  FROM FilterToConsumerBinding
                  WHERE (FilterDetails OR ConsumerDetails)
             },workers=len(list=namespaces))
-```
+</code></pre>
+

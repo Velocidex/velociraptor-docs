@@ -28,7 +28,7 @@ On windows, there are two types of logs:
      by default. If it is available we can rely on the information.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.DHCP
 description: |
 
@@ -158,4 +158,5 @@ reports:
 
       {{ Query "SELECT _Time * 1000, ClientIP FROM source(source='RejectedDHCP')" | Timeline }}
 
-```
+</code></pre>
+

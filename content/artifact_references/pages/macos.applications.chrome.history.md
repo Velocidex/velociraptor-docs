@@ -12,7 +12,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Applications.Chrome.History
 description: |
   Read all User's chrome history.
@@ -55,4 +55,5 @@ sources:
              query=urlSQLQuery)
           })
 
-```
+</code></pre>
+

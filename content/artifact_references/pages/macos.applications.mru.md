@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Parse the MRU from MacOS users
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Applications.MRU
 description: |
    Parse the MRU from MacOS users
@@ -172,4 +172,5 @@ sources:
           })
         })
 
-```
+</code></pre>
+

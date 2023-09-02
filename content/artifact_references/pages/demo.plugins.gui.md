@@ -9,7 +9,7 @@ A demo plugin showing some GUI features.
 This plugin is also used for tests.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Demo.Plugins.GUI
 description: |
   A demo plugin showing some GUI features.
@@ -357,4 +357,5 @@ sources:
                         name="test.txt") AS Upload
           FROM source()
 
-```
+</code></pre>
+

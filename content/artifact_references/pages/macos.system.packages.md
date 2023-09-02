@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Parse packages installed on Macs
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.Packages
 description: |
   Parse packages installed on Macs
@@ -35,4 +35,5 @@ sources:
         FROM foreach(
            row=packages[0].Json.SPApplicationsDataType)
 
-```
+</code></pre>
+

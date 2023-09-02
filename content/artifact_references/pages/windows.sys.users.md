@@ -13,7 +13,7 @@ This will not include domain users or the output from `NetUserEnum`
 possible users on the system.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.Users
 description: |
   List User accounts by inspecting registry keys. This method is a
@@ -55,4 +55,5 @@ sources:
            ) AS Data
         FROM read_reg_key(globs=remoteRegKey, accessor="registry")
 
-```
+</code></pre>
+

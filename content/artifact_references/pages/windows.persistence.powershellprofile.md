@@ -17,7 +17,7 @@ configured profiles. The user can also targert and exclude specific content
 with relevant regex filters
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Persistence.PowershellProfile
 author: Matt Green - @mgreen27
 description: |
@@ -80,4 +80,5 @@ sources:
                         then= Content=~StringWhiteList,
                         else= False)
 
-```
+</code></pre>
+

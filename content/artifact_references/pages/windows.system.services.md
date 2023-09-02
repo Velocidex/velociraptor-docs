@@ -7,7 +7,7 @@ tags: [Client Artifact]
 List Service details.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.Services
 description: |
   List Service details.
@@ -114,4 +114,5 @@ sources:
                     then=authenticode(filename=ServiceDll || " ")) AS CertinfoServiceDll
       FROM service
 
-```
+</code></pre>
+

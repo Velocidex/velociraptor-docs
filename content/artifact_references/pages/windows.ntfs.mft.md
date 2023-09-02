@@ -31,7 +31,7 @@ Multiple filters are cumulative.
 OSPath output now uses expected Windows backslash "`\`".
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.NTFS.MFT
 author: "Matt Green - @mgreen27"
 description: |
@@ -299,4 +299,5 @@ sources:
         then= enriched_results,
         else= results)
 
-```
+</code></pre>
+

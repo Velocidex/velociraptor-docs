@@ -15,7 +15,7 @@ For most performant searches leverage path, size and and date filters. By defaul
 the artifact leverages the 'auto' data accessor but can also be changed as desired.  
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Detection.HashHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -117,4 +117,5 @@ sources:
         FROM if(condition= HashSelector.Hash, then= find_files)
         WHERE 
             ( Hash.MD5 in MD5List OR Hash.SHA1 in SHA1List OR Hash.SHA256 in SHA256List )
-```
+</code></pre>
+
