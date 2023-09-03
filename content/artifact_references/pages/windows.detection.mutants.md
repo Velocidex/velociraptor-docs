@@ -34,7 +34,7 @@ sources:
     query: |
         LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM pslist()
-        WHERE ProcName =~ processRegex AND ProcPid > 0
+        WHERE ProcName =~ processRegex AND ProcPid &gt; 0
 
         SELECT * FROM foreach(
           row=processes,

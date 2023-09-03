@@ -30,7 +30,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET Device <= pathspec(parse=Drive)
+      LET Device &lt;= pathspec(parse=Drive)
 
       SELECT *, upload(accessor="mft",
                        file=Device + Inode,

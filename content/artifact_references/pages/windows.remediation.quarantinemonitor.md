@@ -47,12 +47,12 @@ parameters:
 
 precondition:
   SELECT OS FROM info() WHERE OS = "windows"
-     AND version(function="atexit") >= 0
+     AND version(function="atexit") &gt;= 0
 
 sources:
   - query: |
       -- When the query is done we unset the policy.
-      LET _ <= atexit(query={
+      LET _ &lt;= atexit(query={
          SELECT * FROM Artifact.Windows.Remediation.Quarantine(
            PolicyName=PolicyName, RemovePolicy=TRUE)
       })

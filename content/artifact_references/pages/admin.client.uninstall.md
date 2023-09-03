@@ -99,7 +99,7 @@ sources:
       WHERE OS = 'darwin'
 
     query:  |
-      LET me <= SELECT Exe FROM info()
+      LET me &lt;= SELECT Exe FROM info()
 
       SELECT * FROM if(condition=ReallyDoIt,
       then={

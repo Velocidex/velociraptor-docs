@@ -75,15 +75,15 @@ export: |
          ["tab_size", 84, "uint32"],
          ["entries", 0, "Profile", {
             type: "Array",
-            offset: "x=>x.tab_start_lba * 512",
+            offset: "x=&gt;x.tab_start_lba * 512",
             type_options: {
              type: "GPTEntry",
-             count: "x=>x.tab_num",
+             count: "x=&gt;x.tab_num",
             }}]
         ]],
         ["GPTEntry", 128, [
           ["Offset", 0, "Value", {
-              value: "x=>x.StartOf",
+              value: "x=&gt;x.StartOf",
           }],
           ["type_guid", 0, GUID],
           ["id_guid", 16, GUID],
@@ -101,7 +101,7 @@ export: |
           ["__D4", 6, "String", {"term": "", "length": 2}],
           ["__D5", 8, "String", {"term": "", "length": 6}],
           ["Value", 0, "Value", {
-            "value": "x=>format(format='{%08x-%04x-%04x-%02x-%02x}', args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5])"
+            "value": "x=&gt;format(format='{%08x-%04x-%04x-%02x-%02x}', args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5])"
           }]
         ]]
         ]
@@ -109,13 +109,13 @@ export: |
 
 sources:
   - query: |
-        LET GPTHeader <= parse_binary(filename=ImagePath,
+        LET GPTHeader &lt;= parse_binary(filename=ImagePath,
            accessor="raw_file",
            profile=MBRProfile,
            struct="GPTHeader",
            offset=SectorSize)
 
-        LET PrimaryPartitions <= parse_binary(filename=ImagePath,
+        LET PrimaryPartitions &lt;= parse_binary(filename=ImagePath,
            accessor="raw_file",
            profile=MBRProfile,
            struct="MBRHeader",
@@ -130,7 +130,7 @@ sources:
                  humanize(bytes=(end_lba - start_lba) * SectorSize) AS Size,
                  name
           FROM foreach(row=GPTHeader.entries)
-          WHERE start_lba > 0
+          WHERE start_lba &gt; 0
         })
 
         -- Display primary partitions
@@ -139,7 +139,7 @@ sources:
             humanize(bytes=size_sec * SectorSize) AS Size,
             ptype AS name
         FROM foreach(row=PrimaryPartitions.PrimaryPartitions)
-        WHERE start_sec > 0
+        WHERE start_sec &gt; 0
 
         SELECT StartOffset, EndOffset, Size, name, {
               SELECT OSPath.Path AS OSPath

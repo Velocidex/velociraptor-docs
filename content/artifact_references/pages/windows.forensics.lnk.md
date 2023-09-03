@@ -96,7 +96,7 @@ export: |
             "term": ""
         }],
         ["LinkClsID", 0, "Value", {
-            "value": "x=>format(format='%x', args=x.__LinkClsID)"
+            "value": "x=&gt;format(format='%x', args=x.__LinkClsID)"
         }],
         ["LinkFlags", 20, "Flags", {
             "type": "uint32",
@@ -244,22 +244,22 @@ export: |
             }
         }],
         ["HotKey", 0, "Value", {
-            "value": "x=>if(condition= x.__HotKeyLow=~'No key assigned',
+            "value": "x=&gt;if(condition= x.__HotKeyLow=~'No key assigned',
                             then=x.__HotKeyLow,
                             else=x.__HotKeyLow + ' + ' + x.__HotKeyHigh)"
             
         }],
         
         # The LinkTargetIDList only exists if the Link Flag is set otherwise it is empty.
-        ["LinkTargetIDList", "x=>x.HeaderSize", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasLinkTargetIDList'",
+        ["LinkTargetIDList", "x=&gt;x.HeaderSize", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasLinkTargetIDList'",
             "choices": {
                 "true": "LinkTargetIDList",
                 "false": "Empty"
             }
         }],
-        ["LinkInfo", "x=>x.LinkTargetIDList.EndOf", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasLinkInfo'",
+        ["LinkInfo", "x=&gt;x.LinkTargetIDList.EndOf", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasLinkInfo'",
             "choices": {
                 "true": "LinkInfo",
                 "false": "Empty"
@@ -267,52 +267,52 @@ export: |
         }],
         
         # StringData flag checks
-        ["__Name", "x=>x.LinkInfo.EndOf", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasName'",
+        ["__Name", "x=&gt;x.LinkInfo.EndOf", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasName'",
             "choices": {
                 "true": "Name",
                 "false": "Empty"
             }
         }],
-        ["__RelativePath", "x=>x.__Name.EndOf", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasRelativePath'",
+        ["__RelativePath", "x=&gt;x.__Name.EndOf", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasRelativePath'",
             "choices": {
                 "true": "RelativePath",
                 "false": "Empty"
             }
         }],
-        ["__WorkingDir", "x=>x.__RelativePath.EndOf", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasWorkingDir'",
+        ["__WorkingDir", "x=&gt;x.__RelativePath.EndOf", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasWorkingDir'",
             "choices": {
                 "true": "WorkingDir",
                 "false": "Empty"
             }
         }],
-        ["__Arguments", "x=>x.__WorkingDir.EndOf", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasArguments'",
+        ["__Arguments", "x=&gt;x.__WorkingDir.EndOf", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasArguments'",
             "choices": {
                 "true": "Arguments",
                 "false": "Empty"
             }
         }],
-        ["__IconLocation", "x=>x.__Arguments.EndOf", "Union", {
-            "selector": "x=>x.LinkFlags =~ 'HasIconLocation'",
+        ["__IconLocation", "x=&gt;x.__Arguments.EndOf", "Union", {
+            "selector": "x=&gt;x.LinkFlags =~ 'HasIconLocation'",
             "choices": {
                 "true": "IconLocation",
                 "false": "Empty"
             }
         }],
         ["StringData",0,"StringData"],
-        ["ExtraData", "x=>x.__IconLocation.EndOf", "Array", {
+        ["ExtraData", "x=&gt;x.__IconLocation.EndOf", "Array", {
                 "type": "ExtraData",
                 "count": 1000,
-                "sentinal": "x=>x.Size < 0x00000004"
+                "sentinal": "x=&gt;x.Size &lt; 0x00000004"
             }],
       ]],
       ["Empty", 0, []],
       
       # Struct size includes the size field
-      ["LinkTargetIDList", "x=>x.IDListSize + 2", [
+      ["LinkTargetIDList", "x=&gt;x.IDListSize + 2", [
         ["IDListSize", 0, "uint16"],
         ["IDList", 2, "Array", {
            "type": "ItemIDList",
@@ -321,9 +321,9 @@ export: |
       ]],
 
       # Item List contains shell bags
-      ["ItemIDList", "x=>x.ItemIDSize", [
+      ["ItemIDList", "x=&gt;x.ItemIDSize", [
         ["ItemIDSize", 0, "uint16"],
-        ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
+        ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
         ["Type", 2, "BitField", {
           "type": "uint8",
           "start_bit": 4,
@@ -338,7 +338,7 @@ export: |
 
         # For now only support some common shell bags
         ["ShellBag", 0, "Union", {
-           "selector": "x=>x.Type",
+           "selector": "x=&gt;x.Type",
             "choices": {
                "64": "ShellBag0x40",
                "48": "ShellBag0x30",
@@ -353,7 +353,7 @@ export: |
             encoding: "utf8",
          }],
          ["Description", 0, "Value", {
-             "value": 'x=>dict(
+             "value": 'x=&gt;dict(
              Type="NetworkLocation",
              ShortName=x.Name
              )'
@@ -361,8 +361,8 @@ export: |
       ]],
 
       # A LinkInfo stores information about the destination of the link.
-      ["LinkInfo", "x=>x.__LinkInfoSize", [
-        ["__LinkInfoOffset", 0, "Value", {"value": "x=>x.StartOf"}],
+      ["LinkInfo", "x=&gt;x.__LinkInfoSize", [
+        ["__LinkInfoOffset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
         ["__LinkInfoSize", 0, "uint32"],
         ["__LinkInfoHeaderSize", 4, "uint32"],
         ["LinkInfoFlags", 8, "Flags", {
@@ -376,14 +376,14 @@ export: |
         ["__LocalBasePathOffset", 16, "uint32"],
         ["__CommonNetworkRelativeLinkOffset", 20, "uint32"],
         ["__CommonPathSuffixOffset", 24, "uint32"],
-        ["__LocalBasePath", "x=>x.__LocalBasePathOffset", "String", {}],
-        ["__CommonNetworkRelativePath", "x=>x.__CommonNetworkRelativeLinkOffset", "String"],
-        ["__CommonPathSuffix", "x=>x.__CommonPathSuffixOffset", "String"],
-        ["__VolumeID", "x=>x.__VolumeIDOffset", "VolumeID"],
-        ["__CommonNetworkRelativeLink", "x=>x.__CommonNetworkRelativeLinkOffset", "CommonNetworkRelativeLink"],
+        ["__LocalBasePath", "x=&gt;x.__LocalBasePathOffset", "String", {}],
+        ["__CommonNetworkRelativePath", "x=&gt;x.__CommonNetworkRelativeLinkOffset", "String"],
+        ["__CommonPathSuffix", "x=&gt;x.__CommonPathSuffixOffset", "String"],
+        ["__VolumeID", "x=&gt;x.__VolumeIDOffset", "VolumeID"],
+        ["__CommonNetworkRelativeLink", "x=&gt;x.__CommonNetworkRelativeLinkOffset", "CommonNetworkRelativeLink"],
         ["Target", 0, "Value", { # Depending on the LinkInfoFlags this struct needs to be interpreted differently.
             "value": '
-               x=>if(condition=x.LinkInfoFlags =~ "VolumeIDAndLocalBasePath",
+               x=&gt;if(condition=x.LinkInfoFlags =~ "VolumeIDAndLocalBasePath",
                      then=dict(Path=x.__LocalBasePath,
                                VolumeInfo=x.__VolumeID),
                      else=dict(Path=format(format="%v\\%v",
@@ -451,15 +451,15 @@ export: |
         }],
         ["__NetNameOffsetUnicode", 20, "uint32"],
         ["__DeviceNameOffsetUnicode", 24, "uint32"],
-        ["__NetNameAscii", "x=>x.__NetNameOffset", "String"],
-        ["__DeviceNameAscii", "x=>x.__DeviceNameOffset", "String"],
-        ["__NetNameUnicode", "x=>x.__NetNameOffsetUnicode", "String", {"encoding": "utf16"}],
-        ["__DeviceNameUnicode", "x=>x.__DeviceNameOffsetUnicode", "String", {"encoding": "utf16"}],
+        ["__NetNameAscii", "x=&gt;x.__NetNameOffset", "String"],
+        ["__DeviceNameAscii", "x=&gt;x.__DeviceNameOffset", "String"],
+        ["__NetNameUnicode", "x=&gt;x.__NetNameOffsetUnicode", "String", {"encoding": "utf16"}],
+        ["__DeviceNameUnicode", "x=&gt;x.__DeviceNameOffsetUnicode", "String", {"encoding": "utf16"}],
         ["NetName", 0, "Value", {
-            "value": "x=>if(condition=x.__NetNameOffset, then=x.__NetNameAscii, else=x.__NetNameUnicode)"
+            "value": "x=&gt;if(condition=x.__NetNameOffset, then=x.__NetNameAscii, else=x.__NetNameUnicode)"
         }],
         ["DeviceName", 0, "Value", {
-            "value": "x=>if(condition=x.__DeviceNameOffset, then=x.__DeviceNameAscii, else=x.__DeviceNameUnicode)"
+            "value": "x=&gt;if(condition=x.__DeviceNameOffset, then=x.__DeviceNameAscii, else=x.__DeviceNameUnicode)"
         }]
       ]],
 
@@ -481,10 +481,10 @@ export: |
         ["DriveSerialNumber", 8, "uint32"],
         ["__VolumeLabelOffset", 12, "uint32"],
         ["__VolumeLabelOffsetUnicode", 16, "uint32"],
-        ["__VolumeLabelAscii", "x=>x.__VolumeLabelOffset", "String"],
-        ["__VolumeLabelUnicode", "x=>x.__VolumeLabelOffsetUnicode", "String", {"encoding": "utf16"}],
+        ["__VolumeLabelAscii", "x=&gt;x.__VolumeLabelOffset", "String"],
+        ["__VolumeLabelUnicode", "x=&gt;x.__VolumeLabelOffsetUnicode", "String", {"encoding": "utf16"}],
         ["VolumeLabel", 0, "Value", {
-            "value": 'x=>if(condition=x.__VolumeLabelOffset,
+            "value": 'x=&gt;if(condition=x.__VolumeLabelOffset,
                then=x.__VolumeLabelAscii, else=x.__VolumeLabelUnicode)'
         }]
       ]],
@@ -494,10 +494,10 @@ export: |
          ["__Name", 3, "String"],
          # Name is only valid if the first bit is set.
          ["Name", 3, "Value", {
-             "value": "x=>if(condition=x.ParentOf.Subtype, then=x.__Name, else='')",
+             "value": "x=&gt;if(condition=x.ParentOf.Subtype, then=x.__Name, else='')",
          }],
          ["Description", 0, "Value", {
-            "value": 'x=>dict(
+            "value": 'x=&gt;dict(
                 LongName=x.Name,
                 ShortName=x.Name,
                 Type="Volume"
@@ -508,7 +508,7 @@ export: |
       # Marks the root class My Computer
       ["ShellBag0x1f", 0, [
         ["Description", 0, "Value", {
-            "value": 'x=>dict(
+            "value": 'x=&gt;dict(
                ShortName="My Computer",
                Type="Root"
             )'
@@ -537,11 +537,11 @@ export: |
         }],
 
         # The extension tag should be immediately after the search string.
-        ["__ExtensionTag", "x=>len(list=x.__pre)", "uint32"],
+        ["__ExtensionTag", "x=&gt;len(list=x.__pre)", "uint32"],
 
             # Extension starts 4 bytes before the tag
-            ["Extension", "x=>len(list=x.__pre) - 4", "Union", {
-                "selector": "x=>format(format='%#x', args=x.__ExtensionTag)",
+            ["Extension", "x=&gt;len(list=x.__pre) - 4", "Union", {
+                "selector": "x=&gt;format(format='%#x', args=x.__ExtensionTag)",
                 "choices": {
                     "0xbeef0004": "Beef0004",
                 }
@@ -549,7 +549,7 @@ export: |
 
             # Put all the data together in a convenient location
             ["Description", 0, "Value", {
-                "value": 'x=>dict(
+                "value": 'x=&gt;dict(
                     Type=x.SubType,
                     Modified=if(condition=x.__LastModificationTime, then=x.LastModificationTime),
                     LastAccessed=if(condition=x.Extension.__LastAccessed, then=x.Extension.LastAccessed),
@@ -566,7 +566,7 @@ export: |
             ["Version", 2, "uint16"],
             ["__Signature", 4, "uint32"],
             ["Signature", 0, "Value", {
-                "value": "x=>format(format='%#x', args=x.__Signature)"
+                "value": "x=&gt;format(format='%#x', args=x.__Signature)"
             }],
             ["__CreateDate", 8, "uint32"],
             ["__LastAccessed", 12, "uint32"],
@@ -592,76 +592,76 @@ export: |
         ]],
         
         ["StringData",0,[
-            ["TargetPath",0,"Value",{ "value":"x=> x.ParentOf.LinkInfo.Target.Path"}],
-            ["Name",0,"Value",{ "value":"x=> x.ParentOf.__Name.StringData"}],
-            ["RelativePath",0,"Value",{ "value":"x=> x.ParentOf.__RelativePath.StringData"}],
-            ["WorkingDir",0,"Value",{ "value":"x=> x.ParentOf__WorkingDir.StringData"}],
-            ["Arguments",0,"Value",{ "value":"x=> x.ParentOf.__Arguments.StringData"}],
-            ["IconLocation",0,"Value",{ "value":"x=> x.ParentOf.__IconLocation.StringData"}],
+            ["TargetPath",0,"Value",{ "value":"x=&gt; x.ParentOf.LinkInfo.Target.Path"}],
+            ["Name",0,"Value",{ "value":"x=&gt; x.ParentOf.__Name.StringData"}],
+            ["RelativePath",0,"Value",{ "value":"x=&gt; x.ParentOf.__RelativePath.StringData"}],
+            ["WorkingDir",0,"Value",{ "value":"x=&gt; x.ParentOf__WorkingDir.StringData"}],
+            ["Arguments",0,"Value",{ "value":"x=&gt; x.ParentOf.__Arguments.StringData"}],
+            ["IconLocation",0,"Value",{ "value":"x=&gt; x.ParentOf.__IconLocation.StringData"}],
         ]],
         
         ## StringDataBlock structs
-        ["Name", "x=>x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
+        ["Name", "x=&gt;x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=>x.Size",
+                "length": "x=&gt;x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["WorkingDir", "x=>x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
+        ["WorkingDir", "x=&gt;x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=>x.Size",
+                "length": "x=&gt;x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["RelativePath", "x=>x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
+        ["RelativePath", "x=&gt;x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=>x.Size",
+                "length": "x=&gt;x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["Arguments", "x=>x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
+        ["Arguments", "x=&gt;x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
-            ["SizeType", 0, "Value", {"value": "x=>format(format='%T',args=x.Size)"}],
+            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
+            ["SizeType", 0, "Value", {"value": "x=&gt;format(format='%T',args=x.Size)"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=>x.Size",
+                "length": "x=&gt;x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["IconLocation", "x=>x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
+        ["IconLocation", "x=&gt;x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=>x.Size",
+                "length": "x=&gt;x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["ExtraData","x=>x.Size",[
-            ["Offset",0,"Value",{"value":"x=>x.StartOf"}],
+        ["ExtraData","x=&gt;x.Size",[
+            ["Offset",0,"Value",{"value":"x=&gt;x.StartOf"}],
             ["Size",0,"uint32"],
             ["__Header",4,"uint32"],
-            ["Header",0,"Value",{"value":"x=>'0x' + upcase(string=format(format='%08x',args=x.__Header))"}],
+            ["Header",0,"Value",{"value":"x=&gt;'0x' + upcase(string=format(format='%08x',args=x.__Header))"}],
             ["BlockClass", 4, "Enumeration", {
                 "type": "uint32",
                 "map": {
@@ -678,7 +678,7 @@ export: |
                     "VistaAndAboveIDList": 0xA000000C,
                 }}],
             ["Data", 0, "Union", {
-               "selector": "x=>x.Header",
+               "selector": "x=&gt;x.Header",
                 "choices": {
                     "0xA0000001": "EnvironmentVariableDataBlock",
                     "0xA0000002": "ConsoleDataBlock", 
@@ -703,7 +703,7 @@ export: |
                 "max_length": 520
             }],
             ["DataValue", 0, "Value",{ 
-                "value": "x=>if(condition= x.__TargetAnsi=x.__TargetUnicode,
+                "value": "x=&gt;if(condition= x.__TargetAnsi=x.__TargetUnicode,
                                     then=x.__TargetAnsi,
                                     else=dict(Ascii=x.__TargetAnsi,Unicode=x.__TargetUnicode))" }],
         ]],
@@ -737,22 +737,22 @@ export: |
             ["__ScreenBufferSizeX",12,"int16"],
             ["__ScreenBufferSizeY",14,"int16"],
             ["ScreenBufferSize",0,"Value",{
-                "value":"x=>format(format='%v x %v',args=[x.__ScreenBufferSizeX,x.__ScreenBufferSizeY])"
+                "value":"x=&gt;format(format='%v x %v',args=[x.__ScreenBufferSizeX,x.__ScreenBufferSizeY])"
             }],
             ["__WindowSizeX",16,"int16"],
             ["__WindowSizeY",18,"int16"],
             ["WindowSize",0,"Value",{
-                "value":"x=>format(format='%v x %v',args=[x.__WindowSizeX,x.__WindowSizeY])"
+                "value":"x=&gt;format(format='%v x %v',args=[x.__WindowSizeX,x.__WindowSizeY])"
             }],
             ["__WindowOriginX",20,"int16"],
             ["__WindowOriginY",22,"int16"],
             ["WindowOrigin",0,"Value",{
-                "value":"x=>format(format='%v / %v',args=[x.__WindowOriginX,x.__WindowOriginY])"
+                "value":"x=&gt;format(format='%v / %v',args=[x.__WindowOriginX,x.__WindowOriginY])"
             }], 
             ["__FontSizeW",32,"int16"],
             ["__FontSizeH",34,"int16"],
             ["FontSize",0,"Value",{
-                "value":"x=>if(condition= x.__FontSizeW=0,
+                "value":"x=&gt;if(condition= x.__FontSizeW=0,
                         then= x.__FontSizeH,
                         else= format(format='%v / %v',args=[x.__FontSizeW,x.__FontSizeH])) "
             }],
@@ -762,7 +762,7 @@ export: |
                 end_bit: 31,
             }],
             ["FontFamily", 0, "Value", {
-                "value": "x=>get(item=dict(
+                "value": "x=&gt;get(item=dict(
                                 `0`='DONTCARE',
                                 `16`='ROMAN',
                                 `32`='SWISS',
@@ -778,11 +778,11 @@ export: |
             }],
             # TODO: implement Flag select for FontPitch
             ["FontPitch", 0 ,"Value",{
-                "value":"x=>format(format='0x%02x',args=x.__FontPitch)"
+                "value":"x=&gt;format(format='0x%02x',args=x.__FontPitch)"
             }],
             ["__FontWeight",40,"uint32"],
             ["BoldFont", 0 ,"Value",{
-                "value":"x=>if(condition= 700<=x.__FontWeight,
+                "value":"x=&gt;if(condition= 700&lt;=x.__FontWeight,
                     then= True, 
                     else= False)"
             }],
@@ -792,35 +792,35 @@ export: |
             }],
             ["__CursorSize",108,"uint32"],
             ["CursorSize", 0 ,"Value",{
-                "value":"x=> if(condition= x.__CursorSize <= 25,
+                "value":"x=&gt; if(condition= x.__CursorSize &lt;= 25,
                                 then= 'Small',
-                        else=if(condition= x.__CursorSize >= 26 AND x.__CursorSize <= 50,
+                        else=if(condition= x.__CursorSize &gt;= 26 AND x.__CursorSize &lt;= 50,
                                 then= 'Medium',
-                        else=if(condition= x.__CursorSize >= 51 AND x.__CursorSize <= 100,
+                        else=if(condition= x.__CursorSize &gt;= 51 AND x.__CursorSize &lt;= 100,
                                 else= 'Large',
                                 else= x.__CursorSize )))"
             }],
             ["__FullScreen",112,"uint32"],
             ["FullScreen", 0 ,"Value",{
-                "value":"x=> if(condition= x.__FullScreen > 0,
+                "value":"x=&gt; if(condition= x.__FullScreen &gt; 0,
                                 then= True,
                                 else= False )"
             }],
             ["__QuickEdit",116,"uint32"],
             ["QuickEdit", 0 ,"Value",{
-                "value":"x=> if(condition= x.__QuickEdit > 0,
+                "value":"x=&gt; if(condition= x.__QuickEdit &gt; 0,
                                 then= True,
                                 else= False )"
             }],
             ["__InsertMode",120,"uint32"],
             ["InsertMode", 0 ,"Value",{
-                "value":"x=> if(condition= x.__InsertMode > 0,
+                "value":"x=&gt; if(condition= x.__InsertMode &gt; 0,
                                 then= True,
                                 else= False )"
             }],
             ["__AutoPosition",124,"uint32"],
             ["AutoPosition", 0 ,"Value",{
-                "value":"x=> if(condition= x.__AutoPosition > 0,
+                "value":"x=&gt; if(condition= x.__AutoPosition &gt; 0,
                                 then= True,
                                 else= False )"
             }],
@@ -828,7 +828,7 @@ export: |
             ["NumberOfHistoryBuffers",132,"uint32"],
             ["__HistoryNoDup",136,"uint32"],
             ["HistoryDuplicatesAllowed", 0 ,"Value",{
-                "value":"x=> if(condition= x.__HistoryNoDup > 0,
+                "value":"x=&gt; if(condition= x.__HistoryNoDup &gt; 0,
                                 then= True,
                                 else= False )"
             }],
@@ -841,27 +841,27 @@ export: |
         ["TrackerDataBlock", 0x00000060, [
             ["__DataBlockSize",0,"uint32"],
             ["__MachineID", 16, "String"],
-            ["MachineID", 0, "Value",{ "value": "x=>if(condition= x.__MachineID=~'[^ -~]+', then=Null, else=x.__MachineID )" }],
-            ["MacAddress", 0, "Value",{ "value": "x=>if(condition=x.MachineID,then=split(string=x.Droid[1],sep='-')[-1])" }],
+            ["MachineID", 0, "Value",{ "value": "x=&gt;if(condition= x.__MachineID=~'[^ -~]+', then=Null, else=x.__MachineID )" }],
+            ["MacAddress", 0, "Value",{ "value": "x=&gt;if(condition=x.MachineID,then=split(string=x.Droid[1],sep='-')[-1])" }],
             ["__Droid0", 32, "GUID"],
             ["__Droid1", 48, "GUID"],
-            ["Droid", 0, "Value",{"value": "x=>if(condition=x.MachineID,then=(x.__Droid0.Value,x.__Droid1.Value))" }],
+            ["Droid", 0, "Value",{"value": "x=&gt;if(condition=x.MachineID,then=(x.__Droid0.Value,x.__Droid1.Value))" }],
             ["__DroidBirth0", 64, "GUID"],
             ["__DroidBirth1", 80, "GUID"],
-            ["DroidBirth", 0, "Value",{ "value": "x=>if(condition=x.MachineID,then=(x.__DroidBirth0.Value, x.__DroidBirth0.Value))" }],
+            ["DroidBirth", 0, "Value",{ "value": "x=&gt;if(condition=x.MachineID,then=(x.__DroidBirth0.Value, x.__DroidBirth0.Value))" }],
         ]],
         #0xA0000004
         ["ConsoleFEDataBlock", 0x0000000C, [
             ["__DataBlockSize",0,"uint32"],
             ["CodePage",8,"uint32"],
-            ["DataValue",0,"Value",{"value":"x=>x.CodePage"}],
+            ["DataValue",0,"Value",{"value":"x=&gt;x.CodePage"}],
         ]],
         #0xA0000005
         ["SpecialFolderDataBlock", 0x00000010, [
             ["__DataBlockSize",0,"uint32"],
             ["SpecialFolderId",8,"uint32"],
             ["IdOffset",12,"uint32"],
-            ["DataValue",0,"Value",{"value":"x=>x.SpecialFolderId"}],
+            ["DataValue",0,"Value",{"value":"x=&gt;x.SpecialFolderId"}],
         ]],
         #0xA0000006
         ["DarwinDataBlock", 0x00000314, [
@@ -872,7 +872,7 @@ export: |
                 "max_length": 520
             }],
             ["DataValue", 0, "Value",{ 
-                "value": "x=>if(condition= x.__DarwinDataAnsi=x.__DarwinDataUnicode,
+                "value": "x=&gt;if(condition= x.__DarwinDataAnsi=x.__DarwinDataUnicode,
                                     then=x.__DarwinDataAnsi,
                                     else=dict(Ascii=x.__DarwinDataAnsi,Unicode=x.__DarwinDataUnicode))" }],
         ]],
@@ -885,40 +885,40 @@ export: |
                 "max_length": 520,
             }],
             ["DataValue", 0, "Value",{ 
-                "value": "x=>if(condition= x.__TargetAnsi=x.__TargetUnicode,
+                "value": "x=&gt;if(condition= x.__TargetAnsi=x.__TargetUnicode,
                                     then=x.__TargetAnsi,
                                     else=dict(Ascii=x.__TargetAnsi,Unicode=x.__TargetUnicode))" }],
         ]],
         #0xA0000008
-        ["ShimDataBlock", "x=>x.__DataBlockSize", [
+        ["ShimDataBlock", "x=&gt;x.__DataBlockSize", [
             ["__DataBlockSize",0,"uint32"],
             ["LayerName", 8, "String", { 
                 "encoding": "utf16",
-                "length": "x=>x.__DataBlockSize - 8",
+                "length": "x=&gt;x.__DataBlockSize - 8",
                 "max_length": 10000
                 }],
-            ["DataValue",0,"Value",{"value":"x=>x.LayerName"}],
+            ["DataValue",0,"Value",{"value":"x=&gt;x.LayerName"}],
         ]],
         #0xA0000009
-        ["PropertyStoreDataBlock", "x=>x.__DataBlockSize", [
+        ["PropertyStoreDataBlock", "x=&gt;x.__DataBlockSize", [
             ["__DataBlockSize",0,"uint32"],
             ["PropertyStorage", 8, "Array", {
                 "count": 1000,
                 "type": "PropertyStorage",
-                "sentinal": "x=>x.__DataBlockSize = 0"
+                "sentinal": "x=&gt;x.__DataBlockSize = 0"
             }],
-            ["DataValue",0,"Value",{"value":"x=>x.PropertyStorage.PropertyValue"}],
-            #["DataValue",0,"Value",{"value":"x=>property_store(data=x.PropertyStorage.PropertyValue)"}],
+            ["DataValue",0,"Value",{"value":"x=&gt;x.PropertyStorage.PropertyValue"}],
+            #["DataValue",0,"Value",{"value":"x=&gt;property_store(data=x.PropertyStorage.PropertyValue)"}],
             
         ]],
         #0xA000000B
         ["KnownFolderDataBlock", 0x00000314, [
             ["__DataBlockSize",0,"uint32"],
             ["__KnownFolderId", 8, "GUID"],
-            ["GUID",0,"Value",{"value":"x=>x.__KnownFolderId.Value"}],
+            ["GUID",0,"Value",{"value":"x=&gt;x.__KnownFolderId.Value"}],
             ["__Offset", 24,"uint32"],
             ["KnownFolder", 0, "Value", { 
-                "value": "x=> get(item=dict(
+                "value": "x=&gt; get(item=dict(
                     `DE61D971-5EBC-4F02-A3A9-6C82895E5C04`='AddNewPrograms',
                     `724EF170-A42D-4FEF-9F26-B60E846FBA4F`='AdminTools',
                     `A520A1A4-1780-4FF6-BD18-167343C5AF16`='AppDataLow',
@@ -1012,28 +1012,28 @@ export: |
             }],
         ]],
         #0xA000000C
-        ["VistaAndAboveIDListDataBlock", "x=>x.__BlockSize", [
+        ["VistaAndAboveIDListDataBlock", "x=&gt;x.__BlockSize", [
             ["__DataBlockSize",0,"uint32"],
             ["IDList", 8, "ItemIDList"],
         ]],
         
-        ["PropertyStorage","x=>x.StorageSize", [
+        ["PropertyStorage","x=&gt;x.StorageSize", [
             ["StorageSize",0,"uint32"],
             #["Version",4,"String",{ "length":4 }], #Expect 1SPS / 0x53505331
             ["__Format", 8,"GUID"],
-            ["Format", 0, "Value",{"value": "x=>x.__Format.Value" }],
+            ["Format", 0, "Value",{"value": "x=&gt;x.__Format.Value" }],
             ["PropertyValue", 24, "Array", {
                 "type": "PropertyValue",
                 "count": 1000,
-                "sentinal": "x=>x.__ValueSize = 0"
+                "sentinal": "x=&gt;x.__ValueSize = 0"
             }],
         ]],
-        ["PropertyValue","x=>x.__ValueSize", [
+        ["PropertyValue","x=&gt;x.__ValueSize", [
             ["__ValueSize",0,"uint32"],
             ["__ID",4,"uint32"],
-            ["GuidId",0,"Value",{"value": "x=>x.ParentOf.Format + '/' + str(str=x.__ID)"}],
+            ["GuidId",0,"Value",{"value": "x=&gt;x.ParentOf.Format + '/' + str(str=x.__ID)"}],
             ["Description", 0, "Value", { 
-                "value": "x=> get(item=dict(
+                "value": "x=&gt; get(item=dict(
                         `28636AA6-953D-11D2-B5D6-00C04FD918D0`=x.__SHELL_DETAILS,
                         `446D16B1-8DAD-4870-A748-402EA43D788C`=x.__CACHE,
                         `46588AE2-4CBC-4338-BBFC-139326986DCE`=x.__User,
@@ -1234,14 +1234,14 @@ export: |
             ["__Size",13,"uint32"],
             ["__LPWSTR",17, "String",{ 
                 "term_hex": "00", 
-                "length": "x=>x.__Size * 2",
+                "length": "x=&gt;x.__Size * 2",
                 "encoding": "utf16"
             }],
             ["__FILETIME",13, "WinFileTime"],
             ["__UI8",13, "uint64"],
             ["__CLSID",13,"GUID"],
             ["Value", 0, "Value", { 
-                "value": "x=> get(item=dict(
+                "value": "x=&gt; get(item=dict(
                                     `LPWSTR`=x.__LPWSTR,
                                     `FILETIME`=x.__FILETIME,
                                     `UI8`=x.__UI8,
@@ -1255,7 +1255,7 @@ export: |
             ["__D3", 6, "uint16"],
             ["__D4", 8, "String", {"term": "", "length": 2}],
             ["__D5", 10, "String", {"term": "", "length": 6}],
-            ["Value", 0, "Value", { "value": "x=>upcase(string=
+            ["Value", 0, "Value", { "value": "x=&gt;upcase(string=
                     format(format='%08x-%04x-%04x-%02x-%02x',
                         args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5]))" }],
         ]]
@@ -1303,7 +1303,7 @@ sources:
             Parsed.LinkInfo as LinkInfo,
             dict(
                 LinkTarget= if(condition= len(list=fixpath(data=Parsed.LinkTargetIDList.IDList.ShellBag.Description.LongName))
-                    <   len(list=fixpath(data=Parsed.LinkTargetIDList.IDList.ShellBag.Description.ShortName)),
+                    &lt;   len(list=fixpath(data=Parsed.LinkTargetIDList.IDList.ShellBag.Description.ShortName)),
                         then= fixpath(data=Parsed.LinkTargetIDList.IDList.ShellBag.Description.ShortName),
                         else= fixpath(data=Parsed.LinkTargetIDList.IDList.ShellBag.Description.LongName)),
                 LinkTargetIDList = Parsed.LinkTargetIDList

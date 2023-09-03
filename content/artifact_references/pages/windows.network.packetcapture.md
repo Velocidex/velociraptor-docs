@@ -15,7 +15,7 @@ convert the .etl to a PCAP and upload it.
 
 <pre><code class="language-yaml">
 name: Windows.Network.PacketCapture
-author: Cybereason <omer.yampel@cybereason.com>
+author: Cybereason &lt;omer.yampel@cybereason.com&gt;
 description: |
   Run this artifact twice, the first time, set the StartTrace flag to
   True to start the PCAP collection, this will have the VQL return a
@@ -44,9 +44,9 @@ sources:
         LET tool_zip = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
             ToolName="etl2pcapng", IsExecutable=FALSE)
 
-        LET ExePath <= tempfile(extension='.exe')
+        LET ExePath &lt;= tempfile(extension='.exe')
 
-        LET etl2pcapbin <= SELECT
+        LET etl2pcapbin &lt;= SELECT
             copy(
               filename=pathspec(
                  DelegatePath=tool_zip[0].OSPath,
@@ -56,7 +56,7 @@ sources:
             ) AS file
         FROM scope()
 
-        LET outfile <= tempfile(extension=".pcapng")
+        LET outfile &lt;= tempfile(extension=".pcapng")
 
         LET stop_trace = SELECT * FROM execve(
              argv=['netsh', 'trace', 'stop'])

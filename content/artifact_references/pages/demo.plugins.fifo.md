@@ -119,7 +119,7 @@ sources:
       // materializing the cache contents. Otherwise the fifo wont
       // start until it is first called (i.e. the first successful
       // login and we will miss the failed events before hand).
-       LET foo <= SELECT * FROM last_5_events
+       LET foo &lt;= SELECT * FROM last_5_events
 
       // This simulates successful logon - we assume every 3 seonds.
       LET success_logon = SELECT Unix as SuccessTime from clock(period=3)
@@ -135,7 +135,7 @@ sources:
               enumerate(items=FailedTime) as FailedTime,
               count(items=FailedTime) as Count
            FROM last_5_events GROUP BY SuccessTime
-          }) WHERE Count > 3
+          }) WHERE Count &gt; 3
 
 </code></pre>
 

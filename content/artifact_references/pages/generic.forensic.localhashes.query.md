@@ -50,7 +50,7 @@ parameters:
 
 sources:
   - query: |
-      LET hash_db <= SELECT OSPath
+      LET hash_db &lt;= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
       -- Check hashes from the CSV or comma delimited input

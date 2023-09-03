@@ -50,7 +50,7 @@ sources:
            then=HybridAnalysisKey,
            else=server_metadata().HybridAnalysisKey)
 
-        LET URL <= 'https://hybrid-analysis.com/api/v2/search/hash'
+        LET URL &lt;= 'https://hybrid-analysis.com/api/v2/search/hash'
 
         LET Data = SELECT parse_json_array(data=Content) as Content
         FROM http_client(

@@ -32,7 +32,7 @@ parameters:
 
 sources:
   - query: |
-      LET tokens <= SELECT * FROM chain(
+      LET tokens &lt;= SELECT * FROM chain(
           a={SELECT "File" AS Type FROM scope() WHERE Files = 'Y'},
           a2={SELECT "Section" AS Type FROM scope() WHERE Files = 'Y'},
           b={SELECT "Key" AS Type FROM scope() WHERE Key = 'Y'}
@@ -40,7 +40,7 @@ sources:
 
       LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM pslist()
-        WHERE ProcName =~ processRegex AND ProcPid > 0
+        WHERE ProcName =~ processRegex AND ProcPid &gt; 0
 
       SELECT * FROM foreach(
           row=processes,

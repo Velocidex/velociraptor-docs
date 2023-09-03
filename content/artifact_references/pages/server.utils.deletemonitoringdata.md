@@ -66,7 +66,7 @@ sources:
                globs="/**.json*", accessor="fs",
                root="/clients/"+ client_id + "/monitoring")
             WHERE ArtifactName =~ ArtifactRegex
-              AND Timestamp < DateBefore
+              AND Timestamp &lt; DateBefore
         }, workers=10)
 
 </code></pre>

@@ -96,7 +96,7 @@ parameters:
 
 sources:
   - query: |
-      LET SMB_CREDENTIALS <= set(item=dict(), field=ServerName,
+      LET SMB_CREDENTIALS &lt;= set(item=dict(), field=ServerName,
          value=format(format="%s:%s", args=[Username, Password]))
 
       LET file_search = SELECT OSPath,
@@ -115,15 +115,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(

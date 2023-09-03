@@ -35,21 +35,21 @@ type: SERVER
 reports:
   - type: CLIENT
     template: |
-      <div class="row dashboard ">
-      <div class="card col-10">
-      <img src="./velo.svg" height="150">
-      <div class="card-body">
+      &lt;div class="row dashboard "&gt;
+      &lt;div class="card col-10"&gt;
+      &lt;img src="./velo.svg" height="150"&gt;
+      &lt;div class="card-body"&gt;
 
       # Welcome to Velociraptor!
 
       ## Common tasks:
 
-      * <a href="#/dashboard">Inspect the server's state</a>
-      * <a href="#/collected/server">Build an Offline Collector</a>
-      * <a href="#/notebooks">Write VQL notebooks</a>
-      * <a href="#/host/server">View Server Configuration</a>
-      * <a href="#/events/server/Server.Audit.Logs">Inspect Server Audit Log</a>
-      * <a href="#/artifacts/Server.Internal.Welcome">Customize this welcome screen</a>
+      * &lt;a href="#/dashboard"&gt;Inspect the server's state&lt;/a&gt;
+      * &lt;a href="#/collected/server"&gt;Build an Offline Collector&lt;/a&gt;
+      * &lt;a href="#/notebooks"&gt;Write VQL notebooks&lt;/a&gt;
+      * &lt;a href="#/host/server"&gt;View Server Configuration&lt;/a&gt;
+      * &lt;a href="#/events/server/Server.Audit.Logs"&gt;Inspect Server Audit Log&lt;/a&gt;
+      * &lt;a href="#/artifacts/Server.Internal.Welcome"&gt;Customize this welcome screen&lt;/a&gt;
 
       Or simply search for a client in the search bar above.
 
@@ -60,7 +60,7 @@ reports:
 
       1. Press `Ctrl-/` to view keyboard hotkeys.
 
-      </div></div></div>
+      &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 
 </code></pre>
 

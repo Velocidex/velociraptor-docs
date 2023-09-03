@@ -45,7 +45,7 @@ sources:
           process_tracker_get(id=Parse.ProcessID).Data.CommandLine AS CommandLine,
           process_tracker_get(id=Parse.ParentProcessID).Data.CommandLine AS ParentCommandLine,
           join(array=process_tracker_callchain(id=Parse.ProcessID).Data.Name,
-               sep=" <- ") AS CallChain
+               sep=" &lt;- ") AS CallChain
       FROM Delayed
 
 </code></pre>

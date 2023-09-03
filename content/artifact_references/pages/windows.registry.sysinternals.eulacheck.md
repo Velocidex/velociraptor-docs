@@ -39,7 +39,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
     name: RegistryAPI
     query: |
-      LET users <= SELECT Name, UUID
+      LET users &lt;= SELECT Name, UUID
           FROM Artifact.Windows.Sys.Users()
       WHERE Name =~ userRegex
 
@@ -57,7 +57,7 @@ sources:
     description: Detect keys using Raw Registry Analysis
     query: |
       -- Apply Raw Registry Mappings
-      LET _ <= MapRawRegistryHives
+      LET _ &lt;= MapRawRegistryHives
 
       -- Make sure to call the other sources otherwise we get recursion errors!
       SELECT *

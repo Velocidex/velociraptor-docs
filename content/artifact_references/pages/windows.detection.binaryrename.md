@@ -124,7 +124,7 @@ parameters:
 
 sources:
   - query: |
-      LET bins <= SELECT
+      LET bins &lt;= SELECT
             if(condition=Filename='',then='ANY',
                 else=lowcase(string=Filename)) AS Filename,
             if(condition=Internal='',then='ANY',

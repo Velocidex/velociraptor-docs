@@ -23,14 +23,14 @@ sources:
         */
         LET packages = SELECT parse_string_with_regex(
             string=Record,
-            regex=['Package:\\s(?P<Package>.+)',
-                   'Installed-Size:\\s(?P<InstalledSize>.+)',
-                   'Version:\\s(?P<Version>.+)',
-                   'Source:\\s(?P<Source>.+)',
-                   'Architecture:\\s(?P<Architecture>.+)']) as Record
+            regex=['Package:\\s(?P&lt;Package&gt;.+)',
+                   'Installed-Size:\\s(?P&lt;InstalledSize&gt;.+)',
+                   'Version:\\s(?P&lt;Version&gt;.+)',
+                   'Source:\\s(?P&lt;Source&gt;.+)',
+                   'Architecture:\\s(?P&lt;Architecture&gt;.+)']) as Record
             FROM parse_records_with_regex(
                    file=linuxDpkgStatus,
-                   regex='(?sm)^(?P<Record>Package:.+?)\\n\\n')
+                   regex='(?sm)^(?P&lt;Record&gt;Package:.+?)\\n\\n')
 
         SELECT Record.Package as Package,
                atoi(string=Record.InstalledSize) as InstalledSize,

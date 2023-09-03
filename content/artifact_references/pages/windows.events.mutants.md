@@ -42,7 +42,7 @@ parameters:
 sources:
     - query: |
     
-        LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) > 0
+        LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) &gt; 0
 
         LET query_mutant = SELECT * FROM winobj() WHERE Type = "Mutant" AND Name =~ MutantNameRegex 
 

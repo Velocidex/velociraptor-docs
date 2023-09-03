@@ -61,7 +61,7 @@ description: |
   spaces in it:
 
   ```
-    & 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
+    &amp; 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
   ```
 
 required_permissions:

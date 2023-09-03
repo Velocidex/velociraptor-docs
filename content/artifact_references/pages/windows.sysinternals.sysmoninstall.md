@@ -45,7 +45,7 @@ parameters:
 
 sources:
 - query: |
-    LET bin <= SELECT * FROM switch(
+    LET bin &lt;= SELECT * FROM switch(
     a={
       SELECT * FROM glob(globs=SysmonFileLocation)
     }, b={

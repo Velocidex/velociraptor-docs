@@ -124,7 +124,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         },
         else={ SELECT * FROM file_search})
 
@@ -132,8 +132,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         },
         else={SELECT * FROM more_recent})
 

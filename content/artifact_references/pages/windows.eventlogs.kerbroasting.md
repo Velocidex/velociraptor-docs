@@ -76,8 +76,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath

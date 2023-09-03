@@ -42,7 +42,7 @@ precondition:
 sources:
   - name: Upload
     query: |
-       LET Parsed <= parse_ntfs(device=Drive, inode=MFTId)
+       LET Parsed &lt;= parse_ntfs(device=Drive, inode=MFTId)
 
        SELECT *, upload(accessor="mft", file=Drive + Inode,
                         name=Parsed.OSPath + Inode) AS IndexUpload

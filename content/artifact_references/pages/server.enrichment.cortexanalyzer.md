@@ -42,10 +42,10 @@ parameters:
      description: TLP for the job submitted to Cortex
      default: 0
    - name: CortexURL
-     description: URL used for Cortex job submission. It is recommended to use the <a href="#/host/server">server metadata store</a> for this.
+     description: URL used for Cortex job submission. It is recommended to use the &lt;a href="#/host/server"&gt;server metadata store&lt;/a&gt; for this.
      default: ''
    - name: CortexKey
-     description: API key used for authentication to Cortex. It is recommended to use the <a href="#/host/server">server metadata store</a> for this.
+     description: API key used for authentication to Cortex. It is recommended to use the &lt;a href="#/host/server"&gt;server metadata store&lt;/a&gt; for this.
      default: ''
    - name: DisableSSLVerify
      type: bool
@@ -60,9 +60,9 @@ parameters:
 
 sources:
   - query: |
-        LET OBSERVABLE <= Observable
-        LET OBSERVABLE_DATATYPE <= ObservableType
-        LET URL <= if(
+        LET OBSERVABLE &lt;= Observable
+        LET OBSERVABLE_DATATYPE &lt;= ObservableType
+        LET URL &lt;= if(
                 condition=CortexURL,
             then=CortexURL,
             else=server_metadata().CortexURL)

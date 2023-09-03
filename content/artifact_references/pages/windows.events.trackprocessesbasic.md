@@ -54,7 +54,7 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker <= process_tracker(
+      LET Tracker &lt;= process_tracker(
         sync_query=SyncQuery, sync_period=1000 * PollPeriod)
 
       SELECT * FROM process_tracker_updates()

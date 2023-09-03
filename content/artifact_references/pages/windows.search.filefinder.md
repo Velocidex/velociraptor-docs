@@ -131,15 +131,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(

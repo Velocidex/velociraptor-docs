@@ -84,13 +84,13 @@ sources:
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp < DateBefore AND stamp > DateAfter,
+                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp < DateBefore,
+                then= stamp &lt; DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp > DateAfter,
+                then= stamp &gt; DateAfter,
                 else= True
             )))
 
@@ -147,14 +147,14 @@ sources:
         WHERE Data.type =~ 'BINARY'
 
       -- precalculate all hive values for performance
-      LET AllValues <= SELECT * FROM if(condition= HiveGlob,
+      LET AllValues &lt;= SELECT * FROM if(condition= HiveGlob,
                                         then={ SELECT * FROM GlobValues},
                                         else={ SELECT * FROM NTUserValues} )
             WHERE time_test(stamp=Mtime)
 
 
       -- memorise for lookup / performance
-      LET Items <= memoize(query={
+      LET Items &lt;= memoize(query={
             SELECT Type, Name, Value,
                 Type + ':' + Name + ':' + HiveName  AS Key
             FROM AllValues

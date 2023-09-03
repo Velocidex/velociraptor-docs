@@ -28,7 +28,7 @@ sources:
           string=base64decode(
              string=parse_string_with_regex(
                 string=CommandLine,
-                regex='-((?i)(en|enc|encode|encodedCommand)) (?P<Encoded>[^ ]+)'
+                regex='-((?i)(en|enc|encode|encodedCommand)) (?P&lt;Encoded&gt;[^ ]+)'
              ).Encoded)) AS Script
         FROM watch_monitoring(artifact='Windows.Events.ProcessCreation')
         WHERE CommandLine =~ '-(en|enc|encode|encodedCommand)'

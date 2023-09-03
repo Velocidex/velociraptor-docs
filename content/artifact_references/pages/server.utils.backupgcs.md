@@ -48,11 +48,11 @@ parameters:
 sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or the server metadata.
-      LET bucket <= if(condition=Bucket, then=Bucket,
+      LET bucket &lt;= if(condition=Bucket, then=Bucket,
            else=server_metadata().DefaultBucket)
-      LET project <= if(condition=Project, then=Project,
+      LET project &lt;= if(condition=Project, then=Project,
            else=server_metadata().DefaultGCSProject)
-      LET gcskey <= if(condition=GCSKey, then=GCSKey,
+      LET gcskey &lt;= if(condition=GCSKey, then=GCSKey,
            else=server_metadata().DefaultGCSKey)
 
       LET completions = SELECT *,

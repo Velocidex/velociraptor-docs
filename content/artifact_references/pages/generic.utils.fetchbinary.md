@@ -34,9 +34,9 @@ description: |
    field, the server will populate the following environment
    variables.
 
-   Tool_<ToolName>_HASH     - The hash of the binary
-   Tool_<ToolName>_FILENAME - The filename to store it.
-   Tool_<ToolName>_URL      - The URL.
+   Tool_&lt;ToolName&gt;_HASH     - The hash of the binary
+   Tool_&lt;ToolName&gt;_FILENAME - The filename to store it.
+   Tool_&lt;ToolName&gt;_URL      - The URL.
 
 parameters:
   - name: ToolName
@@ -71,11 +71,11 @@ sources:
       -- running on the client and it needs to be compatibile with
       -- clients at least back to 0.3.9
 
-      LET info_cache <= SELECT * FROM info()
+      LET info_cache &lt;= SELECT * FROM info()
       LET inventory_item = SELECT inventory_get(
          tool=ToolName, version=Version) AS Item FROM scope()
 
-      LET args <= SELECT * FROM switch(
+      LET args &lt;= SELECT * FROM switch(
         // Try to get info from the ToolInfo parameter.
         a={SELECT get(field="Tool_" + ToolName + "_HASH", item=ToolInfo) AS ToolHash,
                   get(field="Tool_" + ToolName + "_FILENAME", item=ToolInfo) AS ToolFilename,
@@ -99,7 +99,7 @@ sources:
 
       // Keep the binaries cached in the temp directory. We verify the
       // hashes all the time so this should be safe.
-      LET binpath <= SELECT Path FROM switch(
+      LET binpath &lt;= SELECT Path FROM switch(
 
           -- Allow user to specify a temporary directory which
           -- will be cleaned up.
@@ -115,7 +115,7 @@ sources:
         )
 
       // Where we should save the file.
-      LET ToolPath <= SELECT path_join(components=[
+      LET ToolPath &lt;= SELECT path_join(components=[
            (binpath[0]).Path, (args[0]).ToolFilename]) AS Path FROM scope()
 
       // Support tools locally served from disk

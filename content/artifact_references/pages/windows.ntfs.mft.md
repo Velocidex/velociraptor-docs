@@ -106,7 +106,7 @@ sources:
   - query: |
       -- Cater for older clients which do not have the Links column.
       LET parse_mft_version(filename, accessor, prefix) = SELECT *
-      FROM if(condition=version(plugin="parse_mft") > 1,
+      FROM if(condition=version(plugin="parse_mft") &gt; 1,
               then={ SELECT *
                      FROM parse_mft(
                          filename=filename, accessor=accessor, prefix=prefix)
@@ -123,18 +123,18 @@ sources:
               })
 
       -- The path to to the drive that holds the MFT file (can be a pathspec)
-      LET Drive <= pathspec(parse=MFTDrive, path_type="ntfs")
+      LET Drive &lt;= pathspec(parse=MFTDrive, path_type="ntfs")
 
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp < DateBefore AND stamp > DateAfter,
+                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp < DateBefore,
+                then= stamp &lt; DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp > DateAfter,
+                then= stamp &gt; DateAfter,
                 else= True
             )))
 
@@ -179,12 +179,12 @@ sources:
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
         WHERE
-             ( Created0x10 > DateAfter
-              OR Created0x30 > DateAfter
-              OR LastModified0x10 > DateAfter
-              OR LastModified0x30 > DateAfter
-              OR LastRecordChange0x10 > DateAfter
-              OR LastRecordChange0x30 > DateAfter)
+             ( Created0x10 &gt; DateAfter
+              OR Created0x30 &gt; DateAfter
+              OR LastModified0x10 &gt; DateAfter
+              OR LastModified0x30 &gt; DateAfter
+              OR LastRecordChange0x10 &gt; DateAfter
+              OR LastRecordChange0x30 &gt; DateAfter)
             AND FileName =~ FileRegex
             AND Links =~ PathRegex
 
@@ -202,12 +202,12 @@ sources:
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
         WHERE
-             ( Created0x10 < DateBefore
-              OR Created0x30 < DateBefore
-              OR LastModified0x10 < DateBefore
-              OR LastModified0x30 < DateBefore
-              OR LastRecordChange0x10 < DateBefore
-              OR LastRecordChange0x30 < DateBefore)
+             ( Created0x10 &lt; DateBefore
+              OR Created0x30 &lt; DateBefore
+              OR LastModified0x10 &lt; DateBefore
+              OR LastModified0x30 &lt; DateBefore
+              OR LastRecordChange0x10 &lt; DateBefore
+              OR LastRecordChange0x30 &lt; DateBefore)
             AND FileName =~ FileRegex
             AND Links =~ PathRegex
 
@@ -228,10 +228,10 @@ sources:
         WHERE FileName =~ FileRegex
             AND Links =~ PathRegex
             AND if(condition=SizeMax,
-                then=FileSize < atoi(string=SizeMax),
+                then=FileSize &lt; atoi(string=SizeMax),
                 else=TRUE)
             AND if(condition=SizeMin,
-                then=FileSize > atoi(string=SizeMin),
+                then=FileSize &gt; atoi(string=SizeMin),
                 else=TRUE)
             AND
              ( time_test(stamp=Created0x10)

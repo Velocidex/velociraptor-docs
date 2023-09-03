@@ -41,7 +41,7 @@ description: |
   tickets are vulnerable to brute force attack and this event is an indicator
   of a Kerberoasting attack.
 
-  **ATT&CK**: [T1208 - Kerberoasting](https://attack.mitre.org/techniques/T1208/)
+  **ATT&amp;CK**: [T1208 - Kerberoasting](https://attack.mitre.org/techniques/T1208/)
   Typical attacker methodology is to firstly request accounts in the domain
   with SPN attributes, then request an insecure TGS ticket for brute forcing.
   This attack is particularly effective as any domain credentials can be used

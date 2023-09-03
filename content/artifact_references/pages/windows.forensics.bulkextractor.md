@@ -115,10 +115,10 @@ parameters:
 
 sources:
   - query: |
-      LET bin <= SELECT *
+      LET bin &lt;= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(ToolName="Bulk_Extractor_Binary")
-      LET tempfolder <= tempdir()
-      LET ExePath <= tempfile(extension=".exe")
+      LET tempfolder &lt;= tempdir()
+      LET ExePath &lt;= tempfile(extension=".exe")
 
       LET target = SELECT
             DeviceID,

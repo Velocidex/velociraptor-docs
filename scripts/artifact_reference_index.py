@@ -1,5 +1,6 @@
 import urllib.request
 import json
+import html
 import yaml
 import re
 import os
@@ -94,7 +95,10 @@ def build_markdown(artifact_root_directory):
            fd.write(template % (
              data["name"],
              getTag(record["type"]),
-             data.get("description", ""), content))
+             data.get("description", ""),
+             # Escape the content into a html block to avoid bugs in
+             # markdown parsing.
+             html.escape(content, quote=False)))
 
   index = sorted(index, key=lambda x: x["title"])
 

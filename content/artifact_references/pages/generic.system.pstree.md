@@ -61,7 +61,7 @@ parameters:
     type: regex
 
   - name: CallChainSep
-    default: " -> "
+    default: " -&gt; "
 
   - name: IncludePstree
     type: bool

@@ -128,7 +128,7 @@ sources:
     -- This list comes from cat /proc/devices and represents actual
     -- devices. Most virtual devices like /proc, fuse and network
     -- filesystems have a major number of 0.
-    LET LocalDeviceMajor <= (
+    LET LocalDeviceMajor &lt;= (
        253,
        7,   -- loop
        8,   -- sd
@@ -158,10 +158,10 @@ sources:
     LET RecursionCallback = if(
        condition=LocalFilesystemOnly,
          then=if(condition=ExcludePathRegex,
-                 then="x=>x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
-                 else="x=>x.Data.DevMajor IN LocalDeviceMajor"),
+                 then="x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
+                 else="x=&gt;x.Data.DevMajor IN LocalDeviceMajor"),
          else=if(condition=ExcludePathRegex,
-                 then="x=>NOT x.OSPath =~ ExcludePathRegex",
+                 then="x=&gt;NOT x.OSPath =~ ExcludePathRegex",
                  else=""))
 
     LET file_search = SELECT OSPath,
@@ -180,7 +180,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else={
           SELECT * FROM file_search
         })
@@ -189,8 +189,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-            AND MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+            AND MTime &gt; MoreRecentThan
         }, else={
           SELECT * FROM more_recent
         })

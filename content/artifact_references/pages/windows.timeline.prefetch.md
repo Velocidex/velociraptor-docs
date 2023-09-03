@@ -58,7 +58,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
-      LET hostname <= SELECT Fqdn FROM info()
+      LET hostname &lt;= SELECT Fqdn FROM info()
 
       -- Parse prefetch files and apply non time filters
       LET pf = SELECT * FROM foreach(
@@ -94,9 +94,9 @@ sources:
                     FROM pf
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                     else=TRUE)
             GROUP BY ExecutionTime
       LET creationTimes = SELECT * FROM flatten(
@@ -105,12 +105,12 @@ sources:
                         OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
-                    WHERE RunCount > 8
+                    WHERE RunCount &gt; 8
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                         else=TRUE)
             GROUP BY ExecutionTime
 

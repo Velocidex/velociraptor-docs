@@ -40,7 +40,7 @@ sources:
                now() - last_seen_at / 1000000 AS LastSeen,
                label(client_id=client_id, labels=LabelGroup, op="remove")
         FROM clients(search="label:" + LabelGroup)
-        WHERE LastSeen < 300
+        WHERE LastSeen &lt; 300
 
         LET send_massage = SELECT * FROM foreach(row=hits,
         query={

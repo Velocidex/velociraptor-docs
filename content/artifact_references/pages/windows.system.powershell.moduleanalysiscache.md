@@ -44,24 +44,24 @@ sources:
            ["Signature", 0, "String", {"length": 13}],
            ["CountOfEntries", 14, "uint32"],
            ["Entries", 18, "Array",
-                 {"type": "Entry", "count": "x => x.CountOfEntries"}]
+                 {"type": "Entry", "count": "x =&gt; x.CountOfEntries"}]
          ]],
 
-         ["Entry", "x=>x.Func.SizeOf + x.ModuleLength + 20", [
-           ["Offset", 0, "Value", {"value": "x => x.StartOf"}],
+         ["Entry", "x=&gt;x.Func.SizeOf + x.ModuleLength + 20", [
+           ["Offset", 0, "Value", {"value": "x =&gt; x.StartOf"}],
            ["TimestampTicks", 0, "uint64"],
            ["ModuleLength", 8, "uint32"],
-           ["ModuleName", 12, "String", {"length": "x => x.ModuleLength"}],
-           ["CommandCount", "x => x.ModuleLength + 12", "uint32"],
-           ["Func", "x => x.ModuleLength + 16", "Array",
-                  {"type": "FunctionInfo", "count": "x => x.CommandCount"}],
-           ["CountOfTypes", "x => x.Func.EndOf", "uint32"]
+           ["ModuleName", 12, "String", {"length": "x =&gt; x.ModuleLength"}],
+           ["CommandCount", "x =&gt; x.ModuleLength + 12", "uint32"],
+           ["Func", "x =&gt; x.ModuleLength + 16", "Array",
+                  {"type": "FunctionInfo", "count": "x =&gt; x.CommandCount"}],
+           ["CountOfTypes", "x =&gt; x.Func.EndOf", "uint32"]
          ]],
 
-         ["FunctionInfo", "x => x.NameLen + 8", [
+         ["FunctionInfo", "x =&gt; x.NameLen + 8", [
            ["NameLen", 0, "uint32"],
-           ["Name", 4, "String", {"length": "x => x.NameLen"}],
-           ["Count", "x => x.NameLen + 4", "uint32"]
+           ["Name", 4, "String", {"length": "x =&gt; x.NameLen"}],
+           ["Count", "x =&gt; x.NameLen + 4", "uint32"]
          ]]
        ]
       '

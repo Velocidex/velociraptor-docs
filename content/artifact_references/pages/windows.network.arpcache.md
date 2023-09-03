@@ -35,7 +35,7 @@ sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET interfaces <=
+        LET interfaces &lt;=
           SELECT Index, HardwareAddr, IP
           FROM Artifact.Windows.Network.InterfaceAddresses()
 

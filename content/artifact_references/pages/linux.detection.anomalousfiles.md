@@ -54,7 +54,7 @@ sources:
              OSPath,
              substr(str=Name, start=0, end=1) = "." AS IsHidden,
              Size,
-             Size > MaxNormalSize AS IsLarge,
+             Size &gt; MaxNormalSize AS IsLarge,
              Mode.String AS Mode,
              Mode =~ "^u" as HasSUID
       FROM glob(globs=split(string=PathsToSearch, sep_string=","))

@@ -48,7 +48,7 @@ sources:
 
     query: |
       -- first get context on target binary
-      LET bin <= SELECT *
+      LET bin &lt;= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(
             ToolName="Intezer")
 

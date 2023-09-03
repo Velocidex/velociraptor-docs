@@ -61,7 +61,7 @@ sources:
             }, max_rows=1000, max_age=60)
         
       -- Query it once to materialize the FIFO
-      LET _ <= SELECT * FROM RecentProcesses
+      LET _ &lt;= SELECT * FROM RecentProcesses
         
       LET GetProcessInfo(TargetPid) = SELECT *, ThreadId as ProcessThreadId
         FROM switch(

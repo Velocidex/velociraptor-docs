@@ -22,8 +22,8 @@ sources:
       SELECT Device, Mount, FSType, split(string=Opts, sep=",") As Options
       FROM parse_records_with_regex(
          file=ProcMounts,
-         regex='(?m)^(?P<Device>[^ ]+) (?P<Mount>[^ ]+) (?P<FSType>[^ ]+) '+
-             '(?P<Opts>[^ ]+)')
+         regex='(?m)^(?P&lt;Device&gt;[^ ]+) (?P&lt;Mount&gt;[^ ]+) (?P&lt;FSType&gt;[^ ]+) '+
+             '(?P&lt;Opts&gt;[^ ]+)')
 
 
 reports:

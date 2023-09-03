@@ -45,7 +45,7 @@ sources:
 
              -- Remove the .dll extension if present to get the bare dll filename.
              lowcase(string=parse_string_with_regex(
-                  regex="^(?P<BareName>[^.]+)", string=Name).BareName) AS DLLBareName
+                  regex="^(?P&lt;BareName&gt;[^.]+)", string=Name).BareName) AS DLLBareName
 
         FROM glob(globs=DLLGlob)
         WHERE NOT OSPath =~ ExcludeRegex
@@ -67,7 +67,7 @@ sources:
            FROM foreach(row=Forwards,
              query={
                  SELECT parse_string_with_regex(
-                               regex="(?P<DllPath>.+)\\.(?P<Export>[^.]+$)",
+                               regex="(?P&lt;DllPath&gt;.+)\\.(?P&lt;Export&gt;[^.]+$)",
                                string=_value) AS Parse,
                         _value AS ForwardedImport
                  FROM scope()

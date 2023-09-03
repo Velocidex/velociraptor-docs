@@ -42,7 +42,7 @@ parameters:
 sources:
   - query: |
       LET download_one_file = if(
-         condition=version(plugin="stat") > 1,
+         condition=version(plugin="stat") &gt; 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -55,7 +55,7 @@ sources:
         })
 
       LET download_recursive = if(
-         condition=version(plugin="stat") > 1,
+         condition=version(plugin="stat") &gt; 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload

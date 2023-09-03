@@ -75,8 +75,8 @@ sources:
 
   - precondition: SELECT * FROM info() WHERE NOT version(plugin="vfs_ls")
     query: |
-      // Glob > v2 accepts a component list for the root parameter.
-      LET Path <= if(condition=version(plugin="glob") > 2 AND Components,
+      // Glob &gt; v2 accepts a component list for the root parameter.
+      LET Path &lt;= if(condition=version(plugin="glob") &gt; 2 AND Components,
         then=Components, else=Path)
 
       // Old versions do not have the root parameter to glob()
@@ -108,7 +108,7 @@ sources:
              accessor=Accessor)
 
       SELECT * FROM if(
-       condition=version(plugin="glob") >= 1,
+       condition=version(plugin="glob") &gt;= 1,
        then=NewQuery,
        else=LegacyQuery)
 

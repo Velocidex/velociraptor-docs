@@ -66,7 +66,7 @@ sources:
 
     query: |
       // Make sure sysmon is installed.
-      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       SELECT *, { SELECT Hostname FROM info() } as Hostname FROM Artifact.Windows.Sysinternals.SysmonLogForward()

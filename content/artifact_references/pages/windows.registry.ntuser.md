@@ -114,7 +114,7 @@ export: |
         SELECT NTUserPath FROM stat(filename=NTUserPath)
     })
 
-    // Use this like `LET _ <= MapRawRegistryHives`
+    // Use this like `LET _ &lt;= MapRawRegistryHives`
     LET MapRawRegistryHives =remap(config=dict(
        remappings=_make_ntuser_mappings.Mapping + _standard_mappings))
 

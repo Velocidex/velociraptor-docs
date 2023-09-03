@@ -82,7 +82,7 @@ sources:
       LET TMP = SELECT OSPath.Path AS _KeyPath,
           parse_string_with_regex(
                 string=OSPath.Path,
-                regex="^.+Count\\\\\"?(?P<Name>.+?)\"?$") AS Name,
+                regex="^.+Count\\\\\"?(?P&lt;Name&gt;.+?)\"?$") AS Name,
             OSPath,
             parse_binary(
                filename=Data.value,
@@ -113,7 +113,7 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
           },
           else={ SELECT * FROM A1})
 

@@ -79,7 +79,7 @@ parameters:
 
 sources:
   - query: |
-        LET files <= SELECT OSPath
+        LET files &lt;= SELECT OSPath
            FROM glob(globs=expand(path=AMCacheGlob))
 
         SELECT * FROM foreach(row=files,

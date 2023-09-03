@@ -59,7 +59,7 @@ sources:
                member="0") AS Application,
              parse_string_with_regex(
                string=OSPath,
-               regex="\\\\L.(?P<User>[^\\\\]+)\\\\").User AS User,
+               regex="\\\\L.(?P&lt;User&gt;[^\\\\]+)\\\\").User AS User,
                LastModifiedTime,
                LastModifiedTime.Unix as LastExecutionTS
         FROM timeline
@@ -73,7 +73,7 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
 
 </code></pre>

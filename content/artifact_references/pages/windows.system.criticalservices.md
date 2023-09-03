@@ -21,7 +21,7 @@ description: |
   installed at all, it will not be shown.
 
 reference:
-  - "ATT&CK: T1089"
+  - "ATT&amp;CK: T1089"
   - https://github.com/teoseller/osquery-attck/blob/master/windows_critical_service_status.conf
 
 precondition: SELECT OS From info() where OS = 'windows'

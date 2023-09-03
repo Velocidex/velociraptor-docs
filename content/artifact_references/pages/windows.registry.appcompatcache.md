@@ -41,54 +41,54 @@ parameters:
 precondition: SELECT OS From info() where OS = 'windows'
 
 export: |
-    LET AppCompatCacheParser <= '''[
-    ["HeaderWin10", "x=>x.HeaderSize", [
+    LET AppCompatCacheParser &lt;= '''[
+    ["HeaderWin10", "x=&gt;x.HeaderSize", [
       ["HeaderSize", 0, "unsigned int"],
-      ["Entries", "x=>x.HeaderSize", Array, {
+      ["Entries", "x=&gt;x.HeaderSize", Array, {
           type: "Entry",
-          sentinel: "x=>x.Size = 0",
+          sentinel: "x=&gt;x.Size = 0",
           count: 10000,
       }]
     ]],
     ["HeaderWin8", 128, [
       ["Entries", 128, Array, {
           type: "EntryWin8",
-          sentinel: "x=>x.EntrySize = 0",
+          sentinel: "x=&gt;x.EntrySize = 0",
           count: 10000,
       }]
     ]],
 
-    ["EntryWin8", "x=>x.EntrySize + 12", [
+    ["EntryWin8", "x=&gt;x.EntrySize + 12", [
       ["Signature", 0, "String", {
          length: 4,
       }],
       ["EntrySize", 8, "unsigned int"],
       ["PathSize", 12, "uint16"],
       ["Path", 14, "String", {
-          length: "x=>x.PathSize",
+          length: "x=&gt;x.PathSize",
           encoding: "utf16",
       }],
-      ["LastMod", "x=>x.PathSize + 14 + 10", "WinFileTime"]
+      ["LastMod", "x=&gt;x.PathSize + 14 + 10", "WinFileTime"]
     ]],
 
-    ["Entry", "x=>x.Size + 12", [
+    ["Entry", "x=&gt;x.Size + 12", [
       ["Signature", 0, "String", {
          length: 4,
       }],
       ["Size", 8, "unsigned int"],
       ["PathSize", 12, "uint16"],
       ["Path", 14, "String", {
-          length: "x=>x.PathSize",
+          length: "x=&gt;x.PathSize",
           encoding: "utf16",
       }],
-      ["LastMod", "x=>x.PathSize + 14", "WinFileTime"],
-      ["DataSize", "x=>x.PathSize + 14 + 8", "uint32"],
-      ["Data", "x=>x.PathSize + 14 + 8 + 4" , "String", {
-          length: "x=>x.DataSize",
+      ["LastMod", "x=&gt;x.PathSize + 14", "WinFileTime"],
+      ["DataSize", "x=&gt;x.PathSize + 14 + 8", "uint32"],
+      ["Data", "x=&gt;x.PathSize + 14 + 8 + 4" , "String", {
+          length: "x=&gt;x.DataSize",
       }],
 
       # The last byte of the Data block is 1 for execution
-      ["Execution", "x=>x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
+      ["Execution", "x=&gt;x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
     ]],
 
     # This is the Win7 parser but we dont use it right now.
@@ -96,16 +96,16 @@ export: |
       ["Signature", 0, "uint32"],
       ["Entries", 128, "Array", {
           count: 10000,
-          sentinel: "x=>x.PathSize = 0",
+          sentinel: "x=&gt;x.PathSize = 0",
           type: EntryWin7x64,
       }]
     ]],
     ["EntryWin7x64", 48, [
       ["PathSize", 0, "uint16"],
       ["PathOffset", 8, "uint32"],
-      ["Path", "x=>x.PathOffset - x.StartOf", "String", {
+      ["Path", "x=&gt;x.PathOffset - x.StartOf", "String", {
           encoding: "utf16",
-          length: "x=>x.PathSize",
+          length: "x=&gt;x.PathSize",
       }],
       ["LastMod", 16, "WinFileTime"]
     ]]
@@ -135,10 +135,10 @@ export: |
 sources:
   - query: |
       -- first find all ControlSet Keys in scope
-      LET AppCompatKeys <= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor='registry')
+      LET AppCompatKeys &lt;= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor='registry')
 
       -- when greater than one key we need to extract results and order later
-      LET results <= SELECT
+      LET results &lt;= SELECT
             ModificationTime,
             Name as Path,
             ControlSet,

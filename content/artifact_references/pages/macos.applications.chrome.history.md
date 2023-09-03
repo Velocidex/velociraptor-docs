@@ -39,7 +39,7 @@ precondition: SELECT OS From info() where OS = 'darwin'
 sources:
   - query: |
       LET history_files = SELECT
-         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=OSPath).User AS User,
+         parse_string_with_regex(regex="/Users/(?P&lt;User&gt;[^/]+)", string=OSPath).User AS User,
          OSPath, Mtime
       FROM glob(globs=historyGlobs)
 

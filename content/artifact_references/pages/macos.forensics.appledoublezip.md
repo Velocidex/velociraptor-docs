@@ -74,7 +74,7 @@ export: |
       }],
       ["Count", 24, "uint16b"],
       ["Items", 26, "Array", {
-          count: "x=>x.Count",
+          count: "x=&gt;x.Count",
           type: "Entry",
       }],
       ["attr_header", 84, "attr_header"]
@@ -85,7 +85,7 @@ export: |
       ["Length", 8, "uint32b"],
       ["Value", 0, "Profile", {
            type: "ASFinderInfo",
-           offset: "x=>x.Offset",
+           offset: "x=&gt;x.Offset",
       }]
     ]],
     ["attr_header", 0, [
@@ -101,25 +101,25 @@ export: |
       ["flags", 32, "uint16b"],
       ["num_attr", 34, "uint16b"],
       ["attrs", 36, "Array", {
-          count: "x=>x.num_attr",
+          count: "x=&gt;x.num_attr",
           type: "attr_t",
       }]
     ]],
-    ["attr_t", "x=>Align(value=x.name_length + 11)", [
+    ["attr_t", "x=&gt;Align(value=x.name_length + 11)", [
      ["offset", 0, "uint32b"],
      ["length", 4, "uint32b"],
      ["flags", 8, "uint16b"],
      ["name_length", 10, "uint8"],
      ["name", 11, "String", {
-         length: "x=>x.name_length",
+         length: "x=&gt;x.name_length",
      }],
      ["data", 0, "Profile", {
         type: "String",
         type_options: {
             term: "",
-            length: "x=>x.length",
+            length: "x=&gt;x.length",
         },
-        offset: "x=>x.offset",
+        offset: "x=&gt;x.offset",
      }]
     ]]
     ]

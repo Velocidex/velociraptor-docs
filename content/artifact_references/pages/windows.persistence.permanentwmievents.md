@@ -57,7 +57,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET namespaces <= SELECT * FROM if(condition=AllRootNamespaces, 
+      LET namespaces &lt;= SELECT * FROM if(condition=AllRootNamespaces, 
             then= { 
                 SELECT 'root/' + Name as namespace 
                 FROM wmi(namespace='ROOT',query='SELECT * FROM __namespace' )
@@ -65,12 +65,12 @@ sources:
             },
             else= Namespaces )
     
-      LET FilterToConsumerBinding <= SELECT * FROM foreach(
+      LET FilterToConsumerBinding &lt;= SELECT * FROM foreach(
             row=namespaces,
             query={
                 SELECT parse_string_with_regex(string=Consumer,
-                    regex=['((?P<namespace>^[^:]+):)?(?P<Type>.+?)\\.Name="(?P<Name>.+)"']) as Consumer,
-                    parse_string_with_regex(string=Filter,regex=['((?P<namespace>^[^:]+):)?(?P<Type>.+?)\\.Name="(?P<Name>.+)"']) as Filter
+                    regex=['((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name="(?P&lt;Name&gt;.+)"']) as Consumer,
+                    parse_string_with_regex(string=Filter,regex=['((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name="(?P&lt;Name&gt;.+)"']) as Filter
                 FROM wmi(
                     query="SELECT * FROM __FilterToConsumerBinding",namespace=namespace)
         },workers=len(list=namespaces))

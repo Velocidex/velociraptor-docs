@@ -108,7 +108,7 @@ sources:
 
       -- recursive search function
       LET Recurse(Container, File, Accessor, RecursionRounds) = SELECT * FROM if(
-        condition=RecursionRounds < MaxRecursions,
+        condition=RecursionRounds &lt; MaxRecursions,
         then={
            SELECT * FROM foreach(
                 row={
@@ -116,7 +116,7 @@ sources:
                     FROM glob(accessor='zip',
                        root=pathspec(DelegatePath=File, DelegateAccessor=Accessor),
                        globs='**')
-                    WHERE NOT IsDir AND Size > 0
+                    WHERE NOT IsDir AND Size &gt; 0
                 },
                 query={
                     SELECT *

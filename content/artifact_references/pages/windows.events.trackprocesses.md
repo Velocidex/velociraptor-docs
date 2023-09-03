@@ -63,7 +63,7 @@ sources:
 
     query: |
       // Make sure sysmon is installed.
-      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       LET UpdateQuery =
@@ -99,9 +99,9 @@ sources:
                            TerminalSessionId= EventData.TerminalSessionId,
                            IntegrityLevel= EventData.IntegrityLevel,
                            Hashes=parse_string_with_regex(regex=[
-                             "SHA256=(?P<SHA256>[^,]+)",
-                             "MD5=(?P<MD5>[^,]+)",
-                             "IMPHASH=(?P<IMPHASH>[^,]+)"],
+                             "SHA256=(?P&lt;SHA256&gt;[^,]+)",
+                             "MD5=(?P&lt;MD5&gt;[^,]+)",
+                             "IMPHASH=(?P&lt;IMPHASH&gt;[^,]+)"],
                            string=EventData.Hashes)
                        ) AS data,
                        EventData.UtcTime AS start_time,
@@ -132,13 +132,13 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker <= process_tracker(
+      LET Tracker &lt;= process_tracker(
          enrichments=if(condition=AddEnrichments, then=[
-           '''x=>if(
+           '''x=&gt;if(
                 condition=NOT x.Data.VersionInformation AND x.Data.Image,
                 then=dict(VersionInformation=parse_pe(file=x.Data.Image).VersionInformation))
            ''',
-           '''x=>if(
+           '''x=&gt;if(
                 condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = '-',
                 then=dict(OriginalFilename=x.Data.VersionInformation.OriginalFilename))
            '''], else=[]),

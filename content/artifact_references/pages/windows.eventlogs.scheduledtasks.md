@@ -116,17 +116,17 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
+      LET DateAfterTime &lt;= if(condition=DateAfter,
         then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
         then=DateBefore, else=timestamp(epoch="2200-01-01"))
 
       -- Lookup what each task ID means (sadly dict keys are always strings).
-      LET TaskIDLookup <= dict(
+      LET TaskIDLookup &lt;= dict(
         `4698`="A scheduled task was created.",
         `4699`="A scheduled task was deleted.",
         `4700`="A scheduled task was enabled.",
@@ -152,7 +152,7 @@ sources:
                  then= data.TaskContentNew,
                  else= if(condition= data.TaskContent,
                     then= data.TaskContent)),
-                       re='<[?].+?>',
+                       re='&lt;[?].+?&gt;',
                        replace='')).Task,
 
          ClientProcessStartKey=data.ClientProcessStartKey,
@@ -208,7 +208,7 @@ sources:
                     AND UserName =~ UserNameRegex
                     AND format(format='%v %v %v %v', args=[
                             EventData, UserData, Message, System]) =~ IocRegex
-                    AND EventTime >= DateAfterTime AND EventTime <= DateBeforeTime
+                    AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
             }
           )
 

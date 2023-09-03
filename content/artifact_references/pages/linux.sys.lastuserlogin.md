@@ -19,14 +19,14 @@ parameters:
     type: int64
 
 export: |
-  LET wtmpProfile <= '''
+  LET wtmpProfile &lt;= '''
   [
     ["Header", 0, [
 
     ["records", 0, "Array", {
         "type": "utmp",
-        "count": "x=>MaxCount",
-        "max_count": "x=>MaxCount",
+        "count": "x=&gt;MaxCount",
+        "max_count": "x=&gt;MaxCount",
     }],
     ]],
     ["utmp", 384, [

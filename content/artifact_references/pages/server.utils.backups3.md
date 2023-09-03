@@ -49,13 +49,13 @@ parameters:
 sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or the server metadata.
-      LET bucket <= if(condition=Bucket, then=Bucket,
+      LET bucket &lt;= if(condition=Bucket, then=Bucket,
            else=server_metadata().DefaultBucket)
-      LET credentialskey <= if(condition=CredentialsKey, then=CredentialsKey,
+      LET credentialskey &lt;= if(condition=CredentialsKey, then=CredentialsKey,
            else=server_metadata().S3AccessKeyId)
-      LET region <= if(condition=Region, then=Region,
+      LET region &lt;= if(condition=Region, then=Region,
            else=server_metadata().DefaultRegion)
-      LET credentialssecret <= if(condition=CredentialsSecret,
+      LET credentialssecret &lt;= if(condition=CredentialsSecret,
               then=CredentialsSecret, else=server_metadata().S3AccessSecret)
 
       LET completions = SELECT *,

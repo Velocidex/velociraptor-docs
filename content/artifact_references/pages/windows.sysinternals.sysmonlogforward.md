@@ -33,7 +33,7 @@ parameters:
 sources:
 - query: |
     // First ensure that sysmon is actually installed.
-    LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+    LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
         SysmonFileLocation=SysmonFileLocation)
 
     // Just parse and forward events. Use ETW rather than watch_evtx()

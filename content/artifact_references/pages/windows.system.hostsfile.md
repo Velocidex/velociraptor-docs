@@ -51,9 +51,9 @@ sources:
                     SELECT parse_string_with_regex(
                         string=_value,
                         regex=[
-                            "^\\s*(?P<Resolution>[^\\s]+)\\s+" +
-                            "(?P<Hostname>[^\\#]+)\\s*" +
-                            "#*\\s*(?P<Comment>.*)$"
+                            "^\\s*(?P&lt;Resolution&gt;[^\\s]+)\\s+" +
+                            "(?P&lt;Hostname&gt;[^\\#]+)\\s*" +
+                            "#*\\s*(?P&lt;Comment&gt;.*)$"
                         ]) as Record
                     FROM foreach(row=List)
                     WHERE _value

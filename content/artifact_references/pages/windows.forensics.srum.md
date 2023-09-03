@@ -62,7 +62,7 @@ sources:
 
   - name: Execution Stats
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT  AutoIncId AS ID,
                 TimeStamp,
@@ -81,7 +81,7 @@ sources:
 
   - name: Application Resource Usage
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
                TimeStamp,
@@ -112,7 +112,7 @@ sources:
 
   - name: Network Connections
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
              TimeStamp,
@@ -131,7 +131,7 @@ sources:
 
   - name: Network Usage
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
              TimeStamp,

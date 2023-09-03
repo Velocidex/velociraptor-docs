@@ -39,7 +39,7 @@ parameters:
 
 sources:
   - query: |
-      LET binary <= SELECT OSPath
+      LET binary &lt;= SELECT OSPath
       FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryWindows")
 
       LET result = SELECT * FROM execve(

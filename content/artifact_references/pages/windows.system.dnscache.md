@@ -143,14 +143,14 @@ sources:
   - precondition: |
       SELECT OS from info() where OS = "windows"
     query: |
-      LET wmiQuery <= '''
+      LET wmiQuery &lt;= '''
          SELECT Data, Entry, Status, TimeToLive, Type, Section
          FROM MSFT_DNSClientCache
       '''
-      LET wmiNamespace <= "root/StandardCimv2"
-      LET MapOfRecordType <= parse_json(data=kMapOfRecordType)
-      LET MapOfStatus <= parse_json(data=kMapOfStatus)
-      LET MapOfSection <= parse_json(data=kMapOfSection)
+      LET wmiNamespace &lt;= "root/StandardCimv2"
+      LET MapOfRecordType &lt;= parse_json(data=kMapOfRecordType)
+      LET MapOfStatus &lt;= parse_json(data=kMapOfStatus)
+      LET MapOfSection &lt;= parse_json(data=kMapOfSection)
 
       LET dns_cache_entries = SELECT
           Entry AS Name,

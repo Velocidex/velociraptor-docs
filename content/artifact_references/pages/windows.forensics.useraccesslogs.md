@@ -49,7 +49,7 @@ export: |
         ["C", 2, "uint8"],
         ["D", 3, "uint8"],
         ["IP", 0, "Value", {
-           value: "x=> format(format='%d.%d.%d.%d', args=[x.A, x.B, x.C, x.D])"
+           value: "x=&gt; format(format='%d.%d.%d.%d', args=[x.A, x.B, x.C, x.D])"
         }]
       ]]
     ]'''
@@ -74,7 +74,7 @@ export: |
       WHERE Name =~ "SystemIdentity.mdb"
 
     -- Prepare a Role lookup to resolve the role GUID
-    LET RoleLookup <= memoize(key="RoleGuid", query={
+    LET RoleLookup &lt;= memoize(key="RoleGuid", query={
       SELECT * FROM foreach(row=SystemIdentity, query={
          SELECT * FROM parse_ese(file=OSPath, table="ROLE_IDS")
          WHERE log(message="RoleGuid " + RoleGuid)

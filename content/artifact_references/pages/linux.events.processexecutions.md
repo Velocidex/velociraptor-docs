@@ -41,7 +41,7 @@ parameters:
 sources:
   - query: |
      // Install the auditd rule if possible.
-     LET _ <= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
+     LET _ &lt;= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
           "exit,always", "-F", "arch=b64", "-S", "execve", "-k", "procmon"])
 
      LET exec_log = SELECT timestamp(string=Timestamp) AS Time, Sequence,
@@ -55,8 +55,8 @@ sources:
        FROM audit()
        WHERE "procmon" in Tags AND Result = 'success'
 
-     // Cache Uid -> Username mapping.
-     LET users <= SELECT User, atoi(string=Uid) AS Uid
+     // Cache Uid -&gt; Username mapping.
+     LET users &lt;= SELECT User, atoi(string=Uid) AS Uid
        FROM Artifact.Linux.Sys.Users()
 
      // Enrich the original artifact with more data.

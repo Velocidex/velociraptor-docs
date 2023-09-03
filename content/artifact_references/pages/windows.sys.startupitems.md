@@ -52,7 +52,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-        LET approved <=
+        LET approved &lt;=
            SELECT Name as ApprovedName,
                   encode(string=Data, type="hex") as Enabled
            FROM glob(globs=startupApprovedGlobs.KeyGlobs,

@@ -59,29 +59,29 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- Build time bounds
-      LET DateAfterTime <= if(condition=DateAfter,
+      LET DateAfterTime &lt;= if(condition=DateAfter,
         then=DateAfter, else="1600-01-01")
-      LET DateBeforeTime <= if(condition=DateBefore,
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
         then=DateBefore, else="2200-01-01")
 
       -- expand provided glob into a list of paths on the file system (fs)
-      LET fspaths <= SELECT OSPath FROM glob(
+      LET fspaths &lt;= SELECT OSPath FROM glob(
          globs=expand(path=FileGlob), accessor=Accessor)
 
       LET parse_log(OSPath, Accessor) = SELECT OSPath,
           parse_string_with_regex(
             string=Line,
-            regex="^(?P<TeamViewerID>^\\d+)\\s+"+
-              "(?P<SourceHost>.+)\\s" +
-              "(?P<StartTime>\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
-              "(?P<EndTime>\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
-              "(?P<User>.+)\\s+" +
-              "(?P<ConnectionType>[^\\s]+)\\s+" +
-              "(?P<ConnectionID>.+)$") as Record
+            regex="^(?P&lt;TeamViewerID&gt;^\\d+)\\s+"+
+              "(?P&lt;SourceHost&gt;.+)\\s" +
+              "(?P&lt;StartTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
+              "(?P&lt;EndTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
+              "(?P&lt;User&gt;.+)\\s+" +
+              "(?P&lt;ConnectionType&gt;[^\\s]+)\\s+" +
+              "(?P&lt;ConnectionID&gt;.+)$") as Record
         FROM parse_lines(filename=OSPath, accessor=Accessor)
         WHERE Line
           AND Record.TeamViewerID =~ TeamViewerIDRegex
@@ -97,10 +97,10 @@ sources:
                       timestamp(epoch=Record.EndTime,
                                 format="02-01-2006 15:04:05") AS EndTime
                FROM parse_log(OSPath=OSPath, Accessor=Accessor)
-               WHERE StartTime < DateBeforeTime
-                    AND StartTime > DateAfterTime
-                    AND EndTime < DateBeforeTime
-                    AND EndTime > DateAfterTime
+               WHERE StartTime &lt; DateBeforeTime
+                    AND StartTime &gt; DateAfterTime
+                    AND EndTime &lt; DateBeforeTime
+                    AND EndTime &gt; DateAfterTime
             })
 
       SELECT

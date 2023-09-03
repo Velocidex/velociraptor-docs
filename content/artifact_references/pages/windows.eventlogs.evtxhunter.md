@@ -105,13 +105,13 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
+      LET DateAfterTime &lt;= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- expand provided glob into a list of paths on the file system (fs)
@@ -138,8 +138,8 @@ sources:
                     OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE ( EventData OR UserData OR Message )
-                    AND EventTime < DateBeforeTime
-                    AND EventTime > DateAfterTime
+                    AND EventTime &lt; DateBeforeTime
+                    AND EventTime &gt; DateAfterTime
                     AND Channel =~ ChannelRegex
                     AND Provider =~ ProviderRegex
                     AND str(str=EventID) =~ IdRegex

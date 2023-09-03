@@ -96,10 +96,10 @@ sources:
       LET options = SELECT Option FROM parse_csv(accessor="data", filename=Flags)
         WHERE get(field=Name)
 
-      LET os_info <= SELECT Architecture FROM info()
+      LET os_info &lt;= SELECT Architecture FROM info()
 
       // Get the path to the binary.
-      LET bin <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET bin &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
               ToolName= "Autorun_" + os_info[0].Architecture,
               ToolInfo=ToolInfo)
 

@@ -29,26 +29,26 @@ reports:
       ##### Author: {{ $artifact.Author }}
       {{end}}
 
-      <div class="description-content">
+      &lt;div class="description-content"&gt;
 
       {{ $artifact.Description }}
 
       {{ if $artifact.Reference }}
       ---
       References:
-      <ul>
+      &lt;ul&gt;
       {{- range $item := $artifact.Reference -}}
-      <li>{{ $item }}</li>
+      &lt;li&gt;{{ $item }}&lt;/li&gt;
       {{- end -}}
-      </ul>
+      &lt;/ul&gt;
       {{ end }}
-      </div>
+      &lt;/div&gt;
 
       {{ if $artifact.Tools }}
       ### Tools
 
       {{ range $artifact.Tools -}}
-      * <grr-tool-viewer name="{{.Name}}"></grr-tool-viewer>
+      * &lt;grr-tool-viewer name="{{.Name}}"&gt;&lt;/grr-tool-viewer&gt;
       {{ end }}
 
       {{ end }}
@@ -57,45 +57,45 @@ reports:
 
       ### Parameters
 
-      <table class="table table-striped">
-      <thead>
-         <tr>
-           <th>Name</th>
-           <th>Type</th>
-           <th>Default</th>
-           <th>Description</th>
-         </tr>
-      </thead>
-      <tbody>
+      &lt;table class="table table-striped"&gt;
+      &lt;thead&gt;
+         &lt;tr&gt;
+           &lt;th&gt;Name&lt;/th&gt;
+           &lt;th&gt;Type&lt;/th&gt;
+           &lt;th&gt;Default&lt;/th&gt;
+           &lt;th&gt;Description&lt;/th&gt;
+         &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
       {{- range $item := $artifact.Parameters -}}
          {{- if not (eq $item.Type "hidden") -}}
-           <tr>
-             <td>{{ $item.Name }}</td>
-             <td>{{ $item.Type }}</td>
-             <td><pre>{{ $item.Default }}</pre></td>
-             <td>{{ $item.Description }}</td>
-           </tr>
+           &lt;tr&gt;
+             &lt;td&gt;{{ $item.Name }}&lt;/td&gt;
+             &lt;td&gt;{{ $item.Type }}&lt;/td&gt;
+             &lt;td&gt;&lt;pre&gt;{{ $item.Default }}&lt;/pre&gt;&lt;/td&gt;
+             &lt;td&gt;{{ $item.Description }}&lt;/td&gt;
+           &lt;/tr&gt;
          {{- end -}}
       {{- end -}}
-      </tbody></table>
+      &lt;/tbody&gt;&lt;/table&gt;
 
       {{ end }}
 
       {{ if $artifact.Imports }}
 
-      <table class="table table-striped">
-      <thead>
-         <tr>
-           <th>Imports</th>
-         </tr>
-      </thead>
-      <tbody>
+      &lt;table class="table table-striped"&gt;
+      &lt;thead&gt;
+         &lt;tr&gt;
+           &lt;th&gt;Imports&lt;/th&gt;
+         &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
       {{- range $item := $artifact.Imports -}}
-        <tr>
-          <td>{{ $item }}</td>
-        </tr>
+        &lt;tr&gt;
+          &lt;td&gt;{{ $item }}&lt;/td&gt;
+        &lt;/tr&gt;
       {{- end -}}
-      </tbody></table>
+      &lt;/tbody&gt;&lt;/table&gt;
 
       {{ end }}
 

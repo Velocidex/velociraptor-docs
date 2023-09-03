@@ -65,12 +65,12 @@ sources:
 
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
+      LET DateAfterTime &lt;= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
-      LET CSVFile <= tempfile(extension='.csv')
+      LET CSVFile &lt;= tempfile(extension='.csv')
 
       -- Download the binary and create a csv file to write on.
       LET tmp_exe = SELECT OSPath AS BinPath
@@ -102,8 +102,8 @@ sources:
         FROM parse_csv(filename=CSVFile)
       })
       WHERE URL =~ URLRegex AND
-            Visited > DateAfterTime AND
-            Visited < DateBeforeTime
+            Visited &gt; DateAfterTime AND
+            Visited &lt; DateBeforeTime
 
 </code></pre>
 

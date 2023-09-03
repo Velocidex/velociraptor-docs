@@ -49,12 +49,12 @@ sources:
       LET NTFS_CACHE_TIME = 30
       LET USN_FREQUENCY = 60
 
-      LET hash_db <= SELECT OSPath
+      LET hash_db &lt;= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
-      LET path <= hash_db[0].OSPath
+      LET path &lt;= hash_db[0].OSPath
 
-      LET _ <= log(message="Will use local hash database " + path)
+      LET _ &lt;= log(message="Will use local hash database " + path)
 
       LET file_modifications = SELECT Device + OSPath AS OSPath
       FROM watch_usn(device=Device, accessor="ntfs")

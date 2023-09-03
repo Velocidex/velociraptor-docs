@@ -59,7 +59,7 @@ parameters:
 
 sources:
   - query: |
-      LET Prefix <= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
+      LET Prefix &lt;= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
       LET ExchangeURL = "https://docs.velociraptor.app/release_artifacts/release_artifacts_" + VelociraptorRelease + ".zip"
 
       LET X = SELECT artifact_set(

@@ -114,7 +114,7 @@ sources:
 
     query: |
       -- check which Yara to use
-      LET yara_rules <= YaraUrl || YaraRule
+      LET yara_rules &lt;= YaraUrl || YaraRule
 
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())

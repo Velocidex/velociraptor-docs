@@ -63,63 +63,63 @@ export: |
         }],
         ["__username_offset", 12, "uint32"],
         ["__username_length", 16, "uint32"],
-        ["username", "x=>x.__username_offset + 0xcc", "String", {
-            "length": "x=>x.__username_length",
+        ["username", "x=&gt;x.__username_offset + 0xcc", "String", {
+            "length": "x=&gt;x.__username_length",
             "encoding": "utf16",
         }],
         ["__fullname_offset", 24, "uint32"],
         ["__fullname_length", 28, "uint32"],
-        ["fullname", "x=>x.__fullname_offset + 0xcc", "String", {
-            "length": "x=>x.__fullname_length",
+        ["fullname", "x=&gt;x.__fullname_offset + 0xcc", "String", {
+            "length": "x=&gt;x.__fullname_length",
             "encoding": "utf16",
         }],
         ["__comment_offset", 36, "uint32"],
         ["__comment_length", 40, "uint32"],
-        ["comment", "x=>x.__comment_offset + 0xcc", "String", {
+        ["comment", "x=&gt;x.__comment_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__comment_length",
+            length: "x=&gt;x.__comment_length",
         }],
 
         ["__driveletter_offset", 84, "uint32"],
         ["__driveletter_length", 88, "uint32"],
-        ["driveletter", "x=>x.__driveletter_offset + 0xcc", "String", {
+        ["driveletter", "x=&gt;x.__driveletter_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__driveletter_length",
+            length: "x=&gt;x.__driveletter_length",
         }],
 
         ["__logon_script_offset", 96, "uint32"],
         ["__logon_script_length", 100, "uint32"],
-        ["logon_script", "x=>x.__logon_script_offset + 0xcc", "String", {
+        ["logon_script", "x=&gt;x.__logon_script_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__logon_script_length",
+            length: "x=&gt;x.__logon_script_length",
         }],
 
         ["__profile_path_offset", 108, "uint32"],
         ["__profile_path_length", 112, "uint32"],
-        ["profile_path", "x=>x.__profile_path_offset + 0xcc", "String", {
+        ["profile_path", "x=&gt;x.__profile_path_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__profile_path_length",
+            length: "x=&gt;x.__profile_path_length",
         }],
 
         ["__workstation_offset", 120, "uint32"],
         ["__workstation_length", 124, "uint32"],
-        ["workstation", "x=>x.__workstation_offset + 0xcc", "String", {
+        ["workstation", "x=&gt;x.__workstation_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__workstation_length",
+            length: "x=&gt;x.__workstation_length",
         }],
 
         ["__lmpwd_hash_offset", 156, "uint32"],
         ["__lmpwd_hash_length", 160, "uint32"],
-        ["lmpwd_hash", "x=>x.__lmpwd_hash_offset + 0xcc", "String", {
+        ["lmpwd_hash", "x=&gt;x.__lmpwd_hash_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__lmpwd_hash_length",
+            length: "x=&gt;x.__lmpwd_hash_length",
         }],
 
         ["__ntpwd_hash_offset", 168, "uint32"],
         ["__ntpwd_hash_length", 172, "uint32"],
-        ["ntpwd_hash", "x=>x.__ntpwd_hash_offset + 0xcc", "String", {
+        ["ntpwd_hash", "x=&gt;x.__ntpwd_hash_offset + 0xcc", "String", {
             encoding: "utf16",
-            length: "x=>x.__ntpwd_hash_length",
+            length: "x=&gt;x.__ntpwd_hash_length",
         }]
        ]]
      ]

@@ -1,5 +1,35 @@
 [
     {
+        "title": "Windows.Detection.IdatLoader",
+        "author": "mgreen27",
+        "description": "This artifact enables running Yara over processes in memory.\nTargeting detection of IDAT Loader.  \n",
+        "link": "/exchange/artifacts/pages/idatloader",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2023-09-01"
+    },
+    {
+        "title": "Server.Utils.BackupAzure",
+        "author": "zaneGittins",
+        "description": "This server monitoring artifact will automatically zip and backup\nany collected artifacts to Azure blob storage.",
+        "link": "/exchange/artifacts/pages/server.utils.backupazure",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2023-08-29"
+    },
+    {
+        "title": "Windows.EventLogs.RemoteAccessVPN",
+        "author": "ekt0-syn",
+        "description": "This Artifact enables scoping EventLogs from Microsoft VPN, served by \nRemote Access Service server role. \nIt is designed to assist in identifying VPN connections on organizations that \nare using Microsoft VPN service. It targets both server and client side logs.",
+        "link": "/exchange/artifacts/pages/windows.eventlogs.remoteaccessvpn",
+        "tags": [],
+        "author_link": "https://github.com/ekt0-syn",
+        "author_avatar": "https://avatars.githubusercontent.com/u/118297035?v=4",
+        "date": "2023-08-29"
+    },
+    {
         "title": "Linux.Debian.GPGKeys",
         "author": "misje",
         "description": "Extract keys, fingerprints and identities from GPG keys.",

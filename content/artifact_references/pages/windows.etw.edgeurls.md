@@ -38,7 +38,7 @@ parameters:
 
 sources:
   - query: |
-      LET m <= memoize(key="Pid", period=30, query={
+      LET m &lt;= memoize(key="Pid", period=30, query={
           SELECT Pid, Exe, Username FROM pslist()
       })
 

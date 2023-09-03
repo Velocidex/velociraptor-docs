@@ -91,9 +91,9 @@ parameters:
 sources:
   - query: |
       -- setup hash lists if needed
-      LET MD5Array <= split(sep='\\s+',string=MD5List)
-      LET SHA1Array <=  split(sep='\\s+',string=SHA1List)
-      LET SHA256Array <= split(sep='\\s+',string=SHA256List)
+      LET MD5Array &lt;= split(sep='\\s+',string=MD5List)
+      LET SHA1Array &lt;=  split(sep='\\s+',string=SHA1List)
+      LET SHA256Array &lt;= split(sep='\\s+',string=SHA256List)
 
       -- firstly find files in scope with performance
       LET find_files = SELECT *,
@@ -103,31 +103,31 @@ sources:
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                 FROM glob(globs=TargetGlob,accessor=Accessor)
                 WHERE NOT IsDir AND NOT IsLink
-                    AND Size > SizeMin AND Size < SizeMax
-                    AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
-                    AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
+                    AND Size &gt; SizeMin AND Size &lt; SizeMax
+                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
             },
             else={ SELECT * FROM  if(condition=DateBefore,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=OSPath,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
-                        AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
                 },
                 else={ SELECT * FROM  if(condition=DateAfter,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
-                        AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
                 },
                 else={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size > SizeMin AND Size < SizeMax
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
                 })})})
         WHERE _Header = 'MZ'
             AND if(condition= UnexpectedExtension,

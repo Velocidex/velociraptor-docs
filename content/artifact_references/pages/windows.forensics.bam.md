@@ -40,7 +40,7 @@ sources:
   - precondition:
       SELECT OS from info() where OS = "windows"
     query: |
-        LET users <= SELECT Name, UUID
+        LET users &lt;= SELECT Name, UUID
             FROM Artifact.Windows.Sys.Users()
             WHERE Name =~ userRegex
 

@@ -110,9 +110,9 @@ sources:
       -- Find target docs
       LET office_docs = SELECT OSPath, Mtime, Size
         FROM glob(globs=SearchGlob)
-        WHERE NOT IsDir and Size > 0
+        WHERE NOT IsDir and Size &gt; 0
 
-      LET rtf_injection <= SELECT * FROM foreach(
+      LET rtf_injection &lt;= SELECT * FROM foreach(
          row=office_docs,
          query={
                 SELECT
@@ -150,7 +150,7 @@ sources:
                   root=pathspec(DelegatePath=OfficePath),
                   accessor='zip')
                 WHERE not IsDir
-                  AND Size > 0
+                  AND Size &gt; 0
                   AND ZipMemberPath =~ TemplateFileRegex
             })
 
@@ -163,7 +163,7 @@ sources:
                 OSPath.Path as Section,
                 parse_string_with_regex(
                     string=Line,
-                    regex=['\\s+Target="(?P<Target>[^"]+)"\\s+TargetMode='
+                    regex=['\\s+Target="(?P&lt;Target&gt;[^"]+)"\\s+TargetMode='
                         ]).Target as TemplateTarget,
                 Mtime as SectionMtime,
                 Atime as SectionAtime,

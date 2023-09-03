@@ -43,7 +43,7 @@ sources:
 
   - name: HostPublicKeys
     query: |
-      LET Me <= SELECT * FROM info()
+      LET Me &lt;= SELECT * FROM info()
 
       SELECT * FROM foreach(row={
         SELECT OSPath
@@ -74,7 +74,7 @@ sources:
           one machine to another machine.
           */
 
-          LET lookup <= memoize(
+          LET lookup &lt;= memoize(
              key="PublicKey",
              query={
                SELECT *

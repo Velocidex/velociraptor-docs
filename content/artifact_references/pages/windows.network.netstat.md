@@ -17,7 +17,7 @@ description: |
 sources:
 - precondition: SELECT OS From info() where OS = 'windows'
   query: |
-    LET processes <= SELECT Name, Pid AS ProcPid FROM pslist()
+    LET processes &lt;= SELECT Name, Pid AS ProcPid FROM pslist()
     SELECT Pid, {
         SELECT Name from processes
         WHERE Pid = ProcPid

@@ -25,7 +25,7 @@ name: Windows.Timeline.Registry.RunMRU
 description: |
     # Output all available RunMRU registry keys in timeline format.
 
-    RunMRU is when a user enters a command into the START > Run prompt.
+    RunMRU is when a user enters a command into the START &gt; Run prompt.
     Entries will be logged in the user hive under:    Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU
 
     The artifact numbers all entries with the most recent at
@@ -64,11 +64,11 @@ parameters:
 
 sources:
  - query: |
-        LET hostname_lu <= SELECT Fqdn FROM info()
-        LET HKEY_USERS <= pathspec(parse="HKEY_USERS", path_type="registry")
+        LET hostname_lu &lt;= SELECT Fqdn FROM info()
+        LET HKEY_USERS &lt;= pathspec(parse="HKEY_USERS", path_type="registry")
 
         // First we need to extract populated RunMRU
-        LET MRUList <= SELECT OSPath,
+        LET MRUList &lt;= SELECT OSPath,
            Data.value as RunMruOrder,
            len(list=Data.value) as RunMruLength,
            Username,
@@ -76,7 +76,7 @@ sources:
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
 
         // Now extract RunMRU entries and order
-        LET results <= SELECT * FROM foreach(
+        LET results &lt;= SELECT * FROM foreach(
            row=MRUList,
            query={
              SELECT
@@ -98,16 +98,16 @@ sources:
              WHERE not reg_name = "MRUList" AND
                     if(condition=targetUser, then=Username =~ targetUser,
                         else=TRUE) AND
-                    if(condition=dateAfter, then=reg_mtime > timestamp(string=dateAfter),
+                    if(condition=dateAfter, then=reg_mtime &gt; timestamp(string=dateAfter),
                         else=TRUE) AND
-                    if(condition=dateBefore, then=reg_mtime < timestamp(string=dateBefore),
+                    if(condition=dateBefore, then=reg_mtime &lt; timestamp(string=dateBefore),
                         else=TRUE)
                     AND log(message=UUID)
              ORDER BY mru_order
           })
 
         // join mru values and order for presentation
-        LET usercommands <= SELECT Username as user, mru_order,
+        LET usercommands &lt;= SELECT Username as user, mru_order,
                 format(format="MRU%v: %v", args=[mru_order,reg_value]) as mru_grouped
         FROM results
 

@@ -47,9 +47,9 @@ parameters:
 
 sources:
   - query: |
-      LET RecursionCB <= if(condition= ExcludeDirectoryRegex,
-         then="x => NOT x.OSPath =~ ExcludeDirectoryRegex",
-         else="x => NOT x.OSPath =~ '^/proc' ")
+      LET RecursionCB &lt;= if(condition= ExcludeDirectoryRegex,
+         then="x =&gt; NOT x.OSPath =~ ExcludeDirectoryRegex",
+         else="x =&gt; NOT x.OSPath =~ '^/proc' ")
 
       LET files = SELECT OSPath
         FROM glob(globs=TargetFiles,

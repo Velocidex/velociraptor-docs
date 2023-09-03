@@ -22,14 +22,14 @@ sources:
   - query: |
         LET stats = SELECT parse_string_with_regex(string=Content,
            regex=[
-             'client_comms_concurrency (?P<client_comms_concurrency>[^\\s]+)',
-             'client_comms_current_connections (?P<client_comms_current_connections>[^\\s]+)',
-             'flow_completion (?P<flow_completion>[^\\s]+)',
-             'process_open_fds (?P<process_open_fds>[^\\s]+)',
-             'uploaded_bytes (?P<uploaded_bytes>[^\\s]+)',
-             'uploaded_files (?P<uploaded_files>[^\\s]+)',
-             'stats_client_one_day_actives{version="[^"]+"} (?P<one_day_active>[^\\s]+)',
-             'stats_client_seven_day_actives{version="[^"]+"} (?P<seven_day_active>[^\\s]+)'
+             'client_comms_concurrency (?P&lt;client_comms_concurrency&gt;[^\\s]+)',
+             'client_comms_current_connections (?P&lt;client_comms_current_connections&gt;[^\\s]+)',
+             'flow_completion (?P&lt;flow_completion&gt;[^\\s]+)',
+             'process_open_fds (?P&lt;process_open_fds&gt;[^\\s]+)',
+             'uploaded_bytes (?P&lt;uploaded_bytes&gt;[^\\s]+)',
+             'uploaded_files (?P&lt;uploaded_files&gt;[^\\s]+)',
+             'stats_client_one_day_actives{version="[^"]+"} (?P&lt;one_day_active&gt;[^\\s]+)',
+             'stats_client_seven_day_actives{version="[^"]+"} (?P&lt;seven_day_active&gt;[^\\s]+)'
            ]) AS Stat, {
               // On Windows Prometheus does not provide these so we get our own.
               SELECT Times.user + Times.system as CPU,

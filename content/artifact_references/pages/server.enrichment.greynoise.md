@@ -40,7 +40,7 @@ parameters:
 
 sources:
   - query: |
-        LET URL <= 'https://api.greynoise.io/v3/community/'
+        LET URL &lt;= 'https://api.greynoise.io/v3/community/'
 
         LET Data = SELECT parse_json(data=Content) AS GreyNoiseLookup
         FROM http_client(url=URL + IP,

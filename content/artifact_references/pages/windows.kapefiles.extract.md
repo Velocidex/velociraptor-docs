@@ -87,7 +87,7 @@ sources:
 
       // Memoize the metadata stored in the container file so we can
       // quickly extract the file times.
-      LET AllFileMetadata <= memoize(
+      LET AllFileMetadata &lt;= memoize(
           key="SourceFile",
           query={
             SELECT *

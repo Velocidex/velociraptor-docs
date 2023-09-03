@@ -48,7 +48,7 @@ description: |
     NOTE: Velociraptor can now parse Shellbags natively with the
     Windows.Forensics.Shellbags artifact.
 
-    MITRE ATT&CK ID: TA0009 - Collection
+    MITRE ATT&amp;CK ID: TA0009 - Collection
 
 author: Eduardo Mattos - @eduardfir
 
@@ -80,11 +80,11 @@ parameters:
 sources:
   - query: |
       -- get context on target binary
-      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SBECmd", IsExecutable=TRUE)
 
       -- build tempfolder for output
-      LET tempfolder <= tempdir(remove_last=TRUE)
+      LET tempfolder &lt;= tempdir(remove_last=TRUE)
 
       -- get users with profiles
       LET UserProfiles = SELECT
@@ -94,7 +94,7 @@ sources:
       WHERE Name =~ userRegex and HomeDirectory =~ "Users"
 
       -- execute payload
-      LET deploy <= SELECT * FROM foreach(row=UserProfiles,
+      LET deploy &lt;= SELECT * FROM foreach(row=UserProfiles,
                     query={
                         SELECT *, Name
                         FROM execve(argv=[

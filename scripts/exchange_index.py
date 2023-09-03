@@ -1,5 +1,6 @@
 import urllib.request
 import json
+import html
 import yaml
 import re
 import os
@@ -181,7 +182,8 @@ def build_markdown():
              json.dumps(record_with_author["tags"]),
              org, project,
              yaml_filename,
-             data["description"], content))
+             data["description"],
+             html.escape(content, quote=False)))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)

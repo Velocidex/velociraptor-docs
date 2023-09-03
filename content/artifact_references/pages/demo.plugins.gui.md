@@ -298,7 +298,7 @@ sources:
 
           -- Add the time series into the timeline.
           SELECT timeline_add(
-              key="Timestamp", name="Time 你好世界 'line' &\" ",
+              key="Timestamp", name="Time 你好世界 'line' &amp;\" ",
               query=T1, timeline="Test \"Timeline 你好世界\""),
            timeline_add(
               key="Timestamp", name="2",

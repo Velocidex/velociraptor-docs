@@ -96,16 +96,16 @@ parameters:
 
 sources:
   - query: |
-        LET hostname <= SELECT Fqdn FROM info()
-        LET DateAfterTime <= if(condition=DateAfter,
+        LET hostname &lt;= SELECT Fqdn FROM info()
+        LET DateAfterTime &lt;= if(condition=DateAfter,
              then=DateAfter, else=timestamp(epoch="1600-01-01"))
-        LET DateBeforeTime <= if(condition=DateBefore,
+        LET DateBeforeTime &lt;= if(condition=DateBefore,
              then=DateBefore, else=timestamp(epoch="2200-01-01"))
         LET records = SELECT *,
-                Created0x10 < Created0x30 as FNCreatedShift,
+                Created0x10 &lt; Created0x30 as FNCreatedShift,
                 Created0x10.Unix * 1000000000 = Created0x10.UnixNano as USecZero,
-                Created0x10 > LastModified0x10 as PossibleCopy,
-                ( LastAccess0x10 > LastModified0x10 AND LastAccess0x10 > Created0x10 ) as VolumeCopy
+                Created0x10 &gt; LastModified0x10 as PossibleCopy,
+                ( LastAccess0x10 &gt; LastModified0x10 AND LastAccess0x10 &gt; Created0x10 ) as VolumeCopy
             FROM parse_mft(filename=MFTFilename, accessor=Accessor)
             WHERE
                 FileName =~ NameRegex AND
@@ -113,9 +113,9 @@ sources:
                 if(condition=Inode, then= EntryNumber=atoi(string=Inode)
                     OR ParentEntryNumber=atoi(string=Inode),
                     else=TRUE) AND
-                if(condition=SizeMax, then=FileSize < SizeMax,
+                if(condition=SizeMax, then=FileSize &lt; SizeMax,
                     else=TRUE) AND
-                if(condition=SizeMin, then=FileSize > SizeMin,
+                if(condition=SizeMin, then=FileSize &gt; SizeMin,
                     else=TRUE) AND
                 if(condition= EntryType="Both", then=TRUE,
                     else= if(condition= EntryType="File",
@@ -127,14 +127,14 @@ sources:
                         then= InUse=True,
                     else= if(condition= AllocatedType="Unallocated",
                         then= InUse=False))) AND
-                (((Created0x10 > DateAfterTime) AND (Created0x10 < DateBeforeTime)) OR
-                ((Created0x30 > DateAfterTime) AND (Created0x30 < DateBeforeTime)) OR
-                ((LastModified0x10 > DateAfterTime) AND (LastModified0x10 < DateBeforeTime)) OR
-                ((LastModified0x30 > DateAfterTime) AND (LastModified0x30 < DateBeforeTime)) OR
-                ((LastRecordChange0x10 > DateAfterTime) AND (LastRecordChange0x10 < DateBeforeTime)) OR
-                ((LastRecordChange0x30 > DateAfterTime) AND (LastRecordChange0x30 < DateBeforeTime)) OR
-                ((LastAccess0x10 > DateAfterTime) AND (LastAccess0x10 < DateBeforeTime)) OR
-                ((LastAccess0x30 > DateAfterTime) AND (LastAccess0x30 < DateBeforeTime)))
+                (((Created0x10 &gt; DateAfterTime) AND (Created0x10 &lt; DateBeforeTime)) OR
+                ((Created0x30 &gt; DateAfterTime) AND (Created0x30 &lt; DateBeforeTime)) OR
+                ((LastModified0x10 &gt; DateAfterTime) AND (LastModified0x10 &lt; DateBeforeTime)) OR
+                ((LastModified0x30 &gt; DateAfterTime) AND (LastModified0x30 &lt; DateBeforeTime)) OR
+                ((LastRecordChange0x10 &gt; DateAfterTime) AND (LastRecordChange0x10 &lt; DateBeforeTime)) OR
+                ((LastRecordChange0x30 &gt; DateAfterTime) AND (LastRecordChange0x30 &lt; DateBeforeTime)) OR
+                ((LastAccess0x10 &gt; DateAfterTime) AND (LastAccess0x10 &lt; DateBeforeTime)) OR
+                ((LastAccess0x30 &gt; DateAfterTime) AND (LastAccess0x30 &lt; DateBeforeTime)))
 
         LET common_fields = SELECT EntryNumber, ParentEntryNumber,
                 OSPath, FileName, FileSize, IsDir,InUse,

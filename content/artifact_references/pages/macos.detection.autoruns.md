@@ -79,15 +79,15 @@ sources:
                string=data,
                regex=[
                  /* Regex for event (Starts with @) */
-                 "^(?P<Event>@[a-zA-Z]+)\\s+(?P<Command>.+)",
+                 "^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)",
 
                  /* Regex for regular command. */
-                 "^(?P<Minute>[^\\s]+)\\s+"+
-                 "(?P<Hour>[^\\s]+)\\s+"+
-                 "(?P<DayOfMonth>[^\\s]+)\\s+"+
-                 "(?P<Month>[^\\s]+)\\s+"+
-                 "(?P<DayOfWeek>[^\\s]+)\\s+"+
-                 "(?P<Command>.+)$"]) as Record
+                 "^(?P&lt;Minute&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Hour&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Month&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Command&gt;.+)$"]) as Record
 
             /* Read lines from the file and filter ones that start with "#" */
             FROM split_records(

@@ -53,7 +53,7 @@ type: CLIENT_EVENT
 
 parameters:
   - name: securityLogFile
-    default: >-
+    default: &gt;-
       C:/Windows/System32/Winevt/Logs/Security.evtx
 
   - name: failureCount
@@ -79,7 +79,7 @@ sources:
                       max_age=atoi(string=failedLogonTimeWindow))
 
       // Force the fifo to materialize.
-      LET foo <= SELECT * FROM last_5_events
+      LET foo &lt;= SELECT * FROM last_5_events
 
       LET success_logon = SELECT EventData as SuccessEventData,
            System as SuccessSystem
@@ -96,7 +96,7 @@ sources:
            FROM last_5_events
            WHERE FailedEventData.SubjectUserName = SuccessEventData.SubjectUserName
            GROUP BY LogonTime
-          })  WHERE Count > atoi(string=failureCount)
+          })  WHERE Count &gt; atoi(string=failureCount)
 
 </code></pre>
 

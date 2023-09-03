@@ -108,8 +108,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       // expand provided glob into a list of paths on the file system (fs)
       LET fspaths =
@@ -129,10 +129,10 @@ sources:
               FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE
                 if(condition=StartDate,
-                   then=TimeCreated >= timestamp(string=StartDate),
+                   then=TimeCreated &gt;= timestamp(string=StartDate),
                    else=true)
                 AND if(condition=EndDate,
-                       then=TimeCreated <= timestamp(string=EndDate),
+                       then=TimeCreated &lt;= timestamp(string=EndDate),
                        else=true)
                 AND Channel =~ ChannelRegex
                 AND str(str=EventID) =~ IDRegex

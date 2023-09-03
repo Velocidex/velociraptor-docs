@@ -37,7 +37,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: >-
+    default: &gt;-
       %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
   - name: MinimumFailedLogins
@@ -56,7 +56,7 @@ sources:
       LET last_failed_events = SELECT * FROM fifo(
               query=failed_login, max_rows=50, max_age=3600)
 
-      LET _ <= SELECT * FROM last_failed_events
+      LET _ &lt;= SELECT * FROM last_failed_events
 
       LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
         FROM watch_syslog(filename=syslogAuthLogPath)
@@ -68,7 +68,7 @@ sources:
            WHERE Event.user = FailedEvent.user
         } AS Failures
         FROM success_login
-        WHERE len(list=Failures) > int(int=MinimumFailedLogins)
+        WHERE len(list=Failures) &gt; int(int=MinimumFailedLogins)
 
 </code></pre>
 

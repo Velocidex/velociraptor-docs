@@ -42,7 +42,7 @@ sources:
         )
 
         -- https://elixir.bootlin.com/linux/latest/source/include/net/tcp_states.h#L14
-        LET StateLookup <= dict(
+        LET StateLookup &lt;= dict(
            `01`="Established",
            `02`="Syn Sent",
            `06`="Time Wait", -- No owner process
@@ -55,10 +55,10 @@ sources:
                Data.Link AS Filename,
                parse_string_with_regex(
                   string=Data.Link,
-                  regex="(?P<Type>socket|pipe):\\[(?P<inode>[0-9]+)\\]") AS Details
+                  regex="(?P&lt;Type&gt;socket|pipe):\\[(?P&lt;inode&gt;[0-9]+)\\]") AS Details
         FROM glob(globs="/proc/*/fd/*")
 
-        LET AllSockets <= SELECT atoi(string=Pid) AS Pid,
+        LET AllSockets &lt;= SELECT atoi(string=Pid) AS Pid,
                read_file(filename="/proc/" + Pid + "/comm") AS Command,
                read_file(filename="/proc/" + Pid + "/cmdline") AS CommandLine,
                Filename,

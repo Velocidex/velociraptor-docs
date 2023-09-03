@@ -44,9 +44,9 @@ export: |
           ["ResetPeriod", 0, "uint32"],
           ["__ActionsCount", 12, "uint32"],
           ["__lpsaActionsHeader", 16, "uint32"],
-          ["FailureAction", "x=>x.__lpsaActionsHeader", "Array", {
+          ["FailureAction", "x=&gt;x.__lpsaActionsHeader", "Array", {
               "type": "ServiceAction",
-              "count": "x=>x.__ActionsCount"
+              "count": "x=&gt;x.__ActionsCount"
           }]
         ]],
         ["ServiceAction", 8, [
@@ -59,7 +59,7 @@ export: |
                     "SC_ACTION_RUN_COMMAND": 3,
                 }}],
             ["__DelayMsec", 4, "uint32"],
-            ["Delay", 4,"Value",{ "value": "x=>x.__DelayMsec/1000" }],
+            ["Delay", 4,"Value",{ "value": "x=&gt;x.__DelayMsec/1000" }],
         ]],
       ]
       '''
@@ -69,7 +69,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET service <= SELECT State, Name, DisplayName, Status,
+      LET service &lt;= SELECT State, Name, DisplayName, Status,
             ProcessId as Pid, ExitCode, StartMode,
             PathName, ServiceType, StartName as UserAccount,
             {
@@ -94,7 +94,7 @@ sources:
                 FROM read_reg_key(globs=servicesKeyGlob + Name)
             } AS FailureActions,
             expand(path=parse_string_with_regex(regex=
-                ['^"(?P<AbsoluteExePath>[^"]+)','(?P<AbsoluteExePath>^[^ "]+)'],
+                ['^"(?P&lt;AbsoluteExePath&gt;[^"]+)','(?P&lt;AbsoluteExePath&gt;^[^ "]+)'],
                 string=PathName).AbsoluteExePath) as AbsoluteExePath
         FROM wmi(query="SELECT * From Win32_service", namespace="root/CIMV2")
         WHERE Name =~ NameRegex

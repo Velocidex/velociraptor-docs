@@ -64,19 +64,19 @@ parameters:
 sources:
   - query: |
         -- firstly set timebounds for performance
-        LET DateAfterTime <= if(condition=DateAfter,
+        LET DateAfterTime &lt;= if(condition=DateAfter,
              then=DateAfter, else="1600-01-01")
-        LET DateBeforeTime <= if(condition=DateBefore,
+        LET DateBeforeTime &lt;= if(condition=DateBefore,
             then=DateBefore, else="2200-01-01")
 
         -- This rule performs an initial reduction for speed, then we
         -- reduce further using other conditions.
         LET USNYaraRule = '''rule X {
             strings:
-              // First byte is the record length < 255 second byte should be 0-1 (0-512 bytes per record)
+              // First byte is the record length &lt; 255 second byte should be 0-1 (0-512 bytes per record)
               // Version Major and Minor must be 2 and 0
               // D7 01 is the ending of a reasonable WinFileTime
-              // Name Offset and Name Length are short ints but should be < 255
+              // Name Offset and Name Length are short ints but should be &lt; 255
               $a = { ?? (00 | 01) 00 00 02 00 00 00 [24] ?? ?? ?? ?? ?? ?? D? 01 [16] ?? 00 3c 00  }
             condition:
               any of them
@@ -89,8 +89,8 @@ sources:
            profile=USNProfile, offset=String.Offset) AS _Parsed
         FROM yara(files=USNFile, accessor=Accessor,
                   rules=USNYaraRule, number=200000000)
-        WHERE _Parsed.RecordLength > 60 AND  // Record must be at least 60 bytes
-              _Parsed.FileNameLength > 3 AND _Parsed.FileNameLength < 100
+        WHERE _Parsed.RecordLength &gt; 60 AND  // Record must be at least 60 bytes
+              _Parsed.FileNameLength &gt; 3 AND _Parsed.FileNameLength &lt; 100
 
         SELECT Offset, _Parsed.TimeStamp AS TimeStamp,
                _Parsed.Filename AS Name,
@@ -99,8 +99,8 @@ sources:
                _Parsed.Reason AS Reason
         FROM Hits
         WHERE Name =~ FileRegex AND
-              TimeStamp < DateBeforeTime AND
-              TimeStamp > DateAfterTime
+              TimeStamp &lt; DateBeforeTime AND
+              TimeStamp &gt; DateAfterTime
 
 </code></pre>
 

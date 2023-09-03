@@ -33,7 +33,7 @@ export: |
            ["Count", 4, "uint32"],
            ["PartialDescriptors", 8, "Array", {
               "type": "CM_PARTIAL_RESOURCE_DESCRIPTOR",
-              "count": "x=>x.Count"
+              "count": "x=&gt;x.Count"
            }]
         ]],
 

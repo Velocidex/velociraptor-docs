@@ -74,16 +74,16 @@ description: |
   To configure the event collector properly a couple steps need to be
   completed prior to setting up this event:
     1. Configure an index to ingest the data.
-       * Go to Settings > Index.
+       * Go to Settings &gt; Index.
        * New Index.
     2. Configure the collector.
-       * Go to Settings > Data Inputs > HTTP Event Collector.
+       * Go to Settings &gt; Data Inputs &gt; HTTP Event Collector.
        * Add New.
        * Name does not matter, but ensure indexer acknowledgement is OFF.
        * Set `Selected Indexes` to the index configured in step 1.
        * Save API key for this event.
     3. Set Global settings.
-       * Go to Settings > Data Inputs > HTTP Event Collector > Global Settings
+       * Go to Settings &gt; Data Inputs &gt; HTTP Event Collector &gt; Global Settings
        * Ensure `All Tokens` is set to ENABLED
        * Copy the HTTP Port Number for this event
     4. Configure your Splunk props.conf and tranforms.conf  
@@ -123,7 +123,7 @@ description: |
                       )  
 
 
-       > Note: `Enable SSL` only works if SSL is properly configured on your
+       &gt; Note: `Enable SSL` only works if SSL is properly configured on your
        Splunk server -- meaning you have proper certificates and DNS. If you are
        accessing your Splunk instance by IP, `Enable SSL` should be set to OFF.
 type: SERVER_EVENT

@@ -149,7 +149,7 @@ parameters:
   - name: StandardCollection
     type: hidden
     default: |
-      LET _ <= log(message="Will collect package %v", args=zip_filename)
+      LET _ &lt;= log(message="Will collect package %v", args=zip_filename)
 
       SELECT * FROM collect(artifacts=Artifacts,
             args=Parameters, output=zip_filename,
@@ -182,7 +182,7 @@ parameters:
   - name: GCSCollection
     type: hidden
     default: |
-      LET GCSBlob <= parse_json(data=target_args.GCSKey)
+      LET GCSBlob &lt;= parse_json(data=target_args.GCSKey)
 
       // A utility function to upload the file.
       LET upload_file(filename, name, accessor) = upload_gcs(
@@ -232,20 +232,20 @@ parameters:
     type: hidden
     default: |
       // Add all the tools we are going to use to the inventory.
-      LET _ <= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
+      LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
        FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
        WHERE log(message="Adding tool " + ToolName)
 
-      LET baseline <= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
+      LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
          scope().CWD AS CWD FROM info()
 
-      LET OutputPrefix <= if(condition= OutputPrefix,
+      LET OutputPrefix &lt;= if(condition= OutputPrefix,
         then=pathspec(parse=OutputPrefix),
         else= if(condition= baseline[0].CWD,
           then=pathspec(parse= baseline[0].CWD),
           else=pathspec(parse= baseline[0].ExePath)))
 
-      LET _ <= log(message="Output Prefix : %v", args= OutputPrefix)
+      LET _ &lt;= log(message="Output Prefix : %v", args= OutputPrefix)
 
       LET FormatMessage(Message) = regex_transform(
           map=dict(`%FQDN%`=baseline[0].Fqdn,
@@ -254,18 +254,18 @@ parameters:
 
       // Format the filename safely according to the filename
       // template. This will be the name uploaded to the bucket.
-      LET formatted_zip_name <= regex_replace(
+      LET formatted_zip_name &lt;= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
           re="[^0-9A-Za-z\\-]", replace="_") + ".zip"
 
       // This is where we write the files on the endpoint.
-      LET zip_filename <= OutputPrefix + formatted_zip_name
+      LET zip_filename &lt;= OutputPrefix + formatted_zip_name
 
       // The log is always written to the executable path
-      LET log_filename <= pathspec(parse= baseline[0].Exe + ".log")
+      LET log_filename &lt;= pathspec(parse= baseline[0].Exe + ".log")
 
       -- Make a random hex string as a random password
-      LET RandomPassword <= SELECT format(format="%02x",
+      LET RandomPassword &lt;= SELECT format(format="%02x",
             args=rand(range=255)) AS A
       FROM range(end=25)
 
@@ -303,19 +303,19 @@ parameters:
   - name: CloudCollection
     type: hidden
     default: |
-      LET TargetArgs <= target_args
+      LET TargetArgs &lt;= target_args
 
       // When uploading to the cloud it is allowed to use directory //
       // separators and we trust the filename template to be a valid
       // filename.
-      LET upload_name <= regex_replace(
+      LET upload_name &lt;= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
           re="[^0-9A-Za-z\\-/]", replace="_")
 
-      LET _ <= log(message="Will collect package %v and upload to cloud bucket %v",
+      LET _ &lt;= log(message="Will collect package %v and upload to cloud bucket %v",
          args=[zip_filename, TargetArgs.bucket])
 
-      LET Result <= SELECT
+      LET Result &lt;= SELECT
           upload_file(filename=Container,
                       name= upload_name + ".zip",
                       accessor="file") AS Upload,
@@ -334,9 +334,9 @@ parameters:
           level=Level,
           metadata=ContainerMetadata)
 
-      LET _ <= if(condition=NOT Result[0].Upload.Path,
-         then=log(message="<red>Failed to upload to cloud bucket!</> Leaving the collection behind for manual upload!"),
-         else=log(message="<green>Collection Complete!</> Please remove %v when you are sure it was properly transferred", args=zip_filename))
+      LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
+         then=log(message="&lt;red&gt;Failed to upload to cloud bucket!&lt;/&gt; Leaving the collection behind for manual upload!"),
+         else=log(message="&lt;green&gt;Collection Complete!&lt;/&gt; Please remove %v when you are sure it was properly transferred", args=zip_filename))
 
       SELECT * FROM Result
 
@@ -348,16 +348,16 @@ parameters:
        grabs files from the local archive.
 
     default: |
-       LET RequiredTool <= ToolName
+       LET RequiredTool &lt;= ToolName
 
-       LET matching_tools <= SELECT ToolName, Filename
+       LET matching_tools &lt;= SELECT ToolName, Filename
        FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
        WHERE RequiredTool = ToolName
 
        LET get_ext(filename) = parse_string_with_regex(
              regex="(\\.[a-z0-9]+)$", string=filename).g1
 
-       LET temp_binary <= if(condition=matching_tools,
+       LET temp_binary &lt;= if(condition=matching_tools,
        then=tempfile(
                 extension=get_ext(filename=matching_tools[0].Filename),
                 remove_last=TRUE,
@@ -369,7 +369,7 @@ parameters:
 
 sources:
   - query: |
-      LET Binaries <= SELECT * FROM foreach(
+      LET Binaries &lt;= SELECT * FROM foreach(
           row={
              SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
           }, query={
@@ -391,14 +391,14 @@ sources:
            WHERE NOT log(message="Unknown target type " + OS) }
       )
 
-      LET Target <= tool_name[0].Type
+      LET Target &lt;= tool_name[0].Type
 
       // This is what we will call it.
-      LET CollectorName <= format(
+      LET CollectorName &lt;= format(
           format='Collector_%v',
           args=inventory_get(tool=Target).Definition.filename)
 
-      LET CollectionArtifact <= SELECT Value FROM switch(
+      LET CollectionArtifact &lt;= SELECT Value FROM switch(
         a = { SELECT CommonCollections + StandardCollection AS Value
               FROM scope()
               WHERE target = "ZIP" },
@@ -428,7 +428,7 @@ sources:
       -- For x509, if no public key cert is specified, we use the
       -- server's own key. This makes it easy for the server to import
       -- the file again.
-      LET updated_encryption_args <= if(
+      LET updated_encryption_args &lt;= if(
          condition=use_server_cert,
          then=dict(public_key=server_frontend_cert(),
                    scheme="x509"),
@@ -436,7 +436,7 @@ sources:
       )
 
       -- Add custom definition if needed. Built in definitions are not added
-      LET definitions <= SELECT * FROM chain(
+      LET definitions &lt;= SELECT * FROM chain(
       a = { SELECT name, description, tools, parameters, sources
             FROM artifact_definitions(deps=TRUE, names=artifacts)
             WHERE NOT compiled_in AND
@@ -497,7 +497,7 @@ sources:
 
       // Build the autoexec config file depending on the user's
       // collection type choices.
-      LET autoexec <= dict(autoexec=dict(
+      LET autoexec &lt;= dict(autoexec=dict(
           argv=("artifacts", "collect", "Collector",
                 "--logfile", CollectorName + ".log") + optional_cmdline.Opt,
           artifact_definitions=definitions)

@@ -47,7 +47,7 @@ sources:
           ["Environment", 128, "Pointer", {
               "type": "String",
               "type_options": {
-                 "length": "x=>x.EnvironmentSize",
+                 "length": "x=&gt;x.EnvironmentSize",
                  "encoding": "utf16",
                  "max_length": 10000,
                  "term": "",
@@ -62,7 +62,7 @@ sources:
               "type": "String",
               "type_options": {
                 "encoding": "utf16",
-                "length": "x=>x.Length",
+                "length": "x=&gt;x.Length",
                 "term": "",
               }}],
        ]]
@@ -81,7 +81,7 @@ sources:
        -- lines. Each line contains the variable name followed by an =
        -- sign and then the variable value.
        LET SplitEnv(EnvString) =  SELECT parse_string_with_regex(
-          string=_value, regex="^(?P<Name>[^=]*)=(?P<Value>.+)") AS Line
+          string=_value, regex="^(?P&lt;Name&gt;[^=]*)=(?P&lt;Value&gt;.+)") AS Line
        FROM foreach(row=split(string=EnvString, sep="\x00"))
        WHERE Line
 

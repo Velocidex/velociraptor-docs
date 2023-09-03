@@ -52,7 +52,7 @@ sources:
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='<[?].+?>',
+                    re='&lt;[?].+?&gt;',
                     replace='')) AS XML
       FROM read_file(filenames=OSPath)
 

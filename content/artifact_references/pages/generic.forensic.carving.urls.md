@@ -39,7 +39,7 @@ sources:
           query={
             SELECT OSPath,
                    URL FROM parse_records_with_regex(file=OSPath,
-               regex="(?P<URL>https?:\\/\\/[\\w\\.-]+[\\/\\w \\.-]*)")
+               regex="(?P&lt;URL&gt;https?:\\/\\/[\\w\\.-]+[\\/\\w \\.-]*)")
           })
 
 </code></pre>

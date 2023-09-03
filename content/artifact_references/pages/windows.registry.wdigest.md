@@ -50,8 +50,8 @@ description: |
     “UseLogonCredential” DWORD value, so the key needs to be
     added. The existence of the key is suspicious, if not expected.
 
-    * ATT&CK tactic: Defense Evasion, Credential Access
-    * ATT&CK technique: T1112, T1003.001
+    * ATT&amp;CK tactic: Defense Evasion, Credential Access
+    * ATT&amp;CK technique: T1112, T1003.001
 
 reference:
     - https://medium.com/blue-team/preventing-mimikatz-attacks-ed283e7ebdd5

@@ -55,8 +55,8 @@ parameters:
 
 sources:
   - query: |
-      LET Password <= format(format="%02x", args=rand(range=0xffffffffffff))
-      LET ServerMetadataKey <= "User Password " + UserName
+      LET Password &lt;= format(format="%02x", args=rand(range=0xffffffffffff))
+      LET ServerMetadataKey &lt;= "User Password " + UserName
 
       LET DoIt = SELECT * FROM if(condition=ResetPassword,
       then={

@@ -25,8 +25,8 @@ description: |
   This artifact enables running Yara over physical memory.
 
   There are 2 kinds of Yara rules that can be deployed:
-   &nbsp;1. Url link to a yara rule.
-   &nbsp;2. A Standard Yara rule attached as a parameter.
+   &amp;nbsp;1. Url link to a yara rule.
+   &amp;nbsp;2. A Standard Yara rule attached as a parameter.
 
   Only one method of Yara will be applied and search order is as above. The
   default is Cobalt Strike opcodes.
@@ -97,7 +97,7 @@ sources:
 
     query: |
       -- check which Yara to use
-      LET yara_rules <= YaraUrl || YaraRule
+      LET yara_rules &lt;= YaraUrl || YaraRule
 
       LET SparsePath = pathspec(
            DelegateAccessor='raw_file',
@@ -116,7 +116,7 @@ sources:
       -- Install the driver and schedule an uninstall when the query
       -- is done.  We must load the driver on the system drive or it
       -- wont load properly.
-      LET _ <= SELECT *
+      LET _ &lt;= SELECT *
       FROM foreach(row=WinpmemBinary,
       query={
          SELECT *, atexit(query={

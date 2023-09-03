@@ -36,7 +36,7 @@ sources:
   - query: |
       LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
 
-      LET ProviderNames <= memoize(key="GUID", query={
+      LET ProviderNames &lt;= memoize(key="GUID", query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
         FROM glob(globs=Publishers, accessor="registry")

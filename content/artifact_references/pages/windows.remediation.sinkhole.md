@@ -72,7 +72,7 @@ sources:
 
     query: |
       -- Extract sink hole requirements from table
-      LET changes <= SELECT
+      LET changes &lt;= SELECT
                 Domain,
                 Sinkhole,
                 if(condition=Description,
@@ -109,12 +109,12 @@ sources:
         FROM execve(argv=['cmd.exe', '/c','ipconfig','/flushdns'])
 
       -- Find existing entries to modify
-      LET existing <= SELECT
+      LET existing &lt;= SELECT
             parse_string_with_regex(
             string=Line,
             regex=[
-                "^\\s+(?P<Resolution>[^\\s]+)\\s+" +
-                "(?P<Hostname>[^\\s]+)\\s*\\S*$"
+                "^\\s+(?P&lt;Resolution&gt;[^\\s]+)\\s+" +
+                "(?P&lt;Hostname&gt;[^\\s]+)\\s*\\S*$"
             ]) as Record,
             Line
         FROM parse_lines(filename=HostsFile)
@@ -124,10 +124,10 @@ sources:
 
       -- Parse a URL to get domain name.
       LET get_domain(URL) = parse_string_with_regex(
-           string=URL, regex='^https?://(?P<Domain>[^:/]+)').Domain
+           string=URL, regex='^https?://(?P&lt;Domain&gt;[^:/]+)').Domain
 
       -- extract Velociraptor config for policy
-      LET extracted_config <= SELECT * FROM foreach(
+      LET extracted_config &lt;= SELECT * FROM foreach(
           row=config.server_urls,
             query={
                 SELECT get_domain(URL=_value) AS Domain
@@ -135,7 +135,7 @@ sources:
             })
 
       -- Set existing entries to sinkholed values
-      LET find_modline <= SELECT * FROM foreach(row=changes,
+      LET find_modline &lt;= SELECT * FROM foreach(row=changes,
             query={
                 SELECT
                     format(format='\t%v\t\t%v\t\t# %v',
@@ -150,7 +150,7 @@ sources:
             })
 
       -- Add new hostsfile entries
-      LET find_newline <= SELECT * FROM foreach(row=changes,
+      LET find_newline &lt;= SELECT * FROM foreach(row=changes,
             query={
                 SELECT
                     format(format='\t%v\t\t%v\t\t# %v',
@@ -164,7 +164,7 @@ sources:
             })
 
       -- Determine which lines should stay the same
-      LET find_line <= SELECT
+      LET find_line &lt;= SELECT
                 Line,
                 Record.Hostname as Domain,
                 'old entry' as Type
@@ -174,7 +174,7 @@ sources:
                 AND NOT Domain in find_newline.Domain
 
       -- Add all lines to staging object
-      LET build_lines <= SELECT Line FROM chain(
+      LET build_lines &lt;= SELECT Line FROM chain(
             a=find_modline,
             b=find_newline,
             c=find_line
@@ -184,7 +184,7 @@ sources:
       LET HostsData = join(array=build_lines.Line,sep='\r\n')
 
       -- Force start of backup or restore if applicable
-      LET backup_restore <= if(
+      LET backup_restore &lt;= if(
          condition= RestoreBackup AND log(message="Will attempt to restore backup"),
          then= if(
             condition= check_backup,
@@ -203,7 +203,7 @@ sources:
         )
 
       -- Do kick off logic
-      LET do_it <= SELECT * FROM if(condition= NOT RestoreBackup,
+      LET do_it &lt;= SELECT * FROM if(condition= NOT RestoreBackup,
             then= {
                 SELECT * FROM chain(
                     a= log(message='Adding hosts entries.'),

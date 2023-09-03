@@ -52,7 +52,7 @@ sources:
                 then=timestamp(winfiletime=High * 4294967296 + Low))
 
         -- lookupSID() may not be available on deaddisk analysis
-        LET roaming_users <= memoize(query={
+        LET roaming_users &lt;= memoize(query={
           SELECT
              split(string=Key.OSPath.Basename, sep="-")[-1] as Uid,
              "" AS Gid,
@@ -132,7 +132,7 @@ reports:
       * Local users show the mtime of their home directory.
 
       {{ define "users" }}
-         LET users <= SELECT Name, UUID, Type, Mtime
+         LET users &lt;= SELECT Name, UUID, Type, Mtime
          FROM source()
       {{ end }}
       {{ Query "users" "SELECT Name, UUID, Type, Mtime FROM users" | Table }}

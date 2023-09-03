@@ -78,23 +78,23 @@ sources:
         }],
         ["cipher_length", 15, "uint32b"],
         ["cipher", 19, "String", {
-            "length": "x=>x.cipher_length",
+            "length": "x=&gt;x.cipher_length",
         }]
       ]]]
       '''
 
       -- Device major numbers considered local. See Linux.Search.FileFinder
-      LET LocalDeviceMajor <= (NULL,
+      LET LocalDeviceMajor &lt;= (NULL,
           253, 7, 8, 9, 11, 65, 66, 67, 68, 69, 70,
           71, 128, 129, 130, 131, 132, 133, 134, 135, 202, 253, 254, 259)
 
       // Only search local filesystems
-      LET RecursionCallback = "x=>x.Data.DevMajor IN LocalDeviceMajor"
+      LET RecursionCallback = "x=&gt;x.Data.DevMajor IN LocalDeviceMajor"
 
       LET _Hits = SELECT OSPath,
            read_file(filename=OSPath, length=20240) AS Data
         FROM glob(globs=KeyGlobs, recursion_callback=RecursionCallback)
-        WHERE Size < 20000
+        WHERE Size &lt; 20000
 
       LET Hits = SELECT OSPath, Data,
              base64decode(

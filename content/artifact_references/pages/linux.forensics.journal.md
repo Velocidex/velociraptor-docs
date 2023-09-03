@@ -42,7 +42,7 @@ parameters:
 
 export: |
     LET JournalProfile = '''[
-    ["Header", "x=>x.header_size", [
+    ["Header", "x=&gt;x.header_size", [
       ["Signature", 0, "String", {
           "length": 8,
       }],
@@ -50,16 +50,16 @@ export: |
       ["arena_size", 96, "uint64"],
       ["n_objects", 144, uint64],
       ["n_entries", 152, uint64],
-      ["Objects", "x=>x.header_size", "Array", {
+      ["Objects", "x=&gt;x.header_size", "Array", {
           "type": "ObjectHeader",
-          "count": "x=>x.n_objects",
+          "count": "x=&gt;x.n_objects",
           "max_count": 100000
       }]
     ]],
 
-    ["ObjectHeader", "x=>x.size", [
+    ["ObjectHeader", "x=&gt;x.size", [
      ["Offset", 0, "Value", {
-        "value": "x=>x.StartOf",
+        "value": "x=&gt;x.StartOf",
      }],
      ["type", 0, "Enumeration",{
          "type": "uint8",
@@ -77,13 +77,13 @@ export: |
      ["flags", 1, "uint8"],
      ["__real_size", 8, "uint64"],
      ["__round_size", 8, "Value", {
-         "value": "x=>int(int=x.__real_size / 8) * 8",
+         "value": "x=&gt;int(int=x.__real_size / 8) * 8",
      }],
      ["size", 0, "Value", {
-         "value": "x=>if(condition=x.__real_size = x.__round_size, then=x.__round_size, else=x.__round_size + 8)",
+         "value": "x=&gt;if(condition=x.__real_size = x.__round_size, then=x.__round_size, else=x.__round_size + 8)",
      }],
      ["payload", 16, Union, {
-         "selector": "x=>x.type",
+         "selector": "x=&gt;x.type",
          "choices": {
              "OBJECT_DATA": DataObject,
              "OBJECT_ENTRY": EntryObject,
@@ -103,7 +103,7 @@ export: |
       ["items", 48, Array, {
           "type": EntryItem,
           "count": 50,
-          "sentinel": "x=>x.object.payload = NULL",
+          "sentinel": "x=&gt;x.object.payload = NULL",
       }]
     ]],
     ["EntryItem", 16, [

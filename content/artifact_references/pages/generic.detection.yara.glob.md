@@ -116,18 +116,18 @@ parameters:
 sources:
   - query: |
       -- check which Yara to use
-      LET yara_rules <= YaraUrl || YaraRule
+      LET yara_rules &lt;= YaraUrl || YaraRule
 
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp < DateBefore AND stamp > DateAfter,
+                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp < DateBefore,
+                then= stamp &lt; DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp > DateAfter,
+                then= stamp &gt; DateAfter,
                 else= True
             )))
 
@@ -137,10 +137,10 @@ sources:
         WHERE
           NOT IsDir AND NOT IsLink
           AND if(condition=SizeMin,
-            then= SizeMin < Size,
+            then= SizeMin &lt; Size,
             else= True)
           AND if(condition=SizeMax,
-            then=SizeMax > Size,
+            then=SizeMax &gt; Size,
             else= True)
           AND
              ( time_test(stamp=Mtime)
@@ -163,10 +163,10 @@ sources:
                             name=format(format="%v-%v-%v",
                             args=[
                                 OSPath,
-                                if(condition= String.Offset - ContextBytes < 0,
+                                if(condition= String.Offset - ContextBytes &lt; 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes > Size,
+                                if(condition= String.Offset + ContextBytes &gt; Size,
                                     then= Size,
                                     else= String.Offset + ContextBytes) ]
                             )) as HitContext

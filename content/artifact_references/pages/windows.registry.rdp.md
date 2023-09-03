@@ -53,7 +53,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - name: Servers
     query: |
-      LET servers <= SELECT 
+      LET servers &lt;= SELECT 
             Mtime as LastWriteTime,
             basename(path=OSPath.Dirname) as Server,
             OSPath.Basename as KeyName,
@@ -92,7 +92,7 @@ sources:
 
   - name: Mru
     query: |
-      LET mru <= SELECT 
+      LET mru &lt;= SELECT 
             Mtime as LastWriteTime,
             OSPath.Basename as KeyName,
             Data.value as KeyValue,

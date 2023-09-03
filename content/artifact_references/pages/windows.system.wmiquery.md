@@ -42,7 +42,7 @@ required_permissions:
 
 parameters:
   - name: WMIQuery
-    description: "Add target WMI query: e.g SELECT * FROM <CLASSNAME>"
+    description: "Add target WMI query: e.g SELECT * FROM &lt;CLASSNAME&gt;"
     default: "SELECT * FROM Win32_Process"
 
   - name: Namespace

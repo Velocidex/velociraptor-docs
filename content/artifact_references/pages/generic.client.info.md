@@ -58,7 +58,7 @@ sources:
     description: Windows specific information about the host
     precondition: SELECT OS From info() where OS = 'windows'
     query: |
-      LET DomainLookup <= dict(
+      LET DomainLookup &lt;= dict(
          `0`='Standalone Workstation',
          `1`='Member Workstation',
          `2`='Standalone Server',
@@ -140,13 +140,13 @@ reports:
            FROM source(artifact="Generic.Client.Stats",
                        client_id=ClientId,
                        start_time=now() - 86400)
-           WHERE CPUPercent >= 0
+           WHERE CPUPercent &gt;= 0
          })
       {{ end }}
 
-      <div>
+      &lt;div&gt;
       {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
-      </div>
+      &lt;/div&gt;
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
       {{ if $windows_info }}

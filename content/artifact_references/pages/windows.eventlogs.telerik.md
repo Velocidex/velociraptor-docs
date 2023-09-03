@@ -73,13 +73,13 @@ sources:
   - precondition: SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
+      LET DateAfterTime &lt;= if(condition=DateAfter,
         then = DateAfter, else = "1600-01-01" )
-      LET DateBeforeTime <= if(condition=DateBefore,
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
         then = DateBefore, else = "2200-01-01" )
 
       -- expand provided glob into a list of paths on the file system (fs)
@@ -110,7 +110,7 @@ sources:
                     AND NOT if(condition=WhitelistRegex,
                         then= format(format='%v',args=EventData.Data) =~ WhitelistRegex,
                         else= FALSE )
-                    AND EventTime >= DateAfterTime AND EventTime <= DateBeforeTime
+                    AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
             }
           )
 

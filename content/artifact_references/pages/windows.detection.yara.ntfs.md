@@ -133,18 +133,18 @@ sources:
             FileRegex=FileNameRegex,PathRegex=PathRegex, 
             SizeMax=SizeMax, SizeMin=SizeMin)
         WHERE NOT IsDir
-            AND NOT OSPath =~ '''\\\\.\\.:\\<Err>\\'''
+            AND NOT OSPath =~ '''\\\\.\\.:\\&lt;Err&gt;\\'''
             AND if(condition=EarliestSILastChanged,
-                then= LastRecordChange0x10 > EarliestSILastChanged,
+                then= LastRecordChange0x10 &gt; EarliestSILastChanged,
                 else= True)
             AND if(condition=LatestSILastChanged,
-                then= LastRecordChange0x10 < LatestSILastChanged,
+                then= LastRecordChange0x10 &lt; LatestSILastChanged,
                 else= True)
             AND if(condition=EarliestFNCreated,
-                then= Created0x30 > EarliestFNCreation,
+                then= Created0x30 &gt; EarliestFNCreation,
                 else= True)
             AND if(condition=LatestFNCreated,
-                then= Created0x30 < LatestFNCreation,
+                then= Created0x30 &lt; LatestFNCreation,
                 else= True)
 
       -- scan files and only report a single hit.
@@ -162,10 +162,10 @@ sources:
                             name=format(format="%v-%v-%v", 
                             args=[
                                 OSPath,
-                                if(condition= String.Offset - ContextBytes < 0,
+                                if(condition= String.Offset - ContextBytes &lt; 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes > File.Size,
+                                if(condition= String.Offset + ContextBytes &gt; File.Size,
                                     then= File.Size,
                                     else= String.Offset + ContextBytes) ]
                             )) as HitContext

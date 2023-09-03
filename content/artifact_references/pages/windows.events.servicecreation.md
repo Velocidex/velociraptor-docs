@@ -31,7 +31,7 @@ type: CLIENT_EVENT
 
 parameters:
   - name: systemLogFile
-    default: >-
+    default: &gt;-
       C:/Windows/System32/Winevt/Logs/System.evtx
 
 sources:

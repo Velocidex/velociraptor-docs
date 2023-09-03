@@ -44,7 +44,7 @@ sources:
         LET Root = pathspec(parse="C:", path_type="ntfs")
 
         -- Progress logging for newer clients
-        LET fileList = SELECT * FROM if(condition=version(function="log") > 1,
+        LET fileList = SELECT * FROM if(condition=version(function="log") &gt; 1,
         then={
           SELECT Root + OSPath AS OSPath
           FROM parse_mft(accessor="ntfs",filename=Root+"$MFT")

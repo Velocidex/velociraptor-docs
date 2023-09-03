@@ -64,23 +64,23 @@ reports:
 
       ## Server status @ {{ Get $time "0.Now" }}
 
-      <p>The following are total across all frontends.</p>
-          <span class="container">
-            <span class="row">
-              <span class="col-sm panel">
+      &lt;p&gt;The following are total across all frontends.&lt;/p&gt;
+          &lt;span class="container"&gt;
+            &lt;span class="row"&gt;
+              &lt;span class="col-sm panel"&gt;
                CPU and Memory Utilization
                {{- Query "CPU" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 -}}
-              </span>
-              <span class="col-sm panel">
+              &lt;/span&gt;
+              &lt;span class="col-sm panel"&gt;
                Currently Connected Clients
                {{- Query "CurrentConnections" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 -}}
-              </span>
-            </span>
-      </span>
+              &lt;/span&gt;
+            &lt;/span&gt;
+      &lt;/span&gt;
 
       ## Current Orgs
 
-      {{ Query "LET ColumnTypes <= dict(ClientConfig='url_internal') \
+      {{ Query "LET ColumnTypes &lt;= dict(ClientConfig='url_internal') \
                 SELECT Name, OrgId, \
                        format(format='[%s](/notebooks/Dashboards/uploads/%%22%s/client.%s.config.yaml%%22)', \
                        args=[OrgId, ArtifactName, OrgId]) AS ClientConfig, \

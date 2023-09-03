@@ -28,10 +28,10 @@ sources:
 
     query: |
         // Cache the pslist output in memory.
-        LET processes <= SELECT Pid, Ppid, Name, Exe FROM pslist()
+        LET processes &lt;= SELECT Pid, Ppid, Name, Exe FROM pslist()
 
         // Get the pids of all procecesses named services.exe
-        LET services <= SELECT Pid FROM processes where Name =~ "services.exe"
+        LET services &lt;= SELECT Pid FROM processes where Name =~ "services.exe"
 
         // The interesting processes are those which are not spawned by services.exe
         LET suspicious = SELECT Pid As SVCHostPid,

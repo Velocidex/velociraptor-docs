@@ -94,7 +94,7 @@ parameters:
                 $s3 = "wininet"
 
             condition:
-                ( $header at 0 and filesize < 4096 )
+                ( $header at 0 and filesize &lt; 4096 )
                 or any of ($s*) // we enact offset limits in VQL ( 0..4096 )
         }
   - name: FindSleepFunction
@@ -126,161 +126,161 @@ export: |
 
         # 0x0002:Port, 0x0001:Type, 0x0002:Length
         ["__port_prefix", 0, "String",{"term_hex": "000200010002", length: 10000, max_length: 10000}],
-        ["Port", "x=>len(list=x.__port_prefix) + 6", "uint16b"],
+        ["Port", "x=&gt;len(list=x.__port_prefix) + 6", "uint16b"],
 
         # 0x0003:Sleeptime,0x0002:Type, 0x0004:Length
         ["__sleeptime_prefix", 0, "String", {"term_hex": "000300020004", length: 10000, max_length: 10000}],
-        ["Sleeptime", "x=>len(list=x.__sleeptime_prefix) + 6", "uint32b"],
+        ["Sleeptime", "x=&gt;len(list=x.__sleeptime_prefix) + 6", "uint32b"],
 
         # 0x0004:Maxgetsize, 0x0002:Type, 0x0004:Length
         ["__maxgetsize_prefix", 0, "String",{"term_hex": "000400020004", length: 10000, max_length: 10000}],
-        ["Maxgetsize", "x=>len(list=x.__maxgetsize_prefix) + 6", "uint32b"],
+        ["Maxgetsize", "x=&gt;len(list=x.__maxgetsize_prefix) + 6", "uint32b"],
 
         # 0x0005:Jitter, 0x0001:Type, 0x0002:Length
         ["__jitter_prefix", 0, "String",{"term_hex": "000500010002", length: 10000, max_length: 10000}],
-        ["Jitter", "x=>len(list=x.__jitter_prefix) + 6", "uint16b"],
+        ["Jitter", "x=&gt;len(list=x.__jitter_prefix) + 6", "uint16b"],
 
         # 0x0006:MaxDns, 0x0001:Type, 0x0002:Length
         ["__maxdns_prefix", 0, "String",{"term_hex": "000600010002", length: 10000, max_length: 10000}],
-        ["MaxDns", "x=>len(list=x.__maxdns_prefix) + 6", "uint16b"],
+        ["MaxDns", "x=&gt;len(list=x.__maxdns_prefix) + 6", "uint16b"],
 
         # 0x0007:Publickey,0x0003:Type,
         ["__publickey_prefix", 0, "String",{"term_hex": "000700030100", length: 10000, max_length: 10000}],
-        ["__publickey_raw", "x=>len(list=x.__publickey_prefix) + 6", "String",{"term_hex":"00000008"}],
-        ["PublicKey", "x=>len(list=x.__publickey_prefix) + 6", "Value",{"value":"x=>format(format='% x',args=x.__publickey_raw)"}],
+        ["__publickey_raw", "x=&gt;len(list=x.__publickey_prefix) + 6", "String",{"term_hex":"00000008"}],
+        ["PublicKey", "x=&gt;len(list=x.__publickey_prefix) + 6", "Value",{"value":"x=&gt;format(format='% x',args=x.__publickey_raw)"}],
 
         # 0x0008:server/get-uri,0x0003:Type,
         ["__c2server_prefix", 0, "String",{"term_hex": "00080003", length: 10000, max_length: 10000}],
-        ["C2Server", "x=>len(list=x.__c2server_prefix) + 6", "String"],
+        ["C2Server", "x=&gt;len(list=x.__c2server_prefix) + 6", "String"],
 
         # 0x0009:useragent,0x0003:Type,
         ["__useragent_prefix", 0, "String",{"term_hex": "00090003", length: 10000, max_length: 10000}],
-        ["UserAgent", "x=>len(list=x.__useragent_prefix) + 6", "String"],
+        ["UserAgent", "x=&gt;len(list=x.__useragent_prefix) + 6", "String"],
 
         # 0x000a:PostUri,0x0003:Type,
         ["__PostUri_prefix", 0, "String", {"term_hex": "000a0003", length: 10000, max_length: 10000}],
-        ["PostURI", "x=>len(list=x.__PostUri_prefix) + 6", "String"],
+        ["PostURI", "x=&gt;len(list=x.__PostUri_prefix) + 6", "String"],
 
         # 0x000b:Malleable_C2_Instructions,0x0003:Type, adding length check as not sure if we can rely on termination
         ["__Malleable_C2_Instructions_prefix", 0, "String",{"term_hex": "000b0003", length: 10000, max_length: 10000}],
-        ["__Malleable_C2_Instructions_length","x=>len(list=x.__Malleable_C2_Instructions_prefix) + 4","uint16b"],
-        ["__Malleable_C2_Instructions", "x=>len(list=x.__Malleable_C2_Instructions_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__Malleable_C2_Instructions_length"}],
-        ["MalleableC2Instructions",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__Malleable_C2_Instructions, re='[^ -~\\r\\n]', replace='')])" }],
-        #["Malleable_C2_Instructions",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__Malleable_C2_Instructions)" }], #uncomment to return base64 encoded raw Malleable_C2_Instructions
+        ["__Malleable_C2_Instructions_length","x=&gt;len(list=x.__Malleable_C2_Instructions_prefix) + 4","uint16b"],
+        ["__Malleable_C2_Instructions", "x=&gt;len(list=x.__Malleable_C2_Instructions_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__Malleable_C2_Instructions_length"}],
+        ["MalleableC2Instructions",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__Malleable_C2_Instructions, re='[^ -~\\r\\n]', replace='')])" }],
+        #["Malleable_C2_Instructions",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__Malleable_C2_Instructions)" }], #uncomment to return base64 encoded raw Malleable_C2_Instructions
 
         # 0x000c:HttpGetHeader,0x0003:Type, adding length check as we can not rely on termination
         ["__HttpGetHeader_prefix", 0, "String",{"term_hex": "000c0003", length: 10000, max_length: 10000}],
-        ["__HttpGetHeader_length","x=>len(list=x.__HttpGetHeader_prefix) + 4","uint16b"],
-        ["__HttpGetHeader","x=>len(list=x.__HttpGetHeader_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=> x.__HttpGetHeader_length"}],
-        ["HttpGetHeader",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__HttpGetHeader, re='[^ -~\\r\\n]', replace='')])" }],
-        #["HttpGetHeader",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__HttpGetHeader)" }], #uncomment to return base64 encoded raw HttpGetHeader
+        ["__HttpGetHeader_length","x=&gt;len(list=x.__HttpGetHeader_prefix) + 4","uint16b"],
+        ["__HttpGetHeader","x=&gt;len(list=x.__HttpGetHeader_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=&gt; x.__HttpGetHeader_length"}],
+        ["HttpGetHeader",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__HttpGetHeader, re='[^ -~\\r\\n]', replace='')])" }],
+        #["HttpGetHeader",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__HttpGetHeader)" }], #uncomment to return base64 encoded raw HttpGetHeader
 
         # 0x000d:HttpPostHeader,0x0003:Type, adding length check as we can not rely on termination
         ["__http_post_header_prefix", 0, "String",{"term_hex": "000d0003", length: 10000, max_length: 10000}],
-        ["__HttpPostHeader_length","x=>len(list=x.__http_post_header_prefix) + 4","uint16b"],
-        ["__HttpPostHeader","x=>len(list=x.__http_post_header_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=> x.__HttpPostHeader_length"}],
-        ["HttpPostHeader",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__HttpPostHeader, re='[^ -~\\r\\n]', replace='')])" }],
-        #["HttpPostHeader",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__HttpPostHeader)" }], #uncomment to return base64 encoded raw HttpPostHeader
+        ["__HttpPostHeader_length","x=&gt;len(list=x.__http_post_header_prefix) + 4","uint16b"],
+        ["__HttpPostHeader","x=&gt;len(list=x.__http_post_header_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=&gt; x.__HttpPostHeader_length"}],
+        ["HttpPostHeader",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__HttpPostHeader, re='[^ -~\\r\\n]', replace='')])" }],
+        #["HttpPostHeader",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__HttpPostHeader)" }], #uncomment to return base64 encoded raw HttpPostHeader
 
         # 0x000e:SpawnTo,0x0003:Type # Adding length check as we can not rely on termination
         ["__SpawnTo_header_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        ["__SpawnTo_header_length","x=>len(list=x.__SpawnTo_header_prefix) + 4","uint16b"],
-        ["__SpawnTo", "x=>len(list=x.__SpawnTo_header_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__SpawnTo_header_length"}],
-        ["SpawnTo",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__SpawnTo, re='[^ -~\\r\\n]', replace='')])" }],
-        #["SpawnTo",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__SpawnTo)" }], #uncomment to return base64 encoded raw SpawnTo
+        ["__SpawnTo_header_length","x=&gt;len(list=x.__SpawnTo_header_prefix) + 4","uint16b"],
+        ["__SpawnTo", "x=&gt;len(list=x.__SpawnTo_header_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__SpawnTo_header_length"}],
+        ["SpawnTo",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__SpawnTo, re='[^ -~\\r\\n]', replace='')])" }],
+        #["SpawnTo",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__SpawnTo)" }], #uncomment to return base64 encoded raw SpawnTo
 
         # 0x000f:PipeName,0x0003:Type
         ["__pipename_prefix", 0, "String",{"term_hex": "000f0003", length: 10000, max_length: 10000}],
-        ["Pipename", "x=>len(list=x.__pipename_prefix) + 6", "String",{"term_hex":"0000"}],
+        ["Pipename", "x=&gt;len(list=x.__pipename_prefix) + 6", "String",{"term_hex":"0000"}],
 
         # 0x0010:KillDateYear, 0x0001:Type, 0x0002:Length
         ["__KillDateYear_prefix", 0, "String",{"term_hex": "001000010002", length: 10000, max_length: 10000}],
-        ["KillDateYear", "x=>len(list=x.__KillDateYear_prefix) + 6", "uint16b"],
+        ["KillDateYear", "x=&gt;len(list=x.__KillDateYear_prefix) + 6", "uint16b"],
 
         # 0x0011:KillDateMonth, 0x0001:Type, 0x0002:Length
         ["__KillDateMonth_prefix", 0, "String",{"term_hex": "001200010002", length: 10000, max_length: 10000}],
-        ["KillDateMonth", "x=>len(list=x.__KillDateMonth_prefix) + 6", "uint16b"],
+        ["KillDateMonth", "x=&gt;len(list=x.__KillDateMonth_prefix) + 6", "uint16b"],
 
         # 0x0012:KillDateDay, 0x0001:Type, 0x0002:Length
         ["__KillDateDay_prefix", 0, "String",{"term_hex": "001200010002", length: 10000, max_length: 10000}],
-        ["KillDateDay", "x=>len(list=x.__KillDateDay_prefix) + 6", "uint16b"],
+        ["KillDateDay", "x=&gt;len(list=x.__KillDateDay_prefix) + 6", "uint16b"],
 
         # 0x0013:DNSIdle, 0x0002:Type, 0x0004:Length
         ["__DNSIdle_prefix", 0, "String",{"term_hex": "001300020004", length: 10000, max_length: 10000}],
-        ["__DNSIdle1", "x=>len(list=x.__DNSIdle_prefix) + 6", "uint8"],
-        ["__DNSIdle2", "x=>len(list=x.__DNSIdle_prefix) + 7", "uint8"],
-        ["__DNSIdle3", "x=>len(list=x.__DNSIdle_prefix) + 8", "uint8"],
-        ["__DNSIdle4", "x=>len(list=x.__DNSIdle_prefix) + 9", "uint8"],
+        ["__DNSIdle1", "x=&gt;len(list=x.__DNSIdle_prefix) + 6", "uint8"],
+        ["__DNSIdle2", "x=&gt;len(list=x.__DNSIdle_prefix) + 7", "uint8"],
+        ["__DNSIdle3", "x=&gt;len(list=x.__DNSIdle_prefix) + 8", "uint8"],
+        ["__DNSIdle4", "x=&gt;len(list=x.__DNSIdle_prefix) + 9", "uint8"],
         ["DNSIdle", 0, "Value", {
-            "value": "x=> str(str=x.__DNSIdle1) + '.' + str(str=x.__DNSIdle2) + '.' + str(str=x.__DNSIdle3) + '.' + str(str=x.__DNSIdle4)"
+            "value": "x=&gt; str(str=x.__DNSIdle1) + '.' + str(str=x.__DNSIdle2) + '.' + str(str=x.__DNSIdle3) + '.' + str(str=x.__DNSIdle4)"
         }],
 
         # 0x0014:DNSSleep', 0x0002:Type, 0x0004:Length
         ["__DNSSleep_prefix", 0, "String",{"term_hex": "001400020004", length: 10000, max_length: 10000}],
-        ["DNSSleep", "x=>len(list=x.__DNSSleep_prefix) + 6", "uint32b"],
+        ["DNSSleep", "x=&gt;len(list=x.__DNSSleep_prefix) + 6", "uint32b"],
 
         # 0x0015:SSH_1, to complete - didnt find any examples assuming zero terminated
         ["__SSH_1_prefix", 0, "String",{"term_hex": "00150003", length: 10000, max_length: 10000}],
-        ["SSH_1", "x=>len(list=x.__SSH_1_prefix) + 6", "String"],
+        ["SSH_1", "x=&gt;len(list=x.__SSH_1_prefix) + 6", "String"],
 
         # 0x0016:SSH_2, to complete - didnt find any examples assuming zero terminated
         ["__SSH_2_prefix", 0, "String",{"term_hex": "00160003", length: 10000, max_length: 10000}],
-        ["SSH_2", "x=>len(list=x.__SSH_2_prefix) + 6", "String"],
+        ["SSH_2", "x=&gt;len(list=x.__SSH_2_prefix) + 6", "String"],
 
         # 0x0017:SSH_3, to complete - didnt find any examples assuming zero terminated
         ["__SSH_3_prefix", 0, "String",{"term_hex": "00170003", length: 10000, max_length: 10000}],
-        ["SSH_3", "x=>len(list=x.__SSH_3_prefix) + 6", "String"],
+        ["SSH_3", "x=&gt;len(list=x.__SSH_3_prefix) + 6", "String"],
 
         # 0x0018:SSH_4, to complete - didnt find any examples assuming zero terminated
         ["__SSH_4_prefix", 0, "String",{"term_hex": "00180003", length: 10000, max_length: 10000}],
-        ["SSH_4", "x=>len(list=x.__SSH_4_prefix) + 6", "String"],
+        ["SSH_4", "x=&gt;len(list=x.__SSH_4_prefix) + 6", "String"],
 
         # 0x0019:SSH_5, to complete - didnt find any examples assuming zero terminated
         ["__SSH_5_prefix", 0, "String",{"term_hex": "00190003", length: 10000, max_length: 10000}],
-        ["SSH_5", "x=>len(list=x.__SSH_5_prefix) + 6", "String"],
+        ["SSH_5", "x=&gt;len(list=x.__SSH_5_prefix) + 6", "String"],
 
         # 0x001a:GetVerb,0x0003:Type
         ["__GetVerb_prefix", 0, "String",{"term_hex": "001a0003"}],
-        ["GetVerb", "x=>len(list=x.__GetVerb_prefix) + 6", "String",{"term_hex":"0000"}],
+        ["GetVerb", "x=&gt;len(list=x.__GetVerb_prefix) + 6", "String",{"term_hex":"0000"}],
 
         # 0x001b: PostVerb, 0x0003:Type
         ["__PostVerb_prefix", 0, "String",{"term_hex": "001b0003"}],
-        ["PostVerb", "x=>len(list=x.__PostVerb_prefix) + 6", "String",{"term_hex":"0000"}],
+        ["PostVerb", "x=&gt;len(list=x.__PostVerb_prefix) + 6", "String",{"term_hex":"0000"}],
 
         # 0x001c:HttpPostChunk,0x0002:Type, 0x0004:Length
         ["__HttpPostChunk_prefix", 0, "String", {"term_hex": "001c00020004"}],
-        ["HttpPostChunk", "x=>len(list=x.__HttpPostChunk_prefix) + 6", "uint32b"],
+        ["HttpPostChunk", "x=&gt;len(list=x.__HttpPostChunk_prefix) + 6", "uint32b"],
 
         # 0x001d:spawnto_x86,0x0003:Type
         ["__spawnx86_prefix", 0, "String",{"term_hex": "001d0003", length: 10000, max_length: 10000}],
-        ["SpawnTox86", "x=>len(list=x.__spawnx86_prefix) + 6", "String",{"term_hex":"0000"}],
+        ["SpawnTox86", "x=&gt;len(list=x.__spawnx86_prefix) + 6", "String",{"term_hex":"0000"}],
 
         # 0x001e:spawn_to_x64,0x0003:Type
         ["__spawnx64_prefix", 0, "String",{"term_hex": "001e0003", length: 10000, max_length: 10000}],
-        ["SpawnTox64", "x=>len(list=x.__spawnx64_prefix) + 6", "String",{"term_hex":"0000"}],
+        ["SpawnTox64", "x=&gt;len(list=x.__spawnx64_prefix) + 6", "String",{"term_hex":"0000"}],
 
         # 0x001f:CryptoScheme, 0x0001:Type, 0x0002:Length
         ["__CryptoScheme_prefix", 0, "String",{"term_hex": "001f00010002", length: 10000, max_length: 10000}],
-        ["CryptoScheme", "x=>len(list=x.__CryptoScheme_prefix) + 6", "uint16b"],
+        ["CryptoScheme", "x=&gt;len(list=x.__CryptoScheme_prefix) + 6", "uint16b"],
 
         # 0x0020:Proxy, 0x0003:Type
         ["__Proxy_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        #["__Proxy_length","x=>len(list=x.__Proxy_prefix) + 4","uint16b"],
-        ["Proxy", "x=>len(list=x.__Proxy_prefix) + 6", "String"],
+        #["__Proxy_length","x=&gt;len(list=x.__Proxy_prefix) + 4","uint16b"],
+        ["Proxy", "x=&gt;len(list=x.__Proxy_prefix) + 6", "String"],
 
         # 0x0021:ProxyUsername, 0x0003:Type
         ["__ProxyUsername_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        ["__ProxyUsername_length","x=>len(list=x.__ProxyUsername_prefix) + 4","uint16b"],
-        ["ProxyUsername", "x=>len(list=x.__ProxyUsername_prefix) + 6", "String"],
+        ["__ProxyUsername_length","x=&gt;len(list=x.__ProxyUsername_prefix) + 4","uint16b"],
+        ["ProxyUsername", "x=&gt;len(list=x.__ProxyUsername_prefix) + 6", "String"],
 
         # 0x0022:ProxyPassword, 0x0003:Type
         ["__ProxyPassword_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
-        ["__ProxyPassword_length","x=>len(list=x.__ProxyPassword_prefix) + 4","uint16b"],
-        ["ProxyPassword", "x=>len(list=x.__ProxyPassword_prefix) + 6", "String"],
+        ["__ProxyPassword_length","x=&gt;len(list=x.__ProxyPassword_prefix) + 4","uint16b"],
+        ["ProxyPassword", "x=&gt;len(list=x.__ProxyPassword_prefix) + 6", "String"],
 
         # 0x0023:ProxyType, 0x0001:Type, 0x0002:Length
         ["__ProxyType", 0, "String",{"term_hex": "002300010002", length: 10000, max_length: 10000}],
-        ["ProxyType", "x=>len(list=x.__ProxyType) + 6", "Enumeration", {
+        ["ProxyType", "x=&gt;len(list=x.__ProxyType) + 6", "Enumeration", {
             "type": "uint16b",
             "choices": {
                  "1": "No proxy",
@@ -290,38 +290,38 @@ export: |
 
         # 0x0024:Deprecated, 0x0001:Type, 0x0002:Length
         ["__Deprecated_prefix", 0, "String",{"term_hex": "002400010002", length: 10000, max_length: 10000}],
-        ["Deprecated", "x=>len(list=x.__Deprecated_prefix) + 6", "uint16b"],
+        ["Deprecated", "x=&gt;len(list=x.__Deprecated_prefix) + 6", "uint16b"],
 
         # 0x0025:LicenseId,0x0002:Type, 0x0004:Length
         ["__LicenseId_prefix", 0, "String", {"term_hex": "002500020004", length: 10000, max_length: 10000}],
-        ["LicenseId", "x=>len(list=x.__LicenseId_prefix) + 6", "uint32b"],
+        ["LicenseId", "x=&gt;len(list=x.__LicenseId_prefix) + 6", "uint32b"],
 
         # 0x0026:bStageCleanup, 0x0001:Type, 0x0002:Length
         ["__bStageCleanup_prefix", 0, "String",{"term_hex": "002600010002", length: 10000, max_length: 10000}],
-        ["bStageCleanup", "x=>len(list=x.__bStageCleanup_prefix) + 6", "uint16b"],
+        ["bStageCleanup", "x=&gt;len(list=x.__bStageCleanup_prefix) + 6", "uint16b"],
 
         # 0x0027:bCFGCaution, 0x0001:Type, 0x0002:Length
         ["__bCFGCaution_prefix", 0, "String",{"term_hex": "002700010002", length: 10000, max_length: 10000}],
-        ["bCFGCaution", "x=>len(list=x.__bCFGCaution_prefix) + 6", "uint16b"],
+        ["bCFGCaution", "x=&gt;len(list=x.__bCFGCaution_prefix) + 6", "uint16b"],
 
         # 0x0028:KillDate,0x0002:Type, 0x0004:Length
         ["__KillDate_prefix", 0, "String", {"term_hex": "002800020004", length: 10000, max_length: 10000}],
-        ["KillDate", "x=>len(list=x.__KillDate_prefix) + 6", "uint32b"],
+        ["KillDate", "x=&gt;len(list=x.__KillDate_prefix) + 6", "uint32b"],
 
         # 0x0029:TextSectionEnd,0x0002:Type, 0x0004:Length
         ["__TextSectionEnd_prefix", 0, "String", {"term_hex": "002900020004", length: 10000, max_length: 10000}],
-        ["TextSectionEnd", "x=>len(list=x.__TextSectionEnd_prefix) + 6", "uint32b"],
+        ["TextSectionEnd", "x=&gt;len(list=x.__TextSectionEnd_prefix) + 6", "uint32b"],
 
         # 0x002a:ObfuscateSectionsInfo,0x0003:Type # Adding length check as we can not rely on termination
         ["__ObfuscateSectionsInfo_prefix", 0, "String",{"term_hex": "002a0003", length: 10000, max_length: 10000}],
-        ["__ObfuscateSectionsInfo_length","x=>len(list=x.__ObfuscateSectionsInfo_prefix) + 4","uint16b"],
-        ["__ObfuscateSectionsInfo", "x=>len(list=x.__ObfuscateSectionsInfo_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ObfuscateSectionsInfo_length"}],
-        ["ObfuscateSectionsInfo",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ObfuscateSectionsInfo, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ObfuscateSectionsInfo",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ObfuscateSectionsInfo)" }], #uncomment to return base64 encoded raw ObfuscateSectionsInfo
+        ["__ObfuscateSectionsInfo_length","x=&gt;len(list=x.__ObfuscateSectionsInfo_prefix) + 4","uint16b"],
+        ["__ObfuscateSectionsInfo", "x=&gt;len(list=x.__ObfuscateSectionsInfo_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ObfuscateSectionsInfo_length"}],
+        ["ObfuscateSectionsInfo",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ObfuscateSectionsInfo, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ObfuscateSectionsInfo",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ObfuscateSectionsInfo)" }], #uncomment to return base64 encoded raw ObfuscateSectionsInfo
 
         #0x002b:ProcessInjectStartRWX, 0x0001:Type, 0x0002:Length
         ["__ProcessInjectStartRWX", 0, "String",{"term_hex": "002b00010002", length: 10000, max_length: 10000}],
-        ["ProcessInjectStartRWX", "x=>len(list=x.__ProcessInjectStartRWX) + 6", "Enumeration", {
+        ["ProcessInjectStartRWX", "x=&gt;len(list=x.__ProcessInjectStartRWX) + 6", "Enumeration", {
             "type": "uint16b",
             "choices": {
                  "0x1": "PAGE_NOACCESS",
@@ -336,7 +336,7 @@ export: |
 
         #0x002c:ProcessInjectUseRWX, 0x0001:Type, 0x0002:Length
         ["__ProcessInjectUseRWX", 0, "String",{"term_hex": "002c00010002", length: 10000, max_length: 10000}],
-        ["ProcessInjectUseRWX", "x=>len(list=x.__ProcessInjectUseRWX) + 6", "Enumeration", {
+        ["ProcessInjectUseRWX", "x=&gt;len(list=x.__ProcessInjectUseRWX) + 6", "Enumeration", {
             "type": "uint16b",
             "choices": {
                  "0x1": "PAGE_NOACCESS",
@@ -351,74 +351,74 @@ export: |
 
         # 0x002d:ProcessInjectMinAlloc,0x0002:Type, 0x0004:Length
         ["__ProcessInjectMinAlloc_prefix", 0, "String", {"term_hex": "002d00020004", length: 10000, max_length: 10000}],
-        ["ProcessInjectMinAlloc", "x=>len(list=x.__ProcessInjectMinAlloc_prefix) + 6", "uint32b"],
+        ["ProcessInjectMinAlloc", "x=&gt;len(list=x.__ProcessInjectMinAlloc_prefix) + 6", "uint32b"],
 
         # 0x002e:ProcessInjectTransformx86, 0x0003:Type, # Adding length check as we can not rely on termination
         ["__ProcessInjectTransformx86_prefix", 0, "String",{"term_hex": "002e0003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectTransformx86_length","x=>len(list=x.__ProcessInjectTransformx86_prefix) + 4","uint16b"],
-        ["__ProcessInjectTransformx86", "x=>len(list=x.__ProcessInjectTransformx86_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ProcessInjectTransformx86_length"}],
-        ["ProcessInjectTransformx86",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx86, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ProcessInjectTransformx86",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ProcessInjectTransformx86)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx86
+        ["__ProcessInjectTransformx86_length","x=&gt;len(list=x.__ProcessInjectTransformx86_prefix) + 4","uint16b"],
+        ["__ProcessInjectTransformx86", "x=&gt;len(list=x.__ProcessInjectTransformx86_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ProcessInjectTransformx86_length"}],
+        ["ProcessInjectTransformx86",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx86, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ProcessInjectTransformx86",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ProcessInjectTransformx86)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx86
 
 
         # 0x002f:ProcessInjectTransformx64, 0x0003:Type, # Adding length check as we can not rely on termination
         ["__ProcessInjectTransformx64_prefix", 0, "String",{"term_hex": "002f0003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectTransformx64_length","x=>len(list=x.__ProcessInjectTransformx64_prefix) + 4","uint16b"],
-        ["__ProcessInjectTransformx64", "x=>len(list=x.__ProcessInjectTransformx64_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ProcessInjectTransformx64_length"}],
-        ["ProcessInjectTransformx64",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx64, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ProcessInjectTransformx64",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ProcessInjectTransformx64)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx64
+        ["__ProcessInjectTransformx64_length","x=&gt;len(list=x.__ProcessInjectTransformx64_prefix) + 4","uint16b"],
+        ["__ProcessInjectTransformx64", "x=&gt;len(list=x.__ProcessInjectTransformx64_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ProcessInjectTransformx64_length"}],
+        ["ProcessInjectTransformx64",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx64, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ProcessInjectTransformx64",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ProcessInjectTransformx64)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx64
 
         # 0x0032:UsesCookies, 0x0001:Type, 0x0002:Length
         ["__UsesCookies_prefix", 0, "String",{"term_hex": "003200010002", length: 10000, max_length: 10000}],
-        ["UsesCookies", "x=>len(list=x.__UsesCookies_prefix) + 6", "uint16b"],
+        ["UsesCookies", "x=&gt;len(list=x.__UsesCookies_prefix) + 6", "uint16b"],
 
         # 0x0033:ProcessInjectExecute, 0x0003:Type # Adding length check as we can not rely on termination
         ["__ProcessInjectExecute_prefix", 0, "String",{"term_hex": "00330003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectExecute_length","x=>len(list=x.__ProcessInjectExecute_prefix) + 4","uint16b"],
-        ["__ProcessInjectExecute", "x=>len(list=x.__ProcessInjectExecute_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=> x.__ProcessInjectExecute_length"}],
-        ["ProcessInjectExecute",0,"Value",{ "value": "x=>format(format='%s', args=[regex_replace(source=x.__ProcessInjectExecute, re='[^ -~\\r\\n]', replace='')])" }],
-        #["ProcessInjectExecute",0,"Value",{ "value": "x=>'base64:' + base64encode(string=x.__ProcessInjectExecute)" }], #uncomment to return base64 encoded raw ProcessInjectExecute
+        ["__ProcessInjectExecute_length","x=&gt;len(list=x.__ProcessInjectExecute_prefix) + 4","uint16b"],
+        ["__ProcessInjectExecute", "x=&gt;len(list=x.__ProcessInjectExecute_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ProcessInjectExecute_length"}],
+        ["ProcessInjectExecute",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ProcessInjectExecute, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ProcessInjectExecute",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ProcessInjectExecute)" }], #uncomment to return base64 encoded raw ProcessInjectExecute
 
         # 0x0034:ProcessInjectAllocationMethod, 0x0001:Type, 0x0002:Length
         ["__ProcessInjectAllocationMethod_prefix", 0, "String",{"term_hex": "003400010002", length: 10000, max_length: 10000}],
-        ["ProcessInjectAllocationMethod", "x=>len(list=x.__ProcessInjectAllocationMethod_prefix) + 6", "uint16b"],
+        ["ProcessInjectAllocationMethod", "x=&gt;len(list=x.__ProcessInjectAllocationMethod_prefix) + 6", "uint16b"],
 
         # 0x0035:ProcessInjectStub, 0x0003:Type # Adding length check as we can not rely on termination
         ["__ProcessInjectStub_prefix", 0, "String",{"term_hex": "00350003", length: 10000, max_length: 10000}],
-        ["__ProcessInjectStub_length","x=>len(list=x.__ProcessInjectStub_prefix) + 4","uint16b"],
-        ["__ProcessInjectStub", "x=>len(list=x.__ProcessInjectStub_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=> x.__ProcessInjectStub_length"}],
-        ["ProcessInjectStub",0,"Value",{ "value": "x=>format(format='% x', args=x.__ProcessInjectStub)" }],
+        ["__ProcessInjectStub_length","x=&gt;len(list=x.__ProcessInjectStub_prefix) + 4","uint16b"],
+        ["__ProcessInjectStub", "x=&gt;len(list=x.__ProcessInjectStub_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=&gt; x.__ProcessInjectStub_length"}],
+        ["ProcessInjectStub",0,"Value",{ "value": "x=&gt;format(format='% x', args=x.__ProcessInjectStub)" }],
 
         # 0x0036:HostHeader, 0x0003:Type # Adding length check as we can not rely on termination
         ["__HostHeader_prefix", 0, "String",{"term_hex": "00360003", length: 10000, max_length: 10000}],
-        ["__HostHeader_length","x=>len(list=x.__HostHeader_prefix) + 4","uint16b"],
-        ["HostHeader", "x=>len(list=x.__HostHeader_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=> x.__HostHeader_length"}],
+        ["__HostHeader_length","x=&gt;len(list=x.__HostHeader_prefix) + 4","uint16b"],
+        ["HostHeader", "x=&gt;len(list=x.__HostHeader_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=&gt; x.__HostHeader_length"}],
 
     ]],
     [Shellcode, 0, [
-        ["__Position", 0, "Value",{"value":"x=>unhex(string=position(data=_Data))"}],
-        ["Server", 0, "Value",{"value":"x=>regex_replace(source=regex_replace(source=x.__Position,re='\\x{00}.{4}[^$]*$',replace=''),re='\u0000',replace='')"}],
-        ["TargetUri", 0, "Value",{"value":"x=>find_strings(data=_Data,length=5,filter='^/').Strings[0]"}],
-        ["__LicenseBytes", 0, "Value",{"value":"x=>read_file(accessor='data',filename=x.__Position || '', offset=len(list=x.Server) + 1 ,length=4)"}],
-        ["License", 0, "Value",{"value":"x=>parse_binary(accessor='data', filename=x.__LicenseBytes,struct='uint32b')"}],
-        ["Strings", 0, "Value",{"value":"x=>find_strings(data=_Data,length=5,filter='.').Strings"}],
+        ["__Position", 0, "Value",{"value":"x=&gt;unhex(string=position(data=_Data))"}],
+        ["Server", 0, "Value",{"value":"x=&gt;regex_replace(source=regex_replace(source=x.__Position,re='\\x{00}.{4}[^$]*$',replace=''),re='\u0000',replace='')"}],
+        ["TargetUri", 0, "Value",{"value":"x=&gt;find_strings(data=_Data,length=5,filter='^/').Strings[0]"}],
+        ["__LicenseBytes", 0, "Value",{"value":"x=&gt;read_file(accessor='data',filename=x.__Position || '', offset=len(list=x.Server) + 1 ,length=4)"}],
+        ["License", 0, "Value",{"value":"x=&gt;parse_binary(accessor='data', filename=x.__LicenseBytes,struct='uint32b')"}],
+        ["Strings", 0, "Value",{"value":"x=&gt;find_strings(data=_Data,length=5,filter='.').Strings"}],
     ]],
 
     ["EmbeddedPE", 0, [
         ["__PayloadType", 0, "uint32"],
-        ["PayloadType", 0, "Value",{"value":"x=>format(format='0x%08x',args=x.__PayloadType)"}],
+        ["PayloadType", 0, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__PayloadType)"}],
         ["__PayloadSize", 4, "uint32"],
-        #["PayloadSize", 4, "Value",{"value":"x=>format(format='0x%08x',args=x.__PayloadSize)"}],
+        #["PayloadSize", 4, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__PayloadSize)"}],
         ["__XorKey", 8, "uint32b"],
-        ["XorKey", 8, "Value",{"value":"x=>format(format='0x%08x',args=x.__XorKey)"}],
+        ["XorKey", 8, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__XorKey)"}],
         ["__Id2", 12, "uint32"],
-        ["Id2", 12, "Value",{"value":"x=>format(format='0x%08x',args=x.__Id2)"}],
-        ["__Payload", 16, "Value",{"value":"x=>read_file(accessor='data',filename=embedded_section(path=TargetBytes || OSPath,
+        ["Id2", 12, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__Id2)"}],
+        ["__Payload", 16, "Value",{"value":"x=&gt;read_file(accessor='data',filename=embedded_section(path=TargetBytes || OSPath,
                 type=if(condition=TargetBytes,then='data',else='auto'))[0].Data || '', offset=16,length=x.__PayloadSize)"}],
         #["__Payload", 16, "String",{"term_hex":"",length=x.__PayloadSize)"}],
-        ["DecodedPayload", 16, "Value",{"value":"x=>xor(string=x.__Payload,key=unhex(string=x.XorKey))"}],
-        ["PayloadHash", 16, "Value",{"value":"x=>hash(path=xor(string=x.__Payload,key=unhex(string=x.XorKey)),accessor='data')"}],
-        ["OriginalFileHash", 16, "Value",{"value":"x=>hash(path=OSPath)"}],
+        ["DecodedPayload", 16, "Value",{"value":"x=&gt;xor(string=x.__Payload,key=unhex(string=x.XorKey))"}],
+        ["PayloadHash", 16, "Value",{"value":"x=&gt;hash(path=xor(string=x.__Payload,key=unhex(string=x.XorKey)),accessor='data')"}],
+        ["OriginalFileHash", 16, "Value",{"value":"x=&gt;hash(path=OSPath)"}],
     ]]]'''
 
 
@@ -428,11 +428,11 @@ sources:
       LET unique(values) = SELECT _value as value FROM foreach(row=values) GROUP BY _value
 
       -- section to dynamically generate Xor configuration yara hunt strings
-      LET a <= unhex(string='01')
-      LET b <= unhex(string='02')
-      LET c <= unhex(string='03')
+      LET a &lt;= unhex(string='01')
+      LET b &lt;= unhex(string='02')
+      LET c &lt;= unhex(string='03')
 
-      LET XorChars <=
+      LET XorChars &lt;=
         SELECT format(format="%#02x", args=_value) AS H,
             unhex(string=format(format="%02x", args=_value)) as X
         FROM range(start=0, end=256, step=1)
@@ -477,7 +477,7 @@ sources:
                       offset=_value.FileOffset,
                       length=_value.Size) as Data
         FROM foreach(row= parse_pe(file=path,accessor=type).Sections)
-        WHERE Name = '.data' AND Size > 15
+        WHERE Name = '.data' AND Size &gt; 15
 
 
       -- scan DataBytes for CobaltStrike config
@@ -615,7 +615,7 @@ sources:
 
 
       -- find velociraptor process
-      LET me <= SELECT * FROM if(condition= NOT ( TargetFileGlob OR TargetBytes ),
+      LET me &lt;= SELECT * FROM if(condition= NOT ( TargetFileGlob OR TargetBytes ),
                     then = { SELECT Pid FROM pslist(pid=getpid()) })
 
 
@@ -666,19 +666,19 @@ sources:
 
 
       -- Add dynamic functions for shellcode parsing
-      LET position(data) = if(condition= len(list=split(string=format(format='%x',args=data),sep='ffff')) > 1,
+      LET position(data) = if(condition= len(list=split(string=format(format='%x',args=data),sep='ffff')) &gt; 1,
             then= split(string=format(format='%x',args=data),sep='ffff')[-1],
             else= False )
       LET find_strings(data,length,filter) = SELECT Strings
-        FROM parse_records_with_regex(file=data,accessor='data',regex='(?P<Strings>[ -~]+)')
-        WHERE len(list=Strings) > length - 1
+        FROM parse_records_with_regex(file=data,accessor='data',regex='(?P&lt;Strings&gt;[ -~]+)')
+        WHERE len(list=Strings) &gt; length - 1
             AND Strings =~ filter
             AND NOT Strings =~ '^\\s+$'
         LIMIT 150
 
 
       -- generate results remove any FPs
-      LET results <= SELECT *,
+      LET results &lt;= SELECT *,
             if(condition= Rule=~'cobalt_strike_beacon$',
                 then= format(format='0x%x',args=Xor),else='0x00') as Xor,
             if(condition= Rule=~'cobalt_strike_beacon',

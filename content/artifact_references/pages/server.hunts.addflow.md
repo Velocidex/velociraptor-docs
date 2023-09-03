@@ -39,7 +39,7 @@ sources:
          FROM scope()
       }, else={
          SELECT * FROM scope() WHERE
-         log(message="<red>ERROR</>: You must set HuntId, ClientId and FlowId.") AND FALSE
+         log(message="&lt;red&gt;ERROR&lt;/&gt;: You must set HuntId, ClientId and FlowId.") AND FALSE
       })
 
 </code></pre>

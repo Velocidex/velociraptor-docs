@@ -90,10 +90,10 @@ sources:
         WHERE 
             NOT OSPath.Basename =~ '\\$Secure:\\$SDS|\\$Repair|\\$BadClus|\\$Bitmap|\\$UpCase'
             AND if(condition=MinSize,
-                    then= Size > MinSize,
+                    then= Size &gt; MinSize,
                     else= True )
             AND if(condition= MaxSize,
-                    then= Size < MaxSize,
+                    then= Size &lt; MaxSize,
                     else= True )
             AND NOT if(condition=AdsNameExclusion,
                         then= AdsName =~ AdsNameExclusion,

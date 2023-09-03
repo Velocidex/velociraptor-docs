@@ -69,8 +69,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       LET Profile = '[
         ["Header", 0, [
@@ -80,17 +80,17 @@ sources:
           ["FileSize", 112, "uint32"],
           ["URL", 116, "String", {
               "encoding": "utf16",
-              "length": "x=>x.UrlSize"
+              "length": "x=&gt;x.UrlSize"
           }],
-          ["Hash", "x=>x.UrlSize + 116", "String", {
+          ["Hash", "x=&gt;x.UrlSize + 116", "String", {
               "encoding": "utf16",
-              "length": "x=>x.HashSize"
+              "length": "x=&gt;x.HashSize"
           }]
         ]]
       ]'
 
       -- Build a whitelist regex
-      LET URLRegex <= "^" + join(array=URLWhitelist.URL, sep="|")
+      LET URLRegex &lt;= "^" + join(array=URLWhitelist.URL, sep="|")
       LET Files = SELECT OSPath,
 
           -- Parse each metadata file.
@@ -103,7 +103,7 @@ sources:
           read_file(length=4, accessor=Accessor,
                 filename=OSPath.Dirname.Dirname + "Content" + OSPath.Basename) AS ContentHeader
       FROM glob(globs=[MetadataGlobUser, MetadataGlobSystem], accessor=Accessor)
-      WHERE Header.FileSize > MinSize
+      WHERE Header.FileSize &gt; MinSize
 
       SELECT OSPath AS _MetadataFile, _ContentPath,
                if(condition=AlsoUpload, then=upload(file=OSPath, accessor=Accessor)) AS _MetdataUpload,

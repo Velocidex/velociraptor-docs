@@ -20,13 +20,13 @@ export: |
       ["EfiSignatures", 0, [
         ["__tmp", 0, "uint32"],
         ["__Signatures", 0, "Union", {
-          "selector": "x=>x.__tmp < 257",
+          "selector": "x=&gt;x.__tmp &lt; 257",
           "choices": {
             "true": "EfiSignaturesListAttrib",
             "false": "EfiSignaturesList"
           }
         }],
-        ["Signatures", 0, "Value", {"value": "x=>x.__Signatures.Signatures"}]
+        ["Signatures", 0, "Value", {"value": "x=&gt;x.__Signatures.Signatures"}]
       ]],
       ["EfiSignaturesListAttrib", 0, [
         ["__Attributes", 0, "uint32"],
@@ -35,35 +35,35 @@ export: |
       ["EfiSignaturesList", 0, [
         ["Signatures", 0, "Array", {"type": "Signature", "count": 1000}]
       ]],
-      ["Signature", "x=>x.__ListSize", [
+      ["Signature", "x=&gt;x.__ListSize", [
         ["__Type", 0, "GUID"],
-        ["Type", 0, "Value", {"value": "x=>x.__Type.Value"}],
+        ["Type", 0, "Value", {"value": "x=&gt;x.__Type.Value"}],
         ["__ListSize", 16, "uint32"],
         ["__HeaderSize", 20, "uint32"],
         ["Payload", 24, "Union", {
-          "selector": "x=>x.Type",
+          "selector": "x=&gt;x.Type",
           "choices": {
             "{a5c059a1-94e4-4aa7-87b5-ab155c2bf072}": "Cert",
             "{c1c41626-504c-4092-aca9-41f936934328}": "HashList"
           }
         }]
       ]],
-      ["Cert", "x=>x.__SignatureSize + 4", [
+      ["Cert", "x=&gt;x.__SignatureSize + 4", [
         ["__SignatureSize", 0, "uint32"],
         ["__Owner", 4, "GUID"],
-        ["Owner", 0, "Value", {"value": "x=>x.__Owner.Value"}],
-        ["__Data", 20, "String", {"length": "x=>x.__SignatureSize - 16", "term": "", "max_length": 10000}],
-        ["Cert", 0, "Value", {"value": "x=>parse_x509(data=x.__Data)[0]"}]
+        ["Owner", 0, "Value", {"value": "x=&gt;x.__Owner.Value"}],
+        ["__Data", 20, "String", {"length": "x=&gt;x.__SignatureSize - 16", "term": "", "max_length": 10000}],
+        ["Cert", 0, "Value", {"value": "x=&gt;parse_x509(data=x.__Data)[0]"}]
       ]],
       ["HashList", 0, [
         ["__SignatureSize", 0, "uint32"],
-        ["Hashes", 4, "Array", {"type": "Hash", "count": 1000, "sentinel": "x=>x.Owner = '{00000000-0000-0000-0000-000000000000}'"}]
+        ["Hashes", 4, "Array", {"type": "Hash", "count": 1000, "sentinel": "x=&gt;x.Owner = '{00000000-0000-0000-0000-000000000000}'"}]
       ]],
       ["Hash", 48, [
         ["__Owner", 0, "GUID"],
-        ["Owner", 0, "Value", {"value": "x=>x.__Owner.Value"}],
+        ["Owner", 0, "Value", {"value": "x=&gt;x.__Owner.Value"}],
         ["__Data", 16, "String", {"length": 32, "term": ""}],
-        ["Hash", 0, "Value", {"value": "x=>format(format='%048x', args=[x.__Data])"}]
+        ["Hash", 0, "Value", {"value": "x=&gt;format(format='%048x', args=[x.__Data])"}]
       ]],
       ["GUID", 16, [
         ["__D1", 0, "uint32"],
@@ -72,7 +72,7 @@ export: |
         ["__D4", 8, "String", {"term": "", "length": 2}],
         ["__D5", 10, "String", {"term": "", "length": 6}],
         ["Value", 0, "Value", {
-          "value": "x=>format(format='{%08x-%04x-%04x-%02x-%02x}', args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5])"
+          "value": "x=&gt;format(format='{%08x-%04x-%04x-%02x-%02x}', args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5])"
         }]
       ]]
     ]'''

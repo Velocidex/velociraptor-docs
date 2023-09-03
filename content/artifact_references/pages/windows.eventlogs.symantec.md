@@ -56,9 +56,9 @@ parameters:
 
 sources:
     - query: |
-       LET DateAfterTime <= if(condition=DateAfter,
+       LET DateAfterTime &lt;= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-       LET DateBeforeTime <= if(condition=DateBefore,
+       LET DateBeforeTime &lt;= if(condition=DateBefore,
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
        SELECT timestamp(epoch=System.TimeCreated.SystemTime) As EventTime,
               System.EventID.Value as EventId,
@@ -66,8 +66,8 @@ sources:
               EventData.Data[0] as EventData
        FROM parse_evtx(filename=SymantecEventLog)
        WHERE
-            EventTime < DateBeforeTime AND
-            EventTime > DateAfterTime AND
+            EventTime &lt; DateBeforeTime AND
+            EventTime &gt; DateAfterTime AND
             format(format="%v",args=System.EventID.Value) =~ RegexEventIds AND
             EventData =~ TargetRegex AND
             if(condition=IgnoreRegex,

@@ -67,12 +67,12 @@ export: |
           ["Signature", 0, "String", {"length": 3}],
           ["UncompressedSize", 4, "unsigned long"],
           ["Data", 8, String, {
-              length: "x=>x.UncompressedSize",
+              length: "x=&gt;x.UncompressedSize",
               term: "",
               max_length: 10000000,
           }],
           ["Decompressed", 0, "Value", {
-              value: "x=>lzxpress_decompress(data=x.Data)"
+              value: "x=&gt;lzxpress_decompress(data=x.Data)"
           }],
         ]],
         ["SCCAHeader", 84, [
@@ -94,7 +94,7 @@ export: |
 
          # Hash is followed by a version specific info struct.
          ["Info", 84, "Union", {
-             selector: "x=>x.Version",
+             selector: "x=&gt;x.Version",
              choices: {
                  "WinXP (17)": "FileInformationWinXP",
                  "Vista (23)": "FileInformationVista",
@@ -124,13 +124,13 @@ export: |
          ["RunCount", 60, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV17",
-             count: "x=>x.__NumberOfFileMetrics",
+             count: "x=&gt;x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+             count: "x=&gt;x.__NumberOfVolumes",
           }],
         ]],
 
@@ -154,13 +154,13 @@ export: |
          ["RunCount", 68, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV23",
-             count: "x=>x.__NumberOfFileMetrics",
+             count: "x=&gt;x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+             count: "x=&gt;x.__NumberOfVolumes",
           }],
         ]],
 
@@ -185,13 +185,13 @@ export: |
          ["RunCount", 124, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV23",
-             count: "x=>x.__NumberOfFileMetrics",
+             count: "x=&gt;x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+             count: "x=&gt;x.__NumberOfVolumes",
           }],
         ]],
 
@@ -214,17 +214,17 @@ export: |
          ["__RunCountPre", 120, "unsigned long"],
          ["__RunCount2", 116, "unsigned long"],
          ["RunCount", 0, Value, {
-            value: "x=>if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)",
+            value: "x=&gt;if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)",
          }],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV30",
-             count: "x=>x.__NumberOfFileMetrics",
+             count: "x=&gt;x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=>x.__NumberOfVolumes",
+             count: "x=&gt;x.__NumberOfVolumes",
           }],
         ]],
 
@@ -237,7 +237,7 @@ export: |
           ["__FilenameOffset", 8, "unsigned long"],
            ["__FilenameLength", 12, "unsigned long"],
            ["Filename", 0, "Profile", {
-               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
+               offset: "x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset",
                type: "String",
                type_options: {
                    encoding: "utf16",
@@ -252,7 +252,7 @@ export: |
           ["__FilenameLength", 16, "unsigned long"],
           ["__MFTFileReference", 24, "unsigned long"],
           ["Filename", 0, "Profile", {
-               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
+               offset: "x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset",
                type: "String",
                type_options: {
                    encoding: "utf16",
@@ -266,7 +266,7 @@ export: |
            ["__FilenameLength", 16, "unsigned long"],
            ["__MFTFileReference", 24, "unsigned long"],
            ["Filename", 0, "Profile", {
-               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
+               offset: "x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset",
                type: "String",
                type_options: {
                    encoding: "utf16",
@@ -277,33 +277,33 @@ export: |
 
         ["VolumeInformation", 40, [
           ["__DeviceOffset", 0, "unsigned long"],
-          ["DeviceName", "x=>x.__DeviceOffset", "String", {
+          ["DeviceName", "x=&gt;x.__DeviceOffset", "String", {
               encoding: utf16,
-              length: "x=>x.__DeviceSize * 2",
+              length: "x=&gt;x.__DeviceSize * 2",
           }],
           ["__DeviceSize", 4, "unsigned long"],
           ["DeviceCreationTime", 8, "WinFileTime"],
           ["VolumeSerialNumber", 12, "unsigned long"],
           ["VolumeSerialNumberHex", 0, Value, {
-              value: "x=>format(format='%#x', args=x.VolumeSerialNumber)",
+              value: "x=&gt;format(format='%#x', args=x.VolumeSerialNumber)",
           }],
           ["__FileReferenceOffset", 20, "unsigned long"],
           ["__FileReferenceDataSize", 24, "unsigned long"],
           ["__DirectoryStringsOffset", 28, "unsigned long"],
           ["__NumDirectoryStrings", 32, "unsigned long"],
-          ["__Directories", "x=>x.__DirectoryStringsOffset", "Array", {
+          ["__Directories", "x=&gt;x.__DirectoryStringsOffset", "Array", {
               type: "DirectoryName",
-              count: "x=>x.__NumDirectoryStrings",
+              count: "x=&gt;x.__NumDirectoryStrings",
           }],
           ["Directories", 0, Value, {
-              value: "x=>x.__Directories.Name"
+              value: "x=&gt;x.__Directories.Name"
           }],
         ]],
-        ["DirectoryName", "x=>x.Size * 2 + 4", [
+        ["DirectoryName", "x=&gt;x.Size * 2 + 4", [
           ["Size", 0, "uint8"],
           ["Name", 2, "String", {
               encoding: "utf16",
-              length: "x=>x.Size * 2"
+              length: "x=&gt;x.Size * 2"
           }]
         ]]
         ]
@@ -340,7 +340,7 @@ sources:
                   SCCAHeader.FileSize AS FileSize,
                   format(format="%#X", args=SCCAHeader.Hash) AS Hash,
                   SCCAHeader.Version AS Version,
-                  filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=>x.Unix > 0") AS LastRunTimes,
+                  filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=&gt;x.Unix &gt; 0") AS LastRunTimes,
                   SCCAHeader.Info.RunCount AS RunCount,
                   OSPath,
                   Name AS PrefetchFileName,
@@ -364,9 +364,9 @@ sources:
                     FROM pf
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                     else=TRUE)
         LET creationTimes = SELECT * FROM flatten(
                 query = {
@@ -374,12 +374,12 @@ sources:
                         OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
-                    WHERE RunCount > 8
+                    WHERE RunCount &gt; 8
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
                         else=TRUE)
             GROUP BY ExecutionTime
 

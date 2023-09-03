@@ -61,7 +61,7 @@ sources:
              Pid,
              Status,
              process_tracker_get(id=Pid).Data AS ProcInfo,
-             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=" -> ") AS CallChain,
+             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=" -&gt; ") AS CallChain,
              process_tracker_tree(id=Pid) AS ChildrenTree
       FROM connections()
       WHERE Status =~ ConnectionStatusRegex

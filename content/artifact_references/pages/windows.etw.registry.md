@@ -56,8 +56,8 @@ parameters:
 
 sources:
 - query: |
-    LET Cache <= lru(size=1000)
-    LET EventLookup <= dict(
+    LET Cache &lt;= lru(size=1000)
+    LET EventLookup &lt;= dict(
         `1`="CreateKey",
         `2`="OpenKey",
         `3`="DeleteKey",

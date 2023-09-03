@@ -85,8 +85,8 @@ sources:
     - query: |
 
         // If a MessageBox configured truncate to 256 character limit
-        LET MessageBox <= parse_string_with_regex(
-                  regex='^(?P<Message>.{0,255}).*',
+        LET MessageBox &lt;= parse_string_with_regex(
+                  regex='^(?P&lt;Message&gt;.{0,255}).*',
                   string=MessageBox).Message
 
         // Normalise Action
@@ -96,7 +96,7 @@ sources:
                   then= 'Block'))
 
         // extract configurable policy from lookuptable
-        LET configurable_policy <= SELECT
+        LET configurable_policy &lt;= SELECT
                   normalise_action(Action=Action) AS Action,
                   SrcAddr,SrcMask,SrcPort,
                   DstAddr,DstMask,DstPort,
@@ -105,16 +105,16 @@ sources:
 
         // Parse a URL to get domain name.
         LET get_domain(URL) = parse_string_with_regex(
-             string=URL, regex='^https?://(?P<Domain>[^:/]+)').Domain
+             string=URL, regex='^https?://(?P&lt;Domain&gt;[^:/]+)').Domain
 
         // Parse a URL to get the port
         LET get_port(URL) = if(condition= URL=~"https://[^:]+/", then="443",
               else=if(condition= URL=~"http://[^:]+/", then="80",
               else=parse_string_with_regex(string=URL,
-                  regex='^https?://[^:/]+(:(?P<Port>[0-9]*))?/').Port))
+                  regex='^https?://[^:/]+(:(?P&lt;Port&gt;[0-9]*))?/').Port))
 
         // extract Velociraptor config for policy
-        LET extracted_config <= SELECT * FROM foreach(
+        LET extracted_config &lt;= SELECT * FROM foreach(
                   row=config.server_urls,
                   query={
                       SELECT
@@ -133,7 +133,7 @@ sources:
                   })
 
         // build policy with extracted config and lookuptable
-        LET policy <= SELECT *
+        LET policy &lt;= SELECT *
               FROM chain(
                   a=extracted_config,
                   b=configurable_policy

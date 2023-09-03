@@ -13,7 +13,7 @@ sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET process <= SELECT Name, Pid from pslist()
+        LET process &lt;= SELECT Name, Pid from pslist()
 
         SELECT * from foreach(
           row={

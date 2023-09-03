@@ -83,7 +83,7 @@ sources:
            globs="/**",
            root=pathspec(DelegatePath=OfficePath),
            accessor='zip')
-        WHERE not IsDir and Size > 0
+        WHERE not IsDir and Size &gt; 0
 
         // For each document, scan all its parts for the keyword.
         SELECT OfficePath,

@@ -48,7 +48,7 @@ sources:
         LET removable_disks = SELECT Name AS Drive,
             atoi(string=Data.Size) AS Size
         FROM glob(globs="/*", accessor="file")
-        WHERE Data.Description =~ "Removable" AND Size < atoi(string=maxDriveSize)
+        WHERE Data.Description =~ "Removable" AND Size &lt; atoi(string=maxDriveSize)
 
         LET file_listing = SELECT OSPath,
             Mtime As Modified,

@@ -39,7 +39,7 @@ parameters:
 
 sources:
 - query: |
-    LET org_record <= org_create(name=OrgName)
+    LET org_record &lt;= org_create(name=OrgName)
 
     SELECT org_record.name as Name, org_record.id AS OrgId,
            user_create(orgs=org_record.id,

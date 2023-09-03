@@ -13,7 +13,7 @@ description: |
    Enumerate the root certificates in the Windows Root store.
 
 reference:
-   - "ATT&CK: T1553"
+   - "ATT&amp;CK: T1553"
    - https://attack.mitre.org/techniques/T1553/004/
 
 parameters:
@@ -32,11 +32,11 @@ sources:
 
     query: |
         LET profile = '''[
-        ["Record", "x=>x.Length + 12", [
+        ["Record", "x=&gt;x.Length + 12", [
           ["Type", 0, "uint32"],
           ["Length", 8, "uint32"],
           ["Data", 12, "String", {
-              length: "x=>x.Length",
+              length: "x=&gt;x.Length",
               term: "",
           }],
           ["UnicodeString", 12, "String", {

@@ -125,10 +125,10 @@ sources:
                             name=format(format="%v-%v_%v.bin-%v-%v",
                             args=[
                                 Name, Pid, AddressRange,
-                                if(condition= String.Offset - ContextBytes < 0,
+                                if(condition= String.Offset - ContextBytes &lt; 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes > SectionSize,
+                                if(condition= String.Offset + ContextBytes &gt; SectionSize,
                                     then= SectionSize,
                                     else= String.Offset + ContextBytes ) ])
                             ) as HitContext,

@@ -75,7 +75,7 @@ description: |
   SID name  : NT AUTHORITY\SYSTEM
 
   688     {0;000003e7} 1 D 42171          NT AUTHORITY\SYSTEM     S-1-5-18        (04g,21p)       Primary
-  -> Impersonated !
+  -&gt; Impersonated !
   * Process Token : {0;000195ad} 1 F 757658339   DESKTOP-NHNHT65\mic     S-1-5-21-2310288903-2791442386-3035081252-1001  (15g,24p)       Primary
   * Thread Token  : {0;000003e7} 1 D 759094260   NT AUTHORITY\SYSTEM     S-1-5-18        (04g,21p)       Impersonation (Delegation)
   ```
