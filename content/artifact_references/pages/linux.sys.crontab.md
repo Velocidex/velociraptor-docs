@@ -20,35 +20,35 @@ parameters:
     default: 10000
     type: int
 
-precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
+precondition: SELECT OS From info() where OS = 'linux'
 
 sources:
   - name: CronTabs
     query: |
       LET raw = SELECT * FROM foreach(
           row={
-            SELECT OSPath from glob(globs=split(string=cronTabGlob, sep=&quot;,&quot;))
+            SELECT OSPath from glob(globs=split(string=cronTabGlob, sep=","))
           },
           query={
             SELECT OSPath, data, parse_string_with_regex(
               string=data,
               regex=[
                  /* Regex for event (Starts with @) */
-                 &quot;^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)&quot;,
+                 "^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)",
 
                  /* Regex for regular command. */
-                 &quot;^(?P&lt;Minute&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;Hour&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;Month&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;User&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;Command&gt;.+)$&quot;]) as Record
+                 "^(?P&lt;Minute&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Hour&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Month&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;User&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Command&gt;.+)$"]) as Record
 
-            /* Read lines from the file and filter ones that start with &quot;#&quot; */
+            /* Read lines from the file and filter ones that start with "#" */
             FROM split_records(
                filenames=OSPath,
-               regex=&quot;\n&quot;, columns=[&quot;data&quot;]) WHERE not data =~ &quot;^\\s*#&quot;
+               regex="\n", columns=["data"]) WHERE not data =~ "^\\s*#"
             }) WHERE Record.Command
 
       SELECT Record.Event AS Event,
@@ -64,11 +64,11 @@ sources:
   - name: CronScripts
     query: |
       SELECT Mtime, OSPath, read_file(filename=OSPath,length=Length) AS Content
-      FROM glob(globs=split(string=cronTabScripts, sep=&quot;,&quot;))
+      FROM glob(globs=split(string=cronTabScripts, sep=","))
   - name: Uploaded
     query: |
       SELECT OSPath, upload(file=OSPath) AS Upload
-      FROM glob(globs=split(string=cronTabGlob + &quot;,&quot; + cronTabScripts, sep=&quot;,&quot;))
+      FROM glob(globs=split(string=cronTabGlob + "," + cronTabScripts, sep=","))
 
 </code></pre>
 

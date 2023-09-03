@@ -36,24 +36,24 @@ parameters:
      type: regex
      default: .
 export: |
-    LET FSEventProfile = &#x27;&#x27;&#x27;[
-    [&quot;Header&quot;, 0, [
-      [&quot;Signature&quot;, 0, &quot;String&quot;, {
+    LET FSEventProfile = '''[
+    ["Header", 0, [
+      ["Signature", 0, "String", {
           length: 4
       }],
-      [&quot;StreamSize&quot;, 8, uint32],
-      [&quot;Items&quot;, 12, &quot;Array&quot;, {
+      ["StreamSize", 8, uint32],
+      ["Items", 12, "Array", {
           count: 10000,
           max_count: 10000,
           type: FSEventEntry,
-          sentinel: &quot;x=&gt;len(list=x.path) = 0&quot;,
+          sentinel: "x=&gt;len(list=x.path) = 0",
       }]
     ]],
-    [&quot;FSEventEntry&quot;, &quot;x=&gt;len(list=x.path) + 21&quot;, [
-      [&quot;path&quot;, 0, &quot;String&quot;],
-      [&quot;id&quot;, &quot;x=&gt;len(list=x.path) + 1&quot;, &quot;uint64&quot;],
-      [&quot;flags&quot;, &quot;x=&gt;len(list=x.path) + 9&quot;, &quot;Flags&quot;, {
-          type: &quot;uint32&quot;,
+    ["FSEventEntry", "x=&gt;len(list=x.path) + 21", [
+      ["path", 0, "String"],
+      ["id", "x=&gt;len(list=x.path) + 1", "uint64"],
+      ["flags", "x=&gt;len(list=x.path) + 9", "Flags", {
+          type: "uint32",
           bitmap: {
             FSE_CREATE_FILE: 0,
             FSE_DELETE: 1,
@@ -84,7 +84,7 @@ export: |
           }
       }],
     ]]
-    ]&#x27;&#x27;&#x27;
+    ]'''
 
 sources:
   - query: |
@@ -95,11 +95,11 @@ sources:
       SELECT * FROM foreach(row=files,
       query={
         SELECT OSPath.Basename AS File, Mtime, path,
-               id, join(array=flags, sep=&quot;, &quot;) AS flags
+               id, join(array=flags, sep=", ") AS flags
         FROM foreach(row=parse_binary(
-           filename=read_file(filename=OSPath, accessor=&quot;gzip&quot;, length=1000000),
-           accessor=&quot;data&quot;,
-           profile=FSEventProfile, struct=&quot;Header&quot;).Items)
+           filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
+           accessor="data",
+           profile=FSEventProfile, struct="Header").Items)
       })
       WHERE path =~ PathRegex AND flags =~ FlagsRegex
 

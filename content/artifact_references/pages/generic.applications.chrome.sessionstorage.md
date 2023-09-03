@@ -16,7 +16,7 @@ per website and can vary.
 name: Generic.Applications.Chrome.SessionStorage
 description: |
   Session storage allows a web site to store permanent data in the
-  user&#x27;s browser.
+  user's browser.
 
   This artifact parses this data from the browser cache. Each website
   has maintains a mapping between keys and values. The data is stored
@@ -43,19 +43,19 @@ parameters:
 
 sources:
 - query: |
-    LET _ &lt;= log(message=&quot;Glob %v&quot;, args= [SessionGlobs.Glob, ])
+    LET _ &lt;= log(message="Glob %v", args= [SessionGlobs.Glob, ])
     LET _GetMapping(Data, ID) = to_dict(item={
       SELECT _key AS RawKey,
              parse_string_with_regex(string=_key,
-                 regex=&#x27;map-([^-]+)-(?P&lt;Key&gt;.+)&#x27;).Key AS _key,
+                 regex='map-([^-]+)-(?P&lt;Key&gt;.+)').Key AS _key,
              utf16(string=_value) AS _value
       FROM items(item=Data)
-      WHERE RawKey =~ format(format=&quot;map-%v&quot;, args=ID)
+      WHERE RawKey =~ format(format="map-%v", args=ID)
     })
 
     LET DumpSessionStorate(Data) =
          SELECT parse_string_with_regex(string=_key,
-                    regex=&#x27;&#x27;&#x27;namespace-(?P&lt;GUID&gt;[^-]+)-(?P&lt;URL&gt;.+)&#x27;&#x27;&#x27;) AS Parsed,
+                    regex='''namespace-(?P&lt;GUID&gt;[^-]+)-(?P&lt;URL&gt;.+)''') AS Parsed,
                 _value, _GetMapping(Data=Data, ID=_value) AS Mapping
          FROM items(item=Data)
          WHERE Parsed.URL
@@ -71,10 +71,10 @@ sources:
     SELECT * FROM foreach(row={
        SELECT OSPath, Data, if(condition=AlsoUpload, then={
           SELECT upload(file=OSPath) AS Upload
-          FROM glob(globs=&quot;*&quot;, root=OSPath, accessor= Accessor)
+          FROM glob(globs="*", root=OSPath, accessor= Accessor)
        }) AS Upload
        FROM hits
-       WHERE log(message=&quot;Processing %v&quot;, args=OSPath)
+       WHERE log(message="Processing %v", args=OSPath)
 
     }, query={
        SELECT OSPath,

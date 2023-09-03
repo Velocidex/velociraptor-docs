@@ -14,7 +14,7 @@ type: CLIENT_EVENT
 description: |
    Logs dns queries on DNS servers. This is handy for identifying the true source system that is initiating malicious dns requests that you observed. Note that this can be resource intensive for the CPU on busy DNS servers - from 5% to 70% CPU load of one core, but memory consumption is very low. This is still a lot less then enabling DNS debug logging.
 
-author: &quot;Jos Clephas - jos-ir&quot;
+author: "Jos Clephas - jos-ir"
 
 parameters:
   - name: QueryNameRegex
@@ -26,7 +26,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
         SELECT System.TimeStamp as TimeStamp,
@@ -41,7 +41,7 @@ sources:
                EventData.Source as Source,
                EventData.TCP as TCP,
                EventData.XID as XID
-        FROM watch_etw(guid=&quot;{EB79061A-A566-4698-9119-3ED2807060E7}&quot;)
+        FROM watch_etw(guid="{EB79061A-A566-4698-9119-3ED2807060E7}")
         WHERE EventData AND
               QNAME =~ QueryNameRegex AND
               Source =~ SourceIPRegex

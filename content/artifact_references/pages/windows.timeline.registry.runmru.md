@@ -40,32 +40,32 @@ description: |
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: KeyGlob
     type: hidden
     default: Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU\MRUList
   - name: dateAfter
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: dateBefore
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: targetUser
-    description: &quot;target user regex&quot;
+    description: "target user regex"
     type: regex
   - name: regexValue
-    description: &quot;regex search over RunMRU values.&quot;
+    description: "regex search over RunMRU values."
     type: regex
   - name: groupResults
-    description: &quot;groups MRU entries to one message line&quot;
+    description: "groups MRU entries to one message line"
     type: bool
 
 sources:
  - query: |
         LET hostname_lu &lt;= SELECT Fqdn FROM info()
-        LET HKEY_USERS &lt;= pathspec(parse=&quot;HKEY_USERS&quot;, path_type=&quot;registry&quot;)
+        LET HKEY_USERS &lt;= pathspec(parse="HKEY_USERS", path_type="registry")
 
         // First we need to extract populated RunMRU
         LET MRUList &lt;= SELECT OSPath,
@@ -86,16 +86,16 @@ sources:
                 OSPath.Basename as reg_name,
                 HKEY_USERS + UUID + OSPath.Dirname.Path as reg_key,
 
-                -- Value data is similar to &#x27;cmd.exe\1&#x27; so we just need the bit before the \
-                regex_replace(source=Data.value, re=&quot;\\\\1$&quot;, replace=&quot;&quot;) as reg_value,
+                -- Value data is similar to 'cmd.exe\1' so we just need the bit before the \
+                regex_replace(source=Data.value, re="\\\\1$", replace="") as reg_value,
                 Data.type as reg_type,
                 RunMruLength - 1 - len(list=regex_replace(
                    source=RunMruOrder,
-                   re=&quot;^.*&quot; + OSPath.Basename,
-                   replace=&quot;&quot;)) as mru_order,
+                   re="^.*" + OSPath.Basename,
+                   replace="")) as mru_order,
                 RunMruOrder
-             FROM glob(globs=&#x27;*&#x27;, root=OSPath.Dirname, accessor=&quot;raw_reg&quot;)
-             WHERE not reg_name = &quot;MRUList&quot; AND
+             FROM glob(globs='*', root=OSPath.Dirname, accessor="raw_reg")
+             WHERE not reg_name = "MRUList" AND
                     if(condition=targetUser, then=Username =~ targetUser,
                         else=TRUE) AND
                     if(condition=dateAfter, then=reg_mtime &gt; timestamp(string=dateAfter),
@@ -108,16 +108,16 @@ sources:
 
         // join mru values and order for presentation
         LET usercommands &lt;= SELECT Username as user, mru_order,
-                format(format=&quot;MRU%v: %v&quot;, args=[mru_order,reg_value]) as mru_grouped
+                format(format="MRU%v: %v", args=[mru_order,reg_value]) as mru_grouped
         FROM results
 
         // Prepare join use case
         LET joinOut = SELECT
                 reg_mtime as event_time,
                 hostname_lu[0].Fqdn as hostname,
-                &quot;RunMRU&quot; as parser,
-                &quot;RunMRU evidence user: &quot; + Username + &quot;, &quot; +
-                  join(array=mru_grouped, sep=&quot; | &quot;)  + &quot;&#x27;&quot; as message,
+                "RunMRU" as parser,
+                "RunMRU evidence user: " + Username + ", " +
+                  join(array=mru_grouped, sep=" | ")  + "'" as message,
                 source,
                 Username as user
         FROM foreach(row=usercommands,
@@ -138,10 +138,10 @@ sources:
         LET splitOut = SELECT
                     reg_mtime as event_time,
                     hostname_lu.Fqdn[0] as hostname,
-                    &quot;RunMRU&quot; as parser,
-                    &quot;RunMRU evidence user: &quot; + Username +
-                        format(format=&quot;, order: %v, command: %v&quot;, args=[mru_order,reg_value])
-                            + &quot;&#x27;&quot; as message,
+                    "RunMRU" as parser,
+                    "RunMRU evidence user: " + Username +
+                        format(format=", order: %v, command: %v", args=[mru_order,reg_value])
+                            + "'" as message,
                     source,
                     Username as user,
                     reg_key,

@@ -20,7 +20,7 @@ description: |
   Humio) ingestion endpoint
 
   NOTE: You must ensure you are collecting these artifacts from the
-  clients by adding them to the &quot;Client Events&quot; GUI.
+  clients by adding them to the "Client Events" GUI.
 
 type: SERVER_EVENT
 
@@ -68,7 +68,7 @@ parameters:
 sources:
   - query: |
       LET artifacts_to_watch = SELECT Artifact FROM Artifacts
-        WHERE log(message=&quot;Uploading artifact &quot; + Artifact + &quot; to LogScale&quot;)
+        WHERE log(message="Uploading artifact " + Artifact + " to LogScale")
 
       LET events = SELECT * FROM foreach(
           row=artifacts_to_watch,
@@ -83,7 +83,7 @@ sources:
           apibaseurl=ingestApiBase,
           ingest_token=ingestToken,
           threads=numThreads,
-          tag_fields=split(string=tagFields, sep=&quot;,&quot;),
+          tag_fields=split(string=tagFields, sep=","),
           batching_timeout_ms=batchingTimeoutMs,
           event_batch_size=eventBatchSize,
           http_timeout=httpTimeout,

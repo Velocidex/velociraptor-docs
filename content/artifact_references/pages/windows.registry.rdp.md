@@ -48,7 +48,7 @@ parameters:
      type: regex
      
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
       
 sources:
   - name: Servers
@@ -65,11 +65,11 @@ sources:
             Username,
             UUID as SID
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
-        WHERE NOT Data.type = &#x27;Key&#x27;
-            AND OSPath =~ &#x27;&#x27;&#x27;Terminal Server Client\\\\Servers\\&#x27;&#x27;&#x27;
+        WHERE NOT Data.type = 'Key'
+            AND OSPath =~ '''Terminal Server Client\\\\Servers\\'''
 
       LET find_value(path, sid, keyname ) = SELECT KeyValue,
-            format(format=&#x27;%x&#x27;,args=read_file(accessor=&#x27;data&#x27;,filename=KeyValue,length=ValueLength)) as CertHash
+            format(format='%x',args=read_file(accessor='data',filename=KeyValue,length=ValueLength)) as CertHash
         FROM servers 
         WHERE KeyName = keyname AND Key=path AND SID=sid
         
@@ -86,8 +86,8 @@ sources:
             
       
       SELECT *
-        find_value(path=Key,sid=SID,keyname=&#x27;UsernameHint&#x27;)[0].KeyValue as UsernameHint,
-        find_value(path=Key,sid=SID,keyname=&#x27;CertHash&#x27;)[0].CertHash as CertHash
+        find_value(path=Key,sid=SID,keyname='UsernameHint')[0].KeyValue as UsernameHint,
+        find_value(path=Key,sid=SID,keyname='CertHash')[0].CertHash as CertHash
       FROM results
 
   - name: Mru
@@ -101,8 +101,8 @@ sources:
             Username,
             UUID as SID
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
-        WHERE NOT Data.type = &#x27;Key&#x27;
-            AND OSPath =~ &#x27;&#x27;&#x27;Terminal Server Client\\\\Default\\\\MRU&#x27;&#x27;&#x27;
+        WHERE NOT Data.type = 'Key'
+            AND OSPath =~ '''Terminal Server Client\\\\Default\\\\MRU'''
     
       LET find_mru(sid) = SELECT KeyValue FROM mru 
         WHERE SID=sid

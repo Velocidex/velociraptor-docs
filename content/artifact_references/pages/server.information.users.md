@@ -21,7 +21,7 @@ type: SERVER
 parameters:
   - name: StandardUserAccounts
     description: Well known SIDs to hide from the output.
-    default: &quot;(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)&quot;
+    default: "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"
     type: regex
 
 sources:
@@ -33,7 +33,7 @@ sources:
                session_id AS flow_id,
                active_time, client_id, Fqdn
            FROM flows(client_id=client_id)
-           WHERE artifacts_with_results =~&#x27;Windows.Sys.Users&#x27;
+           WHERE artifacts_with_results =~'Windows.Sys.Users'
            ORDER BY active_time
            DESC LIMIT 1
 
@@ -45,7 +45,7 @@ sources:
             query={
               SELECT Name, UUID, client_id, Fqdn from source(
                  flow_id=flow_id,
-                 artifact=&#x27;Windows.Sys.Users&#x27;,
+                 artifact='Windows.Sys.Users',
                  client_id=client_id)
               WHERE NOT UUID =~ StandardUserAccounts
             })

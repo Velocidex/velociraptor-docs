@@ -15,7 +15,7 @@ description: |
 parameters:
     - name: nameRegex
       description: Only file names that match this regular expression will be scanned.
-      default: &quot;(exe|txt|dll|php)$&quot;
+      default: "(exe|txt|dll|php)$"
       type: regex
     - name: AlsoUpload
       type: bool
@@ -26,7 +26,7 @@ parameters:
       default: |
         rule Hit {
             strings:
-              $a = &quot;Keyword&quot; nocase wide ascii
+              $a = "Keyword" nocase wide ascii
             condition:
               any of them
         }
@@ -34,32 +34,32 @@ parameters:
     - name: NTFS_CACHE_TIME
       type: int
       description: How often to flush the NTFS cache. (Default is never).
-      default: &quot;1000000&quot;
+      default: "1000000"
 
 precondition:
-    SELECT * FROM info() WHERE OS =~ &quot;windows&quot;
+    SELECT * FROM info() WHERE OS =~ "windows"
 
 sources:
   - query: |
-        LET Root = pathspec(parse=&quot;C:&quot;, path_type=&quot;ntfs&quot;)
+        LET Root = pathspec(parse="C:", path_type="ntfs")
 
         -- Progress logging for newer clients
-        LET fileList = SELECT * FROM if(condition=version(function=&quot;log&quot;) &gt; 1,
+        LET fileList = SELECT * FROM if(condition=version(function="log") &gt; 1,
         then={
           SELECT Root + OSPath AS OSPath
-          FROM parse_mft(accessor=&quot;ntfs&quot;,filename=Root+&quot;$MFT&quot;)
+          FROM parse_mft(accessor="ntfs",filename=Root+"$MFT")
           WHERE InUse
-            AND log(message=&quot;Processing entry %v&quot;, args=EntryNumber, dedup=5)
+            AND log(message="Processing entry %v", args=EntryNumber, dedup=5)
             AND FileName =~ nameRegex
-            AND NOT OSPath =~ &quot;WinSXS&quot;
-            AND log(message=&quot;Scanning file %v&quot;, args=OSPath, dedup=5)
+            AND NOT OSPath =~ "WinSXS"
+            AND log(message="Scanning file %v", args=OSPath, dedup=5)
 
         }, else={
           SELECT Root + OSPath AS OSPath
-          FROM parse_mft(accessor=&quot;ntfs&quot;,filename=Root+&quot;$MFT&quot;)
+          FROM parse_mft(accessor="ntfs",filename=Root+"$MFT")
           WHERE InUse
             AND FileName =~ nameRegex
-            AND NOT OSPath =~ &quot;WinSXS&quot;
+            AND NOT OSPath =~ "WinSXS"
         })
 
         -- These files are typically short - only report a single hit.
@@ -69,7 +69,7 @@ sources:
              File.Size AS Size,
              File.ModTime AS ModTime
         FROM yara(
-            rules=yaraRule, key=&quot;A&quot;,
+            rules=yaraRule, key="A",
             files= OSPath)
         LIMIT 1
 

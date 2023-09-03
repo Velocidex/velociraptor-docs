@@ -18,7 +18,7 @@ description: |
    This code is based on
    https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.py
 
-precondition: SELECT OS FROM info() WHERE OS =~ &#x27;darwin&#x27;
+precondition: SELECT OS FROM info() WHERE OS =~ 'darwin'
 
 parameters:
 - name: sandboxed_loginitems
@@ -29,32 +29,32 @@ parameters:
 
 - name: LaunchAgentsDaemonsGlob
   default: |
-     [&quot;/System/Library/LaunchAgents/*.plist&quot;,&quot;/Library/LaunchAgents/*.plist&quot;,
-      &quot;/Users/*/Library/LaunchAgents/*.plist&quot;,&quot;/private/var/*/Library/LaunchAgents/*.plist&quot;,
-      &quot;/System/Library/LaunchAgents/.*.plist&quot;,&quot;/Library/LaunchAgents/.*.plist&quot;,
-      &quot;/Users/*/Library/LaunchAgents/.*.plist&quot;, &quot;/private/var/*/Library/LaunchAgents/.*.plist&quot;,
-      &quot;/System/Library/LaunchDaemons/*.plist&quot;,&quot;/Library/LaunchDaemons/*.plist&quot;,
-      &quot;/System/Library/LaunchDaemons/.*.plist&quot;,&quot;/Library/LaunchDaemons/.*.plist&quot;]
+     ["/System/Library/LaunchAgents/*.plist","/Library/LaunchAgents/*.plist",
+      "/Users/*/Library/LaunchAgents/*.plist","/private/var/*/Library/LaunchAgents/*.plist",
+      "/System/Library/LaunchAgents/.*.plist","/Library/LaunchAgents/.*.plist",
+      "/Users/*/Library/LaunchAgents/.*.plist", "/private/var/*/Library/LaunchAgents/.*.plist",
+      "/System/Library/LaunchDaemons/*.plist","/Library/LaunchDaemons/*.plist",
+      "/System/Library/LaunchDaemons/.*.plist","/Library/LaunchDaemons/.*.plist"]
 
 - name: ScriptingAdditionsGlobs
   default: |
-      [&quot;/System/Library/ScriptingAdditions/*.osax&quot;,&quot;/Library/ScriptingAdditions/*.osax&quot;,
-       &quot;/System/Library/ScriptingAdditions/.*.osax&quot;,&quot;/Library/ScriptingAdditions/.*.osax&quot;]
+      ["/System/Library/ScriptingAdditions/*.osax","/Library/ScriptingAdditions/*.osax",
+       "/System/Library/ScriptingAdditions/.*.osax","/Library/ScriptingAdditions/.*.osax"]
 
 - name: StartupItemsGlobs
   default: |
-       [&quot;/System/Library/StartupItems/*/*&quot;,&quot;/Library/StartupItems/*/*&quot;]
+       ["/System/Library/StartupItems/*/*","/Library/StartupItems/*/*"]
 
 - name: MiscItemsGlobs
   default: |
-      [&quot;/private/etc/periodic.conf&quot;, &quot;/private/etc/periodic/*/*&quot;, &quot;/private/etc/*.local&quot;,
-       &quot;/private/etc/rc.common&quot;,
-       &quot;/private/etc/emond.d/*&quot;,&quot;/private/etc/emond.d/*/*&quot;]
+      ["/private/etc/periodic.conf", "/private/etc/periodic/*/*", "/private/etc/*.local",
+       "/private/etc/rc.common",
+       "/private/etc/emond.d/*","/private/etc/emond.d/*/*"]
 
 - name: LoginItemsGlobs
   default: |
-      [&quot;/Users/*/Library/Preferences/com.apple.loginitems.plist&quot;,
-       &quot;/private/var/*/Library/Preferences/com.apple.loginitems.plist&quot;]
+      ["/Users/*/Library/Preferences/com.apple.loginitems.plist",
+       "/private/var/*/Library/Preferences/com.apple.loginitems.plist"]
 
 sources:
 - name: Sandboxed Loginitems
@@ -71,7 +71,7 @@ sources:
           row={
             SELECT OSPath, Name, Mtime,
                    upload(file=OSPath) AS Upload
-            FROM glob(globs=split(string=cronTabGlob, sep=&quot;,&quot;))
+            FROM glob(globs=split(string=cronTabGlob, sep=","))
           },
           query={
             SELECT OSPath, Name, Mtime, Upload,
@@ -79,20 +79,20 @@ sources:
                string=data,
                regex=[
                  /* Regex for event (Starts with @) */
-                 &quot;^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)&quot;,
+                 "^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)",
 
                  /* Regex for regular command. */
-                 &quot;^(?P&lt;Minute&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;Hour&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;Month&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+&quot;+
-                 &quot;(?P&lt;Command&gt;.+)$&quot;]) as Record
+                 "^(?P&lt;Minute&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Hour&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Month&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+"+
+                 "(?P&lt;Command&gt;.+)$"]) as Record
 
-            /* Read lines from the file and filter ones that start with &quot;#&quot; */
+            /* Read lines from the file and filter ones that start with "#" */
             FROM split_records(
                filenames=OSPath,
-               regex=&quot;\n&quot;, columns=[&quot;data&quot;]) WHERE not data =~ &quot;^\\s*#&quot;
+               regex="\n", columns=["data"]) WHERE not data =~ "^\\s*#"
             }) WHERE Record.Command
 
     SELECT Record.Event AS Event,
@@ -117,8 +117,8 @@ sources:
     FROM glob(globs=parse_json_array(data=LaunchAgentsDaemonsGlob))
 
     LET programs = SELECT OSPath, Mtime, LaunchdConfig,
-           get(member=&quot;LaunchdConfig.Program&quot;,
-               default=get(member=&quot;LaunchdConfig.ProgramArguments.0&quot;)) AS Program
+           get(member="LaunchdConfig.Program",
+               default=get(member="LaunchdConfig.ProgramArguments.0")) AS Program
     FROM launchd_config
 
     SELECT OSPath, Mtime, LaunchdConfig,

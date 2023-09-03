@@ -21,7 +21,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
         LET results = SELECT OSPath, count() AS Count,

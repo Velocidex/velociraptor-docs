@@ -28,7 +28,7 @@ description: |
   https://www.maxmind.com/ or you can pay for a more accurate option.
 
   After storing the database somewhere on your server, you should the
-  location in the server metadata screen to it under the key &quot;GeoIPDB&quot;
+  location in the server metadata screen to it under the key "GeoIPDB"
   (for example `/usr/shared/GeoLite2-City_20210803/GeoLite2-City.mmdb`)
 
   Alternatively you can import this artifact to gain access to the

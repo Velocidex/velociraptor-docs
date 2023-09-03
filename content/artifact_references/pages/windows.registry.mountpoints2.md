@@ -14,27 +14,27 @@ lateral movement.
 name: Windows.Registry.MountPoints2
 description: |
     This detection will collect any items in the MountPoints2 registry key.
-    With a &quot;$&quot; in the share path. This key will store all remotely mapped
+    With a "$" in the share path. This key will store all remotely mapped
     drives unless removed so is a great hunt for simple admin $ mapping based
     lateral movement.
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
  - name: KeyGlob
    default: Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\*
  - name: MountPointFilterRegex
    type: regex
-   default: &quot;\\$&quot;
+   default: "\\$"
 
 sources:
  - query: |
         SELECT regex_replace(
             source=OSPath.Basename,
-            re=&quot;#&quot;,
-            replace=&quot;\\&quot;) as MountPoint,
+            re="#",
+            replace="\\") as MountPoint,
           Mtime as ModifiedTime,
           Username,
           OSPath.DelegatePath as Hive,

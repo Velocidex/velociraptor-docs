@@ -27,7 +27,7 @@ description: |
   Powershell is commonly used by attackers across all stages of the attack
   lifecycle. Although quite noisy Module logging can provide valuable insight.
 
-  There are several parameter&#x27;s available for search leveraging regex.
+  There are several parameter's available for search leveraging regex.
     - DateAfter enables search for events after this date.
     - DateBefore enables search for events before this date.
     - ContextRegex enables regex search over ContextInfo text field.
@@ -45,16 +45,16 @@ parameters:
   - name: EventLog
     default: C:\Windows\system32\winevt\logs\Microsoft-Windows-PowerShell%4Operational.evtx
   - name: DateAfter
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: DateBefore
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: ContextRegex
-    description: &quot;regex search over Payload text field.&quot;
+    description: "regex search over Payload text field."
     type: regex
   - name: PayloadRegex
-    description: &quot;regex search over Payload text field.&quot;
+    description: "regex search over Payload text field."
     type: regex
 
   - name: VSSAnalysisAge
@@ -69,13 +69,13 @@ parameters:
 sources:
   - query: |
         LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-        LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
+        LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
         -- Build time bounds
         LET DateAfterTime &lt;= if(condition=DateAfter,
-            then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+            then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
         LET DateBeforeTime &lt;= if(condition=DateBefore,
-            then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
+            then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
         -- Determine target files
         LET files =

@@ -39,7 +39,7 @@ parameters:
     default: .
     type: regex
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
@@ -61,14 +61,14 @@ sources:
             FROM sqlite(
               file=OSPath,
               query=urlSQLQuery)
-             WHERE name = &#x27;downloads/metaData&#x27;
+             WHERE name = 'downloads/metaData'
           })
 
         SELECT * FROM foreach(row=places_files,
           query={
             SELECT User,
                    timestamp(epoch=dateAdded) as startTime,
-                   if(condition=name=~&#x27;metaData&#x27;,
+                   if(condition=name=~'metaData',
                     then=timestamp(epoch=parse_json(data=content).endTime)
                     ) AS endTime,
                    timestamp(epoch=lastModified) as last_modified,
@@ -76,13 +76,13 @@ sources:
                    name,
                    url,
                    place_id,
-                   if(condition=name=~&#x27;metaData&#x27;,
+                   if(condition=name=~'metaData',
                     then=parse_json(data=content).fileSize
                     ) AS fileSize,
-                   if(condition=name=~&#x27;metaData&#x27;,
+                   if(condition=name=~'metaData',
                     then=parse_json(data=content).state
                     ) AS state,
-                   if(condition=name=~&#x27;destinationFileURI&#x27;,
+                   if(condition=name=~'destinationFileURI',
                     then=content
                     ) AS localDirectory,
                    flags,

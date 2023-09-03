@@ -9,7 +9,7 @@ This artifact will extract Domain Role per machine.
 
 <pre><code class="language-yaml">
 name: Windows.System.DomainRole
-author: &#x27;Matt Green - @mgreen27&#x27;
+author: 'Matt Green - @mgreen27'
 description: |
    This artifact will extract Domain Role per machine.
 
@@ -28,27 +28,27 @@ parameters:
      
 sources:
   - precondition:
-      SELECT OS From info() where OS =~ &#x27;windows&#x27;
+      SELECT OS From info() where OS =~ 'windows'
 
     query: |
         SELECT 
             Domain, 
             DNSHostName, 
             if(condition= DomainRole=0,
-                then=&#x27;Standalone Workstation&#x27;,
+                then='Standalone Workstation',
                 else=if(condition= DomainRole=1,
-                    then=&#x27;Member Workstation&#x27;,
+                    then='Member Workstation',
                     else=if(condition= DomainRole=2,
-                        then=&#x27;Standalone Server&#x27;,
+                        then='Standalone Server',
                         else=if(condition= DomainRole=3,
-                            then=&#x27;Member Server&#x27;,
+                            then='Member Server',
                             else=if(condition= DomainRole=4,
-                                then=&#x27;Backup Domain Controller&#x27;,
+                                then='Backup Domain Controller',
                                 else=if(condition= DomainRole=5,
-                                    then= &#x27;Primary Domain Controller&#x27;,
-                                    else= &#x27;Unknown&#x27; )))))
+                                    then= 'Primary Domain Controller',
+                                    else= 'Unknown' )))))
                 ) AS DomainRole
-        FROM wmi(query=&#x27;SELECT * FROM Win32_ComputerSystem&#x27;,namespace=&#x27;ROOT/cimv2&#x27;)
+        FROM wmi(query='SELECT * FROM Win32_ComputerSystem',namespace='ROOT/cimv2')
         WHERE 
             DNSHostName =~ HostNameRegex
             AND Domain =~ DomainRegex

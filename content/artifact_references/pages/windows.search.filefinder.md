@@ -68,7 +68,7 @@ description: |
 
 
 precondition:
-  SELECT * FROM info() where OS = &#x27;windows&#x27;
+  SELECT * FROM info() where OS = 'windows'
 
 parameters:
   - name: SearchFilesGlob
@@ -106,23 +106,23 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
   - name: ModifiedBefore
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
 
 sources:
   - query: |
       LET file_search = SELECT OSPath,
-               get(item=Data, field=&quot;mft&quot;) as Inode,
+               get(item=Data, field="mft") as Inode,
                Mode.String AS Mode, Size,
                Mtime AS MTime,
                Atime AS ATime,
                Btime AS BTime,
-               Ctime AS CTime, &quot;&quot; AS Keywords,
+               Ctime AS CTime, "" AS Keywords,
                IsDir, Data
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   accessor=Accessor)
@@ -156,7 +156,7 @@ sources:
                       str(str=String.Data) As Keywords, IsDir, Data
 
                FROM yara(files=OSPath,
-                         key=&quot;A&quot;,
+                         key="A",
                          rules=YaraRule,
                          accessor=Accessor)
             })

@@ -26,13 +26,13 @@ name: Windows.Applications.Chrome.Extensions
 description: |
   Fetch Chrome extensions.
 
-  Chrome extensions are installed into the user&#x27;s home directory.  We
+  Chrome extensions are installed into the user's home directory.  We
   search for manifest.json files in a known path within each system
-  user&#x27;s home directory. We then parse the manifest file as JSON.
+  user's home directory. We then parse the manifest file as JSON.
 
   Many extensions use locale packs to resolve strings like name and
   description. In this case we detect the default locale and load
-  those locale files. We then resolve the extension&#x27;s name and
+  those locale files. We then resolve the extension's name and
   description from there.
 
   ## NOTES:
@@ -50,7 +50,7 @@ parameters:
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     query: |
         /* For each user on the system, search for extension manifests
            in their home directory. */
@@ -86,17 +86,17 @@ sources:
                          -- Munge the filename to get the messages.json path.
                          filenames=regex_replace(
                            source=ManifestFilename,
-                           replace=&quot;\\_locales\\&quot; + Manifest.default_locale +
-                                   &quot;\\messages.json&quot;,
-                           re=&quot;\\\\manifest.json$&quot;))
+                           replace="\\_locales\\" + Manifest.default_locale +
+                                   "\\messages.json",
+                           re="\\\\manifest.json$"))
               },
               else={
                   -- Just fill in empty Locale results.
                   SELECT Manifest,
                          Uid, User,
-                         &quot;&quot; AS LocaleFilename,
-                         &quot;&quot; AS ManifestFilename,
-                         &quot;&quot; AS LocaleManifest
+                         "" AS LocaleFilename,
+                         "" AS ManifestFilename,
+                         "" AS LocaleManifest
                   FROM scope()
               })
 
@@ -120,38 +120,38 @@ sources:
                   resolves the Name column either to the main manifest or
                   the locale manifest.
                */
-               if(condition=&quot;__MSG_&quot; in Manifest.name,
+               if(condition="__MSG_" in Manifest.name,
                   then=get(item=LocaleManifest,
                      member=regex_replace(
                         source=Manifest.name,
-                        replace=&quot;$1&quot;,
-                        re=&quot;(?:__MSG_(.+)__)&quot;)).message,
+                        replace="$1",
+                        re="(?:__MSG_(.+)__)")).message,
                   else=Manifest.name) as Name,
 
-               if(condition=&quot;__MSG_&quot; in Manifest.description,
+               if(condition="__MSG_" in Manifest.description,
                   then=get(item=LocaleManifest,
                      member=regex_replace(
                         source=Manifest.description,
-                        replace=&quot;$1&quot;,
-                        re=&quot;(?:__MSG_(.+)__)&quot;)).message,
+                        replace="$1",
+                        re="(?:__MSG_(.+)__)")).message,
                   else=Manifest.description) as Description,
 
                /* Get the Identifier and Version from the manifest filename */
                regex_replace(
                  source=ManifestFilename,
-                 replace=&quot;$1&quot;,
-                 re=&quot;(?:.+Extensions\\\\([^\\\\]+)\\\\([^\\\\]+)\\\\manifest.json)$&quot;) AS Identifier,
+                 replace="$1",
+                 re="(?:.+Extensions\\\\([^\\\\]+)\\\\([^\\\\]+)\\\\manifest.json)$") AS Identifier,
                regex_replace(
                  source=ManifestFilename,
-                 replace=&quot;$2&quot;,
-                 re=&quot;(?:.+Extensions\\\\([^\\\\]+)\\\\([^\\\\]+)\\\\manifest.json)$&quot;) AS Version,
+                 replace="$2",
+                 re="(?:.+Extensions\\\\([^\\\\]+)\\\\([^\\\\]+)\\\\manifest.json)$") AS Version,
 
                Manifest.author as Author,
                Manifest.background.persistent AS Persistent,
                regex_replace(
                  source=ManifestFilename,
-                 replace=&quot;$1&quot;,
-                 re=&quot;(.+Extensions\\\\.+\\\\)manifest.json$&quot;) AS Path,
+                 replace="$1",
+                 re="(.+Extensions\\\\.+\\\\)manifest.json$") AS Path,
 
                Manifest.oauth2.scopes as Scopes,
                Manifest.permissions as Permissions,

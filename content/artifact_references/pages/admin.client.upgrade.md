@@ -33,7 +33,7 @@ tools:
 
 parameters:
   - name: SleepDuration
-    default: &quot;600&quot;
+    default: "600"
     type: int
     description: |
       The MSI file is typically very large and we do not want to
@@ -42,15 +42,15 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query:  |
       // Force the file to be copied to the real temp directory since
       // we are just about to remove the Tools directory.
       LET bin &lt;= SELECT copy(filename=OSPath,
-          dest=expand(path=&quot;%SYSTEMROOT%\\Temp\\&quot;) + basename(path=OSPath)) AS Dest
+          dest=expand(path="%SYSTEMROOT%\\Temp\\") + basename(path=OSPath)) AS Dest
       FROM Artifact.Generic.Utils.FetchBinary(
-         ToolName=&quot;WindowsMSI&quot;, IsExecutable=FALSE,
+         ToolName="WindowsMSI", IsExecutable=FALSE,
          SleepDuration=SleepDuration)
 
       // Call the binary and return all its output in a single row.
@@ -58,7 +58,7 @@ sources:
       SELECT * FROM foreach(row=bin,
       query={
          SELECT * FROM execve(
-              argv=[&quot;msiexec.exe&quot;, &quot;/i&quot;, Dest, &quot;/q&quot;],
+              argv=["msiexec.exe", "/i", Dest, "/q"],
               length=10000000)
       })
 

@@ -18,7 +18,7 @@ an unlikely value - e.g ANY or left blank.
 
 <pre><code class="language-yaml">
 name: Windows.Detection.BinaryRename
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
     This artifact will detect renamed binaries commonly abused by adversaries.
 
@@ -87,7 +87,7 @@ parameters:
         ANY,,,UltraVNC Setup,UltraVNC_1_3_81_X64_Setup.exe
         ANY,,,File Shredder by PowTools,file_shredder_setup.exe
         ANY,,pCloud Drive.exe,pCloud Drive,pCloud_Windows_3.11.12_x64.exe
-        plink.exe,Plink,Plink,&quot;Command-line SSH, Telnet, and Rlogin client&quot;,plink.exe
+        plink.exe,Plink,Plink,"Command-line SSH, Telnet, and Rlogin client",plink.exe
         pscp.exe,PSCP,PSCP,Command-line SCP/SFTP client,pscp.exe
         psftp.exe,PSFTP,PSFTP,Command-line interactive SFTP client,psftp.exe
         ANY,,,Total Commander Installer,tcmd1000x32.exe
@@ -108,7 +108,7 @@ parameters:
         ANY,Web Browser Pass View,,Web Browser Password Viewer,WebBrowserPassView.exe
         ANY,PowerTool.exe,PowerTool.exe,Anti-virus/rootkit/bootkit Tool,PowerTool64.exe
         ANY,,winscp.com,Console interface for WinSCP,WinSCP.com
-        ANY,winscp,winscp.exe,&quot;WinSCP: SFTP, FTP, WebDAV, S3 and SCP client&quot;,WinSCP.exe
+        ANY,winscp,winscp.exe,"WinSCP: SFTP, FTP, WebDAV, S3 and SCP client",WinSCP.exe
         ANY,iepv,iepv.exe,IE Passwords Viewer,iepv.exe
         ANY,VNCPassView,VNCPassView.exe,VNCPassView,VNCPassView.exe
         ANY,PCHunter,PCHunter.exe,Epoolsoft Windows Information View Tools,PCHunter32.exe
@@ -125,11 +125,11 @@ parameters:
 sources:
   - query: |
       LET bins &lt;= SELECT
-            if(condition=Filename=&#x27;&#x27;,then=&#x27;ANY&#x27;,
+            if(condition=Filename='',then='ANY',
                 else=lowcase(string=Filename)) AS Filename,
-            if(condition=Internal=&#x27;&#x27;,then=&#x27;ANY&#x27;,
+            if(condition=Internal='',then='ANY',
                 else=lowcase(string=Internal)) AS Internal,
-            if(condition=Original=&#x27;&#x27;,then=&#x27;ANY&#x27;,
+            if(condition=Original='',then='ANY',
                 else=lowcase(string=Original)) AS Original
         FROM VersionInfoTable
 
@@ -145,8 +145,8 @@ sources:
             (( lowcase(string=VersionInformation.OriginalFilename) in bins.Original
                 OR lowcase(string=VersionInformation.InternalName) in bins.Internal )
                 AND NOT lowcase(string=Name) in bins.Filename )
-        OR OSPath =~ &#x27;C:\\\\Windows\\\\System32\\\\(osk|Magnify|Narrator|DisplaySwitch).exe$&#x27;
-            AND NOT VersionInformation.OriginalFilename =~ &#x27;^(osk|SR|Narrator|ScreenMagnifier|DisplaySwitch)\.exe$&#x27;
+        OR OSPath =~ 'C:\\\\Windows\\\\System32\\\\(osk|Magnify|Narrator|DisplaySwitch).exe$'
+            AND NOT VersionInformation.OriginalFilename =~ '^(osk|SR|Narrator|ScreenMagnifier|DisplaySwitch)\.exe$'
         )
 
 </code></pre>

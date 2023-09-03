@@ -32,19 +32,19 @@ description: |
 
 parameters:
  - name: MFTId
-   default: &quot;81978&quot;
+   default: "81978"
  - name: Drive
-   default: &#x27;\\.\C:&#x27;
+   default: '\\.\C:'
 
 precondition:
-  SELECT * FROM info() where OS = &#x27;windows&#x27;
+  SELECT * FROM info() where OS = 'windows'
 
 sources:
   - name: Upload
     query: |
        LET Parsed &lt;= parse_ntfs(device=Drive, inode=MFTId)
 
-       SELECT *, upload(accessor=&quot;mft&quot;, file=Drive + Inode,
+       SELECT *, upload(accessor="mft", file=Drive + Inode,
                         name=Parsed.OSPath + Inode) AS IndexUpload
        FROM foreach(
             row=Parsed.Attributes,

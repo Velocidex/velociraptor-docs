@@ -31,7 +31,7 @@ sources:
           timestamp(epoch=Flow.create_time/1000000) as create_time,
           basename(path=Flow.session_id) as flow_id,
           (Flow.active_time - Flow.create_time) / 1000000 as Duration,
-          format(format=&#x27;%v&#x27;, args=[Flow.state]) as State
+          format(format='%v', args=[Flow.state]) as State
         FROM hunt_flows(hunt_id=hunt_id) order by create_time desc
 
         SELECT * from foreach(row=hunts, query=flows)

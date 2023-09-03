@@ -23,7 +23,7 @@ type: SERVER
 parameters:
   - name: Age
     description: Remove clients older than this many days
-    default: &quot;7&quot;
+    default: "7"
 
   - name: ReallyDoIt
     type: bool

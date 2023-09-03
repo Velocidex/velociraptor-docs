@@ -20,14 +20,14 @@ result set.
 name: Admin.Events.PostProcessUploads
 description: |
   Sometimes we would like to post process uploads collected as part of
-  the hunt&#x27;s artifact collections
+  the hunt's artifact collections
 
   Post processing means to watch the hunt for completed flows and run
   a post processing command on the files obtained from each host.
 
   The command will receive the list of paths of the files uploaded by
   the artifact. We dont actually care what the command does with those
-  files - we will just relay our stdout/stderr to the artifact&#x27;s
+  files - we will just relay our stdout/stderr to the artifact's
   result set.
 
 type: SERVER_EVENT
@@ -41,7 +41,7 @@ parameters:
       The command to run - must be a json array of strings! The list
       of files will be appended to the end of the command.
     default: |
-      [&quot;/bin/ls&quot;, &quot;-l&quot;]
+      ["/bin/ls", "-l"]
 
   - name: uploadPostProcessArtifact
     description: |
@@ -53,7 +53,7 @@ sources:
         LET files = SELECT Flow,
             array(a1=parse_json_array(data=uploadPostProcessCommand),
                   a2=file_store(path=Flow.uploaded_files)) as Argv
-        FROM watch_monitoring(artifact=&#x27;System.Flow.Completion&#x27;)
+        FROM watch_monitoring(artifact='System.Flow.Completion')
         WHERE uploadPostProcessArtifact in Flow.artifacts_with_results
 
         SELECT * from foreach(

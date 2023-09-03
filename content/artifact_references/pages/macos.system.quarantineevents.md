@@ -25,7 +25,7 @@ parameters:
   default: /Users/*/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
 
 precondition:
-      SELECT OS From info() where OS = &#x27;darwin&#x27;
+      SELECT OS From info() where OS = 'darwin'
 
 sources:
   - query: |
@@ -33,7 +33,7 @@ sources:
         FROM glob(globs=QuarantineGlob)
 
       LET QEvents = SELECT *
-        FROM sqlite(file=OSPath, query=&quot;SELECT * from LSQuarantineEvent&quot;)
+        FROM sqlite(file=OSPath, query="SELECT * from LSQuarantineEvent")
 
       // Add delta (978307200 seconds between Cocoa timestamp
       // (2020,1,1) and epoch timestamp (1970,1,1)) to provided Cocoa
@@ -48,7 +48,7 @@ sources:
                   LSQuarantineOriginURLString AS Origin,
                   LSQuarantineAgentName AS AgentName,
                   LSQuarantineAgentBundleIdentifier AS AgentBundle,
-                  split(string=OSPath, sep=&#x27;/&#x27;)[2] AS User,
+                  split(string=OSPath, sep='/')[2] AS User,
                   LSQuarantineEventIdentifier AS EventUUID
                  FROM scope()
               }

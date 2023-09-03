@@ -44,16 +44,16 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       -- first get context on target binary
       LET bin &lt;= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(
-            ToolName=&quot;Intezer&quot;)
+            ToolName="Intezer")
 
       -- execute payload
-      SELECT * FROM execve(argv=[ bin.OSPath[0], &#x27;-k&#x27;, ApiKey ])
+      SELECT * FROM execve(argv=[ bin.OSPath[0], '-k', ApiKey ])
 
 </code></pre>
 

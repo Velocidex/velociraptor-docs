@@ -38,35 +38,35 @@ parameters:
     type: regex
 
 export: |
-    LET Profile = &#x27;&#x27;&#x27;
+    LET Profile = '''
         [
-        [&quot;ServiceFailureActions&quot;, 0, [
-          [&quot;ResetPeriod&quot;, 0, &quot;uint32&quot;],
-          [&quot;__ActionsCount&quot;, 12, &quot;uint32&quot;],
-          [&quot;__lpsaActionsHeader&quot;, 16, &quot;uint32&quot;],
-          [&quot;FailureAction&quot;, &quot;x=&gt;x.__lpsaActionsHeader&quot;, &quot;Array&quot;, {
-              &quot;type&quot;: &quot;ServiceAction&quot;,
-              &quot;count&quot;: &quot;x=&gt;x.__ActionsCount&quot;
+        ["ServiceFailureActions", 0, [
+          ["ResetPeriod", 0, "uint32"],
+          ["__ActionsCount", 12, "uint32"],
+          ["__lpsaActionsHeader", 16, "uint32"],
+          ["FailureAction", "x=&gt;x.__lpsaActionsHeader", "Array", {
+              "type": "ServiceAction",
+              "count": "x=&gt;x.__ActionsCount"
           }]
         ]],
-        [&quot;ServiceAction&quot;, 8, [
-            [&quot;Type&quot;, 0, &quot;Enumeration&quot;, {
-                &quot;type&quot;: &quot;uint32&quot;,
-                &quot;map&quot;: {
-                    &quot;SC_ACTION_NONE&quot;: 0,
-                    &quot;SC_ACTION_RESTART&quot;: 1,
-                    &quot;SC_ACTION_REBOOT&quot;: 2,
-                    &quot;SC_ACTION_RUN_COMMAND&quot;: 3,
+        ["ServiceAction", 8, [
+            ["Type", 0, "Enumeration", {
+                "type": "uint32",
+                "map": {
+                    "SC_ACTION_NONE": 0,
+                    "SC_ACTION_RESTART": 1,
+                    "SC_ACTION_REBOOT": 2,
+                    "SC_ACTION_RUN_COMMAND": 3,
                 }}],
-            [&quot;__DelayMsec&quot;, 4, &quot;uint32&quot;],
-            [&quot;Delay&quot;, 4,&quot;Value&quot;,{ &quot;value&quot;: &quot;x=&gt;x.__DelayMsec/1000&quot; }],
+            ["__DelayMsec", 4, "uint32"],
+            ["Delay", 4,"Value",{ "value": "x=&gt;x.__DelayMsec/1000" }],
         ]],
       ]
-      &#x27;&#x27;&#x27;
+      '''
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       LET service &lt;= SELECT State, Name, DisplayName, Status,
@@ -74,11 +74,11 @@ sources:
             PathName, ServiceType, StartName as UserAccount,
             {
                 SELECT Mtime as Created
-                FROM stat(filename=servicesKeyGlob + Name, accessor=&#x27;registry&#x27;)
+                FROM stat(filename=servicesKeyGlob + Name, accessor='registry')
             } AS Created,
             {
                 SELECT expand(path=ServiceDll) AS ServiceDll
-                FROM read_reg_key(globs=servicesKeyGlob + Name + &quot;\\Parameters&quot;)
+                FROM read_reg_key(globs=servicesKeyGlob + Name + "\\Parameters")
                 LIMIT 1
             } AS ServiceDll,
             {
@@ -87,16 +87,16 @@ sources:
             } AS FailureCommand,
             {
                 SELECT if(condition=FailureActions,
-                   then=parse_binary(accessor=&#x27;data&#x27;,
-                                     filename= FailureActions || &quot; &quot;,
+                   then=parse_binary(accessor='data',
+                                     filename= FailureActions || " ",
                                      profile=Profile,
-                                     struct=&#x27;ServiceFailureActions&#x27;)) as FailureActions
+                                     struct='ServiceFailureActions')) as FailureActions
                 FROM read_reg_key(globs=servicesKeyGlob + Name)
             } AS FailureActions,
             expand(path=parse_string_with_regex(regex=
-                [&#x27;^&quot;(?P&lt;AbsoluteExePath&gt;[^&quot;]+)&#x27;,&#x27;(?P&lt;AbsoluteExePath&gt;^[^ &quot;]+)&#x27;],
+                ['^"(?P&lt;AbsoluteExePath&gt;[^"]+)','(?P&lt;AbsoluteExePath&gt;^[^ "]+)'],
                 string=PathName).AbsoluteExePath) as AbsoluteExePath
-        FROM wmi(query=&quot;SELECT * From Win32_service&quot;, namespace=&quot;root/CIMV2&quot;)
+        FROM wmi(query="SELECT * From Win32_service", namespace="root/CIMV2")
         WHERE Name =~ NameRegex
             AND DisplayName =~ DisplayNameRegex
             AND PathName =~ PathNameRegex
@@ -105,13 +105,13 @@ sources:
 
       SELECT *,
         if(condition=Calculate_hashes,
-            then=hash(path=AbsoluteExePath, accessor=&quot;auto&quot;)) AS HashServiceExe,
+            then=hash(path=AbsoluteExePath, accessor="auto")) AS HashServiceExe,
                  if(condition=CertificateInfo,
-                    then=authenticode(filename=AbsoluteExePath || &quot; &quot;)) AS CertinfoServiceExe,
+                    then=authenticode(filename=AbsoluteExePath || " ")) AS CertinfoServiceExe,
                  if(condition=Calculate_hashes,
-                    then=hash(path=ServiceDll || &quot; &quot;,accessor=&quot;auto&quot;)) AS HashServiceDll,
+                    then=hash(path=ServiceDll || " ",accessor="auto")) AS HashServiceDll,
                  if(condition=CertificateInfo,
-                    then=authenticode(filename=ServiceDll || &quot; &quot;)) AS CertinfoServiceDll
+                    then=authenticode(filename=ServiceDll || " ")) AS CertinfoServiceDll
       FROM service
 
 </code></pre>

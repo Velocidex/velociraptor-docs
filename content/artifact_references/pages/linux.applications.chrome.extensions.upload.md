@@ -16,14 +16,14 @@ description: |
   Upload all users chrome extension.
 
   We dont bother actually parsing anything here, we just grab all the
-  extension files in user&#x27;s home directory.
+  extension files in user's home directory.
 
 parameters:
   - name: extensionGlobs
     default: /.config/google-chrome/*/Extensions/**
 sources:
   - precondition: |
-      SELECT OS From info() where OS = &#x27;linux&#x27;
+      SELECT OS From info() where OS = 'linux'
     query: |
         -- For each user on the system, search for extension files
         -- in their home directory and upload them.

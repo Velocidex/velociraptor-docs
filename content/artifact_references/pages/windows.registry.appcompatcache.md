@@ -38,91 +38,91 @@ parameters:
   - name: AppCompatCacheKey
     default: HKEY_LOCAL_MACHINE/System/ControlSet*/Control/Session Manager/AppCompatCache/AppCompatCache
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 export: |
-    LET AppCompatCacheParser &lt;= &#x27;&#x27;&#x27;[
-    [&quot;HeaderWin10&quot;, &quot;x=&gt;x.HeaderSize&quot;, [
-      [&quot;HeaderSize&quot;, 0, &quot;unsigned int&quot;],
-      [&quot;Entries&quot;, &quot;x=&gt;x.HeaderSize&quot;, Array, {
-          type: &quot;Entry&quot;,
-          sentinel: &quot;x=&gt;x.Size = 0&quot;,
+    LET AppCompatCacheParser &lt;= '''[
+    ["HeaderWin10", "x=&gt;x.HeaderSize", [
+      ["HeaderSize", 0, "unsigned int"],
+      ["Entries", "x=&gt;x.HeaderSize", Array, {
+          type: "Entry",
+          sentinel: "x=&gt;x.Size = 0",
           count: 10000,
       }]
     ]],
-    [&quot;HeaderWin8&quot;, 128, [
-      [&quot;Entries&quot;, 128, Array, {
-          type: &quot;EntryWin8&quot;,
-          sentinel: &quot;x=&gt;x.EntrySize = 0&quot;,
+    ["HeaderWin8", 128, [
+      ["Entries", 128, Array, {
+          type: "EntryWin8",
+          sentinel: "x=&gt;x.EntrySize = 0",
           count: 10000,
       }]
     ]],
 
-    [&quot;EntryWin8&quot;, &quot;x=&gt;x.EntrySize + 12&quot;, [
-      [&quot;Signature&quot;, 0, &quot;String&quot;, {
+    ["EntryWin8", "x=&gt;x.EntrySize + 12", [
+      ["Signature", 0, "String", {
          length: 4,
       }],
-      [&quot;EntrySize&quot;, 8, &quot;unsigned int&quot;],
-      [&quot;PathSize&quot;, 12, &quot;uint16&quot;],
-      [&quot;Path&quot;, 14, &quot;String&quot;, {
-          length: &quot;x=&gt;x.PathSize&quot;,
-          encoding: &quot;utf16&quot;,
+      ["EntrySize", 8, "unsigned int"],
+      ["PathSize", 12, "uint16"],
+      ["Path", 14, "String", {
+          length: "x=&gt;x.PathSize",
+          encoding: "utf16",
       }],
-      [&quot;LastMod&quot;, &quot;x=&gt;x.PathSize + 14 + 10&quot;, &quot;WinFileTime&quot;]
+      ["LastMod", "x=&gt;x.PathSize + 14 + 10", "WinFileTime"]
     ]],
 
-    [&quot;Entry&quot;, &quot;x=&gt;x.Size + 12&quot;, [
-      [&quot;Signature&quot;, 0, &quot;String&quot;, {
+    ["Entry", "x=&gt;x.Size + 12", [
+      ["Signature", 0, "String", {
          length: 4,
       }],
-      [&quot;Size&quot;, 8, &quot;unsigned int&quot;],
-      [&quot;PathSize&quot;, 12, &quot;uint16&quot;],
-      [&quot;Path&quot;, 14, &quot;String&quot;, {
-          length: &quot;x=&gt;x.PathSize&quot;,
-          encoding: &quot;utf16&quot;,
+      ["Size", 8, "unsigned int"],
+      ["PathSize", 12, "uint16"],
+      ["Path", 14, "String", {
+          length: "x=&gt;x.PathSize",
+          encoding: "utf16",
       }],
-      [&quot;LastMod&quot;, &quot;x=&gt;x.PathSize + 14&quot;, &quot;WinFileTime&quot;],
-      [&quot;DataSize&quot;, &quot;x=&gt;x.PathSize + 14 + 8&quot;, &quot;uint32&quot;],
-      [&quot;Data&quot;, &quot;x=&gt;x.PathSize + 14 + 8 + 4&quot; , &quot;String&quot;, {
-          length: &quot;x=&gt;x.DataSize&quot;,
+      ["LastMod", "x=&gt;x.PathSize + 14", "WinFileTime"],
+      ["DataSize", "x=&gt;x.PathSize + 14 + 8", "uint32"],
+      ["Data", "x=&gt;x.PathSize + 14 + 8 + 4" , "String", {
+          length: "x=&gt;x.DataSize",
       }],
 
       # The last byte of the Data block is 1 for execution
-      [&quot;Execution&quot;, &quot;x=&gt;x.PathSize + 14 + 8 + 4 + x.DataSize - 4&quot;, &quot;uint32&quot;]
+      ["Execution", "x=&gt;x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
     ]],
 
     # This is the Win7 parser but we dont use it right now.
-    [&quot;HeaderWin7x64&quot;, 128, [
-      [&quot;Signature&quot;, 0, &quot;uint32&quot;],
-      [&quot;Entries&quot;, 128, &quot;Array&quot;, {
+    ["HeaderWin7x64", 128, [
+      ["Signature", 0, "uint32"],
+      ["Entries", 128, "Array", {
           count: 10000,
-          sentinel: &quot;x=&gt;x.PathSize = 0&quot;,
+          sentinel: "x=&gt;x.PathSize = 0",
           type: EntryWin7x64,
       }]
     ]],
-    [&quot;EntryWin7x64&quot;, 48, [
-      [&quot;PathSize&quot;, 0, &quot;uint16&quot;],
-      [&quot;PathOffset&quot;, 8, &quot;uint32&quot;],
-      [&quot;Path&quot;, &quot;x=&gt;x.PathOffset - x.StartOf&quot;, &quot;String&quot;, {
-          encoding: &quot;utf16&quot;,
-          length: &quot;x=&gt;x.PathSize&quot;,
+    ["EntryWin7x64", 48, [
+      ["PathSize", 0, "uint16"],
+      ["PathOffset", 8, "uint32"],
+      ["Path", "x=&gt;x.PathOffset - x.StartOf", "String", {
+          encoding: "utf16",
+          length: "x=&gt;x.PathSize",
       }],
-      [&quot;LastMod&quot;, 16, &quot;WinFileTime&quot;]
+      ["LastMod", 16, "WinFileTime"]
     ]]
 
-    ]&#x27;&#x27;&#x27;
+    ]'''
 
     LET AppCompatCacheWin10(Blob) = parse_binary(
-        accessor=&quot;data&quot;,
+        accessor="data",
         filename=Blob,
         profile=AppCompatCacheParser,
-        struct=&quot;HeaderWin10&quot;)
+        struct="HeaderWin10")
 
     LET AppCompatCacheWin8(Blob) = parse_binary(
-        accessor=&quot;data&quot;,
+        accessor="data",
         filename=Blob,
         profile=AppCompatCacheParser,
-        struct=&quot;HeaderWin8&quot;)
+        struct="HeaderWin8")
 
     LET AppCompatCache(Blob) = SELECT *
     FROM foreach(
@@ -135,7 +135,7 @@ export: |
 sources:
   - query: |
       -- first find all ControlSet Keys in scope
-      LET AppCompatKeys &lt;= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor=&#x27;registry&#x27;)
+      LET AppCompatKeys &lt;= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor='registry')
 
       -- when greater than one key we need to extract results and order later
       LET results &lt;= SELECT
@@ -145,14 +145,14 @@ sources:
             Key
           FROM foreach(
               row={
-                 SELECT OSPath FROM glob(accessor=&#x27;registry&#x27;,
+                 SELECT OSPath FROM glob(accessor='registry',
                      globs=AppCompatCacheKey)
               }, query={
                   SELECT OSPath AS Key, Path AS Name,
                      LastMod AS ModificationTime,
                      OSPath[2] as ControlSet
                   FROM AppCompatCache(Blob=read_file(
-                      accessor=&#x27;registry&#x27;, filename=OSPath))
+                      accessor='registry', filename=OSPath))
             })
 
       -- find position of entry for each ControlSet. Lower numbers more recent

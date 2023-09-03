@@ -16,7 +16,7 @@ name: Server.Slack.Clients.Online
 description: |
    Send a message to slack when clients come online.
 
-   This artifact searches for all clients that carry the label &quot;Slack&quot;
+   This artifact searches for all clients that carry the label "Slack"
    by default, and if they have appeared online in the last 5 minutes,
    sends a message to Slack and removed the label from the client.
 
@@ -38,8 +38,8 @@ sources:
         LET hits = SELECT client_id,
                os_info.fqdn as Hostname ,
                now() - last_seen_at / 1000000 AS LastSeen,
-               label(client_id=client_id, labels=LabelGroup, op=&quot;remove&quot;)
-        FROM clients(search=&quot;label:&quot; + LabelGroup)
+               label(client_id=client_id, labels=LabelGroup, op="remove")
+        FROM clients(search="label:" + LabelGroup)
         WHERE LastSeen &lt; 300
 
         LET send_massage = SELECT * FROM foreach(row=hits,
@@ -47,11 +47,11 @@ sources:
            SELECT client_id, Hostname, LastSeen, Content, Response
            FROM http_client(
                 data=serialize(item=dict(
-                text=format(format=&quot;Client %v (%v) has appeared online %v seconds ago&quot;,
+                text=format(format="Client %v (%v) has appeared online %v seconds ago",
                             args=[Hostname, client_id, LastSeen])),
-                format=&quot;json&quot;),
-            headers=dict(`Content-Type`=&quot;application/json&quot;),
-            method=&quot;POST&quot;,
+                format="json"),
+            headers=dict(`Content-Type`="application/json"),
+            method="POST",
             url=token_url)
         })
 

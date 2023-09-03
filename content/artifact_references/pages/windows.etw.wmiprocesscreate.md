@@ -39,8 +39,8 @@ sources:
       LET hits = SELECT
          System.ID AS ID,
          System.TimeStamp AS Timestamp,
-         get(member=&quot;EventData&quot;) AS EventData
-      FROM watch_etw(guid=&quot;{1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}&quot;)
+         get(member="EventData") AS EventData
+      FROM watch_etw(guid="{1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}")
       WHERE ID = 23
 
       SELECT ID, Timestamp, EventData.ClientMachine AS Hostname,

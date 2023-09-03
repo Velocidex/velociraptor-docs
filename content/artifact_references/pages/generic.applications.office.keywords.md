@@ -62,8 +62,8 @@ parameters:
     default: |
       rule Hit {
         strings:
-          $a = &quot;secret&quot; wide nocase
-          $b = &quot;secret&quot; nocase
+          $a = "secret" wide nocase
+          $b = "secret" nocase
 
         condition:
           any of them
@@ -80,9 +80,9 @@ sources:
         LET document_parts = SELECT OfficePath,
              OSPath AS ZipMemberPath
         FROM glob(
-           globs=&quot;/**&quot;,
+           globs="/**",
            root=pathspec(DelegatePath=OfficePath),
-           accessor=&#x27;zip&#x27;)
+           accessor='zip')
         WHERE not IsDir and Size &gt; 0
 
         // For each document, scan all its parts for the keyword.
@@ -101,7 +101,7 @@ sources:
                  rules=yaraRule,
                  files=document_parts.ZipMemberPath,
                  context=200,
-                 accessor=&#x27;zip&#x27;)
+                 accessor='zip')
         })
 
 </code></pre>

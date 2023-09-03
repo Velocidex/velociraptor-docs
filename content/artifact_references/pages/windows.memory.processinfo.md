@@ -32,48 +32,48 @@ parameters:
 
 sources:
 - query: |
-       LET profile = &#x27;&#x27;&#x27;[
-       [&quot;PEB&quot;,0 , [
+       LET profile = '''[
+       ["PEB",0 , [
            # https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb
-           [&quot;ProcessParameters&quot;, 32, &quot;Pointer&quot;, {
-                &quot;type&quot;: &quot;ProcessParameters&quot;,
+           ["ProcessParameters", 32, "Pointer", {
+                "type": "ProcessParameters",
            }],
        ]],
-       [&quot;ProcessParameters&quot;, 0, [
-          [&quot;ImagePathName&quot;, 96, &quot;UNICODE_STRING&quot;],
-          [&quot;CommandLine&quot;, 112, &quot;UNICODE_STRING&quot;],
-          [&quot;CurrentDirectory&quot;, 56, &quot;CURDIR&quot;],
-          [&quot;EnvironmentSize&quot;, 1008, &quot;uint64&quot;],
-          [&quot;Environment&quot;, 128, &quot;Pointer&quot;, {
-              &quot;type&quot;: &quot;String&quot;,
-              &quot;type_options&quot;: {
-                 &quot;length&quot;: &quot;x=&gt;x.EnvironmentSize&quot;,
-                 &quot;encoding&quot;: &quot;utf16&quot;,
-                 &quot;max_length&quot;: 10000,
-                 &quot;term&quot;: &quot;&quot;,
+       ["ProcessParameters", 0, [
+          ["ImagePathName", 96, "UNICODE_STRING"],
+          ["CommandLine", 112, "UNICODE_STRING"],
+          ["CurrentDirectory", 56, "CURDIR"],
+          ["EnvironmentSize", 1008, "uint64"],
+          ["Environment", 128, "Pointer", {
+              "type": "String",
+              "type_options": {
+                 "length": "x=&gt;x.EnvironmentSize",
+                 "encoding": "utf16",
+                 "max_length": 10000,
+                 "term": "",
               }}]
        ]],
-       [&quot;CURDIR&quot;, 0, [
-         [&quot;DosPath&quot;, 0, &quot;UNICODE_STRING&quot;],
+       ["CURDIR", 0, [
+         ["DosPath", 0, "UNICODE_STRING"],
        ]],
-       [&quot;UNICODE_STRING&quot;, 16, [
-          [&quot;Length&quot;, 0, &quot;uint16&quot;],
-          [&quot;Buffer&quot;, 8, &quot;Pointer&quot;, {
-              &quot;type&quot;: &quot;String&quot;,
-              &quot;type_options&quot;: {
-                &quot;encoding&quot;: &quot;utf16&quot;,
-                &quot;length&quot;: &quot;x=&gt;x.Length&quot;,
-                &quot;term&quot;: &quot;&quot;,
+       ["UNICODE_STRING", 16, [
+          ["Length", 0, "uint16"],
+          ["Buffer", 8, "Pointer", {
+              "type": "String",
+              "type_options": {
+                "encoding": "utf16",
+                "length": "x=&gt;x.Length",
+                "term": "",
               }}],
        ]]
-       ]&#x27;&#x27;&#x27;
+       ]'''
 
        LET ParsePeb(PID) = SELECT Name,
-           format(format=&quot;%0#x&quot;, args=PebBaseAddress) AS PebBaseAddress, Pid,
-           parse_binary(accessor=&quot;process&quot;,
-                        filename=format(format=&quot;/%v&quot;, args=PID),
+           format(format="%0#x", args=PebBaseAddress) AS PebBaseAddress, Pid,
+           parse_binary(accessor="process",
+                        filename=format(format="/%v", args=PID),
                         profile=profile,
-                        struct=&quot;PEB&quot;,
+                        struct="PEB",
                         offset=PebBaseAddress) AS Data
        FROM pslist(pid=PID)
 
@@ -81,8 +81,8 @@ sources:
        -- lines. Each line contains the variable name followed by an =
        -- sign and then the variable value.
        LET SplitEnv(EnvString) =  SELECT parse_string_with_regex(
-          string=_value, regex=&quot;^(?P&lt;Name&gt;[^=]*)=(?P&lt;Value&gt;.+)&quot;) AS Line
-       FROM foreach(row=split(string=EnvString, sep=&quot;\x00&quot;))
+          string=_value, regex="^(?P&lt;Name&gt;[^=]*)=(?P&lt;Value&gt;.+)") AS Line
+       FROM foreach(row=split(string=EnvString, sep="\x00"))
        WHERE Line
 
        -- Massage the parsed data into a structured table

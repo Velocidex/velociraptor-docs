@@ -82,10 +82,10 @@ sources:
               EventData.ServiceName as ServiceName,
               EventData.ServiceSid as ServiceSid,
               EventData.TargetUserName as TargetUserName,
-              &quot;0x&quot; + format(format=&quot;%x&quot;, args=EventData.Status) as Status,
+              "0x" + format(format="%x", args=EventData.Status) as Status,
               EventData.TargetDomainName as TargetDomainName,
-              &quot;0x&quot; + format(format=&quot;%x&quot;, args=EventData.TicketEncryptionType) as TicketEncryptionType,
-              &quot;0x&quot; + format(format=&quot;%x&quot;, args=EventData.TicketOptions) as TicketOptions,
+              "0x" + format(format="%x", args=EventData.TicketEncryptionType) as TicketEncryptionType,
+              "0x" + format(format="%x", args=EventData.TicketOptions) as TicketOptions,
               EventData.TransmittedServices as TransmittedServices,
               EventData.IpAddress as IpAddress,
               EventData.IpPort as IpPort
@@ -98,8 +98,8 @@ sources:
             WHERE System.EventID.Value = 4769
                 AND EventData.TicketEncryptionType = 23
                 AND EventData.Status = 0
-                AND NOT EventData.ServiceName =~ &quot;krbtgt|\\$$&quot;
-                AND NOT EventData.TargetUserName =~ &quot;\\$@&quot;
+                AND NOT EventData.ServiceName =~ "krbtgt|\\$$"
+                AND NOT EventData.TargetUserName =~ "\\$@"
         })
 
 </code></pre>

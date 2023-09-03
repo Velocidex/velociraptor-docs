@@ -34,7 +34,7 @@ parameters:
       On Windows, this is the device to apply all the glob on
       (e.g. `C:`). On *NIX, this should be a path to a subdirectory or
       /.
-    default: &quot;C:&quot;
+    default: "C:"
 
   - name: Accessor
     default: auto
@@ -44,7 +44,7 @@ parameters:
   - name: NTFS_CACHE_TIME
     type: int
     description: How often to flush the NTFS cache. (Default is never).
-    default: &quot;1000000&quot;
+    default: "1000000"
 
 
 sources:
@@ -56,7 +56,7 @@ sources:
       LET specs = SELECT RootPath + Glob AS Glob
             FROM collectionSpec
             WHERE log(message=format(
-               format=&quot;Processing Device %v with %v: glob is %v&quot;,
+               format="Processing Device %v with %v: glob is %v",
                args=[Root, Accessor, Glob]))
 
       -- Join all the collection rules into a single Glob plugin. This ensure we
@@ -66,7 +66,7 @@ sources:
                Mtime AS Modified,
                Atime AS LastAccessed
         FROM glob(globs=specs.Glob, accessor=Accessor)
-        WHERE NOT IsDir AND log(message=&quot;Found &quot; + SourceFile)
+        WHERE NOT IsDir AND log(message="Found " + SourceFile)
 
       -- Pass all the results to the next query.
       LET all_results &lt;=

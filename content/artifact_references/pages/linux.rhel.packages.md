@@ -15,18 +15,18 @@ description: |
 parameters:
   - name: DNFGrokExpression
     description: A Grok expression to parse the output from `dns list installed`
-    default: &quot;%{DATA:Package}%{SPACE} %{DATA:Version}%{SPACE} %{GREEDYDATA:Repository}&quot;
+    default: "%{DATA:Package}%{SPACE} %{DATA:Version}%{SPACE} %{GREEDYDATA:Repository}"
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = &#x27;linux&#x27;
+      SELECT OS From info() where OS = 'linux'
 
     query: |
         SELECT * FROM foreach(row={
           SELECT grok(grok=DNFGrokExpression, data=Stdout) AS Parsed
-          FROM execve(argv=[&quot;dnf&quot;, &quot;--quiet&quot;, &quot;list&quot;, &quot;installed&quot;], sep=&quot;\n&quot;)
+          FROM execve(argv=["dnf", "--quiet", "list", "installed"], sep="\n")
           WHERE count() &gt; 2
-        }, column=&quot;Parsed&quot;)
+        }, column="Parsed")
 
 </code></pre>
 

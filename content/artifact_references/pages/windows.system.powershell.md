@@ -61,25 +61,25 @@ description: |
   spaces in it:
 
   ```
-    &amp; &#x27;C:\Program Files\Windows Defender\MpCmdRun.exe&#x27; -Scan -ScanType 1
+    &amp; 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
   ```
 
 required_permissions:
   - EXECVE
 
 precondition:
-  SELECT OS From info() where OS = &#x27;windows&#x27;
+  SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: Command
-    default: &quot;dir C:/&quot;
+    default: "dir C:/"
   - name: PowerShellExe
-    default: &quot;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe&quot;
+    default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
 
 sources:
   - query: |
       SELECT * FROM execve(argv=[PowerShellExe,
-        &quot;-ExecutionPolicy&quot;, &quot;Unrestricted&quot;, &quot;-encodedCommand&quot;,
+        "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
         base64encode(string=utf16_encode(string=Command))
       ])
 

@@ -26,31 +26,31 @@ parameters:
   - name: ExecutableRegex
     default: .
   - name: NetworkConnectionsGUID
-    default: &quot;{DD6636C4-8929-4683-974E-22C046A43763}&quot;
+    default: "{DD6636C4-8929-4683-974E-22C046A43763}"
     type: hidden
   - name: ApplicationResourceUsageGUID
-    default: &quot;{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}&quot;
+    default: "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}"
     type: hidden
   - name: ExecutionGUID
-    default: &quot;{5C8CF1C7-7257-4F13-B223-970EF5939312}&quot;
+    default: "{5C8CF1C7-7257-4F13-B223-970EF5939312}"
     type: hidden
   - name: NetworkUsageGUID
-    default: &quot;{973F5D5C-1D90-4944-BE8E-24B94231A174}&quot;
+    default: "{973F5D5C-1D90-4944-BE8E-24B94231A174}"
     type: hidden
   - name: Upload
-    description: Select to Upload the SRUM database file &#x27;srudb.dat&#x27;
+    description: Select to Upload the SRUM database file 'srudb.dat'
     type: bool
 
 export: |
   LET resolveESEId(OSPath, Accessor, Id) = cache(
-      name=&quot;ESE&quot;,
+      name="ESE",
       func=srum_lookup_id(file=OSPath, accessor=Accessor, id=Id),
-      key=format(format=&quot;%v-%v-%v&quot;, args=[OSPath, Accessor, Id]))
+      key=format(format="%v-%v-%v", args=[OSPath, Accessor, Id]))
 
   LET lookupSIDCache(OSPath, Accessor, Id) = cache(
-      name=&quot;SID&quot;,
+      name="SID",
       func=lookupSID(sid=srum_lookup_id(file=OSPath, accessor=Accessor, id=Id)),
-      key=format(format=&quot;%v-%v-%v&quot;, args=[OSPath, Accessor, Id]))
+      key=format(format="%v-%v-%v", args=[OSPath, Accessor, Id]))
 
 sources:
   - name: Upload
@@ -167,7 +167,7 @@ sources:
                   sum(item=BytesSent) as TotalSent,
                   sum(item=BytesRecvd) as TotalRecvd,
                   InterfaceLuid
-              FROM source(artifact=&quot;Windows.Forensics.SRUM/Network Usage&quot;)
+              FROM source(artifact="Windows.Forensics.SRUM/Network Usage")
               GROUP BY App, User,InterfaceLuid
               ORDER BY TotalSent DESC
 

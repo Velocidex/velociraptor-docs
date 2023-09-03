@@ -42,7 +42,7 @@ description: |
   the modified time in the zip file header itself but all the times
   are present in the metadata file:
 
-  &quot;Windows.KapeFiles.Targets/All File Metadata.json&quot;
+  "Windows.KapeFiles.Targets/All File Metadata.json"
 
   Sometimes, users wish to extract the contents of a collection to a
   directory, and run an external tool over the data. Some such
@@ -74,12 +74,12 @@ parameters:
 
 sources:
   - query: |
-      LET MetadataFile = (&quot;results&quot;, &quot;Windows.KapeFiles.Targets/All File Metadata.json&quot;)
-      LET UploadsFile = &quot;uploads.json&quot;
+      LET MetadataFile = ("results", "Windows.KapeFiles.Targets/All File Metadata.json")
+      LET UploadsFile = "uploads.json"
 
       // Path to the root of the container
-      LET RootPathSpec = pathspec(DelegateAccessor=&quot;auto&quot;,
-                                  path_type=&quot;zip&quot;,
+      LET RootPathSpec = pathspec(DelegateAccessor="auto",
+                                  path_type="zip",
                                   DelegatePath=ContainerPath)
 
       // The pathspec for where to store the file
@@ -88,10 +88,10 @@ sources:
       // Memoize the metadata stored in the container file so we can
       // quickly extract the file times.
       LET AllFileMetadata &lt;= memoize(
-          key=&quot;SourceFile&quot;,
+          key="SourceFile",
           query={
             SELECT *
-            FROM parse_jsonl(accessor=&quot;collector&quot;,
+            FROM parse_jsonl(accessor="collector",
                              filename=RootPathSpec + MetadataFile)
           })
 
@@ -99,12 +99,12 @@ sources:
                               OutputPathSpec + _Components[2:] AS Dest,
                               get(item=AllFileMetadata,
                                   field=vfs_path) AS Metadata
-        FROM parse_jsonl(accessor=&quot;collector&quot;,
+        FROM parse_jsonl(accessor="collector",
                          filename=RootPathSpec + UploadsFile)
-        WHERE Type != &quot;idx&quot;
+        WHERE Type != "idx"
 
       SELECT *, upload_directory(
-          accessor=&quot;collector&quot;,
+          accessor="collector",
           output=OutputDirectory,
           mtime=Metadata.Modified,
           atime=Metadata.LastAccessed,

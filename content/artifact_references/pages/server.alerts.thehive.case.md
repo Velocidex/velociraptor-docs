@@ -43,28 +43,28 @@ sources:
       LET flow_info = SELECT timestamp(epoch=Timestamp) AS Timestamp,
              client_info(client_id=ClientId).os_info.fqdn AS FQDN,
              ClientId, FlowId, Flow.artifacts_with_results[0] AS FlowResults
-      FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
+      FROM watch_monitoring(artifact="System.Flow.Completion")
       WHERE Flow.artifacts_with_results =~ ArtifactsToAlertOn
 
       LET cases = SELECT * FROM foreach(row=flow_info,
        query={
           SELECT FQDN, parse_json(data=Content)._id AS CaseID FROM http_client(
           data=serialize(item=dict(
-                title=format(format=&quot;Hit on %v for %v&quot;, args=[FlowResults, FQDN]), description=format(format=&quot;ClientId: %v\n\nFlowID: %v\n\nURL: %v//app/index.html?#/collected/%v/%v&quot;, args=[ClientId, FlowId, VeloServerURL, ClientId, FlowId,]), tags=[ClientId,FlowId, FQDN]), format=&quot;json&quot;),
-          headers=dict(`Content-Type`=&quot;application/json&quot;, `Authorization`=format(format=&quot;Bearer %v&quot;, args=[thehive_key])),
+                title=format(format="Hit on %v for %v", args=[FlowResults, FQDN]), description=format(format="ClientId: %v\n\nFlowID: %v\n\nURL: %v//app/index.html?#/collected/%v/%v", args=[ClientId, FlowId, VeloServerURL, ClientId, FlowId,]), tags=[ClientId,FlowId, FQDN]), format="json"),
+          headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[thehive_key])),
           disable_ssl_security=DisableSSLVerify,
-          method=&quot;POST&quot;,
-          url=format(format=&quot;%v/api/case&quot;, args=[TheHiveURL]))
+          method="POST",
+          url=format(format="%v/api/case", args=[TheHiveURL]))
        })
 
        SELECT * from foreach(row=cases,
        query={
           SELECT * FROM http_client(
-          data=serialize(item=dict(data=FQDN, dataType=&quot;fqdn&quot;, message=FQDN)),
-          headers=dict(`Content-Type`=&quot;application/json&quot;, `Authorization`=format(format=&quot;Bearer %v&quot;, args=[thehive_key])),
+          data=serialize(item=dict(data=FQDN, dataType="fqdn", message=FQDN)),
+          headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[thehive_key])),
           disable_ssl_security=DisableSSLVerify,
-          method=&quot;POST&quot;,
-          url=format(format=&quot;%v/api/case/%v/artifact&quot;, args=[TheHiveURL, CaseID]))
+          method="POST",
+          url=format(format="%v/api/case/%v/artifact", args=[TheHiveURL, CaseID]))
        })
 
 </code></pre>

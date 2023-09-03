@@ -51,16 +51,16 @@ description: |
 reference:
   - https://www.aldeid.com/wiki/Windows-userassist-keys
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: UserFilter
-    default: &quot;&quot;
+    default: ""
     description: If specified we filter by this username.
     type: regex
 
   - name: ExecutionTimeAfter
-    default: &quot;&quot;
+    default: ""
     type: timestamp
     description: If specified only show executions after this time.
 
@@ -68,27 +68,27 @@ parameters:
     default: Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\*\Count\*
 
 export:
-  LET userAssistProfile = &#x27;&#x27;&#x27;
+  LET userAssistProfile = '''
       [
-        [&quot;Header&quot;, 0, [
-          [&quot;NumberOfExecutions&quot;, 4, &quot;uint32&quot;],
-          [&quot;LastExecution&quot;, 60, &quot;uint64&quot;]
+        ["Header", 0, [
+          ["NumberOfExecutions", 4, "uint32"],
+          ["LastExecution", 60, "uint64"]
         ]]
       ]
-    &#x27;&#x27;&#x27;
+    '''
 
 sources:
   - query: |
       LET TMP = SELECT OSPath.Path AS _KeyPath,
           parse_string_with_regex(
                 string=OSPath.Path,
-                regex=&quot;^.+Count\\\\\&quot;?(?P&lt;Name&gt;.+?)\&quot;?$&quot;) AS Name,
+                regex="^.+Count\\\\\"?(?P&lt;Name&gt;.+?)\"?$") AS Name,
             OSPath,
             parse_binary(
                filename=Data.value,
-               accessor=&quot;data&quot;,
+               accessor="data",
                profile=userAssistProfile,
-               struct=&quot;Header&quot;
+               struct="Header"
              ) As ParsedUserAssist,
              Username AS User
       FROM Artifact.Windows.Registry.NTUser(KeyGlob=UserAssistKey)

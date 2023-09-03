@@ -23,17 +23,17 @@ description: |
   registry and attempts to detect when event logs were disabled.
 
 precondition:
-  SELECT * FROM info() WHERE OS =~ &quot;windows&quot;
+  SELECT * FROM info() WHERE OS =~ "windows"
 
 parameters:
   - name: ProviderRegex
     default: .
     type: regex
   - name: DateAfter
-    description: &quot;search for modifications after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for modifications after this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: DateBefore
-    description: &quot;search for modifications before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for modifications before this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
 
 sources:
@@ -42,11 +42,11 @@ sources:
     query: |
       -- Build time bounds
       LET DateAfterTime &lt;= if(condition=DateAfter,
-            then=DateAfter, else=timestamp(epoch=&quot;1600-01-01&quot;))
+            then=DateAfter, else=timestamp(epoch="1600-01-01"))
       LET DateBeforeTime &lt;= if(condition=DateBefore,
-            then=DateBefore, else=timestamp(epoch=&quot;2200-01-01&quot;))
+            then=DateBefore, else=timestamp(epoch="2200-01-01"))
 
-      LET Key = &quot;HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*&quot;
+      LET Key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*"
 
       SELECT Key.Mtime AS Mtime,
              basename(path=Key.OSPath) AS ChannelName,
@@ -60,13 +60,13 @@ sources:
   - name: Providers
     description: Inspect the state of each provider
     query: |
-      LET Key = &quot;HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-System\\**\\Enabled&quot;
-      LET Publishers = &quot;HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@&quot;
+      LET Key = "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-System\\**\\Enabled"
+      LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
 
-      LET ProviderNames &lt;= memoize(key=&quot;GUID&quot;, query={
+      LET ProviderNames &lt;= memoize(key="GUID", query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
-        FROM glob(globs=Publishers, accessor=&quot;registry&quot;)
+        FROM glob(globs=Publishers, accessor="registry")
       })
 
       LET X = SELECT Mtime,
@@ -76,10 +76,10 @@ sources:
                      to_dict(item={
                         SELECT Name AS _key, Data.value AS _value
                         FROM glob(root=OSPath.Dirname,
-                                  globs=&quot;/*&quot;,
-                                  accessor=&quot;registry&quot;)
+                                  globs="/*",
+                                  accessor="registry")
                      }) AS Content
-        FROM glob(globs=Key, accessor=&quot;registry&quot;)
+        FROM glob(globs=Key, accessor="registry")
 
       SELECT Mtime, GUID, Key AS _RegKey,
          get(item=ProviderNames, member=GUID).Name AS ProviderName,

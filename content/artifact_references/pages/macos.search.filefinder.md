@@ -68,7 +68,7 @@ description: |
 
 
 precondition:
-  SELECT * FROM info() where OS = &#x27;darwin&#x27;
+  SELECT * FROM info() where OS = 'darwin'
 
 parameters:
   - name: SearchFilesGlob
@@ -96,11 +96,11 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
   - name: ModifiedBefore
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
   - name: DoNotFollowSymlinks
@@ -118,7 +118,7 @@ sources:
                Ctime AS CTime,
                IsDir, Mode
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
-                  accessor=&quot;file&quot;, nosymlink=DoNotFollowSymlinks)
+                  accessor="file", nosymlink=DoNotFollowSymlinks)
 
     LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
@@ -151,21 +151,21 @@ sources:
                       str(str=String.Data) As Keywords
 
                FROM yara(files=OSPath,
-                         key=&quot;A&quot;,
+                         key="A",
                          rules=YaraRule,
-                         accessor=&quot;file&quot;)
+                         accessor="file")
             })
         },
         else={SELECT * FROM modified_before})
 
     SELECT OSPath, Inode, Mode, Size, ATime,
-             MTime, CTime, get(field=&#x27;Keywords&#x27;) AS Keywords,
+             MTime, CTime, get(field='Keywords') AS Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
-                              accessor=&quot;file&quot;)) AS Upload,
+                              accessor="file")) AS Upload,
                if(condition=Calculate_Hash and Mode.IsRegular,
                   then=hash(path=OSPath,
-                            accessor=&quot;file&quot;)) AS Hash
+                            accessor="file")) AS Hash
     FROM keyword_search
 
 column_types:

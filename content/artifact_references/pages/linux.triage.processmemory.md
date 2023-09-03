@@ -12,7 +12,7 @@ name: Linux.Triage.ProcessMemory
 description: |
   Dump process memory and upload to the server
 
-precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
+precondition: SELECT OS From info() where OS = 'linux'
 
 parameters:
   - name: processPid
@@ -22,8 +22,8 @@ parameters:
 sources:
   - query: |
       SELECT Name as ProcessName, CommandLine, Pid,
-             upload(file=format(format=&quot;/%d&quot;, args=processPid),
-                    accessor=&quot;process&quot;) as CrashDump
+             upload(file=format(format="/%d", args=processPid),
+                    accessor="process") as CrashDump
       FROM pslist(pid=processPid)
 
 </code></pre>

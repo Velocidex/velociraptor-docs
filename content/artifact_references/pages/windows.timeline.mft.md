@@ -36,35 +36,35 @@ description: |
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: MFTFilename
-    default: &quot;C:/$MFT&quot;
+    default: "C:/$MFT"
   - name: Accessor
     default: ntfs
   - name: PathRegex
-    description: &quot;regex search over OSPath.&quot;
+    description: "regex search over OSPath."
     type: regex
   - name: NameRegex
     default: .
     type: regex
-    description: &quot;regex search over File Name&quot;
+    description: "regex search over File Name"
   - name: Inode
     type: int64
-    description: &quot;search for inode&quot;
+    description: "search for inode"
   - name: DateAfter
     type: timestamp
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: SizeMax
     type: int64
-    description: &quot;Entries in the MFT over this size in bytes.&quot;
+    description: "Entries in the MFT over this size in bytes."
   - name: SizeMin
     type: int64
-    description: &quot;Entries in the MFT under this size in bytes.&quot;
+    description: "Entries in the MFT under this size in bytes."
   - name: EntryType
     description: |
         Type of entry. File, Directory or Both.
@@ -98,9 +98,9 @@ sources:
   - query: |
         LET hostname &lt;= SELECT Fqdn FROM info()
         LET DateAfterTime &lt;= if(condition=DateAfter,
-             then=DateAfter, else=timestamp(epoch=&quot;1600-01-01&quot;))
+             then=DateAfter, else=timestamp(epoch="1600-01-01"))
         LET DateBeforeTime &lt;= if(condition=DateBefore,
-             then=DateBefore, else=timestamp(epoch=&quot;2200-01-01&quot;))
+             then=DateBefore, else=timestamp(epoch="2200-01-01"))
         LET records = SELECT *,
                 Created0x10 &lt; Created0x30 as FNCreatedShift,
                 Created0x10.Unix * 1000000000 = Created0x10.UnixNano as USecZero,
@@ -117,15 +117,15 @@ sources:
                     else=TRUE) AND
                 if(condition=SizeMin, then=FileSize &gt; SizeMin,
                     else=TRUE) AND
-                if(condition= EntryType=&quot;Both&quot;, then=TRUE,
-                    else= if(condition= EntryType=&quot;File&quot;,
+                if(condition= EntryType="Both", then=TRUE,
+                    else= if(condition= EntryType="File",
                         then= IsDir=False,
-                    else= if(condition= EntryType=&quot;Directory&quot;,
+                    else= if(condition= EntryType="Directory",
                         then= IsDir=True))) AND
-                if(condition= AllocatedType=&quot;Both&quot;, then=TRUE,
-                    else= if(condition= AllocatedType=&quot;Allocated&quot;,
+                if(condition= AllocatedType="Both", then=TRUE,
+                    else= if(condition= AllocatedType="Allocated",
                         then= InUse=True,
-                    else= if(condition= AllocatedType=&quot;Unallocated&quot;,
+                    else= if(condition= AllocatedType="Unallocated",
                         then= InUse=False))) AND
                 (((Created0x10 &gt; DateAfterTime) AND (Created0x10 &lt; DateBeforeTime)) OR
                 ((Created0x30 &gt; DateAfterTime) AND (Created0x30 &lt; DateBeforeTime)) OR
@@ -149,28 +149,28 @@ sources:
             si_modified = {
                 SELECT *,
                     LastModified0x10 as event_time,
-                    format(format=&quot;MFTEntry:%v $STANDARD_INFORMATION (0x10) LastModified time&quot;,
+                    format(format="MFTEntry:%v $STANDARD_INFORMATION (0x10) LastModified time",
                       args=EntryNumber) as message
                 FROM common_fields
             },
             si_access = {
                 SELECT *,
                     LastAccess0x10 as event_time,
-                    format(format=&quot;MFTEntry:%v $STANDARD_INFORMATION (0x10) LastAccess time&quot;,
+                    format(format="MFTEntry:%v $STANDARD_INFORMATION (0x10) LastAccess time",
                       args=EntryNumber) as message
                 FROM common_fields
             },
             si_created = {
                 SELECT *,
                     LastRecordChange0x10 as event_time,
-                    format(format=&quot;MFTEntry:%v $STANDARD_INFORMATION (0x10) LastRecordChange time&quot;,
+                    format(format="MFTEntry:%v $STANDARD_INFORMATION (0x10) LastRecordChange time",
                       args=EntryNumber) as message
                 FROM common_fields
             },
             si_born = {
                 SELECT *,
                     Created0x10 as event_time,
-                    format(format=&quot;MFTEntry:%v $STANDARD_INFORMATION (0x10) Created time&quot;,
+                    format(format="MFTEntry:%v $STANDARD_INFORMATION (0x10) Created time",
                       args=EntryNumber) as message
                 FROM common_fields
             })
@@ -178,28 +178,28 @@ sources:
             fn_modified = {
                 SELECT *,
                     LastModified0x30 as event_time,
-                    format(format=&quot;MFTEntry:%v $FILE_NAME (0x30) LastModified time&quot;,
+                    format(format="MFTEntry:%v $FILE_NAME (0x30) LastModified time",
                       args=EntryNumber) as message
                 FROM common_fields
             },
             fn_access = {
                 SELECT *,
                     LastAccess0x30 as event_time,
-                    format(format=&quot;MFTEntry:%v $FILE_NAME (0x30) LastAccess time&quot;,
+                    format(format="MFTEntry:%v $FILE_NAME (0x30) LastAccess time",
                       args=EntryNumber) as message
                 FROM common_fields
             },
             fn_created = {
                 SELECT *,
                     LastRecordChange0x30 as event_time,
-                    format(format=&quot;MFTEntry:%v $FILE_NAME (0x30) LastRecordChange time&quot;,
+                    format(format="MFTEntry:%v $FILE_NAME (0x30) LastRecordChange time",
                       args=EntryNumber) as message
                 FROM common_fields
             },
             fn_born = {
                 SELECT *,
                     Created0x30 as event_time,
-                      format(format=&quot;MFTEntry:%v $FILE_NAME (0x30) Created time&quot;,
+                      format(format="MFTEntry:%v $FILE_NAME (0x30) Created time",
                         args=EntryNumber) as message
                 FROM common_fields
             })
@@ -207,7 +207,7 @@ sources:
         SELECT
             event_time,
             hostname.Fqdn[0] as hostname,
-            &quot;MFT&quot; as parser,
+            "MFT" as parser,
             MFTFilename as source,
             message,
             OSPath as path,
@@ -233,12 +233,12 @@ sources:
                 SELECT * FROM chain(
                     standard_information={
                         SELECT * FROM if(
-                            condition=TimeOutput=&quot;STANDARD_INFORMATION&quot; OR TimeOutput=&quot;ALL&quot;,
+                            condition=TimeOutput="STANDARD_INFORMATION" OR TimeOutput="ALL",
                             then=standard_information_rows)
                     },
                     file_name={
                         SELECT * FROM if(
-                            condition=TimeOutput=&quot;FILE_NAME&quot; OR TimeOutput=&quot;ALL&quot;,
+                            condition=TimeOutput="FILE_NAME" OR TimeOutput="ALL",
                             then=file_name_rows)
                     })
             })

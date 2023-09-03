@@ -24,25 +24,25 @@ description: |
 
 type: CLIENT_EVENT
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
       LET PublisherGlob = pathspec(
-        Path=&#x27;&#x27;&#x27;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers&#x27;&#x27;&#x27;,
-        path_type=&quot;registry&quot;)
+        Path='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers''',
+        path_type="registry")
 
       LET GUIDLookup(GUID) = SELECT Data.value AS Provider
-         FROM stat(accessor=&quot;registry&quot;, filename=PublisherGlob + (&quot;/&quot; + GUID + &quot;/@&quot;))
+         FROM stat(accessor="registry", filename=PublisherGlob + ("/" + GUID + "/@"))
 
       SELECT System.TimeStamp AS Timestamp,
-        if(condition=System.ID = 14, then=&quot;Installed&quot;, else=&quot;Removed&quot;) AS Action, {
+        if(condition=System.ID = 14, then="Installed", else="Removed") AS Action, {
            SELECT Name, CommandLine from pslist(pid=System.ProcessID)
         } AS ProcessInfo ,
         GUIDLookup(GUID=EventData.ProviderName)[0].Provider AS Provider,
         EventData.SessionName AS SessionName,
         System AS _System, EventData AS _EventData
-      FROM watch_etw(guid=&quot;{B675EC37-BDB6-4648-BC92-F3FDC74D3CA2}&quot;, all=0x400)
+      FROM watch_etw(guid="{B675EC37-BDB6-4648-BC92-F3FDC74D3CA2}", all=0x400)
       WHERE System.ID IN (14, 15)
 
 </code></pre>

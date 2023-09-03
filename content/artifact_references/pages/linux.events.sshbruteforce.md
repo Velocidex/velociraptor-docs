@@ -50,8 +50,8 @@ sources:
       LET failed_login = SELECT grok(grok=SSHGrok, data=Line) AS FailedEvent,
             Line as FailedLine
         FROM watch_syslog(filename=syslogAuthLogPath)
-        WHERE FailedEvent.program = &quot;sshd&quot; AND FailedEvent.event = &quot;Failed&quot;
-              AND FailedEvent.method = &quot;password&quot;
+        WHERE FailedEvent.program = "sshd" AND FailedEvent.event = "Failed"
+              AND FailedEvent.method = "password"
 
       LET last_failed_events = SELECT * FROM fifo(
               query=failed_login, max_rows=50, max_age=3600)
@@ -60,8 +60,8 @@ sources:
 
       LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
         FROM watch_syslog(filename=syslogAuthLogPath)
-        WHERE Event.program = &quot;sshd&quot; AND Event.event = &quot;Accepted&quot;
-              AND Event.method = &quot;password&quot;
+        WHERE Event.program = "sshd" AND Event.event = "Accepted"
+              AND Event.method = "password"
 
       SELECT Event, Line, {
            SELECT FailedLine FROM last_failed_events

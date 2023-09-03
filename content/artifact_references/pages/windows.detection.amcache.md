@@ -60,7 +60,7 @@ reference:
 
 parameters:
   - name: AMCacheGlob
-    default: &quot;%SYSTEMROOT%/appcompat/Programs/Amcache.hve&quot;
+    default: "%SYSTEMROOT%/appcompat/Programs/Amcache.hve"
     description: AMCache hive path
   - name: KeyPathGlob
     default: /Root/{Inventory, File}*/**
@@ -89,54 +89,54 @@ sources:
                       Key.OSPath.Path as EntryKey,
                       Key.ModTime as KeyMTime,
 
-                      -- Key is like \Root\InventoryDriverBinary\&quot;c:/windows/system32/drivers/1394ohci.sys&quot;
+                      -- Key is like \Root\InventoryDriverBinary\"c:/windows/system32/drivers/1394ohci.sys"
                       Key.OSPath.Components[1] as EntryType,
 
-                      if(condition=get(member=&quot;FileId&quot;),
-                         then=strip(string=FileId, prefix=&#x27;0000&#x27;),
-                      else=if(condition=get(member=&quot;101&quot;),
-                         then=strip(string=`101`, prefix=&#x27;0000&#x27;),
-                      else=if(condition=get(member=&quot;DriverId&quot;),
-                         then=strip(string=DriverId, prefix=&#x27;0000&#x27;)))) as SHA1,
+                      if(condition=get(member="FileId"),
+                         then=strip(string=FileId, prefix='0000'),
+                      else=if(condition=get(member="101"),
+                         then=strip(string=`101`, prefix='0000'),
+                      else=if(condition=get(member="DriverId"),
+                         then=strip(string=DriverId, prefix='0000')))) as SHA1,
 
-                      if(condition=get(member=&quot;Name&quot;),
+                      if(condition=get(member="Name"),
                          then=Name,
-                      else=if(condition=get(member=&quot;FriendlyName&quot;),
+                      else=if(condition=get(member="FriendlyName"),
                          then=FriendlyName,
-                      else=if(condition=get(member=&quot;15&quot;),
-                         then=split(string=str(str=`15`), sep=&#x27;\\\\&#x27;)[-1],
-                      else=if(condition=get(member=&quot;DriverName&quot;),
+                      else=if(condition=get(member="15"),
+                         then=split(string=str(str=`15`), sep='\\\\')[-1],
+                      else=if(condition=get(member="DriverName"),
                          then=DriverName)))) as EntryName,
 
-                      if(condition=get(member=&quot;LowerCaseLongPath&quot;),
+                      if(condition=get(member="LowerCaseLongPath"),
                           then=LowerCaseLongPath,
-                      else=if(condition=get(member=&quot;15&quot;),
+                      else=if(condition=get(member="15"),
                           then=`15`,
-                      else=if(condition=get(member=&quot;AddinCLSID&quot;),
+                      else=if(condition=get(member="AddinCLSID"),
                           then=AddinCLSID))) as EntryPath,
 
-                      if(condition=get(member=&quot;Publisher&quot;),
+                      if(condition=get(member="Publisher"),
                           then=Publisher,
-                      else=if(condition=get(member=&quot;Provider&quot;),
+                      else=if(condition=get(member="Provider"),
                           then=Provider,
-                      else=if(condition=get(member=&quot;DriverCompany&quot;),
+                      else=if(condition=get(member="DriverCompany"),
                           then=DriverCompany))) as Publisher,
 
-                      get(member=&quot;OriginalFileName&quot;) AS OriginalFileName,
+                      get(member="OriginalFileName") AS OriginalFileName,
 
-                      if(condition=get(member=&quot;BinaryType&quot;),
+                      if(condition=get(member="BinaryType"),
                          then=BinaryType,
-                      else=if(condition=get(member=&quot;AddInType&quot;),
-                         then=AddinType + &#x27; &#x27; + OfficeArchitecture,
-                      else=if(condition=Key.OSPath.Path =~ &#x27;InventoryDevicePnp&#x27;,
-                         then=&#x27;DevicePnp&#x27;,
-                      else=if(condition=Key.OSPath.Path =~ &#x27;InventoryDriverBinary&#x27;,
-                         then=&#x27;DriverBinary&#x27;)))) as BinaryType
+                      else=if(condition=get(member="AddInType"),
+                         then=AddinType + ' ' + OfficeArchitecture,
+                      else=if(condition=Key.OSPath.Path =~ 'InventoryDevicePnp',
+                         then='DevicePnp',
+                      else=if(condition=Key.OSPath.Path =~ 'InventoryDriverBinary',
+                         then='DriverBinary')))) as BinaryType
 
                     FROM read_reg_key(
                         globs=KeyPathGlob,
                         root=pathspec(DelegatePath=OSPath),
-                        accessor=&#x27;raw_reg&#x27;)
+                        accessor='raw_reg')
                     WHERE SHA1
                         AND SHA1 =~ SHA1Regex
                         AND if(condition= NameRegex,

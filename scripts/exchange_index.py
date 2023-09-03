@@ -183,7 +183,7 @@ def build_markdown():
              org, project,
              yaml_filename,
              data["description"],
-             html.escape(content)))
+             html.escape(content, quote=False)))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)

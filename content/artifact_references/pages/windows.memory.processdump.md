@@ -16,7 +16,7 @@ description: |
 
   Previously named Windows.Triage.ProcessMemory
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: ProcessRegex
@@ -41,18 +41,18 @@ sources:
 
         LET Regions(Pid) = SELECT dict(Offset=Address, Length=Size) AS Sparse
           FROM vad(pid=Pid)
-          WHERE Protection =~ &quot;r&quot;
+          WHERE Protection =~ "r"
 
         LET UploadDump(Pid, ProcessName, CommandLine) =
           SELECT * FROM if(condition= VelociraptorCompatible,
           then={
              SELECT ProcessName, CommandLine, Pid,
-                    upload(accessor=&quot;sparse&quot;,
+                    upload(accessor="sparse",
                            file=pathspec(
                               Path=serialize(item=Regions(Pid=Pid).Sparse),
-                              DelegateAccessor=&quot;process&quot;,
-                              DelegatePath=format(format=&quot;/%d&quot;, args=Pid)),
-                              name=pathspec(Path=format(format=&quot;%d.dd&quot;, args=Pid))) AS ProcessMemory
+                              DelegateAccessor="process",
+                              DelegatePath=format(format="/%d", args=Pid)),
+                              name=pathspec(Path=format(format="%d.dd", args=Pid))) AS ProcessMemory
              FROM scope()
           }, else={
             SELECT ProcessName, CommandLine, Pid, OSPath,

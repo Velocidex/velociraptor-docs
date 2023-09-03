@@ -17,7 +17,7 @@ the artifact leverages the 'auto' data accessor but can also be changed as desir
 
 <pre><code class="language-yaml">
 name: Generic.Detection.HashHunter
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
     This artifact enables searching for hashes.
     
@@ -27,12 +27,12 @@ description: |
     Note: this artifacts filters are cumulative so a hash based hit will return 
     no results if the file is filtered out by other filters.  
     For most performant searches leverage path, size and and date filters. By default 
-    the artifact leverages the &#x27;auto&#x27; data accessor but can also be changed as desired.  
+    the artifact leverages the 'auto' data accessor but can also be changed as desired.  
 
 parameters:
   - name: TargetGlob
     description: Glob to target.
-    default: &quot;C:/Users/**/*&quot;
+    default: "C:/Users/**/*"
   - name: Accessor
     description: Velociraptor accessor to use. Changing to ntfs will increase scan time.
     default: auto
@@ -64,23 +64,23 @@ sources:
   - query: |
       -- setup hash lists
       LET MD5List &lt;= if(condition= MD5List,
-                        then= split(sep=&#x27;\\s+&#x27;,string=MD5List), else=Null)
+                        then= split(sep='\\s+',string=MD5List), else=Null)
       LET SHA1List &lt;= if(condition= SHA1List,
-                        then= split(sep=&#x27;\\s+&#x27;,string=SHA1List), else=Null)
+                        then= split(sep='\\s+',string=SHA1List), else=Null)
       LET SHA256List &lt;= if(condition= SHA256List,
-                        then= split(sep=&#x27;\\s+&#x27;,string=SHA256List), else=Null)
+                        then= split(sep='\\s+',string=SHA256List), else=Null)
       
       -- set hash selector for optimised hash calculation
       LET HashSelector &lt;= SELECT * FROM chain(
-          a={ SELECT &quot;MD5&quot; AS Hash FROM scope() WHERE MD5List },
-          b={ SELECT &quot;SHA1&quot; AS Hash FROM scope() WHERE SHA1List },
-          c={ SELECT &quot;SHA256&quot; AS Hash FROM scope() WHERE SHA256List })
+          a={ SELECT "MD5" AS Hash FROM scope() WHERE MD5List },
+          b={ SELECT "SHA1" AS Hash FROM scope() WHERE SHA1List },
+          c={ SELECT "SHA256" AS Hash FROM scope() WHERE SHA256List })
       
       -- firstly find files in scope with performance
       LET find_files = SELECT * FROM if(condition=DateBefore AND DateAfter,
             then={
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
-                FROM glob(globs=TargetGlob,accessor=Accessor,nosymlink=&#x27;True&#x27;)
+                FROM glob(globs=TargetGlob,accessor=Accessor,nosymlink='True')
                 WHERE NOT IsDir AND NOT IsLink
                     AND Size &gt; SizeMin AND Size &lt; SizeMax
                     AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )

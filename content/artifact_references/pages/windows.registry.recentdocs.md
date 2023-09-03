@@ -52,29 +52,29 @@ parameters:
     type: hidden
     default: Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\**
   - name: HiveGlob
-    description: &quot;optional hive glob to target for offline processing.&quot;
+    description: "optional hive glob to target for offline processing."
   - name: DateAfter
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
     type: timestamp
   - name: DateBefore
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
     type: timestamp
   - name: EntryRegex
     default: .
-    description: &quot;regex filter for document/entry name.&quot;
+    description: "regex filter for document/entry name."
   - name: UserRegex
     default: .
-    description: &quot;regex filter for username over standard query.&quot;
+    description: "regex filter for username over standard query."
   - name: SidRegex
     default: .
-    description: &quot;regex filter for user SID over standard query.&quot;
+    description: "regex filter for user SID over standard query."
   - name: Profile
     type: hidden
     default: |
         [
-            [&quot;Target&quot;, 0, [
-              [&quot;Filename&quot;, 0, &quot;String&quot;, {
-                  encoding: &quot;utf16&quot;,
+            ["Target", 0, [
+              ["Filename", 0, "String", {
+                  encoding: "utf16",
               }],
             ]]
         ]
@@ -97,9 +97,9 @@ sources:
 
       -- dynamic function to extract RecentDocs order from MRUListEx data value
       LET find_order(value) = SELECT
-            parse_binary(accessor=&#x27;data&#x27;,
+            parse_binary(accessor='data',
                 filename=substr(str=value,start=_value,end=_value + 4),
-                struct=&#x27;uint32&#x27;) as Int
+                struct='uint32') as Int
         FROM range(end=len(list=value),start=0,step=4)
         WHERE NOT Int = 4294967295
 
@@ -108,12 +108,12 @@ sources:
             Mtime,
             OSPath.Components[-2] AS Type,
             OSPath.Components[-1] AS Name,
-            if(condition= OSPath.Basename = &#x27;MRUListEx&#x27;,
+            if(condition= OSPath.Basename = 'MRUListEx',
                then= find_order(value=Data.value).Int,
                else= parse_binary(
-                  accessor=&quot;data&quot;,
+                  accessor="data",
                   filename=Data.value,
-                  profile=Profile, struct=&quot;Target&quot;).Filename ) as Value,
+                  profile=Profile, struct="Target").Filename ) as Value,
             Data,
             OSPath.DelegatePath as HiveName,
             OSPath,
@@ -122,7 +122,7 @@ sources:
         FROM Artifact.Windows.Registry.NTUser(KeyGlob=KeyGlob)
         WHERE Username =~ UserRegex
             AND UUID =~ SidRegex
-            AND Data.type =~ &#x27;BINARY&#x27;
+            AND Data.type =~ 'BINARY'
 
 
       -- Glob method allows offline processing but can not filter by user
@@ -130,21 +130,21 @@ sources:
             Mtime,
             OSPath.Components[-2] AS Type,
             OSPath.Components[-1] AS Name,
-            if(condition= OSPath.Basename = &#x27;MRUListEx&#x27;,
+            if(condition= OSPath.Basename = 'MRUListEx',
                then= find_order(value=Data.value).Int,
                else= parse_binary(
-                  accessor=&quot;data&quot;,
+                  accessor="data",
                   filename=Data.value,
                   profile=Profile,
-                  struct=&quot;Target&quot;).Filename ) as Value,
+                  struct="Target").Filename ) as Value,
             Data,
             OSPath.DelegatePath as HiveName,
             OSPath
         FROM glob(
            globs=KeyGlob,
            root=pathspec(DelegatePath=HiveGlob),
-           accessor=&quot;raw_reg&quot;)
-        WHERE Data.type =~ &#x27;BINARY&#x27;
+           accessor="raw_reg")
+        WHERE Data.type =~ 'BINARY'
 
       -- precalculate all hive values for performance
       LET AllValues &lt;= SELECT * FROM if(condition= HiveGlob,
@@ -156,20 +156,20 @@ sources:
       -- memorise for lookup / performance
       LET Items &lt;= memoize(query={
             SELECT Type, Name, Value,
-                Type + &#x27;:&#x27; + Name + &#x27;:&#x27; + HiveName  AS Key
+                Type + ':' + Name + ':' + HiveName  AS Key
             FROM AllValues
-        }, key=&quot;Key&quot;)
+        }, key="Key")
 
 
       -- flattern output then add lookup of processed data
       LET flat_data(type,hivename) = SELECT *,
-            str(str=Value) + &#x27; := &#x27; +
-              get(item=Items, field=str(str=Type) + &#x27;:&#x27; +
-              str(str=Value) + &#x27;:&#x27; + str(str=hivename) ).Value  AS Value
+            str(str=Value) + ' := ' +
+              get(item=Items, field=str(str=Type) + ':' +
+              str(str=Value) + ':' + str(str=hivename) ).Value  AS Value
         FROM flatten(query={
             SELECT Mtime, Type, Name, Value,HiveName
             FROM AllValues
-            WHERE Name = &#x27;MRUListEx&#x27;
+            WHERE Name = 'MRUListEx'
             AND Type = type AND HiveName = hivename
           })
          GROUP BY Value
@@ -181,11 +181,11 @@ sources:
             OSPath.Path as Key,
             HiveName,
             if(condition=HiveGlob,
-                then=&#x27;&#x27;, else=Username) as Username,
+                then='', else=Username) as Username,
             if(condition=HiveGlob,
-                then=&#x27;&#x27;, else=UUID) as UUID
+                then='', else=UUID) as UUID
           FROM AllValues
-          WHERE Name = &#x27;MRUListEx&#x27;
+          WHERE Name = 'MRUListEx'
 
 
       -- print rows, remove Username/SID from offline
@@ -206,7 +206,7 @@ sources:
                 Key, HiveName, Username, UUID
             FROM results
         })
-      WHERE format(format=&#x27;%v&#x27;, args=MruEntries) =~ EntryRegex
+      WHERE format(format='%v', args=MruEntries) =~ EntryRegex
 
 </code></pre>
 

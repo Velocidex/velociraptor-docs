@@ -33,7 +33,7 @@ tools:
     url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
     serve_locally: true
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 required_permissions:
 - EXECVE
@@ -50,27 +50,27 @@ sources:
       SELECT * FROM glob(globs=SysmonFileLocation)
     }, b={
       SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-       ToolName=&quot;SysmonBinary&quot;)
+       ToolName="SysmonBinary")
     })
 
     LET existing_hash = SELECT lowcase(
        string=parse_string_with_regex(
-          string=Stdout, regex=&quot;hash:.+SHA256=([^\\n\\r]+)&quot;).g1) AS Hash
-    FROM execve(argv=[bin[0].OSPath, &quot;-c&quot;])
+          string=Stdout, regex="hash:.+SHA256=([^\\n\\r]+)").g1) AS Hash
+    FROM execve(argv=[bin[0].OSPath, "-c"])
 
     LET sysmon_config = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-       ToolName=&quot;SysmonConfig&quot;, IsExecutable=FALSE)
+       ToolName="SysmonConfig", IsExecutable=FALSE)
 
     LET ensure_service_running =
-       SELECT * FROM execve(argv=[&quot;sc.exe&quot;, &quot;start&quot;, &quot;sysmon64&quot;])
+       SELECT * FROM execve(argv=["sc.exe", "start", "sysmon64"])
 
     LET doit = SELECT * FROM chain(
     a={
        // First force an uninstall to clear the config
-       SELECT * FROM execve(argv= [ bin[0].OSPath, &quot;-accepteula&quot;, &quot;-u&quot;], length=10000000)
+       SELECT * FROM execve(argv= [ bin[0].OSPath, "-accepteula", "-u"], length=10000000)
     }, b={
        SELECT * FROM execve(argv= [ bin[0].OSPath,
-           &quot;-accepteula&quot;, &quot;-i&quot;, sysmon_config[0].OSPath ], length=10000000)
+           "-accepteula", "-i", sysmon_config[0].OSPath ], length=10000000)
     }, c=ensure_service_running)
 
     // Only install sysmon if the existing config hash is not the same
@@ -78,12 +78,12 @@ sources:
     SELECT * FROM if(
     condition=if(
         condition=bin AND sysmon_config,
-        else=log(message=&quot;Failed to fetch sysmon tools!&quot;),
+        else=log(message="Failed to fetch sysmon tools!"),
         then=if(
            condition=existing_hash[0].Hash != Tool_SysmonConfig_HASH,
-           then=log(message=&quot;Sysmon config hash has changed (%v vs %v) - reinstalling&quot;,
+           then=log(message="Sysmon config hash has changed (%v vs %v) - reinstalling",
                     args=[existing_hash[0].Hash, Tool_SysmonConfig_HASH]),
-           else=log(message=&quot;Existing sysmon config hash has not changed (%v) - skipping reinstall&quot;,
+           else=log(message="Existing sysmon config hash has not changed (%v) - skipping reinstall",
                     args=Tool_SysmonConfig_HASH) AND FALSE
           )
         ),

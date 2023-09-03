@@ -46,13 +46,13 @@ reference:
 
 parameters:
   - name: EvtxGlob
-    default: &#x27;%SystemRoot%\System32\Winevt\Logs\Application.evtx&#x27;
+    default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
   - name: IocRegex
-    description: &quot;IOC Regex&quot;
+    description: "IOC Regex"
     default: telerik.*\\?type=rau
     type: regex
   - name: WhitelistRegex
-    description: &quot;Regex of string to witelist&quot;
+    description: "Regex of string to witelist"
     type: regex
   - name: VSSAnalysisAge
     type: int
@@ -64,23 +64,23 @@ parameters:
       for everything which will be much slower.
   - name: DateAfter
     type: timestamp
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
 
 sources:
-  - precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+  - precondition: SELECT OS From info() where OS = 'windows'
 
     query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
       LET DateAfterTime &lt;= if(condition=DateAfter,
-        then = DateAfter, else = &quot;1600-01-01&quot; )
+        then = DateAfter, else = "1600-01-01" )
       LET DateBeforeTime &lt;= if(condition=DateBefore,
-        then = DateBefore, else = &quot;2200-01-01&quot; )
+        then = DateBefore, else = "2200-01-01" )
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -106,9 +106,9 @@ sources:
                     OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE EventID = 1309
-                    AND format(format=&#x27;%v&#x27;,args=EventData.Data) =~ IocRegex
+                    AND format(format='%v',args=EventData.Data) =~ IocRegex
                     AND NOT if(condition=WhitelistRegex,
-                        then= format(format=&#x27;%v&#x27;,args=EventData.Data) =~ WhitelistRegex,
+                        then= format(format='%v',args=EventData.Data) =~ WhitelistRegex,
                         else= FALSE )
                     AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
             }

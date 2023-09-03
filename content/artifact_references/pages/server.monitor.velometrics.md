@@ -22,14 +22,14 @@ sources:
   - query: |
         LET stats = SELECT parse_string_with_regex(string=Content,
            regex=[
-             &#x27;client_comms_concurrency (?P&lt;client_comms_concurrency&gt;[^\\s]+)&#x27;,
-             &#x27;client_comms_current_connections (?P&lt;client_comms_current_connections&gt;[^\\s]+)&#x27;,
-             &#x27;flow_completion (?P&lt;flow_completion&gt;[^\\s]+)&#x27;,
-             &#x27;process_open_fds (?P&lt;process_open_fds&gt;[^\\s]+)&#x27;,
-             &#x27;uploaded_bytes (?P&lt;uploaded_bytes&gt;[^\\s]+)&#x27;,
-             &#x27;uploaded_files (?P&lt;uploaded_files&gt;[^\\s]+)&#x27;,
-             &#x27;stats_client_one_day_actives{version=&quot;[^&quot;]+&quot;} (?P&lt;one_day_active&gt;[^\\s]+)&#x27;,
-             &#x27;stats_client_seven_day_actives{version=&quot;[^&quot;]+&quot;} (?P&lt;seven_day_active&gt;[^\\s]+)&#x27;
+             'client_comms_concurrency (?P&lt;client_comms_concurrency&gt;[^\\s]+)',
+             'client_comms_current_connections (?P&lt;client_comms_current_connections&gt;[^\\s]+)',
+             'flow_completion (?P&lt;flow_completion&gt;[^\\s]+)',
+             'process_open_fds (?P&lt;process_open_fds&gt;[^\\s]+)',
+             'uploaded_bytes (?P&lt;uploaded_bytes&gt;[^\\s]+)',
+             'uploaded_files (?P&lt;uploaded_files&gt;[^\\s]+)',
+             'stats_client_one_day_actives{version="[^"]+"} (?P&lt;one_day_active&gt;[^\\s]+)',
+             'stats_client_seven_day_actives{version="[^"]+"} (?P&lt;seven_day_active&gt;[^\\s]+)'
            ]) AS Stat, {
               // On Windows Prometheus does not provide these so we get our own.
               SELECT Times.user + Times.system as CPU,

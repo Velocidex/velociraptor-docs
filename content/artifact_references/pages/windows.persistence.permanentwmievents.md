@@ -54,13 +54,13 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       LET namespaces &lt;= SELECT * FROM if(condition=AllRootNamespaces, 
             then= { 
-                SELECT &#x27;root/&#x27; + Name as namespace 
-                FROM wmi(namespace=&#x27;ROOT&#x27;,query=&#x27;SELECT * FROM __namespace&#x27; )
+                SELECT 'root/' + Name as namespace 
+                FROM wmi(namespace='ROOT',query='SELECT * FROM __namespace' )
                 WHERE namespace
             },
             else= Namespaces )
@@ -69,10 +69,10 @@ sources:
             row=namespaces,
             query={
                 SELECT parse_string_with_regex(string=Consumer,
-                    regex=[&#x27;((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name=&quot;(?P&lt;Name&gt;.+)&quot;&#x27;]) as Consumer,
-                    parse_string_with_regex(string=Filter,regex=[&#x27;((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name=&quot;(?P&lt;Name&gt;.+)&quot;&#x27;]) as Filter
+                    regex=['((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name="(?P&lt;Name&gt;.+)"']) as Consumer,
+                    parse_string_with_regex(string=Filter,regex=['((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name="(?P&lt;Name&gt;.+)"']) as Filter
                 FROM wmi(
-                    query=&quot;SELECT * FROM __FilterToConsumerBinding&quot;,namespace=namespace)
+                    query="SELECT * FROM __FilterToConsumerBinding",namespace=namespace)
         },workers=len(list=namespaces))
         
       SELECT * FROM foreach(
@@ -80,14 +80,14 @@ sources:
             query={
                  SELECT {
                      SELECT * FROM wmi(
-                       query=&quot;SELECT * FROM &quot; + Consumer.Type,
+                       query="SELECT * FROM " + Consumer.Type,
                        namespace=if(condition=Consumer.namespace,
                           then=Consumer.namespace,
                           else=namespace)) WHERE Name = Consumer.Name
                    } AS ConsumerDetails,
                    {
                      SELECT * FROM wmi(
-                       query=&quot;SELECT * FROM &quot; + Filter.Type,
+                       query="SELECT * FROM " + Filter.Type,
                        namespace=if(condition=Filter.namespace,
                           then=Filter.namespace,
                           else=namespace)) WHERE Name = Filter.Name

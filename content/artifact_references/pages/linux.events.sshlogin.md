@@ -33,7 +33,7 @@ sources:
       -- Basic syslog parsing via GROK expressions.
       LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
         FROM watch_syslog(filename=syslogAuthLogPath)
-        WHERE Event.program = &quot;sshd&quot; AND Event.event = &quot;Accepted&quot;
+        WHERE Event.program = "sshd" AND Event.event = "Accepted"
 
       SELECT timestamp(string=Event.timestamp) AS Time,
               Event.user AS User,

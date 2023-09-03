@@ -37,11 +37,11 @@ required_permissions:
 
 parameters:
   - name: Command
-    default: &quot;ls -l /&quot;
+    default: "ls -l /"
 
 sources:
   - query: |
-      SELECT * FROM execve(argv=[&quot;/bin/bash&quot;, &quot;-c&quot;, Command])
+      SELECT * FROM execve(argv=["/bin/bash", "-c", Command])
 
 </code></pre>
 

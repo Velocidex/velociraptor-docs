@@ -40,12 +40,12 @@ parameters:
 
 sources:
   - query: |
-        LET URL &lt;= &#x27;https://api.greynoise.io/v3/community/&#x27;
+        LET URL &lt;= 'https://api.greynoise.io/v3/community/'
 
         LET Data = SELECT parse_json(data=Content) AS GreyNoiseLookup
         FROM http_client(url=URL + IP,
-                         headers=dict(`Accept`=&quot;application/json&quot;),
-                         method=&#x27;GET&#x27;)
+                         headers=dict(`Accept`="application/json"),
+                         method='GET')
 
         SELECT
             GreyNoiseLookup.ip AS IP,

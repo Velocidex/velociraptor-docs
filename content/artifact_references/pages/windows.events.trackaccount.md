@@ -10,7 +10,7 @@ Artifact to detect account usage by monitoring event id 4624. This is useful for
 <pre><code class="language-yaml">
 name: Windows.Events.Trackaccount
 description: |
-  Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named &#x27;Server.Alerts.Trackaccount&#x27;
+  Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'
 
 author: Jos Clephas - @DfirJos
 
@@ -20,15 +20,15 @@ parameters:
   - name: eventLog
     default: C:\Windows\system32\winevt\logs\Security.evtx
   - name: UserRegex
-    default: &#x27;admin|user&#x27;
+    default: 'admin|user'
     type: regex
   - name: LogonTypeRegex
     type: json_array
-    default: &#x27;[2,3,4,5,7,8,9,10,11]&#x27;
+    default: '[2,3,4,5,7,8,9,10,11]'
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     query: |
       LET files = SELECT * FROM glob(globs=eventLog)
 

@@ -51,19 +51,19 @@ sources:
   - query: |
      LET GetFilename(MappingName, BaseOffset) = if(
          condition=MappingName,
-         then=format(format=&quot;dump_%#x_%s&quot;, args=[BaseOffset, basename(path=MappingName)]),
-         else=format(format=&quot;dump_%#x&quot;, args=BaseOffset))
+         then=format(format="dump_%#x_%s", args=[BaseOffset, basename(path=MappingName)]),
+         else=format(format="dump_%#x", args=BaseOffset))
 
-     SELECT format(format=&quot;%#x&quot;, args=Address) AS Address, Size, MappingName,
+     SELECT format(format="%#x", args=Address) AS Address, Size, MappingName,
             State, Type, Protection, ProtectionMsg, read_file(
-              accessor=&quot;process&quot;,
-              filename=format(format=&quot;/%d&quot;, args=Pid),
+              accessor="process",
+              filename=format(format="/%d", args=Pid),
               offset=Address,
               length=10) AS Header,
             upload(file=pe_dump(pid=Pid, base_offset=Address),
                    name=GetFilename(MappingName=MappingName, BaseOffset=Address)) AS Upload
      FROM vad(pid=9604)
-     WHERE Header =~ &quot;^MZ&quot; AND MappingName =~ FilenameRegex
+     WHERE Header =~ "^MZ" AND MappingName =~ FilenameRegex
 
 </code></pre>
 

@@ -25,7 +25,7 @@ description: |
   created in the previous step in the TraceFile. This will then
   convert the .etl to a PCAP and upload it.
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 tools:
     - name: etl2pcapng
@@ -42,24 +42,24 @@ parameters:
 sources:
     - query: |
         LET tool_zip = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-            ToolName=&quot;etl2pcapng&quot;, IsExecutable=FALSE)
+            ToolName="etl2pcapng", IsExecutable=FALSE)
 
-        LET ExePath &lt;= tempfile(extension=&#x27;.exe&#x27;)
+        LET ExePath &lt;= tempfile(extension='.exe')
 
         LET etl2pcapbin &lt;= SELECT
             copy(
               filename=pathspec(
                  DelegatePath=tool_zip[0].OSPath,
-                 Path=&quot;etl2pcapng/x64/etl2pcapng.exe&quot;),
+                 Path="etl2pcapng/x64/etl2pcapng.exe"),
               dest=ExePath,
-              accessor=&#x27;zip&#x27;
+              accessor='zip'
             ) AS file
         FROM scope()
 
-        LET outfile &lt;= tempfile(extension=&quot;.pcapng&quot;)
+        LET outfile &lt;= tempfile(extension=".pcapng")
 
         LET stop_trace = SELECT * FROM execve(
-             argv=[&#x27;netsh&#x27;, &#x27;trace&#x27;, &#x27;stop&#x27;])
+             argv=['netsh', 'trace', 'stop'])
 
         LET convert_pcap = SELECT * FROM execve(
              argv=[etl2pcapbin[0].file, TraceFile, outfile])
@@ -75,10 +75,10 @@ sources:
                 SELECT
                     split(string=split(
                         string=Stdout,
-                        sep=&quot;Trace File: &quot;)[1],
-                    sep=&quot;\r\nAppend:&quot;)[0] as etl_file
-                FROM execve(argv=[&quot;netsh&quot;, &quot;trace&quot;, &quot;start&quot;, &quot;capture=yes&quot;])
-                WHERE log(message=&quot;stderr: &quot; + Stderr), log(message=&quot;stdout: &quot; + Stdout)
+                        sep="Trace File: ")[1],
+                    sep="\r\nAppend:")[0] as etl_file
+                FROM execve(argv=["netsh", "trace", "start", "capture=yes"])
+                WHERE log(message="stderr: " + Stderr), log(message="stdout: " + Stdout)
 
         SELECT * FROM if(
                 condition=StartTrace,

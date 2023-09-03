@@ -51,7 +51,7 @@ description: |
 
     **Settings**
     Target - Can be \\\\.\\PhysicalDrive[X], \\\\?\\HarddiskVolumeShadowCopy[Y]
-    or C:\\Folder\\Path&quot;
+    or C:\\Folder\\Path"
     TargetAllPhysical - boolean option to include all attached physical disks
     TargetVSS - boolean option to target all VSC
     CarveEvtx - boolean option to include evtx carving
@@ -59,13 +59,13 @@ description: |
 
     FreeCommand - supersedes evtx or find options and allows free form switch
     generation for adlib use cases.
-    e.g &#x27;-E evtx, -e zip -S unzip_carve_mode=2&#x27;&quot;
+    e.g '-E evtx, -e zip -S unzip_carve_mode=2'"
     Will add:
-    command prefix: &quot;-q 99999999999 -R&#x27;&quot; and
-    postfix: &quot;-o [Outfolder] [Target]&quot;.
+    command prefix: "-q 99999999999 -R'" and
+    postfix: "-o [Outfolder] [Target]".
     To make: bulk_extractor q 99999999999 -R -E evtx, -e zip -S unzip_carve_mode=2 -o [outfolder] [Target]
 
-    If FindRegex or &quot;-f&quot; has been used in FreeCommand the artifact will attempt
+    If FindRegex or "-f" has been used in FreeCommand the artifact will attempt
     to parse find.txt output.
 
     **Note**
@@ -93,39 +93,39 @@ tools:
     url: https://github.com/Velocidex/Tools/raw/main/BulkExtractor/bulk_extractor.exe
     serve_locally: true
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: Target
-    description: &quot;Target. Can by physical drive, \\\\?\\HarddiskVolumeShadowCopy1 or C:\\Folder\\Path&quot;
+    description: "Target. Can by physical drive, \\\\?\\HarddiskVolumeShadowCopy1 or C:\\Folder\\Path"
     default: \\.\PhysicalDrive0
   - name: TargetAllPhysical
-    description: &quot;Target all attached physical drives&quot;
+    description: "Target all attached physical drives"
     type: bool
   - name: TargetVSS
-    description: &quot;Target all VSC. Note: Not targeted to folder. Velociraptor CAN collect from the Volume Shadow direct targeted to folder with ntfs accessor so there may be a better way.&quot;
+    description: "Target all VSC. Note: Not targeted to folder. Velociraptor CAN collect from the Volume Shadow direct targeted to folder with ntfs accessor so there may be a better way."
     type: bool
   - name: CarveEvtx
-    description: &quot;Carve EVTX files&quot;
+    description: "Carve EVTX files"
     type: bool
   - name: FindRegex
-    description: &quot;Regex for Bulk_extractor find plugin&quot;
+    description: "Regex for Bulk_extractor find plugin"
   - name: FreeCommand
-    description: &quot;Bulk_extractor custom commands. .e.g &#x27;-E evtx, -e zip -S unzip_carve_mode=2&#x27;&quot;
+    description: "Bulk_extractor custom commands. .e.g '-E evtx, -e zip -S unzip_carve_mode=2'"
 
 sources:
   - query: |
       LET bin &lt;= SELECT *
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName=&quot;Bulk_Extractor_Binary&quot;)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Bulk_Extractor_Binary")
       LET tempfolder &lt;= tempdir()
-      LET ExePath &lt;= tempfile(extension=&quot;.exe&quot;)
+      LET ExePath &lt;= tempfile(extension=".exe")
 
       LET target = SELECT
             DeviceID,
-            if(condition=DeviceID=~&quot;^\\\\\\\\.\\\\&quot;,
-                then=split(string=split(string=DeviceID,sep=&#x27;\\\\\\\\.\\\\&#x27;)[1],
-                    sep=&#x27;\\\\&#x27;)[0],
-                else=&quot;bulk_out&quot;) as base,
+            if(condition=DeviceID=~"^\\\\\\\\.\\\\",
+                then=split(string=split(string=DeviceID,sep='\\\\\\\\.\\\\')[1],
+                    sep='\\\\')[0],
+                else="bulk_out") as base,
             _DeviceID
       FROM chain(
             a={
@@ -140,23 +140,23 @@ sources:
                     Target as DeviceID,
                     upcase(string=Target) as _DeviceID
                 FROM scope()
-                WHERE Target =~ &#x27;.&#x27;
+                WHERE Target =~ '.'
             },
             c={
                 SELECT
                     regex_replace(source=OSPath,
-                        re=&quot;GLOBALROOT\\\\Device\\\\&quot;,replace=&quot;&quot;)AS DeviceID,
+                        re="GLOBALROOT\\\\Device\\\\",replace="")AS DeviceID,
                     Data.ID AS ShadowCopyID,
                     upcase(string=regex_replace(source=OSPath,
-                        re=&quot;GLOBALROOT\\\\Device\\\\&quot;,replace=&quot;&quot;)) as _DeviceID
-                FROM glob(globs=&#x27;/*&#x27;, accessor=&#x27;ntfs&#x27;)
+                        re="GLOBALROOT\\\\Device\\\\",replace="")) as _DeviceID
+                FROM glob(globs='/*', accessor='ntfs')
                 WHERE ShadowCopyID AND TargetVSS
                 ORDER by OSPath
             })
             GROUP BY _DeviceID
 
-      LET cmdline = SELECT (bin[0].OSPath, &#x27;-q&#x27;, &#x27;99999999999&#x27;, &#x27;-R&#x27;) +
-                           CMD + &#x27;-o&#x27; as CMD FROM switch(
+      LET cmdline = SELECT (bin[0].OSPath, '-q', '99999999999', '-R') +
+                           CMD + '-o' as CMD FROM switch(
             a= {
                 SELECT commandline_split(command=FreeCommand) AS CMD
                 FROM scope()
@@ -164,22 +164,22 @@ sources:
             },
             b= {
                 SELECT
-                    (&#x27;-E&#x27;,&#x27;evtx&#x27;,&#x27;-e&#x27;,&#x27;find&#x27;,&#x27;-f&#x27;,FindRegex) AS CMD
+                    ('-E','evtx','-e','find','-f',FindRegex) AS CMD
                 FROM scope()
                 WHERE CarveEvtx AND FindRegex
             },
             c= {
-                SELECT (&#x27;-E&#x27;,&#x27;evtx&#x27;) AS CMD
+                SELECT ('-E','evtx') AS CMD
                 FROM scope()
                 WHERE CarveEvtx
             },
             d= {
-                SELECT (&#x27;-E&#x27;,&#x27;find&#x27;,&#x27;-f&#x27;,FindRegex) AS CMD
+                SELECT ('-E','find','-f',FindRegex) AS CMD
                 FROM scope()
                 WHERE FindRegex
             },
             e= {
-                SELECT (&#x27;-h&#x27;) AS CMD FROM scope()
+                SELECT ('-h') AS CMD FROM scope()
             })
 
       SELECT * FROM foreach(
@@ -188,30 +188,30 @@ sources:
             SELECT *
             FROM execve(
              argv=cmdline[0].CMD + (
-                tempfolder + &#x27;\\&#x27; +
-                  regex_replace(source=base, re=&#x27;[^a-zA-Z]&#x27;, replace=&#x27;_&#x27;),
+                tempfolder + '\\' +
+                  regex_replace(source=base, re='[^a-zA-Z]', replace='_'),
                   DeviceID),
-             length=10000000, sep=&#x27;\n&#x27;)})
+             length=10000000, sep='\n')})
 
   - name: FindResults
     query: |
       SELECT * FROM foreach(
         row={  SELECT *
-               FROM glob(globs=&#x27;/*/find.txt&#x27;, root=tempfolder)
+               FROM glob(globs='/*/find.txt', root=tempfolder)
         },
         query={
             SELECT *
             FROM split_records(filenames=OSPath,first_row_is_headers=false,
-                columns=[&#x27;Location&#x27;,&#x27;Match&#x27;,&#x27;Data&#x27;],regex=&#x27;\t&#x27;)
-            WHERE NOT Location =~ &#x27;#&#x27;
+                columns=['Location','Match','Data'],regex='\t')
+            WHERE NOT Location =~ '#'
         })
-        WHERE FindRegex OR FreeCommand =~ &#x27;-f&#x27;
+        WHERE FindRegex OR FreeCommand =~ '-f'
 
   - name: Upload
     query: |
       SELECT upload(file=OSPath,
                     name=strip(string=OSPath,prefix=tempfolder)) AS Upload
-      FROM glob(globs=&quot;/**&quot;, root=tempfolder)
+      FROM glob(globs="/**", root=tempfolder)
       WHERE Upload
 
 </code></pre>

@@ -21,12 +21,12 @@ parameters:
     default: /Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist
 
 precondition:
-      SELECT OS From info() where OS = &#x27;darwin&#x27;
+      SELECT OS From info() where OS = 'darwin'
 
 sources:
   - query: |
       LET WifiPlist = SELECT OSPath from glob(globs=WifiGlob)
-      LET KnownNetworks = SELECT get(member=&quot;KnownNetworks&quot;) as KN from plist(file=WifiPlist.OSPath)
+      LET KnownNetworks = SELECT get(member="KnownNetworks") as KN from plist(file=WifiPlist.OSPath)
       LET EachNetwork = SELECT * from foreach(
          row=KnownNetworks,
          query={

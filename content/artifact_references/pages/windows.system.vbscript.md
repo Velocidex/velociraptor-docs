@@ -37,17 +37,17 @@ required_permissions:
   - EXECVE
 
 precondition:
-  SELECT OS From info() where OS = &#x27;windows&#x27;
+  SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: Script
-    default: Wscript.Echo &quot;Hello world!&quot;
+    default: Wscript.Echo "Hello world!"
        
 sources:
   - query: |
-      LET temp_script &lt;= tempfile(extension=&#x27;.vbs&#x27;, data=str(str=Script))
+      LET temp_script &lt;= tempfile(extension='.vbs', data=str(str=Script))
  
       SELECT Stdout 
-      FROM execve(argv=[&#x27;cscript.exe&#x27;,&#x27;//NoLogo&#x27;,&#x27;/E:vbs&#x27;,temp_script], sep=&#x27;\n&#x27;)
+      FROM execve(argv=['cscript.exe','//NoLogo','/E:vbs',temp_script], sep='\n')
 </code></pre>
 

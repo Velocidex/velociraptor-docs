@@ -39,9 +39,9 @@ parameters:
   - name: UsnCheckPeriod
     type: int
     description: Dedup all file operations that occur within this period
-    default: &quot;10&quot;
+    default: "10"
 
-precondition: SELECT OS from info() where OS = &quot;windows&quot;
+precondition: SELECT OS from info() where OS = "windows"
 
 sources:
   - query: |
@@ -54,10 +54,10 @@ sources:
 
       LET path &lt;= hash_db[0].OSPath
 
-      LET _ &lt;= log(message=&quot;Will use local hash database &quot; + path)
+      LET _ &lt;= log(message="Will use local hash database " + path)
 
       LET file_modifications = SELECT Device + OSPath AS OSPath
-      FROM watch_usn(device=Device, accessor=&quot;ntfs&quot;)
+      FROM watch_usn(device=Device, accessor="ntfs")
       WHERE OSPath =~ PathRegex
 
       -- The USN journal may contain multiple entries for the same
@@ -88,7 +88,7 @@ sources:
       -- For each file hashed, insert to the local database
       LET insertion = SELECT OSPath, Hash, Size, Time, {
          SELECT * FROM sqlite(file=path,
-            query=&quot;INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)&quot;,
+            query="INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)",
             args=[OSPath, Hash, Time, Size])
       } AS Insert
       FROM files

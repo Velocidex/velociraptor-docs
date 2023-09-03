@@ -30,7 +30,7 @@ description: |
 
 parameters:
   - name: officeExtensions
-    default: &quot;*.{xls,xlsm,doc,docx,ppt,pptm}&quot;
+    default: "*.{xls,xlsm,doc,docx,ppt,pptm}"
   - name: officeFileSearchGlob
     default: C:\Users\**\
     description: The directory to search for office documents.

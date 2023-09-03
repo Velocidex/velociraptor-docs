@@ -15,7 +15,7 @@ targetting includes symlink files.
 
 <pre><code class="language-yaml">
 name: Linux.Sys.LogHunter
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
   This artifact enables grep of Linux, MacOS and Windows logs.
   Parameters include SearchRegex and WhitelistRegex as regex terms.
@@ -27,36 +27,36 @@ description: |
 
 parameters:
   - name: TargetFiles
-    default: &#x27;/var/log/**&#x27;
+    default: '/var/log/**'
   - name: SearchRegex
-    description: &quot;Regex of strings to search in log line.&quot;
-    default: &#x27; POST &#x27;
+    description: "Regex of strings to search in log line."
+    default: ' POST '
     type: regex
   - name: FilterRegex
-    description: &quot;Regex of strings to leave out of output.&quot;
+    description: "Regex of strings to leave out of output."
     default:
     type: regex
   - name: ExcludeDirectoryRegex
     type: regex
-    description: &quot;Does not descend into directories that match this Regex.&quot;
-    default: &quot;^/(shared|proc|snap)&quot;
+    description: "Does not descend into directories that match this Regex."
+    default: "^/(shared|proc|snap)"
   - name: ExcludePathRegex
-    description: &quot;Regex of paths to exclude from scanning.&quot;
-    default: &#x27;\.journal$&#x27;
+    description: "Regex of paths to exclude from scanning."
+    default: '\.journal$'
     type: regex
 
 sources:
   - query: |
       LET RecursionCB &lt;= if(condition= ExcludeDirectoryRegex,
-         then=&quot;x =&gt; NOT x.OSPath =~ ExcludeDirectoryRegex&quot;,
-         else=&quot;x =&gt; NOT x.OSPath =~ &#x27;^/proc&#x27; &quot;)
+         then="x =&gt; NOT x.OSPath =~ ExcludeDirectoryRegex",
+         else="x =&gt; NOT x.OSPath =~ '^/proc' ")
 
       LET files = SELECT OSPath
         FROM glob(globs=TargetFiles,
             nosymlink=TRUE,
             recursion_callback=RecursionCB)
         WHERE NOT IsDir AND NOT OSPath =~ ExcludePathRegex
-          AND log(message=&quot;Scanning %v&quot;, args=OSPath)
+          AND log(message="Scanning %v", args=OSPath)
 
       LET hits = SELECT * FROM foreach(row=files,
           query={

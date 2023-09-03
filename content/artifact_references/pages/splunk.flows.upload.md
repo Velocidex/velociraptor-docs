@@ -101,25 +101,25 @@ description: |
         INGEST_EVAL = sourcetype=lower(_index)
         [vql-timestamp]
         INGEST_EVAL = _time=case( \
-                      _index=&quot;artifact_Linux_Search_FileFinder&quot;,strptime(CTime,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_System_VFS_ListDirectory&quot;,strptime(ctime,&quot;%Y-%m-%dT%H:%M:%S.%NZ&quot;), \
-                      _index=&quot;artifact_Windows_Timeline_MFT&quot;,strptime(event_time,&quot;%Y-%m-%dT%H:%M:%S.%NZ&quot;), \
-                      _index=&quot;artifact_Windows_NTFS_MFT&quot;,strptime(Created0x10,&quot;%Y-%m-%dT%H:%M:%S.%NZ&quot;), \
-                      _index=&quot;artifact_Windows_EventLogs_Evtx&quot;,strptime(TimeCreated,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Custom_Windows_EventLogs_System_7045&quot;,strptime(TimeCreated,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_EventLogs_RDPAuth&quot;,strptime(EventTime,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Analysis_EvidenceOfExecution_UserAssist&quot;,strptime(LastExecution,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Analysis_EvidenceOfExecution_Amcache&quot;,strptime(KeyMTime,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_System_Amcache_InventoryApplicationFile&quot;,strptime(LastModified,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Search_FileFinder&quot;,strptime(CTime,&quot;%Y-%m-%dT%H:%M:%S.%NZ&quot;), \
-                      _index=&quot;artifact_Windows_Applications_NirsoftBrowserViewer&quot;,strptime(Visited,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Registry_RecentDocs&quot;,strptime(LastWriteTime,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Forensics_UserAccessLogs_Clients&quot;,strptime(InsertDate,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Forensics_UserAccessLogs_DNS&quot;,strptime(LastSeen,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Forensics_UserAccessLogs_SystemIdentity&quot;,strptime(CreationTime,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Custom_Windows_Application_IIS_IISLogs&quot;,strptime(event_time,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_MacOS_Applications_Chrome_History&quot;,strptime(last_visit_time,&quot;%Y-%m-%dT%H:%M:%SZ&quot;), \
-                      _index=&quot;artifact_Windows_Registry_UserAssist&quot;,strptime(LastExecution,&quot;%Y-%m-%dT%H:%M:%SZ&quot;) \
+                      _index="artifact_Linux_Search_FileFinder",strptime(CTime,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_System_VFS_ListDirectory",strptime(ctime,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+                      _index="artifact_Windows_Timeline_MFT",strptime(event_time,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+                      _index="artifact_Windows_NTFS_MFT",strptime(Created0x10,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+                      _index="artifact_Windows_EventLogs_Evtx",strptime(TimeCreated,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Custom_Windows_EventLogs_System_7045",strptime(TimeCreated,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_EventLogs_RDPAuth",strptime(EventTime,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Analysis_EvidenceOfExecution_UserAssist",strptime(LastExecution,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Analysis_EvidenceOfExecution_Amcache",strptime(KeyMTime,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_System_Amcache_InventoryApplicationFile",strptime(LastModified,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Search_FileFinder",strptime(CTime,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+                      _index="artifact_Windows_Applications_NirsoftBrowserViewer",strptime(Visited,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Registry_RecentDocs",strptime(LastWriteTime,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Forensics_UserAccessLogs_Clients",strptime(InsertDate,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Forensics_UserAccessLogs_DNS",strptime(LastSeen,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Forensics_UserAccessLogs_SystemIdentity",strptime(CreationTime,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Custom_Windows_Application_IIS_IISLogs",strptime(event_time,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_MacOS_Applications_Chrome_History",strptime(last_visit_time,"%Y-%m-%dT%H:%M:%SZ"), \
+                      _index="artifact_Windows_Registry_UserAssist",strptime(LastExecution,"%Y-%m-%dT%H:%M:%SZ") \
                       )  
 
 
@@ -130,7 +130,7 @@ type: SERVER_EVENT
 
 parameters:
    - name: ArtifactNameRegex
-     default: &quot;.&quot;
+     default: "."
      type: regex
      description: Names of artifacts to upload to Splunk
    - name: url
@@ -167,7 +167,7 @@ parameters:
 sources:
   - query: |
         LET completions = SELECT * FROM watch_monitoring(
-                     artifact=&quot;System.Flow.Completion&quot;)
+                     artifact="System.Flow.Completion")
                  WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
                      AND log(message=Flow.artifacts_with_results)
 
@@ -179,8 +179,8 @@ sources:
                              SELECT *, _value AS Artifact,
                                     timestamp(epoch=now()) AS timestamp,
                                     ClientId, Flow.session_id AS FlowId,
-                                    &quot;artifact_&quot; + regex_replace(source=_value,
-                                       re=&#x27;[/.]&#x27;, replace=&#x27;_&#x27;) as _index
+                                    "artifact_" + regex_replace(source=_value,
+                                       re='[/.]', replace='_') as _index
                              FROM source(
                                 client_id=ClientId,
                                 flow_id=Flow.session_id,

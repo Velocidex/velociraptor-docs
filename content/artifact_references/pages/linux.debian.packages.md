@@ -14,7 +14,7 @@ parameters:
     default: /var/lib/dpkg/status
 sources:
   - precondition: |
-      SELECT OS From info() where OS = &#x27;linux&#x27;
+      SELECT OS From info() where OS = 'linux'
     query: |
         /* First pass - split file into records start with
            Package and end with \n\n.
@@ -23,14 +23,14 @@ sources:
         */
         LET packages = SELECT parse_string_with_regex(
             string=Record,
-            regex=[&#x27;Package:\\s(?P&lt;Package&gt;.+)&#x27;,
-                   &#x27;Installed-Size:\\s(?P&lt;InstalledSize&gt;.+)&#x27;,
-                   &#x27;Version:\\s(?P&lt;Version&gt;.+)&#x27;,
-                   &#x27;Source:\\s(?P&lt;Source&gt;.+)&#x27;,
-                   &#x27;Architecture:\\s(?P&lt;Architecture&gt;.+)&#x27;]) as Record
+            regex=['Package:\\s(?P&lt;Package&gt;.+)',
+                   'Installed-Size:\\s(?P&lt;InstalledSize&gt;.+)',
+                   'Version:\\s(?P&lt;Version&gt;.+)',
+                   'Source:\\s(?P&lt;Source&gt;.+)',
+                   'Architecture:\\s(?P&lt;Architecture&gt;.+)']) as Record
             FROM parse_records_with_regex(
                    file=linuxDpkgStatus,
-                   regex=&#x27;(?sm)^(?P&lt;Record&gt;Package:.+?)\\n\\n&#x27;)
+                   regex='(?sm)^(?P&lt;Record&gt;Package:.+?)\\n\\n')
 
         SELECT Record.Package as Package,
                atoi(string=Record.InstalledSize) as InstalledSize,

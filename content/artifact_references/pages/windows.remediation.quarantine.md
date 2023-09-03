@@ -60,11 +60,11 @@ reference:
 required_permissions:
   - EXECVE
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: PolicyName
-    default: &quot;VelociraptorQuarantine&quot;
+    default: "VelociraptorQuarantine"
   - name: RuleLookupTable
     type: csv
     default: |
@@ -86,14 +86,14 @@ sources:
 
         // If a MessageBox configured truncate to 256 character limit
         LET MessageBox &lt;= parse_string_with_regex(
-                  regex=&#x27;^(?P&lt;Message&gt;.{0,255}).*&#x27;,
+                  regex='^(?P&lt;Message&gt;.{0,255}).*',
                   string=MessageBox).Message
 
         // Normalise Action
-        LET normalise_action(Action)=if(condition= lowcase(string=Action)= &#x27;permit&#x27;,
-              then= &#x27;Permit&#x27;,
-              else= if(condition= lowcase(string=Action)= &#x27;block&#x27;,
-                  then= &#x27;Block&#x27;))
+        LET normalise_action(Action)=if(condition= lowcase(string=Action)= 'permit',
+              then= 'Permit',
+              else= if(condition= lowcase(string=Action)= 'block',
+                  then= 'Block'))
 
         // extract configurable policy from lookuptable
         LET configurable_policy &lt;= SELECT
@@ -105,29 +105,29 @@ sources:
 
         // Parse a URL to get domain name.
         LET get_domain(URL) = parse_string_with_regex(
-             string=URL, regex=&#x27;^https?://(?P&lt;Domain&gt;[^:/]+)&#x27;).Domain
+             string=URL, regex='^https?://(?P&lt;Domain&gt;[^:/]+)').Domain
 
         // Parse a URL to get the port
-        LET get_port(URL) = if(condition= URL=~&quot;https://[^:]+/&quot;, then=&quot;443&quot;,
-              else=if(condition= URL=~&quot;http://[^:]+/&quot;, then=&quot;80&quot;,
+        LET get_port(URL) = if(condition= URL=~"https://[^:]+/", then="443",
+              else=if(condition= URL=~"http://[^:]+/", then="80",
               else=parse_string_with_regex(string=URL,
-                  regex=&#x27;^https?://[^:/]+(:(?P&lt;Port&gt;[0-9]*))?/&#x27;).Port))
+                  regex='^https?://[^:/]+(:(?P&lt;Port&gt;[0-9]*))?/').Port))
 
         // extract Velociraptor config for policy
         LET extracted_config &lt;= SELECT * FROM foreach(
                   row=config.server_urls,
                   query={
                       SELECT
-                          &#x27;Permit&#x27; AS Action,
-                          &#x27;me&#x27; AS SrcAddr,
-                          &#x27;&#x27; As SrcMask,
-                          &#x27;0&#x27; AS SrcPort,
+                          'Permit' AS Action,
+                          'me' AS SrcAddr,
+                          '' As SrcMask,
+                          '0' AS SrcPort,
                           get_domain(URL=_value) AS DstAddr,
-                          &#x27;&#x27; As DstMask,
+                          '' As DstMask,
                           get_port(URL=_value) AS DstPort,
-                          &#x27;tcp&#x27; AS Protocol,
-                          &#x27;yes&#x27; AS Mirrored,
-                          &#x27;VelociraptorFrontEnd&#x27; AS Description,
+                          'tcp' AS Protocol,
+                          'yes' AS Mirrored,
+                          'VelociraptorFrontEnd' AS Description,
                           _value AS URL
                       FROM scope()
                   })
@@ -138,44 +138,44 @@ sources:
                   a=extracted_config,
                   b=configurable_policy
               )
-              WHERE Action =~ &#x27;^(Permit|Block)$&#x27;
+              WHERE Action =~ '^(Permit|Block)$'
 
         // Removes empty options from the command line
-        LET clean_cmdline(CMD) = filter(list=CMD, regex=&#x27;^(\\w+|\\w+=.+)$&#x27;)
+        LET clean_cmdline(CMD) = filter(list=CMD, regex='^(\\w+|\\w+=.+)$')
 
         LET delete_cmdline = clean_cmdline(
-             CMD=(&#x27;netsh&#x27;,&#x27;ipsec&#x27;,&#x27;static&#x27;,&#x27;delete&#x27;,&#x27;policy&#x27;, &#x27;name=&#x27; + PolicyName))
+             CMD=('netsh','ipsec','static','delete','policy', 'name=' + PolicyName))
 
         LET create_cmdline = clean_cmdline(
-             CMD=(&#x27;netsh&#x27;,&#x27;ipsec&#x27;,&#x27;static&#x27;,&#x27;add&#x27;,&#x27;policy&#x27;, &#x27;name=&#x27; + PolicyName))
+             CMD=('netsh','ipsec','static','add','policy', 'name=' + PolicyName))
 
         LET action_cmdline(Action) = clean_cmdline(
-             CMD=(&#x27;netsh&#x27;,&#x27;ipsec&#x27;,&#x27;static&#x27;,&#x27;add&#x27;,&#x27;filteraction&#x27;,
-                  &#x27;name=&#x27; + PolicyName + &#x27; &#x27; + Action + &#x27;Action&#x27;,
-                  &#x27;action=&#x27; + Action))
+             CMD=('netsh','ipsec','static','add','filteraction',
+                  'name=' + PolicyName + ' ' + Action + 'Action',
+                  'action=' + Action))
 
         LET rule_cmdline(Action) = clean_cmdline(
-             CMD=(&#x27;netsh&#x27;,&#x27;ipsec&#x27;,&#x27;static&#x27;,&#x27;add&#x27;,&#x27;rule&#x27;,
-                  &#x27;name=&#x27; + PolicyName + &#x27; &#x27; + Action + &#x27;Rule&#x27;,
-                  &#x27;policy=&#x27; + PolicyName,
-                  &#x27;filterlist=&#x27; + PolicyName + &#x27; &#x27; + Action + &#x27;FilterList&#x27;,
-                  &#x27;filteraction=&#x27; + PolicyName + &#x27; &#x27; + Action + &#x27;Action&#x27;))
+             CMD=('netsh','ipsec','static','add','rule',
+                  'name=' + PolicyName + ' ' + Action + 'Rule',
+                  'policy=' + PolicyName,
+                  'filterlist=' + PolicyName + ' ' + Action + 'FilterList',
+                  'filteraction=' + PolicyName + ' ' + Action + 'Action'))
 
         LET enable_cmdline = clean_cmdline(
-             CMD=(&#x27;netsh&#x27;,&#x27;ipsec&#x27;,&#x27;static&#x27;,&#x27;set&#x27;,&#x27;policy&#x27;,
-                   &#x27;name=&#x27; + PolicyName, &#x27;assign=y&#x27;))
+             CMD=('netsh','ipsec','static','set','policy',
+                   'name=' + PolicyName, 'assign=y'))
 
         // Emit the message if no output is emitted, otherwise emit the output.
         LET combine_results(Stdout, Stderr, ReturnCode, Message) = if(
-              condition=Stdout =~ &quot;[^\\s]&quot;, then=Stdout,
-              else= if(condition=Stderr =~ &quot;[^\\s]&quot;, then=Stderr,
+              condition=Stdout =~ "[^\\s]", then=Stdout,
+              else= if(condition=Stderr =~ "[^\\s]", then=Stderr,
               else= if(condition= ReturnCode=0,
                     then=Message )))
 
         // delete old or unwanted policy
         LET delete_policy = SELECT
               timestamp(epoch=now()) as Time,
-              PolicyName + &#x27; IPSec policy removed.&#x27; AS Result
+              PolicyName + ' IPSec policy removed.' AS Result
           FROM execve(argv=delete_cmdline, length=10000)
 
         // first step is creating IPSec policy
@@ -183,23 +183,23 @@ sources:
               timestamp(epoch=now()) as Time,
               combine_results(Stdout=Stdout, Stderr=Stderr,
                   ReturnCode=ReturnCode,
-                  Message=PolicyName + &#x27; IPSec policy created.&#x27;) AS Result
+                  Message=PolicyName + ' IPSec policy created.') AS Result
           FROM execve(argv=create_cmdline, length=10000)
 
         LET entry_cmdline(Action, SrcAddr, SrcPort, SrcMask,
                    DstAddr, DstPort, DstMask, Protocol,
                    Mirrored, Description) = clean_cmdline(
-              CMD=(&#x27;netsh&#x27;,&#x27;ipsec&#x27;,&#x27;static&#x27;,&#x27;add&#x27;,&#x27;filter&#x27;,
-                   format(format=&#x27;filterlist=%s %sFilterList&#x27;, args=[PolicyName, Action]),
-                   format(format=&#x27;srcaddr=%v&#x27;, args=SrcAddr),
-                   format(format=&#x27;srcmask=%v&#x27;, args=SrcMask),
-                   format(format=&#x27;srcport=%v&#x27;, args=SrcPort),
-                   format(format=&#x27;dstaddr=%v&#x27;, args=DstAddr),
-                   format(format=&#x27;dstmask=%v&#x27;, args=DstMask),
-                   format(format=&#x27;dstport=%v&#x27;, args=DstPort),
-                   format(format=&#x27;protocol=%v&#x27;, args=Protocol),
-                   format(format=&#x27;mirrored=%v&#x27;, args=Mirrored),
-                   format(format=&#x27;description=%v&#x27;, args=Description)))
+              CMD=('netsh','ipsec','static','add','filter',
+                   format(format='filterlist=%s %sFilterList', args=[PolicyName, Action]),
+                   format(format='srcaddr=%v', args=SrcAddr),
+                   format(format='srcmask=%v', args=SrcMask),
+                   format(format='srcport=%v', args=SrcPort),
+                   format(format='dstaddr=%v', args=DstAddr),
+                   format(format='dstmask=%v', args=DstMask),
+                   format(format='dstport=%v', args=DstPort),
+                   format(format='protocol=%v', args=Protocol),
+                   format(format='mirrored=%v', args=Mirrored),
+                   format(format='description=%v', args=Description)))
 
         // second step is to create policy filters
         LET create_filters = SELECT * FROM foreach(row=policy,
@@ -208,12 +208,12 @@ sources:
                           timestamp(epoch=now()) as Time,
                           combine_results(Stdout=Stdout, Stderr=Stderr,
                                ReturnCode=ReturnCode,
-                               Message=&#x27;Entry added: &#x27; +
+                               Message='Entry added: ' +
                                  join(array=entry_cmdline(Action=Action,
                                    SrcAddr=SrcAddr, SrcPort=SrcPort, SrcMask=SrcMask,
                                    DstAddr=DstAddr, DstPort=DstPort, DstMask=DstMask,
                                    Protocol=Protocol, Mirrored=Mirrored,
-                                   Description=Description), sep=&quot; &quot;)) AS Result
+                                   Description=Description), sep=" ")) AS Result
                       FROM execve(argv=entry_cmdline(Action=Action,
                                    SrcAddr=SrcAddr, SrcPort=SrcPort, SrcMask=SrcMask,
                                    DstAddr=DstAddr, DstPort=DstPort, DstMask=DstMask,
@@ -233,8 +233,8 @@ sources:
                           timestamp(epoch=now()) as Time,
                           combine_results(Stdout=Stdout, Stderr=Stderr,
                                ReturnCode=ReturnCode,
-                               Message=&#x27;FilterAction added: &#x27; +
-                                 join(array=action_cmdline(Action=Action), sep=&quot; &quot;)) AS Result
+                               Message='FilterAction added: ' +
+                                 join(array=action_cmdline(Action=Action), sep=" ")) AS Result
                       FROM execve(argv=action_cmdline(Action=Action), length=10000)
                   })
 
@@ -250,8 +250,8 @@ sources:
                           timestamp(epoch=now()) as Time,
                           combine_results(Stdout=Stdout, Stderr=Stderr,
                                ReturnCode=ReturnCode,
-                               Message=&#x27;Rule added: &#x27; +
-                                 join(array=rule_cmdline(Action=Action), sep=&quot; &quot;)) AS Result
+                               Message='Rule added: ' +
+                                 join(array=rule_cmdline(Action=Action), sep=" ")) AS Result
                       FROM execve(argv=rule_cmdline(Action=Action), length=10000)
                   })
 
@@ -260,22 +260,22 @@ sources:
               timestamp(epoch=now()) as Time,
               combine_results(Stdout=Stdout, Stderr=Stderr,
                   ReturnCode=ReturnCode,
-                  Message=PolicyName + &#x27; IPSec policy applied.&#x27;) AS Result
+                  Message=PolicyName + ' IPSec policy applied.') AS Result
               FROM execve(argv=enable_cmdline, length=10000)
 
         // test connection to a frontend server
         LET test_connection = SELECT * FROM foreach(
                   row={
                       SELECT * FROM policy
-                      WHERE Description = &#x27;VelociraptorFrontEnd&#x27;
+                      WHERE Description = 'VelociraptorFrontEnd'
                   },
                   query={
                       SELECT *
                           Url,
                           response
                       FROM
-                          http_client(url=&#x27;https://&#x27; + DstAddr + &#x27;:&#x27; + DstPort + &#x27;/server.pem&#x27;,
-                              disable_ssl_security=&#x27;TRUE&#x27;)
+                          http_client(url='https://' + DstAddr + ':' + DstPort + '/server.pem',
+                              disable_ssl_security='TRUE')
                       WHERE Response = 200
                       LIMIT 1
                   })
@@ -286,12 +286,12 @@ sources:
                       SELECT
                           timestamp(epoch=now()) as Time,
                           if(condition=MessageBox,
-                              then= PolicyName + &#x27; connection test successful. MessageBox sent.&#x27;,
-                              else= PolicyName + &#x27; connection test successful.&#x27;
+                              then= PolicyName + ' connection test successful. MessageBox sent.',
+                              else= PolicyName + ' connection test successful.'
                               ) AS Result
                       FROM if(condition=MessageBox,
                           then= {
-                              SELECT * FROM execve(argv=[&#x27;msg&#x27;,&#x27;*&#x27;,MessageBox])
+                              SELECT * FROM execve(argv=['msg','*',MessageBox])
                           },
                           else={
                               SELECT * FROM scope()
@@ -300,7 +300,7 @@ sources:
                   else={
                       SELECT
                           timestamp(epoch=now()) as Time,
-                          PolicyName + &#x27; failed connection test. Removing IPSec policy.&#x27; AS Result
+                          PolicyName + ' failed connection test. Removing IPSec policy.' AS Result
                       FROM delete_policy
                   })
 

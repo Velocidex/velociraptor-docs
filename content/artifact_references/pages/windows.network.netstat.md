@@ -15,7 +15,7 @@ description: |
   socket was first bound is also shown.
 
 sources:
-- precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+- precondition: SELECT OS From info() where OS = 'windows'
   query: |
     LET processes &lt;= SELECT Name, Pid AS ProcPid FROM pslist()
     SELECT Pid, {

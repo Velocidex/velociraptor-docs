@@ -42,16 +42,16 @@ required_permissions:
 
 parameters:
   - name: WMIQuery
-    description: &quot;Add target WMI query: e.g SELECT * FROM &lt;CLASSNAME&gt;&quot;
-    default: &quot;SELECT * FROM Win32_Process&quot;
+    description: "Add target WMI query: e.g SELECT * FROM &lt;CLASSNAME&gt;"
+    default: "SELECT * FROM Win32_Process"
 
   - name: Namespace
-    description: &quot;Add target Namespace: e.g root/cimv2&quot;
+    description: "Add target Namespace: e.g root/cimv2"
     default: root/cimv2
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
        SELECT * FROM wmi(namespace=Namespace,query=WMIQuery)

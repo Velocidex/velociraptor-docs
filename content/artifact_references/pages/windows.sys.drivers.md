@@ -15,21 +15,21 @@ description: |
   installed but unused drivers.
 
 precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: AlsoCheckAuthenticode
     type: bool
     description: If selected we also check the authenticode information.
-    default: &quot;Y&quot;
+    default: "Y"
 
 sources:
   - name: SignedDrivers
     query: |
        SELECT *
        FROM wmi(
-          query=&quot;select * from Win32_PnPSignedDriver&quot;,
-          namespace=&quot;ROOT\\CIMV2&quot;)
+          query="select * from Win32_PnPSignedDriver",
+          namespace="ROOT\\CIMV2")
 
   - name: RunningDrivers
     query: |
@@ -38,8 +38,8 @@ sources:
          then=authenticode(filename=PathName)) AS Authenticode,
          hash(path=PathName) AS Hashes
        FROM wmi(
-         query=&quot;select * from Win32_SystemDriver&quot;,
-         namespace=&quot;ROOT\\CIMV2&quot;)
+         query="select * from Win32_SystemDriver",
+         namespace="ROOT\\CIMV2")
     notebook:
       - type: vql_suggestion
         name: Unique issuers
@@ -54,8 +54,8 @@ sources:
           SELECT count() AS Count,
                  enumerate(items=Name) AS Names,
                  Authenticode.IssuerName AS Issuer, Hashes
-          FROM source(artifact=&quot;Windows.Sys.Drivers/RunningDrivers&quot;)
-          WHERE NOT Issuer =~ &quot;Microsoft&quot;
+          FROM source(artifact="Windows.Sys.Drivers/RunningDrivers")
+          WHERE NOT Issuer =~ "Microsoft"
           GROUP BY Issuer
 
 </code></pre>

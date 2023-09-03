@@ -16,7 +16,7 @@ description: |
 
 parameters:
   - name: triageTable
-    description: &quot;A CSV table controlling upload. Must have the headers: Type, Accessor, Glob.&quot;
+    description: "A CSV table controlling upload. Must have the headers: Type, Accessor, Glob."
     type: csv
     default: |
       Type,Accessor,Glob
@@ -30,7 +30,7 @@ sources:
                       mtime=Mtime,
                       ctime=Ctime,
                       accessor=Accessor) AS FileDetails
-        FROM glob(globs=split(string=Glob, sep=&quot;,&quot;), accessor=Accessor)
+        FROM glob(globs=split(string=Glob, sep=","), accessor=Accessor)
         WHERE NOT IsDir
 
         SELECT * FROM foreach(

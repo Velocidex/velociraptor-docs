@@ -47,13 +47,13 @@ parameters:
       default: |
         rule Hit {
            strings:
-             $a = &quot;my secret file.txt&quot; nocase wide ascii
+             $a = "my secret file.txt" nocase wide ascii
            condition:
              any of them
         }
       type: yara
     - name: Device
-      default: &quot;C:&quot;
+      default: "C:"
 
 sources:
   - query: |
@@ -62,10 +62,10 @@ sources:
                parse_ntfs(device=Device,
                           mft=String.Offset / 1024) AS MFT
         FROM yara(
-             rules=yaraRule, files=Device + &quot;/$MFT&quot;,
+             rules=yaraRule, files=Device + "/$MFT",
              end=10000000000,
              number=1000,
-             accessor=&quot;ntfs&quot;)
+             accessor="ntfs")
 
 </code></pre>
 

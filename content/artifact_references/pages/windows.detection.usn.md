@@ -47,13 +47,13 @@ parameters:
   - name: USN_FREQUENCY
     type: int
     description: How many seconds before rechecking the USN journal.
-    default: &quot;30&quot;
+    default: "30"
   - name: NTFS_CACHE_TIME
     type: int
     description: How often to flush the NTFS cache.
-    default: &quot;30&quot;
+    default: "30"
 
-precondition: SELECT OS from info() where OS = &quot;windows&quot;
+precondition: SELECT OS from info() where OS = "windows"
 
 sources:
   - query: |

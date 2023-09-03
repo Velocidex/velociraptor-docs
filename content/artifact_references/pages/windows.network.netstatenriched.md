@@ -20,7 +20,7 @@ shooting yourself in the foot.
 
 <pre><code class="language-yaml">
 name: Windows.Network.NetstatEnriched
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
   NetstatEnhanced adds additional data points to the Netstat artifact and
   enables verbose search options.
@@ -38,19 +38,19 @@ description: |
 required_permissions:
   - EXECVE
   
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: IPRegex
-    description: &quot;regex search over IP address fields.&quot;
+    description: "regex search over IP address fields."
     default:  .
     type: regex
   - name: PortRegex
-    description: &quot;regex search over port fields.&quot;
+    description: "regex search over port fields."
     default: .
     type: regex
   - name: Family
-    description: &quot;IP version family selection&quot;
+    description: "IP version family selection"
     type: choices
     default: ALL
     choices:
@@ -61,12 +61,12 @@ parameters:
     type: hidden
     default: |
       Choice,Regex
-      ALL,&quot;.&quot;
-      IPv4,&quot;^IPv4$&quot;
-      IPv6,&quot;^IPv6$&quot;
+      ALL,"."
+      IPv4,"^IPv4$"
+      IPv6,"^IPv6$"
 
   - name: Type
-    description: &quot;Transport protocol type selection&quot;
+    description: "Transport protocol type selection"
     type: choices
     default: ALL
     choices:
@@ -77,12 +77,12 @@ parameters:
     type: hidden
     default: |
       Choice,Regex
-      ALL,&quot;.&quot;
-      TCP,&quot;^TCP$&quot;
-      UDP,&quot;^UDP$&quot;
+      ALL,"."
+      TCP,"^TCP$"
+      UDP,"^UDP$"
 
   - name: Status
-    description: &quot;TCP status selection&quot;
+    description: "TCP status selection"
     type: choices
     default: ALL
     choices:
@@ -94,41 +94,41 @@ parameters:
     type: hidden
     default: |
       Choice,Regex
-      ALL,&quot;.&quot;
-      ESTABLISHED,&quot;^ESTAB$&quot;
-      LISTENING,&quot;^LISTEN$&quot;
-      OTHER,&quot;CLOS|SENT|RCVD|LAST|WAIT|DELETE&quot;
+      ALL,"."
+      ESTABLISHED,"^ESTAB$"
+      LISTENING,"^LISTEN$"
+      OTHER,"CLOS|SENT|RCVD|LAST|WAIT|DELETE"
 
   - name: ProcessNameRegex
-    description: &quot;regex search over source process name&quot;
+    description: "regex search over source process name"
     default: ^malware\.exe$
     type: regex
   - name: ProcessPathRegex
-    description: &quot;regex search over source process path&quot;
+    description: "regex search over source process path"
     default: .
     type: regex
   - name: CommandLineRegex
-    description: &quot;regex search over source process commandline&quot;
+    description: "regex search over source process commandline"
     default: .
     type: regex
   - name: HashRegex
-    description: &quot;regex search over source process hash&quot;
+    description: "regex search over source process hash"
     default: .
     type: regex
   - name: UsernameRegex
-    description: &quot;regex search over source process user context&quot;
+    description: "regex search over source process user context"
     default: .
     type: regex
   - name: AuthenticodeSubjectRegex
-    description: &quot;regex search over source Authenticode Subject&quot;
+    description: "regex search over source Authenticode Subject"
     default: .
     type: regex
   - name: AuthenticodeIssuerRegex
-    description: &quot;regex search over source Authenticode Issuer&quot;
+    description: "regex search over source Authenticode Issuer"
     default: .
     type: regex
   - name: AuthenticodeVerified
-    description: &quot;Authenticode signiture selection&quot;
+    description: "Authenticode signiture selection"
     type: choices
     default: ALL
     choices:
@@ -140,31 +140,31 @@ parameters:
     type: hidden
     default: |
       Choice,Regex
-      ALL,&quot;.&quot;
-      TRUSTED,&quot;^trusted$&quot;
-      UNSIGNED,&quot;^unsigned$&quot;
-      NOT TRUSTED,&quot;unsigned|disallowed|untrusted|error&quot;
+      ALL,"."
+      TRUSTED,"^trusted$"
+      UNSIGNED,"^unsigned$"
+      NOT TRUSTED,"unsigned|disallowed|untrusted|error"
   - name: DumpProcess
-    description: &quot;WARNING: If selected will attempt to dump process from all results.&quot;
+    description: "WARNING: If selected will attempt to dump process from all results."
     type: bool
   - name: KillProcess
-    description: &quot;WARNING: If selected will attempt to kill process from all results.&quot;
+    description: "WARNING: If selected will attempt to kill process from all results."
     type: bool
     
 sources:
   - name: Netstat
     query: |
       LET VerifiedRegex &lt;= SELECT Regex
-            FROM parse_csv(filename=AuthenticodeVerifiedMap, accessor=&quot;data&quot;)
+            FROM parse_csv(filename=AuthenticodeVerifiedMap, accessor="data")
             WHERE Choice=AuthenticodeVerified LIMIT 1
       LET StatusRegex &lt;= SELECT Regex
-            FROM parse_csv(filename=StatusMap, accessor=&quot;data&quot;)
+            FROM parse_csv(filename=StatusMap, accessor="data")
             WHERE Choice=Status LIMIT 1
       LET FamilyRegex &lt;= SELECT Regex
-            FROM parse_csv(filename=FamilyMap, accessor=&quot;data&quot;)
+            FROM parse_csv(filename=FamilyMap, accessor="data")
             WHERE Choice=Family LIMIT 1
       LET TypeRegex &lt;= SELECT Regex
-            FROM parse_csv(filename=TypeMap, accessor=&quot;data&quot;)
+            FROM parse_csv(filename=TypeMap, accessor="data")
             WHERE Choice=Type LIMIT 1
 
       LET process &lt;= SELECT Pid as PsId,
@@ -212,21 +212,21 @@ sources:
                 and Status =~ StatusRegex.Regex[0]
                 and Family =~ FamilyRegex.Regex[0]
                 and Type =~ TypeRegex.Regex[0]
-                and ( format(format=&quot;%v&quot;, args=SrcIP) =~ IPRegex
-                    or format(format=&quot;%v&quot;, args=DestIP) =~ IPRegex )
-                and ( format(format=&quot;%v&quot;, args=SrcPort) =~ PortRegex
-                    or format(format=&quot;%v&quot;, args=DestPort) =~ PortRegex )
+                and ( format(format="%v", args=SrcIP) =~ IPRegex
+                    or format(format="%v", args=DestIP) =~ IPRegex )
+                and ( format(format="%v", args=SrcPort) =~ PortRegex
+                    or format(format="%v", args=DestPort) =~ PortRegex )
     
       LET Regions(Pid) = SELECT dict(Offset=Address, Length=Size) AS Sparse
         FROM vad(pid=Pid)
-        WHERE Protection =~ &quot;r&quot;
+        WHERE Protection =~ "r"
       LET dump = SELECT *,
-            upload(accessor=&quot;sparse&quot;,
+            upload(accessor="sparse",
                     file=pathspec(
                     Path=serialize(item=Regions(Pid=Pid).Sparse),
-                    DelegateAccessor=&quot;process&quot;,
-                    DelegatePath=format(format=&quot;/%d&quot;, args=Pid)),
-                     name=pathspec(Path=format(format=&quot;%d.dd&quot;, args=Pid))) AS ProcessMemory
+                    DelegateAccessor="process",
+                    DelegatePath=format(format="/%d", args=Pid)),
+                     name=pathspec(Path=format(format="%d.dd", args=Pid))) AS ProcessMemory
         FROM results
       LET kill = SELECT *, pskill(pid=Pid) AS KillProcess    
         FROM results
@@ -235,11 +235,11 @@ sources:
       
       SELECT * FROM switch(
             a = { 
-                SELECT *, if(condition= KillProcess=Null,then=&#x27;Success&#x27;,else=KillProcess) AS KillProcess
+                SELECT *, if(condition= KillProcess=Null,then='Success',else=KillProcess) AS KillProcess
                 FROM if(condition= DumpProcess AND KillProcess, then= dumpandkill )},
             b = { SELECT * FROM if(condition= DumpProcess, then= dump )},
             c = { 
-                SELECT *, if(condition= KillProcess=Null,then=&#x27;Success&#x27;,else=KillProcess) AS KillProcess
+                SELECT *, if(condition= KillProcess=Null,then='Success',else=KillProcess) AS KillProcess
                 FROM if(condition= KillProcess, then= kill) 
             },
             catch = results

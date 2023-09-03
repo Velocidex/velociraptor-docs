@@ -98,7 +98,7 @@ def build_markdown(artifact_root_directory):
              data.get("description", ""),
              # Escape the content into a html block to avoid bugs in
              # markdown parsing.
-             html.escape(content)))
+             html.escape(content, quote=False)))
 
   index = sorted(index, key=lambda x: x["title"])
 

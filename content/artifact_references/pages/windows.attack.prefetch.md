@@ -16,12 +16,12 @@ description: |
    artifacts. This pack was generated from
    https://github.com/teoseller/osquery-attck
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
      - query: |
          SELECT Name, ModTime, Mtime AS modified
-         FROM glob(globs=&quot;C:/Windows/Prefetch/*&quot;)
+         FROM glob(globs="C:/Windows/Prefetch/*")
 
 # Reports can be MONITORING_DAILY, CLIENT, SERVER_EVENT
 reports:
@@ -52,7 +52,7 @@ reports:
            powershell.exe,POWERSHELL Execute: is a powerful interactive command-line interface and scripting environment included in the Windows operating system - ATT&amp;CK T1086
            regsvr32.exe,POWERSHELL Execute: is a powerful interactive command-line interface and scripting environment included in the Windows operating system - ATT&amp;CK T1117
            PsExec.exe,PsExec Execute: is a free Microsoft tool that can be used to execute a program on another computer. - ATT&amp;CK T1035:S0029
-           runas.exe,Runas Execute: Allows a user to run specific tools and programs with different permissions than the user&#x27;s current logon provides. - ATT&amp;CK T1134
+           runas.exe,Runas Execute: Allows a user to run specific tools and programs with different permissions than the user's current logon provides. - ATT&amp;CK T1134
            bitsadmin.exe,Bitsadmin Execute: Windows Background Intelligent Transfer Service (BITS) is a low-bandwidth: asynchronous file transfer mechanism exposed through Component Object Model (COM) - ATT&amp;CK T1197:S0190
            certutil.exe,Certutil Execute: Certutil.exe is a legitimate built-in command-line program to manage certificates in Windows - ATT&amp;CK T1105:T1140:T1130:S0160
            netsh.exe,Netsh Execute: Netsh.exe (also referred to as Netshell) is a command-line scripting utility used to interact with the network configuration of a system - ATT&amp;CK T1128:T1063:S0108
@@ -69,29 +69,29 @@ reports:
       The below shows any prefetch files of interest and what they
       could potentially mean.
 
-      {{ define &quot;query&quot; }}
+      {{ define "query" }}
          LET lookup &lt;= SELECT * FROM lookupTable
       {{ end }}
 
-      {{ define &quot;data&quot;}}
+      {{ define "data"}}
         LET data &lt;= SELECT * FROM source()
       {{ end }}
 
-      {{ range (Query &quot;data&quot; &quot;query&quot; &quot;SELECT * FROM lookup&quot;) }}
-          {{ $rows := Query (printf &quot;SELECT * FROM source() WHERE Name =~ &#x27;%v&#x27;&quot; (Get . &quot;signature&quot;) ) }}
+      {{ range (Query "data" "query" "SELECT * FROM lookup") }}
+          {{ $rows := Query (printf "SELECT * FROM source() WHERE Name =~ '%v'" (Get . "signature") ) }}
           {{ if $rows }}
 
-      ## {{ Get $rows &quot;0.Name&quot; }}
-      Modified on {{ Get $rows &quot;0.ModTime&quot; }}.
+      ## {{ Get $rows "0.Name" }}
+      Modified on {{ Get $rows "0.ModTime" }}.
 
-      {{ Get . &quot;description&quot; }}
+      {{ Get . "description" }}
 
           {{ end }}
       {{ end }}
 
       # Timeline
 
-      {{ Query &quot;SELECT modified * 1000, Name FROM foreach(row=lookup, query={ SELECT * FROM data WHERE Name =~ signature})&quot; | Timeline }}
+      {{ Query "SELECT modified * 1000, Name FROM foreach(row=lookup, query={ SELECT * FROM data WHERE Name =~ signature})" | Timeline }}
 
 </code></pre>
 

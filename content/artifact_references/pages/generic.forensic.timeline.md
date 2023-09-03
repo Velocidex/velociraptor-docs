@@ -26,7 +26,7 @@ sources:
   # For NTFS accessors we write the MFT id as the inode. On windows
   # the file accessor does not give the inode at all.
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27; AND timelineAccessor = &#x27;ntfs&#x27;
+      SELECT OS From info() where OS = 'windows' AND timelineAccessor = 'ntfs'
     query: |
         SELECT 0 AS Md5, OSPath,
                Sys.mft as Inode,
@@ -36,7 +36,7 @@ sources:
 
   # For linux we can get the Inode from Sys.Ino
   - precondition:
-      SELECT * From scope() where timelineAccessor = &#x27;file&#x27;
+      SELECT * From scope() where timelineAccessor = 'file'
     query: |
         SELECT 0 AS Md5, OSPath,
                Sys.Ino as Inode,

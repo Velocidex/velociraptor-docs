@@ -60,11 +60,11 @@ sources:
             SELECT OSPath,
                 OSPath.Dirname.Basename AS ArtifactName, Size,
                 timestamp(epoch=
-                 split(string=OSPath.Basename, sep=&quot;\\.&quot;)[0]) AS Timestamp,
+                 split(string=OSPath.Basename, sep="\\.")[0]) AS Timestamp,
                  if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
             FROM glob(
-               globs=&quot;/**.json*&quot;, accessor=&quot;fs&quot;,
-               root=&quot;/clients/&quot;+ client_id + &quot;/monitoring&quot;)
+               globs="/**.json*", accessor="fs",
+               root="/clients/"+ client_id + "/monitoring")
             WHERE ArtifactName =~ ArtifactRegex
               AND Timestamp &lt; DateBefore
         }, workers=10)

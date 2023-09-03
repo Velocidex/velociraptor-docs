@@ -19,15 +19,15 @@ type: CLIENT
 
 parameters:
   - name: NonInteractiveExecutables
-    description: Non-interactive executables that may appear in user&#x27;s details
+    description: Non-interactive executables that may appear in user's details
     type: str
-    default: &quot;/usr/sbin/nologin,/bin/false,/sbin/nologin,/bin/sync&quot;
+    default: "/usr/sbin/nologin,/bin/false,/sbin/nologin,/bin/sync"
 
 sources:
   - precondition: |
       SELECT OS
       FROM info()
-      WHERE OS = &#x27;linux&#x27;
+      WHERE OS = 'linux'
 
     query: |
       SELECT Fqdn AS Host,
@@ -38,7 +38,7 @@ sources:
               Homedir,
               Shell 
       FROM Artifact.Linux.Sys.Users()
-      WHERE NOT Shell IN split(string=NonInteractiveExecutables, sep_string=&quot;,&quot;)
+      WHERE NOT Shell IN split(string=NonInteractiveExecutables, sep_string=",")
 
 </code></pre>
 

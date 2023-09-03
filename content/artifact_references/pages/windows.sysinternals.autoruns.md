@@ -25,7 +25,7 @@ tools:
     url: https://live.sysinternals.com/tools/autorunsc64.exe
     serve_locally: true
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: All
@@ -71,7 +71,7 @@ parameters:
 
 sources:
   - query: |
-      LET Flags = &#x27;&#x27;&#x27;Option,Name
+      LET Flags = '''Option,Name
       *,All
       b,Boot execute
       c,Codecs
@@ -90,26 +90,26 @@ sources:
       s,Autostart services and non-disabled drivers
       t,Scheduled tasks
       w,Winlogon entries
-      &#x27;&#x27;&#x27;
+      '''
 
       -- The options actually selected
-      LET options = SELECT Option FROM parse_csv(accessor=&quot;data&quot;, filename=Flags)
+      LET options = SELECT Option FROM parse_csv(accessor="data", filename=Flags)
         WHERE get(field=Name)
 
       LET os_info &lt;= SELECT Architecture FROM info()
 
       // Get the path to the binary.
       LET bin &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-              ToolName= &quot;Autorun_&quot; + os_info[0].Architecture,
+              ToolName= "Autorun_" + os_info[0].Architecture,
               ToolInfo=ToolInfo)
 
       // Call the binary and return all its output in a single row.
       LET output = SELECT * FROM execve(argv=[bin[0].OSPath,
-            &#x27;-nobanner&#x27;, &#x27;-accepteula&#x27;, &#x27;-t&#x27;, &#x27;-a&#x27;,
-            join(array=options.Option, sep=&quot;&quot;),
-            &#x27;-c&#x27;, -- CSV output
-            &#x27;-h&#x27;, -- Also calculate hashes
-            &#x27;*&#x27;   -- All user profiles.
+            '-nobanner', '-accepteula', '-t', '-a',
+            join(array=options.Option, sep=""),
+            '-c', -- CSV output
+            '-h', -- Also calculate hashes
+            '*'   -- All user profiles.
       ], length=10000000)
 
       // Parse the CSV output and return it as rows. We can filter this further.
@@ -119,7 +119,7 @@ sources:
           row=output,
           query={
              SELECT * FROM parse_csv(filename=utf16(string=Stdout),
-                                     accessor=&quot;data&quot;)
+                                     accessor="data")
           })
       })
 

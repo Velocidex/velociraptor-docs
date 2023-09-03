@@ -64,7 +64,7 @@ reference:
 
 parameters:
   - name: EvtxGlob
-    default: &#x27;%SystemRoot%\System32\winevt\logs\Security.evtx&#x27;
+    default: '%SystemRoot%\System32\winevt\logs\Security.evtx'
   - name: VSSAnalysisAge
     type: int
     default: 0
@@ -77,7 +77,7 @@ parameters:
 sources:
   - query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -94,10 +94,10 @@ sources:
                     EventData.ServiceName as ServiceName,
                     EventData.ServiceSid as ServiceSid,
                     EventData.TargetUserName as TargetUserName,
-                    format(format=&quot;0x%x&quot;, args=EventData.Status) as Status,
+                    format(format="0x%x", args=EventData.Status) as Status,
                     EventData.TargetDomainName as TargetDomainName,
-                    format(format=&quot;0x%x&quot;, args=EventData.TicketEncryptionType) as TicketEncryptionType,
-                    format(format=&quot;0x%x&quot;, args=EventData.TicketOptions) as TicketOptions,
+                    format(format="0x%x", args=EventData.TicketEncryptionType) as TicketEncryptionType,
+                    format(format="0x%x", args=EventData.TicketOptions) as TicketOptions,
                     EventData.TransmittedServices as TransmittedServices,
                     EventData.IpAddress as IpAddress,
                     EventData.IpPort as IpPort,
@@ -107,8 +107,8 @@ sources:
                     System.EventID.Value = 4769
                     AND EventData.TicketEncryptionType = 23
                     AND EventData.Status = 0
-                    AND NOT EventData.ServiceName =~ &quot;krbtgt|\\$$&quot;
-                    AND NOT EventData.TargetUserName =~ &quot;\\$@&quot;
+                    AND NOT EventData.ServiceName =~ "krbtgt|\\$$"
+                    AND NOT EventData.TargetUserName =~ "\\$@"
           })
 
 

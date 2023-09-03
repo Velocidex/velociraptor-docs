@@ -32,7 +32,7 @@ type: SERVER_EVENT
 
 parameters:
    - name: ArtifactNameRegex
-     default: &quot;.&quot;
+     default: "."
      description: A regular expression to select which artifacts to upload
      type: regex
 
@@ -62,7 +62,7 @@ sources:
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
              flow_id=FlowId, wait=TRUE) AS FlowDownload
-      FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
+      FROM watch_monitoring(artifact="System.Flow.Completion")
       WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       SELECT upload_s3(
@@ -71,8 +71,8 @@ sources:
          credentialssecret=credentialssecret,
          region=region,
          file=FlowDownload,
-         accessor=&quot;fs&quot;,
-         name=format(format=&quot;Host %v %v %v.zip&quot;,
+         accessor="fs",
+         name=format(format="Host %v %v %v.zip",
                      args=[Fqdn, FlowId, timestamp(epoch=now())])) AS Upload
       FROM completions
       WHERE Upload OR

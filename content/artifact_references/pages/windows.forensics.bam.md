@@ -38,7 +38,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS from info() where OS = &quot;windows&quot;
+      SELECT OS from info() where OS = "windows"
     query: |
         LET users &lt;= SELECT Name, UUID
             FROM Artifact.Windows.Sys.Users()
@@ -50,10 +50,10 @@ sources:
           } As UserName,
           Name as Binary,
           timestamp(winfiletime=parse_binary(
-               filename=Data.value, accessor=&quot;data&quot;,
-               profile=&quot;[]&quot;, struct=&quot;int64&quot;)) AS Bam_time
-        FROM glob(globs=bamKeys.KeyGlob, accessor=&quot;registry&quot;)
-        WHERE Data.type =~ &quot;BINARY&quot;
+               filename=Data.value, accessor="data",
+               profile="[]", struct="int64")) AS Bam_time
+        FROM glob(globs=bamKeys.KeyGlob, accessor="registry")
+        WHERE Data.type =~ "BINARY"
 
 </code></pre>
 

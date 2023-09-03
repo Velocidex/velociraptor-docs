@@ -58,7 +58,7 @@ sources:
         sync_query=SyncQuery, sync_period=1000 * PollPeriod)
 
       SELECT * FROM process_tracker_updates()
-      WHERE update_type = &quot;stats&quot;
+      WHERE update_type = "stats"
 
 </code></pre>
 

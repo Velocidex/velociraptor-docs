@@ -13,26 +13,26 @@ description: |
   This artifact pack collects various persistence mechanisms in Windows.
 
 precondition:
-  SELECT OS from info() where OS = &quot;windows&quot;
+  SELECT OS from info() where OS = "windows"
 
 sources:
   - name: WMI Event Filters
     description: |
-      {{ DocFrom &quot;Windows.Persistence.PermanentWMIEvents&quot; }}
+      {{ DocFrom "Windows.Persistence.PermanentWMIEvents" }}
 
     query: |
         SELECT * FROM Artifact.Windows.Persistence.PermanentWMIEvents()
 
   - name: Startup Items
     description: |
-      {{ DocFrom &quot;Windows.Sys.StartupItems&quot; }}
+      {{ DocFrom "Windows.Sys.StartupItems" }}
 
     query: |
         SELECT * FROM Artifact.Windows.Sys.StartupItems()
 
   - name: Debug Bootstraping
     description: |
-      {{ DocFrom &quot;Windows.Persistence.Debug&quot; }}
+      {{ DocFrom "Windows.Persistence.Debug" }}
 
       If there are any rows in the table below then executing the
       program will also launch the program listed under the Debugger

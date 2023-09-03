@@ -58,7 +58,7 @@ reference:
 
 type: CLIENT
 precondition:
-  SELECT * FROM info() where OS = &#x27;windows&#x27;
+  SELECT * FROM info() where OS = 'windows'
 
 parameters:
   - name: WDigestGlob
@@ -77,15 +77,15 @@ sources:
             Name as KeyName,
             Data.type as KeyType,
             Data.value as KeyValue
-        FROM glob(globs=WDigestGlob, accessor=&quot;registry&quot;)
-        WHERE KeyType = &quot;DWORD&quot;
-            AND KeyName =~ &quot;UseLogonCredential|Negotiate&quot;
+        FROM glob(globs=WDigestGlob, accessor="registry")
+        WHERE KeyType = "DWORD"
+            AND KeyName =~ "UseLogonCredential|Negotiate"
             AND NOT if(condition= ShowAllValues,
                         then= False,
                         else= KeyValue = 0)
         GROUP BY LastModified, KeyName, KeyType, KeyValue,
             regex_replace(source=OSPath,
-                re=&#x27;&#x27;&#x27;[^\\]+ControlSet[^\\]+&#x27;&#x27;&#x27;,replace=&#x27;CurrentControlSet&#x27;)
+                re='''[^\\]+ControlSet[^\\]+''',replace='CurrentControlSet')
 
 column_types:
   - name: LastModified

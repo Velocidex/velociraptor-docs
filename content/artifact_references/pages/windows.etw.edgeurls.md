@@ -38,15 +38,15 @@ parameters:
 
 sources:
   - query: |
-      LET m &lt;= memoize(key=&quot;Pid&quot;, period=30, query={
+      LET m &lt;= memoize(key="Pid", period=30, query={
           SELECT Pid, Exe, Username FROM pslist()
       })
 
       SELECT System.ID AS ID,
              System.TimeStamp AS Timestamp,
              get(item=m, field=System.ProcessID) AS ProcInfo,
-             get(member=&quot;EventData.URL&quot;) AS URL
-      FROM watch_etw(guid=&quot;{245F975D-909D-49ED-B8F9-9A75691D6B6B}&quot;)
+             get(member="EventData.URL") AS URL
+      FROM watch_etw(guid="{245F975D-909D-49ED-B8F9-9A75691D6B6B}")
       WHERE ID = 805 AND URL =~ URLFilter
 
 </code></pre>

@@ -29,7 +29,7 @@ Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit P
 <pre><code class="language-yaml">
 name: Windows.Events.FailedLogBeforeSuccess
 description: |
-  Sometimes attackers will brute force an local user&#x27;s account&#x27;s
+  Sometimes attackers will brute force an local user's account's
   password. If the account password is strong, brute force attacks are
   not effective and might not represent a high value event in
   themselves.
@@ -65,7 +65,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS FROM info() where OS = &#x27;windows&#x27;
+      SELECT OS FROM info() where OS = 'windows'
     query: |
       LET failed_logon = SELECT EventData as FailedEventData,
            System as FailedSystem

@@ -18,15 +18,15 @@ parameters:
     default: /proc/stat
 sources:
   - precondition: |
-      SELECT OS From info() where OS = &#x27;linux&#x27;
+      SELECT OS From info() where OS = 'linux'
     query: |
         LET raw = SELECT * FROM split_records(
            filenames=procStat,
-           regex=&#x27; +&#x27;,
-           columns=[&#x27;core&#x27;, &#x27;user&#x27;, &#x27;nice&#x27;, &#x27;system&#x27;,
-                    &#x27;idle&#x27;, &#x27;iowait&#x27;, &#x27;irq&#x27;, &#x27;softirq&#x27;,
-                    &#x27;steal&#x27;, &#x27;guest&#x27;, &#x27;guest_nice&#x27;])
-        WHERE core =~ &#x27;cpu.+&#x27;
+           regex=' +',
+           columns=['core', 'user', 'nice', 'system',
+                    'idle', 'iowait', 'irq', 'softirq',
+                    'steal', 'guest', 'guest_nice'])
+        WHERE core =~ 'cpu.+'
 
         SELECT core AS Core,
                atoi(string=user) as User,

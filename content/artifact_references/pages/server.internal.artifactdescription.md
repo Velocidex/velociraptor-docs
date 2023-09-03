@@ -14,7 +14,7 @@ type: INTERNAL
 reports:
   - type: INTERNAL
     template: |
-      {{ $artifact := Scope &quot;artifact&quot; }}
+      {{ $artifact := Scope "artifact" }}
 
       ## {{ $artifact.Name }}
 
@@ -29,7 +29,7 @@ reports:
       ##### Author: {{ $artifact.Author }}
       {{end}}
 
-      &lt;div class=&quot;description-content&quot;&gt;
+      &lt;div class="description-content"&gt;
 
       {{ $artifact.Description }}
 
@@ -48,7 +48,7 @@ reports:
       ### Tools
 
       {{ range $artifact.Tools -}}
-      * &lt;grr-tool-viewer name=&quot;{{.Name}}&quot;&gt;&lt;/grr-tool-viewer&gt;
+      * &lt;grr-tool-viewer name="{{.Name}}"&gt;&lt;/grr-tool-viewer&gt;
       {{ end }}
 
       {{ end }}
@@ -57,7 +57,7 @@ reports:
 
       ### Parameters
 
-      &lt;table class=&quot;table table-striped&quot;&gt;
+      &lt;table class="table table-striped"&gt;
       &lt;thead&gt;
          &lt;tr&gt;
            &lt;th&gt;Name&lt;/th&gt;
@@ -68,7 +68,7 @@ reports:
       &lt;/thead&gt;
       &lt;tbody&gt;
       {{- range $item := $artifact.Parameters -}}
-         {{- if not (eq $item.Type &quot;hidden&quot;) -}}
+         {{- if not (eq $item.Type "hidden") -}}
            &lt;tr&gt;
              &lt;td&gt;{{ $item.Name }}&lt;/td&gt;
              &lt;td&gt;{{ $item.Type }}&lt;/td&gt;
@@ -83,7 +83,7 @@ reports:
 
       {{ if $artifact.Imports }}
 
-      &lt;table class=&quot;table table-striped&quot;&gt;
+      &lt;table class="table table-striped"&gt;
       &lt;thead&gt;
          &lt;tr&gt;
            &lt;th&gt;Imports&lt;/th&gt;

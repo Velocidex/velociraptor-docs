@@ -57,31 +57,31 @@ reference:
   - https://coolaj86.com/articles/the-openssh-private-key-format/
   - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 
-precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
+precondition: SELECT OS From info() where OS = 'linux'
 
 parameters:
   - name: KeyGlobs
     default: /home/*/.ssh/{*.pem,id_rsa,id_dsa}
 
   - name: ExcludePathRegex
-    default: &quot;^/(proc|sys|run|snap)&quot;
+    default: "^/(proc|sys|run|snap)"
     type: regex
     description: If this regex matches the path of any directory we do not even descend inside of it.
 
 sources:
   - query: |
       -- For new OpenSSH format
-      LET SSHProfile = &#x27;&#x27;&#x27;[
-        [&quot;Header&quot;, 0, [
-        [&quot;Magic&quot;, 0, &quot;String&quot;, {
-            &quot;length&quot;: 100,
+      LET SSHProfile = '''[
+        ["Header", 0, [
+        ["Magic", 0, "String", {
+            "length": 100,
         }],
-        [&quot;cipher_length&quot;, 15, &quot;uint32b&quot;],
-        [&quot;cipher&quot;, 19, &quot;String&quot;, {
-            &quot;length&quot;: &quot;x=&gt;x.cipher_length&quot;,
+        ["cipher_length", 15, "uint32b"],
+        ["cipher", 19, "String", {
+            "length": "x=&gt;x.cipher_length",
         }]
       ]]]
-      &#x27;&#x27;&#x27;
+      '''
 
       -- Device major numbers considered local. See Linux.Search.FileFinder
       LET LocalDeviceMajor &lt;= (NULL,
@@ -89,7 +89,7 @@ sources:
           71, 128, 129, 130, 131, 132, 133, 134, 135, 202, 253, 254, 259)
 
       // Only search local filesystems
-      LET RecursionCallback = &quot;x=&gt;x.Data.DevMajor IN LocalDeviceMajor&quot;
+      LET RecursionCallback = "x=&gt;x.Data.DevMajor IN LocalDeviceMajor"
 
       LET _Hits = SELECT OSPath,
            read_file(filename=OSPath, length=20240) AS Data
@@ -100,17 +100,17 @@ sources:
              base64decode(
                 string=parse_string_with_regex(
                     string=Data,
-                    regex=&quot;(?sm)KEY-----(.+)-----END&quot;).g1) || &quot;&quot; AS Decoded,
+                    regex="(?sm)KEY-----(.+)-----END").g1) || "" AS Decoded,
             parse_string_with_regex(
                string=Data,
-               regex=&quot;(BEGIN.* PRIVATE KEY)&quot;).g1 AS Header,
-            read_file(filename=OSPath.Dirname + (OSPath.Basename + &quot;.pub&quot;) ) AS PublicKey
+               regex="(BEGIN.* PRIVATE KEY)").g1 AS Header,
+            read_file(filename=OSPath.Dirname + (OSPath.Basename + ".pub") ) AS PublicKey
       FROM _Hits
       WHERE Header
 
       LET OpenSSHKeyParser(OSPath, Decoded) = SELECT OSPath,
-         parse_binary(accessor=&quot;data&quot;, filename=Decoded,
-                      profile=SSHProfile, struct=&quot;Header&quot;) AS Parsed
+         parse_binary(accessor="data", filename=Decoded,
+                      profile=SSHProfile, struct="Header") AS Parsed
          FROM scope()
 
       -- Support both types of ssh keys dependingg on the header
@@ -124,42 +124,42 @@ sources:
                     Parsed.cipher AS Cipher,
                     Header, PublicKey
              FROM OpenSSHKeyParser(OSPath= OSPath, Decoded=Decoded)
-             WHERE Header =~ &quot;BEGIN OPENSSH PRIVATE KEY&quot;
+             WHERE Header =~ "BEGIN OPENSSH PRIVATE KEY"
           },
           a2={
              -- encrypted rsa key from e.g. putty
              SELECT OSPath,
-                    &quot;PKCS8&quot; AS KeyType,
+                    "PKCS8" AS KeyType,
                     parse_string_with_regex(string=Data,
-                      regex=&quot;DEK-Info: ([-a-zA-Z0-9]+)&quot;).g1 AS Cipher,
+                      regex="DEK-Info: ([-a-zA-Z0-9]+)").g1 AS Cipher,
                     Header, PublicKey
              FROM scope()
-             WHERE Header =~ &quot;BEGIN RSA PRIVATE KEY&quot;
-               AND &quot;Proc-Type: 4,ENCRYPTED&quot; in Data
+             WHERE Header =~ "BEGIN RSA PRIVATE KEY"
+               AND "Proc-Type: 4,ENCRYPTED" in Data
           },
           b={
              -- unencrypted rsa key from e.g. AWS
              SELECT OSPath,
-                    &quot;PKCS8&quot; AS KeyType,
-                    &quot;none&quot; AS Cipher,
+                    "PKCS8" AS KeyType,
+                    "none" AS Cipher,
                     Header, PublicKey
              FROM scope()
-             WHERE Header =~ &quot;BEGIN (RSA )?PRIVATE KEY&quot;
+             WHERE Header =~ "BEGIN (RSA )?PRIVATE KEY"
           },
           c={
              -- old format encrypted
              SELECT OSPath,
-                    &quot;PKCS8&quot; AS KeyType,
-                    &quot;PKCS#5&quot; AS Cipher,
+                    "PKCS8" AS KeyType,
+                    "PKCS#5" AS Cipher,
                     Header, PublicKey
              FROM scope()
-             WHERE Header =~ &quot;BEGIN ENCRYPTED PRIVATE KEY&quot;
+             WHERE Header =~ "BEGIN ENCRYPTED PRIVATE KEY"
           },
           d={
              -- catch all for unknown keys
              SELECT OSPath,
-                    &quot;Unknown&quot; AS KeyType,
-                    &quot;Unknown&quot; AS Cipher,
+                    "Unknown" AS KeyType,
+                    "Unknown" AS Cipher,
                     Header, PublicKey
              FROM scope()
           })

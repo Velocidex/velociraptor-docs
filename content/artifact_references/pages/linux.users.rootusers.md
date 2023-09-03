@@ -21,7 +21,7 @@ sources:
   - precondition: |
       SELECT OS
       FROM info()
-      WHERE OS = &#x27;linux&#x27;
+      WHERE OS = 'linux'
 
     query: |
       SELECT *
@@ -38,8 +38,8 @@ sources:
                  Gid,
                  Homedir,
                  Shell
-          FROM execve(argv=[&quot;id&quot;, &quot;-Gn&quot;, User])
-          WHERE ReturnCode = 0 AND Stdout =~ &quot;root&quot;
+          FROM execve(argv=["id", "-Gn", User])
+          WHERE ReturnCode = 0 AND Stdout =~ "root"
         }
       )
 

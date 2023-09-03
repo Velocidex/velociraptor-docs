@@ -21,8 +21,8 @@ sources:
       SELECT * FROM foreach(
           row={
              SELECT ClientId, Flow, FlowId
-             FROM watch_monitoring(artifact=&#x27;System.Flow.Completion&#x27;)
-             WHERE Flow.artifacts_with_results =~ &#x27;Generic.Client.Info&#x27;
+             FROM watch_monitoring(artifact='System.Flow.Completion')
+             WHERE Flow.artifacts_with_results =~ 'Generic.Client.Info'
           },
           query={
             SELECT * FROM switch(
@@ -42,8 +42,8 @@ sources:
                  FROM source(
                     client_id=ClientId,
                     flow_id=FlowId,
-                    source=&quot;BasicInformation&quot;,
-                    artifact=&quot;Custom.Generic.Client.Info&quot;)
+                    source="BasicInformation",
+                    artifact="Custom.Generic.Client.Info")
                },
             b={
                 SELECT ClientId,
@@ -61,8 +61,8 @@ sources:
                FROM source(
                   client_id=ClientId,
                   flow_id=FlowId,
-                  source=&quot;BasicInformation&quot;,
-                  artifact=&quot;Generic.Client.Info&quot;)
+                  source="BasicInformation",
+                  artifact="Generic.Client.Info")
             })
           })
 

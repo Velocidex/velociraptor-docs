@@ -19,7 +19,7 @@ typically is very small and available in NtfsMetadata field of output.
 
 <pre><code class="language-yaml">
 name: Windows.NTFS.ExtendedAttributes
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
   Adversaries may use NTFS file attributes for defence evasion to hide malicious
   data. This artifact parses NTFS Extended attributes ($EA).
@@ -41,22 +41,22 @@ reference:
 
 parameters:
   - name: MFTDrive
-    default: &quot;C:&quot;
+    default: "C:"
   - name: HostPathRegex
-    description: &quot;Regex search over OSPath.&quot;
-    default: &quot;.&quot;
+    description: "Regex search over OSPath."
+    default: "."
     type: regex
   - name: DateAfter
     type: timestamp
-    description: &quot;search for host files with timestamps after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for host files with timestamps after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for  host files with timestamps before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for  host files with timestamps before this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: AllDrives
     type: bool
-    description: &quot;Select MFT search on all attached ntfs drives.&quot;
+    description: "Select MFT search on all attached ntfs drives."
   - name: EANameRegex
-    description: &quot;$EA Name regex filter to include in results.&quot;
+    description: "$EA Name regex filter to include in results."
     default: .
     type: regex
   - name: EANameExclusion
@@ -64,69 +64,69 @@ parameters:
     default: ^(\$KERNEL\.PURGE\.(ESBCACHE|APPXFICACHE)|\$CI\.CATALOGHINT|\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\.CSC\.\w+)$
     type: regex
   - name: EAContentRegex
-    description: &quot;$EA content to search for by regex.&quot;
+    description: "$EA content to search for by regex."
     default: .
     type: regex
   - name: SizeMax
     type: int64
-    description: &quot;Total $EA attributes in the MFT under this size in bytes.&quot;
+    description: "Total $EA attributes in the MFT under this size in bytes."
     default: 100000
   - name: SizeMin
     type: int64
-    description: &quot;Total $EA attributes in the MFT over this size in bytes.&quot;
+    description: "Total $EA attributes in the MFT over this size in bytes."
     default: 0
   - name: UploadHits
     type: bool
-    description: &quot;Upload complete complete attribute data.&quot;
+    description: "Upload complete complete attribute data."
 
 sources:
   - query: |
-      LET Profile = &#x27;&#x27;&#x27;[
-         [&quot;EAData&quot;, 0, [
-            [&quot;Entries&quot;, 0, &quot;Array&quot;,{
-                &quot;type&quot;: &quot;EA&quot;,
-                &quot;count&quot;: 99 }],
+      LET Profile = '''[
+         ["EAData", 0, [
+            ["Entries", 0, "Array",{
+                "type": "EA",
+                "count": 99 }],
          ]],
-         [&quot;EA&quot;, &quot;x=&gt;x.__NextOffset&quot;, [
-            [&quot;__NextOffset&quot;, 0, &quot;uint32&quot;],
-            [&quot;__NameLength&quot;, 5, &quot;uint8&quot;],
-            [&quot;__ValueLength&quot;, 6, &quot;uint16&quot;],
-            [&quot;Name&quot;, 8, String, {
-                length: &quot;x=&gt;x.__NameLength&quot; }],
-            [&quot;Flags&quot;, 4, &quot;uint8&quot;],
-            [&quot;ValueLength&quot;, 6, &quot;uint16&quot;],
-            [&quot;Value&quot;, &quot;x=&gt;9 + x.__NameLength&quot;, &quot;String&quot;,{
-                term: &quot;********** NO TERM **********&quot;,
-                length: &quot;x=&gt;x.__ValueLength&quot;,
+         ["EA", "x=&gt;x.__NextOffset", [
+            ["__NextOffset", 0, "uint32"],
+            ["__NameLength", 5, "uint8"],
+            ["__ValueLength", 6, "uint16"],
+            ["Name", 8, String, {
+                length: "x=&gt;x.__NameLength" }],
+            ["Flags", 4, "uint8"],
+            ["ValueLength", 6, "uint16"],
+            ["Value", "x=&gt;9 + x.__NameLength", "String",{
+                term: "********** NO TERM **********",
+                length: "x=&gt;x.__ValueLength",
                 max_length: 10000 }],
        ]]
-       ]&#x27;&#x27;&#x27;
+       ]'''
 
       -- find all MFT entries with an $EA - ignore VSS
       LET mft_entries = SELECT *,
             parse_ntfs(mft=EntryNumber, device=MFTDrive ) as NtfsMetadata
         FROM Artifact.Windows.NTFS.MFT(
            MFTDrive=MFTDrive,
-           Accessor=&#x27;ntfs&#x27;,
+           Accessor='ntfs',
            PathRegex=HostPathRegex,
            DateAfter=DateAfter,
            DateBefore=DateBefore,
            AllDrives=AllDrives)
-        WHERE -- NOT OSPath =~ &#x27;HarddiskVolumeShadowCopy&#x27; AND
-          NtfsMetadata.Attributes.Type =~ &#x27;^\\$EA&#x27;
+        WHERE -- NOT OSPath =~ 'HarddiskVolumeShadowCopy' AND
+          NtfsMetadata.Attributes.Type =~ '^\\$EA'
 
       -- enrich results for size filter, dropping metadata field output as this attribute is viewable in Ntfs field.
       LET enriched_results = SELECT OSPath,NtfsMetadata,
-            --{ SELECT * FROM NtfsMetadata.Attributes WHERE Type = &#x27;$EA_INFORMATION&#x27;} as _EA_INFORMATION_Metadata,
-            { SELECT * FROM NtfsMetadata.Attributes WHERE Type = &#x27;$EA&#x27;} as _EA_Metadata
+            --{ SELECT * FROM NtfsMetadata.Attributes WHERE Type = '$EA_INFORMATION'} as _EA_INFORMATION_Metadata,
+            { SELECT * FROM NtfsMetadata.Attributes WHERE Type = '$EA'} as _EA_Metadata
         FROM mft_entries
         WHERE _EA_Metadata.Size &gt; SizeMin AND _EA_Metadata.Size &lt; SizeMax
 
       -- parse EA attribute
       LET parse_ea = SELECT OSPath, NtfsMetadata, _EA_Metadata,
-            parse_binary(accessor=&quot;mft&quot;,
+            parse_binary(accessor="mft",
                 filename=NtfsMetadata.Device + _EA_Metadata.Inode,
-                profile=Profile, struct=&quot;EAData&quot;).Entries AS EA
+                profile=Profile, struct="EAData").Entries AS EA
         FROM enriched_results
 
       -- flattern results and output a row for each EA parsed
@@ -148,8 +148,8 @@ sources:
 
       -- upload extended EA data
       LET upload_hits=SELECT OSPath, NtfsMetadata, EA,
-            upload(file=NtfsMetadata.Device + _EA_Metadata.Inode,accessor=&#x27;mft&#x27;) AS Upload
-            --upload(file=Ntfs.Device + _EA_INFORMATION_Metadata.Inode,accessor=&#x27;mft&#x27;) AS EA_INFORMATION_Upload
+            upload(file=NtfsMetadata.Device + _EA_Metadata.Inode,accessor='mft') AS Upload
+            --upload(file=Ntfs.Device + _EA_INFORMATION_Metadata.Inode,accessor='mft') AS EA_INFORMATION_Upload
         FROM flatten_results
 
       -- return rows

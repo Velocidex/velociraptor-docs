@@ -17,7 +17,7 @@ This artifact works on Windows 10 1607 version.
 <pre><code class="language-yaml">
 name: Windows.System.Amcache
 description: |
-  Get information from the system&#x27;s amcache.
+  Get information from the system's amcache.
 
   The Amcache.hve file is a registry file that stores the information
   of executed applications. Amcache.hve records the recent processes
@@ -32,7 +32,7 @@ reference:
 
 parameters:
   - name: amCacheGlob
-    default: &quot;%SYSTEMROOT%/appcompat/Programs/Amcache.hve&quot;
+    default: "%SYSTEMROOT%/appcompat/Programs/Amcache.hve"
   - name: amCacheRegPath
     default: /Root/InventoryApplicationFile/*
   - name: NTFS_CACHE_SIZE
@@ -40,7 +40,7 @@ parameters:
     default: 1000
 
 precondition: |
-  SELECT OS From info() where OS = &#x27;windows&#x27;
+  SELECT OS From info() where OS = 'windows'
 
 sources:
   - name: InventoryApplicationFile
@@ -60,12 +60,12 @@ sources:
         FROM foreach(
           row={
             SELECT OSPath from glob(globs=expand(path=amCacheGlob))
-            WHERE log(message=&quot;Processing &quot;+OSPath)
+            WHERE log(message="Processing "+OSPath)
           }, query={
             SELECT * from read_reg_key(
                globs=amCacheRegPath,
                root=pathspec(DelegatePath=OSPath),
-               accessor=&#x27;raw_reg&#x27;
+               accessor='raw_reg'
             )
         })
 
@@ -75,31 +75,31 @@ sources:
           row={
             SELECT OSPath from glob(globs=expand(path=amCacheGlob))
           }, query={
-            SELECT get(item=scope(), member=&quot;100&quot;) As ProductId,
-                   get(item=scope(), member=&quot;101&quot;) As SHA1,
-                   get(item=scope(), member=&quot;15&quot;) As OSPath,
+            SELECT get(item=scope(), member="100") As ProductId,
+                   get(item=scope(), member="101") As SHA1,
+                   get(item=scope(), member="15") As OSPath,
                    Key.Mtime as LastModifiedKey
             FROM read_reg_key(
                root=pathspec(DelegatePath=OSPath),
-               globs=&#x27;/Root/File/*/*&#x27;,
-               accessor=&#x27;raw_reg&#x27;
+               globs='/Root/File/*/*',
+               accessor='raw_reg'
             )
         })
 
 reports:
   - type: CLIENT
     template: |
-      {{define &quot;recent_executions&quot;}}
+      {{define "recent_executions"}}
            LET recent_executions &lt;= SELECT LastModified, Name, count(items=Name) As Count,
                   int(int=_LastModified/3600) AS Hour
-           FROM source(source=&quot;InventoryApplicationFile&quot;)
+           FROM source(source="InventoryApplicationFile")
            GROUP BY Hour
            LIMIT 500
       {{ end }}
 
-      {{ define &quot;timeline&quot; }}
+      {{ define "timeline" }}
          SELECT LastModified,
-                format(format=&quot;%s (%d)&quot;, args=[Name, Count]) As TotalCount
+                format(format="%s (%d)", args=[Name, Count]) As TotalCount
          FROM recent_executions
       {{ end }}
 
@@ -123,12 +123,12 @@ reports:
       &gt; For clarity we hide the names of all other binaries, and just
         show the total count.
 
-      {{ Query &quot;recent_executions&quot; &quot;timeline&quot; | Timeline }}
+      {{ Query "recent_executions" "timeline" | Timeline }}
 
 
       Here is the same data in tabular form.
 
-      {{ Query &quot;timeline&quot; | Table }}
+      {{ Query "timeline" | Table }}
 
 </code></pre>
 

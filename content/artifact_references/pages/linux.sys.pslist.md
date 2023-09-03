@@ -21,7 +21,7 @@ parameters:
     type: regex
 
 precondition: |
-  SELECT OS From info() where OS =~ &#x27;linux|darwin&#x27;
+  SELECT OS From info() where OS =~ 'linux|darwin'
 
 sources:
   - query: |
@@ -29,7 +29,7 @@ sources:
                hash(path=Exe) as Hash,
                Username, timestamp(epoch=CreateTime/1000) AS CreatedTime,
                MemoryInfo.RSS AS RSS,
-               Exe =~ &quot;\\(deleted\\)$&quot; AS Deleted
+               Exe =~ "\\(deleted\\)$" AS Deleted
         FROM process_tracker_pslist()
         WHERE Name =~ processRegex
 

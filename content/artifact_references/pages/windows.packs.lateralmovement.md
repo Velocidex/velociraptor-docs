@@ -12,7 +12,7 @@ name: Windows.Packs.LateralMovement
 description: |
   Detect evidence of lateral movement.
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 reference:
   - https://digital-forensics.sans.org/media/SANS_Poster_2018_Hunt_Evil_FINAL.pdf
@@ -25,19 +25,19 @@ sources:
   - name: WMIC
     query: |
       SELECT * FROM Artifact.Windows.Forensics.Prefetch()
-      WHERE Executable =~ &quot;wmic.exe&quot;
+      WHERE Executable =~ "wmic.exe"
   - name: ShimCache
     query: |
       SELECT * FROM Artifact.Windows.Registry.AppCompatCache()
-      WHERE Name =~ &quot;wmic.exe&quot;
+      WHERE Name =~ "wmic.exe"
   - name: BAM
     query: |
       SELECT * FROM Artifact.Windows.Forensics.Bam()
-      WHERE Binary =~ &quot;wmic.exe&quot;
+      WHERE Binary =~ "wmic.exe"
   - name: AmCache
     query: |
       SELECT * FROM Artifact.Windows.System.Amcache()
-      WHERE Binary =~ &quot;wmic.exe&quot;
+      WHERE Binary =~ "wmic.exe"
 
 </code></pre>
 

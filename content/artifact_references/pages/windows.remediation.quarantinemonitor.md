@@ -27,7 +27,7 @@ required_permissions:
 
 parameters:
   - name: PolicyName
-    default: &quot;VelociraptorQuarantine&quot;
+    default: "VelociraptorQuarantine"
   - name: RuleLookupTable
     type: csv
     default: |
@@ -42,12 +42,12 @@ parameters:
         character limit.
   - name: ReloadPeriod
     description: Reload the ipsec policy every this many seconds on the endpoint.
-    default: &quot;600&quot;
+    default: "600"
     type: int
 
 precondition:
-  SELECT OS FROM info() WHERE OS = &quot;windows&quot;
-     AND version(function=&quot;atexit&quot;) &gt;= 0
+  SELECT OS FROM info() WHERE OS = "windows"
+     AND version(function="atexit") &gt;= 0
 
 sources:
   - query: |
@@ -60,7 +60,7 @@ sources:
       SELECT * FROM foreach(
         row={
            SELECT * FROM clock(period=ReloadPeriod, start=now())
-           WHERE log(message=&quot;Setting quarantine policy&quot;)
+           WHERE log(message="Setting quarantine policy")
         },
         query={
           SELECT * FROM Artifact.Windows.Remediation.Quarantine(

@@ -77,11 +77,11 @@ description: |
 
 author: Chris Hendricks (chris@counteractive.net)
 
-precondition: SELECT OS FROM info() WHERE OS = &#x27;windows&#x27;
+precondition: SELECT OS FROM info() WHERE OS = 'windows'
 
 parameters:
   - name: EvtxGlob
-    default: &#x27;%SystemRoot%\System32\winevt\Logs\*.evtx&#x27;
+    default: '%SystemRoot%\System32\winevt\Logs\*.evtx'
   - name: VSSAnalysisAge
     type: int
     default: 0
@@ -92,24 +92,24 @@ parameters:
       for everything which will be much slower.
   - name: StartDate
     type: timestamp
-    description: &quot;Parse events on or after this date (YYYY-MM-DDTmm:hh:ssZ)&quot;
+    description: "Parse events on or after this date (YYYY-MM-DDTmm:hh:ssZ)"
   - name: EndDate
     type: timestamp
-    description: &quot;Parse events on or before this date (YYYY-MM-DDTmm:hh:ssZ)&quot;
+    description: "Parse events on or before this date (YYYY-MM-DDTmm:hh:ssZ)"
   - name: PathRegex
-    default: &quot;.&quot;
+    default: "."
     type: regex
   - name: ChannelRegex
-    default: &quot;.&quot;
+    default: "."
     type: regex
   - name: IDRegex
-    default: &quot;.&quot;
+    default: "."
     type: regex
 
 sources:
   - query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       // expand provided glob into a list of paths on the file system (fs)
       LET fspaths =

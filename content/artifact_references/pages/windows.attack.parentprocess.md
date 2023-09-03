@@ -26,7 +26,7 @@ reference:
   - https://www.sans.org/security-resources/posters/hunt-evil/165/download
   - https://github.com/teoseller/osquery-attck/blob/master/windows-incorrect_parent_process.conf
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: lookupTable
@@ -65,7 +65,7 @@ sources:
                   ParentRegex as ExpectedParentName,
                   Username,
                   join(array=process_tracker_callchain(id=Pid).Data.Name,
-                       sep=&quot; -&gt; &quot;) AS CallChain
+                       sep=" -&gt; ") AS CallChain
            FROM process_tracker_pslist()
            WHERE ActualProcessName =~ ProcessName
              AND ActualParentName

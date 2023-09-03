@@ -50,16 +50,16 @@ sources:
            then=HybridAnalysisKey,
            else=server_metadata().HybridAnalysisKey)
 
-        LET URL &lt;= &#x27;https://hybrid-analysis.com/api/v2/search/hash&#x27;
+        LET URL &lt;= 'https://hybrid-analysis.com/api/v2/search/hash'
 
         LET Data = SELECT parse_json_array(data=Content) as Content
         FROM http_client(
             url=URL,
             headers=dict(`api-key`=Creds,
                          `user-agent`=UserAgent,
-                         `Content-Type`=&quot;application/x-www-form-urlencoded&quot;),
+                         `Content-Type`="application/x-www-form-urlencoded"),
             params=dict(hash=Hash),
-            method=&#x27;POST&#x27;)
+            method='POST')
 
         SELECT * from foreach (
             row=Data,

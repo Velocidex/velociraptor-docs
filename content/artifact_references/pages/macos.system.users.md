@@ -25,20 +25,20 @@ sources:
   - query: |
       LET user_plist = SELECT OSPath FROM glob(globs=UserPlistGlob)
       LET UserDetails(OSPath) =
-              SELECT get(member=&quot;name.0&quot;, default=&quot;&quot;) AS Name,
-                     get(member=&quot;realname.0&quot;, default=&quot;&quot;) AS RealName,
-                     get(member=&quot;shell.0&quot;, default=&quot;&quot;) AS UserShell,
-                     get(member=&quot;home.0&quot;, default=&quot;&quot;) AS HomeDir,
+              SELECT get(member="name.0", default="") AS Name,
+                     get(member="realname.0", default="") AS RealName,
+                     get(member="shell.0", default="") AS UserShell,
+                     get(member="home.0", default="") AS HomeDir,
                      if(condition=LinkedIdentity,
                         then=plist(file=LinkedIdentity[0],
-                                   accessor=&#x27;data&#x27;)) as AppleId,
+                                   accessor='data')) as AppleId,
                      if(condition=accountPolicyData,
                         then=plist(file=accountPolicyData[0],
-                                   accessor=&#x27;data&#x27;)) AS AccountPolicyData
+                                   accessor='data')) AS AccountPolicyData
               FROM plist(file=OSPath)
 
       SELECT Name, RealName, UserShell, HomeDir,
-               get(item=AppleId, field=&quot;appleid.apple.com&quot;) AS AppleId,
+               get(item=AppleId, field="appleid.apple.com") AS AppleId,
                timestamp(epoch=AccountPolicyData.creationTime) AS CreationTime,
                AccountPolicyData.failedLoginCount AS FailedLoginCount,
                timestamp(epoch=AccountPolicyData.failedLoginTimestamp) AS FailedLoginTimestamp,
@@ -46,7 +46,7 @@ sources:
       FROM foreach(row=user_plist, query={
          SELECT * FROM UserDetails(OSPath= OSPath)
       })
-      WHERE NOT OnlyShowRealUsers OR NOT UserShell =~ &#x27;false&#x27;
+      WHERE NOT OnlyShowRealUsers OR NOT UserShell =~ 'false'
 
 </code></pre>
 

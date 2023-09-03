@@ -15,17 +15,17 @@ description: |
 
 sources:
   - precondition: |
-      SELECT OS From info() WHERE OS = &#x27;linux&#x27;
+      SELECT OS From info() WHERE OS = 'linux'
 
     query: |
       LET zypper_output = SELECT *
         FROM execve(
           length=1000000,
-          argv=[&quot;zypper&quot;, &quot;--xmlout&quot;, &quot;search&quot;, &quot;--installed-only&quot;, &quot;--details&quot;, &quot;--type=package&quot;])
+          argv=["zypper", "--xmlout", "search", "--installed-only", "--details", "--type=package"])
       
       LET xml = parse_xml(
           file=str(str=zypper_output.Stdout),
-          accessor=&quot;data&quot;)
+          accessor="data")
       
       SELECT *
       FROM foreach(

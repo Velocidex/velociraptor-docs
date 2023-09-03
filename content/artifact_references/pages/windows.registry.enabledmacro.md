@@ -18,9 +18,9 @@ description: |
   HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted Documents\TrustRecords reg keys for values ending in FFFFFF7F
   http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html
 
-author: &quot;@mgreen27&quot;
+author: "@mgreen27"
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
  - name: KeyGlob
@@ -35,8 +35,8 @@ sources:
             {
                 SELECT OSPath FROM glob(
                   root=expand(path=Directory),
-                  globs=&quot;/NTUSER.DAT&quot;,
-                  accessor=&quot;auto&quot;)
+                  globs="/NTUSER.DAT",
+                  accessor="auto")
             } as NTUser,
             expand(path=Directory) as Directory
         FROM Artifact.Windows.Sys.Users()
@@ -55,9 +55,9 @@ sources:
             FROM glob(
               globs=KeyGlob,
               root=pathspec(DelegatePath=NTUser),
-              accessor=&quot;raw_reg&quot;)
-            WHERE Data.type =~ &quot;BINARY&quot;
-              and encode(string=Data.value, type=&quot;hex&quot;) =~ &quot;ffffff7f$&quot;
+              accessor="raw_reg")
+            WHERE Data.type =~ "BINARY"
+              and encode(string=Data.value, type="hex") =~ "ffffff7f$"
           })
 
 </code></pre>

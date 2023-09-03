@@ -36,8 +36,8 @@ sources:
     SELECT * FROM if(condition=AlsoDownloadClientConfigs,
     then={
       SELECT *, upload(file=_client_config,
-         accessor=&quot;data&quot;,
-         name=format(format=&quot;client.%s.config.yaml&quot;, args=OrgId || &quot;RootOrg&quot;)) AS ClientConfig
+         accessor="data",
+         name=format(format="client.%s.config.yaml", args=OrgId || "RootOrg")) AS ClientConfig
       FROM orgs()
     }, else={
       SELECT * FROM orgs()

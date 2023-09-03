@@ -30,16 +30,16 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
         LET GetTimestamp(High, Low) = if(condition=High,
                 then=timestamp(winfiletime=High * 4294967296 + Low))
 
         -- lookupSID() may not be available on deaddisk analysis
-        SELECT split(string=Key.OSPath.Basename, sep=&quot;-&quot;)[-1] as Uid,
-           &quot;&quot; AS Gid,
-           lookupSID(sid=Key.OSPath.Basename) || &quot;&quot; AS Name,
+        SELECT split(string=Key.OSPath.Basename, sep="-")[-1] as Uid,
+           "" AS Gid,
+           lookupSID(sid=Key.OSPath.Basename) || "" AS Name,
            Key.OSPath as Description,
            ProfileImagePath as Directory,
            Key.OSPath.Basename as UUID,
@@ -53,7 +53,7 @@ sources:
                 ProfileUnloadTime=GetTimestamp(
                    High=LocalProfileUnloadTimeHigh, Low=LocalProfileUnloadTimeLow)
            ) AS Data
-        FROM read_reg_key(globs=remoteRegKey, accessor=&quot;registry&quot;)
+        FROM read_reg_key(globs=remoteRegKey, accessor="registry")
 
 </code></pre>
 

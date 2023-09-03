@@ -61,20 +61,20 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       -- firstly set timebounds for performance
       LET DateAfterTime &lt;= if(condition=DateAfter,
-        then=timestamp(epoch=DateAfter), else=timestamp(epoch=&quot;1600-01-01&quot;))
+        then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
       LET DateBeforeTime &lt;= if(condition=DateBefore,
-        then=timestamp(epoch=DateBefore), else=timestamp(epoch=&quot;2200-01-01&quot;))
+        then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
-      LET CSVFile &lt;= tempfile(extension=&#x27;.csv&#x27;)
+      LET CSVFile &lt;= tempfile(extension='.csv')
 
       -- Download the binary and create a csv file to write on.
       LET tmp_exe = SELECT OSPath AS BinPath
-      FROM Artifact.Generic.Utils.FetchBinary(ToolName=&quot;NirsoftBrowsingHistoryView64&quot;)
+      FROM Artifact.Generic.Utils.FetchBinary(ToolName="NirsoftBrowsingHistoryView64")
 
       LET results = SELECT CSVFile
       FROM foreach(row=tmp_exe,
@@ -82,14 +82,14 @@ sources:
           SELECT CSVFile,
                  if(condition=AlsoUpload,
                     then=upload(file=CSVFile,
-                                name=&quot;NirsoftBrowsingHistoryView.csv&quot;)) AS Upload
+                                name="NirsoftBrowsingHistoryView.csv")) AS Upload
           FROM execve(argv=[
              BinPath,
-             &quot;/VisitTimeFilterType&quot;, &quot;1&quot;,
-             &quot;/HistorySource&quot;, HistorySource, &quot;/LoadIE&quot;, &quot;1&quot;,
-             &quot;/LoadFirefox&quot;, &quot;1&quot;, &quot;/LoadChrome&quot;, &quot;1&quot;,
-             &quot;/LoadSafari&quot;, &quot;1&quot;,
-             &quot;/scomma&quot;,  CSVFile, &quot;/SaveDirect&quot;])
+             "/VisitTimeFilterType", "1",
+             "/HistorySource", HistorySource, "/LoadIE", "1",
+             "/LoadFirefox", "1", "/LoadChrome", "1",
+             "/LoadSafari", "1",
+             "/scomma",  CSVFile, "/SaveDirect"])
         })
       WHERE Upload OR TRUE
 
@@ -98,7 +98,7 @@ sources:
       query={
         -- This timestamp is in US style time and local time... boo :-(
         SELECT *, timestamp(string=`Visit Time`,
-           format=&quot;1/2/2006 3:04:05 PM&quot;) AS Visited
+           format="1/2/2006 3:04:05 PM") AS Visited
         FROM parse_csv(filename=CSVFile)
       })
       WHERE URL =~ URLRegex AND

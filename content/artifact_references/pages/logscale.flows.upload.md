@@ -62,7 +62,7 @@ parameters:
 sources:
   - query: |
       LET completions = SELECT * FROM watch_monitoring(
-             artifact=&quot;System.Flow.Completion&quot;)
+             artifact="System.Flow.Completion")
              WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       LET documents = SELECT * FROM foreach(row=completions,
@@ -85,7 +85,7 @@ sources:
           apibaseurl=ingestApiBase,
           ingest_token=ingestToken,
           threads=numThreads,
-          tag_fields=split(string=tagFields, sep=&quot;,&quot;),
+          tag_fields=split(string=tagFields, sep=","),
           batching_timeout_ms=batchingTimeoutMs,
           event_batch_size=eventBatchSize,
           http_timeout=httpTimeout,

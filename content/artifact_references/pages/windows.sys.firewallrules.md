@@ -18,36 +18,36 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     query: |
         LET rules = SELECT Name as Value,
                parse_string_with_regex(string=Data,
-                 regex=[&quot;Action=(?P&lt;Action&gt;[^|]+)&quot;,
-                        &quot;Active=(?P&lt;Active&gt;[^|]+)&quot;,
-                        &quot;Dir=(?P&lt;Dir&gt;[^|]+)&quot;,
-                        &quot;Protocol=(?P&lt;Protocol&gt;[^|]+)&quot;,
-                        &quot;LPort=(?P&lt;LPort&gt;[^|]+)&quot;,
-                        &quot;Name=(?P&lt;Name&gt;[^|]+)&quot;,
-                        &quot;Desc=(?P&lt;Desc&gt;[^|]+)&quot;,
-                        &quot;App=(?P&lt;App&gt;[^|]+)&quot;]) as Record,
+                 regex=["Action=(?P&lt;Action&gt;[^|]+)",
+                        "Active=(?P&lt;Active&gt;[^|]+)",
+                        "Dir=(?P&lt;Dir&gt;[^|]+)",
+                        "Protocol=(?P&lt;Protocol&gt;[^|]+)",
+                        "LPort=(?P&lt;LPort&gt;[^|]+)",
+                        "Name=(?P&lt;Name&gt;[^|]+)",
+                        "Desc=(?P&lt;Desc&gt;[^|]+)",
+                        "App=(?P&lt;App&gt;[^|]+)"]) as Record,
                Data,
                OSPath
-        FROM glob(globs=regKey, accessor=&quot;registry&quot;)
+        FROM glob(globs=regKey, accessor="registry")
 
         SELECT Value,
                Record.Name as Name,
-               get(item=Record, field=&quot;Desc&quot;) as Description,
+               get(item=Record, field="Desc") as Description,
                Record.App as App,
-               if(condition=Record.Active =~ &quot;TRUE&quot;, then=&quot;Yes&quot;, else=&quot;No&quot;) as Active,
+               if(condition=Record.Active =~ "TRUE", then="Yes", else="No") as Active,
                Record.Action as Action,
                Record.Dir as Dir,
-               if(condition=Record.Protocol = &quot;6&quot;,
-                  then=&quot;TCP&quot;,
-                  else=if(condition=Record.Protocol = &quot;17&quot;,
-                          then=&quot;UDP&quot;,
+               if(condition=Record.Protocol = "6",
+                  then="TCP",
+                  else=if(condition=Record.Protocol = "17",
+                          then="UDP",
                           else=Record.Protocol)) as Protocol,
                if(condition=Record.LPort = NULL,
-                  then=&quot;Any&quot;,
+                  then="Any",
                   else=Record.LPort) as LPort,
                Record.Name as Name
         FROM rules

@@ -49,12 +49,12 @@ sources:
            then=VirustotalKey,
            else=server_metadata().VirustotalKey)
 
-        LET URL &lt;= &#x27;https://www.virustotal.com/api/v3/files/&#x27; + Hash
+        LET URL &lt;= 'https://www.virustotal.com/api/v3/files/' + Hash
 
         LET Data = SELECT parse_json(data=Content) AS VTData
         FROM http_client(url=URL, headers=dict(`x-apikey`=Creds))
 
-        SELECT format(format=&#x27;%v/%v&#x27;,
+        SELECT format(format='%v/%v',
              args=[VTData.data.attributes.last_analysis_stats.malicious,
                    VTData.data.attributes.last_analysis_stats.malicious +
                    VTData.data.attributes.last_analysis_stats.undetected]) As VTRating,

@@ -85,10 +85,10 @@ parameters:
     type: bool
   - name: DateAfter
     type: timestamp
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: YaraUrl
     description: If configured will attempt to download Yara rules form Url
     type: upload
@@ -98,9 +98,9 @@ parameters:
     default: |
         rule IsELF:TestRule {
            meta:
-              author = &quot;the internet&quot;
-              date = &quot;2021-05-03&quot;
-              description = &quot;A simple ELF rule to test yara features&quot;
+              author = "the internet"
+              date = "2021-05-03"
+              description = "A simple ELF rule to test yara features"
           condition:
              uint32(0) == 0x464c457f
         }
@@ -133,7 +133,7 @@ sources:
 
       -- first find all matching glob
       LET files = SELECT OSPath, Name, Size, Mtime, Atime, Ctime, Btime
-        FROM glob(globs=PathGlob,nosymlink=&#x27;True&#x27;)
+        FROM glob(globs=PathGlob,nosymlink='True')
         WHERE
           NOT IsDir AND NOT IsLink
           AND if(condition=SizeMin,
@@ -158,9 +158,9 @@ sources:
                     Rule, Tags, Meta,
                     String.Name as YaraString,
                     String.Offset as HitOffset,
-                    upload( accessor=&#x27;scope&#x27;,
-                            file=&#x27;String.Data&#x27;,
-                            name=format(format=&quot;%v-%v-%v&quot;,
+                    upload( accessor='scope',
+                            file='String.Data',
+                            name=format(format="%v-%v-%v",
                             args=[
                                 OSPath,
                                 if(condition= String.Offset - ContextBytes &lt; 0,

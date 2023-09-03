@@ -31,7 +31,7 @@ description: |
 
   Maintaining hashes client side allows Velociraptor to answer the
   query - which machine has this hash on our network extremely
-  quickly. Velociraptor only needs to lookup the each client&#x27;s local
+  quickly. Velociraptor only needs to lookup the each client's local
   database of file hashes.
 
   Maintaining this database case be done using this artifact or using
@@ -62,7 +62,7 @@ sources:
 
       LET path &lt;= hash_db[0].OSPath
 
-      LET _ &lt;= log(message=&quot;Will use local hash database &quot; + path)
+      LET _ &lt;= log(message="Will use local hash database " + path)
 
       // Crawl the files and calculate their hashes
       LET files = SELECT OSPath, Size, hash(path=OSPath).MD5 AS Hash
@@ -71,7 +71,7 @@ sources:
 
       LET insertion = SELECT OSPath, Hash, Size, {
          SELECT * FROM sqlite(file=path,
-            query=&quot;INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)&quot;,
+            query="INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)",
             args=[OSPath.String, Hash, now(), Size])
       } AS Insert
       FROM files

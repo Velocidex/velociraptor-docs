@@ -8,16 +8,16 @@ An Event artifact which generates client's CPU and memory statistics.
 
 <pre><code class="language-yaml">
 name: Generic.Client.Stats
-description: An Event artifact which generates client&#x27;s CPU and memory statistics.
+description: An Event artifact which generates client's CPU and memory statistics.
 parameters:
   - name: Frequency
     description: Return stats every this many seconds.
     type: int
-    default: &quot;10&quot;
+    default: "10"
 type: CLIENT_EVENT
 
 sources:
-  - precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+  - precondition: SELECT OS From info() where OS = 'windows'
     query: |
       SELECT *, rate(x=CPU, y=Timestamp) AS CPUPercent
       FROM foreach(
@@ -32,7 +32,7 @@ sources:
            FROM pslist(pid=getpid())
          })
 
-  - precondition: SELECT OS From info() where OS != &#x27;windows&#x27;
+  - precondition: SELECT OS From info() where OS != 'windows'
     query: |
       SELECT *, rate(x=CPU, y=Timestamp) AS CPUPercent
       FROM foreach(
@@ -51,29 +51,29 @@ sources:
 reports:
   - type: SERVER_EVENT
     template: |
-      {{ define &quot;resources&quot; }}
+      {{ define "resources" }}
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source()
            WHERE CPUPercent &gt;= 0
       {{ end }}
 
-      {{ Query &quot;resources&quot; | LineChart &quot;xaxis_mode&quot; &quot;time&quot; &quot;RSS.yaxis&quot; 2 }}
+      {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
 
   - type: MONITORING_DAILY
     template: |
-      {{ define &quot;resources&quot; }}
+      {{ define "resources" }}
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source()
            WHERE CPUPercent &gt;= 0
       {{ end }}
 
-      {{ $client_info := Query &quot;SELECT * FROM clients(client_id=ClientId) LIMIT 1&quot; }}
+      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
 
-      # Client Footprint for {{ Get $client_info &quot;0.os_info.fqdn&quot; }}
+      # Client Footprint for {{ Get $client_info "0.os_info.fqdn" }}
 
-      The client has a client ID of {{ Get $client_info &quot;0.client_id&quot; }}.
+      The client has a client ID of {{ Get $client_info "0.client_id" }}.
       Clients report the Velociraptor process footprint to the
       server every 10 seconds. The data includes the total CPU
       utilization, and the resident memory size used by the client.
@@ -87,7 +87,7 @@ reports:
       substantially.
 
         &lt;div&gt;
-        {{ Query &quot;resources&quot; | LineChart &quot;xaxis_mode&quot; &quot;time&quot; &quot;RSS.yaxis&quot; 2 }}
+        {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
         &lt;/div&gt;
 
       ## VQL Query
@@ -95,7 +95,7 @@ reports:
       The following VQL query was used to plot the graph above.
 
       ```sql
-      {{ template &quot;resources&quot; }}
+      {{ template "resources" }}
       ```
 
       &gt; To learn about managing end point performance with Velociraptor see

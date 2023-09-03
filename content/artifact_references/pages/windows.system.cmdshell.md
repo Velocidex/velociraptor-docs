@@ -46,15 +46,15 @@ required_permissions:
   - EXECVE
 
 precondition:
-  SELECT OS From info() where OS = &#x27;windows&#x27;
+  SELECT OS From info() where OS = 'windows'
 
 parameters:
   - name: Command
-    default: &quot;dir C:\\&quot;
+    default: "dir C:\\"
 
 sources:
   - query: |
-      SELECT * FROM execve(argv=[&quot;cmd.exe&quot;, &quot;/c&quot;, Command])
+      SELECT * FROM execve(argv=["cmd.exe", "/c", Command])
 
 </code></pre>
 

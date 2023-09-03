@@ -86,30 +86,30 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
   - name: ModifiedBefore
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
 
 sources:
   - query: |
       LET SMB_CREDENTIALS &lt;= set(item=dict(), field=ServerName,
-         value=format(format=&quot;%s:%s&quot;, args=[Username, Password]))
+         value=format(format="%s:%s", args=[Username, Password]))
 
       LET file_search = SELECT OSPath,
-               get(item=Data, field=&quot;mft&quot;) as Inode,
+               get(item=Data, field="mft") as Inode,
                Mode.String AS Mode, Size,
                Mtime AS MTime,
                Atime AS ATime,
                Btime AS BTime,
-               Ctime AS CTime, &quot;&quot; AS Keywords,
+               Ctime AS CTime, "" AS Keywords,
                IsDir, Data
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   root=ServerName,
-                  accessor=&quot;smb&quot;)
+                  accessor="smb")
 
       LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
@@ -140,18 +140,18 @@ sources:
                       str(str=String.Data) As Keywords, IsDir, Data
 
                FROM yara(files=OSPath,
-                         key=&quot;A&quot;,
+                         key="A",
                          rules=YaraRule,
-                         accessor=&quot;smb&quot;)
+                         accessor="smb")
             })
         }, else=modified_before)
 
       SELECT OSPath, Inode, Mode, Size, MTime, ATime,
              CTime, BTime, Keywords, IsDir,
                if(condition=Upload_File and NOT IsDir,
-                  then=upload(file=OSPath, accessor=&quot;smb&quot;)) AS Upload,
+                  then=upload(file=OSPath, accessor="smb")) AS Upload,
                if(condition=Calculate_Hash and NOT IsDir,
-                  then=hash(path=OSPath, accessor=&quot;smb&quot;)) AS Hash,
+                  then=hash(path=OSPath, accessor="smb")) AS Hash,
             Data
       FROM keyword_search
 

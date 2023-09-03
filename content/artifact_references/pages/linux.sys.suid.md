@@ -39,7 +39,7 @@ description: |
   privileges. Instead of creating an entry in the sudoers file, which
   must be done by root, any user can specify the setuid or setgid flag
   to be set for their own applications. These bits are indicated with
-  an &quot;s&quot; instead of an &quot;x&quot; when viewing a file&#x27;s attributes via ls
+  an "s" instead of an "x" when viewing a file's attributes via ls
   -l. The chmod program can set these bits with via bitmasking, chmod
   4777 [file] or via shorthand naming, chmod u+s [file].
 
@@ -47,7 +47,7 @@ description: |
   or exploit a vulnerability in an application with the setsuid or
   setgid bits to get code running in a different user’s
   context. Additionally, adversaries can use this mechanism on their
-  own malware to make sure they&#x27;re able to execute in elevated
+  own malware to make sure they're able to execute in elevated
   contexts in the future [2].
 
 reference:
@@ -64,7 +64,7 @@ sources:
                Mtime,
                Sys.Uid AS OwnerID,
                Sys.Gid AS GroupID
-      FROM glob(globs=GlobExpression) WHERE Mode =~ &#x27;^g|u&#x27;
+      FROM glob(globs=GlobExpression) WHERE Mode =~ '^g|u'
 
 </code></pre>
 

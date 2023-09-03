@@ -55,7 +55,7 @@ sources:
           row=processes,
           query={
             SELECT Pid, Name,Exe as _Exe,CommandLine as _CommandLine ,
-                format(format=&#x27;%x-%x&#x27;, args=[ModuleBaseAddress,
+                format(format='%x-%x', args=[ModuleBaseAddress,
                      ModuleBaseAddress+ModuleBaseSize]) AS Range,
                 ModuleName, ExePath as ModulePath
             FROM modules(pid=Pid)

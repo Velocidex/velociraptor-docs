@@ -51,27 +51,27 @@ parameters:
       - ntfs
       - file
   - name: FileRegex
-    description: &quot;Regex search over File Name&quot;
-    default: &quot;.&quot;
+    description: "Regex search over File Name"
+    default: "."
     type: regex
   - name: DateAfter
     type: timestamp
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
 
 sources:
   - query: |
         -- firstly set timebounds for performance
         LET DateAfterTime &lt;= if(condition=DateAfter,
-             then=DateAfter, else=&quot;1600-01-01&quot;)
+             then=DateAfter, else="1600-01-01")
         LET DateBeforeTime &lt;= if(condition=DateBefore,
-            then=DateBefore, else=&quot;2200-01-01&quot;)
+            then=DateBefore, else="2200-01-01")
 
         -- This rule performs an initial reduction for speed, then we
         -- reduce further using other conditions.
-        LET USNYaraRule = &#x27;&#x27;&#x27;rule X {
+        LET USNYaraRule = '''rule X {
             strings:
               // First byte is the record length &lt; 255 second byte should be 0-1 (0-512 bytes per record)
               // Version Major and Minor must be 2 and 0
@@ -81,11 +81,11 @@ sources:
             condition:
               any of them
         }
-        &#x27;&#x27;&#x27;
+        '''
 
         -- Find all the records in the drive.
         LET Hits = SELECT String.Offset AS Offset, parse_binary(
-           filename=USNFile, accessor=Accessor, struct=&quot;USN_RECORD_V2&quot;,
+           filename=USNFile, accessor=Accessor, struct="USN_RECORD_V2",
            profile=USNProfile, offset=String.Offset) AS _Parsed
         FROM yara(files=USNFile, accessor=Accessor,
                   rules=USNYaraRule, number=200000000)

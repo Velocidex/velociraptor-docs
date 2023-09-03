@@ -47,46 +47,46 @@ reports:
   - name: Templates
     type: TEMPLATES
     template: |
-       {{ define &quot;fold_start&quot; }}
-       &lt;div role=&quot;button&quot; class=&quot;btn btn-primary btn-block row collapsible&quot;&gt;View Details&lt;/div&gt;
-       &lt;div class=&quot;collapse row&quot;&gt;&lt;div class=&quot;card card-body overflow-auto&quot;&gt;
+       {{ define "fold_start" }}
+       &lt;div role="button" class="btn btn-primary btn-block row collapsible"&gt;View Details&lt;/div&gt;
+       &lt;div class="collapse row"&gt;&lt;div class="card card-body overflow-auto"&gt;
        {{end}}
-       {{ define &quot;fold_end&quot; }}
+       {{ define "fold_end" }}
        &lt;/div&gt;&lt;/div&gt;
        {{ end }}
 
-       {{ define &quot;hidden_paragraph_start&quot; }}
+       {{ define "hidden_paragraph_start" }}
        {{- if .description -}}
-       &lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;collapsible&quot;&gt;{{ .description }} ...&lt;/a&gt;
+       &lt;div&gt;&lt;a href="#" class="collapsible"&gt;{{ .description }} ...&lt;/a&gt;
        {{- else -}}
-       &lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;collapsible&quot;&gt;More ...&lt;/a&gt;
+       &lt;div&gt;&lt;a href="#" class="collapsible"&gt;More ...&lt;/a&gt;
        {{- end -}}
-       &lt;div class=&quot;collapse&quot;&gt;
+       &lt;div class="collapse"&gt;
        {{end}}
 
-       {{ define &quot;hidden_paragraph_end&quot; }}
+       {{ define "hidden_paragraph_end" }}
        &lt;/div&gt;&lt;/div&gt;
        {{ end }}
 
 
   - type: HTML
     template: |
-      {{ import &quot;Reporting.Default&quot; &quot;Templates&quot; }}
+      {{ import "Reporting.Default" "Templates" }}
 
       &lt;!doctype html&gt;
-       &lt;html lang=&quot;en-US&quot;&gt;
+       &lt;html lang="en-US"&gt;
          &lt;head&gt;
-         {{ $hostinfo := Query &quot;SELECT timestamp(epoch=now()).UTC.String AS Time, \
-             OS, Fqdn FROM info()&quot; | Expand }}
+         {{ $hostinfo := Query "SELECT timestamp(epoch=now()).UTC.String AS Time, \
+             OS, Fqdn FROM info()" | Expand }}
 
-           &lt;meta charset=&quot;utf-8&quot;&gt;
-           &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-           &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+           &lt;meta charset="utf-8"&gt;
+           &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+           &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
 
            &lt;!-- Name of the scan --&gt;
-           &lt;title&gt;{{ Get $hostinfo &quot;0.Fqdn&quot; }} Artifact Collection&lt;/title&gt;
+           &lt;title&gt;{{ Get $hostinfo "0.Fqdn" }} Artifact Collection&lt;/title&gt;
            &lt;style&gt;
-             @charset &quot;UTF-8&quot;;
+             @charset "UTF-8";
            body {
              padding-top: 57px;
            }
@@ -135,7 +135,7 @@ reports:
                color: #FFFFFF;
                font-size: 24px;
                background-color: #00aa00;
-               font-family: Gotham, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;
+               font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
                font-variant: normal;
                padding-top: 15px;
                padding-bottom: 15px;
@@ -218,50 +218,50 @@ reports:
            /* TextWhitespace */  .chromaw { color: #bbbbbb }
 
            &lt;/style&gt;
-           &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+           &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
 
            &lt;!-- Bootstrap core CSS --&gt;
-           &lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css&quot; integrity=&quot;sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh&quot; crossorigin=&quot;anonymous&quot;&gt;
-           &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css&quot; &gt;
+           &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"&gt;
+           &lt;link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" &gt;
 
-           &lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;&gt;&lt;/script&gt;
-           &lt;script src=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js&quot; integrity=&quot;sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-           &lt;script src=&quot;https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js&quot;&gt;&lt;/script&gt;
+           &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
+           &lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"&gt;&lt;/script&gt;
+           &lt;script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"&gt;&lt;/script&gt;
          &lt;/head&gt;
          &lt;body&gt;
-           &lt;nav class=&quot;header navbar navbar-expand-lg navbar-dark fixed-top&quot;&gt;
-             &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot; aria-label=&quot;CyberCX&quot;&gt;
-               &lt;img src=&quot;https://www.velocidex.com/images/logos/velo_word_on_side.svg&quot; class=&quot;logo&quot;/&gt;
+           &lt;nav class="header navbar navbar-expand-lg navbar-dark fixed-top"&gt;
+             &lt;a class="navbar-brand" href="#" aria-label="CyberCX"&gt;
+               &lt;img src="https://www.velocidex.com/images/logos/velo_word_on_side.svg" class="logo"/&gt;
              &lt;/a&gt;
-             &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot;
-                     data-toggle=&quot;collapse&quot;
-                     data-target=&quot;#navbarSupportedContent&quot;
-                     aria-controls=&quot;navbarSupportedContent&quot;
-                     aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;
-               &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
+             &lt;button class="navbar-toggler" type="button"
+                     data-toggle="collapse"
+                     data-target="#navbarSupportedContent"
+                     aria-controls="navbarSupportedContent"
+                     aria-expanded="false" aria-label="Toggle navigation"&gt;
+               &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
              &lt;/button&gt;
-             &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;navbarSupportedContent&quot;&gt;
-               &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
-                 &lt;li class=&quot;nav-item active&quot;&gt;
-                   &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;Top &lt;span class=&quot;sr-only&quot;&gt;(top)&lt;/span&gt;&lt;/a&gt;
+             &lt;div class="collapse navbar-collapse" id="navbarSupportedContent"&gt;
+               &lt;ul class="navbar-nav mr-auto"&gt;
+                 &lt;li class="nav-item active"&gt;
+                   &lt;a class="nav-link" href="#"&gt;Top &lt;span class="sr-only"&gt;(top)&lt;/span&gt;&lt;/a&gt;
                  &lt;/li&gt;
-                 &lt;li class=&quot;nav-item&quot;&gt;
-                   &lt;a class=&quot;nav-link&quot; href=&quot;https://github.com/Velocidex/velociraptor&quot;&gt;GitHub&lt;/a&gt;
+                 &lt;li class="nav-item"&gt;
+                   &lt;a class="nav-link" href="https://github.com/Velocidex/velociraptor"&gt;GitHub&lt;/a&gt;
                  &lt;/li&gt;
-                 &lt;li class=&quot;nav-item&quot;&gt;
-                   &lt;a class=&quot;nav-link&quot; href=&quot;#&quot; id=&quot;print-button&quot;&gt;Print&lt;/a&gt;
+                 &lt;li class="nav-item"&gt;
+                   &lt;a class="nav-link" href="#" id="print-button"&gt;Print&lt;/a&gt;
                  &lt;/li&gt;
 
-                 &lt;li class=&quot;nav-item dropdown&quot;&gt;
-                   &lt;a class=&quot;nav-link dropdown-toggle&quot; href=&quot;#&quot;
-                   id=&quot;navbarDropdown&quot; role=&quot;button&quot;
-                   data-toggle=&quot;dropdown&quot;
-                   aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+                 &lt;li class="nav-item dropdown"&gt;
+                   &lt;a class="nav-link dropdown-toggle" href="#"
+                   id="navbarDropdown" role="button"
+                   data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false"&gt;
                      Artifacts Collected
                    &lt;/a&gt;
-                   &lt;div class=&quot;dropdown-menu&quot; aria-labelledby=&quot;navbarDropdown&quot;&gt;
+                   &lt;div class="dropdown-menu" aria-labelledby="navbarDropdown"&gt;
                      {{ range .parts }}
-                     &lt;a class=&quot;dropdown-item&quot; href=&quot;#{{- .Artifact.Name -}}&quot;&gt;
+                     &lt;a class="dropdown-item" href="#{{- .Artifact.Name -}}"&gt;
                          {{ .Artifact.Name }}
                      &lt;/a&gt;
                      {{ end }}
@@ -271,52 +271,52 @@ reports:
              &lt;/div&gt;
            &lt;/nav&gt;
 
-           &lt;main role=&quot;main&quot; class=&quot;container&quot;&gt;
-             &lt;div class=&quot;row section top-section&quot;&gt;
-               &lt;div class=&quot;col&quot;&gt;
-                 {{ $data := Query &quot;SELECT timestamp(epoch=now()).UTC.String AS Time, OS, Fqdn FROM info()&quot; | Expand }}
-                 {{ Get $hostinfo &quot;0.Fqdn&quot; }} Artifact Collection
+           &lt;main role="main" class="container"&gt;
+             &lt;div class="row section top-section"&gt;
+               &lt;div class="col"&gt;
+                 {{ $data := Query "SELECT timestamp(epoch=now()).UTC.String AS Time, OS, Fqdn FROM info()" | Expand }}
+                 {{ Get $hostinfo "0.Fqdn" }} Artifact Collection
                &lt;/div&gt;
-               &lt;div class=&quot;col&quot;&gt;{{- Get $data &quot;0&quot; -}}&lt;/div&gt;
+               &lt;div class="col"&gt;{{- Get $data "0" -}}&lt;/div&gt;
              &lt;/div&gt;
 
              {{ range .parts }}
 
-             &lt;div class=&quot;&quot;&gt;
-               &lt;a class=&quot;anchor&quot; name=&quot;{{- .Artifact.Name -}}&quot;&gt;&lt;/a&gt;
+             &lt;div class=""&gt;
+               &lt;a class="anchor" name="{{- .Artifact.Name -}}"&gt;&lt;/a&gt;
                &lt;!-- If the artifact has its own report, just include it as is --&gt;
                {{ if .HTML }}
                  {{ .HTML }}
                {{ else }}
                  &lt;!-- Default report in case the artifact does not have one --&gt;
                  &lt;h1&gt;{{ .Artifact.Name }}
-                     &lt;div class=&quot;btn btn-primary-outline float-right&quot;&gt;{{ .Artifact.Author }}
+                     &lt;div class="btn btn-primary-outline float-right"&gt;{{ .Artifact.Author }}
                      &lt;/div&gt;
                  &lt;/h1&gt;
 
                  {{ $name := .Artifact.Name }}
 
-                 {{ template &quot;hidden_paragraph_start&quot; dict &quot;description&quot; &quot;View Artifact Description&quot; }}
+                 {{ template "hidden_paragraph_start" dict "description" "View Artifact Description" }}
                    {{ Markdown .Artifact.Description }}
 
                    {{ if .Artifact.Reference }}
                      &lt;h3&gt;References&lt;/h3&gt;
                      &lt;ul&gt;
                        {{ range .Artifact.Reference }}
-                       &lt;li&gt;&lt;a href=&quot;{{ . }}&quot;&gt;{{ . }}&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href="{{ . }}"&gt;{{ . }}&lt;/a&gt;&lt;/li&gt;
                        {{ end }}
                      &lt;/ul&gt;
                    {{ end }}
-                 {{ template &quot;hidden_paragraph_end&quot; }}
+                 {{ template "hidden_paragraph_end" }}
 
                  {{ range .Artifact.Sources }}
-                    {{ $source := print &quot;source(\n  source=&#x27;&quot; .Name &quot;&#x27;, artifact=&#x27;&quot; $name &quot;&#x27;)&quot; }}
-                    {{ $query := print &quot;SELECT * FROM &quot; $source &quot; \nLIMIT 100&quot; }}
+                    {{ $source := print "source(\n  source='" .Name "', artifact='" $name "')" }}
+                    {{ $query := print "SELECT * FROM " $source " \nLIMIT 100" }}
 
                     &lt;!-- There could be a huge number of rows just to get the count, so we cap at 10000 --&gt;
-                    {{ $count := Get ( Query (print &quot;LET X = SELECT * FROM &quot; $source \
-                       &quot; LIMIT 10000 SELECT 1 AS ALL, count() AS Count FROM X Group BY ALL&quot;) | Expand ) \
-                       &quot;0.Count&quot; }}
+                    {{ $count := Get ( Query (print "LET X = SELECT * FROM " $source \
+                       " LIMIT 10000 SELECT 1 AS ALL, count() AS Count FROM X Group BY ALL") | Expand ) \
+                       "0.Count" }}
 
                     {{ if $count }}
                       {{ if .Name }}
@@ -325,35 +325,35 @@ reports:
                       {{ end }}
 
                       &lt;!-- Show the artifact source if required. --&gt;
-                      {{ template &quot;hidden_paragraph_start&quot; dict &quot;description&quot; &quot;Source&quot; }}
-                      &lt;div class=&quot;row card card-body noprint&quot;&gt;
+                      {{ template "hidden_paragraph_start" dict "description" "Source" }}
+                      &lt;div class="row card card-body noprint"&gt;
                         {{ if .Query }}
-                          {{ Markdown ( print &quot;```vql\n&quot; .Query  &quot;```\n&quot;) }}
+                          {{ Markdown ( print "```vql\n" .Query  "```\n") }}
                         {{ else }}
                           {{ range .Queries }}
-                            {{ Markdown ( print &quot;```vql\n&quot; .  &quot;```\n&quot;) }}
+                            {{ Markdown ( print "```vql\n" .  "```\n") }}
                           {{ end }}
                         {{ end }}
                       &lt;/div&gt;
-                      {{ template &quot;hidden_paragraph_end&quot; }}
+                      {{ template "hidden_paragraph_end" }}
 
                       &lt;!-- If this is a flow show the parameters. --&gt;
-                      {{ $flow := Query &quot;LET X = SELECT Request.Parameters.env AS Env FROM flows(client_id=ClientId, flow_id=FlowId)&quot; \
-                      &quot;SELECT * FROM foreach(row=X[0].Env, query={ SELECT Key, Value FROM scope()})&quot; | Expand }}
+                      {{ $flow := Query "LET X = SELECT Request.Parameters.env AS Env FROM flows(client_id=ClientId, flow_id=FlowId)" \
+                      "SELECT * FROM foreach(row=X[0].Env, query={ SELECT Key, Value FROM scope()})" | Expand }}
                       {{ if $flow }}
-                        {{ template &quot;hidden_paragraph_start&quot; dict &quot;description&quot; &quot;Parameters&quot; }}
-                        &lt;div class=&quot;row card card-body noprint&quot;&gt;
+                        {{ template "hidden_paragraph_start" dict "description" "Parameters" }}
+                        &lt;div class="row card card-body noprint"&gt;
                           &lt;h3&gt; Parameters &lt;/h3&gt;
 
-                          &lt;table class=&quot;table&quot;&gt;&lt;thead&gt;&lt;th&gt;Key&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/thead&gt;
+                          &lt;table class="table"&gt;&lt;thead&gt;&lt;th&gt;Key&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/thead&gt;
                             &lt;tbody&gt;
                               {{ range $flow }}
-                                &lt;tr&gt;&lt;td&gt;{{ Get . &quot;Key&quot; }}&lt;/td&gt;&lt;td&gt;{{ Get . &quot;Value&quot; }}&lt;/td&gt;&lt;/tr&gt;
+                                &lt;tr&gt;&lt;td&gt;{{ Get . "Key" }}&lt;/td&gt;&lt;td&gt;{{ Get . "Value" }}&lt;/td&gt;&lt;/tr&gt;
                               {{ end }}
                             &lt;/tbody&gt;
                           &lt;/table&gt;
                         &lt;/div&gt;
-                        {{ template &quot;hidden_paragraph_end&quot; }}
+                        {{ template "hidden_paragraph_end" }}
                       {{ end }}
 
                       {{ if gt $count 9999 }}
@@ -362,14 +362,14 @@ reports:
                         &lt;p&gt;The source retrieved a total of {{ $count }} rows.&lt;/p&gt;
                       {{ end }}
 
-                      {{ template &quot;fold_start&quot; }}
-                      &lt;div class=&quot;noprint&quot;&gt;
+                      {{ template "fold_start" }}
+                      &lt;div class="noprint"&gt;
                         &lt;p&gt; Below you will find a table of the first 100 rows, obtained by the VQL query:
                         &lt;/p&gt;
-                        {{ Markdown (print &quot;```vql\n&quot; $query &quot;\n```\n&quot; ) }}
+                        {{ Markdown (print "```vql\n" $query "\n```\n" ) }}
                       &lt;/div&gt;
                       {{ Query $query | Table }}
-                      {{ template &quot;fold_end&quot; }}
+                      {{ template "fold_end" }}
 
                     {{ else }}
                       &lt;p&gt;No rows returned&lt;/p&gt;
@@ -381,20 +381,20 @@ reports:
            {{ end }}
            &lt;/main&gt;
            &lt;script&gt;
-             $(&quot;.collapsible&quot;).click(function() {
-               $(this).next().toggle(&quot;slow&quot;);
+             $(".collapsible").click(function() {
+               $(this).next().toggle("slow");
                try {
-                 $(&quot;table.table-striped&quot;).DataTable().columns.adjust();
+                 $("table.table-striped").DataTable().columns.adjust();
                } catch(e) {
 
                };
              });
 
-             $(&quot;#print-button&quot;).click(function() {
-                $(&quot;.collapse&quot;).removeClass(&quot;collapse&quot;);
-                $(&#x27;table.table-striped&#x27;).DataTable().destroy();
-                $(&quot;.collapsible&quot;).hide();
-                $(&quot;.noprint&quot;).hide();
+             $("#print-button").click(function() {
+                $(".collapse").removeClass("collapse");
+                $('table.table-striped').DataTable().destroy();
+                $(".collapsible").hide();
+                $(".noprint").hide();
                 setTimeout(function() {
                    window.print();
                    location.reload();
@@ -403,10 +403,10 @@ reports:
 
              $(document).ready( function () {
                 try {
-                   $(&#x27;table.table-striped&#x27;).DataTable({
-                      &quot;scrollY&quot;: 400,
-                      &quot;scrollX&quot;: true,
-                      &quot;autoWidth&quot;: false,
+                   $('table.table-striped').DataTable({
+                      "scrollY": 400,
+                      "scrollX": true,
+                      "autoWidth": false,
                    });
                 } catch(e) {};
              });

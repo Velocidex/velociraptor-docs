@@ -34,14 +34,14 @@ description: |
   MacOS users.
 
   MacOS filesystem can represent extended attributes. Similarly to
-  Windows&#x27;s ZoneIdentifier, when a file is downloaded on MacOS it also
+  Windows's ZoneIdentifier, when a file is downloaded on MacOS it also
   receives an extended attribute recording where the file was
   downloaded from. (See the `Windows.Analysis.EvidenceOfDownload`
   artifact)
 
   What makes MacOS different however, is that when a user adds a file
   to a Zip file (in Finder, right click the file and select
-  &quot;compress&quot;), MacOS will also record the extended attributes in the
+  "compress"), MacOS will also record the extended attributes in the
   zip file under the __MACOSX folder.
 
   This is a huge privacy leak because people often do not realize that
@@ -65,73 +65,73 @@ export: |
     -- Offsets are aligned to 4 bytes
     LET Align(value) = value + value - int(int=value / 4) * 4
 
-    LET Profile = &#x27;&#x27;&#x27;[
-    [&quot;Header&quot;, 0, [
-      [&quot;Magic&quot;, 0, &quot;uint32b&quot;],
-      [&quot;Version&quot;, 4, &quot;uint32b&quot;],
-      [&quot;Filler&quot;, 8, &quot;String&quot;, {
+    LET Profile = '''[
+    ["Header", 0, [
+      ["Magic", 0, "uint32b"],
+      ["Version", 4, "uint32b"],
+      ["Filler", 8, "String", {
           length: 16,
       }],
-      [&quot;Count&quot;, 24, &quot;uint16b&quot;],
-      [&quot;Items&quot;, 26, &quot;Array&quot;, {
-          count: &quot;x=&gt;x.Count&quot;,
-          type: &quot;Entry&quot;,
+      ["Count", 24, "uint16b"],
+      ["Items", 26, "Array", {
+          count: "x=&gt;x.Count",
+          type: "Entry",
       }],
-      [&quot;attr_header&quot;, 84, &quot;attr_header&quot;]
+      ["attr_header", 84, "attr_header"]
     ]],
-    [&quot;Entry&quot;, 12, [
-      [&quot;ID&quot;, 0, &quot;uint32b&quot;],
-      [&quot;Offset&quot;, 4, &quot;uint32b&quot;],
-      [&quot;Length&quot;, 8, &quot;uint32b&quot;],
-      [&quot;Value&quot;, 0, &quot;Profile&quot;, {
-           type: &quot;ASFinderInfo&quot;,
-           offset: &quot;x=&gt;x.Offset&quot;,
+    ["Entry", 12, [
+      ["ID", 0, "uint32b"],
+      ["Offset", 4, "uint32b"],
+      ["Length", 8, "uint32b"],
+      ["Value", 0, "Profile", {
+           type: "ASFinderInfo",
+           offset: "x=&gt;x.Offset",
       }]
     ]],
-    [&quot;attr_header&quot;, 0, [
+    ["attr_header", 0, [
 
       # Should be ATTR
-      [&quot;Magic&quot;, 0, &quot;String&quot;, {
+      ["Magic", 0, "String", {
           length: 4,
       }],
 
-      [&quot;total_size&quot;, 8, &quot;uint32b&quot;],
-      [&quot;data_start&quot;, 12, &quot;uint32b&quot;],
-      [&quot;data_length&quot;,16, &quot;uint32b&quot;],
-      [&quot;flags&quot;, 32, &quot;uint16b&quot;],
-      [&quot;num_attr&quot;, 34, &quot;uint16b&quot;],
-      [&quot;attrs&quot;, 36, &quot;Array&quot;, {
-          count: &quot;x=&gt;x.num_attr&quot;,
-          type: &quot;attr_t&quot;,
+      ["total_size", 8, "uint32b"],
+      ["data_start", 12, "uint32b"],
+      ["data_length",16, "uint32b"],
+      ["flags", 32, "uint16b"],
+      ["num_attr", 34, "uint16b"],
+      ["attrs", 36, "Array", {
+          count: "x=&gt;x.num_attr",
+          type: "attr_t",
       }]
     ]],
-    [&quot;attr_t&quot;, &quot;x=&gt;Align(value=x.name_length + 11)&quot;, [
-     [&quot;offset&quot;, 0, &quot;uint32b&quot;],
-     [&quot;length&quot;, 4, &quot;uint32b&quot;],
-     [&quot;flags&quot;, 8, &quot;uint16b&quot;],
-     [&quot;name_length&quot;, 10, &quot;uint8&quot;],
-     [&quot;name&quot;, 11, &quot;String&quot;, {
-         length: &quot;x=&gt;x.name_length&quot;,
+    ["attr_t", "x=&gt;Align(value=x.name_length + 11)", [
+     ["offset", 0, "uint32b"],
+     ["length", 4, "uint32b"],
+     ["flags", 8, "uint16b"],
+     ["name_length", 10, "uint8"],
+     ["name", 11, "String", {
+         length: "x=&gt;x.name_length",
      }],
-     [&quot;data&quot;, 0, &quot;Profile&quot;, {
-        type: &quot;String&quot;,
+     ["data", 0, "Profile", {
+        type: "String",
         type_options: {
-            term: &quot;&quot;,
-            length: &quot;x=&gt;x.length&quot;,
+            term: "",
+            length: "x=&gt;x.length",
         },
-        offset: &quot;x=&gt;x.offset&quot;,
+        offset: "x=&gt;x.offset",
      }]
     ]]
     ]
-    &#x27;&#x27;&#x27;
+    '''
 
-    LET ParseData(data) = if(condition=data =~ &quot;^bplist&quot;,
-         then=plist(accessor=&quot;data&quot;, file=data), else=data)
+    LET ParseData(data) = if(condition=data =~ "^bplist",
+         then=plist(accessor="data", file=data), else=data)
 
     LET ParseAppleDouble(double_data) = SELECT name AS Key, ParseData(data=data) AS Value
        FROM foreach(row=parse_binary(
-            filename=double_data, accessor=&quot;data&quot;,
-            profile=Profile, struct=&quot;Header&quot;).attr_header.attrs)
+            filename=double_data, accessor="data",
+            profile=Profile, struct="Header").attr_header.attrs)
 
 sources:
  - query: |
@@ -141,8 +141,8 @@ sources:
      }, query={
         SELECT OSPath, pathspec(parse=OSPath) AS PathSpec
         FROM glob(
-             globs=&quot;__MACOSX/**&quot;,
-             accessor=&quot;zip&quot;,
+             globs="__MACOSX/**",
+             accessor="zip",
              root=pathspec(DelegatePath=ZipPath))
      })
 
@@ -151,7 +151,7 @@ sources:
        SELECT PathSpec.DelegatePath AS ZipFile,
               PathSpec.Path AS Member,
               Key, Value
-       FROM ParseAppleDouble(double_data=read_file(filename=OSPath, accessor=&quot;zip&quot;))
+       FROM ParseAppleDouble(double_data=read_file(filename=OSPath, accessor="zip"))
      })
 
 </code></pre>

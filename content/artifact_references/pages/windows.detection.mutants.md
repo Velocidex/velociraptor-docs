@@ -40,7 +40,7 @@ sources:
           row=processes,
           query={
             SELECT ProcPid, ProcName, Exe, Type, Name, Handle
-            FROM handles(pid=ProcPid, types=&quot;Mutant&quot;)
+            FROM handles(pid=ProcPid, types="Mutant")
           })
         WHERE Name =~ MutantNameRegex
             AND if(condition= MutantWhitelistRegex,
@@ -51,7 +51,7 @@ sources:
     description: Reveals all Mutant objects in the Windows Object Manager namespace.
     query: |
         SELECT Name, Type FROM winobj()
-        WHERE Type = &#x27;Mutant&#x27; AND Name =~ MutantNameRegex
+        WHERE Type = 'Mutant' AND Name =~ MutantNameRegex
             AND if(condition= MutantWhitelistRegex,
                 then= NOT Name =~ MutantWhitelistRegex,
                 else= True )

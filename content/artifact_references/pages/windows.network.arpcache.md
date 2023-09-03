@@ -21,38 +21,38 @@ parameters:
   - name: kMapOfState
     default: |
      {
-      &quot;0&quot;: &quot;Unreachable&quot;,
-      &quot;1&quot;: &quot;Incomplete&quot;,
-      &quot;2&quot;: &quot;Probe&quot;,
-      &quot;3&quot;: &quot;Delay&quot;,
-      &quot;4&quot;: &quot;Stale&quot;,
-      &quot;5&quot;: &quot;Reachable&quot;,
-      &quot;6&quot;: &quot;Permanent&quot;,
-      &quot;7&quot;: &quot;TBD&quot;
+      "0": "Unreachable",
+      "1": "Incomplete",
+      "2": "Probe",
+      "3": "Delay",
+      "4": "Stale",
+      "5": "Reachable",
+      "6": "Permanent",
+      "7": "TBD"
      }
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     query: |
         LET interfaces &lt;=
           SELECT Index, HardwareAddr, IP
           FROM Artifact.Windows.Network.InterfaceAddresses()
 
         LET arp_cache = SELECT if(condition=AddressFamily=23,
-                    then=&quot;IPv6&quot;,
+                    then="IPv6",
                   else=if(condition=AddressFamily=2,
-                    then=&quot;IPv4&quot;,
+                    then="IPv4",
                   else=AddressFamily)) as AddressFamily,
 
                if(condition=Store=0,
-                    then=&quot;Persistent&quot;,
+                    then="Persistent",
                   else=if(condition=(Store=1),
-                    then=&quot;Active&quot;,
-                  else=&quot;?&quot;)) as Store,
+                    then="Active",
+                  else="?")) as Store,
 
                get(item=parse_json(data=kMapOfState),
-                   member=encode(string=State, type=&#x27;string&#x27;)) AS State,
+                   member=encode(string=State, type='string')) AS State,
                InterfaceIndex, IPAddress,
                InterfaceAlias, LinkLayerAddress
             FROM wmi(query=wmiQuery, namespace=wmiNamespace)

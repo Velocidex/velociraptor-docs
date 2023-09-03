@@ -36,7 +36,7 @@ parameters:
 
 sources:
  - precondition:
-     SELECT OS from info() where OS = &quot;windows&quot;
+     SELECT OS from info() where OS = "windows"
 
    query: |
         SELECT System.TimeCreated.SystemTime as Timestamp,

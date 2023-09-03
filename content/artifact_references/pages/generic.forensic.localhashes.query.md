@@ -29,7 +29,7 @@ description: |
   like this:
 
   ```
-  .\velociraptor.exe -v artifacts collect Generic.Forensic.LocalHashes.Query --args &quot;Hashes=Hash`ne6c1ce56e6729a0b077c0f2384726b30&quot;
+  .\velociraptor.exe -v artifacts collect Generic.Forensic.LocalHashes.Query --args "Hashes=Hash`ne6c1ce56e6729a0b077c0f2384726b30"
   ```
 
 parameters:
@@ -59,7 +59,7 @@ sources:
         SELECT lowcase(string=strip(string=Hash)) AS Hash
         FROM Hashes
       }, b={
-        SELECT * FROM foreach(row=split(string=CommaDelimitedHashes, sep=&quot;,&quot;),
+        SELECT * FROM foreach(row=split(string=CommaDelimitedHashes, sep=","),
         query={
            SELECT lowcase(string=strip(string=_value)) AS Hash FROM scope()
         })
@@ -70,7 +70,7 @@ sources:
          SELECT path AS Path, md5 AS MD5, size AS Size,
                 timestamp(epoch=time) AS Timestamp
          FROM sqlite(file=hash_db[0].OSPath,
-                     query=&quot;SELECT path, md5, size, timestamp AS time FROM hashes WHERE md5 = ?&quot;,
+                     query="SELECT path, md5, size, timestamp AS time FROM hashes WHERE md5 = ?",
                      args=Hash)
       })
 

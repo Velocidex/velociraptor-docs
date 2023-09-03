@@ -63,7 +63,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       -- obtain hostname for output prefix
@@ -71,7 +71,7 @@ sources:
 
       -- get context on target binary
       LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
-                    ToolName=&quot;SharpHound&quot;)
+                    ToolName="SharpHound")
 
 
       -- build tempfolder for output
@@ -79,15 +79,15 @@ sources:
 
 
       -- execute payload
-      LET deploy = SELECT * FROM execve(argv=[payload.OSPath[0],&#x27;--outputdirectory&#x27;,
-                tempfolder,&#x27;--nozip&#x27;,&#x27;--outputprefix&#x27;,hostname.Fqdn[0] ])
+      LET deploy = SELECT * FROM execve(argv=[payload.OSPath[0],'--outputdirectory',
+                tempfolder,'--nozip','--outputprefix',hostname.Fqdn[0] ])
 
 
       -- remove payload if selected
       LET remove &lt;= SELECT * FROM if(condition=RemovePayload,
                 then={
-                    SELECT * FROM execve(argv=[&#x27;powershell&#x27;,&#x27;Remove-Item&#x27;,
-                                            payload.OSPath[0],&#x27;-Force&#x27; ])
+                    SELECT * FROM execve(argv=['powershell','Remove-Item',
+                                            payload.OSPath[0],'-Force' ])
                 })
 
 
@@ -95,7 +95,7 @@ sources:
       SELECT * FROM if(condition= deploy.ReturnCode[0]= 0,
         then={
             SELECT Name, upload(file=OSPath,name=Name)
-            FROM glob(globs=&quot;/*.json&quot;, root=tempfolder)
+            FROM glob(globs="/*.json", root=tempfolder)
         },
         else=deploy)
 

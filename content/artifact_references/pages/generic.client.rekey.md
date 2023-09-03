@@ -24,7 +24,7 @@ quickly.
 <pre><code class="language-yaml">
 name: Generic.Client.Rekey
 description: |
-  This artifact forces the client to reinitialize it&#x27;s client id.
+  This artifact forces the client to reinitialize it's client id.
 
   It is normally not needed! You will want to use this artifact in
   very specific situation, such as the Velociraptor service was
@@ -47,7 +47,7 @@ parameters:
   - name: Wait
     description: Wait this long before restarting the client.
     type: int
-    default: &#x27;10&#x27;
+    default: '10'
 
 sources:
   - query:

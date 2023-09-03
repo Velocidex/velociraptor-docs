@@ -14,7 +14,7 @@ description: |
 
 type: CLIENT_EVENT
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 tools:
   - name: SysmonBinary
@@ -40,8 +40,8 @@ sources:
     // because it is a little bit faster.
     SELECT System.ID AS ID,
            System.TimeStamp AS Timestamp,
-           get(member=&#x27;EventData&#x27;) AS EventData
-    FROM watch_etw(guid=&#x27;{5770385f-c22a-43e0-bf4c-06f5698ffbd9}&#x27;)
+           get(member='EventData') AS EventData
+    FROM watch_etw(guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
 
 </code></pre>
 

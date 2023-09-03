@@ -90,15 +90,15 @@ description: |
   .. code-block:: json
 
       {
-        &quot;Count&quot;: 5,
-        &quot;FailedTime&quot;: [
+        "Count": 5,
+        "FailedTime": [
           1549527272,
           1549527273,
           1549527274,
           1549527275,
           1549527276
         ],
-        &quot;SuccessTime&quot;: 1549527277
+        "SuccessTime": 1549527277
       }
 
   Of course in the real artifact we would want to include more

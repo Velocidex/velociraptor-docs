@@ -11,7 +11,7 @@ name: Windows.Network.ListeningPorts
 description: Processes with listening (bound) network sockets/ports.
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     query: |
         LET process &lt;= SELECT Name, Pid from pslist()
 
@@ -20,7 +20,7 @@ sources:
             SELECT Pid AS PortPid, Laddr.Port AS Port,
                    TypeString as Protocol, FamilyString as Family,
                    Laddr.IP as Address
-            FROM netstat() where Status = &#x27;LISTEN&#x27;
+            FROM netstat() where Status = 'LISTEN'
           },
           query={
             SELECT Pid, Name, Port, Protocol, Family, Address

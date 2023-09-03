@@ -26,134 +26,134 @@ parameters:
 export: |
         -- Parser for MAC Bookmark format
         LET type_lookup &lt;= dict(
-           `0x100`=&quot;__DataString&quot;,
-           `0x200`=&quot;__DataData&quot;,
-           `0x300`=&quot;__DataUint32&quot;,
-           `0x400`=&quot;__DataDate&quot;,
-           `0x500`=&quot;__DataBool&quot;,
-           `0x600`=&quot;__DataArray&quot;,
-           `0x700`=&quot;__DataDict&quot;,
-           `0x800`=&quot;__DataUUID&quot;,
-           `0x900`=&quot;__DataURL&quot;
+           `0x100`="__DataString",
+           `0x200`="__DataData",
+           `0x300`="__DataUint32",
+           `0x400`="__DataDate",
+           `0x500`="__DataBool",
+           `0x600`="__DataArray",
+           `0x700`="__DataDict",
+           `0x800`="__DataUUID",
+           `0x900`="__DataURL"
            )
 
         LET MRULookup &lt;= dict(
-           `0x2040`=&quot;Volume Bookmark&quot;,
-           `0x2002`=&quot;Volume Path&quot;,
-           `0x2020`=&quot;Volume Flags&quot;,
-           `0x2030`=&quot;Volume is Root FS&quot;,
-           `0x2011`=&quot;Volume UUID&quot;,
-           `0x2012`=&quot;Volume Size&quot;,
-           `0x2013`=&quot;Volume Creation Date&quot;,
-           `0x2005`=&quot;Volume URL&quot;,
-           `0x2040`=&quot;Volume Bookmark&quot;,
-           `0x2050`=&quot;Volume Mount Point&quot;,
-           `0xf080`=&quot;Security Extension&quot;,
-           `0xf081`=&quot;Security Extension&quot;,
-           `0x1004`=&quot;Target Path&quot;,
-           `0x1005`=&quot;Target CNID Path&quot;,
-           `0xc001`=&quot;Containing Folder Index&quot;,
-           `0x1040`=&quot;Target Creation Date&quot;,
-           `0x1010`=&quot;Target Flags&quot;,
-           `0x1020`=&quot;Target Filename&quot;,
-           `0xc011`=&quot;Creator Username&quot;,
-           `0xc012`=&quot;Creator UID&quot;
+           `0x2040`="Volume Bookmark",
+           `0x2002`="Volume Path",
+           `0x2020`="Volume Flags",
+           `0x2030`="Volume is Root FS",
+           `0x2011`="Volume UUID",
+           `0x2012`="Volume Size",
+           `0x2013`="Volume Creation Date",
+           `0x2005`="Volume URL",
+           `0x2040`="Volume Bookmark",
+           `0x2050`="Volume Mount Point",
+           `0xf080`="Security Extension",
+           `0xf081`="Security Extension",
+           `0x1004`="Target Path",
+           `0x1005`="Target CNID Path",
+           `0xc001`="Containing Folder Index",
+           `0x1040`="Target Creation Date",
+           `0x1010`="Target Flags",
+           `0x1020`="Target Filename",
+           `0xc011`="Creator Username",
+           `0xc012`="Creator UID"
         )
 
-        LET BookmarkProfile = &#x27;&#x27;&#x27;[
-         [&quot;Header&quot;, 0, [
-          [&quot;Magic&quot;, 0, &quot;String&quot;, {
+        LET BookmarkProfile = '''[
+         ["Header", 0, [
+          ["Magic", 0, "String", {
               length: 4,
           }],
-          [&quot;Size&quot;, 4, &quot;uint32&quot;],
-          [&quot;HeaderSize&quot;, 12, &quot;uint32&quot;],
-          [&quot;TOCOffset&quot;, &quot;x=&gt;x.HeaderSize&quot;, &quot;uint32&quot;],
-          [&quot;TOC&quot;, &quot;x=&gt;x.TOCOffset + x.HeaderSize&quot;, &quot;TOC&quot;]
+          ["Size", 4, "uint32"],
+          ["HeaderSize", 12, "uint32"],
+          ["TOCOffset", "x=&gt;x.HeaderSize", "uint32"],
+          ["TOC", "x=&gt;x.TOCOffset + x.HeaderSize", "TOC"]
          ]],
-         [&quot;TOC&quot;, 0, [
-          [&quot;SizeOfTOC&quot;, 0, &quot;uint32&quot;],
-          [&quot;Magic&quot;, 4, &quot;uint32&quot;],
-          [&quot;TOCId&quot;, 8, &quot;uint32&quot;],
-          [&quot;NextTOC&quot;, 12, &quot;uint32&quot;],
-          [&quot;TOCCount&quot;, 16, &quot;uint32&quot;],
-          [&quot;Items&quot;, 20, &quot;Array&quot;, {
-              type: &quot;TOCItem&quot;,
-              count: &quot;x=&gt;x.TOCCount&quot;,
+         ["TOC", 0, [
+          ["SizeOfTOC", 0, "uint32"],
+          ["Magic", 4, "uint32"],
+          ["TOCId", 8, "uint32"],
+          ["NextTOC", 12, "uint32"],
+          ["TOCCount", 16, "uint32"],
+          ["Items", 20, "Array", {
+              type: "TOCItem",
+              count: "x=&gt;x.TOCCount",
           }]
          ]],
-         [&quot;__TOCArrayPtr&quot;, 4, [
-          [&quot;Offset&quot;, 0, &quot;uint32&quot;],
-          [&quot;Item&quot;, 0, &quot;Profile&quot;, {
-            type: &quot;TOCValue&quot;,
-            offset: &quot;x=&gt;x.Offset + 48&quot;
+         ["__TOCArrayPtr", 4, [
+          ["Offset", 0, "uint32"],
+          ["Item", 0, "Profile", {
+            type: "TOCValue",
+            offset: "x=&gt;x.Offset + 48"
            }]
          ]],
-         [&quot;TOCValue&quot;, 0, [
-           [&quot;MyOffset&quot;, 0, &quot;Value&quot;, {
-               value: &quot;x=&gt;x.StartOf&quot;,
+         ["TOCValue", 0, [
+           ["MyOffset", 0, "Value", {
+               value: "x=&gt;x.StartOf",
            }],
-           [&quot;length&quot;, 0, &quot;uint32&quot;],
-           [&quot;subtype&quot;, 4, &quot;BitField&quot;, {
-               type: &quot;uint32&quot;,
+           ["length", 0, "uint32"],
+           ["subtype", 4, "BitField", {
+               type: "uint32",
                start_bit: 0,
                end_bit: 8,
             }],
-            [&quot;data_type&quot;, 4, &quot;BitField&quot;, {
-               type: &quot;uint32&quot;,
+            ["data_type", 4, "BitField", {
+               type: "uint32",
                start_bit: 8,
                end_bit: 32,
             }],
-            [&quot;data&quot;, 0, &quot;Value&quot;, {
-               value: &quot;x=&gt;get(item=x, field=get(item=type_lookup, field=format(format=&#x27;%#x&#x27;, args=x.data_type)))&quot;,
+            ["data", 0, "Value", {
+               value: "x=&gt;get(item=x, field=get(item=type_lookup, field=format(format='%#x', args=x.data_type)))",
             }],
-            [&quot;__DataString&quot;, 8, &quot;String&quot;, {
-               length: &quot;x=&gt;x.length&quot;,
-               term: &quot;&quot;,
+            ["__DataString", 8, "String", {
+               length: "x=&gt;x.length",
+               term: "",
             }],
-            [&quot;__DataData&quot;, 0, &quot;Value&quot;, {
-               value: &quot;x=&gt;format(format=&#x27;%x&#x27;, args=x.__DataStr)&quot;,
+            ["__DataData", 0, "Value", {
+               value: "x=&gt;format(format='%x', args=x.__DataStr)",
             }],
-            [&quot;__DataDateFloat&quot;, 8, &quot;float64be&quot;],
-            [&quot;__DataDate&quot;, 0, &quot;Value&quot;, {
-               value: &quot;x=&gt;timestamp(cocoatime=x.__DataDateFloat)&quot;,
+            ["__DataDateFloat", 8, "float64be"],
+            ["__DataDate", 0, "Value", {
+               value: "x=&gt;timestamp(cocoatime=x.__DataDateFloat)",
             }],
-            [&quot;__DataUint32&quot;, 8, &quot;uint32&quot;],
-            [&quot;__DataBool&quot;, 0, &quot;Value&quot;, {
-                value: &quot;x=&gt;if(condition=x.subtype, then=TRUE, else=FALSE)&quot;,
+            ["__DataUint32", 8, "uint32"],
+            ["__DataBool", 0, "Value", {
+                value: "x=&gt;if(condition=x.subtype, then=TRUE, else=FALSE)",
             }],
-            [&quot;__DataURL&quot;, 0, &quot;Value&quot;, {
-               value: &quot;x=&gt;x.__DataString&quot;,
+            ["__DataURL", 0, "Value", {
+               value: "x=&gt;x.__DataString",
             }],
-            [&quot;__DataArrayOffsets&quot;, 8, &quot;Array&quot;, {
-               count: &quot;x=&gt;x.length / 4&quot;,
-               type: &quot;__TOCArrayPtr&quot;
+            ["__DataArrayOffsets", 8, "Array", {
+               count: "x=&gt;x.length / 4",
+               type: "__TOCArrayPtr"
             }],
-            [&quot;__DataArray&quot;, 0, &quot;Value&quot;, {
-               value: &quot;x=&gt;x.__DataArrayOffsets.Item.data&quot;,
+            ["__DataArray", 0, "Value", {
+               value: "x=&gt;x.__DataArrayOffsets.Item.data",
             }],
          ]],
-         [&quot;TOCItem&quot;, 12, [
-           [&quot;ID&quot;, 0, &quot;uint32&quot;],
-           [&quot;Offset&quot;, 4, &quot;uint32&quot;],
-           [&quot;TOCValue&quot;, &quot;x=&gt;x.Offset + 48 - x.StartOf&quot;, &quot;TOCValue&quot;],
+         ["TOCItem", 12, [
+           ["ID", 0, "uint32"],
+           ["Offset", 4, "uint32"],
+           ["TOCValue", "x=&gt;x.Offset + 48 - x.StartOf", "TOCValue"],
          ]]
         ]
-        &#x27;&#x27;&#x27;
+        '''
 
         LET ParseBookmark(Bookmark) =
            SELECT _value.name AS Name,
-                  get(item=MRULookup, field=format(format=&quot;%#x&quot;, args=ID)) AS Field,
-                  format(format=&quot;%#x&quot;, args=ID) AS FieldID,
-                  format(format=&quot;%#x&quot;, args=TOCValue.data_type) AS data_type,
-                  regex_replace(re=&quot;__Data&quot;, replace=&quot;&quot;,
+                  get(item=MRULookup, field=format(format="%#x", args=ID)) AS Field,
+                  format(format="%#x", args=ID) AS FieldID,
+                  format(format="%#x", args=TOCValue.data_type) AS data_type,
+                  regex_replace(re="__Data", replace="",
                         source=get(item=type_lookup,
-                        field=format(format=&quot;%#x&quot;,
+                        field=format(format="%#x",
                               args=TOCValue.data_type))) AS type,
                   TOCValue.data AS data
 
            FROM foreach(row=parse_binary(
-                        accessor=&quot;data&quot;, filename=Bookmark,
-                        profile=BookmarkProfile, struct=&quot;Header&quot;).TOC.Items)
+                        accessor="data", filename=Bookmark,
+                        profile=BookmarkProfile, struct="Header").TOC.Items)
 
 sources:
   - query: |

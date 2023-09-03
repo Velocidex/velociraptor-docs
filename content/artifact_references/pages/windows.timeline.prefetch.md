@@ -29,7 +29,7 @@ description: |
   the last 8 execution times and creation time (9 potential executions).
 
   This artifact is a timelined output version of the standard Prefetch
-  artifact. There are several parameter&#x27;s availible.
+  artifact. There are several parameter's availible.
     - dateAfter enables search for prefetch evidence after this date.
     - dateBefore enables search for prefetch evidence before this date.
     - binaryRegex enables to filter on binary name, e.g evil.exe.
@@ -42,19 +42,19 @@ parameters:
     - name: prefetchGlobs
       default: C:\Windows\Prefetch\*.pf
     - name: dateAfter
-      description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
       type: timestamp
     - name: dateBefore
-      description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
       type: timestamp
     - name: binaryRegex
-      description: &quot;Regex of executable name.&quot;
+      description: "Regex of executable name."
       type: regex
     - name: hashRegex
-      description: &quot;Regex of prefetch hash.&quot;
+      description: "Regex of prefetch hash."
       type: regex
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
@@ -118,8 +118,8 @@ sources:
       LET flatOutput = SELECT
                     ExecutionTime as event_time,
                     hostname.Fqdn[0] as hostname,
-                    &quot;Prefetch&quot; as parser,
-                    &quot;Evidence of Execution: &quot; + Executable + format(format=&quot; Prefetch run count %v&quot;, args=RunCount) as message,
+                    "Prefetch" as parser,
+                    "Evidence of Execution: " + Executable + format(format=" Prefetch run count %v", args=RunCount) as message,
                     FilteredPath as source,
                     Executable as file_name,
                     CreationTime as prefetch_ctime,

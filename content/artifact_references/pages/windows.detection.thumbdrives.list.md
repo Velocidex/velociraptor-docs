@@ -40,20 +40,20 @@ parameters:
   - name: maxDriveSize
     type: int
     description: We ignore removable drives larger than this size in bytes.
-    default: &quot;32000000000&quot;
+    default: "32000000000"
 
 
 sources:
   - query: |
         LET removable_disks = SELECT Name AS Drive,
             atoi(string=Data.Size) AS Size
-        FROM glob(globs=&quot;/*&quot;, accessor=&quot;file&quot;)
-        WHERE Data.Description =~ &quot;Removable&quot; AND Size &lt; atoi(string=maxDriveSize)
+        FROM glob(globs="/*", accessor="file")
+        WHERE Data.Description =~ "Removable" AND Size &lt; atoi(string=maxDriveSize)
 
         LET file_listing = SELECT OSPath,
             Mtime As Modified,
             Size
-        FROM glob(globs=Drive+&quot;\\**&quot;, accessor=&quot;file&quot;)
+        FROM glob(globs=Drive+"\\**", accessor="file")
         LIMIT 1000
 
         SELECT * FROM diff(
@@ -62,9 +62,9 @@ sources:
                  row=removable_disks,
                  query=file_listing)
           },
-          key=&quot;OSPath&quot;,
+          key="OSPath",
           period=10)
-          WHERE Diff = &quot;added&quot;
+          WHERE Diff = "added"
 
 </code></pre>
 

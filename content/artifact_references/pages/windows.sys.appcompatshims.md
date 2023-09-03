@@ -29,7 +29,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     query: |
         LET installed_sdb &lt;=
            SELECT Key, Key.Name as SdbGUID, DatabasePath,
@@ -37,23 +37,23 @@ sources:
                   -- Convert windows file time to unix epoch.
                   (DatabaseInstallTimeStamp / 10000000) - 11644473600 AS DatabaseInstallTimeStamp
            FROM read_reg_key(
-             globs=split(string=shimKeys, sep=&quot;,[\\s]*&quot;),
-             accessor=&quot;registry&quot;)
+             globs=split(string=shimKeys, sep=",[\\s]*"),
+             accessor="registry")
 
         LET result = SELECT * from foreach(
           row={
             SELECT regex_replace(
                source=OSPath,
-               replace=&quot;$1&quot;,
-               re=&quot;^.+\\\\([^\\\\]+)\\\\[^\\\\]+$&quot;) as Executable,
+               replace="$1",
+               re="^.+\\\\([^\\\\]+)\\\\[^\\\\]+$") as Executable,
               regex_replace(
                source=Name,
-               replace=&quot;$1&quot;,
-               re=&quot;(\\{[^}]+\\}).*$&quot;) as SdbGUIDRef,
+               replace="$1",
+               re="(\\{[^}]+\\}).*$") as SdbGUIDRef,
                Name as ExeName
             FROM glob(
-              globs=split(string=customKeys, sep=&quot;,[\\s]*&quot;),
-              accessor=&quot;registry&quot;)
+              globs=split(string=customKeys, sep=",[\\s]*"),
+              accessor="registry")
           },
           query={
             SELECT Executable, DatabasePath, DatabaseType,

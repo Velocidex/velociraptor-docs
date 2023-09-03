@@ -41,7 +41,7 @@ sources:
           }, query={
               SELECT grok(grok=SSHGrok, data=Line) AS Event, OSPath
               FROM parse_lines(filename=OSPath)
-              WHERE Event.program = &quot;sshd&quot;
+              WHERE Event.program = "sshd"
           })
 
 </code></pre>

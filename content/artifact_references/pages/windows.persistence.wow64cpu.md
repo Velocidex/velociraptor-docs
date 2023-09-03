@@ -21,16 +21,16 @@ parameters:
      default: HKEY_LOCAL_MACHINE\Software\Microsoft\Wow64\**
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       SELECT OSPath.Dirname as KeyPath,
         Name as KeyName,
         Data.value as Value,
         Mtime AS LastModified
-      FROM glob(globs=split(string=TargetRegKey, sep=&quot;,&quot;), accessor=&quot;registry&quot;)
+      FROM glob(globs=split(string=TargetRegKey, sep=","), accessor="registry")
       WHERE Data.value and
-        not (Name = &quot;@&quot; and (Data.value =~ &quot;(wow64cpu.dll|wowarmhw.dll|xtajit.dll)&quot;))
+        not (Name = "@" and (Data.value =~ "(wow64cpu.dll|wowarmhw.dll|xtajit.dll)"))
 
 </code></pre>
 

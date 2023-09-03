@@ -32,7 +32,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
     queries:
       - |
         SELECT Key.Name as KeyName,
@@ -46,8 +46,8 @@ sources:
                UninstallString,
                InstallDate,
                Key.OSPath as KeyPath
-        FROM read_reg_key(globs=split(string=programKeys, sep=&#x27;,[\\s]*&#x27;),
-                          accessor=&quot;registry&quot;)
+        FROM read_reg_key(globs=split(string=programKeys, sep=',[\\s]*'),
+                          accessor="registry")
 
 </code></pre>
 

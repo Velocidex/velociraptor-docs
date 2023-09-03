@@ -37,74 +37,74 @@ reports:
     timeout: 10
     parameters:
       - name: Sample
-        default: &quot;6&quot;
+        default: "6"
 
     template: |
-      {{ define &quot;CPU&quot; }}
+      {{ define "CPU" }}
           SELECT _ts as Timestamp,
               CPUPercent,
               MemoryUse / 1048576 AS MemoryUse,
               TotalFrontends
-          FROM source(source=&quot;Prometheus&quot;,
-                      artifact=&quot;Server.Monitor.Health&quot;)
+          FROM source(source="Prometheus",
+                      artifact="Server.Monitor.Health")
       {{ end }}
 
-      {{ define &quot;CurrentConnections&quot; }}
+      {{ define "CurrentConnections" }}
            SELECT * FROM sample(
              n=atoi(string=Sample),
              query={
                SELECT _ts as Timestamp,
                   client_comms_current_connections
-               FROM source(source=&quot;Prometheus&quot;,
-                           artifact=&quot;Server.Monitor.Health&quot;)
+               FROM source(source="Prometheus",
+                           artifact="Server.Monitor.Health")
             })
       {{ end }}
 
-      {{ $time := Query &quot;SELECT timestamp(epoch=now()) AS Now FROM scope()&quot; | Expand }}
+      {{ $time := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
 
-      ## Server status @ {{ Get $time &quot;0.Now&quot; }}
+      ## Server status @ {{ Get $time "0.Now" }}
 
       &lt;p&gt;The following are total across all frontends.&lt;/p&gt;
-          &lt;span class=&quot;container&quot;&gt;
-            &lt;span class=&quot;row&quot;&gt;
-              &lt;span class=&quot;col-sm panel&quot;&gt;
+          &lt;span class="container"&gt;
+            &lt;span class="row"&gt;
+              &lt;span class="col-sm panel"&gt;
                CPU and Memory Utilization
-               {{- Query &quot;CPU&quot; | LineChart &quot;xaxis_mode&quot; &quot;time&quot; &quot;RSS.yaxis&quot; 2 -}}
+               {{- Query "CPU" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 -}}
               &lt;/span&gt;
-              &lt;span class=&quot;col-sm panel&quot;&gt;
+              &lt;span class="col-sm panel"&gt;
                Currently Connected Clients
-               {{- Query &quot;CurrentConnections&quot; | LineChart &quot;xaxis_mode&quot; &quot;time&quot; &quot;RSS.yaxis&quot; 2 -}}
+               {{- Query "CurrentConnections" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 -}}
               &lt;/span&gt;
             &lt;/span&gt;
       &lt;/span&gt;
 
       ## Current Orgs
 
-      {{ Query &quot;LET ColumnTypes &lt;= dict(ClientConfig=&#x27;url_internal&#x27;) \
+      {{ Query "LET ColumnTypes &lt;= dict(ClientConfig='url_internal') \
                 SELECT Name, OrgId, \
-                       format(format=&#x27;[%s](/notebooks/Dashboards/uploads/%%22%s/client.%s.config.yaml%%22)&#x27;, \
+                       format(format='[%s](/notebooks/Dashboards/uploads/%%22%s/client.%s.config.yaml%%22)', \
                        args=[OrgId, ArtifactName, OrgId]) AS ClientConfig, \
-                       upload(accessor=&#x27;data&#x27;, file=_client_config, \
-                              name=&#x27;client.&#x27;+OrgId+&#x27;.config.yaml&#x27;) AS _Upload \
-                FROM orgs() &quot; | Table }}
+                       upload(accessor='data', file=_client_config, \
+                              name='client.'+OrgId+'.config.yaml') AS _Upload \
+                FROM orgs() " | Table }}
 
       ## Disk Space
 
-      {{ Query &quot;SELECT * FROM Artifact.Generic.Client.DiskSpace()&quot; | Table }}
+      {{ Query "SELECT * FROM Artifact.Generic.Client.DiskSpace()" | Table }}
 
       ## Users
 
-      {{ define &quot;UserPermissions&quot; }}
+      {{ define "UserPermissions" }}
         SELECT name, effective_policy AS _EffectivePolicy,
-               join(array=roles, sep=&quot;, &quot;) AS Roles
+               join(array=roles, sep=", ") AS Roles
         FROM gui_users()
       {{ end }}
 
-      {{ Query &quot;UserPermissions&quot; | Table }}
+      {{ Query "UserPermissions" | Table }}
 
       ## Server version
 
-      {{ Query &quot;SELECT Version FROM config&quot; | Table }}
+      {{ Query "SELECT Version FROM config" | Table }}
 
 </code></pre>
 

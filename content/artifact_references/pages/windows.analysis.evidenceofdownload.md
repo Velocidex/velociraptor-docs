@@ -45,29 +45,29 @@ type: CLIENT
 
 parameters:
  - name: DirectoryPathGlob
-   default: &quot;C:/Users/*/Downloads/&quot;
+   default: "C:/Users/*/Downloads/"
 
  - name: ZoneIdRegex
    description: A Regular expression to match the required zone (default Internet and Restricted Zones).
-   default: &quot;ZoneId=[34]&quot;
+   default: "ZoneId=[34]"
 
 sources:
  - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
    query: |
-      LET X = SELECT split(string=OSPath, sep=&quot;:Zone.Identifier&quot;)[0] as DownloadedFilePath,
+      LET X = SELECT split(string=OSPath, sep=":Zone.Identifier")[0] as DownloadedFilePath,
                     Mtime,
-                    read_file(filename=OSPath, accessor=&quot;ntfs&quot;) as _ZoneIdentifierContent
+                    read_file(filename=OSPath, accessor="ntfs") as _ZoneIdentifierContent
              FROM glob(
-               globs=DirectoryPathGlob + &quot;/**/*:Zone.Identifier&quot;,
-               accessor=&quot;ntfs&quot;)
+               globs=DirectoryPathGlob + "/**/*:Zone.Identifier",
+               accessor="ntfs")
 
       SELECT *,
              if(condition=DownloadedFilePath, then=hash(path=DownloadedFilePath)) as FileHash,
-             parse_string_with_regex(regex=&quot;ZoneId=(.+)&quot;, string=_ZoneIdentifierContent).g1 AS ZoneId,
-             parse_string_with_regex(regex=&quot;HostUrl=(.+)&quot;, string=_ZoneIdentifierContent).g1 AS HostUrl,
-             parse_string_with_regex(regex=&quot;ReferrerUrl=(.+)&quot;, string=_ZoneIdentifierContent).g1 AS ReferrerUrl
+             parse_string_with_regex(regex="ZoneId=(.+)", string=_ZoneIdentifierContent).g1 AS ZoneId,
+             parse_string_with_regex(regex="HostUrl=(.+)", string=_ZoneIdentifierContent).g1 AS HostUrl,
+             parse_string_with_regex(regex="ReferrerUrl=(.+)", string=_ZoneIdentifierContent).g1 AS ReferrerUrl
       FROM X
 
 </code></pre>

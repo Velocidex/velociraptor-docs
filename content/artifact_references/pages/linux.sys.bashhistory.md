@@ -17,7 +17,7 @@ tags: .bash_history .bash_profile .bashrc
 
 <pre><code class="language-yaml">
 name: Linux.Sys.BashHistory
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
   This artifact enables grep of Bash and alternate shell history files.
 
@@ -35,11 +35,11 @@ parameters:
     default: /{root,home/*}/.*_history
   - name: SearchRegex
     type: regex
-    description: &quot;Regex of strings to search in line.&quot;
-    default: &#x27;.&#x27;
+    description: "Regex of strings to search in line."
+    default: '.'
   - name: WhitelistRegex
     type: regex
-    description: &quot;Regex of strings to leave out of output.&quot;
+    description: "Regex of strings to leave out of output."
     default:
 
 sources:

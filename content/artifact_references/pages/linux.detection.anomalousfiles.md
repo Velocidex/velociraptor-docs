@@ -41,23 +41,23 @@ parameters:
   - name: PathsToSearch
     description: Paths to search, separated by comma
     type: str
-    default: &quot;/home/**,tmp/**&quot;
+    default: "/home/**,tmp/**"
 
 sources:
   - precondition: |
       SELECT OS
       FROM info()
-      WHERE OS = &#x27;linux&#x27;
+      WHERE OS = 'linux'
 
     query: |
       SELECT Fqdn AS Host,
              OSPath,
-             substr(str=Name, start=0, end=1) = &quot;.&quot; AS IsHidden,
+             substr(str=Name, start=0, end=1) = "." AS IsHidden,
              Size,
              Size &gt; MaxNormalSize AS IsLarge,
              Mode.String AS Mode,
-             Mode =~ &quot;^u&quot; as HasSUID
-      FROM glob(globs=split(string=PathsToSearch, sep_string=&quot;,&quot;))
+             Mode =~ "^u" as HasSUID
+      FROM glob(globs=split(string=PathsToSearch, sep_string=","))
       WHERE IsHidden OR IsLarge OR HasSUID
 
 </code></pre>

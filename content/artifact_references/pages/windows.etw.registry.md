@@ -44,7 +44,7 @@ description: |
 
 type: CLIENT_EVENT
 
-precondition: SELECT * FROM info() WHERE OS = &quot;windows&quot;
+precondition: SELECT * FROM info() WHERE OS = "windows"
 
 parameters:
 - name: KeyNameRegex
@@ -58,21 +58,21 @@ sources:
 - query: |
     LET Cache &lt;= lru(size=1000)
     LET EventLookup &lt;= dict(
-        `1`=&quot;CreateKey&quot;,
-        `2`=&quot;OpenKey&quot;,
-        `3`=&quot;DeleteKey&quot;,
-        `4`=&quot;QueryKey&quot;,
-        `5`=&quot;SetValueKey&quot;,
-        `6`=&quot;DeleteValueKey&quot;,
-        `7`=&quot;QueryValue&quot;,
-        `8`=&quot;EnumerateKey&quot;,
-        `9`=&quot;EnumerateValueKey&quot;
+        `1`="CreateKey",
+        `2`="OpenKey",
+        `3`="DeleteKey",
+        `4`="QueryKey",
+        `5`="SetValueKey",
+        `6`="DeleteValueKey",
+        `7`="QueryValue",
+        `8`="EnumerateKey",
+        `9`="EnumerateValueKey"
     )
 
     LET registry_access = SELECT System, EventData,
        get(item=EventLookup, field=str(str=System.ID)) AS EventType,
        get(item=Cache, field=EventData.KeyObject) || EventData.KeyName AS KeyName
-    FROM watch_etw(guid=&quot;{70EB4F03-C1DE-4F73-A051-33D13D5413BD}&quot;, any=0x7720)
+    FROM watch_etw(guid="{70EB4F03-C1DE-4F73-A051-33D13D5413BD}", any=0x7720)
     WHERE System.ProcessID != getpid() -- exclude ourselves
         AND EventType  -- we only care about these events
         AND if(condition=System.ID in (1, 2, 4),

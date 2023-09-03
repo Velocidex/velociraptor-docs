@@ -9,7 +9,7 @@ This artifact will extract network shares per machine.
 
 <pre><code class="language-yaml">
 name: Windows.System.Shares
-author: &#x27;Matt Green - @mgreen27&#x27;
+author: 'Matt Green - @mgreen27'
 description: |
    This artifact will extract network shares per machine.
 
@@ -27,11 +27,11 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
         SELECT Name, Path, Caption, Status,MaximumAllowed,AllowMaximum,InstallDate
-        FROM wmi(query=&#x27;SELECT * FROM Win32_Share&#x27;,namespace=&#x27;root/cimv2&#x27;)
+        FROM wmi(query='SELECT * FROM Win32_Share',namespace='root/cimv2')
         WHERE Name =~ NameRegex AND Path =~ PathRegex
 </code></pre>
 

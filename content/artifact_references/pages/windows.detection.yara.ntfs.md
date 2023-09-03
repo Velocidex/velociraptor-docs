@@ -72,8 +72,8 @@ parameters:
     description: Only paths that match this regular expression will be scanned.
     default: ^C:\\Windows\\System32\\
   - name: DriveLetter
-    description: &quot;Target drive. Default is a C:&quot;
-    default: &quot;C:&quot;
+    description: "Target drive. Default is a C:"
+    default: "C:"
   - name: SizeMax
     type: int
   - name: SizeMin
@@ -100,9 +100,9 @@ parameters:
     default: |
         rule IsPE:TestRule {
            meta:
-              author = &quot;the internet&quot;
-              date = &quot;2021-03-04&quot;
-              description = &quot;A simple PE rule to test yara features&quot;
+              author = "the internet"
+              date = "2021-03-04"
+              description = "A simple PE rule to test yara features"
           condition:
              uint16(0) == 0x5A4D and
              uint32(uint32(0x3C)) == 0x00004550
@@ -119,7 +119,7 @@ parameters:
     
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       -- check which Yara to use
@@ -133,7 +133,7 @@ sources:
             FileRegex=FileNameRegex,PathRegex=PathRegex, 
             SizeMax=SizeMax, SizeMin=SizeMin)
         WHERE NOT IsDir
-            AND NOT OSPath =~ &#x27;&#x27;&#x27;\\\\.\\.:\\&lt;Err&gt;\\&#x27;&#x27;&#x27;
+            AND NOT OSPath =~ '''\\\\.\\.:\\&lt;Err&gt;\\'''
             AND if(condition=EarliestSILastChanged,
                 then= LastRecordChange0x10 &gt; EarliestSILastChanged,
                 else= True)
@@ -157,9 +157,9 @@ sources:
                     Rule, Tags, Meta,
                     String.Name as YaraString,
                     String.Offset as HitOffset,
-                    upload( accessor=&#x27;scope&#x27;, 
-                            file=&#x27;String.Data&#x27;, 
-                            name=format(format=&quot;%v-%v-%v&quot;, 
+                    upload( accessor='scope', 
+                            file='String.Data', 
+                            name=format(format="%v-%v-%v", 
                             args=[
                                 OSPath,
                                 if(condition= String.Offset - ContextBytes &lt; 0,

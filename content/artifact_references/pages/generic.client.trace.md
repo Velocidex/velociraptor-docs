@@ -35,7 +35,7 @@ parameters:
 
 sources:
 - query: |
-    SELECT * FROM if(condition=version(function=&quot;trace&quot;),
+    SELECT * FROM if(condition=version(function="trace"),
     then={
        SELECT trace() AS TraceFile
        FROM clock(start=0, period=FrequencySec)

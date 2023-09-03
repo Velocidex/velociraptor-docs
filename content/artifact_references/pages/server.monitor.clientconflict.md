@@ -35,9 +35,9 @@ sources:
   - query: |
       SELECT
         collect_client(client_id=ClientId,
-            artifacts=&quot;Generic.Client.Rekey&quot;, env=dict())
+            artifacts="Generic.Client.Rekey", env=dict())
       AS NewCollection
-      FROM watch_monitoring(artifact=&quot;Server.Internal.ClientConflict&quot;)
+      FROM watch_monitoring(artifact="Server.Internal.ClientConflict")
 
 </code></pre>
 

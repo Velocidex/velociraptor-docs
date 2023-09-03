@@ -38,9 +38,9 @@ parameters:
 
   - name: ResetPassword
     type: bool
-    default: &quot;Y&quot;
+    default: "Y"
     description: |
-      Reset the user&#x27;s password. This must be set when
+      Reset the user's password. This must be set when
       creating the user in the first place.
 
   - name: Role
@@ -55,8 +55,8 @@ parameters:
 
 sources:
   - query: |
-      LET Password &lt;= format(format=&quot;%02x&quot;, args=rand(range=0xffffffffffff))
-      LET ServerMetadataKey &lt;= &quot;User Password &quot; + UserName
+      LET Password &lt;= format(format="%02x", args=rand(range=0xffffffffffff))
+      LET ServerMetadataKey &lt;= "User Password " + UserName
 
       LET DoIt = SELECT * FROM if(condition=ResetPassword,
       then={
@@ -66,7 +66,7 @@ sources:
              field=ServerMetadataKey, value=Password)),
           user_create(roles=Role, user=UserName, password=Password)
         FROM scope()
-        WHERE log(message=&quot;New password for user is stored in server metadata under key &quot; + ServerMetadataKey)
+        WHERE log(message="New password for user is stored in server metadata under key " + ServerMetadataKey)
       }, else={
         -- Just grant the user the specified role
         SELECT user_create(roles=Role, user=UserName)
@@ -82,7 +82,7 @@ sources:
         })
       }, else={
         SELECT * FROM scope()
-        WHERE log(message=&quot;A Username must be set&quot;) AND FALSE
+        WHERE log(message="A Username must be set") AND FALSE
       })
 
 </code></pre>

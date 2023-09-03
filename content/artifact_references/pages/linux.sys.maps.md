@@ -22,7 +22,7 @@ description: |
   This artifact parses the /proc/&lt;pid&gt;/maps to emit all mapped files
   into the process.
 
-precondition: SELECT OS From info() where OS = &#x27;linux&#x27;
+precondition: SELECT OS From info() where OS = 'linux'
 
 parameters:
   - name: processRegex
@@ -37,11 +37,11 @@ sources:
         WHERE Name =~ processRegex
 
       SELECT Pid, Name, Username,
-               &quot;0x&quot; + Record.Start AS StartHex,
-               &quot;0x&quot; + Record.End AS EndHex,
+               "0x" + Record.Start AS StartHex,
+               "0x" + Record.End AS EndHex,
                Record.Perm AS Perm,
-               atoi(string=&quot;0x&quot; + Record.Size) AS Size,
-               &quot;0x&quot; + Record.Size AS SizeHex,
+               atoi(string="0x" + Record.Size) AS Size,
+               "0x" + Record.Size AS SizeHex,
                Record.Filename AS Filename,
                if(condition=Record.Deleted, then=TRUE, else=FALSE) AS Deleted
       FROM foreach(
@@ -49,11 +49,11 @@ sources:
           query={
             SELECT parse_string_with_regex(
                     string=Line,
-                    regex=&quot;(?P&lt;Start&gt;^[^-]+)-(?P&lt;End&gt;[^\\s]+)\\s+(?P&lt;Perm&gt;[^\\s]+)\\s+(?P&lt;Size&gt;[^\\s]+)\\s+[^\\s]+\\s+(?P&lt;PermInt&gt;[^\\s]+)\\s+(?P&lt;Filename&gt;.+?)(?P&lt;Deleted&gt; \\(deleted\\))?$&quot;) AS Record,
+                    regex="(?P&lt;Start&gt;^[^-]+)-(?P&lt;End&gt;[^\\s]+)\\s+(?P&lt;Perm&gt;[^\\s]+)\\s+(?P&lt;Size&gt;[^\\s]+)\\s+[^\\s]+\\s+(?P&lt;PermInt&gt;[^\\s]+)\\s+(?P&lt;Filename&gt;.+?)(?P&lt;Deleted&gt; \\(deleted\\))?$") AS Record,
                   Pid, Name, Username
             FROM parse_lines(
-               filename=format(format=&quot;/proc/%d/maps&quot;, args=[Pid]),
-               accessor=&#x27;file&#x27;
+               filename=format(format="/proc/%d/maps", args=[Pid]),
+               accessor='file'
             )
           })
 

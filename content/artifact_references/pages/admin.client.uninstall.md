@@ -47,16 +47,16 @@ parameters:
 sources:
   - name: Windows
     precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query:  |
       LET packages = SELECT KeyName, DisplayName,UninstallString
       FROM Artifact.Windows.Sys.Programs()
       WHERE DisplayName =~ DisplayNameRegex AND
-        log(message=&quot;Will uninstall &quot; + DisplayName)
+        log(message="Will uninstall " + DisplayName)
 
       LET uninstall(UninstallString) = SELECT * FROM execve(
-          argv=commandline_split(command=UninstallString) + &quot;/quiet&quot;)
+          argv=commandline_split(command=UninstallString) + "/quiet")
 
       SELECT KeyName, DisplayName, UninstallString,
           if(condition=ReallyDoIt, then=uninstall(Name=UninstallString).Stdout) AS UninstallLog
@@ -66,44 +66,44 @@ sources:
     precondition: |
       -- Only run if dpkg is installed.
       SELECT OS, {
-         SELECT ReturnCode FROM execve(argv=[&quot;dpkg&quot;, &quot;--help&quot;])
+         SELECT ReturnCode FROM execve(argv=["dpkg", "--help"])
       } AS ReturnCode
       FROM info()
-      WHERE OS = &#x27;linux&#x27; AND ReturnCode = 0
+      WHERE OS = 'linux' AND ReturnCode = 0
 
     query:  |
       SELECT * FROM if(condition=ReallyDoIt,
       then={
-        SELECT * FROM execve(argv=[&quot;dpkg&quot;, &quot;--remove&quot;, &quot;velociraptor-client&quot;])
+        SELECT * FROM execve(argv=["dpkg", "--remove", "velociraptor-client"])
       })
 
   - name: RPMBased
     precondition: |
       -- Only run if rpm is installed.
       SELECT OS, {
-         SELECT ReturnCode FROM execve(argv=[&quot;rpm&quot;, &quot;--help&quot;])
+         SELECT ReturnCode FROM execve(argv=["rpm", "--help"])
       } AS ReturnCode
       FROM info()
-      WHERE OS = &#x27;linux&#x27; AND ReturnCode = 0
+      WHERE OS = 'linux' AND ReturnCode = 0
 
     query:  |
       SELECT * FROM if(condition=ReallyDoIt,
       then={
-        SELECT * FROM execve(argv=[&quot;rpm&quot;, &quot;--erase&quot;, &quot;velociraptor-client&quot;])
+        SELECT * FROM execve(argv=["rpm", "--erase", "velociraptor-client"])
       })
 
   - name: MacOS
     precondition: |
       SELECT OS
       FROM info()
-      WHERE OS = &#x27;darwin&#x27;
+      WHERE OS = 'darwin'
 
     query:  |
       LET me &lt;= SELECT Exe FROM info()
 
       SELECT * FROM if(condition=ReallyDoIt,
       then={
-        SELECT * FROM execve(argv=[me[0].Exe, &quot;service&quot;, &quot;remove&quot;])
+        SELECT * FROM execve(argv=[me[0].Exe, "service", "remove"])
       })
 
 </code></pre>

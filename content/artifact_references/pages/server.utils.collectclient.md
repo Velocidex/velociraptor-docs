@@ -31,7 +31,7 @@ parameters:
     description: A client ID or a Hostname
     default: C.1234
   - name: Parameters
-    default: &quot;{}&quot;
+    default: "{}"
     description: A key/value JSON object specifying parameters for the artifact
     type: json
 
@@ -46,13 +46,13 @@ sources:
       LET collection &lt;= if(condition=client_id,
           then=collect_client(client_id=client_id,
                               artifacts=ArtifactName, env=Parameters),
-          else=log(message=&quot;No clients found to match search &quot; + Client) AND FALSE)
+          else=log(message="No clients found to match search " + Client) AND FALSE)
 
       -- Wait for the collection to finish - if the client is
       -- currently connected this wont take long
       LET flow_results &lt;= SELECT * FROM if(condition=collection,
       then={
-         SELECT * FROM watch_monitoring(artifact=&#x27;System.Flow.Completion&#x27;)
+         SELECT * FROM watch_monitoring(artifact='System.Flow.Completion')
          WHERE FlowId = collection.flow_id
          LIMIT 1
       })

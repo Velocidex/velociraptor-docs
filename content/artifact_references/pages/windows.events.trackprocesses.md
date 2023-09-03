@@ -59,7 +59,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       // Make sure sysmon is installed.
@@ -69,21 +69,21 @@ sources:
       LET UpdateQuery =
             SELECT * FROM foreach(row={
               SELECT *,
-                     get(member=&#x27;EventData&#x27;) AS EventData
-              FROM watch_etw(guid=&#x27;{5770385f-c22a-43e0-bf4c-06f5698ffbd9}&#x27;)
+                     get(member='EventData') AS EventData
+              FROM watch_etw(guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
             }, query={
               SELECT * FROM switch(
               start={
                 SELECT EventData.ProcessId AS id,
                        EventData.ParentProcessId AS parent_id,
-                       &quot;start&quot; AS update_type,
+                       "start" AS update_type,
 
                        -- We need to manually build the dict here so
                        -- we can maintain column ordering.
                        dict(
                            Pid=EventData.ProcessId,
                            Ppid=EventData.ParentProcessId,
-                           Name=split(sep_string=&quot;\\&quot;, string=EventData.Image)[-1],
+                           Name=split(sep_string="\\", string=EventData.Image)[-1],
                            StartTime=EventData.UtcTime,
                            EndTime=NULL,
                            Username=EventData.User,
@@ -99,9 +99,9 @@ sources:
                            TerminalSessionId= EventData.TerminalSessionId,
                            IntegrityLevel= EventData.IntegrityLevel,
                            Hashes=parse_string_with_regex(regex=[
-                             &quot;SHA256=(?P&lt;SHA256&gt;[^,]+)&quot;,
-                             &quot;MD5=(?P&lt;MD5&gt;[^,]+)&quot;,
-                             &quot;IMPHASH=(?P&lt;IMPHASH&gt;[^,]+)&quot;],
+                             "SHA256=(?P&lt;SHA256&gt;[^,]+)",
+                             "MD5=(?P&lt;MD5&gt;[^,]+)",
+                             "IMPHASH=(?P&lt;IMPHASH&gt;[^,]+)"],
                            string=EventData.Hashes)
                        ) AS data,
                        EventData.UtcTime AS start_time,
@@ -112,7 +112,7 @@ sources:
               end={
                 SELECT EventData.ProcessId AS id,
                        NULL AS parent_id,
-                       &quot;exit&quot; AS update_type,
+                       "exit" AS update_type,
                        dict() AS data,
                        NULL AS start_time,
                        EventData.UtcTime AS end_time
@@ -134,18 +134,18 @@ sources:
 
       LET Tracker &lt;= process_tracker(
          enrichments=if(condition=AddEnrichments, then=[
-           &#x27;&#x27;&#x27;x=&gt;if(
+           '''x=&gt;if(
                 condition=NOT x.Data.VersionInformation AND x.Data.Image,
                 then=dict(VersionInformation=parse_pe(file=x.Data.Image).VersionInformation))
-           &#x27;&#x27;&#x27;,
-           &#x27;&#x27;&#x27;x=&gt;if(
-                condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = &#x27;-&#x27;,
+           ''',
+           '''x=&gt;if(
+                condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = '-',
                 then=dict(OriginalFilename=x.Data.VersionInformation.OriginalFilename))
-           &#x27;&#x27;&#x27;], else=[]),
+           '''], else=[]),
         sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
 
       SELECT * FROM process_tracker_updates()
-      WHERE update_type = &quot;stats&quot; OR AlsoForwardUpdates
+      WHERE update_type = "stats" OR AlsoForwardUpdates
 
 </code></pre>
 

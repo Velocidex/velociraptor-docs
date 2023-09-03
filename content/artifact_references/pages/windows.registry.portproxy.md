@@ -27,7 +27,7 @@ reference:
 
 author: Matt Green - @mgreen27
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
  - name: KeyGlob
@@ -39,11 +39,11 @@ sources:
      SELECT OSPath,
          OSPath[-3] AS ProxyType,
          OSPath[-2] AS Protocol,
-         regex_replace(source=OSPath.Basename, re=&quot;/&quot;, replace=&quot;:&quot;) as Listening,
-         regex_replace(source=Data.value, re=&quot;/&quot;, replace=&quot;:&quot;) as Destination,
+         regex_replace(source=OSPath.Basename, re="/", replace=":") as Listening,
+         regex_replace(source=Data.value, re="/", replace=":") as Destination,
          Mtime as ModifiedTime,
          Type
-       FROM glob(globs=KeyGlob, accessor=&quot;registry&quot;)
+       FROM glob(globs=KeyGlob, accessor="registry")
        WHERE Type
 
 
@@ -55,18 +55,18 @@ reports:
       ==========================
       {{ .Description }}
 
-      {{ define &quot;report&quot; }}
+      {{ define "report" }}
          LET report = SELECT Protocol,
             ProxyType,
             Listening,
             Destination,
             ModifiedTime,
             ProxyType + Protocol + Listening + Destination as ServiceKey
-         FROM source(source=&#x27;PortProxy&#x27;)
+         FROM source(source='PortProxy')
          GROUP BY ServiceKey
       {{ end }}
 
-      {{ Query &quot;report&quot;  &quot;SELECT ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report&quot; | Table }}
+      {{ Query "report"  "SELECT ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
 
   - type: HUNT
     template: |
@@ -75,7 +75,7 @@ reports:
       ==========================
       {{ .Description }}
 
-      {{ define &quot;report&quot; }}
+      {{ define "report" }}
          LET report = SELECT Fqdn,
             Protocol,
             ProxyType,
@@ -83,11 +83,11 @@ reports:
             Destination,
             ModifiedTime,
             ProxyType + Protocol + Listening + Destination as ServiceKey
-         FROM source(source=&#x27;PortProxy&#x27;)
+         FROM source(source='PortProxy')
          GROUP BY ServiceKey
       {{ end }}
 
-      {{ Query &quot;report&quot;  &quot;SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report&quot; | Table }}
+      {{ Query "report"  "SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
 
 </code></pre>
 

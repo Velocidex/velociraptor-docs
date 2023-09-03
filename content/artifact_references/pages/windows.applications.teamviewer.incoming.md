@@ -30,21 +30,21 @@ parameters:
   - name: FileGlob
     default: C:\Program Files (x86)\TeamViewer\Connections_incoming.txt
   - name: DateAfter
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: DateBefore
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ss Z&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
     type: timestamp
   - name: TeamViewerIDRegex
-    description: &quot;Regex of TeamViewer ID&quot;
+    description: "Regex of TeamViewer ID"
     default: .
     type: regex
   - name: SourceHostRegex
-    description: &quot;Regex of source host&quot;
+    description: "Regex of source host"
     default: .
     type: regex
   - name: UserRegex
-    description: &quot;Regex of user&quot;
+    description: "Regex of user"
     default: .
     type: regex
 
@@ -60,13 +60,13 @@ parameters:
 sources:
   - query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- Build time bounds
       LET DateAfterTime &lt;= if(condition=DateAfter,
-        then=DateAfter, else=&quot;1600-01-01&quot;)
+        then=DateAfter, else="1600-01-01")
       LET DateBeforeTime &lt;= if(condition=DateBefore,
-        then=DateBefore, else=&quot;2200-01-01&quot;)
+        then=DateBefore, else="2200-01-01")
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths &lt;= SELECT OSPath FROM glob(
@@ -75,13 +75,13 @@ sources:
       LET parse_log(OSPath, Accessor) = SELECT OSPath,
           parse_string_with_regex(
             string=Line,
-            regex=&quot;^(?P&lt;TeamViewerID&gt;^\\d+)\\s+&quot;+
-              &quot;(?P&lt;SourceHost&gt;.+)\\s&quot; +
-              &quot;(?P&lt;StartTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s&quot; +
-              &quot;(?P&lt;EndTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s&quot; +
-              &quot;(?P&lt;User&gt;.+)\\s+&quot; +
-              &quot;(?P&lt;ConnectionType&gt;[^\\s]+)\\s+&quot; +
-              &quot;(?P&lt;ConnectionID&gt;.+)$&quot;) as Record
+            regex="^(?P&lt;TeamViewerID&gt;^\\d+)\\s+"+
+              "(?P&lt;SourceHost&gt;.+)\\s" +
+              "(?P&lt;StartTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
+              "(?P&lt;EndTime&gt;\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}:\\d{2})\\s" +
+              "(?P&lt;User&gt;.+)\\s+" +
+              "(?P&lt;ConnectionType&gt;[^\\s]+)\\s+" +
+              "(?P&lt;ConnectionID&gt;.+)$") as Record
         FROM parse_lines(filename=OSPath, accessor=Accessor)
         WHERE Line
           AND Record.TeamViewerID =~ TeamViewerIDRegex
@@ -93,9 +93,9 @@ sources:
             row=PathList,
             query={
                SELECT *, timestamp(epoch=Record.StartTime,
-                                format=&quot;02-01-2006 15:04:05&quot;) AS StartTime,
+                                format="02-01-2006 15:04:05") AS StartTime,
                       timestamp(epoch=Record.EndTime,
-                                format=&quot;02-01-2006 15:04:05&quot;) AS EndTime
+                                format="02-01-2006 15:04:05") AS EndTime
                FROM parse_log(OSPath=OSPath, Accessor=Accessor)
                WHERE StartTime &lt; DateBeforeTime
                     AND StartTime &gt; DateAfterTime

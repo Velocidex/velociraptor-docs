@@ -48,7 +48,7 @@ description: |
   a process or thread. The information in a token includes the
   identity and privileges of the user account associated with the
   process or thread. When a user logs on, the system verifies the
-  user&#x27;s password by comparing it with information stored in a
+  user's password by comparing it with information stored in a
   security database.
 
   Every process has a primary token that describes the security
@@ -56,7 +56,7 @@ description: |
   the system uses the primary token when a thread of the process
   interacts with a securable object. Moreover, a thread can
   impersonate a client account. Impersonation allows the thread to
-  interact with securable objects using the client&#x27;s security
+  interact with securable objects using the client's security
   context. A thread that is impersonating a client has both a primary
   token and an impersonation token.
 
@@ -67,7 +67,7 @@ description: |
 
   ```
   mimikatz # privilege::debug
-  Privilege &#x27;20&#x27; OK
+  Privilege '20' OK
 
   mimikatz # token::elevate
   Token Id  : 0
@@ -83,7 +83,7 @@ reference:
   - https://github.com/kslgroup/TokenImp-Token_Impersonation_Detection/blob/master/TokenImp%20documentation.pdf
 
 
-precondition: SELECT OS From info() where OS = &#x27;windows&#x27;
+precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
@@ -91,7 +91,7 @@ sources:
                Username, OwnerSid, TokenIsElevated,
                CommandLine, Exe
         FROM pslist()
-        WHERE log(message=format(format=&quot;Inspecting %s (%v)&quot;, args=[ProcName, Pid]))
+        WHERE log(message=format(format="Inspecting %s (%v)", args=[ProcName, Pid]))
 
       SELECT * FROM foreach(row=processes,
           query={
@@ -99,7 +99,7 @@ sources:
              // same as the process token.
              SELECT ProcPid, ProcName, Username, OwnerSid, TokenIsElevated,
                CommandLine, Exe, ThreadInfo.TokenInfo AS ImpersonationToken
-             FROM handles(pid=ProcPid, types=&#x27;Thread&#x27;)
+             FROM handles(pid=ProcPid, types='Thread')
              WHERE ImpersonationToken.User AND ImpersonationToken.User != OwnerSid
           })
 

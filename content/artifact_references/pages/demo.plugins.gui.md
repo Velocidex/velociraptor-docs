@@ -32,16 +32,16 @@ parameters:
       - Third Choice
 
   - name: Hashes
-    validating_regex: &#x27;^\s*([A-F0-9]+\s*)+$&#x27;
+    validating_regex: '^\s*([A-F0-9]+\s*)+$'
     description: One or more hashes in hex separated by white space.
 
   - name: RegularExpression
     type: regex
-    default: &quot;.&quot;
+    default: "."
 
   - name: MultipleRegularExpression
     type: regex_array
-    default: &#x27;[&quot;.+&quot;]&#x27;
+    default: '[".+"]'
 
   - name: YaraRule
     type: yara
@@ -87,12 +87,12 @@ parameters:
 
   - name: JSONData
     type: json_array
-    default: &quot;[]&quot;
+    default: "[]"
 
   - name: JSONData2
     type: json_array
     default: |
-      [{&quot;foo&quot;: &quot;bar&quot;}]
+      [{"foo": "bar"}]
 
   - name: FileUpload1
     type: upload
@@ -114,7 +114,7 @@ column_types:
 
 sources:
   - query: |
-      SELECT base64encode(string=&quot;This should popup in a hex editor&quot;) AS Base64Hex,
+      SELECT base64encode(string="This should popup in a hex editor") AS Base64Hex,
              ChoiceSelector, Flag, Flag2, Flag3,
              OffFlag, StartDate, StartDate2, StartDate3,
              CSVData, CSVData2, JSONData, JSONData2,
@@ -143,12 +143,12 @@ sources:
           **Each of the below cells should have a H2 heading**
 
           ## Check that notebook environment variables are populated
-          {{ $x := Query &quot;SELECT * FROM items(\
+          {{ $x := Query "SELECT * FROM items(\
              item=dict(NotebookId=NotebookId, ClientId=ClientId,\
-                       FlowId=FlowId, ArtifactName=ArtifactName))&quot; | Expand }}
+                       FlowId=FlowId, ArtifactName=ArtifactName))" | Expand }}
 
           {{ range $x }}
-          * {{ Get . &quot;_key&quot; }} - {{ Get . &quot;_value&quot; }}
+          * {{ Get . "_key" }} - {{ Get . "_value" }}
           {{- end -}}
 
       - type: md
@@ -165,20 +165,20 @@ sources:
           ## A VQL cell with a heading.
           */
           LET ColumnTypes = dict(
-            Time1=&quot;timestamp&quot;,
-            Time2=&quot;timestamp&quot;,
-            Time3=&quot;timestamp&quot;,
-            Time4=&quot;timestamp&quot;,
-            FlowId=&quot;flow&quot;,
-            ClientId=&quot;client&quot;,
-            Data=&quot;hex&quot;,
-            URL=&quot;url&quot;,
-            SafeURL=&quot;safe_url&quot;, // Present dialog before click.
-            Base64Data=&quot;base64hex&quot;
+            Time1="timestamp",
+            Time2="timestamp",
+            Time3="timestamp",
+            Time4="timestamp",
+            FlowId="flow",
+            ClientId="client",
+            Data="hex",
+            URL="url",
+            SafeURL="safe_url", // Present dialog before click.
+            Base64Data="base64hex"
           )
 
-          LET Base64Data = base64encode(string=&quot;\x00\x01\x20\x32\x12\x10&quot;)
-          LET URL = &quot;[Google](https://www.google.com)&quot;
+          LET Base64Data = base64encode(string="\x00\x01\x20\x32\x12\x10")
+          LET URL = "[Google](https://www.google.com)"
 
           SELECT 1628609690.1 AS Raw,
 
@@ -186,76 +186,76 @@ sources:
                  1628609690.1 AS Time1,
 
                  -- ms as a string
-                 &quot;1628609690100&quot; AS Time2,
+                 "1628609690100" AS Time2,
 
                  -- ns
                  1628609690100000 AS Time3,
 
                  -- Standard string form
-                 &quot;2021-08-10T15:34:50Z&quot; AS Time4,
+                 "2021-08-10T15:34:50Z" AS Time4,
 
                  FlowId, ClientId, URL, URL AS SafeURL, Base64Data,
 
-                 format(format=&quot;%02x&quot;, args=&quot;Hello&quot;) AS Data
+                 format(format="%02x", args="Hello") AS Data
           FROM scope()
 
       - type: Markdown
         template: |
           ## Scatter Chart with a named column
 
-          {{ define &quot;ScatterTest&quot; }}
+          {{ define "ScatterTest" }}
            SELECT X, Name, Y, Y3
-          FROM parse_csv(accessor=&quot;data&quot;, filename=&#x27;&#x27;&#x27;
+          FROM parse_csv(accessor="data", filename='''
           X,Name,Y,Y3
           1,Bob,2,3
           2,Frank,4,6
           3,Mike,6,8
           4,Sally,3,2
-           &#x27;&#x27;&#x27;)
+           ''')
           {{ end }}
-          {{ Query &quot;ScatterTest&quot; | ScatterChart &quot;name_column&quot; &quot;Name&quot; }}
+          {{ Query "ScatterTest" | ScatterChart "name_column" "Name" }}
 
           ## Stacked Bar Chart (Categories are first column)
 
-          {{ define &quot;Test&quot; }}
+          {{ define "Test" }}
           SELECT X, Y, Y3
-          FROM parse_csv(accessor=&quot;data&quot;, filename=&#x27;&#x27;&#x27;
+          FROM parse_csv(accessor="data", filename='''
           X,Y,Y3
           Bob,2,3
           Bill,4,6
           Foo,6,8
           Bar,7,2
-          &#x27;&#x27;&#x27;)
+          ''')
           {{ end }}
-          {{ Query &quot;Test&quot; | BarChart &quot;type&quot; &quot;stacked&quot; }}
+          {{ Query "Test" | BarChart "type" "stacked" }}
 
           ## Time chart with timestamp in first column
 
-          {{ define &quot;TimeTest&quot; }}
+          {{ define "TimeTest" }}
           SELECT Timestamp, Y, Y3
-          FROM parse_csv(accessor=&quot;data&quot;, filename=&#x27;&#x27;&#x27;
+          FROM parse_csv(accessor="data", filename='''
           Timestamp,Y,Y3
           2021-10-09,2,3
           2021-10-10,4,6
           2021-10-11,6,8
           2021-10-12,7,2
-          &#x27;&#x27;&#x27;)
+          ''')
           {{ end }}
-          {{ Query &quot;TimeTest&quot; | TimeChart }}
+          {{ Query "TimeTest" | TimeChart }}
 
           ## Line chart
 
-          {{ define &quot;LineTest&quot; }}
+          {{ define "LineTest" }}
           SELECT X, Y, Y3
-          FROM parse_csv(accessor=&quot;data&quot;, filename=&#x27;&#x27;&#x27;
+          FROM parse_csv(accessor="data", filename='''
           X,Y,Y3
           1,2,3
           2,4,6
           3,6,8
           4,7,2
-          &#x27;&#x27;&#x27;)
+          ''')
           {{ end }}
-          {{ Query &quot;LineTest&quot; | LineChart }}
+          {{ Query "LineTest" | LineChart }}
 
       - type: Markdown
         template: |
@@ -263,15 +263,15 @@ sources:
 
           The following should show a CPU load chart of the last 10 min.
 
-          {{ define &quot;Q&quot; }}
+          {{ define "Q" }}
             SELECT _ts, CPUPercent
             FROM monitoring(
-                  artifact=&quot;Server.Monitor.Health/Prometheus&quot;,
+                  artifact="Server.Monitor.Health/Prometheus",
                   start_time=now() - 10 * 60)
             LIMIT 100
           {{ end }}
 
-          {{ Query &quot;Q&quot; | TimeChart }}
+          {{ Query "Q" | TimeChart }}
 
       - type: vql
         template: |
@@ -284,38 +284,38 @@ sources:
           */
           SELECT timestamp(epoch=_ts) AS Timestamp, CPUPercent
           FROM monitoring(
-            source=&quot;Prometheus&quot;,
-            artifact=&quot;Server.Monitor.Health&quot;,
+            source="Prometheus",
+            artifact="Server.Monitor.Health",
             start_time=now() - 10 * 60)
 
           LET T1 = SELECT
                timestamp(epoch=_ts) AS Timestamp,
                dict(X=CPUPercent, Y=1) AS Dict
           FROM monitoring(
-            source=&quot;Prometheus&quot;,
-            artifact=&quot;Server.Monitor.Health&quot;,
+            source="Prometheus",
+            artifact="Server.Monitor.Health",
             start_time=now() - 10 * 60)
 
           -- Add the time series into the timeline.
           SELECT timeline_add(
-              key=&quot;Timestamp&quot;, name=&quot;Time 你好世界 &#x27;line&#x27; &amp;\&quot; &quot;,
-              query=T1, timeline=&quot;Test \&quot;Timeline 你好世界\&quot;&quot;),
+              key="Timestamp", name="Time 你好世界 'line' &amp;\" ",
+              query=T1, timeline="Test \"Timeline 你好世界\""),
            timeline_add(
-              key=&quot;Timestamp&quot;, name=&quot;2&quot;,
-              query=T1, timeline=&quot;Test \&quot;Timeline 你好世界\&quot;&quot;)
+              key="Timestamp", name="2",
+              query=T1, timeline="Test \"Timeline 你好世界\"")
           FROM scope()
 
       - type: Markdown
         env:
           - key: Timeline
-            value: Test &quot;Timeline 你好世界&quot;
+            value: Test "Timeline 你好世界"
         template: |
           ## This super timeline should have two timelines.
 
           Add a timeline manually and hit refresh on this cell to
           check it is being updated.
 
-          {{ Scope &quot;Timeline&quot; | Timeline }}
+          {{ Scope "Timeline" | Timeline }}
 
       - type: VQL
         template: |
@@ -324,8 +324,8 @@ sources:
 
           Check both expanded and contracted states of the cell
           */
-          LET zalgo = &quot;1̴̣̜̗̰͇͖͖̞̮͈͍̂͜.̸̢̧̨͙̻̜̰̼̔̿̓̄̀̅͌̈́͒͗̈́̒̕̚͜͠e̶̙̞̬̹̥͖̤̟͑͒̂̀̔͠x̵̛̱̠̳͍̦̘̤̙͚̙͈̬́̈́͂̎̽̇̀͝ę̵̯̦̫͖͖͍͈̟̠͉̥͒̑̐̏̕̚̕͜͠&quot;
-          LET Test = &quot;Hellothereongline&quot; + zalgo
+          LET zalgo = "1̴̣̜̗̰͇͖͖̞̮͈͍̂͜.̸̢̧̨͙̻̜̰̼̔̿̓̄̀̅͌̈́͒͗̈́̒̕̚͜͠e̶̙̞̬̹̥͖̤̟͑͒̂̀̔͠x̵̛̱̠̳͍̦̘̤̙͚̙͈̬́̈́͂̎̽̇̀͝ę̵̯̦̫͖͖͍͈̟̠͉̥͒̑̐̏̕̚̕͜͠"
+          LET Test = "Hellothereongline" + zalgo
 
           SELECT Test AS Test1, Test AS Test2, Test AS Test3,
                  Test AS Test4, Test AS Test5,
@@ -338,7 +338,7 @@ sources:
       - type: VQL
         template: |
           /*
-          # Column types set in the artifact&#x27;s `column_types` field
+          # Column types set in the artifact's `column_types` field
 
           These apply to notebooks automatically without needing to
           define them again.
@@ -348,13 +348,13 @@ sources:
 
           */
 
-          LET ColumnTypes = dict(`StartDate`=&#x27;timestamp&#x27;,
-                                 Hex=&#x27;hex&#x27;, Upload=&#x27;preview_upload&#x27;)
-          LET Hex = &quot;B0 EC 48 5F 18 77&quot;
+          LET ColumnTypes = dict(`StartDate`='timestamp',
+                                 Hex='hex', Upload='preview_upload')
+          LET Hex = "B0 EC 48 5F 18 77"
 
-          SELECT Hex, StartDate, hash(accessor=&quot;data&quot;, path=&quot;Hello&quot;) AS Hash,
-                 upload(accessor=&quot;data&quot;, file=&quot;Hello world&quot;,
-                        name=&quot;test.txt&quot;) AS Upload
+          SELECT Hex, StartDate, hash(accessor="data", path="Hello") AS Hash,
+                 upload(accessor="data", file="Hello world",
+                        name="test.txt") AS Upload
           FROM source()
 
 </code></pre>

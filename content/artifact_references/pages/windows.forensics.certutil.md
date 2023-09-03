@@ -70,38 +70,38 @@ parameters:
 sources:
   - query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then=&quot;ntfs_vss&quot;, else=&quot;auto&quot;)
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
-      LET Profile = &#x27;[
-        [&quot;Header&quot;, 0, [
-          [&quot;UrlSize&quot;, 12, &quot;uint32&quot;],
-          [&quot;HashSize&quot;, 100, &quot;uint32&quot;],
-          [&quot;DownloadTime&quot;, 16, &quot;uint64&quot;],
-          [&quot;FileSize&quot;, 112, &quot;uint32&quot;],
-          [&quot;URL&quot;, 116, &quot;String&quot;, {
-              &quot;encoding&quot;: &quot;utf16&quot;,
-              &quot;length&quot;: &quot;x=&gt;x.UrlSize&quot;
+      LET Profile = '[
+        ["Header", 0, [
+          ["UrlSize", 12, "uint32"],
+          ["HashSize", 100, "uint32"],
+          ["DownloadTime", 16, "uint64"],
+          ["FileSize", 112, "uint32"],
+          ["URL", 116, "String", {
+              "encoding": "utf16",
+              "length": "x=&gt;x.UrlSize"
           }],
-          [&quot;Hash&quot;, &quot;x=&gt;x.UrlSize + 116&quot;, &quot;String&quot;, {
-              &quot;encoding&quot;: &quot;utf16&quot;,
-              &quot;length&quot;: &quot;x=&gt;x.HashSize&quot;
+          ["Hash", "x=&gt;x.UrlSize + 116", "String", {
+              "encoding": "utf16",
+              "length": "x=&gt;x.HashSize"
           }]
         ]]
-      ]&#x27;
+      ]'
 
       -- Build a whitelist regex
-      LET URLRegex &lt;= &quot;^&quot; + join(array=URLWhitelist.URL, sep=&quot;|&quot;)
+      LET URLRegex &lt;= "^" + join(array=URLWhitelist.URL, sep="|")
       LET Files = SELECT OSPath,
 
           -- Parse each metadata file.
           parse_binary(filename=OSPath, accessor=Accessor,
                        profile=Profile,
-                       struct=&quot;Header&quot;) AS Header,
+                       struct="Header") AS Header,
 
           -- The content is kept in the Content directory.
-          OSPath.Dirname.Dirname + &quot;Content&quot; + OSPath.Basename AS _ContentPath,
+          OSPath.Dirname.Dirname + "Content" + OSPath.Basename AS _ContentPath,
           read_file(length=4, accessor=Accessor,
-                filename=OSPath.Dirname.Dirname + &quot;Content&quot; + OSPath.Basename) AS ContentHeader
+                filename=OSPath.Dirname.Dirname + "Content" + OSPath.Basename) AS ContentHeader
       FROM glob(globs=[MetadataGlobUser, MetadataGlobSystem], accessor=Accessor)
       WHERE Header.FileSize &gt; MinSize
 
@@ -110,14 +110,14 @@ sources:
                if(condition=AlsoUpload, then=upload(file=_ContentPath, accessor=Accessor)) AS _Upload,
                Header.URL AS URL,
                Header.FileSize AS FileSize,
-               regex_replace(re=&#x27;&quot;&#x27;, replace=&quot;&quot;, source=Header.Hash) AS Hash,
+               regex_replace(re='"', replace="", source=Header.Hash) AS Hash,
                timestamp(winfiletime=Header.DownloadTime) AS DownloadTime,
-               if(condition= ContentHeader=~ &#x27;MZ&#x27;,
+               if(condition= ContentHeader=~ 'MZ',
                     then= parse_pe(file= _ContentPath, accessor=Accessor).VersionInformation,
-                    else= &#x27;N/A&#x27; ) as VersionInformation,
-               if(condition= ContentHeader=~ &#x27;MZ&#x27;,
+                    else= 'N/A' ) as VersionInformation,
+               if(condition= ContentHeader=~ 'MZ',
                     then= authenticode(filename= _ContentPath, accessor=Accessor),
-                    else= &#x27;N/A&#x27; ) as Authenticode
+                    else= 'N/A' ) as Authenticode
 
       FROM Files
       WHERE NOT URL =~ URLRegex

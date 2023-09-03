@@ -29,7 +29,7 @@ description: |
   in the GUI before collecting this artifact).
 
   After collecting this artifact, collect the `Server.Orgs.ListOrgs`
-  artifact and select to upload client config files. Use this org&#x27;s
+  artifact and select to upload client config files. Use this org's
   config to create new client MSIs for deployment.
 
 type: SERVER
@@ -43,7 +43,7 @@ sources:
 
     SELECT org_record.name as Name, org_record.id AS OrgId,
            user_create(orgs=org_record.id,
-                       roles=[&quot;administrator&quot;, &quot;org_admin&quot;],
+                       roles=["administrator", "org_admin"],
                        user=whoami()) AS AdminUser
     FROM scope()
 

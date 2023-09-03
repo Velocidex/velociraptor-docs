@@ -19,54 +19,54 @@ parameters:
     type: int64
 
 export: |
-  LET wtmpProfile &lt;= &#x27;&#x27;&#x27;
+  LET wtmpProfile &lt;= '''
   [
-    [&quot;Header&quot;, 0, [
+    ["Header", 0, [
 
-    [&quot;records&quot;, 0, &quot;Array&quot;, {
-        &quot;type&quot;: &quot;utmp&quot;,
-        &quot;count&quot;: &quot;x=&gt;MaxCount&quot;,
-        &quot;max_count&quot;: &quot;x=&gt;MaxCount&quot;,
+    ["records", 0, "Array", {
+        "type": "utmp",
+        "count": "x=&gt;MaxCount",
+        "max_count": "x=&gt;MaxCount",
     }],
     ]],
-    [&quot;utmp&quot;, 384, [
-        [&quot;ut_type&quot;, 0, &quot;Enumeration&quot;, {
-            &quot;type&quot;: &quot;short int&quot;,
-            &quot;choices&quot;: {
-               &quot;0&quot;: &quot;EMPTY&quot;,
-               &quot;1&quot;: &quot;RUN_LVL&quot;,
-               &quot;2&quot;: &quot;BOOT_TIME&quot;,
-               &quot;5&quot;: &quot;INIT_PROCESS&quot;,
-               &quot;6&quot;: &quot;LOGIN_PROCESS&quot;,
-               &quot;7&quot;: &quot;USER_PROCESS&quot;,
-               &quot;8&quot;: &quot;DEAD_PROCESS&quot;
+    ["utmp", 384, [
+        ["ut_type", 0, "Enumeration", {
+            "type": "short int",
+            "choices": {
+               "0": "EMPTY",
+               "1": "RUN_LVL",
+               "2": "BOOT_TIME",
+               "5": "INIT_PROCESS",
+               "6": "LOGIN_PROCESS",
+               "7": "USER_PROCESS",
+               "8": "DEAD_PROCESS"
              }
           }],
-        [&quot;ut_pid&quot;, 4, &quot;int&quot;],
-        [&quot;ut_terminal&quot;, 8, &quot;String&quot;, {&quot;length&quot;: 32}],
-        [&quot;ut_terminal_identifier&quot;, 40, &quot;String&quot;, {&quot;length&quot;: 4}],
-        [&quot;ut_user&quot;, 44, &quot;String&quot;, {&quot;length&quot;: 32}],
-        [&quot;ut_hostname&quot;, 76, &quot;String&quot;, {&quot;length&quot;: 256}],
-        [&quot;ut_termination_status&quot;, 332, &quot;int&quot;],
-        [&quot;ut_exit_status&quot;, 334, &quot;int&quot;],
-        [&quot;ut_session&quot;, 336, &quot;int&quot;],
-        [&quot;ut_timestamp&quot;, 340, &quot;int32&quot;],
-        [&quot;ut_ip_address&quot;, 348, &quot;int64&quot;],
+        ["ut_pid", 4, "int"],
+        ["ut_terminal", 8, "String", {"length": 32}],
+        ["ut_terminal_identifier", 40, "String", {"length": 4}],
+        ["ut_user", 44, "String", {"length": 32}],
+        ["ut_hostname", 76, "String", {"length": 256}],
+        ["ut_termination_status", 332, "int"],
+        ["ut_exit_status", 334, "int"],
+        ["ut_session", 336, "int"],
+        ["ut_timestamp", 340, "int32"],
+        ["ut_ip_address", 348, "int64"],
     ]
     ]
     ]]
-    ]&#x27;&#x27;&#x27;
+    ]'''
 
 sources:
   - precondition: |
-      SELECT OS From info() where OS = &#x27;linux&#x27;
+      SELECT OS From info() where OS = 'linux'
     query: |
       LET parsed = SELECT OSPath, parse_binary(
                    filename=OSPath,
                    profile=wtmpProfile,
-                   struct=&quot;Header&quot;
+                   struct="Header"
                  ) AS Parsed
-      FROM glob(globs=split(string=wtmpGlobs, sep=&quot;,&quot;))
+      FROM glob(globs=split(string=wtmpGlobs, sep=","))
       SELECT * FROM foreach(row=parsed,
       query={
          SELECT * FROM foreach(row=Parsed.records,
@@ -81,7 +81,7 @@ sources:
               timestamp(epoch=ut_timestamp) as login_time
           FROM scope()
         })
-      }) WHERE Type != &quot;EMPTY&quot; AND PID != 0
+      }) WHERE Type != "EMPTY" AND PID != 0
 
 </code></pre>
 

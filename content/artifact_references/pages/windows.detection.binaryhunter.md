@@ -20,7 +20,7 @@ the artifact leverages the 'auto' data accessor but can also be changed as desir
 
 <pre><code class="language-yaml">
 name: Windows.Detection.BinaryHunter
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
     This artifact enables hunting for binary attributes.
 
@@ -33,17 +33,17 @@ description: |
     Note: this artifacts filters are cumulative so a hash based hit will return
     no results if the file is filtered out by other filters.
     For most performant searches leverage path, size and and date filters. By default
-    the artifact leverages the &#x27;auto&#x27; data accessor but can also be changed as desired.
+    the artifact leverages the 'auto' data accessor but can also be changed as desired.
 
 parameters:
   - name: TargetGlob
     description: Glob to target.
-    default: &quot;C:/Users/**/*&quot;
+    default: "C:/Users/**/*"
   - name: Accessor
     description: Velociraptor accessor to use. Changing to ntfs will increase scan time.
     default: auto
   - name: UnexpectedExtension
-    description: &quot;Exclude binaries with expected extension: com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd&quot;
+    description: "Exclude binaries with expected extension: com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd"
     type: bool
   - name: ExcludeTrusted
     description: Exclude binaries with Trusted Authenticode certificates.
@@ -91,9 +91,9 @@ parameters:
 sources:
   - query: |
       -- setup hash lists if needed
-      LET MD5Array &lt;= split(sep=&#x27;\\s+&#x27;,string=MD5List)
-      LET SHA1Array &lt;=  split(sep=&#x27;\\s+&#x27;,string=SHA1List)
-      LET SHA256Array &lt;= split(sep=&#x27;\\s+&#x27;,string=SHA256List)
+      LET MD5Array &lt;= split(sep='\\s+',string=MD5List)
+      LET SHA1Array &lt;=  split(sep='\\s+',string=SHA1List)
+      LET SHA256Array &lt;= split(sep='\\s+',string=SHA256List)
 
       -- firstly find files in scope with performance
       LET find_files = SELECT *,
@@ -129,9 +129,9 @@ sources:
                     WHERE NOT IsDir AND NOT IsLink
                         AND Size &gt; SizeMin AND Size &lt; SizeMax
                 })})})
-        WHERE _Header = &#x27;MZ&#x27;
+        WHERE _Header = 'MZ'
             AND if(condition= UnexpectedExtension,
-                then= NOT Name =~ &#x27;\.(com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd)$&#x27;,
+                then= NOT Name =~ '\.(com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd)$',
                 else= True)
 
 
@@ -154,7 +154,7 @@ sources:
             then= serialize(item=PE) =~ PEInformationWhitelistRegex,
             else= False)
         AND if(condition= ExcludeTrusted,
-                then= NOT Authenticode.Trusted = &quot;trusted&quot;,
+                then= NOT Authenticode.Trusted = "trusted",
                 else= True)
         AND if(condition= MD5List OR SHA1List OR SHA256List,
             then=(

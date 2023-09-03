@@ -23,7 +23,7 @@ parameters:
    default: C:\Users\*
 
  - name: SlackOnly
-   description: &quot;Select to return only entries from Slack space.&quot;
+   description: "Select to return only entries from Slack space."
    type: bool
 
  - name: AlsoUpload
@@ -33,12 +33,12 @@ parameters:
 sources:
   - name: UploadI30Streams
     precondition:
-      SELECT * FROM info() where OS = &#x27;windows&#x27; AND AlsoUpload
+      SELECT * FROM info() where OS = 'windows' AND AlsoUpload
 
     query: |
        LET inodes = SELECT OSPath, Data.mft AS MFT,
              parse_ntfs(device=OSPath, inode=Data.mft) AS MFTInfo
-       FROM glob(globs=DirectoryGlobs, accessor=&quot;ntfs&quot;)
+       FROM glob(globs=DirectoryGlobs, accessor="ntfs")
        WHERE IsDir
 
        LET upload_streams = SELECT * FROM foreach(
@@ -51,23 +51,23 @@ sources:
                   _value.Size AS Size,
                   _value.Name AS Name,
                   _value.OSPath AS OSPath,
-                  upload(accessor=&quot;mft&quot;,
+                  upload(accessor="mft",
                          file=MFTInfo.Device + _value.Inode,
-                         name=pathspec(Path=_value.OSPath + &quot;/&quot; + _value.Inode)) AS IndexUpload
+                         name=pathspec(Path=_value.OSPath + "/" + _value.Inode)) AS IndexUpload
            FROM scope()
-           WHERE Type =~ &quot;INDEX_&quot;
+           WHERE Type =~ "INDEX_"
        })
 
        SELECT * FROM foreach(row=inodes, query=upload_streams)
 
   - name: AnalyzeI30
     precondition:
-      SELECT * FROM info() where OS = &#x27;windows&#x27;
+      SELECT * FROM info() where OS = 'windows'
 
     query: |
        LET inodes = SELECT OSPath, Data.mft AS MFT,
              parse_ntfs(device=OSPath, inode=Data.mft) AS MFTInfo
-       FROM glob(globs=DirectoryGlobs, accessor=&quot;ntfs&quot;)
+       FROM glob(globs=DirectoryGlobs, accessor="ntfs")
        WHERE IsDir
 
        SELECT * FROM foreach(

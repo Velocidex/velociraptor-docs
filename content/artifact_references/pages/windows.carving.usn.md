@@ -66,130 +66,130 @@ description: |
 
 parameters:
   - name: DriveToScan
-    default: &quot;C:&quot;
+    default: "C:"
   - name: FileRegex
-    description: &quot;Regex search over File Name&quot;
-    default: &quot;.&quot;
+    description: "Regex search over File Name"
+    default: "."
     type: regex
   - name: DateAfter
     type: timestamp
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
 
 export: |
   -- Profile to parse the USN record
-  LET USNProfile = &#x27;&#x27;&#x27;[
-            [&quot;USN_RECORD_V2&quot;, 4, [
-                [&quot;RecordLength&quot;, 0, &quot;unsigned long&quot;],
-                [&quot;MajorVersion&quot;, 4, &quot;unsigned short&quot;],
-                [&quot;MinorVersion&quot;, 6, &quot;unsigned short&quot;],
-                [&quot;FileReferenceNumberSequence&quot;, 8, &quot;BitField&quot;, {
-                    &quot;type&quot;: &quot;unsigned long long&quot;,
-                    &quot;start_bit&quot;: 48,
-                    &quot;end_bit&quot;: 63
+  LET USNProfile = '''[
+            ["USN_RECORD_V2", 4, [
+                ["RecordLength", 0, "unsigned long"],
+                ["MajorVersion", 4, "unsigned short"],
+                ["MinorVersion", 6, "unsigned short"],
+                ["FileReferenceNumberSequence", 8, "BitField", {
+                    "type": "unsigned long long",
+                    "start_bit": 48,
+                    "end_bit": 63
                 }],
-                [&quot;FileReferenceNumberID&quot;, 8, &quot;BitField&quot;, {
-                    &quot;type&quot;: &quot;unsigned long long&quot;,
-                    &quot;start_bit&quot;: 0,
-                    &quot;end_bit&quot;: 48
+                ["FileReferenceNumberID", 8, "BitField", {
+                    "type": "unsigned long long",
+                    "start_bit": 0,
+                    "end_bit": 48
                 }],
-                [&quot;ParentFileReferenceNumberSequence&quot;, 16, &quot;BitField&quot;, {
-                    &quot;type&quot;: &quot;unsigned long long&quot;,
-                    &quot;start_bit&quot;: 48,
-                    &quot;end_bit&quot;: 63
+                ["ParentFileReferenceNumberSequence", 16, "BitField", {
+                    "type": "unsigned long long",
+                    "start_bit": 48,
+                    "end_bit": 63
                 }],
-                [&quot;ParentFileReferenceNumberID&quot;, 16, &quot;BitField&quot;, {
-                    &quot;type&quot;: &quot;unsigned long long&quot;,
-                    &quot;start_bit&quot;: 0,
-                    &quot;end_bit&quot;: 48
+                ["ParentFileReferenceNumberID", 16, "BitField", {
+                    "type": "unsigned long long",
+                    "start_bit": 0,
+                    "end_bit": 48
                 }],
 
-                [&quot;Usn&quot;, 24, &quot;unsigned long long&quot;],
-                [&quot;TimeStamp&quot;, 32, &quot;WinFileTime&quot;],
-                [&quot;Reason&quot;, 40, &quot;Flags&quot;, {
-                    &quot;type&quot;: &quot;unsigned long&quot;,
-                    &quot;bitmap&quot;: {
-                        &quot;DATA_OVERWRITE&quot;: 0,
-                        &quot;DATA_EXTEND&quot;: 1,
-                        &quot;DATA_TRUNCATION&quot;: 2,
-                        &quot;NAMED_DATA_OVERWRITE&quot;: 4,
-                        &quot;NAMED_DATA_EXTEND&quot;: 5,
-                        &quot;NAMED_DATA_TRUNCATION&quot;: 6,
-                        &quot;FILE_CREATE&quot;: 8,
-                        &quot;FILE_DELETE&quot;: 9,
-                        &quot;EA_CHANGE&quot;: 10,
-                        &quot;SECURITY_CHANGE&quot;: 11,
-                        &quot;RENAME_OLD_NAME&quot;: 12,
-                        &quot;RENAME_NEW_NAME&quot;: 13,
-                        &quot;INDEXABLE_CHANGE&quot;: 14,
-                        &quot;BASIC_INFO_CHANGE&quot;: 15,
-                        &quot;HARD_LINK_CHANGE&quot;: 16,
-                        &quot;COMPRESSION_CHANGE&quot;: 17,
-                        &quot;ENCRYPTION_CHANGE&quot;: 18,
-                        &quot;OBJECT_ID_CHANGE&quot;: 19,
-                        &quot;REPARSE_POINT_CHANGE&quot;: 20,
-                        &quot;STREAM_CHANGE&quot;: 21,
-                        &quot;CLOSE&quot;: 31
+                ["Usn", 24, "unsigned long long"],
+                ["TimeStamp", 32, "WinFileTime"],
+                ["Reason", 40, "Flags", {
+                    "type": "unsigned long",
+                    "bitmap": {
+                        "DATA_OVERWRITE": 0,
+                        "DATA_EXTEND": 1,
+                        "DATA_TRUNCATION": 2,
+                        "NAMED_DATA_OVERWRITE": 4,
+                        "NAMED_DATA_EXTEND": 5,
+                        "NAMED_DATA_TRUNCATION": 6,
+                        "FILE_CREATE": 8,
+                        "FILE_DELETE": 9,
+                        "EA_CHANGE": 10,
+                        "SECURITY_CHANGE": 11,
+                        "RENAME_OLD_NAME": 12,
+                        "RENAME_NEW_NAME": 13,
+                        "INDEXABLE_CHANGE": 14,
+                        "BASIC_INFO_CHANGE": 15,
+                        "HARD_LINK_CHANGE": 16,
+                        "COMPRESSION_CHANGE": 17,
+                        "ENCRYPTION_CHANGE": 18,
+                        "OBJECT_ID_CHANGE": 19,
+                        "REPARSE_POINT_CHANGE": 20,
+                        "STREAM_CHANGE": 21,
+                        "CLOSE": 31
                     }
                 }],
-                [&quot;SourceInfo&quot;, 44, &quot;Flags&quot;, {
-                    &quot;type&quot;: &quot;unsigned long&quot;,
-                    &quot;bitmap&quot;: {
-                        &quot;DATA_MANAGEMENT&quot;: 0,
-                        &quot;AUXILIARY_DATA&quot;: 1,
-                        &quot;REPLICATION_MANAGEMENT&quot;: 2
+                ["SourceInfo", 44, "Flags", {
+                    "type": "unsigned long",
+                    "bitmap": {
+                        "DATA_MANAGEMENT": 0,
+                        "AUXILIARY_DATA": 1,
+                        "REPLICATION_MANAGEMENT": 2
                     }
                 }],
-                [&quot;SecurityId&quot;, 48, &quot;unsigned long&quot;],
-                [&quot;FileAttributes&quot;, 52, &quot;Flags&quot;, {
-                    &quot;type&quot;: &quot;unsigned long&quot;,
-                    &quot;bitmap&quot;: {
-                        &quot;READONLY&quot;: 0,
-                        &quot;HIDDEN&quot;: 1,
-                        &quot;SYSTEM&quot;: 2,
-                        &quot;DIRECTORY&quot;: 4,
-                        &quot;ARCHIVE&quot;: 5,
-                        &quot;DEVICE&quot;: 6,
-                        &quot;NORMAL&quot;: 7,
-                        &quot;TEMPORARY&quot;: 8,
-                        &quot;SPARSE_FILE&quot;: 9,
-                        &quot;REPARSE_POINT&quot;: 10,
-                        &quot;COMPRESSED&quot;: 11,
-                        &quot;OFFLINE&quot;: 12,
-                        &quot;NOT_CONTENT_INDEXED&quot;: 13,
-                        &quot;ENCRYPTED&quot;: 14,
-                        &quot;INTEGRITY_STREAM&quot;: 15,
-                        &quot;VIRTUAL&quot;: 16,
-                        &quot;NO_SCRUB_DATA&quot;: 17
+                ["SecurityId", 48, "unsigned long"],
+                ["FileAttributes", 52, "Flags", {
+                    "type": "unsigned long",
+                    "bitmap": {
+                        "READONLY": 0,
+                        "HIDDEN": 1,
+                        "SYSTEM": 2,
+                        "DIRECTORY": 4,
+                        "ARCHIVE": 5,
+                        "DEVICE": 6,
+                        "NORMAL": 7,
+                        "TEMPORARY": 8,
+                        "SPARSE_FILE": 9,
+                        "REPARSE_POINT": 10,
+                        "COMPRESSED": 11,
+                        "OFFLINE": 12,
+                        "NOT_CONTENT_INDEXED": 13,
+                        "ENCRYPTED": 14,
+                        "INTEGRITY_STREAM": 15,
+                        "VIRTUAL": 16,
+                        "NO_SCRUB_DATA": 17
                     }
                 }],
-                [&quot;FileNameLength&quot;, 56, &quot;unsigned short&quot;],
-                [&quot;FileNameOffset&quot;, 58, &quot;unsigned short&quot;],
-                [&quot;Filename&quot;, &quot;x=&gt;x.FileNameOffset&quot;, &quot;String&quot;, {
-                    encoding: &quot;utf16&quot;,
-                    length: &quot;x=&gt;x.FileNameLength&quot;,
+                ["FileNameLength", 56, "unsigned short"],
+                ["FileNameOffset", 58, "unsigned short"],
+                ["Filename", "x=&gt;x.FileNameOffset", "String", {
+                    encoding: "utf16",
+                    length: "x=&gt;x.FileNameLength",
                 }]
             ]]]
-        &#x27;&#x27;&#x27;
+        '''
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = &#x27;windows&#x27;
+      SELECT OS From info() where OS = 'windows'
 
     query: |
         -- firstly set timebounds for performance
         LET DateAfterTime &lt;= if(condition=DateAfter,
-             then=DateAfter, else=&quot;1600-01-01&quot;)
+             then=DateAfter, else="1600-01-01")
         LET DateBeforeTime &lt;= if(condition=DateBefore,
-            then=DateBefore, else=&quot;2200-01-01&quot;)
+            then=DateBefore, else="2200-01-01")
 
-        LET Device &lt;= &#x27;&#x27;&#x27;\\.\&#x27;&#x27;&#x27; + DriveToScan
+        LET Device &lt;= '''\\.\''' + DriveToScan
 
         -- This rule performs an initial reduction for speed, then we
         -- reduce further using other conditions.
-        LET YaraRule = &#x27;&#x27;&#x27;rule X {
+        LET YaraRule = '''rule X {
             strings:
               // First byte is the record length &lt; 255 second byte should be 0-1 (0-512 bytes per record)
               // Version Major and Minor must be 2 and 0
@@ -199,13 +199,13 @@ sources:
             condition:
               any of them
         }
-        &#x27;&#x27;&#x27;
+        '''
 
         -- Find all the records in the drive.
         LET Hits = SELECT String.Offset AS Offset, parse_binary(
-           filename=Device, accessor=&quot;ntfs&quot;, struct=&quot;USN_RECORD_V2&quot;,
+           filename=Device, accessor="ntfs", struct="USN_RECORD_V2",
            profile=USNProfile, offset=String.Offset) AS _Parsed
-        FROM yara(files=Device, accessor=&quot;ntfs&quot;, rules=YaraRule, number=200000000)
+        FROM yara(files=Device, accessor="ntfs", rules=YaraRule, number=200000000)
         WHERE _Parsed.RecordLength &gt; 60 AND  // Record must be at least 60 bytes
               _Parsed.FileNameLength &gt; 3 AND _Parsed.FileNameLength &lt; 100
 

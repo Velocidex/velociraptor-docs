@@ -33,7 +33,7 @@ OSPath output now uses expected Windows backslash "`\`".
 
 <pre><code class="language-yaml">
 name: Windows.NTFS.MFT
-author: &quot;Matt Green - @mgreen27&quot;
+author: "Matt Green - @mgreen27"
 description: |
   This artifact parses $MFT files and returns rows of each in scope  MFT record.
   This artifact can be used as the basis for other artifacts where the MFT needs
@@ -59,14 +59,14 @@ description: |
 
   NOTE: Generally more efficient to filter on filename.
   Multiple filters are cumulative.
-  OSPath output now uses expected Windows backslash &quot;`\`&quot;.
+  OSPath output now uses expected Windows backslash "`\`".
 
 parameters:
   - name: MFTDrive
     description: |
       The path to to the drive that holds the MFT file (can be a pathspec). This
       drive is also used for results for offline processing.
-    default: &quot;C:&quot;
+    default: "C:"
   - name: MFTPath
     description: Optional path to MFT file for offline processing.
     default:
@@ -74,30 +74,30 @@ parameters:
     default: ntfs
   - name: AllNtfs
     type: bool
-    description: &quot;Return all NTFS metadata with resutls.&quot;
+    description: "Return all NTFS metadata with resutls."
   - name: PathRegex
-    description: &quot;Regex search over OSPath.&quot;
-    default: &quot;.&quot;
+    description: "Regex search over OSPath."
+    default: "."
     type: regex
   - name: FileRegex
-    description: &quot;Regex search over File Name&quot;
-    default: &quot;.&quot;
+    description: "Regex search over File Name"
+    default: "."
     type: regex
   - name: DateAfter
     type: timestamp
-    description: &quot;search for events after this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: DateBefore
     type: timestamp
-    description: &quot;search for events before this date. YYYY-MM-DDTmm:hh:ssZ&quot;
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
   - name: SizeMax
     type: int64
-    description: &quot;Entries in the MFT under this size in bytes.&quot;
+    description: "Entries in the MFT under this size in bytes."
   - name: SizeMin
     type: int64
-    description: &quot;Entries in the MFT over this size in bytes.&quot;
+    description: "Entries in the MFT over this size in bytes."
   - name: AllDrives
     type: bool
-    description: &quot;Select MFT search on all attached ntfs drives.&quot;
+    description: "Select MFT search on all attached ntfs drives."
   - name: NTFS_INCLUDE_SHORT_NAMES
     description: See all names referencing the file including short names.
     type: bool
@@ -106,7 +106,7 @@ sources:
   - query: |
       -- Cater for older clients which do not have the Links column.
       LET parse_mft_version(filename, accessor, prefix) = SELECT *
-      FROM if(condition=version(plugin=&quot;parse_mft&quot;) &gt; 1,
+      FROM if(condition=version(plugin="parse_mft") &gt; 1,
               then={ SELECT *
                      FROM parse_mft(
                          filename=filename, accessor=accessor, prefix=prefix)
@@ -123,7 +123,7 @@ sources:
               })
 
       -- The path to to the drive that holds the MFT file (can be a pathspec)
-      LET Drive &lt;= pathspec(parse=MFTDrive, path_type=&quot;ntfs&quot;)
+      LET Drive &lt;= pathspec(parse=MFTDrive, path_type="ntfs")
 
       -- time testing
       LET time_test(stamp) =
@@ -141,9 +141,9 @@ sources:
       -- find all ntfs drives
       LET ntfs_drives = SELECT
         OSPath AS Drive,
-        OSPath + &#x27;$MFT&#x27; AS MFTFilename
-      FROM glob(globs=&quot;/*&quot;, accessor=&quot;ntfs&quot;)
-      WHERE log(message=&quot;Processing &quot; + MFTFilename)
+        OSPath + '$MFT' AS MFTFilename
+      FROM glob(globs="/*", accessor="ntfs")
+      WHERE log(message="Processing " + MFTFilename)
 
       -- function returning MFT entries
       -- Only check the filename - should be very quick
@@ -243,7 +243,7 @@ sources:
             OR time_test(stamp=LastAccess0x10)
             OR time_test(stamp=LastAccess0x30))
 
-      -- Choose a query to run depending on the user&#x27;s choices.
+      -- Choose a query to run depending on the user's choices.
       LET mftsearch(Drive, MFTPath) = SELECT * FROM if(
        -- only need to do a filename comparison
        condition=NOT DateAfter AND NOT DateBefore AND NOT SizeMin AND NOT SizeMax,
@@ -287,7 +287,7 @@ sources:
               SELECT * FROM mftsearch(Drive=Drive,
                                 MFTPath=if(condition= MFTPath ,
                                             then= MFTPath,
-                                            else= Drive + &quot;$MFT&quot;))
+                                            else= Drive + "$MFT"))
             })
       -- enrich results with NtfsMetadata is requests
       LET enriched_results = SELECT *,

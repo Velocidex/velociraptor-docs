@@ -68,7 +68,7 @@ description: |
 
 
 precondition:
-  SELECT * FROM info() where OS = &#x27;linux&#x27;
+  SELECT * FROM info() where OS = 'linux'
 
 parameters:
   - name: SearchFilesGlob
@@ -96,15 +96,15 @@ parameters:
     type: bool
 
   - name: MoreRecentThan
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
   - name: ModifiedBefore
-    default: &quot;&quot;
+    default: ""
     type: timestamp
 
   - name: ExcludePathRegex
-    default: &quot;^/(proc|sys|run|snap)&quot;
+    default: "^/(proc|sys|run|snap)"
     type: regex
     description: If this regex matches the path of any directory we do not even descend inside of it.
 
@@ -158,11 +158,11 @@ sources:
     LET RecursionCallback = if(
        condition=LocalFilesystemOnly,
          then=if(condition=ExcludePathRegex,
-                 then=&quot;x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex&quot;,
-                 else=&quot;x=&gt;x.Data.DevMajor IN LocalDeviceMajor&quot;),
+                 then="x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
+                 else="x=&gt;x.Data.DevMajor IN LocalDeviceMajor"),
          else=if(condition=ExcludePathRegex,
-                 then=&quot;x=&gt;NOT x.OSPath =~ ExcludePathRegex&quot;,
-                 else=&quot;&quot;))
+                 then="x=&gt;NOT x.OSPath =~ ExcludePathRegex",
+                 else=""))
 
     LET file_search = SELECT OSPath,
                Sys.mft as Inode,
@@ -174,7 +174,7 @@ sources:
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   recursion_callback=RecursionCallback,
                   one_filesystem=OneFilesystem,
-                  accessor=&quot;file&quot;, nosymlink=DoNotFollowSymlinks)
+                  accessor="file", nosymlink=DoNotFollowSymlinks)
 
     LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
@@ -209,9 +209,9 @@ sources:
                       str(str=String.Data) As Keywords
 
                FROM yara(files=OSPath,
-                         key=&quot;A&quot;,
+                         key="A",
                          rules=YaraRule,
-                         accessor=&quot;file&quot;)
+                         accessor="file")
             })
         }, else={
           SELECT *, NULL AS Keywords FROM modified_before
@@ -221,10 +221,10 @@ sources:
              MTime, CTime, Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
-                              accessor=&quot;file&quot;)) AS Upload,
+                              accessor="file")) AS Upload,
                if(condition=Calculate_Hash and Mode.IsRegular,
                   then=hash(path=OSPath,
-                            accessor=&quot;file&quot;)) AS Hash
+                            accessor="file")) AS Hash
     FROM keyword_search
 
 column_types:
