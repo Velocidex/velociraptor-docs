@@ -83,7 +83,7 @@ sources:
                 ProcessRegex=ProcessRegex,
                 YaraRule=YaraRule,
                 YaraRule=YaraRule,
-                NumberOfHits=str(str=NumberOfHits),
+                NumberOfHits=NumberOfHits,
                 ContextBytes=ContextBytes,
                 ExePathWhitelist=ExePathWhitelist )
 
