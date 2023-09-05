@@ -2,7 +2,8 @@ name: Windows.Detection.IdatLoader
 author: Matt Green - @mgreen27
 description: |
   This artifact enables running Yara over processes in memory.
-  Targeting detection of IDAT Loader.  
+  Targeting detection of IDAT Loader and final payloads 
+  observed in field.  
 
 type: CLIENT
 reference:
@@ -19,6 +20,7 @@ parameters:
     type: bool
   - name: YaraRule
     type: yara
+    description: Final Yara option and the default if no other options provided.
     default: |
         rule IDAT_Loader_August_2023
         {
@@ -33,7 +35,28 @@ parameters:
             condition:
                 2 of ($trait_*)
         }
-
+        
+        rule win_stealc_w0 {
+           meta:
+               malware = "Stealc"
+               description = "Find standalone Stealc sample based on decryption routine or characteristic strings"
+               reference = "https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1/"
+               author = "crep1x"
+               notes = "removed MZ header condition"
+           strings:
+               $dec = { 55 8b ec 8b 4d ?? 83 ec 0c 56 57 e8 ?? ?? ?? ?? 6a 03 33 d2 8b f8 59 f7 f1 8b c7 85 d2 74 04 } //deobfuscation function
+               
+               $str01 = "------" ascii
+               $str02 = "Network Info:" ascii
+               $str03 = "- IP: IP?" ascii
+               $str04 = "- Country: ISO?" ascii
+               $str05 = "- Display Resolution:" ascii
+               $str06 = "User Agents:" ascii
+               $str07 = "%s\\%s\\%s" ascii
+        
+           condition:
+                ($dec or 5 of ($str*))
+        }
   - name: NumberOfHits
     description: THis artifact will stop by default at one hit. This setting allows additional hits
     default: 1
