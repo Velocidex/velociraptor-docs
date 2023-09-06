@@ -75,7 +75,7 @@ part of this year's marquee event of the open-source DFIR calendar.
 
   <tr>
     <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">11:00-11:45 am</font></td>
-    <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Wes Lambert  <br> Founder & CEO, Glue Security</font></td>
+    <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Wes Lambert </font></td>
     <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
         <a href="#clawing-your-way-to-compliance-with-velociraptor">
           Clawing Your Way To Compliance with Velociraptor
@@ -179,7 +179,7 @@ tool!
 
 ### Clawing Your Way to Compliance with Velociraptor
 
-By: **Wes Lambert** - Founder and CEO Glue Security
+By: **Wes Lambert**
 
 In this presentation, we'll explore the multifaceted capabilities of
 Velociraptor as an endpoint visibility monitoring tool in meeting
