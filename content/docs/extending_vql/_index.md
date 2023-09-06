@@ -217,14 +217,14 @@ SELECT * FROM foreach(row=tasks,
   query={
     SELECT * FROM if(condition= ReallyDoIt='Y',
       then={
-        SELECT FullPath, Name, Command, Arguments, ComHandler, UserId, _XML
+        SELECT OSPath, Name, Command, Arguments, ComHandler, UserId, _XML
         FROM execve(argv=["powershell",
            "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
               base64encode(string=utf16_encode(
               string=format(format=script, args=[Name])))
         ])
       }, else={
-        SELECT FullPath, Name, Command, Arguments, ComHandler, UserId, _XML
+        SELECT OSPath, Name, Command, Arguments, ComHandler, UserId, _XML
         FROM scope()
       })
   })
@@ -304,7 +304,7 @@ sources:
 
 ```sql
       LET output = SELECT * FROM execve(argv=[
-           bin[0].FullPath,
+           bin[0].OSPath,
            '-nobanner', '-accepteula', '-t', '-a', '*', '-c', '*'],
            length=10000000)
 ```
