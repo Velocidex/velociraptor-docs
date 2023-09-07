@@ -75,10 +75,10 @@ part of this year's marquee event of the open-source DFIR calendar.
 
   <tr>
     <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">11:00-11:45 am</font></td>
-    <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Wes Lambert </font></td>
+    <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Semanur Güneysu <br> SOC Analyst, IMPERUM</font></td>
     <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
         <a href="#clawing-your-way-to-compliance-with-velociraptor">
-          Clawing Your Way To Compliance with Velociraptor
+          Empowering SOC Analysts with Velociraptor: Revolutionizing Live Response and Automation
         </a>
     </font></td>
   </tr>
@@ -106,10 +106,10 @@ part of this year's marquee event of the open-source DFIR calendar.
   </tr>
   <tr>
     <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom><font size=3 color="#000000">1:45-2:30 pm </font></td>
-    <td align="left" valign=bottom><font size=3 color="#000000">Semanur Güneysu <br> SOC Analyst, IMPERUM</font></td>
+    <td align="left" valign=bottom><font size=3 color="#000000">Wes Lambert <br> Founder & CEO, Glue Security</font></td>
     <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
         <a href="#empowering-soc-analysts-with-velociraptor-revolutionizing-live-response-and-automation">
-          Empowering SOC Analysts with Velociraptor: Revolutionizing Live Response and Automation
+          Clawing Your Way To Compliance with Velociraptor
         </a>
     </font></td>
   </tr>
@@ -177,60 +177,50 @@ Velociraptor, this webinar will provide a demonstration of some of the
 powerful capabilities that come bundled in this widely popular DFIR
 tool!
 
-### Clawing Your Way to Compliance with Velociraptor
+### Empowering SOC Analysts with Velociraptor: Revolutionizing Live Response and Automation
 
-By: **Wes Lambert**
+By: **Semanur Güneysu** - SOC Analyst, IMPERUM
 
-In this presentation, we'll explore the multifaceted capabilities of
-Velociraptor as an endpoint visibility monitoring tool in meeting
-various security compliance standards. While compliance has
-traditionally been seen as a complex and arduous task, the application
-of innovative tools like Velociraptor can significantly streamline
-this process and ensure that organizations maintain their adherence to
-different cybersecurity policies.  Cybersecurity compliance is
-increasingly being seen not just as an administrative burden, but as
-an essential component of an organization's cybersecurity
-framework. Amid the ever-evolving cybersecurity landscape, compliance
-with the right security standards can help organizations mitigate
-threats and reduce risk. Velociraptor's capacity to provide real-time,
-comprehensive visibility of endpoints makes it a vital instrument in
-achieving and maintaining security compliance.
-
-Throughout the presentation, we'll delve into the application of
-Velociraptor in creating a robust, efficient, and effective security
-compliance framework. We will illustrate how its features, like live
-response, artifact collection, and advanced querying capabilities can
-be leveraged to fulfill regulatory requirements. By highlighting
-specific case scenarios, we will demonstrate how Velociraptor's
-ability to investigate security threats and breaches, and monitor
-security configurations, aligns with critical compliance needs.  We'll
-further examine how Velociraptor can support the different aspects of
-the compliance lifecycle. By enabling continuous monitoring and
-auditing of endpoints, Velociraptor can help organizations maintain an
-accurate inventory of assets, track and control configurations,
-identify and respond to security incidents, and conduct post-incident
-analyses, all of which are crucial to ensuring adherence to various
-security standards.
-
-Continuing, we'll discuss how the open-source nature of Velociraptor
-allows for customization and flexibility in responding to unique
-compliance requirements. Whether it's creating custom artifacts to
-capture specific data or modifying existing artifacts to suit specific
-environments, Velociraptor provides the flexibility organizations need
-to meet compliance standards.
-
-In conclusion, the presentation will underscore the significance of
-adopting a proactive, tool-supported approach to achieving
-compliance. By employing Velociraptor's advanced endpoint visibility
-monitoring capabilities, organizations can not only demonstrate their
-adherence to required security standards but also enhance their
-overall cybersecurity posture.  The insights shared during this
-presentation will be especially beneficial for security professionals
-and compliance officers seeking efficient ways to align their
-compliance strategies with dynamic cybersecurity needs. Through this
-exploration of Velociraptor's potential in the compliance arena,
-attendees will gain a deeper understanding of how to leverage this
-powerful tool in their quest to maintain security compliance.
+In today's rapidly evolving threat landscape, SOC analysts are
+constantly challenged to detect, respond to, and remediate security
+incidents swiftly and efficiently. This presentation focuses on
+designing automation playbooks while using Velociraptor’s features
+that enable SOC analysts to enhance their capabilities: The
+presentation begins by highlighting the significance of live response
+in incident handling and investigations. We delve into the limitations
+of traditional approaches and showcase how Velociraptor revolutionizes
+the live response landscape. Through its open-source nature,
+extensibility, and powerful query language, Velociraptor empowers SOC
+analysts to perform real-time investigations and gather valuable
+forensic data across endpoints, networks.  Additionally, the
+presentation highlights the capabilities of the Velociraptor app
+within the SOAR platform. We showcase how the Velociraptor app,
+leveraging its API integration.This integration empowers SOC analysts
+to leverage Velociraptor's powerful live response capabilities
+directly within the IMPERUM platform, enhancing efficiency and
+centralizing incident response efforts.With the integration of
+Velociraptor and IMPERUM, SOC analysts can streamline incident
+response workflows, automate repetitive tasks, and orchestrate complex
+security operations seamlessly.  The presentation then underscores the
+benefits of Velociraptor and live response automation. We emphasize
+how these technologies improve the efficiency, accuracy, and speed of
+incident response. By enabling SOC analysts to gather forensically
+sound evidence, perform deep-dive investigations, and make data-driven
+decisions, Velociraptor becomes a force multiplier in the SOC
+ecosystem. Moreover, the integration of Velociraptor with IMPERUM
+augments the effectiveness of incident response by enabling proactive
+threat hunting, correlation of events, and automated remediation
+actions.  Lastly, we discuss real-world use cases and success stories
+that demonstrate the tangible impact of Velociraptor in live response
+scenarios. Through these examples, we illustrate how SOC analysts can
+effectively handle and mitigate security incidents, significantly
+reducing the mean time to detect and respond and minimizing the
+overall impact of cyber threats.  In conclusion, this presentation
+highlights the transformative potential of Velociraptor and IMPERUM in
+empowering SOC analysts. By combining the live response capabilities
+of Velociraptor with playbooks, organizations can enhance their
+incident response capabilities, strengthen their security posture, and
+adapt to the ever-evolving threat landscape effectively.
 
 
 ### Windows Search Index: The forensic artifact you’ve been searching for
@@ -371,50 +361,17 @@ only rely on third party enrichment to start.
 resourceful and self-starting as a result.
 
 
-### Empowering SOC Analysts with Velociraptor: Revolutionizing Live Response and Automation
+### Clawing Your Way To Compliance with Velociraptor
 
-By **Semanur Güneysu** - SOC Analyst, IMPERUM
+By **Wes Lambert** - Founder & CEO, Glue Security
 
-In today's rapidly evolving threat landscape, SOC analysts are
-constantly challenged to detect, respond to, and remediate security
-incidents swiftly and efficiently. This presentation focuses on
-designing automation playbooks while using Velociraptor’s features
-that enable SOC analysts to enhance their capabilities: The
-presentation begins by highlighting the significance of live response
-in incident handling and investigations. We delve into the limitations
-of traditional approaches and showcase how Velociraptor revolutionizes
-the live response landscape. Through its open-source nature,
-extensibility, and powerful query language, Velociraptor empowers SOC
-analysts to perform real-time investigations and gather valuable
-forensic data across endpoints, networks.  Additionally, the
-presentation highlights the capabilities of the Velociraptor app
-within the SOAR platform. We showcase how the Velociraptor app,
-leveraging its API integration.This integration empowers SOC analysts
-to leverage Velociraptor's powerful live response capabilities
-directly within the IMPERUM platform, enhancing efficiency and
-centralizing incident response efforts.With the integration of
-Velociraptor and IMPERUM, SOC analysts can streamline incident
-response workflows, automate repetitive tasks, and orchestrate complex
-security operations seamlessly.  The presentation then underscores the
-benefits of Velociraptor and live response automation. We emphasize
-how these technologies improve the efficiency, accuracy, and speed of
-incident response. By enabling SOC analysts to gather forensically
-sound evidence, perform deep-dive investigations, and make data-driven
-decisions, Velociraptor becomes a force multiplier in the SOC
-ecosystem. Moreover, the integration of Velociraptor with IMPERUM
-augments the effectiveness of incident response by enabling proactive
-threat hunting, correlation of events, and automated remediation
-actions.  Lastly, we discuss real-world use cases and success stories
-that demonstrate the tangible impact of Velociraptor in live response
-scenarios. Through these examples, we illustrate how SOC analysts can
-effectively handle and mitigate security incidents, significantly
-reducing the mean time to detect and respond and minimizing the
-overall impact of cyber threats.  In conclusion, this presentation
-highlights the transformative potential of Velociraptor and IMPERUM in
-empowering SOC analysts. By combining the live response capabilities
-of Velociraptor with playbooks, organizations can enhance their
-incident response capabilities, strengthen their security posture, and
-adapt to the ever-evolving threat landscape effectively.
+In this presentation, we’ll explore the multifaceted capabilities of Velociraptor as an endpoint visibility monitoring tool in meeting various security compliance standards. While compliance has traditionally been seen as a complex and arduous task, the application of innovative tools like Velociraptor can significantly streamline this process and ensure that organizations maintain their adherence to different cybersecurity policies. Cybersecurity compliance is increasingly being seen not just as an administrative burden, but as an essential component of an organization’s cybersecurity framework. Amid the ever-evolving cybersecurity landscape, compliance with the right security standards can help organizations mitigate threats and reduce risk. Velociraptor’s capacity to provide real-time, comprehensive visibility of endpoints makes it a vital instrument in achieving and maintaining security compliance.
+
+Throughout the presentation, we’ll delve into the application of Velociraptor in creating a robust, efficient, and effective security compliance framework. We will illustrate how its features, like live response, artifact collection, and advanced querying capabilities can be leveraged to fulfill regulatory requirements. By highlighting specific case scenarios, we will demonstrate how Velociraptor’s ability to investigate security threats and breaches, and monitor security configurations, aligns with critical compliance needs. We’ll further examine how Velociraptor can support the different aspects of the compliance lifecycle. By enabling continuous monitoring and auditing of endpoints, Velociraptor can help organizations maintain an accurate inventory of assets, track and control configurations, identify and respond to security incidents, and conduct post-incident analyses, all of which are crucial to ensuring adherence to various security standards.
+
+Continuing, we’ll discuss how the open-source nature of Velociraptor allows for customization and flexibility in responding to unique compliance requirements. Whether it’s creating custom artifacts to capture specific data or modifying existing artifacts to suit specific environments, Velociraptor provides the flexibility organizations need to meet compliance standards.
+
+In conclusion, the presentation will underscore the significance of adopting a proactive, tool-supported approach to achieving compliance. By employing Velociraptor’s advanced endpoint visibility monitoring capabilities, organizations can not only demonstrate their adherence to required security standards but also enhance their overall cybersecurity posture. The insights shared during this presentation will be especially beneficial for security professionals and compliance officers seeking efficient ways to align their compliance strategies with dynamic cybersecurity needs. Through this exploration of Velociraptor’s potential in the compliance arena, attendees will gain a deeper understanding of how to leverage this powerful tool in their quest to maintain security compliance.
 
 
 
