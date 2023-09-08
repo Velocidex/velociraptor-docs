@@ -3,7 +3,6 @@ import json
 import yaml
 import re
 import os
-from zipfile import ZipFile
 
 # Where we generate the search index.
 commits_url = "https://api.github.com/repos/Velocidex/velociraptor-docs/commits"

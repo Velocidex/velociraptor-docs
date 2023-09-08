@@ -4,7 +4,6 @@ import html
 import yaml
 import re
 import os
-from zipfile import ZipFile
 import argparse
 
 parser = argparse.ArgumentParser(description='Generate artifact documentation.')
