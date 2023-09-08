@@ -148,6 +148,11 @@ part of this year's marquee event of the open-source DFIR calendar.
 ### Content Management Like a Boss!
 By **Matt Green** - Principal Software Engineer, Velociraptor/Rapid7
 
+Content management is one of the most under rated Velociraptor capabilities 
+used by mature users. This talk will walk through some basics of content 
+management, introduce automation and hopefully leave you with actionable 
+ideas on how to do Velociraptor Content like a boss. 
+
 ### Fast DFIR with Velociraptor
 By **Mike Cohen** - Digital Paleontologist
 
