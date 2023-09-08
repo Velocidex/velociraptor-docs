@@ -150,7 +150,7 @@ By **Matt Green** - Principal Software Engineer, Velociraptor/Rapid7
 
 Content management is one of the most under rated Velociraptor capabilities 
 used by mature users. This talk will walk through some basics of content 
-management, introduce automation and hopfully leave you with actionable 
+management, introduce automation and hopefully leave you with actionable 
 ideas on how to do Velociraptor Content like a boss. 
 
 ### Fast DFIR with Velociraptor
