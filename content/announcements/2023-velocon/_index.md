@@ -106,7 +106,7 @@ part of this year's marquee event of the open-source DFIR calendar.
   </tr>
   <tr>
     <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom><font size=3 color="#000000">1:45-2:30 pm </font></td>
-    <td align="left" valign=bottom><font size=3 color="#000000">Wes Lambert <br> Founder & CEO, Glue Security</font></td>
+    <td align="left" valign=bottom><font size=3 color="#000000">Wes Lambert </font></td>
     <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
         <a href="#empowering-soc-analysts-with-velociraptor-revolutionizing-live-response-and-automation">
           Clawing Your Way To Compliance with Velociraptor
