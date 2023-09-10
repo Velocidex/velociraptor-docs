@@ -2,7 +2,7 @@
     {
         "title": "Windows.Detection.IdatLoader",
         "author": "mgreen27",
-        "description": "This artifact enables running Yara over processes in memory.\nTargeting detection of IDAT Loader.  \n",
+        "description": "This artifact enables running Yara over processes in memory.\nTargeting detection of IDAT Loader and final payloads \nobserved in field.  ",
         "link": "/exchange/artifacts/pages/idatloader",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
