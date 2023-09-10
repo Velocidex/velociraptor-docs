@@ -60,13 +60,11 @@ sources:
                         then= parse_json(data=server_metadata().DetectRaptor).Timestamp
                             ) as InstalledTimestamp
         FROM content
-        WHERE if(condition= UpdateAnyway 
-                        OR NOT server_metadata().DetectRaptor
-                        OR NOT InstalledTimestamp 
-                        OR InstalledTimestamp < ZipTimestamp,
-                then= True,
-                else= False )
-                
+        WHERE UpdateAnyway 
+           OR NOT server_metadata().DetectRaptor
+           OR NOT InstalledTimestamp 
+           OR InstalledTimestamp < ZipTimestamp
+                           
       -- get content return a row if new content or UpdateAnyway
       LET get_content = SELECT ZipPath,ZipTimestamp,ZipSHA1
         FROM foreach(row= check_version,
