@@ -1,4 +1,4 @@
-name: MacOS.GateKeeper.Detections
+name: MacOS.XProtect.Detections
 description: |
    GateKeeper behavioral detections
    https://www.huntress.com/blog/dmxprotect-stop-drop-shut-malware-down-before-it-opens-up-shop
