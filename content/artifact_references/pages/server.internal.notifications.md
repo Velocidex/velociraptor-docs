@@ -12,7 +12,7 @@ client will be notified that new work is available to it.
 Note: This is an automated system artifact. You do not need to start it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Notifications
 description: |
   This event artifact is an internal event stream over which client
@@ -24,4 +24,5 @@ description: |
 
 type: INTERNAL
 
-```
+</code></pre>
+

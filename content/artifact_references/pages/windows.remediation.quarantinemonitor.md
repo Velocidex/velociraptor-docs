@@ -11,7 +11,7 @@ account for changes in DNS/connectivity details. When the query is
 terminated, we undo the quarantine.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Remediation.QuarantineMonitor
 description: |
   An event query that will ensure the client is quarantined.
@@ -47,12 +47,12 @@ parameters:
 
 precondition:
   SELECT OS FROM info() WHERE OS = "windows"
-     AND version(function="atexit") >= 0
+     AND version(function="atexit") &gt;= 0
 
 sources:
   - query: |
       -- When the query is done we unset the policy.
-      LET _ <= atexit(query={
+      LET _ &lt;= atexit(query={
          SELECT * FROM Artifact.Windows.Remediation.Quarantine(
            PolicyName=PolicyName, RemovePolicy=TRUE)
       })
@@ -68,4 +68,5 @@ sources:
             MessageBox=MessageBox)
        })
 
-```
+</code></pre>
+

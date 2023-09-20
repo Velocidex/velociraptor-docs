@@ -25,7 +25,7 @@ will not update the execution counter or time. Therefore there may be
 some executions that have a 0 time and 0 runcount.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.UserAssist
 description: |
   Windows systems maintain a set of keys in the registry database
@@ -82,7 +82,7 @@ sources:
       LET TMP = SELECT OSPath.Path AS _KeyPath,
           parse_string_with_regex(
                 string=OSPath.Path,
-                regex="^.+Count\\\\\"?(?P<Name>.+?)\"?$") AS Name,
+                regex="^.+Count\\\\\"?(?P&lt;Name&gt;.+?)\"?$") AS Name,
             OSPath,
             parse_binary(
                filename=Data.value,
@@ -113,8 +113,9 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
           },
           else={ SELECT * FROM A1})
 
-```
+</code></pre>
+

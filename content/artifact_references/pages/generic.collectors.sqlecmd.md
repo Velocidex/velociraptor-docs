@@ -28,7 +28,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Collectors.SQLECmd
 description: |
   Many applications maintain internal state using SQLite
@@ -231,8 +231,8 @@ parameters:
 
 sources:
 - query: |
-   LET AllFilenamesRegex <= '''^(CarsDB.db|Contacts.db|random.sqlite|ActivitiesCache.db|Antiphishing.db|RansomwareRecover.db|cache.db|es.db|Web Data|Web Data|Cookies|History|Favicons|History|History|Web Data|Media History|Media History|Network Action Predictor|Shortcuts|Top Sites|aggregation.dbx|config.db|filecache.db|icon.db|instance.dbx|home.db|home.db|home.db|home.db|sync_history.db|tray-thumbnails.db|EventTranscript.db|EventTranscript.db|queue.sqlite3|places.sqlite|cookies.sqlite|downloads.sqlite|places.sqlite|favicons.sqlite|formhistory.sqlite|places.sqlite|random.db|cloud_graph.db|snapshot.db|sync_config.db|metadata_sqlite_db|plum.sqlite|nessusd.db|MediaDb.v1.sqlite|random.db|Main.db|wpndatabase.db|wpndatabase.db|Store.db|contacts.db|Notifications.db|Phone.db|photos.db|settings.db|accounts4.db|callhistory.storedata)$'''
-   LET SQLiteFiles <=
+   LET AllFilenamesRegex &lt;= '''^(CarsDB.db|Contacts.db|random.sqlite|ActivitiesCache.db|Antiphishing.db|RansomwareRecover.db|cache.db|es.db|Web Data|Web Data|Cookies|History|Favicons|History|History|Web Data|Media History|Media History|Network Action Predictor|Shortcuts|Top Sites|aggregation.dbx|config.db|filecache.db|icon.db|instance.dbx|home.db|home.db|home.db|home.db|sync_history.db|tray-thumbnails.db|EventTranscript.db|EventTranscript.db|queue.sqlite3|places.sqlite|cookies.sqlite|downloads.sqlite|places.sqlite|favicons.sqlite|formhistory.sqlite|places.sqlite|random.db|cloud_graph.db|snapshot.db|sync_config.db|metadata_sqlite_db|plum.sqlite|nessusd.db|MediaDb.v1.sqlite|random.db|Main.db|wpndatabase.db|wpndatabase.db|Store.db|contacts.db|Notifications.db|Phone.db|photos.db|settings.db|accounts4.db|callhistory.storedata)$'''
+   LET SQLiteFiles &lt;=
    SELECT OSPath,
     read_file(filename=OSPath, length=15, accessor=Accessor) AS Magic,
     if(condition=AlsoUpload,
@@ -5327,4 +5327,5 @@ sources:
       SQLQuery=SQLQuery, FileType=FileType,
       IdentifyQuery=IdentifyQuery, IdentifyValue=IdentifyValue)
 
-```
+</code></pre>
+

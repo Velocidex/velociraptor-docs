@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact parses the FSEvents log files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Forensics.FSEvents
 description: |
    This artifact parses the FSEvents log files.
@@ -46,13 +46,13 @@ export: |
           count: 10000,
           max_count: 10000,
           type: FSEventEntry,
-          sentinel: "x=>len(list=x.path) = 0",
+          sentinel: "x=&gt;len(list=x.path) = 0",
       }]
     ]],
-    ["FSEventEntry", "x=>len(list=x.path) + 21", [
+    ["FSEventEntry", "x=&gt;len(list=x.path) + 21", [
       ["path", 0, "String"],
-      ["id", "x=>len(list=x.path) + 1", "uint64"],
-      ["flags", "x=>len(list=x.path) + 9", "Flags", {
+      ["id", "x=&gt;len(list=x.path) + 1", "uint64"],
+      ["flags", "x=&gt;len(list=x.path) + 9", "Flags", {
           type: "uint32",
           bitmap: {
             FSE_CREATE_FILE: 0,
@@ -103,4 +103,5 @@ sources:
       })
       WHERE path =~ PathRegex AND flags =~ FlagsRegex
 
-```
+</code></pre>
+

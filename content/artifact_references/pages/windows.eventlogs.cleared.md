@@ -9,7 +9,7 @@ Extract Event Logs related to EventLog clearing
 - System Log - EventID 104
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.Cleared
 author: Matt Green - @mgreen27
 
@@ -67,4 +67,5 @@ sources:
             DateBefore=DateBefore,
             VSSAnalysisAge=VSSAnalysisAge)
 
-```
+</code></pre>
+

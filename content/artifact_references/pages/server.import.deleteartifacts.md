@@ -10,7 +10,7 @@ server based on a regex.
 NOTE: It is impossible to remove built in artifacts.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Import.DeleteArtifacts
 description: |
   This artifact will remove customized artifacts from the Velociraptor
@@ -39,4 +39,5 @@ sources:
       WHERE NOT built_in
         AND name =~ ArtifactRegex
 
-```
+</code></pre>
+

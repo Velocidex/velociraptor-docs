@@ -9,7 +9,7 @@ master Frontend manager service will aggregate these into a combined
 metric stream.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.FrontendMetrics
 description: |
   An internal queue that receives metrics from all frontends. The
@@ -18,4 +18,5 @@ description: |
 
 type: INTERNAL
 
-```
+</code></pre>
+

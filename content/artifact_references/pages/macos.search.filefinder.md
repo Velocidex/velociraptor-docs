@@ -34,7 +34,7 @@ This artifact is useful in the following scenarios:
     locate other similar files
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Search.FileFinder
 description: |
   Find files on the filesystem using the filename or content.
@@ -124,7 +124,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         },
         else={ SELECT * FROM file_search})
 
@@ -132,8 +132,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         },
         else={SELECT * FROM more_recent})
 
@@ -178,4 +178,5 @@ column_types:
   - name: Upload
     type: preview_upload
 
-```
+</code></pre>
+

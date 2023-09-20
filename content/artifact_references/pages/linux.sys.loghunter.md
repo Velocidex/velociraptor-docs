@@ -13,7 +13,7 @@ NOTE: nosymlink feature of glob is set so unexpected results may occur if
 targetting includes symlink files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.LogHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -47,9 +47,9 @@ parameters:
 
 sources:
   - query: |
-      LET RecursionCB <= if(condition= ExcludeDirectoryRegex,
-         then="x => NOT x.OSPath =~ ExcludeDirectoryRegex",
-         else="x => NOT x.OSPath =~ '^/proc' ")
+      LET RecursionCB &lt;= if(condition= ExcludeDirectoryRegex,
+         then="x =&gt; NOT x.OSPath =~ ExcludeDirectoryRegex",
+         else="x =&gt; NOT x.OSPath =~ '^/proc' ")
 
       LET files = SELECT OSPath
         FROM glob(globs=TargetFiles,
@@ -73,4 +73,5 @@ sources:
            SELECT * FROM hits
         })
 
-```
+</code></pre>
+

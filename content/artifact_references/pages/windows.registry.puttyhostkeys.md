@@ -14,7 +14,7 @@ records the host key for each server connected to, in the Windows Registry.
 - To search for a specific PORT: TargetKeyName =~ '@\<PORT\>:.+$'
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.PuttyHostKeys
 author: Matt Green - @mgreen27
 description: |
@@ -24,8 +24,8 @@ description: |
    records the host key for each server connected to, in the Windows Registry.
    
    - Output KeyName: ssh-ed12345@22:27.27.27.27
-   - To search for a specific IP: TargetKeyName =~ ':\<IP\>$'
-   - To search for a specific PORT: TargetKeyName =~ '@\<PORT\>:.+$'
+   - To search for a specific IP: TargetKeyName =~ ':\&lt;IP\&gt;$'
+   - To search for a specific PORT: TargetKeyName =~ '@\&lt;PORT\&gt;:.+$'
    
    
 type: CLIENT
@@ -45,7 +45,7 @@ sources:
       SELECT OS From info() where OS = 'windows' 
 
     query: |
-      LET HKEY_USERS <= pathspec(path_type="registry", Path="HKEY_USERS")
+      LET HKEY_USERS &lt;= pathspec(path_type="registry", Path="HKEY_USERS")
 
       SELECT 
         Mtime,
@@ -59,4 +59,5 @@ sources:
         AND KeyValue =~ TargetKeyValue
 
 
-```
+</code></pre>
+

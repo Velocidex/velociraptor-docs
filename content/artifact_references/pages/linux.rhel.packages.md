@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Parse packages installed from dnf
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.RHEL.Packages
 description: |
   Parse packages installed from dnf
@@ -25,7 +25,8 @@ sources:
         SELECT * FROM foreach(row={
           SELECT grok(grok=DNFGrokExpression, data=Stdout) AS Parsed
           FROM execve(argv=["dnf", "--quiet", "list", "installed"], sep="\n")
-          WHERE count() > 2
+          WHERE count() &gt; 2
         }, column="Parsed")
 
-```
+</code></pre>
+

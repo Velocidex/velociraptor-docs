@@ -18,7 +18,7 @@ Please only use these switches after scoping as there are no guardrails on
 shooting yourself in the foot.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.NetstatEnriched
 author: "Matt Green - @mgreen27"
 description: |
@@ -154,20 +154,20 @@ parameters:
 sources:
   - name: Netstat
     query: |
-      LET VerifiedRegex <= SELECT Regex
+      LET VerifiedRegex &lt;= SELECT Regex
             FROM parse_csv(filename=AuthenticodeVerifiedMap, accessor="data")
             WHERE Choice=AuthenticodeVerified LIMIT 1
-      LET StatusRegex <= SELECT Regex
+      LET StatusRegex &lt;= SELECT Regex
             FROM parse_csv(filename=StatusMap, accessor="data")
             WHERE Choice=Status LIMIT 1
-      LET FamilyRegex <= SELECT Regex
+      LET FamilyRegex &lt;= SELECT Regex
             FROM parse_csv(filename=FamilyMap, accessor="data")
             WHERE Choice=Family LIMIT 1
-      LET TypeRegex <= SELECT Regex
+      LET TypeRegex &lt;= SELECT Regex
             FROM parse_csv(filename=TypeMap, accessor="data")
             WHERE Choice=Type LIMIT 1
 
-      LET process <= SELECT Pid as PsId,
+      LET process &lt;= SELECT Pid as PsId,
             Ppid,
             Name,
             CommandLine,
@@ -245,4 +245,5 @@ sources:
             catch = results
         )
 
-```
+</code></pre>
+

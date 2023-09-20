@@ -13,7 +13,7 @@ If you run it yourself (or via the API) the results will also be
 shown in the VFS view.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: System.VFS.DownloadFile
 description: |
   This is an internal artifact used by the GUI to populate the
@@ -42,7 +42,7 @@ parameters:
 sources:
   - query: |
       LET download_one_file = if(
-         condition=version(plugin="stat") > 1,
+         condition=version(plugin="stat") &gt; 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -55,7 +55,7 @@ sources:
         })
 
       LET download_recursive = if(
-         condition=version(plugin="stat") > 1,
+         condition=version(plugin="stat") &gt; 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -81,4 +81,5 @@ sources:
         then={ SELECT * FROM download_recursive},
         else={ SELECT * FROM download_one_file})
 
-```
+</code></pre>
+

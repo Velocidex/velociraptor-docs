@@ -18,7 +18,7 @@ Alternatively you can import this artifact to gain access to the
 utility functions (or just copy them into your own artifact).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.GeoIP
 description: |
   This artifact can use the MaxMind database to Geo resolve an IP
@@ -51,4 +51,5 @@ sources:
              City(IP=_value) AS City
       FROM foreach(row=IP)
 
-```
+</code></pre>
+

@@ -7,7 +7,7 @@ tags: [Server Artifact]
 Build an MSI ready for deployment in the current org.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.CreateMSI
 description: |
   Build an MSI ready for deployment in the current org.
@@ -35,4 +35,5 @@ sources:
        WHERE AlsoBuild_x86
     })
 
-```
+</code></pre>
+

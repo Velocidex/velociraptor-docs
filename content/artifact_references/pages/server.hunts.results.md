@@ -7,7 +7,7 @@ tags: [Server Artifact]
 Show the results from each artifact collection hunt.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Hunts.Results
 description: |
   Show the results from each artifact collection hunt.
@@ -23,4 +23,5 @@ sources:
   - query: |
       SELECT * FROM hunt_results(hunt_id=huntId, artifact=ArtifactName)
 
-```
+</code></pre>
+

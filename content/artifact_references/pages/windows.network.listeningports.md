@@ -6,14 +6,14 @@ tags: [Client Artifact]
 
 Processes with listening (bound) network sockets/ports.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.ListeningPorts
 description: Processes with listening (bound) network sockets/ports.
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET process <= SELECT Name, Pid from pslist()
+        LET process &lt;= SELECT Name, Pid from pslist()
 
         SELECT * from foreach(
           row={
@@ -27,4 +27,5 @@ sources:
             FROM process where Pid = PortPid
           })
 
-```
+</code></pre>
+

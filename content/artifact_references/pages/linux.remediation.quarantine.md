@@ -17,7 +17,7 @@ except those for DNS lookup and velociraptor itself.
 To unquarantine the system, set the *RemovePolicy* parameter to *True*.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Remediation.Quarantine
 description: |
   This artifact applies quarantine to Linux systems via nftables.
@@ -66,8 +66,8 @@ sources:
      FROM  execve(argv=Cmd, length=10000)
 
      // If a MessageBox configured truncate to 256 character limit
-     LET MessageBox <= parse_string_with_regex(
-               regex='^(?P<Message>.{0,255}).*',
+     LET MessageBox &lt;= parse_string_with_regex(
+               regex='^(?P&lt;Message&gt;.{0,255}).*',
                string=MessageBox).Message
 
      // Parse a URL to get domain name.
@@ -78,7 +78,7 @@ sources:
                  then="443", else="80"))
 
      // extract Velociraptor config for policy
-     LET extracted_config <= SELECT * FROM foreach(
+     LET extracted_config &lt;= SELECT * FROM foreach(
                row=config.server_urls,
                query={
                    SELECT
@@ -250,4 +250,5 @@ sources:
             AND FALSE
        })
 
-```
+</code></pre>
+

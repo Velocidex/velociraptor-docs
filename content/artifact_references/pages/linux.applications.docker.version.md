@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Get Dockers version by connecting to its socket.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Applications.Docker.Version
 description: Get Dockers version by connecting to its socket.
 parameters:
@@ -32,4 +32,5 @@ sources:
                JSON.BuildTime as BuildTime
         FROM data
 
-```
+</code></pre>
+

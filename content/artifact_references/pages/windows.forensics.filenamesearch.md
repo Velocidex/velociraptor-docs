@@ -22,7 +22,7 @@ the MFT entry where the hit was found and attempts to resolve that
 to an actual filename.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.FilenameSearch
 description: |
   Did a specific file exist on this machine in the past or does it
@@ -67,4 +67,5 @@ sources:
              number=1000,
              accessor="ntfs")
 
-```
+</code></pre>
+

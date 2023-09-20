@@ -17,7 +17,7 @@ like this:
 ```
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Forensic.LocalHashes.Query
 description: |
   This artifact maintains a local (client side) database of file
@@ -50,7 +50,7 @@ parameters:
 
 sources:
   - query: |
-      LET hash_db <= SELECT OSPath
+      LET hash_db &lt;= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
       -- Check hashes from the CSV or comma delimited input
@@ -74,4 +74,5 @@ sources:
                      args=Hash)
       })
 
-```
+</code></pre>
+

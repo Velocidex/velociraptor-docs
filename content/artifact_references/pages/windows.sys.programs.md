@@ -11,7 +11,7 @@ installation details are left to the discretion of the product author.
 Limitations: This key parses the live registry hives - if a user is not logged in then their data will not be resident in HKU and therefore you should parse the hives on disk (including within VSS/Regback).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.Programs
 description: |
   Represents products as they are installed by Windows Installer. A product generally
@@ -25,7 +25,7 @@ reference:
 
 parameters:
   - name: programKeys
-    default: >-
+    default: &gt;-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Uninstall\*
@@ -49,4 +49,5 @@ sources:
         FROM read_reg_key(globs=split(string=programKeys, sep=',[\\s]*'),
                           accessor="registry")
 
-```
+</code></pre>
+

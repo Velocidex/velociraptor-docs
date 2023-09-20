@@ -14,7 +14,7 @@ can be modified to point to a malcious application.
  emulate a legitimate application.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.Dock
 description: |
   This artifact examines the contents of the user's dock.  The
@@ -59,4 +59,5 @@ column_types:
   - name: Book
     type: base64hex
 
-```
+</code></pre>
+

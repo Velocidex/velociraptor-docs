@@ -10,7 +10,7 @@ There are several filteres availible to the user to filter out and target with
 regex, by default duplicate DNSCache requests are filtered out.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.DNS
 author: Matt Green - @mgreen27
 description: |
@@ -61,7 +61,7 @@ sources:
             }, max_rows=1000, max_age=60)
         
       -- Query it once to materialize the FIFO
-      LET _ <= SELECT * FROM RecentProcesses
+      LET _ &lt;= SELECT * FROM RecentProcesses
         
       LET GetProcessInfo(TargetPid) = SELECT *, ThreadId as ProcessThreadId
         FROM switch(
@@ -152,4 +152,5 @@ sources:
             AND Process.ImageName =~ ImageRegex
             AND Query =~ QueryRegex
             AND Answer =~ AnswerRegex
-```
+</code></pre>
+

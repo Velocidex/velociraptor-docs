@@ -19,7 +19,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.Edge.Favicons
 description: |
   Enumerate the users Microsoft Edge favicons.
@@ -96,4 +96,5 @@ column_types:
 - name: Image
   type: preview_upload
 
-```
+</code></pre>
+

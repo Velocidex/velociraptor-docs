@@ -9,7 +9,7 @@ table presents the AppCompat Shim information from the registry in a
 nice format.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.AppcompatShims
 description: |
   Application Compatibility shims are a way to persist malware. This
@@ -21,17 +21,17 @@ reference:
 
 parameters:
   - name: shimKeys
-    default: >-
+    default: &gt;-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB\*
   - name: customKeys
-    default: >-
+    default: &gt;-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom\*\*
 
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET installed_sdb <=
+        LET installed_sdb &lt;=
            SELECT Key, Key.Name as SdbGUID, DatabasePath,
                   DatabaseType, DatabaseDescription,
                   -- Convert windows file time to unix epoch.
@@ -64,4 +64,5 @@ sources:
 
         SELECT * from result
 
-```
+</code></pre>
+

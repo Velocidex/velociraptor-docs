@@ -12,7 +12,7 @@ registry hives around the filesystem for BagMRU keys. Different OS
 versions may have slightly different locations for the MRU keys.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Shellbags
 description: |
   Windows uses the Shellbag keys to store user preferences for GUI
@@ -67,7 +67,7 @@ sources:
           base64encode(string=Data.value) AS _RawData, ModTime
       FROM ShellValues
 
-      LET AllResults <= SELECT KeyPath,
+      LET AllResults &lt;= SELECT KeyPath,
         _Parsed.ShellBag.Description AS Description,
         _Parsed, _RawData, ModTime
       FROM ParsedValues
@@ -75,7 +75,7 @@ sources:
       // Recursive function to join path components together.
       // Limit recursion depth just in case.
       LET FormPath(MRUPath, Description, Depth) = SELECT * FROM if(
-        condition=Depth < 20,
+        condition=Depth &lt; 20,
         then={SELECT * FROM chain(
           b={
             SELECT MRUPath, Description, Depth,
@@ -109,7 +109,7 @@ sources:
            KeyPath AS _OSPath,
            KeyPath.DelegatePath AS Hive,
            KeyPath.Path AS KeyPath, Description,
-               join(array=Chain.Name, sep=" -> ") AS Path,
+               join(array=Chain.Name, sep=" -&gt; ") AS Path,
                _RawData, _Parsed
         FROM ReconstructedPath
         ORDER BY Path
@@ -118,4 +118,5 @@ column_types:
   - name: _RawData
     type: base64
 
-```
+</code></pre>
+

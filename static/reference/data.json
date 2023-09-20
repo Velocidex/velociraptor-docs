@@ -2648,6 +2648,11 @@
             {
                 "name": "version",
                 "type": "string"
+            },
+            {
+                "name": "probe",
+                "type": "bool",
+                "description": "If specified we only probe the tool definition without materializing"
             }
         ],
         "category": "server",
@@ -2909,7 +2914,7 @@
             {
                 "name": "level",
                 "type": "string",
-                "description": "Level to log at (DEFAULT, WARN, ERROR, INFO)."
+                "description": "Level to log at (DEFAULT, WARN, ERROR, INFO, DEBUG)."
             }
         ],
         "category": "basic"

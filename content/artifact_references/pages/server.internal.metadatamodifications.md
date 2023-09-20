@@ -10,7 +10,7 @@ notifications of server metadata modifications are sent.
 Note: This is an automated system artifact. You do not need to start it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.MetadataModifications
 description: |
   This event artifact is an internal event stream over which
@@ -20,4 +20,5 @@ description: |
 
 type: SERVER_EVENT
 
-```
+</code></pre>
+

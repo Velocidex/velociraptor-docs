@@ -34,7 +34,7 @@ This artifact is useful in the following scenarios:
     locate other similar files
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Search.FileFinder
 description: |
   Find files on the filesystem using the filename or content.
@@ -131,15 +131,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime > MoreRecentThan
+          WHERE MTime &gt; MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime < ModifiedBefore
-           AND  MTime > MoreRecentThan
+          WHERE MTime &lt; ModifiedBefore
+           AND  MTime &gt; MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(
@@ -183,4 +183,5 @@ column_types:
   - name: Upload
     type: preview_upload
 
-```
+</code></pre>
+

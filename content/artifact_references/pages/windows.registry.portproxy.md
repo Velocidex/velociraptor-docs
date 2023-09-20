@@ -10,7 +10,7 @@ lolbin netsh.exe; Metaspoit and other common attack tools also have
 configuration modules.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.PortProxy
 description: |
     This artifact will return any items in the Windows PortProxy service
@@ -20,7 +20,7 @@ description: |
 
 reference:
   - Port Proxy detection(http://www.dfirnotes.net/portproxy_detection/)
-  - ATT&CK T1090 - Connection Proxy(https://attack.mitre.org/techniques/T1090/)
+  - ATT&amp;CK T1090 - Connection Proxy(https://attack.mitre.org/techniques/T1090/)
     Adversaries may use a connection proxy to direct network traffic between
     systems or act as an intermediary for network communications to a command
     and control server to avoid direct connections to their infrastructure.
@@ -89,4 +89,5 @@ reports:
 
       {{ Query "report"  "SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
 
-```
+</code></pre>
+

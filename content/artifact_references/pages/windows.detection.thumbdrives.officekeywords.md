@@ -17,7 +17,7 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.OfficeKeywords
 description: |
   Users inserting Thumb drives or other Removable drive pose a
@@ -64,4 +64,5 @@ sources:
               yaraRule=yaraRule, searchGlob=OSPath, documentGlobs="")
           })
 
-```
+</code></pre>
+

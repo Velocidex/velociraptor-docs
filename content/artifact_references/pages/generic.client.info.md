@@ -17,7 +17,7 @@ NOTE: Do not modify the BasicInformation source since it is used to
 interrogate the clients.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Client.Info
 description: |
   Collect basic information about the client.
@@ -58,7 +58,7 @@ sources:
     description: Windows specific information about the host
     precondition: SELECT OS From info() where OS = 'windows'
     query: |
-      LET DomainLookup <= dict(
+      LET DomainLookup &lt;= dict(
          `0`='Standalone Workstation',
          `1`='Member Workstation',
          `2`='Standalone Server',
@@ -140,13 +140,13 @@ reports:
            FROM source(artifact="Generic.Client.Stats",
                        client_id=ClientId,
                        start_time=now() - 86400)
-           WHERE CPUPercent >= 0
+           WHERE CPUPercent &gt;= 0
          })
       {{ end }}
 
-      <div>
+      &lt;div&gt;
       {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
-      </div>
+      &lt;/div&gt;
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
       {{ if $windows_info }}
@@ -164,4 +164,5 @@ column_types:
   - name: LastLogin
     type: timestamp
 
-```
+</code></pre>
+

@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 Logs dns queries on DNS servers. This is handy for identifying the true source system that is initiating malicious dns requests that you observed. Note that this can be resource intensive for the CPU on busy DNS servers - from 5% to 70% CPU load of one core, but memory consumption is very low. This is still a lot less then enabling DNS debug logging.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.DNSQueriesServer
 type: CLIENT_EVENT
 
@@ -46,4 +46,5 @@ sources:
               QNAME =~ QueryNameRegex AND
               Source =~ SourceIPRegex
 
-```
+</code></pre>
+

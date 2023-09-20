@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Gets the interactive users from a Linux host.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Users.InteractiveUsers
 
 description: |
@@ -40,4 +40,5 @@ sources:
       FROM Artifact.Linux.Sys.Users()
       WHERE NOT Shell IN split(string=NonInteractiveExecutables, sep_string=",")
 
-```
+</code></pre>
+

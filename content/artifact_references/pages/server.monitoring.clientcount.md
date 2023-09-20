@@ -8,7 +8,7 @@ An artifact that sends an email every hour of the current state of
 the deployment.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitoring.ClientCount
 
 description: |
@@ -50,4 +50,5 @@ sources:
             )
         })
 
-```
+</code></pre>
+

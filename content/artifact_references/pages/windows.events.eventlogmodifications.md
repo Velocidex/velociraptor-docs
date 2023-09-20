@@ -12,7 +12,7 @@ This artifact monitors the state of the event log system from the
 registry and attempts to detect when event logs were disabled.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.EventLogModifications
 description: |
   It is possible to disable windows event logs on a per channel or per
@@ -36,7 +36,7 @@ sources:
   - query: |
       LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
 
-      LET ProviderNames <= memoize(key="GUID", query={
+      LET ProviderNames &lt;= memoize(key="GUID", query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
         FROM glob(globs=Publishers, accessor="registry")
@@ -54,4 +54,5 @@ sources:
       SELECT * FROM diff(query=Query, period=Period, key="QueryKey")
       WHERE Diff =~ "added"
 
-```
+</code></pre>
+

@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Firmware ACPI functional table common metadata and content.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.ACPITables
 description: Firmware ACPI functional table common metadata and content.
 reference:
@@ -23,4 +23,5 @@ sources:
 
         SELECT Name, Size, Hash.MD5, Hash.SHA1, Hash.SHA256 from hashes
 
-```
+</code></pre>
+

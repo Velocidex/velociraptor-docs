@@ -17,7 +17,7 @@ this user.
 UserRegex and SidRegex can be used to target a specific user.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.RDP
 author: Matt Green - @mgreen27
 description: |
@@ -53,7 +53,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - name: Servers
     query: |
-      LET servers <= SELECT 
+      LET servers &lt;= SELECT 
             Mtime as LastWriteTime,
             basename(path=OSPath.Dirname) as Server,
             OSPath.Basename as KeyName,
@@ -92,7 +92,7 @@ sources:
 
   - name: Mru
     query: |
-      LET mru <= SELECT 
+      LET mru &lt;= SELECT 
             Mtime as LastWriteTime,
             OSPath.Basename as KeyName,
             Data.value as KeyValue,
@@ -121,4 +121,5 @@ sources:
         LastWriteTime,
         find_mru(sid=SID).KeyValue as Mru
       FROM results
-```
+</code></pre>
+

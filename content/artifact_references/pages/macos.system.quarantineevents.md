@@ -9,7 +9,7 @@ This artifact parses the QuarantineEventsV2 database, which provides
 information on when a file was downloaded from the internet.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.QuarantineEvents
 description: |
 
@@ -56,4 +56,5 @@ sources:
 
       SELECT * FROM foreach(row=QList, query=QEventsDetails)
 
-```
+</code></pre>
+

@@ -12,7 +12,7 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Applications.Chrome.History
 description: |
   Read all User's chrome history.
@@ -39,7 +39,7 @@ precondition: SELECT OS From info() where OS = 'darwin'
 sources:
   - query: |
       LET history_files = SELECT
-         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=OSPath).User AS User,
+         parse_string_with_regex(regex="/Users/(?P&lt;User&gt;[^/]+)", string=OSPath).User AS User,
          OSPath, Mtime
       FROM glob(globs=historyGlobs)
 
@@ -55,4 +55,5 @@ sources:
              query=urlSQLQuery)
           })
 
-```
+</code></pre>
+

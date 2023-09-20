@@ -1,9 +1,9 @@
 import urllib.request
 import json
+import html
 import yaml
 import re
 import os
-from zipfile import ZipFile
 import argparse
 
 parser = argparse.ArgumentParser(description='Generate artifact documentation.')
@@ -27,9 +27,10 @@ tags: [%s]
 
 %s
 
-```yaml
+<pre><code class="language-yaml">
 %s
-```
+</code></pre>
+
 """
 
 def getTag(t):
@@ -93,7 +94,10 @@ def build_markdown(artifact_root_directory):
            fd.write(template % (
              data["name"],
              getTag(record["type"]),
-             data.get("description", ""), content))
+             data.get("description", ""),
+             # Escape the content into a html block to avoid bugs in
+             # markdown parsing.
+             html.escape(content, quote=False)))
 
   index = sorted(index, key=lambda x: x["title"])
 

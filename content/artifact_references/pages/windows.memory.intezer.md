@@ -14,7 +14,7 @@ Analyze: The collected modules are analyzed using Genetic Malware Analysis techn
 View results: https://analyze.intezer.com/ endpoint analysis report.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Memory.Intezer
 description: |
    This artifact will trigger an intezer agent scan on the endpoint.
@@ -48,11 +48,12 @@ sources:
 
     query: |
       -- first get context on target binary
-      LET bin <= SELECT *
+      LET bin &lt;= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(
             ToolName="Intezer")
 
       -- execute payload
       SELECT * FROM execve(argv=[ bin.OSPath[0], '-k', ApiKey ])
 
-```
+</code></pre>
+

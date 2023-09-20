@@ -12,7 +12,7 @@ NOTE: You must ensure you are collecting these artifacts from the
 clients by adding them to the "Client Events" GUI.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: LogScale.Events.Clients
 description: |
   This server side event monitoring artifact will watch a selection of client
@@ -33,7 +33,7 @@ parameters:
     description: Ingest token for API
     type: string
   - name: tagFields
-    description: Comma-separated list of field names to use as tags in the message; Can be renamed with <oldname>=<newname>.
+    description: Comma-separated list of field names to use as tags in the message; Can be renamed with &lt;oldname&gt;=&lt;newname&gt;.
     default:
     type: string
   - name: numThreads
@@ -90,4 +90,5 @@ sources:
           debug=debug,
           stats_interval=statsInterval)
 
-```
+</code></pre>
+

@@ -9,7 +9,7 @@ to be collected from endpoints and automatically posts those to a
 LogScale (formerly Humio) ingestion endpoint.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: LogScale.Flows.Upload
 description: |
   This server side event monitoring artifact waits for new artifacts
@@ -27,7 +27,7 @@ parameters:
     description: Ingest token for API
     type: string
   - name: tagFields
-    description: Comma-separated list of field names to use as tags in the message; Can be renamed with <oldname>=<newname>.
+    description: Comma-separated list of field names to use as tags in the message; Can be renamed with &lt;oldname&gt;=&lt;newname&gt;.
     default:
     type: string
   - name: numThreads
@@ -92,4 +92,5 @@ sources:
           debug=debug,
           stats_interval=statsInterval)
 
-```
+</code></pre>
+

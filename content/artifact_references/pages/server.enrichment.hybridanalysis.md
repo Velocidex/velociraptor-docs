@@ -13,7 +13,7 @@ Ex.
   `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.HybridAnalysis
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -50,7 +50,7 @@ sources:
            then=HybridAnalysisKey,
            else=server_metadata().HybridAnalysisKey)
 
-        LET URL <= 'https://hybrid-analysis.com/api/v2/search/hash'
+        LET URL &lt;= 'https://hybrid-analysis.com/api/v2/search/hash'
 
         LET Data = SELECT parse_json_array(data=Content) as Content
         FROM http_client(
@@ -69,4 +69,5 @@ sources:
                 FROM scope()
             })
 
-```
+</code></pre>
+

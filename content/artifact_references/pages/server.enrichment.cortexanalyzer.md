@@ -13,7 +13,7 @@ Ex.
   `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.CortexAnalyzer
 description: |
   Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
@@ -42,10 +42,10 @@ parameters:
      description: TLP for the job submitted to Cortex
      default: 0
    - name: CortexURL
-     description: URL used for Cortex job submission. It is recommended to use the <a href="#/host/server">server metadata store</a> for this.
+     description: URL used for Cortex job submission. It is recommended to use the &lt;a href="#/host/server"&gt;server metadata store&lt;/a&gt; for this.
      default: ''
    - name: CortexKey
-     description: API key used for authentication to Cortex. It is recommended to use the <a href="#/host/server">server metadata store</a> for this.
+     description: API key used for authentication to Cortex. It is recommended to use the &lt;a href="#/host/server"&gt;server metadata store&lt;/a&gt; for this.
      default: ''
    - name: DisableSSLVerify
      type: bool
@@ -60,9 +60,9 @@ parameters:
 
 sources:
   - query: |
-        LET OBSERVABLE <= Observable
-        LET OBSERVABLE_DATATYPE <= ObservableType
-        LET URL <= if(
+        LET OBSERVABLE &lt;= Observable
+        LET OBSERVABLE_DATATYPE &lt;= ObservableType
+        LET URL &lt;= if(
                 condition=CortexURL,
             then=CortexURL,
             else=server_metadata().CortexURL)
@@ -112,4 +112,5 @@ sources:
         LET REPORT = SELECT parse_json(data=Resp) AS Details FROM GETREPORT
         SELECT Observable, Details.workerName as AnalyzerName, Details as _Details, Details.report AS Report FROM foreach(row=ANALYZERS_MATCH_TYPE, query={SELECT * FROM REPORT})
 
-```
+</code></pre>
+

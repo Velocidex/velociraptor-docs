@@ -7,7 +7,7 @@ tags: [Server Artifact]
 Adds a new timeline to a super timeline.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.AddTimeline
 description: |
   Adds a new timeline to a super timeline.
@@ -44,4 +44,5 @@ sources:
          key=Key), RemoveLimit
       FROM scope()
 
-```
+</code></pre>
+

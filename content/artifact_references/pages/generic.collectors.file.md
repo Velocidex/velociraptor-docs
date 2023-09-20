@@ -9,7 +9,7 @@ device. The globs will be searched in one pass - so you can provide
 many globs at the same time.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Collectors.File
 description: |
    Collects files using a set of globs. All globs must be on the same
@@ -50,7 +50,7 @@ parameters:
 sources:
    - name: All Matches Metadata
      query: |
-      LET RootPath <= pathspec(Path=Root, accessor=Accessor)
+      LET RootPath &lt;= pathspec(Path=Root, accessor=Accessor)
 
       -- Generate the collection globs for each device
       LET specs = SELECT RootPath + Glob AS Glob
@@ -69,7 +69,7 @@ sources:
         WHERE NOT IsDir AND log(message="Found " + SourceFile)
 
       -- Pass all the results to the next query.
-      LET all_results <=
+      LET all_results &lt;=
          SELECT Created, LastAccessed, Modified, Size, SourceFile
          FROM hits
 
@@ -97,4 +97,5 @@ sources:
                Created, Modified, LastAccessed
         FROM uploaded_files
 
-```
+</code></pre>
+

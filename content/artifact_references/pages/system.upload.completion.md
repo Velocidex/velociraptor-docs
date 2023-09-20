@@ -8,7 +8,7 @@ An internal artifact that produces events for every file that is
 uploaded to the system.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: System.Upload.Completion
 description: |
   An internal artifact that produces events for every file that is
@@ -16,4 +16,5 @@ description: |
 
 type: CLIENT_EVENT
 
-```
+</code></pre>
+

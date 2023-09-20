@@ -8,7 +8,7 @@ Applications that will be started up from the various run key
 locations.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.StartupItems
 description: |
     Applications that will be started up from the various run key
@@ -52,7 +52,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-        LET approved <=
+        LET approved &lt;=
            SELECT Name as ApprovedName,
                   encode(string=Data, type="hex") as Enabled
            FROM glob(globs=startupApprovedGlobs.KeyGlobs,
@@ -101,4 +101,5 @@ sources:
            first=registry_runners,
            second=file_runners)
 
-```
+</code></pre>
+

@@ -13,7 +13,7 @@ clients by adding them to the "Client Events" GUI, or for server
 artifacts, the "Server Events" GUI.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Elastic.Events.Upload
 aliases:
 - Elastic.Events.Clients
@@ -98,4 +98,5 @@ sources:
           disable_ssl_security=DisableSSLSecurity,
           type="ClientEvents")
 
-```
+</code></pre>
+

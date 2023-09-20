@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Find processes with the specified environment variables.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.EnvironmentVariables
 description: |
    Find processes with the specified environment variables.
@@ -97,4 +97,5 @@ sources:
           SELECT * FROM source()
           LIMIT 50
 
-```
+</code></pre>
+

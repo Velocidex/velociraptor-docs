@@ -11,7 +11,7 @@ The default list contains virus scanners. If the software is not
 installed at all, it will not be shown.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.CriticalServices
 description: |
   This artifact returns information about any services which are
@@ -21,7 +21,7 @@ description: |
   installed at all, it will not be shown.
 
 reference:
-  - "ATT&CK: T1089"
+  - "ATT&amp;CK: T1089"
   - https://github.com/teoseller/osquery-attck/blob/master/windows_critical_service_status.conf
 
 precondition: SELECT OS From info() where OS = 'windows'
@@ -47,4 +47,5 @@ sources:
          FROM Artifact.Windows.System.Services()
          WHERE Critical AND State != "Running"
 
-```
+</code></pre>
+

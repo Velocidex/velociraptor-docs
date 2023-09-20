@@ -15,7 +15,7 @@ Ex.
   `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.GreyNoise
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -40,7 +40,7 @@ parameters:
 
 sources:
   - query: |
-        LET URL <= 'https://api.greynoise.io/v3/community/'
+        LET URL &lt;= 'https://api.greynoise.io/v3/community/'
 
         LET Data = SELECT parse_json(data=Content) AS GreyNoiseLookup
         FROM http_client(url=URL + IP,
@@ -58,4 +58,5 @@ sources:
             GreyNoiseLookup AS _GreyNoiseLookup
         FROM Data
 
-```
+</code></pre>
+

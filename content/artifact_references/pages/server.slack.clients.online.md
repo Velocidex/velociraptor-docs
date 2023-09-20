@@ -11,7 +11,7 @@ by default, and if they have appeared online in the last 5 minutes,
 sends a message to Slack and removed the label from the client.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Slack.Clients.Online
 description: |
    Send a message to slack when clients come online.
@@ -40,7 +40,7 @@ sources:
                now() - last_seen_at / 1000000 AS LastSeen,
                label(client_id=client_id, labels=LabelGroup, op="remove")
         FROM clients(search="label:" + LabelGroup)
-        WHERE LastSeen < 300
+        WHERE LastSeen &lt; 300
 
         LET send_massage = SELECT * FROM foreach(row=hits,
         query={
@@ -60,4 +60,5 @@ sources:
            row={SELECT * FROM clock(period=60)},
            query=send_massage)
 
-```
+</code></pre>
+

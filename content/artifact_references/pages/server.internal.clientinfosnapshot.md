@@ -9,7 +9,7 @@ snapshot. Minion use this to trigger a refresh of their client info
 snapshots.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.ClientInfoSnapshot
 type: INTERNAL
 description: |
@@ -17,4 +17,5 @@ description: |
   snapshot. Minion use this to trigger a refresh of their client info
   snapshots.
 
-```
+</code></pre>
+

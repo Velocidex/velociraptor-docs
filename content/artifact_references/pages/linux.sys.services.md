@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Parse services from systemctl
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.Services
 description: Parse services from systemctl 
 
@@ -23,4 +23,5 @@ sources:
         SELECT * FROM foreach(row=all_services, column="Parsed") WHERE Unit =~ ".service"
         
         
-```
+</code></pre>
+

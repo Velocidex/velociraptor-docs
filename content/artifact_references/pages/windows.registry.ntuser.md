@@ -32,7 +32,7 @@ to access user data.
 {{% /notice %}}
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.NTUser
 description: |
   This artifact searches for keys or values within the user's
@@ -114,7 +114,7 @@ export: |
         SELECT NTUserPath FROM stat(filename=NTUserPath)
     })
 
-    // Use this like `LET _ <= MapRawRegistryHives`
+    // Use this like `LET _ &lt;= MapRawRegistryHives`
     LET MapRawRegistryHives =remap(config=dict(
        remappings=_make_ntuser_mappings.Mapping + _standard_mappings))
 
@@ -151,4 +151,5 @@ sources:
                     accessor="raw_reg")
             })
 
-```
+</code></pre>
+

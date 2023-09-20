@@ -15,7 +15,7 @@ Ex.
 `TO-DO`: Implement a timer to spread out requests
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Enrichment.Virustotal
 author: Wes Lambert -- @therealwlambert
 description: |
@@ -49,7 +49,7 @@ sources:
            then=VirustotalKey,
            else=server_metadata().VirustotalKey)
 
-        LET URL <= 'https://www.virustotal.com/api/v3/files/' + Hash
+        LET URL &lt;= 'https://www.virustotal.com/api/v3/files/' + Hash
 
         LET Data = SELECT parse_json(data=Content) AS VTData
         FROM http_client(url=URL, headers=dict(`x-apikey`=Creds))
@@ -65,4 +65,5 @@ sources:
             VTData AS _Data
         FROM Data
 
-```
+</code></pre>
+

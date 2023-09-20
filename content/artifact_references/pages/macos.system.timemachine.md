@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact collects information about MacOS Time Machine backups.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.System.TimeMachine
 description: |
   This artifact collects information about MacOS Time Machine backups.
@@ -37,4 +37,5 @@ sources:
             )
       SELECT * FROM foreach(row=TMPlist, query=TMDetails)
 
-```
+</code></pre>
+

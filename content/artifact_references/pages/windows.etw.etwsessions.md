@@ -12,7 +12,7 @@ This artifact monitors for all new ETW sessions and reports the
 tracing process as well as the provider that is being traced.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ETW.ETWSessions
 description: |
   Windows Event Tracing exposes a lot of low level system information
@@ -45,4 +45,5 @@ sources:
       FROM watch_etw(guid="{B675EC37-BDB6-4648-BC92-F3FDC74D3CA2}", all=0x400)
       WHERE System.ID IN (14, 15)
 
-```
+</code></pre>
+

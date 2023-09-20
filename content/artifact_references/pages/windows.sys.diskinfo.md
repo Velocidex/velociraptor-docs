@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Retrieve basic information about the physical disks of a system.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.DiskInfo
 description: Retrieve basic information about the physical disks of a system.
 sources:
@@ -28,4 +28,5 @@ sources:
            query="SELECT * from Win32_DiskDrive",
            namespace="ROOT\\CIMV2")
 
-```
+</code></pre>
+

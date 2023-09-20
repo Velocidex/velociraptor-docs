@@ -7,7 +7,7 @@ tags: [Client Artifact]
 A Generic uploader used by triaging artifacts.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Triage.Collection.Upload
 description: |
   A Generic uploader used by triaging artifacts.
@@ -38,4 +38,5 @@ sources:
                FileDetails.Sha256 as SHA256
         FROM results
 
-```
+</code></pre>
+

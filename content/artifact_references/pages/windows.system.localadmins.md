@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Gets a list of local admin accounts.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.LocalAdmins
 description: |
    Gets a list of local admin accounts.
@@ -29,7 +29,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET script <= 'Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json'
+      LET script &lt;= 'Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json'
 
       LET out = SELECT parse_json_array(data=Stdout) AS Output
           FROM execve(argv=[PowerShellExe,
@@ -45,4 +45,5 @@ sources:
           FROM scope()
       })
 
-```
+</code></pre>
+

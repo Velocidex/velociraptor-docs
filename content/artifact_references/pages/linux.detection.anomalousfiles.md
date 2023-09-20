@@ -15,7 +15,7 @@ An anomalous file is considered one that matches at least one criteria:
 - With SUID bit set.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Detection.AnomalousFiles
 
 description: |
@@ -54,10 +54,11 @@ sources:
              OSPath,
              substr(str=Name, start=0, end=1) = "." AS IsHidden,
              Size,
-             Size > MaxNormalSize AS IsLarge,
+             Size &gt; MaxNormalSize AS IsLarge,
              Mode.String AS Mode,
              Mode =~ "^u" as HasSUID
       FROM glob(globs=split(string=PathsToSearch, sep_string=","))
       WHERE IsHidden OR IsLarge OR HasSUID
 
-```
+</code></pre>
+

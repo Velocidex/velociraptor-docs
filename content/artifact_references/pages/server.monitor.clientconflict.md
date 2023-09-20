@@ -16,7 +16,7 @@ themselves. Clients will generate a new client id and reconnect with
 the server, saving their new keys into their write back files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Monitor.ClientConflict
 type: SERVER_EVENT
 description: |
@@ -39,4 +39,5 @@ sources:
       AS NewCollection
       FROM watch_monitoring(artifact="Server.Internal.ClientConflict")
 
-```
+</code></pre>
+

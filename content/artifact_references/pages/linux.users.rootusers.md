@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Detects users added in the `sudo` group.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Users.RootUsers
 
 description: |
@@ -43,4 +43,5 @@ sources:
         }
       )
 
-```
+</code></pre>
+

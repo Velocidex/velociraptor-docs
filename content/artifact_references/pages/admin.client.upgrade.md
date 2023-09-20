@@ -15,7 +15,7 @@ client, you can install any other MSI as well by customizing this
 artifact or uploading a different msi file.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Admin.Client.Upgrade
 description: |
   Remotely push new client updates.
@@ -47,8 +47,8 @@ sources:
     query:  |
       // Force the file to be copied to the real temp directory since
       // we are just about to remove the Tools directory.
-      LET bin <= SELECT copy(filename=OSPath,
-          dest=expand(path="%SYSTEMROOT%\\Temp\\") + OSPath.Basename) AS Dest
+      LET bin &lt;= SELECT copy(filename=OSPath,
+          dest=expand(path="%SYSTEMROOT%\\Temp\\") + basename(path=OSPath)) AS Dest
       FROM Artifact.Generic.Utils.FetchBinary(
          ToolName="WindowsMSI", IsExecutable=FALSE,
          SleepDuration=SleepDuration)
@@ -62,4 +62,5 @@ sources:
               length=10000000)
       })
 
-```
+</code></pre>
+

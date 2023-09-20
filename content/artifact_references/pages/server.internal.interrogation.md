@@ -11,7 +11,7 @@ updating a client record, it will send an event on this artifact.
 Note: This is an automated system artifact. You do not need to start it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Interrogation
 description: |
   This event artifact is an internal event stream over which client
@@ -22,4 +22,5 @@ description: |
 
 type: INTERNAL
 
-```
+</code></pre>
+

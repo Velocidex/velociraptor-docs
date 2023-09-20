@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 List Windows physical memory ranges.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.PhysicalMemoryRanges
 description: List Windows physical memory ranges.
 reference:
@@ -33,7 +33,7 @@ export: |
            ["Count", 4, "uint32"],
            ["PartialDescriptors", 8, "Array", {
               "type": "CM_PARTIAL_RESOURCE_DESCRIPTOR",
-              "count": "x=>x.Count"
+              "count": "x=&gt;x.Count"
            }]
         ]],
 
@@ -68,4 +68,5 @@ sources:
               })
       })
 
-```
+</code></pre>
+

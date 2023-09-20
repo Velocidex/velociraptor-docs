@@ -13,7 +13,7 @@ This artifact extracts all the trusted hashes from a system by
 parsing all the cat files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.CatFiles
 description: |
    Windows stores many hashes in .cat files. These catalog files
@@ -58,4 +58,5 @@ sources:
             })
         })
 
-```
+</code></pre>
+

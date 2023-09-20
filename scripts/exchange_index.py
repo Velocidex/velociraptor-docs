@@ -1,5 +1,6 @@
 import urllib.request
 import json
+import html
 import yaml
 import re
 import os
@@ -26,9 +27,10 @@ editURL: https://github.com/%s/%s/edit/master/%s
 
 %s
 
-```yaml
+<pre><code class="language-yaml">
 %s
-```
+</code></pre>
+
 """
 
 previous_data = []
@@ -108,7 +110,14 @@ def make_archive(archive_path):
         if not name.endswith(".yaml"):
           continue
 
-        archive.write(os.path.join(root, name))
+        filename = os.path.join(root, name)
+        with open(filename) as fd:
+          data = fd.read()
+
+        # Force archive member to have a fixed timestamp - therefore
+        # the zip hash will depend only on the content, allowing git
+        # to deduplicate it properly across commits.
+        archive.writestr(zipfile.ZipInfo(filename=filename), data)
 
 def make_archive_v1(archive_path):
   with zipfile.ZipFile(archive_path, mode='w',
@@ -122,7 +131,7 @@ def make_archive_v1(archive_path):
         with open(filename) as fd:
           data = fd.read()
 
-        archive.writestr(filename, convert_to_v1(data))
+        archive.writestr(zipfile.ZipInfo(filename=filename), convert_to_v1(data))
 
 # For version 1 we drop all newer fields. This is suitable for older
 # Velociraptor versions which do not support expected_hash or version
@@ -180,7 +189,8 @@ def build_markdown():
              json.dumps(record_with_author["tags"]),
              org, project,
              yaml_filename,
-             data["description"], content))
+             data["description"],
+             html.escape(content, quote=False)))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)

@@ -15,7 +15,7 @@ analyses them to provide an overview of the commands executed and
 the user under which they will be run.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.TaskScheduler
 description: |
   The Windows task scheduler is a common mechanism that malware uses
@@ -49,7 +49,7 @@ sources:
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='<[?].+?>',
+                    re='&lt;[?].+?&gt;',
                     replace='')) AS XML
         FROM read_file(filenames=OSPath)
 
@@ -61,4 +61,5 @@ sources:
             XML as _XML
         FROM foreach(row=Uploads, query=parse_task)
 
-```
+</code></pre>
+

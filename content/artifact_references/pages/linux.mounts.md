@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 List mounted filesystems by reading /proc/mounts
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Mounts
 description: List mounted filesystems by reading /proc/mounts
 
@@ -22,8 +22,8 @@ sources:
       SELECT Device, Mount, FSType, split(string=Opts, sep=",") As Options
       FROM parse_records_with_regex(
          file=ProcMounts,
-         regex='(?m)^(?P<Device>[^ ]+) (?P<Mount>[^ ]+) (?P<FSType>[^ ]+) '+
-             '(?P<Opts>[^ ]+)')
+         regex='(?m)^(?P&lt;Device&gt;[^ ]+) (?P&lt;Mount&gt;[^ ]+) (?P&lt;FSType&gt;[^ ]+) '+
+             '(?P&lt;Opts&gt;[^ ]+)')
 
 
 reports:
@@ -33,4 +33,5 @@ reports:
 
       {{ Query "SELECT * FROM source()" | Table }}
 
-```
+</code></pre>
+

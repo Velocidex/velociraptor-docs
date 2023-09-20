@@ -12,7 +12,7 @@ This artifact enumerates all flows in the hunt and actively cancels
 them.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.CancelHunt
 description: |
   Sometimes a hunt is issued which is no longer useful. While stopping
@@ -43,4 +43,5 @@ sources:
          WHERE log(message="Hunt ID must be specified.") AND NULL
       })
 
-```
+</code></pre>
+

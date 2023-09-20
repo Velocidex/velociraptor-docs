@@ -28,7 +28,7 @@ NOTE:
   analysis please download raw artifact sets.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Amcache
 author: Matt Green - @mgreen27
 description: |
@@ -79,7 +79,7 @@ parameters:
 
 sources:
   - query: |
-        LET files <= SELECT OSPath
+        LET files &lt;= SELECT OSPath
            FROM glob(globs=expand(path=AMCacheGlob))
 
         SELECT * FROM foreach(row=files,
@@ -146,4 +146,5 @@ sources:
                             then= EntryPath =~ PathRegex,
                             else= True)
             })
-```
+</code></pre>
+

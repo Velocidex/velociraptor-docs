@@ -7,9 +7,9 @@ tags: [Client Artifact]
 Parse list of installed packages from zypper output
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.SuSE.Packages
-author: Hilko Bengen <bengen@hilluzination.de>
+author: Hilko Bengen &lt;bengen@hilluzination.de&gt;
 description: |
   Parse list of installed packages from zypper output
 
@@ -38,4 +38,5 @@ sources:
           FROM _value
         })
 
-```
+</code></pre>
+

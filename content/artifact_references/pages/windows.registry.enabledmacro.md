@@ -10,7 +10,7 @@ HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted Documents\TrustRecords
 http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.EnabledMacro
 description: |
   Checks for Registry key indicating macro was enabled by user.
@@ -60,4 +60,5 @@ sources:
               and encode(string=Data.value, type="hex") =~ "ffffff7f$"
           })
 
-```
+</code></pre>
+

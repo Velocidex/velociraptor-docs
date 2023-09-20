@@ -21,7 +21,7 @@ to recursively search.
 added by default. The artifact also exlcudes NTFS system files by default.    
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.NTFS.ADSHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -90,10 +90,10 @@ sources:
         WHERE 
             NOT OSPath.Basename =~ '\\$Secure:\\$SDS|\\$Repair|\\$BadClus|\\$Bitmap|\\$UpCase'
             AND if(condition=MinSize,
-                    then= Size > MinSize,
+                    then= Size &gt; MinSize,
                     else= True )
             AND if(condition= MaxSize,
-                    then= Size < MaxSize,
+                    then= Size &lt; MaxSize,
                     else= True )
             AND NOT if(condition=AdsNameExclusion,
                         then= AdsName =~ AdsNameExclusion,
@@ -117,4 +117,5 @@ sources:
       SELECT * FROM if(condition=UploadDataStream,
                         then= upload_hits,
                         else= hits)
-```
+</code></pre>
+

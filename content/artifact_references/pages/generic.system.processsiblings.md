@@ -14,7 +14,7 @@ the process in question (e.g. previous shell commands etc).
 Minimum Version: 0.6.6
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.System.ProcessSiblings
 description: |
   This artifact queries the process tracker to display all known
@@ -67,4 +67,5 @@ column_types:
   - name: ParentTree
     type: tree
 
-```
+</code></pre>
+

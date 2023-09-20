@@ -27,7 +27,7 @@ https://en.wikipedia.org/wiki/List_of_Microsoft_Office_filename_extensions
 https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/File_formats
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Generic.Applications.Office.Keywords
 description: |
   Microsoft Office documents among other document format (such as
@@ -83,7 +83,7 @@ sources:
            globs="/**",
            root=pathspec(DelegatePath=OfficePath),
            accessor='zip')
-        WHERE not IsDir and Size > 0
+        WHERE not IsDir and Size &gt; 0
 
         // For each document, scan all its parts for the keyword.
         SELECT OfficePath,
@@ -104,4 +104,5 @@ sources:
                  accessor='zip')
         })
 
-```
+</code></pre>
+

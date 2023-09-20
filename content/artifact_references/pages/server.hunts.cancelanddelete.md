@@ -23,7 +23,7 @@ This artifact is implicitly collected by the GUI when pressing the
 "Delete Hunt" Button.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Hunts.CancelAndDelete
 description: |
    Velociraptor Hunts are a way of running the same flow on
@@ -72,4 +72,5 @@ sources:
     query: |
       SELECT * FROM hunt_delete(hunt_id=HuntId, really_do_it=DeleteAllFiles)
 
-```
+</code></pre>
+

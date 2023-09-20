@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Certificate Authorities installed in Keychains/ca-bundles.
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Sys.CertificateAuthorities
 description: Certificate Authorities installed in Keychains/ca-bundles.
 sources:
@@ -21,4 +21,5 @@ sources:
                NotBefore, NotAfter, HexSerialNumber
         FROM certificates()
 
-```
+</code></pre>
+

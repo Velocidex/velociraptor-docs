@@ -8,7 +8,7 @@ Endpoints may participate in hunts. This artifact collects which
 hunt each system participated in.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: System.Hunt.Participation
 description: |
      Endpoints may participate in hunts. This artifact collects which
@@ -17,4 +17,5 @@ description: |
 # Will not be written but will be relayed between minions and server.
 type: INTERNAL
 
-```
+</code></pre>
+

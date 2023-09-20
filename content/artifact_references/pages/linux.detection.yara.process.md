@@ -21,7 +21,7 @@ Note: the Yara scan will stop after one hit. Multi-string rules will also only
 show one string in returned rows.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Detection.Yara.Process
 author: Matt Green - @mgreen27
 description: |
@@ -84,7 +84,7 @@ sources:
 
     query: |
       -- check which Yara to use
-      LET yara_rules <= YaraUrl || YaraRule
+      LET yara_rules &lt;= YaraUrl || YaraRule
 
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
@@ -144,4 +144,5 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
-```
+</code></pre>
+

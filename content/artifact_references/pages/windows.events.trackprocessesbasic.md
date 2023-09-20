@@ -16,7 +16,7 @@ This tracker DOES NOT require sysmon and is **incompatible** with
 Windows.Events.TrackProcesses (only one should be running).
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.TrackProcessesBasic
 description: |
   This artifact is a basic Process tracker using a simple polled
@@ -54,10 +54,11 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker <= process_tracker(
+      LET Tracker &lt;= process_tracker(
         sync_query=SyncQuery, sync_period=1000 * PollPeriod)
 
       SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats"
 
-```
+</code></pre>
+

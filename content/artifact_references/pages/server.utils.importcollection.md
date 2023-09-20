@@ -26,7 +26,7 @@ NOTE: This artifact is still experimental - please provide feedback
 on our issue board.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.ImportCollection
 description: |
   The Velociraptor offline collector is an automated, preconfigured
@@ -77,4 +77,5 @@ sources:
              Import.artifacts_with_results AS Artifacts
       FROM result
 
-```
+</code></pre>
+

@@ -9,7 +9,7 @@ tags: [Client Artifact]
 We can look for evidence of this dll by first performing a YARA search on the MFT across all drives, then applying an additional FireEye-supplied rule against the file found via MFT.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.SolarwindsSunburst
 
 description: |
@@ -48,7 +48,7 @@ parameters:
 
 sources:
   - query: |
-      LET yara_rules <= SELECT read_file(filename=OSPath) AS Rule,
+      LET yara_rules &lt;= SELECT read_file(filename=OSPath) AS Rule,
            basename(path=OSPath) AS ToolName
         FROM Artifact.Generic.Utils.FetchBinary(
              ToolName="SunburstYARARules", IsExecutable=FALSE)
@@ -68,7 +68,7 @@ sources:
              rules=yaraMFT, files=Device + "/$MFT",
              end=10000000000,
              number=1000,
-             accessor="ntfs")}) WHERE MFT.Size > SizeMin AND MFT.Size < SizeMax
+             accessor="ntfs")}) WHERE MFT.Size &gt; SizeMin AND MFT.Size &lt; SizeMax
 
       LET yarasearch = SELECT Rule, String.Offset AS HitOffset,
              str(str=String.Data) AS HitContext,
@@ -90,4 +90,5 @@ sources:
         hash(path=FileName) AS Hash
       FROM yarahits
 
-```
+</code></pre>
+

@@ -9,7 +9,7 @@ Windows maintains DNS lookups for a short time in the DNS cache.
 This artifact collects DNS cache entries using the WMI class MSFT_DNSClientCache.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.System.DNSCache
 description: |
   Windows maintains DNS lookups for a short time in the DNS cache.
@@ -143,14 +143,14 @@ sources:
   - precondition: |
       SELECT OS from info() where OS = "windows"
     query: |
-      LET wmiQuery <= '''
+      LET wmiQuery &lt;= '''
          SELECT Data, Entry, Status, TimeToLive, Type, Section
          FROM MSFT_DNSClientCache
       '''
-      LET wmiNamespace <= "root/StandardCimv2"
-      LET MapOfRecordType <= parse_json(data=kMapOfRecordType)
-      LET MapOfStatus <= parse_json(data=kMapOfStatus)
-      LET MapOfSection <= parse_json(data=kMapOfSection)
+      LET wmiNamespace &lt;= "root/StandardCimv2"
+      LET MapOfRecordType &lt;= parse_json(data=kMapOfRecordType)
+      LET MapOfStatus &lt;= parse_json(data=kMapOfStatus)
+      LET MapOfSection &lt;= parse_json(data=kMapOfSection)
 
       LET dns_cache_entries = SELECT
           Entry AS Name,
@@ -169,4 +169,5 @@ sources:
 
       SELECT * FROM dns_cache_entries
 
-```
+</code></pre>
+

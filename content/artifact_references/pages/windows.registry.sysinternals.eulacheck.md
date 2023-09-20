@@ -13,7 +13,7 @@ Note: This artifact uses HKEY_USERS and therefore will not detect
 users that are not currently logged on.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Registry.Sysinternals.Eulacheck
 description: |
   Checks for the Accepted Sysinternals EULA from the registry key
@@ -39,7 +39,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
     name: RegistryAPI
     query: |
-      LET users <= SELECT Name, UUID
+      LET users &lt;= SELECT Name, UUID
           FROM Artifact.Windows.Sys.Users()
       WHERE Name =~ userRegex
 
@@ -57,10 +57,11 @@ sources:
     description: Detect keys using Raw Registry Analysis
     query: |
       -- Apply Raw Registry Mappings
-      LET _ <= MapRawRegistryHives
+      LET _ &lt;= MapRawRegistryHives
 
       -- Make sure to call the other sources otherwise we get recursion errors!
       SELECT *
       FROM Artifact.Windows.Registry.Sysinternals.Eulacheck(source="RegistryAPI")
 
-```
+</code></pre>
+

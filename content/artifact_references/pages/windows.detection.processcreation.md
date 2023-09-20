@@ -9,7 +9,7 @@ Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
 provider for new events.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.ProcessCreation
 description: |
   This artifact logs specific process creation events to
@@ -66,7 +66,7 @@ sources:
 
     query: |
       // Make sure sysmon is installed.
-      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       SELECT *, { SELECT Hostname FROM info() } as Hostname FROM Artifact.Windows.Sysinternals.SysmonLogForward()
@@ -85,4 +85,5 @@ sources:
         EventData.Description =~ DescriptionRegex AND
         EventData.FileVersion =~ FileVersionRegex
 
-```
+</code></pre>
+

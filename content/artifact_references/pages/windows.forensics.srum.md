@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Process the SRUM database.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.SRUM
 description: |
   Process the SRUM database.
@@ -62,7 +62,7 @@ sources:
 
   - name: Execution Stats
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT  AutoIncId AS ID,
                 TimeStamp,
@@ -81,7 +81,7 @@ sources:
 
   - name: Application Resource Usage
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
                TimeStamp,
@@ -112,7 +112,7 @@ sources:
 
   - name: Network Connections
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
              TimeStamp,
@@ -131,7 +131,7 @@ sources:
 
   - name: Network Usage
     query: |
-        LET SRUMFiles <= SELECT OSPath FROM glob(globs=SRUMLocation)
+        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
 
         SELECT AutoIncId as SRUMId,
              TimeStamp,
@@ -171,4 +171,5 @@ sources:
               GROUP BY App, User,InterfaceLuid
               ORDER BY TotalSent DESC
 
-```
+</code></pre>
+

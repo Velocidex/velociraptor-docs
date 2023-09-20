@@ -40,7 +40,7 @@ endpoint.
 is not ideal from a forensic viewpoint.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.BulkExtractor
 description: |
     This content will execute bulk_extractor with record carving plugins from
@@ -115,10 +115,10 @@ parameters:
 
 sources:
   - query: |
-      LET bin <= SELECT *
+      LET bin &lt;= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(ToolName="Bulk_Extractor_Binary")
-      LET tempfolder <= tempdir()
-      LET ExePath <= tempfile(extension=".exe")
+      LET tempfolder &lt;= tempdir()
+      LET ExePath &lt;= tempfile(extension=".exe")
 
       LET target = SELECT
             DeviceID,
@@ -214,4 +214,5 @@ sources:
       FROM glob(globs="/**", root=tempfolder)
       WHERE Upload
 
-```
+</code></pre>
+

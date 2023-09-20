@@ -12,10 +12,10 @@ artifacts, this will be able to retrieve information about exited
 processes.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Attack.ParentProcess
 description: |
-  Maps the Mitre Att&ck framework process executions into artifacts.
+  Maps the Mitre Att&amp;ck framework process executions into artifacts.
 
   NOTE: This artifact uses the process tracker. If you also enable the
   Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
@@ -65,11 +65,12 @@ sources:
                   ParentRegex as ExpectedParentName,
                   Username,
                   join(array=process_tracker_callchain(id=Pid).Data.Name,
-                       sep=" -> ") AS CallChain
+                       sep=" -&gt; ") AS CallChain
            FROM process_tracker_pslist()
            WHERE ActualProcessName =~ ProcessName
              AND ActualParentName
              AND NOT ActualParentName =~ ParentRegex
          })
 
-```
+</code></pre>
+

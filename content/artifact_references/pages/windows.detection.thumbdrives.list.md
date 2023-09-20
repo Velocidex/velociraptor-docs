@@ -18,7 +18,7 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.List
 description: |
   Users inserting Thumb drives or other Removable drive pose a
@@ -48,7 +48,7 @@ sources:
         LET removable_disks = SELECT Name AS Drive,
             atoi(string=Data.Size) AS Size
         FROM glob(globs="/*", accessor="file")
-        WHERE Data.Description =~ "Removable" AND Size < atoi(string=maxDriveSize)
+        WHERE Data.Description =~ "Removable" AND Size &lt; atoi(string=maxDriveSize)
 
         LET file_listing = SELECT OSPath,
             Mtime As Modified,
@@ -66,4 +66,5 @@ sources:
           period=10)
           WHERE Diff = "added"
 
-```
+</code></pre>
+

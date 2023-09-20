@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Find and parse system wtmp files. This indicate when the user last logged in.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Sys.LastUserLogin
 description: Find and parse system wtmp files. This indicate when the
              user last logged in.
@@ -19,14 +19,14 @@ parameters:
     type: int64
 
 export: |
-  LET wtmpProfile <= '''
+  LET wtmpProfile &lt;= '''
   [
     ["Header", 0, [
 
     ["records", 0, "Array", {
         "type": "utmp",
-        "count": "x=>MaxCount",
-        "max_count": "x=>MaxCount",
+        "count": "x=&gt;MaxCount",
+        "max_count": "x=&gt;MaxCount",
     }],
     ]],
     ["utmp", 384, [
@@ -83,4 +83,5 @@ sources:
         })
       }) WHERE Type != "EMPTY" AND PID != 0
 
-```
+</code></pre>
+

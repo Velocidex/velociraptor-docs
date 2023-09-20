@@ -11,7 +11,7 @@ With UploadLogs selected a copy of the logs are uploaded to the server.
 SearchVSS enables search over VSS and dedup support.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Applications.MegaSync
 description: |
   This artifact will parse MEGASync logs and enables using regex to search for
@@ -54,8 +54,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       -- Find target files
       LET files = SELECT *, OSPath as Source
@@ -99,4 +99,5 @@ sources:
         FROM output
         GROUP BY OSPath
 
-```
+</code></pre>
+

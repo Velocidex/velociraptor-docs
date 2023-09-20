@@ -8,7 +8,7 @@ A Generic uploader used by triaging artifacts. This is similar to
 `Triage.Collection.Upload` but uses a CSV table to drive it.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Triage.Collection.UploadTable
 description: |
   A Generic uploader used by triaging artifacts. This is similar to
@@ -43,4 +43,5 @@ sources:
           FROM results
         })
 
-```
+</code></pre>
+

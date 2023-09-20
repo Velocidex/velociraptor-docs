@@ -23,7 +23,7 @@ file was later removed.
 Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Forensics.Usn
 description: |
   This artifact parses the NTFS USN journal and allows filters to
@@ -80,9 +80,9 @@ sources:
 
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime <= if(condition=DateAfter,
+      LET DateAfterTime &lt;= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime <= if(condition=DateBefore,
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       LET all_drives = SELECT OSPath.Components[0] AS Drive
@@ -112,8 +112,8 @@ sources:
               WHERE Filename =~ FileNameRegex
                 AND str(str=_FileMFTID) =~ MFT_ID_Regex
                 AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
-                AND Timestamp < DateBeforeTime
-                AND Timestamp > DateAfterTime
+                AND Timestamp &lt; DateBeforeTime
+                AND Timestamp &gt; DateAfterTime
                 AND _Links =~ PathRegex
             })
           }, else={
@@ -122,9 +122,10 @@ sources:
             WHERE Filename =~ FileNameRegex
                 AND str(str=_FileMFTID) =~ MFT_ID_Regex
                 AND str(str=_ParentMFTID) =~ Parent_MFT_ID_Regex
-                AND Timestamp < DateBeforeTime
-                AND Timestamp > DateAfterTime
+                AND Timestamp &lt; DateBeforeTime
+                AND Timestamp &gt; DateAfterTime
                 AND _Links =~ PathRegex
           })
 
-```
+</code></pre>
+

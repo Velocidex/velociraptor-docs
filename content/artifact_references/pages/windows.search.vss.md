@@ -11,7 +11,7 @@ NOTE: This used to be more complicated but now delegates to the
 "ntfs_vss" accessor to do all the work.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Search.VSS
 description: |
   This artifact will find all relevant files in the VSS. Typically
@@ -40,4 +40,5 @@ sources:
       SELECT * FROM glob(globs=SearchFilesGlob, accessor="ntfs_vss")
       ORDER BY OSPath
 
-```
+</code></pre>
+

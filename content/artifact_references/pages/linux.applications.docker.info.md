@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Get Dockers info by connecting to its socket.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Applications.Docker.Info
 description: Get Dockers info by connecting to its socket.
 parameters:
@@ -55,4 +55,5 @@ sources:
                JSON.DockerRootDir as DockerRootDir
         FROM data
 
-```
+</code></pre>
+

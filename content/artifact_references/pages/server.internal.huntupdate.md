@@ -9,7 +9,7 @@ certain hunt has changed and should be updated from the internal
 cache.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.HuntUpdate
 description: |
   An internal queue to notify hunt dispatchers on all minions that a
@@ -23,4 +23,5 @@ column_types:
   - name: Hunt
     type: json
 
-```
+</code></pre>
+

@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Address resolution cache, both static and dynamic (from ARP, NDP).
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.ArpCache
 description: Address resolution cache, both static and dynamic (from ARP, NDP).
 parameters:
@@ -35,7 +35,7 @@ sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET interfaces <=
+        LET interfaces &lt;=
           SELECT Index, HardwareAddr, IP
           FROM Artifact.Windows.Network.InterfaceAddresses()
 
@@ -67,4 +67,5 @@ sources:
              WHERE InterfaceIndex = Index
           })
 
-```
+</code></pre>
+

@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Find and parse ssh known hosts files.
 
-```yaml
+<pre><code class="language-yaml">
 name: Linux.Ssh.KnownHosts
 description: Find and parse ssh known hosts files.
 parameters:
@@ -43,7 +43,7 @@ sources:
 
   - name: HostPublicKeys
     query: |
-      LET Me <= SELECT * FROM info()
+      LET Me &lt;= SELECT * FROM info()
 
       SELECT * FROM foreach(row={
         SELECT OSPath
@@ -74,7 +74,7 @@ sources:
           one machine to another machine.
           */
 
-          LET lookup <= memoize(
+          LET lookup &lt;= memoize(
              key="PublicKey",
              query={
                SELECT *
@@ -84,4 +84,5 @@ sources:
           SELECT *, get(item=lookup, field=PublicKey) AS Hostname
           FROM source(artifact="Linux.Ssh.KnownHosts")
 
-```
+</code></pre>
+

@@ -8,7 +8,7 @@ Show information about open sockets. On windows the time when the
 socket was first bound is also shown.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Network.Netstat
 description: |
   Show information about open sockets. On windows the time when the
@@ -17,7 +17,7 @@ description: |
 sources:
 - precondition: SELECT OS From info() where OS = 'windows'
   query: |
-    LET processes <= SELECT Name, Pid AS ProcPid FROM pslist()
+    LET processes &lt;= SELECT Name, Pid AS ProcPid FROM pslist()
     SELECT Pid, {
         SELECT Name from processes
         WHERE Pid = ProcPid
@@ -29,4 +29,5 @@ sources:
       Timestamp
     FROM netstat()
 
-```
+</code></pre>
+

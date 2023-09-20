@@ -11,7 +11,7 @@ Alerts are expected to be low frequency and high value and may be
 generated client or server side.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Alerts
 description: |
   An internal event queue for alerts. All alerts sent from clients are
@@ -22,4 +22,5 @@ description: |
 
 type: SERVER_EVENT
 
-```
+</code></pre>
+

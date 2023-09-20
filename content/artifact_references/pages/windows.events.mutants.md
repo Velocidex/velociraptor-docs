@@ -7,7 +7,7 @@ tags: [Client Event Artifact]
 This artifact detects creation of Mutants and triggers an alert. 
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.Events.Mutants
 description: |
   This artifact detects creation of Mutants and triggers an alert. 
@@ -42,7 +42,7 @@ parameters:
 sources:
     - query: |
     
-        LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) > 0
+        LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) &gt; 0
 
         LET query_mutant = SELECT * FROM winobj() WHERE Type = "Mutant" AND Name =~ MutantNameRegex 
 
@@ -58,4 +58,5 @@ sources:
         
         SELECT *, alert(name=AlertName, Name=Name, Type=Type, Exe=Exe) as AlertSent FROM diff(query=query_diff, period=Period, key="Name") WHERE Diff = diff
 
-```
+</code></pre>
+

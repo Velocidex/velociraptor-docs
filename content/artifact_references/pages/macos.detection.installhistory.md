@@ -7,7 +7,7 @@ tags: [Client Artifact]
 This artifact collects entries from the InstallHistory .plist file
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Detection.InstallHistory
 description: |
   This artifact collects entries from the InstallHistory .plist file
@@ -42,4 +42,5 @@ sources:
             })
     SELECT * FROM foreach(row=SWplist, query=SoftwareDetails)
 
-```
+</code></pre>
+

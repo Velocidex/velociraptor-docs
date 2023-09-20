@@ -21,7 +21,7 @@ is to run this artifact on only a handful of machines in a typical domain,
 then deduplicate output.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.ActiveDirectory.BloodHound
 description: |
    This artifact allows deployment of the BloodHound collection tool Sharphound.
@@ -67,15 +67,15 @@ sources:
 
     query: |
       -- obtain hostname for output prefix
-      LET hostname <= SELECT Fqdn FROM info()
+      LET hostname &lt;= SELECT Fqdn FROM info()
 
       -- get context on target binary
-      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SharpHound")
 
 
       -- build tempfolder for output
-      LET tempfolder <= tempdir()
+      LET tempfolder &lt;= tempdir()
 
 
       -- execute payload
@@ -84,7 +84,7 @@ sources:
 
 
       -- remove payload if selected
-      LET remove <= SELECT * FROM if(condition=RemovePayload,
+      LET remove &lt;= SELECT * FROM if(condition=RemovePayload,
                 then={
                     SELECT * FROM execve(argv=['powershell','Remove-Item',
                                             payload.OSPath[0],'-Force' ])
@@ -99,4 +99,5 @@ sources:
         },
         else=deploy)
 
-```
+</code></pre>
+

@@ -8,7 +8,7 @@ An internal artifact used track new client interrogations by the
 Interrogation service.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Internal.Interrogate
 description: |
   An internal artifact used track new client interrogations by the
@@ -66,4 +66,5 @@ sources:
             })
           })
 
-```
+</code></pre>
+

@@ -13,7 +13,7 @@ A `BPF` (Berkeley Packet Filter) expression can also be supplied to filter the c
 Read more about BPF expressions here: https://biot.com/capstats/bpf.html
 
 
-```yaml
+<pre><code class="language-yaml">
 name: MacOS.Network.PacketCapture
 author: Wes Lambert, @therealwlambert
 description: |
@@ -47,8 +47,9 @@ precondition:
 
 sources:
     - query: |
-            LET pcap <= tempfile(extension=".pcap")
+            LET pcap &lt;= tempfile(extension=".pcap")
             SELECT *, upload(file=pcap) AS PCAP
-              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) & sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) &amp; sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
 
-```
+</code></pre>
+

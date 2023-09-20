@@ -17,7 +17,7 @@ artifact and select to upload client config files. Use this org's
 config to create new client MSIs for deployment.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Orgs.NewOrg
 description: |
   This server artifact will create a new org and assign the current
@@ -39,7 +39,7 @@ parameters:
 
 sources:
 - query: |
-    LET org_record <= org_create(name=OrgName)
+    LET org_record &lt;= org_create(name=OrgName)
 
     SELECT org_record.name as Name, org_record.id AS OrgId,
            user_create(orgs=org_record.id,
@@ -47,4 +47,5 @@ sources:
                        user=whoami()) AS AdminUser
     FROM scope()
 
-```
+</code></pre>
+

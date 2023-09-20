@@ -30,7 +30,7 @@ fan_out|Wait for this many listeners to connect before starting the query|int64
 Create a named generator that receives rows from the query.
 
 This plugin allow multiple queries to efficiently filter rows from
-the same query. 
+the same query.
 
 ### Example
 

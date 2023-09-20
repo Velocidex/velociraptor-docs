@@ -15,7 +15,7 @@ them against some criteria. Flows that match are then removed.
   will match before using the ReallyDoIt option.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.DeleteManyFlows
 description: |
    Sometimes the Velociraptor server accumulates a lot of data that is
@@ -51,7 +51,7 @@ parameters:
 
 sources:
   - query: |
-        LET DateBefore <= DateBefore || now()
+        LET DateBefore &lt;= DateBefore || now()
         LET hits = SELECT * FROM foreach(row={
             SELECT client_id,
                    os_info.hostname AS hostname
@@ -66,7 +66,7 @@ sources:
           FROM flows(client_id=client_id)
           WHERE creator =~ CreatorRegex
              AND artifacts =~ ArtifactRegex
-             AND created < DateBefore
+             AND created &lt; DateBefore
         }, workers=10)
 
         SELECT * FROM if(condition=ReallyDoIt,
@@ -84,4 +84,5 @@ sources:
             SELECT * FROM hits
         })
 
-```
+</code></pre>
+

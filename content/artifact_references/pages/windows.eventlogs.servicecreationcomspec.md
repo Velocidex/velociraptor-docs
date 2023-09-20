@@ -15,7 +15,7 @@ SearchVSS allows querying VSS instances of EventLog Path with event
 deduplication.
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Windows.EventLogs.ServiceCreationComspec
 description: |
 
@@ -49,8 +49,8 @@ parameters:
 sources:
   - name: ServiceCreation
     query: |
-      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
 
       // Extract all target paths from glob
       LET files = SELECT OSPath
@@ -95,4 +95,5 @@ sources:
         FROM hits
         GROUP BY EventRecordID, Channel
 
-```
+</code></pre>
+

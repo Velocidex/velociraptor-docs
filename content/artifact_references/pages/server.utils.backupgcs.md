@@ -15,7 +15,7 @@ DefaultGCSKey)
 Thanks to @shortxstack and @Recon_InfoSec
 
 
-```yaml
+<pre><code class="language-yaml">
 name: Server.Utils.BackupGCS
 description: |
    This server monitoring artifact will automatically zip and backup
@@ -48,11 +48,11 @@ parameters:
 sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or the server metadata.
-      LET bucket <= if(condition=Bucket, then=Bucket,
+      LET bucket &lt;= if(condition=Bucket, then=Bucket,
            else=server_metadata().DefaultBucket)
-      LET project <= if(condition=Project, then=Project,
+      LET project &lt;= if(condition=Project, then=Project,
            else=server_metadata().DefaultGCSProject)
-      LET gcskey <= if(condition=GCSKey, then=GCSKey,
+      LET gcskey &lt;= if(condition=GCSKey, then=GCSKey,
            else=server_metadata().DefaultGCSKey)
 
       LET completions = SELECT *,
@@ -75,4 +75,5 @@ sources:
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
 
-```
+</code></pre>
+
