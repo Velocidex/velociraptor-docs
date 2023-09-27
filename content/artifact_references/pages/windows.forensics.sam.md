@@ -125,10 +125,11 @@ export: |
      ]
      '''
 
-sources:
-  - precondition:
-      SELECT OS From info() where OS = 'windows'
+precondition:
+  SELECT OS From info() where OS = 'windows'
 
+sources:
+  - name: Parsed
     query: |
         SELECT Key.OSPath.Path AS Key,
            Key.OSPath.DelegatePath AS Hive,
@@ -144,6 +145,15 @@ sources:
            root=pathspec(DelegatePath=SAMPath),
            accessor="raw_reg")
         WHERE _F AND _V
+
+  - name: CreateTimes
+    description: "Show the modified times of the \\SAM\\Domains\\Account\\Users\\Names keys"
+    query: |
+      SELECT Name AS Username, Mtime AS CreatedTime
+      FROM glob(globs='SAM\\Domains\\Account\\Users\\Names\\*',
+                root=pathspec(DelegatePath=SAMPath),
+                accessor="raw_reg")
+      WHERE Data.type =~ "Key"
 
 column_types:
   - name: F

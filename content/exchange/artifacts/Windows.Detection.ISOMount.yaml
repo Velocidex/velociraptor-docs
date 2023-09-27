@@ -2,8 +2,8 @@ name: Windows.Detection.ISOMount
 author: Conor Quinn - @ConorQuinn92, updated Matt Green - @mgreen27
 description: |
    Following Microsoft's decision to block macros by default on MS Office applications, threat actors are increasingly using container files such as ISO files to distribute malware. 
-   This artifact will extract evidence of .iso files being mounted that may be malicious from the Microsoft-Windows-VHDMP-Operational EventLog. 
-   The artifact targets the string ".iso" in event IDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).
+   This artifact will extract evidence of container files being mounted that may be malicious from the Microsoft-Windows-VHDMP-Operational EventLog. 
+   The artifact targets the string ".(iso|vhd|vhdx|img)$" in event IDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).
    
 reference:
   - https://nasbench.medium.com/finding-forensic-goodness-in-obscure-windows-event-logs-60e978ea45a3

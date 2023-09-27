@@ -37,6 +37,14 @@ parameters:
   - name: SectorSize
     type: int
     default: 512
+  - name: MagicRegex
+    type: regex
+    description: Filter partitions by their magic
+    default: .
+  - name: NameRegex
+    type: regex
+    description: Filter partitions by their magic
+    default: .
 
 export: |
     LET MBRProfile = '''[
@@ -141,22 +149,41 @@ sources:
         FROM foreach(row=PrimaryPartitions.PrimaryPartitions)
         WHERE start_sec &gt; 0
 
-        SELECT StartOffset, EndOffset, Size, name, {
-              SELECT OSPath.Path AS OSPath
-              FROM glob(globs="/*",
-                        accessor="raw_ntfs",
-                        root=pathspec(
-                          DelegateAccessor="offset",
-                          DelegatePath=pathspec(
-                            DelegateAccessor="raw_file",
-                            DelegatePath=ImagePath,
-                            Path=format(format="%d", args=StartOffset))))
-                 } AS TopLevelDirectory,
+        -- Handle the correct partition types
+        LET GetAccessor(Magic) =
+        if(condition=Magic =~ "NTFS", then="raw_ntfs",
+           else=if(condition=Magic =~ "FAT", then="fat"))
+
+        LET ListTopDirectory(PartitionPath, Magic) =
+        SELECT * FROM if(condition=GetAccessor(Magic=Magic), then={
+            SELECT OSPath.Path AS OSPath
+            FROM glob(globs="/*",
+                      accessor=GetAccessor(Magic=Magic),
+                      root=PartitionPath)
+        })
+
+        LET PartitionList = SELECT StartOffset, EndOffset, Size, name,
             magic(accessor="data", path=read_file(
               accessor="raw_file",
               filename=ImagePath,
-              offset=StartOffset, length=10240)) AS Magic
+              offset=StartOffset, length=10240)) AS Magic,
+
+            -- The OSPath to access the partition
+            pathspec(
+              DelegateAccessor="offset",
+              DelegatePath=pathspec(
+                 DelegateAccessor="raw_file",
+                 DelegatePath=ImagePath,
+                 Path=format(format="%d", args=StartOffset))) AS _PartitionPath
         FROM chain(a=PARTS, b=GPT)
+        WHERE name =~ NameRegex
+          AND Magic =~ MagicRegex
+
+        SELECT StartOffset, EndOffset, Size, name,
+            ListTopDirectory(Magic=Magic,
+              PartitionPath= _PartitionPath).OSPath AS TopLevelDirectory,
+            Magic, _PartitionPath
+        FROM PartitionList
 
 </code></pre>
 

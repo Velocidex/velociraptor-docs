@@ -14,10 +14,16 @@ user accesses a file from a supported application or manually created by the use
 
 This artifact has several configurable options:
 
-- TargetGlob: glob targeting. Default targets *.lnk files in user path.
+- TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
 - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
 - IgnoreRegex: Ignore regex filter on key fields.
 - UploadLnk: uploads lnk hits.
+- SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
+- SusSize: Any lnk over this size in bytes is suspicious.
+- SusArgSize: Any lnk with Argument strings over this size is suspicious.
+- SusArgRegex: Regex for suspicious strings in Arguments.
+- SusHostnameRegex: Regex for suspicious TrackerData Hostname.
+- CheckHostnameMismatch: Compare TrackerData.MachineID with Hostname (noisy in many networks)
 
 List of fields targeted by filter regex:
 
@@ -32,7 +38,24 @@ List of fields targeted by filter regex:
   - TrackerData.MachineID
   - TrackerData.MacAddress  
     
-  NOTE: regex startof (^) and endof ($) line modifiers will not work.
+  NOTE: regex startof (^) and endof ($) line modifiers will not work.  
+  
+  
+  Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
+ 
+  * Large Size - default over 20000 bytes
+  * Startup Path - path with \Startup\
+  * Environment variable script - environment vatiable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
+  * No Target with environmant variable - environment variable only execution
+  * Suspicious argument size - large sized arguments over 250 characters as default
+  * Arguments have ticks - ticks are common in malicious LNK files
+  * Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
+  * Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
+  * Arguments have leading space malicious LNK files may have a many leading spaces to obfuscate some tools
+  * Arguments have http strings - LNKs are reguarly used as a download cradle - https?://
+  * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
+  * Suspicious hostname - some common malicious hostnames
+  * Hostname mismatch - if selected will compare trackerdata hostname to machine name (lots of FPs)
 
 
 <pre><code class="language-yaml">
@@ -49,10 +72,16 @@ description: |
   
   This artifact has several configurable options:
   
-  - TargetGlob: glob targeting. Default targets *.lnk files in user path.
+  - TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
   - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
   - IgnoreRegex: Ignore regex filter on key fields.
   - UploadLnk: uploads lnk hits.
+  - SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
+  - SusSize: Any lnk over this size in bytes is suspicious.
+  - SusArgSize: Any lnk with Argument strings over this size is suspicious.
+  - SusArgRegex: Regex for suspicious strings in Arguments.
+  - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
+  - CheckHostnameMismatch: Compare TrackerData.MachineID with Hostname (noisy in many networks)
   
   List of fields targeted by filter regex:
   
@@ -67,7 +96,24 @@ description: |
     - TrackerData.MachineID
     - TrackerData.MacAddress  
       
-    NOTE: regex startof (^) and endof ($) line modifiers will not work.
+    NOTE: regex startof (^) and endof ($) line modifiers will not work.  
+    
+    
+    Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
+   
+    * Large Size - default over 20000 bytes
+    * Startup Path - path with \Startup\
+    * Environment variable script - environment vatiable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
+    * No Target with environmant variable - environment variable only execution
+    * Suspicious argument size - large sized arguments over 250 characters as default
+    * Arguments have ticks - ticks are common in malicious LNK files
+    * Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
+    * Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
+    * Arguments have leading space malicious LNK files may have a many leading spaces to obfuscate some tools
+    * Arguments have http strings - LNKs are reguarly used as a download cradle - https?://
+    * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
+    * Suspicious hostname - some common malicious hostnames
+    * Hostname mismatch - if selected will compare trackerdata hostname to machine name (lots of FPs)
 
 
 reference:
@@ -75,7 +121,7 @@ reference:
 
 parameters:
   - name: TargetGlob
-    default: C:\Users\**\*.lnk
+    default: C:\{ProgramData,Users\*\AppData\*}\Microsoft\Windows\{Start Menu\Programs\StartUp,Recent\**}\*.lnk
   - name: IocRegex
     type: regex
     description: A regex to filter on all fields
@@ -84,6 +130,26 @@ parameters:
     description: A regex to ignore ilter all fields
   - name: UploadLnk
     description: Also upload the link files themselves.
+    type: bool
+  - name: SuspiciousOnly
+    description: Only returns LNK files reporting a suspicious attribute
+    type: bool
+  - name: SusSize
+    description: Any lnk over this size in bytes is suspicious.
+    default: 20000
+    type: int
+  - name: SusArgSize
+    default: 250
+    description: Any lnk with Argument strings over this size is suspicious.
+    type: int
+  - name: SusArgRegex
+    description: Regex for suspicious strings in Argumetns.
+    default: \\AppData\\|\\Users\\Public\\|\\Temp\\|comspec|&amp;cd&amp;echo| -NoP | -W Hidden | [-/]decode | -e.* (JAB|SUVYI|SQBFAFgA|aWV4I|aQBlAHgA)|start\s*[\\/]b|\.downloadstring\(|\.downloadfile\(|iex
+  - name: SusHostnameRegex
+    description: Regex for suspicious TrackerData Hastname.
+    default: ^(Win-|Desktop-|Commando$)
+  - name: CheckHostnameMismatch
+    description: Compare TrackerData.MachineID with Hostname (noisy in many networks) 
     type: bool
 
 export: |
@@ -1264,6 +1330,8 @@ export: |
 
 sources:
   - query: |
+     LET hostname &lt;= if(condition=CheckHostnameMismatch, then={ SELECT Hostname FROM info()})
+     
      LET targets = SELECT OSPath, Mtime,Atime,Ctime,Btime,Size,
             read_file(filename=OSPath,offset=0,length=2) as _Header
         FROM glob(globs=TargetGlob)
@@ -1354,15 +1422,37 @@ sources:
                             join(array=PropertyStore.Value,sep='\n')
                         ]) =~ IgnoreRegex,
                     else= False)
+      
+      LET add_suspicious = SELECT *, dict(
+                `Large Size` = SourceFile.Size &gt; SusSize,
+                `Startup Path` = SourceFile.OSPath =~ '''\\Startup\\''',
+                `Environment variable script` = ExtraData.EnvironmentVariable =~ '''\.(bat|cmd|ps1|js|vbs|vbe|py)$''',
+                `No Target with environmant variable` = ExtraData.EnvironmentVariable AND StringData.Arguments AND NOT (StringData.TargetPath OR StringData.RelativePath),
+                `Suspicious argument size` = len(list=StringData.Arguments) &gt; SusArgSize,
+                `Arguments have ticks` = StringData.Arguments=~'''\^''',
+                `Arguments have environment variables` = StringData.Arguments=~'''\%|\$env:''',
+                `Arguments have rare characters` = StringData.Arguments=~'''\?\!\~\@''',
+                `Arguments have leading space` = StringData.Arguments =~ '^ ',
+                `Arguments have http strings` = StringData.Arguments =~'''https?://''',
+                `Suspicious arguments` = StringData.Arguments =~ SusArgRegex,
+                `Suspicious hostname` = ExtraData.TrackerData.MachineID AND SusHostnameRegex AND ExtraData.TrackerData.MachineID=~SusHostnameRegex AND NOT lowcase(string=ExtraData.TrackerData.MachineID)=~lowcase(string=hostname[0].Hostname),
+                `Hostname mismatch` = CheckHostnameMismatch AND ExtraData.TrackerData.MachineID AND NOT lowcase(string=ExtraData.TrackerData.MachineID)=~lowcase(string=hostname[0].Hostname)
+            ) as Suspicious
+        FROM results
+        WHERE if(condition=SuspiciousOnly,
+            then= join(array=Suspicious) =~ ':true',
+            else= True )
         
       LET upload_results = SELECT *, 
             upload(file=SourceFile.OSPath) as UploadedLnk
-        FROM results
+        FROM add_suspicious
         
-      SELECT *
+      -- finally return rows and remove suspicious attributes that are not true
+      SELECT *,
+            to_dict(item={SELECT * FROM items(item=Suspicious) WHERE _value = True}) as Suspicious
         FROM if(condition=UploadLnk,
             then= upload_results,
-            else= results )
+            else= add_suspicious )
 
 column_types:
   - name: SourceFile.Mtime
