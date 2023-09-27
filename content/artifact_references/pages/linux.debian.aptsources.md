@@ -22,7 +22,7 @@ deb indicates a source for binary packages, and deb-src instructs APT where
 to find source code for packages.
 
 `*.sources` files (deb822-style format) are in the form of key–value
-lines, and as opposed to the one–line format, they can contain
+lines, and as opposed to the one–line format, they may contain
 multiple URIs, components and types (deb/deb-src), along with
 embedded GPG keys. Example:
 
@@ -33,8 +33,9 @@ Suites: unstable
 Components: main contrib non-free
 ```
 
-The exported function parse_aptsources(OSPath, flatten) parses
-both formats and returns a (optionally flattened) table with
+The exported function `parse_aptsources(OSPath, flatten)` parses
+both formats and returns an (optionally flattened) table with
+
  - OSPath
  - Types (deb/deb-src)
  - Components (e.g. main/contrib/non-free/restricted,universe)
@@ -43,7 +44,9 @@ both formats and returns a (optionally flattened) table with
  - _Transport (e.g. http/https/file/cdrom/ftp)
  - URIs (e.g. http://us.archive.ubuntu.com/ubuntu/)
 
-Any option is added to an individual column. Typical options are
+Any option is added to an individual column. The most common options
+are
+
  - Architectures (e.g. amd64/i386/armel)
  - Signed-By (e.g. /usr/share/keyrings/osquery.gpg)
 
@@ -51,22 +54,26 @@ All known option names are transformed to the plural PascalCase
 variants as listed in the sources.list man page. Any undocumented
 options will still be included in the results, with names unchanged.
 Options in the one-line format of the form "lang+=de"/"arch-=i386"
-will be in columns like "Languages-Add"/"Architectures-Remove", matching
-the option names having the same effect in deb822.
+will be put in columns like "Languages-Add"/"Architectures-Remove",
+matching the option names having the same effect in deb822.
 
 Entries in deb822 sources files may be disabled by including
 "Enabled: no" instead of commenting out all lines. If this field
 is not present with a falsly value, the entry is enabled. Use the
 exported functions DebTrue()/DebFalse() to correctly parse all
-accepted true/false strings, or use the VQL suggestion "Enabled"
-to filter on this column (true), if present.
+accepted true/false strings, or use the VQL suggestion "Only enabled
+sources" to filter on this column (true), if present.
 
 If the GPG key is embedded in a .sources file, the whole GPG key
 will be included in the cell. Otherwise the value will be a file
-path.
+path. Use the VQL suggestion "Hide embedded GPG keys" to replace
+embedded GPG keys with "(embedded)" in the results. In order to
+inspect the keys themselves (files or embedded data), use the
+exchange artifact Linux.Debian.GPGKeys.
 
-If flatten is False, multi–value fields (like Components) will
-be combined in a single-space-separated string in each row.
+If the function parameter "flatten" is False, multi–value fields
+(like Components) will be combined in a single space-separated
+string in each row.
 
 In addition to the two apt sources tables, a third table correlates
 information from InRelease and Release files to provide additional
@@ -95,7 +102,7 @@ description: |
   to find source code for packages.
 
   `*.sources` files (deb822-style format) are in the form of key–value
-  lines, and as opposed to the one–line format, they can contain
+  lines, and as opposed to the one–line format, they may contain
   multiple URIs, components and types (deb/deb-src), along with
   embedded GPG keys. Example:
 
@@ -106,8 +113,9 @@ description: |
   Components: main contrib non-free
   ```
 
-  The exported function parse_aptsources(OSPath, flatten) parses
-  both formats and returns a (optionally flattened) table with
+  The exported function `parse_aptsources(OSPath, flatten)` parses
+  both formats and returns an (optionally flattened) table with
+
    - OSPath
    - Types (deb/deb-src)
    - Components (e.g. main/contrib/non-free/restricted,universe)
@@ -116,7 +124,9 @@ description: |
    - _Transport (e.g. http/https/file/cdrom/ftp)
    - URIs (e.g. http://us.archive.ubuntu.com/ubuntu/)
 
-  Any option is added to an individual column. Typical options are
+  Any option is added to an individual column. The most common options
+  are
+
    - Architectures (e.g. amd64/i386/armel)
    - Signed-By (e.g. /usr/share/keyrings/osquery.gpg)
 
@@ -124,22 +134,26 @@ description: |
   variants as listed in the sources.list man page. Any undocumented
   options will still be included in the results, with names unchanged.
   Options in the one-line format of the form "lang+=de"/"arch-=i386"
-  will be in columns like "Languages-Add"/"Architectures-Remove", matching
-  the option names having the same effect in deb822.
+  will be put in columns like "Languages-Add"/"Architectures-Remove",
+  matching the option names having the same effect in deb822.
 
   Entries in deb822 sources files may be disabled by including
   "Enabled: no" instead of commenting out all lines. If this field
   is not present with a falsly value, the entry is enabled. Use the
   exported functions DebTrue()/DebFalse() to correctly parse all
-  accepted true/false strings, or use the VQL suggestion "Enabled"
-  to filter on this column (true), if present.
+  accepted true/false strings, or use the VQL suggestion "Only enabled
+  sources" to filter on this column (true), if present.
 
   If the GPG key is embedded in a .sources file, the whole GPG key
   will be included in the cell. Otherwise the value will be a file
-  path.
+  path. Use the VQL suggestion "Hide embedded GPG keys" to replace
+  embedded GPG keys with "(embedded)" in the results. In order to
+  inspect the keys themselves (files or embedded data), use the
+  exchange artifact Linux.Debian.GPGKeys.
 
-  If flatten is False, multi–value fields (like Components) will
-  be combined in a single-space-separated string in each row.
+  If the function parameter "flatten" is False, multi–value fields
+  (like Components) will be combined in a single space-separated
+  string in each row.
 
   In addition to the two apt sources tables, a third table correlates
   information from InRelease and Release files to provide additional
@@ -380,10 +394,6 @@ export: |
             columns='Section',
             regex='^ #', record_regex='''\n{2,}'''
         )
-        /* Sections may be empty due to several newlines or comments on their own
-           separated by newlines. Ensure that at least one field is present
-           (URIs are mandatory): */
-        WHERE URIs
 
         LET Deb822_Flattened_(OSPath) = SELECT * FROM foreach(
             row=Deb822Sections(OSPath=OSPath),
@@ -394,6 +404,9 @@ export: |
                 )
             })}
         )
+        /* DEB822_Sections() may produce empty rows. Exclude these by filtering
+           for a required column, like URIs: */
+        WHERE URIs
 
         /* Parse a deb822 sources file with options in individual columns.
            Note that, as opposed to DebOneLine and Deb822_Flattened, this
@@ -406,6 +419,7 @@ export: |
                 column='Contents'
             )}
         )
+        WHERE URIs
 
         /* Parse a deb822 sources file with options in individual columns, flattened: */
         LET Deb822_Flattened(OSPath) = SELECT * FROM flatten(query={
@@ -461,14 +475,34 @@ sources:
       - type: vql_suggestion
         name: Only enabled sources
         template: |
-            SELECT * FROM source(artifact='Custom.Linux.Debian.AptSources/Sources')
-            WHERE get(field='Enabled', default='yes') =~ '(?i)^(?:yes|true|with|on|enable)$'
+            /*
+            # Sources (enabled only)
+            */
+            SELECT * FROM source()
+            WHERE Enabled =~ '(?i)^(?:yes|true|with|on|enable)$' || true
 
       - type: vql_suggestion
         name: Trusted sources (apt-secure bypassed)
         template: |
-            SELECT * FROM source(artifact='Custom.Linux.Debian.AptSources/Sources')
-            WHERE get(field='Trusted', default='') =~ '(?i)^(?:yes|true|with|on|enable)$'
+            /*
+            # "Trusted" sources (apt-secure bypassed)
+
+            When the Trusted option is true, apt does not verify the GPG
+            signature of the Release files of the repository, and it also
+            doe not warn about this.
+            */
+            SELECT * FROM source()
+            WHERE Trusted =~ '(?i)^(?:yes|true|with|on|enable)$' || false
+
+      - type: vql_suggestion
+        name: Hide embedded GPG keys
+        template: |
+            /*
+            # Sources (embedded GPG keys hidden)
+            */
+            SELECT *, if(condition=get(field='Signed-By')=~'BEGIN PGP PUBLIC KEY',
+                then='(embedded)', else=get(field='Signed-By')) AS `Signed-By`
+                FROM source()
 
   - name: SourcesFlattened
     query: |

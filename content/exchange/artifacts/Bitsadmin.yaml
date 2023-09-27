@@ -45,7 +45,7 @@ sources:
                 EventData.bytesTotal as bytesTotal,
                 EventData.bytesTransferred as bytesTransferred,
                 EventData.bytesTransferredFromPeer
-            FROM parse_evtx(filename=FullPath)
+            FROM parse_evtx(filename=OSPath)
             WHERE 
                 EventId = 59
                 AND NOT if( condition= UrlWhitelistRegex,
