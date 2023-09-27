@@ -13,9 +13,6 @@ used to identify and eliminate potentially risky domain configuration.
 The Sharphound collection is in json format and upload to the server for
 additional processing.
 
-RemovePayload - Due to potential malicious use of this tool I have also
-included an option to remove payload after execution.
-
 NOTE: Do not run this artifact as an unrestricted hunt. General recommendation
 is to run this artifact on only a handful of machines in a typical domain,
 then deduplicate output.
@@ -32,9 +29,6 @@ description: |
 
    The Sharphound collection is in json format and upload to the server for
    additional processing.
-
-   RemovePayload - Due to potential malicious use of this tool I have also
-   included an option to remove payload after execution.
 
    NOTE: Do not run this artifact as an unrestricted hunt. General recommendation
    is to run this artifact on only a handful of machines in a typical domain,
@@ -56,11 +50,6 @@ tools:
 
 type: CLIENT
 
-parameters:
-  - name: RemovePayload
-    description: Select to remove payload after execution.
-    type: bool
-
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
@@ -73,23 +62,12 @@ sources:
       LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SharpHound")
 
-
       -- build tempfolder for output
       LET tempfolder &lt;= tempdir()
-
 
       -- execute payload
       LET deploy = SELECT * FROM execve(argv=[payload.OSPath[0],'--outputdirectory',
                 tempfolder,'--nozip','--outputprefix',hostname.Fqdn[0] ])
-
-
-      -- remove payload if selected
-      LET remove &lt;= SELECT * FROM if(condition=RemovePayload,
-                then={
-                    SELECT * FROM execve(argv=['powershell','Remove-Item',
-                                            payload.OSPath[0],'-Force' ])
-                })
-
 
       -- output rows
       SELECT * FROM if(condition= deploy.ReturnCode[0]= 0,

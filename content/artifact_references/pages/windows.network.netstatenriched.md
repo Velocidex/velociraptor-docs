@@ -10,11 +10,11 @@ enables verbose search options.
 Examples include: Process name and path, authenticode information or
 network connection details.
 
-WARNING:  
-KillProcess - attempts to use Taskill to kill the processes returned.  
-DumpProcess - dumps the process as a sparse file for post processing.  
+WARNING:
+KillProcess - attempts to use Taskill to kill the processes returned.
+DumpProcess - dumps the process as a sparse file for post processing.
 
-Please only use these switches after scoping as there are no guardrails on 
+Please only use these switches after scoping as there are no guardrails on
 shooting yourself in the foot.
 
 
@@ -27,17 +27,17 @@ description: |
 
   Examples include: Process name and path, authenticode information or
   network connection details.
-  
-  WARNING:  
-  KillProcess - attempts to use Taskill to kill the processes returned.  
-  DumpProcess - dumps the process as a sparse file for post processing.  
-  
-  Please only use these switches after scoping as there are no guardrails on 
+
+  WARNING:
+  KillProcess - attempts to use Taskill to kill the processes returned.
+  DumpProcess - dumps the process as a sparse file for post processing.
+
+  Please only use these switches after scoping as there are no guardrails on
   shooting yourself in the foot.
 
 required_permissions:
   - EXECVE
-  
+
 precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
@@ -101,7 +101,7 @@ parameters:
 
   - name: ProcessNameRegex
     description: "regex search over source process name"
-    default: ^malware\.exe$
+    default: ^(malware\.exe|.*)$
     type: regex
   - name: ProcessPathRegex
     description: "regex search over source process path"
@@ -150,7 +150,7 @@ parameters:
   - name: KillProcess
     description: "WARNING: If selected will attempt to kill process from all results."
     type: bool
-    
+
 sources:
   - name: Netstat
     query: |
@@ -191,13 +191,13 @@ sources:
                 FamilyString as Family,
                 TypeString as Type,
                 Status,
-                Laddr.IP as SrcIP, 
+                Laddr.IP as SrcIP,
                 Laddr.Port as SrcPort,
-                Raddr.IP as DestIP, 
+                Raddr.IP as DestIP,
                 Raddr.Port as DestPort,
                 Timestamp
             FROM netstat()
-            WHERE 
+            WHERE
                 Name =~ ProcessNameRegex
                 AND Path =~ ProcessPathRegex
                 and CommandLine =~ CommandLineRegex
@@ -216,7 +216,7 @@ sources:
                     or format(format="%v", args=DestIP) =~ IPRegex )
                 and ( format(format="%v", args=SrcPort) =~ PortRegex
                     or format(format="%v", args=DestPort) =~ PortRegex )
-    
+
       LET Regions(Pid) = SELECT dict(Offset=Address, Length=Size) AS Sparse
         FROM vad(pid=Pid)
         WHERE Protection =~ "r"
@@ -228,19 +228,19 @@ sources:
                     DelegatePath=format(format="/%d", args=Pid)),
                      name=pathspec(Path=format(format="%d.dd", args=Pid))) AS ProcessMemory
         FROM results
-      LET kill = SELECT *, pskill(pid=Pid) AS KillProcess    
+      LET kill = SELECT *, pskill(pid=Pid) AS KillProcess
         FROM results
-      LET dumpandkill = SELECT *, pskill(pid=Pid) AS KillProcess 
+      LET dumpandkill = SELECT *, pskill(pid=Pid) AS KillProcess
         FROM dump
-      
+
       SELECT * FROM switch(
-            a = { 
+            a = {
                 SELECT *, if(condition= KillProcess=Null,then='Success',else=KillProcess) AS KillProcess
                 FROM if(condition= DumpProcess AND KillProcess, then= dumpandkill )},
             b = { SELECT * FROM if(condition= DumpProcess, then= dump )},
-            c = { 
+            c = {
                 SELECT *, if(condition= KillProcess=Null,then='Success',else=KillProcess) AS KillProcess
-                FROM if(condition= KillProcess, then= kill) 
+                FROM if(condition= KillProcess, then= kill)
             },
             catch = results
         )

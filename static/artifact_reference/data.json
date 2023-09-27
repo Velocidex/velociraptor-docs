@@ -279,6 +279,15 @@
         ]
     },
     {
+        "title": "Generic.System.HostsFile",
+        "description": "The system hosts file maps hostnames to IP addresses. In some cases,\nentries in this file take precedence and overrides the results from\nthe system DNS service.",
+        "link": "/artifact_references/pages/generic.system.hostsfile",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Generic.System.ProcessSiblings",
         "description": "This artifact queries the process tracker to display all known\nsibling processes of the target process (i.e. all other processes\nfrom the same parent).",
         "link": "/artifact_references/pages/generic.system.processsiblings",
@@ -2514,6 +2523,15 @@
         "title": "Windows.Forensics.Timeline",
         "description": "Win10 records recently used applications and files in a \u201ctimeline\u201d\naccessible via the \u201cWIN+TAB\u201d key. The data is recorded in a SQLite\ndatabase.",
         "link": "/artifact_references/pages/windows.forensics.timeline",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.UEFI",
+        "description": "Searches for an EFI partition in the current partition table and\nenumerates all files in it.\n",
+        "link": "/artifact_references/pages/windows.forensics.uefi",
         "type": "client",
         "tags": [
             "Client Artifact"
