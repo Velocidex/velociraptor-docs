@@ -23,5 +23,11 @@ string|Data to apply Gunzip|string (required)
 
 ### Description
 
-Apply Gunzip to the data.
+Uncompress a gzip-compressed block of data.
+
+### Example
+```vql
+gunzip(string=base64decode(string="H4sIAAAAAAACA3N0pC4AAKAb0QxQAAAA")) -> "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+```
+
 

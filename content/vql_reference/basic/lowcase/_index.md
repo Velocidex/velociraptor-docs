@@ -19,5 +19,9 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-string|A string to lower|string (required)
+string|The string to process|string (required)
+
+### Description
+
+Returns the lowercase version of a string.
 

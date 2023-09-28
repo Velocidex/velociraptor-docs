@@ -21,11 +21,11 @@ LET interrogations = SELECT *
 FROM watch_monitoring(artifact="System.Flow.Completion")
 WHERE Flow.artifacts_with_results =~ "Generic.Client.Info/BasicInformation"
 
-LET results = SELECT *
+LET results = SELECT *, ClientId
 FROM source(
    artifact="Generic.Client.Info/BasicInformation" ,
    client_id=ClientId, flow_id=FlowId)
-WHERE Release =~ "Server"
+WHERE Platform =~ "Server"
 
 SELECT *,
 label(client_id=ClientId, labels="Server", op="set")
@@ -55,13 +55,13 @@ sources:
     FROM watch_monitoring(artifact="System.Flow.Completion")
     WHERE Flow.artifacts_with_results =~ "Generic.Client.Info/BasicInformation"
 
-    LET results = SELECT *
+    LET results = SELECT *, ClientId
     FROM source(
        artifact="Generic.Client.Info/BasicInformation" ,
        client_id=ClientId, flow_id=FlowId)
-    WHERE Release =~ "Server"
+    WHERE Platform =~ "Server"
 
-    SELECT *,
+    SELECT *
     label(client_id=ClientId, labels="Server", op="set")
     FROM foreach(row=interrogations, query=results)
 ```

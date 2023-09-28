@@ -1,27 +1,9 @@
----
-title: Windows.Timeline.Prefetch
-hidden: true
-tags: [Client Artifact]
----
-
-Windows keeps a cache of prefetch files. When an executable is run,
-the system records properties about the executable to make it faster
-to run next time. By parsing this information we are able to
-determine when binaries are run in the past. On Windows10 we can see
-the last 8 execution times and creation time (9 potential executions).
-
-This artifact is a timelined output version of the standard Prefetch
-artifact. There are several parameter's availible.
-  - dateAfter enables search for prefetch evidence after this date.
-  - dateBefore enables search for prefetch evidence before this date.
-  - binaryRegex enables to filter on binary name, e.g evil.exe.
-  - hashRegex enables to filter on prefetch hash.
-
-
-<pre><code class="language-yaml">
-name: Windows.Timeline.Prefetch
+name: Windows.Timeline.Prefetch.Improved
 author: Matt Green - @mgreen27
 description: |
+  NOTE: This is a fixed version of Windows.Timeline.Prefetch which is
+  available in the release binary after 0.7.0-3.
+
   Windows keeps a cache of prefetch files. When an executable is run,
   the system records properties about the executable to make it faster
   to run next time. By parsing this information we are able to
@@ -58,7 +40,8 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
-      LET hostname &lt;= SELECT Fqdn FROM info()
+
+      LET hostname <= SELECT Fqdn FROM info()
 
       SELECT  LastRunTimes as event_time,
               hostname.Fqdn[0] as hostname,
@@ -125,6 +108,3 @@ sources:
         GROUP BY LastRunTimes
       })
       ORDER BY event_time
-
-</code></pre>
-

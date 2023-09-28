@@ -2070,6 +2070,15 @@
         ]
     },
     {
+        "title": "Windows.Detection.Yara.Device",
+        "description": "This artifact enables running Yara over a Physical device and offset\nspecific targeting.",
+        "link": "/artifact_references/pages/windows.detection.yara.device",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Detection.Yara.NTFS",
         "description": "This artifact searches the MFT, returns a list of target files then runs Yara\nover the target list.",
         "link": "/artifact_references/pages/windows.detection.yara.ntfs",

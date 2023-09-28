@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-notebook_id|Client ID to export.|string (required)
+notebook_id|Notebook ID to export.|string (required)
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
