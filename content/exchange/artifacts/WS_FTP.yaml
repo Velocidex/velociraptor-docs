@@ -20,11 +20,13 @@ description: |
    - Yara: IIS logs
    - Evtx: Application Event Logs IIS exception   
    
-   Both methods target observed IPs and the string /AHT/ which is part of the 
-   vulnerable module.  
+   Both methods target observed IPs and the string /AHT/AhtApiService.asmx which 
+   is part of the vulnerable module.
+   Note: no direct evidence of exploitation observed in application logs, only 
+   exceptions that otherwise seem rare around the time of exploitation.
    
    
-   Last updated: 2023-10-01T06:15Z
+   Last updated: 2023-10-01T13:15Z
    
 reference:
   - https://www.rapid7.com/blog/post/2023/09/29/etr-critical-vulnerabilities-in-ws_ftp-server/
@@ -39,7 +41,7 @@ parameters:
   - name: IocRegex
     type: regex
     description: "IOC Regex in evtxHunt"
-    default: '/AHT/|86\.48\.3\.172'
+    default: '/AHT/AhtApiService\.asmx|86\.48\.3\.172'
   - name: DateAfter
     type: timestamp
     default: 1685232000
@@ -65,8 +67,7 @@ parameters:
             score = 80
       
          strings:
-           $post = /\n.{1,50} POST \/AHT\/.{1,250}\n/
-      
+           $post = /\n.{1,50} \/AHT\/AhtApiService.asmx\/AuthUser.{1,250}\n/
            $ip = " 86.48.3.172 " ascii
       
           condition:
