@@ -18,8 +18,13 @@ description: |
    The artifact enables detection via:
    
    - Yara: IIS logs
+   - Evtx: Application Event Logs IIS exception   
    
-   Last updated: 2023-10-01T04:44Z
+   Both methods target observed IPs and the string /AHT/ which is part of the 
+   vulnerable module.  
+   
+   
+   Last updated: 2023-10-01T06:15Z
    
 reference:
   - https://www.rapid7.com/blog/post/2023/09/29/etr-critical-vulnerabilities-in-ws_ftp-server/
@@ -29,6 +34,12 @@ resources:
   timeout: 1800
 
 parameters:
+  - name: EvtxGlob
+    default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
+  - name: IocRegex
+    type: regex
+    description: "IOC Regex in evtxHunt"
+    default: '/AHT/|86\.48\.3\.172'
   - name: DateAfter
     type: timestamp
     default: 1685232000
@@ -131,7 +142,20 @@ sources:
       SELECT * FROM if(condition=UploadYaraHits,
         then={ SELECT * FROM upload_hits},
         else={ SELECT * FROM hits})
-        
+
+
+  - name: Evtx
+    query: |
+      SELECT EventTime,Computer,Channel,Provider,EventID,EventRecordID,
+        EventData,
+        OSPath
+      FROM Artifact.Windows.EventLogs.EvtxHunter(
+                        EvtxGlob=EvtxGlob,
+                        IocRegex=IocRegex,
+                        IdRegex='^1309$',
+                        DateAfter=DateAfter,
+                        DateBefore=DateBefore )
+      
 column_types:
   - name: HitContext
     type: preview_upload
