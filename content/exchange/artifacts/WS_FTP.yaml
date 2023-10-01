@@ -18,8 +18,13 @@ description: |
    The artifact enables detection via:
    
    - Yara: IIS logs
+   - Evtx: Application Event Logs IIS exception   
    
-   Last updated: 2023-10-01T04:44Z
+   Both methods target observed IPs and the string /AHT/ which is part of the 
+   vulnerable module.  
+   
+   
+   Last updated: 2023-10-01T06:15Z
    
 reference:
   - https://www.rapid7.com/blog/post/2023/09/29/etr-critical-vulnerabilities-in-ws_ftp-server/
@@ -29,6 +34,12 @@ resources:
   timeout: 1800
 
 parameters:
+  - name: EvtxGlob
+    default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
+  - name: IocRegex
+    type: regex
+    description: "IOC Regex in evtxHunt"
+    default: '/AHT/|86\.48\.3\.172'
   - name: DateAfter
     type: timestamp
     default: 1685232000
@@ -46,16 +57,20 @@ parameters:
   - name: LogYara
     default: |
         rule LOG_ws_ftp_exploit {
-            meta:
-              description = "Detects potential exploitation of Progress Software WS_FTP Server in IIS logs"
-              author = "Matt Green - @mgreen27"
-              reference = "https://www.rapid7.com/blog/post/2023/09/29/etr-critical-vulnerabilities-in-ws_ftp-server/"
-              date = "2023-10-01"
-              score = 80
-            strings:
-             $post = /\n.{1,50} POST \/AHT\/.{1,250}\n/ 
-            condition:
-              any of them
+          meta:
+            description = "Detects potential exploitation of Progress Software WS_FTP Server in IIS logs"
+            author = "Matt Green - @mgreen27"
+            reference = "<insert rapid7 blog here>"
+            date = "2023-10-01"
+            score = 80
+      
+         strings:
+           $post = /\n.{1,50} POST \/AHT\/.{1,250}\n/
+      
+           $ip = " 86.48.3.172 " ascii
+      
+          condition:
+            any of them
         }
   - name: NumberOfHits
     description: This artifact will stop by default at one hit. This setting allows additional hits
@@ -127,7 +142,20 @@ sources:
       SELECT * FROM if(condition=UploadYaraHits,
         then={ SELECT * FROM upload_hits},
         else={ SELECT * FROM hits})
-        
+
+
+  - name: Evtx
+    query: |
+      SELECT EventTime,Computer,Channel,Provider,EventID,EventRecordID,
+        EventData,
+        OSPath
+      FROM Artifact.Windows.EventLogs.EvtxHunter(
+                        EvtxGlob=EvtxGlob,
+                        IocRegex=IocRegex,
+                        IdRegex='^1309$',
+                        DateAfter=DateAfter,
+                        DateBefore=DateBefore )
+      
 column_types:
   - name: HitContext
     type: preview_upload
