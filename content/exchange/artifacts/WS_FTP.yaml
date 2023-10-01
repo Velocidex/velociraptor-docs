@@ -1,8 +1,8 @@
 name: Windows.Detection.WS_FTP
 author: Matt Green - @mgreen27
 description: | 
-   This is an artifact to detect exploitation of a MoveIt WS_FTP critical 
-   vulnerability observed in the wild.
+   This is an artifact to detect exploitation of a Progress Software's WS_FTP 
+   critical vulnerability observed in the wild.
    
    CVE-2023–40044 is a severe .NET deserialization vulnerability in WS_FTP 
    Server’s Ad Hoc Transfer module, allowing a pre-authenticated attacker to 
