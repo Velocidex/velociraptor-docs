@@ -60,7 +60,7 @@ parameters:
           meta:
             description = "Detects potential exploitation of Progress Software WS_FTP Server in IIS logs"
             author = "Matt Green - @mgreen27"
-            reference = "<insert rapid7 blog here>"
+            reference = "https://www.rapid7.com/blog/post/2023/09/29/etr-critical-vulnerabilities-in-ws_ftp-server/"
             date = "2023-10-01"
             score = 80
       
