@@ -1,9 +1,8 @@
 name: Generic.Collection.UAC
 author: Thiago Canozzo Lahr - @tclahr
 description: |
-    This artifact leverages UAC (Unix-like Artifacts Collector)
-    to collect artifacts from Unix-like systems, then uploads the
-    output to the Velociraptor server.
+    This artifact leverages UAC (Unix-like Artifacts Collector) to collect artifacts
+    from Unix-like systems, and then upload the output to the Velociraptor server.
 
 reference:
     - https://github.com/tclahr/uac
@@ -26,7 +25,7 @@ parameters:
 sources:
     - query: |
         // fetch uac .tar.gz package
-        LET uac_package <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(ToolName="uac", IsExecutable=FALSE)
+        LET uac_package <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(ToolName="uac", IsExecutable=FALSE, TemporaryOnly=TRUE)
         // create temp dir
         LET temp_dir <= tempdir(remove_last=true)
         // uncompress the .tar.gz container
@@ -43,8 +42,6 @@ sources:
                                             sep="\n",
                                             length=2048
                                         )
-        // remove uac package from client
-        LET remove_uac_package <= SELECT rm(filename=uac_package.OSPath[0]) FROM scope()
         // upload output and log file
         LET upload_output_files <= SELECT OSPath, upload(accessor="file", file=OSPath, name=OSPath.Basename) AS Upload FROM glob(globs=["uac-*.log", "uac-*.tar.gz"], root=uac_source_directory.OSPath[0])
         SELECT * FROM chain(
@@ -53,8 +50,8 @@ sources:
         )
 
 # CHANGELOG:
-# 2023-09-25: v3.0 released
-#   - Fetched UAC package will now be removed from client after execution.
+# 2023-10-01: v3.0 released
+#   - FetchBinary now uses TemporaryOnly=TRUE to use a temporary directory to hold the binary and remove it afterward.
 #   - The FullPath column of the Glob plugin is deprecated so it was replaced by OSPath.
 # 2023-03-01: v2.0 released
 #   - UAC tool needs to be either fetched via upstream URL or manually provided as a .tar.gz package.
