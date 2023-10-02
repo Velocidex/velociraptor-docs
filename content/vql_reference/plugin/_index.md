@@ -67,7 +67,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[scope](scope)|<span class='vql_type'>Plugin</span>|The scope plugin returns the current scope as a single row|
 |[sql](sql)|<span class='vql_type'>Plugin</span>|Run queries against sqlite, mysql, and postgres databases|
 |[stat](stat)|<span class='vql_type'>Plugin</span>|Get file information|
-|[switch](switch)|<span class='vql_type'>Plugin</span>|Executes each query|
+|[switch](switch)|<span class='vql_type'>Plugin</span>|Conditional execution of multiple queries in order|
 |[tempfile](tempfile)|<span class='vql_type'>Function</span>|Create a temporary file and write some data into it|
 |[upload](upload)|<span class='vql_type'>Function</span>|Upload a file to the upload service|
 |[upload](upload)|<span class='vql_type'>Plugin</span>|Upload files to the server|

@@ -64,39 +64,18 @@ MSI does not include a valid configuration file.  You will need to
 modify the MSI to pack your configuration file (that was generated
 earlier) into it.
 
+The easiest way to configure the MSI package is via the
+`Server.Utils.CreateMSI` server artifact. After gaining access to the
+Velociraptor web GUI, simply switch the relevant Organization, then
+select `Server Artifacts` from the sidebar. Then add a new collection,
+search for `Server.Utils.CreateMSI` and click launch. The produced MSI
+will be available in the `Uploaded Files` tab.
+
 The official release installs the Velociraptor executable into
 `C:\Program Files\Velociraptor\` then creates a new Windows service
 that points to this executable and starts automatically at boot
 time. If an existing Velociraptor service is already installed, it
 will be overwritten.
-
-When the service starts, it attempts to load the configuration file
-from `C:\Program Files\Velociraptor\client.config.yaml`.
-
-By default, the official MSI comes bundled with an invalid
-configuration file which is placed at the above location. This means
-that just installing the official MSI will create a service which is
-unable to fully start. It is possible to overwrite the
-`client.config.yaml` file at any time to have the service start
-fully. You can arrange for the file to be written using SCCM scheduled
-tasks or other administrative methods.
-
-### Repacking client configuration into the Windows MSI
-
-By far the easiest method is to update the MSI with the customized
-`client.config.yaml`. We call this process `repacking` the MSI because
-we do not need to build a new MSI from scratch we only replace the
-config file in the official MSI.
-
-You can repack the MSI like this (Even from linux):
-```
-velociraptor-v0.6.7-4-linux-amd64 config repack --msi velociraptor-v0.6.7-4-windows-amd64.msi client.config.yaml output.msi
-```
-
-The above command will repack the provided client.config.yaml into the
-official MSI and write out a new MSI file.
-
-![Building custom MSI](repacking.png)
 
 {{% notice note "Resigning the repacked MSI" %}}
 
@@ -118,7 +97,7 @@ create a proper custom MSI with embedded configuration. You can also
 customize this Wix file to specify a different service name,
 destination location etc.
 
-To do so, follow follow the instructions
+To do so, follow the instructions
 [here](https://github.com/Velocidex/velociraptor/tree/master/docs/wix)
 
 To summarize the process, you will need to:
@@ -181,9 +160,9 @@ Although Velociraptor supports installing the service directly as
 described above, this is not actually the recommended method. We
 recommend using the MSI as described above instead.
 
-One common problem with installing the service is the difficulty in
-uninstalling without the MSI infrastructure being able to clean up old
-files.
+One common problem with installing the service in this way, is the
+difficulty in uninstalling without the MSI infrastructure being able
+to clean up old files.
 
 {{% /notice %}}
 

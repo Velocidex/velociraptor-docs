@@ -21,7 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 path|Extract directory name of path|Any (required)
 sep|Separator to use (default /)|string
-path_type|Type of path (e.g. 'windows,linux)|string
+path_type|Type of path (e.g. windows, linux)|string
 
 ### Description
 
