@@ -68,7 +68,7 @@ parameters:
             score = 80
       
          strings:
-           $post = /\n.{1,50} POST \/AHT\/{1,250}\n/
+           $post = /\n.{1,50} POST \/AHT\/.{1,250}\n/
            $ip = " 86.48.3.172 " ascii
       
           condition:
