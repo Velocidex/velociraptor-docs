@@ -315,6 +315,7 @@
     },
     {
         "name": "base85decode",
+        "description": "Decode a base85 encoded string.",
         "type": "Function",
         "args": [
             {
@@ -344,7 +345,7 @@
             {
                 "name": "path_type",
                 "type": "string",
-                "description": "Type of path (e.g. 'windows,linux)"
+                "description": "Type of path (e.g. windows, linux)"
             }
         ],
         "category": "basic"
@@ -1045,7 +1046,7 @@
             {
                 "name": "notebook_id",
                 "type": "string",
-                "description": "Client ID to export.",
+                "description": "Notebook ID to export.",
                 "required": true
             }
         ],
@@ -1208,7 +1209,7 @@
             {
                 "name": "path_type",
                 "type": "string",
-                "description": "Type of path (e.g. 'windows,linux)"
+                "description": "Type of path (e.g. windows, linux)"
             }
         ],
         "category": "basic"
@@ -2078,7 +2079,7 @@
     },
     {
         "name": "gunzip",
-        "description": "Apply Gunzip to the data.",
+        "description": "Uncompress a gzip-compressed block of data.",
         "type": "Function",
         "args": [
             {
@@ -2890,6 +2891,14 @@
         }
     },
     {
+        "name": "sysinfo",
+        "description": "Collect system information on Linux clients",
+        "type": "Function",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
         "name": "log",
         "description": "Log the message and return TRUE.",
         "type": "Function",
@@ -3003,12 +3012,13 @@
     },
     {
         "name": "lowcase",
+        "description": "Returns the lowercase version of a string.",
         "type": "Function",
         "args": [
             {
                 "name": "string",
                 "type": "string",
-                "description": "A string to lower",
+                "description": "The string to process",
                 "required": true
             }
         ],
@@ -6069,7 +6079,7 @@
     },
     {
         "name": "str",
-        "description": "Normalize a String.",
+        "description": "Returns the string representation of provided data",
         "type": "Function",
         "args": [
             {
@@ -6083,7 +6093,7 @@
     },
     {
         "name": "strip",
-        "description": "Strip a prefix from a string.",
+        "description": "Strip prefix and/or suffix from a string",
         "type": "Function",
         "args": [
             {
@@ -6144,7 +6154,7 @@
     },
     {
         "name": "switch",
-        "description": "Executes each query. The first query to return any rows will be emitted.",
+        "description": "Conditional execution of multiple queries in order",
         "type": "Plugin",
         "category": "plugin"
     },
@@ -6415,12 +6425,13 @@
     },
     {
         "name": "upcase",
+        "description": "Returns an uppercase version of the string.",
         "type": "Function",
         "args": [
             {
                 "name": "string",
                 "type": "string",
-                "description": "A string to lower",
+                "description": "The string to process",
                 "required": true
             }
         ],

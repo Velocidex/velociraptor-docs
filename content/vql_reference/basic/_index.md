@@ -51,7 +51,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[killkillkill](killkillkill)|<span class='vql_type'>Function</span>|Kills the client and forces a restart - this is very aggressive!|
 |[len](len)|<span class='vql_type'>Function</span>|Returns the length of an object|
 |[log](log)|<span class='vql_type'>Function</span>|Log the message and return TRUE|
-|[lowcase](lowcase)|<span class='vql_type'>Function</span>||
+|[lowcase](lowcase)|<span class='vql_type'>Function</span>|Returns the lowercase version of a string|
 |[max](max)|<span class='vql_type'>Function</span>|Finds the largest item in the aggregate|
 |[memoize](memoize)|<span class='vql_type'>Function</span>|Memoize a query into memory|
 |[min](min)|<span class='vql_type'>Function</span>|Finds the smallest item in the aggregate|
@@ -70,8 +70,8 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[sleep](sleep)|<span class='vql_type'>Function</span>|Sleep for the specified number of seconds|
 |[slice](slice)|<span class='vql_type'>Function</span>|Slice an array|
 |[split](split)|<span class='vql_type'>Function</span>|Splits a string into an array based on a regexp separator|
-|[str](str)|<span class='vql_type'>Function</span>|Normalize a String|
-|[strip](strip)|<span class='vql_type'>Function</span>|Strip a prefix from a string|
+|[str](str)|<span class='vql_type'>Function</span>|Returns the string representation of provided data|
+|[strip](strip)|<span class='vql_type'>Function</span>|Strip prefix and/or suffix from a string|
 |[substr](substr)|<span class='vql_type'>Function</span>|Create a substring from a string|
 |[sum](sum)|<span class='vql_type'>Function</span>|Sums the items|
 |[tempdir](tempdir)|<span class='vql_type'>Function</span>|Create a temporary directory|
@@ -79,7 +79,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[to_dict](to_dict)|<span class='vql_type'>Function</span>|Construct a dict from a query|
 |[unhex](unhex)|<span class='vql_type'>Function</span>|Apply hex decoding to the string|
 |[unzip](unzip)|<span class='vql_type'>Plugin</span>|Unzips a file into a directory|
-|[upcase](upcase)|<span class='vql_type'>Function</span>||
+|[upcase](upcase)|<span class='vql_type'>Function</span>|Returns an uppercase version of the string|
 |[upload_sftp](upload_sftp)|<span class='vql_type'>Function</span>|Upload files to SFTP|
 |[upload_webdav](upload_webdav)|<span class='vql_type'>Function</span>|Upload files to a WebDAV server|
 |[url](url)|<span class='vql_type'>Function</span>|Construct a URL or parse one|

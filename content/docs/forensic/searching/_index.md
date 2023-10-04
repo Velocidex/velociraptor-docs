@@ -146,7 +146,7 @@ This is a common use of combining a `glob()` plugin with an
 `upload()` function:
 
 ```sql
-SELECT upload(path=FullPath) AS Upload
+SELECT upload(file=FullPath) AS Upload
 FROM glob(globs='''C:\Users\*\Downloads\*''')
 WHERE NOT IsDir
 ```

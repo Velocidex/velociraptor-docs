@@ -13,7 +13,7 @@ Miscellaneous plugins not yet categorized.
 |[alert](alert)|<span class='vql_type'>Function</span>|Generate an alert message|
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
-|[base85decode](base85decode)|<span class='vql_type'>Function</span>||
+|[base85decode](base85decode)|<span class='vql_type'>Function</span>|Decode a base85 encoded string|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
@@ -23,7 +23,7 @@ Miscellaneous plugins not yet categorized.
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[flow_logs](flow_logs)|<span class='vql_type'>Plugin</span>|Retrieve the query logs of a flow|
 |[get_flow](get_flow)|<span class='vql_type'>Function</span>|Gets flow details|
-|[gunzip](gunzip)|<span class='vql_type'>Function</span>|Apply Gunzip to the data|
+|[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
@@ -58,6 +58,7 @@ Miscellaneous plugins not yet categorized.
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
 |[repack](repack)|<span class='vql_type'>Function</span>|Repack and upload a repacked binary or MSI to the server|
 |[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
+|[sysinfo](sysinfo)|<span class='vql_type'>Function</span>|Collect system information on Linux clients|
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[trace](trace)|<span class='vql_type'>Function</span>|Upload a trace file|
 |[upload_azure](upload_azure)|<span class='vql_type'>Function</span>|Upload files to Azure Blob Storage Service|
