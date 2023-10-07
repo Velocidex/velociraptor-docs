@@ -357,13 +357,14 @@ parameters:
        LET get_ext(filename) = parse_string_with_regex(
              regex="(\\.[a-z0-9]+)$", string=filename).g1
 
-       LET temp_binary &lt;= if(condition=matching_tools,
-       then=tempfile(
-                extension=get_ext(filename=matching_tools[0].Filename),
-                remove_last=TRUE,
-                permissions=if(condition=IsExecutable, then="x")))
+        LET FullPath &lt;= if(condition=matching_tools,
+        then=copy(filename=matching_tools[0].Filename,
+             accessor="me", dest=tempfile(
+                 extension=get_ext(filename=matching_tools[0].Filename),
+                 remove_last=TRUE,
+                 permissions=if(condition=IsExecutable, then="x"))))
 
-       SELECT copy(filename=Filename, accessor="me", dest=temp_binary) AS OSPath,
+       SELECT FullPath, FullPath AS OSPath,
               Filename AS Name
        FROM matching_tools
 

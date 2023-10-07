@@ -21,12 +21,12 @@ parameters:
    - name: File
 sources:
    - query: |
-        LET Capa <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(
+        LET Capa <= SELECT OSPath FROM Artifact.Generic.Utils.FetchBinary(
               ToolName="CapaWindows")
         LET CapaPath <= tempfile(extension=".exe")
         LET UnzipIt <= SELECT
-            copy(filename=url(path=Capa[0].FullPath,
-                fragment="capa.exe").String,
+            copy(filename=pathspec(DelegateAccessor='file',
+                DelegatePath=Capa[0].OSPath, Path='capa.exe'),
                 dest=CapaPath,
                 accessor='zip')
         FROM scope()
