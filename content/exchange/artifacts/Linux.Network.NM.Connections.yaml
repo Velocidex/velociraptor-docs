@@ -48,8 +48,8 @@ parameters:
         Replace Wi-FI PSKs (wifi-security/psk) with "<REDACTED>".
 
 export: |
-    /* Parse an INI config file and return Key and Value. The section name
-       is inserted in front of Key, separated by '/'. */
+    /* Parse an INI config file and return Section (the part enclosed in '[]' on
+       lines of their own), Key and Value. */
     LET parse_ini(filename) = SELECT * FROM foreach(row={
         SELECT * FROM parse_records_with_regex(file=filename,
             regex='''(?m)\[\s*(?P<Section>[^\]]+)\s*\](?P<Contents>[^\[]*)''')
@@ -60,6 +60,8 @@ export: |
                     regex='^[\s\n]*(?P<Key>[^=]+)=(?P<Value>.*)')
         })
 
+    /* Parse an INI config file and return a single column, Contents, with
+       the contents. Section names are prepended to keys, separated by '/'. */
     LET parse_ini_as_dict(filename) = SELECT to_dict(item={
             SELECT lowcase(string=Section + '/' + Key) AS _key, Value AS _value
             FROM parse_ini(filename=filename)
