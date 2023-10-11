@@ -121,7 +121,7 @@ sources:
     description: |
         Return a handful of useful properties from ConnectionConfigs in a
         more readable table with individual column names: Name, UUID, Type,
-        IfName and LastActivated. LastActivated are fetched from another
+        Device and LastActivated. LastActivated are fetched from another
         state file and combined with the results from ConnectionConfigs.
     query: |
         LET Timestamps = SELECT UUID, if(condition=parse_float(string=Timestamp),
@@ -129,14 +129,14 @@ sources:
             FROM parse_records_with_regex(file='/var/lib/NetworkManager/timestamps',
                 regex='''(?P<UUID>[-A-Fa-f0-9]+)+=(?P<Timestamp>\S+)''')
 
-        LET Connections <= SELECT Name, _UUID AS UUID, Type, IfName, LastActivated
+        LET Connections <= SELECT Name, _UUID AS UUID, Type, Device, LastActivated
             FROM foreach(row={
                 SELECT * FROM ConfiguredConnections
                 }, query={
                     SELECT Contents.`connection/id` AS Name,
                         Contents.`connection/uuid` AS _UUID,
                         Contents.`connection/type` AS Type,
-                        Contents.`connection/interface-name` AS IfName,
+                        Contents.`connection/interface-name` AS Device,
                         Timestamp AS LastActivated
                     FROM Timestamps
                     WHERE _UUID=UUID
@@ -250,7 +250,7 @@ sources:
                 }) AS Contents FROM scope() WHERE _value
             })
 
-        SELECT DEVICE AS IfName, SSID, BSSID, MODE AS Mode, CHAN AS Chan,
+        SELECT DEVICE AS Device, SSID, BSSID, MODE AS Mode, CHAN AS Chan,
             FREQ AS Freq, RATE AS Rate, SIGNAL AS Signal, SECURITY AS Security,
             ACTIVE='yes' AS Active, `WPA-FLAGS` AS WPAFlags, `RSN-FLAGS` AS RSNFlags,
             `IN-USE`='*' AS InUse
@@ -269,6 +269,6 @@ sources:
                 regex='''(?P<UUID>[-A-Fa-f0-9]+)+=(?P<BSSIDs>\S+)''')
 
         SELECT * FROM foreach(row=SeenBSSIDs, query={
-            SELECT Name, UUID, IfName, BSSIDs FROM Connections
+            SELECT Name, UUID, Device, BSSIDs FROM Connections
             WHERE _UUID=UUID
         })
