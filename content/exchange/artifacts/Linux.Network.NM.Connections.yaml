@@ -16,7 +16,7 @@ description: |
 
   Whether the connections are currently active is not stored in file
   and must be queried using using nmcli or through dbus. If the parameter
-  RunNmcli is true (default false), nmcli will be run as an external
+  RunNmcli is true (which is the default), nmcli will be run as an external
   program to retrieve this information.
 
   Information such as IP addresses, routes, DNS servers, available Wi-Fi
@@ -35,7 +35,7 @@ type: CLIENT
 
 parameters:
   - name: RunNmcli
-    default: false
+    default: true
     type: bool
     description: |
         Run "nmcli" to query additional information, like active connections,
