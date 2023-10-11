@@ -14,15 +14,14 @@ description: |
   is the default). Note that by default, NetworkManager doesn't managed
   connections defined in /etc/network/interfaces.
 
-  Information such as IP addresses, routes and other interface settings
-  and statistics are not retrieved. This information may be retrieved
-  from Generic.Network.InterfaceAddresses or interfaces(), but note that
-  not all connections in NetworkManager have interfaces specified.
-
   Whether the connections are currently active is not stored in file
   and must be queried using using nmcli or through dbus. If the parameter
   QueryActive is true (default false), nmcli will be run as an external
   program to retrieve this information.
+
+  Information such as IP addresses, routes, DNS servers and other settings
+  can also be collected from all managed interfaces using nmcli. Set
+  QueryDevices to true to collect this.
 
   This artifact also exports two functions, parse_ini(filename) and
   parse_ini_as_dict(filename), which may be useful to parse INI files
@@ -41,6 +40,12 @@ parameters:
     type: bool
     description: |
         Run "nmcli" to query which connections are active.
+  - name: QueryDevices
+    default: false
+    type: bool
+    description: |
+        Run "nmcli" to query the current device states, including
+        addresses, routes and DNS servers
   - name: RedactSecrets
     default: true
     type: bool
@@ -162,6 +167,29 @@ sources:
             })
 
         SELECT * FROM ActiveConnections
+
+  - name: DeviceStatus
+    description: |
+        Ask NetworkManager through "nmcli" about the status of all devices,
+        including IP addresses, routes and DNS settings
+    query: |
+        LET nmcli = SELECT Stdout
+            FROM execve(argv=['nmcli', '-t', 'device', 'show'])
+
+        LET DeviceStatus = SELECT * FROM foreach(row=split(sep='\n\n',
+            string=nmcli.Stdout), query={
+                SELECT parse_string_with_regex(string=_value,
+                    regex='''GENERAL.DEVICE:(?P<Device>.+)''').Device AS Device,
+                    to_dict(item={
+                        SELECT Key AS _key, Value AS _value
+                            FROM parse_records_with_regex(file=_value, accessor='data',
+                                regex='''^(?P<Key>[^:]+):(?P<Value>.+)''')
+                    }) AS Status
+                    FROM scope()
+            })
+
+        SELECT * FROM DeviceStatus
+            WHERE QueryDevices
 
   - name: SeenBSSIDs
     description: |
