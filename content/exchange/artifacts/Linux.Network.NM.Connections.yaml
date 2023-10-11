@@ -16,12 +16,11 @@ description: |
 
   Whether the connections are currently active is not stored in file
   and must be queried using using nmcli or through dbus. If the parameter
-  QueryActive is true (default false), nmcli will be run as an external
+  RunNmcli is true (default false), nmcli will be run as an external
   program to retrieve this information.
 
-  Information such as IP addresses, routes, DNS servers and other settings
-  can also be collected from all managed interfaces using nmcli. Set
-  QueryDevices to true to collect this.
+  Information such as IP addresses, routes, DNS servers, available Wi-Fi
+  networks and other settings will also be collected if RunNmcli is enabled.
 
   This artifact also exports two functions, parse_ini(filename) and
   parse_ini_as_dict(filename), which may be useful to parse INI files
@@ -35,17 +34,12 @@ reference:
 type: CLIENT
 
 parameters:
-  - name: QueryActive
+  - name: RunNmcli
     default: false
     type: bool
     description: |
-        Run "nmcli" to query which connections are active.
-  - name: QueryDevices
-    default: false
-    type: bool
-    description: |
-        Run "nmcli" to query the current device states, including
-        addresses, routes and DNS servers
+        Run "nmcli" to query additional information, like active connections,
+        current status, IP addresses, routes, DNS servers etc.
   - name: RedactSecrets
     default: true
     type: bool
@@ -157,7 +151,7 @@ sources:
     query: |
         LET nmcli = SELECT Stdout
             FROM execve(argv=['nmcli', '-t', '-f', 'uuid', 'connection', 'show', '--active'])
-            WHERE QueryActive
+            WHERE RunNmcli
 
         LET ActiveConnections = SELECT * FROM foreach(row={
             SELECT * FROM parse_lines(accessor='data',
@@ -170,8 +164,9 @@ sources:
 
   - name: DeviceStatus
     description: |
-        Ask NetworkManager through "nmcli" about the status of all devices,
-        including IP addresses, routes and DNS settings
+        Ask NetworkManager through "nmcli" about the status of all network
+        interfaces, managed as well unmanaged, with detailed information such
+        as IP addresses, routes, MTU and DNS settings.
     query: |
         LET nmcli = SELECT Stdout
             FROM execve(argv=['nmcli', '-t', 'device', 'show'])
@@ -183,13 +178,84 @@ sources:
                     to_dict(item={
                         SELECT Key AS _key, Value AS _value
                             FROM parse_records_with_regex(file=_value, accessor='data',
-                                regex='''^(?P<Key>[^:]+):(?P<Value>.+)''')
+                                regex='^\n?(?P<Key>[^:]+):(?P<Value>.+)')
                     }) AS Status
                     FROM scope()
             })
 
-        SELECT * FROM DeviceStatus
-            WHERE QueryDevices
+        /* We're pretty much done now, but the output could be a lot nicer to
+           work with. */
+
+        LET S = scope()
+        LET Status <= SELECT * FROM foreach(row={SELECT * FROM DeviceStatus},
+            column='Status')
+
+        LET to_array(col, dev) = filter(list=array(a={
+            SELECT * FROM column_filter(include=col, query={
+                SELECT * FROM Status WHERE `GENERAL.DEVICE` = dev
+            })}), regex='.')
+
+        LET prettify_route(col, dev) = SELECT *
+            FROM foreach(row=to_array(dev=dev, col=col), query={
+                SELECT Dest, NextHop, int(int=Metric) AS Metric FROM foreach(row={
+                    SELECT parse_string_with_regex(string=_value, regex=(
+                        '''dst\s*=\s*(?P<Dest>[^,]+)''',
+                        '''nh\s*=\s*(?P<NextHop>[^,]+)''',
+                        '''mt\s*=\s*(?P<Metric>\d+)''')) AS R
+                        FROM scope()
+                    }, column='R')
+                })
+
+        SELECT `GENERAL.DEVICE` AS Device,
+            S.`GENERAL.TYPE` AS Type,
+            S.`GENERAL.CONNECTION` AS Connection,
+            S.`GENERAL.STATE` AS State,
+            S.`GENERAL.HWADDR` AS Mac,
+            S.`GENERAL.MTU` AS MTU,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.ADDRESS') AS Addresses,
+            prettify_route(dev=`GENERAL.DEVICE`, col='IP4.ROUTE') AS Routes,
+            S.`IP4.GATEWAY` AS Gateway,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.DNS') AS DNSServers,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.DOMAIN') AS DNSDomains,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.SEARCHES') AS DNSSearches,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.ADDRESS') AS _IPv6Addresses,
+            prettify_route(dev=`GENERAL.DEVICE`, col='IP6.ROUTE') AS _IPv6Routes,
+            S.`IP6.GATEWAY` AS _IPv6Gateway,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.DNS') AS _IPv6DNSServers,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.DOMAIN') AS _IPv6DNSDomains,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.SEARCHES') AS _IPv6DNSSearches
+            FROM Status
+
+  - name: AvailableAccessPoints
+    description: |
+        Ask NetworkManager through "nmcli" about details about all available
+        Wi-Fi access points
+    query: |
+        LET nmcli = SELECT Stdout
+            FROM execve(argv=['nmcli', '-t', '-m', 'multiline', '-f',
+                'ssid,bssid,mode,chan,freq,rate,signal,security,wpa-flags,rsn-flags,device,active,in-use',
+                'device', 'wifi', 'list'])
+
+        LET AccessPoints = SELECT * FROM foreach(row=filter(list=split(sep='\x01\x02',
+                /* Separate sections of key–values by injecting a blob and then
+                   split on that string. nmcli also has a "tabular" output mode,
+                   but ":", the separator, is also part of the output and is
+                   "escaped" by "/", making the parsing difficult. */
+                string=regex_replace(source=nmcli.Stdout, re='(?m)^IN-USE:.*$',
+                    replace='$0\x01\x02')), regex='.'), query={
+
+                SELECT to_dict(item={
+                    SELECT Key AS _key, Value as _value FROM parse_records_with_regex(
+                        file=_value, accessor='data', regex='^\n?(?P<Key>[^:]+):(?P<Value>.*)')
+                }) AS Contents FROM scope() WHERE _value
+            })
+
+        SELECT DEVICE AS IfName, SSID, BSSID, MODE AS Mode, CHAN AS Chan,
+            FREQ AS Freq, RATE AS Rate, SIGNAL AS Signal, SECURITY AS Security,
+            ACTIVE='yes' AS Active, `WPA-FLAGS` AS WPAFlags, `RSN-FLAGS` AS RSNFlags,
+            `IN-USE`='*' AS InUse
+            FROM foreach(row=AccessPoints, column='Contents')
+            WHERE RunNmcli
 
   - name: SeenBSSIDs
     description: |
