@@ -8,10 +8,22 @@ parameters:
   - name: Length 
     default: 10000
     type: int
-author: Wes Lambert -- @therealwlambert/@weslambert@infosec.exchange 
+  - name: DateBefore
+    type: timestamp
+  - name: DateAfter
+    type: timestamp
+
+author: Wes Lambert -- @therealwlambert/@weslambert@infosec.exchange
 sources:
   - query:
-      LET JCtlOut = SELECT * FROM execve(length=Length, argv=['/usr/bin/journalctl', '-o', 'json'], sep="\n")
+      LET JournalFormat(ts) = format(format='%d-%02d-%02d %02d:%02d:%02d UTC',
+        args=[ts.Year, ts.Month, ts.Day, ts.Hour, ts.Minute, ts.Second])
+      LET DateAfterTime = JournalFormat(ts=if(condition=DateAfter,
+        then=DateAfter, else=timestamp(epoch='1600-01-01')))
+      LET DateBeforeTime = JournalFormat(ts=if(condition=DateBefore,
+        then=DateBefore, else=timestamp(epoch='2200-01-01')))
+      LET JCtlOut = SELECT * FROM execve(length=Length, argv=['/usr/bin/journalctl',
+        '-o', 'json', '-S', DateAfterTime, '-U', DateBeforeTime], sep="\n")
       SELECT
         timestamp(string=ParsedOutput.__REALTIME_TIMESTAMP) AS Timestamp,
         ParsedOutput._HOSTNAME AS _Hostname,
