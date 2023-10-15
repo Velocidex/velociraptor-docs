@@ -8,9 +8,9 @@ parameters:
   - name: Length 
     default: 10000
     type: int
-  - name: DateBefore
-    type: timestamp
   - name: DateAfter
+    type: timestamp
+  - name: DateBefore
     type: timestamp
 
 author: Wes Lambert -- @therealwlambert/@weslambert@infosec.exchange
