@@ -4,3 +4,6 @@
 public/
 .wordlist.dict
 .hugo_build.lock
+.idea/velociraptor-docs.iml
+.idea/modules.xml
+.idea/vcs.xml

@@ -4,7 +4,7 @@ This is the documentation site for Velociraptor - digging deeper!
 
 ## Building this site
 
-The site uses the static website generator [Hugo](https://hugo.io). 
+The site uses the static website generator [Hugo](https://gohugo.io). 
 
 To develop on the site:
 1. clone this repository by running the following git clone command
