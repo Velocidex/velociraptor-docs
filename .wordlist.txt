@@ -367,6 +367,7 @@ Infosec's
 initialised
 inode
 inodes
+InsightIDR
 Inspiron
 InstalledSize
 instantiation
