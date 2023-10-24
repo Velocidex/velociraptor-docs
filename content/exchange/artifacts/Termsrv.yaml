@@ -1,80 +1,103 @@
 name: Windows.Detection.Termsrv
 author: Matt Green - @mgreen27
 description: |
-    This artifact detects patched TerminalService dynamic link library - 
+    This artifact detects patched TerminalService / Remote Desktop (RDP) dynamic link library - 
     termsrv.dll.
     
-    Non Terminal Services Windows systems (e.g Windows 10 or 11) do not allow 
+    ATT&CK T1505.005. Non Terminal Services Windows systems (e.g Windows 10 or 11) do not allow 
     concurrent users to RDP into the machine at the same time. Typically a notice 
     is displayed to the logged-on user requesting access and notifying of the 
     impending log off. As a defence evasion technique threat actors have been 
     known to patch termsrv.dll to evade detections.
     
+    The artifact collects 3 potential detection points:
+    
+    1. In memory - targeting termsrv.dll mapped file for the patch bytes
+    2. On disk - targeting and file named termsrv.dll
+    3. Services - targeting any unutual ServiceDll path or an untrusted authenticode ServiceDll
+    
 reference:
+  - https://attack.mitre.org/techniques/T1505/005/
   - https://www.mysysadmintips.com/windows/clients/545-multiple-rdp-remote-desktop-sessions-in-windows-10
   
 type: CLIENT
+resources:
+  timeout: 1200
+  
 parameters:
   - name: FileNameRegex
     description: Only file names that match this regular expression will be scanned.
-    default: ^termsrv\.dll$
-  - name: DriveLetter
-    description: "Target drive. Default is a C:"
-    default: "C:"
-  - name: AllDrives
-    type: bool
+    default: termsrv\.dll
+  - name: MappingRegex
+    description: Only mapped sections that match this regular expression will be scanned.
+    default: termsrv\.dll
   - name: UploadHits
     type: bool
+    description: If selected will upload any yara hits
   - name: YaraRule
     type: yara
-    description: Final Yara option and the default if no other options provided.
+    description: Patched RDP yara
     default: |
-        rule termserv_modified
+        rule termserv_modified_mz
         {
             meta:
-                description = "Finds hex of termserv.dll patch in MZ file"
-        		author = "Matt Green - @mgreen27"
-        		date = "2022-11-10"
+                description = "Finds hex of termsrv.dll patch in MZ file"
            strings:
                 $patch = { B8 00 01 00 00 89 81 38 06 00 00 90 }
         
             condition:
                 uint16(0) == 0x5a4d and ( $patch  )
         }
+        rule termserv_modified
+        {
+            meta:
+                description = "Finds hex of termsrv.dll patch"
+           strings:
+                $patch = { B8 00 01 00 00 89 81 38 06 00 00 90 }
+        
+            condition:
+                $patch
+        }
+  - name: ExpectedServiceDll
+    description: Expected service dll location
+    default: C:\\Windows\\System32\\termsrv.dll
     
-    
+precondition: SELECT OS From info() where OS = 'windows'
+
 sources:
-  - precondition:
-      SELECT OS From info() where OS = 'windows'
-
+  - name: VAD
     query: |
-      -- first find all matching files mft
-      LET files = SELECT *
-        FROM Artifact.Windows.NTFS.MFT(
-            MFTDrive=DriveLetter, AllDrives=AllDrives,
-            FileRegex=FileNameRegex)
-        WHERE NOT IsDir
+        SELECT ProcessCreateTime,Pid,Name,MappingName,AddressRange,State,Type,
+            ProtectionMsg,Protection,SectionSize,YaraHit,HitContext,ProcessChain
+        FROM Artifact.Windows.System.VAD(
+                ProcessRegex='svchost\.exe',
+                MappingNameRegex=MappingRegex,
+                SuspiciousContent=YaraRule,
+                UploadSection=UploadHits )
 
-      -- scan files and only report a single hit.
-      LET hits = SELECT * FROM foreach(row=files,
-            query={
-                SELECT
-                    FileName, OSPath,
-                    File.Size AS Size,
-                    File.ModTime AS ModTime,
-                    Rule, Tags, Meta,
-                    str(str=String.Data) AS HitContext,
-                    String.Offset AS HitOffset
-                FROM yara(rules=YaraRule, files=OSPath,number=1)
-            })
-
-      -- upload files that have hit
-      LET upload_hits=SELECT *,
-            upload(file=OSPath) AS Upload
-        FROM hits
-        GROUP BY OSPath
-
-      -- return rows
-      SELECT * FROM if(condition=UploadHits,
-        then={ SELECT * FROM upload_hits},
-        else={ SELECT * FROM hits})
+  - name: Yara.NTFS
+    query: |
+        SELECT OSPath,Size,ModTime,Rule,Meta,YaraString,HitOffset,HitContext
+        FROM Artifact.Windows.Detection.Yara.NTFS(
+                FileNameRegex=FileNameRegex,
+                PathRegex=".",
+                YaraRule=YaraRule,
+                UploadHits=UploadHits )
+                
+  - name: Services
+    query: |
+        SELECT State,Name,DisplayName,Status,Pid,ExitCode,StartMode,PathName,
+            ServiceType,UserAccount,Created,FailureCommand,FailureActions,
+            AbsoluteExePath, ServiceDll,
+            HashServiceDll, CertinfoServiceDll,
+            parse_pe(file=ServiceDll) as PEInfo
+        FROM Artifact.Windows.System.Services(
+                            DisplayNameRegex='Remote Desktop Services',
+                            Calculate_hashes='Y',
+                            CertificateInfo='Y')
+        WHERE Name =~ 'TermService'
+            AND ( NOT ServiceDll = ExpectedServiceDll OR CertinfoServiceDll.Trusted = 'untrusted' )
+            
+column_types:
+  - name: HitContext
+    type: preview_upload
