@@ -1,7 +1,7 @@
 name: Windows.Registry.HVCI
 author: Matt Green - @mgreen27
 description: |
-    This artifact will return any items in the Hypervisor-protected Code 
+    This artifact will return the Enabled KeyValue in the Hypervisor-protected Code 
     Integrity (HVCI) registry path. An adversary may set the Enabled key to 0 
     if they intend to manipulate UEFI boot process.
     
@@ -31,7 +31,8 @@ sources:
         Name as KeyName,
         Data.value as KeyValue
       FROM glob(globs=KeyGlob, accessor="registry")
-      WHERE if(condition= OnlyShowZero,
+      WHERE KeyName = 'Enabled'
+        AND if(condition= OnlyShowZero,
                 then= KeyValue = 0,
                 else= True )
       GROUP BY KeyName, KeyValue, KeyType
