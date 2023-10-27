@@ -2,7 +2,7 @@ name: Windows.Sysinternals.SysmonArchive
 author: Matt Green - @mgreen27
 description: |
    If configured, Sysmon EID 23: FileDelete enables archiving file deletes on 
-   disk. The challenges of this configuraiton is management of the archive 
+   disk. The challenges of this configuration is management of the archive 
    folder which can grow to be significant size and use up disk space.  
    
    This artifact enables management of the archive, listing files and removing 
