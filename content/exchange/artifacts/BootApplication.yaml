@@ -1,4 +1,4 @@
-name: Exchange.Windows.Forensics.UEFI.BootApplication
+name: Windows.Forensics.UEFI.BootApplication
 author: "Matt Green - @mgreen27"
 description: |
     This artifact parses Windows MeasuredBoot TCGLogs to extract PathName of 
