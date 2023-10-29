@@ -1,6 +1,9 @@
 name: Linux.Detection.IncorrectPermissions
 author: Andreas Misje – @misje
 description: |
+    NOTE: Requires velociraptor 0.7.1 or higher. – Alternatively, import the
+    artifact dependency Linux.Sys.Groups manually into your installation.
+
     This artifacts checks a number of files and directories to verify whether
     they have the expected owner, group owner and mode. A file with an incorrect
     owner may allow attackers to modify important system files. Similarly,
@@ -10,7 +13,7 @@ description: |
     The parameter FilesToInspect contains lines of globs to search for. Each
     line may specify expected user, expected group, expected file mode and
     expected directory mode. It is very important that the order of the lines
-    is in order of increasted specificity. For example:
+    is in order of increasing specificity. For example:
 
     ```csv
     /etc/*,root,root,644,755
