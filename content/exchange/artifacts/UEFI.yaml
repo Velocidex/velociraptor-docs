@@ -1,4 +1,4 @@
-name: Exchange.Windows.Forensics.UEFI
+name: Windows.Forensics.UEFI
 author: Matt Green - @mgreen27
 description: |
   This artifact enables disk analysis over an EFI System Partition (ESP).
