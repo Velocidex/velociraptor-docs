@@ -111,14 +111,14 @@ sources:
                 BootApplication,
                 min(item=Btime) as EarliestBtime,
                 count() as TotalBoots
-          FROM source(artifact="Windows.Forensics.UEFI.BootApplication")
+          FROM source(artifact="Exchange.Windows.Forensics.UEFI.BootApplication")
           GROUP BY lowcase(string=BootApplication)
           
           /*
           ##  All BootApplication
           */
           SELECT BootApplication, OSPath, Size, Mtime, Ctime, Btime
-          FROM source(artifact="Windows.Forensics.UEFI.BootApplication")
+          FROM source(artifact="Exchange.Windows.Forensics.UEFI.BootApplication")
           
   - name: AllParsed
     queries:
