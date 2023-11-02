@@ -367,6 +367,7 @@ Infosec's
 initialised
 inode
 inodes
+InsightIDR
 Inspiron
 InstalledSize
 instantiation
@@ -1409,3 +1410,6 @@ extensibility
 masse
 transformative
 Uncompress
+
+# content/docs/_index.md
+InsightIDR

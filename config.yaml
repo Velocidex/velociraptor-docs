@@ -50,6 +50,9 @@ menu:
       identifier: "rss"
       url: "/rss/"
       weight: 40
+   -  name: "<i class='fa fa-question-circle'></i>Rapid7 Docs"
+      url: "https://docs.rapid7.com/"
+      weight: 50
 
 googleAnalytics: G-QYH72LMYCS
 

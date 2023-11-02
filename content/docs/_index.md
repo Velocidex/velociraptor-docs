@@ -22,3 +22,9 @@ used in many different situations, visit our
 Finally check out the Velociraptor [Blog]({{< ref "/blog" >}}) for articles about
 using Velociraptor in different scenarios and to learn more about
 Velociraptor's features.
+
+{{% notice note "Using Velociraptor integrated with Rapid7 InsightIDR?"%}}
+
+Read the [InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-alerts) to learn more about how Velociraptor and InsightIDR work together.
+
+{{% /notice %}}

@@ -21,16 +21,6 @@ carousel:
 
 ---
 
-{{% notice tip "VeloCon 2023 September 13 2023!" %}}
-
-Register now for this year's VeloCon event taking place on the 13th
-Sept in the EST timezone. This virtual conference will present
-community talks about Velociraptor!
-
-[See more details here]({{< ref "/announcements/2023-velocon/" >}})
-
-{{% /notice %}}
-
 
 ## Velociraptor - Digging Deeper!
 
