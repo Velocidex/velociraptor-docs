@@ -1,0 +1,33 @@
+name: Windows.Sys.LoggedInUsers
+author: Zane Gittins
+description: |
+   Get all currently logged in users via WMI.
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: CLIENT
+
+parameters:
+   - name: UserNameRegex
+     default: .
+     type: string
+     description: Filter by username.
+   - name: DomainRegex
+     default: .
+     type: string
+     description: Filter by domain.
+   - name: LogonTypeRegex
+     default: .
+     type: string
+     description: Filter by logon type. For example, 10 for remote.
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET CurrentlyLoggedIn = SELECT parse_string_with_regex(string=Antecedent,regex=['Domain=\\"(.*?)\\"']).g1 as Domain,parse_string_with_regex(string=Antecedent,regex=['Name=\\"(.*)\\"']).g1 as LogonName, parse_string_with_regex(string=Dependent,regex=['LogonId=\\"([0-9]+)\\"']).g1 as CurrentLogonId FROM wmi(query="SELECT * FROM win32_loggedonuser", namespace="ROOT/CIMV2") WHERE LogonName =~ UserNameRegex
+
+      LET Sessions = SELECT LogonName,Domain,LogonId,LogonType,timestamp(string=parse_string_with_regex(string=StartTime,regex=['([0-9\\.]+).*']).g1+format(args=atoi(string=parse_string_with_regex(string=StartTime,regex=['(-|\\+)([0-9]+)']).g2)/60,format=parse_string_with_regex(string=StartTime,regex=['.*(\\+|-)']).g1+"%02.0f00"),format="20060102150405.999999-0700") as StartTimestamp
+      FROM wmi(query="SELECT * FROM Win32_LogonSession", namespace="ROOT/CIMV2") WHERE LogonId=CurrentLogonId AND Domain =~ DomainRegex AND LogonType =~ LogonTypeRegex
+
+      SELECT * FROM foreach(row=CurrentlyLoggedIn, query=Sessions)
