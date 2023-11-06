@@ -23,5 +23,5 @@ str|The string to normalize|Any (required)
 
 ### Description
 
-Normalize a String.
+Returns the string representation of provided data
 

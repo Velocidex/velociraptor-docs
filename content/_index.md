@@ -21,16 +21,11 @@ carousel:
 
 ---
 
-{{% notice tip "VeloCon 2023 September 13 2023!" %}}
+{{% notice warning "CVE-2023-5950 published on 2023-11-06" %}}
+Please upgrade your servers to mitigate `CVE-2023-5950` to at least release `0.7.0-4` or `0.6.9-1`.
 
-Register now for this year's VeloCon event taking place on the 13th
-Sept in the EST timezone. This virtual conference will present
-community talks about Velociraptor!
-
-[See more details here]({{< ref "/announcements/2023-velocon/" >}})
-
+[More details](/announcements/2023-cves/)
 {{% /notice %}}
-
 
 ## Velociraptor - Digging Deeper!
 

@@ -4,3 +4,4 @@
 public/
 .wordlist.dict
 .hugo_build.lock
+.idea

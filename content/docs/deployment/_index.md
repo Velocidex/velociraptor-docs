@@ -11,6 +11,12 @@ Signed]({{< relref "self-signed" >}}) or [Cloud Deployment]({{< relref
 local machine for testing environment. For more information, see
 [Instant Velociraptor](#instant-velociraptor).
 
+{{% notice note "Using Velociraptor integrated with Rapid7 InsightIDR?"%}}
+
+These deployment steps apply to open source Velociraptor only. Read the  [InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration) to learn more about how Velociraptor is deployed with the Insight Platform.
+
+{{% /notice %}}
+
 ## Deployment Overview
 
 Below is a typical Velociraptor deployment
