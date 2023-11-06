@@ -55,6 +55,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[js_set](js_set)|<span class='vql_type'>Function</span>|Set a variables value in the JS VM|
 |[magic](magic)|<span class='vql_type'>Function</span>|Identify a file using magic rules|
 |[netcat](netcat)|<span class='vql_type'>Plugin</span>|Make a tcp connection and read data from a socket|
+|[netstat](netstat)|<span class='vql_type'>Plugin</span>|Collect network information|
 |[pathspec](pathspec)|<span class='vql_type'>Function</span>|Create a structured path spec to pass to certain accessors|
 |[pipe](pipe)|<span class='vql_type'>Function</span>|A pipe allows plugins that use files to read data from a vql|
 |[profile](profile)|<span class='vql_type'>Plugin</span>|Returns a profile dump from the running process|
