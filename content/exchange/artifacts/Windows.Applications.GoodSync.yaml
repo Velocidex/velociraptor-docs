@@ -8,8 +8,6 @@ description: |
    This artifact have been created to identify potential exfiltrated files using GoodSync tool.
    You can read more about it on https://www.synacktiv.com/publications/legitimate-exfiltration-tools-summary-and-detection-for-incident-response-and-threat
 
-author: Nathanaël Ndong, Synacktiv
-
 type: CLIENT
 parameters:
     - name: FileGlob
