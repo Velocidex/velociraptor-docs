@@ -31,6 +31,7 @@ logs|Recent logs|bool
 queries|Recent Queries run|bool
 metrics|Collect metrics|bool
 duration|Duration of samples (default 30 sec)|int64
+type|The type of profile (this is a regex of debug output types that will be shown).|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
