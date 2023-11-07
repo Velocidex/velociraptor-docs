@@ -12,11 +12,11 @@ sources:
 
     query: |
         LET PowershellScript = '''$Results = @()
-        $BitlockerVolumers = Get-BitLockerVolume
-        $BitlockerVolumers |
+        $BitlockerVolumes = Get-BitLockerVolume
+        $BitlockerVolumes |
         ForEach-Object {
-            $MountPoint = $_.MountPoint
             $RecoveryKey = [string]($_.KeyProtector).RecoveryPassword
+            # Only add results with valid recovery keys.
             if ($RecoveryKey.Length -gt 5) {
                 $_ | Add-Member -MemberType NoteProperty -Name "RecoveryPassword" -Value $RecoveryKey
                 $Results += $_
