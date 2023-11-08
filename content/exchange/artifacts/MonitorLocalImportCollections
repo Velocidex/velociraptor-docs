@@ -1,4 +1,4 @@
-name: Custom.Artifact.MonitorLocalImportCollections
+name: Server.Import.WatchLocalDirectory
 description: |
    This is an artifact that will monitor a local path for collections, 
    which it will then ingest. 
