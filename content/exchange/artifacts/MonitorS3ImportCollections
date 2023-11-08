@@ -1,4 +1,4 @@
-name: Custom.Artifact.MonitorS3ImportCollections
+name: Server.Import.WatchS3Directory
 description: |
    This is an artifact that will monitor an S3 path for collections, 
    which it will then ingest. 
