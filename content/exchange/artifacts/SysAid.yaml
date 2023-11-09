@@ -148,7 +148,7 @@ sources:
   - name: Evtx.NetworkIOC
     query: |
       SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
-                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*Firewall|Sysmon|Powershell*.evtx',
+                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*{Firewall,Sysmon,Powershell}*.evtx',
                 IocRegex= NetworkIoc )
                 
                 
