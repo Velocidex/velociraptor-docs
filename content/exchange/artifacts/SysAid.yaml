@@ -1,7 +1,7 @@
 name: Windows.Detection.SysAid
 author: Matt Green - @mgreen27
 description: |
-   This artifact detects artifacts associated with post exploitation activity of 
+   Detects artifacts associated with post exploitation activity of 
    LaceTempest related to the SysAid 0day.
    
    There are several sub artifact scopes, with configurable regex parameters to 
@@ -11,12 +11,12 @@ description: |
    - Disk.Ntfs: targets known disk IOCs via Windows.ntfs.mft
    - Forensic.Usn: targets known disk IOCs via USN journal
    - Evtx.Defender: Searches Defender event logs for evidence of associated alerts
-   - Evtx.NetworkIOC: targets known strings of network IOCs in Firewall, Sysmon and Powershell logs.
+   - Evtx.NetworkIOC: targets known strings of network IOCs in Firewall, Sysmon logs.
+   - Evtx.PowershellIOC: targets known strings of powershell IOCs in Powershell logs.
    
 type: CLIENT
 resources:
   timeout: 1800
-  
   
 parameters:
   - name: FileNameRegex
@@ -37,6 +37,9 @@ parameters:
   - name: NetworkIoc
     description: Regex of network IOCs to hunt evtx
     default: 81\.19\.138\.52|45\.182\.189\.100|179\.60\.150\.34|45\.155\.37\.105
+  - name: PowershellIoc
+    description: Regex of Powershell string IOCs to hunt evtx
+    default: STOP-PROCs FOUND\! Exiting|userentry\|getLogo\\\.jsp\|Go|179\.60\.150\.34
   - name: UploadYaraHits
     type: bool
   - name: YaraRule
@@ -148,8 +151,14 @@ sources:
   - name: Evtx.NetworkIOC
     query: |
       SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
-                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*{Firewall,Sysmon,Powershell}*.evtx',
+                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*{Firewall,Sysmon}*.evtx',
                 IocRegex= NetworkIoc )
+
+  - name: Evtx.Powershell
+    query: |
+      SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
+                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*Powershell*.evtx',
+                IocRegex= PowershellIoc )
                 
                 
 column_types:
