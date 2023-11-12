@@ -18,7 +18,6 @@ parameters:
     type: regex
   - name: YaraRule
     type: yara
-    description: Final Yara option and the default if no other options provided.
     default: |
       rule ConfluencePageIndicator {
         meta:
