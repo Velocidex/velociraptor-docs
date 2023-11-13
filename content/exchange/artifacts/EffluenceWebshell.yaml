@@ -1,8 +1,10 @@
-name: Windows.Detection.EffluenceWebshell
+name: Generic.Detection.EffluenceWebshell
 author: Matt Green - @mgreen27
 description: |
   This artifact detects Effluence Webshell observed deployed during exploitation 
   of Atlassian Confluence CVE-2023-22515.
+
+  NOTE: may need to target process as required.
 
 reference:
     - https://www.aon.com/cyber-solutions/aon_cyber_labs/detecting-effluence-an-unauthenticated-confluence-web-shell/
@@ -11,13 +13,14 @@ type: CLIENT
 
 parameters:
   - name: ProcessRegex
-    default: .
+    default: java
     type: regex
   - name: PidRegex
     default: .
     type: regex
   - name: YaraRule
     type: yara
+    description: Final Yara option and the default if no other options provided.
     default: |
       rule ConfluencePageIndicator {
         meta:
@@ -45,16 +48,26 @@ parameters:
 
 
 sources:
-  - precondition:
-      SELECT OS From info() where OS = 'windows'
-
-    query: |
-      SELECT * FROM Artifact.Windows.Detection.Yara.Process(
+  - query: |
+      LET linux = SELECT * FROM Artifact.Linux.Detection.Yara.Process(
                             ProcessRegex=ProcessRegex,
                             PidRegex=PidRegex,
                             YaraRule=YaraRule,
                             NumberOfHits=NumberOfHits,
                             ContextBytes=ContextBytes )
+
+      LET windows = SELECT * FROM Artifact.Windows.Detection.Yara.Process(
+                            ProcessRegex=ProcessRegex,
+                            PidRegex=PidRegex,
+                            YaraRule=YaraRule,
+                            NumberOfHits=NumberOfHits,
+                            ContextBytes=ContextBytes )
+        
+      LET system = SELECT OS From info() where OS
+      
+      SELECT * FROM if(condition= system[0].OS=windows,
+                        then= windows,
+                        else= linux )
                             
 column_types:
   - name: HitContext
