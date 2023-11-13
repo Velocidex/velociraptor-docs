@@ -4,8 +4,6 @@ description: |
   This artifact detects Effluence Webshell observed deployed during exploitation 
   of Atlassian Confluence CVE-2023-22515.
 
-  NOTE: may need to target process as required.
-
 reference:
     - https://www.aon.com/cyber-solutions/aon_cyber_labs/detecting-effluence-an-unauthenticated-confluence-web-shell/
     
@@ -20,7 +18,6 @@ parameters:
     type: regex
   - name: YaraRule
     type: yara
-    description: Final Yara option and the default if no other options provided.
     default: |
       rule ConfluencePageIndicator {
         meta:
