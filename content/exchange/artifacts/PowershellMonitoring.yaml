@@ -133,6 +133,7 @@ sources:
                 AND NOT if(condition=IgnorePaths,
                     then= EventData.Path =~ ScriptIgnorePath 
                         OR EventData.ContextInfo.CommandPath =~ ScriptIgnorePath,
+                        OR EventData.ContextInfo.ScriptName =~ ScriptIgnorePath
                             else= False)
             LIMIT 1 -- limts to 1 row per IocCsv entry.
         })
