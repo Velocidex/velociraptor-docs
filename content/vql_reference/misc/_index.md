@@ -27,6 +27,7 @@ Miscellaneous plugins not yet categorized.
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
+|[logging](logging)|<span class='vql_type'>Plugin</span>|Watch the logs emitted by the server|
 |[logscale_upload](logscale_upload)|<span class='vql_type'>Plugin</span>|Upload rows to LogScale ingestion server|
 |[lru](lru)|<span class='vql_type'>Function</span>|Creates an LRU object|
 |[lzxpress_decompress](lzxpress_decompress)|<span class='vql_type'>Function</span>|Decompress an lzxpress blob|
@@ -54,10 +55,13 @@ Miscellaneous plugins not yet categorized.
 |[profile_memory](profile_memory)|<span class='vql_type'>Plugin</span>|Enumerates all in use memory within the runtime|
 |[pskill](pskill)|<span class='vql_type'>Function</span>|Kill the specified process|
 |[query](query)|<span class='vql_type'>Plugin</span>|Evaluate a VQL query|
+|[read_crypto_file](read_crypto_file)|<span class='vql_type'>Plugin</span>|Read a previously stored encrypted local storage file|
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
 |[repack](repack)|<span class='vql_type'>Function</span>|Repack and upload a repacked binary or MSI to the server|
 |[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
+|[sigma](sigma)|<span class='vql_type'>Plugin</span>|Evaluate sigma rules|
+|[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
 |[sysinfo](sysinfo)|<span class='vql_type'>Function</span>|Collect system information on Linux clients|
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[trace](trace)|<span class='vql_type'>Function</span>|Upload a trace file|
@@ -66,4 +70,5 @@ Miscellaneous plugins not yet categorized.
 |[user](user)|<span class='vql_type'>Function</span>|Retrieves information about the Velociraptor user|
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|
 |[vfs_ls](vfs_ls)|<span class='vql_type'>Plugin</span>|List directory and build a VFS object|
+|[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
