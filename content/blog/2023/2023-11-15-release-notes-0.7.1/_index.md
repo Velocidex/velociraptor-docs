@@ -11,7 +11,7 @@ author: "Mike Cohen"
 date: 2023-11-15
 ---
 
-I am very excited to announce the latest Velociraptor release 0.7.1 is
+I am very excited to announce that the latest Velociraptor release 0.7.1 is
 now in release candidate status.
 
 In this post I will discuss some of the interesting new features.
@@ -73,7 +73,7 @@ I can see my newly added notebook template and select it.
 
 In this release, Velociraptor allows copying of a cell from any
 notebook to the Global notebooks. This facilitates a workflow where
-users may filter, post process and identify interesting artifacts in
+users may filter, post-process and identify interesting artifacts in
 various hunt notebooks or specific collection notebooks, but then copy
 the post processed cell into a central Global notebook for
 collaboration.
@@ -97,7 +97,7 @@ Velociraptor will copy the cell to the target notebook and add VQL
 statements to still refer to the original collection. This allows
 users of the global notebook to further refine the query if needed.
 
-This work flow allows better collaboration between users.
+This workflow allows better collaboration between users.
 
 ### VFS Downloads
 
@@ -274,7 +274,7 @@ Previous support for Event Tracing For Windows (ETW) was
 rudimentary. Each query that called the `watch_etw()` plugin to
 receive the event stream from a particular provider created a new ETW
 session. Since the total number of ETW sessions on the system is
-limited to 64, this used previous resources.
+limited to 64, this used precious resources.
 
 In 0.7.1 the ETW subsystem was overhauled with the ability to
 multiplex many ETW watchers on top of the same session. The ETW
