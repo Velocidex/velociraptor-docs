@@ -279,6 +279,43 @@ else={
 })
 ```
 
+### Subqueries as columns
+
+You can use a subquery as a column which will cause it to be evaluated
+for each row (in this way it is similar to the `foreach()` plugin).
+
+Since subqueries are always an array of dictionaries, the output if
+often difficult to read when the subquery returns many rows or
+columns. As a special case, VQL will simplify subqueries:
+
+1. If the subquery returns one row and has several columns, VQL will
+   put a single dictionary of data in the column.
+2. If the subquery returns one row and a single column, the value is
+   expanded into the cell.
+
+These heuristics are helpful when constructing subqueries to enrich
+columns. If you wish to preserve the array of dicts you can use a VQL
+function instead.
+
+Here is an example to demonstrate:
+```vql
+LET Foo =  SELECT "Hello" AS Greeting FROM scope()
+
+SELECT { SELECT "Hello" AS Greeting FROM scope() } AS X,
+       { SELECT "Hello" AS Greeting, "Goodbye" AS Farewell FROM scope() } AS Y,
+       Foo AS Z
+FROM scope()
+```
+
+In the above query - X is a subquery with a single row and a single
+column, therefore VQL will simplify the column X to contain `"Hello"`
+The second query contains two columns so VQL will simplify it into a
+dict.
+
+Finally to get the full unsimplified content, a VQL stored query can
+be used. This will result in an array of one dict, containing a single
+column `Greeting` with value of `Hello`
+
 
 ### Arrays
 
