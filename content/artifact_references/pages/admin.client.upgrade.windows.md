@@ -1,5 +1,5 @@
 ---
-title: Admin.Client.Upgrade
+title: Admin.Client.Upgrade.Windows
 hidden: true
 tags: [Client Artifact]
 ---
