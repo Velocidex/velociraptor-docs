@@ -1414,3 +1414,19 @@ Uncompress
 # content/docs/_index.md
 InsightIDR
 XSS
+
+# content/docs/vql/_index.md
+unsimplified
+
+# content/blog/2023/2023-11-15-sigma_in_velociraptor/_index.md
+Hayabusa
+SIEMs
+backend's
+backends
+ruleset
+schemas
+taskscheduler
+
+# content/blog/2023/2023-11-15-release-notes-0.7.1/_index.md
+Templated
+decrypted
