@@ -1430,3 +1430,7 @@ taskscheduler
 # content/blog/2023/2023-11-15-release-notes-0.7.1/_index.md
 Templated
 decrypted
+
+# content/vql_reference/event/watch_etw/_index.md
+TdhGetEventMapInformation
+MapInfo
