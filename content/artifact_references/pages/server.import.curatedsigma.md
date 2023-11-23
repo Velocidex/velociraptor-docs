@@ -10,8 +10,8 @@ https://sigma.velocidex.com
 Collect this artifact on the server to automatically import or
 update these artifacts.
 
-<pre><code class="language-yaml">
 
+<pre><code class="language-yaml">
 name: Server.Import.CuratedSigma
 description: |
   This artifact allows importing curated Sigma rules from
@@ -47,5 +47,5 @@ sources:
         Prefix=Prefix,
         ExchangeURL=get(item= URLlookup, member= PackageName))
 
-
 </code></pre>
+

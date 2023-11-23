@@ -70,7 +70,7 @@ parameters:
     default: ^kernel32\.dll$
   - name: PathRegex
     description: Only paths that match this regular expression will be scanned.
-    default: ^C:\\Windows\\System32\\
+    default: C:\\Windows\\System32\\
   - name: DriveLetter
     description: "Target drive. Default is a C:"
     default: "C:"
@@ -186,5 +186,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+
 </code></pre>
 

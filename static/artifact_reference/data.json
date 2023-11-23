@@ -18,9 +18,36 @@
         ]
     },
     {
-        "title": "Admin.Client.Upgrade",
+        "title": "Admin.Client.UpdateClientConfig",
+        "description": "Sometimes we wish to move a client from one org ID to another. This\nrequires updating the config on the client and rekeying the client.",
+        "link": "/artifact_references/pages/admin.client.updateclientconfig",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Upgrade.Debian",
+        "description": "Remotely push new client updates to Debian hosts.",
+        "link": "/artifact_references/pages/admin.client.upgrade.debian",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Upgrade.RedHat",
+        "description": "Remotely push new client updates to Red Hat hosts.",
+        "link": "/artifact_references/pages/admin.client.upgrade.redhat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Upgrade.Windows",
         "description": "Remotely push new client updates.",
-        "link": "/artifact_references/pages/admin.client.upgrade",
+        "link": "/artifact_references/pages/admin.client.upgrade.windows",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -99,9 +126,36 @@
         ]
     },
     {
+        "title": "Generic.Client.DiskUsage",
+        "description": "This artifact reports the amount of space used by each directory\nrecursively (Similar to the `du` command).",
+        "link": "/artifact_references/pages/generic.client.diskusage",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Generic.Client.Info",
         "description": "Collect basic information about the client.",
         "link": "/artifact_references/pages/generic.client.info",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.LocalLogs",
+        "description": "Write client logs locally in an encrypted container. This helps when\nwe need to access what the client was doing in the past.\n",
+        "link": "/artifact_references/pages/generic.client.locallogs",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.LocalLogsRetrieve",
+        "description": "Retrives the locally written logs.\n",
+        "link": "/artifact_references/pages/generic.client.locallogsretrieve",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -496,7 +550,7 @@
     },
     {
         "title": "Linux.RHEL.Packages",
-        "description": "Parse packages installed from dnf\n",
+        "description": "Parse packages installed from dnf or yum\n",
         "link": "/artifact_references/pages/linux.rhel.packages",
         "type": "client",
         "tags": [
@@ -597,6 +651,15 @@
         "title": "Linux.Sys.Crontab",
         "description": "Displays parsed information from crontab.\n",
         "link": "/artifact_references/pages/linux.sys.crontab",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Groups",
+        "description": "Get system group IDs, names and memberships from /etc/group",
+        "link": "/artifact_references/pages/linux.sys.groups",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -766,7 +829,7 @@
     },
     {
         "title": "MacOS.Forensics.FSEvents",
-        "description": "This artifact parses the FSEvents log files.\n",
+        "description": "This artifact parses the FSEvents log files.",
         "link": "/artifact_references/pages/macos.forensics.fsevents",
         "type": "client",
         "tags": [
@@ -879,6 +942,15 @@
         "type": "client",
         "tags": [
             "Client Artifact"
+        ]
+    },
+    {
+        "title": "Notebooks.Default",
+        "description": "A default notebook.\n",
+        "link": "/artifact_references/pages/notebooks.default",
+        "type": "notebook",
+        "tags": [
+            "notebook"
         ]
     },
     {
@@ -1000,7 +1072,7 @@
     },
     {
         "title": "Server.Enrichment.GreyNoise",
-        "description": "Submit an IP to the GreyNoise Community API.",
+        "description": "Submit an IP to the GreyNoise API.",
         "link": "/artifact_references/pages/server.enrichment.greynoise",
         "type": "server",
         "tags": [
@@ -1065,6 +1137,15 @@
         "title": "Server.Import.ArtifactExchange",
         "description": "This artifact will automatically import the latest\nartifact exchange bundle into the current server.\n",
         "link": "/artifact_references/pages/server.import.artifactexchange",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.CuratedSigma",
+        "description": "This artifact allows importing curated Sigma rules from\nhttps://sigma.velocidex.com",
+        "link": "/artifact_references/pages/server.import.curatedsigma",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1311,6 +1392,15 @@
         "type": "client",
         "tags": [
             "Client Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.UserManager",
+        "description": "An internal artifact notifying when user accounts are modified.\n",
+        "link": "/artifact_references/pages/server.internal.usermanager",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
         ]
     },
     {
@@ -1575,6 +1665,15 @@
         ]
     },
     {
+        "title": "Server.Utils.KillClient",
+        "description": "This artifact agressively kills a client.",
+        "link": "/artifact_references/pages/server.utils.killclient",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.ListUsers",
         "description": "This server artifact is used to list all current users and their\npermissions and org access.",
         "link": "/artifact_references/pages/server.utils.listusers",
@@ -1671,6 +1770,15 @@
         "type": "client",
         "tags": [
             "Client Artifact"
+        ]
+    },
+    {
+        "title": "System.VFS.Export",
+        "description": "Exports parts of the VFS in a server side collection.\n",
+        "link": "/artifact_references/pages/system.vfs.export",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
         ]
     },
     {
@@ -2982,6 +3090,15 @@
         "title": "Windows.Search.Yara",
         "description": "Searches for a specific malicious file or set of files by a Yara rule.\n",
         "link": "/artifact_references/pages/windows.search.yara",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sigma.EventLogs",
+        "description": "Parse Windows event logs and matches then against Sigma Rules.",
+        "link": "/artifact_references/pages/windows.sigma.eventlogs",
         "type": "client",
         "tags": [
             "Client Artifact"

@@ -1,7 +1,7 @@
 ---
 title: Generic.Client.LocalLogs
 hidden: true
-tags: [Client Artifact]
+tags: [Client Event Artifact]
 ---
 
 Write client logs locally in an encrypted container. This helps when
@@ -9,7 +9,6 @@ we need to access what the client was doing in the past.
 
 
 <pre><code class="language-yaml">
-
 name: Generic.Client.LocalLogs
 description: |
   Write client logs locally in an encrypted container. This helps when
@@ -41,7 +40,7 @@ parameters:
 
 sources:
 - query: |
-     LET _ <= log(message="Writing local log to " + expand(path=LocalFilename))
+     LET _ &lt;= log(message="Writing local log to " + expand(path=LocalFilename))
 
      SELECT * FROM write_crypto_file(
        max_rows=MaxRows, max_wait=MaxWait, max_size=MaxSize,
@@ -52,5 +51,5 @@ sources:
        })
      WHERE AlsoForward
 
-
 </code></pre>
+

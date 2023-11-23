@@ -16,7 +16,7 @@ artifact or uploading a different msi file.
 
 
 <pre><code class="language-yaml">
-name: Admin.Client.Upgrade
+name: Admin.Client.Upgrade.Windows
 description: |
   Remotely push new client updates.
 

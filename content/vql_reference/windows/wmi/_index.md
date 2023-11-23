@@ -22,6 +22,9 @@ Arg | Description | Type
 query|The WMI query to issue.|string (required)
 namespace|The WMI namespace to use (ROOT/CIMV2)|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Execute simple WMI queries synchronously.

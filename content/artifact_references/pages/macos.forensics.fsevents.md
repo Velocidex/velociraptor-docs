@@ -6,14 +6,43 @@ tags: [Client Artifact]
 
 This artifact parses the FSEvents log files.
 
+We can filter on Path, Flags or use time box on source file 
+
+An interesting hunt may be filter for Entries of plist files modified or 
+created on a specific date. Malware often creates plist files in 
+/Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or 
+/Library/Internet Plugins.
+
+NOTE: 
+
+- FSEvents do not have timestamps so we specify source file Mtime and 
+Btime. 
+- default timeout is only 600 seconds - you will need to increase for this 
+colection to finish.
+
 
 <pre><code class="language-yaml">
 name: MacOS.Forensics.FSEvents
 description: |
    This artifact parses the FSEvents log files.
+   
+   We can filter on Path, Flags or use time box on source file 
+   
+   An interesting hunt may be filter for Entries of plist files modified or 
+   created on a specific date. Malware often creates plist files in 
+   /Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or 
+   /Library/Internet Plugins.
+   
+   NOTE: 
+   
+   - FSEvents do not have timestamps so we specify source file Mtime and 
+   Btime. 
+   - default timeout is only 600 seconds - you will need to increase for this 
+   colection to finish.
 
 reference:
 - https://www.osdfcon.org/presentations/2017/Ibrahim-Understanding-MacOS-File-Ststem-Events-with-FSEvents-Parser.pdf
+- https://www.crowdstrike.com/blog/using-os-x-fsevents-discover-deleted-malicious-artifact/
 
 type: CLIENT
 
@@ -35,6 +64,16 @@ parameters:
      description: Filter by flags
      type: regex
      default: .
+   - name: DateAfter
+     type: timestamp
+     description: "search for source files with Btime after this date. YYYY-MM-DDTmm:hh:ssZ"
+   - name: DateBefore
+     type: timestamp
+     description: "search for source files with Mtime before this date. YYYY-MM-DDTmm:hh:ssZ"
+   - name: LogSource
+     type: bool
+     description: "Adds the Source file OSPath into logs"
+
 export: |
     LET FSEventProfile = '''[
     ["Header", 0, [
@@ -88,20 +127,26 @@ export: |
 
 sources:
   - query: |
-      LET files = SELECT OSPath, Mtime
-      FROM glob(globs=(Glob || GlobTable.Glob))
-      WHERE log(message=OSPath)
+      LET files = SELECT OSPath, Mtime, Btime
+        FROM glob(globs=(Glob || GlobTable.Glob))
+        WHERE   if(condition=DateAfter, then= Btime &gt; DateAfter, else= True )
+            AND if(condition=DateBefore, then= Mtime &lt; DateBefore, else= True )
+            AND log(message=OSPath)
 
       SELECT * FROM foreach(row=files,
-      query={
-        SELECT OSPath.Basename AS File, Mtime, path,
-               id, join(array=flags, sep=", ") AS flags
-        FROM foreach(row=parse_binary(
-           filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
-           accessor="data",
-           profile=FSEventProfile, struct="Header").Items)
-      })
-      WHERE path =~ PathRegex AND flags =~ FlagsRegex
-
+        query={
+            SELECT 
+                path as EnrtryPath,
+                id as EntryId, 
+                join(array=flags, sep=", ") AS EntryFlags,
+                OSPath.Basename as SourceFile, 
+                Mtime as SourceMtime, 
+                Btime as SourceBtime 
+            FROM foreach(row=parse_binary(
+                    filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
+                    accessor="data",
+                    profile=FSEventProfile, struct="Header").Items)
+        })
+        WHERE EnrtryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
 </code></pre>
 

@@ -14,8 +14,8 @@ If you change the `TopLevelDirectory` to the drive letter
 (e.g. `C:\\`) it may take a while to complete as it will need to
 examine every file on the drive.
 
-<pre><code class="language-yaml">
 
+<pre><code class="language-yaml">
 name: Generic.Client.DiskUsage
 description: |
   This artifact reports the amount of space used by each directory
@@ -43,7 +43,7 @@ parameters:
 
 sources:
   - query: |
-      LET Res <= dict()
+      LET Res &lt;= dict()
 
       LET _DirInfo(DirPath) = SELECT DirPath, Size, sum(item=Size) AS TotalSize
       FROM chain(a={
@@ -66,7 +66,7 @@ sources:
 
       -- Recurse into the TopLevelDirectory and rely on the set()
       -- above to store the results.
-      LET _ <= SELECT * FROM DirInfo(DirPath=TopLevelDirectory)
+      LET _ &lt;= SELECT * FROM DirInfo(DirPath=TopLevelDirectory)
 
       SELECT *, humanize(bytes=TotalSize) AS TotalSizeHuman
       FROM foreach(row={
@@ -74,5 +74,5 @@ sources:
       }, column="_value")
       ORDER BY TotalSize DESC
 
-
 </code></pre>
+

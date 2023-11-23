@@ -15,7 +15,6 @@ changed to a different org.
 
 
 <pre><code class="language-yaml">
-
 name: Admin.Client.UpdateClientConfig
 description: |
   Sometimes we wish to move a client from one org ID to another. This
@@ -44,7 +43,7 @@ sources:
           AND Config.Client.nonce
 
         LET CheckConfigPath(ConfigPath) = SELECT * FROM stat(filename=ConfigPath)
-        LET Config <=  parse_yaml(accessor="data", filename=ConfigYaml)
+        LET Config &lt;=  parse_yaml(accessor="data", filename=ConfigYaml)
 
         LET DoIt = if(condition=ValidateConfig(Config=Config),
           else=log(message="Config is invalid") AND FALSE,
@@ -75,5 +74,5 @@ sources:
         WHERE OrgId = RequiredOrgId
         LIMIT 1
 
-
 </code></pre>
+

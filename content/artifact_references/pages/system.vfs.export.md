@@ -6,8 +6,8 @@ tags: [Server Artifact]
 
 Exports parts of the VFS in a server side collection.
 
-<pre><code class="language-yaml">
 
+<pre><code class="language-yaml">
 name: System.VFS.Export
 description: |
   Exports parts of the VFS in a server side collection.
@@ -35,7 +35,7 @@ parameters:
 
 sources:
   - query: |
-      LET components <= Components || pathspec(parse=Path).Components
+      LET components &lt;= Components || pathspec(parse=Path).Components
       SELECT Name, OSPath, Size, IsDir,
              Data.DownloadInfo.flow_id AS FlowId,
              if(condition=Data.DownloadInfo.flow_id,
@@ -44,3 +44,4 @@ sources:
       WHERE NOT IsDir
 
 </code></pre>
+

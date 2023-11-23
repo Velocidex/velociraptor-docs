@@ -27,6 +27,7 @@ basic_auth_user|The username to use in HTTP basic auth|string
 basic_auth_password|The password to use in HTTP basic auth|string
 noverifycert|Skip TLS Verification (deprecated in favor of SkipVerify)|bool
 skip_verify|Skip TLS Verification|bool
+user_agent|If specified, set a HTTP User-Agent.|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>

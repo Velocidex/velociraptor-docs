@@ -211,6 +211,27 @@
         }
     },
     {
+        "name": "artifact_set_metadata",
+        "description": "Sets metadata about the artifact.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The Artifact to update",
+                "required": true
+            },
+            {
+                "name": "hidden",
+                "type": "bool",
+                "description": "Set to true make the artifact hidden in the GUI, false to make it visible again."
+            }
+        ],
+        "metadata": {
+            "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
+        }
+    },
+    {
         "name": "atexit",
         "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
         "type": "Function",
@@ -428,7 +449,10 @@
         "name": "certificates",
         "description": "Collect certificate from the system trust store.",
         "type": "Plugin",
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "chain",
@@ -1433,6 +1457,21 @@
         "category": "plugin"
     },
     {
+        "name": "etw_sessions",
+        "description": "Enumerates all active ETW sessions",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "count",
+                "type": "uint64",
+                "description": "The count of sessions to retrieve (default 64) "
+            }
+        ],
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
         "name": "execve",
         "description": "This plugin launches an external command and captures its STDERR,\nSTDOUT and return code. The command's stdout is split using the `sep`\nparameter as required.",
         "type": "Plugin",
@@ -1619,12 +1658,11 @@
             {
                 "name": "regex",
                 "type": "string",
-                "description": "A regex to test each item",
-                "repeated": true
+                "description": "A regex to test each item"
             },
             {
                 "name": "condition",
-                "type": "string",
+                "type": "Lambda",
                 "description": "A VQL lambda to use to filter elements"
             }
         ],
@@ -2107,7 +2145,10 @@
                 "repeated": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "hash",
@@ -2204,6 +2245,11 @@
                 "name": "cookie_jar",
                 "type": "ordereddict.Dict",
                 "description": "A cookie jar to use if provided. This is a dict of cookie structures."
+            },
+            {
+                "name": "user_agent",
+                "type": "string",
+                "description": "If specified, set a HTTP User-Agent."
             }
         ],
         "category": "plugin",
@@ -2416,7 +2462,13 @@
             {
                 "name": "brief",
                 "type": "bool",
-                "description": "If set we return less columns."
+                "description": "If set we return less columns (deprecated)."
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "If set we combine results from all orgs.",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -2449,6 +2501,11 @@
                 "name": "description",
                 "type": "string",
                 "description": "Update hunt description"
+            },
+            {
+                "name": "expires",
+                "type": "time.Time",
+                "description": "Update hunt expiry"
             }
         ],
         "metadata": {
@@ -2532,8 +2589,7 @@
             {
                 "name": "client_id",
                 "type": "string",
-                "description": "The client id to import to. Use 'auto' to generate a new client id.",
-                "required": true
+                "description": "The client id to import to. Use 'auto' to generate a new client id."
             },
             {
                 "name": "hostname",
@@ -2545,6 +2601,16 @@
                 "type": "string",
                 "description": "Path on server to the collector zip.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            },
+            {
+                "name": "import_type",
+                "type": "string",
+                "description": "Whether the import is an offline_collector or hunt."
             }
         ],
         "category": "server",
@@ -3014,6 +3080,14 @@
         "name": "lookupSID",
         "description": "Get information about the SID.",
         "type": "Function",
+        "args": [
+            {
+                "name": "sid",
+                "type": "string",
+                "description": "A SID to lookup using LookupAccountSid ",
+                "required": true
+            }
+        ],
         "category": "windows"
     },
     {
@@ -3386,7 +3460,10 @@
                 "required": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "monitoring",
@@ -4701,7 +4778,10 @@
                 "required": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "proc_yara",
@@ -5110,6 +5190,11 @@
                 "type": "OSPath",
                 "description": "Path to the file to write",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
             }
         ],
         "metadata": {
@@ -6452,7 +6537,10 @@
                 "required": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "trace",
@@ -6949,6 +7037,11 @@
                 "name": "skip_verify",
                 "type": "bool",
                 "description": "Skip TLS Verification"
+            },
+            {
+                "name": "user_agent",
+                "type": "string",
+                "description": "If specified, set a HTTP User-Agent."
             }
         ],
         "category": "basic",
@@ -7326,6 +7419,16 @@
                 "name": "level",
                 "type": "int64",
                 "description": "Log level (0-5)"
+            },
+            {
+                "name": "stop",
+                "type": "Lambda",
+                "description": "If provided we stop watching automatically when this lambda returns true"
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "If provided we stop after this much time"
             }
         ],
         "category": "event"
@@ -7438,7 +7541,10 @@
                 "description": "Object namespace path."
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "wmi",
@@ -7457,7 +7563,10 @@
                 "description": "The WMI namespace to use (ROOT/CIMV2)"
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "wmi_events",
@@ -7483,7 +7592,10 @@
                 "required": true
             }
         ],
-        "category": "event"
+        "category": "event",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "write_crypto_file",

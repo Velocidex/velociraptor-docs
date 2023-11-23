@@ -31,6 +31,7 @@ tempfile_extension|If specified we write to a tempfile. The content field will c
 remove_last|If set we delay removal as much as possible.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 cookie_jar|A cookie jar to use if provided. This is a dict of cookie structures.|ordereddict.Dict
+user_agent|If specified, set a HTTP User-Agent.|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>

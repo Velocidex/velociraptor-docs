@@ -23,6 +23,9 @@ query|WMI query to run.|string (required)
 namespace|WMI namespace|string (required)
 wait|Wait this many seconds for events and then quit.|int64 (required)
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Executes an evented WMI queries asynchronously.

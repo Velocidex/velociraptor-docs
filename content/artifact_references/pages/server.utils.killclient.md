@@ -11,8 +11,8 @@ If the client runs as a service, it will restart by the service manager.
 NOTE: If the client is not running as a service (i.e. interactively)
 it may not restart and further communication will be lost!
 
-<pre><code class="language-yaml">
 
+<pre><code class="language-yaml">
 name: Server.Utils.KillClient
 description: |
   This artifact agressively kills a client.
@@ -35,7 +35,7 @@ sources:
       let clients_list = SELECT ClientId
       FROM parse_records_with_regex(
           accessor="data", file=ClientIdList,
-          regex="(?P<ClientId>C\\.[0-9a-z-]+)")
+          regex="(?P&lt;ClientId&gt;C\\.[0-9a-z-]+)")
       WHERE log(message="Killing client " + ClientId)
 
       SELECT * FROM foreach(row=clients_list,
@@ -44,3 +44,4 @@ sources:
       })
 
 </code></pre>
+

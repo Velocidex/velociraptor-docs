@@ -10,8 +10,8 @@ NOTE: This artifact requires that you supply a client Red Hat package using the
 tools interface or using the "rpm client" command. Simply click on the tool
 in the GUI and upload a package.
 
-<pre><code class="language-yaml">
 
+<pre><code class="language-yaml">
 name: Admin.Client.Upgrade.RedHat
 description: |
   Remotely push new client updates to Red Hat hosts.
@@ -39,7 +39,7 @@ sources:
     query:  |
       // Force the file to be copied to the real temp directory since
       // we are just about to remove the Tools directory.
-      LET bin <= SELECT copy(filename=OSPath,
+      LET bin &lt;= SELECT copy(filename=OSPath,
           dest=expand(path="/tmp/") + basename(path=OSPath)) AS Dest
       FROM Artifact.Generic.Utils.FetchBinary(
          ToolName="VelociraptorRedHat", IsExecutable=FALSE,
@@ -55,3 +55,4 @@ sources:
       })
 
 </code></pre>
+

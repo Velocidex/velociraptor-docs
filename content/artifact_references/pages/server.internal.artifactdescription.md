@@ -29,6 +29,8 @@ reports:
       ##### Author: {{ $artifact.Author }}
       {{end}}
 
+      {{ if $artifact.Description }}
+
       &lt;div class="description-content"&gt;
 
       {{ $artifact.Description }}
@@ -44,11 +46,13 @@ reports:
       {{ end }}
       &lt;/div&gt;
 
+      {{ end }}
+
       {{ if $artifact.Tools }}
       ### Tools
 
       {{ range $artifact.Tools -}}
-      * &lt;grr-tool-viewer name="{{.Name}}"&gt;&lt;/grr-tool-viewer&gt;
+      * &lt;grr-tool-viewer name="{{.Name}}" version="{{.Version}}"&gt;&lt;/grr-tool-viewer&gt;
       {{ end }}
 
       {{ end }}
@@ -109,6 +113,8 @@ reports:
 
       {{ range $source := $artifact.Sources }}
 
+      {{ if or $source.Queries $source.Query }}
+
       ### Source {{ $source.Name }}
       {{ if $source.Query }}
 
@@ -123,6 +129,8 @@ reports:
       {{- $query -}}
       {{ end }}
       ```
+      {{ end }}
+
       {{ end }}
 
       {{ end }}

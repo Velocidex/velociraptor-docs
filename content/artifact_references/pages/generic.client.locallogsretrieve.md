@@ -8,7 +8,6 @@ Retrives the locally written logs.
 
 
 <pre><code class="language-yaml">
-
 name: Generic.Client.LocalLogsRetrieve
 description: |
   Retrives the locally written logs.
@@ -38,5 +37,5 @@ sources:
            SELECT * FROM read_crypto_file(filename=vfs_path, accessor="fs")
         })
 
-
 </code></pre>
+
