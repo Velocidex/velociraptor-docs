@@ -154,8 +154,7 @@ sources:
                                 then= Size,
                                 else= String.Offset + ContextBytes) ]
                         )) as HitContext
-            FROM yara( accessor='fat',start=FirstCluster,
-                    rules=yara_rules,files=OSPath,
+            FROM yara( accessor='fat', rules=yara_rules,files=OSPath,
                     context=ContextBytes,number=NumberOfHits )
         })
       
