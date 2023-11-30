@@ -1,5 +1,5 @@
 ---
-title: handles
+title: etw_sessions
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## handles
+## etw_sessions
 <span class='vql_type pull-right page-header'>Plugin</span>
 
 
@@ -19,14 +19,12 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-pid|If specified only get handles from these PIDs.|uint64
-types|If specified only get handles of this type.|list of string
+count|The count of sessions to retrieve (default 64) |uint64
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
 
 ### Description
 
-Enumerate process handles.
-
+Enumerates all active ETW sessions
 

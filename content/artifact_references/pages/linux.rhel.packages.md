@@ -4,13 +4,13 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Parse packages installed from dnf
+Parse packages installed from dnf or yum
 
 
 <pre><code class="language-yaml">
 name: Linux.RHEL.Packages
 description: |
-  Parse packages installed from dnf
+  Parse packages installed from dnf or yum
 
 parameters:
   - name: DNFGrokExpression
@@ -22,11 +22,17 @@ sources:
       SELECT OS From info() where OS = 'linux'
 
     query: |
-        SELECT * FROM foreach(row={
+        LET exec = SELECT * FROM foreach(row={
           SELECT grok(grok=DNFGrokExpression, data=Stdout) AS Parsed
-          FROM execve(argv=["dnf", "--quiet", "list", "installed"], sep="\n")
+          FROM execve(argv=cmd, sep="\n")
           WHERE count() &gt; 2
         }, column="Parsed")
+        
+        SELECT * FROM switch(
+            a=exec(cmd=["dnf", "--quiet", "list", "installed"]),
+            b=exec(cmd=["yum", "--quiet", "list", "installed"]),
+            c={SELECT log(level="ERROR",message="Could not retrieve Package Information") FROM scope()}
+            )
 
 </code></pre>
 

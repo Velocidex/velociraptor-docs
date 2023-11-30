@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 filename|Path to the file to write|OSPath (required)
+accessor|The accessor to use|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>

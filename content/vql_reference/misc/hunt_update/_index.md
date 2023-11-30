@@ -23,6 +23,7 @@ hunt_id|The hunt to update|string (required)
 stop|Stop the hunt|bool
 start|Start the hunt|bool
 description|Update hunt description|string
+expires|Update hunt expiry|time.Time
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">START_HUNT</i>

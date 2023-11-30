@@ -13,6 +13,7 @@ Miscellaneous plugins not yet categorized.
 |[alert](alert)|<span class='vql_type'>Function</span>|Generate an alert message|
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
+|[artifact_set_metadata](artifact_set_metadata)|<span class='vql_type'>Function</span>|Sets metadata about the artifact|
 |[base85decode](base85decode)|<span class='vql_type'>Function</span>|Decode a base85 encoded string|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|
@@ -21,6 +22,7 @@ Miscellaneous plugins not yet categorized.
 |[delete_flow](delete_flow)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
+|[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|
 |[flow_logs](flow_logs)|<span class='vql_type'>Plugin</span>|Retrieve the query logs of a flow|
 |[get_flow](get_flow)|<span class='vql_type'>Function</span>|Gets flow details|
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
