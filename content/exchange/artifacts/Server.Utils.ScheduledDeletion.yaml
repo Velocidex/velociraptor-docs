@@ -23,8 +23,7 @@ sources:
       FROM clock(period=60)
       WHERE Now =~ ScheduleTimeRegex AND Today =~ ScheduleDayRegex AND
           log(message="Launching at time " + Now)
-      
-      LET DateToDelete <= now() - 60*60*24*DaysOld
+          
       SELECT * FROM foreach(row=schedule, query={
-          SELECT * FROM Artifact.Server.Utils.DeleteMonitoringData(ArtifactRegex=ArtifactRegex, DateBefore=DateToDelete, ReallyDoIt=true)
+          SELECT * FROM Artifact.Server.Utils.DeleteMonitoringData(ArtifactRegex=ArtifactRegex, DateBefore=(now() - 60*60*24*DaysOld), ReallyDoIt=true)
       })
