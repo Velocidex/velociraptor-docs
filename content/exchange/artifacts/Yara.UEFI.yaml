@@ -59,6 +59,24 @@ parameters:
                 condition:
                     7 of them and filesize < 181248
             }
+            rule MAL_Rootkit_CosmicStrand
+            {
+                meta:
+                	author = "Natalie Zargarov @ Rapid7"
+                    description = "CosmicStrand UEFI rootkit detection rule. Detects the compromised .efi driver "
+                    targeting = "process,efi"
+                    tags ="Rootkit"
+                strings:
+                    $trait_0 = {89 C6 53 89 D8 BB 3F B8 11 03}
+                    $trait_1 = {8B 3D 18 10 01 00 33 DB 8D 45 F8 50 53 53 6A 0B}
+                    $trait_2= {83 EC 4C 53 57 68 A0 10 01 00 8D 45 F8}
+                    $trait_3= {53 81 C7 FF 0F 00 00 68 54 44 55 00 81 E7 00 F0 FF FF 57 6A 01}
+                    $trait_4= {50 68 08 08 08 08 68 D0 43 DE DE 68 1F 96 00 00 BF E4 10 01 00}
+                    $string_0 = "winlogon.exe" 
+                condition:
+                    1 of ($trait_*) and 
+                    1 of ($string_*)
+            }
   - name: NumberOfHits
     description: This artifact will stop by default at one hit. This setting allows additional hits
     default: 1
@@ -111,7 +129,6 @@ sources:
       
       LET target_files = SELECT 
             StartOffset as PartitionOffset, PartitionSize,
-            --name as Name,
             OSPath,
             Size, Mtime, Atime, Ctime, Btime,
             Data.first_cluster as FirstCluster,
@@ -154,8 +171,7 @@ sources:
                                 then= Size,
                                 else= String.Offset + ContextBytes) ]
                         )) as HitContext
-            FROM yara( accessor='fat',start=FirstCluster,
-                    rules=yara_rules,files=OSPath,
+            FROM yara( accessor='fat', rules=yara_rules,files=OSPath,
                     context=ContextBytes,number=NumberOfHits )
         })
       
