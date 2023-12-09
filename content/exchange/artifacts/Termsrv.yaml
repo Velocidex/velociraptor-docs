@@ -25,10 +25,10 @@ type: CLIENT
 parameters:
   - name: FileNameRegex
     description: Only file names that match this regular expression will be scanned.
-    default: termsrv\.dll
+    default: termsrv\.dll$
   - name: MappingRegex
     description: Only mapped sections that match this regular expression will be scanned.
-    default: termsrv\.dll
+    default: termsrv\.dll$
   - name: UploadHits
     type: bool
     description: If selected will upload any yara hits
@@ -47,8 +47,8 @@ parameters:
                 $patch
         }
   - name: ExpectedServiceDll
-    description: Expected service dll location
-    default: C:\\Windows\\System32\\termsrv.dll
+    description: Expected service dll location regex
+    default: '''^C:\\Windows\\System32\\termsrv\.dll$'''
     
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -85,7 +85,7 @@ sources:
                             Calculate_hashes='Y',
                             CertificateInfo='Y')
         WHERE Name =~ 'TermService'
-            AND ( NOT ServiceDll = ExpectedServiceDll OR CertinfoServiceDll.Trusted = 'untrusted' )
+            AND ( NOT ServiceDll =~ ExpectedServiceDll OR CertinfoServiceDll.Trusted = 'untrusted' )
             
 column_types:
   - name: HitContext
