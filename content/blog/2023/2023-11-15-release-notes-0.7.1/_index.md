@@ -12,7 +12,7 @@ date: 2023-11-15
 ---
 
 I am very excited to announce that the latest Velociraptor release 0.7.1 is
-now in release candidate status.
+now released.
 
 In this post I will discuss some of the interesting new features.
 
