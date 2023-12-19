@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.7.1 Release"
 description: |
-   Velociraptor Release 0.7.1 is now in release candidate
+   Velociraptor Release 0.7.1 is now LIVE!
    This post discusses some of the new features.
 
 tags:
@@ -12,7 +12,7 @@ date: 2023-11-15
 ---
 
 I am very excited to announce that the latest Velociraptor release 0.7.1 is
-now released.
+now LIVE!
 
 In this post I will discuss some of the interesting new features.
 
@@ -131,13 +131,13 @@ filename pattern (e.g. only executables) or all files.
 
 ![Inspecting the VFS collection](inspect_vfs_collection.png)
 
-Finally the GUI shows a link to the collected flow where I can inspect
+Finally, the GUI shows a link to the collected flow where I can inspect
 the files or prepare a download zip just like any other collection.
 
 
 ## New VQL plugins and capabilities
 
-This release introduce an exciting new capability: `Built-in Sigma Support`.
+This release introduces an exciting new capability: `Built-in Sigma Support`.
 
 ### Built-in Sigma Support
 
@@ -153,7 +153,7 @@ can run on it. Instead, Velociraptor's philosophy is to bring the
 query to the endpoint itself.
 
 In Velociraptor, Sigma rules can directly be used on the endpoint,
-without the need to forwards all the events off the system first! This
+without the need to forward all the events off the system first! This
 makes Sigma a powerful tool for initial triage:
 
 * Apply a large number of Sigma rules on the local event log files.
@@ -167,7 +167,7 @@ Velociraptor](https://youtu.be/Q1IoGX--814?si=sRu1o7uAJqezjIwY&t=3858)
 where Eric Capuano uses the `Hayabusa` tool deployed via Velociraptor to
 quickly identify the attack techniques evident on the endpoint.
 
-Previously we could only apply Sigma rules in Velociraptor by bundling
+Previously, we could only apply Sigma rules in Velociraptor by bundling
 the `Hayabusa` tool - which presents a curated set of Sigma rules but
 runs locally. In this release Sigma matching is done natively in
 Velociraptor and therefore the [Velociraptor
@@ -233,7 +233,7 @@ For example, consider the `glob()` plugin which searches for files.
 
 ![Globing for files over SSH](glob_over_ssh.png)
 
-We can specify that the `glob()` use the `ssh` accessor to access the
+We can specify that the `glob()` uses the `ssh` accessor to access the
 remote system. By setting the `SSH_CONFIG` VQL variable, the accessor
 is able to use the locally stored private key to be able to
 authenticate with the remote system to access remote files.
@@ -242,7 +242,7 @@ We can combine this new accessor with the `remapping` feature to
 reconfigure the VQL engine to substitute the `auto` accessor with the
 `ssh` accessor when any plugin attempts to access files. This allows
 us to transparently use the same artifacts that would access files
-locally, but this time transparently will access these files over SSH:
+locally, but this time will transparently access these files over SSH:
 
 ![Remapping the auto accessor with ssh ](remapping_ssh.png)
 
@@ -263,7 +263,7 @@ performing hunts, and also running the notebook queries.
 
 This release allows notebook processors to be run in another
 process. In Multi-Frontend configurations (also called Master/Minion
-configuration), the Minion nodes will now offer to perform notebook
+configurations), the Minion nodes will now offer to perform notebook
 queries away from the master node. This allows this sudden workload to
 be distributed to other nodes in the cluster and improve server and
 GUI performance.
@@ -317,7 +317,7 @@ The downside of writing data locally on the endpoints is that this
 data may be accessed if the endpoint is later compromised. If the data
 contains sensitive information this can be used by an attacker. This
 is also primarily the reason that Velociraptor does not write a log
-file on the endpoint. Unfortunately this makes it difficult to debug
+file on the endpoint. Unfortunately, this makes it difficult to debug
 issues.
 
 The 0.7.1 release introduces a secure local log file format. This
