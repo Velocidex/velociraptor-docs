@@ -25,7 +25,7 @@ parameters:
     type: yara
     description: Final Yara option and the default if no other options provided.
     default: |
-        rule IDAT_Loader_August_2023
+        rule MAL_Loader_IDAT_August_2023
         {
             meta:
                 description = "IDAT Loader August 2023"
@@ -37,6 +37,24 @@ parameters:
                 $trait_3 = {68 77 94 91 2C 8B 45 ?? 50 E8}
             condition:
                 2 of ($trait_*)
+        }
+        rule MAL_Loader_IDAT_Shellcode_Dec_2023
+        {
+             meta:
+                author = "Thomas Elkins - Rapid7"
+                description = "Yara detects in memory IDAT Loader shellcode"
+                date = "20-12-2023"
+                
+            strings:
+                $stage1_32_1 = { 8B D1 8D 04 09 D1 EA 33 D0 8D 04 09 56 81 E2 55 55 55 55 33 D0 8B F2 8B C2 C1 E0 02 C1 EE 02 33 } // function from IDAT API Hashing Routine
+                $stage1_32_2 = { 8A 44 0D 08 30 04 32 8D 41 01 83 E9 03 42 F7 D9 1B C9 23 C8 3B D7 72 E8 } // XOR encrpytion routine for creation of encrypted temp file
+                $stage1_64_1 = { 8B 44 24 08 25 55 55 55 55 D1 E0 8B 4C 24 08 D1 E9 81 E1 55 55 55 55 0B C1 89 44 24 08 } // function from IDAT API Hashing Routine
+                $stage1_64_1 = { 8B 04 24 8B 4C 24 04 0F B6 4C 0C 08 48 8B 54 24 20 0F B6 04 02 33 C1 8B 0C 24 48 8B 54 24 20 88 } // XOR encryption for creation of encrypted temp file
+                $stage2_1 = { FF 57 0C 33 D2 6A 1A 59 F7 F1 66 0F BE 44 15 DC 66 89 04 73 46 3B 75 FC 72 E6 } // Function turns computer name into UpperCase only characters using srand function
+                $stage2_1 = { 8B 00 33 04 8A 8B 4D E8 89 01 8B 55 E4 83 EA 01 39 55 F4 75 } // decryption loop for final payload
+                
+            condition:
+                2 of ($stage1_32_*) or 2 of ($stage1_64_*) or 2 of ($stage2_*)
         }
         
         rule win_stealc_w0 {
