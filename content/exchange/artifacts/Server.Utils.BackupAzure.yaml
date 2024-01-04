@@ -1,4 +1,4 @@
-name: Exchange.Server.Utils.BackupAzure
+name: Server.Utils.BackupAzure
 description: |
    This server monitoring artifact will automatically zip and backup
    any collected artifacts to Azure blob storage.
