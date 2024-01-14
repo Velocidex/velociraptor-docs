@@ -1434,3 +1434,7 @@ decrypted
 # content/vql_reference/event/watch_etw/_index.md
 TdhGetEventMapInformation
 MapInfo
+
+# content/docs/deployment/security/_index.md
+mTLS
+unencrypted
