@@ -240,7 +240,7 @@ The previous section described how to bring up the debug server by
 providing the `--debug` commandline, but existing clients are not
 normally already running with this flag. Often we are trying to
 collect an artifact from a remote client and we want to see what is
-actually happing in the client process itself.
+actually happening in the client process itself.
 
 We can do this by collecting the `Generic.Client.Profile` from the
 client directly. This artifact has access to the same data exposed
@@ -263,7 +263,7 @@ issues.
 
 While collecting the profile at any time is useful, it is sometimes
 hard to catch the problem on the client at just the right moment. For
-example, if a particular query causes a memory leak or performace
+example, if a particular query causes a memory leak or performance
 issues, by the time you can schedule the `Generic.Client.Profile`
 artifact, the client may have already restarted or is too busy to
 actually collect the artifact.
@@ -286,7 +286,7 @@ progresses as well as the logs from the client.
 
 One of the first troubleshooting steps described above is to run the
 client with the `-v` flag to print client logs to the screen. This
-helps to identify transient network issues or idenitify when a client
+helps to identify transient network issues or identify when a client
 restarted.
 
 Normally however, the client does not write its logs to disk. This is
@@ -300,7 +300,7 @@ decrypt it on the server while not creating an information leak risk.
 To enable local client logging, you can create a new label group
 (e.g. `logged`) and then assign the `Generic.Client.LocalLogs` client
 monitoring artifact to this group. This allows you to begin logging on
-any client by simply labelling it into the group.
+any client by simply labeling it into the group.
 
 ![Configuring local client logs](local_client_logs.png)
 
