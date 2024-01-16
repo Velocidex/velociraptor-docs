@@ -1,4 +1,4 @@
-name: Windows.PersistenceSniper
+name: Windows.PersistenceSniper2
 description: PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident Responders and System Administrators to hunt persistences implanted in Windows machines. It is also available on Powershell Gallery and it is digitally signed with a valid code signing certificate. The tool is under active development with new releases coming out regularly, so make sure to use the up-to-date version. https://github.com/last-byte/PersistenceSniper
 
 author: Chris Jones - CPIRT | FabFaeb
@@ -11,11 +11,10 @@ precondition:
     SELECT OS From info() where OS = 'windows'
 
 sources:
- - name: Upload
-   query: |
+ - query: |
         LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="PSniper", IsExecutable=FALSE)
 
-        LET TmpDir <= tempdir()
+        LET TmpDir <= tempdir(remove_last='True')
 
         LET _ <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
@@ -23,12 +22,8 @@ sources:
 
         LET CSVFile <= TmpDir + '\\psniper_results.csv'
 
-        LET cmdline = 'powershell -executionpolicy bypass -command "& { import-module '+ "'" + PSniperLocation + "'" + '; Find-AllPersistence | ConvertTo-CSV -NoTypeInformation}" | Out-File -encoding ASCII"' + CSVFile + '"'
+        LET cmdline = 'Powershell powershell -executionpolicy bypass -command "& { import-module '+ "'" + PSniperLocation + "'" + '; Find-AllPersistence | ConvertTo-CSV -NoTypeInformation}" | Out-File -encoding ASCII "' + CSVFile + '"'
 
-        LET _ <= SELECT * FROM execve(argv=["Powershell", cmdline], length=10000)
+        LET _ <= SELECT * FROM execve(argv=split(string=cmdline,sep=' '), length=10000)
 
-        SELECT upload(file=CSVFile) AS Uploads FROM scope()
-
- - name: Results
-   query: |
         SELECT * FROM parse_csv(filename=CSVFile)
