@@ -39,7 +39,7 @@ sources:
                 EventData.name as Name,
                 EventData.id as Id,
                 EventData.url as Url,
-                url(parse=Url).Host AS TLD,
+                url(parse=EventData.url).Host AS TLD,
                 EventData.peer as Peer,
                 timestamp(epoch=EventData.fileTime) as FileTime,
                 EventData.fileLength as fileLength,
