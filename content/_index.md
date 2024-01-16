@@ -21,12 +21,6 @@ carousel:
 
 ---
 
-{{% notice warning "CVE-2023-5950 published on 2023-11-06" %}}
-Please upgrade your servers to mitigate `CVE-2023-5950` to at least release `0.7.0-4` or `0.6.9-1`.
-
-[More details](/announcements/2023-cves/)
-{{% /notice %}}
-
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response
