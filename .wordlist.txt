@@ -1438,3 +1438,7 @@ MapInfo
 # content/docs/deployment/security/_index.md
 mTLS
 unencrypted
+
+# content/docs/deployment/troubleshooting/_index.md
+DataDog
+Grafana
