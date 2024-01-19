@@ -19,9 +19,11 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-client_id|The client id to import to. Use 'auto' to generate a new client id.|string (required)
+client_id|The client id to import to. Use 'auto' to generate a new client id.|string
 hostname|When creating a new client, set this as the hostname.|string
 filename|Path on server to the collector zip.|string (required)
+accessor|The accessor to use.|string
+import_type|Whether the import is an offline_collector or hunt.|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>

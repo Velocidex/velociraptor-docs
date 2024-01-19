@@ -20,7 +20,6 @@ APIs. The following are only available when running on Windows.
 |[interfaces](interfaces)|<span class='vql_type'>Plugin</span>|List all active network interfaces using the API|
 |[lookupSID](lookupSID)|<span class='vql_type'>Function</span>|Get information about the SID|
 |[modules](modules)|<span class='vql_type'>Plugin</span>|Enumerate Loaded DLLs|
-|[netstat](netstat)|<span class='vql_type'>Plugin</span>|Collect network information|
 |[partitions](partitions)|<span class='vql_type'>Plugin</span>|List all partitions|
 |[proc_dump](proc_dump)|<span class='vql_type'>Plugin</span>|Dumps process memory|
 |[proc_yara](proc_yara)|<span class='vql_type'>Plugin</span>|Scan processes using yara rules|

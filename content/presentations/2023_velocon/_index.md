@@ -1,40 +1,28 @@
 ---
-menutitle: "VeloCON 2023"
-title: "The 2023 Velociraptor Conference - Digging Deeper Together..."
-description: |
-    Join us in our annual Velociraptor conference to discuss and share your experiences with Velociraptor!
+menutitle: VeloCON 2023
+title: VeloCON 2023
+weight: 100
 
-weight: 30
-no_edit: true
-noTitle: true
+
 ---
 
 <img style="width: 100%" src="velocon_banner_2023.jpg">
 
-We are thrilled to announce that the 2nd annual VeloCON virtual summit will
-be held this September 13th, with times oriented to the continental
-USA timezones. Once again, the conference will be online and completely
-free! Presentations will be published on our Velociraptor site and as
-YouTube videos after the event.
-
+On September 13th 2023, we held the 2nd annual VeloCON virtual summit.
 VeloCON is a 1 day event focused on the Velociraptor community. It's
 a place to share experiences in using and developing Velociraptor to
 address the needs of the wider DFIR community and an opportunity to take
 a look ahead at the future of our platform.
 
-Registration for this event is completely free! Registration is now
-open for VeloCON 2023 at the link here:
-https://rapid7.zoom.us/webinar/register/WN_tLy3AsN7SOOncobuLQWpXQ#/registration.
+VeloCON ended with Mike Cohen VeloCON with a review of the last twelve months
+for Velociraptor, and some insight into the next twelve. 
 
-Last year's event was a tremendous success, with over 500 unique participants
-enjoying our lineup of fascinating discussions, tech talks and the
-opportunity to get to know real members of our own community.  You can
-re-watch an indexed version of VeloCON 2022 at
-https://www.youtube.com/watch?v=ahUMgKZLHLk&list=PLz4xB83Y3VbhJjsvw75wPbNZcbiWA_L03
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/0trXidVpuQs" title="VeloCon 2023: Year In Review/Future Roadmap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-This year's event calls for even more of the stimulating and informative content
-that made last year's VeloCON so much fun.  Don't miss your chance at being a
-part of this year's marquee event of the open-source DFIR calendar.
+YouTube links to the sessions can be found below. 
+
+
+
 
 ## Agenda at a glance
 
@@ -153,6 +141,8 @@ used by mature users. This talk will walk through some basics of content
 management, introduce automation and hopefully leave you with actionable 
 ideas on how to do Velociraptor Content like a boss. 
 
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/DjMAri17-MI" title="VeloCon 2023:  Content Management Like a Boss!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### Fast DFIR with Velociraptor
 By **Mike Cohen** - Digital Paleontologist
 
@@ -181,6 +171,8 @@ artifacts you might be able to leverage. If you currently do not use
 Velociraptor, this webinar will provide a demonstration of some of the
 powerful capabilities that come bundled in this widely popular DFIR
 tool!
+
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/ibl4-MzW-KI" title="VeloCon 2023:  Fast DFIR with Velociraptor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Empowering SOC Analysts with Velociraptor: Revolutionizing Live Response and Automation
 
@@ -228,6 +220,8 @@ incident response capabilities, strengthen their security posture, and
 adapt to the ever-evolving threat landscape effectively.
 
 
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/uXWeWFQd0SM" title="VeloCon 2023: Empowering SOC Analysts with Velociraptor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### Windows Search Index: The forensic artifact you’ve been searching for
 
 By **Phalgun Kulkarni** - DFIR Consultant - Aon
@@ -265,7 +259,7 @@ https://www.aon.com/cyber-solutions/aon_cyber_labs/windows-search-index-the-fore
 SIDR available at https://github.com/strozfriedberg/sidr
 
 
-
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/zTRrxRJr7SA" title="VeloCon 2023: Windows Search Index: The forensic artifact you’ve been searching for" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Velociraptor As a Learning Tool
 
@@ -365,6 +359,7 @@ only rely on third party enrichment to start.
 - I will reiterate that when you combine all the above, you becoming more
 resourceful and self-starting as a result.
 
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/KX6RV6rvY00" title="VeloCon 2023: Velociraptor As a Learning Tool" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Clawing Your Way To Compliance with Velociraptor
 
@@ -378,7 +373,7 @@ Continuing, we’ll discuss how the open-source nature of Velociraptor allows fo
 
 In conclusion, the presentation will underscore the significance of adopting a proactive, tool-supported approach to achieving compliance. By employing Velociraptor’s advanced endpoint visibility monitoring capabilities, organizations can not only demonstrate their adherence to required security standards but also enhance their overall cybersecurity posture. The insights shared during this presentation will be especially beneficial for security professionals and compliance officers seeking efficient ways to align their compliance strategies with dynamic cybersecurity needs. Through this exploration of Velociraptor’s potential in the compliance arena, attendees will gain a deeper understanding of how to leverage this powerful tool in their quest to maintain security compliance.
 
-
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/Az2_ljP7d00" title="VeloCon 2023: Clawing Your Way To Compliance with Velociraptor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ### Tracing the Footsteps: A Bird's Eye View of Lateral Movement Using Velociraptor
 
@@ -437,3 +432,5 @@ OS (including Remote Access Tools artifacts), which can be utilized to
 identify the affected systems and Threat Actor’s movement in a
 network.  The ability to efficiently consume the data generated by our
 Velociraptor plugin through data visualizations.
+
+<iframe width="1092" height="614" src="https://www.youtube.com/embed/WS6yzwcZ9ZE" title="VeloCon 2023: Tracing the Footsteps: A Bird’s Eye View of Lateral Movement Using Velociraptor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

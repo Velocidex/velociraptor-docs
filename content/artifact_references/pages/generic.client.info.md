@@ -38,8 +38,7 @@ sources:
       This source is used internally to populate agent info. Do not
       modify or remove this query.
     query: |
-        LET Interfaces = SELECT format(format='%02x:%02x:%02x:%02x:%02x:%02x',
-            args=HardwareAddr) AS MAC
+        LET Interfaces = SELECT HardwareAddrString AS MAC
         FROM interfaces()
         WHERE HardwareAddr
 
@@ -53,6 +52,18 @@ sources:
                Platform, PlatformVersion, KernelVersion, Fqdn,
                Interfaces.MAC AS MACAddresses
         FROM info()
+
+  - name: LinuxInfo
+    description: Linux specific information about the host
+    precondition: SELECT OS From info() where OS = 'linux'
+    query: |
+      SELECT
+      sysinfo() AS `Computer Info`,
+      { SELECT Name, HardwareAddrString AS MACAddress,
+               Up, PointToPoint,
+               AddrsString AS IPAddresses
+        FROM interfaces() WHERE HardwareAddr} AS `Network Info`
+      FROM scope()
 
   - name: WindowsInfo
     description: Windows specific information about the host
@@ -144,14 +155,39 @@ reports:
          })
       {{ end }}
 
+      {{ define "computerinfo" }}
+      LET X &lt;= SELECT *
+        FROM source(artifact='Generic.Client.Info/LinuxInfo')
+        LIMIT 1
+
+      SELECT humanize(bytes=TotalPhysicalMemory) AS  TotalPhysicalMemory,
+             humanize(bytes=TotalFreeMemory) AS  TotalFreeMemory,
+             humanize(bytes=TotalSharedMemory) AS  TotalSharedMemory,
+             humanize(bytes=TotalSwap) AS  TotalSwap,
+             humanize(bytes=FreeSwap) AS  FreeSwap
+      FROM foreach(row=X[0].`Computer Info`)
+      {{ end }}
+
       &lt;div&gt;
       {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
       &lt;/div&gt;
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
-      {{ if $windows_info }}
+      {{ if $windows_info | Expand }}
       # Windows agent information
         {{ $windows_info | Table }}
+      {{ end }}
+
+      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(artifact='Generic.Client.Info/LinuxInfo') LIMIT 1 SELECT * FROM X" }}
+      {{ if Query "SELECT * FROM source(artifact='Generic.Client.Info/LinuxInfo')" | Expand }}
+      # Linux agent information
+
+      ### Network Info
+        {{ Query "SELECT * FROM foreach(row=X[0].`Network Info`)" | Table }}
+
+      ### Computer Info
+        {{ Query "computerinfo" | Table }}
+
       {{ end }}
 
       # Active Users

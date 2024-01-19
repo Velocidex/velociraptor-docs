@@ -14,19 +14,19 @@ type: CLIENT
 author: Wes Lambert - @therealwlambert
 tools:
   - name: CapaWindows
-    url: https://github.com/mandiant/capa/releases/download/v6.0.0/capa-v6.0.0-windows.zip
-    expected_hash: ca9a5388de86e95289426007ef794f6f6977ba6720f7fe5bc35a8cdc8a16f452
+    url: https://github.com/mandiant/capa/releases/download/v6.1.0/capa-v6.1.0-windows.zip
+    expected_hash: 070923d5ca225ef29a670af9cc66a8d648fcaaff7e283cb1ddc73de6e3610f0f
     serve_locally: true
 parameters:
    - name: File
 sources:
    - query: |
-        LET Capa <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(
+        LET Capa <= SELECT OSPath FROM Artifact.Generic.Utils.FetchBinary(
               ToolName="CapaWindows")
         LET CapaPath <= tempfile(extension=".exe")
         LET UnzipIt <= SELECT
-            copy(filename=url(path=Capa[0].FullPath,
-                fragment="capa.exe").String,
+            copy(filename=pathspec(DelegateAccessor='file',
+                DelegatePath=Capa[0].OSPath, Path='capa.exe'),
                 dest=CapaPath,
                 accessor='zip')
         FROM scope()

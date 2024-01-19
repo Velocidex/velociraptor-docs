@@ -27,3 +27,7 @@ end|End index of substring|int
 
 Create a substring from a string
 
+If start is not provided, the beginning of the string is used.
+If end is not provided, the end of the string are used.
+
+

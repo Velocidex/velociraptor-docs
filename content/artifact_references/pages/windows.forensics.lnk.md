@@ -6,18 +6,24 @@ tags: [Client Artifact]
 
 This artiact parses LNK shortcut files.
 
-A LNK file is a type of Shell Item that serves as a shortcut or reference to a 
-specific file, folder, or application. It contains metadata and information 
-about the accessed file or location and is a valuable forensic artifact. 
-LNK files can be automatically created by the Windows operating system when a 
+A LNK file is a type of Shell Item that serves as a shortcut or reference to a
+specific file, folder, or application. It contains metadata and information
+about the accessed file or location and is a valuable forensic artifact.
+LNK files can be automatically created by the Windows operating system when a
 user accesses a file from a supported application or manually created by the user.
 
 This artifact has several configurable options:
 
-- TargetGlob: glob targeting. Default targets *.lnk files in user path.
+- TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
 - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
 - IgnoreRegex: Ignore regex filter on key fields.
 - UploadLnk: uploads lnk hits.
+- SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
+- SusSize: Any lnk over this size in bytes is suspicious.
+- SusArgSize: Any lnk with Argument strings over this size is suspicious.
+- SusArgRegex: Regex for suspicious strings in Arguments.
+- SusHostnameRegex: Regex for suspicious TrackerData Hostname.
+- CheckHostnameMismatch: Compare TrackerData.MachineID with Hostname (noisy in many networks)
 
 List of fields targeted by filter regex:
 
@@ -30,9 +36,26 @@ List of fields targeted by filter regex:
   - LinkTarget.LinkTarget
   - PropertyStore
   - TrackerData.MachineID
-  - TrackerData.MacAddress  
-    
+  - TrackerData.MacAddress
+
   NOTE: regex startof (^) and endof ($) line modifiers will not work.
+
+
+  Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
+
+  * Large Size - default over 20000 bytes
+  * Startup Path - path with \Startup\
+  * Environment variable script - environment vatiable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
+  * No Target with environmant variable - environment variable only execution
+  * Suspicious argument size - large sized arguments over 250 characters as default
+  * Arguments have ticks - ticks are common in malicious LNK files
+  * Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
+  * Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
+  * Arguments have leading space malicious LNK files may have a many leading spaces to obfuscate some tools
+  * Arguments have http strings - LNKs are reguarly used as a download cradle - https?://
+  * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
+  * Suspicious hostname - some common malicious hostnames
+  * Hostname mismatch - if selected will compare trackerdata hostname to machine name (lots of FPs)
 
 
 <pre><code class="language-yaml">
@@ -40,22 +63,28 @@ name: Windows.Forensics.Lnk
 author: Matt Green - @mgreen27
 description: |
   This artiact parses LNK shortcut files.
-  
-  A LNK file is a type of Shell Item that serves as a shortcut or reference to a 
-  specific file, folder, or application. It contains metadata and information 
-  about the accessed file or location and is a valuable forensic artifact. 
-  LNK files can be automatically created by the Windows operating system when a 
+
+  A LNK file is a type of Shell Item that serves as a shortcut or reference to a
+  specific file, folder, or application. It contains metadata and information
+  about the accessed file or location and is a valuable forensic artifact.
+  LNK files can be automatically created by the Windows operating system when a
   user accesses a file from a supported application or manually created by the user.
-  
+
   This artifact has several configurable options:
-  
-  - TargetGlob: glob targeting. Default targets *.lnk files in user path.
+
+  - TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
   - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
   - IgnoreRegex: Ignore regex filter on key fields.
   - UploadLnk: uploads lnk hits.
-  
+  - SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
+  - SusSize: Any lnk over this size in bytes is suspicious.
+  - SusArgSize: Any lnk with Argument strings over this size is suspicious.
+  - SusArgRegex: Regex for suspicious strings in Arguments.
+  - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
+  - CheckHostnameMismatch: Compare TrackerData.MachineID with Hostname (noisy in many networks)
+
   List of fields targeted by filter regex:
-  
+
     - StringData.TargetPath
     - StringData.Name
     - StringData.RelativePath
@@ -65,9 +94,26 @@ description: |
     - LinkTarget.LinkTarget
     - PropertyStore
     - TrackerData.MachineID
-    - TrackerData.MacAddress  
-      
+    - TrackerData.MacAddress
+
     NOTE: regex startof (^) and endof ($) line modifiers will not work.
+
+
+    Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
+
+    * Large Size - default over 20000 bytes
+    * Startup Path - path with \Startup\
+    * Environment variable script - environment vatiable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
+    * No Target with environmant variable - environment variable only execution
+    * Suspicious argument size - large sized arguments over 250 characters as default
+    * Arguments have ticks - ticks are common in malicious LNK files
+    * Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
+    * Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
+    * Arguments have leading space malicious LNK files may have a many leading spaces to obfuscate some tools
+    * Arguments have http strings - LNKs are reguarly used as a download cradle - https?://
+    * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
+    * Suspicious hostname - some common malicious hostnames
+    * Hostname mismatch - if selected will compare trackerdata hostname to machine name (lots of FPs)
 
 
 reference:
@@ -75,7 +121,7 @@ reference:
 
 parameters:
   - name: TargetGlob
-    default: C:\Users\**\*.lnk
+    default: C:\{ProgramData,Users\*\AppData\*}\Microsoft\Windows\{Start Menu\Programs\StartUp,Recent\**}\*.lnk
   - name: IocRegex
     type: regex
     description: A regex to filter on all fields
@@ -84,6 +130,26 @@ parameters:
     description: A regex to ignore ilter all fields
   - name: UploadLnk
     description: Also upload the link files themselves.
+    type: bool
+  - name: SuspiciousOnly
+    description: Only returns LNK files reporting a suspicious attribute
+    type: bool
+  - name: SusSize
+    description: Any lnk over this size in bytes is suspicious.
+    default: 20000
+    type: int
+  - name: SusArgSize
+    default: 250
+    description: Any lnk with Argument strings over this size is suspicious.
+    type: int
+  - name: SusArgRegex
+    description: Regex for suspicious strings in Argumetns.
+    default: \\AppData\\|\\Users\\Public\\|\\Temp\\|comspec|&amp;cd&amp;echo| -NoP | -W Hidden | [-/]decode | -e.* (JAB|SUVYI|SQBFAFgA|aWV4I|aQBlAHgA)|start\s*[\\/]b|\.downloadstring\(|\.downloadfile\(|iex
+  - name: SusHostnameRegex
+    description: Regex for suspicious TrackerData Hastname.
+    default: ^(Win-|Desktop-|Commando$)
+  - name: CheckHostnameMismatch
+    description: Compare TrackerData.MachineID with Hostname (noisy in many networks)
     type: bool
 
 export: |
@@ -155,7 +221,7 @@ export: |
         ["WriteTime", 44, "WinFileTime", {
             "type": "uint64"
         }],
-        
+
         ["FileSize", 52, "uint32"],
         ["IconIndex", 56, "uint32"],
         ["ShowCommand", 60, "Enumeration", {
@@ -247,9 +313,9 @@ export: |
             "value": "x=&gt;if(condition= x.__HotKeyLow=~'No key assigned',
                             then=x.__HotKeyLow,
                             else=x.__HotKeyLow + ' + ' + x.__HotKeyHigh)"
-            
+
         }],
-        
+
         # The LinkTargetIDList only exists if the Link Flag is set otherwise it is empty.
         ["LinkTargetIDList", "x=&gt;x.HeaderSize", "Union", {
             "selector": "x=&gt;x.LinkFlags =~ 'HasLinkTargetIDList'",
@@ -265,7 +331,7 @@ export: |
                 "false": "Empty"
             }
         }],
-        
+
         # StringData flag checks
         ["__Name", "x=&gt;x.LinkInfo.EndOf", "Union", {
             "selector": "x=&gt;x.LinkFlags =~ 'HasName'",
@@ -310,7 +376,7 @@ export: |
             }],
       ]],
       ["Empty", 0, []],
-      
+
       # Struct size includes the size field
       ["LinkTargetIDList", "x=&gt;x.IDListSize + 2", [
         ["IDListSize", 0, "uint16"],
@@ -340,10 +406,18 @@ export: |
         ["ShellBag", 0, "Union", {
            "selector": "x=&gt;x.Type",
             "choices": {
+               # Older VQL had a bug in BitField
                "64": "ShellBag0x40",
                "48": "ShellBag0x30",
                "16": "ShellBag0x1f",
                "32": "ShellBag0x20",
+
+               # Newer versions should work better
+               "1": "ShellBag0x1f",
+               "2": "ShellBag0x20",
+               "3": "ShellBag0x30",
+               "4": "ShellBag0x40",
+
             }
         }]
         ]],
@@ -391,7 +465,7 @@ export: |
                                RelativeLink=x.__CommonNetworkRelativeLink) )'
         }]
       ]],
-      
+
       ["CommonNetworkRelativeLink", 0, [
         ["__CommonNetworkRelativeLinkSize", 0, "uint32"],
         ["__CommonNetworkRelativeLinkFlags", 4, "Flags", {
@@ -590,7 +664,7 @@ export: |
                 "end_bit": 64,
             }]
         ]],
-        
+
         ["StringData",0,[
             ["TargetPath",0,"Value",{ "value":"x=&gt; x.ParentOf.LinkInfo.Target.Path"}],
             ["Name",0,"Value",{ "value":"x=&gt; x.ParentOf.__Name.StringData"}],
@@ -599,7 +673,7 @@ export: |
             ["Arguments",0,"Value",{ "value":"x=&gt; x.ParentOf.__Arguments.StringData"}],
             ["IconLocation",0,"Value",{ "value":"x=&gt; x.ParentOf.__IconLocation.StringData"}],
         ]],
-        
+
         ## StringDataBlock structs
         ["Name", "x=&gt;x.Size + 2", [
             ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
@@ -666,7 +740,7 @@ export: |
                 "type": "uint32",
                 "map": {
                     "EnvironmentVariable": 0xA0000001,
-                    "Console": 0xA0000002, 
+                    "Console": 0xA0000002,
                     "TrackerData": 0xA0000003,
                     "ConsoleFE": 0xA0000004,
                     "SpecialFolder": 0xA0000005,
@@ -681,7 +755,7 @@ export: |
                "selector": "x=&gt;x.Header",
                 "choices": {
                     "0xA0000001": "EnvironmentVariableDataBlock",
-                    "0xA0000002": "ConsoleDataBlock", 
+                    "0xA0000002": "ConsoleDataBlock",
                     "0xA0000003": "TrackerDataBlock",
                     "0xA0000004": "ConsoleFEDataBlock",
                     "0xA0000005": "SpecialFolderDataBlock",
@@ -702,7 +776,7 @@ export: |
                 "encoding": "utf16",
                 "max_length": 520
             }],
-            ["DataValue", 0, "Value",{ 
+            ["DataValue", 0, "Value",{
                 "value": "x=&gt;if(condition= x.__TargetAnsi=x.__TargetUnicode,
                                     then=x.__TargetAnsi,
                                     else=dict(Ascii=x.__TargetAnsi,Unicode=x.__TargetUnicode))" }],
@@ -720,7 +794,7 @@ export: |
                     "BACKGROUND_BLUE": 4,
                     "BACKGROUND_GREEN": 5,
                     "BACKGROUND_RED": 6,
-                    "BACKGROUND_INTENSITY": 7, 
+                    "BACKGROUND_INTENSITY": 7,
                 }}],
             ["PopupFillAttributes",10,"Flags", {
                 "type": "uint16",
@@ -732,7 +806,7 @@ export: |
                     "BACKGROUND_BLUE": 4,
                     "BACKGROUND_GREEN": 5,
                     "BACKGROUND_RED": 6,
-                    "BACKGROUND_INTENSITY": 7, 
+                    "BACKGROUND_INTENSITY": 7,
                 }}],
             ["__ScreenBufferSizeX",12,"int16"],
             ["__ScreenBufferSizeY",14,"int16"],
@@ -748,7 +822,7 @@ export: |
             ["__WindowOriginY",22,"int16"],
             ["WindowOrigin",0,"Value",{
                 "value":"x=&gt;format(format='%v / %v',args=[x.__WindowOriginX,x.__WindowOriginY])"
-            }], 
+            }],
             ["__FontSizeW",32,"int16"],
             ["__FontSizeH",34,"int16"],
             ["FontSize",0,"Value",{
@@ -768,7 +842,13 @@ export: |
                                 `32`='SWISS',
                                 `48`='MODERN',
                                 `64`='SCRIPT',
-                                `80`='DECORATIVE'),
+                                `80`='DECORATIVE',
+
+                                `1`='ROMAN',
+                                `2`='SWISS',
+                                `3`='MODERN',
+                                `4`='SCRIPT',
+                                `5`='DECORATIVE'),
                             member=x.__FontFamily)"
             }],
             ["__FontPitch", 36, "BitField", {
@@ -783,7 +863,7 @@ export: |
             ["__FontWeight",40,"uint32"],
             ["BoldFont", 0 ,"Value",{
                 "value":"x=&gt;if(condition= 700&lt;=x.__FontWeight,
-                    then= True, 
+                    then= True,
                     else= False)"
             }],
             ["FaceName", 44, "String", {
@@ -871,7 +951,7 @@ export: |
                 "encoding": "utf16",
                 "max_length": 520
             }],
-            ["DataValue", 0, "Value",{ 
+            ["DataValue", 0, "Value",{
                 "value": "x=&gt;if(condition= x.__DarwinDataAnsi=x.__DarwinDataUnicode,
                                     then=x.__DarwinDataAnsi,
                                     else=dict(Ascii=x.__DarwinDataAnsi,Unicode=x.__DarwinDataUnicode))" }],
@@ -884,7 +964,7 @@ export: |
                 "encoding": "utf16",
                 "max_length": 520,
             }],
-            ["DataValue", 0, "Value",{ 
+            ["DataValue", 0, "Value",{
                 "value": "x=&gt;if(condition= x.__TargetAnsi=x.__TargetUnicode,
                                     then=x.__TargetAnsi,
                                     else=dict(Ascii=x.__TargetAnsi,Unicode=x.__TargetUnicode))" }],
@@ -892,7 +972,7 @@ export: |
         #0xA0000008
         ["ShimDataBlock", "x=&gt;x.__DataBlockSize", [
             ["__DataBlockSize",0,"uint32"],
-            ["LayerName", 8, "String", { 
+            ["LayerName", 8, "String", {
                 "encoding": "utf16",
                 "length": "x=&gt;x.__DataBlockSize - 8",
                 "max_length": 10000
@@ -909,7 +989,7 @@ export: |
             }],
             ["DataValue",0,"Value",{"value":"x=&gt;x.PropertyStorage.PropertyValue"}],
             #["DataValue",0,"Value",{"value":"x=&gt;property_store(data=x.PropertyStorage.PropertyValue)"}],
-            
+
         ]],
         #0xA000000B
         ["KnownFolderDataBlock", 0x00000314, [
@@ -917,7 +997,7 @@ export: |
             ["__KnownFolderId", 8, "GUID"],
             ["GUID",0,"Value",{"value":"x=&gt;x.__KnownFolderId.Value"}],
             ["__Offset", 24,"uint32"],
-            ["KnownFolder", 0, "Value", { 
+            ["KnownFolder", 0, "Value", {
                 "value": "x=&gt; get(item=dict(
                     `DE61D971-5EBC-4F02-A3A9-6C82895E5C04`='AddNewPrograms',
                     `724EF170-A42D-4FEF-9F26-B60E846FBA4F`='AdminTools',
@@ -1016,7 +1096,7 @@ export: |
             ["__DataBlockSize",0,"uint32"],
             ["IDList", 8, "ItemIDList"],
         ]],
-        
+
         ["PropertyStorage","x=&gt;x.StorageSize", [
             ["StorageSize",0,"uint32"],
             #["Version",4,"String",{ "length":4 }], #Expect 1SPS / 0x53505331
@@ -1032,7 +1112,7 @@ export: |
             ["__ValueSize",0,"uint32"],
             ["__ID",4,"uint32"],
             ["GuidId",0,"Value",{"value": "x=&gt;x.ParentOf.Format + '/' + str(str=x.__ID)"}],
-            ["Description", 0, "Value", { 
+            ["Description", 0, "Value", {
                 "value": "x=&gt; get(item=dict(
                         `28636AA6-953D-11D2-B5D6-00C04FD918D0`=x.__SHELL_DETAILS,
                         `446D16B1-8DAD-4870-A748-402EA43D788C`=x.__CACHE,
@@ -1046,7 +1126,7 @@ export: |
                         `E3E0584C-B788-4A5A-BB20-7F5A44C9ACDD`=x.__SEARCH,
                         `F29F85E0-4FF9-1068-AB91-08002B27B3D9`=x.__Document,
                         `FB8D2D7B-90D1-4E34-BF60-6EAC09922BBF`=x.__Hash),
-                    member=x.ParentOf.Format) || 'Unknown Guid' " 
+                    member=x.ParentOf.Format) || 'Unknown Guid' "
             }],
             ["__STORAGE", 4, "Enumeration", {
                 "type": "uint32",
@@ -1116,7 +1196,7 @@ export: |
                 "type": "uint32",
                 "map": {
                     "Item Folder Path Display Narrow": 0x00000064,
-                }}],                
+                }}],
             ["__AppUserModel", 4, "Enumeration", {
                 "type": "uint32",
                 "map": {
@@ -1232,21 +1312,21 @@ export: |
                 }
             }],
             ["__Size",13,"uint32"],
-            ["__LPWSTR",17, "String",{ 
-                "term_hex": "00", 
+            ["__LPWSTR",17, "String",{
+                "term_hex": "00",
                 "length": "x=&gt;x.__Size * 2",
                 "encoding": "utf16"
             }],
             ["__FILETIME",13, "WinFileTime"],
             ["__UI8",13, "uint64"],
             ["__CLSID",13,"GUID"],
-            ["Value", 0, "Value", { 
+            ["Value", 0, "Value", {
                 "value": "x=&gt; get(item=dict(
                                     `LPWSTR`=x.__LPWSTR,
                                     `FILETIME`=x.__FILETIME,
                                     `UI8`=x.__UI8,
                                     `CLSID`=x.__CLSID.Value),
-                                member=x.Type) || 'Unknown: First bytes 0x' + upcase(string=format(format='%08x',args=x.__Size))" 
+                                member=x.Type) || 'Unknown: First bytes 0x' + upcase(string=format(format='%08x',args=x.__Size))"
             }],
         ]],
         ["GUID", 16, [
@@ -1264,11 +1344,13 @@ export: |
 
 sources:
   - query: |
+     LET hostname &lt;= if(condition=CheckHostnameMismatch, then={ SELECT Hostname FROM info()})
+
      LET targets = SELECT OSPath, Mtime,Atime,Ctime,Btime,Size,
             read_file(filename=OSPath,offset=0,length=2) as _Header
         FROM glob(globs=TargetGlob)
         WHERE NOT IsDir AND _Header =~ '^L\x00$'
-     
+
      LET lnk_files = SELECT *,
             parse_binary(filename=OSPath,
                 profile=Profile, struct="ShellLinkHeader")  AS Parsed
@@ -1276,18 +1358,18 @@ sources:
 
      LET fixpath(data) = regex_transform(key='x', source=join(sep='\\',array=data),
             map=dict( `My Computer\\\\` = '', `:\\\\\\\\` = ''':\''',`\\\\\\\\\\\\` = '\\'))
-            
+
      LET property_store(data) = SELECT * FROM foreach(row=data,query={SELECT * FROM foreach(row=_value,
             query={
                 SELECT GuidId,Description,Type,Value FROM foreach(row=_value)
             })})
 
 
-            
-     LET parsed = SELECT 
+
+     LET parsed = SELECT
             dict(OSPath=OSPath, Size=Size,
                 Mtime=Mtime,Btime=Btime) as SourceFile,
-            dict( 
+            dict(
                 Headersize = Parsed.HeaderSize,
                 LinkClsID = Parsed.LinkClsID,
                 LinkFlags = Parsed.LinkFlags,
@@ -1310,22 +1392,22 @@ sources:
             ) as LinkTarget,
             Parsed.StringData as StringData,
             to_dict(item={
-                    SELECT 
-                        BlockClass as _key, 
+                    SELECT
+                        BlockClass as _key,
                         if(condition= Data.DataValue,
-                            then= Data.DataValue, else= Data)  as _value 
+                            then= Data.DataValue, else= Data)  as _value
                     FROM foreach(row=Parsed.ExtraData)
                 }) as ExtraData,
             property_store(data=Parsed.ExtraData.Data.PropertyStorage.PropertyValue) as PropertyStore
         FROM lnk_files
 
       LET results = SELECT SourceFile,ShellLinkHeader,LinkInfo,LinkTarget,StringData,
-            if(condition=PropertyStore, 
+            if(condition=PropertyStore,
                 then= ExtraData + dict(PropertyStore=PropertyStore),
                 else= ExtraData ) as ExtraData
         FROM parsed
         WHERE if(condition= IocRegex,
-                    then= format(format='%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\s%s', 
+                    then= format(format='%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\s%s',
                         args=[
                             StringData.TargetPath,
                             StringData.Name,
@@ -1340,7 +1422,7 @@ sources:
                         ]) =~ IocRegex,
                     else= True)
                 AND NOT if(condition= IgnoreRegex,
-                    then= format(format='%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\s%s', 
+                    then= format(format='%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\s%s',
                         args=[
                             StringData.TargetPath,
                             StringData.Name,
@@ -1354,15 +1436,37 @@ sources:
                             join(array=PropertyStore.Value,sep='\n')
                         ]) =~ IgnoreRegex,
                     else= False)
-        
-      LET upload_results = SELECT *, 
-            upload(file=SourceFile.OSPath) as UploadedLnk
+
+      LET add_suspicious = SELECT *, dict(
+                `Large Size` = SourceFile.Size &gt; SusSize,
+                `Startup Path` = SourceFile.OSPath =~ '''\\Startup\\''',
+                `Environment variable script` = ExtraData.EnvironmentVariable =~ '''\.(bat|cmd|ps1|js|vbs|vbe|py)$''',
+                `No Target with environmant variable` = ExtraData.EnvironmentVariable AND StringData.Arguments AND NOT (StringData.TargetPath OR StringData.RelativePath),
+                `Suspicious argument size` = len(list=StringData.Arguments) &gt; SusArgSize,
+                `Arguments have ticks` = StringData.Arguments=~'''\^''',
+                `Arguments have environment variables` = StringData.Arguments=~'''\%|\$env:''',
+                `Arguments have rare characters` = StringData.Arguments=~'''\?\!\~\@''',
+                `Arguments have leading space` = StringData.Arguments =~ '^ ',
+                `Arguments have http strings` = StringData.Arguments =~'''https?://''',
+                `Suspicious arguments` = StringData.Arguments =~ SusArgRegex,
+                `Suspicious hostname` = ExtraData.TrackerData.MachineID AND SusHostnameRegex AND ExtraData.TrackerData.MachineID=~SusHostnameRegex AND NOT lowcase(string=ExtraData.TrackerData.MachineID)=~lowcase(string=hostname[0].Hostname),
+                `Hostname mismatch` = CheckHostnameMismatch AND ExtraData.TrackerData.MachineID AND NOT lowcase(string=ExtraData.TrackerData.MachineID)=~lowcase(string=hostname[0].Hostname)
+            ) as Suspicious
         FROM results
-        
-      SELECT *
+        WHERE if(condition=SuspiciousOnly,
+            then= join(array=Suspicious) =~ ':true',
+            else= True )
+
+      LET upload_results = SELECT *,
+            upload(file=SourceFile.OSPath) as UploadedLnk
+        FROM add_suspicious
+
+      -- finally return rows and remove suspicious attributes that are not true
+      SELECT *,
+            to_dict(item={SELECT * FROM items(item=Suspicious) WHERE _value = True}) as Suspicious
         FROM if(condition=UploadLnk,
             then= upload_results,
-            else= results )
+            else= add_suspicious )
 
 column_types:
   - name: SourceFile.Mtime

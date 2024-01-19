@@ -4,8 +4,7 @@ description: PersistenceSniper is a Powershell module that can be used by Blue T
 author: Chris Jones - CPIRT
 tools:
  - name: PSniper
-   url: https://github.com/last-byte/PersistenceSniper/releases/download/v1.11.0/PersistenceSniper.zip
-
+   url: https://github.com/last-byte/PersistenceSniper/releases/download/v1.14.0/PersistenceSniper.zip
 type: Client
 
 precondition: 
@@ -26,7 +25,7 @@ sources:
         
         SELECT * FROM foreach(
             row={
-                SELECT Stdout FROM execve(argv=["Powershell", cmdline], length=10000000000)
+                SELECT Stdout FROM execve(argv=["Powershell", cmdline], length=104857600)
             }, query={
                 SELECT * FROM parse_json_array(data=Stdout) where log(message=Stdout) AND log(message=Stderr)
             })

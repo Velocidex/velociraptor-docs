@@ -211,6 +211,27 @@
         }
     },
     {
+        "name": "artifact_set_metadata",
+        "description": "Sets metadata about the artifact.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The Artifact to update",
+                "required": true
+            },
+            {
+                "name": "hidden",
+                "type": "bool",
+                "description": "Set to true make the artifact hidden in the GUI, false to make it visible again."
+            }
+        ],
+        "metadata": {
+            "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
+        }
+    },
+    {
         "name": "atexit",
         "description": "Install a query to run when the query is unwound. This is used to\nclean up when the query ends.",
         "type": "Function",
@@ -315,6 +336,7 @@
     },
     {
         "name": "base85decode",
+        "description": "Decode a base85 encoded string.",
         "type": "Function",
         "args": [
             {
@@ -344,7 +366,7 @@
             {
                 "name": "path_type",
                 "type": "string",
-                "description": "Type of path (e.g. 'windows,linux)"
+                "description": "Type of path (e.g. windows, linux)"
             }
         ],
         "category": "basic"
@@ -427,7 +449,10 @@
         "name": "certificates",
         "description": "Collect certificate from the system trust store.",
         "type": "Plugin",
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "chain",
@@ -1045,7 +1070,7 @@
             {
                 "name": "notebook_id",
                 "type": "string",
-                "description": "Client ID to export.",
+                "description": "Notebook ID to export.",
                 "required": true
             }
         ],
@@ -1208,7 +1233,7 @@
             {
                 "name": "path_type",
                 "type": "string",
-                "description": "Type of path (e.g. 'windows,linux)"
+                "description": "Type of path (e.g. windows, linux)"
             }
         ],
         "category": "basic"
@@ -1432,6 +1457,21 @@
         "category": "plugin"
     },
     {
+        "name": "etw_sessions",
+        "description": "Enumerates all active ETW sessions",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "count",
+                "type": "uint64",
+                "description": "The count of sessions to retrieve (default 64) "
+            }
+        ],
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
         "name": "execve",
         "description": "This plugin launches an external command and captures its STDERR,\nSTDOUT and return code. The command's stdout is split using the `sep`\nparameter as required.",
         "type": "Plugin",
@@ -1618,12 +1658,11 @@
             {
                 "name": "regex",
                 "type": "string",
-                "description": "A regex to test each item",
-                "repeated": true
+                "description": "A regex to test each item"
             },
             {
                 "name": "condition",
-                "type": "string",
+                "type": "Lambda",
                 "description": "A VQL lambda to use to filter elements"
             }
         ],
@@ -2078,7 +2117,7 @@
     },
     {
         "name": "gunzip",
-        "description": "Apply Gunzip to the data.",
+        "description": "Uncompress a gzip-compressed block of data.",
         "type": "Function",
         "args": [
             {
@@ -2106,7 +2145,10 @@
                 "repeated": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "hash",
@@ -2203,6 +2245,11 @@
                 "name": "cookie_jar",
                 "type": "ordereddict.Dict",
                 "description": "A cookie jar to use if provided. This is a dict of cookie structures."
+            },
+            {
+                "name": "user_agent",
+                "type": "string",
+                "description": "If specified, set a HTTP User-Agent."
             }
         ],
         "category": "plugin",
@@ -2415,7 +2462,13 @@
             {
                 "name": "brief",
                 "type": "bool",
-                "description": "If set we return less columns."
+                "description": "If set we return less columns (deprecated)."
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "If set we combine results from all orgs.",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -2448,6 +2501,11 @@
                 "name": "description",
                 "type": "string",
                 "description": "Update hunt description"
+            },
+            {
+                "name": "expires",
+                "type": "time.Time",
+                "description": "Update hunt expiry"
             }
         ],
         "metadata": {
@@ -2531,8 +2589,7 @@
             {
                 "name": "client_id",
                 "type": "string",
-                "description": "The client id to import to. Use 'auto' to generate a new client id.",
-                "required": true
+                "description": "The client id to import to. Use 'auto' to generate a new client id."
             },
             {
                 "name": "hostname",
@@ -2544,6 +2601,16 @@
                 "type": "string",
                 "description": "Path on server to the collector zip.",
                 "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            },
+            {
+                "name": "import_type",
+                "type": "string",
+                "description": "Whether the import is an offline_collector or hunt."
             }
         ],
         "category": "server",
@@ -2920,6 +2987,20 @@
         "category": "basic"
     },
     {
+        "name": "logging",
+        "description": "Watch the logs emitted by the server.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "component",
+                "type": "string"
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
+    },
+    {
         "name": "logscale_upload",
         "description": "Upload rows to LogScale ingestion server.",
         "type": "Plugin",
@@ -2999,16 +3080,25 @@
         "name": "lookupSID",
         "description": "Get information about the SID.",
         "type": "Function",
+        "args": [
+            {
+                "name": "sid",
+                "type": "string",
+                "description": "A SID to lookup using LookupAccountSid ",
+                "required": true
+            }
+        ],
         "category": "windows"
     },
     {
         "name": "lowcase",
+        "description": "Returns the lowercase version of a string.",
         "type": "Function",
         "args": [
             {
                 "name": "string",
                 "type": "string",
-                "description": "A string to lower",
+                "description": "The string to process",
                 "required": true
             }
         ],
@@ -3370,7 +3460,10 @@
                 "required": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "monitoring",
@@ -3526,7 +3619,10 @@
         "name": "netstat",
         "description": "Collect network information.",
         "type": "Plugin",
-        "category": "windows"
+        "category": "plugin",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "notebook_delete",
@@ -3895,6 +3991,11 @@
                 "name": "messagedb",
                 "type": "string",
                 "description": "A Message database from https://github.com/Velocidex/evtx-data."
+            },
+            {
+                "name": "workers",
+                "type": "int64",
+                "description": "If specified we use this many workers to parse the file in parallel (default 1)."
             }
         ],
         "category": "parsers",
@@ -4677,7 +4778,10 @@
                 "required": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "proc_yara",
@@ -4895,6 +4999,11 @@
                 "name": "duration",
                 "type": "int64",
                 "description": "Duration of samples (default 30 sec)"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "The type of profile (this is a regex of debug output types that will be shown)."
             }
         ],
         "category": "plugin",
@@ -5070,6 +5179,27 @@
             }
         ],
         "category": "server"
+    },
+    {
+        "name": "read_crypto_file",
+        "description": "Read a previously stored encrypted local storage file.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "Path to the file to write",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
     },
     {
         "name": "read_file",
@@ -5654,6 +5784,51 @@
         }
     },
     {
+        "name": "sigma",
+        "description": "Evaluate sigma rules.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "rules",
+                "type": "string",
+                "description": "A list of sigma rules to compile.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "log_sources",
+                "type": "Any",
+                "description": "A log source object as obtained from the sigma_log_sources() VQL function.",
+                "required": true
+            },
+            {
+                "name": "field_mapping",
+                "type": "ordereddict.Dict",
+                "description": "A dict containing a mapping between a rule field name and a VQL Lambda to get the value of the field from the event."
+            },
+            {
+                "name": "debug",
+                "type": "bool",
+                "description": "If enabled we emit all match objects with description of what would match."
+            },
+            {
+                "name": "rule_filter",
+                "type": "Lambda",
+                "description": "If specified we use this callback to filter the rules for inclusion."
+            },
+            {
+                "name": "default_details",
+                "type": "Lambda",
+                "description": "If specified we use this callback to determine a details column if the sigma rule does not specify it."
+            }
+        ]
+    },
+    {
+        "name": "sigma_log_sources",
+        "description": "Constructs a Log sources object to be used in sigma rules. Call with args being category/product/service and values being stored queries. You may use a * as a placeholder for any of these fields.",
+        "type": "Function"
+    },
+    {
         "name": "sleep",
         "description": "Sleep for the specified number of seconds. Always returns true.",
         "type": "Function",
@@ -6069,7 +6244,7 @@
     },
     {
         "name": "str",
-        "description": "Normalize a String.",
+        "description": "Returns the string representation of provided data",
         "type": "Function",
         "args": [
             {
@@ -6083,7 +6258,7 @@
     },
     {
         "name": "strip",
-        "description": "Strip a prefix from a string.",
+        "description": "Strip prefix and/or suffix from a string",
         "type": "Function",
         "args": [
             {
@@ -6144,9 +6319,17 @@
     },
     {
         "name": "switch",
-        "description": "Executes each query. The first query to return any rows will be emitted.",
+        "description": "Conditional execution of multiple queries in order",
         "type": "Plugin",
         "category": "plugin"
+    },
+    {
+        "name": "sysinfo",
+        "description": "Collect system information on Linux clients",
+        "type": "Function",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "tempdir",
@@ -6354,7 +6537,10 @@
                 "required": true
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "trace",
@@ -6415,12 +6601,13 @@
     },
     {
         "name": "upcase",
+        "description": "Returns an uppercase version of the string.",
         "type": "Function",
         "args": [
             {
                 "name": "string",
                 "type": "string",
-                "description": "A string to lower",
+                "description": "The string to process",
                 "required": true
             }
         ],
@@ -6850,6 +7037,11 @@
                 "name": "skip_verify",
                 "type": "bool",
                 "description": "Skip TLS Verification"
+            },
+            {
+                "name": "user_agent",
+                "type": "string",
+                "description": "If specified, set a HTTP User-Agent."
             }
         ],
         "category": "basic",
@@ -7227,6 +7419,16 @@
                 "name": "level",
                 "type": "int64",
                 "description": "Log level (0-5)"
+            },
+            {
+                "name": "stop",
+                "type": "Lambda",
+                "description": "If provided we stop watching automatically when this lambda returns true"
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "If provided we stop after this much time"
             }
         ],
         "category": "event"
@@ -7252,6 +7454,11 @@
                 "name": "messagedb",
                 "type": "string",
                 "description": "A Message database from https://github.com/Velocidex/evtx-data."
+            },
+            {
+                "name": "workers",
+                "type": "int64",
+                "description": "If specified we use this many workers to parse the file in parallel (default 1)."
             }
         ],
         "category": "event",
@@ -7334,7 +7541,10 @@
                 "description": "Object namespace path."
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "wmi",
@@ -7353,7 +7563,10 @@
                 "description": "The WMI namespace to use (ROOT/CIMV2)"
             }
         ],
-        "category": "windows"
+        "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "wmi_events",
@@ -7379,7 +7592,47 @@
                 "required": true
             }
         ],
-        "category": "event"
+        "category": "event",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
+        "name": "write_crypto_file",
+        "description": "Write a query into an encrypted local storage file.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "Path to the file to write",
+                "required": true
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "query to write into the file.",
+                "required": true
+            },
+            {
+                "name": "max_wait",
+                "type": "uint64",
+                "description": "How often to flush the file (default 60 sec)."
+            },
+            {
+                "name": "max_rows",
+                "type": "uint64",
+                "description": "How many rows to buffer before writing (default 1000)."
+            },
+            {
+                "name": "max_size",
+                "type": "uint64",
+                "description": "When the file grows to this size, truncate it (default 1Gb)."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        }
     },
     {
         "name": "write_csv",

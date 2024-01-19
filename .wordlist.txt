@@ -367,6 +367,7 @@ Infosec's
 initialised
 inode
 inodes
+InsightIDR
 Inspiron
 InstalledSize
 instantiation
@@ -1408,3 +1409,36 @@ WinSCP
 extensibility
 masse
 transformative
+Uncompress
+
+# content/docs/_index.md
+InsightIDR
+XSS
+
+# content/docs/vql/_index.md
+unsimplified
+
+# content/blog/2023/2023-11-15-sigma_in_velociraptor/_index.md
+Hayabusa
+SIEMs
+backend's
+backends
+ruleset
+schemas
+taskscheduler
+
+# content/blog/2023/2023-11-15-release-notes-0.7.1/_index.md
+Templated
+decrypted
+
+# content/vql_reference/event/watch_etw/_index.md
+TdhGetEventMapInformation
+MapInfo
+
+# content/docs/deployment/security/_index.md
+mTLS
+unencrypted
+
+# content/docs/deployment/troubleshooting/_index.md
+DataDog
+Grafana
