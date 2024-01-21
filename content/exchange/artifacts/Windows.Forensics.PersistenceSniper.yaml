@@ -1,0 +1,85 @@
+name: Windows.Forensics.PersistenceSniper
+description: PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident Responders and System Administrators to hunt persistences implanted in Windows machines. It is also available on Powershell Gallery and it is digitally signed with a valid code signing certificate. The tool is under active development with new releases coming out regularly, so make sure to use the up-to-date version. https://github.com/last-byte/PersistenceSniper
+
+author: Chris Jones - CPIRT | FabFaeb | Antonio Blescia (TheThMando)
+
+parameters:
+  - name: DiffCSVUrl
+    default: https://raw.githubusercontent.com/ablescia/Windows.PersistenceSniper/main/false_positives.csv
+    type: url
+  - name: IncludeHighFalsePositivesChecks
+    default: true
+    type: bool
+  - name: UploadHits
+    type: bool
+    default: false
+
+tools:
+  - name: PSniper
+    url: https://github.com/last-byte/PersistenceSniper/releases/download/v1.15.0/PersistenceSniper.zip
+
+type: Client
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+    - query: |
+       LET TmpDir <= tempdir(remove_last='Y')
+
+       LET Toolzip <= SELECT FullPath
+         FROM Artifact.Generic.Utils.FetchBinary(ToolName="PSniper",
+                                                 IsExecutable=FALSE)
+       
+       LET _ <= SELECT 
+                       copy(
+                         accessor='data',
+                         dest=TmpDir + "\\false_positives.csv",
+                         filename=utf16(string=Content))
+         FROM http_client(method='GET', url=DiffCSVUrl)
+       
+       LET _ <= SELECT *
+         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+       
+       LET PSniperLocation = path_join(
+           components=[TmpDir, 'PersistenceSniper', 'PersistenceSniper.psm1'],
+           path_type='windows')
+       
+       LET FalsePositivesFile <= path_join(
+           components=[TmpDir, 'false_positives.csv'],
+           path_type='windows')
+       
+       LET CSVFile <= path_join(
+           components=[TmpDir + 'psniper_results.csv'],
+           path_type='windows')
+       
+       LET arg_diffcsv <= if(
+           condition=DiffCSVUrl != "",
+           then="-DiffCSV " + '"' + FalsePositivesFile.Path + '"',
+           else="")
+       
+       LET arg_includehighfalsepositiveschecks <= if(
+           condition=IncludeHighFalsePositivesChecks,
+           then="-IncludeHighFalsePositivesChecks",
+           else="")
+       
+       LET cmdline <= join(
+           array=['import-module', '"' + PSniperLocation.Path + '";', 'Find-AllPersistence', arg_includehighfalsepositiveschecks, arg_diffcsv, '| ConvertTo-CSV -NoTypeInformation | Out-File -encoding ASCII', CSVFile.Path],
+           sep=' ')
+       
+       LET _ <= SELECT *
+         FROM execve(
+           argv=["powershell", "-ExecutionPolicy", "bypass", "-command", cmdline])
+       
+       LET hits = SELECT *
+         FROM parse_csv(filename=CSVFile)
+       
+       -- upload files if selected
+       LET upload_hits = SELECT *, upload(file=CSVFile) AS Upload
+                         FROM hits
+       
+       -- return rows
+       SELECT *
+       FROM if(
+         condition=UploadHits,
+         then=upload_hits,
+         else=hits)
