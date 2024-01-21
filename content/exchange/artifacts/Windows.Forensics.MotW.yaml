@@ -1,0 +1,54 @@
+name: Windows.Forensics.MotW
+description: |
+   The rule is designed to identify and extract the MOTW header from files, which is a security feature implemented by Windows operating systems. 
+   The Mark-of-the-Web (MOTW) is a security feature in Windows that tags files downloaded from the Internet to indicate their less-trusted origin. This tag is essentially an alternate data stream (ADS), known as the Zone Identifier, attached to the file.
+   This header is used to tag files downloaded from the Internet as potentially unsafe, prompting additional security checks or warnings before the file is opened.
+author: Antonio Blescia (TheThMando)
+type: CLIENT
+
+parameters:
+   - name: BasePath
+     default: "C:/Users/**/"
+   - name: FileExtensions
+     default: '["*.exe", "*.zip", "*.rar","*.accdb", "*.ade", "*.adp", "*.app", "*.asp", "*.cer", "*.chm", "*.cnt", "*.crt", "*.csh", "*.der", "*.doc", "*.docm", "*.docx", "*.fxp", "*.gadget", "*.grp", "*.hlp", "*.hpj", "*.img", "*.inf", "*.ins", "*.iso", "*.isp", "*.its", "*.js", "*.jse", "*.ksh", "*.mad", "*.maf", "*.mag", "*.mam", "*.maq", "*.mar", "*.mas", "*.mat", "*.mau", "*.mav", "*.maw", "*.mcf", "*.mda", "*.mdb", "*.mde", "*.mdt", "*.mdw", "*.mdz", "*.msc", "*.msh", "*.msh1", "*.msh1xml", "*.msh2", "*.msh2xml", "*.mshxml", "*.msp", "*.mst", "*.msu", "*.one", "*.ops", "*.ost", "*.pcd", "*.pl", "*.plg", "*.ppt", "*.pptm", "*.pptx", "*.prf", "*.prg", "*.printerexport", "*.ps1", "*.ps1xml", "*.ps2", "*.ps2xml", "*.psc1", "*.psc2", "*.psd1", "*.psm1", "*.pst", "*.pub", "*.scf", "*.sct", "*.shb", "*.shs", "*.theme", "*.tmp", "*.url", "*.vbe", "*.vbp", "*.vbs", "*.vhd", "*.vhdx", "*.vsmacros", "*.vsw", "*.webpnp", "*.ws", "*.wsc", "*.wsf", "*.wsh", "*.xls", "*.xlsm", "*.xlsx", "*.xnk", "*.pdf"]'
+     type: json_array
+   - name: Workers
+     default: 1
+     type: integer
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+     -- Generates the glob patterns
+     LET glob_patterns = SELECT *
+       FROM foreach(
+         row=FileExtensions,
+         query={
+           SELECT join(array=[BasePath, _value]) AS element
+           FROM scope()
+         })
+         
+     -- For each glob pattens gets the OSPath, the hashes, and the MotW header
+     SELECT *
+     FROM foreach(
+       row={
+         SELECT OSPath
+         FROM glob(globs=glob_patterns.element)
+         WHERE NOT IsDir
+       },
+       query={
+         SELECT OSPath,
+                hash(path=OSPath) as Hashes,
+                {
+                  SELECT Stdout
+                  FROM execve(
+                    argv=["powershell", "-ExecutionPolicy", "bypass", "-command", "Get-Content -Path " + OSPath.String + " -Stream Zone.Identifier"])
+                } AS MotW
+         FROM scope()
+         -- Show only the elements that have the HostUrl set
+         WHERE MotW
+          and MotW =~ "HostUrl"
+       },
+       workers=Workers)
