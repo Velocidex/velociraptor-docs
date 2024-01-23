@@ -611,3 +611,35 @@ which can not write to the config file. This combination makes it
 difficult for a compromised Velociraptor administrator account to
 remove the lockdown and use Velociraptor as a lateral movement
 vehicle.
+
+### Removing plugins from a shared server
+
+While Velociraptor allows user to run arbitrary VQL in notebooks it
+does control access to the things that the queries can do by applying
+a user's ACL token to each plugin.
+
+This means that administrators are typically allowed to run all
+plugins, even those that might compromise the server (e.g. the
+`execve()` plugin can run arbitrary shell commands!)
+
+For shared server environments it is better to prevent these plugins
+from running at all - even for administrators.
+
+Velociraptor allows the configuration file to specify which VQL plugins are allowed using the [defaults.allowed_plugins]({{% ref "/docs/deployment/references/#defaults.allowed_plugins" %}}), [defaults.allowed_functions]({{% ref "/docs/deployment/references/#defaults.allowed_functions" %}}) and [defaults.allowed_accessors]({{% ref "/docs/deployment/references/#defaults.allowed_accessors" %}})
+
+The easiest way to populate these is to answer Yes to `Do you want to
+restrict VQL functionality on the server?` in the configuration
+wizard. This will implement the [default allow
+list](https://github.com/Velocidex/velociraptor/blob/master/bin/allowlist.go)
+(which you can tweak later as required).
+
+If these lists are populated, only the plugins mentioned are allowed
+to be registered at all. This results in an error message like `Plugin
+Info Not Found` when the plugin is used.
+
+The purpose of this security measure is to completely remove
+functionality from the server, regardless of the permissions model. It
+is only needed when the server is shared between potentially untrusted
+users. Usually you should not implement this because it causes a lot
+of functionality to randomly break (e.g. any artifacts that might
+depend on a plugin which is not in the allow list will fail).

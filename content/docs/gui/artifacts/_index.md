@@ -5,11 +5,11 @@ draft: false
 weight: 15
 ---
 
-Velociraptor's superpower is a
-powerful query language termed `VQL`. You might be surprised to learn that you have already been using VQL
-all this time. When clicking in the VFS interface to sync a directory
-listing or download files, the GUI was collecting artifacts behind the
-scenes.
+Velociraptor's superpower is a powerful query language termed
+`VQL`. You might be surprised to learn that you have already been
+using VQL all this time. When clicking in the VFS interface to sync a
+directory listing or download files, the GUI was collecting artifacts
+behind the scenes.
 
 Click on the `Collected Artifacts` sidebar screen to view the
 artifacts that have been collected so far.
