@@ -1,8 +1,13 @@
 name: Windows.Forensics.MotW
 description: |
-   The rule is designed to identify and extract the MOTW header from files, which is a security feature implemented by Windows operating systems. 
-   The Mark-of-the-Web (MOTW) is a security feature in Windows that tags files downloaded from the Internet to indicate their less-trusted origin. This tag is essentially an alternate data stream (ADS), known as the Zone Identifier, attached to the file.
-   This header is used to tag files downloaded from the Internet as potentially unsafe, prompting additional security checks or warnings before the file is opened.
+  The rule is designed to identify and extract the MOTW header from files, which is a security feature implemented by Windows operating systems. 
+  This header is used to tag files downloaded from the Internet as potentially unsafe, prompting additional security checks or warnings before the file is opened.
+  The following ZoneId values may be used in a Zone.Identifier ADS:
+  - 0: Local computer
+  - 1: Local intranet
+  - 2: Trusted sites
+  - 3: Internet
+  - 4: Restricted sites
 author: Antonio Blescia (TheThMando)
 type: CLIENT
 
@@ -49,6 +54,6 @@ sources:
          FROM scope()
          -- Show only the elements that have the HostUrl set
          WHERE MotW
-          and MotW =~ "HostUrl"
+          and MotW =~ "ZoneId=3"
        },
        workers=Workers)
