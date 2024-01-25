@@ -25,8 +25,11 @@ type: CLIENT
 
 parameters:
  - name: DirectoryPathGlob
-   type: json_array
-   default: '["C:/Users/*/Downloads/**/*:Zone.Identifier", "C:/$Recycle.Bin/*/**/$R*:Zone.Identifier"]'
+   type: csv
+   default: |
+    Path
+    C:/Users/*/Downloads/**/*:Zone.Identifier
+    C:/$Recycle.Bin/*/**/$R*:Zone.Identifier
 
  - name: ZoneIdRegex
    description: A Regular expression to match the required zone (default Internet and Restricted Zones).
@@ -41,7 +44,7 @@ sources:
                     Mtime,
                     read_file(filename=OSPath, accessor="ntfs") as _ZoneIdentifierContent
              FROM glob(
-               globs=DirectoryPathGlob,
+               globs=DirectoryPathGlob.Path,
                accessor="ntfs")
               WHERE NOT IsDir
 
