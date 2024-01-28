@@ -94,7 +94,7 @@ sources:
         LET ResultFile <= TmpDir + '\\hayabusa_results.' + OutputFormat
 
         -- Build the command line considering all options
-        LET cmdline <= filter(list=(
+        LET cmdline <= (
           HayabusaExe, HayabusaCmd, "--live-analysis",
           "--no-wizard", 
           "--output", ResultFile,
@@ -106,7 +106,7 @@ sources:
           if(condition=UTC, then="--UTC"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter")
-        ),  regex=".+")
+        )
 
         -- Run the tool and divert messages to logs.
         LET ExecHB <= SELECT *
@@ -118,8 +118,8 @@ sources:
 
  - name: Results
    query: |
-        LET CSV_RESULT  <= SELECT * FROM parse_csv(filename=ResultFile)
-        LET JSON_RESULT <= SELECT * FROM parse_jsonl(filename=ResultFile)
+        LET CSV_RESULT  = SELECT * FROM parse_csv(filename=ResultFile)
+        LET JSON_RESULT = SELECT * FROM parse_jsonl(filename=ResultFile)
         
         SELECT *, timestamp(string=Timestamp) AS EventTime
         FROM if(condition= OutputFormat = "csv", then=CSV_RESULT, else=JSON_RESULT)
