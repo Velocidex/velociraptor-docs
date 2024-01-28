@@ -5,9 +5,9 @@ description: |
    hunting tool.
 
    This artifact runs Hayabusa on the endpoint against the specified
-   Windows event log directory, and generates and uploads a single CSV
+   Windows event log directory, and generates and uploads a single CSV/JSON
    file for further analysis with excel, timeline explorer, elastic
-   stack, etc.
+   stack, jq, etc.
 
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
@@ -32,6 +32,13 @@ parameters:
    description: "Enable rules marked as noisy"
    type: bool
    default: N
+ - name: OutputFormat
+   description: "Choose the format of the result file"
+   default: csv
+   type: choices
+   choices:
+     - csv
+     - json
  - name: OutputProfile
    description: "Decide how much data you want back"
    default: standard
@@ -83,21 +90,23 @@ sources:
         LET _ <= if(condition=UpdateRules, then={
         SELECT * FROM execve(argv=['cmd.exe', '/c', 'cd', TmpDir, '&', HayabusaExe, 'update-rules']) })
 
-        LET CSVFile <= TmpDir + '\\hayabusa_results.csv'
+        LET HayabusaCmd <= OutputFormat + '-timeline'
+        LET ResultFile <= TmpDir + '\\hayabusa_results.' + OutputFormat
 
         -- Build the command line considering all options
-        LET cmdline <= filter(list=(
-          HayabusaExe, "csv-timeline", "--live-analysis",
+        LET cmdline <= (
+          HayabusaExe, HayabusaCmd, "--live-analysis",
           "--no-wizard", 
-          "--output", CSVFile,
+          "--output", ResultFile,
           "--min-level", MinimalLevel,
           "--profile", OutputProfile,
           "--quiet", "--no-summary",
           "--threads", str(str=Threads),
+          if(condition= OutputFormat = "json", then="-L"),
           if(condition=UTC, then="--UTC"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter")
-        ),  regex=".+")
+        )
 
         -- Run the tool and divert messages to logs.
         LET ExecHB <= SELECT *
@@ -105,9 +114,12 @@ sources:
         WHERE log(message=Stdout)
 
         -- Upload the raw file.
-        SELECT upload(file=CSVFile) AS Uploads FROM scope()
+        SELECT upload(file=ResultFile) AS Uploads FROM scope()
 
  - name: Results
    query: |
+        LET CSV_RESULT  = SELECT * FROM parse_csv(filename=ResultFile)
+        LET JSON_RESULT = SELECT * FROM parse_jsonl(filename=ResultFile)
+        
         SELECT *, timestamp(string=Timestamp) AS EventTime
-        FROM parse_csv(filename=CSVFile)
+        FROM if(condition= OutputFormat = "csv", then=CSV_RESULT, else=JSON_RESULT)
