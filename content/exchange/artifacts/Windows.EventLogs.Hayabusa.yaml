@@ -94,7 +94,7 @@ sources:
         LET ResultFile <= TmpDir + '\\hayabusa_results.' + OutputFormat
 
         -- Build the command line considering all options
-        LET cmdline <= (
+        LET cmdline <= filter(list=(
           HayabusaExe, HayabusaCmd, "--live-analysis",
           "--no-wizard", 
           "--output", ResultFile,
@@ -106,7 +106,7 @@ sources:
           if(condition=UTC, then="--UTC"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter")
-        )
+        ), regex=".+")
 
         -- Run the tool and divert messages to logs.
         LET ExecHB <= SELECT *
