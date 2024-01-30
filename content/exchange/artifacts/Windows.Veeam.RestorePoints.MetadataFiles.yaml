@@ -178,7 +178,7 @@ sources:
                      GuestInfo.Ip AS GuestIP,
                      GuestInfo.ToolsStatus AS GuestToolsStatus,
                      GuestInfo.ToolsVersionStatus AS GuestToolsVersionStatus,
-                     _value.AttrViType AS VirtualType,
+                     _value.AttrViType || 'Physical machine' AS VirtualType,
                      _value.AttrHostId AS HostID
                 FROM foreach(row=Objects) WHERE _value.AttrId = ObjectID
           })
