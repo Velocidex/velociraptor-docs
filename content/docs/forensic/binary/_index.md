@@ -155,7 +155,7 @@ and the `Length` is a 4 byte little endian integer located at offset
 ```vql
 LET Profile = '''
 [
-   ["Header": 0, [
+   ["Header", 0, [
       ["Signature", 0, "String", {
          "length": 10
       }],
@@ -474,7 +474,7 @@ Example:
           "WNNC_NET_DOCUSPACE": 0x001B0000,
           "WNNC_NET_MANGOSOFT": 0x001C0000,
       }
-  ]]
+  }]
 ```
 
 ### BitField
