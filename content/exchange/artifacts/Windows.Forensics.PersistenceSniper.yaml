@@ -45,12 +45,13 @@ sources:
            path_type='windows')
        
        LET FalsePositivesFile <= path_join(
-           components=[TmpDir, 'false_positives.csv'],
+           components=[TmpDir, '\\false_positives.csv'],
            path_type='windows')
        
        LET CSVFile <= path_join(
-           components=[TmpDir + 'psniper_results.csv'],
+           components=[TmpDir + '\\psniper_results.csv'],
            path_type='windows')
+       LET csvpath = '"' + CSVFile.Path + '"'
        
        LET arg_diffcsv <= if(
            condition=DiffCSVUrl != "",
@@ -63,7 +64,7 @@ sources:
            else="")
        
        LET cmdline <= join(
-           array=['import-module', '"' + PSniperLocation.Path + '";', 'Find-AllPersistence', arg_includehighfalsepositiveschecks, arg_diffcsv, '| ConvertTo-CSV -NoTypeInformation | Out-File -encoding ASCII', CSVFile.Path],
+           array=['import-module', '"' + PSniperLocation.Path + '";', 'Find-AllPersistence', arg_includehighfalsepositiveschecks, arg_diffcsv, '| ConvertTo-CSV -NoTypeInformation | Out-File -encoding ASCII',csvpath],
            sep=' ')
        
        LET _ <= SELECT *
