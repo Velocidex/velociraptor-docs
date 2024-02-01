@@ -1,5 +1,15 @@
 name: Windows.Forensics.PersistenceSniper
-description: PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident Responders and System Administrators to hunt persistences implanted in Windows machines. It is also available on Powershell Gallery and it is digitally signed with a valid code signing certificate. The tool is under active development with new releases coming out regularly, so make sure to use the up-to-date version. https://github.com/last-byte/PersistenceSniper
+description: |
+  PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident 
+  Responders and System Administrators to hunt persistences implanted in Windows machines. 
+  It is also available on Powershell Gallery and it is digitally signed with a valid code 
+  signing certificate. The tool is under active development with new releases coming out 
+  regularly, so make sure to use the up-to-date version. 
+  https://github.com/last-byte/PersistenceSniper
+
+  NOTE: the Rapid7 team has observed this artifact fail with some EDR/EPP tools deployed
+  with Powershell prevention capabilities. Please ensure the Velociraptor binary (and 
+  child powershell) are excluded in these tools.
 
 author: Chris Jones - CPIRT | FabFaeb | Antonio Blescia (TheThMando)
 
