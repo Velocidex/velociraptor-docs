@@ -1,0 +1,30 @@
+name: Generic.Remediation.UploadFile.Glob
+description: |
+   This artefact lets you upload a file to the target system. If the target file exists, it will be overritten.
+   It uses glob to define the destination path. You can upload the file to multiple destinations at once.
+author: Philipp Leu
+type: CLIENT
+
+parameters:
+   - name: TargetGlob
+     description: Destination Path, if the destination already exists, it will be overridden
+   - name: ReallyDoIt
+     description: When selected, it will really override the targets!
+     type: bool
+     
+tools:
+  - name: RemediationFile
+    url:
+
+sources:
+  - query: |
+      LET targets = SELECT * FROM glob(globs=TargetGlob)
+        WHERE NOT IsDir
+        ORDER BY OSPath DESC 
+     
+      LET UploadedFile <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="RemediationFile", IsExecutable=FALSE, TemporaryOnly=TRUE)
+     
+      LET upload_targets = SELECT *, if(condition=ReallyDoIt, then=copy(filename=UploadedFile.FullPath[0], accessor="file", dest=OSPath), else=FALSE) AS Overwritten FROM targets
+      
+      SELECT OSPath,Overwritten,Size,Mtime,Ctime,Btime
+      FROM upload_targets 
