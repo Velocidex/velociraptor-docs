@@ -14,22 +14,24 @@ behind the scenes.
 Click on the `Collected Artifacts` sidebar screen to view the
 artifacts that have been collected so far.
 
-![Collected Artifacts](image71.png)
+![Collected Artifacts](collected_artifacts.png)
 
 This screen consists of two panes - the top pane shows a list of all
 the `Artifacts` collected so far from this endpoint, while the bottom
 pane shows information about the selected artifact.
 
-All artifacts have a **Name**. In our example, you can see that we have been collecting `System.VFS.DownloadFile` and
+All artifacts have a **Name**. In our example, you can see that we
+have been collecting `System.VFS.DownloadFile` and
 `System.VFS.ListDirectory` in order to populate the VFS screen.
 
 Each artifact collection has a unique `Flow ID`, which is how
 Velociraptor refers to a collection. The collection is created at a
-certain time and starts some time later. If the client is offline, the collection will start when it
-comes back online.
+certain time and starts some time later. If the client is offline, the
+collection will start when it comes back online.
 
-Collections also take parameters. In the previous example, the `System.VFS.ListDirectory` artifact was used to list
-the directory "C:\Users\test".
+Collections also take parameters. In the previous example, the
+`System.VFS.ListDirectory` artifact was used to list the directory
+"C:\Users\test".
 
 A collection of artifacts can return rows or upload
 files. This is because an artifact is simply a VQL query and all
@@ -72,7 +74,7 @@ class="fas fa-plus"></i>. This will open the new collection wizard as
 show below.
 
 
-![New Collection Wizard](image73.png)
+![New Collection Wizard](new_collection_wizard.png)
 
 The Wizard contains a number of steps but you can skip them if they
 are not needed.
@@ -94,14 +96,15 @@ name and just recall them by clicking in the favorites list button.
 
 The next step allows us to modify artifact parameters.
 
-![Artifact Parameters](image74.png)
+![Artifact Parameters](artifact_parameters.png)
 
 Each Artifact parameter has a default value.
 
-For the purposes of our example, we will upload some raw XML files. Click `Launch` to start the collection. After a short time, the
+For the purposes of our example, we will upload some raw XML
+files. Click `Launch` to start the collection. After a short time, the
 collection will complete.
 
-![Collection Complete](image75.png)
+![Collection Complete](viewing_complete_collection.png)
 
 We can see that this collection uploaded 195 files and added 195
 rows. The VQL query parses each XML file in turn and uploads it.
@@ -114,19 +117,20 @@ bottom pane:
    forwarded to the server. We are able to see how the query is
    progressing based on the query log.
 
-![Query Log](image76.png)
+![Query Log](query_logs.png)
 
 2. **Uploaded Files** - This tab shows all the files uploaded by this
-   query. You can download any of these files from the server by
-   simply clicking the link.
+   query. You can download any of these files individually from the
+   server by simply clicking the link, or click the preview button to
+   examine the file in the GUI.
 
-![Uploaded Files](image77.png)
+![Uploaded Files](uploaded_files.png)
 
 3. **Result Tab** - This shows each result set in a table. A single
    collection may collect several artifacts. In this case you can
    choose which artifact to view by clicking the pull down menu.
 
-![Result Tab](image78.png)
+![Result Tab](results_tab.png)
 
 
 ## Inspecting and modifying artifacts
@@ -139,11 +143,12 @@ The left pane shows the name of the artifact, a description and any
 parameters the artifact may take. Finally we can inspect the VQL
 source of the artifact.
 
-![View Artifact](image72.png)
+![View Artifact](artifact_viewer.png)
 
-You can edit any artifact by clicking the "Edit an Artifact" button <i class="fas fa-pencil-alt"></i>
+You can edit any artifact by clicking the "Edit an Artifact" button <i
+class="fas fa-pencil-alt"></i>
 
-![Edit Artifact](image85.png)
+![Edit Artifact](edit_artifact.png)
 
 User artifacts must have the prefix “Custom.” in order to ensure that
 user artifacts do not override built in artifacts. When editing an
