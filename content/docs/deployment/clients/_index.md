@@ -86,7 +86,7 @@ by a valid code signing certificate.
 
 {{% /notice %}}
 
-{{% notice note "Winget install is not supported - you should pin/denylist VRR in winget" %}}
+{{% notice note "Winget install is not supported - you should pin/denylist Velociraptor in winget" %}}
 
 If your windows environment use winget command line tool (or
 `Romanitho/Winget-AutoUpdate` for user toasts) for unattended 3rd party
