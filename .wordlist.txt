@@ -1442,3 +1442,9 @@ unencrypted
 # content/docs/deployment/troubleshooting/_index.md
 DataDog
 Grafana
+
+# content/docs/deployment/clients/_index.md
+Winget
+autoupdate
+denylist
+winget

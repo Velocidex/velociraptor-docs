@@ -86,6 +86,24 @@ by a valid code signing certificate.
 
 {{% /notice %}}
 
+{{% notice note "Winget install is not supported - you should pin/denylist Velociraptor in winget" %}}
+
+If your windows environment use winget command line tool (or
+`Romanitho/Winget-AutoUpdate` for user toasts) for unattended 3rd party
+app auto updates on windows.  This can lead to failed downgrade
+message issues (as at 5 Feb 2024) or when the winget version numbers
+are fixed unexpected upgrade toasts and server client version
+mismatches
+
+We strongly recommend getting your admins to pin the Velociraptor
+version in winget and deny list upgrading Velociraptor - for
+Winget-autoupdate if your environment uses them - please see
+https://learn.microsoft.com/en-us/windows/package-manager/winget/pinning
+/ https://github.com/Romanitho/Winget-AutoUpdate (search for
+blacklist) for more information.
+
+{{% /notice %}}
+
 ### Installing using custom MSI package
 
 If you wish to customize the MSI from scratch (e.g. change name of
