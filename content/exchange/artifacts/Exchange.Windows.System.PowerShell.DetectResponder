@@ -11,8 +11,6 @@ precondition:
   SELECT OS From info() where OS = 'windows'
 
 parameters:
-  - name: Command
-    default: "dir C:/"
   - name: PowerShellExe
     default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
   - name: ReloadPeriod
