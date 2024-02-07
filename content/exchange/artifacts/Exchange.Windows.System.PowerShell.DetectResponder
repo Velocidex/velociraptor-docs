@@ -1,7 +1,8 @@
-name: Custom.Windows.System.PowerShell.DetectResponder
+name: Exchange.Windows.System.PowerShell.DetectResponder
 author: "Dhruv Majumdar, Jamie Bhoohe"
 description: |
   This artifact allows to detect responder in the environment
+  https://tcm-sec.com/llmnr-poisoning-and-how-to-prevent-it/
 type: CLIENT_EVENT
 required_permissions:
   - EXECVE
