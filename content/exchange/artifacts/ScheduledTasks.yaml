@@ -7,10 +7,6 @@ description: |
   The artifact will attempt to find relevant XML data if exists.
   There is also an option to show only tasks  missing a Security Descriptor.
   
-  
-  any scheduled tasks missing the Tree path Security Descriptor (SD) value in the 
-  task cache. Without this value, the task is hidden from common query methods. 
-  
   TODO: cleanup, write test and add to main repo
   
 reference:
