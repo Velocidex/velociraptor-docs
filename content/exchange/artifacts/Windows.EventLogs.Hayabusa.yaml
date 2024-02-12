@@ -12,26 +12,27 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
- - name: Hayabusa-2.12.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.12.0/hayabusa-2.12.0-windows-64-bit.zip
-   expected_hash: 24b3cc66902708dbe9543efaeb8ffa77ced6b0d29cfc5c92bf10fd8e8b04e24a
-   version: 2.12.0
+ - name: Hayabusa-2.13.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.13.0/hayabusa-2.13.0-win-x64.zip
+   expected_hash: c350ba83ffb02391115d2d5e1236a6a1cd79e9c49be8296f485819e7b20be8fa
+   version: 2.13.0
 
 precondition: SELECT OS From info() where OS = 'windows'
 
 parameters:
- - name: UTC
-   description: "Output time in UTC format"
-   type: bool
-   default: Y
- - name: UpdateRules
-   description: "Update rules before scanning"
-   type: bool
-   default: Y
- - name: NoisyRules
-   description: "Enable rules marked as noisy"
-   type: bool
-   default: N
+ - name: EvtxDirectory
+   description: "Directory of .evtx files"
+   default: C:/Windows/System32/winevt/Logs
+ - name: MinimalLevel
+   description: "Minimum level for rules"
+   default: medium
+   type: choices
+   choices:
+     - informational
+     - low
+     - medium
+     - high
+     - critical
  - name: OutputFormat
    description: "Choose the format of the result file"
    default: csv
@@ -52,24 +53,34 @@ parameters:
      - super-verbose
      - timesketch-minimal
      - timesketch-verbose
+ - name: OutputTimeFormat
+   description: "Choose the format of timestamp"
+   default: ISO-8601
+   type: choices
+   choices:
+     - European-time
+     - ISO-8601
+     - RFC-2822
+     - RFC-3339
+     - US-military-time
+     - US-time
+     - UTC
+ - name: Threads
+   description: "Number of threads"
+   type: int
+   default: 4
+ - name: UpdateRules
+   description: "Update rules before scanning"
+   type: bool
+   default: Y
+ - name: NoisyRules
+   description: "Enable rules marked as noisy"
+   type: bool
+   default: N
  - name: EIDFilter
    description: "Scan only common Event IDs for quicker scans"
    type: bool
    default: N
- - name: MinimalLevel
-   description: "Minimum level for rules"
-   default: informational
-   type: choices
-   choices:
-     - informational
-     - low
-     - medium
-     - high
-     - critical
- - name: Threads
-   description: "Number of threads"
-   type: int
-   default: 2
  - name: TimelineOffset
    description: "Scan recent events based on an offset (ex: 1y, 3M, 30d, 24h, 30m)"
  - name: TimelineStart
@@ -96,7 +107,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.12.0", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.13.0", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -104,7 +115,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.12.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.13.0-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={
@@ -116,15 +127,16 @@ sources:
         -- Build the command line considering all options
         -- If it does not match if(condition...), it returns Null, so remove Null with filter(....regex=".+")
         LET cmdline <= filter(list=(
-          HayabusaExe, HayabusaCmd, "--live-analysis",
+          HayabusaExe, HayabusaCmd,
           "--no-wizard", 
+          "--quiet", "--no-summary",
+          "--directory", EvtxDirectory, 
           "--output", ResultFile,
           "--min-level", MinimalLevel,
           "--profile", OutputProfile,
-          "--quiet", "--no-summary",
+          "--" + OutputTimeFormat,
           "--threads", str(str=Threads),
           if(condition=OutputFormat = "jsonl", then="-L"),
-          if(condition=UTC, then="--UTC"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter"),
           if(condition=TimelineOffset, then="--timeline-offset"),   if(condition=TimelineOffset, then=TimelineOffset),
