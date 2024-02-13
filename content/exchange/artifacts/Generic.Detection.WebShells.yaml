@@ -40,6 +40,8 @@ parameters:
      default: 'cmd\.exe|powershell\.exe|pwsh\.exe|net\.exe|net1\.exe|whoami\.exe|hostname\.exe|systeminfo\.exe|ipconfig\.exe'
    - name: DateAfter
      type: timestamp
+   - name: DateBefore
+     type: timestamp
    - name: YaraRule
      type: yara
      description: yara rule used to search for web shells
@@ -748,8 +750,21 @@ sources:
     query: |
       SELECT * FROM Artifact.Windows.EventLogs.Evtx(EvtxGlob='%SystemRoot%\\System32\\winevt\\Logs\\Security\.evtx', IDRegex="4688")
       WHERE EventData.ParentProcessName =~ WebserverProcessRegex AND EventData.NewProcessName =~ SpawnedProcessRegex
-  - name: FileCreation
+  - name: FileSystemChanges
     query: |
+      -- time test function (taken from Windows.NTFS.MFT)
+      LET time_test(stamp) =
+            if(condition= DateBefore AND DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
+                else=
+            if(condition=DateBefore,
+                then= stamp < DateBefore,
+                else=
+            if(condition= DateAfter,
+                then= stamp > DateAfter,
+                else= True
+            )))
+      
       LET webroot = SELECT * FROM switch(
         windows={SELECT WindowsWebRoot AS Dir FROM info() WHERE OS = "windows"},
         linux={SELECT LinuxWebRoot AS Dir FROM info() WHERE OS = "linux"}
@@ -758,21 +773,5 @@ sources:
       SELECT * FROM glob(globs=webroot_dir, accessor="auto")
       WHERE 
         NOT IsDir 
-        AND if(condition=DateAfter,
-                   then=Btime >= timestamp(string=DateAfter),
-                   else=true)
-        AND Name =~ WebshellRegex
-  - name: FileModification
-    query: |
-      LET webroot = SELECT * FROM switch(
-        windows={SELECT WindowsWebRoot AS Dir FROM info() WHERE OS = "windows"},
-        linux={SELECT LinuxWebRoot AS Dir FROM info() WHERE OS = "linux"}
-      ) 
-      LET webroot_dir <= webroot[0].Dir
-      SELECT * FROM glob(globs=webroot_dir, accessor="auto")
-      WHERE 
-        NOT IsDir 
-        AND if(condition=DateAfter,
-                   then=Mtime >= timestamp(string=DateAfter),
-                   else=true)
+        AND (time_test(stamp=Btime) OR time_test(stamp=Mtime))
         AND Name =~ WebshellRegex
