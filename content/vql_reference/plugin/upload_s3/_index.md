@@ -26,6 +26,7 @@ bucket|The bucket to upload to|string (required)
 region|The region the bucket is in|string (required)
 credentialskey|The AWS key credentials to use|string
 credentialssecret|The AWS secret credentials to use|string
+credentialstoken|The AWS session token to use (only needed for temporary credentials)|string
 endpoint|The Endpoint to use|string
 serversideencryption|The server side encryption method to use|string
 kmsencryptionkey|The server side KMS key to use|string

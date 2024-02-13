@@ -28,6 +28,7 @@ start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
 notebook_id|The notebook to read from (should also include cell id)|string
 notebook_cell_id|The notebook cell read from (should also include notebook id)|string
+notebook_cell_version|The notebook cell version to read from (should also include notebook id and notebook cell)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
