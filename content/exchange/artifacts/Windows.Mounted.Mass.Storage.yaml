@@ -1,4 +1,4 @@
-name: Custom.Windows.Mounted.Mass.Storage
+name: Windows.Mounted.Mass.Storage
 author: "Yaniv Radunsky & Kobi Arami @ 10root cyber security"
 description: |
    Find drives/usb mass storage that were mounted
