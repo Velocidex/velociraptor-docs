@@ -748,8 +748,9 @@ sources:
     precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-      SELECT * FROM Artifact.Windows.EventLogs.Evtx(EvtxGlob='%SystemRoot%\\System32\\winevt\\Logs\\Security\.evtx', IDRegex="4688")
-      WHERE EventData.ParentProcessName =~ WebserverProcessRegex AND EventData.NewProcessName =~ SpawnedProcessRegex
+      SELECT * FROM Artifact.Windows.EventLogs.Evtx(EvtxGlob='%SystemRoot%\\System32\\winevt\\Logs\\{*Sysmon*,Security}\.evtx', IDRegex="1|4688")
+      WHERE ( Channel =~ 'sysmon' AND EventID = 1 AND EventData.ParentImage =~ WebserverProcessRegex AND EventData.Image =~ SpawnedProcessRegex )
+        OR ( Channel =~ 'Security' AND EventID = 4688 AND EventData.ParentProcessName =~ WebserverProcessRegex AND EventData.NewProcessName =~ SpawnedProcessRegex )
   - name: FileSystemChanges
     query: |
       -- time test function (taken from Windows.NTFS.MFT)
