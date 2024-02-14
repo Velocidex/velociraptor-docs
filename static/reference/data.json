@@ -7731,7 +7731,7 @@
     },
     {
         "name": "xattr",
-        "description": "query a file for the specified extended attribute",
+        "description": "Query a file for the specified extended attribute.",
         "type": "Function",
         "args": [
             {
@@ -7743,7 +7743,7 @@
             {
                 "name": "attribute",
                 "type": "string",
-                "description": "Attribute to collect.",
+                "description": "Attribute to collect. ",
                 "repeated": true
             },
             {

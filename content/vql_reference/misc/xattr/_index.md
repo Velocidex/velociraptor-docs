@@ -20,7 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 filename|Filename to inspect.|OSPath (required)
-attribute|Attribute to collect.|list of string
+attribute|Attribute to collect. |list of string
 accessor|File accessor|string
 
 Required Permissions: 
@@ -28,20 +28,14 @@ Required Permissions:
 
 ### Description
 
-{{% notice note %}}
+Query a file for the specified extended attribute.
 
-This function is not available in the current release of Velociraptor, and 
-    will be available in 0.7.2
+If no attributes are provided, this function will return all extended attributes 
+for the file.
 
-{{% /notice %}}
+Please note: this API is not reliable, so please provided extended attributes
+where possible.
 
-Query a file for the specified extended attribute. If no attributes are provided, 
-the function will return all extended attributes on the file. 
+Note: This function only works on Mac and Linux. 
 
-{{% notice note %}}
 
-  Please note that the list function is currently unreliable, and will often 
-  error out. Where possible, please provide a list of extended attributes to collect
-  rather than listing all extended attributes. 
-
-{{% /notice %}}
