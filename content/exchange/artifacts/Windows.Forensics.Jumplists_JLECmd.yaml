@@ -1,6 +1,6 @@
-name: Windows.Forensics.Jumplists.AutomaticDestinations_JLECmd
+name: Windows.Forensics.Jumplists_JLECmd
 description: |
-    * Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS files in C:\ drive recursively and return output for analysis.  (jlecmd.exe -d C:/ --csvf -csv tmpdir results_AutomaticDestinations.csv). 
+    * Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).  
     * JLECmd.zip is downloaded from the URL to 'C:\Program Files\Velociraptor\Tools' folder.   
     * JLECmd.zip can be uploaded to Velociraptor Server in order to copy it to the clients in case there is no internet connection.
     * Created using @carlos_cajigas LECmd VQL as a quide.  
@@ -21,19 +21,19 @@ parameters:
   - name: sourceFile
     default: .
     type: regex
-    description: "RegEx pattern for the name or path of the Automatic Destinations jump list file. Example 'recent' folder"
+    description: "RegEx pattern for the name or path of the Automatic and Custom Destinations jump list files. Example 'recent' folder"
   - name: localPath
     default: .
     type: regex
-    description: "RegEx pattern for the name or path of the target of the Automatic Destinations jump list file. Example 'powershell_ise.exe'"
+    description: "RegEx pattern for the name or path of the target of the Automatic and Custom Destinations jump list files. Example 'powershell_ise.exe'"
   - name: arguments
     default: .
     type: regex
-    description: "Arguments of the Custom Destinations jump list file. Example '/c powershell Invoke-Command'"
+    description: "Arguments of the Automatic and Custom Destinations jump list files. Example '/c powershell Invoke-Command'"
   - name: dateAfter
-    description: "search for Custom Destinations jump list files with a SourceCreated after this date. YYYY-MM-DD"
+    description: "search for Automatic and Custom Destinations jump list files with a SourceCreated after this date. YYYY-MM-DD"
   - name: dateBefore
-    description: "search for Custom Destinations jump list files with a SourceCreated before this date. YYYY-MM-DD"
+    description: "search for Automatic and Custom Destinations jump list files with a SourceCreated before this date. YYYY-MM-DD"
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -75,4 +75,21 @@ sources:
       AND SourceFile =~ sourceFile
       AND LocalPath =~ localPath
       AND Arguments =~ arguments
-    
+
+
+  - query: |
+  
+      -- parse csv
+      SELECT SourceFile, SourceCreated, SourceModified, LocalPath, Arguments, 
+      TargetCreated, TargetModified, VolumeLabel, DriveType, AppIdDescription, CommonPath,  
+      VolumeSerialNumber, MachineID, MachineMACAddress, TargetMFTEntryNumber, TargetSequenceNumber, 
+      TargetIDAbsolutePath, TrackerCreatedOn, ExtraBlocksPresent, HeaderFlags,FileAttributes, FileSize
+      FROM parse_csv(filename=tmpdir + "jlecmd" + "\\results_CustomDestinations.csv")
+         WHERE 
+        (if(condition=dateAfter, then=SourceCreated > dateAfter,
+            else=TRUE) AND 
+        if(condition=dateBefore, then=SourceCreated < dateBefore, 
+            else=TRUE))
+      AND SourceFile =~ sourceFile
+      AND LocalPath =~ localPath
+      AND Arguments =~ arguments
