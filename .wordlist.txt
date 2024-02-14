@@ -1374,6 +1374,7 @@ tgz
 KMS
 kmsencryptionkey
 uploadroot
+credentialstoken
 
 # content/blog/2023/2023-07-27-release-notes-0.7.0/index.md
 SQLiteHunter
@@ -1448,3 +1449,11 @@ Winget
 autoupdate
 denylist
 winget
+
+# content/vql_reference/misc/xattr/_index.md
+xattr
+
+
+# content/vql_reference/basic/humanize/_index.md
+MiB
+ibytes
