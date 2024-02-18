@@ -37,18 +37,15 @@ sources:
       -- Extract the CISCat_Lite tool zip
       LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+     
       -- Generate the absolute path that points the the extracted tool location  
       LET CISCatPath = path_join(
           components=[TmpDir, 'Assessor', 'Assessor-CLI.bat'],
           path_type='windows')
-      -- Compose the command line string     
-      LET cmdline <= join(
-          array=['./Assessor-CLI.bat', '-b', '"' + BaselinePath + '"', '-p', '"' + ProfileName + '"'],
-          sep=' ')
-      -- Run the command using powershell     
+          
+      -- Run the command     
       LET _ <= SELECT *
-        FROM execve(argv=["powershell", "-command", cmdline],
-                    cwd=TmpDir + '/' + "Assessor")
+        FROM execve(argv=[CISCatPath, "-b", BaselinePath, '-p', ProfileName])
 
       SELECT * 
          FROM foreach( row={
