@@ -31,12 +31,12 @@ sources:
       -- Generate the temp dir
       LET TmpDir <= tempdir(remove_last=true)
       -- Upload the CISCat_Lite tool on the host
-      LET Toolzip <= SELECT FullPath
+      LET Toolzip <= SELECT OSPath
         FROM Artifact.Generic.Utils.FetchBinary(ToolName="CISCat_Lite",
                                                 IsExecutable=FALSE)
       -- Extract the CISCat_Lite tool zip
       LET _ <= SELECT *
-        FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+        FROM unzip(filename=Toolzip.OSPath, output_directory=TmpDir)
      
       -- Generate the absolute path that points the the extracted tool location  
       LET CISCatPath = path_join(
