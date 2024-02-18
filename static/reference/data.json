@@ -937,6 +937,11 @@
                 "name": "append",
                 "type": "bool",
                 "description": "If true we append to the target file otherwise truncate it"
+            },
+            {
+                "name": "create_directories",
+                "type": "bool",
+                "description": "If true we ensure the destination directories exist"
             }
         ],
         "category": "basic",
@@ -1355,6 +1360,11 @@
                 "name": "max_memory_buffer",
                 "type": "uint64",
                 "description": "How large we allow the memory buffer to grow to while we are trying to contact the Elastic server (default 100mb)."
+            },
+            {
+                "name": "action",
+                "type": "string",
+                "description": "Either index or create. For data streams this must be create."
             }
         ],
         "category": "server",
@@ -2265,7 +2275,22 @@
             {
                 "name": "bytes",
                 "type": "int64",
-                "description": "Format bytes with units"
+                "description": "Format bytes with units (e.g. MB)"
+            },
+            {
+                "name": "ibytes",
+                "type": "int64",
+                "description": "Format bytes with units (e.g. MiB)"
+            },
+            {
+                "name": "time",
+                "type": "time.Time",
+                "description": "Format time (e.g. 2 hours ago)"
+            },
+            {
+                "name": "comma",
+                "type": "int64",
+                "description": "Format integer with comma (e.g. 1,230)"
             }
         ],
         "category": "basic"
@@ -3514,6 +3539,11 @@
                 "name": "notebook_cell_id",
                 "type": "string",
                 "description": "The notebook cell read from (should also include notebook id)"
+            },
+            {
+                "name": "notebook_cell_version",
+                "type": "string",
+                "description": "The notebook cell version to read from (should also include notebook id and notebook cell)"
             },
             {
                 "name": "notebook_cell_table",
@@ -5923,6 +5953,11 @@
                 "description": "The notebook cell read from (should also include notebook id)"
             },
             {
+                "name": "notebook_cell_version",
+                "type": "string",
+                "description": "The notebook cell version to read from (should also include notebook id and notebook cell)"
+            },
+            {
                 "name": "notebook_cell_table",
                 "type": "int64",
                 "description": "A notebook cell can have multiple tables.)"
@@ -6859,6 +6894,11 @@
                 "description": "The AWS secret credentials to use"
             },
             {
+                "name": "credentialstoken",
+                "type": "string",
+                "description": "The AWS session token to use (only needed for temporary credentials)"
+            },
+            {
                 "name": "endpoint",
                 "type": "string",
                 "description": "The Endpoint to use"
@@ -7687,6 +7727,33 @@
         ],
         "metadata": {
             "permissions": "FILESYSTEM_WRITE"
+        }
+    },
+    {
+        "name": "xattr",
+        "description": "Query a file for the specified extended attribute.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "Filename to inspect.",
+                "required": true
+            },
+            {
+                "name": "attribute",
+                "type": "string",
+                "description": "Attribute to collect. ",
+                "repeated": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "File accessor"
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
         }
     },
     {

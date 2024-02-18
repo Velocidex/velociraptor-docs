@@ -19,7 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-bytes|Format bytes with units|int64
+bytes|Format bytes with units (e.g. MB)|int64
+ibytes|Format bytes with units (e.g. MiB)|int64
+time|Format time (e.g. 2 hours ago)|time.Time
+comma|Format integer with comma (e.g. 1,230)|int64
 
 ### Description
 
