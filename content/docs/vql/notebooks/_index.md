@@ -88,7 +88,7 @@ collapse button at the top right of the screen.
 {{% /notice %}}
 
 
-## Hunt and Flow notebooks
+## Hunt and Flow Notebooks
 
 Notebooks are an excellent medium to run arbitrary VQL queries. Much
 of the time, these queries are used to post process the results from
@@ -99,3 +99,23 @@ each hunt and a `flow notebook` for each collection. Let's see this
 feature in action. I will collect the `Windows.Timeline.Prefetch`
 artifact that will build a timeline of the prefetch files on the
 endpoint.
+
+## Sharing Notebooks
+
+By default, notebooks are private to the user who created them. 
+When creating or editing a notebook, you can choose to share it with
+all users by clicking the Public check box. You can also share it with
+only some users by selecting their names in the Collaborators field.
+
+![Sharing a notebook](notebook_sharing.png)
+
+{{% notice note "Accessing Data in Private Notebooks" %}}
+Users can only view notebooks that they own or share.
+Other notebooks cannot be accessed from the list view
+or via direct link. However, the data within notebooks is still available
+to all users. For example, any notebook editor can build or view a
+[timeline]({{< ref "/blog/2021/2021-09-07-release-notes-0.6.1/#timelines" >}})
+from private notebook cells if they know the notebook and cell IDs. This can
+be useful for providing your team with data views that are sourced from more
+complex queries maintained in a private notebook.
+{{% /notice %}}
