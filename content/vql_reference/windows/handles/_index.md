@@ -22,6 +22,9 @@ Arg | Description | Type
 pid|If specified only get handles from these PIDs.|uint64
 types|If specified only get handles of this type.|list of string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Enumerate process handles.

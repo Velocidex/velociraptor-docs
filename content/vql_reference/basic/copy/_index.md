@@ -24,6 +24,7 @@ accessor|The accessor to use|string
 dest|The destination file to write.|string (required)
 permissions|Required permissions (e.g. 'x').|string
 append|If true we append to the target file otherwise truncate it|bool
+create_directories|If true we ensure the destination directories exist|bool
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>

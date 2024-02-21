@@ -24,6 +24,8 @@ guid|A Provider GUID to watch |string (required)
 any|Any Keywords |uint64
 all|All Keywords |uint64
 level|Log level (0-5)|int64
+stop|If provided we stop watching automatically when this lambda returns true|Lambda
+timeout|If provided we stop after this much time|uint64
 
 ### Description
 

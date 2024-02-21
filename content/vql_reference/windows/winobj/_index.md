@@ -21,6 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 path|Object namespace path.|string
 
+Required Permissions: 
+<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+
 ### Description
 
 Enumerate The Windows Object Manager namespace.

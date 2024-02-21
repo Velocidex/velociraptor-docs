@@ -1374,6 +1374,7 @@ tgz
 KMS
 kmsencryptionkey
 uploadroot
+credentialstoken
 
 # content/blog/2023/2023-07-27-release-notes-0.7.0/index.md
 SQLiteHunter
@@ -1414,3 +1415,45 @@ Uncompress
 # content/docs/_index.md
 InsightIDR
 XSS
+
+# content/docs/vql/_index.md
+unsimplified
+
+# content/blog/2023/2023-11-15-sigma_in_velociraptor/_index.md
+Hayabusa
+SIEMs
+backend's
+backends
+ruleset
+schemas
+taskscheduler
+
+# content/blog/2023/2023-11-15-release-notes-0.7.1/_index.md
+Templated
+decrypted
+
+# content/vql_reference/event/watch_etw/_index.md
+TdhGetEventMapInformation
+MapInfo
+
+# content/docs/deployment/security/_index.md
+mTLS
+unencrypted
+
+# content/docs/deployment/troubleshooting/_index.md
+DataDog
+Grafana
+
+# content/docs/deployment/clients/_index.md
+Winget
+autoupdate
+denylist
+winget
+
+# content/vql_reference/misc/xattr/_index.md
+xattr
+
+
+# content/vql_reference/basic/humanize/_index.md
+MiB
+ibytes

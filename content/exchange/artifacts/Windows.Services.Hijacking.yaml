@@ -1,4 +1,4 @@
-name: Custom.Windows.Services.Hijacking
+name: Windows.Services.Hijacking
 description: |
    Service Executable Hijacking is a misconfiguration flaw, where a service runs an executable which has 
    overly permissive permissions on it (for example: "Full Control" permissions to "Authenticated Users").

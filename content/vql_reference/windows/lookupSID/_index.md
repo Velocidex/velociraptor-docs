@@ -14,6 +14,13 @@ no_edit: true
 <span class='vql_type pull-right page-header'>Function</span>
 
 
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+sid|A SID to lookup using LookupAccountSid |string (required)
+
 ### Description
 
 Get information about the SID.

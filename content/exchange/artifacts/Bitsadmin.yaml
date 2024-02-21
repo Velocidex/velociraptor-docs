@@ -1,7 +1,8 @@
 name: Windows.EventLogs.Bitsadmin
 author: "Matt Green - @mgreen27"
 description: |
-    This content will extract BITS Transfer events and enable filtering by URL
+    This content will extract BITS Transfer events and enable filtering by URL 
+    and TLD.
 
 reference:
   - https://attack.mitre.org/techniques/T1197/
@@ -10,14 +11,11 @@ reference:
 parameters:
   - name: EventLog
     default: C:\Windows\System32\winevt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx
-  - name: UrlWhitelistRegex
-    description: Primary whitelist regex - anchor base domain - e.g *.live.com/*
-    default: 'https?://(|.*)(office365|dell|live|mozilla|sun|adobe|onenote|microsoft|windowsupdate|google|oracle|googleapis|hp)\.(net|com|(|\.au))(|:80|:443|:5985)/'
-  - name: UrlWhitelistRegex2
-    description: Secondary whitelist regex. Used for root domain e.g domain.com/*
-    default: 'https?://((oneclient\.sfx|aka)\.ms|(10|192)\.d{1,3}\.\d{1,3}\.\d{1,3})(|:80|:443|:5985)/'
-  - name: UrlWhitelistRegex3
-    description: Secondary whitelist regex. Used for other regex.
+  - name: TldAllowListRegex
+    description: TLD allow list regex - anchor TLD - e.g live.com
+    default: '(office365|dell|live|mozilla|sun|adobe|onenote|microsoft|windowsupdate|google|oracle|hp)\.(net|com|(|\.au))|\.(office\.net|sentinelone\.net|connectwise.net)|(oneclient\.sfx|aka)\.ms|(10|192)\.d{1,3}\.\d{1,3}\.\d{1,3}'
+  - name: UrlAllowListRegex
+    description: Secondary whitelist regex. Used for Url
 
 sources:
   - precondition:
@@ -39,7 +37,7 @@ sources:
                 EventData.name as Name,
                 EventData.id as Id,
                 EventData.url as Url,
-                url(parse=Url).Host AS TLD,
+                url(parse=EventData.url).Host AS TLD,
                 EventData.peer as Peer,
                 timestamp(epoch=EventData.fileTime) as FileTime,
                 EventData.fileLength as fileLength,
@@ -49,15 +47,25 @@ sources:
             FROM parse_evtx(filename=OSPath)
             WHERE 
                 EventId = 59
-                AND NOT if( condition= UrlWhitelistRegex,
-                            then= Url =~ UrlWhitelistRegex,
+                AND NOT if( condition= TldAllowListRegex,
+                            then= TLD =~ TldAllowListRegex,
                             else= FALSE)
-                AND NOT if( condition= UrlWhitelistRegex2,
-                            then= Url =~ UrlWhitelistRegex2,
-                            else= FALSE)
-                AND NOT if( condition= UrlWhitelistRegex3,
-                            then= Url =~ UrlWhitelistRegex3,
+                AND NOT if( condition= UrlAllowListRegex,
+                            then= Url =~ UrlAllowListRegex,
                             else= FALSE)
         })
 
       SELECT * FROM results
+      
+    notebook:
+      - type: vql_suggestion
+        name: Stack rank by TLD
+        template: |
+            /*
+            ## TLD stacking - find potential to add to Ignore regex and triage low counts
+            */
+            SELECT TLD,count() as TldTotal,
+                Url as UrlExample
+            FROM source(artifact="Windows.EventLogs.Bitsadmin")
+            GROUP BY TLD
+            ORDER BY TldTotal

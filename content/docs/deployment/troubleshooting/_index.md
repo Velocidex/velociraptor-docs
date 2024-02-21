@@ -1,16 +1,20 @@
 ---
-title: Troubleshooting Deployments
+title: Troubleshooting and Debugging
 menutitle: Troubleshooting
 weight: 100
 ---
+
+### Troubleshooting deployments
 
 Sometimes things don't work when you first try them. This page will go
 through the common issues people find when deploying Velociraptor
 clients and the steps needed to debug them.
 
-## Server fails to start
+#### Server fails to start
 
-If the server fails to start, you can try to start it by hand to see any logs or issues. Typically the Linux service will report something unhelpful such as:
+If the server fails to start, you can try to start it by hand to see
+any logs or issues. Typically the Linux service will report something
+unhelpful such as:
 
 ```
 # service velociraptor_server status
@@ -34,7 +38,8 @@ Dec 31 15:47:18 devbox velociraptor[3572509]: velociraptor.bin: error: frontend:
 ```
 
 In this case, Velociraptor can not start because it can not write on
-its logs directory. Other errors might be disk full or various permission denied problems.
+its logs directory. Other errors might be disk full or various
+permission denied problems.
 
 {{% notice warning "Incorrect permissions in the filestore" %}}
 
@@ -51,151 +56,11 @@ command `chown -R velociraptor:velociraptor /path/to/filestore/`)
 
 {{% /notice %}}
 
-## Velociraptor communications
-
-To understand where things might go wrong, we first need to understand
-how Velociraptor clients communicate with the server. You can read a lot more details about Velociraptor's encryption scheme and communication protocol in our [Velociraptor Communications Blog post]({{< ref "/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/_index.md" >}}), but we will go through the most important aspects here.
-
-### Velociraptor’s internal PKI
-
-Every Velociraptor deployments creates an internal PKI which underpins
-it. The configuration wizard create an internal CA with an X509
-certificate and a private key. This CA is used to
-
-1. Create initial server certificates and any additional certificates
-   for key rotation.
-
-1. CA public certificate is embedded in the client’s configuration and
-   is used to verify server communications.
-
-1. The CA is used to create API keys for programmatic access. The
-   server is then able to verify API clients.
-
-The configuration file contains the CA's X509 certificate in the
-**Client.ca_certificate** parameter (it is therefore embedded in the
-client configuration). The private key is contained in the
-**CA.private_key** parameter.
-
-{{% notice warning "Protecting the CA private key" %}}
-
-In a secure installation you should remove the **CA.private_key**
-section from the server config and keep it offline. You only need it
-to create new API keys using the *velociraptor config api_client*
-command, and the server does not need it in normal operations.
-
-{{% /notice %}}
-
-### Messages
-
-Clients and servers communicate by sending each other messages (which
-are simply protocol buffers), for example, a message may contain VQL
-queries or result sets. Messages are collected into a list and sent in
-a single POST operation in a **MessageList** protobuf. This protobuf
-is encrypted using a session key with a symmetric cipher
-(`aes_128_cbc`). The session key is chosen by the sending party and is
-written into an encrypted **Cipher** protobuf and sent along with each
-message.
-
-![Velociraptor Communication overview](1ntQkR2sRm8mIg5vkYjngEg.png)
-
-This symmetric key is encoded in a **Cipher Properties** protobuf
-which is encrypted in turn using the receiving party’s public key and
-signed using the sending party’s private key.
-
-{{% notice tip "Messages are double encrypted" %}}
-
-You might have noticed that **MessageList** protobufs are encrypted
-and signed, but they are usually still delivered within a TLS session -
-therefore there are two layers of encryption.
-
-The internal encryption scheme's main purpose is not to encrypt the
-messages but to sign them. This prevents messages from one client from
-impersonating another client.
-
-{{% /notice %}}
-
-### HTTP protocol
-
-Velociraptor uses HTTPS POST messages to deliver message sets to the
-server. The server in turn sends messages to the client in the body of
-the POST request. The client connects to one of the server URLs
-provided in the **Client.server_urls** setting in its config file.
-
-Before the client communicates with the server, the client must verify
-it is actually talking with the correct server. This happens at two
-levels:
-
-* If the URL is a HTTPS URL then the TLS connection needs to be
-  verified
-
-* The client will fetch the url /server.pem to receive the server’s
-  internal certificate. This certificate must be verified by the
-  embedded CA.
-
-Note that this verification is essential in order to prevent the
-client from accidentally talking with captive portals or MITM proxies.
-
-### TLS verification
-
-Velociraptor currently supports 2 modes for deployment via the config
-wizard:
-
-* Self signed mode uses internal CAs for the TLS certificates. The
-  client knows it is in self signed mode if the
-  **Client.use_self_signed_ssl** flag is true.
-
-* Proper certificates minted by Let’s encrypt.
-
-Velociraptor verifies self signed TLS certificates using its built in
-CA. This essentially pins the server’s certificate inside the client —
-even if a MITM was able to mint another certificate (even if it was
-trusted by the global roots!) it would not be valid since it was not
-issued by Velociraptor’s internal CA which is the only CA we trust in
-this mode! In this way self signed mode is more secure than when using
-a public CA.
-
-The **Client.pinned_server_name** specifies the common name of the
-server (or DNS name in the Server Alternate Name (SAN) field). The
-client verifies that the certificate is correct **AND** that the name
-is the same as the pinned name. You typically do not need to change
-this setting.
-
-If the client is not in self signed mode
-(i.e. **Client.use_self_signed_ssl** is false or not present), it
-expects to verify TLS connections using the system’s root certificate
-store. In this configuration, Velociraptor may be susceptible to a
-MITM SSL inspection proxy, and we must rely on the internal encryption
-mechanism as described in the previous section to protect
-communications.
-
-{{% notice warning "Self signed TLS certificates" %}}
-
-Velociraptor's self signed mode **requires** that the certificates be
-issued by Velociraptor itself (the CA is pinned). It is **not
-supported** for the server to present self signed certificates
-generated by another CA!
-
-In practice we find that often customer networks do contain SSL
-inspection proxies which are using self signed certificates. This
-breaks communications between client and server altogether. We
-typically prefer to deploy Let’s Encrypt certificates for reliability
-and better interoperability with such SSL interception proxies.
-
-If you encounter an SSL interception proxy that breaks Velociraptor
-communications, you may look into ways to whitelist the Velociraptor
-server. Many proxies have mechanisms to whitelist certain domains.
-
-{{% /notice %}}
-
-## Debugging client communications
-
-Now that we have an understanding on the low level communication
-mechanism, let’s try to apply our understanding to debugging common
-deployment issues.
+### Debugging client communications
 
 If the client does not appear to properly connect to the server, the
-first thing is to run it manually (using the `velociraptor --config client.config.yaml client -v`
-command):
+first thing is to run it manually (using the `velociraptor --config
+client.config.yaml client -v` command):
 
 ![Running the client manually](1TOeyrCcX69mtUdO8E4ZK9g.png)
 
@@ -244,7 +109,8 @@ config file):
 velociraptor --config server.config.yaml config rotate_key > new_server.config.yaml
 ```
 
-Depending on which user invoked the Velociraptor binary, you may need to alter the permissions of the new server configuration file.
+Depending on which user invoked the Velociraptor binary, you may need
+to alter the permissions of the new server configuration file.
 
 For example:
 
@@ -253,7 +119,8 @@ chmod 600 new_server.config.yaml
 chown velociraptor:velociraptor new_server.config.yaml
 ```
 
-From here, you will need to move the updated server configuration into the appropriate location. 
+From here, you will need to move the updated server configuration into
+the appropriate location.
 
 {{% notice warning "CA certificate expiry" %}}
 
@@ -267,3 +134,219 @@ config file). When generating the config file initially, the CA
 certificate is created with a 10 year validity.
 
 {{% /notice %}}
+
+### Debugging Velociraptor
+
+Velociraptor is a powerful program with a lot of
+functionality. Sometimes it is important to find out what is happening
+inside Velociraptor and if it doing what is expected. This is
+important for debugging or even just for understanding what is
+happening.
+
+To see the inner workings of Velociraptor we can collect `profiles` of
+various aspects of the program. These profiles exist regardless of if
+Velociraptor is used in as a client or server or even an offline
+collector.
+
+You can read more about profiling in [Profiling the Beast]({{% ref "/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/" %}})
+
+#### Starting the debug server
+
+When provided with the `--debug` flag, Velociraptor will start the
+debug server on port 6060 (use `--debug_port` to change it). By
+default the debug server will only bind to localhost so you will need
+to either tunnel the port or use a local browser to connect to it.
+
+![Viewing the debug server](debug_server.png)
+
+The debug server has a number of different profiles and new ones will
+be introduced, so below we just cover some of the most useful profiles
+you can view.
+
+##### Notebook workers
+
+Notebooks are very useful feature of the server allowing for complex
+postprocessing of collected data. Sometimes these queries are very
+large and take a long time to run. To limit the amount of resources
+the queries can take on the server, Velociraptor only creates a
+limited number of notebook workers (by default 5).
+
+![Inspecting the notebook workers](notebook_workers.png)
+
+##### Currently running queries
+
+This view shows the queries currently running in this process. For
+example queries will run as part of the notebook evaluation, currently
+installed event queries or in the case of the offline collector,
+currently collecting artifacts.
+
+![Inspecting the currently running queries](currently_running_queries.png)
+
+You can also see all recent queries (even the ones that have completed
+already). This helps to understand what exactly the client is doing.
+
+##### ETW Subsystem
+
+This profile shows the current state of the ETW subsystem on
+Windows. We can see what providers Velociraptor is subscribed to, how
+many queries are currently watching that provider, and how many events
+were received from the provider.
+
+![Inspecting the ETW subsystem](etw_profile.png)
+
+
+##### Go profiling information
+
+For even more low level view of the program execution, we can view the
+`Built in Go Profiles` which include detailed heap allocation,
+goroutine information and can capture a CPU profile for closer
+inspection.
+
+This type of information is critical for developers to understand what
+the code is doing, and you should forward it in any bug reports or
+discussions to help the Velociraptor developer team.
+
+#### Debugging the offline collector
+
+The offline collector is a one shot collector which simply runs,
+collects several preconfigured artifacts into a zip file and
+terminates.
+
+Sometimes the collector may take a long time or use too much
+memory. In this case you might want to gain visibility into what its
+doing.
+
+You can start the offline collector by adding the `--debug` flags to
+its execution in a similar way to above.
+
+```
+Collector_velociraptor-v0.7.1-windows-amd64.exe -- --debug --debug_port 6061
+```
+
+![Inspecting the ETW subsystem](debugging_offline_collector.png)
+
+Note that the additional `--` is required to indicate that the
+additional parameters are not considered part of the command line (the
+offline collector requires running with no parameters).
+
+The above will start the debug server on port 6061. You can then
+download goroutine, heap allocation and other profiles from the debug
+server and forward these to the Velociraptor team to resolve any issues.
+
+
+#### Debugging a remote client
+
+The previous section described how to bring up the debug server by
+providing the `--debug` commandline, but existing clients are not
+normally already running with this flag. Often we are trying to
+collect an artifact from a remote client and we want to see what is
+actually happening in the client process itself.
+
+We can do this by collecting the `Generic.Client.Profile` from the
+client directly. This artifact has access to the same data exposed
+through the debug server, but does not require the debug flag to be
+enabled in advance.
+
+![Collecting the client profile](client_profile_artifact.png)
+
+By default the artifact collects the most useful information
+developers require, but you can customize the artifact parameter to
+collect more detailed information if required.
+
+You can share the result of the collection by exporting it to a zip
+file and sharing with the development team on Discord or GitHub
+issues.
+
+![Exporting the client profile](exporting_client_profile.png)
+
+#### Enabling a trace
+
+While collecting the profile at any time is useful, it is sometimes
+hard to catch the problem on the client at just the right moment. For
+example, if a particular query causes a memory leak or performance
+issues, by the time you can schedule the `Generic.Client.Profile`
+artifact, the client may have already restarted or is too busy to
+actually collect the artifact.
+
+In this case it is useful to enable a trace during the collection of
+another artifact. This setting will cause the client to take profile
+snapshots at specified intervals during query execution and
+automatically upload them to the server.
+
+![Enabling periodic trace during artifact collection](enabling_trace.png)
+
+This setting will upload a zip file containing critical profile
+information every 10 seconds during query execution. This information
+is useful to see the memory and resource footprint as the query
+progresses as well as the logs from the client.
+
+![Viewing the trace log](trace_logs.png)
+
+#### Inspecting client's log
+
+One of the first troubleshooting steps described above is to run the
+client with the `-v` flag to print client logs to the screen. This
+helps to identify transient network issues or identify when a client
+restarted.
+
+Normally however, the client does not write its logs to disk. This is
+done to prevent information leakage risks - the client's log may
+contain sensitive information like collected artifacts.
+
+It is possible to tell the client to log to an encrypted local storage
+file. This allows us to collect the file from any client later and
+decrypt it on the server while not creating an information leak risk.
+
+To enable local client logging, you can create a new label group
+(e.g. `logged`) and then assign the `Generic.Client.LocalLogs` client
+monitoring artifact to this group. This allows you to begin logging on
+any client by simply labeling it into the group.
+
+![Configuring local client logs](local_client_logs.png)
+
+Logs will be written continuously into the specified file on the
+endpoint. The file is encrypted and can only be decrypted on the
+server but the client can append logging information, even after a
+reboot.
+
+When we want to inspect the log file, we simply collect it from the
+endpoint using the `Generic.Client.LocalLogsRetrieve` artifact.
+
+![Retrieving the encrypted log file](encrypted_local_log_file.png)
+
+The notebook tab will automatically decrypt the logs and display them
+in a table.
+
+![Decrypting the local log file](reading_encrypted_file.png)
+
+
+#### Debugging the server
+
+It is also possible to collect the profile from the server without the
+use of the `--debug` flag using the `Server.Monitor.Profile`
+artifact. This is the server equivalent of the
+`Generic.Client.Profile` artifact.
+
+#### Collecting metrics
+
+When Velociraptor is run in production it is often necessary to build
+dashboards to monitor the server's characteristics, such as memory
+user, requests per second etc.
+
+Velociraptor exports a lot of important metrics using the standard
+`Prometheus` library. This information may be scraped from the
+server's monitoring port (by default
+http://127.0.0.1:8003/metrics). You can change the port and bind
+address for the metrics server using the [Monitoring.bind_port
+]({{% ref "/docs/deployment/references/#Monitoring.bind_port" %}}) and [Monitoring.bind_address
+]({{% ref "/docs/deployment/references/#Monitoring.bind_address" %}}) setting.
+
+You can either manually see program metrics using curl or configure an
+external system like [Grafana](https://grafana.com/) or
+[DataDog](https://www.datadoghq.com/) to scrape these metrics.
+
+```
+curl http://127.0.0.1:8003/metrics | less
+```
+
+We recommend that proper monitoring be implemented in production systems.

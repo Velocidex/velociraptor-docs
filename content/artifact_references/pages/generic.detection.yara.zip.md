@@ -168,5 +168,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+
 </code></pre>
 

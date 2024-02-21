@@ -19,10 +19,22 @@ To work with a specific client, search for it using the
 search bar at the top of the Admin GUI. Click the Search or Show All icon
 to see all the clients.
 
-![Searching for a client](image56.png)
+![Searching for a client](searching_client.png)
 
 {{% notice tip %}}
-You can use the following prefixes as well: `label:` to search clients with a label or `host:` to search for hostnames.
+You can use the following prefixes as well:
+
+* `all`: show all clients
+* `label:` to search clients with a label
+* `host:` to search for hostnames.
+* `ip`: to search based on IP address
+* `mac`: to search based on MAC addresses
+* `recent`: see all the recent clients this user interacted with.
+
+
+Clicking on the `online status` column header toggles the search
+between all clients and only those that are currently online.
+
 {{% /notice %}}
 
 The search function uses a client index so can quickly
@@ -31,32 +43,35 @@ requirements should be done in a notebook using full VQL syntax.
 
 The results from the search are shown as a table.
 
-![Search page](search2.png)
-
-
 The table contains five columns:
 
-1. The **online state** of the host is shown as a color icon. A green dot
-   indicated that the host is currently connected to the server, a
-   yellow icon indicates the host is not currently connected but was
-   connected between 15 minutes and 24 hours ago. A red icon indicates that the
-   host has not been seen for 24 hours or more.
+1. The **online state** of the host is shown as a color icon. A green
+   dot indicated that the host is currently connected to the server, a
+   an exclamation icon indicates the host is not currently connected
+   but was connected between 15 minutes and 24 hours ago. A warning
+   triangle indicates that the host has not been seen for 24 hours or
+   more.
 
 2. The **client ID** of the host is shown. Clients have a unique ID
-   starting with “C.”. Internally, the client ID is considered the most
-   accurate source of endpoint identity. Velociraptor always refers
-   to the client ID rather than the hostname because hostnames can change. A
-   client ID is derived from the client's cryptographic key and is
-   stored on the endpoint in the client `writeback file`.
+   starting with `C.`. Internally, the client ID is considered the
+   most accurate source of endpoint identity. Velociraptor always
+   refers to the client ID rather than the hostname because hostnames
+   can change. A client ID is derived from the client's cryptographic
+   key and is stored on the endpoint in the client `writeback
+   file`. Clicking on the client id will take you to the host
+   information screen.
 
-3. The **hostname** reported by the host.
+3. The **hostname** and **Fully Qualified Domain Name** reported by
+   the host.
 
 4. The **operating system version**. This indicates if the host is a
    Windows/Linux/MacOS machine and its respective version.
 
-5. Any **labels** applied to the host.
+5. Any **labels** applied to the host. Clicking on a label removes the
+   label from this host.
 
 {{% notice tip %}}
+
 Once you view a particular host, the GUI will automatically remember it in a most recently used list (MRU). You can view your recent searches easily by selecting it from the gui.
 
 ![Search page](mru.png)
@@ -77,15 +92,25 @@ select the hosts in the GUI and then click the "add labels" button.
 
 ![Adding labels](labels.png)
 
+### Manipulating labels via VQL
+
 Although it is possible to manipulate labels via the GUI, It is
 usually easier to use VQL queries to add or remove labels via the
 `label()` plugin.
 
-For example, the following query labels all machines that the user
-"mike" ever logged into (Where HuntId is set to a
-`Windows.Sys.Users` artifact collector hunt ID:
+For example, let's say we wanted to label all machines with the local
+user of `mike`. I would follow the following steps:
 
-```sql
+1. Launch a hunt to list all user accounts on all endpoints using the
+`Windows.Sys.Users`.
+2. When enough results are returned, I click the `Notebook` tab in the
+   hunt manager to access the hunt's notebook.
+3. Applying the query below I filter all results with the user `Mike`
+   and apply the label function to that host.
+
+Note that `HuntId` is automatically set to the hunt id inside the hunt notebook:
+
+```vql
 SELECT Name, label(client_id=ClientId,
                    labels="Mikes Box",
                    op="set")
@@ -146,15 +171,15 @@ to the selected client.
 You can easily tell which client we are dealing with as the name of
 the host, and the last time we connected with it are shown:
 
-![Host View](image57.png)
+![Host View](client_overview.png)
 
 Velociraptor maintains some basic information about the host, such as
 its hostname, labels, last seen IP, and last seen time. This is shown
 in the `Host View` pane. Velociraptor uses this information to make it
 possible to search for this host and target it for further
-investigation. Velociraptor gathers this information during the
-`Interrogate` operation. Interrogation normally occurs when the client
-first enrolls, but you can interrogate any client at any time by
+investigation. Velociraptor gathers this information constantly from
+the endpoint and upon first enrollment, so this information should be
+relatively up to date. You can refresh this information at any time by
 clicking the `Interrogate` button.
 
 Each client has arbitrary metadata so you can integrate it easily into
@@ -193,6 +218,7 @@ information about a host.
 
 ![VQL Drilldown](image58.png)
 
+### Table GUI Widgets
 
 A common UI element in the Velociraptor GUI is the table widget. Since
 Velociraptor deals with VQL queries and all queries simply return a
@@ -213,10 +239,10 @@ seen above:
 
 ![Raw JSON](image59.png)
 
-3. Export table as CSV - Clicking on the export table button simply
-   exports the **visible** columns as a CSV file. This is a great way
-   of filtering out uninteresting columns and producing more targeted
-   CSV files for post processing in e.g. Excel.
+3. Export table as CSV or JSON - Clicking on the export table button
+   simply exports the **visible** columns as a CSV file. This is a
+   great way of filtering out uninteresting columns and producing more
+   targeted CSV files for post processing in e.g. Excel.
 
 
 ### Remote shell commands
@@ -226,10 +252,16 @@ curated VQL queries. However, sometimes it is necessary to run
 arbitrary commands on the endpoint in a dynamic incident response
 operation.
 
-Velociraptor allows running arbitrary shell commands on the endpoint
-using Powershell/Cmd/Bash or adhoc VQL.
+The advantage of collecting artifacts is that they are generally better tested and controlled than just typing arbitrary Powershell or Bash commands in the GUI - remember, a single typo can ruin your day!
 
-![Shell command](image60.png)
+We recommend that arbitrary shell commands only be used as a last
+resort and instead shell commands be run with the VQL `execve()`
+plugin within the context of an artifact.
+
+Velociraptor allows running arbitrary shell commands on the endpoint
+using `Powershell`/`Cmd`/`Bash` or adhoc `VQL`.
+
+![Shell command](shell_commands.png)
 
 {{% notice note %}}
 
@@ -238,7 +270,7 @@ arbitrary shell commands on remote endpoints!
 
 {{% /notice %}}
 
-You can prevent clients from running arbitrary shell command
+You can prevent clients from running arbitrary shell commands
 by setting `Client.prevent_execve` to true. This limits your DFIR
 efficacy because many artifacts depend on being able to launch
 external programs.

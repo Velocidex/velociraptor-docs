@@ -22,7 +22,8 @@ Arg | Description | Type
 artifact|The artifact to retrieve|string
 source|An optional source within the artifact.|string
 hunt_id|The hunt id to read.|string (required)
-brief|If set we return less columns.|bool
+brief|If set we return less columns (deprecated).|bool
+orgs|If set we combine results from all orgs.|list of string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">READ_RESULTS</i>

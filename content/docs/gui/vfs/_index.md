@@ -10,33 +10,51 @@ client's filesystem. The Velociraptor GUI has a Virtual Filesystem
 View (VFS) screen.
 
 The VFS is simply a server side cache of the files on the endpoint. It
-is merely a familiar GUI to allow inspection of the client's
-filesystem.
+is merely a familiar GUI to allow to interactively fetch and
+inspect of the client's filesystem.
 
-![The Virtual Filesystem](image63.png)
+![The Virtual Filesystem](vfs_view.png)
 
 The VFS consists of a tree view in the left pane and a file listing in
 the top right pane. The tree view allows us to navigate through the
 filesystem, starting at the top level. Remember that the GUI is simply
 viewing data that was previously collected from the client. When
 clicking on a directory in the tree view that has not been synced from
-the client yet, the top right pane is blank.
+the client yet, the top right pane shows the message `No data available. Refresh directory from client by clicking above.`.
 
 Clicking on the refresh directory button <i class="fas fa-folder-open"></i>
 will initiate a directory listing operation on the client, and
 providing the client is currently connected, will refresh the VFS
-view.
+view. Similarly the recursive refresh directory button will recursively refresh the directory listing from the current directory down.
 
 Clicking on any of the files in the directory listing, will show their
-properties in bottom right pane. In particular, listing the directory
-only populates file metadata, such as timestamps - it does not fetch
-the file data. In the `Stats` tab we can initiate a download operation
-from the endpoint by clicking the "Download from client" button <i class="fas fa-sync"></i>.
+properties in the bottom right pane. In particular, listing the
+directory only populates file metadata, such as timestamps - it does
+not fetch the file data. In the `Stats` tab (bottom right pane) we can
+initiate a download operation from the endpoint by clicking the
+"Download from client" button <i class="fas fa-sync"></i>.
+
+If you need to download a lot of files, it might be easier to hide the
+`Stats` pane (bottom right pane) by clicking the `Stats Toggle` button
+and initiating the download by right clicking the `Download` cell next
+to the file in the listing.
 
 Once a file is fetched from the endpoint it is stored on the server
 and we may view it in the VFS GUI. The file is also marked by a floppy
 disk icon <i class="fas fa-save"></i>. You can download the collected
 file from the server by clicking the download icon <i class="fas fa-download"></i>.
+
+### Exporting VFS files
+
+While it is possible to download collected files from the VFS `Stats`
+tab this is inefficient for many files. Instead you can click the
+`Prepare Download` button to prepare an export Zip file of various
+files from the VFS.
+
+![Exporting files from the VFS](exporting_vfs_files.png)
+
+This will begin a server side collection that packages the downloaded
+files specified into a new collection which may then be exported.
 
 ### Recursively operating on files
 
@@ -45,7 +63,7 @@ the endpoint. In many cases it would be convenient to fetch or
 download entire directories from the endpoint. Clicking on the
 recursively sync directory button begins a recursive directory listing.
 
-![Recursive listing](image66.png)
+![Recursive listing a remote directory](image66.png)
 
 {{% notice tip "Cancelling large VFS operations" %}}
 
@@ -57,6 +75,27 @@ of a very large directory you can click the button again to cancel the
 operation.
 
 {{% /notice %}}
+
+### Previewing a file after download.
+
+Once a file is fetched from the endpoint it is stored on the
+server. You can quickly preview the file in the GUI by clicking on the
+preview button (initially the preview button shows the first few
+characters from the file, which helps to quickly eyeball the file
+type).
+
+![Previewing files](vfs_view_2.png)
+
+The Preview screen is a hex viewer with some useful features:
+
+![Previewing files](vfs_view_3.png)
+
+* `Text View`: View a text only version of the data (this removes non printable
+  characters from the binary data and shows only ASCII strings).
+* `Goto Offset`: allows to skip to arbitrary offsets in the file
+* `Search file`: allows to search the file using `Regex`, `String` or
+  `Hex String` modes.
+
 
 ### VFS accessors
 
