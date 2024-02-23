@@ -11,16 +11,16 @@ description: |
    
    2. Parse ```C:\Program Files\ScreenConnect\App_data\User.Xml``` file.   
    Usually this file is set during first use and reset during exploit. 
-   Check for timestamp discrepencies and obviously evil usernames/email 
+   Check for timestamp discrepancies and obviously evil usernames/email 
    (@poc.com).  
    
    3. Parse ```security.db```.   
    Add time filter. Results are stacked, check for unusual access patterns 
    and malicious IPs.
    
-   4. List and update (optionally) all ScreenConnect files.
+   4. List and upload (optionally) all ScreenConnect files.
    
-   Collect additoinal artifacts as desired for support.
+   Collect additional artifacts as desired for support.
 
 reference:
     - https://www.rapid7.com/blog/post/2024/02/20/etr-high-risk-vulnerabilities-in-connectwise-screenconnect/
