@@ -1,0 +1,24 @@
+name: Linux.Environment.Variables
+author: Sikha Puthanveedu @SikhaMohan
+description: Get Environment Variables from Linux System. 
+             Collect from current shell session and the system-wide configuration file.
+parameters:
+  - name: envfile
+    default: /etc/environment
+precondition: |
+      SELECT OS From info() where OS = 'linux'
+sources:
+  - name: Session Environment Variables
+    query: |
+        SELECT parse_string_with_regex(regex="^([^=]+)", string=Stdout).g1 AS Variable,
+               parse_string_with_regex(regex="=([^=]+)$", string=Stdout).g1 AS Value
+            FROM execve(argv=[format(format= 'printenv')], sep="\n")
+
+  - name: System Environment Variables
+    query: |
+        SELECT Variable,Value
+            FROM split_records(
+                            filenames=envfile,
+                            regex="=", record_regex="\r?\n", 
+                            columns=["Variable",
+                                      "Value"]) WHERE not Variable =~ "^#"
