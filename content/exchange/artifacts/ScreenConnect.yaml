@@ -1,3 +1,4 @@
+
 name: Windows.Triage.ScreenConnect
 author: Matt Green - @mgreen27 - Rapid7 Labs
 description: |
@@ -6,8 +7,9 @@ description: |
    
    This artifact will:   
    
-   1. Check for Webshells in ```/App_Extensions/*/*.{aspx,ashx}``` path.  
-   Some observed legitimate webapps have been excluded.
+   1. Check for Webshells in ```/App_Extensions/**/*.{aspx,ashx}``` path.  
+   Some observed legitimate webapp strings have been excluded.   
+   NOTE: Use WebshellsUSN to find potential exploits that cleanup shells.   
    
    2. Parse ```C:\Program Files\ScreenConnect\App_data\User.Xml``` file.   
    Usually this file is set during first use and reset during exploit. 
@@ -33,13 +35,13 @@ parameters:
      description: Glob for all files under ScreenConnect program files
    - name: ExcludedWebshellStrings
      description: Excluded webshell strings.
-     default: 'ConnectWise ScreenConnect Configuration Editor|ConnectWise Automate Support Sessions Viewer|ScreenConnectSlackUserName|ZendeskIntegratedSupportSessionNamePrefix|(Class|ClassName)="(Service|ConnectWiseSsoService|ScreenConnect\.ChatTranscriptPage|ScreenConnect\.AutomateLaunchPage|TeamsIntegrationWebService|AdvancedConfigurationEditorService)"|IT IS REQUIRED FOR INTEGRATION WITH CONNECTWISE AUTOMATE'
+     default: ScreenConnect
    - name: DateAfter
      description: Search for security events after this date 
      type: timestamp
      default: "2024-02-20"
    - name: DateBefore
-     description: Search for securuity events before this date 
+     description: Search for security events before this date 
      type: timestamp
    - name: UploadFiles
      description: If selected Upload all ScreenConnect files for review
@@ -52,6 +54,7 @@ sources:
     query: |
       LET shells = SELECT OSPath, Mtime,Atime,Ctime,Btime 
         FROM glob(globs=TargetGlob + "/App_Extensions/**/*.{aspx,ashx}")
+        WHERE NOT IsDir
       
       SELECT * FROM foreach(row=shells, query={
         SELECT 
@@ -63,9 +66,20 @@ sources:
                 Btime=Btime ) as Timestamps,
             read_file(filename=OSPath) as Contents
         FROM scope()
-        WHERE NOT Contents =~ ExcludedWebshellStrings
+        WHERE NOT if(condition=ExcludedWebshellStrings,
+                        then= Contents=~ExcludedWebshellStrings,
+                        else= False )
       })
       
+  - name: WebshellsUsn
+    query: |
+      SELECT Timestamp,OSPath,Reason,MFTId,Sequence,ParentMFTId,ParentSequence,Usn
+      FROM Artifact.Windows.Forensics.Usn(
+                        FileNameRegex='\.(aspx|ashx)$',
+                        PathRegex='ScreenConnect.+App_Extensions',
+                        DateAfter=DateAfter,
+                        DateBefore=DateBefore )
+
   - name: UserXml
     query: |
       SELECT 
