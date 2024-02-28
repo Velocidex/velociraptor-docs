@@ -55,7 +55,7 @@ Glob expressions are case insensitive and may contain the following wild cards:
 * The `*` matches one or more characters.
 * The `?` matches a single character.
 * Alternatives are denoted by braces and comma delimited: `{a,b}`
-* Recursive search is denoted by a `**`. By default this searches 3 directories deep. If you need to increase it you can add a depth number (e.g. `**10`)
+* Recursive search is denoted by a `**`. By default this searches 30 directories deep. If you need to increase it you can add a depth number (e.g. `**50`)
 
 By default globs do not expand environment variables. If you need to
 expand environment variables use the `expand()` function explicitly:
