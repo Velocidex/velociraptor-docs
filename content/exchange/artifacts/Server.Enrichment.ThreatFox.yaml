@@ -1,0 +1,42 @@
+name: Server.Enrichment.ThreatFox
+description: |
+   Query ThreatFox for IOCs. Idea was to use it to check if a hash, IP address or domain is in a list of known
+   
+   To learn more about ThreatFox, see: https://threatfox.abuse.ch/
+   
+   SHOUTOUT THANKS to mike.cohen and predictiple on VQL discord getting the double foreach explained to me. Appreciate it
+   
+   This artifact is intended to be called to check if w/e indicators you're checking are inside ThreatFox IOCs withing the last 24 hours. 
+
+     Ex.
+       `SELECT * from Artifact.Server.Enrichment.ThreatFox()
+       
+     Ex. Use in a hunt...
+     '''
+    LET TFData <= SELECT ioc, ioc_type FROM Artifact.Server.Enrichment.ThreatFox()
+
+    LET IpConns = SELECT System.Computer AS Computer, EventData.DestinationIp AS DestIp, EventData.DestinationHostname AS DestHost FROM parse_evtx(filename="C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-Sysmon%4Operational.evtx") WHERE System.EventID.Value = 3 AND DestIp != '34.36.95.252'
+
+    SELECT * FROM foreach(row=IpConns, query={SELECT str(str=ioc) AS IOC, ioc_type, str(str=DestIp) AS DstIP, DestHost FROM foreach(row=TFData)}) WHERE IOC =~ DstIP OR IOC =~ DestHost
+        '''
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: SERVER
+
+parameters:
+   - name: Query
+     default:
+   - name: Days
+     default:
+
+
+sources:
+    - query: |
+        LET TFSubmission <= 
+            SELECT parse_json(data=Content).data AS Records
+            FROM http_client(url="https://threatfox-api.abuse.ch/api/v1/",
+                           method="POST",
+                           data='{"query": "get_iocs", "days": 7}')
+        
+        SELECT ioc, ioc_type
+        FROM foreach(row=TFSubmission.Records, query={SELECT * FROM foreach(row=_value)})
