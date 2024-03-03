@@ -1,4 +1,4 @@
-name: Server.Enrichment.ThreatFox
+name: Server.Enrichment.ThreatFox_logCmp
 description: |
    Query ThreatFox for IOCs. Idea was to use it to check if a hash, IP address or domain is in a list of known
    
