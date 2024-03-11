@@ -21,8 +21,8 @@ Arg | Description | Type
 ----|-------------|-----
 client_id|The client id to schedule a collection on|string (required)
 artifacts|A list of artifacts to collect|list of string (required)
-env|Parameters to apply to the artifact (an alternative to a full spec)|Any
-spec|Parameters to apply to the artifacts|Any
+env|Parameters to apply to the artifact (an alternative to a full spec)|ordereddict.Dict
+spec|Parameters to apply to the artifacts|ordereddict.Dict
 timeout|Set query timeout (default 10 min)|uint64
 ops_per_sec|Set query ops_per_sec value|float64
 cpu_limit|Set query cpu_limit value|float64
@@ -79,5 +79,36 @@ artifacts parameter.
 NOTE: When constructing the dictionaries for the spec parameter
 you will often need to specify a field name containing full
 stop. You can escape this using the backticks like the example above.
+
+# Example - conditional collections
+
+In this example we wish to create an artifact with check buttons
+for selecting groups of artifacts to launch. Assume `Do1` and
+`Do2` are boolean parameters:
+
+1. Depending on the checkbox condition we set a set of dicts and
+   potential arguments.
+
+2. Next we rely on the fact that dict additions merge the keys of
+   each dict to create a merged dict. The `Spec` dict is
+   constructed by joining the different parts together
+
+3. To obtain the list of unique artifacts we use the `items()`
+   plugin to extract the keys from the spec dict.
+
+```vql
+LET X1 = if(condition=Do1, then=dict(`Generic.Client.Info`=dict()), else=dict())
+LET X2 = if(condition=Do2, then=dict(`Generic.System.Pstree`=dict()), else=dict())
+
+LET Spec = X1 + X2
+
+LET ArtifactNames = SELECT _key FROM items(item=Spec)
+
+SELECT collect_client(
+         spec=Spec,
+         artifacts=ArtifactNames._key,
+         client_id='C.49982ba4c2ccef20') AS collection
+FROM scope()
+```
 
 

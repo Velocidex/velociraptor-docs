@@ -170,14 +170,15 @@ parameters:
           accessor=accessor,
           bucket=TargetArgs.bucket,
           name=name,
-          credentialskey=TargetArgs.credentialsKey,
-          credentialssecret=TargetArgs.credentialsSecret,
+          credentials_key=TargetArgs.credentialsKey,
+          credentials_secret=TargetArgs.credentialsSecret,
+          credentials_token=TargetArgs.credentialsToken,
           region=TargetArgs.region,
           endpoint=TargetArgs.endpoint,
-          serversideencryption=TargetArgs.serverSideEncryption,
-          kmsencryptionkey=TargetArgs.kmsEncryptionKey,
-          s3uploadroot=TargetArgs.s3UploadRoot,
-          noverifycert=TargetArgs.noverifycert)
+          serverside_encryption=TargetArgs.serverSideEncryption,
+          kms_encryption_key=TargetArgs.kmsEncryptionKey,
+          s3upload_root=TargetArgs.s3UploadRoot,
+          skip_verify=TargetArgs.noverifycert)
 
   - name: GCSCollection
     type: hidden
@@ -231,10 +232,13 @@ parameters:
   - name: CommonCollections
     type: hidden
     default: |
+      LET S = scope()
+
       // Add all the tools we are going to use to the inventory.
-      LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash)
+      LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
        FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
-       WHERE log(message="Adding tool " + ToolName)
+       WHERE log(message="Adding tool " + ToolName +
+             " version " + (S.Version || "Unknown"))
 
       LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
          scope().CWD AS CWD FROM info()
@@ -349,6 +353,7 @@ parameters:
 
     default: |
        LET RequiredTool &lt;= ToolName
+       LET S = scope()
 
        LET matching_tools &lt;= SELECT ToolName, Filename
        FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
@@ -423,7 +428,7 @@ sources:
       )
 
       LET use_server_cert = encryption_scheme =~ "x509"
-         AND NOT encryption_args.public_key =~ "----BEGIN CERTIFICATE-----"
+         AND NOT encryption_args.public_key =~ "-----BEGIN CERTIFICATE-----"
          AND log(message="Pubkey encryption specified, but no cert/key provided. Defaulting to server frontend cert")
 
       -- For x509, if no public key cert is specified, we use the
@@ -480,6 +485,8 @@ sources:
                dict(name="SleepDuration", type="int", default="0"),
                dict(name="ToolName"),
                dict(name="ToolInfo"),
+               dict(name="TemporaryOnly", type="bool"),
+               dict(name="Version"),
                dict(name="IsExecutable", type="bool", default="Y"),
             ) AS parameters,
             (

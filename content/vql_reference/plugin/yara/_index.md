@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-rules|Yara rules in the yara DSL.|string (required)
+rules|Yara rules in the yara DSL or after being compiled by the yarac compiler.|string
 files|The list of files to scan.|list of Any (required)
 accessor|Accessor (e.g. ntfs,file)|string
 context|How many bytes to include around each hit|int
@@ -43,10 +43,18 @@ across files. You can read more about [yara rules](https://yara.readthedocs.io/e
 accessor is used to open the various files which allows this plugin to
 work across raw ntfs, zip members or indeed process memory.
 
-Scanning proceeds by reading a block from the file, then applying the
-yara rule on the block. This will fail if the signature is split
-across block boundary. You can choose the block size to be
-appropriate.
+There are two modes supported. If the accessor is "process" or
+"file", we delegate scanning directly to the yara library. This
+allows yara to see the entire file and apply signatures that span
+large offset differences (e.g. a signature looking for a string in
+the middle of the file and the header).
+
+For other accessors we need to use buffer scanning. In this mode,
+Velociraptor will read buffers from the accessor and apply the
+yara library to the buffer. Due to limitations in the yara API, it
+is not possible to match signatures that are split on buffer
+boundaries. You can choose the block size to try to fit the entire
+signature with each block.
 
 If the accessor is **not** specified we use the yara library to
 directly open the file itself without Velociraptor's accessor
@@ -73,26 +81,17 @@ use the rule text itself to generate the cache key. It is
 recommended that the `key` parameter be specified because it makes
 it more efficient since we do not need to hash the rules each time.
 
-### Shorthand rules
+You can supply a `compiled yara rule` as produced by the `yarac`
+program. This is not recommended because it is not portable - the
+rule must have been compiled with the exact same version of Yara
+that is embedded in Velociraptor (Currently 4.5.0). Compiled rules
+are generally larger too than the plain text rules.
 
-This plugin accepts yara rules in the `rules` parameter. But typically
-we only search for keywords so writing a full yara syntax rule is
-tedious. Therefore we provide a shorthand way to specify the
-keywords. For example:
-
-```
-wide nocase:foo,bar,baz
-```
-
-When the rule is provided in the above form, the plugin will
-automatically generate a yara rule which matches any of the specified
-keywords. The specification before the `:` means the same thing as the
-yara DSL and the following combinations are supported `wide`,
-`wide ascii`, `wide nocase`, `wide nocase ascii`.
-
-This shorthand notation is less useful because recent Velociraptor
-versions offer a context sensitive Yara rule editor in the GUI
-(simply press ? to bring up a rule template).
+When creating an artifact which requires a yara rule, set the type
+of the parameter to `yara` and Velociraptor will offer a context
+sensitive Yara rule editor in the GUI (simply press ? to bring up
+a rule template). This makes it easier to write quick rules in the
+GUI.
 
 {{% notice note %}}
 

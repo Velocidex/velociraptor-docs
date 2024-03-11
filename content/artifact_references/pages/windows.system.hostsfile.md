@@ -6,9 +6,9 @@ tags: [Client Artifact]
 
 Parses the Windows Hostsfile.
 
-Regex searching for Hostname and resolutin is enabled over output.
+Regex searching for Hostname and resolution is enabled over output.
 NOTE: For Hostname search is on the hostfile line and regex ^ or $
-is not reccomended.
+is not recommended.
 
 
 <pre><code class="language-yaml">
@@ -17,9 +17,9 @@ author: Matt Green - @mgreen27
 description: |
    Parses the Windows Hostsfile.
 
-   Regex searching for Hostname and resolutin is enabled over output.
+   Regex searching for Hostname and resolution is enabled over output.
    NOTE: For Hostname search is on the hostfile line and regex ^ or $
-   is not reccomended.
+   is not recommended.
 
 type: CLIENT
 

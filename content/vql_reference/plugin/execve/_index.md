@@ -48,4 +48,34 @@ tools on the client.
 
 https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
 
+NOTE: The plugin receives an array of arguments which are passed
+to the `execve()` system call as an array (on Windows they are
+properly escaped into a command line). This means that you do not
+need to escape or quote any special characters in the command.
+
+We noticed people often do this or variations on it:
+```vql
+LET PathToCacls = "C:/Program Files"
+LET CommandLine <= "cacls.exe " + '"' + PathToCacls + '"'
+SELECT * FROM execve(argv=["powershell", "-c", CommandLine])
+```
+
+While this appears to work it is incorrect, fragile and
+susceptible to a simple shell injection (for example if the
+`PathToCacls` contains quotes).
+
+As a rule we prefer to not run commands through the shell at all
+since it is not needed and unsafe. The correct approach is always
+to split the `argv` into an array of distinct arguments:
+
+```vql
+LET PathToCacls = "C:/Program Files"
+SELECT * FROM execve(argv=["cacls.exe", PathToCacls])
+```
+
+This calls the program directly and is not susceptible to escaping
+or quoting issues (since there is no shell involved). Additionally
+it does not invoke powershell which means that any execution
+artifacts are not trampled by this VQL.
+
 

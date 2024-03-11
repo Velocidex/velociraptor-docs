@@ -23,16 +23,16 @@ file|The file to upload|OSPath (required)
 name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
 bucket|The bucket to upload to|string (required)
-region|The region the bucket is in|string (required)
-credentialskey|The AWS key credentials to use|string
-credentialssecret|The AWS secret credentials to use|string
-credentialstoken|The AWS session token to use (only needed for temporary credentials)|string
+region|The region the bucket is in|string
+credentials_key|The AWS key credentials to use|string
+credentials_secret|The AWS secret credentials to use|string
+credentials_token|The AWS session token to use (only needed for temporary credentials)|string
 endpoint|The Endpoint to use|string
-serversideencryption|The server side encryption method to use|string
-kmsencryptionkey|The server side KMS key to use|string
-s3uploadroot|Prefix for the S3 object|string
-noverifycert|Skip TLS Verification (deprecated in favor of SkipVerify)|bool
+serverside_encryption|The server side encryption method to use|string
+kms_encryption_key|The server side KMS key to use|string
+s3upload_root|Prefix for the S3 object|string
 skip_verify|Skip TLS Verification|bool
+secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>

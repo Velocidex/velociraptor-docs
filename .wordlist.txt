@@ -1457,3 +1457,31 @@ xattr
 # content/vql_reference/basic/humanize/_index.md
 MiB
 ibytes
+
+# content/blog/2024/2024-03-10-release-notes-0.72/_index.md
+CloudFlare
+EWF
+TCT
+Websocket
+balancers
+decompile
+dyndns
+sortable
+topologies
+uploaders
+virtualize
+websocket
+websockets
+
+# content/vql_reference/plugin/upload_s3/_index.md
+kms
+serverside
+
+# content/vql_reference/misc/host/_index.md
+AXFR
+CNAME
+DNSKEY
+SOA
+
+# content/vql_reference/plugin/yara/_index.md
+yarac

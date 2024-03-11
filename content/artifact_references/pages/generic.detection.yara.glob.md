@@ -69,6 +69,10 @@ description: |
   If upload is selected NumberOfHits is redundant and not advised as hits are
   grouped by path to ensure files only downloaded once.
 
+aliases:
+  - Windows.Detection.Yara.Glob
+  - Linux.Detection.Yara.Glob
+  - MacOS.Detection.Yara.Glob
 
 type: CLIENT
 parameters:

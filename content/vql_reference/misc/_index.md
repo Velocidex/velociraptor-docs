@@ -26,6 +26,7 @@ Miscellaneous plugins not yet categorized.
 |[flow_logs](flow_logs)|<span class='vql_type'>Plugin</span>|Retrieve the query logs of a flow|
 |[get_flow](get_flow)|<span class='vql_type'>Function</span>|Gets flow details|
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
+|[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
@@ -37,6 +38,10 @@ Miscellaneous plugins not yet categorized.
 |[mock_clear](mock_clear)|<span class='vql_type'>Function</span>|Resets all mocks|
 |[mock_replay](mock_replay)|<span class='vql_type'>Function</span>|Replay recorded calls on a mock|
 |[monitoring_logs](monitoring_logs)|<span class='vql_type'>Plugin</span>|Retrieve log messages from client event monitoring for the specified client id and artifact|
+|[notebook_create](notebook_create)|<span class='vql_type'>Function</span>|Create a new notebook|
+|[notebook_export](notebook_export)|<span class='vql_type'>Function</span>|Exports a notebook to a zip file or HTML|
+|[notebook_get](notebook_get)|<span class='vql_type'>Function</span>|Get a notebook|
+|[notebook_update_cell](notebook_update_cell)|<span class='vql_type'>Function</span>|Update a notebook cell|
 |[org](org)|<span class='vql_type'>Function</span>|Return the details of the current org|
 |[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organization|
 |[org_delete](org_delete)|<span class='vql_type'>Function</span>|Deletes an Org from the server|
@@ -72,6 +77,7 @@ Miscellaneous plugins not yet categorized.
 |[user](user)|<span class='vql_type'>Function</span>|Retrieves information about the Velociraptor user|
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|
 |[vfs_ls](vfs_ls)|<span class='vql_type'>Plugin</span>|List directory and build a VFS object|
+|[watch_jsonl](watch_jsonl)|<span class='vql_type'>Plugin</span>|Watch a jsonl file and stream events from it|
 |[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
 |[xattr](xattr)|<span class='vql_type'>Function</span>|Query a file for the specified extended attribute|

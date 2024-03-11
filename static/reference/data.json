@@ -225,6 +225,11 @@
                 "name": "hidden",
                 "type": "bool",
                 "description": "Set to true make the artifact hidden in the GUI, false to make it visible again."
+            },
+            {
+                "name": "basic",
+                "type": "bool",
+                "description": "Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it."
             }
         ],
         "metadata": {
@@ -770,12 +775,12 @@
             },
             {
                 "name": "env",
-                "type": "Any",
+                "type": "ordereddict.Dict",
                 "description": "Parameters to apply to the artifact (an alternative to a full spec)"
             },
             {
                 "name": "spec",
-                "type": "Any",
+                "type": "ordereddict.Dict",
                 "description": "Parameters to apply to the artifacts"
             },
             {
@@ -1077,6 +1082,11 @@
                 "type": "string",
                 "description": "Notebook ID to export.",
                 "required": true
+            },
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "The name of the export. If not set this will be named according to the notebook id and timestamp"
             }
         ],
         "metadata": {
@@ -2190,6 +2200,37 @@
         }
     },
     {
+        "name": "host",
+        "description": "Perform a DNS resolution.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name to lookup",
+                "required": true
+            },
+            {
+                "name": "server",
+                "type": "string",
+                "description": "A DNS server to query - if not provided uses the system resolver."
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of lookup, can be CNAME, NS, SOA, TXT, DNSKEY, AXFR, A (default)"
+            },
+            {
+                "name": "prefer_go",
+                "type": "bool",
+                "description": "Prefer calling the native Go implementation rather than the system."
+            }
+        ],
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
+    },
+    {
         "name": "http_client",
         "description": "Make a http request.",
         "type": "Plugin",
@@ -2203,12 +2244,12 @@
             },
             {
                 "name": "params",
-                "type": "Any",
+                "type": "ordereddict.Dict",
                 "description": "Parameters to encode as POST or GET query strings"
             },
             {
                 "name": "headers",
-                "type": "Any",
+                "type": "ordereddict.Dict",
                 "description": "A dict of headers to send."
             },
             {
@@ -2260,6 +2301,17 @@
                 "name": "user_agent",
                 "type": "string",
                 "description": "If specified, set a HTTP User-Agent."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "If specified, use this managed secret. The secret should be of type 'HTTP Secrets'. Alternatively specify the Url as secret://name"
+            },
+            {
+                "name": "files",
+                "type": "ordereddict.Dict",
+                "description": "If specified, upload these files using multipart form upload. For example [dict(file=\"My filename.txt\", path=OSPath, accessor=\"auto\"),]",
+                "repeated": true
             }
         ],
         "category": "plugin",
@@ -3559,6 +3611,12 @@
                 "name": "count",
                 "type": "int64",
                 "description": "Maximum number of clients to fetch (default unlimited)'"
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "Run the query over these orgs. If empty use the current org.'",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -3655,6 +3713,48 @@
         }
     },
     {
+        "name": "notebook_create",
+        "description": "Create a new notebook.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the notebook"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "The description of the notebook"
+            },
+            {
+                "name": "collaborators",
+                "type": "string",
+                "description": "A list of users to share the notebook with.",
+                "repeated": true
+            },
+            {
+                "name": "public",
+                "type": "bool",
+                "description": "If set the notebook will be public."
+            },
+            {
+                "name": "artifacts",
+                "type": "string",
+                "description": "A list of NOTEBOOK artifacts to create the notebook with (Notebooks.Default)",
+                "repeated": true
+            },
+            {
+                "name": "env",
+                "type": "ordereddict.Dict",
+                "description": "An environment to initialize the notebook with"
+            }
+        ],
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        }
+    },
+    {
         "name": "notebook_delete",
         "description": "Delete a notebook with all its cells. ",
         "type": "Plugin",
@@ -3672,6 +3772,85 @@
         "category": "server",
         "metadata": {
             "permissions": "SERVER_ADMIN"
+        }
+    },
+    {
+        "name": "notebook_export",
+        "description": "Exports a notebook to a zip file or HTML.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The id of the notebook to export",
+                "required": true
+            },
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "The name of the export. If not set this will be named according to the notebook id and timestamp"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Set the type of the export (html or zip)."
+            }
+        ],
+        "metadata": {
+            "permissions": "PREPARE_RESULTS"
+        }
+    },
+    {
+        "name": "notebook_get",
+        "description": "Get a notebook.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The id of the notebook to fetch",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        }
+    },
+    {
+        "name": "notebook_update_cell",
+        "description": "Update a notebook cell.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The id of the notebook to update",
+                "required": true
+            },
+            {
+                "name": "cell_id",
+                "type": "string",
+                "description": "The cell of the notebook to update. If this is empty we add a new cell to the notebook"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Set the type of the cell if needed (markdown or vql)."
+            },
+            {
+                "name": "input",
+                "type": "string",
+                "description": "The new cell content.",
+                "required": true
+            },
+            {
+                "name": "output",
+                "type": "string",
+                "description": "If this is set, we do not calculate the cell but set this as the rendered output."
+            }
+        ],
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
         }
     },
     {
@@ -5971,6 +6150,12 @@
                 "name": "count",
                 "type": "int64",
                 "description": "Maximum number of clients to fetch (default unlimited)'"
+            },
+            {
+                "name": "orgs",
+                "type": "string",
+                "description": "Run the query over these orgs. If empty use the current org.'",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -6854,6 +7039,7 @@
         "name": "upload_s3",
         "description": "Upload files to S3.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "file",
@@ -6880,21 +7066,20 @@
             {
                 "name": "region",
                 "type": "string",
-                "description": "The region the bucket is in",
-                "required": true
+                "description": "The region the bucket is in"
             },
             {
-                "name": "credentialskey",
+                "name": "credentials_key",
                 "type": "string",
                 "description": "The AWS key credentials to use"
             },
             {
-                "name": "credentialssecret",
+                "name": "credentials_secret",
                 "type": "string",
                 "description": "The AWS secret credentials to use"
             },
             {
-                "name": "credentialstoken",
+                "name": "credentials_token",
                 "type": "string",
                 "description": "The AWS session token to use (only needed for temporary credentials)"
             },
@@ -6904,29 +7089,29 @@
                 "description": "The Endpoint to use"
             },
             {
-                "name": "serversideencryption",
+                "name": "serverside_encryption",
                 "type": "string",
                 "description": "The server side encryption method to use"
             },
             {
-                "name": "kmsencryptionkey",
+                "name": "kms_encryption_key",
                 "type": "string",
                 "description": "The server side KMS key to use"
             },
             {
-                "name": "s3uploadroot",
+                "name": "s3upload_root",
                 "type": "string",
                 "description": "Prefix for the S3 object"
-            },
-            {
-                "name": "noverifycert",
-                "type": "bool",
-                "description": "Skip TLS Verification (deprecated in favor of SkipVerify)"
             },
             {
                 "name": "skip_verify",
                 "type": "bool",
                 "description": "Skip TLS Verification"
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'"
             }
         ],
         "category": "plugin",
@@ -7507,6 +7692,33 @@
         }
     },
     {
+        "name": "watch_jsonl",
+        "description": "Watch a jsonl file and stream events from it.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "A list of log files to parse.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use."
+            },
+            {
+                "name": "buffer_size",
+                "type": "int",
+                "description": "Maximum size of line buffer."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        }
+    },
+    {
         "name": "watch_monitoring",
         "description": "Watch clients' monitoring log. This is an event plugin. This\nplugin will produce events from all clients.\n",
         "type": "Plugin",
@@ -7723,6 +7935,11 @@
                 "type": "StoredQuery",
                 "description": "query to write into the file.",
                 "required": true
+            },
+            {
+                "name": "buffer_size",
+                "type": "int",
+                "description": "Maximum size of buffer before flushing to file."
             }
         ],
         "metadata": {
@@ -7784,8 +8001,7 @@
             {
                 "name": "rules",
                 "type": "string",
-                "description": "Yara rules in the yara DSL.",
-                "required": true
+                "description": "Yara rules in the yara DSL or after being compiled by the yarac compiler."
             },
             {
                 "name": "files",
