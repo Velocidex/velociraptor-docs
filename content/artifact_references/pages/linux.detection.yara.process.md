@@ -41,6 +41,9 @@ description: |
   Note: the Yara scan will stop after one hit. Multi-string rules will also only
   show one string in returned rows.
 
+aliases:
+- MacOS.Detection.Yara.Process
+
 type: CLIENT
 parameters:
   - name: ProcessRegex
@@ -80,7 +83,7 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'linux'
+      SELECT OS From info() where OS = 'linux' OR OS = 'darwin'
 
     query: |
       -- check which Yara to use
@@ -111,19 +114,22 @@ sources:
                 ProcessName,
                 CommandLine,
                 Pid,
-                Namespace,
                 Rule,
+                Tag,
                 Meta,
                 String.Name as YaraString,
                 String.Offset as HitOffset,
-                upload( accessor='scope', 
-                    file='String.Data', 
-                    name=format(format="%v-%v_%v_%v", 
+                upload( accessor='scope',
+                    file='String.Data',
+                    name=format(format="%v-%v_%v_%v",
                     args=[ ProcessName, Pid, String.Offset, ContextBytes ]
                         )) as HitContext
-             FROM yara(files=format(format="/%d", args=Pid),
-                       accessor='process',rules=yara_rules,
-                       context=ContextBytes, number=NumberOfHits )
+             FROM proc_yara(
+                        pid=Pid,
+                        rules=yara_rules,
+                        context=ContextBytes,
+                        number=NumberOfHits
+                    )
           })
 
       -- upload hits using the process accessor
@@ -144,5 +150,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+
 </code></pre>
 

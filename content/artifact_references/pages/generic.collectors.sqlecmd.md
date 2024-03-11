@@ -528,7 +528,7 @@ sources:
 
 - name: Chromium Browser Downloads
   query: |
-    LET IdentifyQuery = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='urls' OR name='visits' OR name='downloads' OR name='segments' OR name='typed_url_sync_metadata');'''
+    LET IdentifyQuery = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='urls' OR name='visits' OR name='downloads' OR name='segments' OR name='keyword_search_terms');'''
     LET IdentifyValue = 5
     LET SQLQuery = '''SELECT
     downloads.id AS ID,
@@ -682,7 +682,7 @@ sources:
 
 - name: Chromium Browser History
   query: |
-    LET IdentifyQuery = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='urls' OR name='visits' OR name='downloads' OR name='segments' OR name='typed_url_sync_metadata');'''
+    LET IdentifyQuery = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='urls' OR name='visits' OR name='downloads' OR name='segments' OR name='keyword_search_terms');'''
     LET IdentifyValue = 5
     LET SQLQuery = '''SELECT
     urls.id AS ID,
@@ -715,7 +715,7 @@ sources:
 
 - name: Chromium Browser Keyword Searches
   query: |
-    LET IdentifyQuery = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='urls' OR name='visits' OR name='downloads' OR name='segments' OR name='typed_url_sync_metadata');'''
+    LET IdentifyQuery = '''SELECT count(*) FROM sqlite_master WHERE type='table' AND (name='urls' OR name='visits' OR name='downloads' OR name='segments' OR name='keyword_search_terms');'''
     LET IdentifyValue = 5
     LET SQLQuery = '''SELECT
     keyword_search_terms.keyword_id AS KeywordID,

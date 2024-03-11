@@ -49,6 +49,7 @@ reports:
       * &lt;a href="#/notebooks"&gt;Write VQL notebooks&lt;/a&gt;
       * &lt;a href="#/host/server"&gt;View Server Configuration&lt;/a&gt;
       * &lt;a href="#/events/server/Server.Audit.Logs"&gt;Inspect Server Audit Log&lt;/a&gt;
+      * &lt;a href="#/secrets"&gt;Manage Server Secrets&lt;/a&gt;
       * &lt;a href="#/artifacts/Server.Internal.Welcome"&gt;Customize this welcome screen&lt;/a&gt;
 
       Or simply search for a client in the search bar above.

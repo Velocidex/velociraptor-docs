@@ -81,6 +81,15 @@
         ]
     },
     {
+        "title": "Elastic.EventLogs.Sysmon",
+        "description": "Ship the the Sysmon event log in ECS schema.",
+        "link": "/artifact_references/pages/elastic.eventlogs.sysmon",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Elastic.Events.Upload",
         "description": "This server monitoring artifact will watch a selection of client or\nserver monitoring artifacts for new events and push those to an\nelastic index.",
         "link": "/artifact_references/pages/elastic.events.upload",
@@ -667,7 +676,7 @@
     },
     {
         "title": "Linux.Sys.LastUserLogin",
-        "description": "Find and parse system wtmp files. This indicate when the user last logged in.",
+        "description": "Find and parse system wtmp files. This indicate when the user last\nlogged in.\n",
         "link": "/artifact_references/pages/linux.sys.lastuserlogin",
         "type": "client",
         "tags": [
@@ -831,6 +840,15 @@
         "title": "MacOS.Forensics.FSEvents",
         "description": "This artifact parses the FSEvents log files.",
         "link": "/artifact_references/pages/macos.forensics.fsevents",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Network.Netstat",
+        "description": "Report network connections, and enrich with process information.\n",
+        "link": "/artifact_references/pages/macos.network.netstat",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -1164,6 +1182,15 @@
         "title": "Server.Import.PreviousReleases",
         "description": "When upgrading the Velociraptor server the built in artifacts may\nchange using newer VQL features that are not present on older\nclients.",
         "link": "/artifact_references/pages/server.import.previousreleases",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.UpdatedBuiltin",
+        "description": "This artifact allows importing updated versions of some common built\nin artifacts. If you do not want to wait for the next full release\nyou can use this artifact to import a more recent version of some\nselect artifacts which might include later feature.",
+        "link": "/artifact_references/pages/server.import.updatedbuiltin",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1683,15 +1710,6 @@
         ]
     },
     {
-        "title": "Server.Utils.ReIndex",
-        "description": "This utility artifact replays all collected Generic.Client.Info\ncollections to the interrogation service forcing a reindex.",
-        "link": "/artifact_references/pages/server.utils.reindex",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Server.Utils.SaveFavoriteFlow",
         "description": "Users may collect various artifacts from hosts. Sometimes it might\ntake a bit of effort to setup and configure just the perfect\ncombination of parameters and artifacts to collect.",
         "link": "/artifact_references/pages/server.utils.savefavoriteflow",
@@ -2107,7 +2125,7 @@
     },
     {
         "title": "Windows.Detection.Registry",
-        "description": "This artifact detects registry changes and triggers an alert. \n",
+        "description": "This artifact detects registry changes and triggers an alert.\n",
         "link": "/artifact_references/pages/windows.detection.registry",
         "type": "client_event",
         "tags": [
@@ -2214,6 +2232,15 @@
         ]
     },
     {
+        "title": "Windows.Detection.Yara.UEFI",
+        "description": "This artifact enables running yara over files in an EFI System Partition (ESP).\n",
+        "link": "/artifact_references/pages/windows.detection.yara.uefi",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.ETW.DNS",
         "description": "This artifact monitors DNS queries using ETW.",
         "link": "/artifact_references/pages/windows.etw.dns",
@@ -2229,6 +2256,15 @@
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.DotNetRundown",
+        "description": "Queries the Microsoft-Windows-DotNETRuntimeRundown provider to\ncollect a list of DotNet modules loaded into a process. This can be\nuseful when responding to reflectively loaded DotNet malware.",
+        "link": "/artifact_references/pages/windows.etw.dotnetrundown",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -2647,7 +2683,7 @@
     },
     {
         "title": "Windows.Forensics.UEFI",
-        "description": "Searches for an EFI partition in the current partition table and\nenumerates all files in it.\n",
+        "description": "This artifact enables disk analysis over an EFI System Partition (ESP).",
         "link": "/artifact_references/pages/windows.forensics.uefi",
         "type": "client",
         "tags": [

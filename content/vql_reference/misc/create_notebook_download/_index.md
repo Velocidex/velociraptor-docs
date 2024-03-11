@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 notebook_id|Notebook ID to export.|string (required)
+filename|The name of the export. If not set this will be named according to the notebook id and timestamp|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>

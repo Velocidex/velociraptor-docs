@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 name|The Artifact to update|string (required)
 hidden|Set to true make the artifact hidden in the GUI, false to make it visible again.|bool
+basic|Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it.|bool
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">ARTIFACT_WRITER</i>

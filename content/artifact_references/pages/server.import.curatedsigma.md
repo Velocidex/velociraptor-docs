@@ -32,6 +32,7 @@ parameters:
     choices:
       - Velociraptor Hayabusa Ruleset
       - Velociraptor Hayabusa Live Detection
+      - Velociraptor ChopChopGo Ruleset (Linux)
 
   - name: Prefix
     description: Add artifacts with this prefix
@@ -40,6 +41,7 @@ parameters:
 sources:
   - query: |
       LET URLlookup = dict(
+        `Velociraptor ChopChopGo Ruleset (Linux)`="https://sigma.velocidex.com/Velociraptor-ChopChopGo-Rules.zip",
         `Velociraptor Hayabusa Ruleset`="https://sigma.velocidex.com/Velociraptor-Hayabusa-Rules.zip",
         `Velociraptor Hayabusa Live Detection`="https://sigma.velocidex.com/Velociraptor-Hayabusa-Monitoring.zip")
 

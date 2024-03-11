@@ -32,6 +32,7 @@ notebook_cell_version|The notebook cell version to read from (should also includ
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
+orgs|Run the query over these orgs. If empty use the current org.'|list of string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">READ_RESULTS</i>

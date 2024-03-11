@@ -91,6 +91,7 @@ parameters:
       - registry
       - file
       - ntfs
+      - ntfs_vss
 
   - name: YaraRule
     type: yara
@@ -113,6 +114,11 @@ parameters:
     default: ""
     type: timestamp
 
+  - name: VSS_MAX_AGE_DAYS
+    type: int
+    description: |
+      If larger than 0 we restrict VSS age to this many days
+      ago. Otherwise we find all VSS.
 
 sources:
   - query: |

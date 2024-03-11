@@ -20,8 +20,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 url|The URL to fetch|string (required)
-params|Parameters to encode as POST or GET query strings|Any
-headers|A dict of headers to send.|Any
+params|Parameters to encode as POST or GET query strings|ordereddict.Dict
+headers|A dict of headers to send.|ordereddict.Dict
 method|HTTP method to use (GET, POST, PUT, PATCH, DELETE)|string
 data|If specified we write this raw data into a POST request instead of encoding the params above.|string
 chunk_size|Read input with this chunk size and send each chunk as a row|int
@@ -32,6 +32,8 @@ remove_last|If set we delay removal as much as possible.|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 cookie_jar|A cookie jar to use if provided. This is a dict of cookie structures.|ordereddict.Dict
 user_agent|If specified, set a HTTP User-Agent.|string
+secret|If specified, use this managed secret. The secret should be of type 'HTTP Secrets'. Alternatively specify the Url as secret://name|string
+files|If specified, upload these files using multipart form upload. For example [dict(file="My filename.txt", path=OSPath, accessor="auto"),]|list of ordereddict.Dict
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
@@ -97,27 +99,24 @@ automatically removed when the query ends.
 
 ### Example: Uploading files
 
-Many API handlers support uploading files via POST messages. While
-this is not directly supported by http_client it is possible to
-upload a file using simple VQL - by formatting the POST body using
-the multipart rules.
+Many API handlers support uploading files via POST messages. This
+is supported using the `files` parameter for this plugin. The
+plugin will automatically switch to `multipart/form` mode and
+stream the file content. This allows you to upload very large
+files with minimal memory impact. Here is an example:
 
 ```vql
-LET file_bytes = read_file(filename="/bin/ls")
-
 SELECT *
 FROM http_client(
     url='http://localhost:8002/test/',
     method='POST',
-    headers=dict(
-        `Content-Type`="multipart/form-data;boundary=83fcda3640aca670"
-    ),
-    data='--83fcda3640aca670\r\nContent-Disposition: form-data; name="file";filename="ls"\r\nContent-Type: application/octet-stream\r\n\r\n' +
-         file_bytes + '\r\n--83fcda3640aca670--')
+    files=dict(file='file.txt', key='file', path='/etc/passwd', accessor="file")
+)
 ```
-
-Note how custom headers can be provided using a dict - note also
-how dict keys with special characters in them can be constructed
-using the backtick quoting.
+Here the files can be an array of dicts with the following fields:
+* file: The name of the file that will be stored on the server
+* key: The name of the form element that will receive the file
+* path: This is an OSPath object that we open and stream into the form.
+* accessor: Any accessor required for the path.
 
 
