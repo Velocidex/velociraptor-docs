@@ -129,7 +129,7 @@ sources:
                 "C:/Program Files/ScreenConnect*/**",
                 "C:/Program Files (x86)/ScreenConnect*/**",
                 "C:/ProgramData/ScreenConnect*/**",
-                "C:/Users/*/Documents/ConenctWiseControl/**" )
+                "C:/Users/*/Documents/ConnectWiseControl/**" )
         SELECT * 
         FROM Artifact.Windows.Search.FileFinder(
                             Upload_File=UploadFiles,
