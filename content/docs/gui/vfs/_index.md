@@ -68,7 +68,7 @@ the collection. You can then go back to review the files at that time.
 
 Sometimes files in the VFS will contain malware or other unwanted
 software. Often the investigator's local workstation will have AV or
-other security products that might quatantine the produced ZIP
+other security products that might quarantine the produced ZIP
 file. In this case it is better to compress the export with a
 password.
 
