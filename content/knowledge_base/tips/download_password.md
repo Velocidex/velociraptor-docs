@@ -1,4 +1,4 @@
-# How do I enable pasword protected downloads?
+# How do I enable password protected downloads?
 
 You can just export them from the GUI!   
 
