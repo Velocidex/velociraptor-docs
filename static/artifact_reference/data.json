@@ -1188,6 +1188,15 @@
         ]
     },
     {
+        "title": "Server.Import.Rapid7Labs",
+        "description": "This artifact will import curated artifacts by Rapid7 Labs.\n",
+        "link": "/artifact_references/pages/server.import.rapid7labs",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Import.UpdatedBuiltin",
         "description": "This artifact allows importing updated versions of some common built\nin artifacts. If you do not want to wait for the next full release\nyou can use this artifact to import a more recent version of some\nselect artifacts which might include later feature.",
         "link": "/artifact_references/pages/server.import.updatedbuiltin",

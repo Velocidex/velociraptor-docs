@@ -14,6 +14,8 @@ Miscellaneous plugins not yet categorized.
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[artifact_set_metadata](artifact_set_metadata)|<span class='vql_type'>Function</span>|Sets metadata about the artifact|
+|[backup](backup)|<span class='vql_type'>Plugin</span>|Generates a backup file|
+|[backup_restore](backup_restore)|<span class='vql_type'>Plugin</span>|Restore state from a backup file|
 |[base85decode](base85decode)|<span class='vql_type'>Function</span>|Decode a base85 encoded string|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|

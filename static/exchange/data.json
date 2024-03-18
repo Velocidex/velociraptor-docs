@@ -1,5 +1,125 @@
 [
     {
+        "title": "Windows.Forensics.ThumbCache",
+        "author": "mgreen27",
+        "description": "ThumbCache_xx.db parser. ",
+        "link": "/exchange/artifacts/pages/thumbcache",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-03-16"
+    },
+    {
+        "title": "Windows.Forensics.TabState",
+        "author": "mgreen27",
+        "description": "This artifact parses notepad TabState files in available in Windows 11.",
+        "link": "/exchange/artifacts/pages/tabstate",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-03-03"
+    },
+    {
+        "title": "Windows.Triage.ScreenConnect",
+        "author": "mgreen27",
+        "description": "This artifact extracts useful data for triage of ConnectWise ScreenConnect\nCVE-2024-1709 and CVE-2024-1708 impacting versions 23.9.7 and prior.",
+        "link": "/exchange/artifacts/pages/screenconnect",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-02-23"
+    },
+    {
+        "title": "Windows.Audit.CISCat_Lite",
+        "author": "ablescia",
+        "description": "This artifact runs the CISCat-Lite tool on the target machine and uploads the html output on the velociraptor server.",
+        "link": "/exchange/artifacts/pages/windows.audit.ciscat_lite",
+        "tags": [],
+        "author_link": "https://github.com/ablescia",
+        "author_avatar": "https://avatars.githubusercontent.com/u/90195154?v=4",
+        "date": "2024-02-18"
+    },
+    {
+        "title": "Generic.Detection.WebShells",
+        "author": "sec-hbaer",
+        "description": "This artifact looks for evidence of a web shell being present on the system. It targets Windows and Linux hosts.\nThe artifact should be run on web servers, be it dedicated web servers or systems with integrated web servers. \nFor such machines, find the root directory of the web server and change the artifact parameters as needed.",
+        "link": "/exchange/artifacts/pages/generic.detection.webshells",
+        "tags": [],
+        "author_link": "https://github.com/sec-hbaer",
+        "author_avatar": "https://avatars.githubusercontent.com/u/150132280?v=4",
+        "date": "2024-02-14"
+    },
+    {
+        "title": "Windows.Forensics.Jumplists_JLECmd",
+        "author": "orhan-emre",
+        "description": "* Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).  \n* JLECmd.zip is downloaded from the URL to 'C:\\Program Files\\Velociraptor\\Tools' folder.   \n* JLECmd.zip can be uploaded to Velociraptor Server in order to copy it to the clients in case there is no internet connection.\n* Created using @carlos_cajigas LECmd VQL as a quide.  \n* JLECmd is a CLI tool for analyzing Custom Destinations jump list data. Learn more - https://github.com/EricZimmerman/JLECmd\n",
+        "link": "/exchange/artifacts/pages/windows.forensics.jumplists_jlecmd",
+        "tags": [],
+        "author_link": "https://github.com/orhan-emre",
+        "author_avatar": "https://avatars.githubusercontent.com/u/64384804?v=4",
+        "date": "2024-02-14"
+    },
+    {
+        "title": "Windows.Mounted.Mass.Storage",
+        "author": "hasamba",
+        "description": "Find drives/usb mass storage that were mounted\n",
+        "link": "/exchange/artifacts/pages/windows.mounted.mass.storage",
+        "tags": [],
+        "author_link": "https://github.com/hasamba",
+        "author_avatar": "https://avatars.githubusercontent.com/u/7392290?v=4",
+        "date": "2024-02-13"
+    },
+    {
+        "title": "Windows.Registry.ScheduledTasks",
+        "author": "mgreen27",
+        "description": "This artefact will collect Scheduled task information from the registry without \nrelying on the existance of an XML file in C:\\\\Windows\\\\System32\\\\Tasks.",
+        "link": "/exchange/artifacts/pages/scheduledtasks",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-02-12"
+    },
+    {
+        "title": "Generic.Detection.Yara.SSH",
+        "author": "mgreen27",
+        "description": "This is a server artifact that enables running Generic.Detection.Yara.Glob \nover ssh.",
+        "link": "/exchange/artifacts/pages/sshyara",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-02-06"
+    },
+    {
+        "title": "Windows.Veeam.RestorePoints.MetadataFiles",
+        "author": "cybiosity-syn",
+        "description": "Parses the metadata found in Veeam backup chain metadata files (.vbm) to extract relevant fields for each Restore Point.",
+        "link": "/exchange/artifacts/pages/windows.veeam.restorepoints.metadatafiles",
+        "tags": [],
+        "author_link": "https://github.com/cybiosity-syn",
+        "author_avatar": "https://avatars.githubusercontent.com/u/158057079?v=4",
+        "date": "2024-01-29"
+    },
+    {
+        "title": "Generic.Detection.Confluence_CVE_2023_22527",
+        "author": "mgreen27",
+        "description": "This artifact detects evidence of exploitation of Confluence RCE CVE-2023-22527.",
+        "link": "/exchange/artifacts/pages/confluence_cve_2023_22527",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-01-26"
+    },
+    {
+        "title": "Windows.Forensics.PersistenceSniper",
+        "author": "ablescia",
+        "description": "PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident \nResponders and System Administrators to hunt persistences implanted in Windows machines. \nIt is also available on Powershell Gallery and it is digitally signed with a valid code \nsigning certificate. The tool is under active development with new releases coming out \nregularly, so make sure to use the up-to-date version. \nhttps://github.com/last-byte/PersistenceSniper",
+        "link": "/exchange/artifacts/pages/windows.forensics.persistencesniper",
+        "tags": [],
+        "author_link": "https://github.com/ablescia",
+        "author_avatar": "https://avatars.githubusercontent.com/u/90195154?v=4",
+        "date": "2024-01-21"
+    },
+    {
         "title": "Generic.Detection.EffluenceWebshell",
         "author": "mgreen27",
         "description": "This artifact detects Effluence Webshell observed deployed during exploitation \nof Atlassian Confluence CVE-2023-22515.\n",
@@ -450,16 +570,6 @@
         "tags": [],
         "author_link": "https://github.com/hillu",
         "author_avatar": "https://avatars.githubusercontent.com/u/173211?v=4",
-        "date": "2023-05-18"
-    },
-    {
-        "title": "Windows.PersistenceSniper",
-        "author": "Shad0wCell",
-        "description": "PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident Responders and System Administrators to hunt persistences implanted in Windows machines. It is also available on Powershell Gallery and it is digitally signed with a valid code signing certificate. The tool is under active development with new releases coming out by the week, so make sure to use the up-to-date version. https://github.com/last-byte/PersistenceSniper",
-        "link": "/exchange/artifacts/pages/windows.persistencesniper",
-        "tags": [],
-        "author_link": "https://github.com/Shad0wCell",
-        "author_avatar": "https://avatars.githubusercontent.com/u/80175648?v=4",
         "date": "2023-05-18"
     },
     {
@@ -1621,7 +1731,7 @@
     {
         "title": "Windows.EventLogs.Bitsadmin",
         "author": "mgreen27",
-        "description": "This content will extract BITS Transfer events and enable filtering by URL\n",
+        "description": "This content will extract BITS Transfer events and enable filtering by URL \nand TLD.\n",
         "link": "/exchange/artifacts/pages/bitsadmin",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
