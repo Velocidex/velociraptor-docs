@@ -8,7 +8,7 @@ tags:
  - Release
 
 author: "Mike Cohen"
-date: 2023-11-15
+date: 2024-03-10
 ---
 
 I am very excited to announce that the latest Velociraptor release
