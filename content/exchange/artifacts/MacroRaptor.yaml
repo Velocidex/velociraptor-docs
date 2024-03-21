@@ -34,11 +34,11 @@ sources:
       -- firstly match regex for macro code of interest
       LET macros = SELECT * FROM foreach(
             row={
-                SELECT FullPath,Name,Size,Mtime,Atime,Ctime,Btime FROM glob(globs=TargetGlob)
+                SELECT OSPath,Name,Size,Mtime,Atime,Ctime,Btime FROM glob(globs=TargetGlob)
             },
             query={
                 SELECT 
-                    FullPath,Name,Size,
+                    OSPath,Name,Size,
                     dict(Mtime=Mtime,Atime=Atime,Ctime=Ctime,Btime=Btime) as Timestamps,
                     dict(
                         AutoExec = if(condition= Code=~AutoExecRegex,
@@ -52,13 +52,13 @@ sources:
                                 else= False)
                             ) as MacroDetection,
                     dict(Type=Type,StreamName=StreamName,ModuleName=ModuleName,Code=Code) as MacroCode
-                FROM olevba(file=FullPath)
+                FROM olevba(file=OSPath)
                 WHERE Code =~ AutoExecRegex OR Code =~ WriteRegex OR Code=~ ExecRegex
             })
       
       -- determine if suspicious
       LET results = SELECT 
-            FullPath,Name,Size,Timestamps,
+            OSPath,Name,Size,Timestamps,
             if(condition= MacroDetection.AutoExec AND ( MacroDetection.Write OR MacroDetection.Execute ),
                 then = True,
                 else= False ) as Suspicious,
@@ -70,12 +70,12 @@ sources:
             else= Suspicious)
         
       -- upload hits to server
-      LET upload_results = SELECT *, upload(file=FullPath) as Upload
+      LET upload_results = SELECT *, upload(file=OSPath) as Upload
         FROM results
 
       -- output rows
       SELECT *,
-        hash(path=FullPath) as Hash
+        hash(path=OSPath) as Hash
       FROM if(condition= UploadDocument,
             then= { SELECT * FROM upload_results},
             else= { SELECT * FROM results})
