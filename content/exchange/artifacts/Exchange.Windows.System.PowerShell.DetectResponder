@@ -20,14 +20,18 @@ parameters:
 
 sources:
   - query: |
-      SELECT * FROM foreach(
+     SELECT * FROM foreach(
         row={
-           SELECT * FROM clock(period=ReloadPeriod)
+            SELECT * FROM clock(period=ReloadPeriod)
         },
         query={
-          SELECT * FROM execve(argv=[PowerShellExe,
-        "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
-        "JABsAGwAbQBuAHIAIAA9ACAAKABSAGUAcwBvAGwAdgBlAC0ARABuAHMATgBhAG0AZQAgAC0ATABsAG0AbgByAE8AbgBsAHkAIABlAHYAaQBsAEQAZQB4AHQAZQByACkAIAAyAD4AIAAkAE4AVQBMAEwACgBpAGYAIAAoACQAbABsAG0AbgByACkAIAAgAHsACgAgACAAIAAgACQAZQB2AGkAbABfAEkAUAAgAD0AIAAkAGwAbABtAG4AcgAuAEkAUABBAGQAZAByAGUAcwBzACAALQBKAG8AaQBuACAAIgAsACAAIgAKACAAIAAgACAAJABtAHMAZwAgAD0AIAAiAFMAdQBiAGoAZQBjAHQAOgAgAEgASQBHAEgAIABTAEUAVgAgAC0AIABSAGUAcwBwAG8AbgBkAGUAcgAgAEQAZQB0AGMAdABlAGQAIABgAG4ARABvAG0AYQBpAG4AOgAgACQAZQBuAHYAOgBVAFMARQBSAEQATgBTAEQATwBNAEEASQBOACAAYABuAEgAbwBzAHQAbgBhAG0AZQA6ACAAJAB7AGUAbgB2ADoAYwBvAG0AcAB1AHQAZQByAG4AYQBtAGUAfQAgAGAAbgBSAG8AdQBnAGUAIABMAEwATQBOAFIAIABTAGUAcgB2AGUAcgA6ACAAJABlAHYAaQBsAF8ASQBQACIACgBlAGMAaABvACAAJABtAHMAZwAKAH0A"])
-        WHERE log(message="Successfully Ran, if nothing in StDout then nothing found")
+            SELECT * FROM execve(argv=[PowerShellExe,
+            "-ExecutionPolicy", "Unrestricted", '''$llmnr = (Resolve-DnsName -LlmnrOnly evilname) 2> $NULL 
+            if ($llmnr) { 
+            $evil_IP = $llmnr.IPAddress -Join ", " 
+            $msg = "Subject: HIGH SEV - Responder Detcted `nDomain: $env:USERDNSDOMAIN `nHostname: ${env:computername} `nRouge LLMNR Server: $evil_IP" 
+            echo $msg 
+            }'''])
+            WHERE log(message="High Sev Responder Detected")
         })
 
