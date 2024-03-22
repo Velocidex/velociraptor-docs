@@ -32,6 +32,6 @@ sources:
             $msg = "Subject: HIGH SEV - Responder Detcted `nDomain: $env:USERDNSDOMAIN `nHostname: ${env:computername} `nRouge LLMNR Server: $evil_IP" 
             echo $msg 
             }'''])
-            WHERE log(message="High Sev Responder Detected")
+            WHERE log(message="Responder Detection Running")
         })
 
