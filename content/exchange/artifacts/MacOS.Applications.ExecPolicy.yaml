@@ -1,0 +1,111 @@
+name: MacOS.Applications.ExecPolicy
+description: |
+   This database is extensively used by Gatekeeper, and the scan cache tables are updated with the results of any scan that occurs.
+   
+   https://redcanary.com/blog/gatekeeper/                                                                                    
+   https://eclecticlight.co/2023/03/13/ventura-has-changed-app-quarantine-with-a-new-xattr/                                         
+   https://knight.sc/reverse%20engineering/2019/02/20/syspolicyd-internals.html
+
+parameters:
+  - name: ExecPolicyDB
+    default: "/Private/var/db/SystemPolicyConfiguration/ExecPolicy"
+  
+  - name: ScanTargetsQuery
+    default: |
+        SELECT * 
+        FROM scan_targets_v2
+  
+  - name: ProvenanceTrackingQuery
+    default: |
+        SELECT * 
+        FROM provenance_tracking
+        
+  - name: ExecutableMeasurementsQuery
+    default: |
+        SELECT * 
+        FROM executable_measurements_v2
+        
+  - name: PolicyScanCacheQuery
+    default: |
+        SELECT * 
+        FROM policy_scan_cache
+  
+  - name: LegacyExecHistoryV4Query
+    default: |
+        SELECT * 
+        FROM legacy_exec_history_v4
+  
+  - name: PolicyScanCacheByPathQuery
+    default: |
+        SELECT * 
+        FROM policy_scan_cache_by_path     
+        
+        
+precondition: SELECT OS From info() where OS = 'darwin'
+
+sources:
+  - name: ScanTargets
+    query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs=ExecPolicyDB)
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT timestamp(string=timestamp) AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query=ScanTargetsQuery)
+            })
+
+  - name: ExecutableMeasurements
+    query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs=ExecPolicyDB)
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT timestamp(string=timestamp) AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query=ExecutableMeasurementsQuery)
+            })          
+
+  - name: ProvenanceTracking
+    query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs=ExecPolicyDB)
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT timestamp(string=timestamp) AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query=ProvenanceTrackingQuery)
+            })
+
+  - name: PolicyScanCache
+    query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs=ExecPolicyDB)
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT timestamp(string=timestamp) AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query=PolicyScanCacheQuery)
+            })
+            
+  - name: LegacyExecHistoryV4 
+    query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs=ExecPolicyDB)
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT timestamp(string=timestamp) AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query=LegacyExecHistoryV4Query)
+            })
+            
+  - name: PolicyScanCacheByPath
+    query: |
+        LET SystemPolicyExecDB = SELECT FullPath FROM glob(globs=ExecPolicyDB)
+        SELECT * FROM foreach(row=SystemPolicyExecDB,
+          query={
+            SELECT timestamp(string=timestamp) AS time, *
+            FROM sqlite(
+                file=FullPath,
+                query=PolicyScanCacheByPathQuery)
+            })
