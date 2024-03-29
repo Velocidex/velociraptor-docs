@@ -12,10 +12,10 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
- - name: Hayabusa-2.13.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.13.0/hayabusa-2.13.0-win-x64.zip
-   expected_hash: c350ba83ffb02391115d2d5e1236a6a1cd79e9c49be8296f485819e7b20be8fa
-   version: 2.13.0
+ - name: Hayabusa-2.14.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.14.0/hayabusa-2.14.0-win-x64.zip
+   expected_hash: de8abff4f6ed35f28e1e2897659e4f7adcca13ef84d2764afa786ca3f60224ec
+   version: 2.14.0
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -73,6 +73,10 @@ parameters:
    description: "Update rules before scanning"
    type: bool
    default: Y
+ - name: LowMemoryMode
+   description: "Enable low memory mode"
+   type: bool
+   default: Y
  - name: NoisyRules
    description: "Enable rules marked as noisy"
    type: bool
@@ -107,7 +111,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.13.0", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.14.0", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -115,7 +119,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.13.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.14.0-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={
@@ -137,6 +141,7 @@ sources:
           "--" + OutputTimeFormat,
           "--threads", str(str=Threads),
           if(condition=OutputFormat = "jsonl", then="-L"),
+          if(condition=LowMemoryMode, then="--low-memory-mode"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter"),
           if(condition=TimelineOffset, then="--timeline-offset"),   if(condition=TimelineOffset, then=TimelineOffset),
