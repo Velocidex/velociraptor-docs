@@ -1,4 +1,5 @@
 name: Windows.Scanner.Yara.Parsed
+author: Dennis Yarizadeh + Chris Jones - Check Point Incident Response Team
 description: |
     Instructions: Upload a yara signature file (signature file must be named yara.yas) and yara64.exe in a single zip file called yara.zip.
     This artifact is an alternative way to scan processes, or recursively scan the C:\ with a yara file containing multiple yara rules, utilizing the official yara tool. 
@@ -6,10 +7,6 @@ description: |
     This artifact will drop the yara.zip file onto the client in a temporary directory, unzip the binary and yara file, 
     and then iterate through every running process or file on disk. Finally, it will delete the temporary directory.  
     
-    Author: Dennis Yarizadeh + Chris Jones - Check Point Incident Response Team
-
-
-
 tools:
   - name: yaraexecutable
     url: https://github.com/VirusTotal/yara/releases/download/v4.3.2/yara-4.3.2-2150-win64.zip
