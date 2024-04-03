@@ -1,0 +1,94 @@
+name: Exchange.Windows.EventLogs.Hayabusa.Takajo
+description: |
+   [Hayabusa](https://github.com/Yamato-Security/hayabusa) is a
+   Windows event log fast forensics timeline generator and threat
+   hunting tool.
+
+   This artifact runs Hayabusa on the endpoint against the specified
+   Windows event log directory, and generates and uploads a single CSV/JSONL
+   file for further analysis with excel, timeline explorer, elastic
+   stack, jq, etc.
+
+   [Takajo] (https://github.com/Yamato-Security/takajo) is a fast forensics analyzer
+   for Hayabusa results written in Nim. Takajō means "Falconer" in Japanese
+   and was chosen as it analyzes Hayabusa's "catches" (results).
+
+author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
+
+tools:
+ - name: Hayabusa-2.14.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.14.0/hayabusa-2.14.0-win-x64.zip
+ - name: Takajo-2.5.0
+   url: https://github.com/Yamato-Security/takajo/releases/download/v2.5.0/takajo-2.5.0-win.zip
+   
+
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+ - name: EvtxDirectory
+   description: "Directory of .evtx files"
+   default: C:/Windows/System32/winevt/Logs
+
+sources:
+ - name: Upload
+   query: |
+        -- Fetch the binary
+        LET ToolzipHB <= SELECT FullPath
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.14.0", IsExecutable=FALSE)
+
+        LET TmpDirHB <= tempdir()
+
+        -- Unzip the binary
+        LET _ <= SELECT *
+        FROM unzip(filename=ToolzipHB.FullPath, output_directory=TmpDirHB)
+
+        LET HayabusaExe <= TmpDirHB + '\\hayabusa-2.14.0-win-x64.exe'
+        LET HayabusaCmd <= "json-timeline"
+        LET ResultFileHB <= TmpDirHB + '\\hayabusa_results.jsonl'
+
+        -- Build the command line considering all options
+        -- If it does not match if(condition...), it returns Null, so remove Null with filter(....regex=".+")
+        LET cmdlineHB <= filter(list=(
+          HayabusaExe, HayabusaCmd,
+          "-d", EvtxDirectory,
+          "-L",
+          "-o", ResultFileHB,
+          "-w",
+          "-p", "verbose",
+        ), regex=".+")
+
+        -- Run the tool and divert messages to logs.
+        LET ExecHB <= SELECT *
+        FROM execve(argv=cmdlineHB, sep="\n", length=9999999)
+        WHERE log(message=Stdout)
+
+        -- Fetch the binary
+        LET ToolzipTK <= SELECT FullPath
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Takajo-2.5.0", IsExecutable=FALSE)
+
+        -- Unzip the binary
+        LET _ <= SELECT *
+        FROM unzip(filename=ToolzipTK.FullPath, output_directory=TmpDirHB)
+
+        LET TakajoExe <= TmpDirHB + '\\takajo.exe'
+        LET TakajoCmd <= "automagic"
+        LET ResultFileTK <= TmpDirHB + '\\case-0\\'
+
+        -- Build the command line considering all options
+        -- If it does not match if(condition...), it returns Null, so remove Null with filter(....regex=".+")
+        LET cmdlineTK <= filter(list=(
+          TakajoExe, TakajoCmd,
+          "-q",
+          "-s",
+          "-t", TmpDirHB, 
+          "-o", ResultFileTK,
+        ), regex=".+")
+
+        -- Run the tool and divert messages to logs.
+        LET ExecTK <= SELECT *
+        FROM execve(argv=cmdlineTK, sep="\n", length=99999999)
+        WHERE log(message=Stdout)
+
+        -- Upload the results folder.
+        SELECT upload(file=OSPath, accessor=directory) AS Uploads FROM glob(globs="*\**", root=ResultFileTK)
