@@ -19,6 +19,7 @@ parameters:
 tools:
   - name: Trawler
     url: https://github.com/joeavanzato/Trawler/releases/download/1_0_0/trawler_release_v1_0_0.zip
+    expected_hash: efade9e0e6d228c118c4c28de2e45c37ae2fa4973283d5f851e6c62c7b72f53b
 
 type: Client
 
