@@ -1,26 +1,19 @@
-name: Exchange.Windows.EventLogs.Hayabusa.Takajo
+name: Custom.Exchange.Windows.EventLogs.Hayabusa.Takajo
 description: |
-   [Hayabusa](https://github.com/Yamato-Security/hayabusa) is a
-   Windows event log fast forensics timeline generator and threat
-   hunting tool.
-
-   This artifact runs Hayabusa on the endpoint against the specified
-   Windows event log directory, and generates and uploads a single CSV/JSONL
-   file for further analysis with excel, timeline explorer, elastic
-   stack, jq, etc.
-
    [Takajo] (https://github.com/Yamato-Security/takajo) is a fast forensics analyzer
    for Hayabusa results written in Nim. Takajō means "Falconer" in Japanese
    and was chosen as it analyzes Hayabusa's "catches" (results).
+   
+   First, it will call Exchange.Windows.EventLogs.Hayabusa to execute the following commandline to create the hayabusa_results.jsonl: "hayabusa.exe json-timeline -d <EVTX-DIR> -L -o hayabusa_results.jsonl -w -p verbose"
+   Then, it will be launched Takajo with "automagic" option: which executes as many commands as possible and output results to a "case-0" folder and will upload all the content with the following commandline: "takajo.exe automagic -t hayabusa_tempdir/ -o case-0 "
+   All the output results will be uploaded.
 
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
- - name: Hayabusa-2.14.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.14.0/hayabusa-2.14.0-win-x64.zip
  - name: Takajo-2.5.0
    url: https://github.com/Yamato-Security/takajo/releases/download/v2.5.0/takajo-2.5.0-win.zip
-   
+   expected_hash: bba76ce84484c53145f7df368560cfeae267729df9c404e570ee7fb544c86b01
 
 
 precondition: SELECT OS From info() where OS = 'windows'
