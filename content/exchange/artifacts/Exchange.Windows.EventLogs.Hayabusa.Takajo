@@ -1,4 +1,4 @@
-name: Custom.Exchange.Windows.EventLogs.Hayabusa.Takajo
+name: Exchange.Windows.EventLogs.Hayabusa.Takajo
 description: |
    [Takajo] (https://github.com/Yamato-Security/takajo) is a fast forensics analyzer
    for Hayabusa results written in Nim. Takajō means "Falconer" in Japanese
