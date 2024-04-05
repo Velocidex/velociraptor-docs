@@ -11,6 +11,9 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
+ - name: Hayabusa-2.14.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.14.0/hayabusa-2.14.0-win-x64.zip
+   expected_hash: de8abff4f6ed35f28e1e2897659e4f7adcca13ef84d2764afa786ca3f60224ec
  - name: Takajo-2.5.0
    url: https://github.com/Yamato-Security/takajo/releases/download/v2.5.0/takajo-2.5.0-win.zip
    expected_hash: bba76ce84484c53145f7df368560cfeae267729df9c404e570ee7fb544c86b01
