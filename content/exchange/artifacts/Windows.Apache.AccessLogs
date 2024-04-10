@@ -12,7 +12,7 @@ type: CLIENT
 
 parameters:
   - name: AccessLogPath
-    default: C:/Apache24/logs/access.log*
+    default: C:/Apache/logs/access.log*
 
   - name: ApacheAccessLogGrok
     description: A Grok expression for parsing Apache access log lines.
