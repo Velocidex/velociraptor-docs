@@ -16,6 +16,27 @@ I am very excited to announce that the latest Velociraptor release
 
 In this post I will discuss some of the interesting new features.
 
+## Version scheme update
+
+Traditionally Velociraptor followed the GRR version format and that
+has 4 numbers - so we had 0.6.5 and then if we needed to do a patch
+release we would do 0.6.5-1 etc.
+
+It turns out this is not compatible with Semantic Versioning exactly
+which needs to have exactly 3 versions: a `MAJOR` version, a `MINOR`
+version and a `PATCH` version. This causes problems with packaging
+systems which expect sementic versioning like that for example `RPM`,
+`DEB` or `MSI`. We also use Semantic Versioning internally to compare
+versions (for example to determine if we should upgrade a Tool
+definition )
+
+So in this release we are taking the brave step of conforming with
+Semantic Versioning more correctly and officially dropping the second
+dot to have a `MAJOR` version of 0, a `MINOR` version of 72 and then
+`PATCH` releases after that (starting with 0).
+
+That means our next version will be `0.72.0` and if we need to release
+patches after the release it will be `0.72.1` , `0.72.2` etc.
 
 ## EWF Support
 
