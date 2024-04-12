@@ -223,13 +223,12 @@ remapped mount point.
 Let's see how this works in practice. I will start the GUI using:
 
 ```
-$ velociraptor-v0.6.4-linux-amd64 --config_override /tmp/remapping.yaml gui -v
+$ velociraptor-v0.6.4-linux-amd64 --remap /tmp/remapping.yaml gui -v
 ```
 
 This simply starts the Velociraptor server and a single client talking
-to it. However, due to the `--config_override` flag, the remapping
-configuration will be applied to both client and server
-configurations.
+to it. However, due to the `--remap` flag, the remapping configuration
+will be applied to both client and server configurations.
 
 Now when I interact with the client's VFS view due to the remapping
 the result comes from the `vmdk` image.

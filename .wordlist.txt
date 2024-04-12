@@ -1485,3 +1485,15 @@ SOA
 
 # content/vql_reference/plugin/yara/_index.md
 yarac
+
+# content/docs/forensic/filesystem/accessors/_index.md
+ewf
+rebase
+seekable
+snapshotting
+unicode
+unmapped
+vss
+
+# content/blog/2024/2024-03-10-release-notes-0.72/_index.md
+sementic
