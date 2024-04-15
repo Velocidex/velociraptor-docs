@@ -60,9 +60,9 @@ reports:
             })
       {{ end }}
 
-      {{ $time := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
-
-      ## Server status @ {{ Get $time "0.Now" }}
+      {{ $time_rows := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
+      {{ $time := Get $time_rows "0.Now" }}
+      ## Server status @ &lt;velo-value value="{{ $time.Format "2006-01-02T15:04:05Z07:00" }}" /&gt;
 
       &lt;p&gt;The following are total across all frontends.&lt;/p&gt;
           &lt;span class="container"&gt;
@@ -82,7 +82,7 @@ reports:
 
       {{ Query "LET ColumnTypes &lt;= dict(ClientConfig='url_internal') \
                 SELECT Name, OrgId, \
-                       format(format='[%s](/notebooks/Dashboards/uploads/data/%%22%s/client.%s.config.yaml%%22)', \
+                       format(format='[%s](/notebooks/Dashboards/%s/uploads/data/client.%s.config.yaml)', \
                        args=[OrgId, ArtifactName, OrgId]) AS ClientConfig, \
                        upload(accessor='data', file=_client_config, \
                               name='client.'+OrgId+'.config.yaml') AS _Upload \

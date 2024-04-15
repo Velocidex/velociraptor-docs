@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-items|Not used anymore|Any
+items|The items to enumerate|Any
 
 ### Description
 

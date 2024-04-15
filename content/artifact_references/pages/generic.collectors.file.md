@@ -62,7 +62,8 @@ sources:
       -- Join all the collection rules into a single Glob plugin. This ensure we
       -- only make one pass over the filesystem. We only want LFNs.
       LET hits = SELECT OSPath AS SourceFile, Size,
-               Ctime AS Created,
+               Btime AS Created,
+               Ctime AS Changed,
                Mtime AS Modified,
                Atime AS LastAccessed
         FROM glob(globs=specs.Glob, accessor=Accessor)
@@ -70,7 +71,7 @@ sources:
 
       -- Pass all the results to the next query.
       LET all_results &lt;=
-         SELECT Created, LastAccessed, Modified, Size, SourceFile
+         SELECT Created, Changed, LastAccessed, Modified, Size, SourceFile
          FROM hits
 
       SELECT * FROM all_results
@@ -83,7 +84,7 @@ sources:
         },
         workers=30,
         query={
-          SELECT Created, LastAccessed, Modified, SourceFile, Size,
+          SELECT Created, Changed, LastAccessed, Modified, SourceFile, Size,
                upload(file=SourceFile,
                       accessor=Accessor,
                       mtime=Modified) AS Upload
@@ -94,7 +95,7 @@ sources:
       SELECT now() AS CopiedOnTimestamp, SourceFile,
              Upload.Path AS DestinationFile,
                Size AS FileSize, Upload.sha256 AS SourceFileSha256,
-               Created, Modified, LastAccessed
+               Created, Changed, Modified, LastAccessed
         FROM uploaded_files
 
 </code></pre>

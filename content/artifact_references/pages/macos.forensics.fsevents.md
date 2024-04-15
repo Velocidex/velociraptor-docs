@@ -136,7 +136,7 @@ sources:
       SELECT * FROM foreach(row=files,
         query={
             SELECT 
-                path as EnrtryPath,
+                path as EntryPath,
                 id as EntryId, 
                 join(array=flags, sep=", ") AS EntryFlags,
                 OSPath.Basename as SourceFile, 
@@ -147,6 +147,7 @@ sources:
                     accessor="data",
                     profile=FSEventProfile, struct="Header").Items)
         })
-        WHERE EnrtryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
+        WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
+
 </code></pre>
 

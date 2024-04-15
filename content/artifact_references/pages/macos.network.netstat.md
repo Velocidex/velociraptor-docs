@@ -50,7 +50,8 @@ parameters:
     description: "regex search over the process callchain"
     default: "."
     type: regex
-
+  - name: AlsoCollectFullProcessTree
+    type: bool
 
 sources:
   - query: |
@@ -61,8 +62,10 @@ sources:
              Pid,
              Status, TypeString AS Type,
              process_tracker_get(id=Pid).Data AS ProcInfo,
-             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=" -&gt; ") AS CallChain,
-             process_tracker_tree(id=Pid) AS ChildrenTree
+             join(array=process_tracker_callchain(id=Pid).Data.Name,
+                  sep=" -&gt; ") AS CallChain,
+             if(condition=AlsoCollectFullProcessTree,
+                then=process_tracker_tree(id=Pid)) AS ChildrenTree
       FROM netstat()
       WHERE Status =~ ConnectionStatusRegex
        AND  Raddr =~ IPRegex

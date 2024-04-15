@@ -1495,5 +1495,20 @@ unicode
 unmapped
 vss
 
-# content/blog/2024/2024-03-10-release-notes-0.72/_index.md
-sementic
+# content/docs/vql/join/_index.md
+Alfreds
+Anders
+ContactName
+CustomerID
+CustomerName
+Emparedados
+Futterkiste
+OrderDate
+OrderID
+Taquería
+helados
+
+# content/blog/2024/2024-04-12-registry-hunter/_index.md
+EulaCheck
+eulacheck
+specilized
