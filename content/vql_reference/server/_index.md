@@ -65,7 +65,7 @@ the GUI.
 |[rm_client_monitoring](rm_client_monitoring)|<span class='vql_type'>Function</span>|Remove an artifact from the client monitoring table|
 |[rm_server_monitoring](rm_server_monitoring)|<span class='vql_type'>Function</span>|Remove an artifact from the server monitoring table|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
-|[server_metadata](server_metadata)|<span class='vql_type'>Function</span>|Returns client metadata from the datastore|
+|[server_metadata](server_metadata)|<span class='vql_type'>Function</span>|Returns server metadata from the datastore|
 |[server_set_metadata](server_set_metadata)|<span class='vql_type'>Function</span>|Sets server metadata|
 |[set_client_monitoring](set_client_monitoring)|<span class='vql_type'>Function</span>|Sets the current client monitoring state|
 |[set_server_monitoring](set_server_monitoring)|<span class='vql_type'>Function</span>|Sets the current server monitoring state|

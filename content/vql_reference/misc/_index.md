@@ -25,12 +25,14 @@ Miscellaneous plugins not yet categorized.
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|
+|[eval](eval)|<span class='vql_type'>Function</span>|Evaluate a vql lambda function on the current scope|
 |[flow_logs](flow_logs)|<span class='vql_type'>Plugin</span>|Retrieve the query logs of a flow|
 |[get_flow](get_flow)|<span class='vql_type'>Function</span>|Gets flow details|
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
 |[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
+|[import](import)|<span class='vql_type'>Function</span>|Imports an artifact into the current scope|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
 |[logging](logging)|<span class='vql_type'>Plugin</span>|Watch the logs emitted by the server|
 |[logscale_upload](logscale_upload)|<span class='vql_type'>Plugin</span>|Upload rows to LogScale ingestion server|
@@ -71,6 +73,7 @@ Miscellaneous plugins not yet categorized.
 |[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
 |[sigma](sigma)|<span class='vql_type'>Plugin</span>|Evaluate sigma rules|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
+|[stat](stat)|<span class='vql_type'>Function</span>|Get file information|
 |[sysinfo](sysinfo)|<span class='vql_type'>Function</span>|Collect system information on Linux clients|
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[trace](trace)|<span class='vql_type'>Function</span>|Upload a trace file|

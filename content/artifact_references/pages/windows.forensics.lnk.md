@@ -372,7 +372,7 @@ export: |
         ["ExtraData", "x=&gt;x.__IconLocation.EndOf", "Array", {
                 "type": "ExtraData",
                 "count": 1000,
-                "sentinal": "x=&gt;x.Size &lt; 0x00000004"
+                "sentinel": "x=&gt;x.Size &lt; 0x00000004"
             }],
       ]],
       ["Empty", 0, []],
@@ -382,7 +382,7 @@ export: |
         ["IDListSize", 0, "uint16"],
         ["IDList", 2, "Array", {
            "type": "ItemIDList",
-           "count": 1000   # Max count until sentinal
+           "count": 1000   # Max count until sentinel
          }]
       ]],
 
@@ -914,7 +914,7 @@ export: |
             }],
             ["ColorTable", 140, "Array", {
                 "type": "uint32",
-                "count": 16   # Max count until sentinal
+                "count": 16   # Max count until sentinel
             }],
         ]],
         #0xA0000003
@@ -985,7 +985,7 @@ export: |
             ["PropertyStorage", 8, "Array", {
                 "count": 1000,
                 "type": "PropertyStorage",
-                "sentinal": "x=&gt;x.__DataBlockSize = 0"
+                "sentinel": "x=&gt;x.__DataBlockSize = 0"
             }],
             ["DataValue",0,"Value",{"value":"x=&gt;x.PropertyStorage.PropertyValue"}],
             #["DataValue",0,"Value",{"value":"x=&gt;property_store(data=x.PropertyStorage.PropertyValue)"}],
@@ -1105,7 +1105,7 @@ export: |
             ["PropertyValue", 24, "Array", {
                 "type": "PropertyValue",
                 "count": 1000,
-                "sentinal": "x=&gt;x.__ValueSize = 0"
+                "sentinel": "x=&gt;x.__ValueSize = 0"
             }],
         ]],
         ["PropertyValue","x=&gt;x.__ValueSize", [

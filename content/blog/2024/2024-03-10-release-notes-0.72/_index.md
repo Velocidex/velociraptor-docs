@@ -25,7 +25,7 @@ release we would do 0.6.5-1 etc.
 It turns out this is not compatible with Semantic Versioning exactly
 which needs to have exactly 3 versions: a `MAJOR` version, a `MINOR`
 version and a `PATCH` version. This causes problems with packaging
-systems which expect sementic versioning like that for example `RPM`,
+systems which expect semantic versioning like that for example `RPM`,
 `DEB` or `MSI`. We also use Semantic Versioning internally to compare
 versions (for example to determine if we should upgrade a Tool
 definition )
@@ -509,6 +509,20 @@ to use compiled rules - to try to hide the rules (e.g. from commercial
 reasons).
 
 {{% /notice %}}
+
+### The Registry Hunter is launched
+
+As DFIR practitioners, the Windows registry is a treasure trove of
+information. The Windows registry stores information about system
+configuration and therefore we can use it to understand what software
+was installed, how it was configured and hunt for mis-configuration or
+deliberate compromises to achieve attacker persistence.
+
+This release also introduces the Registry Hunter project - a unified
+streamlined way to hunt for forensically relevant information through
+the windows registry.
+
+You can read more about [The registry hunter]({{% ref "/blog/2024/2024-04-12-registry-hunter/" %}}) in our blog post.
 
 ## Conclusions
 

@@ -27,6 +27,7 @@ timeout|Cancel the query after this many seconds|float64
 progress_timeout|If no progress is detected in this many seconds, we terminate the query and output debugging information|float64
 org_id|If specified, the query will run in the specified org space (Use 'root' to refer to the root org)|string
 runas|If specified, the query will run as the specified user|string
+inherit|If specified we inherit the scope instead of building a new one.|bool
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">IMPERSONATION</i>
@@ -34,4 +35,8 @@ Required Permissions:
 ### Description
 
 Evaluate a VQL query.
+
+This plugin is useful for evaluating a query in a different
+environment or context, or turning a string into a query.
+
 
