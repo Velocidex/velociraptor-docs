@@ -716,3 +716,15 @@ details > summary:first-of-type {
     display: list-item;
     counter-increment: list-item 0;
     list-style: inside disclosure-closed;
+}
+
+#body-inner table {
+    margin: 30px;
+}
+
+#body-inner table tbody {
+    border-top-color: black;
+    border-bottom-color: black;
+    border-style: solid;
+    border-width: 3px;
+}

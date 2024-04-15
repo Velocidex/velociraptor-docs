@@ -517,7 +517,7 @@ sources:
            target=tool_name[0].Type,
            binaries=Binaries.Binary,
            version=opt_version,
-           config=serialize(format='json', item=autoexec))
+           config=serialize(format='json', item=autoexec)) AS Repacked
       FROM scope()
 
 </code></pre>

@@ -21,7 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 query|Source for rows to upload.|StoredQuery (required)
 threads|How many threads to use.|int64
-url|The Splunk Event Collector URL.|string
+url|The Splunk Event Collector URL.|string (required)
 token|Splunk HEC Token.|string
 index|The name of the index to upload to.|string (required)
 source|The source field for splunk. If not specified this will be 'velociraptor'.|string
@@ -33,6 +33,7 @@ wait_time|Batch splunk upload this long (2 sec).|int64
 hostname|Hostname for Splunk Events. Defaults to server hostname.|string
 timestamp_field|Field to use as event timestamp.|string
 hostname_field|Field to use as event hostname. Overrides hostname parameter.|string
+secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>

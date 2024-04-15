@@ -87,6 +87,7 @@ sources:
       LET completions = SELECT * FROM watch_monitoring(
              artifact="System.Flow.Completion")
              WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+      LET organization &lt;= org().name
 
       LET documents = SELECT * FROM foreach(row=completions,
           query={
@@ -98,7 +99,8 @@ sources:
                             timestamp(epoch=now()) AS timestamp,
                             ClientId, Flow.session_id AS FlowId,
                             "artifact_" + regex_replace(source=_value,
-                               re='[/.]', replace='_') as _index
+                               re='[/.]', replace='_') as _index,
+                            organization as Organization
                      FROM source(
                         client_id=ClientId,
                         flow_id=Flow.session_id,
