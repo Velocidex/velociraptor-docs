@@ -34,7 +34,7 @@ sources:
         FROM Artifact.Generic.Utils.FetchBinary(ToolName="KnockKnock", IsExecutable='N')
       LET tempfolder <= tempdir()
         
-      LET bin <= SELECT * FROM unzip(filename=tool.OSPath[0],output_directory=tempfolder)
+      LET bin <= SELECT * FROM unzip(filename=tool.FullPath,output_directory=tempfolder)
       
       LET other_commands = if(condition=IncludeAppleItems AND  QueryVT,
                                 then= ['-apple'],
