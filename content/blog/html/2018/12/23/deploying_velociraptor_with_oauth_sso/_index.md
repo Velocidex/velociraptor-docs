@@ -202,7 +202,7 @@ candy :-).
 
 {{% notice note Thanks %}}
 
-Shouts to the folks from [Klein & Co](https://www.kleinco.com.au/) who
+Shoutout to the folks from [CyberCX](https://www.cybercx.com.au/) who
 sponsored this exciting feature!.
 
 {{% /notice %}}
