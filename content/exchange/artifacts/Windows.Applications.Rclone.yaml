@@ -1,0 +1,32 @@
+name: Windows.Applications.Rclone.yaml
+description: |
+  This artifact will collect the rclone.conf file from the Rclone tool for all users and
+  registry values that include the string 'rclone' that may include the location of the tool on the endpoint.
+
+author: BusterBaxter5
+
+precondition:
+  SELECT * FROM info() where OS = 'windows'
+
+type: CLIENT
+
+parameters:
+  - name: FilePath
+    default: "C:\\Users\\*\\AppData\\Roaming\\rclone\\rclone.conf"
+    description: Path of the rclone.conf file to be collected
+
+  - name: RegistryPath
+    default: "HKCU\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Compatibility Assistant\\Store"
+    description: Path of the registry key to be collected
+
+sources:
+  - query: |
+      SELECT FullPath, Size, ModTime FROM glob(globs=FilePath)
+
+  - query: |
+      SELECT FullPath, Name, Data FROM glob(globs=RegistryPath, accessor='registry')
+      WHERE Data.value =~ 'rclone' AND NOT Data.type = 'key'
+
+column_types:
+  - name: Modified
+    type: timestamp
