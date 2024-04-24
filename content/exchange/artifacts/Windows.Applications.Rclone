@@ -1,4 +1,4 @@
-name: Windows.Applications.Rclone.yaml
+name: Windows.Applications.Rclone
 description: |
   This artifact will collect the rclone.conf file from the Rclone tool for all users and
   registry values that include the string 'rclone' that may include the location of the tool on the endpoint.
@@ -16,7 +16,7 @@ parameters:
     description: Path of the rclone.conf file to be collected
 
   - name: RegistryPath
-    default: "HKCU\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Compatibility Assistant\\Store"
+    default: "HKEY_USERS\\*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Compatibility Assistant\\Store"
     description: Path of the registry key to be collected
 
 sources:
