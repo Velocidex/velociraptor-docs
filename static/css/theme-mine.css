@@ -728,3 +728,7 @@ details > summary:first-of-type {
     border-style: solid;
     border-width: 3px;
 }
+
+.search_results table {
+    width: -webkit-fill-available;
+}

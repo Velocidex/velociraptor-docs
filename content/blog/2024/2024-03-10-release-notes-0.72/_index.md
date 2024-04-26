@@ -157,6 +157,96 @@ $ velociraptor-v0.72-rc1-linux-amd64  --remap /tmp/remap_ssh.yaml \
 
 The GUI has been improved in this release.
 
+### Inbuilt Stacking support
+
+One very common task in DFIR is
+[stacking](https://www.youtube.com/watch?v=nJNMLxmq9w8). This is a
+powerful technique to quickly understand what had happened on the
+endpoint and what is normal (and by extension unusual) on an endpoint.
+
+While Velociraptor has always been able to do stacking within a post
+processing notebook by using the `GROUP BY` VQL operator to count the
+number of occurrences broken by category. When the user wanted to
+actually see all those items, they needed to run a second VQL query to
+filter only those items. This made it cumbersome and inefficient to
+review large numbers of groups.
+
+In the latest release, stacking is built right into the GUI for fast
+and efficient operation. I will demonstrate how to use it with the
+example of the Velociraptor Sigma artifacts.
+
+For this example, assume I approach a new endpoint and I really don't
+know where to start - is this a suspicious endpoint? Is it normal?
+
+First I will import the Sigma artifacts into my server. The
+Velociraptor Sigma project maintains this artifact at
+https://sigma.velocidex.com
+
+![Importing the Sigma artifacts](importing_sigma.png)
+
+I will import the `Velociraptor Hayabusa Ruleset` which allows me to
+apply the rules maintained by the [Hayabusa
+project](https://github.com/Yamato-Security/hayabusa) to static event
+log files on the endpoint. The ruleset is extensive and rules are
+broken down by rule level and rule status. However in this case I want
+to try out all the rules - including very noisy ones because I want to
+get an overview of what might have happened on this endpoint.
+
+![Collecting the sigma artifact](collecting_sigma_rules.png)
+
+The Hayabusa ruleset is extensive and might collect many false
+positives. In this case it took around 6 minutes to apply the rules on
+all the event log files and returned over 60k hits from about 4200
+rules.
+
+Generally it is impractical to review every single hit, so we
+typically rely on Stacking the results using a query like
+
+```vql
+SELECT *, count() AS Count
+FROM source(artifact="Windows.Hayabusa.Rules")
+GROUP BY Title ORDER BY Count DESC
+```
+
+![Stacking rules by title](group_by.png)
+
+We immediately see that almost half the rules are triggered by
+informational DNS queries, but if we wanted to look at those we would
+have to issue another query
+
+```vql
+SELECT *
+FROM source(artifact="Windows.Hayabusa.Rules")
+WHERE Title =~ "DNS Query"
+```
+
+In this release, stacking is built directly into the GUI making it a
+lot easier to work with. The way this works is by performing the
+stacking operation at the same time as sorting a column.
+
+I will stack by Title by clicking the sort icon at the top of the column
+
+![Stacking rules by title](stacking_a_column.png)
+
+Once the column is sorted, a stacking icon will appear next to
+it. Clicking on that icon will display the stacking dialog view. This
+view shows the different unique values of the selected column and the
+total number of items of that value. In our case it shows the total
+number of times the specific rule has fired.
+
+![Viewing the stacking stats](viewing_column_stack.png)
+
+Clicking the icon in each row seeks the table immediately to view all
+the rows with the same `Title` value. In this case I want to quickly
+view the hits from the `Windows Defender Threat Detected` rule.
+
+![Viewing the stacking stats](viewing_common_rows.png)
+
+Using this technique I can quickly review the most interesting rules
+and their corresponding hits directly in the GUI without needing to
+recalculate anything.
+
+
 ### Undo/Redo for notebook cells
 
 Velociraptor offers an easy way to experiment and explore data with
@@ -424,6 +514,20 @@ Client:
 ```
 
 Note that the PAC file must obviously be accessible without a proxy.
+
+### Automated backups
+
+Velociraptor maintains some critical metadata in various files. In
+this release we implemented an automated backup and restore
+framework. This framework is able to backup some critical parts of the
+server using the VQL plugins [backup()]({{% ref
+"/vql_reference/misc/backup/" %}}) and [backup_restore()]({{% ref
+"/vql_reference/misc/backup_restore/" %}}), as well as periodically
+(by default daily).
+
+* Backup all users and ACLs
+* Backup all hunt metadata
+* Backup client metadata including labels, and other metadata.
 
 
 ## Other notable features

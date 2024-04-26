@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-artifact|The artifact to watch|string
+artifact|The artifact to watch|string (required)
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">READ_RESULTS</i>

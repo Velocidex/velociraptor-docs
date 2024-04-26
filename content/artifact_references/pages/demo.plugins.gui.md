@@ -24,12 +24,23 @@ resources:
 
 parameters:
   - name: ChoiceSelector
+    description: Choose one item from a selection
     type: choices
     default: First Choice
     choices:
       - First Choice
       - Second Choice
       - Third Choice
+
+  - name: MultiChoiceSelector
+    description: Choose one or more items from a selection
+    type: multichoice
+    default: Bananas
+    choices:
+      - Apples
+      - Bananas
+      - Oranges
+      - Grapes
 
   - name: Hashes
     validating_regex: '^\s*([A-F0-9]+\s*)+$'
@@ -115,7 +126,7 @@ column_types:
 sources:
   - query: |
       SELECT base64encode(string="This should popup in a hex editor") AS Base64Hex,
-             ChoiceSelector, Flag, Flag2, Flag3,
+             ChoiceSelector, MultiChoiceSelector, Flag, Flag2, Flag3,
              OffFlag, StartDate, StartDate2, StartDate3,
              CSVData, CSVData2, JSONData, JSONData2,
              len(list=FileUpload1) AS FileUpload1Length
@@ -348,13 +359,15 @@ sources:
 
           */
 
-          LET ColumnTypes = dict(`StartDate`='timestamp',
+          LET ColumnTypes = dict(`StartDate`='timestamp', Download='download',
                                  Hex='hex', Upload='preview_upload')
           LET Hex = "B0 EC 48 5F 18 77"
 
           SELECT Hex, StartDate, hash(accessor="data", path="Hello") AS Hash,
                  upload(accessor="data", file="Hello world",
-                        name="test.txt") AS Upload
+                        name="test.txt") AS Upload,
+                 upload(accessor="data", file="Hello world",
+                        name="test.txt") AS Download
           FROM source()
 
       - type: VQL
