@@ -166,7 +166,7 @@ endpoint and what is normal (and by extension unusual) on an endpoint.
 
 While Velociraptor has always been able to do stacking within a post
 processing notebook by using the `GROUP BY` VQL operator to count the
-number of occurances broken by category. When the user wanted to
+number of occurrences broken by category. When the user wanted to
 actually see all those items, they needed to run a second VQL query to
 filter only those items. This made it cumbersome and inefficient to
 review large numbers of groups.
@@ -200,7 +200,7 @@ all the event log files and returned over 60k hits from about 4200
 rules.
 
 Generally it is impractical to review every single hit, so we
-typically rely on Stacking the results usig a query like
+typically rely on Stacking the results using a query like
 
 ```vql
 SELECT *, count() AS Count
