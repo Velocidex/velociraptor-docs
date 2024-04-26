@@ -21,7 +21,7 @@ parameters:
 
 sources:
   - query: |
-      SELECT * FROM query(query=Command)
+      SELECT * FROM query(query=Command, env=dict(config=config))
 
 </code></pre>
 
