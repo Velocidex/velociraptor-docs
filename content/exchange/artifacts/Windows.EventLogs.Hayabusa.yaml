@@ -12,10 +12,10 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity
 
 tools:
- - name: Hayabusa-2.14.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.14.0/hayabusa-2.14.0-win-x64.zip
-   expected_hash: de8abff4f6ed35f28e1e2897659e4f7adcca13ef84d2764afa786ca3f60224ec
-   version: 2.14.0
+ - name: Hayabusa-2.15.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.15.0/hayabusa-2.15.0-win-x64.zip
+   expected_hash: 158b404fa5fd6937a1331ed1acde262998e6e1586a8604346956d4fc6a14b5d6
+   version: 2.15.0
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -111,7 +111,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.14.0", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.15.0", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -119,7 +119,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.14.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.15.0-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={
