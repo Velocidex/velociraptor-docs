@@ -1,5 +1,5 @@
 ---
-title: "The registry hunter"
+title: "The Registry Hunter"
 description: |
     As DFIR practitioners, the Windows registry is a treasure trove of information.
 
