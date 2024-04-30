@@ -12,7 +12,7 @@ type: CLIENT
 
 parameters:
   - name: AccessLogPath
-    default: /var/log/apache2/access.log*  
+    default: /var/log/apache2/access.log* 
 
   - name: ApacheAccessLogGrok
     description: A Grok expression for parsing Apache access log lines.
@@ -21,8 +21,8 @@ parameters:
 
 sources:
   - query: |
-      // Basic Apache access log parsing via GROK expressions.
-      SELECT timestamp(string=Event.timestamp) AS Time,
+      
+      SELECT timestamp(string=Event.timestamp) AS TIME
              Event.client AS ClientIP,
              Event.method AS RequestMethod,
              Event.request AS RequestURL,
@@ -32,8 +32,8 @@ sources:
              OSPath
         FROM foreach(
           row={
-              SELECT OSPath FROM glob(globs=AccessLogPath)  # Uses glob to match log file patterns
+              SELECT OSPath FROM glob(globs=AccessLogPath) 
           }, query={
               SELECT grok(grok=ApacheAccessLogGrok, data=Line) AS Event, OSPath
-              FROM parse_lines(filename=OSPath)  # Parses each line of the logs using the defined Grok pattern
+              FROM parse_lines(filename=OSPath)
           })
