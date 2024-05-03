@@ -115,7 +115,7 @@ sources:
     query: |
       -- check which Yara to use
       LET yara_rules &lt;= YaraUrl || YaraRule
-
+      
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
 
@@ -138,8 +138,8 @@ sources:
                 ExePath,
                 CommandLine,
                 Pid,
-                Namespace,
                 Rule,
+                Tags,
                 Meta,
                 String.Name as YaraString,
                 String.Offset as HitOffset,
@@ -150,25 +150,26 @@ sources:
                         split(string=ProcessName, sep='\\.')[0], Pid,
                         String.Offset ]
                     )) as HitContext
-             FROM yara(
-                files=format(format="/%d", args=Pid),
-                accessor='process',
-                rules=yara_rules,
-                context=ContextBytes,
-                number=NumberOfHits)
+                
+            FROM proc_yara(
+                            pid=int(int=Pid),
+                            rules=yara_rules,
+                            context=ContextBytes,
+                            number=NumberOfHits
+                        )
           })
 
       -- upload hits using proc_dump plugin
       LET upload_hits = SELECT * FROM foreach(
         row=hits,
         query={
-            SELECT
+            SELECT 
                 ProcessName,
                 ExePath,
                 CommandLine,
                 Pid,
-                Namespace,
                 Rule,
+                Tags,
                 Meta,
                 YaraString,
                 HitOffset,
@@ -180,7 +181,7 @@ sources:
                 ) as ProcessDump
             FROM proc_dump(pid=Pid)
           })
-
+          
       -- return rows
       SELECT * FROM if(condition=UploadHits,
         then=upload_hits,
@@ -189,6 +190,5 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
-
 </code></pre>
 

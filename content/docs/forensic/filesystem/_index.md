@@ -74,17 +74,49 @@ components. Sometimes path component (e.g. a file or directory) can
 also contain path separator characters in which case the component is
 quoted in the path.
 
+To learn more about how paths are used in Velociraptor see [Velociraptor Paths]({{< ref "/docs/forensic/filesystem/paths/" >}})
+
+### The Glob Root
+
+Glob expressions are meant to be simple to write and to
+understand. They are not as powerful as a regular expression, with
+only a few types of wildcard characters allowed (e.g. `*` or
+`?`). However, what if we wanted to literally match a directory which
+also contained a wildcard character?
+
+This problem is encountered quite often: Normally we know an exact
+directory path and simply want to search beneath this directory using
+glob. Consider a directory like `C:\Users\Administrator\{123-45-65}` -
+this is common as directories are often named as GUID - especially in
+the registry.
+
+If we used the above in a glob expression, the `glob()` plugin will
+assume `{123-45-65}` is an alternative wild card. It will therefore
+only match a directory exactly named `123-45-65`. We can therefore use
+the `root` parameter to tell `glob()` to only start searching from
+this exact directory name:
+
+```vql
+SELECT *
+FROM glob(globs='**', root='''C:\Users\Administrator\{123-45-65}''')
+```
+
+Note that the root path is **not** a glob expression but represents
+exactly a single path forming the directory under which we start
+searching. Similarly the glob parameters now refer to wildcard matches
+under that root directory.
+
 ### Glob results
 
 The `glob()` plugin returns rows with several columns. As usual, the
 best way to see what a plugin returns is to click the `Raw Response JSON`
 button on the results table.
 
-![Glob output](image12.png)
+![Glob output](glob_results.png)
 
 Some of the more important columns available are
 
-1. The `FullPath` is the complete path to the matching file, whereas
+1. The `OSPath` is the complete path to the matching file, whereas
    the `Name` is just the filename.
 2. The `Mtime`, `Atime`, `Ctime` and `Btime` are timestamps of the file.
 3. The `Data` column is a free form dictionary containing key/value
@@ -92,6 +124,10 @@ Some of the more important columns available are
 4. `IsDir`, `IsLink` and `Mode` indicate what kind of file
    matched. (`Mode.String` can present the mode in a more human
    readable way).
+5. Finally the `glob()` plugin reports which glob expression matched
+   this particular file. This is handy when you provided a list of
+   glob expressions to the plugin.
+
 
 ## Filesystem accessors
 
@@ -102,19 +138,23 @@ also have a hierarchical structure. For example, the registry is
 organized in a similar way to a filesystem, so maybe we can use a glob
 expression to search the registry?
 
-Velociraptor supports direct access to many different such
-hierarchical trees via `accessors` (Accessors are essentially
-filesystem access drivers). Some common accessors are
+Velociraptor supports direct access to many different data sources
+with such hierarchical trees via `accessors` (Accessors are
+essentially filesystem access drivers). Some common accessors are
 
 * **file** - uses OS APIs to access files.
 * **ntfs** - uses raw NTFS parsing to access low level files
-* **reg** or **registry** - uses OS APIs to access the windows registry
+* **registry** - uses OS APIs to access the windows registry
 
-When no accessor is specified, Velociraptor uses an automatic
-accessor: It uses the **file** accessor to attempt to read file using
-the OS APIs, but if the file is locked, Velociraptor automatically
-falls back to the **ntfs** accessor in order to read the file from raw
-disk clusters.
+When no accessor is specified, Velociraptor uses an automatic accessor
+(called **auto**): On Windows, the **auto** accessor uses the **file**
+accessor to attempt to read the file using the OS APIs, but if the
+file is locked (or it received permission denied errors), Velociraptor
+automatically falls back to the **ntfs** accessor in order to read the
+file from raw disk clusters. This allows Velociraptor to transparently
+bypass any OS level restrictions on reading files (such as filesystem
+permissions or some filter drivers that block access to files based on
+other rules - sometimes found in local security software).
 
 ### The registry accessor
 

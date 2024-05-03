@@ -1,7 +1,7 @@
 name: Windows.Applications.FreeFileSync
 author: Nathanaël Ndong, Synacktiv
 description: |
-   This artefact can be used to retrieve and parse some GoodSync file in order to:
+   This artefact can be used to retrieve and parse some FreeFileSync file in order to:
    - Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the qeury GlobalInfo
    - Identify the latest transfered files with Latest Data Transfer
    - Identify the presence of others interesting logs about previous or attempt of files transfer

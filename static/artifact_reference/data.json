@@ -81,6 +81,15 @@
         ]
     },
     {
+        "title": "Elastic.EventLogs.Sysmon",
+        "description": "Ship the the Sysmon event log in ECS schema.",
+        "link": "/artifact_references/pages/elastic.eventlogs.sysmon",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Elastic.Events.Upload",
         "description": "This server monitoring artifact will watch a selection of client or\nserver monitoring artifacts for new events and push those to an\nelastic index.",
         "link": "/artifact_references/pages/elastic.events.upload",
@@ -667,7 +676,7 @@
     },
     {
         "title": "Linux.Sys.LastUserLogin",
-        "description": "Find and parse system wtmp files. This indicate when the user last logged in.",
+        "description": "Find and parse system wtmp files. This indicate when the user last\nlogged in.\n",
         "link": "/artifact_references/pages/linux.sys.lastuserlogin",
         "type": "client",
         "tags": [
@@ -837,6 +846,15 @@
         ]
     },
     {
+        "title": "MacOS.Network.Netstat",
+        "description": "Report network connections, and enrich with process information.\n",
+        "link": "/artifact_references/pages/macos.network.netstat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "MacOS.Network.PacketCapture",
         "description": "This artifact leverages tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/macos.network.packetcapture",
@@ -948,6 +966,15 @@
         "title": "Notebooks.Default",
         "description": "A default notebook.\n",
         "link": "/artifact_references/pages/notebooks.default",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.VQLx2",
+        "description": "A notebook initialized with 2 VQL cells\n",
+        "link": "/artifact_references/pages/notebooks.vqlx2",
         "type": "notebook",
         "tags": [
             "notebook"
@@ -1164,6 +1191,33 @@
         "title": "Server.Import.PreviousReleases",
         "description": "When upgrading the Velociraptor server the built in artifacts may\nchange using newer VQL features that are not present on older\nclients.",
         "link": "/artifact_references/pages/server.import.previousreleases",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.Rapid7Labs",
+        "description": "This artifact will import curated artifacts by Rapid7 Labs.\n",
+        "link": "/artifact_references/pages/server.import.rapid7labs",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.RegistryHunter",
+        "description": "This artifact will import the latest Registry Hunter artifact.",
+        "link": "/artifact_references/pages/server.import.registryhunter",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.UpdatedBuiltin",
+        "description": "This artifact allows importing updated versions of some common built\nin artifacts. If you do not want to wait for the next full release\nyou can use this artifact to import a more recent version of some\nselect artifacts which might include later feature.",
+        "link": "/artifact_references/pages/server.import.updatedbuiltin",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1683,15 +1737,6 @@
         ]
     },
     {
-        "title": "Server.Utils.ReIndex",
-        "description": "This utility artifact replays all collected Generic.Client.Info\ncollections to the interrogation service forcing a reindex.",
-        "link": "/artifact_references/pages/server.utils.reindex",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Server.Utils.SaveFavoriteFlow",
         "description": "Users may collect various artifacts from hosts. Sometimes it might\ntake a bit of effort to setup and configure just the perfect\ncombination of parameters and artifacts to collect.",
         "link": "/artifact_references/pages/server.utils.savefavoriteflow",
@@ -1702,7 +1747,7 @@
     },
     {
         "title": "Splunk.Flows.Upload",
-        "description": "This server side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to a\nSplunk server.\nTo configure the event collector properly a couple steps need to be\ncompleted prior to setting up this event:\n  1. Configure an index to ingest the data.\n     * Go to Settings > Index.\n     * New Index.\n  2. Configure the collector.\n     * Go to Settings > Data Inputs > HTTP Event Collector.\n     * Add New.\n     * Name does not matter, but ensure indexer acknowledgement is OFF.\n     * Set `Selected Indexes` to the index configured in step 1.\n     * Save API key for this event.\n  3. Set Global settings.\n     * Go to Settings > Data Inputs > HTTP Event Collector > Global Settings\n     * Ensure `All Tokens` is set to ENABLED\n     * Copy the HTTP Port Number for this event\n  4. Configure your Splunk props.conf and tranforms.conf  \n     * Add the following to props.conf\n      [vql]\n      INDEXED_EXTRACTIONS = json\n      DATETIME_CONFIG = CURRENT\n      TZ = GMT\n      category = Custom\n      pulldown_type = 1\n      TRANSFORMS-vql-sourcetype = vql-sourcetype,vql-timestamp\n      TRUNCATE = 512000  \n     * Add the following to transforms.conf  \n      [vql-sourcetype]\n      INGEST_EVAL = sourcetype=lower(_index)\n      [vql-timestamp]\n      INGEST_EVAL = _time=case( \\\n                    _index=\"artifact_Linux_Search_FileFinder\",strptime(CTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_System_VFS_ListDirectory\",strptime(ctime,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    _index=\"artifact_Windows_Timeline_MFT\",strptime(event_time,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    _index=\"artifact_Windows_NTFS_MFT\",strptime(Created0x10,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    _index=\"artifact_Windows_EventLogs_Evtx\",strptime(TimeCreated,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Custom_Windows_EventLogs_System_7045\",strptime(TimeCreated,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_EventLogs_RDPAuth\",strptime(EventTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Analysis_EvidenceOfExecution_UserAssist\",strptime(LastExecution,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Analysis_EvidenceOfExecution_Amcache\",strptime(KeyMTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_System_Amcache_InventoryApplicationFile\",strptime(LastModified,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Search_FileFinder\",strptime(CTime,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    _index=\"artifact_Windows_Applications_NirsoftBrowserViewer\",strptime(Visited,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Registry_RecentDocs\",strptime(LastWriteTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Forensics_UserAccessLogs_Clients\",strptime(InsertDate,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Forensics_UserAccessLogs_DNS\",strptime(LastSeen,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Forensics_UserAccessLogs_SystemIdentity\",strptime(CreationTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Custom_Windows_Application_IIS_IISLogs\",strptime(event_time,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_MacOS_Applications_Chrome_History\",strptime(last_visit_time,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    _index=\"artifact_Windows_Registry_UserAssist\",strptime(LastExecution,\"%Y-%m-%dT%H:%M:%SZ\") \\\n                    )  ",
+        "description": "This server side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to a\nSplunk server.\nTo configure the event collector properly a couple steps need to be\ncompleted prior to setting up this event:\n  1. Configure an index to ingest the data.\n     * Go to Settings > Index.\n     * New Index.\n  2. Configure the collector.\n     * Go to Settings > Data Inputs > HTTP Event Collector.\n     * Add New.\n     * Name does not matter, but ensure indexer acknowledgement is OFF.\n     * Set `Selected Indexes` to the index configured in step 1.\n     * Save API key for this event.\n  3. Set Global settings.\n     * Go to Settings > Data Inputs > HTTP Event Collector > Global Settings\n     * Ensure `All Tokens` is set to ENABLED\n     * Copy the HTTP Port Number for this event\n  4. Configure your Splunk props.conf and tranforms.conf\n     * Add the following to props.conf\n      [vql]\n      INDEXED_EXTRACTIONS = json\n      DATETIME_CONFIG = CURRENT\n      TZ = GMT\n      category = Custom\n      pulldown_type = 1\n      TRANSFORMS-vql-sourcetype = vql-sourcetype,vql-timestamp\n      TRUNCATE = 512000\n     * Add the following to transforms.conf\n      [vql-sourcetype]\n      INGEST_EVAL = sourcetype=lower(src_artifact)\n      [vql-timestamp]\n      INGEST_EVAL = _time=case( \\\n                    src_artifact=\"artifact_Linux_Search_FileFinder\",strptime(CTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_System_VFS_ListDirectory\",strptime(ctime,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    src_artifact=\"artifact_Windows_Timeline_MFT\",strptime(event_time,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    src_artifact=\"artifact_Windows_NTFS_MFT\",strptime(Created0x10,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    src_artifact=\"artifact_Windows_EventLogs_Evtx\",strptime(TimeCreated,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Custom_Windows_EventLogs_System_7045\",strptime(TimeCreated,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_EventLogs_RDPAuth\",strptime(EventTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Analysis_EvidenceOfExecution_UserAssist\",strptime(LastExecution,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Analysis_EvidenceOfExecution_Amcache\",strptime(KeyMTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_System_Amcache_InventoryApplicationFile\",strptime(LastModified,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Search_FileFinder\",strptime(CTime,\"%Y-%m-%dT%H:%M:%S.%NZ\"), \\\n                    src_artifact=\"artifact_Windows_Applications_NirsoftBrowserViewer\",strptime(Visited,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Registry_RecentDocs\",strptime(LastWriteTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Forensics_UserAccessLogs_Clients\",strptime(InsertDate,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Forensics_UserAccessLogs_DNS\",strptime(LastSeen,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Forensics_UserAccessLogs_SystemIdentity\",strptime(CreationTime,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Custom_Windows_Application_IIS_IISLogs\",strptime(event_time,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_MacOS_Applications_Chrome_History\",strptime(last_visit_time,\"%Y-%m-%dT%H:%M:%SZ\"), \\\n                    src_artifact=\"artifact_Windows_Registry_UserAssist\",strptime(LastExecution,\"%Y-%m-%dT%H:%M:%SZ\") \\\n                    )",
         "link": "/artifact_references/pages/splunk.flows.upload",
         "type": "server_event",
         "tags": [
@@ -2107,7 +2152,7 @@
     },
     {
         "title": "Windows.Detection.Registry",
-        "description": "This artifact detects registry changes and triggers an alert. \n",
+        "description": "This artifact detects registry changes and triggers an alert.\n",
         "link": "/artifact_references/pages/windows.detection.registry",
         "type": "client_event",
         "tags": [
@@ -2214,6 +2259,15 @@
         ]
     },
     {
+        "title": "Windows.Detection.Yara.UEFI",
+        "description": "This artifact enables running yara over files in an EFI System Partition (ESP).\n",
+        "link": "/artifact_references/pages/windows.detection.yara.uefi",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.ETW.DNS",
         "description": "This artifact monitors DNS queries using ETW.",
         "link": "/artifact_references/pages/windows.etw.dns",
@@ -2229,6 +2283,15 @@
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.DotNetRundown",
+        "description": "Queries the Microsoft-Windows-DotNETRuntimeRundown provider to\ncollect a list of DotNet modules loaded into a process. This can be\nuseful when responding to reflectively loaded DotNet malware.",
+        "link": "/artifact_references/pages/windows.etw.dotnetrundown",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -2647,7 +2710,7 @@
     },
     {
         "title": "Windows.Forensics.UEFI",
-        "description": "Searches for an EFI partition in the current partition table and\nenumerates all files in it.\n",
+        "description": "This artifact enables disk analysis over an EFI System Partition (ESP).",
         "link": "/artifact_references/pages/windows.forensics.uefi",
         "type": "client",
         "tags": [

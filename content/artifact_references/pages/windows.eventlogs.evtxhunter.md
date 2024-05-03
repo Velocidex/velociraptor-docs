@@ -153,7 +153,6 @@ sources:
           )
 
         SELECT * FROM evtxsearch(PathList=fspaths)
-        GROUP BY EventRecordID, Channel
 
 </code></pre>
 

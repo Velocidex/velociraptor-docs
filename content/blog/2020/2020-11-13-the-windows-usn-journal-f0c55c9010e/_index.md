@@ -18,7 +18,7 @@ NTFS is the default filesystem on Windows systems, so it is important for DFIR t
 
 ### What is the USN Journal?
 
-By default Windows maintains a journal of filesystem activities is a file called **$Extend\$UsnJrnl** in a special data stream called **$J**. This stream contains records of filesystem operations, primarily to allow backup applications visibility into the files that have been changed since the last time a backup was run.
+By default Windows maintains a journal of filesystem activities in a file called **$Extend\$UsnJrnl** in a special data stream called **$J**. This stream contains records of filesystem operations, primarily to allow backup applications visibility into the files that have been changed since the last time a backup was run.
 
 The **$Extend\$UsnJrnl:$J** file begins life when the volume is created as an empty file. As files are modified on the volume, the $J file is extended with additional USN records.
 

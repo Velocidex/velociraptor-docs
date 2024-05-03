@@ -34,6 +34,8 @@ parameters:
   - name: ImagePath
     default: "\\\\?\\GLOBALROOT\\Device\\Harddisk0\\DR0"
     description: Raw Device for main disk containing partition table to parse.
+  - name: Accessor
+    default: "raw_file"
   - name: SectorSize
     type: int
     default: 512
@@ -118,13 +120,13 @@ export: |
 sources:
   - query: |
         LET GPTHeader &lt;= parse_binary(filename=ImagePath,
-           accessor="raw_file",
+           accessor=Accessor,
            profile=MBRProfile,
            struct="GPTHeader",
            offset=SectorSize)
 
         LET PrimaryPartitions &lt;= parse_binary(filename=ImagePath,
-           accessor="raw_file",
+           accessor=Accessor,
            profile=MBRProfile,
            struct="MBRHeader",
            offset=0)
@@ -164,7 +166,7 @@ sources:
 
         LET PartitionList = SELECT StartOffset, EndOffset, Size, name,
             magic(accessor="data", path=read_file(
-              accessor="raw_file",
+              accessor=Accessor,
               filename=ImagePath,
               offset=StartOffset, length=10240)) AS Magic,
 
@@ -172,7 +174,7 @@ sources:
             pathspec(
               DelegateAccessor="offset",
               DelegatePath=pathspec(
-                 DelegateAccessor="raw_file",
+                 DelegateAccessor=Accessor,
                  DelegatePath=ImagePath,
                  Path=format(format="%d", args=StartOffset))) AS _PartitionPath
         FROM chain(a=PARTS, b=GPT)

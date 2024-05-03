@@ -150,6 +150,11 @@ parameters:
   - name: KillProcess
     description: "WARNING: If selected will attempt to kill process from all results."
     type: bool
+  - name: DISABLE_DANGEROUS_API_CALLS
+    type: bool
+    description: |
+      Enable this to disable potentially flakey APIs which may cause
+      crashes.
 
 sources:
   - name: Netstat
@@ -175,7 +180,8 @@ sources:
             Hash,
             Authenticode,
             Username
-        FROM Artifact.Windows.System.Pslist()
+        FROM Artifact.Windows.System.Pslist(
+            DISABLE_DANGEROUS_API_CALLS=DISABLE_DANGEROUS_API_CALLS)
         WHERE Name =~ ProcessNameRegex
             AND Exe =~ ProcessPathRegex
             AND CommandLine =~ CommandLineRegex

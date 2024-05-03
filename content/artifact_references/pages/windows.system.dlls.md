@@ -38,10 +38,15 @@ parameters:
   - name: CertificateInfo
     default: N
     type: bool
+  - name: DISABLE_DANGEROUS_API_CALLS
+    type: bool
+    description: |
+      Enable this to disable potentially flakey APIs which may cause
+      crashes.
 
 sources:
   - query: |
-  
+
       -- first find processes in scope
       LET processes = SELECT Pid, Name,Exe,CommandLine
         FROM pslist()
@@ -61,7 +66,7 @@ sources:
             FROM modules(pid=Pid)
             WHERE ModulePath =~ DllRegex
           })
-      
+
       -- add additional enrichment usecases
       LET cert_hash = SELECT *,
                 hash(path=expand(path=ModulePath)) AS Hash,
@@ -71,7 +76,7 @@ sources:
             FROM results
       LET nocert_hash = SELECT *, hash(path=expand(path=ModulePath)) AS Hash
             FROM results
-      
+
       -- output rows
       SELECT * FROM if(condition= Calculate_Hash AND CertificateInfo,
                         then= cert_hash,

@@ -14,6 +14,8 @@ Miscellaneous plugins not yet categorized.
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[artifact_set_metadata](artifact_set_metadata)|<span class='vql_type'>Function</span>|Sets metadata about the artifact|
+|[backup](backup)|<span class='vql_type'>Plugin</span>|Generates a backup file|
+|[backup_restore](backup_restore)|<span class='vql_type'>Plugin</span>|Restore state from a backup file|
 |[base85decode](base85decode)|<span class='vql_type'>Function</span>|Decode a base85 encoded string|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|
@@ -23,11 +25,14 @@ Miscellaneous plugins not yet categorized.
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|
+|[eval](eval)|<span class='vql_type'>Function</span>|Evaluate a vql lambda function on the current scope|
 |[flow_logs](flow_logs)|<span class='vql_type'>Plugin</span>|Retrieve the query logs of a flow|
 |[get_flow](get_flow)|<span class='vql_type'>Function</span>|Gets flow details|
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
+|[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
+|[import](import)|<span class='vql_type'>Function</span>|Imports an artifact into the current scope|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
 |[logging](logging)|<span class='vql_type'>Plugin</span>|Watch the logs emitted by the server|
 |[logscale_upload](logscale_upload)|<span class='vql_type'>Plugin</span>|Upload rows to LogScale ingestion server|
@@ -37,6 +42,10 @@ Miscellaneous plugins not yet categorized.
 |[mock_clear](mock_clear)|<span class='vql_type'>Function</span>|Resets all mocks|
 |[mock_replay](mock_replay)|<span class='vql_type'>Function</span>|Replay recorded calls on a mock|
 |[monitoring_logs](monitoring_logs)|<span class='vql_type'>Plugin</span>|Retrieve log messages from client event monitoring for the specified client id and artifact|
+|[notebook_create](notebook_create)|<span class='vql_type'>Function</span>|Create a new notebook|
+|[notebook_export](notebook_export)|<span class='vql_type'>Function</span>|Exports a notebook to a zip file or HTML|
+|[notebook_get](notebook_get)|<span class='vql_type'>Function</span>|Get a notebook|
+|[notebook_update_cell](notebook_update_cell)|<span class='vql_type'>Function</span>|Update a notebook cell|
 |[org](org)|<span class='vql_type'>Function</span>|Return the details of the current org|
 |[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organization|
 |[org_delete](org_delete)|<span class='vql_type'>Function</span>|Deletes an Org from the server|
@@ -64,6 +73,7 @@ Miscellaneous plugins not yet categorized.
 |[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
 |[sigma](sigma)|<span class='vql_type'>Plugin</span>|Evaluate sigma rules|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
+|[stat](stat)|<span class='vql_type'>Function</span>|Get file information|
 |[sysinfo](sysinfo)|<span class='vql_type'>Function</span>|Collect system information on Linux clients|
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[trace](trace)|<span class='vql_type'>Function</span>|Upload a trace file|
@@ -72,6 +82,7 @@ Miscellaneous plugins not yet categorized.
 |[user](user)|<span class='vql_type'>Function</span>|Retrieves information about the Velociraptor user|
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|
 |[vfs_ls](vfs_ls)|<span class='vql_type'>Plugin</span>|List directory and build a VFS object|
+|[watch_jsonl](watch_jsonl)|<span class='vql_type'>Plugin</span>|Watch a jsonl file and stream events from it|
 |[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
 |[xattr](xattr)|<span class='vql_type'>Function</span>|Query a file for the specified extended attribute|

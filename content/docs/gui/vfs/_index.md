@@ -20,12 +20,15 @@ the top right pane. The tree view allows us to navigate through the
 filesystem, starting at the top level. Remember that the GUI is simply
 viewing data that was previously collected from the client. When
 clicking on a directory in the tree view that has not been synced from
-the client yet, the top right pane shows the message `No data available. Refresh directory from client by clicking above.`.
+the client yet, the top right pane shows the message `No data
+available. Refresh directory from client by clicking above.`.
 
-Clicking on the refresh directory button <i class="fas fa-folder-open"></i>
-will initiate a directory listing operation on the client, and
-providing the client is currently connected, will refresh the VFS
-view. Similarly the recursive refresh directory button will recursively refresh the directory listing from the current directory down.
+Clicking on the refresh directory button <i class="fas
+fa-folder-open"></i> will initiate a directory listing operation on
+the client, and providing the client is currently connected, will
+refresh the VFS view. Similarly the recursive refresh directory button
+will recursively refresh the directory listing from the current
+directory down.
 
 Clicking on any of the files in the directory listing, will show their
 properties in the bottom right pane. In particular, listing the
@@ -55,6 +58,25 @@ files from the VFS.
 
 This will begin a server side collection that packages the downloaded
 files specified into a new collection which may then be exported.
+
+Remember that the VFS is fluid - each time we refresh new listing or
+downloads from the client, the VFS view will change. Performing an
+export of the VFS freezes in time the state of the VFS at the time of
+the collection. You can then go back to review the files at that time.
+
+{{% notice tip "Exporting files from the VFS with a password" %}}
+
+Sometimes files in the VFS will contain malware or other unwanted
+software. Often the investigator's local workstation will have AV or
+other security products that might quarantine the produced ZIP
+file. In this case it is better to compress the export with a
+password.
+
+See the Knowledge Base article [How do I enable password protected VFS
+downloads?]({{< ref "/knowledge_base/tips/download_password/" >}}) for
+reference on setting the password for export.
+
+{{% /notice %}}
 
 ### Recursively operating on files
 

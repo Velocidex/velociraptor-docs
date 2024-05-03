@@ -304,3 +304,23 @@ you to create a fully automated pipeline based off Velociraptor
 collections, hunts etc.
 
 {{% /notice %}}
+
+
+## Using the shell for automation
+
+You don't have to use a powerful language like Python to connect to
+the API. It is possible to write simple shell scripts that use the
+Velociraptor API using bash or powershell by leveraging the
+velociraptor binary itself.
+
+Velociraptor offers the `query` command which allows you to run any
+VQL query. When provided with the `--api_config` flag, Velociraptor
+will use that api configuration file to connect remotely to the API
+server and run the query there.
+
+This can be chained to other tools and automation orchestrated with a
+simple bash script:
+
+```
+velociraptor --api_config api.config.yaml query "SELECT * FROM info()" --format jsonl | jq
+```

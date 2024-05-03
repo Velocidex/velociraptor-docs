@@ -10,7 +10,7 @@ any collected artifacts to s3.
 You will need to provide credentials to upload to the bucket. The
 credentials can be given as parameters or they will be taken from
 the server metadata (as DefaultBucket, DefaultRegion,
-S3AccessKeyId, S3AccessSecret)
+S3AccessKeyId, S3AccessSecret, S3AccessToken)
 
 Thanks to @shortxstack and @Recon_InfoSec
 
@@ -24,7 +24,7 @@ description: |
    You will need to provide credentials to upload to the bucket. The
    credentials can be given as parameters or they will be taken from
    the server metadata (as DefaultBucket, DefaultRegion,
-   S3AccessKeyId, S3AccessSecret)
+   S3AccessKeyId, S3AccessSecret, S3AccessToken)
 
    Thanks to @shortxstack and @Recon_InfoSec
 
@@ -41,23 +41,17 @@ parameters:
    - name: Region
    - name: CredentialsKey
    - name: CredentialsSecret
-
+   - name: CredentialsToken
+   - name: Secret
+     description: A Secret name to use for uploading.
    - name: RemoveDownloads
      type: bool
      description: If set, remove the flow export files after upload
 
 sources:
   - query: |
-      -- Allow these settings to be set by the artifact parameter or the server metadata.
-      LET bucket &lt;= if(condition=Bucket, then=Bucket,
-           else=server_metadata().DefaultBucket)
-      LET credentialskey &lt;= if(condition=CredentialsKey, then=CredentialsKey,
-           else=server_metadata().S3AccessKeyId)
-      LET region &lt;= if(condition=Region, then=Region,
-           else=server_metadata().DefaultRegion)
-      LET credentialssecret &lt;= if(condition=CredentialsSecret,
-              then=CredentialsSecret, else=server_metadata().S3AccessSecret)
-
+      -- Allow these settings to be set by the artifact parameter or
+      -- the server metadata.
       LET completions = SELECT *,
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
@@ -66,10 +60,12 @@ sources:
       WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
       SELECT upload_s3(
-         bucket=bucket,
-         credentialskey=credentialskey,
-         credentialssecret=credentialssecret,
-         region=region,
+         bucket=Bucket,
+         credentials_key=CredentialsKey,
+         credentials_secret=CredentialsSecret,
+         credentials_token=CredentialsToken,
+         secret=Secret,
+         region=Region,
          file=FlowDownload,
          accessor="fs",
          name=format(format="Host %v %v %v.zip",

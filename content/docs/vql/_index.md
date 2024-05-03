@@ -355,7 +355,8 @@ While these make sense for SQL since they affect the way indexes are
 used in the query, VQL does not have table indexes, nor does it have
 any tables. Therefore the `JOIN` operator is meaningless for
 Velociraptor. To keep VQL simple and accessible, we specifically did
-not implement a `JOIN` operator.
+not implement a `JOIN` operator. For a more detailed discussion of the
+`JOIN` operator see [emulating join in VQL]({{% relref "./join" %}})
 
 Instead of a `JOIN` operator, VQL has the `foreach()` plugin, which is
 probably the most commonly used plugin in VQL queries. The `foreach()`
@@ -871,3 +872,37 @@ Some aggregate functions:
 These can be seen in the query below.
 
 ![Aggregate functions](image70.png)
+
+### VQL Lambda functions
+
+In various places it is possible to specify a VQL lambda
+function. These functions a simple VQL expressions which can be used
+as filters, or simple callbacks in some plugins. The format is simple:
+
+```
+x=>x.Field + 2
+```
+
+Represents a simple function with a single parameter `x`. When the
+lambda function is evaluated, the caller will pass the value as `x`
+and receive the result of the function.
+
+Usually lambda functions are specified as strings, and will be
+interpreted at run time. For example the `eval()` function allows a
+lambda to be directly evaluated (with `x` being the current scope in
+that case).
+
+
+```vql
+SELECT eval(func="x=>1+1") AS Two FROM scope()
+```
+
+The scope that is visited at the place where the lambda is evaluated
+will be passed to the lambda function - this allows the lambda to
+access previously defined helper functions.
+
+```vql
+LET AddTwo(x) = x + 2
+
+SELECT eval(func="x=>AddTwo(x=1)") AS Three FROM scope()
+```

@@ -6,7 +6,7 @@ tags: [Client Event Artifact]
 
 This artifact monitors DNS queries using ETW.
 
-There are several filteres availible to the user to filter out and target with 
+There are several filteres availible to the user to filter out and target with
 regex, by default duplicate DNSCache requests are filtered out.
 
 
@@ -15,8 +15,8 @@ name: Windows.ETW.DNS
 author: Matt Green - @mgreen27
 description: |
   This artifact monitors DNS queries using ETW.
-  
-  There are several filteres availible to the user to filter out and target with 
+
+  There are several filteres availible to the user to filter out and target with
   regex, by default duplicate DNSCache requests are filtered out.
 
 type: CLIENT_EVENT
@@ -42,59 +42,14 @@ parameters:
     description: "Commandline to filter out. Typically we do not want Dnscache events."
     default: 'svchost.exe -k NetworkService -p -s Dnscache$'
     type: regex
-    
-    
+
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
-      
+
     query: |
-      LET RecentProcesses = SELECT * FROM fifo(query={
-                SELECT System.TimeStamp AS CreateTime, 
-                    EventData.ImageName AS ImageName,
-                    int(int=EventData.ProcessID) AS Pid,
-                    EventData.MandatoryLabel AS MandatoryLabel,
-                    EventData.ProcessTokenElevationType AS ProcessTokenElevationType,
-                    EventData.ProcessTokenIsElevated AS TokenIsElevated
-                FROM watch_etw(guid="{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}", any=0x10)
-                WHERE System.ID = 1   
-            }, max_rows=1000, max_age=60)
-        
-      -- Query it once to materialize the FIFO
-      LET _ &lt;= SELECT * FROM RecentProcesses
-        
-      LET GetProcessInfo(TargetPid) = SELECT *, ThreadId as ProcessThreadId
-        FROM switch(
-            -- First try to get the pid directly
-            a={
-                SELECT 
-                    Name, Pid, CreateTime,
-                    Exe as ImageName,
-                    CommandLine,
-                    Username,
-                    TokenIsElevated
-                FROM pslist(pid=TargetPid)
-            },
-            -- Failing this look in the FIFO for a recently started process.
-            b={
-                SELECT
-                    basename(path=ImageName) as Name,
-                    Pid,
-                    CreateTime,
-                    ImageName,
-                    Null as CommandLine,
-                    Null as Username,
-                    if(condition= TokenIsElevated="0", 
-                        then= false, 
-                        else= true ) as TokenIsElevated
-                FROM RecentProcesses
-                WHERE Pid = TargetPid
-                LIMIT 1
-            })
-        
-        SELECT System.TimeStamp AS EventTime,
-            EventData.QueryName AS Query,
-            get(item=dict(
+        LET TypeLookup &lt;= dict(
                         `1` = 'A',
                         `2` = 'NS',
                         `5` = 'CNAME',
@@ -141,16 +96,23 @@ sources:
                         `256` = 'URI',
                         `257` = 'CAA',
                         `32768` = 'TA',
-                        `32769` = 'DLV'),
-                    member=str(str=EventData.QueryType)) AS Type,
-               EventData.QueryResults AS Answer,
-               GetProcessInfo(TargetPid=System.ProcessID,ThreadId=System.ThreadID)[0] as Process
-        FROM watch_etw(guid="{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}")
+                        `32769` = 'DLV')
+
+        SELECT System.TimeStamp AS EventTime,
+            EventData.QueryName AS Query,
+            get(item=TypeLookup,
+                member=str(str=EventData.QueryType)) AS Type,
+            EventData.QueryResults AS Answer,
+            process_tracker_get(id=System.ProcessID).Data as Process
+        FROM watch_etw(
+          description="Microsoft-Windows-DNS-Client",
+          guid="{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}")
         WHERE System.ID = 3008
-            AND Query AND Process AND Answer 
-            AND NOT Process.CommandLine =~ CommandLineExclusion
-            AND Process.ImageName =~ ImageRegex
-            AND Query =~ QueryRegex
-            AND Answer =~ AnswerRegex
+           AND Query
+           AND NOT Process.CommandLine =~ CommandLineExclusion
+           AND Process.Exe =~ ImageRegex
+           AND Query =~ QueryRegex
+           AND Answer =~ AnswerRegex
+
 </code></pre>
 
