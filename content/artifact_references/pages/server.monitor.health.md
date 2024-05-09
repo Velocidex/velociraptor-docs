@@ -46,6 +46,7 @@ reports:
               MemoryUse / 1048576 AS MemoryUse,
               TotalFrontends
           FROM source(source="Prometheus",
+                      start_time=StartTime, end_time=EndTime,
                       artifact="Server.Monitor.Health")
       {{ end }}
 
@@ -56,6 +57,7 @@ reports:
                SELECT _ts as Timestamp,
                   client_comms_current_connections
                FROM source(source="Prometheus",
+                           start_time=StartTime, end_time=EndTime,
                            artifact="Server.Monitor.Health")
             })
       {{ end }}

@@ -126,6 +126,15 @@
         ]
     },
     {
+        "title": "Generic.Client.CleanupTemp",
+        "description": "This artifact cleans up the temp folder in the Velociraptor client.\n",
+        "link": "/artifact_references/pages/generic.client.cleanuptemp",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Generic.Client.DiskSpace",
         "description": "This artifact reports the amount of free disk space. It is designed\nto work equally on all architectures:",
         "link": "/artifact_references/pages/generic.client.diskspace",
@@ -678,6 +687,15 @@
         "title": "Linux.Sys.LastUserLogin",
         "description": "Find and parse system wtmp files. This indicate when the user last\nlogged in.\n",
         "link": "/artifact_references/pages/linux.sys.lastuserlogin",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.LogGrep",
+        "description": "This artifact enables grep and zgrep of linux logs and gzipped log files.\n",
+        "link": "/artifact_references/pages/linux.sys.loggrep",
         "type": "client",
         "tags": [
             "Client Artifact"
