@@ -2,6 +2,12 @@ name: Windows.Detection.ProxyHunter
 author: Matt Green - @mgreen27
 description: |
    This artifact detects evidence of several common proxy tools.
+   
+   1. Hunt through Event Logs for potential evidence of proxy tool commandline.
+   2. Checks active connections for proxy tool commandline (for active threat)
+   3. Checks port proxy registry key for OS level forwarding
+   
+   NOTE: this artifact is Windows only. Similar queries for 2. can be run on linux and macos
 
 type: CLIENT
 
@@ -12,8 +18,7 @@ parameters:
    - name: ProxyCliRegex
      type: regex
      description: Regex to detect proxy tool cli. Default example includes plink. 
-     default: \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5} :\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5}:socks
-
+     default: \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}:\d{1,5}\s+-p|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5} :\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5}:socks
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows' 
@@ -27,6 +32,11 @@ sources:
             EvtxGlob=TargetGlob,
             SearchVSS='Y' )
             
+  - name: ActiveConnections
+    query: |
+      -- Secondly check for proxy CLI with potential active network connections by CLI.
+      SELECT * FROM Artifact.Windows.Network.NetstatEnriched(CommandLineRegex=ProxyCliRegex,ProcessNameRegex='.')
+      
   - name: PortProxy
     query: |
       -- next we check for Windows inbuilt proxy config usually empty
