@@ -35,7 +35,7 @@ parameters:
   - name: MultiChoiceSelector
     description: Choose one or more items from a selection
     type: multichoice
-    default: Bananas
+    default: '["Bananas"]'
     choices:
       - Apples
       - Bananas
@@ -277,6 +277,7 @@ sources:
           {{ define "Q" }}
             SELECT _ts, CPUPercent
             FROM monitoring(
+                  client_id="server",
                   artifact="Server.Monitor.Health/Prometheus",
                   start_time=now() - 10 * 60)
             LIMIT 100
@@ -295,6 +296,7 @@ sources:
           */
           SELECT timestamp(epoch=_ts) AS Timestamp, CPUPercent
           FROM monitoring(
+            client_id="server",
             source="Prometheus",
             artifact="Server.Monitor.Health",
             start_time=now() - 10 * 60)
@@ -303,6 +305,7 @@ sources:
                timestamp(epoch=_ts) AS Timestamp,
                dict(X=CPUPercent, Y=1) AS Dict
           FROM monitoring(
+            client_id="server",
             source="Prometheus",
             artifact="Server.Monitor.Health",
             start_time=now() - 10 * 60)

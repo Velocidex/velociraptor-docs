@@ -12,7 +12,8 @@ date: 2024-03-10
 ---
 
 I am very excited to announce that the latest Velociraptor release
-0.72 is now available for testing in Release Candidate status.
+0.72 is now available. You can also watch a video walkthrough of this
+post here https://www.youtube.com/watch?v=FwmFYmTQxeA
 
 In this post I will discuss some of the interesting new features.
 

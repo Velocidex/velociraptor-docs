@@ -1,5 +1,85 @@
 [
     {
+        "title": "Windows.Apache.AccessLogs",
+        "author": "Krishna-23",
+        "description": "Parses Apache access logs to extract detailed request information.\n",
+        "link": "/exchange/artifacts/pages/windows.apache.accesslogs",
+        "tags": [],
+        "author_link": "https://github.com/Krishna-23",
+        "author_avatar": "https://avatars.githubusercontent.com/u/56428658?v=4",
+        "date": "2024-04-15"
+    },
+    {
+        "title": "Exchange.Windows.EventLogs.Hayabusa.Takajo",
+        "author": "x0rPE",
+        "description": "[Takajo] (https://github.com/Yamato-Security/takajo) is a fast forensics analyzer\nfor Hayabusa results written in Nim. Takaj\u014d means \"Falconer\" in Japanese\nand was chosen as it analyzes Hayabusa's \"catches\" (results).",
+        "link": "/exchange/artifacts/pages/exchange.windows.eventlogs.hayabusa.takajo",
+        "tags": [],
+        "author_link": "https://github.com/x0rPE",
+        "author_avatar": "https://avatars.githubusercontent.com/u/45003021?v=4",
+        "date": "2024-04-08"
+    },
+    {
+        "title": "Exchange.Windows.System.PowerShell.DetectResponder",
+        "author": "Jbhoohe",
+        "description": "This artifact allows to detect responder in the environment\nhttps://tcm-sec.com/llmnr-poisoning-and-how-to-prevent-it/\n",
+        "link": "/exchange/artifacts/pages/exchange.windows.system.powershell.detectresponder",
+        "tags": [],
+        "author_link": "https://github.com/Jbhoohe",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3902514?v=4",
+        "date": "2024-04-05"
+    },
+    {
+        "title": "Windows.Forensics.Trawler",
+        "author": "joeavanzato",
+        "description": "Trawler [https://github.com/joeavanzato/Trawler] is a PowerShell script designed to help Incident\nResponders rapidly identify potential adversary persistence mechanisms on Windows.  It is similar\nin nature to PersistenceSniper with additional targeted checks as well as the capability to operate\nagainst a 'dead box' (mounted drive). The output is simplified compared to PersistenceSniper, providing\nthe user with the details needed to kick off an investigation into any identified mechanisms.\nThink of these tools as autoruns on steroids.",
+        "link": "/exchange/artifacts/pages/trawler",
+        "tags": [],
+        "author_link": "https://github.com/joeavanzato",
+        "author_avatar": "https://avatars.githubusercontent.com/u/23218352?v=4",
+        "date": "2024-04-04"
+    },
+    {
+        "title": "Windows.Scanner.Yara.Parsed",
+        "author": "mgreen27",
+        "description": "Instructions: Upload a yara signature file (signature file must be named yara.yas) and yara64.exe in a single zip file called yara.zip.\nThis artifact is an alternative way to scan processes, or recursively scan the C:\\ with a yara file containing multiple yara rules, utilizing the official yara tool. ",
+        "link": "/exchange/artifacts/pages/windows.detection.yara.yara64",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-03-24"
+    },
+    {
+        "title": "Windows.Forensics.AdvancedPortScanner",
+        "author": "y0sh1mitsu",
+        "description": "This Velociraptor artifact is tailored for forensics analysis of Angry IP Scanner usage on Windows platforms. This facilitates the identification of how Angry IP Scanner was configured and used, aiding in DFIR investigations. It examines registry keys HKEY_USERS\\\\*\\\\SOFTWARE\\\\Famatech\\\\advanced_port_scanner and HKEY_USERS\\\\*\\\\SOFTWARE\\\\Famatech\\\\advanced_port_scanner\\\\State for retrieve some informations about:\n   \n- run: Displays the version of Advanced Port Scanner\n- locale_timestamp: Indicates the time in EPOCH (UTC +0) at which the application was first launched\n- locale: Displays the language chosen for the graphical interface, may prove useful to have an idea of the native language of a threat actor (it is necessary to correlate with a modus operandi in order not to fall into the trap of a false flag)\n- LastPortsUsed: Displays the last ports used in the last scan\n- LastRangeUsed: Displays the last IP range used in the last scan\n- IpRangesMruList: Displays all the IP ranges scanned by the tool, the first digit of each prefix in this list indicates the frequency of scans for each range\n- PortsMruList: Displays all the ports that have been scanned by the tool, the first digit of each prefix in this list indicates the frequency of scans for each port\n- SearchMruList: Displays all the IP addresses or hostnames that have been searched using the GUI's \"search\" feature\n",
+        "link": "/exchange/artifacts/pages/windows.forensics.advancedportscanner",
+        "tags": [],
+        "author_link": "https://github.com/y0sh1mitsu",
+        "author_avatar": "https://avatars.githubusercontent.com/u/62485373?v=4",
+        "date": "2024-03-24"
+    },
+    {
+        "title": "Windows.Forensics.AngryIPScanner",
+        "author": "y0sh1mitsu",
+        "description": "This Velociraptor artifact is tailored for forensic analysis of Angry IP Scanner usage on Windows platforms. This facilitates the identification of how Angry IP Scanner was configured and used, aiding in DFIR investigations. It examines HKEY_USERS\\\\*\\\\SOFTWARE\\\\JavaSoft\\\\Prefs\\\\ipscan from the registry for retrieve some informations about:\n  \n  - language: Displays the language used in the GUI, may prove useful to have an idea of the language used by a threat actor (it is necessary to correlate with a modus operandi in order not to fall into the trap of a false flag)\n  - Version: Displays the version of Angry IP Scanner\n  - LastVersionCheck: Captures the last time (EPOCH format in UTC +0) when the application checked for an update\n  - PortScanConfiguration: Displays the selected ports for scanning\n",
+        "link": "/exchange/artifacts/pages/windows.forensics.angryipscanner",
+        "tags": [],
+        "author_link": "https://github.com/y0sh1mitsu",
+        "author_avatar": "https://avatars.githubusercontent.com/u/62485373?v=4",
+        "date": "2024-03-24"
+    },
+    {
+        "title": "Windows.Forensics.SoftPerfectNetworkScanner",
+        "author": "y0sh1mitsu",
+        "description": "This Velociraptor artifact is tailored for forensic analysis of SoftPerfect Network Scanner (NetScan) usage on Windows platforms. This facilitates the identification of how SoftPerfect Network Scanner was configured and used, aiding in DFIR investigations. It parse the MFT to search and retrieve the content of two files:",
+        "link": "/exchange/artifacts/pages/windows.forensics.softperfectnetworkscanner",
+        "tags": [],
+        "author_link": "https://github.com/y0sh1mitsu",
+        "author_avatar": "https://avatars.githubusercontent.com/u/62485373?v=4",
+        "date": "2024-03-24"
+    },
+    {
         "title": "Windows.Forensics.ThumbCache",
         "author": "mgreen27",
         "description": "ThumbCache_xx.db parser. ",
@@ -112,7 +192,7 @@
     {
         "title": "Windows.Forensics.PersistenceSniper",
         "author": "ablescia",
-        "description": "PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident \nResponders and System Administrators to hunt persistences implanted in Windows machines. \nIt is also available on Powershell Gallery and it is digitally signed with a valid code \nsigning certificate. The tool is under active development with new releases coming out \nregularly, so make sure to use the up-to-date version. \nhttps://github.com/last-byte/PersistenceSniper",
+        "description": "PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident\nResponders and System Administrators to hunt persistences implanted in Windows machines.\nIt is also available on Powershell Gallery and it is digitally signed with a valid code\nsigning certificate. The tool is under active development with new releases coming out\nregularly, so make sure to use the up-to-date version.\nhttps://github.com/last-byte/PersistenceSniper",
         "link": "/exchange/artifacts/pages/windows.forensics.persistencesniper",
         "tags": [],
         "author_link": "https://github.com/ablescia",
@@ -172,7 +252,7 @@
     {
         "title": "Windows.Applications.FreeFileSync",
         "author": "freeze-syn",
-        "description": "This artefact can be used to retrieve and parse some GoodSync file in order to:\n- Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the qeury GlobalInfo\n- Identify the latest transfered files with Latest Data Transfer\n- Identify the presence of others interesting logs about previous or attempt of files transfer",
+        "description": "This artefact can be used to retrieve and parse some FreeFileSync file in order to:\n- Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the qeury GlobalInfo\n- Identify the latest transfered files with Latest Data Transfer\n- Identify the presence of others interesting logs about previous or attempt of files transfer",
         "link": "/exchange/artifacts/pages/windows.applications.freefilesync",
         "tags": [],
         "author_link": "https://github.com/freeze-syn",

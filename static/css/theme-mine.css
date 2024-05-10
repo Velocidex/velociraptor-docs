@@ -732,3 +732,11 @@ details > summary:first-of-type {
 .search_results table {
     width: -webkit-fill-available;
 }
+
+#body-inner .search_box tbody {
+    border-style: none;
+}
+
+#body-inner .search_box .gsc-input table {
+    margin: 0;
+}
