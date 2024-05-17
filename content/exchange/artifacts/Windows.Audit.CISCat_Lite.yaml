@@ -5,9 +5,7 @@ description: |
   CIS-CAT Lite is a free tool from the Center for Internet Security that helps in assessing and improving IT security configurations. 
   It enables unlimited system scans, provides compliance scores, and offers remediation steps based on CIS Benchmarks. 
   This tool is useful for organizations seeking to enhance their technology security.
-
-  Downloads your CIS-CAT Lite free from the https://learn.cisecurity.org/cis-cat-lite link. (Registration is required!)
-  After downloading the zip file, upload the file to the velociraptor server as the CISCat_Lite tool. 
+ 
   The artifact has been configured to perform a standard scan of a Windows 10 Enterprise machine. 
   To select the baseline and profiles, execute the command ".\Assessor-CLI.bat -i"
 type: CLIENT
@@ -16,13 +14,13 @@ author: Antonio Blescia (TheThMando)
 
 parameters:
   - name: BaselinePath
-    default: "./benchmarks/CIS_Microsoft_Windows_10_Enterprise_Benchmark_v2.0.0-xccdf.xml"
+    default: "./benchmarks/CIS_Microsoft_Windows_10_Enterprise_Benchmark_v3.0.0-xccdf.xml"
   - name: ProfileName
     default: "Level 1 (L1) - Corporate/Enterprise Environment (general use)"
 
 tools:
   - name: CISCat_Lite
-    serve_locally: true
+    url: https://workbench.cisecurity.org/api/vendor/v1/cis-cat/lite/latest
 
 sources:
   - precondition: SELECT OS From info() where OS = 'windows'
@@ -36,7 +34,7 @@ sources:
                                                 IsExecutable=FALSE)
       -- Extract the CISCat_Lite tool zip
       LET _ <= SELECT *
-        FROM unzip(filename=Toolzip.OSPath, output_directory=TmpDir)
+        FROM unzip(filename=Toolzip.OSPath, output_directory=TmpDir, type="zip")
      
       -- Generate the absolute path that points the the extracted tool location  
       LET CISCatPath = path_join(
