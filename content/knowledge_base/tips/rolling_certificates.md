@@ -25,11 +25,22 @@ Validity
 ## Rotating certificates
 
 To rotate server certificates, simply use the following command to
-generate a new configuration file with rotated certificates:
+generate a new configuration file containing rotated certificates:
 
 ```
-$ velociraptor --config /etc/velociraptor/server.config.yaml config rotate_key > /tmp/new_key.config.yaml
+$ velociraptor config reissue_certs --config /etc/velociraptor/server.config.yaml > /tmp/new_key.config.yaml
 ```
+
+Alternatively, you can regenerate the server's private keys and rotate the
+certificates at the same time:
+
+```
+$ velociraptor config rotate_keys --config /etc/velociraptor/server.config.yaml > /tmp/new_key.config.yaml
+```
+
+The previous two commands will not affect the CA private key and
+certificate, which is valid for 10 years, as described in the
+previous section.
 
 You can view the new certificate using jq and openssl (here `jq` is
 used to show the PEM certificate of the frontend and `openssl` is used

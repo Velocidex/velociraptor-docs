@@ -106,7 +106,7 @@ server configuration file (after suitably backing up the previous
 config file):
 
 ```bash
-velociraptor --config server.config.yaml config rotate_key > new_server.config.yaml
+velociraptor config reissue_certs --validity 365 --config server.config.yaml > new_server.config.yaml
 ```
 
 Depending on which user invoked the Velociraptor binary, you may need
