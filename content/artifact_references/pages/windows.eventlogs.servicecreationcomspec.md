@@ -93,7 +93,6 @@ sources:
             EventRecordID,
             Source
         FROM hits
-        GROUP BY EventRecordID, Channel
 
 </code></pre>
 

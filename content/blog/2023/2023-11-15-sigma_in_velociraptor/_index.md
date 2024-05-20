@@ -1,6 +1,9 @@
 ---
 title: "Sigma In Velociraptor"
 date: 2023-10-15T00:14:44+10:00
+tags:
+- Sigma
+- Detection
 ---
 
 This page discusses how Sigma is implemented and used within

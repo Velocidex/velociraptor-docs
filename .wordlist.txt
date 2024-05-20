@@ -1514,3 +1514,12 @@ eulacheck
 specilized
 
 walkthrough
+
+
+<url-free> content/blog/2024/2024-05-09-detection-engineering/_index.md
+--------------------------------------------------------------------------------
+ChainSaw
+SigmaHQ
+Winlogbeats
+architecting
+executable's

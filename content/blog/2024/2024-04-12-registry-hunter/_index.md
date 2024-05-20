@@ -6,6 +6,10 @@ description: |
 date: 2024-04-11T23:25:17Z
 draft: false
 weight: 40
+tags:
+- Detection
+- Forensics
+- Windows
 ---
 
 As DFIR practitioners, the Windows registry is a treasure trove of
