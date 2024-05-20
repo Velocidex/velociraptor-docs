@@ -39,7 +39,7 @@ $ velociraptor config rotate_keys --config /etc/velociraptor/server.config.yaml 
 ```
 
 The previous two commands will not affect the CA private key and
-certificate, which are valid for 10 years, as described in the
+certificate, which is valid for 10 years, as described in the
 previous section.
 
 You can view the new certificate using jq and openssl (here `jq` is
