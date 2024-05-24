@@ -163,7 +163,7 @@ place at the sensor level. For example Elastic Common Schema
 [normalizes](https://www.elastic.co/guide/en/ecs/current/ecs-process.html#field-process-command-line)
 the `CommandLine` field to `process.command_line` in the ECS Schema.
 
-Therefore `Sigma` uses a target specific translation between abstract
+Therefore `Sigma` uses a target-specific translation between abstract
 Sigma fields to the actual field in the event record in the target
 SIEM. This translation is called `Field Mapping` and depends on the
 target detection stack used and its event normalization (and to some
