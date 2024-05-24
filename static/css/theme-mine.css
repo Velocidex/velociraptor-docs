@@ -740,3 +740,18 @@ details > summary:first-of-type {
 #body-inner .search_box .gsc-input table {
     margin: 0;
 }
+
+td.hash {
+    font-family: mono;
+    font-size: small;
+}
+
+td.signature {
+    text-align: center;
+}
+
+.platform {
+    height: 32px;
+    display: flex;
+    padding-right: 10px;
+}
