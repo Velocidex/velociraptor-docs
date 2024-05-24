@@ -2,6 +2,7 @@
 title: Tech Users Group 2022
 menutitle: Tech Users Group 2022
 weight: 45
+no_menu: true
 ---
 
 ## Digging Deeper with Velociraptor

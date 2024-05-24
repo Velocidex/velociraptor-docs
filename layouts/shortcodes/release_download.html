@@ -1,0 +1,36 @@
+{{ $r := .Page.Params.release }}
+{{ $br := .Page.Params.base_release }}
+{{ $brands := $.Site.Data.icons.brands }}
+
+<h3>Release {{ $r }}</h3>
+
+The current release is {{ $r }}. We have ready built binaries available
+for download from GitHub. Less common platforms may not be built at the latest release.
+
+<table>
+<th><tr><td></td><td>Build</td><td>Download</td><td>Hash</td><td>Signature</td></tr></th>
+<tbody>
+{{ range .Page.Params.arches }}
+{{ $rr := $r }}
+{{ if .release }}{{ $rr = .release }}{{ end }}
+<tr>
+  <td>
+    <div class="platform">
+     {{ index $brands .platform | safeHTML }}
+    </div>
+  </td>
+  <td>{{.desc }}</td>
+    <td><a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}">
+        velociraptor-v{{- $rr }}-{{- .name -}}
+        </a>
+    </td>
+  <td class="hash">{{.hash}}</td>
+  <td class="signature">
+    <a href="https://github.com/Velocidex/velociraptor/releases/download/v{{- $br -}}/velociraptor-v{{- $rr }}-{{- .name -}}.sig">
+    <i class="fas fa-file-signature"></i>
+    </a>
+  </td>
+</tr>
+{{ end }}
+</tbody>
+</table>

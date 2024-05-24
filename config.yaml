@@ -4,8 +4,8 @@ title: "Velociraptor - Digging deeper!"
 
 theme: "hugo-theme-learn"
 disqusShortname: velocidex-velociraptor
-security:
-  enableInlineShortcodes: true
+#security:
+#  enableInlineShortcodes: true
 
 params:
   noDisqus: true

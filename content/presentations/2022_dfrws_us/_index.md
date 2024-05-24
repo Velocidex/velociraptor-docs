@@ -2,6 +2,7 @@
 title: DFRWS US 2022
 menutitle: DFRWS US 2022
 weight: 40
+no_menu: true
 ---
 
 At DFRWS US 2022, Mike gave a 4 hour workshop. Below you will find the
