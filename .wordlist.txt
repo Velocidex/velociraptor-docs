@@ -1523,3 +1523,6 @@ SigmaHQ
 Winlogbeats
 architecting
 executable's
+
+desc
+rr
