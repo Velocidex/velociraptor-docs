@@ -163,7 +163,7 @@ place at the sensor level. For example Elastic Common Schema
 [normalizes](https://www.elastic.co/guide/en/ecs/current/ecs-process.html#field-process-command-line)
 the `CommandLine` field to `process.command_line` in the ECS Schema.
 
-Therefore `Sigma` uses a target specific translation between abstract
+Therefore `Sigma` uses a target-specific translation between abstract
 Sigma fields to the actual field in the event record in the target
 SIEM. This translation is called `Field Mapping` and depends on the
 target detection stack used and its event normalization (and to some
@@ -201,9 +201,9 @@ detection:
     condition: selection and (selection_PSEXESVC_in_service or selection_PSEXESVC_in_path)
 ```
 
-This rule detect when a new service is created with the name
-`PSEXESVC` or a service created with that name. While this is the
-default behavior of `PsExec` it is trivial to bypass this
+This rule detects when a new service is created with the name
+`PSEXESVC` or a service is created with that name included in the path.
+While this is the default behavior of `PsExec` it is trivial to bypass this
 rule. Viewing the [PsExec
 Documentation](https://learn.microsoft.com/en-us/sysinternals/downloads/psexec)
 we can see that the `-r` flag can change this service name to anything
@@ -264,11 +264,11 @@ usually a weak signal (because the attacker can trivially change the
 file) in the case of loaded drivers, the driver must be signed to be
 successfully inserted into the kernel.
 
-Therefore there is a misconception that driver files can not be
+This had led to a misconception that driver files cannot be
 modified - otherwise their digital signature will be invalidated
-making them unable to load into the kernel.
+making them unable to be loaded into the kernel.
 
-Unfortunately this misconception is not true - a signed binary file
+Unfortunately this is not true - a signed binary file
 can easily be modified in such as a way that it's authenticode hash
 (which is signed) remains the same but its file hash changes. This is
 because a file hash covers the entire file, while the authenticode
@@ -322,10 +322,10 @@ but will invalidate signature.
 ## Sigma shortcomings
 
 While Sigma rules are supposed to be directly usable between detection
-stacks, by simply changing the compiler backend, this is rarely the
+stacks, by simply changing the compiler backend. However this is rarely the
 case.  Because the Sigma standard is not well specified and lacks a
 common taxonomy it is difficult to use a rule designed to operate on
-the output of Sysmon event logs to a detection stack that only uses
+the output of Sysmon event logs with a detection stack that only uses
 System logs or EDR logs.
 
 For example, in the above example rule, we see that the rule requires
@@ -342,7 +342,7 @@ really specific enough, most rules have a further `detection` clause
 to better define the precise log source. Although technically it is
 not always accurate to use that clause instead of the `logsource`
 because the clause can be use in an arbitrary logical context, most of
-the time it is a filter so can be taken as a substitute to the real
+the time it is a filter so can be taken as a substitute for the real
 log source.
 
 {{% /notice %}}
@@ -421,7 +421,7 @@ The previously described model relies on forwarding events from the
 endpoint to a central location, where detection is actually made. This
 approach is challenging in practice:
 
-1. There is a trade off between the volume and type of events relayed
+1. There is a trade-off between the volume and type of events relayed
    to the SIEM: On a typical Windows system there are hundreds of
    different event logs and event types. It is impossible to forward
    all events from the endpoint to the SIEM without increasing the
@@ -434,9 +434,9 @@ approach is challenging in practice:
    practice.
 
 Detection capabilities are slowly migrating from a purely centralized
-detection engine that process forwarded events from the endpoint, to a
-more endpoint focused detection capabilities where the endpoint can
-autonomously enrich and respond to detection rules. This allows the
+detection engine that processes forwarded events from the endpoint, to
+more endpoint-focused detection capabilities where the endpoint can
+autonomously enrich and respond to detection events. This allows the
 endpoint to triage the events by applying detection rules on the
 endpoint directly. Therefore only high value events are forwarded to
 the SIEM.
@@ -563,7 +563,7 @@ increasing the amount of uploaded event traffic between the endpoint
 and the detection platform.
 
 But can we go further? Why stop at event logs at all? Being on the
-endpoint directly actually provides access to a whole class of new log
+endpoint directly actually provides access to a whole class of new data
 sources which are far beyond the simple event logs collected by the
 system. For example, we can directly examine registry keys, search for
 and parse files on the endpoint and much more.
@@ -676,7 +676,7 @@ discussed how detection engineers can assess if a Sigma rule is
 fragile and how it can be strengthened by utilizing more detailed log
 sources.
 
-Next we explore how Sigma rules can be applied on the endpoint itself
+Next we explored how Sigma rules can be applied on the endpoint itself
 to access more log sources than are typically shipped to the SIEM. By
 evaluating the rules directly on the endpoint, it is possible to use
 Sigma rules for incident response triage purposes. I then demonstrate
@@ -690,7 +690,7 @@ generate events from sources like registry keys, paths and many other
 forensic artifacts. This allows detection rules to have unprecedented
 reach.
 
-Finally we look at utilizing Sigma rules with real time event queries
+Finally we looked at utilizing Sigma rules with real time event queries
 allowing Velociraptor to alert in real time when Sigma rules match,
 instead of having to post process events from the event log file.
 
