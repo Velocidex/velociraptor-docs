@@ -4,6 +4,9 @@ title: "Velociraptor - Digging deeper!"
 
 theme: "hugo-theme-learn"
 disqusShortname: velocidex-velociraptor
+#security:
+#  enableInlineShortcodes: true
+
 params:
   noDisqus: true
   themeVariant: "mine"
@@ -42,6 +45,10 @@ menu:
       identifier: "ds"
       url: "/discord/"
       weight: 20
+   -  name: "<i class='fab fa-youtube'></i>YouTube"
+      identifier: "yt"
+      url: "/youtube/"
+      weight: 25
    -  name: "<i class='fas fa-envelope'></i>Mailing List"
       identifier: "mail"
       url: "mailto:velociraptor-discuss@googlegroups.com"
