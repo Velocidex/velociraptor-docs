@@ -1,9 +1,9 @@
 name: Windows.Forensics.Jumplists_JLECmd
 description: |
-    * Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).  
-    * JLECmd.zip is downloaded from the URL to 'C:\Program Files\Velociraptor\Tools' folder.   
+    * Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).
+    * JLECmd.zip is downloaded from the URL to 'C:\Program Files\Velociraptor\Tools' folder.
     * JLECmd.zip can be uploaded to Velociraptor Server in order to copy it to the clients in case there is no internet connection.
-    * Created using @carlos_cajigas LECmd VQL as a quide.  
+    * Created using @carlos_cajigas LECmd VQL as a quide.
     * JLECmd is a CLI tool for analyzing Custom Destinations jump list data. Learn more - https://github.com/EricZimmerman/JLECmd
 
 author: Orhan Emre @orhan_emre
@@ -16,7 +16,7 @@ tools:
     expected_hash: 10bc3698867be7c707500afc01c45c44b6a0439d14e04477e08b76d95c87255c
     version: 1.5.0
 
-    
+
 parameters:
   - name: sourceFile
     default: .
@@ -45,51 +45,57 @@ sources:
 
       -- build tempfolder for output
       LET tmpdir <= tempdir()
-      
+
       -- decompress utility
-      LET payload = SELECT * 
+      LET payload = SELECT *
         FROM unzip(filename=jlecmdpackage[0].FullPath,
             output_directory=tmpdir)
-      
+
       -- execute payload
-      LET deploy <= SELECT * 
-        FROM execve(argv=[payload.NewPath[0], 
-        "-d", 
-        "c:/", 
-        "--csv", 
-        tmpdir + "jlecmd", 
-        "--csvf", 
+      LET deploy <= SELECT *
+        FROM execve(argv=[payload.NewPath[0],
+        "-d",
+        "c:/",
+        "--csv",
+        tmpdir,
+        "--csvf",
         "results.csv"])
-      
-      -- parse csv
-      SELECT SourceFile, SourceCreated, SourceModified, LocalPath, Arguments, 
-      TargetCreated, TargetModified, VolumeLabel, DriveType, AppIdDescription, CommonPath,  
-      VolumeSerialNumber, MachineID, MachineMACAddress, TargetMFTEntryNumber, TargetSequenceNumber, 
-      TargetIDAbsolutePath, TrackerCreatedOn, ExtraBlocksPresent, HeaderFlags,FileAttributes, FileSize
-      FROM parse_csv(filename=tmpdir + "jlecmd" + "\\results_AutomaticDestinations.csv")
-         WHERE 
-        (if(condition=dateAfter, then=SourceCreated > dateAfter,
-            else=TRUE) AND 
-        if(condition=dateBefore, then=SourceCreated < dateBefore, 
-            else=TRUE))
-      AND SourceFile =~ sourceFile
-      AND LocalPath =~ localPath
-      AND Arguments =~ arguments
 
+      LET x = scope()
 
-  - query: |
-  
-      -- parse csv
-      SELECT SourceFile, SourceCreated, SourceModified, LocalPath, Arguments, 
-      TargetCreated, TargetModified, VolumeLabel, DriveType, AppIdDescription, CommonPath,  
-      VolumeSerialNumber, MachineID, MachineMACAddress, TargetMFTEntryNumber, TargetSequenceNumber, 
-      TargetIDAbsolutePath, TrackerCreatedOn, ExtraBlocksPresent, HeaderFlags,FileAttributes, FileSize
-      FROM parse_csv(filename=tmpdir + "jlecmd" + "\\results_CustomDestinations.csv")
-         WHERE 
-        (if(condition=dateAfter, then=SourceCreated > dateAfter,
-            else=TRUE) AND 
-        if(condition=dateBefore, then=SourceCreated < dateBefore, 
-            else=TRUE))
-      AND SourceFile =~ sourceFile
-      AND LocalPath =~ localPath
-      AND Arguments =~ arguments
+      SELECT * FROM foreach(row={
+          SELECT OSPath, upload(file=OSPath)
+          FROM glob(globs="results_*.csv", root=tmpdir)
+      }, query={
+          SELECT x.SourceFile AS SourceFile,
+             x.SourceCreated AS SourceCreated,
+             x.SourceModified AS SourceModified,
+             x.LocalPath AS LocalPath,
+             x.Arguments AS Arguments,
+             x.TargetCreated AS TargetCreated,
+             x.TargetModified AS TargetModified,
+             x.VolumeLabel AS VolumeLabel,
+             x.DriveType AS DriveType,
+             x.AppIdDescription AS AppIdDescription,
+             x.CommonPath AS CommonPath,
+             x.VolumeSerialNumber AS VolumeSerialNumber,
+             x.MachineID AS MachineID,
+             x.MachineMACAddress AS MachineMACAddress,
+             x.TargetMFTEntryNumber AS TargetMFTEntryNumber,
+             x.TargetSequenceNumber AS TargetSequenceNumber,
+             x.TargetIDAbsolutePath AS TargetIDAbsolutePath,
+             x.TrackerCreatedOn AS TrackerCreatedOn,
+             x.ExtraBlocksPresent AS ExtraBlocksPresent,
+             x.HeaderFlags AS HeaderFlags,
+             x.FileAttributes AS FileAttributes,
+             x.FileSize AS FileSize
+         FROM parse_csv(filename=OSPath)
+         WHERE
+           (if(condition=dateAfter, then=SourceCreated > dateAfter,
+             else=TRUE) AND
+           if(condition=dateBefore, then=SourceCreated < dateBefore,
+             else=TRUE))
+         AND SourceFile =~ sourceFile
+         AND LocalPath =~ localPath
+         AND Arguments =~ arguments
+      })
