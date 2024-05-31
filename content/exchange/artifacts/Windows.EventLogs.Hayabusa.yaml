@@ -168,6 +168,6 @@ sources:
    query: |
         LET CSV_RESULT  = SELECT * FROM parse_csv(filename=ResultFile)
         LET JSONL_RESULT = SELECT * FROM parse_jsonl(filename=ResultFile)
-        
-        SELECT *, timestamp(string=Timestamp) AS EventTime
+     
+        SELECT *, if(condition= OutputProfile =~ "timesketch", then=timestamp(string=datetime), else=timestamp(string=Timestamp)) AS EventTime
         FROM if(condition= OutputFormat = "csv", then=CSV_RESULT, else=JSONL_RESULT)
