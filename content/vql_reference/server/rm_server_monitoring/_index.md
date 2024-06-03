@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-artifact|The name of the artifact to add|string (required)
+artifact|The name of the artifact to remove|string (required)
 parameters|A dict of artifact parameters|LazyExpr
 
 Required Permissions: 
