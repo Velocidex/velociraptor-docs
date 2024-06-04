@@ -20,7 +20,6 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 artifact|The name of the artifact to remove|string (required)
-parameters|A dict of artifact parameters|LazyExpr
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
