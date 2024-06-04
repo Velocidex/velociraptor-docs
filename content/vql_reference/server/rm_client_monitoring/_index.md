@@ -19,9 +19,8 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-artifact|The name of the artifact to add|string (required)
-parameters|A dict of artifact parameters|LazyExpr
-label|Add this artifact to this label group (default all)|string
+artifact|The name of the artifact to remove from the event table|string (required)
+label|Remove this artifact from this label group (default the 'all'  group)|string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>

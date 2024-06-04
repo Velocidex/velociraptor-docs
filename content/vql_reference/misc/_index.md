@@ -50,6 +50,7 @@ Miscellaneous plugins not yet categorized.
 |[org_create](org_create)|<span class='vql_type'>Function</span>|Creates a new organization|
 |[org_delete](org_delete)|<span class='vql_type'>Function</span>|Deletes an Org from the server|
 |[orgs](orgs)|<span class='vql_type'>Plugin</span>|Retrieve the list of orgs on this server|
+|[panic](panic)|<span class='vql_type'>Plugin</span>|Crash the program with a panic!|
 |[passwd](passwd)|<span class='vql_type'>Function</span>|Updates the user's password|
 |[pe_dump](pe_dump)|<span class='vql_type'>Function</span>|Dump a PE file from process memory|
 |[pk_decrypt](pk_decrypt)|<span class='vql_type'>Function</span>|Decrypt files using pubkey encryption|

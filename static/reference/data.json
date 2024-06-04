@@ -2642,16 +2642,6 @@
                 "name": "hunt_id",
                 "type": "string",
                 "description": "A hunt id to read, if not specified we list all of them."
-            },
-            {
-                "name": "offset",
-                "type": "uint64",
-                "description": "Start offset."
-            },
-            {
-                "name": "count",
-                "type": "uint64",
-                "description": "Max number of results to return."
             }
         ],
         "category": "server",
@@ -3618,7 +3608,8 @@
             {
                 "name": "artifact",
                 "type": "string",
-                "description": "The name of the event artifact to read"
+                "description": "The name of the event artifact to read",
+                "required": true
             },
             {
                 "name": "source",
@@ -3973,6 +3964,14 @@
         "name": "orgs",
         "description": "Retrieve the list of orgs on this server.",
         "type": "Plugin"
+    },
+    {
+        "name": "panic",
+        "description": "Crash the program with a panic!",
+        "type": "Plugin",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        }
     },
     {
         "name": "parallelize",
@@ -5782,18 +5781,13 @@
             {
                 "name": "artifact",
                 "type": "string",
-                "description": "The name of the artifact to add",
+                "description": "The name of the artifact to remove from the event table",
                 "required": true
-            },
-            {
-                "name": "parameters",
-                "type": "LazyExpr",
-                "description": "A dict of artifact parameters"
             },
             {
                 "name": "label",
                 "type": "string",
-                "description": "Add this artifact to this label group (default all)"
+                "description": "Remove this artifact from this label group (default the 'all'  group)"
             }
         ],
         "category": "server",
@@ -5809,13 +5803,8 @@
             {
                 "name": "artifact",
                 "type": "string",
-                "description": "The name of the artifact to add",
+                "description": "The name of the artifact to remove",
                 "required": true
-            },
-            {
-                "name": "parameters",
-                "type": "LazyExpr",
-                "description": "A dict of artifact parameters"
             }
         ],
         "category": "server",
