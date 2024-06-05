@@ -1,4 +1,4 @@
-name: Windows.Apache.AccessLogs
+name: Apache.AccessLogs
 
 description: |
   Parses Apache access logs to extract detailed request information.
