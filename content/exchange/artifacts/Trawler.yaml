@@ -39,7 +39,7 @@ sources:
        LET TrawlerOutputPath = '"' + TrawlerOutput.Path + '"'
 
        LET cmdline <= join(
-           array=['.\\trawler.ps1', '-outpath', TrawlerOutputPath],
+           array=[TrawlerLocation, '-outpath', TrawlerOutputPath],
            sep=' ')
 
        LET _ <= SELECT *
