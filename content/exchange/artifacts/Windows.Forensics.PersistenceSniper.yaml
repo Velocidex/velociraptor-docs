@@ -10,13 +10,12 @@ description: |
   NOTE: the Rapid7 team has observed this artifact fail with some EDR/EPP tools deployed
   with Powershell prevention capabilities. Please ensure the Velociraptor binary (and
   child powershell) are excluded in these tools.
+  Now DiffCSVUrl is downloaded during generation of the 
+  collector, not during execution.
 
-author: Chris Jones - CPIRT | FabFaeb | Antonio Blescia (TheThMando)
+author: Chris Jones - CPIRT | FabFaeb | Antonio Blescia (TheThMando) | 0xdeadcell
 
 parameters:
-  - name: DiffCSVUrl
-    default: https://raw.githubusercontent.com/ablescia/Windows.PersistenceSniper/main/false_positives.csv
-    type: url
   - name: IncludeHighFalsePositivesChecks
     default: true
     type: bool
@@ -27,25 +26,25 @@ parameters:
 tools:
   - name: PSniper
     url: https://github.com/last-byte/PersistenceSniper/releases/download/v1.15.0/PersistenceSniper.zip
+  - name: DiffCSVUrl
+    url: https://raw.githubusercontent.com/ablescia/Windows.PersistenceSniper/main/false_positives.csv
+
 
 type: Client
 
 precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
-    - query: |
+  - query: |
        LET TmpDir <= tempdir(remove_last='Y')
 
        LET Toolzip <= SELECT FullPath
          FROM Artifact.Generic.Utils.FetchBinary(ToolName="PSniper",
                                                  IsExecutable=FALSE)
-
-       LET _ <= SELECT
-                       copy(
-                         accessor='data',
-                         dest=TmpDir + "\\false_positives.csv",
-                         filename=utf16(string=Content))
-         FROM http_client(method='GET', url=DiffCSVUrl)
+       
+       LET CSVPath <= SELECT FullPath
+         FROM Artifact.Generic.Utils.FetchBinary(ToolName="DiffCSVUrl",
+                                                 IsExecutable=FALSE)
 
        LET _ <= SELECT *
          FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
@@ -58,13 +57,13 @@ sources:
            components=[TmpDir, '\\false_positives.csv'],
            path_type='windows')
 
-           LET CSVFile <= path_join(
+       LET CSVFile <= path_join(
            components=[TmpDir + '\\psniper_results.csv'],
            path_type='windows')
        LET csvpath = '"' + CSVFile.Path + '"'
 
        LET arg_diffcsv <= if(
-           condition=DiffCSVUrl != "",
+           condition=CSVFile != "",
            then="-DiffCSV " + '"' + FalsePositivesFile.Path + '"',
            else="")
 
