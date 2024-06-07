@@ -37,7 +37,6 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - query: |
        LET TmpDir <= tempdir(remove_last='Y')
-       //LET _ <= SELECT * FROM range(end=value) WHERE log(message="Temporary directory created: %v", args=[TmpDir])
 
        LET Toolzip <= SELECT FullPath
          FROM Artifact.Generic.Utils.FetchBinary(ToolName="PSniper",
@@ -94,4 +93,3 @@ sources:
          condition=UploadHits,
          then=upload_hits,
          else=hits)
-
