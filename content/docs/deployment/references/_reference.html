@@ -1920,6 +1920,27 @@ basic, google, azure, oidc-cognito, github, saml, oidc, multi</div>
    <div class="reference-value-mapping">email</div>
 </li>
 
+<div class="item-comment">Automatically create users with the following roles for authenticated SAML requests.<br /><i>If this option is not set then no users will be created automatically.</i></div>
+<li id="GUI.authenticator.saml_user_roles">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L528">
+       saml_user_roles
+     </a>
+   </div>
+   <a href="#GUI.authenticator.saml_user_roles" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping"><ul>
+      <div class="item-comment"></div>
+      <li>
+         <i class="bullet-placeholder"></i>
+         <div class="reference-value-sequence">administrator</div>
+      </li>
+    </ul>
+  </div>
+</li>
+
 <div class="item-comment">URL to OIDC Configuration Document. The configuration should be
 available in the 'oidc_issuer + /.well-known/openid-configuration' endpoint.</div>
 <li id="GUI.authenticator.oidc_issuer">
