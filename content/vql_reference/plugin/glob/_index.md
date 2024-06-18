@@ -115,4 +115,30 @@ SELECT * FROM glob(globs='/**/*.pem',
     recursion_callback="x=>NOT x.OSPath =~ '^/(proc|sys|snap)'")
 ```
 
+## A note about escaping.
+
+Windows paths often contain backslashes which are difficult to
+work with because they need to be escaped both by regular
+expressions **and** VQL strings.
+
+This means that trying to add a recursion callback will expand
+each backslash into 8 backslashes (once for regular expressions
+and twice for nested strings).
+
+```sql
+SELECT * FROM glob(
+  globs="C:/Users/*/*",
+  recursion_callback="x=> NOT x.OSPath =~ 'C:\\\\\\\\Users\\\\\\\\Admini'")
+```
+
+It is a bit easier to use variables and raw strings
+
+```sql
+LET Exclude <= '''C:\\Users\\Admin'''
+
+SELECT * FROM glob(
+  globs="C:/Users/*/*",
+  recursion_callback="x=> NOT x.OSPath =~ Exclude")
+```
+
 
