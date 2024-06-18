@@ -112,7 +112,5 @@ files in all directories other than /proc, /sys or /snap
 
 ```vql
 SELECT * FROM glob(globs='/**/*.pem',
-    recursion_callback="x=>NOT x.Name =~ '^/(proc|sys|snap)'")
+    recursion_callback="x=>NOT x.Name =~ '^(proc|sys|snap)'")
 ```
-
-
