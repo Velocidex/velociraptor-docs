@@ -53,7 +53,7 @@ sources:
       -- Download tool
       LET LinforceTool <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="linforce", IsExecutable=TRUE)
       
-      -- Delete tool and output after the module end
+      -- Delete output after the module end
       LET outputPath <= tempdir(remove_last=TRUE)
       
       -- Execute the script as root and capture the output
