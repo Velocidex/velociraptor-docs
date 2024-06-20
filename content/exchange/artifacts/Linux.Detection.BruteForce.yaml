@@ -32,7 +32,7 @@ parameters:
      default: "80"
    - name: "intervalvar"
      description: "Time interval between attempts to be considered as consecutive"
-     default: "30"
+     default: "45"
    - name: "min_timestamp"
      description: "Initial timestamp for the analysis in the format YYYYmmddHHMMSS"
      default: "20220901000000" 
@@ -45,7 +45,7 @@ parameters:
 tools:
    - name: linforce
      url: https://raw.githubusercontent.com/RCarras/linforce/main/linforce.sh
-     expected_hash: 520ee785af270e206896189f21d4b1c75cdd7789f5fa6fc9990631c7b51a5e86
+     expected_hash: 7d040353aadfef01efd81dfe2a923a958cc3fe730e5a40a53d49bfd1ac6dcd23
      
 sources:
    - name: btmp.logs
