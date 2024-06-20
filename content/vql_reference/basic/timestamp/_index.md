@@ -80,6 +80,49 @@ time is layed out. It represents a template for a timestamp that
 ```vql
 SELECT timestamp(string="8/30/2021 6:01:28 PM",
                  format="1/2/2006 3:04:05 PM")
+FROM scope()
+```
+
+Internally VQL uses Golang's
+[time.Time](https://golang.org/pkg/time/#Time) object to represent
+times and this is what is returned by the `timestamp()` VQL
+function. This object has a number of useful methods which are
+available via fields on the timestamp object:
+
+```json
+{
+  "Day": 26,
+  "Hour": 8,
+  "ISOWeek": 2024,
+  "IsDST": "false",
+  "IsZero": "false",
+  "Minute": 53,
+  "Month": 3,
+  "Nanosecond": 231540468,
+  "Second": 37,
+  "String": "2024-03-26T06:53:37Z",
+  "UTC": "2024-03-26T06:53:37.231540468Z",
+  "Unix": 1711436017,
+  "UnixMicro": 1711436017231540,
+  "UnixMilli": 1711436017231,
+  "UnixNano": 1711436017231540500,
+  "Weekday": 2,
+  "Year": 2024,
+  "YearDay": 86,
+  "Zone": "SAST"
+}
+```
+
+For example `timestamp(epoch=now()).Month` is the current month.
+
+To perform time manipulations you can convert times back to the
+seconds from epoch, then add/subtract times. For example the
+following calculates the time exactly one day (24 hours) before
+the stated time:
+
+```sql
+SELECT timestamp(epoch=timestamp(epoch="2024-03-26T06:53:37Z").Unix - 86400)
+FROM scope()
 ```
 
 

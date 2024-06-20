@@ -34,10 +34,31 @@ have access to all server information, make server configuration
 changes etc.
 
 Practically notebook queries timeout after a 10 min period. Currently
-this limit can not be increased. If you find that the 10 min limit is
-insufficient, simply create a server artifact from the query you wish
-to run and launch it within the server artifacts screen. Server
-artifacts may be collected with increased time limits.
+this limit can not be increased (It is set in the configuration
+file). If you find that the 10 min limit is insufficient, simply
+create a server artifact from the query you wish to run and launch it
+within the server artifacts screen. Server artifacts may be collected
+with increased time limits.
+
+{{% notice warning "Running server VQL plugins on the command line" %}}
+
+Although it is possible to run any VQL queries on the command line
+using the `velociraptor query` command, VQL plugins that change server
+state should not be run this way.
+
+This is because many administrative VQL plugins
+(e.g. `collect_client()`) will change the underlying data store but
+the running server will not be aware that these changes are made.
+
+It is only supported to run administrative VQL plugins using the
+following methods:
+
+1. The notebooks
+2. Server Artifacts
+3. Using the [Velociraptor API]({{% ref "server_api/#using-the-shell-for-automation" %}})
+
+{{% /notice %}}
+
 
 ## Enumerating all clients
 
