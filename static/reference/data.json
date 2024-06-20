@@ -2552,6 +2552,11 @@
                 "name": "limit",
                 "type": "int64",
                 "description": "Number of rows to show (used for paging)."
+            },
+            {
+                "name": "basic_info",
+                "type": "bool",
+                "description": "If specified we only return basic information like flow id and client id."
             }
         ],
         "category": "server",
