@@ -27,9 +27,6 @@ description: |
 type: client
 
 parameters: 
-   - name: "outputPath"
-     description: "Path to store output analysis"
-     default: "/tmp/linforce_analysis"
    - name: "brutevar"
      description: "Number of attempts to consider as brute force"
      default: "80"
@@ -48,13 +45,17 @@ parameters:
 tools:
    - name: linforce
      url: https://raw.githubusercontent.com/RCarras/linforce/main/linforce.sh
+     expected_hash: 520ee785af270e206896189f21d4b1c75cdd7789f5fa6fc9990631c7b51a5e86
      
 sources:
    - name: btmp.logs
      query: |
       -- Download tool
       LET LinforceTool <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="linforce", IsExecutable=TRUE)
-
+      
+      -- Delete tool and output after the module end
+      LET outputPath <= tempdir(remove_last=TRUE)
+      
       -- Execute the script as root and capture the output
       LET _ <= SELECT * FROM execve(argv=["sudo", "/bin/bash", LinforceTool.FullPath[0], "-b", brutevar, "-t", intervalvar, "-i", min_timestamp, "-m", max_timestamp, "-o", outputPath])
 
