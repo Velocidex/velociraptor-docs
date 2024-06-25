@@ -38,7 +38,7 @@ parameters:
 tools:
    - name: linforce
      url: https://raw.githubusercontent.com/RCarras/linforce/main/linforce.sh
-     expected_hash: bdcf7f712692f2d75a9c845eddb0cb43d555cc8afd1aab8a77b66acb51e135ab
+     expected_hash: 998f65cc9f9eef746c38a165e86317e502a0915161df824ad935613e0ad74b0d
      
 sources:
    - name: btmp.logs
