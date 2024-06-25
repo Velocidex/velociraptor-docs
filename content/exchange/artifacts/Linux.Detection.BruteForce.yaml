@@ -5,15 +5,18 @@ description: |
    This code is based on https://github.com/RCarras/linforce/blob/main/linforce.sh
       
    This module uses btmp/wtmp files to search for possible brute force attacks comparing:
+   
    * Wtmp (successful attempts) and btmp (failed attempts) Logs.
    * Time interval between failed login attempts, and against successful logins.
    
    Type of attacks:
+   
    * Basic Brute Force Attack: multiple consecutive attempts from an IP.
    * Password Spraying: multiple consecutive attempts from different users with the same password.  
    * Dynamic IP Attack: multiple consecutive attempts from different IPs.
 
    Creators:
+  
    * Rafael Carrasco: https://www.linkedin.com/in/rafael-carrasco-vilaplana-3199a492
    * David Rosado: https://www.linkedin.com/in/david-rosado-soria-4416b8230
 
