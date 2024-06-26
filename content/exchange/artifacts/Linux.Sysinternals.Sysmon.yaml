@@ -37,8 +37,8 @@ sources:
               SELECT *  FROM glob(globs=syslogPath)
           }, query={
               SELECT grok(grok=sysmonGrok, data=Line) AS Event,
-              FullPath
-              FROM parse_lines(filename=FullPath)
+              OSPath
+              FROM parse_lines(filename=OSPath)
               WHERE Event.program = "sysmon" AND Event.event =~ "<Event>"
           })
       - LET ParsedEvents = SELECT parse_xml(accessor='data', file=Event.event).Event AS Event FROM UnparsedEvents
