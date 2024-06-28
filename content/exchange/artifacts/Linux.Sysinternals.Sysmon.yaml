@@ -26,12 +26,15 @@ parameters:
   - name: EndDate
     type: timestamp
     description: "Parse events on or before this date (YYYY-MM-DDTmm:hh:ssZ)"
+  - name: IDRegex
+    default: "."
   - name: EventDataRegex
-    default: "."
     description: "IOC Filter to reduce results"
-  - name: ParentUserRegex
     default: "."
+  - name: ParentUserRegex
     description: "User filter by parent user for process artefacts"
+    default: "."
+    
 
 sources:
   - queries:
