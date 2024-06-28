@@ -28,7 +28,8 @@ parameters:
 - name: InlineSigmaRules
   description: A single string of sigma rules separated by --- lines
 - name: SigmaRuleFile
-  description: A path to a file containing sigma rules
+  type: upload
+  description: A file containing sigma rules separated by --- lines
 - name: Debug
   type: bool
   description: Enable full debug trace
@@ -293,7 +294,7 @@ export: |
 sources:
 - query: |
     LET Rules = InlineSigmaRules ||
-       if(condition=SigmaRuleFile, then=read_file(path=SigmaRuleFile, length=10000000))
+       if(condition=SigmaRuleFile, then=SigmaRuleFile)
 
     SELECT * FROM sigma(
        rules=split(string= Rules, sep_string="\n---\n"),
