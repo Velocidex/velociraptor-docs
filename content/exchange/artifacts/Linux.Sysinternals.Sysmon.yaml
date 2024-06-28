@@ -28,6 +28,13 @@ parameters:
     description: "Parse events on or before this date (YYYY-MM-DDTmm:hh:ssZ)"
   - name: IDRegex
     default: "."
+  - name: EventDataRegex
+    description: "IOC Filter to reduce results"
+    default: "."
+  - name: ParentUserRegex
+    description: "User filter by parent user for process artefacts"
+    default: "."
+    
 
 sources:
   - queries:
@@ -55,3 +62,5 @@ sources:
             if(condition=StartDate, then=TimeCreated >= timestamp(string=StartDate), else=true)
             AND if(condition=EndDate, then=TimeCreated <= timestamp(string=EndDate), else=true)
             AND str(str=EventID) =~ IDRegex
+            AND EventData =~ EventDataRegex
+            AND EventData.ParentUser =~ ParentUserRegex
