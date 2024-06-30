@@ -73,7 +73,7 @@ file. In this case it is better to compress the export with a
 password.
 
 See the Knowledge Base article [How do I enable password protected VFS
-downloads?]({{< ref "/knowledge_base/tips/download_password/" >}}) for
+downloads?]({{<ref "/knowledge_base/tips/download_password" >}}) for
 reference on setting the password for export.
 
 {{% /notice %}}
