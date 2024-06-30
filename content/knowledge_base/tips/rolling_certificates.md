@@ -93,11 +93,4 @@ Validity
 Now back up the old configuration file and replace it with the new
 file, then restart the server. Clients should reconnect automatically.
 
-**validity flag**
-The latest release also has a --validity option which can be used to extend the validity past the default 1 year, so for example for 10 years:
-```sh
-velociraptor --config server.config.yaml config reissue_certs --validity 3650  > /tmp/new_config.yaml
-```
-If you need a non-standard validity period then you can generate the new config and use that config for a new installation. You don't have to start with the default 1-year and then wait for the certificate to expire.
-
 Tags: #configuration #deployment
