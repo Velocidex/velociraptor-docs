@@ -22,7 +22,44 @@ Validity
    Not After : Apr 13 12:05:46 2023 GMT
 ```
 
+Reissuing a new server certificate can be performed at any time using the
+`config --reissue_certs` command. The procedure amounts to generating a new
+server configuration which is derived from the old one, and then replacing the
+old config with the new config.
+
+Additionally the `config rotate_keys` command can be used to regenerate both
+the server certificate and the associated private key. Although this is not
+necessary for operational purposes, it is considered good security practice
+to rotate keys and certificates periodically, and particularly after a
+suspected systems compromise. 
+
+## Setting a non-standard validity
+
+The latest release has a `--validity` option can be used to extend the validity
+beyond the default of one year. For example, to generate a config containing a
+server certificate which is valid for 2 years, you would run the command:
+```sh
+velociraptor --config server.config.yaml config reissue_certs --validity 730  > new.server.config.yaml
+```
+
+If you expect your server to be a long-term instance then you don't have to
+start with the default 1-year validity and wait for the certificate to expire.
+You can generate a new config on day 1 based on the initial config using the
+`config --reissue_certs` command. You can then use the new config for the new
+server installation.
+
 ## Rotating certificates
+
+{{% notice info %}}
+
+For server versions older than 0.72.3 please use the following commands instead
+of those shown below:
+
+- *Current command* -> *Command for versions <0.72.3*
+- `velociraptor config reissue_certs` -> `velociraptor config reissue_key`
+- `velociraptor config rotate_keys` -> `velociraptor config rotate_key`
+
+{{% /notice %}}
 
 To rotate server certificates, simply use the following command to
 generate a new configuration file containing rotated certificates:
@@ -55,5 +92,12 @@ Validity
 
 Now back up the old configuration file and replace it with the new
 file, then restart the server. Clients should reconnect automatically.
+
+**validity flag**
+The latest release also has a --validity option which can be used to extend the validity past the default 1 year, so for example for 10 years:
+```sh
+velociraptor --config server.config.yaml config reissue_certs --validity 3650  > /tmp/new_config.yaml
+```
+If you need a non-standard validity period then you can generate the new config and use that config for a new installation. You don't have to start with the default 1-year and then wait for the certificate to expire.
 
 Tags: #configuration #deployment
