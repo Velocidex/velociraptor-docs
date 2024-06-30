@@ -23,7 +23,7 @@ Validity
 ```
 
 Reissuing a new server certificate can be performed at any time using the
-`config --reissue_certs` command. The procedure amounts to generating a new
+`config reissue_certs` command. The procedure amounts to generating a new
 server configuration which is derived from the old one, and then replacing the
 old config with the new config.
 
@@ -45,7 +45,7 @@ velociraptor --config server.config.yaml config reissue_certs --validity 730  > 
 If you expect your server to be a long-term instance then you don't have to
 start with the default 1-year validity and wait for the certificate to expire.
 You can generate a new config on day 1 based on the initial config using the
-`config --reissue_certs` command. You can then use the new config for the new
+`config reissue_certs` command. You can then use the new config for the new
 server installation.
 
 ## Rotating certificates
