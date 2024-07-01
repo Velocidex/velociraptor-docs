@@ -1,0 +1,63 @@
+name: Custom.Windows.Applications.RemoteDesktopBitmapCache
+author: Austin Bollinger - Austin@OnlyForensics.com
+description: |
+  This artifact targets a single (currently) RDP bitmap cache file in a hunt. If you wanted to get them all, however, could just run a few hunts like Cache..0000,......Cache..0003.
+
+  I realize that is a bit strange but I am still doing performance/benchmarks as this could be expensive to run large batches especially across VMs.
+
+  The exe files referenced are Nuitka compiles of bmc-tools.py (https://github.com/ANSSI-FR/bmc-tools) and Python I tossed together for converting bmp to png, for upload.
+
+tools:
+ - name: bmcTools
+   url: https://github.com/AustinBollinger-dfir/Velociraptor-bmc/raw/main/bmc-tools.exe
+   expected_hash: 9cec3e48cb4d40f98adf8b876d3b66ae64357f34ce48a00b90ecc96f5d732def
+   serve_locally: true
+ - name: bmpPng
+   url: https://github.com/AustinBollinger-dfir/Velociraptor-bmc/raw/main/bmp-png.exe
+   expected_hash: 2319ea9e4185df0c77ac9346e72c6773f0f75f9883de214235a6250fdc8fbeaf
+   serve_locally: true
+
+parameters:
+   - name: BitmapCachePaths
+     type: csv
+     default: |
+        Glob
+        C:\Users\Administrator\AppData\Local\Microsoft\Terminal Server Client\Cache\*.bin
+     description: Alternative specify multiple globs in a table
+
+sources:
+  - name: Output
+    query: |
+      LET file_search = SELECT OSPath,
+               get(item=Data, field="mft") as Inode,
+               Mode.String AS Mode, Size,
+               Mtime AS MTime,
+               Atime AS ATime,
+               Btime AS BTime,
+               Ctime AS CTime, "" AS Keywords,
+               IsDir, Data
+        FROM glob(globs=BitmapCachePaths.Glob, accessor="auto")
+      
+      LET tmpbmc <= SELECT FullPath
+      FROM Artifact.Generic.Utils.FetchBinary(ToolName="bmcTools")
+      
+      LET tmpbmpPng <= SELECT FullPath
+      FROM Artifact.Generic.Utils.FetchBinary(ToolName="bmpPng")
+
+      LET TempDir <= tempdir(remove_last=TRUE)
+
+      LET targetbin = SELECT OSPath
+      FROM file_search
+      
+      SELECT *
+      FROM execve(argv=[tmpbmc[0].FullPath,"-s", targetbin[0].OSPath, "-d", TempDir, "-b"])
+      
+  - name: PngConversion
+    query: |
+      SELECT *
+      FROM execve(argv=[tmpbmpPng[0].FullPath],cwd=[TempDir])
+     
+  - name: Uploads
+    query: |
+      SELECT upload(file=FullPath) AS Upload
+      FROM glob(globs="converted/*.bin_collage.png", root=TempDir)
