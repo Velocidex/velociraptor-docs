@@ -171,13 +171,11 @@ sources:
                 else = if(condition=Color =~ "^orange",then="#FFAD4699",
                 else = "#31CE3699"))))))
 
-      LET eventDate = format(format="%v.%v",args=[parse_string_with_regex(string=Timestamp.String, regex='''(^.+)Z''').g1,
-                                          if(condition=Timestamp.Nanosecond, then=
-                                               parse_string_with_regex(
-                                               string=str(str=Timestamp.Nanosecond),
-                                               regex='''(^\d\d\d)''').g1
-                                               ,else="000")
-                                          ])
+      LET eventDate = format(format="%d-%02d-%02dT%02d:%02d:%02d.%03d", args=[
+                                      Timestamp.Year, Timestamp.Month, Timestamp.Day,
+                                      Timestamp.Hour, Timestamp.Minute, Timestamp.Second,
+                                      int(int=Timestamp.Nanosecond / 1000000)
+                            ])
 
       LET eventProperties = serialize(
                             item=dict(
