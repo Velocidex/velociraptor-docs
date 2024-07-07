@@ -35,6 +35,9 @@ description: |
    LET FlowId <= '''F.CPTTPTRO63LF6'''
    LET ArtifactName <= '''Windows.Timeline.MFT'''
 
+   -- This is the query that should return the events you want to add to Iris.
+   -- You might want to add a WHERE clause to filter out unwanted events or
+   -- select only specific fields. In this example we limit it to 10 records.
    LET eventsToAdd = SELECT * FROM source(artifact=ArtifactName)
                      LIMIT 10
 
