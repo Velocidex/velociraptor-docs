@@ -39,7 +39,7 @@ parameters:
     default: true
     type: bool
     description: |
-        Replace Wi-FI PSKs (wifi-security/psk) with "<REDACTED>".
+        Replace Wi-FI PSKs (wifi-security/psk) with "\<REDACTED\>".
 
 export: |
     /* Parse an INI config file and return Section (the part enclosed in '[]' on
