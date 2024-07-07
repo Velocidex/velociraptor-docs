@@ -187,7 +187,7 @@ sources:
         LET to_array(col, dev) = filter(list=array(a={
             SELECT * FROM column_filter(include=col, query={
                 SELECT * FROM Status WHERE `GENERAL.DEVICE` = dev
-            })}), regex='.')
+            })}), condition='x=>x')
 
         LET prettify_route(col, dev) = SELECT *
             FROM foreach(row=to_array(dev=dev, col=col), query={
