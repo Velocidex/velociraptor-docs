@@ -249,5 +249,5 @@ sources:
       SELECT * FROM if(condition=checkExistingEntries,
                 then={SELECT "Already Added -> Skipping the event. Check for existing entries manually!" as Action FROM scope()},
                 else={SELECT "Needs to be added" as Action, if(condition= Response=200,then="SUCCESS",else="ERROR") as Result,
-                    parse_json(data=Content).data as EventProperties
-                    FROM apiRequestIrisAddEvent})
+                      eventProperties AS RequestData, parse_json(data=Content).data as ResponseData
+                      FROM apiRequestIrisAddEvent})
