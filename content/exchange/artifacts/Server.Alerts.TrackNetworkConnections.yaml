@@ -30,7 +30,7 @@ sources:
     - query: |
         SELECT * FROM foreach(
           row={
-            SELECT *, client_info(client_id=ClientId).os_info.fqdn AS Fqdn from watch_monitoring(artifact='SEC.N01_Preparation.TrackNetworkConnections')
+            SELECT *, client_info(client_id=ClientId).os_info.fqdn AS Fqdn from watch_monitoring(artifact='Exchange.Generic.Events.TrackNetworkConnections')
             WHERE Fqdn =~ ClientRegex AND ProcInfo.Data.Name =~ ProcessNameRegex AND Raddr.IP =~ RemoteIpRegex AND format(format="%v", args=Raddr.Port) =~ RemotePortRegex
               AND Diff =~ "added"
           },
