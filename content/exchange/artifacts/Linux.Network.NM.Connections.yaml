@@ -11,16 +11,14 @@ description: |
   files and other state files. Connection information is stored in
   the /etc/NetworkManager/system-connections as long as the "keyfile"
   plugin is selected in /etc/NetworkManager/NetworkManager.conf (this
-  is the default). Note that by default, NetworkManager doesn't managed
+  is the default). Note that by default, NetworkManager doesn't manage
   connections defined in /etc/network/interfaces.
 
   Whether the connections are currently active is not stored in file
-  and must be queried using using nmcli or through dbus. If the parameter
-  RunNmcli is true (which is the default), nmcli will be run as an external
-  program to retrieve this information.
-
+  and must be queried using using nmcli or through dbus. This artifact
+  runs nmcli as an external program to retrieve this information.
   Information such as IP addresses, routes, DNS servers, available Wi-Fi
-  networks and other settings will also be collected if RunNmcli is enabled.
+  networks and other settings will also be collected through nmcli.
 
   This artifact also exports two functions, parse_ini(filename) and
   parse_ini_as_dict(filename), which may be useful to parse INI files
@@ -33,18 +31,15 @@ reference:
 
 type: CLIENT
 
+required_permissions:
+    - EXECVE
+
 parameters:
-  - name: RunNmcli
-    default: true
-    type: bool
-    description: |
-        Run "nmcli" to query additional information, like active connections,
-        current status, IP addresses, routes, DNS servers etc.
   - name: RedactSecrets
     default: true
     type: bool
     description: |
-        Replace Wi-FI PSKs (wifi-security/psk) with "<REDACTED>".
+        Replace Wi-FI PSKs (wifi-security/psk) with "\<REDACTED\>".
 
 export: |
     /* Parse an INI config file and return Section (the part enclosed in '[]' on
@@ -151,7 +146,6 @@ sources:
     query: |
         LET nmcli = SELECT Stdout
             FROM execve(argv=['nmcli', '-t', '-f', 'uuid', 'connection', 'show', '--active'])
-            WHERE RunNmcli
 
         LET ActiveConnections = SELECT * FROM foreach(row={
             SELECT * FROM parse_lines(accessor='data',
@@ -178,7 +172,7 @@ sources:
                     to_dict(item={
                         SELECT Key AS _key, Value AS _value
                             FROM parse_records_with_regex(file=_value, accessor='data',
-                                regex='^\n?(?P<Key>[^:]+):(?P<Value>.+)')
+                                regex='^\n?(?P<Key>[^:]+):(?P<Value>.*)')
                     }) AS Status
                     FROM scope()
             })
@@ -193,18 +187,20 @@ sources:
         LET to_array(col, dev) = filter(list=array(a={
             SELECT * FROM column_filter(include=col, query={
                 SELECT * FROM Status WHERE `GENERAL.DEVICE` = dev
-            })}), regex='.')
+            })}), condition='x=>x')
 
         LET prettify_route(col, dev) = SELECT *
             FROM foreach(row=to_array(dev=dev, col=col), query={
-                SELECT Dest, NextHop, int(int=Metric) AS Metric FROM foreach(row={
-                    SELECT parse_string_with_regex(string=_value, regex=(
+                SELECT S.Dest AS Dest, S.NextHop AS NextHop, int(int=S.Metric) AS Metric
+                FROM foreach(row={
+                    SELECT parse_string_with_regex(string=S._value, regex=(
                         '''dst\s*=\s*(?P<Dest>[^,]+)''',
                         '''nh\s*=\s*(?P<NextHop>[^,]+)''',
                         '''mt\s*=\s*(?P<Metric>\d+)''')) AS R
                         FROM scope()
                     }, column='R')
                 })
+                WHERE Dest
 
         SELECT `GENERAL.DEVICE` AS Device,
             S.`GENERAL.TYPE` AS Type,
@@ -249,13 +245,13 @@ sources:
                         file=_value, accessor='data', regex='^\n?(?P<Key>[^:]+):(?P<Value>.*)')
                 }) AS Contents FROM scope() WHERE _value
             })
+            WHERE Contents
 
         SELECT DEVICE AS Device, SSID, BSSID, MODE AS Mode, CHAN AS Chan,
             FREQ AS Freq, RATE AS Rate, SIGNAL AS Signal, SECURITY AS Security,
             ACTIVE='yes' AS Active, `WPA-FLAGS` AS WPAFlags, `RSN-FLAGS` AS RSNFlags,
             `IN-USE`='*' AS InUse
             FROM foreach(row=AccessPoints, column='Contents')
-            WHERE RunNmcli
 
   - name: SeenBSSIDs
     description: |

@@ -1,4 +1,4 @@
-name: Windows.Apache.AccessLogs
+name: Generic.Apache.AccessLogs
 
 description: |
   Parses Apache access logs to extract detailed request information.
@@ -12,7 +12,7 @@ type: CLIENT
 
 parameters:
   - name: AccessLogPath
-    default: C:/Apache/logs/access.log*
+    default: /{/var/log/httpd,/var/log/apache2,C:/Apache/logs}/{access.log,access_log}*
 
   - name: ApacheAccessLogGrok
     description: A Grok expression for parsing Apache access log lines.
