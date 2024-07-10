@@ -1,4 +1,4 @@
-name: Windows.DeepBlueCLI
+name: Windows.EventLogs.DeepBlueCLI
 description: DeepBlueCLI - a PowerShell Module for Threat Hunting via Windows Event Logs
 
 author: Anthony Hannouille - @AnthoLaMalice
