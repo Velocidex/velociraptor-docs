@@ -2,7 +2,7 @@ name: Server.Alerts.TrackNetworkConnections
 author: Herbert Bärschneider @SEC Consult
 description: |
    This artifact alerts on network connections tracked by Velociraptor on clients.
-   Requires the client_event artifact 'SEC.N01_Preparation.TrackNetworkConnections' to be enabled.
+   Requires the client_event artifact 'Generic.Events.TrackNetworkConnections' to be enabled.
    
    You can filter alerts based on FQDN of the client, process name, remote ip and remote port.
    Only created network connections are alerted on (meaning you don't get an alert when the system removes the connection).
