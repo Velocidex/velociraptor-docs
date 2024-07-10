@@ -28,20 +28,28 @@ description: |
    - The true power of this artifact lies in the ability to quickly add many entries to DFIR-IRIS. You will *most likely use this artifact from within a notebook*.
    - There is a basic mechanism established to stop duplicates from being added. An event is compared to existing entries based on asset name, flow id, timestamp and the description. You can add multiple events happening at the same time for the same asset originating from the same flow as long as the description varies, e.g. by including dynamic details of the activity that differentiates between the events at the same time like a process name.
 
-   #### Example:
-
-   to add entries in a performant way and have the results in well-structured columns:
+   #### Notebook usage example:
 
    ```VQL
-   LET eventsToAdd = SELECT event_time,str(str=event_time),message,path,FlowId,ClientId,Fqdn
-                     FROM source(artifact="Windows.Timeline.MFT")
-                     ORDER BY event_time
+   LET ClientId <= '''C.daa3bab35a125058'''
+   LET FlowId <= '''F.CPTTPTRO63LF6'''
+   LET ArtifactName <= '''Windows.Timeline.MFT'''
+
+   -- This is the query that should return the events you want to add to Iris.
+   -- You might want to add a WHERE clause to filter out unwanted events or
+   -- select only specific fields. In this example we limit it to 10 records.
+   LET eventsToAdd = SELECT * FROM source(artifact=ArtifactName)
                      LIMIT 10
 
    SELECT * FROM foreach(
-     row=eventsToAdd,
+     row={
+       SELECT to_dict(item=_value) AS event,
+              serialize(format="json", item=_value) AS raw_event
+       FROM items(item={ SELECT * FROM eventsToAdd })
+     },
      query={
-       SELECT * FROM Artifact.Exchange.IRIS.Timeline.Add(
+       SELECT *
+       FROM Artifact.Exchange.IRIS.Timeline.Add(
          AdditionalAssetId="1,2,3",
          AddToGraph=true,
          AddToSummary=false,
@@ -50,10 +58,11 @@ description: |
          clientId=ClientId,
          Description=format(
            format="Malicious file dropped to the system to establish persistence.\nFile path: %v\nActivity: %v",
-           args=[path, message]),
+           args=[event.path, event.message]),
+         RawEvent=raw_event,
          DisableSSLVerify=true,
          FlowId=FlowId,
-         Timestamp=event_time,
+         Timestamp=event.event_time,
          Title="Persistence established via Autostart Location")
      },
      async=false)
@@ -171,13 +180,11 @@ sources:
                 else = if(condition=Color =~ "^orange",then="#FFAD4699",
                 else = "#31CE3699"))))))
 
-      LET eventDate = format(format="%v.%v",args=[parse_string_with_regex(string=Timestamp.String, regex='''(^.+)Z''').g1,
-                                          if(condition=Timestamp.Nanosecond, then=
-                                               parse_string_with_regex(
-                                               string=str(str=Timestamp.Nanosecond),
-                                               regex='''(^\d\d\d)''').g1
-                                               ,else="000")
-                                          ])
+      LET eventDate = format(format="%d-%02d-%02dT%02d:%02d:%02d.%03.f", args=[
+                                      Timestamp.Year, Timestamp.Month, Timestamp.Day,
+                                      Timestamp.Hour, Timestamp.Minute, Timestamp.Second,
+                                      Timestamp.Nanosecond / 1000000
+                            ])
 
       LET eventProperties = serialize(
                             item=dict(
@@ -242,5 +249,5 @@ sources:
       SELECT * FROM if(condition=checkExistingEntries,
                 then={SELECT "Already Added -> Skipping the event. Check for existing entries manually!" as Action FROM scope()},
                 else={SELECT "Needs to be added" as Action, if(condition= Response=200,then="SUCCESS",else="ERROR") as Result,
-                    parse_json(data=Content).data as EventProperties
-                    FROM apiRequestIrisAddEvent})
+                      parse_json(data=eventProperties) AS RequestData, parse_json(data=Content).data as ResponseData
+                      FROM apiRequestIrisAddEvent})
