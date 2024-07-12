@@ -174,63 +174,107 @@ well as an optional report.
 
 ![Viewing the Offline Collector in the console](image29.png)
 
-### Customizing the execution of the offline collector
+### The Generic offline collector
 
-You can see the embedded configuration of the offline collector using
-the `config show` command:
+Normally the Velociraptor offline collector builder computes a preset
+configuration file and embeds it inside the regular Velociraptor
+binary for ease of use. However this can cause some problems in some
+cases:
 
-```
-C:\Users\Administrator\Downloads>Collector_velociraptor.exe config show
-autoexec:
-  argv:
-  - artifacts
-  - collect
-  - Collector
-  - --logfile
-  - Collector_velociraptor.exe.log
-  - -v
-  - --require_admin
-  artifact_definitions:
-  - name: Collector
-    parameters:
-    - name: Artifacts
-      default: |-
-        [
-         "Demo.Plugins.GUI"
-        ]
-      type: json_array
-    - name: Parameters
-      default: '{}'
-      type: json
-```
+1. By modifying the official Velociraptor binary, the Authenticode
+   signature is invalidated. Therefore the offline collector will need
+   to be re-signed to pass many integrity checks.
+2. The amount of space within the binary reserved for the offline
+   collector is limited. This means that very large artifacts will
+   cause the space to be exceeded.
+3. We have also seen recent MacOS systems refuse to run a binary that
+   has been modified. Therefore regular offline collector packing does
+   not work on recent MacOS versions.
 
-The autoexec parameters are run when no other command line options are
-specified. The default command line simply collects a special custom
-artifact which collects the specified artifacts in the Artifacts
-parameter specified as a JSON list.
+In recent versions of Velociraptor we now offer a new type of
+collector called the `Generic` collector.
 
-The primary use of the offline collector is to be able to run it
-without any needed command line options, which is why the
-configuration file specifies the full list of required artifacts to
-collect. However, sometimes it is useful to slightly tweak the
-collector from the command line. We do this by adding the `--` flag
-which introduces other command line options to the default autoexec
-array specified in the configuration.
+![](generic_collector.png)
 
-You can use this to change the list of collected artifacts on the fly
-by providing a new JSON encoded artifacts list to the collector:
+This will embed the configuration into a shell script instead of the
+Velociraptor binary. Users can then launch the offline collector using
+the unmodified official binary by specifying the `--embedded_config`
+flag:
 
 ```
-Collector_velociraptor.exe -- --args Artifacts="["""Generic.Client.Info""","""Windows.Sys.Users"""]"
+velociraptor-v0.7.0-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
 ```
 
-NOTE: The windows command interpreter (`cmd.exe`) uses an eclectic
-escaping scheme with each quote character encoded into three
-quotes. The same command using bash looks like:
+![](generic_collector_running.png)
+
+While the method is required for MacOS, it can also be used for
+Windows in order to preserve the binary signature or accommodate
+larger artifacts.
+
+### Building an offline collector on the command line
+
+The easiest way of building an offline collector is using the GUI as
+described above. However, for cases where automation is required, it
+is also possible to build an offline collector using the commandline
+only.
+
+This works by writing settings into a `Spec File`. Velociraptor uses
+this file to prepare the offline collector automatically. To obtain
+the initial template for the file run the following command:
 
 ```
-Collector_velociraptor -- --args Artifacts='["Generic.Client.Info"]'
+$ mkdir /tmp/datastore/
+$ ./velociraptor-v0.72.4-linux-amd64 collector --datastore /tmp/datastore/ > /tmp/datastore/spec.yaml
+velociraptor-v0.72.4-linux-amd64: error: collector: No Spec file provided
 ```
+
+The first command prepares a temporary datastore location (this is
+similar to the `velociraptor gui` command which builds an entire
+deployment in that directory).
+
+Because we have not provided any `Spec File` parameter, Velociraptor
+will print a template to the output which we redirect to a file.
+
+Next edit the spec file (which is heavily documented). Most options
+are similar to the ones presented in the GUI builder.
+
+To build the collector, run the command with the generated `spec
+file`.
+
+```text
+$ ./velociraptor-v0.72.4-linux-amd64 collector --datastore /tmp/datastore/ /tmp/datastore/spec.yaml
+...
+Running query LET _ <= SELECT name FROM artifact_definitions()
+[INFO] 2024-07-10T09:12:28Z Compiled all artifacts.
+[]Running query LET Spec <= parse_yaml(filename=SPECFILE)
+[]Running query LET _K = SELECT _key FROM items(item=Spec.Artifacts)
+[]Running query SELECT * FROM Artifact.Server.Utils.CreateCollector(OS=Spec.OS, artifacts=serialize(item=_K._key), parameters=serialize(item=Spec.Artifacts), target=Spec.Target, target_args=Spec.TargetArgs, encryption_scheme=Spec.EncryptionScheme, encryption_args=Spec.EncryptionArgs, opt_verbose=Spec.OptVerbose, opt_banner=Spec.OptBanner, opt_prompt=Spec.OptPrompt, opt_admin=Spec.OptAdmin, opt_tempdir=Spec.OptTempdir, opt_level=Spec.OptLevel, opt_filename_template=Spec.OptFilenameTemplate, opt_collector_filename=Spec.OptCollectorTemplate, opt_format=Spec.OptFormat, opt_output_directory=Spec.OptOutputDirectory, opt_cpu_limit=Spec.OptCpuLimit, opt_progress_timeout=Spec.OptProgressTimeout, opt_timeout=Spec.OptTimeout, opt_version=Spec.OptVersion)
+[INFO] 2024-07-10T09:12:28Z Downloading tool VelociraptorWindows FROM https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-windows-amd64.exe
+client_repack: Will Repack the Velociraptor binary with 5733 bytes of config
+Adding binary Autorun_386
+Adding binary Autorun_amd64
+Uploaded /tmp/datastore/Collector_velociraptor-v0.72.4-windows-amd64.exe (60829135 bytes)
+[
+ {
+   "Repacked": {
+      "Path": "/tmp/datastore/Collector_velociraptor-v0.72.4-windows-amd64.exe",
+      "Size": 60829135,
+      "sha256": "968b8802c10faeaec2a86b9295f66aeee45b79e30a3028be2162a8718b4a98e9",
+      "md5": "3c9375283665d68817008d7a8f232796",
+      "Components": [
+         "Collector_velociraptor-v0.72.4-windows-amd64.exe"
+      ]
+   },
+   "_Source": "Server.Utils.CreateCollector"
+ }
+]
+```
+
+As the output shows, Velociraptor will automatically download any
+required binaries for inclusion in the collector. External binaries
+will be cached in the datastore so the next time the command is run it
+will just use those efficiently.
+
 
 ### Include third party binaries
 
