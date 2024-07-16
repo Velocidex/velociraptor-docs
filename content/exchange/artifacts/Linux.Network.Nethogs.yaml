@@ -44,9 +44,7 @@ sources:
                              sep='\n\nRefreshing:\n')
                },
                query={
-                 SELECT 
-                        Timestamp,
-                        *
+                 SELECT *
                  FROM parse_records_with_regex(
                    accessor='data',
                    file=Stdout,
