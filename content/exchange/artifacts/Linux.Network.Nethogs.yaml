@@ -39,7 +39,7 @@ sources:
              FROM foreach(
                row={
                  SELECT *
-                 FROM execve(argv=['nethogs', '-v', '1', '-t'],
+                 FROM execve(argv=['/usr/sbin/nethogs', '-v', '1', '-t'],
                              length=10000,
                              sep='\n\nRefreshing:\n')
                },
