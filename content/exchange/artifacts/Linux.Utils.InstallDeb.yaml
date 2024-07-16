@@ -13,12 +13,14 @@ reference:
 parameters:
    - name: DebName
      description: |
-        Package to install (by name). Ignored if DebFile is set.
+        Package to install (by name). Ignored if DebFile is set. An absolute path
+        to a deb file that already exists on the system is also accepted.
 
    - name: DebFile
      description: |
         Package to install (by file). Remember to click "Upload"! When set,
-        DebName is ignored.
+        DebName is ignored. Use DebName with an absolute file path if the
+        file already exists on the system and does not need to be uploaded.
      type: upload
 
    - name: UpdateSources
