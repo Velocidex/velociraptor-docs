@@ -1526,3 +1526,7 @@ executable's
 
 desc
 rr
+
+<url-free> content/knowledge_base/tips/deleting_old_data.md
+DeleteManyFlows
+DeleteMonitoringData

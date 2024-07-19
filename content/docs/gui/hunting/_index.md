@@ -5,16 +5,17 @@ draft: false
 weight: 20
 ---
 
-With Velociraptor, you can collect the same artifact from multiple endpoints at the same time using a `Hunt`. Hunts allow you to do the following:
+With Velociraptor, you can collect the same artifact from multiple
+endpoints at the same time using a `Hunt`. Hunts allow you to do the
+following:
 
-* Monitor offline endpoints by scheduling hunts collecting artifacts from any
-   endpoints that come back online during a certain period.
+* Monitor offline endpoints by scheduling hunts collecting artifacts
+  from any endpoints that come back online during a certain period.
 
 * Examine the results from all collections easily.
 
-* Keep track of which endpoints collected the
-   artifact and make sure the same artifact is not collected more than
-   once on any endpoint.
+* Keep track of which endpoints collected the artifact and make sure
+  the same artifact is not collected more than once on any endpoint.
 
 ## What is a hunt?
 
@@ -33,12 +34,11 @@ To schedule a new hunt, select the "Hunt Manager" <i class="fas
 fa-crosshairs"></i> from the sidebar and then select "New Hunt" button
 <i class="fas fa-plus"></i> to see the `New Hunt Wizard`.
 
-Provide the hunt with a description and set the expiration date. You can also target
-machines containing the same label (A `Label Group`), or exclude the
-hunt from these machines.
+Provide the hunt with a description and set the expiration date. You
+can also target machines containing the same label (A `Label Group`),
+or exclude the hunt from these machines.
 
 ![New Hunt](image89.png)
-
 
 {{% notice note "Hunts and expiry" %}}
 
@@ -102,3 +102,120 @@ always best to use more targeted artifacts that return a few rows per
 endpoint rather than fetch raw files that need to be parsed offline.
 
 {{% /notice %}}
+
+## Hunts and labels
+
+We have seen above that we can target hunts by labels. When a hunt is
+targeted to a label, only hosts that have the label assigned will be
+automatically scheduled by the hunt manager.
+
+This allows you to dynamically apply the hunt to various hosts by
+simply adding labels to them. This workflow is very powerful as it
+allows for incremental triaging.
+
+Lets consider an example for how this can be applied in practice.
+
+![Schedule hunt by label](incremental_hunting_by_label_1.png)
+
+I start the process by setting up a hunt for preserving the event logs
+from clients which I consider to have been compromised. Since this
+hunt will collect a lot of data, I can not really run it across the
+entire network - instead I will be very selective and only schedule it
+on compromised hosts.
+
+1. I add a description for this hunt
+2. Next I select to Match by Label.
+3. I can search for an existing label, or if no label already exists,
+   I can create a new label. In this case I will choose the new label
+   `Preserve` to denote a host I want to preserve.
+
+For this example, I choose the `Windows.KapeFiles.Targets` artifact
+with the `Eventlogs` target to collect all windows event logs for
+preservation.
+
+![Collect for preservation](incremental_hunting_by_label_2.png)
+
+The hunt is started but since there are no clients with the new label
+yet, no clients are scheduled.
+
+![Waiting for clients](incremental_hunting_by_label_3.png)
+
+I carry on with my investigation, and at some point I find a client
+which I believe is compromised! I simply go to the host overview page
+and label this client.
+
+![Labeling clients](incremental_hunting_by_label_4.png)
+
+The act of labeling the client has automatically scheduled the client
+into the hunt.
+
+![Client is scheduled](incremental_hunting_by_label_5.png)
+
+Note that I can use this technique to automatically schedule clients
+into various hunts using the VQL
+[label()](/vql_reference/server/label/) function. Therefore I can use
+this technique to automatically add clients to various hunts based on
+previous findings.
+
+## Manually adding clients to hunts
+
+You can think of hunts as a group of collections that we can inspect
+together. For example we can see all the processes from all clients by
+collecting the `Windows.System.Pslist` artifact across the entire
+network in a hunt. Then we can filter across all the processes with
+VQL:
+
+```vql
+SELECT * FROM hunt_results(hunt_id="H.123", artifact="Windows.System.Pslist")
+```
+
+This is very convenient - hunts are really a way to group related
+collections together.
+
+Normally the `Hunt Manager` component described above is responsible
+for scheduling collections on clients depending on certain conditions
+(e.g. labels or OS matches), and adding them to the hunt. However the
+scheduling step is a different separate step from adding the
+collection to the hunt.
+
+It is possible to schedule the collection manually and **then** also
+add the collection to the hunt. This method gives the ultimate
+flexibility in managing hunt membership.
+
+A common example is when a collection needs to be redone for some
+reason. Normally the hunt manager ensures only a single collection
+from the hunt is scheduled on the same client. However sometimes the
+collection fails, or simply needs to be recollected for fresher
+data to be added to the hunt.
+
+In the above example, I redo the collection of
+`Windows.KapeFiles.Targets` that the hunt scheduled previously by
+navigating to the collection view in that specific client. Then I
+`Copy` the collection by pressing the <i class="fas fa-copy"></i>
+button. I can now update things like, timeout or change the parameters
+a bit as required.
+
+![Manually rescheduling a collection](manual_hunt_1.png)
+
+Next, I add the collection to the hunt by clicking the `Add to Hunt` <i class="fas
+fa-crosshairs"></i> button.
+
+![Add collection to hunt](manual_hunt_2.png)
+
+The new collection is added to the hunt. It is up to you if you want
+to keep the old collection around or just delete it.
+
+![Hunt with additional collection](manual_hunt_3.png)
+
+You can add collections to a hunt using the
+[hunt_add()](/vql_reference/server/hunt_add/) VQL function which
+allows unlimited automation around which flows are added to hunt (and
+can also automate the relaunching of the collections).
+
+To help you with manipulating hunts with the notebook, hunt notebooks
+offer a `Cell Suggestion` to assist with managing the hunt progress.
+
+![Adding a Hunt Progress cell suggestion](hunt_suggestion_1.png)
+
+
+![Helpful VQL queries](hunt_suggestion_2.png)
