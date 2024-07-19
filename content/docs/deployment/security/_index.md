@@ -643,3 +643,94 @@ is only needed when the server is shared between potentially untrusted
 users. Usually you should not implement this because it causes a lot
 of functionality to randomly break (e.g. any artifacts that might
 depend on a plugin which is not in the allow list will fail).
+
+## Securing VQL
+
+Velociraptor uses VQL extensively in the form of [artifacts]({{% ref
+"/docs/vql/artifacts" %}}) and [notebooks]({{% ref
+"/docs/vql/notebooks" %}}). Since a VQL query can do many potentially
+dangerous actions, it is important to restrict the type of actions the
+query can perform based on the user's ACL token. When the VQL query is
+started, the user's ACL token is loaded into the query environment. As
+the query continues executing, various VQL plugins and functions are
+evaluated by the VQL engine. VQL plugins and functions may have
+requirements as to the type of permission required to run. You can see
+the required permission for each plugin in the [VQL reference]({{% ref
+"/vql_reference" %}}) page.
+
+![Example VQL reference showing required permissions](vql_reference.png)
+
+This mechanism allows lower privilege users to run VQL safely - those
+actions that require permissions the user does not have will simply be
+ignored (and a log message emitted).
+
+ACL checks are always enforced on the server, for example in notebooks
+and server artifacts. A user with the `Analyst`role, has no
+`FILESYSTEM_READ` permission, and therefore if they tried to run a
+`glob()` based query in a notebook they will be denied.
+
+![Permission denied error in the notebook](notebook_permission_denied.png)
+
+### Controlling access to artifacts
+
+While ACL checks are enforced on the server, on the client all ACL
+checks are disabled. This means that as long as a user is able to
+schedule the collection on the client, the collection can do anything
+at all. This makes sense as we want the VQL to be evaluated the same
+way regardless of who launched the collection in the first place.
+
+However this may give lower privilege users a lot of power over the
+entire network. For example the artifact
+[Windows.System.PowerShell](/artifact_references/pages/windows.system.powershell/) allows
+running arbitrary shell commands on the endpoint. While this is a
+useful capability in limited situations it may lead to severe
+compromise if misused!
+
+Velociraptor allows for an artifact to specify the
+`required_permissions` field.
+
+```yaml
+name: Windows.System.PowerShell
+description: |
+  This artifact allows running arbitrary commands through the system
+    powershell.
+  ....
+required_permissions:
+  - EXECVE
+```
+
+This field specifies that the server check the user has all of the
+required permissions before the server allows the artifact to be
+scheduled. If a user with the `Investigator` role tries to launch this
+artifact, they will be denied (since the usually lack the `EXECVE`
+permission)
+
+![Permission denied launching a powerful artifact](launch_artifact_permission_denied.png)
+
+Typically we set the `required_permissions` field on client artifacts
+that can do dangerous things if misused. In particular, if the
+artifact parameter can specify running arbitrary code.
+
+{{% notice tip "Delegating artifact permissions" %}}
+
+The `required_permissions` check is only done on the artifact being
+launched. It does not apply to any dependent artifacts called from the
+launched artifact. This is deliberate as it allows you to create
+curated safe versions of the dangerous artifacts to be used by lower
+privilege users. For example, while `Windows.System.PowerShell`
+requires an `EXECVE` permission because its parameter allows arbitrary
+commands to run, we can wrap it with a safe version:
+
+```yaml
+name: Custom.SafePowershellDir
+sources:
+  - query: |
+        SELECT * FROM Artifact.Windows.System.PowerShell(Command="dir C:/")
+```
+
+This artifact can not be misused because the command passed to
+`Windows.System.PowerShell` is a fixed string and can not be changed
+by the user that initiates the collection.
+
+
+{{% /notice %}}
