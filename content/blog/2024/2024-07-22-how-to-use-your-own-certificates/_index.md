@@ -1,6 +1,12 @@
 ---
 title: "How to use your own certificates to secure your Velociraptor deployment"
 description: |
+    Velociraptor is a robust open-source tool designed for endpoint
+    monitoring and digital forensics and response. Whether you deploy it
+    on-premise or in the cloud, securing communication between the
+    Velociraptor server and its clients is crucial. This blog post will
+    guide you through creating and installing TLS certificates using
+    DigiCert as your Certificate Authority (CA).
 
 tags:
  - Deployment
