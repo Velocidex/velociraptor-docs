@@ -58,6 +58,32 @@ arches:
     hash: 3ef039583ebaffce281df070b868455bc2dbc234f4b2ed3988cea8dd50116003
     platform: freebsd
 
+
+  - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
+    name: windows-amd64.exe
+    release: 0.72.3
+    hash: cd4697255e30961de26eb303079e7f738f8b86fd5d4c94863091362082e7fda9
+    platform: windows
+
+  - desc: Windows AMD64 (64 bits) MSI For Windows 7 Only
+    name: windows-amd64.msi
+    release: 0.72.3
+    hash: ba0332d12278d09068d355ef8712a4fe26e20760f77fd3ed3ddc4be611c154f1
+    platform: windows
+
+  - desc: Windows 32 bits Executable For Windows 7 Only
+    name: windows-386.exe
+    release: 0.72.3
+    hash: afbc5b06ed89891e53558fe701e75e17d76dacad72f79be937fac2df24573692
+    platform: windows
+
+  - desc: Windows 32 bits MSI For Windows 7 Only
+    name: windows-386.msi
+    release: 0.72.3
+    hash: 20413ebabe16d019b60967fe82123aabdf4d752bc03836c1dc88d365014a247c
+    platform: windows
+
+
 ---
 
 Velociraptor is open source software and is free for anyone to use
@@ -69,6 +95,21 @@ License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme)
 ## Release notes
 
 Full release notes are published in our [release blog post]({{< ref "/blog/2024/2024-03-10-release-notes-0.72/" >}})
+
+{{% notice note "Support for Windows 7" %}}
+
+Golang has officially [ended support for Windows
+7](https://github.com/golang/go/issues/57003) with the Go 1.20
+release. Current builds do not support this platform. The Windows 7
+binaries mentioned above are the last version known to work on Windows
+7 and should mostly work with the current servers (See our [support
+policy](https://docs.velociraptor.app/docs/overview/support/) )
+
+In future we may make periodic builds to target Windows 7 from time to
+time but these will not be the latest.
+
+{{% /notice %}}
+
 
 ## Verifying your download
 

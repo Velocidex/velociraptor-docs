@@ -1,0 +1,75 @@
+name: Linux.Network.Nethogs
+author: 'Andreas Misje - @misje'
+description: |
+  Monitor network bandwidth per process, using "nethogs". This artifact will
+  list all processes that produces (non-local) network traffic on the client,
+  leveraging the process tracker, and displays the total bytes received and sent
+  in the given time frame.
+  
+  Note that the tool/package "nethogs" needs to be installed before calling this
+  artifact.
+
+parameters:
+  - name: Duration
+    type: integer
+    description: Number of seconds to monitor processes
+    default: 300
+    
+precondition:
+  SELECT * FROM info() where OS = 'linux'
+
+sources:
+    - query: |
+       LET Hoggers <= SELECT Process,
+                             PID,
+                             UID,
+                             humanize(bytes=parse_float(string=Sent) * 1024) AS Sent,
+                             humanize(
+                               bytes=parse_float(
+                                 string=Recv) * 1024) AS Recv
+         FROM query(
+           timeout=Duration,
+           query={
+             SELECT 
+                    Process,
+                    PID,
+                    UID,
+                    Sent,
+                    Recv
+             FROM foreach(
+               row={
+                 SELECT *
+                 FROM execve(argv=['/usr/sbin/nethogs', '-v', '1', '-t'],
+                             length=10000,
+                             sep='\n\nRefreshing:\n')
+               },
+               query={
+                 SELECT *
+                 FROM parse_records_with_regex(
+                   accessor='data',
+                   file=Stdout,
+                   regex='''^\s*(?P<Process>[^\t]+)/(?P<PID>\d+)/(?P<UID>\d+)\t(?P<Sent>\d+\.\d+|0)\t(?P<Recv>\d+\.\d+|0)''')
+               })
+           })
+         GROUP BY Process
+
+       SELECT *
+       FROM foreach(
+         row={
+           SELECT *
+           FROM Hoggers
+         },
+         query={
+           SELECT 
+                  Pid,
+                  Name,
+                  CommandLine,
+                  Cwd,
+                  Username,
+                  StartTime,
+                  EndTime,
+                  Sent,
+                  Recv
+           FROM process_tracker_pslist()
+           WHERE Pid = PID
+         })

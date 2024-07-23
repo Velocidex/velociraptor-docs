@@ -7,8 +7,8 @@ import sys
 VERIFY_QUERY = '''
 SELECT artifact_set(
     definition=read_file(filename=OSPath),
-    prefix="Exchange.").name AS ImportedArtifact,
-   FullPath
+    prefix="").name AS ImportedArtifact,
+    OSPath
 FROM glob(globs=FILES)
 '''
 
@@ -20,13 +20,13 @@ Client:
   ca_certificate:
     XXX
   nonce: XX
+Frontend:
 Datastore:
   implementation: Test
 '''
 VELO_CONFIG_FILENAME = "/tmp/velo.config.yaml"
 VELO_FILENAME = "/tmp/velociraptor"
-#VELO_URL = "https://github.com/Velocidex/velociraptor/releases/download/v0.6.4-2/velociraptor-v0.6.4-2-linux-amd64"
-VELO_URL="https://storage.googleapis.com/go.velocidex.com/velociraptor-v0.6.9-dev-linux-amd64-musl"
+VELO_URL = "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.3-linux-amd64-musl"
 EXCHANGE_PATH = os.path.abspath("./content/exchange/artifacts/")
 VELO_LOGFILE = "/tmp/velo.log"
 
@@ -54,6 +54,11 @@ except OSError:
 os.chmod(VELO_FILENAME, 0o755)
 
 result = []
+with subprocess.Popen([VELO_FILENAME, "version"],
+                      stdout=subprocess.PIPE) as proc:
+    for line in proc.stdout:
+        print(line.decode("utf8").strip())
+
 with subprocess.Popen([
         VELO_FILENAME,
         "--config", VELO_CONFIG_FILENAME,
@@ -69,8 +74,8 @@ with subprocess.Popen([
 failures = []
 for item in result:
     if not item["ImportedArtifact"]:
-        failures.append(item["FullPath"])
-        print("Failed to load file %s" % item["FullPath"])
+        failures.append(item["OSPath"])
+        print("Failed to load file %s" % item["OSPath"])
 
 if failures:
     print("\n\n\nFailed to load artifacts: Full error log follows")

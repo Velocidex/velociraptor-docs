@@ -19,7 +19,7 @@ outputs:
 Velociraptor comes with a large number of built in artifacts. This
 reference provides a copy of the built in artifacts normally shipped
 within Velociraptor. This reference is provided for easy searching -
-it does not normally needed to be imported directly into Velociraptor
+it does not normally need to be imported directly into Velociraptor
 since these artifacts are built in.
 
 {{% artifact_reference %}}
