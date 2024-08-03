@@ -486,6 +486,15 @@
         ]
     },
     {
+        "title": "Linux.Events.TrackProcesses",
+        "description": "This artifact uses auditd and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
+        "link": "/artifact_references/pages/linux.events.trackprocesses",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
         "title": "Linux.Forensics.Journal",
         "description": "Parses the binary journal logs. Systemd uses a binary log format to\nstore logs. You can read these logs using journalctl command:",
         "link": "/artifact_references/pages/linux.forensics.journal",
@@ -964,7 +973,7 @@
     },
     {
         "title": "MacOS.System.Wifi",
-        "description": "This artifact looks for all Wifi networks to which a host has joined.  This can be useful in determining where a machine has been, or if a user has joined an illegitimate or unauthorized wireless network.\n",
+        "description": "This artifact looks for all Wifi networks to which a host has\njoined.  This can be useful in determining where a machine has\nbeen, or if a user has joined an illegitimate or unauthorized\nwireless network.\n",
         "link": "/artifact_references/pages/macos.system.wifi",
         "type": "client",
         "tags": [
@@ -2613,6 +2622,15 @@
         "title": "Windows.Forensics.FilenameSearch",
         "description": "Did a specific file exist on this machine in the past or does it\nstill exist on this machine?",
         "link": "/artifact_references/pages/windows.forensics.filenamesearch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.JumpLists",
+        "description": "The automaticdestinatinons jumplist is an OLE2 container containing\nLNK files as individual streams\n",
+        "link": "/artifact_references/pages/windows.forensics.jumplists",
         "type": "client",
         "tags": [
             "Client Artifact"

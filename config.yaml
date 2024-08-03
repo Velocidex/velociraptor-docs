@@ -58,7 +58,7 @@ menu:
       url: "/rss/"
       weight: 40
    -  name: "<i class='fa fa-question-circle'></i>Rapid7 Docs"
-      url: "https://docs.rapid7.com/"
+      url: "https://docs.rapid7.com/insightidr/velociraptor-integration/"
       weight: 50
 
 googleAnalytics: G-QYH72LMYCS

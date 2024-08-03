@@ -1,5 +1,25 @@
 [
     {
+        "title": "Windows.System.Recall.AllWindowEvents",
+        "author": "zachstanford-cybercx",
+        "description": "This artefact will read and correlate several tables to do with Microsoft Recall.",
+        "link": "/exchange/artifacts/pages/windows.system.recall.allwindowevents",
+        "tags": [],
+        "author_link": "https://github.com/zachstanford-cybercx",
+        "author_avatar": "https://avatars.githubusercontent.com/u/163638082?v=4",
+        "date": "2024-06-03"
+    },
+    {
+        "title": "Windows.System.Recall.WindowCaptureEvent",
+        "author": "zachstanford-cybercx",
+        "description": "This artefact will read and correlate several tables to do with Microsoft Recall.",
+        "link": "/exchange/artifacts/pages/windows.system.recall.windowcaptureevent",
+        "tags": [],
+        "author_link": "https://github.com/zachstanford-cybercx",
+        "author_avatar": "https://avatars.githubusercontent.com/u/163638082?v=4",
+        "date": "2024-06-03"
+    },
+    {
         "title": "Windows.Apache.AccessLogs",
         "author": "Krishna-23",
         "description": "Parses Apache access logs to extract detailed request information.\n",
@@ -132,7 +152,7 @@
     {
         "title": "Windows.Forensics.Jumplists_JLECmd",
         "author": "orhan-emre",
-        "description": "* Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).  \n* JLECmd.zip is downloaded from the URL to 'C:\\Program Files\\Velociraptor\\Tools' folder.   \n* JLECmd.zip can be uploaded to Velociraptor Server in order to copy it to the clients in case there is no internet connection.\n* Created using @carlos_cajigas LECmd VQL as a quide.  \n* JLECmd is a CLI tool for analyzing Custom Destinations jump list data. Learn more - https://github.com/EricZimmerman/JLECmd\n",
+        "description": "* Execute Eric Zimmerman's JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).\n* JLECmd.zip is downloaded from the URL to 'C:\\Program Files\\Velociraptor\\Tools' folder.\n* JLECmd.zip can be uploaded to Velociraptor Server in order to copy it to the clients in case there is no internet connection.\n* Created using @carlos_cajigas LECmd VQL as a quide.\n* JLECmd is a CLI tool for analyzing Custom Destinations jump list data. Learn more - https://github.com/EricZimmerman/JLECmd\n",
         "link": "/exchange/artifacts/pages/windows.forensics.jumplists_jlecmd",
         "tags": [],
         "author_link": "https://github.com/orhan-emre",
@@ -941,7 +961,7 @@
     {
         "title": "Windows.Detection.ProxyHunter",
         "author": "mgreen27",
-        "description": "This artifact detects evidence of several common proxy tools.\n",
+        "description": "This artifact detects evidence of several common proxy tools.",
         "link": "/exchange/artifacts/pages/proxyhunter",
         "tags": [],
         "author_link": "https://github.com/mgreen27",

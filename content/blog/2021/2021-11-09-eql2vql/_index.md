@@ -17,6 +17,16 @@ author: "Mike Cohen"
 date: 2021-11-09
 ---
 
+{{% notice warning "Outdated content" %}}
+
+This article describes a threat detection approach that has since been
+superseded by Velociraptor's [built-in Sigma
+functionality]({{<ref "/blog/2023/2023-11-15-sigma_in_velociraptor" >}}),
+however it is retained here for historical and instructive purposes since it
+also demonstrates how the flexibility of VQL makes novel solutions possible.
+
+{{% /notice %}}
+
 If you have been following the development of Velociraptor for a while
 you are probably more than familiar with Velociraptor's flexible query
 language (VQL). Because Velociraptor is an agent running on the
