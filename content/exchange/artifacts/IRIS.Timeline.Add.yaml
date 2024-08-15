@@ -1,6 +1,6 @@
 name: IRIS.Timeline.Add
 
-author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult) | Updated 2024-07 - [10root Cyber Security] (https://10root.com)
+author: Stephan Mikiss @stephmikiss (SEC Defence @SEC Consult) | Updated 2024-08 - [10root Cyber Security] (https://10root.com)
 
 description: |
    Adds Velociraptor rows as timeline entries to [DFIR-IRIS](https://dfir-iris.org/).
@@ -80,7 +80,7 @@ parameters:
   - name: IocId
     description: Comma seperated list of IRIS IocIds to link IOCs in this event.
   - name: Timestamp
-    description: Timestamp of the event as a time.Time object.
+    description: Timestamp of the event as a time.Time object. This can be a field in the source data containing a timestamp object.
   - name: Title
     description: Title of the event.
   - name: FlowId
@@ -190,7 +190,7 @@ sources:
                             item=dict(
                                 event_title=Title,
                                 event_source=if(condition=FlowId,then=format(format="Velo: %v",args=[FlowId]),else="Velo"),
-                                event_assets=if(condition=eventAsset1 OR eventAsset1,then=array(a=eventAsset1,b=eventAsset2),else=[]),
+                                event_assets=if(condition=eventAsset1 OR eventAsset2,then=eventAsset1 + eventAsset2,else=[]),
                                 event_iocs=if(condition=IocId,then=split(string=IocId,sep=",|;"),else=[]),
                                 event_tags=if(condition=Tags,then=format(format="Velo,%v",args=[Tags]),else="Velo"),
                                 event_category_id=eventCategory,
@@ -205,49 +205,33 @@ sources:
                             ,format="json"
                         )
 
-      LET apiRequestIrisAddEvent = if(condition=config.version.version < "0.6.9",
-            then={ SELECT *
-                    FROM http_client(
-                        data=eventProperties,
-                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[IrisKey])),
-                        disable_ssl_security=DisableSSLVerify,
-                        root_ca=IrisRootCA,
-                        method="POST",
-                        url=format(format="%v/case/timeline/events/add?cid=%v", args=[IrisURL,IrisCaseId])) },
-            else={ SELECT *
-                    FROM http_client(
-                        data=eventProperties,
-                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[IrisKey])),
-                        skip_verify=DisableSSLVerify,
-                        root_ca=IrisRootCA,
-                        method="POST",
-                        url=format(format="%v/case/timeline/events/add?cid=%v", args=[IrisURL,IrisCaseId])) })
+      LET apiRequestIrisAddEvent =
+          SELECT *
+          FROM http_client(
+              data=eventProperties,
+              headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[IrisKey])),
+              skip_verify=DisableSSLVerify,
+              root_ca=IrisRootCA,
+              method="POST",
+              url=format(format="%v/case/timeline/events/add?cid=%v", args=[IrisURL,IrisCaseId]))
 
       LET resolveHostname = SELECT os_info.hostname as hostname from clients(client_id=clientId)
 
       LET filterParams = dict(cid=IrisCaseId,q=format(format='{"asset":["%v"],"source":["%v"],"startDate":["%v"],"endDate":["%v"]}',args=[resolveHostname.hostname[0],FlowId,eventDate,eventDate]))
 
-      LET checkExistingEntries = if(condition=config.version.version < "0.6.9",
-            then={ SELECT * FROM flatten(query={SELECT parse_json(data=Content).data.timeline as Timeline     FROM http_client(
-                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[IrisKey])),
-                        method="GET",
-                        root_ca=IrisRootCA,
-                        disable_ssl_security=DisableSSLVerify,
-                        params=filterParams,
-                        url=format(format="%v/case/timeline/advanced-filter", args=[IrisURL])) GROUP BY Timeline
-                        })
-                   WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description) },
-            else={ SELECT * FROM flatten(query={SELECT parse_json(data=Content).data.timeline as Timeline     FROM http_client(
-                        headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[IrisKey])),
-                        method="GET",
-                        root_ca=IrisRootCA,
-                        skip_verify=DisableSSLVerify,
-                        params=filterParams,
-                        url=format(format="%v/case/timeline/advanced-filter", args=[IrisURL])) GROUP BY Timeline })
-                   WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description) })
+      LET checkExistingEntries =
+          SELECT * FROM flatten(query={ SELECT parse_json(data=Content).data.timeline as Timeline
+                                        FROM http_client(
+                                            headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[IrisKey])),
+                                            method="GET",
+                                            root_ca=IrisRootCA,
+                                            skip_verify=DisableSSLVerify,
+                                            params=filterParams,
+                                            url=format(format="%v/case/timeline/advanced-filter", args=[IrisURL])) GROUP BY Timeline })
+                                       WHERE base64encode(string=Timeline.event_content) = base64encode(string=Description)
 
       SELECT * FROM if(condition=checkExistingEntries,
                 then={SELECT "Already Added -> Skipping the event. Check for existing entries manually!" as Action FROM scope()},
                 else={SELECT "Needs to be added" as Action, if(condition= Response=200,then="SUCCESS",else="ERROR") as Result,
-                      parse_json(data=eventProperties) AS RequestData, parse_json(data=Content).data as ResponseData
+                      parse_json(data=eventProperties) AS _RequestData, parse_json(data=Content).data as _ResponseData
                       FROM apiRequestIrisAddEvent})
