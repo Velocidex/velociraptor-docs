@@ -80,18 +80,22 @@ sources:
       // === Initial parsing ====
       // ========================
       
-      LET YaraRule <= '''
-      rule OibRule
-      {
+      LET MetadataStart <= '''
+      rule StartOffsetRule {
           strings:
-              $oib_summary = "<OibSummary>"
-
-          condition:
-              $oib_summary
+              $start = "<OibSummary>"
+          condition: any of them
+      }
+      '''
+      LET MetadataEnd <= '''
+      rule EndOffsetRule {
+          strings:
+              $end = "</OibSummary>"
+          condition: any of them
       }
       '''
       
-      // Extracting and parsing XML for each Veeam backup file
+      // Listing all Storage files in the Backup Repositories
       LET backup_repos = SELECT BackupRepoPath FROM BackupRepositories
       LET backup_files = SELECT * FROM foreach(row=backup_repos,
           query={
@@ -103,32 +107,49 @@ sources:
                         '/**/*.vrb'
                     ],
                     root=BackupRepoPath,
-                    accessor='auto'
-                )
-          })
-    
-      LET raw_xml_data = SELECT * FROM foreach(row=backup_files,
-          query={
-              SELECT String.Offset AS StrOffset,
-                  read_file(
-                      length=10485760,
-                      offset=String.Offset,
-                      filename=File.FullPath) AS RawXML,
-                  File.FullPath AS BackupFilePath
-                FROM yara(
-                    rules=YaraRule,
-                    files=OSPath,
-                    start=0,
-                    end=18446744073709551615
+                    accessor='file'
                 )
           })
       
+      // Find last start offset of metadata for each Storage file
+      LET start_offsets= SELECT File.FullPath AS FilePath,
+             max(item=String.Offset) AS StartOffset
+        FROM yara(
+            files=backup_files.OSPath,
+            rules=MetadataStart,
+            start=0,
+            end=18446744073709551615,
+            number=100
+        )
+        GROUP BY File.FullPath
+        
+      // Find end offset for each start offset, extract and parse XML
       LET xml = SELECT parse_xml(
-              accessor='data',
-              file=split(string=RawXML, sep='</OibSummary>')[0] + '</OibSummary>'
-          ) AS Metadata,
-          BackupFilePath
-        FROM raw_xml_data
+          accessor='data',
+          file=read_file(
+              filename=BackupFilePath,
+              offset=StartOffset,
+              length=EndOffset - StartOffset + 13
+          )
+      ) AS Metadata,
+      BackupFilePath
+        FROM foreach(row=start_offsets,
+        query={
+            SELECT File.FullPath AS BackupFilePath,
+                   StartOffset,
+                   String.Offset + StartOffset AS EndOffset
+              FROM yara(
+                  files=pathspec(
+                      DelegateAccessor='file',
+                      DelegatePath=FilePath,
+                      Path=str(str=StartOffset)
+                  ),
+                  accessor='offset',
+                  rules=MetadataEnd,
+                  end=20971520,
+                  number=1
+              )
+        })
         WHERE Metadata
 
       // =========================      
@@ -171,6 +192,7 @@ sources:
               oib_files_size(Files=Metadata.OibSummary.OibFiles.File) AS ExtractableFilesSize,
               parse_xml(file=Metadata.OibSummary.Storage.AttrPartialPath, accessor='data').Path.Elements AS BackupFile,
               timestamp(string=Metadata.OibSummary.OIB.AttrCreationTimeUtc) AS CreationTimeUTC,
+              timestamp(string=Metadata.OibSummary.OIB.AttrCompletionTimeUtc) AS CompletionTimeUTC,
               humanize(bytes=int(int=Metadata.OibSummary.OIB.AttrApproxSize)) AS ApproximateSize,
               split(string=Metadata.OibSummary.Point.AttrNum, sep='\\.')[0] AS RestorePointNumber,
               restore_point_type[Metadata.OibSummary.Point.AttrType] AS RestorePointType,
@@ -182,7 +204,7 @@ sources:
         FROM xml
       
       // Expanding relevant fields into subfields
-      LET expand_oib = SELECT BackupFilePath, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, HostName, HostInstanceID, JobName, PolicyName, PreviousFileInChain, BackupEncryptionState, VirtualType, ExtractName, ExtractID, ExtractableFilesSize, BackupFile, CreationTimeUTC, ApproximateSize, RestorePointNumber, RestorePointType,
+      LET expand_oib = SELECT BackupFilePath, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, HostName, HostInstanceID, JobName, PolicyName, PreviousFileInChain, BackupEncryptionState, VirtualType, ExtractName, ExtractID, ExtractableFilesSize, BackupFile, CreationTimeUTC, CompletionTimeUTC, ApproximateSize, RestorePointNumber, RestorePointType,
               format(
                   format='%d MiB',
                   args = int(int=TempMemory) || int(int=AuxData.DesktopOibAuxData.SystemConfiguration.RAMInfo.AttrTotalSizeMB)
@@ -209,6 +231,7 @@ sources:
       
       SELECT DisplayName,
              CreationTimeUTC,
+             CompletionTimeUTC,
              ApproximateSize,
              DisksCapacity,
              RestorePointNumber,
