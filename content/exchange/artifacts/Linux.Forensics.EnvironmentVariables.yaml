@@ -1,10 +1,9 @@
-name: Linux.Forensics.EnvironmentVariables.v3
+name: Linux.Forensics.EnvironmentVariables
 author: Idan Beit-Yosef @ ibyf0r3ns1cs
 description: |
   This artifact detects potential persistence mechanisms on Linux systems by analyzing environment variable files and login scripts.  
   Adversaries may modify these files to establish persistence by injecting commands that execute malicious scripts or binaries upon user login or shell initialization.  
   This artifact focuses on identifying such modifications by scanning for environment variable alterations, network utilities, and scripting languages commonly used in attacks.  
-  The globs for file paths can be added using a comma-separated list, and the filters are regex patterns that can be modified as needed to tailor the artifact's detection capabilities.
   
   **MITRE ATT&CK**: [T1546.004](https://attack.mitre.org/techniques/T1546/004/)
 
