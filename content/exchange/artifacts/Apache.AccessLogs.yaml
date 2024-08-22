@@ -12,7 +12,7 @@ type: CLIENT
 
 parameters:
   - name: AccessLogPath
-    default: /{/var/log/httpd,/var/log/apache2,C:/Apache/logs}/{access.log,access_log}*
+    default: /{/var/log/httpd,/var/log/apache2,/var/log/nginx,C:/Apache/logs}/{access.log,access_log}*
 
   - name: ApacheAccessLogGrok
     description: A Grok expression for parsing Apache access log lines.
