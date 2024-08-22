@@ -40,7 +40,7 @@ parameters:
     type: regex
     
   - name: LinuxEnvNetworkUtils
-    default: wget|curl|scp|ssh|nc\s|/usr/bin/nc\s|/bin/nc\s
+    default: wget|curl|scp|ssh|nc\s|/usr/bin/nc\s|/bin/nc\s|https?://[^\s]*
     type: regex
     
   - name: LinuxEnvScripting
