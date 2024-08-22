@@ -1,4 +1,4 @@
-name: Linux.Forensics.EnvironmentVariables
+name: Linux.Forensics.EnvironmentVariables.v3
 author: Idan Beit-Yosef @ ibyf0r3ns1cs
 description: |
   This artifact detects potential persistence mechanisms on Linux systems by analyzing environment variable files and login scripts.  
@@ -17,10 +17,23 @@ reference:
 
 parameters:
   - name: LinuxEnvGlobs
-    default: /home/*/.bashrc,/home/*/.bash_profile,/home/*/.bash_login,/home/*/.profile,/home/*/.zshrc,/etc/profile,/etc/environment,/home/*/.bash_logout
+    type: csv
+    default: |
+      Glob
+      /home/*/.bashrc
+      /home/*/.bash_profile
+      /home/*/.bash_login
+      /home/*/.profile
+      /home/*/.zshrc
+      /etc/profile
+      /etc/environment
+      /home/*/.bash_logout
     
   - name: LoginScriptGlobs
-    default: /etc/profile.d/*.sh
+    type: csv
+    default: |
+        Glob
+        /etc/profile.d/*.sh
     
   - name: LinuxEnvModifiers
     default: ^(export|alias)
@@ -39,7 +52,7 @@ precondition: SELECT OS From info() where OS = 'linux'
 sources:
     - name: ModifierDetection
       query: |
-        LET EnvFiles = SELECT OSPath FROM glob(globs=split(string=LinuxEnvGlobs, sep=","))
+        LET EnvFiles = SELECT OSPath FROM glob(globs=LinuxEnvGlobs.Glob)
         SELECT * FROM foreach(row=EnvFiles,
             query={
                 SELECT Line, OSPath FROM parse_lines(filename=OSPath)
@@ -49,7 +62,7 @@ sources:
 
     - name: NetworkUtilsDetection
       query: |
-        LET EnvFiles = SELECT OSPath FROM glob(globs=split(string=LinuxEnvGlobs, sep=","))
+        LET EnvFiles = SELECT OSPath FROM glob(globs=LinuxEnvGlobs.Glob)
         SELECT * FROM foreach(row=EnvFiles,
             query={
                 SELECT Line, OSPath FROM parse_lines(filename=OSPath)
@@ -59,7 +72,7 @@ sources:
     
     - name: ScriptingDetection
       query: |
-        LET EnvFiles = SELECT OSPath FROM glob(globs=split(string=LinuxEnvGlobs, sep=","))
+        LET EnvFiles = SELECT OSPath FROM glob(globs=LinuxEnvGlobs.Glob)
         SELECT * FROM foreach(row=EnvFiles,
             query={
                 SELECT Line, OSPath FROM parse_lines(filename=OSPath)
@@ -69,8 +82,9 @@ sources:
             
     - name: LoginScriptsDetection
       query: |
-        LET ScriptFiles = SELECT OSPath FROM glob(globs=split(string=LoginScriptGlobs, sep=","))
-        SELECT * FROM foreach(row=ScriptFiles,
-            query={
-                SELECT * from read_file(filenames=OSPath)
-            })
+        SELECT OSPath,upload(file=OSPath) AS Upload FROM glob(globs=LoginScriptGlobs.Glob)
+
+        
+column_types:
+- name: Upload
+  type: preview_upload
