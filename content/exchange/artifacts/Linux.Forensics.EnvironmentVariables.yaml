@@ -1,4 +1,4 @@
-name: Linux.Forensics.EnvironmentVariables.v3
+name: Linux.Forensics.EnvironmentVariables
 author: Idan Beit-Yosef @ ibyf0r3ns1cs
 description: |
   This artifact detects potential persistence mechanisms on Linux systems by analyzing environment variable files and login scripts.  
