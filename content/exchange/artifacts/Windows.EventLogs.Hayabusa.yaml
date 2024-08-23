@@ -12,10 +12,10 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity, Fukusuke Takahashi - @fukusuket
 
 tools:
- - name: Hayabusa-2.16.1
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.16.1/hayabusa-2.16.1-win-x64.zip
-   expected_hash: 1c80c573a9e4f762646910fd5d5c78f7aa1790c1b9ce1510de3bb15893aff52b
-   version: 2.16.1
+ - name: Hayabusa-2.17.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.17.0/hayabusa-2.17.0-win-x64.zip
+   expected_hash: 7ad371b4f567af590edcd3740a939f738aebb56ac1481c1036a031aa46aace28
+   version: 2.17.0
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -73,10 +73,10 @@ parameters:
    description: "Update rules before scanning"
    type: bool
    default: Y
- - name: LowMemoryMode
-   description: "Enable low memory mode"
+ - name: SortEvents
+   description: "Sort events before saving the file"
    type: bool
-   default: Y
+   default: N
  - name: NoisyRules
    description: "Enable rules marked as noisy"
    type: bool
@@ -111,7 +111,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.16.1", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.17.0", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -119,7 +119,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.16.1-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.17.0-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={
@@ -141,7 +141,7 @@ sources:
           "--" + OutputTimeFormat,
           "--threads", str(str=Threads),
           if(condition=OutputFormat = "jsonl", then="-L"),
-          if(condition=LowMemoryMode, then="--low-memory-mode"),
+          if(condition=SortEvents, then="--sort-events"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter"),
           if(condition=TimelineOffset, then="--timeline-offset"),   if(condition=TimelineOffset, then=TimelineOffset),
