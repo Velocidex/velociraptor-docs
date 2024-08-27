@@ -54,7 +54,7 @@ sources:
         LET ActionArg <= if(condition=Action="Logoff console user", then="-o", else=ActionArg)
         LET ActionArg <= if(condition=Action="Reboot", then="-r", else=ActionArg)
         LET ActionArg <= if(condition=Action="Shutdown without poweroff", then="-s", else=ActionArg)
-        LET ActionArg <= if(condition=Action="Turn off monitor", then="-x", else=ActionArg)
+        
         
         LET args <= (
             PSShutdown64bin[0].OSPath,
@@ -74,7 +74,10 @@ sources:
         LET args <= if(condition=Action="Abort", then=(PSShutdown64bin[0].OSPath, "-a"), else=args)
         -- so does lock -l
         LET args <= if(condition=Action="Lock", then=(PSShutdown64bin[0].OSPath, "-l"), else=args)
+        -- monitor shutdown too 
+        LET args <= if(condition=Action="Turn off monitor", then=(PSShutdown64bin[0].OSPath, "-x"), else=args)
         
         LET args <= filter(list=args, regex=".+")
         
         SELECT *, args as command FROM execve(argv=args)
+        
