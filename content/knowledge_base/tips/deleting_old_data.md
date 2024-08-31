@@ -45,3 +45,5 @@ You can automatically delete old collections using the
 ](/artifact_references/pages/server.utils.deletemonitoringdata/)
 artifacts. These are server artifacts which can delete flows and
 monitoring data older than the specified time.
+
+Tags: #configuration #deployment

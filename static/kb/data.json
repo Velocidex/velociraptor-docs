@@ -1,5 +1,17 @@
 [
     {
+        "title": "How to manage storage space on the server",
+        "link": "/knowledge_base/tips/deleting_old_data",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-07-19"
+    },
+    {
         "title": "How do I enable password protected VFS downloads?",
         "link": "/knowledge_base/tips/download_password",
         "tags": [
@@ -346,9 +358,11 @@
         "date": "2022-03-21"
     },
     {
-        "title": "How to manage storage space on the server",
-        "link": "/knowledge_base/tips/deleting_old_data",
-        "tags": [],
+        "title": "Error \"Parameter refers to an unknown artifact\" when collecting a CLIENT artifact",
+        "link": "/knowledge_base/tips/collect_artifact_unknown",
+        "tags": [
+            "vql"
+        ],
         "author": "",
         "author_link": "",
         "author_avatar": "",

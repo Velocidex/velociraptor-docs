@@ -41,17 +41,17 @@ parameters:
      description: Only select flows created before this date. If not set we choose all flows.
      type: timestamp
    - name: CreatorRegex
-     default: "H\\..+"
+     default: "."
      type: regex
      description: |
-       Match flows created by this user (e.g. hunts all start with "H.")
+       Match flows created by this user.
    - name: ReallyDoIt
      type: bool
      description: Does not delete until you press the ReallyDoIt button!
 
 sources:
   - query: |
-        LET DateBefore &lt;= DateBefore || now()
+        LET DateBefore &lt;= DateBefore || timestamp(epoch=now())
         LET hits = SELECT * FROM foreach(row={
             SELECT client_id,
                    os_info.hostname AS hostname

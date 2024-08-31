@@ -20,8 +20,6 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 search|Client search string. Can have the following prefixes: 'label:', 'host:'|string
-start|First client to fetch (0)'|uint64
-count|Maximum number of clients to fetch (1000)'|uint64
 client_id||string
 
 Required Permissions: 

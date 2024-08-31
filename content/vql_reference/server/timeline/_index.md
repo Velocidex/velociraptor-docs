@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 timeline|Name of the timeline to read|string (required)
+components|List of child components to include|list of string
 skip|List of child components to skip|list of string
 start|First timestamp to fetch|Any
 notebook_id|The notebook ID the timeline is stored in.|string

@@ -103,6 +103,9 @@ parameters:
     type: timestamp
     description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
 
+imports:
+  - Windows.Sys.AllUsers
+
 sources:
   - query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
@@ -131,7 +134,7 @@ sources:
                     System.EventID.Value as EventID,
                     System.EventRecordID as EventRecordID,
                     System.Security.UserID as UserSID,
-                    lookupSID(sid=System.Security.UserID) as Username,
+                    LookupSIDCache(SID=System.Security.UserID || "") AS Username,
                     get(field="EventData") as EventData,
                     get(field="UserData") as UserData,
                     get(field="Message") as Message,

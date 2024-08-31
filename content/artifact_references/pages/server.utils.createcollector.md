@@ -31,6 +31,8 @@ parameters:
       - Windows_x86
       - Linux
       - MacOS
+      - MacOSArm
+      - Generic
 
   - name: artifacts
     description: A list of artifacts to collect
@@ -101,6 +103,11 @@ parameters:
     type: int
     description: Compression level (0=no compression).
 
+  - name: opt_concurrency
+    default: "2"
+    type: int
+    description: Number of concurrency queries
+
   - name: opt_format
     default: "jsonl"
     description: Output format (jsonl or csv)
@@ -114,6 +121,11 @@ parameters:
     description: |
       The filename to use. You can expand environment variables as
       well as the following %FQDN% and %TIMESTAMP%.
+
+  - name: opt_collector_filename
+    type: string
+    description: |
+      If used, this option overrides the default filename of the collector being built.
 
   - name: opt_cpu_limit
     default: "0"
@@ -158,6 +170,7 @@ parameters:
             timeout=Timeout,
             password=pass[0].Pass,
             level=Level,
+            concurrency=Concurrency,
             format=Format,
             metadata=ContainerMetadata)
 
@@ -336,6 +349,7 @@ parameters:
           timeout=Timeout,
           password=pass[0].Pass,
           level=Level,
+          concurrency=Concurrency,
           metadata=ContainerMetadata)
 
       LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
@@ -400,9 +414,8 @@ sources:
       LET Target &lt;= tool_name[0].Type
 
       // This is what we will call it.
-      LET CollectorName &lt;= format(
-          format='Collector_%v',
-          args=inventory_get(tool=Target).Definition.filename)
+      LET CollectorName &lt;= opt_collector_filename ||
+          format(format='Collector_%v', args=inventory_get(tool=Target).Definition.filename)
 
       LET CollectionArtifact &lt;= SELECT Value FROM switch(
         a = { SELECT CommonCollections + StandardCollection AS Value
@@ -462,6 +475,7 @@ sources:
                          type="json"
                          ),
                     dict(name="Level", default=opt_level, type="int"),
+                    dict(name="Concurrency", default=opt_concurrency, type="int"),
                     dict(name="Format", default=opt_format),
                     dict(name="OutputPrefix", default=opt_output_directory),
                     dict(name="FilenameTemplate", default=opt_filename_template),
