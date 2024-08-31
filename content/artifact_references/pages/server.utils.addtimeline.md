@@ -24,6 +24,8 @@ parameters:
     description: A query that will be parsed and run.
   - name: Key
     description: Sort column for time
+  - name: MessageColumn
+    description: The name of the column to appear as the message
   - name: RemoveLimit
     description: If specified, we remove the limit clause before adding to the timeline.
     type: bool
@@ -36,6 +38,7 @@ sources:
          notebook_id=NotebookId,
          timeline=Timeline,
          name=ChildName,
+         message_column=MessageColumn,
          query={
            SELECT * FROM query(query=if(condition=RemoveLimit,
              then=regex_replace(re="(?i)LIMIT [0-9]+", replace="", source=Query),

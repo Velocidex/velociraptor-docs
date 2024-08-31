@@ -26,10 +26,11 @@ parameters:
 
 sources:
   - query: |
+      LET Threshold &lt;= timestamp(epoch=now() - AgeSeconds )
       SELECT OSPath, Size, Mtime,
          if(condition=ReadllyDoIt, then=rm(filename=OSPath)) AS Removed
       FROM glob(globs=expand(path=TempGlob))
-      WHERE NOT IsDir AND Mtime &lt; now() - AgeSeconds
+      WHERE NOT IsDir AND Mtime &lt; Threshold
 
 </code></pre>
 

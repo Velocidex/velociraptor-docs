@@ -24,7 +24,6 @@ cocoatime||int64
 mactime|HFS+|int64
 winfiletime||int64
 string|Guess a timestamp from a string|string
-timezone|A default timezone (UTC)|string
 format|A format specifier as per the Golang time.Parse|string
 
 ### Description
@@ -82,6 +81,26 @@ SELECT timestamp(string="8/30/2021 6:01:28 PM",
                  format="1/2/2006 3:04:05 PM")
 FROM scope()
 ```
+
+If the timestamp is ambiguous - i.e. does not specify a timezone
+you can provide a timezone hint using the `PARSE_TZ` VQL
+variable. This will only be used if the timestamp is ambiguous. If
+`PARSE_TZ` is `local` then we use the local timezone on the
+endpoint.
+
+For example:
+
+```vql
+LET PARSE_TZ <= "local"
+
+SELECT timestamp(string="Thu Aug 29 2024 21:03"),
+       timestamp(string="Thu Aug 29 2024 21:03 CEST")
+FROM scope()
+```
+
+The first timestamp will be parsed according to the local timezone
+because it is ambiguous. However, the second timestamp is not
+ambiguous and `PARSE_TZ` has no effect.
 
 Internally VQL uses Golang's
 [time.Time](https://golang.org/pkg/time/#Time) object to represent

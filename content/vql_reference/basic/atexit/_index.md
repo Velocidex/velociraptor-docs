@@ -19,7 +19,8 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-query|A VQL Query to parse and execute.|Any (required)
+query|A VQL Query to parse and execute.
+|Any (required)
 env|A dict of args to insert into the scope.|ordereddict.Dict
 timeout|How long to wait for destructors to run (default 60 seconds).|uint64
 

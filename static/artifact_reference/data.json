@@ -433,7 +433,7 @@
     },
     {
         "title": "Linux.Debian.Packages",
-        "description": "Parse dpkg status file.",
+        "description": "List all packages installed on the system, both deb packages and \"snaps\".\nThe installed deb package information is fetched from the DPKG status file,\nwhile the snap package list is fetched from the snap daemon through a UNIX\nsocket HTTP call (since detailed snap package information is not easily\nin files).",
         "link": "/artifact_references/pages/linux.debian.packages",
         "type": "client",
         "tags": [
@@ -498,15 +498,6 @@
         "title": "Linux.Forensics.Journal",
         "description": "Parses the binary journal logs. Systemd uses a binary log format to\nstore logs. You can read these logs using journalctl command:",
         "link": "/artifact_references/pages/linux.forensics.journal",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Linux.KapeFiles.CollectFromDirectory",
-        "description": "\nKape is a popular bulk collector tool for triaging a system\nquickly. While KAPE itself is not an opensource tool, the logic it\nuses to decide which files to collect is encoded in YAML files\nhosted on the KapeFiles project\n(https://github.com/EricZimmerman/KapeFiles) and released under an\nMIT license.",
-        "link": "/artifact_references/pages/linux.kapefiles.collectfromdirectory",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -801,6 +792,15 @@
         ]
     },
     {
+        "title": "Linux.Utils.InstallDeb",
+        "description": "Install a deb package and configure it with debconf answers. The package\nmay either be specified by name or be an uploaded file. If the package\nalready exists, it may be optionally reconfigured with debconf answers.\n",
+        "link": "/artifact_references/pages/linux.utils.installdeb",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "LogScale.Events.Clients",
         "description": "This server side event monitoring artifact will watch a selection of client\nmonitoring artifacts for new events and push those to a LogScale (formerly\nHumio) ingestion endpoint",
         "link": "/artifact_references/pages/logscale.events.clients",
@@ -999,6 +999,15 @@
         ]
     },
     {
+        "title": "Notebooks.Timelines",
+        "description": "The notebook creates a default Super-Timeline.",
+        "link": "/artifact_references/pages/notebooks.timelines",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
         "title": "Notebooks.VQLx2",
         "description": "A notebook initialized with 2 VQL cells\n",
         "link": "/artifact_references/pages/notebooks.vqlx2",
@@ -1189,7 +1198,7 @@
     },
     {
         "title": "Server.Import.ArtifactExchange",
-        "description": "This artifact will automatically import the latest\nartifact exchange bundle into the current server.\n",
+        "description": "This artifact will automatically import the latest artifact\nexchange bundle into the current server.",
         "link": "/artifact_references/pages/server.import.artifactexchange",
         "type": "server",
         "tags": [
@@ -1341,6 +1350,15 @@
         ]
     },
     {
+        "title": "Server.Internal.ClientScheduled",
+        "description": "This event will be fired when a client was sent flows to process.\n",
+        "link": "/artifact_references/pages/server.internal.clientscheduled",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
         "title": "Server.Internal.ClientTasks",
         "description": "This event will be fired when a client has new tasks scheduled.\n",
         "link": "/artifact_references/pages/server.internal.clienttasks",
@@ -1467,6 +1485,15 @@
         ]
     },
     {
+        "title": "Server.Internal.TimelineAdd",
+        "description": "This artifact will fire whenever a timeline is added to a super\ntimeline. You can use this to monitor for users adding timelines and\nforward them to an external timeline system (e.g. TimeSketch)\n",
+        "link": "/artifact_references/pages/server.internal.timelineadd",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Server.Internal.ToolDependencies",
         "description": "An internal artifact that defines some tool\ndepenencies. Velociraptor releases for offline collector",
         "link": "/artifact_references/pages/server.internal.tooldependencies",
@@ -1551,6 +1578,15 @@
         "title": "Server.Monitoring.ScheduleHunt",
         "description": "Run client interrogation periodically. This is a sample event\nartifact to schedule a hunt periodically. You can change it to\nlaunch other artifacts.\n",
         "link": "/artifact_references/pages/server.monitoring.schedulehunt",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitoring.TimesketchUpload",
+        "description": "This artifact will automatically upload any Velociraptor timelines to Timesketch.\n",
+        "link": "/artifact_references/pages/server.monitoring.timesketchupload",
         "type": "server_event",
         "tags": [
             "Server Event Artifact"
@@ -1666,7 +1702,7 @@
     },
     {
         "title": "Server.Utils.CreateMSI",
-        "description": "Build an MSI ready for deployment in the current org.\n",
+        "description": "Build an MSI ready for deployment in the current org.",
         "link": "/artifact_references/pages/server.utils.createmsi",
         "type": "server",
         "tags": [
@@ -1770,6 +1806,15 @@
         "type": "client",
         "tags": [
             "Client Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.TimesketchUpload",
+        "description": "Timesketch is an interactive collaborative timeline analysis tool\nthat can be found at https://timesketch.org/",
+        "link": "/artifact_references/pages/server.utils.timesketchupload",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
         ]
     },
     {
@@ -2073,15 +2118,6 @@
         "title": "Windows.Carving.USN",
         "description": "Carve URN Journal records from the disk.",
         "link": "/artifact_references/pages/windows.carving.usn",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Windows.Carving.USNFiles",
-        "description": "The USN journal is an important source of information about when\nfiles were manipulated on a system.",
-        "link": "/artifact_references/pages/windows.carving.usnfiles",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2674,7 +2710,7 @@
     },
     {
         "title": "Windows.Forensics.RDPCache",
-        "description": "This artifact views and enables simplified upload of RDP \ncache files. ",
+        "description": "This artifact parses, views and enables simplified upload of RDP \ncache files. ",
         "link": "/artifact_references/pages/windows.forensics.rdpcache",
         "type": "client",
         "tags": [
@@ -2781,6 +2817,15 @@
         ]
     },
     {
+        "title": "Windows.KapeFiles.Remapping",
+        "description": "This artifact automates the rebuilding of remapping rules to be\nable to easily post process the results of the\nWindows.KapeFiles.Targets.",
+        "link": "/artifact_references/pages/windows.kapefiles.remapping",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.KapeFiles.Targets",
         "description": "\nKape is a popular bulk collector tool for triaging a system\nquickly. While KAPE itself is not an opensource tool, the logic it\nuses to decide which files to collect is encoded in YAML files\nhosted on the KapeFiles project\n(https://github.com/EricZimmerman/KapeFiles) and released under an\nMIT license.",
         "link": "/artifact_references/pages/windows.kapefiles.targets",
@@ -2791,7 +2836,7 @@
     },
     {
         "title": "Windows.Memory.Acquisition",
-        "description": "Acquires a full memory image. We download winpmem and use it to\nacquire a full memory image.",
+        "description": "Acquires a full memory image using the built in WinPmem driver.",
         "link": "/artifact_references/pages/windows.memory.acquisition",
         "type": "client",
         "tags": [

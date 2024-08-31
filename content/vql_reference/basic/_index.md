@@ -21,7 +21,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 {{% /notice %}}
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
-|[array](array)|<span class='vql_type'>Function</span>|Create an array with all the args|
+|[array](array)|<span class='vql_type'>Function</span>|Create an array|
 |[atexit](atexit)|<span class='vql_type'>Function</span>|Install a query to run when the query is unwound|
 |[atoi](atoi)|<span class='vql_type'>Function</span>|Convert a string to an integer|
 |[base64decode](base64decode)|<span class='vql_type'>Function</span>|Decodes a base64 encoded string|

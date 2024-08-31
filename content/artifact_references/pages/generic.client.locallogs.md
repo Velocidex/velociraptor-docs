@@ -37,6 +37,16 @@ parameters:
   description: |
     By default we do not forward any of the logs to the server but
     this allows logs to be forwarded as well as written locally.
+- name: Component
+  default: generic
+  description: The log component to forward (default "generic")
+  type: choices
+  choices:
+    - generic
+    - client
+    - frontend
+    - gui
+    - api
 
 sources:
 - query: |
@@ -47,7 +57,7 @@ sources:
        filename=expand(path=LocalFilename),
        query={
          SELECT timestamp(epoch=now()) AS Timestamp, *
-         FROM logging(component="client")
+         FROM logging(component=Component)
        })
      WHERE AlsoForward
 
