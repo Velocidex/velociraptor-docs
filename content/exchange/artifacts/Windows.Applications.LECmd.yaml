@@ -10,7 +10,7 @@ type: CLIENT
 
 tools:
   - name: LECmd
-    url: https://f001.backblazeb2.com/file/EricZimmermanTools/LECmd.zip
+    url: https://download.mikestammer.com/net6/LECmd.zip
     
 parameters:
   - name: sourceFile
