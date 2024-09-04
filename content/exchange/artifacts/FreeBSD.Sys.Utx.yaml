@@ -65,10 +65,10 @@ sources:
       LET UtxContent = SELECT parse_json(data=Stdout) as Content FROM UtxParsing
       
       -- pull out the interesting information from the nested json content
+      LET s = scope() -- a little helper to suppress "symbol not found error" for elements of the content that are sometimes missing
       LET FormatedContent = SELECT * FROM foreach(row=UtxContent,
       query={
-        -- the if-blocks are added because some Symbols are not present in each row, creating ugly errors in the flow if naively selected
-        SELECT user, timestamp(string=`login-time`) AS login_time, if(condition={SELECT * FROM scope() WHERE `logout-time`},then=`logout-time`,else="") AS logout_time, if(condition={SELECT * FROM scope() WHERE `session-length`},then=`session-length`,else="") AS session_length, if(condition={SELECT * FROM scope() WHERE tty},then=tty,else="") AS tty, if(condition={SELECT * FROM scope() WHERE `from`},then=`from`,else="") AS remote, Content.`last-information`.utxdb AS utx_log FROM foreach(row=Content.`last-information`.last)
+        SELECT user, timestamp(string=`login-time`) AS login_time, s.`logout-time` AS logout_time, s.`session-length` AS session_length, s.tty AS tty, s.`from` AS remote, Content.`last-information`.utxdb AS utx_log FROM foreach(row=Content.`last-information`.last)
       })
       
       SELECT * FROM FormatedContent WHERE
