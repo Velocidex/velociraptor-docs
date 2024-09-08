@@ -12,8 +12,7 @@ type: CLIENT
 
 tools:
   - name: JLECmd
-    url: https://f001.backblazeb2.com/file/EricZimmermanTools/JLECmd.zip
-    expected_hash: 10bc3698867be7c707500afc01c45c44b6a0439d14e04477e08b76d95c87255c
+    url: https://download.mikestammer.com/net6/JLECmd.zip
     version: 1.5.0
 
 
