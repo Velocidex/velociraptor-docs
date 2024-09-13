@@ -33,5 +33,7 @@ Required Permissions:
 
 ### Description
 
-Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.
+Upload a file to an upload directory. The final filename will be
+the output directory path followed by the filename path.
+
 

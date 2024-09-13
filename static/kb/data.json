@@ -1,5 +1,16 @@
 [
     {
+        "title": "Error \"Parameter refers to an unknown artifact\" when collecting a CLIENT artifact",
+        "link": "/knowledge_base/tips/collect_artifact_unknown",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2024-08-31"
+    },
+    {
         "title": "How to manage storage space on the server",
         "link": "/knowledge_base/tips/deleting_old_data",
         "tags": [
@@ -356,16 +367,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "Error \"Parameter refers to an unknown artifact\" when collecting a CLIENT artifact",
-        "link": "/knowledge_base/tips/collect_artifact_unknown",
-        "tags": [
-            "vql"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

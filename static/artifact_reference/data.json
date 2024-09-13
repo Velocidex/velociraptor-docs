@@ -1800,12 +1800,30 @@
         ]
     },
     {
+        "title": "Server.Utils.RemoveTimeline",
+        "description": "Remove a child timeline from a super timeline.\n",
+        "link": "/artifact_references/pages/server.utils.removetimeline",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.SaveFavoriteFlow",
         "description": "Users may collect various artifacts from hosts. Sometimes it might\ntake a bit of effort to setup and configure just the perfect\ncombination of parameters and artifacts to collect.",
         "link": "/artifact_references/pages/server.utils.savefavoriteflow",
         "type": "client",
         "tags": [
             "Client Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.StartHuntExample",
+        "description": "This example artifact shows how to create a utility artifact to\nprovide low privileged users with a controlled ability to perform\nhigh privileged operations.",
+        "link": "/artifact_references/pages/server.utils.starthuntexample",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
         ]
     },
     {

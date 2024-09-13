@@ -17,6 +17,9 @@ parser.add_argument('--reference_data', help='Path the the reference data.json t
 
 def CleanTypes(definitions):
     for item in definitions:
+        if item["type"] == "Accessor":
+            item["category"] = "accessors"
+
         for arg in item.get("args", []):
             arg["type"] = arg["type"].replace(
                 "vfilter.", "").replace("accessors.OSPath", "OSPath")

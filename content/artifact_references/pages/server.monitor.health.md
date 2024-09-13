@@ -106,7 +106,7 @@ reports:
 
       ## Server version
 
-      {{ Query "SELECT Version FROM config" | Table }}
+      {{ Query "SELECT server_version FROM config" | Table }}
 
 </code></pre>
 
