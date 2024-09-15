@@ -326,7 +326,7 @@
             {
                 "name": "query",
                 "type": "Any",
-                "description": "A VQL Query to parse and execute.\n",
+                "description": "A VQL Query to parse and execute.",
                 "required": true
             },
             {
@@ -415,6 +415,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "auto",
+        "description": "Access the file using the best accessor possible.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "backup",
@@ -581,6 +591,16 @@
         ]
     },
     {
+        "name": "bzip2",
+        "description": "Access the content of bzip2 files.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "cache",
         "description": "Creates a cache object.",
         "type": "Function",
@@ -680,7 +700,8 @@
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -1140,6 +1161,26 @@
         ]
     },
     {
+        "name": "collector",
+        "description": "Open a collector zip file as if it was a directory - automatically\nexpand sparse files.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "collector_sparse",
+        "description": "Open a collector zip file as if it was a directory.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "column_filter",
         "description": "Select columns from another query using regex.",
         "type": "Plugin",
@@ -1495,6 +1536,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "data",
+        "description": "Makes a string appears as an in memory file.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "delay",
@@ -2001,6 +2052,16 @@
         ]
     },
     {
+        "name": "ewf",
+        "description": "Allow reading an `EWF` file.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "execve",
         "description": "This plugin launches an external command and captures its STDERR,\nSTDOUT and return code. The command's stdout is split using the `sep`\nparameter as required.",
         "type": "Plugin",
@@ -2068,6 +2129,25 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "ext4",
+        "description": "Access files by parsing the raw ext4 filesystems.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "fat",
+        "description": "Access the FAT filesystem inside an image by parsing FAT.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "favorites_delete",
@@ -2169,6 +2249,35 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "file",
+        "description": "Access files using the operating system's API.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "file_links",
+        "description": "Access the filesystem using the OS APIs.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "file_nocase",
+        "description": "Access files using the operating system's API.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "file_store",
@@ -2854,6 +2963,16 @@
         ]
     },
     {
+        "name": "gzip",
+        "description": "Access the content of gzip files.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "handles",
         "description": "Enumerate process handles.\n",
         "type": "Plugin",
@@ -3480,7 +3599,7 @@
             {
                 "name": "client_id",
                 "type": "string",
-                "description": "The client id to import to. Use 'auto' to generate a new client id."
+                "description": "The client id to import to. Use 'auto' to generate a new client id or use the host info from the collection."
             },
             {
                 "name": "hostname",
@@ -3672,6 +3791,11 @@
         "description": "Format an IP address.",
         "type": "Function",
         "args": [
+            {
+                "name": "parse",
+                "type": "string",
+                "description": "Parse the IP as an IPv4 or IPv6 address."
+            },
             {
                 "name": "netaddr4_le",
                 "type": "int64",
@@ -3933,6 +4057,15 @@
         ]
     },
     {
+        "name": "lazy_ntfs",
+        "description": "Access the NTFS filesystem by parsing NTFS structures.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "len",
         "description": "Returns the length of an object.",
         "type": "Function",
@@ -4025,7 +4158,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -4161,6 +4295,9 @@
                 "description": "Enable verbose logging."
             }
         ],
+        "metadata": {
+            "permissions": "COLLECT_SERVER"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4468,6 +4605,16 @@
         ]
     },
     {
+        "name": "me",
+        "description": "Access files bundled inside the Velociraptor binary itself.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "memoize",
         "description": "Memoize a query into memory.",
         "type": "Function",
@@ -4503,6 +4650,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "mft",
+        "description": "The `mft` accessor is used to access arbitrary MFT streams as\nfiles.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "min",
@@ -4762,6 +4919,16 @@
         ]
     },
     {
+        "name": "mscfb",
+        "description": "Parse a MSCFB file as an archive.\n",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "netcat",
         "description": "Make a tcp connection and read data from a socket.",
         "type": "Plugin",
@@ -5004,7 +5171,8 @@
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -5071,6 +5239,34 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "ntfs",
+        "description": "Access the NTFS filesystem by parsing NTFS structures.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "ntfs_vss",
+        "description": "Access the NTFS filesystem by considering all VSS.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "offset",
+        "description": "Allow reading another file from a specific offset.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "olevba",
@@ -6381,7 +6577,17 @@
     },
     {
         "name": "pipe",
-        "description": "A pipe allows plugins that use files to read data from a vql\nquery. This is needed to be able to use the \"pipe\" accessor.",
+        "description": "Read from a VQL pipe.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "pipe",
+        "description": "A pipe allows plugins that use files to read data from a vql\nquery.",
         "type": "Function",
         "args": [
             {
@@ -6645,6 +6851,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "process",
+        "description": "Access process memory like a file.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "process_tracker",
@@ -7106,6 +7322,16 @@
         ]
     },
     {
+        "name": "ranged",
+        "description": "Reconstruct sparse files from idx and base",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "rate",
         "description": "Calculates the rate (derivative) between two quantities.",
         "type": "Function",
@@ -7131,6 +7357,46 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "raw_ext4",
+        "description": "Access the Ext4 filesystem inside an image by parsing the image.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "raw_file",
+        "description": "Access the filesystem using the OS API.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "raw_ntfs",
+        "description": "Access the NTFS filesystem inside an image by parsing NTFS.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "raw_reg",
+        "description": "Access keys and values by parsing a raw registry hive.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "read_crypto_file",
@@ -7271,6 +7537,15 @@
         ]
     },
     {
+        "name": "reg",
+        "description": "Access the registry like a filesystem using the OS APIs.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "reg_rm_key",
         "description": "Removes a key and all its values from the registry.",
         "type": "Function",
@@ -7409,6 +7684,15 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "registry",
+        "description": "Access the registry like a filesystem using the OS APIs.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "rekey",
@@ -7647,6 +7931,16 @@
         ]
     },
     {
+        "name": "s3",
+        "description": "Access S3 Buckets.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "sample",
         "description": "Executes 'query' and samples every n'th row.",
         "type": "Plugin",
@@ -7672,6 +7966,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "scope",
+        "description": "Present the content of a scope variable as a file.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "scope",
@@ -7990,7 +8294,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -8050,6 +8355,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "smb",
+        "description": "Access smb shares (e.g. Windows shares).",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "source",
@@ -8139,6 +8454,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "sparse",
+        "description": "Allow reading another file by overlaying a sparse map on top of\nit.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "split",
@@ -8439,6 +8764,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "ssh",
+        "description": "Access a remote system's filesystem via `SSH/SFTP`.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "starl",
@@ -8848,20 +9183,26 @@
             {
                 "name": "timeline",
                 "type": "string",
-                "description": "Supertimeline to add to. If a super timeline does not exist, creates a new one.",
+                "description": "Supertimeline to delete.",
                 "required": true
             },
             {
                 "name": "notebook_id",
                 "type": "string",
                 "description": "The notebook ID the timeline is stored in."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name/Id of child timeline to delete. If not specified deletes the entire timeline"
             }
         ],
         "metadata": {
             "permissions": "NOTEBOOK_EDITOR"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -8879,7 +9220,8 @@
             "permissions": "READ_RESULTS"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -8944,7 +9286,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -9233,7 +9576,7 @@
     },
     {
         "name": "upload_directory",
-        "description": "Upload a file to an upload directory. The final filename will be the output directory path followed by the filename path.",
+        "description": "Upload a file to an upload directory. The final filename will be\nthe output directory path followed by the filename path.\n",
         "type": "Function",
         "args": [
             {
@@ -9869,7 +10212,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -9980,6 +10324,16 @@
         ]
     },
     {
+        "name": "vfs",
+        "description": "Access client's VFS filesystem on the server.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "vfs_ls",
         "description": "List directory and build a VFS object.",
         "type": "Plugin",
@@ -10017,6 +10371,25 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "vhdx",
+        "description": "Allow reading a vhdx file.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "vmdk",
+        "description": "Allow reading a vmdk file.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "watch_auditd",
@@ -10382,6 +10755,15 @@
     },
     {
         "name": "winpmem",
+        "description": "Access physical memory like a file. Any filename will result in a sparse view of physical memory.",
+        "type": "Accessor",
+        "platforms": [
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "winpmem",
         "description": "Uses the `winpmem` driver to take a memory image.",
         "type": "Function",
         "args": [
@@ -10735,7 +11117,28 @@
         ],
         "platforms": [
             "darwin_arm64_cgo",
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "zip",
+        "description": "Open a zip file as if it was a directory.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "zip_nocase",
+        "description": "Open a zip file as if it was a directory.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     }
 ]

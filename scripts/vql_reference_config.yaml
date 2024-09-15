@@ -129,3 +129,12 @@ content/vql_reference/misc/_index.md:
     Miscellaneous plugins not yet categorized.
   weight: 70
   category: ""
+
+content/vql_reference/accessors/_index.md:
+  title: Accessors
+  linktitle: Accessors
+  description: |
+    Accessors are used to access bulk data from various sources using
+    a standard file like interface.
+  weight: 80
+  category: "accessors"

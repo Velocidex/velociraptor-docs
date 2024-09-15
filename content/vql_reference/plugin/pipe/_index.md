@@ -26,7 +26,11 @@ sep|The separator that will be used to split each read (default: no separator wi
 ### Description
 
 A pipe allows plugins that use files to read data from a vql
-query. This is needed to be able to use the "pipe" accessor.
+query.
+
+**NOTE: this is not the same as a windows named pipe**.
+
+This is needed to be able to use the "pipe" accessor.
 
 ### Example
 
