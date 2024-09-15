@@ -9,12 +9,11 @@ tags:
 
 author: "Mike Cohen"
 date: 2024-10-10
-hidden: true
+noindex: true
 ---
 
 I am very excited to announce that the latest Velociraptor release
-0.72 is now available. You can also watch a video walkthrough of this
-post here https://www.youtube.com/watch?v=FwmFYmTQxeA
+0.73 is now in release candidate.
 
 In this post I will discuss some of the interesting new features.
 
