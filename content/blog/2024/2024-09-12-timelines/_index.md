@@ -64,7 +64,7 @@ additional tools than a simple spreadsheet:
   information in a third column.
 
   The purpose of this step is to assign semantic interpretation of
-  noteworthy events so explain how they are relevant to the case.
+  noteworthy events to explain how they are relevant to the case.
 
 An example of such a manual approach is
 
@@ -128,7 +128,7 @@ In this case I will directly collect artifacts from the endpoint in
 question. I search for the hostname and select it for interactive
 triage.
 
-Usually at the start of an incident I don't really know what happens
+Usually at the start of an incident I don't really know what happened
 or where to start. I like to start of with some Sigma rules as curated
 by the `Windows.Hayabusa.Rules` artifact. This artifact is maintained
 by the separate [Velociraptor Curated
@@ -161,15 +161,16 @@ want to see what **kind** of rules matched to get an overview of what
 happened. I can then drill down into each hit to identify the
 important ones.
 
-This processing is called `Stacking`. Velociraptor has an inbuilt
-stacking feature within the GUI - this is available on any table!
+This type of processing is called `Stacking`. Velociraptor has an
+inbuilt stacking feature within the GUI - it is available on any
+table!
 
 ![Stacking hits by Title](hayabusa_stack_1.svg)
 
 First I sort by one of the table columns - This will select the column
 I want to stack on. In this case, I will sort by the Rule Title. Once
 the table is sorted, the GUI shows the stacking button. Clicking the
-stacking button shows the stacking dialog for this table.
+stacking button shows the stacking overview for this table.
 
 ![Inspecting unique rules](hayabusa_stack_2.svg)
 
@@ -181,10 +182,10 @@ matches to see if they are relevant to the case.
 In the above, I immediately see some interesting rules matched! Lets
 consider the rule `Windows Defender Real-time Protection
 Disabled`. This event matched twice in the logs but it is usually a
-strong signal.
+strong signal so I want to drill down on it.
 
-I will click the Link icon in the stacking table to explore the
-specific times this rule matched.
+If I click the Link icon in the stacking table, I will be able to
+explore the specific times this rule matched.
 
 ![Specific instances when Defender was disabled](hayabusa_stack_defender_disabled.svg)
 
@@ -195,7 +196,7 @@ stage can help to put a timeline on the incident.
 
 For our purposes we can narrow the time of interest to shortly before
 `2024-09-12` and this helps us quickly focus on events after that time
-(in a real case will be more exhaustive in checking for possible
+(in a real case, I will be more exhaustive in checking for possible
 earliest compromise)
 
 I will then reduce the table to all events after `2024-09-12` by
@@ -204,7 +205,7 @@ at high and critical level events, and remove rules which usually
 produce too many false positives.
 
 This reduces the number of events to consider from over 18,000 to
-about 100 events that I can manually review.
+about 100 high confidence events that I can manually review.
 
 ![Reducing data](hayabusa_reduced.svg)
 
@@ -408,7 +409,6 @@ time series into a unique table.
 
 ![Exporting the annotations](annotations_export.svg)
 
-
 ### The Timeline workflow
 
 To summarize, the general workflow is illustrated below
@@ -421,3 +421,22 @@ order to identify high value events.
 
 The aim is to reduce the total number of events that are added to the
 timeline in order to make it easier to review them.
+
+Ultimately the product of the timeline exercise is to simply obtain
+the `Annotation` time series. This contains the manually reviewed and
+annotated set of events to explain the progression of the incident.
+
+## Conclusions
+
+Timeline analysis is an important part of many investigations. The
+emerging Velociraptor built in timeline feature is a useful tool to
+assist in the analysis and reporting of incident timelines.
+
+If you like to try this new feature, take [Velociraptor for a
+spin](https://github.com/Velocidex/velociraptor)!  It is available on
+GitHub under an open source license. As always please file issues on
+the bug tracker or ask questions on our mailing list
+[velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
+. You can also chat with us directly on discord
+[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+.
