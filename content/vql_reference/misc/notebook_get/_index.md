@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 notebook_id|The id of the notebook to fetch|string (required)
+verbose|Include more information|bool
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">READ_RESULTS</i>

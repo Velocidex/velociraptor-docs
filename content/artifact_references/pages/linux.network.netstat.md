@@ -19,7 +19,7 @@ type: CLIENT
 parameters:
    - name: StateRegex
      type: regex
-     default: "Listening|Established"
+     default: "LISTEN|ESTAB"
      description: Only show these states
 
 sources:

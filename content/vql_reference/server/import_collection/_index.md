@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-client_id|The client id to import to. Use 'auto' to generate a new client id.|string
+client_id|The client id to import to. Use 'auto' to generate a new client id or use the host info from the collection.|string
 hostname|When creating a new client, set this as the hostname.|string
 filename|Path on server to the collector zip.|string (required)
 accessor|The accessor to use.|string

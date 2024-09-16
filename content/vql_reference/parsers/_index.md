@@ -40,7 +40,7 @@ plugins so their results may be used in further queries.
 |[parse_records_with_regex](parse_records_with_regex)|<span class='vql_type'>Plugin</span>|Parses a file with a set of regexp and yields matches as records|
 |[parse_recyclebin](parse_recyclebin)|<span class='vql_type'>Plugin</span>|Parses a $I file found in the $Recycle|
 |[parse_string_with_regex](parse_string_with_regex)|<span class='vql_type'>Function</span>|Parse a string with a set of regex and extract fields|
-|[parse_usn](parse_usn)|<span class='vql_type'>Plugin</span>|Parse the USN journal from a device|
+|[parse_usn](parse_usn)|<span class='vql_type'>Plugin</span>|Parse the USN journal from a device, image file or USN file|
 |[parse_x509](parse_x509)|<span class='vql_type'>Function</span>|Parse a DER encoded x509 string into an object|
 |[parse_xml](parse_xml)|<span class='vql_type'>Function</span>|Parse an XML document into a dict like object|
 |[parse_yaml](parse_yaml)|<span class='vql_type'>Function</span>|Parse yaml into an object|

@@ -25,7 +25,7 @@ parameters:
 
 tools:
   - name: PSniper
-    url: https://github.com/last-byte/PersistenceSniper/releases/download/v1.15.0/PersistenceSniper.zip
+    url: https://github.com/last-byte/PersistenceSniper/releases/download/v1.16.1/PersistenceSniper.zip
   - name: DiffCSVUrl
     url: https://raw.githubusercontent.com/ablescia/Windows.PersistenceSniper/main/false_positives.csv
 

@@ -19,6 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
+parse|Parse the IP as an IPv4 or IPv6 address.|string
 netaddr4_le|A network order IPv4 address (as little endian).|int64
 netaddr4_be|A network order IPv4 address (as big endian).|int64
 
@@ -30,12 +31,34 @@ Converts an ip address encoded in various ways. If the IP address is
 encoded as 32 bit integer we can use netaddr4_le or netaddr4_be to
 print it in a human readable way.
 
-This currently does not support IPv6 addresses. Those are usually
-encoded as an array of 8 bytes which makes it easy to format using the
-`format()` function:
+This function wraps the Golang net.IP library
+(https://pkg.go.dev/net#IP ). This makes it easy to deal with
+various IP address notations. Some use cases:
 
-```vql
-  format(format="%x:%x:%x:%x:%x:%x:%x:%x", value)
+## Example - Parse IPv4-mapped IPv6 addresses
+
+```sql
+SELECT ip(parse='0:0:0:0:0:FFFF:129.144.52.38') FROM scope()
 ```
+
+Will return the string "129.144.52.38"
+
+## Example - Get information about IP addresses
+
+VQL will also expose the following attributes of the IP address:
+
+- `IsGlobalUnicast`
+- `IsInterfaceLocalMulticast`
+- `IsLinkLocalMulticast`
+- `IsLinkLocalUnicast`
+- `IsLoopback`
+- `IsMulticast`
+- `IsPrivate`
+
+```sql
+SELECT ip(parse='192.168.1.2').IsPrivate FROM scope()
+```
+
+Return "true" since this is a private address block.
 
 

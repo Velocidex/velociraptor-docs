@@ -43,7 +43,7 @@ reports:
       {{ define "CPU" }}
           SELECT _ts as Timestamp,
               CPUPercent,
-              MemoryUse / 1048576 AS MemoryUse,
+              int(int=MemoryUse / 1048576) AS MemoryUse_Mb,
               TotalFrontends
           FROM source(source="Prometheus",
                       start_time=StartTime, end_time=EndTime,
@@ -106,7 +106,7 @@ reports:
 
       ## Server version
 
-      {{ Query "SELECT Version FROM config" | Table }}
+      {{ Query "SELECT server_version FROM config" | Table }}
 
 </code></pre>
 

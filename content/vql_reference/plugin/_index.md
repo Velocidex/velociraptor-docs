@@ -76,4 +76,3 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[upload_s3](upload_s3)|<span class='vql_type'>Function</span>|Upload files to S3|
 |[whoami](whoami)|<span class='vql_type'>Function</span>|Returns the username that is running the query|
 |[write_csv](write_csv)|<span class='vql_type'>Plugin</span>|Write a query into a CSV file|
-|[yara](yara)|<span class='vql_type'>Plugin</span>|Scan files using yara rules|

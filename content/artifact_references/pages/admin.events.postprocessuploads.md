@@ -37,6 +37,7 @@ required_permissions:
 
 parameters:
   - name: uploadPostProcessCommand
+    type: json_array
     description: |
       The command to run - must be a json array of strings! The list
       of files will be appended to the end of the command.
@@ -51,8 +52,7 @@ parameters:
 sources:
   - query: |
         LET files = SELECT Flow,
-            array(a1=parse_json_array(data=uploadPostProcessCommand),
-                  a2=file_store(path=Flow.uploaded_files)) as Argv
+            uploadPostProcessCommand + file_store(path=Flow.uploaded_files) AS Argv
         FROM watch_monitoring(artifact='System.Flow.Completion')
         WHERE uploadPostProcessArtifact in Flow.artifacts_with_results
 

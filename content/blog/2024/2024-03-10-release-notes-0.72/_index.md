@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.72 Release"
 description: |
-   Velociraptor Release 0.72 is now in release candidate status.
+   Velociraptor Release 0.72 is now in full release.
    This post discusses some of the new features.
 
 tags:
