@@ -101,7 +101,7 @@ This makes it easier to ensure that colors used in future match those used in th
 
 This file is an Excalidraw library containing reusable shape objects for our drawings.
 
-![](library.excalidrawlib)
+![library.excalidrawlib](library.excalidrawlib)
 
 If you find or create objects that you think will be useful in future drawings then please add them to this library, save the changes and commit the updated version back to the repo.
 
