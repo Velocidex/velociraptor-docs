@@ -43,7 +43,7 @@ For **unannotated screenshots** we use the PNG format since it has lossless comp
 
 ## Fonts
 
-The standard Excalidraw version uses a default font named Virgil which is too scrawly and therefore a bit hard to read. (as discussed [here](https://github.com/excalidraw/excalidraw/issues/2945).
+The standard Excalidraw version uses a default font named Virgil which is too scrawly and therefore a bit hard to read (as discussed [here](https://github.com/excalidraw/excalidraw/issues/2945)).
 The default fonts are not able to be changed without editing the application's source, and the Excalidraw developers have stated disinterest in make custom fonts possible.
 
 Fortunately there exists a reasonably well-maintained fork which allows adding custom fonts
