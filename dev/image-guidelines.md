@@ -152,6 +152,8 @@ For full screenshots use one of the following 2 sizes:
 ![](image-guidelines/screen_size.png)
 *These particular constrained sizes can be configured as presets in Chrome's "dev tools" for quick access.*
 
+![](image-guidelines/fullscreen.png)
+
 ### Velociraptor theme
 
 For consistency, and to avoid confusing new users, we use a single GUI theme for all screenshots: the **Velociraptor Light** theme which is the default for new installations.
