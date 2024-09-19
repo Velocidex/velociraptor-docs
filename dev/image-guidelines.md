@@ -43,10 +43,10 @@ For **unannotated screenshots** we use the PNG format since it has lossless comp
 
 ## Fonts
 
-The standard Excalidraw version uses a default font named Virgil which is too scrawly and therefore a bit hard to read (as discussed [here](https://github.com/excalidraw/excalidraw/issues/2945)) and not serious enough for our purpose.
+The official Excalidraw version uses a default font named "Virgil" (or "Excalifont") which is too scrawly and therefore a bit hard to read (as discussed [here](https://github.com/excalidraw/excalidraw/issues/2945)) and not serious enough for our purpose.
 
-The default fonts are not able to be changed without editing the application's source, and the Excalidraw developers have stated disinterest in make custom fonts possible.
-Fortunately there exists a reasonably well-maintained fork which allows adding custom fonts:
+The default fonts are not able to be changed without editing the application's source, and the Excalidraw developers have made no firm commitment to making custom fonts possible even though this is a highly requested feature.
+Fortunately there exists a reasonably well-maintained fork which allow does adding custom fonts:
 
 - https://github.com/hulkbig/excalidraw-zh
 
@@ -65,9 +65,12 @@ Excalidraw has provision for only 3 font variants at a time, so we assign them a
 | playpen-sans-v13-latin-800 |    Heading font    |         "Normal"         |
 | SVBasicManual              |     Code font      |          "Code"          |
 
-Here is how our fonts allocations compare to the default ones:
+Visually this is how our font allocations compare to the default ones:
 
 ![](image-guidelines/excalidraw_default_fonts.png)
+
+In our case the hand-drawn font _is_ our default/normal font.
+We assign our heading font to their "normal font" slot because Excalidraw doesn't have any options for bolding or italicizing fonts.
 
 We host the font files on our documentation site so that our SVG images can load them.
 
@@ -112,6 +115,7 @@ This file is an Excalidraw library containing reusable shape objects for our dra
 
 If you find or create objects that you think will be useful in future drawings then please add them to this library, save the changes and commit the updated version back to the repo.
 
+![](image-guidelines/library.png)
 
 ## Screenshots
 
@@ -121,7 +125,7 @@ While we may do our daily work on screens with high display resolutions,
 the documentation will likely be read on smaller displays or possibly even printed.
 It needs to be legible on typical screens without a magnifying glass or zooming in.
 
-Ideally we want screenshots in the documentation to have a comfortably low resolution.
+Ideally we want screenshots in the documentation to have a comfortably low resolution such that text easily legible without any zooming.
 This can be achieved by either:
 
 - only showing the part of the screen that the user needs to see.
@@ -131,12 +135,18 @@ These are explained below.
 
 #### Partial screens
 
-Screenshots that show only part of the screen area are relatively straightforward.
+##### Framing
 
-![](image-guidelines/screen_partial.png)
+When screenshotting only a part of the screen then it's important to anchor it by including some familiar element like part of the header or sidebar. Unless a previous screenshot has already provided that spacial/navigational context.
 
-A useful trick in Chrome Dev Tools is that you can right-click on a DOM element and capture an image of just that element.
-![](image-guidelines/node_screenshot.png)
+![](image-guidelines/anchors.png)
+
+Capturing screenshots that show only part of the screen area are relatively straightforward and many tools are capable of doing this.
+
+> [!TIP]
+> A useful trick in Chrome Dev Tools is that you can right-click on a DOM element and capture an image of just that element.
+> 
+> ![](image-guidelines/node_screenshot.png)
 
 #### Full screens
 
@@ -147,7 +157,7 @@ Velociraptor's GUI is not a fully responsive web application but it's layout rem
 For full screenshots use one of the following 2 sizes:
 
 - 1280x960 (preferred)
-- 1600x1200 (if needed to show wide table content)
+- 1600x1200 (only if needed to show wide table content or some other specific reason)
 
 ![](image-guidelines/screen_size.png)
 *These particular constrained sizes can be configured as presets in Chrome's "dev tools" for quick access.*
@@ -161,33 +171,14 @@ For consistency, and to avoid confusing new users, we use a single GUI theme for
 #### Theme tweaks
 
 While screenshots do need to depict the actual application UI, it's reasonable to tweak some aspects to make the screenshots a bit clearer for documentation purposes.
-These may include:
+
 1. using a slightly heavier font weight: 500 rather than 400. On Windows the fonts seem to render slightly lighter for some unknown reason.
 2. using pure black or white as the text color instead of lower contrast tones.
 3. reducing the opacity of the modal backdrop so that items in the background are not excessively dimmed
-4. deleting misbehaving or obscuring elements from the DOM if necessary.
-5. adding a glow effect via CSS to focus the reader on a specific element.
 
-Points 1-3 can be patched into the GUI's CSS and compiled to make a documentation-specific binary. A patch is provided in this folder named `documentation_tweaks_{commit_id}.patch`
+We have a special theme named "Standard Docs", expressly for making screenshots, which applies these tweaks on top of the Velociraptor Light theme. 
 
-A glow effect (point 5) around GUI elements can be achieved by applying this CSS to the DOM elements in "dev tools".
-
-Background color may be turned off if it isn't needed or produces a bad result. It's purpose is to fill in rounded corners behind the element being highlighted.
-
-Z-index is only sometimes needed for elements such as buttons when an adjacent element has a z-index property set that causes it to overlay the glow. This property ensures that the glow effect is at the top.
-
-```css
-box-shadow: 0px 0px 10px 5px rgba(34,139,230,0.9);
-
-background-color: rgba(34,139,230,0.9);
-z-index: 1000;
-```
-
-![](image-guidelines/highlight_element.png)
-*Example: applying a glow effect to a DOM element*
-
-![](image-guidelines/element_highlight.png)
-*Example of random elements highlighted with a glow effect*
+![](image-guidelines/docs-theme.png)
 
 ### Annotations
 
@@ -212,8 +203,8 @@ These are available in our [Excalidraw object library](#excalidraw-object-librar
 The above example also shows that a semi-transparent rectangle can be placed behind text to make it more legible if it overlays a dark area of background.
 
 - If you're using numbered callouts simply to indicate a navigation sequence then you may not need to add any descriptions.
-- If the callout numbers are explained/referenced in your written content then descriptions in the image are unnecessary.
-- The arrow is also optional if the placement makes it's clear enough what the numbering is associated with. A good way to make this association clear is by adding a glow effect to the GUI element and place the number close to it.
+- If the callout numbers are explained/referenced in your written content then descriptions in the image may be unnecessary.
+- The arrow is also optional if the placement makes it's clear enough what the numbering is associated with. A good way to make this association clear is by drawing a square or rectangle around the element and placing the number so that it touches the shape.. Example below.
 
 ![](image-guidelines/screen_partial.png)
 
@@ -252,11 +243,11 @@ The diagram heading is made bold by choosing our #2 font which is the same font 
 
 We export our images to SVG format, and not PNG.
 
-When exporting images from Excalidraw we include "Background" which ensures that the background is not transparent (i.e. an opaque white background) plus a small margin around it.
+When exporting images from Excalidraw we include "Background" which ensures that the background is not transparent (i.e. an opaque white background) plus adds a small margin around it.
 
 For SVG exports the Scale setting is irrelevant to quality: the embedded screenshot will be base64-encoded at it's original size, even if you've scaled the screenshot on the Excalidraw canvas. The image dimensions are related to the vector layer and if this is resized by the web server then the embedded raster image will be scaled to match.
 
-You should resize the screenshot so that it's comfortable to work with on the canvas at 100% zoom. When exported at 1x scale the SVG will be sized at the dimensions of a bounding box around the elements on your canvas. The line thicknesses and font sizes are relative to your canvas.
+You should resize the screenshot so that it's comfortable to work with on the canvas at 100% zoom because this represents the view that the reader will see (without needing to zoom in). When exported at 1x scale the SVG will be sized at the dimensions of a bounding box around the elements on your canvas. The line thicknesses and font sizes are relative to your canvas.
 
 ![](image-guidelines/embedded-image-scaling.png)
 
