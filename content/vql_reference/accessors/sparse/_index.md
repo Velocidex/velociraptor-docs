@@ -16,7 +16,7 @@ no_edit: true
 
 ### Description
 
-Allow reading another file by overlaying a sparse map on top of
+Allows reading another file by overlaying a sparse map on top of
 it.
 
 The map excludes reading from certain areas which are considered

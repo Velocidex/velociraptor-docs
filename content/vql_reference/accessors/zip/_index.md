@@ -21,7 +21,7 @@ Open a zip file as if it was a directory.
 Filename is a pathspec with a delegate accessor opening the Zip file,
 and the Path representing the file within the zip file.
 
-## Example
+### Example
 
 ```vql
 SELECT OSPath, Mtime, Size from glob(

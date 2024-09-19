@@ -86,4 +86,4 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[utf16](utf16)|<span class='vql_type'>Function</span>|Parse input from utf16|
 |[utf16_encode](utf16_encode)|<span class='vql_type'>Function</span>|Encode a string to utf16 bytes|
 |[uuid](uuid)|<span class='vql_type'>Function</span>|Generate a UUID|
-|[version](version)|<span class='vql_type'>Function</span>||
+|[version](version)|<span class='vql_type'>Function</span>|Gets the version of a VQL plugin or function|

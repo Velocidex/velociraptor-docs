@@ -59,7 +59,7 @@ This is especially useful when we need to filter rows from a hunt
 - each client's result set will be filtered in parallel on a
 different core.
 
-### Example:
+### Example
 
 ```vql
 SELECT * FROM parallelize(hunt_id=HuntId, artifact=ArtifactName, query={

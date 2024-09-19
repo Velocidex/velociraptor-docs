@@ -35,6 +35,7 @@ whitespace is stripped.
 ```vql
 strip(string=">>  lorem ipsum  <<", prefix=">>", suffix="<<") -> "  lorem ipsum  "
 ```
+
 ```vql
 strip(string="   lorem ipsum   ") -> "lorem ipsum"
 ```

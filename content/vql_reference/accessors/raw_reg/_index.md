@@ -22,7 +22,7 @@ Path is a OSPath having delegate opening the raw registry hive.
 
 For example we can search the raw registry for the System hive:
 
-```sql
+```vql
 SELECT OSPath
 FROM glob(globs='*',
     accessor="raw_reg",

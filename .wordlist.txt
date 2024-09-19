@@ -1567,3 +1567,6 @@ Misspelled words:
 --------------------------------------------------------------------------------
 Timelining
 timelining
+CLI
+Plaso
+TimesketchUpload

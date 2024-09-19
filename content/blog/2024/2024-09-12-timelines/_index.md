@@ -426,6 +426,110 @@ Ultimately the product of the timeline exercise is to simply obtain
 the `Annotation` time series. This contains the manually reviewed and
 annotated set of events to explain the progression of the incident.
 
+## Integration with third party timelining tools
+
+Since the timeline workflow is so central to DFIR there are a number
+of popular timelining tools out there. Probably the most popular is
+[Timesketch](hhttps://timesketch.org/) - a collaborative timeline
+analysis tool developed by the DFIR team at Google.
+
+Many people use Timesketch in conjunction with
+[Plaso](https://github.com/log2timeline/plaso) which is a timeline
+based analysis engine for forensic bulk files (e.g. event logs,
+filesystem metadata etc). The two tools are usually used in a pipeline
+where Plaso extracts many time related events from various triaged
+artifacts, storing them in the Timesketch database. This usually
+results in millions of events - for example each MFT entry contains 16
+distinct timestamps, leading to 16 distinct timeline events.
+
+In practice most of these events are not relevant and cloud the
+analysis process by bombarding the user with many irrelevant
+events. Users then use Timesketch itself to perform filtering and
+analysis in order to remove the irrelevant data.
+
+This "Kitchen Sink" approach means that timeline becomes the main tool
+for filtering and querying large events (with many irrelevant
+fields). Contrast this with Velociraptor's "targeted" approach as
+descried above, where pre-filtering and data shaping/enriching occurs
+**before** the data is ingested into the timeline.
+
+We believe that Velociraptor's "targeted" approach is superior than
+the "Kitchen Sink" approach, but it does require a mindset shift and
+for investigators to modify their processes.
+
+Nevertheless, Timesketch is an excellent tool with many users already
+very familiar with it. Timesketch itself does not actually require
+Plaso at all and can also be used in a targeted way. In fact it is
+possible to feed any time series data to Timesketch.
+
+Velociraptor supports integrating with Timesketch using the
+`Server.Utils.TimesketchUpload` artifact.  This artifact uploads
+Velociraptor's timelines to Timesketch using the Timesketch client
+library. The artifact assumes the client library is installed and
+configured on the server.
+
+To install the Timesketch client library:
+```
+pip install timesketch-import-client timesketch-cli-client
+```
+
+To configure the client library to access your Timesketch instance
+see instructions https://timesketch.org/guides/user/cli-client/ and
+https://timesketch.org/guides/user/upload-data/
+
+This artifact assumes that the timesketch CLI is preconfigured with
+the correct credentials in the `.timesketchrc` file.
+
+You can use this artifact to manually upload any Velociraptor timeline
+data to Timeline by simply specifying the `notebook_id`, the
+`supertimeline` and the `timeline` names. The Artifact will prepare
+automatically create a sketch if required with the same name as the
+Supertimeline, and add a timeline to it with the same name as the
+timeline name provided.
+
+### Automatic Timesketch uploads
+
+While `Server.Utils.TimesketchUpload` allows uploading timeline to
+Timesketch it requires manual intervention. This makes it more complex
+to use and increases friction.
+
+We can automate timeline exports using the
+`Server.Monitoring.TimesketchUpload` server monitoring artifact. This
+artifact watches for any timelines added on the server and
+automatically exports them to Timesketch in the background. This means
+that the user does not need to think about it - all timelines created
+within Velociraptor will automatically be added to Timesketch.
+
+![Configuring the Server.Monitoring.TimesketchUpload artifact](configure_timesketch_export.svg)
+
+To install the `Server.Monitoring.TimesketchUpload` server monitoring
+artifact, select `Server Events` in the sidebar, then click the
+`Update Server Monitoring Table` button. Search for
+`Server.Monitoring.TimesketchUpload` and configure its parameters.
+
+The artifact allows for finer control over which timelines to are to
+be exported - For example, maybe only timelines with a name that
+starts with `Timesketch` will be exported.
+
+Finally the path on the server to the timesketch client library tool
+is required - this is the external binary we call to upload the actual
+data.
+
+![Automating Timesketch Import](automating_timesketch_import.svg)
+
+Once the server monitoring artifact is configured it simply waits
+until a user adds a timeline to a Supertimeline in Velociraptor, as
+described above. When that happens the timeline is automatically added
+to Timesketch into a sketch named the same as the Velociraptor
+Supertimeline.
+
+    ![Viewing timelines in Timesketch](timesketch_view.svg)
+
+As can be seen in the screenshot above, the same targeted timelines
+are exported to Timesketch. This is most useful for existing
+Timesketch users who are wish to continue using their usual timelining
+tool in a more targeted way by pre-processing data in Velociraptor.
+
 ## Conclusions
 
 Timeline analysis is an important part of many investigations. The

@@ -81,7 +81,7 @@ directory - i.e. the glob pattern is appended to the root
 parameter.  The `root` parameter is useful if the directory name
 itself may contain glob characters.
 
-## Following symlinks
+### Following symlinks
 
 On Unix like operating systems symlinks are used
 extensively. Symlinks complicate the job of the glob() plugin
@@ -93,7 +93,7 @@ By default glob() follows symlinks but also checks for cycles by
 checking that a target of a symlink has not been seen before. You
 can disable this behavior with `nosymlink=TRUE`
 
-## Setting a recursion callback
+### Setting a recursion callback
 
 Sometimes it is useful to prevent glob() from recursing into a
 directory. For example, if we know a directory can not possibly
@@ -115,7 +115,7 @@ SELECT * FROM glob(globs='/**/*.pem',
     recursion_callback="x=>NOT x.OSPath =~ '^/(proc|sys|snap)'")
 ```
 
-## A note about escaping.
+### A note about escaping.
 
 Windows paths often contain backslashes which are difficult to
 work with because they need to be escaped both by regular
@@ -125,7 +125,7 @@ This means that trying to add a recursion callback will expand
 each backslash into 8 backslashes (once for regular expressions
 and twice for nested strings).
 
-```sql
+```vql
 SELECT * FROM glob(
   globs="C:/Users/*/*",
   recursion_callback="x=> NOT x.OSPath =~ 'C:\\\\\\\\Users\\\\\\\\Admini'")
@@ -133,7 +133,7 @@ SELECT * FROM glob(
 
 It is a bit easier to use variables and raw strings
 
-```sql
+```vql
 LET Exclude <= '''C:\\Users\\Admin'''
 
 SELECT * FROM glob(

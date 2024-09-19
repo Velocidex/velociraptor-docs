@@ -1,5 +1,15 @@
 [
     {
+        "title": "FreeBSD.Sys.Utx",
+        "author": "Herbert-Karl",
+        "description": "Parse the utx file of the system (similar to wtmp on Linux). This covers user sessions, boots, shutdowns and system time changes.\nBecause FreeBSD discards fields for the entries of the utx file based on type (see `man getutxent`), no direct parsing of the file using \"vtypes\" is done (too complicated for me to define a structure for parsing), but rather native tools are used for accessing the data.",
+        "link": "/exchange/artifacts/pages/freebsd.sys.utx",
+        "tags": [],
+        "author_link": "https://github.com/Herbert-Karl",
+        "author_avatar": "https://avatars.githubusercontent.com/u/34774005?v=4",
+        "date": "2024-09-08"
+    },
+    {
         "title": "Server.Hunt.Comparison",
         "author": "DenKi42",
         "description": "This artifact is used to compare other artifacts from two different hunts. The basic idea is that a baseline (Hunt 1) is created from selected artifacts before an attack. A second hunt (Hunt 2) can then be carried out after the attack using the same artifacts. Now, using this script, artifacts from both hunts can be compared. This allows legitimate activities to be filtered out and makes it easier to identify malicious activities in Hunt2.",

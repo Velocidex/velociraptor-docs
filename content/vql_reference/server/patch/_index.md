@@ -19,9 +19,9 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-item|The item to path|Any (required)
-patch|A JSON Patch to apply|Any
-merge|A merge-patch to apply|Any
+item|The item to patch|Any (required)
+patch|A JSON patch to apply|Any
+merge|A merge patch to apply|Any
 
 ### Description
 
@@ -37,6 +37,7 @@ example, consider the client event monitoring state.
 ```vql
 SELECT get_client_monitoring() FROM scope()
 ```
+
 ```json
 [
   {

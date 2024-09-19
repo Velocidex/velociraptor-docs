@@ -16,13 +16,13 @@ no_edit: true
 
 ### Description
 
-Allow reading an `EWF` file.
+Allow reading an EWF file.
 
 Note that usually EWF files form a set of files with extensions
 like .E01, .E02 etc. This accessor will automatically try to find
 all parts of the same volume set if the file name ends with a '.E01'.
 
-## Example
+### Example
 
 ```vql
 SELECT * FROM glob(

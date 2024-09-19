@@ -37,7 +37,7 @@ entry including listing all its attributes.
 It can either operate on an image file or the raw device (on
 windows), or alternatively you can provide a raw $MFT file.
 
-### Example:
+### Example
 
 ```vql
 SELECT parse_ntfs(
@@ -49,7 +49,7 @@ FROM scope()
 You can get the MFT entry number from `parse_mft()` or from the
 Data attribute of a `glob()` using the `ntfs` accessor.
 
-### Example 2: Using a raw $MFT file
+### Example - Using a raw $MFT file
 
 If you have previously collected the $MFT file (e.g. using the
 `Windows.KapeFiles.Targets` artifact, you can use `parse_ntfs()`

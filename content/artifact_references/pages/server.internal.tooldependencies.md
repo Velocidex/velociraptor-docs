@@ -5,7 +5,7 @@ tags: [Client Artifact]
 ---
 
 An internal artifact that defines some tool
-depenencies. Velociraptor releases for offline collector
+dependencies. Velociraptor releases for offline collector
 
 NOTE: Do not modify - this artifact is generated during build in magefile.go
 
@@ -14,7 +14,7 @@ NOTE: Do not modify - this artifact is generated during build in magefile.go
 name: Server.Internal.ToolDependencies
 description: |
   An internal artifact that defines some tool
-  depenencies. Velociraptor releases for offline collector
+  dependencies. Velociraptor releases for offline collector
 
   NOTE: Do not modify - this artifact is generated during build in magefile.go
 

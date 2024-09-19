@@ -40,7 +40,7 @@ example is to extract a file from a zip file using the `zip`
 accessor into a file on disk.
 
 This function can also be used to create new files with prescribed
-content - for example:
+content, for example:
 
 ```vql
 SELECT copy(filename="Hello world", accessor="data", dest="C:/hi.txt")

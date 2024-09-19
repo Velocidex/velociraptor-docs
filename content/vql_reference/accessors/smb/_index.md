@@ -29,7 +29,7 @@ level directory). The accessor then looks up the relevant
 credentials from the `SMB_CREDENTIALS` dict. This allows multiple
 servers and multiple credentials to be defined at the same time.
 
-## Example:
+### Example
 
 ```
 LET SMB_CREDENTIALS <= dict(ServerName="Username:Password")

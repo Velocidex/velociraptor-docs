@@ -459,6 +459,15 @@
         ]
     },
     {
+        "title": "Linux.Events.Journal",
+        "description": "Watches the binary journal logs. Systemd uses a binary log format to\nstore logs.\n",
+        "link": "/artifact_references/pages/linux.events.journal",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
         "title": "Linux.Events.ProcessExecutions",
         "description": "This artifact collects process execution logs from the Linux kernel.",
         "link": "/artifact_references/pages/linux.events.processexecutions",
@@ -496,7 +505,7 @@
     },
     {
         "title": "Linux.Forensics.Journal",
-        "description": "Parses the binary journal logs. Systemd uses a binary log format to\nstore logs. You can read these logs using journalctl command:",
+        "description": "Parses the binary journal logs. Systemd uses a binary log format to\nstore logs.\n",
         "link": "/artifact_references/pages/linux.forensics.journal",
         "type": "client",
         "tags": [
@@ -1261,7 +1270,7 @@
     },
     {
         "title": "Server.Information.Clients",
-        "description": "This artifact returns the total list of clients, their hostnames and\nthe last times they were seen.",
+        "description": "This artifact returns the total list of clients, their hostnames and\nthe last times they were seen.\n",
         "link": "/artifact_references/pages/server.information.clients",
         "type": "server",
         "tags": [
@@ -1495,7 +1504,7 @@
     },
     {
         "title": "Server.Internal.ToolDependencies",
-        "description": "An internal artifact that defines some tool\ndepenencies. Velociraptor releases for offline collector",
+        "description": "An internal artifact that defines some tool\ndependencies. Velociraptor releases for offline collector",
         "link": "/artifact_references/pages/server.internal.tooldependencies",
         "type": "client",
         "tags": [
@@ -1830,6 +1839,15 @@
         "title": "Server.Utils.TimesketchUpload",
         "description": "Timesketch is an interactive collaborative timeline analysis tool\nthat can be found at https://timesketch.org/",
         "link": "/artifact_references/pages/server.utils.timesketchupload",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.UploadTools",
+        "description": "Velociraptor can use external tools to deploy binaries on the\nendpoint for some artifacts that require it. Usually these binaries\nare automatically downloaded by the server when required. However,\nsometimes a server is deployed on an air gapped network, or has\negress filtering implemented such that the server is unable to\ndownload binaries on demand.",
+        "link": "/artifact_references/pages/server.utils.uploadtools",
         "type": "server",
         "tags": [
             "Server Artifact"

@@ -33,7 +33,7 @@ Velociraptor uses the concept of a Virtual File System to manage the
 information about clients etc. The VFS path is a path into the file
 store. Of course ultimately (at least in the current implementation)
 the file store is storing files on disk, but the disk filename is not
-necessarily the same as the VFS path (for example non representable
+necessarily the same as the VFS path (for example non-representable
 characters are escaped).
 
 You can use the `file_store()` function to return the real file path

@@ -28,9 +28,9 @@ not be properly represented by JSON. Sometimes the filename is
 echoed in various log messages and with the `data` accessor this
 will echo some binary data into the logs.
 
-## Example
+### Example
 
-```sql
+```vql
 LET MyData <= "This is a test string"
 
 SELECT read_file(accessor="scope", filename="MyData") FROM scope()

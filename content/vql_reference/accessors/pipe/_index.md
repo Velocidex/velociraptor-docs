@@ -23,7 +23,7 @@ Read from a VQL pipe.
 A VQL pipe allows data to be generated from a VQL query, as the
 pipe is read, the query proceeds to feed more data to it.
 
-## Example
+### Example
 
 ```vql
 LET MyPipe = pipe(query={

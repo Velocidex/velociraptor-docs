@@ -42,7 +42,7 @@ from a long time before the roll over.
 
 This plugin can take a long time!
 
-Example:
+### Example
 
 ```vql
 SELECT * FROM carve_usn(device='''\\.\C:''')
