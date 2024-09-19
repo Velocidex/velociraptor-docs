@@ -12,6 +12,7 @@ It specifies some informal standards and gives some tool-specific advice with th
 * [Screenshots](#screenshots)
    * [Screen size](#screen-size)
       * [Partial screens](#partial-screens)
+         * [Framing](#framing)
       * [Full screens](#full-screens)
    * [Velociraptor theme](#velociraptor-theme)
       * [Theme tweaks](#theme-tweaks)
