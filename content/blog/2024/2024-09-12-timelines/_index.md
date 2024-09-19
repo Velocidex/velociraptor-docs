@@ -17,7 +17,7 @@ date: 2024-09-12
 {{% notice note "Pre-release feature" %}}
 
 This feature will be available in the upcoming 0.73 release. You can
-[try it right now](https://github.com/Velocidex/velociraptor?tab=readme-ov-file#getting-the-latest-version) and provide valuable feedback.
+[try it right now](https://github.com/Velocidex/velociraptor/releases/tag/v0.73) and provide valuable feedback.
 
 {{% /notice %}}
 
@@ -106,7 +106,7 @@ The important takeaways from this example are:
 ## Case study: Ransomware intrusion
 
 To illustrate how a timeline can be used in a typical DFIR
-investigation, lets consider a simple (if contrived) case study:
+investigation, let's consider a simple (if contrived) case study:
 Ransomware deployment on an endpoint.
 
 ### Step 1: Create a global notebook
@@ -117,9 +117,9 @@ while cells can contain markdown text or VQL queries to evaluate.
 
 I will start off by create a global notebook to hold the timeline.
 
-![Creating a notebook from a template](new_notebook_timeline_1.svg)
+{{< figure src="new_notebook_timeline_1.svg" caption="Creating a notebook from a template" >}}
 
-![An empty timeline notebook](new_notebook_timeline_2.svg)
+{{< figure caption="An empty timeline notebook" src="new_notebook_timeline_2.svg" >}}
 
 
 ### Step 2: Collect some artifacts!
@@ -143,8 +143,7 @@ false positives with the probability of missing a detection. However,
 in the triage context, I really want to see all rules - including ones
 that are noisy and produce a lot of false positives.
 
-
-![Configuring the Sigma artifacts](hayabusa_parameters.svg)
+{{< figure caption="Configuring the Sigma artifacts" src="hayabusa_parameters.svg" >}}
 
 Therefore in this case I will choose to evaluate **All** the rules on
 the endpoint. The artifact will then evaluate all rules against each
@@ -165,14 +164,14 @@ This type of processing is called `Stacking`. Velociraptor has an
 inbuilt stacking feature within the GUI - it is available on any
 table!
 
-![Stacking hits by Title](hayabusa_stack_1.svg)
+{{< figure caption="Stacking hits by Title" src="hayabusa_stack_1.svg" >}}
 
 First I sort by one of the table columns - This will select the column
 I want to stack on. In this case, I will sort by the Rule Title. Once
 the table is sorted, the GUI shows the stacking button. Clicking the
 stacking button shows the stacking overview for this table.
 
-![Inspecting unique rules](hayabusa_stack_2.svg)
+{{< figure caption="Inspecting unique rules" src="hayabusa_stack_2.svg" >}}
 
 Stacking is a common technique to view aggregation of data quickly. I
 allows us to see what **kind** of rules matches in this case, and how
@@ -187,7 +186,7 @@ strong signal so I want to drill down on it.
 If I click the Link icon in the stacking table, I will be able to
 explore the specific times this rule matched.
 
-![Specific instances when Defender was disabled](hayabusa_stack_defender_disabled.svg)
+{{< figure caption="Specific instances when Defender was disabled" src="hayabusa_stack_defender_disabled.svg" >}}
 
 I see a match in 2023 and one in 2024. In practice a lot of false
 positives will occur, or even evidence of previous compromise
@@ -207,7 +206,7 @@ produce too many false positives.
 This reduces the number of events to consider from over 18,000 to
 about 100 high confidence events that I can manually review.
 
-![Reducing data](hayabusa_reduced.svg)
+{{< figure caption="Reducing data" src="hayabusa_reduced.svg" >}}
 
 ### Adding to the timeline.
 
@@ -254,7 +253,7 @@ running commentary of what happened.
 Let's add our Sigma analysis to the timeline. Within the Reduced Sigma
 table, click `Add to Timeline`.
 
-![Adding a table to a super timeline timeline](add_timeline_1.svg)
+{{< figure caption="Adding a table to a super timeline timeline" src="add_timeline_1.svg" >}}
 
 The `Add Timeline` dialog allows us to create a timeline, add it to a
 supertimeline and configure how events are created from the current
@@ -283,7 +282,7 @@ table:
 After the reduced Sigma timeline is added, I can see the timeline
 notebook updated.
 
-![The Supertimeline UI](timeline_sigma.svg)
+{{< figure caption="The Supertimeline UI" src="timeline_sigma.svg" >}}
 
 Following is a description of the UI:
 
@@ -321,12 +320,12 @@ When an event seems important, it can be annotated. Annotating an
 event will copy it into a special time series within the
 `Supertimeline` called `Annotation`.
 
-![Annotating an event](timeline_annotation.svg)
+{{< figure caption="Annotating an event" src="timeline_annotation.svg" >}}
 
 The annotation should contain an explanation as to why this event is
 relevant to the case.
 
-![The annotated event](timeline_annotation_2.svg)
+{{< figure caption="The annotated event" src="timeline_annotation_2.svg" >}}
 
 The annotated event is added to a separate timeline, which may be
 enabled or disabled similarly as the other time series. This allows us
@@ -338,10 +337,9 @@ As I collect other artifacts, I can get more information about the
 case:
 
 1. Collecting the `Windows.Sys.Users` artifact enumerates the local
-   users on the system, and estimates the time that the user first
+   users on the system, and estimates the time that the user last
    logged into the system by reporting the Modified time on the User's
-   profile registry keys and home directory modification time (This
-   indicates when the user last logged into the system).
+   profile registry keys and home directory modification time.
 
    I reduce the data to show the Home directory modification time
    (Last time the user logged into the account).
@@ -398,7 +396,7 @@ FROM source(artifact="Windows.System.TaskScheduler/Analysis")
 WHERE Mtime > "2024-09-12"
 ```
 
-![The complete timeline with annotations](supertimeline.svg)
+{{< figure caption="The complete timeline with annotations" src="supertimeline.svg" >}}
 
 ### Exporting the annotations
 
@@ -407,13 +405,20 @@ table for reporting purposes. The `Timeline` notebook template
 provides a second cell that when recalculated exports the `Annotation`
 time series into a unique table.
 
-![Exporting the annotations](annotations_export.svg)
+{{< figure caption="Exporting the annotations" src="annotations_export.svg" >}}
+
+I now can see what the attackers did. Once they logged in as
+Administrator, they Disabled Windows Defender, Added a second admin
+user account. Then they logged in as that account, created a scheduled
+task for persistence, disabled the Bits client logs and then
+downloaded `PsExec.exe` renamed to `foo.exe`. Finally the attackers
+ran `whoami` and used ping to establish network connectivity.
 
 ### The Timeline workflow
 
 To summarize, the general workflow is illustrated below
 
-![The general timeline workflow](workflow.svg)
+{{< figure caption="The general timeline workflow" src="workflow.svg" >}}
 
 As we collect artifact from a group of hosts in a hunt, or
 individually from specific clients, we post process the results in
@@ -500,7 +505,7 @@ automatically exports them to Timesketch in the background. This means
 that the user does not need to think about it - all timelines created
 within Velociraptor will automatically be added to Timesketch.
 
-![Configuring the Server.Monitoring.TimesketchUpload artifact](configure_timesketch_export.svg)
+{{< figure caption="Configuring the Server.Monitoring.TimesketchUpload artifact" src="configure_timesketch_export.svg" >}}
 
 To install the `Server.Monitoring.TimesketchUpload` server monitoring
 artifact, select `Server Events` in the sidebar, then click the
@@ -515,7 +520,7 @@ Finally the path on the server to the timesketch client library tool
 is required - this is the external binary we call to upload the actual
 data.
 
-![Automating Timesketch Import](automating_timesketch_import.svg)
+{{< figure caption="Automating Timesketch Import" src="automating_timesketch_import.svg" >}}
 
 Once the server monitoring artifact is configured it simply waits
 until a user adds a timeline to a Supertimeline in Velociraptor, as
@@ -523,7 +528,7 @@ described above. When that happens the timeline is automatically added
 to Timesketch into a sketch named the same as the Velociraptor
 Supertimeline.
 
-    ![Viewing timelines in Timesketch](timesketch_view.svg)
+{{< figure caption="Viewing timelines in Timesketch" src="timesketch_view.svg" >}}
 
 As can be seen in the screenshot above, the same targeted timelines
 are exported to Timesketch. This is most useful for existing
