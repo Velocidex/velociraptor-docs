@@ -796,3 +796,12 @@ figure div.figure img {
 .featherlight .featherlight-content img {
     margin: 0 auto !important;
 }
+
+.image-link {
+    padding-right: 20px;
+    color: var(--REFERENCE-value-color);
+}
+
+.image-link:hover {
+    color: var(--REFERENCE-value-color);
+}
