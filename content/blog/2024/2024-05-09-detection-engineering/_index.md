@@ -71,7 +71,7 @@ the basic principals are similar (collect logs, normalize logs into a
 schema, forward to data mining system and then query the data) the
 specifics are very different.
 
-{{< figure src="edr_env.svg" >}}
+![](edr_env.svg)
 
 ## The Sigma Rule format
 
@@ -90,7 +90,7 @@ detection rules. These rules are then fed to specialized `Sigma
 Compilers` to produce stack specific queries for difference SIEM
 vendors.
 
-{{< figure src="sigma_architecture.svg" >}}
+![](sigma_architecture.svg)
 
 Sigma addresses the differences between the detection stacks by
 introducing abstractions at various levels:
@@ -457,7 +457,7 @@ sections:
    event log files.
 3. A mapping between Sigma rules and their corresponding event fields.
 
-{{< figure caption="Velociraptor Sigma Workflow" src="velociraptor_sigma_flow.svg" >}}
+![Velociraptor Sigma Workflow](velociraptor_sigma_flow.svg)
 
 
 ## Velociraptor curated rules

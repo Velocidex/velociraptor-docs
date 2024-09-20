@@ -61,7 +61,7 @@ refresh the client's event tables.
 When any of these produce rows, the client streams the events to the
 server which in turn, writes them to the filestore.
 
-{{< figure caption="Client Event Architecture" src="client_events_arch.svg" >}}
+![Client Event Architecture](client_events_arch.svg)
 
 
 ## Installing client event queries.
