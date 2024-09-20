@@ -45,7 +45,7 @@ artifact. Rules are categorized by `RuleLevel` and `RuleStatus` which
 generally try to balance how noisy a rule against its detection
 efficacy.
 
-![Sigma workflow in Velociraptor](velociraptor_sigma_flow.png)
+![Sigma workflow in Velociraptor](velociraptor_sigma_flow.svg)
 
 Because we are trying to triage the endpoint, we actually want to see
 all the hits, even if they are noisy. We will apply stacking later to

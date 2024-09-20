@@ -212,7 +212,7 @@ only matching events are forwarded to the server. This minimizes the
 total amount of data that needs to be managed by the server to only
 high value, relevant events that already match the Sigma rules.
 
-![Velociraptor Sigma Workflow](velociraptor_sigma_flow.png)
+![Velociraptor Sigma Workflow](velociraptor_sigma_flow.svg)
 
 The above figure outlines the Velociraptor Sigma workflow:
 
