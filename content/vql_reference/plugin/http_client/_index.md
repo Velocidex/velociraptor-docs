@@ -97,7 +97,7 @@ content of the HTTP request into it and then emit a row with
 `Content` being the name of the file. The file will be
 automatically removed when the query ends.
 
-### Example: Uploading files
+### Example - Uploading files
 
 Many API handlers support uploading files via POST messages. This
 is supported using the `files` parameter for this plugin. The

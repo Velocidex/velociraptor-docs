@@ -28,6 +28,7 @@ path_type|Type of path (e.g. windows, linux)|string
 Return the basename of the path.
 
 ### Example
+
 ```vql
 basename(path="/foo/bar") -> "bar"
 ```

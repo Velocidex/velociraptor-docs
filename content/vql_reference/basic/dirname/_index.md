@@ -28,6 +28,7 @@ path_type|Type of path (e.g. windows, linux)|string
 Return the directory path.
 
 ### Example
+
 ```vql
 dirname(path="/usr/bin/ls") -> "/usr/bin"
 ```

@@ -26,7 +26,7 @@ component of the file is the device number to open (e.g. `C:`)
 This accessor does not support directories and so can not be used
 in `glob()`
 
-An example of using this artifact:
+### Example
 
 ```vql
 SELECT upload(accessor="mft", filename="C:/203-128-0")

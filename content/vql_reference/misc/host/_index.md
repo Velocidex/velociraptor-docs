@@ -41,7 +41,9 @@ contact the DNS server for resolving the names.
 NOTE: No caching is currently provided so this may generate a lot
 of load on DNS servers when scanning many rows.
 
-Example: The first query resolves through an external DNS server
+### Example
+
+The first query resolves through an external DNS server
 while the second uses the local resolver.
 
 ```

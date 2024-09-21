@@ -31,9 +31,11 @@ default_password|Set the user's default password for Zip Exports.|string
 
 Update and read the user GUI options
 
-Example: The following will set the user language to french, dark
+### Example
+
+The following will set the user language to French, dark
 theme and add a sidebar link named Foobar. The default password
-for Zip exports will also be set to `foorbar`.
+for zip exports will also be set to `foobar`.
 
 ```vql
 SELECT user_options(user=whoami(),

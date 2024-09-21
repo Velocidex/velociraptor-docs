@@ -36,7 +36,7 @@ VQL output. NOTE: This function queries the internal in-memory
 database so it is very fast and suitable to be called frequently
 on each row.
 
-# Example - enriching hostnames
+### Example - enriching hostnames
 
 Internally, Velociraptor uses client id to uniquely identify the
 client. But often we want to provide a hostname as well. In the

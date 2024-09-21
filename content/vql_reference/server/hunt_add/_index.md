@@ -44,7 +44,7 @@ NOTE: An alternative method is to create a hunt that only targets
 a specific label and then just assign the label to specific
 clients.
 
-## Adding an existing flow to a hunt.
+### Adding an existing flow to a hunt.
 
 If a flow_id is specified, this function will just immediately add
 the collection to the hunt, without scheduling a new

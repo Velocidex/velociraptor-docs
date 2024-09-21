@@ -20,9 +20,9 @@ Allow reading another file from a specific offset.
 
 The filename is taken as an offset into the delegate.
 
-## Example
+### Example
 
-```sql
+```vql
 SELECT read_file(accessor="offset", filename=pathspec(
 DelegateAccessor="data",
 DelegatePath="Hello world",

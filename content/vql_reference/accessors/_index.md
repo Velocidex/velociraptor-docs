@@ -16,7 +16,7 @@ a standard file like interface.
 |[collector](collector)|<span class='vql_type'>Accessor</span>|Open a collector zip file as if it was a directory - automatically|
 |[collector_sparse](collector_sparse)|<span class='vql_type'>Accessor</span>|Open a collector zip file as if it was a directory|
 |[data](data)|<span class='vql_type'>Accessor</span>|Makes a string appears as an in memory file|
-|[ewf](ewf)|<span class='vql_type'>Accessor</span>|Allow reading an `EWF` file|
+|[ewf](ewf)|<span class='vql_type'>Accessor</span>|Allow reading an EWF file|
 |[ext4](ext4)|<span class='vql_type'>Accessor</span>|Access files by parsing the raw ext4 filesystems|
 |[fat](fat)|<span class='vql_type'>Accessor</span>|Access the FAT filesystem inside an image by parsing FAT|
 |[file](file)|<span class='vql_type'>Accessor</span>|Access files using the operating system's API|
@@ -39,14 +39,14 @@ a standard file like interface.
 |[raw_reg](raw_reg)|<span class='vql_type'>Accessor</span>|Access keys and values by parsing a raw registry hive|
 |[reg](reg)|<span class='vql_type'>Accessor</span>|Access the registry like a filesystem using the OS APIs|
 |[registry](registry)|<span class='vql_type'>Accessor</span>|Access the registry like a filesystem using the OS APIs|
-|[s3](s3)|<span class='vql_type'>Accessor</span>|Access S3 Buckets|
+|[s3](s3)|<span class='vql_type'>Accessor</span>|Allows access to S3 buckets|
 |[scope](scope)|<span class='vql_type'>Accessor</span>|Present the content of a scope variable as a file|
 |[smb](smb)|<span class='vql_type'>Accessor</span>|Access smb shares (e|
-|[sparse](sparse)|<span class='vql_type'>Accessor</span>|Allow reading another file by overlaying a sparse map on top of|
+|[sparse](sparse)|<span class='vql_type'>Accessor</span>|Allows reading another file by overlaying a sparse map on top of|
 |[ssh](ssh)|<span class='vql_type'>Accessor</span>|Access a remote system's filesystem via `SSH/SFTP`|
 |[vfs](vfs)|<span class='vql_type'>Accessor</span>|Access client's VFS filesystem on the server|
-|[vhdx](vhdx)|<span class='vql_type'>Accessor</span>|Allow reading a vhdx file|
-|[vmdk](vmdk)|<span class='vql_type'>Accessor</span>|Allow reading a vmdk file|
+|[vhdx](vhdx)|<span class='vql_type'>Accessor</span>|Allow reading a VHDX file|
+|[vmdk](vmdk)|<span class='vql_type'>Accessor</span>|Allow reading a VMDK file|
 |[winpmem](winpmem)|<span class='vql_type'>Accessor</span>|Access physical memory like a file|
 |[zip](zip)|<span class='vql_type'>Accessor</span>|Open a zip file as if it was a directory|
 |[zip_nocase](zip_nocase)|<span class='vql_type'>Accessor</span>|Open a zip file as if it was a directory|

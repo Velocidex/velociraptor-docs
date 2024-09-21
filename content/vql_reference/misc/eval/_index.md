@@ -34,7 +34,7 @@ the scope.
 Note that when eval calls the function, the current scope will be
 passed as the first parameter to the lambda.
 
-Example:
+### Example
 
 ```vql
 LET AddTwo(x) = x + 2

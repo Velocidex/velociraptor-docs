@@ -27,7 +27,7 @@ the raw ext4 partitions will be parsed instead.
 
 This accessor is only available under linux.
 
-## Example
+### Example
 
 ```vql
 SELECT *

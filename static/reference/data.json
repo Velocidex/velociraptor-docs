@@ -18,7 +18,7 @@
             {
                 "name": "label",
                 "type": "string",
-                "description": "Add this artifact to this label group (default all)"
+                "description": "Add the artifact to this label group (default all)"
             }
         ],
         "category": "server",
@@ -2053,7 +2053,7 @@
     },
     {
         "name": "ewf",
-        "description": "Allow reading an `EWF` file.",
+        "description": "Allow reading an EWF file.",
         "type": "Accessor",
         "platforms": [
             "linux_amd64_cgo",
@@ -6414,18 +6414,18 @@
             {
                 "name": "item",
                 "type": "Any",
-                "description": "The item to path",
+                "description": "The item to patch",
                 "required": true
             },
             {
                 "name": "patch",
                 "type": "Any",
-                "description": "A JSON Patch to apply"
+                "description": "A JSON patch to apply"
             },
             {
                 "name": "merge",
                 "type": "Any",
-                "description": "A merge-patch to apply"
+                "description": "A merge patch to apply"
             }
         ],
         "category": "server",
@@ -7872,7 +7872,7 @@
             {
                 "name": "label",
                 "type": "string",
-                "description": "Remove this artifact from this label group (default the 'all'  group)"
+                "description": "Remove the artifact from this label group (default the 'all'  group)"
             }
         ],
         "category": "server",
@@ -7932,7 +7932,7 @@
     },
     {
         "name": "s3",
-        "description": "Access S3 Buckets.",
+        "description": "Allows access to S3 buckets.",
         "type": "Accessor",
         "platforms": [
             "linux_amd64_cgo",
@@ -8457,7 +8457,7 @@
     },
     {
         "name": "sparse",
-        "description": "Allow reading another file by overlaying a sparse map on top of\nit.",
+        "description": "Allows reading another file by overlaying a sparse map on top of\nit.",
         "type": "Accessor",
         "platforms": [
             "linux_amd64_cgo",
@@ -10302,7 +10302,7 @@
     },
     {
         "name": "version",
-        "description": "\nGets the version of a VQL plugin or function.",
+        "description": "Gets the version of a VQL plugin or function.",
         "type": "Function",
         "args": [
             {
@@ -10374,7 +10374,7 @@
     },
     {
         "name": "vhdx",
-        "description": "Allow reading a vhdx file.",
+        "description": "Allow reading a VHDX file.",
         "type": "Accessor",
         "platforms": [
             "linux_amd64_cgo",
@@ -10384,7 +10384,7 @@
     },
     {
         "name": "vmdk",
-        "description": "Allow reading a vmdk file.",
+        "description": "Allow reading a VMDK file.",
         "type": "Accessor",
         "platforms": [
             "linux_amd64_cgo"

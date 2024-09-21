@@ -41,7 +41,7 @@ SELECT * FROM glob(...)
 WHERE log(message="Value of OSPath is %v", args=OSPath)
 ```
 
-## Deduplication
+### Deduplication
 
 Log messages will be deduped according to the `dedup`
 parameter - each distinct format string will not be emitted more

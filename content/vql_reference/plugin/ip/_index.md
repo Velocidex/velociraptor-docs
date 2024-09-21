@@ -35,15 +35,15 @@ This function wraps the Golang net.IP library
 (https://pkg.go.dev/net#IP ). This makes it easy to deal with
 various IP address notations. Some use cases:
 
-## Example - Parse IPv4-mapped IPv6 addresses
+### Example - Parse IPv4-mapped IPv6 addresses
 
-```sql
+```vql
 SELECT ip(parse='0:0:0:0:0:FFFF:129.144.52.38') FROM scope()
 ```
 
 Will return the string "129.144.52.38"
 
-## Example - Get information about IP addresses
+### Example - Get information about IP addresses
 
 VQL will also expose the following attributes of the IP address:
 
@@ -55,7 +55,7 @@ VQL will also expose the following attributes of the IP address:
 - `IsMulticast`
 - `IsPrivate`
 
-```sql
+```vql
 SELECT ip(parse='192.168.1.2').IsPrivate FROM scope()
 ```
 

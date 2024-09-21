@@ -16,7 +16,7 @@ no_edit: true
 
 ### Description
 
-Allow reading a vmdk file.
+Allow reading a VMDK file.
 
 This accessor allows access to the content of VMDK files. Note
 that usually VMDK files are disk images with a partition table and
@@ -28,7 +28,7 @@ The VMDK file should be the metadata file (i.e. not the extent
 files).  The extent files are expected to be in the same directory
 as the metadata file and this accessor will open them separately.
 
-## Example
+### Example
 
 ```vql
 SELECT OSPath.Path AS OSPath, Size, Mode.String
