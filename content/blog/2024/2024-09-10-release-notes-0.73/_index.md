@@ -51,7 +51,7 @@ The new parser emulates the windows event log format, with common
 fields grouped under the `System` column and variable fields in
 `EventData`.
 
-![Journald parser](journald.png)
+{{< figure caption="Journald parser" src="journald.png" >}}
 
 This release also introduces a new VQL plugin `watch_journald()` which
 follows journald logs and forwards events to the server.
@@ -67,7 +67,7 @@ the attacker on systems that ran the RDP client. This information is
 now easily accessible using the new `Windows.Forensics.RDPCache`
 artifact.
 
-![Viewing the RDP cache tiles](rdp_cache.png)
+{{< figure caption="Viewing the RDP cache tiles" src="rdp_cache.png" >}}
 
 
 ### Added the ability to dump clear text network traffic for debugging
@@ -161,7 +161,7 @@ waiting until they complete, before sending further requests. This
 means if the client reboots only the currently executing queries are
 lost, and further queries will continue once the client reconnects.
 
-![Collection status show finer granularity](collection_states.svg)
+{{< figure caption="Collection status show finer granularity" src="collection_states.svg" >}}
 
 ### Hunts can be tagged now.
 
@@ -172,7 +172,7 @@ Over time there can be many hunts active simultaneously, and they can
 be used for multiple uses. In this release, the GUI's hunt view is
 streamlined by enabling hunts to contains labels.
 
-![Hunts can now have Tags](hunt_tags.svg)
+{{< figure caption="Hunts can now have Tags" src="hunt_tags.svg" >}}
 
 Clicking on the hunt label in the table will automatically filter the
 table for that label. Hunt Labels are a way to group large numbers of
@@ -184,7 +184,8 @@ The Velociraptor GUI presents most data in tabular form. It is
 important that tables are easy to navigate. The navigation pager is
 now placed at the top of the table.
 
-![Velociraptor tables have been revamped](table_widget.svg)
+
+{{< figure caption="Velociraptor tables have been revamped" src="table_widget.svg" >}}
 
 If a filter term starts with ! it will now be excluded from the rows
 (i.e. a negative search term).
@@ -202,16 +203,17 @@ As in previous versions, the user can set a download password in their
 preferences. However, previously the password only applied to hunt or
 collection exports.
 
-![Setting password for downloads globally](setting_password.svg)
+{{< figure caption="Setting password for downloads globally" src="setting_password.svg" >}}
 
 In this release, the password setting also applies to individual file
 downloads such as the VFS
 
-![Downloads are password protected](encrypted_downloads.svg)
+
+{{< figure caption="Downloads are password protected" src="encrypted_downloads.svg" >}}
 
 Or the uploads tab in specific collections.
 
-![Individual file downloads can be password protected](single_file_downloads.svg)
+{{< figure caption="Individual file downloads can be password protected" src="single_file_downloads.svg" >}}
 
 ### Post-processing preservation artifacts
 
@@ -242,17 +244,17 @@ Let's examine a typical workflow. I will begin by preparing an offline
 collector with the `Windows.KapeFiles.Targets` artifact configured to
 collect all event logs.
 
-![Building an offline collector](building_offline_collector.png)
+{{< figure caption="Building an offline collector" src="building_offline_collector.png" >}}
 
 Once the collection is complete I receive a ZIP file containing all
 the collected files. I will now import it into Velociraptor.
 
-![Importing the offline collection](importing_offline_collection.svg)
+{{< figure caption="Importing the offline collection" src="importing_offline_collection.svg" >}}
 
 Since this is an offline client and not a real client, Velociraptor
 will create a new client id to contain the collections.
 
-![The imported collection looks just like any other collection](kapefiles_collection.svg)
+{{< figure caption="The imported collection looks just like any other collection" src="kapefiles_collection.svg" >}}
 
 Of course we can not schedule new collections for the client because
 it is not a real client, but once imported, the offline collection
@@ -272,21 +274,21 @@ Instead, the `Windows.KapeFiles.Targets` artifact now offers a VQL
 snippet as a notebook suggestion to post process the collection. I
 access this from the collection's notebook.
 
-![Post processing the KapeFiles collection with a notebook suggestion](post_process_kapefiles.svg)
+{{< figure caption="Post processing the KapeFiles collection with a notebook suggestion" src="post_process_kapefiles.svg" >}}
 
 The new cell contains some template VQL. I can modify it to run other
 artifacts. In this case I will collect the `Windows.Hayabusa.Rules`
 artifact with all the rules (event noisy ones) and `Windows.NTFS.MFT`
 artifact.
 
-![Modifying VQL to run other artifacts](post_process_kapefiles_2.svg)
+{{< figure caption="Modifying VQL to run other artifacts" src="post_process_kapefiles_2.svg" >}}
 
 The post processing steps added a new distinct collection to the
 offline client, as if we collected it directly from the
 endpoint. However, the artifacts were collected from the triage files
 directly imported from the offline bundle.
 
-![A new distinct collection is added](post_process_kapefiles_3.svg)
+{{< figure caption="A new distinct collection is added" src="post_process_kapefiles_3.svg" >}}
 
 Although this new workflow makes it more convenient to post process
 bulk file triage collections, note that this is not an ideal workflow
@@ -309,7 +311,7 @@ Velociraptor]({{% ref "/blog/2024/2024-09-12-timelines/" %}}) blog
 post, but below is a screenshot to illustrate the final product - an
 annotated timeline derived from analysis of multiple artifacts.
 
-![The complete timeline with annotations](../2024-09-12-timelines/supertimeline.svg)
+{{< figure caption="The complete timeline with annotations" src="../2024-09-12-timelines/supertimeline.svg" >}}
 
 ###  Added Timesketch integration artifacts
 
@@ -319,7 +321,7 @@ source timelining tool. The details of the integration are also
 discussed in the blog post above, but here is a view of Timesketch
 with some Velociraptor timelines exported.
 
-![Viewing timelines in Timesketch](../2024-09-12-timelines/timesketch_view.svg)
+{{< figure caption="Viewing timelines in Timesketch" src="../2024-09-12-timelines/timesketch_view.svg" >}}
 
 ### Client metadata fields can now be indexed and searched.
 
@@ -349,7 +351,7 @@ department.
 Indexed metadata fields exist on all clients. Additional non-indexed
 fields can be added by the user.
 
-![Client metadata fields can be indexed or free form](client_metadata.svg)
+{{< figure caption="Client metadata fields can be indexed or free form" src="client_metadata.svg" >}}
 
 ### Enable a server artifact to specify an impersonation user.
 

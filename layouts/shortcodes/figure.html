@@ -1,0 +1,26 @@
+{{ $src := .Get "src" }}
+{{ $id := md5 $src }}
+{{ $filename := path.Join ( path.Dir .Page.File ) $src }}
+{{ $caption := .Get "caption" }}
+{{ if ( hasSuffix $filename ".svg" ) }}
+
+  {{ $data := readFile $filename }}
+  {{ $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` `` $data }}
+
+<figure id="{{ $id }}">
+  <div data-featherlight="#{{ $id }}" class="figure">
+    {{ $data  | safeHTML}}
+  </div>
+  <figcaption>{{ .Get "caption" }}</figcaption>
+</figure>
+
+{{ else }}
+
+<figure id="{{ $id }}">
+  <div data-featherlight="#{{ $id }}" class="figure">
+    <img src="{{ $src }}">
+  </div>
+  <figcaption>{{ $caption }}</figcaption>
+</figure>
+
+{{ end }}
