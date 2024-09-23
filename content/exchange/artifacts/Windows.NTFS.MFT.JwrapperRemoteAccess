@@ -1,0 +1,57 @@
+name: Windows.NTFS.MFT.JwrapperRemoteAccess
+description: |
+   This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to identify IP addresses pertaining to SimpleHelp RMM usage. SimpleHelp uses Jwrapper Remote Access under the hood and logs the destination address and port to a file within directory ".\ProgramData\JWrapper-Remote Access\JWAppsSharedConfig\hash.repository\urls\".
+   
+   Alternatively, the IP addresses can also be identified from the config file located within "C:\\ProgramData\\JWrapper-Remote Access\\JWAppsSharedConfig\\serviceconfig.xml". 
+
+
+type: CLIENT
+
+parameters:
+  - name: MFTDrive
+    description: |
+      The path to to the drive that holds the MFT file (can be a pathspec). This
+      drive is also used for results for offline processing.
+    default: "C:"
+  - name: MFTPath
+    description: Optional path to MFT file for offline processing.
+    default:
+  - name: Accessor
+    default: ntfs
+  - name: AllNtfs
+    type: bool
+    description: "Return all NTFS metadata with results."
+  - name: PathRegex
+    description: "Regex search over OSPath."
+    default: ".C:\\\\ProgramData\\\\JWrapper-Remote Access\\\\JWAppsSharedConfig\\\\hash.repository\\\\urls\\\\"
+    type: regex
+  - name: FileRegex
+    description: "Regex search over File Name"
+    default: "^(https?)__[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}__[0-9]{1,5}$"
+    type: regex
+  - name: DateAfter
+    type: timestamp
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: DateBefore
+    type: timestamp
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: SizeMax
+    type: int64
+    description: "Entries in the MFT under this size in bytes."
+  - name: SizeMin
+    type: int64
+    description: "Entries in the MFT over this size in bytes."
+  - name: AllDrives
+    type: bool
+    description: "Select MFT search on all attached ntfs drives."
+  - name: NTFS_INCLUDE_SHORT_NAMES
+    description: See all names referencing the file including short names.
+    type: bool
+
+
+sources:
+  - query: |
+      SELECT * FROM Artifact.Windows.NTFS.MFT()
+      WHERE FileName =~ FileRegex
+      AND OSPath =~ PathRegex
+      LIMIT 50
