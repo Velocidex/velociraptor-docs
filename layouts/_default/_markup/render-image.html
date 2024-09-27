@@ -1,8 +1,31 @@
-{{ if .Text }}
-<figure>
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" class="captioned">
-  <figcaption>{{ .Text }}</figcaption>
+{{ $src := .Destination }}
+{{ $id := md5 $src }}
+{{ $filename := path.Join ( path.Dir .Page.File ) $src }}
+{{ $caption := .PlainText }}
+{{ if ( hasSuffix $filename ".svg" ) }}
+  {{ $data := readFile $filename }}
+  {{ $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` `` $data }}
+
+<figure id="{{ $id }}">
+  <div data-featherlight="#{{ $id }}" class="figure">
+    {{ $data  | safeHTML}}
+  </div>
+  <figcaption>
+    <a class="image-link" href="{{ $src }}"><i class="fa fa-download"></i></a>
+    {{ $caption }}
+  </figcaption>
 </figure>
+
 {{ else }}
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
+
+<figure id="{{ $id }}">
+  <div data-featherlight="#{{ $id }}" class="figure">
+    <img src="{{ $src }}" alt="{{ $caption }}">
+  </div>
+  <figcaption>
+    <a class="image-link" href="{{ $src }}"><i class="fa fa-download"></i></a>
+    {{ $caption }}
+  </figcaption>
+</figure>
+
 {{ end }}
