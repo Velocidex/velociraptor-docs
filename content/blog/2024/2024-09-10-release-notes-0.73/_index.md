@@ -219,7 +219,7 @@ header.
 #### Column re-ordering
 
 Column ordering usually depends on the VQL query that produces the
-table. However it is sometimes easier to reorder columns on an ad-hoc
+table. However it is sometimes easier to reorder columns on an adhoc
 basis.
 
 You can now reorder columns by dragging the column header and dropping
@@ -232,7 +232,7 @@ it on the new position.
 Sometimes columns contain a lot of data taking up large vertical
 space. This makes it difficult to quickly review the table because the
 extra row height makes the table unable to fit in the screen
-verically.
+vertically.
 
 ![Collapsing columns make the table easier to view](collapsing_columns.svg)
 
