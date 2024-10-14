@@ -2,7 +2,7 @@ name: Linux.Forensics.ProcFD
 author: Chris DiSalle - @chrisdfir
 description: |
   This artifact collects metadata about open file descriptors from active processes on a Linux system. 
-  Outputs include regular files used by each process, sockets, device files, and deleted files.
+  Outputs include regular files, sockets, device files, and deleted files used by each process.
   
 reference:
   - https://sandflysecurity.com/blog/investigating-linux-process-file-descriptors-for-incident-response-and-forensics/
@@ -28,6 +28,7 @@ sources:
             read_file(filename="/proc/" + OSPath[1] + "/loginuid") AS LoginUID,
             Mode
         FROM glob(globs="/proc/*/fd/*")
+        
       SELECT
             OSPath,
             FilePath,
@@ -44,19 +45,6 @@ sources:
 
   - name: Sockets
     query: |
-      LET open_fds <= SELECT
-            OSPath,
-            OSPath[1] AS PID,
-            Data.Link AS FilePath,
-            Mtime,
-            Atime,
-            Ctime,
-            Btime,
-            read_file(filename="/proc/" + OSPath[1] + "/comm") AS ParentCommand,
-            read_file(filename="/proc/" + OSPath[1] + "/cmdline") AS ParentCmdLine,
-            read_file(filename="/proc/" + OSPath[1] + "/loginuid") AS LoginUID,
-            Mode
-        FROM glob(globs="/proc/*/fd/*")
       SELECT
             OSPath,
             FilePath,
@@ -73,19 +61,6 @@ sources:
 
   - name: DeviceFiles
     query: |
-      LET open_fds <= SELECT
-            OSPath,
-            OSPath[1] AS PID,
-            Data.Link AS FilePath,
-            Mtime,
-            Atime,
-            Ctime,
-            Btime,
-            read_file(filename="/proc/" + OSPath[1] + "/comm") AS ParentCommand,
-            read_file(filename="/proc/" + OSPath[1] + "/cmdline") AS ParentCmdLine,
-            read_file(filename="/proc/" + OSPath[1] + "/loginuid") AS LoginUID,
-            Mode
-        FROM glob(globs="/proc/*/fd/*")
       SELECT
             OSPath,
             FilePath,
@@ -102,19 +77,6 @@ sources:
 
   - name: DeletedFiles
     query: |
-      LET open_fds <= SELECT
-            OSPath,
-            OSPath[1] AS PID,
-            Data.Link AS FilePath,
-            Mtime,
-            Atime,
-            Ctime,
-            Btime,
-            read_file(filename="/proc/" + OSPath[1] + "/comm") AS ParentCommand,
-            read_file(filename="/proc/" + OSPath[1] + "/cmdline") AS ParentCmdLine,
-            read_file(filename="/proc/" + OSPath[1] + "/loginuid") AS LoginUID,
-            Mode
-        FROM glob(globs="/proc/*/fd/*")
       SELECT
             OSPath,
             FilePath,
