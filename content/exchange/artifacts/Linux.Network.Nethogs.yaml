@@ -5,16 +5,25 @@ description: |
   list all processes that produces (non-local) network traffic on the client,
   leveraging the process tracker, and displays the total bytes received and sent
   in the given time frame.
-  
+
   Note that the tool/package "nethogs" needs to be installed before calling this
-  artifact.
+  artifact. Set the parameter InstallNethogs to true in order to automatically
+  install the package and its dependencies (Debian-based systems only).
+
+  Short-lived processes that only run for less than one second will not be shown
+  unless a process tracker is installed on the system (*.Events.TrackProcesses).
 
 parameters:
+  - name: InstallNethogs
+    description: Install nethogs using apt-get
+    type: bool
+    default: false
+
   - name: Duration
     type: integer
     description: Number of seconds to monitor processes
     default: 300
-    
+
 precondition:
   SELECT * FROM info() where OS = 'linux'
 
@@ -22,7 +31,7 @@ sources:
     - query: |
        LET Hoggers <= SELECT Process,
                              PID,
-                             UID,
+                             int(int=UID) AS UID,
                              humanize(bytes=parse_float(string=Sent) * 1024) AS Sent,
                              humanize(
                                bytes=parse_float(
@@ -30,7 +39,7 @@ sources:
          FROM query(
            timeout=Duration,
            query={
-             SELECT 
+             SELECT
                     Process,
                     PID,
                     UID,
@@ -53,23 +62,38 @@ sources:
            })
          GROUP BY Process
 
+       LET Result = SELECT *
+         FROM foreach(
+           row={
+             SELECT *
+             FROM Hoggers
+           },
+           query={
+             SELECT
+                    int(int=PID) AS PID,
+                    Name,
+                    CommandLine,
+                    Cwd,
+                    Username,
+                    StartTime,
+                    if(
+                      condition=EndTime.Unix < 0,
+                      then=NULL,
+                      else=EndTime) AS EndTime,
+                    Sent,
+                    Recv
+             FROM process_tracker_pslist()
+             WHERE Pid = PID
+           })
+
+       LET InstallDeps = SELECT *
+         FROM if(
+           condition=InstallNethogs,
+           then={
+             SELECT *
+             FROM Artifact.Linux.Utils.InstallDeb(DebName='nethogs')
+           })
+
        SELECT *
-       FROM foreach(
-         row={
-           SELECT *
-           FROM Hoggers
-         },
-         query={
-           SELECT 
-                  Pid,
-                  Name,
-                  CommandLine,
-                  Cwd,
-                  Username,
-                  StartTime,
-                  EndTime,
-                  Sent,
-                  Recv
-           FROM process_tracker_pslist()
-           WHERE Pid = PID
-         })
+       FROM chain(a_install=InstallDeps,
+                  b_result=Result)
