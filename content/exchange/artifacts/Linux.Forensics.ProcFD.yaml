@@ -30,10 +30,10 @@ sources:
         FROM glob(globs="/proc/*/fd/*")
         
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
@@ -41,15 +41,15 @@ sources:
             Btime,
             Mode
       FROM open_fds
-      WHERE FilePath =~ "^/"
+      WHERE FilePath =~ "^/" AND NOT FilePath =~ "^/dev/"
 
   - name: Sockets
     query: |
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
@@ -62,10 +62,10 @@ sources:
   - name: DeviceFiles
     query: |
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
@@ -78,10 +78,10 @@ sources:
   - name: DeletedFiles
     query: |
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
