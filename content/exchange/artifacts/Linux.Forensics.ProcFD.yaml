@@ -26,67 +26,72 @@ sources:
             read_file(filename="/proc/" + OSPath[1] + "/comm") AS ParentCommand,
             read_file(filename="/proc/" + OSPath[1] + "/cmdline") AS ParentCmdLine,
             read_file(filename="/proc/" + OSPath[1] + "/loginuid") AS LoginUID,
-            Mode
+            format(format="%o", args=[Mode]) AS OctalMode,
+            Mode.String AS StringMode
         FROM glob(globs="/proc/*/fd/*")
         
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
-      WHERE FilePath =~ "^/"
+      WHERE FilePath =~ "^/" AND NOT FilePath =~ "^/dev/"
 
   - name: Sockets
     query: |
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "socket:"
 
   - name: DeviceFiles
     query: |
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "^/dev/"
 
   - name: DeletedFiles
     query: |
       SELECT
-            OSPath,
-            FilePath,
-            ParentCmdLine,
-            ParentCommand,
+            OSPath AS FDPath,
+            FilePath AS FDLink,
+            ParentCmdLine AS ProcessCmdLine,
+            ParentCommand AS Process,
             LoginUID,
             Mtime,
             Atime,
             Ctime,
             Btime,
-            Mode
+            OctalMode,
+            StringMode
       FROM open_fds
       WHERE FilePath =~ "deleted"
