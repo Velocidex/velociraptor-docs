@@ -2,7 +2,7 @@ name: Linux.Forensics.BodyFile
 author: Chris DiSalle - @chrisdfir
 description: |
   This artifact collects detailed file metadata from key Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root. It gathers information such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link. 
-  For symbolic links, the artifact also captures the target path that the symlink points to. The collection is limited to 6 directory levels deep to ensure efficient analysis.
+  For symbolic links, the artifact also captures the target path that the symlink points to. The collection is limited to 5 directory levels deep to ensure efficient analysis.
   
 reference:
   - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
@@ -14,41 +14,41 @@ precondition: SELECT OS FROM info() WHERE OS = 'linux'
 sources:
   - name: BodyFileCollection
     query: |
-      LET BodyFile <= SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link AS Symlink, Mtime, Atime, Ctime, Mode
+      LET BodyFile <= SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link AS Symlink, Mtime, Atime, Ctime, OctalMode, StringMode
       FROM chain(
-          a={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          a={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/tmp/**')
              WHERE OSPath =~ "^(/tmp/[^/]*){0,5}/[^/]*$"},
           
-          b={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          b={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/home/**')
              WHERE OSPath =~ "^(/home/[^/]*){0,5}/[^/]*$"},
           
-          c={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          c={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/etc/**')
              WHERE OSPath =~ "^(/etc/[^/]*){0,5}/[^/]*$"},
           
-          d={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          d={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/var/**')
              WHERE OSPath =~ "^(/var/[^/]*){0,5}/[^/]*$"},
           
-          e={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          e={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/usr/**')
              WHERE OSPath =~ "^(/usr/[^/]*){0,5}/[^/]*$"},
           
-          f={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          f={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/boot/**')
              WHERE OSPath =~ "^(/boot/[^/]*){0,5}/[^/]*$"},
           
-          g={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          g={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/opt/**')
              WHERE OSPath =~ "^(/opt/[^/]*){0,5}/[^/]*$"},
           
-          h={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          h={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/lib/**')
              WHERE OSPath =~ "^(/lib/[^/]*){0,5}/[^/]*$"},
           
-          i={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, Mode, Data
+          i={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
              FROM glob(globs='/root/**')
              WHERE OSPath =~ "^(/root/[^/]*){0,5}/[^/]*$"}
       )
