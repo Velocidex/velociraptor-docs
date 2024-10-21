@@ -906,3 +906,72 @@ LET AddTwo(x) = x + 2
 
 SELECT eval(func="x=>AddTwo(x=1)") AS Three FROM scope()
 ```
+
+### VQL Error handling
+
+VQL queries may encounter errors during their execution. For example,
+we might try to open a file, but fail due to insufficient permissions.
+
+It is especially not desirable to have VQL stop execution completely
+and abort when an error occurs. Usually we want the query to continue
+and produce as much data as possible. However, we do want to
+know that some things potentially went wrong.
+
+Therefore VQL functions typically return `NULL` in the case of an
+error, and log the error in the `Query Logs`. These logs are visible
+in a number of places:
+
+1. When collecting an artifact from a client, the query logs are
+   visible in the `Logs` tab.
+2. In a notebook cell the query logs are visible by clicking the
+   `Logs` button at the bottom of the cell.
+3. With the API the query logs are returned in a separate response
+   field.
+
+When writing a VQL query, another aspect to think about is: what do we
+define as an error? For example if we write a VQL query to collect a
+bunch of files, but one of these files is unreadable - do we consider
+the query has failed?  Should we just stop?
+
+It really depends on a case by case basis.
+
+Generally when collecting an artifact, a number of error conditions
+might occur and some query logs will be produced. But the collection
+is not automatically marked as an `Error` unless one of the following
+conditions is met:
+
+1. Any logs are emitted at the `ERROR` level (using the `log()`
+   function with `level='ERROR'`).
+2. Any log messages match the error patterns defined in
+   [Frontend.collection_error_regex](https://docs.velociraptor.app/docs/deployment/references/#Frontend.collection_error_regex). By
+   default this includes `Symbol not found` which usually indicates a
+   mistake or typo with the VQL query itself.
+3. Errors produced by the client itself (e.g. the query canceled or timed out)
+
+When a collection indicates an error all it means is that something
+unexpected happened and a user needs to take a closer look. The
+collection may still contain useful data - it is a judgment call.
+
+Therefore when writing your own VQL think if an error is actually
+something we need to alert the user about (i.e. there is no further
+value in the collection) or can we just log the error and move on.
+
+Conversely as a Velociraptor user, when a collection is completed
+without an error it does not necessarily mean that everything worked
+perfectly - there may be some messages in the query logs that alert to
+some errors encountered. You should always take a quick look at the
+error logs to see if there is anything of concern.
+
+
+{{% notice warning "Temporary or permanent errors" %}}
+
+Note that an error may be temporary (e.g. the artifact collection
+timed out), or permanent (e.g. an error within the VQL itself, file
+not found etc).
+
+It is not a good idea to automatically retry a collection unless you
+are sure the error is temporary - if the error is more permanent the
+same thing will happen again. It is always worth checking the query
+logs to make sure there is any point in retrying the collection.
+
+{{% /notice %}}
