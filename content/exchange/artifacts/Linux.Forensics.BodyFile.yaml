@@ -1,56 +1,66 @@
 name: Linux.Forensics.BodyFile
 author: Chris DiSalle - @chrisdfir
 description: |
-  This artifact collects detailed file metadata from key Linux directories, including /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root. It gathers information such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link. 
-  For symbolic links, the artifact also captures the target path that the symlink points to. The collection is limited to 5 directory levels deep to ensure efficient analysis.
+  This artifact collects detailed file metadata from Linux directories specified by the TargetDirectories parameter. The default directories include /tmp, /home, /etc, /var, /usr, /boot, /opt, /lib, and /root, but users can modify this list as needed.
+  Metadata such as file size, modification time, access time, creation time, and file type (directory or symbolic link) is gathered recursively up to a depth defined by the MaxRecursionDepth parameter.
+  For symbolic links, the artifact also captures the target path that the symlink points to. 
   
 reference:
   - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
 
-type: CLIENT
-
 precondition: SELECT OS FROM info() WHERE OS = 'linux'
 
-sources:
-  - name: BodyFileCollection
-    query: |
-      LET BodyFile <= SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link AS Symlink, Mtime, Atime, Ctime, OctalMode, StringMode
-      FROM chain(
-          a={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/tmp/**')
-             WHERE OSPath =~ "^(/tmp/[^/]*){0,5}/[^/]*$"},
-          
-          b={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/home/**')
-             WHERE OSPath =~ "^(/home/[^/]*){0,5}/[^/]*$"},
-          
-          c={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/etc/**')
-             WHERE OSPath =~ "^(/etc/[^/]*){0,5}/[^/]*$"},
-          
-          d={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/var/**')
-             WHERE OSPath =~ "^(/var/[^/]*){0,5}/[^/]*$"},
-          
-          e={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/usr/**')
-             WHERE OSPath =~ "^(/usr/[^/]*){0,5}/[^/]*$"},
-          
-          f={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/boot/**')
-             WHERE OSPath =~ "^(/boot/[^/]*){0,5}/[^/]*$"},
-          
-          g={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/opt/**')
-             WHERE OSPath =~ "^(/opt/[^/]*){0,5}/[^/]*$"},
-          
-          h={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/lib/**')
-             WHERE OSPath =~ "^(/lib/[^/]*){0,5}/[^/]*$"},
-          
-          i={SELECT OSPath, Name, Size, IsDir, IsLink, Data.Link, Mtime, Atime, Ctime, format(format="%o", args=[Mode]) AS OctalMode, Mode.String AS StringMode, Data
-             FROM glob(globs='/root/**')
-             WHERE OSPath =~ "^(/root/[^/]*){0,5}/[^/]*$"}
-      )
+parameters:
+  - name: TargetDirectories
+    type: csv
+    default: |
+      Glob
+      /tmp
+      /home
+      /etc
+      /var
+      /usr
+      /boot
+      /opt
+      /lib
+      /root
       
-      SELECT * FROM BodyFile
+  - name: MaxRecursionDepth
+    type: int
+    default: 3
+    description: The maximum depth of recursion for directories.
+
+sources:
+  - name: BodyFileStats
+    query: |
+      -- Collect file paths from the target directories using glob
+      LET FilePaths = SELECT OSPath FROM glob(globs=TargetDirectories.Glob)
+      
+      -- Use foreach to iterate over the directories and run find recursively
+      LET RecurseFiles = SELECT Stdout FROM foreach(row=FilePaths, query={
+        SELECT * FROM execve(argv=["find", str(OSPath), "-maxdepth", MaxRecursionDepth])
+      })
+      
+      -- Split the Stdout result into individual file paths (split by newline)
+      LET SplitPaths = SELECT split(string=Stdout, sep="\n") AS PathList FROM RecurseFiles
+      LET AllPaths = SELECT * FROM flatten(query=SplitPaths)
+      
+      -- Ensure paths are valid and not NULL before passing to stat
+      LET ValidPaths = SELECT PathList FROM AllPaths WHERE PathList != NULL AND PathList != ""
+
+      -- Use stat to collect metadata for all valid paths
+      SELECT OSPath, 
+      Name, 
+      Size, 
+      IsDir, 
+      IsLink, 
+      Data.Link, 
+      Mtime, 
+      Atime, 
+      Ctime, 
+      format(format="%o", args=[Mode]) AS OctalMode, 
+      Mode.String AS StringMode, 
+      Data 
+      FROM foreach(row=ValidPaths, query={
+        SELECT * FROM stat(filename=PathList)
+      })
