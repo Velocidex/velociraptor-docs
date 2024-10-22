@@ -1,4 +1,5 @@
 name: Windows.ESET.Logs
+author: Ján Trenčanský - j91321@infosec.exchange
 description: |
    Parse logs from ESET antivirus products. This log contains information about detections made by the ESET modules such as Real-time filesystem proteciton, Firewall, HIPS, Device Control, HTTP filter, AMSI Scanner etc.
  
