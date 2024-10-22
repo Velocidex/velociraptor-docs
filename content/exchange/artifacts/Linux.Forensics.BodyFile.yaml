@@ -7,6 +7,7 @@ description: |
   
 reference:
   - https://trustedsec.com/blog/incident-response-bring-out-the-body-file
+  - https://wiki.sleuthkit.org/index.php?title=Body_file
 
 precondition: SELECT OS FROM info() WHERE OS = 'linux'
 
