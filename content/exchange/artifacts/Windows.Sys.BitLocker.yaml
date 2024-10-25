@@ -22,7 +22,9 @@ sources:
                 $Results += $_
             }
         }
-        return ($Results | ConvertTo-Json)'''
+        
+        return ConvertTo-Json -InputObject @($Results)
+        '''
         SELECT * FROM foreach(
           row={
             SELECT Stdout FROM execve(argv=["Powershell", "-ExecutionPolicy",
