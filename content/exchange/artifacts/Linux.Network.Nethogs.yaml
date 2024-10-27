@@ -70,7 +70,7 @@ sources:
                FROM foreach(
                  row={
                    SELECT *
-                   FROM execve(argv=['/usr/sbin/nethogs', '-t'],
+                   FROM execve(argv=['/usr/sbin/nethogs', '-t', '-C'],
                                length=10000,
                                sep='\n\nRefreshing:\n')
                  },
@@ -207,7 +207,7 @@ sources:
                      sum(
                        item=Recv * 1024) AS Recv
               FROM source()
-              GROUP BY PID
+              GROUP BY PID, Name
 
             SELECT *,
                    humanize(
@@ -222,9 +222,8 @@ sources:
         - type: vql_suggestion
           name: Plot traffic for PID
           template: |
-            // The process whose traffic to plot (PID 0 here happens to be "Unknown traffic"
-            // from nethogs):
-            LET PIDTarget = 0
+            // The process whose traffic to plot:
+            LET PIDTarget = 1234
 
             /*
             {{ $Vars := Query "SELECT PIDTarget, min(item=Timestamp) AS StartTime, max(item=Timestamp) AS EndTime FROM source() GROUP BY 1" | Expand }}

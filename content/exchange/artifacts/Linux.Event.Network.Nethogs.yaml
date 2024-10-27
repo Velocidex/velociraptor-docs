@@ -59,7 +59,7 @@ sources:
            FROM foreach(
              row={
                SELECT *
-               FROM execve(argv=['/usr/sbin/nethogs', '-t'],
+               FROM execve(argv=['/usr/sbin/nethogs', '-t', '-C'],
                            length=10000,
                            sep='\n\nRefreshing:\n')
              },
@@ -203,7 +203,7 @@ sources:
                        item=Recv * 1024) AS Recv
               FROM source(start_time=StartTime,
                           end_time=EndTime)
-              GROUP BY PID
+              GROUP BY PID, Name
             
             SELECT *,
                    humanize(
@@ -221,9 +221,8 @@ sources:
             // Modify these to adjust the time frame:
             // LET StartTime <= '2024-01-01T00:00:00Z'
             // LET EndTimeTime <= '2024-01-01T00:00:00Z'
-            // The process whose traffic to plot (PID 0 here happens to be "Unknown traffic"
-            // from nethogs):
-            LET PIDTarget = 0
+            // The process whose traffic to plot:
+            LET PIDTarget = 1234
 
             /*
             {{ $Vars := Query "SELECT PIDTarget, StartTime, EndTime FROM scope()" | Expand }}
