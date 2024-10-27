@@ -1,7 +1,7 @@
 name: Linux.Network.Nethogs
 author: 'Andreas Misje - @misje'
 description: |
-  Monitor network bandwidth per process, using "nethogs". This artifact will
+  Monitor network use per process using the tool "nethogs". This artifact will
   list all processes that produces (non-local) network traffic on the client.
   The NetstatEnriched artifact is used to provide detailed information about the
   process using netstat and the process tracker, along with the bytes received
