@@ -3,9 +3,10 @@ author: 'Andreas Misje - @misje'
 type: CLIENT_EVENT
 description: |
   Monitor network use per process using the tool "nethogs". This artifact will
-  list all processes that produces (non-local) network traffic on the client,
-  leveraging the process tracker, and displays the bytes received and sent in
-  bytes per second.
+  list all processes that produces (non-local) network traffic on the client.
+  The NetstatEnriched artifact is used to provide detailed information about the
+  process using netstat and the process tracker, along with the bytes received
+  and sent in bytes per second.
 
   Note that the tool/package "nethogs" needs to be installed before calling this
   artifact. Set the paramater InstallNethogs to true in order to automatically
@@ -21,8 +22,8 @@ parameters:
     type: bool
     default: false
 
-  - name: ProcessCachePeriod
-    description: Number of seconds to cache the process tracker data
+  - name: NetstatCachePeriod
+    description: Number of seconds to cache netstat data
     type: int
     default: 10
 
@@ -51,7 +52,7 @@ sources:
     - query: |
          LET Hoggers = SELECT Timestamp,
                               Process,
-                              PID,
+                              int(int=PID) AS PID,
                               UID,
                               parse_float(string=Sent) AS Sent,
                               parse_float(string=Recv) AS Recv
@@ -74,29 +75,13 @@ sources:
                      AND UID =~ UIDRegex
              })
 
-         // Trick for avoiding errors when referencing non-existent variables:
-         LET S = scope()
-
-         // Memoize the process list since we will be referencing a lot:
-         LET Processes <= memoize(
-             name='ps',
-             key='PID',
-             period=ProcessCachePeriod,
+         LET Netstat <= memoize(
+             name='netstat',
+             key='Pid',
+             period=NetstatCachePeriod,
              query={
-               SELECT 
-                      Pid AS PID,
-                      Name,
-                      CommandLine,
-                      // CurrentDirectory is not always available:
-                      S.CurrentDirectory AS CWD,
-                      Username,
-                      StartTime,
-                      // Do not show a silly timestamp parsed from an invalid value:
-                      if(
-                        condition=EndTime.Unix < 0,
-                        then=NULL,
-                        else=EndTime) AS EndTime
-               FROM process_tracker_pslist()
+               SELECT *
+               FROM Artifact.Linux.Network.NetstatEnriched()
              })
 
          LET Result = SELECT *
@@ -116,18 +101,22 @@ sources:
                             PID=PID,
                             UID=UID,
                             Sent=Sent,
-                            /* "left--outer-join" the process data so that output
-                               from nethogs without a matching PID still gets logged:
-                            */
-                            Recv=Recv) + (get(
-                              item=Processes,
-                              field=PID) || dict(
-                              Name=Process,
+                            Recv=Recv,
+                            ProcInfo=dict(
                               CommandLine=NULL,
-                              CWD=NULL,
                               Username=NULL,
-                              StartTime=NULL,
-                              EndTime=NULL)) AS Contents
+                              StartTime=NULL)) + (get(
+                              item=Netstat,
+                              field=PID) || dict(
+                              Name=NULL,
+                              Laddr=NULL,
+                              Lport=NULL,
+                              Raddr=NULL,
+                              Rport=NULL,
+                              Status=NULL,
+                              ProcInfo=dict(),
+                              CallChain=NULL,
+                              ChildrenTree=NULL)) AS Contents
                    FROM scope()
                    WHERE Contents
                  },
@@ -161,17 +150,31 @@ sources:
             Network traffic (in bytes per second) between {{ Get $TimeRange "0.StartTime" }}
             and {{ Get $TimeRange "0.EndTime" }}
             */
-            SELECT Timestamp,
+            LET ColumnTypes = dict(
+                _ChildrenTree='tree')
+            
+            SELECT 
+                   Timestamp,
                    PID,
-                   Name,
-                   CommandLine,
-                   CWD,
-                   Username,
-                   StartTime,
-                   EndTime,
-                   humanize(bytes=Sent*1024) AS Sent,
-                   humanize(bytes=Recv*1024) AS Recv
-            FROM source(start_time=StartTime, end_time=EndTime)
+                   ProcInfo.Name || Process AS Name,
+                   ProcInfo.CommandLine AS CmdLine,
+                   ProcInfo.Username AS Username,
+                   ProcInfo.StartTime AS StartTime,
+                   Laddr,
+                   Lport,
+                   Raddr,
+                   Rport,
+                   Status,
+                   humanize(
+                     bytes=Sent * 1024) AS Sent,
+                   humanize(
+                     bytes=Recv * 1024) AS Recv,
+                   ProcInfo AS _ProcInfo,
+                   CallChain AS _CalLChain,
+                   ChildrenTree AS _ChildrenTree
+            FROM source(start_time=StartTime,
+                        end_time=EndTime)
+            LIMIT 50
 
         - type: vql_suggestion
           name: Total traffic
@@ -185,17 +188,13 @@ sources:
             {{ $TimeRange := Query "SELECT StartTime, EndTime FROM scope()" | Expand }}
             This is a **rough estimate** of the total bytes sent and received between
             {{ Get $TimeRange "0.StartTime" }} and {{ Get $TimeRange "0.EndTime" }}.
-            Run the non-event artifact Linux.Network.Nethogs in Volume mode for
-            an exact measurement.
             */
             LET Summary = SELECT 
                      PID,
-                     Name,
-                     CommandLine,
-                     CWD,
-                     Username,
-                     StartTime,
-                     EndTime,
+                     ProcInfo.Name || Process AS Name,
+                     ProcInfo.CommandLine AS CommandLine,
+                     ProcInfo.Username AS Username,
+                     ProcInfo.StartTime AS StartTime,
                      // nethogs -t outputs a data rate every second. Adding these
                      // values give us a rough estimate of the data transferred
                      sum(
@@ -205,16 +204,16 @@ sources:
               FROM source(start_time=StartTime,
                           end_time=EndTime)
               GROUP BY PID
-
+            
             SELECT *,
                    humanize(
                      bytes=Sent) AS Sent,
                    humanize(
                      bytes=Recv) AS Recv,
                    humanize(
-                     bytes=sum(
-                       item=Recv + Sent)) AS Total
+                     bytes=Recv + Sent) AS Total
             FROM Summary
+            LIMIT 50
 
         - type: vql_suggestion
           name: Plot traffic for PID
@@ -224,7 +223,7 @@ sources:
             // LET EndTimeTime <= '2024-01-01T00:00:00Z'
             // The process whose traffic to plot (PID 0 here happens to be "Unknown traffic"
             // from nethogs):
-            LET PIDTarget = '0'
+            LET PIDTarget = 0
 
             /*
             {{ $Vars := Query "SELECT PIDTarget, StartTime, EndTime FROM scope()" | Expand }}
@@ -240,6 +239,7 @@ sources:
               FROM source(start_time=StartTime,
                           end_time=EndTime)
               WHERE PID = PIDTarget
+              LIMIT 50
 
             /*
             {{ Query "SELECT * FROM SinglePSStats" | TimeChart }}
