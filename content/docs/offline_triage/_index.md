@@ -338,7 +338,7 @@ you can share that `server.config.yaml` file with them and allow them
 to unpack using:
 
 ```bash
-velociraptor --config server.config.yaml collection.zip unzip --dump_dir /output/dir
+velociraptor --config server.config.yaml unzip collection.zip --dump_dir /output/dir
 ```
 
 ### Include third party binaries
