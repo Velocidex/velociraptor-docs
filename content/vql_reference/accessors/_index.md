@@ -22,6 +22,8 @@ a standard file like interface.
 |[file](file)|<span class='vql_type'>Accessor</span>|Access files using the operating system's API|
 |[file_links](file_links)|<span class='vql_type'>Accessor</span>|Access the filesystem using the OS APIs|
 |[file_nocase](file_nocase)|<span class='vql_type'>Accessor</span>|Access files using the operating system's API|
+|[fs](fs)|<span class='vql_type'>Accessor</span>|Provide access to the server's filestore and datastore|
+|[fs_sparse](fs_sparse)|<span class='vql_type'>Accessor</span>|Provide access to the server's filestore and datastore|
 |[gzip](gzip)|<span class='vql_type'>Accessor</span>|Access the content of gzip files|
 |[lazy_ntfs](lazy_ntfs)|<span class='vql_type'>Accessor</span>|Access the NTFS filesystem by parsing NTFS structures|
 |[me](me)|<span class='vql_type'>Accessor</span>|Access files bundled inside the Velociraptor binary itself|

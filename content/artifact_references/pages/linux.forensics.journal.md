@@ -20,6 +20,14 @@ parameters:
   description: A Glob expression for finding journal files.
   default: /{run,var}/log/journal/*/*.journal
 
+- name: DateAfter
+  type: timestamp
+  description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+
+- name: DateBefore
+  type: timestamp
+  description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+
 - name: AlsoUpload
   type: bool
   description: If set we also upload the raw files.
@@ -38,8 +46,25 @@ sources:
       SELECT OSPath FROM glob(globs=JournalGlob)
     }, query={
       SELECT *
-      FROM parse_journald(filename=OSPath)
+      FROM parse_journald(filename=OSPath,
+          start_time=DateAfter, end_time=DateBefore)
     })
+
+  notebook:
+    - type: vql_suggestion
+      name: Simplified syslog-like view
+      template: |
+        /*
+        # Simplified log view
+        */
+        LET ColumnTypes&lt;=dict(`_ClientId`='client')
+
+        SELECT System.Timestamp AS Timestamp,
+               ClientId AS _ClientId,
+               client_info(client_id=ClientId).os_info.hostname AS Hostname,
+               EventData.SYSLOG_IDENTIFIER AS Unit,
+               EventData.MESSAGE AS Message
+        FROM source()
 
 </code></pre>
 

@@ -23,7 +23,6 @@ This artifact has several configurable options:
 - SusArgSize: Any lnk with Argument strings over this size is suspicious.
 - SusArgRegex: Regex for suspicious strings in Arguments.
 - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
-- CheckHostnameMismatch: Compare TrackerData.MachineID with Hostname (noisy in many networks)
 - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData. 
 - RiskyExe: Regex target exe to flag as risky.
 
@@ -42,7 +41,7 @@ List of fields targeted by filter regex:
   - TrackerData.MacAddress
 
   NOTE: regex startof (^) and endof ($) line modifiers will not work.
-
+  
 
   Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
 
@@ -57,10 +56,8 @@ List of fields targeted by filter regex:
   * Line break in StringData.Name
   * Suspicious argument size - large sized arguments over 250 characters as default
   * Environment variable script - environment vatiable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
-  * Environment variable script
   * No Target with environmant variable - environment variable only execution
-  * Suspicious hostname - some common malicious hostnames    
-  * Hostname mismatch - if selected will compare trackerdata hostname to machine name (lots of FPs)  
+  * Suspicious hostname - some common malicious hostnames
   * Created in VM - Check TrackerData MacAddress for known VM prefix
   * Local Admin- check PropertyStore for indications LNK created by local admin UID 500
   * Cyrillic Language - check PropertyStore for Cyrillic strings
@@ -103,7 +100,6 @@ description: |
   - SusArgSize: Any lnk with Argument strings over this size is suspicious.
   - SusArgRegex: Regex for suspicious strings in Arguments.
   - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
-  - CheckHostnameMismatch: Compare TrackerData.MachineID with Hostname (noisy in many networks)
   - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData. 
   - RiskyExe: Regex target exe to flag as risky.
   
@@ -122,7 +118,7 @@ description: |
     - TrackerData.MacAddress
 
     NOTE: regex startof (^) and endof ($) line modifiers will not work.
-
+    
 
     Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
 
@@ -137,10 +133,8 @@ description: |
     * Line break in StringData.Name
     * Suspicious argument size - large sized arguments over 250 characters as default
     * Environment variable script - environment vatiable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
-    * Environment variable script
     * No Target with environmant variable - environment variable only execution
-    * Suspicious hostname - some common malicious hostnames    
-    * Hostname mismatch - if selected will compare trackerdata hostname to machine name (lots of FPs)  
+    * Suspicious hostname - some common malicious hostnames
     * Created in VM - Check TrackerData MacAddress for known VM prefix
     * Local Admin- check PropertyStore for indications LNK created by local admin UID 500
     * Cyrillic Language - check PropertyStore for Cyrillic strings
@@ -204,7 +198,7 @@ parameters:
   - name: RiskyExe
     description: Regex target exe to flag as risky.
     type: regex
-    default: ^\\(cmd|powershell|cscript|wscript|rundll32|regsvr32|mshta|wmic|netsh)\.exe$
+    default: \\(cmd|powershell|cscript|wscript|rundll32|regsvr32|mshta|wmic|conhost)\.exe$
     
 
 export: |
@@ -429,9 +423,11 @@ export: |
                 "count": 1000,
                 "sentinel": "x=&gt;x.Size &lt; 0x00000004"
             }],
+        ["Overlay", "x=&gt;x.ExtraData.EndOf", "Overlay"],
+
       ]],
       ["Empty", 0, []],
-
+      
       # Struct size includes the size field
       ["LinkTargetIDList", "x=&gt;x.IDListSize + 2", [
         ["IDListSize", 0, "uint16"],
@@ -789,6 +785,7 @@ export: |
         ["ExtraData","x=&gt;x.Size",[
             ["Offset",0,"Value",{"value":"x=&gt;x.StartOf"}],
             ["Size",0,"uint32"],
+            ["EndOf",0,"Value",{"value":"x=&gt;x.EndOf"}],
             ["__Header",4,"uint32"],
             ["Header",0,"Value",{"value":"x=&gt;'0x' + upcase(string=format(format='%08x',args=x.__Header))"}],
             ["BlockClass", 4, "Enumeration", {
@@ -1397,7 +1394,14 @@ export: |
             ["Value", 0, "Value", { "value": "x=&gt;upcase(string=
                     format(format='%08x-%04x-%04x-%02x-%02x',
                         args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5]))" }],
-        ]]
+        ]],
+        ["Overlay", "x=&gt;x.Length", [
+            ["Header", 0, "Value", {"value": "x=&gt;format(format='0x%08x',args=read_file(filename=OSPath,offset=x.StartOf + 4,length=4))"}],
+            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf + 4"}],
+            ["Length", 0, "Value", {"value": "x=&gt;len(list=read_file(filename=OSPath, offset=x.StartOf + 4))"}],
+            ["Entropy", 0, "Value", {"value": "x=&gt;entropy(string=read_file(filename=OSPath,offset=x.StartOf + 4))"}],
+            ["Magic", 0, "Value", {"value": "x=&gt;magic(accessor='data',path=read_file(filename=OSPath,offset=x.StartOf + 4))"}],
+        ]],
      ]
      '''
 
@@ -1456,9 +1460,6 @@ export: |
         
 sources:
   - query: |
-     LET hostname &lt;= if(condition=CheckHostnameMismatch,
-        then={ SELECT Hostname FROM info()})
-
      LET targets = SELECT OSPath, Mtime,Atime,Ctime,Btime,Size,
             read_file(filename=OSPath,offset=0,length=2) as _Header
         FROM glob(globs=TargetGlob)
@@ -1478,6 +1479,7 @@ sources:
         Parsed.StringData as StringData,
         ShowExtraData(Parsed=Parsed) as ExtraData,
         property_store(data=Parsed) as PropertyStore,
+        Parsed.Overlay as Overlay,
         Parsed
       FROM lnk_files
      
@@ -1493,8 +1495,19 @@ sources:
                           LinkTarget,
                           StringData,
                           if(condition=PropertyStore,
-                             then= ExtraData + dict(PropertyStore=PropertyStore),
-                             else= ExtraData ) as ExtraData,
+                             then= if(condition= ExtraData.Overlay,
+                                        then= ExtraData + dict(PropertyStore=PropertyStore),
+                                        else= if(condition= Overlay.Length &gt; 4,
+                                                    then= ExtraData + dict(PropertyStore=PropertyStore) + dict(Overlay=to_dict(item=Overlay)),
+                                                    else= ExtraData + dict(PropertyStore=PropertyStore) 
+                                                )),
+                             else= if(condition= ExtraData.Overlay,
+                                        then= ExtraData,
+                                        else= if(condition= Overlay.Length &gt; 4,
+                                                    then= ExtraData + dict(Overlay=to_dict(item=Overlay)),
+                                                    else= ExtraData 
+                                                )
+                                        )) as ExtraData,
                           find_uid(propertystore=PropertyStore)[0].Value as UID,
                           find_oldpath(propertystore=PropertyStore)[0].Value as OldPath,
                           find_oldsize(propertystore=PropertyStore)[0].Value as OldSize
@@ -1531,12 +1544,12 @@ sources:
                     else= False)
 
       LET sus_cli(data) = dict(
-                `Arguments have ticks` = data=~'''\^|\`''',
+                `Arguments have ticks` = data=~'''\^|\`|[a-z][\'\"]{2}[a-z]''',
                 `Arguments have environment variables` = data=~'''\%|\$env:''',
                 `Arguments have rare characters` = data=~'''\?\!\~\@''',
                 `Arguments have leading space` = data=~ '^ ',
                 `Arguments have http strings` = data=~'''(http|ftp)s?://''',
-                `Arguments have UNC strings` = data=~'''\\\\''',
+                `Arguments have UNC strings` = data=~'''(\s|^)\\\\[a-z0-9$_.-]+''',
                 `Suspicious arguments` = data=~SusArgRegex
             )
             
@@ -1545,8 +1558,10 @@ sources:
         FROM if(condition=data, 
             then={
                 SELECT Base64,  len(list=Base64) as Length 
-                FROM parse_records_with_regex(accessor='data',file=data, regex='''(?P&lt;Base64&gt;[A-Za-z0-9+/]{10,}={0,2})''')
-                ORDER BY Length DESC LIMIT 1
+                FROM parse_records_with_regex(accessor='data',file=data, regex='''(?P&lt;Base64&gt;(https?://[^\s]+/)*[A-Za-z0-9+/]{10,}={0,2})''')
+                WHERE NOT Base64 =~ '^http' -- Implementing negative regex match: We exclude b64 strings with http prefix.
+                ORDER BY Length DESC 
+                LIMIT 1
             },
             else=null )
     
@@ -1554,7 +1569,7 @@ sources:
       LET add_suspicious = SELECT *, dict(
                 `Large Size` = SourceFile.Size &gt; SusSize,
                 `Startup Path` = SourceFile.OSPath =~ '''\\Startup\\''',
-                `Zeroed Headers` = ( ShellLinkHeader.FileSize=0 or ShellLinkHeader.CreationTime=0),
+                `Zeroed Headers` = ( ShellLinkHeader.FileSize=0 AND ShellLinkHeader.CreationTime=~'^1601-01' AND len(list=LinkInfo.LinkInfoFlags)=0 ),
                 `Hidden window` = ShellLinkHeader.ShowCommand = 'SHOWMINNOACTIVE',
                 `Target Changed path` = lowcase(string=LinkInfo.Target.Path) != lowcase(string=OldPath) AND OldPath,
                 `Target Changed size` = ( ShellLinkHeader.FileSize - OldSize != 0 ) AND ShellLinkHeader.FileSize AND OldSize,
@@ -1564,8 +1579,7 @@ sources:
                 `Suspicious argument size` = len(list=StringData.Arguments) &gt; SusArgSize,
                 `Environment variable script` = ExtraData.EnvironmentVariable =~ '''\.(bat|cmd|ps1|js|vbs|vbe|py)$''',
                 `No Target with environment variable` = ExtraData.EnvironmentVariable AND StringData.Arguments AND NOT (StringData.TargetPath OR StringData.RelativePath),
-                `Suspicious hostname` = ExtraData.TrackerData.MachineID AND SusHostnameRegex AND ExtraData.TrackerData.MachineID=~SusHostnameRegex AND NOT lowcase(string=ExtraData.TrackerData.MachineID)=~lowcase(string=hostname[0].Hostname),
-                `Hostname mismatch` = CheckHostnameMismatch AND ExtraData.TrackerData.MachineID AND NOT lowcase(string=ExtraData.TrackerData.MachineID)=~lowcase(string=hostname[0].Hostname),
+                `Suspicious hostname` = ExtraData.TrackerData.MachineID AND SusHostnameRegex AND ExtraData.TrackerData.MachineID=~SusHostnameRegex,
                 `Created in VM` = ExtraData.TrackerData.MacAddress =~ VmPrefixMAC,
                 `Local Admin` = UID='500',
                 `Cyrillic Language` = format(format='%s%s',args=[LinkTarget,ExtraData])=~ '''[\x{0400}-\x{04FF}]''',
@@ -1583,7 +1597,7 @@ sources:
             then= join(array=Suspicious) =~ ''':(true|0x|\d)''' OR join(array=SuspiciousCli) =~ ''':(true|0x|\d)''' OR len(list=ArgumentsDecoded) &gt; 20,
             else= True )
 
-      LET add_suspiciousb64 = SELECT *,
+      LET add_suspiciousb64 = SELECT *
             if(condition= len(list=ArgumentsDecoded) &gt; 20, then = dict(`Long Base64`=True) + sus_cli(data=ArgumentsDecoded)) as SuspiciousCliB64
         FROM add_suspicious
       
@@ -1599,7 +1613,7 @@ sources:
             LinkTarget,
             if(condition= SuspiciousCliB64,
                 then= to_dict(item=StringData) + dict(`DecodedBase64`=ArgumentsDecoded),
-                else = StringData) as StringData,
+                else= StringData) as StringData,
             ExtraData,
             to_dict(item={SELECT * FROM items(item=Suspicious) WHERE _value }) + 
                 to_dict(item={SELECT * FROM items(item=SuspiciousCli) WHERE _value }) + 

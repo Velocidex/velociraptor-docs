@@ -21,6 +21,14 @@ carousel:
 
 ---
 
+{{% notice warning "CVE-2024-10526 published on 2024-11-03" %}}
+
+Please upgrade your client to mitigate `CVE-2024-10526` to at least
+release `0.73.3`. Alternatively run a hunt to update file permissions.
+[More details](/announcements/2024-cves/)
+
+{{% /notice %}}
+
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response
