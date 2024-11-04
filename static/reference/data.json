@@ -456,6 +456,16 @@
                 "type": "string",
                 "description": "The name of the backup file.",
                 "required": true
+            },
+            {
+                "name": "prefix",
+                "type": "string",
+                "description": "Restore the backup from under this prefix in the zip file (defaults to org id)."
+            },
+            {
+                "name": "providers",
+                "type": "string",
+                "description": "If provided only restore providers matching this regex."
             }
         ],
         "platforms": [
@@ -2585,6 +2595,24 @@
         ]
     },
     {
+        "name": "fs",
+        "description": "Provide access to the server's filestore and datastore.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
+        "name": "fs_sparse",
+        "description": "Provide access to the server's filestore and datastore.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "gcs_pubsub_publish",
         "description": "Publish a message to Google PubSub.",
         "type": "Function",
@@ -3404,6 +3432,24 @@
         ]
     },
     {
+        "name": "hunt_info",
+        "description": "Retrieve the hunt information.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "Hunt Id to look up or a flow id created by that hunt (e.g. F.CRUU3KIE5D73G.H )."
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "hunt_results",
         "description": "Retrieve the results of a hunt.",
         "type": "Plugin",
@@ -3478,6 +3524,18 @@
                 "name": "expires",
                 "type": "time.Time",
                 "description": "Update hunt expiry"
+            },
+            {
+                "name": "add_labels",
+                "type": "string",
+                "description": "Labels to be added to hunt",
+                "repeated": true
+            },
+            {
+                "name": "del_labels",
+                "type": "string",
+                "description": "Labels to be removed from hunt",
+                "repeated": true
             }
         ],
         "metadata": {
@@ -4132,6 +4190,11 @@
                 "type": "string"
             },
             {
+                "name": "upload",
+                "type": "ordereddict.Dict",
+                "description": "Upload object for the file to upload (upload object is returned by the upload() function)"
+            },
+            {
                 "name": "tab",
                 "type": "string",
                 "description": "The tab to focus - can be overview, request, results, logs, notebook"
@@ -4150,6 +4213,11 @@
                 "name": "artifact",
                 "type": "string",
                 "description": "The artifact to retrieve"
+            },
+            {
+                "name": "raw",
+                "type": "bool",
+                "description": "When specified we emit a raw URL (without autodetected text)"
             },
             {
                 "name": "org",
@@ -5749,7 +5817,17 @@
             {
                 "name": "raw",
                 "type": "bool",
-                "description": "Emit raw events (no parsed)."
+                "description": "Emit raw events (not parsed)."
+            },
+            {
+                "name": "start_time",
+                "type": "time.Time",
+                "description": "Only parse events newer than this time (default all times)."
+            },
+            {
+                "name": "end_time",
+                "type": "time.Time",
+                "description": "Only parse events older than this time (default all times)."
             }
         ],
         "metadata": {
@@ -9371,6 +9449,14 @@
         ]
     },
     {
+        "name": "typeof",
+        "description": "Print the underlying Go type of the variable.",
+        "type": "Function",
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "unhex",
         "description": "Apply hex decoding to the string.",
         "type": "Function",
@@ -10593,7 +10679,7 @@
             {
                 "name": "raw",
                 "type": "bool",
-                "description": "Emit raw events (no parsed)."
+                "description": "Emit raw events (not parsed)."
             }
         ],
         "metadata": {

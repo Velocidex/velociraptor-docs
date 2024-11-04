@@ -65,6 +65,8 @@ parameters:
    - name: Prefix
      description: Add artifacts with this prefix
      default: Exchange.
+   - name: ArchiveGlob
+     default: "/**/*.{yaml,yml}"
 
 sources:
   - query: |
@@ -76,7 +78,7 @@ sources:
         }, query={
           SELECT read_file(accessor="zip", filename=OSPath) AS Definition
           FROM glob(
-             globs='/**/*.{yaml,yml}',
+             globs=ArchiveGlob,
              root=pathspec(
                 DelegateAccessor="auto",
                 DelegatePath=Content),

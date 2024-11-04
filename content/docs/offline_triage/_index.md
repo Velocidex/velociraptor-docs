@@ -129,13 +129,9 @@ Here we get to choose what kind of collector we would like:
 
 * Target Operating System: This specifies the specific version of the
   Velociraptor binary that will be packed.
-* Password: It is possible to specify a password to encrypt the zip
-  file that Velociraptor will create. Note that when specifying a zip
-  password, Velociraptor will create a second zip file called
-  `data.zip` inside the output zip file. This is done because Zip
-  password protection does not extend to the directory listing, so
-  Velociraptor will hide the content of the zip by storing the data in
-  an embedded zip.
+
+* Encryption: It is possible to specify a scheme to encrypt the zip
+  file that will be created. Read more about this below.
 
 * Collection Type: This controls where the collection is stored.
 
@@ -173,6 +169,54 @@ The collector creates a zip file containing the collected files as
 well as an optional report.
 
 ![Viewing the Offline Collector in the console](image29.png)
+
+### Encrypting the offline collection
+
+The offline collector can capture a lot of privacy and security
+sensitive information. Typically we want to produce an encrypted Zip
+file so that it can not be extracted by anyone other than authorized
+users.
+
+The offline collector supports a number of encryption schemes, but
+they all produce an encrypted zip file. While the ZIP encryption
+format uses `AES` to encrypt the contents of files with a password, file
+names and metadata are not encrypted. This can lead to a lot of
+information leakage by simply listing the archive (which does not
+require a password).
+
+Velociraptor solves this problem by compressing the files inside
+another ZIP file named `data.zip` and then encrypting the content of
+that file. Therefore when listing an encrypted file we see only a
+metadata file and `data.zip`
+
+Velociraptor supports a number of ways to derive the password with
+which to protect the collection:
+
+1. The `Password` method specifies a password in the embedded
+   configuration file. This password is passed directly to the ZIP
+   library to encrypt the file.
+
+   While simple to use this scheme is not recommended as the password
+   is stored in clear text inside the offline collector and can be
+   easily extracted (by running `Collector.exe config show`)
+
+2. The `X509` method is the recommended method to use in all
+   cases. This scheme embeds the Velociraptor server's public
+   certificate in the offline collector. During collection, a random
+   password is generated which is then encrypted using the embedded
+   Velociraptor certificate and stored in the container inside a
+   metadata file.
+
+   After the password is used to encrypt the container, it is
+   discarded. The only way to recover the password is to decrypt it
+   using the server's private key. This way if the collector binary or
+   the collection are compromised - it is impossible to recover the
+   password without the server's configuration file (that contains the
+   private key).
+
+   If the `X509` method is used, the collected ZIP files will be
+   decrypted automatically and transparently when they are imported
+   into the same server that produced the offline collector.
 
 ### The Generic offline collector
 
@@ -275,6 +319,27 @@ required binaries for inclusion in the collector. External binaries
 will be cached in the datastore so the next time the command is run it
 will just use those efficiently.
 
+As mentioned previously it is recommended to use the `X509` encryption
+method for the offline collector. Simply change the following part of
+the spec file:
+
+```yaml
+EncryptionScheme: X509
+```
+
+The `velociraptor collector` command is similar to the `velociraptor
+gui` command in using a directory on the disk to create a full
+deployment with a `server.config.yaml` containing keys. When using the
+`X509` command, the `server.config.yaml` file will be placed in that
+datastore directory.
+
+If you want to give other people the ability to decrypt the collection
+you can share that `server.config.yaml` file with them and allow them
+to unpack using:
+
+```bash
+velociraptor --config server.config.yaml collection.zip unzip --dump_dir /output/dir
+```
 
 ### Include third party binaries
 

@@ -1,8 +1,8 @@
 ---
-menutitle: "Current CVEs"
-title: "Current CVEs"
+menutitle: "Previous CVEs"
+title: "Previous CVEs"
 description: |
-    The current CVEs in the latest release.
+    Older CVE published against Velociraptor.
 
 weight: 10
 no_edit: true
