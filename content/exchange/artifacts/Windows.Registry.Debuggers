@@ -1,0 +1,20 @@
+name: Custom.Windows.System.Debuggers
+description: |
+   List registered Windows debuggers that use the IFEO (Image File Execution Options) mechanism, as used in MITRE _Event Triggered Execution: Image File Execution Options Injection_ (T1546.012). Checks ```HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\*\Debugger```.
+   
+reference:
+    - https://attack.mitre.org/techniques/T1546/012/
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT or NOTEBOOK
+type: CLIENT
+
+parameters:
+#   - name: FirstParameter
+#     default: Default Value of first parameter
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      SELECT basename(path=dirname(path=OSPath)) AS ExeFile, Data.value AS Debugger FROM glob(globs='''HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\*\Debugger''', accessor="registry") 
