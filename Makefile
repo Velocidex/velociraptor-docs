@@ -24,3 +24,9 @@ highlight_js:
 
 serve:
 	hugo serve
+
+clean:
+	rm -rf ./public/
+
+build:
+	hugo
