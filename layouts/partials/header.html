@@ -43,7 +43,10 @@
         <section id="body">
         <div id="overlay"></div>
         <div class="padding highlightable">
-          {{ $editURL := printf "%s%s%s" .Site.Params.editURL ( replace .File.Dir "\\" "/" ) .File.LogicalName }}
+          {{ $editURL := "" }}
+          {{ if .File }}
+          {{ $editURL = printf "%s%s%s" .Site.Params.editURL ( replace .File.Dir "\\" "/" ) .File.LogicalName }}
+          {{ end }}
           {{ if .Params.editURL }}
           {{ $editURL = .Params.editURL }}
           {{ end }}
@@ -72,12 +75,13 @@
                   {{ if $toc }}
                   <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
                   {{ end }}
-                  <span class="links" itemtype="http://schema.org/BreadcrumbItem">
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                  {{$showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
                  {{if $showBreadcrumb}}
-                    {{ template "breadcrumb" dict "page" . "value" .Title }}
+                    {{ template "breadcrumb" dict "page" . "value" .Title "pos" 1 }}
                  {{ else }}
-                   {{ .Title }}
+                    <span itemprop="item"><span itemprop="name">{{ .Title }}</span></span>
+                    <meta itemprop="position" content="1" />
                  {{ end }}
                   </span>
                 </div>
@@ -112,9 +116,10 @@
         {{define "breadcrumb"}}
           {{$parent := .page.Parent }}
           {{ if $parent }}
-            {{ $value := (printf "<a href='%s'>%s</a> > %s" $parent.RelPermalink $parent.Title .value) }}
-            {{ template "breadcrumb" dict "page" $parent "value" $value }}
+            {{ $value := (printf "<a itemprop=\"item\" href='%s'><span itemprop=\"name\">%s</span></a> > %s" $parent.RelPermalink $parent.Title .value) }}
+            {{ template "breadcrumb" dict "page" $parent "value" $value "pos" ( add .pos 1 ) }}
           {{else}}
-            {{.value|safeHTML}}
+            <span itemprop="item"><span itemprop="name">{{.value|safeHTML}}</span></span>
           {{end}}
+        <meta itemprop="position" content="{{ .pos }}" />
         {{end}}

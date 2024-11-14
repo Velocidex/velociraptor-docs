@@ -2,7 +2,10 @@
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML -}}
 {{- $jsonPath := .Page.Params.rss_data_file -}}
 {{- if $jsonPath -}}
-{{- $data := getJSON $jsonPath }}
+{{- $data := slice -}}
+{{- with resources.Get $jsonPath -}}
+  {{- $data = . | transform.Unmarshal -}}
+{{ end }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>
