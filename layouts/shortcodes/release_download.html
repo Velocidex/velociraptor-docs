@@ -13,6 +13,7 @@ for download from GitHub. Less common platforms may not be built at the latest r
 {{ range .Page.Params.arches }}
 {{ $rr := $r }}
 {{ if .release }}{{ $rr = .release }}{{ end }}
+{{ if .base_release }}{{ $br = .base_release }}{{ end }}
 <tr>
   <td>
     <div class="platform">

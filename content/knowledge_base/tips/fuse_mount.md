@@ -145,3 +145,5 @@ The above command will mount the container on the directory
 * `--unix_path_escaping` will allow some characters which are not allowed on windows by are allowed on Unix (e.g. `:`)
 * `--map_device_names_to_letters` will replace NTFS style devices like `\\.\C:` with drive letters `C:`
 * `--strip_colons_on_drive_letters` will remove `:` characters completely so `C:` will become a directory called `C`
+
+Tags: #forensics
