@@ -1,0 +1,64 @@
+name: ExchangeServerHunting
+type: COMPOUND
+description: >
+  Artifact for hunting suspicious activity on Microsoft Exchange Servers,
+  focusing on web shells, suspicious PowerShell commands, and email activity.
+sources:
+  - name: EventLogs_Exchange
+    parameters:
+      LogNames:
+        - "Application"
+        - "System"
+        - "Security"
+    query: >
+      SELECT EventID, TimeCreated, ProviderName, Message
+      FROM events
+      WHERE ProviderName IN ('MSExchange', 'Microsoft-Windows-PowerShell', 'IIS') AND
+            (Message LIKE '%authentication failed%' OR
+             Message LIKE '%login attempt%' OR
+             Message LIKE '%unexpected error%')
+
+  - name: IISLogs_Hunting
+    parameters:
+      Paths:
+        - "C:\\inetpub\\logs\\LogFiles\\W3SVC*\\u_ex*.log"
+    query: >
+      SELECT *
+      FROM files()
+      WHERE content LIKE '%/autodiscover%' OR
+            content LIKE '%/owa%' OR
+            content LIKE '%/ecp%' OR
+            content LIKE '%/asp.net/%'
+
+  - name: MessageTrackingLogs
+    parameters:
+      Paths:
+        - "C:\\Program Files\\Microsoft\\Exchange Server\\V15\\TransportRoles\\Logs\\MessageTracking\\*.log"
+    query: >
+      SELECT TimeLogged, ClientHostname, SenderAddress, RecipientAddress, MessageSubject
+      FROM csv(file=paths)
+      WHERE MessageSubject LIKE '%test%' OR
+            SenderAddress LIKE '%admin%' OR
+            RecipientAddress LIKE '%external%'
+
+  - name: PowerShellLogs
+    parameters:
+      Paths:
+        - "C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-PowerShell%4Operational.evtx"
+    query: >
+      SELECT EventID, Message
+      FROM events
+      WHERE Message LIKE '%Invoke%' OR
+            Message LIKE '%Download%' OR
+            Message LIKE '%EncodedCommand%'
+
+  - name: RegistryKeys_Hunting
+    parameters:
+      Keys:
+        - "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\ExchangeServer"
+        - "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+    query: >
+      SELECT Key, ValueName, Value
+      FROM registry()
+      WHERE Key LIKE '%Exchange%' OR
+            Key LIKE '%Run%'
