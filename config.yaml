@@ -70,3 +70,7 @@ outputs:
   section: ["HTML"]
   taxonomyTerm: ["HTML"]
   taxonomy: ["HTML"]
+
+# services:
+#   rss:
+#     limit: 42
