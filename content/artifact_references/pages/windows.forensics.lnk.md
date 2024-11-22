@@ -188,9 +188,6 @@ parameters:
     description: Regex for suspicious TrackerData Hastname.
     type: regex
     default: ^(Win-|Desktop-|Commando$)
-  - name: CheckHostnameMismatch
-    description: Compare TrackerData.MachineID with Hostname (noisy in many networks)
-    type: bool
   - name: VmPrefixMAC
     description: VM MacAddress prefix regex to compate to LNK TrackerData.
     type: regex
@@ -1634,5 +1631,6 @@ column_types:
     type: timestamp
   - name: ShellLinkHeader.WriteTime
     type: timestamp
+
 </code></pre>
 

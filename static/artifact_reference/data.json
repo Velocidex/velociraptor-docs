@@ -468,6 +468,33 @@
         ]
     },
     {
+        "title": "Linux.Events.DNS",
+        "description": "This artifact uses eBPF to track DNS requests from various processes.",
+        "link": "/artifact_references/pages/linux.events.dns",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.EBPF",
+        "description": "This artifact forwards EBPF events generated on the endpoint.\n",
+        "link": "/artifact_references/pages/linux.events.ebpf",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.HTTPConnections",
+        "description": "This artifact uses eBPF to track HTTP and parse connections from\nvarious processes.",
+        "link": "/artifact_references/pages/linux.events.httpconnections",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
         "title": "Linux.Events.Journal",
         "description": "Watches the binary journal logs. Systemd uses a binary log format to\nstore logs.\n",
         "link": "/artifact_references/pages/linux.events.journal",
@@ -505,7 +532,7 @@
     },
     {
         "title": "Linux.Events.TrackProcesses",
-        "description": "This artifact uses auditd and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
+        "description": "This artifact uses ebpf and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
         "link": "/artifact_references/pages/linux.events.trackprocesses",
         "type": "client_event",
         "tags": [
@@ -1011,6 +1038,24 @@
         "title": "Notebooks.Default",
         "description": "A default notebook.\n",
         "link": "/artifact_references/pages/notebooks.default",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.Demo",
+        "description": "A notebook demonstrating features of notebooks\n",
+        "link": "/artifact_references/pages/notebooks.demo",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.Sigma.Studio",
+        "description": "A notebook to help develop Sigma rules.\n",
+        "link": "/artifact_references/pages/notebooks.sigma.studio",
         "type": "notebook",
         "tags": [
             "notebook"
