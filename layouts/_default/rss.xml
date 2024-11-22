@@ -1,54 +1,54 @@
-{{- $baseUrl := .Site.BaseURL -}}
-{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML -}}
-{{- $jsonPath := .Page.Params.rss_data_file -}}
-{{- if $jsonPath -}}
-{{- $data := slice -}}
-{{- with resources.Get $jsonPath -}}
-  {{- $data = . | transform.Unmarshal -}}
-{{ end }}
+{{- $authorEmail := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .email }}
+      {{- $authorEmail = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- $authorName := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .name }}
+      {{- $authorName = . }}
+    {{- end }}
+  {{- else }}
+    {{- $authorName  = . }}
+  {{- end }}
+{{- end }}
+
+{{- $pctx := . }}
+{{- $pages := slice }}
+{{- $pages = $pctx.Pages }}
+{{- $limit := .Site.Config.Services.RSS.Limit }}
+{{- if ge $limit 1 }}
+{{- $pages = $pages | first $limit }}
+{{- end }}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>
-      {{- if .Page.Params.rss_title -}}
-         {{- .Page.Params.rss_title -}}
-      {{- else -}}
-        {{- if eq  .Title  .Site.Title -}}
-          {{- .Site.Title -}}
-        {{- else -}}
-          {{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}
-        {{- end -}}
-      {{- end -}}</title>
+    <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}</title>
     <link>{{ .Permalink }}</link>
-    <description>Recent content
-    {{- if .Page.Params.rss_description -}}
-      {{- .Page.Params.rss_description -}}
-    {{- else -}}
-      {{ if ne  .Title  .Site.Title }}
-        {{- with .Title }} in {{.}}
-        {{- end -}}
-      {{- end }} on {{ .Site.Title -}}
-    {{- end -}}
-    </description>
-    <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
-    <language>{{.}}</language>{{end}}{{ with .Site.Author.email }}
-    <managingEditor>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Author.email }}
-    <webMaster>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</webMaster>{{end}}{{ with .Site.Copyright }}
-    <copyright>{{.}}</copyright>{{end}}{{ if not .Date.IsZero }}
-    <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
-    {{- with .OutputFormats.Get "RSS" -}}
+    <description>Recent content {{ if ne .Title .Site.Title }}{{ with .Title }}in {{ . }} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+    <generator>Hugo</generator>
+    <language>{{ site.Language.LanguageCode }}</language>{{ with $authorEmail }}
+    <managingEditor>{{.}}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
+    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with .Site.Copyright }}
+    <copyright>{{ . }}</copyright>{{ end }}{{ if not .Date.IsZero }}
+    <lastBuildDate>{{ (index $pages.ByLastmod.Reverse 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- with .OutputFormats.Get "RSS" }}
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
-    {{- end -}}
-    {{ range $data | first 50 }}
-    {{- if .date -}}
+    {{- end }}
+    {{- range $pages }}
     <item>
-      <title>{{ .title }}</title>
-      <link>{{ $baseUrl }}{{ strings.TrimPrefix "/" .link }}</link>
-      <pubDate>{{ dateFormat "Mon, 02 Jan 2006 15:04:05 -0700" .date }}</pubDate>
-      <guid>{{ $baseUrl }}{{ .link }}</guid>
-      <description>{{ .description }}</description>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ replaceRE "img src=\"(.*?)\"" (printf "%s%s%s" "img src=\"" .Permalink "$1\"") .Content | transform.XMLEscape | safeHTML }}</description>
     </item>
-    {{ end }}
-    {{ end }}
+    {{- end }}
   </channel>
 </rss>
-{{ end }}

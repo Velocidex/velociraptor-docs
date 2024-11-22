@@ -68,5 +68,5 @@ outputs:
   page: ["HTML"]
   home: ["HTML"]
   section: ["HTML"]
-  taxonomyTerm: ["HTML"]
   taxonomy: ["HTML"]
+
