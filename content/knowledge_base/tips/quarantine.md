@@ -1,6 +1,4 @@
----
-title: Custom quarantine exclusions
----
+# Custom quarantine exclusions
 
 We may want to add custom exclusions to Velociraptor quarantine and allow communication to another IP
 

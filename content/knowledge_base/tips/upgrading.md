@@ -1,6 +1,4 @@
----
-title: How do I upgrade my server and clients?
----
+# How do I upgrade my server and clients?
 
 To upgrade the Velociraptor server to a new version, simply download the latest release binary from the GitHub Release Page and regenerate a new `Debian` package as described above, but using the existing configuration file.
 

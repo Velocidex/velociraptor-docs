@@ -1,6 +1,4 @@
----
-title: What do I do about "version GLIBC_2.14 not found" errors?
----
+# What do I do about "version GLIBC_2.14 not found" errors?
 
 {{% notice tip "TLDR - use the `musl` build" %}}
 

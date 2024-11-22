@@ -1,6 +1,4 @@
----
-title: How to increase notebook timeout
----
+# How to increase notebook timeout
 
 In the notebook, VQL queries are limited to 10 minutes. Once the timeout is expired, the query is cancelled.
 Regular collections from clients also have a timeout, that timeout can be changed in the new collection wizard GUI to give the query more time.

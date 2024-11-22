@@ -1,6 +1,4 @@
----
-title: "How to manage storage space on the server"
----
+# How to manage storage space on the server
 
 Velociraptor can collect a lot of data quickly but usually the data is
 only relevant for short periods of time.

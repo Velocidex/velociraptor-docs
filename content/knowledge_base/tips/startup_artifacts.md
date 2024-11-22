@@ -1,6 +1,4 @@
----
-title: What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?
----
+# What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?
 
 Velociraptor frontend process has a component called the `Artifact
 Repository`. This component knows about all the artifacts that are

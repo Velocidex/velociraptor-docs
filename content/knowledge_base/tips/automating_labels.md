@@ -1,6 +1,4 @@
----
-title: How can I automatically apply labels to clients?
----
+# How can I automatically apply labels to clients?
 
 Sometimes it is useful to automatically label clients based on client
 state. You can do this automatically by running a [Server Event

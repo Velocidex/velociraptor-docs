@@ -1,6 +1,6 @@
 [
     {
-        "title": "# Structure of the collected files",
+        "title": "How do I use the files inside the offline collector ZIP?",
         "link": "/knowledge_base/tips/fuse_mount",
         "tags": [
             "forensics"
@@ -17,12 +17,12 @@
             "vql"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2024-08-31"
     },
     {
-        "title": "# Management of old collections",
+        "title": "How to manage storage space on the server",
         "link": "/knowledge_base/tips/deleting_old_data",
         "tags": [
             "configuration",
@@ -34,7 +34,20 @@
         "date": "2024-07-19"
     },
     {
-        "title": "# Exporting",
+        "title": "How do I enable password protected VFS downloads?",
+        "link": "/knowledge_base/tips/download_password",
+        "tags": [
+            "password",
+            "download",
+            "gui"
+        ],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2024-03-18"
+    },
+    {
+        "title": "How can I clone an organization with all its hunts and artifacts to another instance?",
         "link": "/knowledge_base/tips/clone_organization_to_other_server",
         "tags": [
             "archiving",
@@ -47,7 +60,20 @@
         "date": "2023-07-24"
     },
     {
-        "title": "# A collector creation script",
+        "title": "How can I convert decimal?",
+        "link": "/knowledge_base/tips/decimaldecode",
+        "tags": [
+            "decode",
+            "decimal",
+            "vql"
+        ],
+        "author": "mgreen27",
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2022-11-02"
+    },
+    {
+        "title": "How can I automate the creation of the offline collector?",
         "link": "/knowledge_base/tips/automate_offline_collector",
         "tags": [
             "configuration",
@@ -59,32 +85,7 @@
         "date": "2022-10-10"
     },
     {
-        "title": "# Assigning clients to the hunt.",
-        "link": "/knowledge_base/tips/hunt_by_label",
-        "tags": [
-            "hunting",
-            "vql",
-            "labels"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-09-10"
-    },
-    {
-        "title": "# Using VQL",
-        "link": "/knowledge_base/tips/retry_hunt",
-        "tags": [
-            "hunting",
-            "vql"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-09-10"
-    },
-    {
-        "title": "Get the latest entry from the GitHub API",
+        "title": "How do I get the latest release binary?",
         "link": "/knowledge_base/tips/getting_latest_release",
         "tags": [
             "configuration",
@@ -96,18 +97,7 @@
         "date": "2022-09-03"
     },
     {
-        "title": "# What is `multipart/form-data` POST?",
-        "link": "/knowledge_base/tips/multiparts_uploads",
-        "tags": [
-            "vql"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-05-21"
-    },
-    {
-        "title": "# Creating favorites programmatically",
+        "title": "How can I save my favorite collections for the future?",
         "link": "/knowledge_base/tips/favorites",
         "tags": [
             "configuration",
@@ -119,21 +109,9 @@
         "date": "2022-04-26"
     },
     {
-        "title": "# Automating configuration generation.",
-        "link": "/knowledge_base/tips/merging_config",
+        "title": "What do I do about \"version GLIBC_2.14 not found\" errors?",
+        "link": "/knowledge_base/tips/glibc_errors",
         "tags": [
-            "configuration"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-04-26"
-    },
-    {
-        "title": "# Setting a non-standard validity",
-        "link": "/knowledge_base/tips/rolling_certificates",
-        "tags": [
-            "configuration",
             "deployment"
         ],
         "author": "scudette",
@@ -142,60 +120,11 @@
         "date": "2022-04-26"
     },
     {
-        "title": "# Specifying a startup artifact.",
-        "link": "/knowledge_base/tips/startup_artifacts",
+        "title": "How can I automatically apply labels to clients?",
+        "link": "/knowledge_base/tips/automating_labels",
         "tags": [
-            "deployment",
-            "configuration"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-04-26"
-    },
-    {
-        "title": "## Generate the configuration",
-        "link": "/knowledge_base/tips/ssl",
-        "tags": [
-            "configuration",
-            "deployment"
-        ],
-        "author": "ajburnell",
-        "author_link": "https://github.com/ajburnell",
-        "author_avatar": "https://avatars.githubusercontent.com/u/30587915?v=4",
-        "date": "2022-04-18"
-    },
-    {
-        "title": "## Environment variables.",
-        "link": "/knowledge_base/tips/proxy",
-        "tags": [
-            "configuration",
-            "deployment"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-04-15"
-    },
-    {
-        "title": "# Supported Upgrade Scenarios",
-        "link": "/knowledge_base/tips/upgrading",
-        "tags": [
-            "configuration",
-            "admin"
-        ],
-        "author": "scudette",
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-03-27"
-    },
-    {
-        "title": "# Granting a user a role.",
-        "link": "/knowledge_base/tips/multiple_oauth",
-        "tags": [
-            "configuration",
-            "sso",
-            "deployment"
+            "automation",
+            "labels"
         ],
         "author": "scudette",
         "author_link": "https://github.com/scudette",
@@ -203,7 +132,7 @@
         "date": "2022-03-26"
     },
     {
-        "title": "# Query logs",
+        "title": "How do I debug the client while it is running?",
         "link": "/knowledge_base/tips/debugging_clients",
         "tags": [
             "deployment",
@@ -215,7 +144,7 @@
         "date": "2022-03-21"
     },
     {
-        "title": "# Windows Environments",
+        "title": "How do I deploy the client as agentless (without install)?",
         "link": "/knowledge_base/tips/deploying_in_agentless_mode",
         "tags": [
             "deployment"
@@ -224,5 +153,230 @@
         "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to control hunting by label groups?",
+        "link": "/knowledge_base/tips/hunt_by_label",
+        "tags": [
+            "hunting",
+            "vql",
+            "labels"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "Applying labels to hunt results",
+        "link": "/knowledge_base/tips/huntlabel",
+        "tags": [
+            "labels"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "In VQL, can I SELECT a column with special characters in its name?",
+        "link": "/knowledge_base/tips/identifier_with_space",
+        "tags": [
+            "vql"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How can I override the configuration file?",
+        "link": "/knowledge_base/tips/merging_config",
+        "tags": [
+            "configuration"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How can I make a multipart/form-data POST request in VQL",
+        "link": "/knowledge_base/tips/multiparts_uploads",
+        "tags": [
+            "vql"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How can I configure Velociraptor for multiple SSO providers",
+        "link": "/knowledge_base/tips/multiple_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How to increase notebook timeout",
+        "link": "/knowledge_base/tips/notebook_timeout",
+        "tags": [
+            "configuration"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "What to do about error \"Plugin info not found\"",
+        "link": "/knowledge_base/tips/plugin_not_found",
+        "tags": [
+            "vql",
+            "configuration",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How do I set a proxy for client communications?",
+        "link": "/knowledge_base/tips/proxy",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "Custom quarantine exclusions",
+        "link": "/knowledge_base/tips/quarantine",
+        "tags": [
+            "quarantine",
+            "containment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How do you generate random characters?",
+        "link": "/knowledge_base/tips/random",
+        "tags": [
+            "random",
+            "vql"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How can I quickly reconfigure an offline collector?",
+        "link": "/knowledge_base/tips/reconfigure_offline_collector",
+        "tags": [],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How do I search for registry keys",
+        "link": "/knowledge_base/tips/registry_finder",
+        "tags": [
+            "forensics",
+            "searching"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How do I re-collect a failed artifact in a hunt?",
+        "link": "/knowledge_base/tips/retry_hunt",
+        "tags": [
+            "hunting",
+            "vql"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How to fix \"certificate has expired or not yet valid error\"?",
+        "link": "/knowledge_base/tips/rolling_certificates",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How do I use my own SSL certificates?",
+        "link": "/knowledge_base/tips/ssl",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?",
+        "link": "/knowledge_base/tips/startup_artifacts",
+        "tags": [
+            "deployment",
+            "configuration"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How do I upgrade my server and clients?",
+        "link": "/knowledge_base/tips/upgrading",
+        "tags": [
+            "configuration",
+            "admin"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How can I url/percent decode a string?",
+        "link": "/knowledge_base/tips/urldecode",
+        "tags": [
+            "decode",
+            "encode",
+            "url",
+            "vql"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

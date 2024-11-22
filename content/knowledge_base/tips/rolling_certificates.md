@@ -1,6 +1,4 @@
----
-title: How to fix "certificate has expired or not yet valid error"?
----
+# How to fix "certificate has expired or not yet valid error"?
 
 When Velociraptor generates a configuration file it also generates
 some certificates to secure it's internal PKI.
@@ -33,7 +31,7 @@ Additionally the `config rotate_keys` command can be used to regenerate both
 the server certificate and the associated private key. Although this is not
 necessary for operational purposes, it is considered good security practice
 to rotate keys and certificates periodically, and particularly after a
-suspected systems compromise.
+suspected systems compromise. 
 
 ## Setting a non-standard validity
 

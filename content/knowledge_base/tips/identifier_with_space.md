@@ -1,6 +1,4 @@
----
-title: In VQL, can I SELECT a column with special characters in its name?
----
+# In VQL, can I SELECT a column with special characters in its name?
 
 Sometimes a VQL query will emit a column name with special characters in its name, such as a dot, space or other special characters.
 

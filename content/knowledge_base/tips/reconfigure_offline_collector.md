@@ -1,12 +1,10 @@
----
-title: How can I quickly reconfigure an offline collector?
----
+# How can I quickly reconfigure an offline collector?
 
 The offline collector is a pre-configured version of Velociraptor that automatically collects certain artifacts when invoked with no command line args. The offline collector is a full Velociraptor binary that simply has a custom configuration embedded - so you can use the collector binary to perform any operations that Velociraptor would.
 
 Usually the collector is built using the GUI by selecting the correct artifacts and injecting parameters into the embedded configuration file. But sometimes we might want to slightly modify the embedded configuration, and firing up a GUI to rebuild a new collector from scratch is a bit too much work.
 
-There is actually an easier way to quickly modify the embedded configuration.
+There is actually an easier way to quickly modify the embedded configuration. 
 
 1. First extract the existing embedded config from the collector into a local file:
 
