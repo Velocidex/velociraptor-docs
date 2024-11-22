@@ -1,4 +1,6 @@
-# What to do about error "Plugin info not found"
+---
+title: What to do about error "Plugin info not found"
+---
 
 Velociraptor VQL queries can run on the server in the context of
 server artifacts or notebook queries. Usually server side VQL is used

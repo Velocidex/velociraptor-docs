@@ -1,4 +1,6 @@
-# Applying labels to hunt results
+---
+title: How to apply labels to hunt results
+---
 
 Sometimes it is useful to label clients from a hunt.
 

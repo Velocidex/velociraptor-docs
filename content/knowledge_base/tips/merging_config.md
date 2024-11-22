@@ -1,4 +1,6 @@
-# How can I override the configuration file?
+---
+title: How can I override the configuration file?
+---
 
 Velociraptor relies on the configuration file to control the operation
 of the server or client. Usually the configuration file is generated

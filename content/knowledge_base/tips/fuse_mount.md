@@ -1,4 +1,6 @@
-# How do I use the files inside the offline collector ZIP?
+---
+title: How do I use the files inside the offline collector ZIP?
+---
 
 The Velociraptor offline collector is a convenient way to collect bulk
 triage data quickly and efficiently, without having to install any new

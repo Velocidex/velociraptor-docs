@@ -1,12 +1,14 @@
-# How can I url/percent decode a string?
+---
+title: How can I url/percent decode a string?
+---
 
-During investigation you may find logs or other data with percent-encoded strings. 
+During investigation you may find logs or other data with percent-encoded strings.
 Since 0.6.5 we have included a lambda function in regex_replace() that enables decode and managing errors to enable analysis.
 
 ```vql
 LET Line = '''http://target/login.asp?userid=bob%27%3b%20update%20logintable%20set%20passwd%3d%270wn3d%27%3b--%00'''
 
-SELECT regex_replace(source=Line, replace_lambda="x=>unhex(string=x[1:]) || x", re="%..") as Decoded FROM scope() 
+SELECT regex_replace(source=Line, replace_lambda="x=>unhex(string=x[1:]) || x", re="%..") as Decoded FROM scope()
 
 ```
 

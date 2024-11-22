@@ -1,4 +1,6 @@
-# How do I use my own SSL certificates?
+---
+title: How do I use my own SSL certificates?
+---
 
 Use case: For an on-premises deployment, Let's Encrypt may not be an option. You may want to use your own enterprise/corporate Certificate Authority (CA) or another 3rd party.
 

@@ -1,8 +1,10 @@
-# How do you generate random characters?
+---
+title: How do you generate random characters?
+---
 
 Using the rand() function we can manipulate the results to output a character set then use the WHERE condition to filter for the characters of interest.
 
-For example output 32 random printable characters:  
+For example output 32 random printable characters:
 ```
   LET RandomChars = SELECT format(format="%c", args=rand(range=255)) AS Character
   FROM range(end=9999999999)

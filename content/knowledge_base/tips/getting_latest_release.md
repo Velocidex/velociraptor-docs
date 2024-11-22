@@ -1,4 +1,6 @@
-# How do I get the latest release binary?
+---
+title: How do I get the latest release binary?
+---
 
 The Velociraptor release process uses a release branch to prepare a
 new release. Releases go through a release candidate (RC) process with

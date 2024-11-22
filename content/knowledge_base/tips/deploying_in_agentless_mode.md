@@ -1,4 +1,6 @@
-# How do I deploy the client as agentless (without install)?
+---
+title: How do I deploy the client as agentless (without install)?
+---
 
 Sometimes we need to deploy Velociraptor in an IR and can not install
 it permanently as a service.

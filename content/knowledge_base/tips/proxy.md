@@ -1,4 +1,6 @@
-# How do I set a proxy for client communications?
+---
+title: How do I set a proxy for client communications?
+---
 
 Many enterprise environments require a proxy to be set before outbound
 web communications is allowed. The Velociraptor client uses HTTP to

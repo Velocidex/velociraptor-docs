@@ -1,4 +1,6 @@
-# How can I automate the creation of the offline collector?
+---
+title: How can I automate the creation of the offline collector?
+---
 
 The Velociraptor Offline collector is a [pre-configured triage and
 acquisition tool]({{<ref "/docs/offline_triage/#offline-collections" >}}).

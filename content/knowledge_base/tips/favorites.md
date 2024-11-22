@@ -1,4 +1,6 @@
-# How can I save my favorite collections for the future?
+---
+title: How can I save my favorite collections for the future?
+---
 
 Sometimes we tend to collect the same set of artifacts together,
 possibly with some specific parameters. It gets tedious to constantly

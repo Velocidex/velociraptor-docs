@@ -1,4 +1,6 @@
-# How do I re-collect a failed artifact in a hunt?
+---
+title: How do I re-collect a failed artifact in a hunt?
+---
 
 Sometimes collecting an artifact in a hunt does not work as
 expected.

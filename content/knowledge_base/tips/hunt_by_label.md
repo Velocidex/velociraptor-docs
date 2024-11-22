@@ -1,4 +1,6 @@
-# How to control hunting by label groups?
+---
+title: How to control hunting by label groups?
+---
 
 In Velociraptor, `Hunts` are sets of the same collections across
 clients. For example, a hunt for `Scheduled Tasks` will automatically

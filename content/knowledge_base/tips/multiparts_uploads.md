@@ -1,4 +1,6 @@
-# How can I make a multipart/form-data POST request in VQL
+---
+title: How can I make a multipart/form-data POST request in VQL
+---
 
 VQL can be used to make http requests using the `http_client()`
 plugin. While `GET` requests are usually pretty straight forward,
@@ -76,7 +78,7 @@ SELECT * FROM http_client(
        END)
 ```
 
-In this example I used some utility functions to make it easier to build the 
+In this example I used some utility functions to make it easier to build the
 different parts and make sure the encoding structure is always correct.
 
 Tags: #vql

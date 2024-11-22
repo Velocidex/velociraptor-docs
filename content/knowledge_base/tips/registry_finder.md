@@ -1,4 +1,6 @@
-# How do I search for registry keys
+---
+title: How do I search for registry keys?
+---
 
 To search the registry simply use the "registry" accessor with the `Windows.Search.FileFinder` artifact.
 

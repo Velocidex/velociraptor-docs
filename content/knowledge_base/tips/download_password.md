@@ -1,4 +1,6 @@
-# How do I enable password protected VFS downloads?
+---
+title: How do I enable password protected VFS downloads?
+---
 
 You can just export them from the GUI!
 

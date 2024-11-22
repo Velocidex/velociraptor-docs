@@ -1,4 +1,6 @@
-# How do I debug the client while it is running?
+---
+title: How do I debug the client while it is running?
+---
 
 Sometimes we collect artifacts from clients but for some reason things seem to take longer than expected. Velociraptor has mechanisms to gain visibility into how clients behave and what queries are running.
 

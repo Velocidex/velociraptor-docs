@@ -21,8 +21,8 @@ things that you have never even imagined was possible!
 
 This section of the site facilitates sharing the community's
 experiences, tips and tricks for getting certain tasks done.  The key
-for using this resource is asking a question: `What task are we trying
-to achieve?`
+for using this resource is asking a question: "What task are we trying
+to achieve?"
 
 Search the below questions to read a short knowledge base article of
 how to answer the question.
