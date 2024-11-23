@@ -1,0 +1,41 @@
+name: Windows.Registry.RestrictedAdminMode
+author: Sikha Puthanveedu @SikhaMohan
+
+description: |
+  This artifact checks the registry key:
+  HKLM\SYSTEM\CurrentControlSet\Control\Lsa\DisableRestrictedAdmin
+  and retrieves its details, including modification time.
+
+  This key controls Restricted Admin Mode, a security feature that can be exploited by threat actors. 
+  A DWORD value of 0 for this key enables Restricted Admin Mode, allowing attackers with local administrator privileges to bypass Multi-Factor Authentication (MFA) when moving laterally within the victim network.
+ 
+  **If this artifact detects a value of 0, further investigation is recommended.** Disabling Restricted Admin Mode might be a necessary security response.
+
+
+reference:
+  - https://www.aon.com/en/insights/cyber-labs/restricted-admin-mode-circumventing-mfa-on-rdp-logons
+  - https://www.blumira.com/blog/2024-apr-why-are-threat-actors-enabling-windows-restrictedadmin-mode
+  - https://cloud.google.com/blog/topics/threat-intelligence/ransomware-attacks-surge-rely-on-public-legitimate-tools
+
+type: CLIENT
+
+precondition: SELECT OS FROM info() WHERE OS = 'windows'
+
+parameters:
+  - name: SearchRegistryGlob
+    default: HKLM\SYSTEM\CurrentControlSet\Control\Lsa\DisableRestrictedAdmin
+    description: Path to the registry key to check for Restricted Admin Mode.
+
+sources:
+  - query: |
+     SELECT Name AS KeyName,
+            FullPath,
+            Data.type AS KeyType,
+            Data.value AS KeyValue,
+            ModTime AS Modified
+     FROM glob(globs=SearchRegistryGlob, accessor='registry')
+     WHERE KeyType = "DWORD"
+
+column_types:
+  - name: Modified
+    type: timestamp
