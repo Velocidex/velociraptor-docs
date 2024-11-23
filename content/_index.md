@@ -25,7 +25,7 @@ carousel:
 
 Please upgrade your client to mitigate `CVE-2024-10526` to at least
 release `0.73.3`. Alternatively run a hunt to update file permissions.
-[More details](/announcements/2024-cves/)
+[More details](/announcements/advisories/cve-2024-10526)
 
 {{% /notice %}}
 
