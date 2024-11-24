@@ -3,6 +3,10 @@
 This document provides guidance for creating image content for the Velociraptor documentation.
 It specifies some informal standards and gives some tool-specific advice with the goal of ensuring as much consistency as possible in our image content.
 
+The guidance in this document is intended to:
+- allow newcomers to get quickly "up to speed" in creating image content that is consistent with existing content on the website.
+- centralize image content-related decisions.
+
 ---
 
 * [Image categories](#image-categories)
@@ -10,21 +14,20 @@ It specifies some informal standards and gives some tool-specific advice with th
 * [Colors](#colors)
 * [Excalidraw object library](#excalidraw-object-library)
 * [Screenshots](#screenshots)
-   * [Screen size](#screen-size)
+  * [Screen size](#screen-size)
       * [Partial screens](#partial-screens)
-         * [Framing](#framing)
+        * [Framing](#framing)
       * [Full screens](#full-screens)
-   * [Velociraptor theme](#velociraptor-theme)
-      * [Theme tweaks](#theme-tweaks)
-   * [Annotations](#annotations)
+  * [Velociraptor theme](#velociraptor-theme)
+  * [Annotations](#annotations)
       * [Arrows](#arrows)
       * [Numbered callouts](#numbered-callouts)
       * [Excalidraw-specific options](#excalidraw-specific-options)
 * [Line diagrams](#line-diagrams)
 * [Exporting images](#exporting-images)
-   * [Formats and settings](#formats-and-settings)
-   * [Fonts in SVG images](#fonts-in-svg-images)
-   * [File size](#file-size)
+  * [Formats and settings](#formats-and-settings)
+  * [Fonts in SVG images](#fonts-in-svg-images)
+  * [File size](#file-size)
 
 ---
 
@@ -36,64 +39,52 @@ Image content generally falls into one of these categories:
 	- unannotated
 	- annotated
 2. [Line diagrams](#line-diagrams) (flow charts, sequence diagrams, etc.)
+3. GIF animations (typically use for short video clips of things like terminal sessions)
 
 For **annotated screenshots** and **line diagrams** we use Excalidraw because it's easy to use and it produces drawings with a realistic hand-drawn effect.
 For annotated screenshots this aspect contrasts well with inorganic GUI elements, and in general it's humanistic and visually appealing.
 
 For **unannotated screenshots** we use the PNG format since it has lossless compression which preserves the legibility in text in images of the Velociraptor GUI. There's no need to do anything fancy with these images. Just try to keep the size below 300KB if possible.
 
+For **GIF animations** no standard exists yet.
+
 ## Fonts
 
-The official Excalidraw version uses a default font named "Virgil" (or "Excalifont") which is too scrawly and therefore a bit hard to read (as discussed [here](https://github.com/excalidraw/excalidraw/issues/2945)) and not serious enough for our purpose.
+The use of standard fonts is most relevant to **annoted screenshots** and **line diagrams**.
 
-The default fonts are not able to be changed without editing the application's source, and the Excalidraw developers have made no firm commitment to making custom fonts possible even though this is a highly requested feature.
-Fortunately there exists a reasonably well-maintained fork which allow does adding custom fonts:
+The official Excalidraw version (https://excalidraw.com) uses a default font named "Excalifont" which is very scrawly and therefore hard to read (as discussed [here](https://github.com/excalidraw/excalidraw/issues/2945)) as well as being too cartoonish for serious subject matter.
 
-- https://github.com/hulkbig/excalidraw-zh
+The default fonts in Excalidraw are not able to be changed without editing the application's source and running a local instance.
+The Excalidraw developers have made no firm commitment to making custom fonts possible even though this is a highly requested feature.
 
-It's very easy to set up a local instance:
-
-1. clone the repo and cd to it
-2. `yarn`  (or `npm install`) to install dependencies
-3. `yarn start` (or `npm start`) to start the web app
-4. follow the link that it shows you (by default http://localhost:3000/).
+As a workaround to this limitation we replace the fonts with our preferred ones in the SVG files that we export from Excalidraw.
+This font substitution is done [automatically](https://github.com/Velocidex/velociraptor-docs/blob/947bb25a3d7cc6b4ac9d376db863f8a9db535ece/layouts/_default/_markup/render-image.html#L7) by the Hugo build process.
 
 Excalidraw has provision for only 3 font variants at a time, so we assign them as follows:
 
-| Font file                  | What we use it for | Replaces Excalidraw's... |
-| -------------------------- | :----------------: | :----------------------: |
-| playpen-sans-v13-latin-500 |    Default font    |       "Hand-drawn"       |
-| playpen-sans-v13-latin-800 |    Heading font    |         "Normal"         |
-| SVBasicManual              |     Code font      |          "Code"          |
+| Excalidraw UI font name | CSS/SVG font family name | Velociraptor WOFF2 font file name | What we use it for |
+|-------------------------|--------------------------|-----------------------------------|:------------------:|
+| Hand-drawn              | Excalifont               | playpen-sans-v13-latin-500        |    Default font    |
+| Normal                  | Nunito                   | playpen-sans-v13-latin-800        |    Heading font    |
+| Code                    | Comic Shanns             | SVBasicManual                     |      Code font     |
 
 Visually this is how our font allocations compare to the default ones:
 
 ![](image-guidelines/excalidraw_default_fonts.png)
 
 In our case the hand-drawn font _is_ our default/normal font.
-We assign our heading font to their "normal font" slot because Excalidraw doesn't have any options for bolding or italicizing fonts.
+We assign our heading font to the provided "normal font" slot because Excalidraw doesn't have any options for bolding or italicizing fonts.
 
-We host the font files on our documentation site so that our SVG images can load them.
+We host the font files at the following locations on our documentation site so that our SVG images can load them.
 
 ```
 https://docs.velociraptor.app/fonts/playpen-sans-v13-latin-500.woff2
-```
 
-```
 https://docs.velociraptor.app/fonts/playpen-sans-v13-latin-800.woff2
-```
 
-```
 https://docs.velociraptor.app/fonts/SVBasicManual.woff2
 ```
-
-The version of Excalidraw mentioned above can load it's fonts from anywhere, but it's convenient that we can also load the fonts from the above-mentioned URIs. That way you can be sure that you're seeing the same fonts in Excalidraw that will be displayed in the SVG images.
-
-![](image-guidelines/excalidraw_custom_fonts.png)
-
-Unfortunately when the Excalidraw diagrams are exported to SVG the custom fonts are not included. But we can switch the fonts by doing a text search & replace on the SVG files. This is explained [here](#fonts-in-svg-images)
-
-For normal text use the **Medium** font size. It's thickness should correspond closely to the thickness of lines and arrows set to **Extra Bold**.
+For normal text we use the **Medium** font size. It's thickness corresponds closely to the thickness of lines and arrows set to **Extra Bold**.
 
 ## Colors
 
@@ -106,7 +97,7 @@ For pure **line diagrams** we use black for lines and text, with de-emphasized e
 Additional colors can be used to emphasize particular drawing objects.
 
 The default Excalidraw color palette is well designed, so only use those colors.
-This makes it easier to ensure that colors used in future can be matched those used in the past.
+This makes it easier to ensure that colors used in future images can be matched those used in the past.
 
 ## Excalidraw object library
 
@@ -114,7 +105,7 @@ This file is an Excalidraw library containing reusable shape objects for our dra
 
 [library.excalidrawlib](library.excalidrawlib)
 
-If you find or create objects that you think will be useful in future drawings then please add them to this library, save the changes and commit the updated version back to the repo.
+If you find or create objects that you think will be useful in future drawings then please add them to this library, save the changes and commit the updated version back to the `velociraptor-docs` repo.
 
 ![](image-guidelines/library.png)
 
@@ -146,7 +137,7 @@ Capturing screenshots that show only part of the screen area are relatively stra
 
 > [!TIP]
 > A useful trick in Chrome Dev Tools is that you can right-click on a DOM element and capture an image of just that element.
-> 
+>
 > ![](image-guidelines/node_screenshot.png)
 
 #### Full screens
@@ -167,17 +158,7 @@ For full screenshots use one of the following 2 sizes:
 
 ### Velociraptor theme
 
-For consistency, and to avoid confusing new users, we use a single GUI theme for all screenshots: the **Velociraptor Light** theme which is the default for new installations.
-
-#### Theme tweaks
-
-While screenshots do need to depict the actual application UI, it's reasonable to tweak some aspects to make the screenshots a bit clearer for documentation purposes.
-
-1. using a slightly heavier font weight: 500 rather than 400. On Windows the fonts seem to render slightly lighter for some unknown reason.
-2. using pure black or white as the text color instead of lower contrast tones.
-3. reducing the opacity of the modal backdrop so that items in the background are not excessively dimmed
-
-We have a special theme named "Standard Docs", expressly for making screenshots, which applies these tweaks on top of the Velociraptor Light theme.
+For consistency, and to avoid confusing new users, we use a single GUI theme for all screenshots: the **Standard Docs** theme which is based on the default Velociraptor Light them but with some additional legibility tweaks.
 
 ![](image-guidelines/docs-theme.png)
 
@@ -214,14 +195,12 @@ The above example also shows that a semi-transparent rectangle can be placed beh
 One of the hidden benefits of Excalidraw is that it doesn't have too many settings.
 This automatically leads to greater consistency.
 
-For the line "**sloppiness**" setting we use the **"medium"** option, i.e. "artistic". The "cartoonist" option produces divergent lines and in general is a bit too messy. We want humanized, not messy (even though messy is fun!).
+For the line "**sloppiness**" setting we use the **"medium"** option, i.e. "artistic".
+The "cartoonist" option produces divergent lines and in general is a bit too messy, so do not use that setting. We want humanized, but not messy (even though messy is fun!).
 
-For line thickness ("**stroke width**") we use "**extra bold**" for annotation arrows, but this is subjective choice, since line thickness is ultimately relative to the dimensions of the rendered image.
-
+For line thickness ("**stroke width**") we use "**extra bold**" for annotation arrows, however this is subjective choice since line thickness is ultimately relative to the dimensions of the rendered image.
 
 ![](image-guidelines/excalidraw_defaults.png)
-
-
 
 ## Line diagrams
 
@@ -234,7 +213,7 @@ The following image highlights the recommended Excalidraw settings for our diagr
 
 ![](image-guidelines/line_diagram_settings.png)
 
-The diagram heading is made bold by choosing our #2 font which is the same font as our #1 font but a bold variant. This is necessary because Excalidraw doesn't have any options for bolding or italicizing fonts.
+The diagram heading is made bold by choosing the "Normal" font which is the same font as our "Hand-drawn" font but a bold variant. This is necessary because Excalidraw currently doesn't have any options for bolding or italicizing fonts.
 
 ## Exporting images
 
@@ -242,35 +221,37 @@ The diagram heading is made bold by choosing our #2 font which is the same font 
 
 ![](image-guidelines/excalidraw_export_settings.png)
 
-We export our images to SVG format, and not PNG.
+We export our images from Excalidraw to SVG format, and not to PNG.
 
-When exporting images from Excalidraw we include "Background" which ensures that the background is not transparent (i.e. an opaque white background) plus adds a small margin around it.
+When exporting images from Excalidraw we include "Background" which ensures that the background is not transparent. This option adds an opaque white background plus a small margin around it.
 
 For SVG exports the Scale setting is irrelevant to quality: the embedded screenshot will be base64-encoded at it's original size, even if you've scaled the screenshot on the Excalidraw canvas. The image dimensions are related to the vector layer and if this is resized by the web server then the embedded raster image will be scaled to match.
 
-You should resize the screenshot so that it's comfortable to work with on the canvas at 100% zoom because this represents the view that the reader will see (without needing to zoom in). When exported at 1x scale the SVG will be sized at the dimensions of a bounding box around the elements on your canvas. The line thicknesses and font sizes are relative to your canvas.
+When working in Excalidraw you should resize the screenshot so that it's comfortable to work with on the canvas at 100% zoom because this represents the view that the reader will see (without needing to zoom in).
+When exported the SVG image will be sized at the dimensions of a bounding box around the elements on your canvas. The line thicknesses and font sizes are relative to your canvas.
 
 ![](image-guidelines/embedded-image-scaling.png)
 
 
 Although it is possible to edit SVG images externally they cannot be imported back into Excalidraw.
-So for annotated screenshots and block diagrams we save the `.excalidraw` file alongside the exported SVG or PNG image, using the same file basename.
-This allows others to easily make changes in future.
-If the image is reused in multiple places on the docs website (or other Velociraptor repos such as presentations) we only need to keep *one instance* of the `.excalidraw` file.
+So for annotated screenshots and block diagrams we save the `.excalidraw` file alongside the exported SVG or PNG image, using the same file basename, and check it in to the Git VCS.
+This allows others to easily make changes in future since they can open the `.excalidraw` file in the Excalidraw web app.
 
+Although the image may be reused in multiple places on the docs website, or in other Velociraptor repos such as presentations, we only need to keep *one instance* of the `.excalidraw` file. If you find yourself needing to edit a SVG image and there is no `.excalidraw` file alongside it, then you should be able to find it be doing a search of the repo for the base filename.
 
 > [!NOTE]
 > Regardless of the export format, remember to also save a copy of the drawing in Excalidraw format so that others can edit it in future, if necessary.
 >
 
-Annotated screenshots exported from Excalidraw as SVG images contain a base64-encoded copy of the screenshot. The saved `.excalidraw` file does too. So it is not necessary to keep a copy of the original screenshot PNG.
+> [!NOTE]
+> Annotated screenshots exported from Excalidraw as SVG images contain a base64-encoded copy of the screenshot. The saved `.excalidraw` file does too. So it is not necessary > to keep a copy of the original screenshot PNG.
+>
 
 ### Fonts in SVG images
 
-Excalidraw's exported SVG images render correctly in Chrome-based web browsers (at minimum) but not in desktop applications such as Inkscape or Krita.
-This makes altering these images difficult, however since SVG is a text format we can make simple changes without too much effort.
+SVG files exported from Excalidraw.com contain subsetted base64 encoded fonts.
 
-We do need to do this for font links because Excalidraw doesn't (yet) put links to the custom fonts inside the SVG files. Instead it adds links to the default fonts served from `excalidraw.com`, which is probably done to make the exported SVGs more portable.
+As mentioned previously, this font substitution is done [automatically](https://github.com/Velocidex/velociraptor-docs/blob/947bb25a3d7cc6b4ac9d376db863f8a9db535ece/layouts/_default/_markup/render-image.html#L7) by the Hugo build process.
 
 ```xml
   <defs>
@@ -312,15 +293,17 @@ We do need to do this for font links because Excalidraw doesn't (yet) put links 
 
   </defs>
 ```
-*SVG font definitions that are needed to render our custom fonts*
+*SVG font definitions that we use to render our custom fonts on our website*
 
-We keep the font-family names unchanged because they are referenced throughout the SVG. We don't care what their names are, as long as they match the intended font files.
+We keep the font-family names unchanged because they are referenced throughout the SVG.
+The names themselves are irrelevant as long as they match the intended font files.
 
 ### File size
 
 If you've followed the advice in this document your image files should not be too large. However it's worth checking the file size and if it's over 300KB then it might be a sign that you've done something wrong.
 
-Most image files should be <300KB and should almost never be >500KB. We want files to stay within these soft limits so that:
+Most image files should be around 300KB and should almost never be  greater than 500KB.
+We prefer to have image files within these soft limits so that:
 - they render reasonably quickly on the website
 - the documentation repo doesn't become significantly larger than it needs to be.
 
