@@ -55,14 +55,14 @@ existing scope outside the query.
 Below we describe a few quirks that users might encounter with
 this plugin.
 
-## Custom artifacts
+### Custom artifacts
 
 The isolated scope does not contain any artifacts by
 default. Usually artifacts are accessible from VQL using the
 `Artifact` plugin, for example the following accesses the
 `Custom.VQL` artifact:
 
-```sql
+```vql
 SELECT * FROM Artifact.Custom.VQL()
 ```
 
@@ -70,13 +70,13 @@ This will not work in the query plugin because the scope is
 isolated. If you want to use the `Artifact` plugin in the new
 scope you need to pass it through the `env` variable:
 
-```sql
+```vql
 SELECT * FROM query(query={
       SELECT * FROM Artifact.Custom.VQL()
 }, env=dict(artifact=Artifact))
 ```
 
-## Remapping rules
+### Remapping rules
 
 When using the `remap()` function to install a new remapping
 configuration, the remapping applies on the current scope and
@@ -88,14 +88,14 @@ For this reason we recommend that remapping rules be applied
 inside an isolated `query()` scope. This way the remapping will
 only apply for the like of the `query()` plugin invocation.
 
-## Using LET statements inside the query
+### Using LET statements inside the query
 
 The `query` parameter can specify a VQL statement or a string
 which will be parsed into a VQL statement. If you use a VQL
 statement it is no possible to use a LET expression (since LET is
 a separate statement). So this is not valid VQL syntax:
 
-```sql
+```vql
 SELECT * FROM query(query={
   LET Foo(X) = ....
   SELECT * FROM Foo(X=1)
@@ -103,7 +103,7 @@ SELECT * FROM query(query={
 ```
 
 You can define the LET statements outside the query block and pass them in:
-```sql
+```vql
 LET Foo(X) = ....
 
 SELECT * FROM query(query={
@@ -118,7 +118,7 @@ SELECT * FROM query(query='''
 ''')
 ```
 
-## Running a query in a different org
+### Running a query in a different org
 
 Normally a VQL query runs in the org context in which it was
 started. However sometimes it is useful to run in different
@@ -142,7 +142,7 @@ FROM foreach(row={
 })
 ```
 
-## Running as a different user
+### Running as a different user
 
 You can specify a different user to run the VQL. This will load
 the other user's ACL token and username (basically this acts like

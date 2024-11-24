@@ -26,6 +26,7 @@ string|A string to decode|string (required)
 Encode a string to utf16 bytes.
 
 ### Example
+
 ```vql
 utf16_encode(string="ABCD") -> "A\u0000B\u0000C\u0000D\u0000"
 ```

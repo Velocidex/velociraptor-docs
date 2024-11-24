@@ -22,7 +22,7 @@ This accessor is designed to operate on images directly. It requires a
 delegate accessor to get the raw image and will open files using the
 NTFS full path rooted at the top of the filesystem.
 
-## Example
+### Example
 
 The following query will open the $MFT file from the raw image file
 that will be accessed using the file accessor.

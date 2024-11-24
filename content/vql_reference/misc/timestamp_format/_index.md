@@ -34,7 +34,7 @@ shorthand to common time formatting directives.
 The output timezone is UTC by default but can be changed using the
 `TZ` VQL variable.
 
-Example:
+### Example
 
 ```vql
 LET TZ="Europe/Berlin"

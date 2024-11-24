@@ -26,7 +26,7 @@ they can not be directly searched with `glob()`. This accessor is
 therefore only really useful for opening the file for reading - or for
 chaining with another accessor.
 
-```sql
+```vql
 SELECT read_file(accessor="bzip2", filename="F:/hello.txt.bz2", length=10)
 FROM scope()
 ```

@@ -14,10 +14,10 @@ author: "Mike Cohen"
 date: 2024-09-12
 ---
 
-{{% notice note "Pre-release feature" %}}
+{{% notice note "New feature" %}}
 
-This feature will be available in the upcoming 0.73 release. You can
-[try it right now](https://github.com/Velocidex/velociraptor?tab=readme-ov-file#getting-the-latest-version) and provide valuable feedback.
+This feature is available in the 0.73 release. You can
+[Download it]({{% ref "/downloads/" %}}) and provide valuable feedback.
 
 {{% /notice %}}
 
@@ -106,7 +106,7 @@ The important takeaways from this example are:
 ## Case study: Ransomware intrusion
 
 To illustrate how a timeline can be used in a typical DFIR
-investigation, lets consider a simple (if contrived) case study:
+investigation, let's consider a simple (if contrived) case study:
 Ransomware deployment on an endpoint.
 
 ### Step 1: Create a global notebook
@@ -120,7 +120,6 @@ I will start off by create a global notebook to hold the timeline.
 ![Creating a notebook from a template](new_notebook_timeline_1.svg)
 
 ![An empty timeline notebook](new_notebook_timeline_2.svg)
-
 
 ### Step 2: Collect some artifacts!
 
@@ -142,7 +141,6 @@ suspicious activity on an endpoint. Normally Sigma rules must balance
 false positives with the probability of missing a detection. However,
 in the triage context, I really want to see all rules - including ones
 that are noisy and produce a lot of false positives.
-
 
 ![Configuring the Sigma artifacts](hayabusa_parameters.svg)
 
@@ -167,6 +165,7 @@ table!
 
 ![Stacking hits by Title](hayabusa_stack_1.svg)
 
+
 First I sort by one of the table columns - This will select the column
 I want to stack on. In this case, I will sort by the Rule Title. Once
 the table is sorted, the GUI shows the stacking button. Clicking the
@@ -188,6 +187,7 @@ If I click the Link icon in the stacking table, I will be able to
 explore the specific times this rule matched.
 
 ![Specific instances when Defender was disabled](hayabusa_stack_defender_disabled.svg)
+
 
 I see a match in 2023 and one in 2024. In practice a lot of false
 positives will occur, or even evidence of previous compromise
@@ -338,10 +338,9 @@ As I collect other artifacts, I can get more information about the
 case:
 
 1. Collecting the `Windows.Sys.Users` artifact enumerates the local
-   users on the system, and estimates the time that the user first
+   users on the system, and estimates the time that the user last
    logged into the system by reporting the Modified time on the User's
-   profile registry keys and home directory modification time (This
-   indicates when the user last logged into the system).
+   profile registry keys and home directory modification time.
 
    I reduce the data to show the Home directory modification time
    (Last time the user logged into the account).
@@ -409,6 +408,13 @@ time series into a unique table.
 
 ![Exporting the annotations](annotations_export.svg)
 
+I now can see what the attackers did. Once they logged in as
+Administrator, they Disabled Windows Defender, Added a second admin
+user account. Then they logged in as that account, created a scheduled
+task for persistence, disabled the Bits client logs and then
+downloaded `PsExec.exe` renamed to `foo.exe`. Finally the attackers
+ran `whoami` and used ping to establish network connectivity.
+
 ### The Timeline workflow
 
 To summarize, the general workflow is illustrated below
@@ -425,6 +431,110 @@ timeline in order to make it easier to review them.
 Ultimately the product of the timeline exercise is to simply obtain
 the `Annotation` time series. This contains the manually reviewed and
 annotated set of events to explain the progression of the incident.
+
+## Integration with third party timelining tools
+
+Since the timeline workflow is so central to DFIR there are a number
+of popular timelining tools out there. Probably the most popular is
+[Timesketch](hhttps://timesketch.org/) - a collaborative timeline
+analysis tool developed by the DFIR team at Google.
+
+Many people use Timesketch in conjunction with
+[Plaso](https://github.com/log2timeline/plaso) which is a timeline
+based analysis engine for forensic bulk files (e.g. event logs,
+filesystem metadata etc). The two tools are usually used in a pipeline
+where Plaso extracts many time related events from various triaged
+artifacts, storing them in the Timesketch database. This usually
+results in millions of events - for example each MFT entry contains 16
+distinct timestamps, leading to 16 distinct timeline events.
+
+In practice most of these events are not relevant and cloud the
+analysis process by bombarding the user with many irrelevant
+events. Users then use Timesketch itself to perform filtering and
+analysis in order to remove the irrelevant data.
+
+This "Kitchen Sink" approach means that timeline becomes the main tool
+for filtering and querying large events (with many irrelevant
+fields). Contrast this with Velociraptor's "targeted" approach as
+descried above, where pre-filtering and data shaping/enriching occurs
+**before** the data is ingested into the timeline.
+
+We believe that Velociraptor's "targeted" approach is superior than
+the "Kitchen Sink" approach, but it does require a mindset shift and
+for investigators to modify their processes.
+
+Nevertheless, Timesketch is an excellent tool with many users already
+very familiar with it. Timesketch itself does not actually require
+Plaso at all and can also be used in a targeted way. In fact it is
+possible to feed any time series data to Timesketch.
+
+Velociraptor supports integrating with Timesketch using the
+`Server.Utils.TimesketchUpload` artifact.  This artifact uploads
+Velociraptor's timelines to Timesketch using the Timesketch client
+library. The artifact assumes the client library is installed and
+configured on the server.
+
+To install the Timesketch client library:
+```
+pip install timesketch-import-client timesketch-cli-client
+```
+
+To configure the client library to access your Timesketch instance
+see instructions https://timesketch.org/guides/user/cli-client/ and
+https://timesketch.org/guides/user/upload-data/
+
+This artifact assumes that the timesketch CLI is preconfigured with
+the correct credentials in the `.timesketchrc` file.
+
+You can use this artifact to manually upload any Velociraptor timeline
+data to Timeline by simply specifying the `notebook_id`, the
+`supertimeline` and the `timeline` names. The Artifact will prepare
+automatically create a sketch if required with the same name as the
+Supertimeline, and add a timeline to it with the same name as the
+timeline name provided.
+
+### Automatic Timesketch uploads
+
+While `Server.Utils.TimesketchUpload` allows uploading timeline to
+Timesketch it requires manual intervention. This makes it more complex
+to use and increases friction.
+
+We can automate timeline exports using the
+`Server.Monitoring.TimesketchUpload` server monitoring artifact. This
+artifact watches for any timelines added on the server and
+automatically exports them to Timesketch in the background. This means
+that the user does not need to think about it - all timelines created
+within Velociraptor will automatically be added to Timesketch.
+
+![Configuring the Server.Monitoring.TimesketchUpload artifact](configure_timesketch_export.svg)
+
+To install the `Server.Monitoring.TimesketchUpload` server monitoring
+artifact, select `Server Events` in the sidebar, then click the
+`Update Server Monitoring Table` button. Search for
+`Server.Monitoring.TimesketchUpload` and configure its parameters.
+
+The artifact allows for finer control over which timelines to are to
+be exported - For example, maybe only timelines with a name that
+starts with `Timesketch` will be exported.
+
+Finally the path on the server to the timesketch client library tool
+is required - this is the external binary we call to upload the actual
+data.
+
+![Automating Timesketch Import](automating_timesketch_import.svg)
+
+Once the server monitoring artifact is configured it simply waits
+until a user adds a timeline to a Supertimeline in Velociraptor, as
+described above. When that happens the timeline is automatically added
+to Timesketch into a sketch named the same as the Velociraptor
+Supertimeline.
+
+![Viewing timelines in Timesketch](timesketch_view.svg)
+
+As can be seen in the screenshot above, the same targeted timelines
+are exported to Timesketch. This is most useful for existing
+Timesketch users who are wish to continue using their usual timelining
+tool in a more targeted way by pre-processing data in Velociraptor.
 
 ## Conclusions
 

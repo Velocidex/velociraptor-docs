@@ -47,7 +47,7 @@ FROM scope()
 ```
 
 You can also provide a string, and `timestamp()` will try to parse
-it by guessing what it represents. For example
+it by guessing what it represents. For example:
 
 ```vql
 SELECT timestamp(string='March 3 2019'),
@@ -88,7 +88,7 @@ variable. This will only be used if the timestamp is ambiguous. If
 `PARSE_TZ` is `local` then we use the local timezone on the
 endpoint.
 
-For example:
+### Example
 
 ```vql
 LET PARSE_TZ <= "local"
@@ -139,7 +139,7 @@ seconds from epoch, then add/subtract times. For example the
 following calculates the time exactly one day (24 hours) before
 the stated time:
 
-```sql
+```vql
 SELECT timestamp(epoch=timestamp(epoch="2024-03-26T06:53:37Z").Unix - 86400)
 FROM scope()
 ```

@@ -50,7 +50,7 @@ number of algorithms such as:
    as there will be too much smear.
 
 
-# Example
+### Example
 
 ```vql
 SELECT winpmem(image_path='c:/test.dd', compression='s2') FROM scope()"

@@ -24,6 +24,8 @@ stop|Stop the hunt|bool
 start|Start the hunt|bool
 description|Update hunt description|string
 expires|Update hunt expiry|time.Time
+add_labels|Labels to be added to hunt|list of string
+del_labels|Labels to be removed from hunt|list of string
 
 Required Permissions: 
 <i class="linkcolour label pull-right label-success">START_HUNT</i>

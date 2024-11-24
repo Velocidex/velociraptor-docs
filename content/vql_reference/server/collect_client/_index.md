@@ -80,7 +80,7 @@ NOTE: When constructing the dictionaries for the spec parameter
 you will often need to specify a field name containing full
 stop. You can escape this using the backticks like the example above.
 
-# Example - conditional collections
+### Example - conditional collections
 
 In this example we wish to create an artifact with check buttons
 for selecting groups of artifacts to launch. Assume `Do1` and

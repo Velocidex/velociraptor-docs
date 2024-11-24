@@ -32,6 +32,7 @@ Miscellaneous plugins not yet categorized.
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
 |[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
 |[hunt_delete](hunt_delete)|<span class='vql_type'>Plugin</span>|Delete a hunt|
+|[hunt_info](hunt_info)|<span class='vql_type'>Function</span>|Retrieve the hunt information|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[import](import)|<span class='vql_type'>Function</span>|Imports an artifact into the current scope|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
@@ -87,6 +88,7 @@ Miscellaneous plugins not yet categorized.
 |[timestamp_format](timestamp_format)|<span class='vql_type'>Function</span>|Format a timestamp into a string|
 |[tlsh_hash](tlsh_hash)|<span class='vql_type'>Function</span>|Calculate the tlsh hash of a file|
 |[trace](trace)|<span class='vql_type'>Function</span>|Upload a trace file|
+|[typeof](typeof)|<span class='vql_type'>Function</span>|Print the underlying Go type of the variable|
 |[upload_azure](upload_azure)|<span class='vql_type'>Function</span>|Upload files to Azure Blob Storage Service|
 |[upload_smb](upload_smb)|<span class='vql_type'>Function</span>|Upload files using the SMB file share protocol|
 |[user](user)|<span class='vql_type'>Function</span>|Retrieves information about the Velociraptor user|

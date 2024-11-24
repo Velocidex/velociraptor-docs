@@ -71,7 +71,10 @@ sources:
   - query: |
       LET Tempfile &lt;= tempfile(extension=".pmem")
 
-      LET ImageInfo &lt;= winpmem(image_path=Tempfile, compression=Compression)
+      LET ImageInfo &lt;= winpmem(
+         service=ServiceName,
+         image_path=Tempfile,
+         compression=Compression)
 
       SELECT ImageInfo, upload(file=Tempfile, name="PhysicalMemory.dd") AS Upload
       FROM stat(filename=Tempfile)

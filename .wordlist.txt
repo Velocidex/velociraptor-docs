@@ -1567,3 +1567,14 @@ Misspelled words:
 --------------------------------------------------------------------------------
 Timelining
 timelining
+CLI
+Plaso
+TimesketchUpload
+Misje
+
+del
+typeof
+CRUU
+KIE
+ds
+AES

@@ -42,7 +42,7 @@ sources:
         FROM clients(search="label:" + LabelGroup)
         WHERE LastSeen &lt; 300
 
-        LET send_massage = SELECT * FROM foreach(row=hits,
+        LET send_message = SELECT * FROM foreach(row=hits,
         query={
            SELECT client_id, Hostname, LastSeen, Content, Response
            FROM http_client(
@@ -58,7 +58,7 @@ sources:
         // Check every minute
         SELECT * FROM foreach(
            row={SELECT * FROM clock(period=60)},
-           query=send_massage)
+           query=send_message)
 
 </code></pre>
 

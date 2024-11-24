@@ -28,7 +28,7 @@ default||Any
 
 Gets the member field from item.
 
-This is useful to index an item from an array. For example:
+This is useful to index an item from an array.
 
 ### Example
 

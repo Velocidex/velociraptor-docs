@@ -12,8 +12,11 @@ operating system to identify application compatibility issues. This helps
 developers troubleshoot legacy functions and contains data related to Windows
 features.
 
-Note: the appcompatcache plugin does not currently support execution flag in
-Windows 7 and 8/8.1 Systems.
+Note: 
+
+- Windows 10+ systems Execution flag of 1 indicates execution.
+- The appcompatcache artifact does not currently support execution flag in
+Windows 7 and 8 / 8.1 Systems.
 
 
 <pre><code class="language-yaml">
@@ -28,8 +31,12 @@ description: |
   developers troubleshoot legacy functions and contains data related to Windows
   features.
 
-  Note: the appcompatcache plugin does not currently support execution flag in
-  Windows 7 and 8/8.1 Systems.
+  Note: 
+  
+  - Windows 10+ systems Execution flag of 1 indicates execution.
+  - The appcompatcache artifact does not currently support execution flag in
+  Windows 7 and 8 / 8.1 Systems.
+ 
 
 reference:
   - https://www.mandiant.com/resources/caching-out-the-val
@@ -68,7 +75,8 @@ export: |
           length: "x=&gt;x.PathSize",
           encoding: "utf16",
       }],
-      ["LastMod", "x=&gt;x.PathSize + 14 + 10", "WinFileTime"]
+      ["LastMod", "x=&gt;x.PathSize + 14 + 10", "WinFileTime"],
+      ["Execution", 0, "Value",{"value":"N/A"}],
     ]],
 
     ["Entry", "x=&gt;x.Size + 12", [
@@ -107,7 +115,9 @@ export: |
           encoding: "utf16",
           length: "x=&gt;x.PathSize",
       }],
-      ["LastMod", 16, "WinFileTime"]
+      ["LastMod", 16, "WinFileTime"],
+      ["Execution", 0, "Value",{"value":"N/A"}],
+
     ]]
 
     ]'''
@@ -141,6 +151,7 @@ sources:
       LET results &lt;= SELECT
             ModificationTime,
             Name as Path,
+            ExecutionFlag,
             ControlSet,
             Key
           FROM foreach(
@@ -150,6 +161,7 @@ sources:
               }, query={
                   SELECT OSPath AS Key, Path AS Name,
                      LastMod AS ModificationTime,
+                     Execution as ExecutionFlag,
                      OSPath[2] as ControlSet
                   FROM AppCompatCache(Blob=read_file(
                       accessor='registry', filename=OSPath))
@@ -173,10 +185,11 @@ sources:
                 })
 
       -- output results
-      SELECT
+      SELECT 
         Position,
         ModificationTime,
         Path,
+        ExecutionFlag,
         ControlSet,
         Key
       FROM if(condition= len(list=AppCompatKeys.OSPath)=1,
@@ -184,6 +197,5 @@ sources:
             SELECT *, count() - 1 as Position FROM results
         },
         else= mutli_controlset )
-
 </code></pre>
 

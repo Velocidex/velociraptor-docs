@@ -20,6 +20,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 name|The name of the backup file.|string (required)
+prefix|Restore the backup from under this prefix in the zip file (defaults to org id).|string
+providers|If provided only restore providers matching this regex.|string
 
 ### Description
 
