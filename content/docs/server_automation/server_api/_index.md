@@ -324,3 +324,5 @@ simple bash script:
 ```
 velociraptor --api_config api.config.yaml query "SELECT * FROM info()" --format jsonl | jq
 ```
+
+![](query_api_client.svg)
