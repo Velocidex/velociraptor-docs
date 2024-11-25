@@ -27,3 +27,10 @@ condition|If specified we ignore the alert unless the condition is true|Any
 
 Generate an alert message.
 
+### See also
+
+- [log](/vql_reference/basic/log/): alerts and log messages are similar in
+  concept and use the same deduplication mechanism which is explained with
+  examples for the `log()` function.
+
+

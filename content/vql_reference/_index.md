@@ -12,6 +12,6 @@ pre: <i class="fas fa-book"></i>
 head: <hr>
 ---
 
-Search for documentation on VQL plugins or functions.
+Search for documentation on VQL plugins, functions and accessors.
 
 {{% reference %}}

@@ -63,7 +63,7 @@ to a real client, flow id to a real flow, etc.
 
 ### Example
 
-```sql
+```vql
 // Setting this in a notebook will tell the GUI to treat this
 // column as URL.
 LET ColumnTypes <= dict(HuntLink="url_internal")

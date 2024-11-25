@@ -43,7 +43,7 @@ of `args=[my_var]`.
 
 ### Examples
 
-```sql
+```vql
 LET csv <= '''John,ate,banana
 Mary,had,little lamb'''
 LET my_words <= SELECT * FROM parse_csv(accessor="data", filename=csv, auto_headers=True)
@@ -53,7 +53,7 @@ returns:
 `Sentence: John ate a banana.`
 `Sentence: Mary had a little lamb.`
 
-```sql
+```vql
 LET T <= timestamp(epoch="2024-02-02T04:42:00Z")
 SELECT format(format="%d-%02d-%02dT%02d:%02d:%06.3fZ", args=[
   T.Year, T.Month, T.Day, T.Hour, T.Minute, T.Nanosecond / 1000000000 ])

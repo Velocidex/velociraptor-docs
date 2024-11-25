@@ -35,7 +35,7 @@ Creating a timestamp representing an hour ago:
 
 Using `now()` in timestamp arithmetic:
 
-```sql
+```vql
 SELECT * FROM flows(client_id="C.8cfee3cef5dc6915")
 WHERE state =~ "FINISHED" AND timestamp(epoch=active_time) > now() - 60 * 60 * 24
 ```

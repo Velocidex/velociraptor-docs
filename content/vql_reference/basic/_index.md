@@ -50,7 +50,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[join](join)|<span class='vql_type'>Function</span>|Join all the args on a separator|
 |[killkillkill](killkillkill)|<span class='vql_type'>Function</span>|Kills the client and forces a restart - this is very aggressive!|
 |[len](len)|<span class='vql_type'>Function</span>|Returns the length of an object|
-|[log](log)|<span class='vql_type'>Function</span>|Log the message and return TRUE|
+|[log](log)|<span class='vql_type'>Function</span>|Log a message to the query log stream|
 |[lowcase](lowcase)|<span class='vql_type'>Function</span>|Returns the lowercase version of a string|
 |[max](max)|<span class='vql_type'>Function</span>|Finds the largest item in the aggregate|
 |[memoize](memoize)|<span class='vql_type'>Function</span>|Memoize a query into memory|

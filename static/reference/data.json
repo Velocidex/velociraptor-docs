@@ -4252,7 +4252,7 @@
     },
     {
         "name": "log",
-        "description": "Log the message and return TRUE.",
+        "description": "Log a message to the query log stream. Always returns TRUE.",
         "type": "Function",
         "version": 2,
         "args": [
