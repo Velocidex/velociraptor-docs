@@ -33,4 +33,9 @@ This plugin uses the integrated tracee eBPF engine to stream events.
 
 See https://github.com/Velocidex/tracee_velociraptor for more details.
 
+### See also
+
+- [ebpf_events](/vql_reference/misc/ebpf_events/): Dumps information about
+  potential ebpf_events that can be used by the watch_ebpf() plugin.
+
 

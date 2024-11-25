@@ -16,7 +16,7 @@ no_edit: true
 
 ### Description
 
-Dump information about potential ebpf_events that can be used by the
-watch_ebpf() plugin.
+Dumps information about potential ebpf_events that can be used by the
+[watch_ebpf](/vql_reference/misc/watch_ebpf/) plugin.
 
 

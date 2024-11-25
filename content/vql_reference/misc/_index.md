@@ -23,7 +23,7 @@ Miscellaneous plugins not yet categorized.
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
 |[delete_events](delete_events)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[delete_flow](delete_flow)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
-|[ebpf_events](ebpf_events)|<span class='vql_type'>Plugin</span>|Dump information about potential ebpf_events that can be used by the|
+|[ebpf_events](ebpf_events)|<span class='vql_type'>Plugin</span>|Dumps information about potential ebpf_events that can be used by the|
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|

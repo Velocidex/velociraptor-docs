@@ -55,7 +55,7 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[max](max)|<span class='vql_type'>Function</span>|Finds the largest item in the aggregate|
 |[memoize](memoize)|<span class='vql_type'>Function</span>|Memoize a query into memory|
 |[min](min)|<span class='vql_type'>Function</span>|Finds the smallest item in the aggregate|
-|[now](now)|<span class='vql_type'>Function</span>|Returns current time in seconds since epoch|
+|[now](now)|<span class='vql_type'>Function</span>|Returns the current time in seconds since epoch|
 |[path_join](path_join)|<span class='vql_type'>Function</span>|Build a path by joining all components|
 |[path_split](path_split)|<span class='vql_type'>Function</span>|Split a path into components|
 |[query](query)|<span class='vql_type'>Function</span>|Launch a subquery and materialize it into a list of rows|

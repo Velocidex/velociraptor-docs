@@ -1751,7 +1751,7 @@
     },
     {
         "name": "ebpf_events",
-        "description": "Dump information about potential ebpf_events that can be used by the\nwatch_ebpf() plugin.\n",
+        "description": "Dumps information about potential ebpf_events that can be used by the\n[watch_ebpf](/vql_reference/misc/watch_ebpf/) plugin.\n",
         "type": "Plugin",
         "platforms": [
             "linux_amd64_cgo"
@@ -5309,7 +5309,7 @@
     },
     {
         "name": "now",
-        "description": "Returns current time in seconds since epoch.",
+        "description": "Returns the current time in seconds since epoch.",
         "type": "Function",
         "category": "basic",
         "platforms": [

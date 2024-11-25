@@ -66,15 +66,11 @@ formatting for timestamps using a much simpler syntax.
 
 ### See also
 
-- [log](vql_reference/basic/log/)
-  - a function which uses the same string formatting as the `format` function.
-- [serialize](/vql_reference/basic/serialize/)
-  - a function that provides serialized (stringified) representations of
-    compound data types such as JSON and YAML objects.
-- [timestamp_format](/vql_reference/misc/timestamp_format/)
-  - a function that simplifies the string formatting of timestamp objects.
-- [typeof](/vql_reference/basic/format/)
-  - a dedicated function equivalent to the special use case:
-  `format(format="%T",args=x)`
+- [log](vql_reference/basic/log/): a function which uses the same string
+  formatting as the `format` function.
+- [timestamp_format](/vql_reference/misc/timestamp_format/): a function
+  that simplifies the string formatting of timestamp objects.
+- [typeof](/vql_reference/basic/format/): a dedicated function equivalent
+  to the special use case: `format(format="%T",args=x)`
 
 
