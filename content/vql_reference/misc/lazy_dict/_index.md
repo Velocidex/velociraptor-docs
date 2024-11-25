@@ -1,5 +1,5 @@
 ---
-title: now
+title: lazy_dict
 index: true
 noTitle: true
 no_edit: true
@@ -10,11 +10,11 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## now
+## lazy_dict
 <span class='vql_type pull-right page-header'>Function</span>
 
 
 ### Description
 
-Returns current time in seconds since epoch.
+Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion.
 
