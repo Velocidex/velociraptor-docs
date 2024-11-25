@@ -39,7 +39,7 @@ authentication verified by the built in Velociraptor CA. This means
 that callers are identified by their client certificates which must be
 issued by the Velociraptor CA.
 
-![The Velociraptor API communications](api_comms.png)
+![The Velociraptor API communications](api_comms.svg)
 
 The Velociraptor API itself is very simple, yet extremely powerful! It
 simply exposes a method called `Query`. Callers are able to run
