@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## logscale_upload
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -34,7 +34,7 @@ stats_interval|Interval, in seconds, to post statistics to the log (default: 600
 debug|Enable verbose logging.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## rm
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -22,7 +22,7 @@ Arg | Description | Type
 filename|Filename to remove.|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
 
 ### Description
 

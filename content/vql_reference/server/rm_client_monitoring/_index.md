@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## rm_client_monitoring
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ artifact|The name of the artifact to remove from the event table|string (require
 label|Remove the artifact from this label group (default the 'all'  group)|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
+<span class="linkcolour label label-success">COLLECT_CLIENT</span>
 
 ### Description
 

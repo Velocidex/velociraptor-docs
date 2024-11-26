@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## collect_client
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -33,8 +33,8 @@ urgent|Set the collection as urgent - skips other queues collections on the clie
 org_id|If set the collection will be started in the specified org.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_CLIENT</span>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

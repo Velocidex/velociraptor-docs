@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_binary
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -26,7 +26,7 @@ struct|Name of the struct in the profile to instantiate.|string (required)
 offset|Start parsing from this offset|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

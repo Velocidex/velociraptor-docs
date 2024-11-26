@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## set_client_monitoring
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -22,7 +22,7 @@ Arg | Description | Type
 value|The Value to set|Any (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
+<span class="linkcolour label label-success">COLLECT_CLIENT</span>
 
 ### Description
 

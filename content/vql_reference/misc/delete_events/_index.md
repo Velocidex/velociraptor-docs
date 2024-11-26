@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## delete_events
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,7 +26,7 @@ end_time|End time to be deleted|time.Time
 really_do_it|If not specified, just show what files will be removed|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">DELETE_RESULTS</i>
+<span class="linkcolour label label-success">DELETE_RESULTS</span>
 
 ### Description
 

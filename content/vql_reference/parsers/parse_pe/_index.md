@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_pe
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ accessor|The accessor to use.|string
 base_offset|The offset in the file for the base address.|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## authenticode
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ filename|The filename to parse.|OSPath (required)
 verbose|Set to receive verbose information about all the certs.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+<span class="linkcolour label label-success">MACHINE_STATE</span>
 
 ### Description
 

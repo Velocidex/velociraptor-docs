@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## timeline
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,7 +26,7 @@ start|First timestamp to fetch|Any
 notebook_id|The notebook ID the timeline is stored in.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

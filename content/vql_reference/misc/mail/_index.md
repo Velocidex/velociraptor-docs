@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## mail
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -33,7 +33,7 @@ skip_verify|Skip SSL verification(default: False).|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

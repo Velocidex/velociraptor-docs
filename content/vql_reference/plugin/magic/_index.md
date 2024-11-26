@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## magic
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -25,7 +25,7 @@ type|Magic type (can be empty or 'mime' or 'extension')|string
 magic|Additional magic to load|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

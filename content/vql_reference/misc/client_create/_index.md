@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## client_create
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -28,7 +28,7 @@ client_id|if set we use this client id otherwise we make a new one|string
 mac_addresses||list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

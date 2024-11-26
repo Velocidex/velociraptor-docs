@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## client_set_metadata
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,8 +23,8 @@ client_id||string (required)
 metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">COLLECT_CLIENT</span>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

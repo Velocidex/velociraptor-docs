@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_usn
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -28,7 +28,7 @@ start_offset|The starting offset of the first USN record to parse.|int64
 fast_paths|If set we resolve full paths using faster but less accurate algorithm.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

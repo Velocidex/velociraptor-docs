@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## watch_ebpf
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -23,7 +23,7 @@ events|A list of event names to acquire.|list of string (required)
 include_env|Include process environment variables.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+<span class="linkcolour label label-success">MACHINE_STATE</span>
 
 ### Description
 
@@ -36,6 +36,6 @@ See https://github.com/Velocidex/tracee_velociraptor for more details.
 ### See also
 
 - [ebpf_events](/vql_reference/misc/ebpf_events/): Dumps information about
-  potential ebpf_events that can be used by the watch_ebpf() plugin.
+  potential ebpf_events.
 
 

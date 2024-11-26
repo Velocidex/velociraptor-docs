@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## unzip
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,8 +26,8 @@ output_directory|Where to unzip to|string (required)
 type|The type of file (default autodetected from file extension - zip or tgz or tar.gz).|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

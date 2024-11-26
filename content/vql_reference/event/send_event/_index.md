@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## send_event
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,8 +23,8 @@ artifact|The artifact name to send the event to.|string (required)
 row|The row to send to the artifact|ordereddict.Dict (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
-<i class="linkcolour label pull-right label-success">PUBLISH</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
+<span class="linkcolour label label-success">PUBLISH</span>
 
 ### Description
 

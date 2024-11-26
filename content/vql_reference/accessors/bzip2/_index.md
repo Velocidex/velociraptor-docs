@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## bzip2
-<span class='vql_type pull-right page-header'>Accessor</span>
+<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
 
 
 ### Description

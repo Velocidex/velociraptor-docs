@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_lines
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -24,7 +24,7 @@ accessor|The accessor to use.|string
 buffer_size|Maximum size of line buffer.|int
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

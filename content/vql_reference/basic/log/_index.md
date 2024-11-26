@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## log
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -46,7 +46,7 @@ Log messages will be deduped according to the `dedup`
 parameter - each **distinct format string** will not be emitted more
 frequently than the `dedup` parameter (by default 60 seconds).
 
-This makes it safe to use `log()` frequently without overflowing
+This makes it safe to use `log()` frequently without flooding
 the logs stream.
 
 ```vql

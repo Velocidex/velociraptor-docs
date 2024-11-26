@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## timeline_add
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -28,7 +28,7 @@ ts_desc_column|The column representing the timestamp description.|string
 notebook_id|The notebook ID the timeline is stored in.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

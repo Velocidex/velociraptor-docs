@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload_webdav
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -30,7 +30,7 @@ skip_verify|Skip TLS Verification|bool
 user_agent|If specified, set a HTTP User-Agent.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

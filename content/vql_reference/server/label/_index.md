@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## label
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ labels|A list of labels to apply|list of string (required)
 op|An operation on the labels (set, check, remove)|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">LABEL_CLIENT</i>
+<span class="linkcolour label label-success">LABEL_CLIENT</span>
 
 ### Description
 

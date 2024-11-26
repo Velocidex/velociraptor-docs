@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hash
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ accessor|The accessor to use|string
 hashselect|The hash function to use (MD5,SHA1,SHA256)|list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

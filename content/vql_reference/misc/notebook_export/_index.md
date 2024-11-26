@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## notebook_export
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ filename|The name of the export. If not set this will be named according to the 
 type|Set the type of the export (html or zip).|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
+<span class="linkcolour label label-success">PREPARE_RESULTS</span>
 
 ### Description
 

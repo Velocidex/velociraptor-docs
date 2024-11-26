@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_csv
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -27,7 +27,7 @@ comment|The single character that should be considered a comment|string
 columns|The columns to use|list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

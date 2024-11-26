@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## format
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -49,8 +49,8 @@ Mary,had,little lamb'''
 LET my_words <= SELECT * FROM parse_csv(accessor="data", filename=csv, auto_headers=True)
 SELECT format(format="%v %v a %v.", args=[Col0, Col1, Col2]) AS Sentence FROM my_words
 ```
-returns:
-`Sentence: John ate a banana.`
+returns:\
+`Sentence: John ate a banana.`\
 `Sentence: Mary had a little lamb.`
 
 ```vql

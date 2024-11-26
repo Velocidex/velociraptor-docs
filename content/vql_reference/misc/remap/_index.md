@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## remap
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 

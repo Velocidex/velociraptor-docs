@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## execve
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,7 +26,7 @@ env|Environment variables to launch with.|LazyExpr
 cwd|If specified we change to this working directory first.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">EXECVE</i>
+<span class="linkcolour label label-success">EXECVE</span>
 
 ### Description
 

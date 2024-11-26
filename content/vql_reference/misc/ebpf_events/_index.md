@@ -11,12 +11,16 @@ no_edit: true
 
 
 ## ebpf_events
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 ### Description
 
 Dumps information about potential ebpf_events that can be used by the
-[watch_ebpf](/vql_reference/misc/watch_ebpf/) plugin.
+`watch_ebpf` plugin.
+
+### See also
+
+- [watch_ebpf](/vql_reference/misc/watch_ebpf/)
 
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## write_jsonl
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -25,7 +25,7 @@ query|query to write into the file.|StoredQuery (required)
 buffer_size|Maximum size of buffer before flushing to file.|int
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
 
 ### Description
 
