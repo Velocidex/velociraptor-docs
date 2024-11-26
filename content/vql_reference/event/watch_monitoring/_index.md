@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## watch_monitoring
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -22,7 +22,7 @@ Arg | Description | Type
 artifact|The artifact to watch|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

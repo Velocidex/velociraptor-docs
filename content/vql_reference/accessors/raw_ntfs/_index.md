@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## raw_ntfs
-<span class='vql_type pull-right page-header'>Accessor</span>
+<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
 
 
 ### Description

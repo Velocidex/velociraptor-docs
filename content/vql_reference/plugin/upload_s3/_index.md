@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload_s3
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -35,7 +35,7 @@ skip_verify|Skip TLS Verification|bool
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

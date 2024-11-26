@@ -23,6 +23,7 @@ Miscellaneous plugins not yet categorized.
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
 |[delete_events](delete_events)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[delete_flow](delete_flow)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
+|[ebpf_events](ebpf_events)|<span class='vql_type'>Plugin</span>|Dumps information about potential ebpf_events that can be used by the|
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|
@@ -35,6 +36,7 @@ Miscellaneous plugins not yet categorized.
 |[hunt_info](hunt_info)|<span class='vql_type'>Function</span>|Retrieve the hunt information|
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[import](import)|<span class='vql_type'>Function</span>|Imports an artifact into the current scope|
+|[lazy_dict](lazy_dict)|<span class='vql_type'>Function</span>|Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion|
 |[leveldb](leveldb)|<span class='vql_type'>Plugin</span>|Enumerate all items in a level db database|
 |[link_to](link_to)|<span class='vql_type'>Function</span>|Create a url linking to a particular part in the Velociraptor GUI|
 |[logging](logging)|<span class='vql_type'>Plugin</span>|Watch the logs emitted by the server|
@@ -95,6 +97,7 @@ Miscellaneous plugins not yet categorized.
 |[user_grant](user_grant)|<span class='vql_type'>Function</span>|Grants the user the specified roles|
 |[user_options](user_options)|<span class='vql_type'>Function</span>|Update and read the user GUI options|
 |[vfs_ls](vfs_ls)|<span class='vql_type'>Plugin</span>|List directory and build a VFS object|
+|[watch_ebpf](watch_ebpf)|<span class='vql_type'>Plugin</span>|Watch for events from eBPF|
 |[watch_journald](watch_journald)|<span class='vql_type'>Plugin</span>|Watch a journald file and stream events from it|
 |[watch_jsonl](watch_jsonl)|<span class='vql_type'>Plugin</span>|Watch a jsonl file and stream events from it|
 |[winpmem](winpmem)|<span class='vql_type'>Function</span>|Uses the `winpmem` driver to take a memory image|

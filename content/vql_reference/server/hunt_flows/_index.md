@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunt_flows
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -25,7 +25,7 @@ limit|Number of rows to show (used for paging).|int64
 basic_info|If specified we only return basic information like flow id and client id.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

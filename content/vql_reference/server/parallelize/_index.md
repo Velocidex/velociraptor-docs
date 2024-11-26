@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parallelize
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -34,7 +34,7 @@ workers|Number of workers to spawn.)|int64
 batch|Number of rows in each batch.)|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

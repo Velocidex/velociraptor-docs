@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_json_array
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -35,7 +35,7 @@ instead of an object.
 
 
 ## parse_json_array
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 

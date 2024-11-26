@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## org_create
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ name|The name of the org.|string (required)
 org_id|An ID for the new org (if not set use a random ID).|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">ORG_ADMIN</i>
+<span class="linkcolour label label-success">ORG_ADMIN</span>
 
 ### Description
 

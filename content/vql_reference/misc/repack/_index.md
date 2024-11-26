@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## repack
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -28,7 +28,7 @@ config|The config to be repacked in the form of a json or yaml string|string (re
 upload_name|The name of the upload to create|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

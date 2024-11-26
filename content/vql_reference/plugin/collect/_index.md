@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## collect
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -38,7 +38,7 @@ concurrency|Number of concurrent collections.|int64
 remapping|A Valid remapping configuration in YAML or JSON format.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
 
 ### Description
 

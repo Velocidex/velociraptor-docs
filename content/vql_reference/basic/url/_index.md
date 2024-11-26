@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## url
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 

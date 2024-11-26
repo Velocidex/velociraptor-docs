@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunt
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -36,8 +36,8 @@ os|If specified target this OS|string
 org_id|If set the collection will be started in the specified orgs.|list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">START_HUNT</i>
-<i class="linkcolour label pull-right label-success">ORG_ADMIN</i>
+<span class="linkcolour label label-success">START_HUNT</span>
+<span class="linkcolour label label-success">ORG_ADMIN</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## artifact_set
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,8 +23,8 @@ definition|Artifact definition in YAML|string
 prefix|Required name prefix|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">ARTIFACT_WRITER</i>
-<i class="linkcolour label pull-right label-success">SERVER_ARTIFACT_WRITER</i>
+<span class="linkcolour label label-success">ARTIFACT_WRITER</span>
+<span class="linkcolour label label-success">SERVER_ARTIFACT_WRITER</span>
 
 ### Description
 

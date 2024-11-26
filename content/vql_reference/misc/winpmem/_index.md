@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## winpmem
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ image_path|If specified we write a physical memory image on this path.|string
 compression|When writing a memory image use this compression (default none) can be none, s2, snappy, gzip.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+<span class="linkcolour label label-success">MACHINE_STATE</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## enumerate_flow
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -23,7 +23,7 @@ client_id||string (required)
 flow_id||string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

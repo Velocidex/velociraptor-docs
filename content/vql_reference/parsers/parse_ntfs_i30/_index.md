@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_ntfs_i30
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 

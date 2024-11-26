@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload_sftp
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -29,7 +29,7 @@ endpoint|The Endpoint to use including port number (e.g. 192.168.1.1:22 )|string
 hostkey|Host key to verify. Blank to disable|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

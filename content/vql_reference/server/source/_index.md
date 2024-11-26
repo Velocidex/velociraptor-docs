@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## source
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -35,7 +35,7 @@ count|Maximum number of clients to fetch (default unlimited)'|int64
 orgs|Run the query over these orgs. If empty use the current org.'|list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

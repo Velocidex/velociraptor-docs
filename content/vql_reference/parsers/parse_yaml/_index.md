@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_yaml
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ filename|Yaml Filename|OSPath (required)
 accessor|File accessor|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

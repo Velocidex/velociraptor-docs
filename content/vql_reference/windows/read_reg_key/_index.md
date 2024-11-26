@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## read_reg_key
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 

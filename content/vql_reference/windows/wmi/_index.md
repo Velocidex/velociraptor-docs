@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## wmi
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -23,7 +23,7 @@ query|The WMI query to issue.|string (required)
 namespace|The WMI namespace to use (ROOT/CIMV2)|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+<span class="linkcolour label label-success">MACHINE_STATE</span>
 
 ### Description
 

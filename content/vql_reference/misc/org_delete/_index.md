@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## org_delete
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ org|The org ID to delete.|string (required)
 really_do_it|If not specified, just show what org will be removed|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">ORG_ADMIN</i>
+<span class="linkcolour label label-success">ORG_ADMIN</span>
 
 ### Description
 

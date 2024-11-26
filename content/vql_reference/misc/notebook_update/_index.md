@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## notebook_update
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -27,7 +27,7 @@ attachment|Raw data of an attachment to be added to the notebook|string
 attachment_filename|The name of the attachment|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

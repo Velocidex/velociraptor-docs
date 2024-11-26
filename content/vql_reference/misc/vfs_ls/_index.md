@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## vfs_ls
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -25,7 +25,7 @@ accessor|An accessor to use.|string
 depth|Depth of directory to list (default 0).|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

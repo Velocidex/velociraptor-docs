@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## notebook_create
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -27,7 +27,7 @@ artifacts|A list of NOTEBOOK artifacts to create the notebook with (Notebooks.De
 env|An environment to initialize the notebook with|ordereddict.Dict
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 
