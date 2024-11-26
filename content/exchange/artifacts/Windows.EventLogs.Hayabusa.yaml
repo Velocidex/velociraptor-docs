@@ -12,10 +12,10 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity, Fukusuke Takahashi - @fukusuket
 
 tools:
- - name: Hayabusa-2.18.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.18.0/hayabusa-2.18.0-win-x64-live-response.zip
-   expected_hash: f52d51f62bb3b4cb4a6e9f66716d024e022f22a3c9b0c44386ee25d67853668a
-   version: 2.18.0
+ - name: Hayabusa-2.19.0
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v2.19.0/hayabusa-2.19.0-win-x64-live-response.zip
+   expected_hash: b0a33cc2ac1bc3f58a60a929460dca47ba57bd8b14fcf016bb1d54e20d834173
+   version: 2.19.0
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -85,7 +85,7 @@ parameters:
    description: "Scan only common Event IDs for quicker scans"
    type: bool
    default: N
- - name: TimelineOffset
+ - name: TimeOffset
    description: "Scan recent events based on an offset (ex: 1y, 3M, 30d, 24h, 30m)"
  - name: TimelineStart
    description: "Start time of the event logs to load (ex: '2020-02-22 00:00:00 +09:00')"
@@ -111,7 +111,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.18.0", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-2.19.0", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -119,7 +119,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-2.18.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-2.19.0-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={
@@ -144,7 +144,7 @@ sources:
           if(condition=SortEvents, then="--sort-events"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter"),
-          if(condition=TimelineOffset, then="--timeline-offset"),   if(condition=TimelineOffset, then=TimelineOffset),
+          if(condition=TimeOffset, then="--time-offset"),           if(condition=TimeOffset, then=TimeOffset),
           if(condition=TimelineStart, then="--timeline-start"),     if(condition=TimelineStart, then=TimelineStart),
           if(condition=TimelineEnd, then="--timeline-end"),         if(condition=TimelineEnd, then=TimelineEnd),
           if(condition=ExcludeCategory, then="--exclude-category"), if(condition=ExcludeCategory, then=ExcludeCategory),
