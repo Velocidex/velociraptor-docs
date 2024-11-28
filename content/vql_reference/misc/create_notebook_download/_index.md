@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## create_notebook_download
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ notebook_id|Notebook ID to export.|string (required)
 filename|The name of the export. If not set this will be named according to the notebook id and timestamp|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
+<span class="linkcolour label label-success">PREPARE_RESULTS</span>
 
 ### Description
 

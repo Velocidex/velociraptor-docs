@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## uploads
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -25,7 +25,7 @@ hunt_id|A hunt ID|string
 notebook_id|A notebook ID|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

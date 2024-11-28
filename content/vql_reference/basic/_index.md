@@ -50,12 +50,12 @@ or in condition clauses (i.e. after the `WHERE` keyword).
 |[join](join)|<span class='vql_type'>Function</span>|Join all the args on a separator|
 |[killkillkill](killkillkill)|<span class='vql_type'>Function</span>|Kills the client and forces a restart - this is very aggressive!|
 |[len](len)|<span class='vql_type'>Function</span>|Returns the length of an object|
-|[log](log)|<span class='vql_type'>Function</span>|Log the message and return TRUE|
+|[log](log)|<span class='vql_type'>Function</span>|Log a message to the query log stream|
 |[lowcase](lowcase)|<span class='vql_type'>Function</span>|Returns the lowercase version of a string|
 |[max](max)|<span class='vql_type'>Function</span>|Finds the largest item in the aggregate|
 |[memoize](memoize)|<span class='vql_type'>Function</span>|Memoize a query into memory|
 |[min](min)|<span class='vql_type'>Function</span>|Finds the smallest item in the aggregate|
-|[now](now)|<span class='vql_type'>Function</span>|Returns current time in seconds since epoch|
+|[now](now)|<span class='vql_type'>Function</span>|Returns the current time in seconds since epoch|
 |[path_join](path_join)|<span class='vql_type'>Function</span>|Build a path by joining all components|
 |[path_split](path_split)|<span class='vql_type'>Function</span>|Split a path into components|
 |[query](query)|<span class='vql_type'>Function</span>|Launch a subquery and materialize it into a list of rows|

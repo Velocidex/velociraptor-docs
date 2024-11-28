@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## pk_encrypt
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -25,7 +25,7 @@ public_key|Public key to encrypt with. Defaults to server public key|string
 scheme|Encryption scheme to use. Defaults to X509. Currently supported: PGP,X509|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

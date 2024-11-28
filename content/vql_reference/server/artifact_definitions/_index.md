@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## artifact_definitions
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -24,7 +24,7 @@ deps|If true includes all dependencies as well.|bool
 sanitize|If true we remove extra metadata.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

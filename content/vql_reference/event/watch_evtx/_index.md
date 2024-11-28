@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## watch_evtx
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -25,7 +25,7 @@ messagedb|A Message database from https://github.com/Velocidex/evtx-data.|string
 workers|If specified we use this many workers to parse the file in parallel (default 1).|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

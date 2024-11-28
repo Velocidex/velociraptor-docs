@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## netcat
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -27,7 +27,7 @@ chunk_size|Read input with this chunk size (default 64kb)|int
 retry|Seconds to wait before retry - default 0 - do not retry|int
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

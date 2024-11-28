@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## inventory_add
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -29,7 +29,7 @@ file|An optional file to upload|OSPath
 accessor|The accessor to use to read the file.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

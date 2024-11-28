@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## artifact_set_metadata
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,8 +24,8 @@ hidden|Set to true make the artifact hidden in the GUI, false to make it visible
 basic|Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">ARTIFACT_WRITER</i>
-<i class="linkcolour label pull-right label-success">SERVER_ARTIFACT_WRITER</i>
+<span class="linkcolour label label-success">ARTIFACT_WRITER</span>
+<span class="linkcolour label label-success">SERVER_ARTIFACT_WRITER</span>
 
 ### Description
 

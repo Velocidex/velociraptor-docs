@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## rekey
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -22,7 +22,7 @@ Arg | Description | Type
 wait|Wait this long before rekeying the client.|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">EXECVE</i>
+<span class="linkcolour label label-success">EXECVE</span>
 
 ### Description
 

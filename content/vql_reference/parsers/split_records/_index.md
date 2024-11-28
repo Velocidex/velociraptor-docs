@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## split_records
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -29,7 +29,7 @@ record_regex|A regex to split data into records (default |string
 buffer_size|Maximum size of line buffer (default 64kb).|int
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

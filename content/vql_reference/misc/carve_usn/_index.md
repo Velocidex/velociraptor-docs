@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## carve_usn
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,7 +26,7 @@ mft_filename|A path to a raw $MFT file to use for path resolution.|OSPath
 usn_filename|A path to a raw USN file to carve. If not provided we carve the image file or the device.|OSPath
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## yara
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -32,7 +32,7 @@ namespace|The Yara namespece to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

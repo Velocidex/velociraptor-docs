@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -28,7 +28,7 @@ ctime|Change time to record|Any
 btime|Birth time to record|Any
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 
@@ -45,7 +45,7 @@ If Velociraptor is run locally the file will be copied to the
 
 
 ## upload
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 

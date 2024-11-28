@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## compress
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,8 +23,8 @@ path|A path to compress|string (required)
 output|A path to write the output - default is the path with a .gz extension|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## client_metadata
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -22,8 +22,8 @@ Arg | Description | Type
 client_id||string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

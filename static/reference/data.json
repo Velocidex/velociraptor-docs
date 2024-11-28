@@ -91,7 +91,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "all",
@@ -197,7 +198,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "artifact_definitions",
@@ -745,7 +747,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "cidr_contains",
@@ -1674,7 +1677,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "diff",
@@ -1744,6 +1748,14 @@
         "description": "Monitor dns queries.",
         "type": "Plugin",
         "category": "windows"
+    },
+    {
+        "name": "ebpf_events",
+        "description": "Dumps information about potential ebpf_events that can be used by the\n`watch_ebpf` plugin.",
+        "type": "Plugin",
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
     },
     {
         "name": "efivariables",
@@ -4115,6 +4127,14 @@
         ]
     },
     {
+        "name": "lazy_dict",
+        "description": "Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion.",
+        "type": "Function",
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "lazy_ntfs",
         "description": "Access the NTFS filesystem by parsing NTFS structures.",
         "type": "Accessor",
@@ -4232,7 +4252,7 @@
     },
     {
         "name": "log",
-        "description": "Log the message and return TRUE.",
+        "description": "Log a message to the query log stream. Always returns TRUE.",
         "type": "Function",
         "version": 2,
         "args": [
@@ -5289,16 +5309,8 @@
     },
     {
         "name": "now",
-        "description": "Returns current time in seconds since epoch.",
+        "description": "Returns the current time in seconds since epoch.",
         "type": "Function",
-        "args": [
-            {
-                "name": "string",
-                "type": "Any",
-                "description": "A string to convert to int",
-                "required": true
-            }
-        ],
         "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
@@ -8351,7 +8363,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "similarity",
@@ -9056,7 +9069,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "sysinfo",
@@ -10554,6 +10568,31 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "watch_ebpf",
+        "description": "Watch for events from eBPF.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "events",
+                "type": "string",
+                "description": "A list of event names to acquire.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "include_env",
+                "type": "bool",
+                "description": "Include process environment variables."
+            }
+        ],
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

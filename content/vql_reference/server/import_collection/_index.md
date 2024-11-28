@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## import_collection
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -26,8 +26,8 @@ accessor|The accessor to use.|string
 import_type|Whether the import is an offline_collector or hunt.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

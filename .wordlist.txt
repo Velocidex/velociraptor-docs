@@ -1551,7 +1551,6 @@ vhdx
 vmdk
 --------------------------------------------------------------------------------
 
-Misspelled words:
 <url-free> content/blog/2024/2024-09-10-release-notes-0.73/_index.md
 --------------------------------------------------------------------------------
 Paginator
@@ -1562,7 +1561,6 @@ timesketch
 vmdk
 --------------------------------------------------------------------------------
 
-Misspelled words:
 <url-free> content/blog/2024/2024-09-12-timelines/_index.md
 --------------------------------------------------------------------------------
 Timelining
@@ -1578,3 +1576,17 @@ CRUU
 KIE
 ds
 AES
+
+<url-free> content/vql_reference/misc/ebpf_events/_index.md
+--------------------------------------------------------------------------------
+ebpf
+
+<url-free> content/vql_reference/misc/watch_ebpf/_index.md
+--------------------------------------------------------------------------------
+eBPF
+tracee
+
+<url-free> content/vql_reference/basic/now/_index.md
+--------------------------------------------------------------------------------
+datetime
+

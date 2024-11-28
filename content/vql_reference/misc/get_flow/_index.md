@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## get_flow
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,8 +23,8 @@ client_id||string (required)
 flow_id||string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_CLIENT</i>
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_CLIENT</span>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

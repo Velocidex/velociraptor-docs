@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## query
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -31,7 +31,7 @@ runas|If specified, the query will run as the specified user|string
 inherit|If specified we inherit the scope instead of building a new one.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">IMPERSONATION</i>
+<span class="linkcolour label label-success">IMPERSONATION</span>
 
 ### Description
 
