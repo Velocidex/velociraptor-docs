@@ -214,7 +214,7 @@ velociraptor.exe config repack --msi velociraptor-windows.msi client.config.yaml
 {{< /tabs >}}
 
 If you are using Velociraptor [organizations](/docs/deployment/orgs/) ("orgs")
-then you can obtain the client configuraration file for each org from the Home
+then you can obtain the client configuration file for each org from the Home
 page in the GUI. Ensure that you are in the `root` org so that the configs for
 all orgs are accessible.
 
