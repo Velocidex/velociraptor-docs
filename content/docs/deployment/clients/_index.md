@@ -484,7 +484,7 @@ creating an appropriate package.
 
 Both types of installer packages use the same service settings and file
 locations. That is, the binary and client configuration files for Linux will be
-in in the same locations regardless of whether you installed using an `rpm` or a
+in the same locations regardless of whether you installed using an `rpm` or a
 `deb` package.
 
 Our `deb` and `rpm` installers support both `systemd` and `SysVinit`, and will
