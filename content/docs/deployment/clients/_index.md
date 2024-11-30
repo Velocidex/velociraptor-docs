@@ -122,7 +122,7 @@ settings are changed when using this method. It is most suitable for users who
 just want to get up and running quickly. Since it is so commonly done we have
 provided a built-in server artifact which allows this to be done via the
 Velociraptor web GUI. However it can also be done on the command line using our
-CLI, similar to how we create installer packages for Linux and MacoS. The CLI
+CLI, similar to how we create installer packages for Linux and macOS. The CLI
 option makes it possible to automate the process using external tools or CI
 pipelines.
 
