@@ -14,10 +14,10 @@ author: "Mike Cohen"
 date: 2024-09-12
 ---
 
-{{% notice note "Pre-release feature" %}}
+{{% notice note "New feature" %}}
 
-This feature will be available in the upcoming 0.73 release. You can
-[try it right now](https://github.com/Velocidex/velociraptor/releases/tag/v0.73) and provide valuable feedback.
+This feature is available in the 0.73 release. You can
+[Download it]({{% ref "/downloads/" %}}) and provide valuable feedback.
 
 {{% /notice %}}
 

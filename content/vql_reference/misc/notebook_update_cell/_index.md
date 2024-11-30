@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## notebook_update_cell
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -26,7 +26,7 @@ input|The new cell content.|string (required)
 output|If this is set, we do not calculate the cell but set this as the rendered output.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

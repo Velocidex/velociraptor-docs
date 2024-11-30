@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunt_results
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,7 +26,7 @@ brief|If set we return less columns (deprecated).|bool
 orgs|If set we combine results from all orgs.|list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

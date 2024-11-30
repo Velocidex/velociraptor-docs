@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload_gcs
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -27,7 +27,7 @@ project|The project to upload to|string (required)
 credentials|The credentials to use|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

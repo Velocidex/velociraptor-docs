@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## write_csv
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -24,7 +24,7 @@ accessor|The accessor to use|string
 query|query to write into the file.|StoredQuery (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
 
 ### Description
 

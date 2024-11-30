@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## items
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -35,7 +35,7 @@ This can be used to filter dict items by feeding the results to
 
 
 ## items
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 

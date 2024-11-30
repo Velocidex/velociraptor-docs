@@ -39,12 +39,9 @@ sources:
           /*
           # Events from Generic.Client.Stats
           */
-          LET StartTime &lt;= "2024-03-20T16:33:38Z"
-          LET EndTime &lt;= "2024-03-20T20:01:37Z"
-
           LET resources = SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                RSS / 1000000 AS MemoryUse
-          FROM source()
+          FROM source(start_time=StartTime, end_time=EndTime)
           WHERE CPUPercent &gt;= 0
           /*
             {{ Query "SELECT * FROM resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}

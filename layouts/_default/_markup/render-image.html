@@ -1,6 +1,6 @@
 {{ $src := .Destination }}
 {{ $id := md5 $src }}
-{{ $filename := path.Join ( path.Dir .Page.File ) $src }}
+{{ $filename := path.Join .Page.File.Dir $src }}
 {{ $caption := .PlainText }}
 {{ if ( hasSuffix $filename ".svg" ) }}
   {{ $data := readFile $filename }}

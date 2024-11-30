@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunt_update
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,9 +24,11 @@ stop|Stop the hunt|bool
 start|Start the hunt|bool
 description|Update hunt description|string
 expires|Update hunt expiry|time.Time
+add_labels|Labels to be added to hunt|list of string
+del_labels|Labels to be removed from hunt|list of string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">START_HUNT</i>
+<span class="linkcolour label label-success">START_HUNT</span>
 
 ### Description
 

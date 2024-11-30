@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## flow_logs
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -23,7 +23,7 @@ flow_id|The flow id to read.|string (required)
 client_id|The client id to extract|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

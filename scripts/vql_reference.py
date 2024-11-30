@@ -43,7 +43,7 @@ def BuildDefinition(filename, item):
 
     filename =  os.path.join(dirname, "_index.md")
     result = "\n\n<div class=\"vql_item\"></div>\n\n"
-    result += ("\n## %s\n<span class='vql_type pull-right page-header'>%s</span>\n\n" % (item["name"], item["type"]))
+    result += ("\n## %s\n<span class='vql_type label label-warning pull-right page-header'>%s</span>\n\n" % (item["name"], item["type"]))
 
     if item.get("args"):
         result += ("\n\n<div class=\"vqlargs\"></div>\n\n")
@@ -65,7 +65,7 @@ def BuildDefinition(filename, item):
     if permissions:
         result += "\nRequired Permissions: \n"
         for p in permissions.split(","):
-            result += '<i class="linkcolour label pull-right label-success">%s</i>\n' % p
+            result += '<span class="linkcolour label label-success">%s</span>\n' % p
 
     result+=("\n")
 

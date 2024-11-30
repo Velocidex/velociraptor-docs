@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload_azure
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -25,7 +25,7 @@ accessor|The accessor to use|string
 sas_url|A SAS URL to use for upload to the container.|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

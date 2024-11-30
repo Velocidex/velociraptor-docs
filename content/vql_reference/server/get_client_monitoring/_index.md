@@ -11,11 +11,11 @@ no_edit: true
 
 
 ## get_client_monitoring
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

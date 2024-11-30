@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunts
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -22,7 +22,7 @@ Arg | Description | Type
 hunt_id|A hunt id to read, if not specified we list all of them.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

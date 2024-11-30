@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## alert
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -26,4 +26,11 @@ condition|If specified we ignore the alert unless the condition is true|Any
 ### Description
 
 Generate an alert message.
+
+### See also
+
+- [log](/vql_reference/basic/log/): alerts and log messages are similar in
+  concept and use the same deduplication mechanism which is explained with
+  examples for the `log()` function.
+
 

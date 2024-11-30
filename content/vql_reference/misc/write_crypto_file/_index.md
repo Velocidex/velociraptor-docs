@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## write_crypto_file
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -26,7 +26,7 @@ max_rows|How many rows to buffer before writing (default 1000).|uint64
 max_size|When the file grows to this size, truncate it (default 1Gb).|uint64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_WRITE</i>
+<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## create_hunt_download
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -28,7 +28,7 @@ password|An optional password to encrypt the collection zip.|string
 expand_sparse|If set we expand sparse files in the archive.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">PREPARE_RESULTS</i>
+<span class="linkcolour label label-success">PREPARE_RESULTS</span>
 
 ### Description
 

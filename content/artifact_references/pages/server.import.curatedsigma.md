@@ -33,7 +33,6 @@ parameters:
       - Velociraptor Hayabusa Ruleset
       - Velociraptor Hayabusa Live Detection
       - Velociraptor ChopChopGo Ruleset (Linux)
-      - Velociraptor Curated Windows Ruleset
 
   - name: Prefix
     description: Add this prefix to imported artifacts
@@ -50,6 +49,7 @@ sources:
                             query={SELECT * FROM
                                 Artifact.Server.Import.ArtifactExchange(
                                 Prefix=Prefix,
+                                ArchiveGlob="*.yaml",
                                 ExchangeURL=get(item= URLlookup, member= _value))})
 
 </code></pre>

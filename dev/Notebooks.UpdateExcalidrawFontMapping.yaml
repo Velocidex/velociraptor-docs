@@ -1,0 +1,82 @@
+name: Notebooks.UpdateExcalidrawFontMapping
+description: |
+  Replaces Excalidraw's old standard font IDs with their new standard IDs in
+  `.excalidraw` files.
+
+  This is only needed if you want to open (in other words: import) old
+  `.excalidraw` files in [excalidraw.com](excalidraw.com) and keep the fonts
+  assigned to their "standard" Excalidraw UI font names.
+
+  Excalidraw have changed their default fonts over time, even though their
+  file format hasn't changed (it's currently "version 2"). In their file format
+  they use assigned numeric IDs instead of font names and their code maps these
+  to the actual fonts.
+
+  | Excalidraw UI font name | CSS/SVG font family name (old) | Excalidraw fontFamily ID (old) | CSS/SVG font family name (new) | Excalidraw fontFamily ID (new) | Velociraptor WOFF2 font file name | What we use it for |
+  |---|---|---|---|---|---|---|
+  | Hand-drawn | Virgil | 1 | Excalifont | 5 | playpen-sans-v13-latin-500 | Default font |
+  | Normal | Cascadia | 2 | Nunito | 6 | playpen-sans-v13-latin-800 | Heading font |
+  | Code | Assistant | 3 | Comic Shanns | 8 | SVBasicManual | Code font |
+
+  The old ID -> new ID mappings are defined in the variable `font_id_map` and a
+  regex to see if files qualify for updating is defined in the `regex_check`
+  variable. Update these if necessary.
+
+  Normally you should not need to "update" `.excalidraw` files in this way.
+  But if they add new fonts in future with new fontFamily IDs, and assign them
+  to their "standard" UI font names, then this may be needed to be allow opening
+  and re-exporting old excalidraw files.
+
+  ### Notes
+
+  - This notebook works with local files and is intended to be run in "gui mode"
+    on Linux.
+  - **Will potentially do bad things if run on Windows!** So don't do that.
+
+type: NOTEBOOK
+
+parameters:
+  - name: rel_path
+    description: Path to the Excalidraw files relative to your $HOME directory
+    default: projects/velociraptor-docs
+    validating_regex: '^.+/.+$'
+  - name: lookback_days
+    type: int
+    description: Only consider files modified <i>less</i> than this many days ago.
+    default: 3
+
+export: |
+  LET regex_check <= '''("fontFamily": [123],)'''
+  LET font_id_map <= dict(`"fontFamily": 1,` = '"fontFamily": 5,',
+                          `"fontFamily": 2,` = '"fontFamily": 6,',
+                          `"fontFamily": 3,` = '"fontFamily": 8,')
+  LET since_date <= timestamp(epoch=now() - 86400 * lookback_days)
+  LET files_path <= path_join(components=[expand(path="%HOME%"), rel_path], path_type="linux")
+  LET file_candidates = SELECT OSPath, Mtime
+                        FROM glob(root=files_path, globs="**/*.excalidraw")
+                        WHERE Mtime > since_date
+                        AND parse_string_with_regex(string=read_file(filename=OSPath),regex=regex_check)
+  LET update_file(target_file) = regex_transform(source=read_file(filename=target_file), map=font_id_map, key="A")
+
+sources:
+  - notebook:
+    - type: vql
+      output: |
+        <img src="/app/velo.svg" style="width:32px;height:32px;">
+        1. Run this cell to see what files will be updated. No changes will be made.<br><hr>
+      template: |
+        /*
+        <br>These files need to be updated:
+        */
+        SELECT OSPath AS Path, Mtime AS `Last Modified` FROM file_candidates
+    - type: vql
+      output: |
+        <img src="/app/velo.svg" style="width:32px;height:32px;">
+        2. Edit the notebook parameters if needed before running this cell.<br>
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b>Running this cell may change files on disk</b> - be careful!<br><hr>
+      template: |
+        /*
+        <br>These files were updated:
+        */
+        SELECT copy(filename=update_file(target_file=OSPath), accessor="data", dest=OSPath) AS Path
+        FROM file_candidates

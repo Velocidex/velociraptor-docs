@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## add_server_monitoring
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ artifact|The name of the artifact to add|string (required)
 parameters|A dict of artifact parameters|LazyExpr
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

@@ -1,8 +1,7 @@
 ---
 title: "Velociraptor 0.73 Release"
 description: |
-   Velociraptor Release 0.73 is now in release candidate status.
-   This post discusses some of the new features.
+   Velociraptor Release 0.73 is available!
 
 tags:
  - Release
@@ -13,9 +12,17 @@ noindex: false
 ---
 
 I am very excited to announce that the latest Velociraptor release
-0.73 is now in release candidate status.
+0.73 is available for download.
 
 In this post I will discuss some of the interesting new features.
+
+## Special Thanks
+
+We would like to extend our thanks to the entire Velociraptor
+Community, with a special mention for [Andreas
+Misje](https://github.com/misje) and [Justin
+Welgemoed](https://github.com/predictiple) who provided invaluable
+testing, feedback and ideas to make this release awesome!
 
 ## New Client functionality
 
@@ -65,7 +72,7 @@ fragments of the screen.
 Sometimes the RDP cache holds crucial evidence as to the activity of
 the attacker on systems that ran the RDP client. This information is
 now easily accessible using the new `Windows.Forensics.RDPCache`
-artifact.
+artifact contributed by [Matt Green](https://github.com/mgreen27).
 
 ![Viewing the RDP cache tiles](rdp_cache.png)
 
@@ -181,13 +188,54 @@ hunts and clean up the display.
 ### Updated Table widget.
 
 The Velociraptor GUI presents most data in tabular form. It is
-important that tables are easy to navigate. The navigation pager is
-now placed at the top of the table.
+important that tables are easy to navigate and use.  This release made
+a lot of updates to the table view.
+
+
+#### Pagination changes
+
+The navigation pager is now placed at the top of the table.
 
 ![Velociraptor tables have been revamped](table_widget.svg)
 
+#### Filtering columns
+
 If a filter term starts with ! it will now be excluded from the rows
 (i.e. a negative search term).
+
+#### Resizing columns
+
+Many tables have varying width columns. By default, Velociraptor will
+try to fit column width automatically to make them more readable, but
+sometimes it is necessary to manually adjust column widths for optimal
+viewing.
+
+Columns can now be resized by dragging the right edge of a cell or
+header.
+
+![Columns can be resized by dragging their right edge](resizing_columns.svg)
+
+
+#### Column re-ordering
+
+Column ordering usually depends on the VQL query that produces the
+table. However it is sometimes easier to reorder columns on an adhoc
+basis.
+
+You can now reorder columns by dragging the column header and dropping
+it on the new position.
+
+![Columns can be reordered by drag and drop](reordering_columns.svg)
+
+#### Compact table view
+
+Sometimes columns contain a lot of data taking up large vertical
+space. This makes it difficult to quickly review the table because the
+extra row height makes the table unable to fit in the screen
+vertically.
+
+![Collapsing columns make the table easier to view](collapsing_columns.svg)
+
 
 ### Password encrypted ZIP files for VFS downloads.
 
@@ -416,7 +464,6 @@ This feature allows an administrator to carefully delegate higher
 privilege tasks to users with lower roles. This makes it easier to
 create users with lower levels of access and improves a least
 privilege permission model.
-
 
 ## Conclusions
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## host
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -25,7 +25,7 @@ type|Type of lookup, can be CNAME, NS, SOA, TXT, DNSKEY, AXFR, A (default)|strin
 prefer_go|Prefer calling the native Go implementation rather than the system.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+<span class="linkcolour label label-success">MACHINE_STATE</span>
 
 ### Description
 

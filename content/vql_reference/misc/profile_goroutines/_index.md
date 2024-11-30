@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## profile_goroutines
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -22,7 +22,7 @@ Arg | Description | Type
 verbose|Emit information in verbose form.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">MACHINE_STATE</i>
+<span class="linkcolour label label-success">MACHINE_STATE</span>
 
 ### Description
 

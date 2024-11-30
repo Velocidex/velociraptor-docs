@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## http_client
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -36,7 +36,7 @@ secret|If specified, use this managed secret. The secret should be of type 'HTTP
 files|If specified, upload these files using multipart form upload. For example [dict(file="My filename.txt", path=OSPath, accessor="auto"),]|list of ordereddict.Dict
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">COLLECT_SERVER</i>
+<span class="linkcolour label label-success">COLLECT_SERVER</span>
 
 ### Description
 

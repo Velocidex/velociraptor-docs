@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunt_add
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -25,7 +25,7 @@ flow_id|If a flow id is specified we do not create a new flow, but instead add t
 relaunch|If specified we relaunch the hunt on this client again.|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">START_HUNT</i>
+<span class="linkcolour label label-success">START_HUNT</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## monitoring
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -28,7 +28,7 @@ start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

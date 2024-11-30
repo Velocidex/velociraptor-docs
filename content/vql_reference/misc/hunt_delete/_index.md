@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## hunt_delete
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -23,7 +23,7 @@ hunt_id||string (required)
 really_do_it||bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

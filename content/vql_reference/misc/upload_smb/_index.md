@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## upload_smb
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -27,7 +27,7 @@ password|The SMB password to login as (if not provided we use the SMB_CREDENTIAL
 server_address|The SMB server address and optionally port followed by the share name (e.g. \\192.168.1.1:445\ShareName)|string (required)
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

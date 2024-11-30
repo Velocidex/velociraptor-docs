@@ -47,7 +47,7 @@ function DrawResults(data) {
 <div class="panel panel-default color">
   <div class="panel-heading color">
     <a class="title link" href=""><h3 class="panel-title color " ></h3></a>
-    <div class="type vql_type pull-right"></div>
+    <div class="type vql_type label label-warning pull-right"></div>
   </div>
   <div class="panel-body color">
     <div class="border color">
@@ -71,13 +71,13 @@ function DrawResults(data) {
       template.find(".link").attr("href", getLink(item));
       template.find(".type").append(item.type)
       template.find(".idea-tag").append(
-          `<i class="linkcolour label label-success">` +
+          `<i class="linkcolour label label-info pull-right">` +
               (item.category || "misc") + `</i>`);
 
       if (item.metadata && item.metadata.permissions) {
           let html = $(`
-            <span class="vql_type">Permissions</span>
-            <span class="permission_list label label-success linkcolour pull-right "></span>`)
+            <span class="vql_type">Required permissions</span>
+            <span class="permission_list linkcolour "></span>`)
           template.find(".permissions").append(html);
 
           for(x of item.metadata.permissions.split(",")) {

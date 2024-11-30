@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## notebook_get
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ notebook_id|The id of the notebook to fetch|string (required)
 verbose|Include more information|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">READ_RESULTS</i>
+<span class="linkcolour label label-success">READ_RESULTS</span>
 
 ### Description
 

@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## inventory_get
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -24,7 +24,7 @@ version||string
 probe|If specified we only probe the tool definition without materializing|bool
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">SERVER_ADMIN</i>
+<span class="linkcolour label label-success">SERVER_ADMIN</span>
 
 ### Description
 

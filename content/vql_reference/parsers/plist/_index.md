@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## plist
-<span class='vql_type pull-right page-header'>Function</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -23,7 +23,7 @@ file|A list of files to parse.|OSPath (required)
 accessor|The accessor to use.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 
@@ -35,7 +35,7 @@ Parse plist file
 
 
 ## plist
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -47,7 +47,7 @@ file|A list of files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 

@@ -80,7 +80,7 @@ column_types:
 - name: Upload
   type: upload_preview
 - name: Authenticode
-  type: folded
+  type: collapsed
 
 </code></pre>
 

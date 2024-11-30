@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## parse_journald
-<span class='vql_type pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
 
@@ -21,10 +21,12 @@ Arg | Description | Type
 ----|-------------|-----
 filename|A list of journal log files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
-raw|Emit raw events (no parsed).|bool
+raw|Emit raw events (not parsed).|bool
+start_time|Only parse events newer than this time (default all times).|time.Time
+end_time|Only parse events older than this time (default all times).|time.Time
 
 Required Permissions: 
-<i class="linkcolour label pull-right label-success">FILESYSTEM_READ</i>
+<span class="linkcolour label label-success">FILESYSTEM_READ</span>
 
 ### Description
 
