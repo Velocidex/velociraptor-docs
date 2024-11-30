@@ -1,6 +1,6 @@
 name: Exchange.Label.User
 description: |
-   This artifact watches for new client enrolments and automatically
+   This artifact watches for new client enrollments and automatically
    label the client with the required label if the user exists.
 
    This artifact can be the starting point for automatically labeling
