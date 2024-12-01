@@ -8,6 +8,7 @@ type: CLIENT
 tools:
   - name: ESETLogCollector
     url: https://download.eset.com/com/eset/tools/diagnosis/log_collector/latest/esetlogcollector.exe
+    expected_hash: c5c9b4ec7feca3f3ac43c71454e7e51f13f19ce52a0583d34b32f7df4bbea5db
     serve_locally: true
  
 precondition: SELECT OS From info() where OS = 'windows'
