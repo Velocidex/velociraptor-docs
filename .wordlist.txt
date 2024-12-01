@@ -1590,3 +1590,25 @@ tracee
 --------------------------------------------------------------------------------
 datetime
 
+<url-free> content/docs/deployment/clients/_index.md
+--------------------------------------------------------------------------------
+AutoUpdate
+FreeBSD
+Glibc
+Intune
+Jamf
+MDM
+macOS
+OpenRC
+Romanitho
+SysVinit
+Toolset
+WiX
+XP
+configs
+dmg
+init
+subcommand
+toolset
+toolsets
+wix

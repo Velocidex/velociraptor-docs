@@ -219,7 +219,7 @@ through a number of steps:
 1. The writeback file is created with a new client private key (and a
    client ID).
 2. The client communicates with the server but receives a 406
-   status. This initiates the enrolment flow.
+   status. This initiates the enrollment flow.
 3. The server schedules an Interrogate flow on the client, which
    issues a number of VQL queries.
 4. We can now search for the client using the GUI search box.
