@@ -56,7 +56,8 @@ use generic file names. omit version numbers and arch.
 
 use platform alternatives where applicable
 
-
+When providing examples commands we should use a consistent order for the
+command components: `[binary]` `[command]` `[subcommand]` `[flags]` `[args]`
 
 ## Page content structure
 

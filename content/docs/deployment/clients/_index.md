@@ -105,9 +105,8 @@ installer format is that most enterprise system administration tools are capable
 of deploying MSI packages. For example, you can use SCCM or Group Policy to
 deploy the MSI to a target organizational unit.
 
-For more information, see [How to use Group Policy to remotely install software
-in Windows Server 2008 and in Windows Server
-2003](https://support.microsoft.com/en-us/help/816102/how-to-use-group-policy-to-remotely-install-software-in-windows-server).
+For more information, see
+[Use Group Policy to remotely install software](https://learn.microsoft.com/en-us/troubleshoot/windows-server/group-policy/use-group-policy-to-install-software).
 
 There are two approaches to generating the MSI package:
 
@@ -191,10 +190,9 @@ know exactly what they are.
 To repack the MSI with a custom config on the command line we use the `config`
 command, and the `repack` subcommand, with the `--msi` flag.
 
-In all cases we
-need to tell velociraptor which MSI we want to repack (usually it's the
-[official release MSI](/downloads/) - 64-bit or 32-bit) and what the output file
-should be named.
+In all cases we need to tell velociraptor which MSI we want to repack (usually
+it's the [official release MSI](/downloads/): either 64-bit or 32-bit) and what
+the output file should be named.
 
 {{< tabs >}} {{% tab name="Linux" %}}
 ```shell
@@ -223,9 +221,8 @@ all orgs are accessible.
 {{% notice note "Re-signing the repacked MSI" %}}
 
 While the Velociraptor binary inside the MSI is officially signed by Rapid7 LLC
-and is unaffected by the MSI repacking process, modifying the MSI file will
-invalidate its (separate) digital signature. For this reason we highly recommend
-that the MSI be re-signed by a valid code signing certificate after repacking.
+and is unaffected by the MSI repacking process, we recommend that the MSI also
+be signed by a valid code signing certificate after repacking.
 
 {{% /notice %}}
 
@@ -315,6 +312,12 @@ folder, create the service, and start it.
 The Velociraptor service runs using the Local System account. Startup of the
 service is Automatic with a delayed start.
 
+One way to automate such a deployment by using Active Directory Group Policy.
+The procedure [outlined below](#agentless-deployment) can easily be adapted to
+run the command `msiexec /i \\DC\Deployment\velociraptor_custom.msi` instead of
+running the exe, or you can use Package distribution procedure described here:
+[Use Group Policy to remotely install software](https://learn.microsoft.com/en-us/troubleshoot/windows-server/group-policy/use-group-policy-to-install-software).
+
 #### Exe install
 
 The Velociraptor executable is also capable of installing itself as a Windows
@@ -330,8 +333,8 @@ package manager, and that may complicate uninstalls or upgrades that you will
 probably want to do in future.
 
 A known problem with installing the service in this way is that it cannot
-uninstall completely cleanly since MSI infrastructure would usually be replied
-upon to perform post-removal tasks such as cleaning up old files.
+uninstall completely cleanly since MSI infrastructure would usually be relied on
+to perform post-removal tasks such as cleaning up old files.
 
 Nevertheless this approach is possible if the situation requires it. You may
 choose to automate such a deployment by using the Group Policy scheduled tasks
@@ -614,13 +617,13 @@ After installation you can check the service status with the command:
 In our official releases we also provide binaries for FreeBSD.
 
 Velociraptor is written in Golang, so it is technically possible for you to
-build it on any platform supported by Go. However Go has officially ended
-support for Windows 7 with the Go 1.20 release. This means that Windows XP,
-Windows server 2003, and Windows 7/Vista can no longer be built using a
-supported version of Go. We may make occasionally - depending on demand for it -
-make builds for Windows 7 using an old unsupported version of Go, but these will
-not be supported and may not be the latest version. Please see [our Support
-Policy](/docs/overview/support/).
+build it on any platform supported by Go. However Go has officially
+[ended support for Windows 7](https://github.com/golang/go/issues/57003) with
+the Go 1.20 release. This means that Windows XP, Windows server 2003, and
+Windows 7/Vista can no longer be built using a supported version of Go. We may
+make occasional (depending on demand for it) builds for Windows 7 using an old
+unsupported version of Go, but these will not be supported and may not be the
+latest version. Please see [our Support Policy](/docs/overview/support/).
 
 We also distribute 32-bit binaries for Windows but not for Linux. If you need
 32-bit Linux builds you will need to build from source. You can do this easily
@@ -629,13 +632,17 @@ editing the "Linux Build All Arches" pipeline.
 
 ## Agentless deployment
 
-There has been a lot of interest in "agentless hunting" especially since many
-people come from backgrounds where PowerShell is used for this purpose.
+There has been a lot of interest in "agentless hunting" using Velociraptor,
+especially since many people come from backgrounds where PowerShell is used for
+this purpose.
 
-There are many reasons why agentless hunting is appealing - there are already a
-ton of endpoint agents and yet another one may not be welcome. Sometimes we need
-to deploy endpoint agents as part of a DFIR engagement and we may not want to
-permanently install yet another agent on endpoints.
+There are many reasons why agentless hunting is appealing. These are the ones we
+hear most often:
+
+* There are already a ton of endpoint agents and yet another one may not be
+  welcome.
+* Sometimes we need to deploy endpoint agents as part of a DFIR engagement and
+  we may not want to permanently install yet another agent on endpoints.
 
 In the agentless deployment scenario, we simply run the binary from a network
 share using Group Policy settings. The downside to this approach is that the
