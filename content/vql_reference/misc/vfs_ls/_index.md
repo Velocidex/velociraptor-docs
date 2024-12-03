@@ -24,8 +24,7 @@ components|Alternatively a list of path components can be given.|list of string
 accessor|An accessor to use.|string
 depth|Depth of directory to list (default 0).|int64
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

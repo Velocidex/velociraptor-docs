@@ -23,8 +23,7 @@ query|WMI query to run.|string (required)
 namespace|WMI namespace|string (required)
 wait|Wait this many seconds for events and then quit.|int64 (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

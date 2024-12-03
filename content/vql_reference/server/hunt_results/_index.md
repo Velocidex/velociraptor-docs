@@ -25,8 +25,7 @@ hunt_id|The hunt id to read.|string (required)
 brief|If set we return less columns (deprecated).|bool
 orgs|If set we combine results from all orgs.|list of string
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

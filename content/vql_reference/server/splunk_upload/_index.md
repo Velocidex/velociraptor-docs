@@ -35,8 +35,7 @@ timestamp_field|Field to use as event timestamp.|string
 hostname_field|Field to use as event hostname. Overrides hostname parameter.|string
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

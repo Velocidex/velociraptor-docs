@@ -22,8 +22,7 @@ Arg | Description | Type
 search|Client search string. Can have the following prefixes: 'label:', 'host:'|string
 client_id||string
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

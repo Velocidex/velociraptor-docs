@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 artifact|The name of the artifact to remove|string (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

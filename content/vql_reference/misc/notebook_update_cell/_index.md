@@ -25,8 +25,7 @@ type|Set the type of the cell if needed (markdown or vql).|string
 input|The new cell content.|string (required)
 output|If this is set, we do not calculate the cell but set this as the rendered output.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

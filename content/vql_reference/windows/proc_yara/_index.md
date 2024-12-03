@@ -27,8 +27,7 @@ namespace|The Yara namespece to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 number|Stop after this many hits (1).|int64
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

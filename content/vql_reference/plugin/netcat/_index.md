@@ -26,8 +26,7 @@ sep|The separator that will be used to split (default - line feed)|string
 chunk_size|Read input with this chunk size (default 64kb)|int
 retry|Seconds to wait before retry - default 0 - do not retry|int
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

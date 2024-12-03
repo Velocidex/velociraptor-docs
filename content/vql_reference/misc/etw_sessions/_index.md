@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 count|The count of sessions to retrieve (default 64) |uint64
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

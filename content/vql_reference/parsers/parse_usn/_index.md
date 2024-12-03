@@ -27,8 +27,7 @@ usn_filename|A path to a raw USN file to parse. If not provided we extract it fr
 start_offset|The starting offset of the first USN record to parse.|int64
 fast_paths|If set we resolve full paths using faster but less accurate algorithm.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

@@ -22,8 +22,7 @@ Arg | Description | Type
 notebook_id|The id of the notebook to fetch|string (required)
 verbose|Include more information|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

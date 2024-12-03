@@ -24,8 +24,7 @@ server|A DNS server to query - if not provided uses the system resolver.|string
 type|Type of lookup, can be CNAME, NS, SOA, TXT, DNSKEY, AXFR, A (default)|string
 prefer_go|Prefer calling the native Go implementation rather than the system.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

@@ -32,8 +32,7 @@ auth_password|The SMTP username password we use to authenticate to the server.|s
 skip_verify|Skip SSL verification(default: False).|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">SERVER_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

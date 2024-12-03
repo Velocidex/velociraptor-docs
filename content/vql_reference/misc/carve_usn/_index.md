@@ -25,8 +25,7 @@ accessor|The accessor to use.|string
 mft_filename|A path to a raw $MFT file to use for path resolution.|OSPath
 usn_filename|A path to a raw USN file to carve. If not provided we carve the image file or the device.|OSPath
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

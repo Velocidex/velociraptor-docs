@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 hunt_id|Hunt Id to look up or a flow id created by that hunt (e.g. F.CRUU3KIE5D73G.H ).|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

@@ -26,8 +26,7 @@ public|If set the notebook will be public.|bool
 artifacts|A list of NOTEBOOK artifacts to create the notebook with (Notebooks.Default)|list of string
 env|An environment to initialize the notebook with|ordereddict.Dict
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

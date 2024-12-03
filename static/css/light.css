@@ -23,16 +23,17 @@
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */
 
+    --CODE-SECTION-BG-color: white;
+    --CODE-color: var(--MAIN-TEXT-color);
+
     --TABLE-HEADER-background-color: #ECEFF1;
     --TABLE-HEADER-color: #323232;
-
-    --CODE-SECTION-BG-color: #f4f4f4;
 
     --REFERENCE-value-color: #00000054;
     --REFERENCE-border-color: #00000026;
 
     --footer-color: #183f81;
-    --vql: red;
+    --vql: lightcoral;
     --MAIN-Author: red;
     --MAIN-Date: #666;
     --mynotice: #666;

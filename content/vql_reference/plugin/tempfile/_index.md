@@ -24,8 +24,7 @@ extension|An extension to place in the tempfile.|string
 permissions|Required permissions (e.g. 'x').|string
 remove_last|If set we delay removal as much as possible.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 
 ### Description
 

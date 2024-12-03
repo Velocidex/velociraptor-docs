@@ -25,9 +25,8 @@ filename_filter|Only extract members matching this regex filter.|string
 output_directory|Where to unzip to|string (required)
 type|The type of file (default autodetected from file extension - zip or tgz or tar.gz).|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

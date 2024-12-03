@@ -25,8 +25,7 @@ raw|Emit raw events (not parsed).|bool
 start_time|Only parse events newer than this time (default all times).|time.Time
 end_time|Only parse events older than this time (default all times).|time.Time
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

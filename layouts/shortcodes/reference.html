@@ -3,7 +3,7 @@
 
 <div class="input-group">
   <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
-         placeholder="Search for VQL plugins or functions"
+         placeholder="Search for VQL plugins, functions, or accessors"
          aria-describedby="basic-addon2">
   <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
 </div>
@@ -71,18 +71,18 @@ function DrawResults(data) {
       template.find(".link").attr("href", getLink(item));
       template.find(".type").append(item.type)
       template.find(".idea-tag").append(
-          `<i class="linkcolour label label-info pull-right">` +
+          `<i class="linkcolour label label-info pull-right">category: ` +
               (item.category || "misc") + `</i>`);
 
       if (item.metadata && item.metadata.permissions) {
           let html = $(`
-            <span class="vql_type">Required permissions</span>
+            <span class="vql_type">Required permissions:</span>
             <span class="permission_list linkcolour "></span>`)
           template.find(".permissions").append(html);
 
           for(x of item.metadata.permissions.split(",")) {
               template.find(".permission_list").append(
-                  `<span class=" label label-success">` + x + `</span>`)
+                  `<span class=" label label-important">` + x + `</span>`)
           };
       }
 

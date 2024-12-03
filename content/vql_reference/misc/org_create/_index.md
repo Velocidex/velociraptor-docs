@@ -22,8 +22,7 @@ Arg | Description | Type
 name|The name of the org.|string (required)
 org_id|An ID for the new org (if not set use a random ID).|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">ORG_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ORG_ADMIN</span>
 
 ### Description
 

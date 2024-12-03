@@ -23,8 +23,7 @@ client_id|Client ID to label.|string (required)
 labels|A list of labels to apply|list of string (required)
 op|An operation on the labels (set, check, remove)|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">LABEL_CLIENT</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">LABEL_CLIENT</span>
 
 ### Description
 

@@ -22,9 +22,8 @@ Arg | Description | Type
 client_id||string (required)
 metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_CLIENT</span>
-<span class="linkcolour label label-success">SERVER_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
+<span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

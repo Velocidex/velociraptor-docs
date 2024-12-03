@@ -34,8 +34,7 @@ start_row|Start reading the result set from this row|int64
 count|Maximum number of clients to fetch (default unlimited)'|int64
 orgs|Run the query over these orgs. If empty use the current org.'|list of string
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

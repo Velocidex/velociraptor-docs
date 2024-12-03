@@ -29,8 +29,7 @@ format|Format to export (csv,json,csv_only) defaults to both.|string
 expand_sparse|If set we expand sparse files in the archive.|bool
 name|If specified we call the file this name otherwise we generate name based on flow id.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">PREPARE_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">PREPARE_RESULTS</span>
 
 ### Description
 

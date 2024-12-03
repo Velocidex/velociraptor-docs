@@ -26,8 +26,7 @@ public|If set the notebook will be public.|bool
 attachment|Raw data of an attachment to be added to the notebook|string
 attachment_filename|The name of the attachment|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

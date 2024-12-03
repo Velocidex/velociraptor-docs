@@ -27,8 +27,7 @@ binaries|List of tool names that will be repacked into the target|list of string
 config|The config to be repacked in the form of a json or yaml string|string (required)
 upload_name|The name of the upload to create|string (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

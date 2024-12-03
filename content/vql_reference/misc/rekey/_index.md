@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 wait|Wait this long before rekeying the client.|int64
 
-Required Permissions: 
-<span class="linkcolour label label-success">EXECVE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">EXECVE</span>
 
 ### Description
 

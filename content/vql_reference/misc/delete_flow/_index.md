@@ -23,8 +23,7 @@ flow_id||string (required)
 client_id||string (required)
 really_do_it||bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">DELETE_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">DELETE_RESULTS</span>
 
 ### Description
 

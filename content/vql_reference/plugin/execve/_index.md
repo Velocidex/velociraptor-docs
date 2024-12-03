@@ -25,8 +25,7 @@ length|Size of buffer to capture output per row.|int64
 env|Environment variables to launch with.|LazyExpr
 cwd|If specified we change to this working directory first.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">EXECVE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">EXECVE</span>
 
 ### Description
 
