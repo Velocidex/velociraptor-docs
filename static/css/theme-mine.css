@@ -64,7 +64,7 @@ font-family: "Iosevka Term";
 font-style: italic;
 font-weight: 700;
 src: local(""),
-    url("/fonts/Atkinson-Hyperlegible-BoldItalic-102a.woff2") format("woff2");
+    url("/fonts/iosevka-term-regular-subset.woff2") format("woff2");
     unicode-range: U+0020-007E, U+0080-00FF;
 font-display: block;
 }
@@ -188,7 +188,7 @@ pre {
 
 pre code, pre.code {
     font-size: 0.9rem !important;
-    font-family: "Iosevka Term";
+    font-family: "Iosevka Term" !important;
 }
 
 div.progress  {
