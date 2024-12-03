@@ -621,10 +621,6 @@ div.search_results img.user-avatar {
     word-spacing: 3px;
 }
 
-#sidebar ul li.dd-item {
-    width: 100%;
-}
-
 #sidebar ul li.dd-item a {
     display: inline;
 }
