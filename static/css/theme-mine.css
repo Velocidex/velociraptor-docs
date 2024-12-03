@@ -77,6 +77,9 @@ html, body {
     height: 100vh !important;
 }
 
+section#body {
+    background-color: var(--MAIN-TEXT-background-color) !important;
+}
 
 textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, select[multiple=multiple]:focus {
     border-color: none;
@@ -616,10 +619,6 @@ div.search_results img.user-avatar {
 
 .space {
     word-spacing: 3px;
-}
-
-#sidebar ul li.dd-item {
-    width: 100%;
 }
 
 #sidebar ul li.dd-item a {
