@@ -212,10 +212,12 @@ body.dark span.hljs-comment {
 
 body.light code.hljs {
     color: black;
+    font-size: 16px !important;
 }
 
 body.dark code.hljs {
     color: white;
+    font-size: 16px !important;
 }
 
 
@@ -247,6 +249,9 @@ blockquote h1 {
     font-size: 2rem;
 }
 
+.input-group .form-control {
+    font-size: 20px !important;
+}
 
 div.mynotices {
     margin: 2rem 0;
@@ -441,6 +446,7 @@ code {
     background-color: var(--CODE-SECTION-BG-color) !important;
     border: none !important;
     font-family: "Iosevka Term" !important;
+    font-size: 16px !important;
     vertical-align: baseline;
 }
 
