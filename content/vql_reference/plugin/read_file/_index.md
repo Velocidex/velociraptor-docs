@@ -24,8 +24,7 @@ max_length|Max length of the file to read.|int
 filenames|One or more files to open.|list of OSPath (required)
 accessor|An accessor to use.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

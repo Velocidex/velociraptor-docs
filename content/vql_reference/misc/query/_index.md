@@ -30,8 +30,7 @@ org_id|If specified, the query will run in the specified org space (Use 'root' t
 runas|If specified, the query will run as the specified user|string
 inherit|If specified we inherit the scope instead of building a new one.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">IMPERSONATION</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">IMPERSONATION</span>
 
 ### Description
 

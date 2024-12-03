@@ -33,8 +33,7 @@ metrics|Collect metrics|bool
 duration|Duration of samples (default 30 sec)|int64
 type|The type of profile (this is a regex of debug output types that will be shown).|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

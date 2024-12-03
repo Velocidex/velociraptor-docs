@@ -5,10 +5,9 @@ description: |
   This same font substitution is done
   [automatically](https://github.com/Velocidex/velociraptor-docs/blob/947bb25a3d7cc6b4ac9d376db863f8a9db535ece/layouts/_default/_markup/render-image.html#L7)
   by the Hugo build process, so this notebook provides an easy way to do it
-  without Hugo.
-  For example: if you need an image for a purpose other than the website and that
-  image isn't going to be on the website, but would like it to still have the
-  standard fonts.
+  without Hugo. For example: if you need an image for a purpose other than the
+  website and that image isn't going to be on the website, but would like it to
+  still have the standard fonts.
 
 type: NOTEBOOK
 

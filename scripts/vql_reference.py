@@ -63,9 +63,9 @@ def BuildDefinition(filename, item):
 
     permissions = item.get("metadata", {}).get("permissions")
     if permissions:
-        result += "\nRequired Permissions: \n"
+        result += '\n<span class="permission_list vql_type">Required permissions:</span>'
         for p in permissions.split(","):
-            result += '<span class="linkcolour label label-success">%s</span>\n' % p
+            result += '<span class="permission_list linkcolour label label-important">%s</span>\n' % p
 
     result+=("\n")
 

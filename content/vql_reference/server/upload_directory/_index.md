@@ -28,8 +28,7 @@ atime|Access time to set the output file.|Any
 ctime|Change time to set the output file.|Any
 btime|Birth time to set the output file.|Any
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 
 ### Description
 

@@ -24,8 +24,7 @@ name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
 sas_url|A SAS URL to use for upload to the container.|string (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

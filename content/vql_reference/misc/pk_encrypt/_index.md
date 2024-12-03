@@ -24,8 +24,7 @@ signing_key|Private key to sign with|string
 public_key|Public key to encrypt with. Defaults to server public key|string
 scheme|Encryption scheme to use. Defaults to X509. Currently supported: PGP,X509|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">SERVER_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

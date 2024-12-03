@@ -23,8 +23,7 @@ tool||string (required)
 version||string
 probe|If specified we only probe the tool definition without materializing|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">SERVER_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

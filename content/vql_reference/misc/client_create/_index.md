@@ -27,8 +27,7 @@ hostname|The hostname of the system|string
 client_id|if set we use this client id otherwise we make a new one|string
 mac_addresses||list of string
 
-Required Permissions: 
-<span class="linkcolour label label-success">SERVER_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

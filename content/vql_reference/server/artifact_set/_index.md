@@ -22,9 +22,8 @@ Arg | Description | Type
 definition|Artifact definition in YAML|string
 prefix|Required name prefix|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">ARTIFACT_WRITER</span>
-<span class="linkcolour label label-success">SERVER_ARTIFACT_WRITER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ARTIFACT_WRITER</span>
+<span class="permission_list linkcolour label label-important">SERVER_ARTIFACT_WRITER</span>
 
 ### Description
 

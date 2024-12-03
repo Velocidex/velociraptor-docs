@@ -26,9 +26,8 @@ permissions|Required permissions (e.g. 'x').|string
 append|If true we append to the target file otherwise truncate it|bool
 create_directories|If true we ensure the destination directories exist|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

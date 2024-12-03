@@ -22,8 +22,7 @@ Arg | Description | Type
 org|The org ID to delete.|string (required)
 really_do_it|If not specified, just show what org will be removed|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">ORG_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ORG_ADMIN</span>
 
 ### Description
 

@@ -23,8 +23,7 @@ accessor|The accessor to use.|string
 filename|The filename to parse.|OSPath (required)
 verbose|Set to receive verbose information about all the certs.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

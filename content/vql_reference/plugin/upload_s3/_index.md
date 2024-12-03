@@ -34,8 +34,7 @@ s3upload_root|Prefix for the S3 object|string
 skip_verify|Skip TLS Verification|bool
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

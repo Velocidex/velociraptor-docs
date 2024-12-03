@@ -24,8 +24,7 @@ source|An optional source within the artifact.|string
 flow_id|The hunt id to read.|string (required)
 client_id|The client id to extract|string (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

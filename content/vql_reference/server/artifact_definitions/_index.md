@@ -23,8 +23,7 @@ names|Artifact definitions to dump|list of string
 deps|If true includes all dependencies as well.|bool
 sanitize|If true we remove extra metadata.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

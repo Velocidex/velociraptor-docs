@@ -25,8 +25,7 @@ start_time|Start time to be deleted|time.Time
 end_time|End time to be deleted|time.Time
 really_do_it|If not specified, just show what files will be removed|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">DELETE_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">DELETE_RESULTS</span>
 
 ### Description
 

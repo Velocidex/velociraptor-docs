@@ -22,8 +22,7 @@ Arg | Description | Type
 events|A list of event names to acquire.|list of string (required)
 include_env|Include process environment variables.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

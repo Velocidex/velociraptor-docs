@@ -26,8 +26,7 @@ nosymlink|If set we do not follow symlinks.|bool
 recursion_callback|A VQL function that determines if a directory should be recursed (e.g. "x=>NOT x.Name =~ 'proc'").|string
 one_filesystem|If set we do not follow links to other filesystems.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

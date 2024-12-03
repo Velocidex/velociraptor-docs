@@ -24,8 +24,7 @@ regex|A list of regex to apply to the file data.|list of string (required)
 accessor|The accessor to use.|string
 buffer_size|Maximum size of line buffer (default 64kb).|int
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

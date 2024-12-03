@@ -25,8 +25,7 @@ source|An optional named source within the artifact|string
 start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

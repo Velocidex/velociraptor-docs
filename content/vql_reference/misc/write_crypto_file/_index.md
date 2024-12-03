@@ -25,8 +25,7 @@ max_wait|How often to flush the file (default 60 sec).|uint64
 max_rows|How many rows to buffer before writing (default 1000).|uint64
 max_size|When the file grows to this size, truncate it (default 1Gb).|uint64
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 
 ### Description
 

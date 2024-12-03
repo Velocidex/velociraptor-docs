@@ -14,8 +14,7 @@ no_edit: true
 <span class='vql_type label label-warning pull-right page-header'>Plugin</span>
 
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

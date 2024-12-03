@@ -28,8 +28,7 @@ count|Only split into this many columns if possible.|int
 record_regex|A regex to split data into records (default |string
 buffer_size|Maximum size of line buffer (default 64kb).|int
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

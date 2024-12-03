@@ -29,8 +29,7 @@ noverifycert|Skip TLS Verification (deprecated in favor of SkipVerify)|bool
 skip_verify|Skip TLS Verification|bool
 user_agent|If specified, set a HTTP User-Agent.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

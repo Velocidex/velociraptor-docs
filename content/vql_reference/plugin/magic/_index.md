@@ -24,8 +24,7 @@ accessor|The accessor to use|string
 type|Magic type (can be empty or 'mime' or 'extension')|string
 magic|Additional magic to load|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

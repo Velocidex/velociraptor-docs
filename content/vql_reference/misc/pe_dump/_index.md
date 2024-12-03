@@ -23,8 +23,7 @@ pid|The pid to dump.|uint64 (required)
 base_offset|The offset in the file for the base address.|int64 (required)
 in_memory|By default we store to a tempfile and return the path. If this option is larger than 0, we prepare the file in a memory buffer at the specified limit, to avoid AV alerts on disk access.|uint64
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

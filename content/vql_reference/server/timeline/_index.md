@@ -25,8 +25,7 @@ skip|List of child components to skip|list of string
 start|First timestamp to fetch|Any
 notebook_id|The notebook ID the timeline is stored in.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

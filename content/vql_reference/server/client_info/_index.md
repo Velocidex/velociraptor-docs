@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

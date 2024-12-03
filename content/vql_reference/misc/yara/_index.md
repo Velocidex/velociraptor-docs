@@ -31,8 +31,7 @@ key|If set use this key to cache the  yara rules.|string
 namespace|The Yara namespece to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

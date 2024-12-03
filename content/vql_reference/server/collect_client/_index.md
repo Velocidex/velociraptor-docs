@@ -32,9 +32,8 @@ max_bytes|Max number of bytes to upload|uint64
 urgent|Set the collection as urgent - skips other queues collections on the client.|bool
 org_id|If set the collection will be started in the specified org.|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_CLIENT</span>
-<span class="linkcolour label label-success">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
+<span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 
 ### Description
 

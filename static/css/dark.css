@@ -23,7 +23,8 @@ body.dark {
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #20272b; /* Color of <hr> separator in menu */
 
-    --CODE-SECTION-BG-color: #424242;
+    --CODE-SECTION-BG-color: #3b444b;
+    --CODE-color: var(--MAIN-TEXT-color);
 
     --TABLE-HEADER-background-color: #323232;
     --TABLE-HEADER-color: #ECEFF1;
@@ -32,9 +33,9 @@ body.dark {
     --REFERENCE-border-color: #ffffff26;
 
     --footer-color: #183f81;
-    --vql: red;
+    --vql: lightcoral;
     --MAIN-Author: red;
-    --MAIN-Date: #666;
+    --MAIN-Date: #EFEBE9;
     --mynotice: #EFEBE9;
     --mynotices-first-child: #E0E0E0;
     --mynotice-info-border: #FFCC8055;

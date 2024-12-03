@@ -24,8 +24,7 @@ accessor|The accessor to use.|string
 messagedb|A Message database from https://github.com/Velocidex/evtx-data.|string
 workers|If specified we use this many workers to parse the file in parallel (default 1).|int64
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

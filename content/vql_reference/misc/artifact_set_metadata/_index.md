@@ -23,9 +23,8 @@ name|The Artifact to update|string (required)
 hidden|Set to true make the artifact hidden in the GUI, false to make it visible again.|bool
 basic|Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">ARTIFACT_WRITER</span>
-<span class="linkcolour label label-success">SERVER_ARTIFACT_WRITER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ARTIFACT_WRITER</span>
+<span class="permission_list linkcolour label label-important">SERVER_ARTIFACT_WRITER</span>
 
 ### Description
 

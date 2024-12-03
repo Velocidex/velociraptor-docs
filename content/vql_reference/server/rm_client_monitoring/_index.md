@@ -22,8 +22,7 @@ Arg | Description | Type
 artifact|The name of the artifact to remove from the event table|string (required)
 label|Remove the artifact from this label group (default the 'all'  group)|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">COLLECT_CLIENT</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
 
 ### Description
 

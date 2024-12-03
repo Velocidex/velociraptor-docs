@@ -24,8 +24,7 @@ accessor|The accessor to use.|string
 prefix|If specified we prefix all paths with this path.|OSPath
 start|The first entry to scan.|int64
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

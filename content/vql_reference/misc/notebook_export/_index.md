@@ -23,8 +23,7 @@ notebook_id|The id of the notebook to export|string (required)
 filename|The name of the export. If not set this will be named according to the notebook id and timestamp|string
 type|Set the type of the export (html or zip).|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">PREPARE_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">PREPARE_RESULTS</span>
 
 ### Description
 

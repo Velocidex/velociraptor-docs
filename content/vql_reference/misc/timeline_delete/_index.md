@@ -23,8 +23,7 @@ timeline|Supertimeline to delete.|string (required)
 notebook_id|The notebook ID the timeline is stored in.|string
 name|Name/Id of child timeline to delete. If not specified deletes the entire timeline|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">NOTEBOOK_EDITOR</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NOTEBOOK_EDITOR</span>
 
 ### Description
 

@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 pid|A pid to kill.|int64 (required)
 
-Required Permissions: 
-<span class="linkcolour label label-success">EXECVE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">EXECVE</span>
 
 ### Description
 

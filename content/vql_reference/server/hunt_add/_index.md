@@ -24,8 +24,7 @@ hunt_id||string (required)
 flow_id|If a flow id is specified we do not create a new flow, but instead add this flow_id to the hunt.|string
 relaunch|If specified we relaunch the hunt on this client again.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">START_HUNT</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">START_HUNT</span>
 
 ### Description
 

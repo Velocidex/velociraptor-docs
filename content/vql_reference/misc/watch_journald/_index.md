@@ -23,8 +23,7 @@ filename|A list of journal log files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
 raw|Emit raw events (not parsed).|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_READ</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

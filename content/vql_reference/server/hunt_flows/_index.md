@@ -24,8 +24,7 @@ start_row|The first row to show (used for paging).|int64
 limit|Number of rows to show (used for paging).|int64
 basic_info|If specified we only return basic information like flow id and client id.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

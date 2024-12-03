@@ -35,9 +35,8 @@ exclude_labels|If specified exclude these labels|list of string
 os|If specified target this OS|string
 org_id|If set the collection will be started in the specified orgs.|list of string
 
-Required Permissions: 
-<span class="linkcolour label label-success">START_HUNT</span>
-<span class="linkcolour label label-success">ORG_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">START_HUNT</span>
+<span class="permission_list linkcolour label label-important">ORG_ADMIN</span>
 
 ### Description
 

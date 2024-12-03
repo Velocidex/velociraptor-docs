@@ -24,8 +24,7 @@ flow_id|A flow ID (client or server artifacts)|string
 hunt_id|A hunt ID|string
 notebook_id|A notebook ID|string
 
-Required Permissions: 
-<span class="linkcolour label label-success">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 

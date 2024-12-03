@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 pid|A pid to list. If this is provided we are able to operate much faster by only opening a single process.|int64
 
-Required Permissions: 
-<span class="linkcolour label label-success">MACHINE_STATE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
 ### Description
 

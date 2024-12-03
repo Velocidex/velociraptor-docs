@@ -190,7 +190,7 @@ know exactly what they are.
 To repack the MSI with a custom config on the command line we use the `config`
 command, and the `repack` subcommand, with the `--msi` flag.
 
-In all cases we need to tell velociraptor which MSI we want to repack (usually
+In all cases we need to tell Velociraptor which MSI we want to repack (usually
 it's the [official release MSI](/downloads/): either 64-bit or 32-bit) and what
 the output file should be named.
 

@@ -21,8 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 remove_last|If set we delay removal as much as possible.|bool
 
-Required Permissions: 
-<span class="linkcolour label label-success">FILESYSTEM_WRITE</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 
 ### Description
 

@@ -27,8 +27,7 @@ expires|Update hunt expiry|time.Time
 add_labels|Labels to be added to hunt|list of string
 del_labels|Labels to be removed from hunt|list of string
 
-Required Permissions: 
-<span class="linkcolour label label-success">START_HUNT</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">START_HUNT</span>
 
 ### Description
 
