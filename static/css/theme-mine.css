@@ -75,6 +75,7 @@ html, body {
     font-family: "Atkinson" !important;
     font-size: 20px !important;
     height: 100vh !important;
+    letter-spacing: 0.1px; /* to avoid unintentional font ligatures */
 }
 
 section#body {
@@ -90,7 +91,7 @@ h2, h3, h4, h5 {
     color: var(--MAIN-TITLES-TEXT-color) !important;
 }
 
-.children-h2 p, .children-h3 p {
+.children-h2 p, .children-h3 p, .children-li p {
     font-size: inherit;
 }
 
@@ -205,12 +206,18 @@ body.dark span.hljs-keyword {
     color: #00E5FF55;
 }
 
+body.dark span.hljs-comment {
+    color: #808080;
+}
+
 body.light code.hljs {
     color: black;
+    font-size: 16px !important;
 }
 
 body.dark code.hljs {
     color: white;
+    font-size: 16px !important;
 }
 
 
@@ -242,6 +249,9 @@ blockquote h1 {
     font-size: 2rem;
 }
 
+.input-group .form-control {
+    font-size: 20px !important;
+}
 
 div.mynotices {
     margin: 2rem 0;
@@ -369,6 +379,7 @@ pre:hover .copy-to-clipboard {
 code.hljs {
     background-color: var(--CODE-SECTION-BG-color);
     color: white ;
+    padding: 0.5em !important;
 }
 
 .ThemeSelector {
@@ -435,6 +446,8 @@ code {
     background-color: var(--CODE-SECTION-BG-color) !important;
     border: none !important;
     font-family: "Iosevka Term" !important;
+    font-size: 16px !important;
+    vertical-align: baseline;
 }
 
 #myCarousel.carousel img {
@@ -820,7 +833,6 @@ details > summary:first-of-type {
 }
 
 #body-inner table {
-    margin: 30px;
     border: none;
 }
 
