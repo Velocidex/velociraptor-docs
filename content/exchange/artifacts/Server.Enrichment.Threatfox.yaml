@@ -8,15 +8,17 @@ description: |
 
      Ex.
 
-       `SELECT * from Artifact.Server.Enrichment.ThreatFox(IOC=$YOURIOC)`
+       `SELECT * from Artifact.Server.Enrichment.ThreatFox(AuthKey=$YOURKEY,IOC=$YOURIOC)`
 
      If querying for an MD5 or SHA256 hash, specify the IOC type, like so:
   
-       `SELECT * from Artifact.Server.Enrichment.ThreatFox(IOC=$YOURIOC, IOCType=Hash)`
+       `SELECT * from Artifact.Server.Enrichment.ThreatFox(AuthKey=$YOURKEY,IOCType=Hash)`
 
 type: SERVER
 
 parameters:
+   - name: AuthKey
+     default:
    - name: IOC
      default:
    - name: IOCType
@@ -35,7 +37,7 @@ sources:
            FROM http_client(
              method="POST",
              url=TFURL,
-             headers=dict(`Content-Type`="application/json"),
+             headers=dict(`Auth-Key`=AuthKey),
              data=serialize(item=dict(`query`="search_ioc",`search_term`=IOC))
        )
        
@@ -44,7 +46,7 @@ sources:
            FROM http_client(
              method="POST",
              url=TFURL,
-             headers=dict(`Content-Type`="application/json"),
+             headers=dict(`Auth-Key`=AuthKey),
              data=serialize(item=dict(`query`="search_hash", `hash`=IOC))
        )
        
