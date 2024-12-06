@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Labels on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/labels/</link><description>Recent content in Labels on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 10 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/labels/index.xml" rel="self" type="application/rss+xml"/><item><title>How to control hunting by label groups?</title><link>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</link><pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</guid><description>&lt;h1 id="how-to-control-hunting-by-label-groups">How to control hunting by label groups?&lt;/h1>
+&lt;p>In Velociraptor, &lt;code>Hunts&lt;/code> are sets of the same collections across
+clients. For example, a hunt for &lt;code>Scheduled Tasks&lt;/code> will automatically
+collect the scheduled tasks from each client.&lt;/p>
+&lt;p>When creating the hunt it is possible to target the hunt to a
+&lt;code>Label&lt;/code>. This only schedules the hunt on clients that have that same
+label. This is useful when collecting a lot of data which does not
+make sense to collect from every machine in the fleet. For example in
+the following screenshot I am limiting the heavy triaging collection
+to machines with the label &lt;code>Triage&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="1912e2fbc6ef8afb41e2a31045e48e4f">
+ &lt;div data-featherlight="#1912e2fbc6ef8afb41e2a31045e48e4f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/limiting_hunts.png" alt="Limiting a hunt to a label">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="limiting_hunts.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Limiting a hunt to a label
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="assigning-clients-to-the-hunt">Assigning clients to the hunt.&lt;/h2>
+&lt;p>Normally when we limit a hunt for a label we immediately schedule the
+hunt on all machines with that label.&lt;/p>
+&lt;p>However it also works the other way around - When a label is added on
+a client, if the hunt targets this label, the client will be
+automatically added to the hunt!&lt;/p>
+&lt;p>This means it is possible to create heavy hunts targeting specific
+labels, and then as the investigation progresses, simply assign the
+label to the client to automatically cause the hunt to collect on that
+client.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="ea294614153c0d0ea666c75a2d1b6b1f">
+ &lt;div data-featherlight="#ea294614153c0d0ea666c75a2d1b6b1f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/apply_label.png" alt="Apply a label to a client to trigger hunt participation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="apply_label.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Apply a label to a client to trigger hunt participation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>Applying labels to hunt results</title><link>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</link><pubDate>Fri, 20 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</guid><description>&lt;h1 id="applying-labels-to-hunt-results">Applying labels to hunt results&lt;/h1>
+&lt;p>Sometimes it is useful to label clients from a hunt.&lt;/p>
+&lt;p>For the following example, I will label all machines with rows from the Windows.Carving.CobaltStrike artifact with a label &amp;ldquo;CobaltStrike&amp;rdquo;.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT ClientId,Fqdn,Rule,
+ label(client_id=ClientId,labels=['CobaltStrike'],op='set') as SetLabel
+FROM source(artifact=&amp;quot;Windows.Carving.CobaltStrike&amp;quot;)
+GROUP BY ClientId
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="37d46915203878b19ceb1f55ac1a77c4">
+ &lt;div data-featherlight="#37d46915203878b19ceb1f55ac1a77c4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/huntlabel/https://user-images.githubusercontent.com/13081800/169450498-39d31902-81ec-4b7c-8c6c-72abe0419c7e.png" alt="Label clients from hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/13081800/169450498-39d31902-81ec-4b7c-8c6c-72abe0419c7e.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Label clients from hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How can I automatically apply labels to clients?</title><link>https://docs.velociraptor.app/knowledge_base/tips/automating_labels/</link><pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/automating_labels/</guid><description>&lt;h1 id="how-can-i-automatically-apply-labels-to-clients">How can I automatically apply labels to clients?&lt;/h1>
+&lt;p>Sometimes it is useful to automatically label clients based on client
+state. You can do this automatically by running a &lt;a href="https://docs.velociraptor.app/docs/server_automation/server_monitoring/">Server Event
+Artifact&lt;/a>
+that automatically applies labels based on some criteria.&lt;/p>
+&lt;p>When a client appears for the first time on a Velociraptor deployment,
+the server instructs the client to enrol, and automatically runs the
+&lt;code>Generic.Client.Info&lt;/code> artifact on it. This artifact is designed to
+collect basic information about the endpoint.&lt;/p>
+&lt;p>We can watch the system for any new collections of the artifact and
+apply labels based on their results.&lt;/p>
+&lt;p>For the following example, I will label a client with the label
+&amp;ldquo;Server&amp;rdquo; if it is running any kind of Windows Server Operating System.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET interrogations = SELECT *
+FROM watch_monitoring(artifact=&amp;quot;System.Flow.Completion&amp;quot;)
+WHERE Flow.artifacts_with_results =~ &amp;quot;Generic.Client.Info/BasicInformation&amp;quot;
+
+LET results = SELECT *, ClientId
+FROM source(
+ artifact=&amp;quot;Generic.Client.Info/BasicInformation&amp;quot; ,
+ client_id=ClientId, flow_id=FlowId)
+WHERE Platform =~ &amp;quot;Server&amp;quot;
+
+SELECT *,
+label(client_id=ClientId, labels=&amp;quot;Server&amp;quot;, op=&amp;quot;set&amp;quot;)
+FROM foreach(row=interrogations, query=results)
+&lt;/code>&lt;/pre>
+&lt;ol>
+&lt;li>The &lt;code>interrogations&lt;/code> query will watch for any flow completion with
+results for the &lt;code>Generic.Client.Info/BasicInformation&lt;/code> source. This
+will provide the flow id and the client id.&lt;/li>
+&lt;li>The &lt;code>results&lt;/code> query will read all the results from the
+collection. Typically the Release field will contain the Windows
+Release information. We filter out all rows but those that match
+the word &amp;ldquo;Server&amp;rdquo; to only see results from the Windows Server
+platform.&lt;/li>
+&lt;li>Finally for each interrogations we get the results and finally
+&amp;ldquo;set&amp;rdquo; the label &amp;ldquo;Server&amp;rdquo; on the client id.&lt;/li>
+&lt;/ol>
+&lt;p>Now that we have the VQL worked out, we just package it in a YAML
+artifact by giving it a name.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">name: AutomateServerLabels
+type: SERVER_EVENT
+sources:
+- query: |
+ LET interrogations = SELECT *
+ FROM watch_monitoring(artifact=&amp;quot;System.Flow.Completion&amp;quot;)
+ WHERE Flow.artifacts_with_results =~ &amp;quot;Generic.Client.Info/BasicInformation&amp;quot;
+
+ LET results = SELECT *, ClientId
+ FROM source(
+ artifact=&amp;quot;Generic.Client.Info/BasicInformation&amp;quot; ,
+ client_id=ClientId, flow_id=FlowId)
+ WHERE Platform =~ &amp;quot;Server&amp;quot;
+
+ SELECT *
+ label(client_id=ClientId, labels=&amp;quot;Server&amp;quot;, op=&amp;quot;set&amp;quot;)
+ FROM foreach(row=interrogations, query=results)
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="ad98c8260b582fa91c5a55cf3e5f1e1f">
+ &lt;div data-featherlight="#ad98c8260b582fa91c5a55cf3e5f1e1f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/automating_labels/artifact.png" alt="Adding a new artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adding a new artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now we can enable monitoring of these events by adding the artifact to
+the server event table&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="e141c9a3e348b7ef1353ad61128ce063">
+ &lt;div data-featherlight="#e141c9a3e348b7ef1353ad61128ce063" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/automating_labels/installing_event_monitoring.png" alt="Installing server event monitoring">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="installing_event_monitoring.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Installing server event monitoring
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Refreshing labels ">&lt;p>The above artifact will automatically label clients when the &lt;code>Generic.Client.Info&lt;/code> collection is run on the clients. This collection runs when the client is first seen but you can run it at any time.&lt;/p>
+&lt;p>To relabel all clients - even after they were enrolled, you can just
+start a hunt for &lt;code>Generic.Client.Info&lt;/code> at any time.&lt;/p>
+&lt;p>Note that labels are either Set or Cleared for it is fine to re-apply
+the label many times.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>Exchange.Label.User</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.label.user/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.label.user/</guid><description>&lt;p>This artifact watches for new client enrollments and automatically
+label the client with the required label if the user exists.&lt;/p>
+&lt;p>This artifact can be the starting point for automatically labeling
+a machine based on any other property - just change the artifact to
+watch and the result filter.&lt;/p>
+&lt;p>#server #event #labels&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Exchange.Label.User
+description: |
+ This artifact watches for new client enrollments and automatically
+ label the client with the required label if the user exists.
+
+ This artifact can be the starting point for automatically labeling
+ a machine based on any other property - just change the artifact to
+ watch and the result filter.
+
+ #server #event #labels
+
+type: SERVER_EVENT
+
+parameters:
+ - name: Label
+ default: MikesBox
+ - name: NameRegex
+ default: mike
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ LET user_flows = SELECT *
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ "Generic.Client.Info/Users"
+
+ LET results = SELECT *,
+ label(client_id=ClientId, labels=Label, op="set")
+ FROM source(artifact="Generic.Client.Info/Users" ,
+ client_id=ClientId, flow_id=FlowId)
+ WHERE Name =~ NameRegex
+
+ SELECT * FROM foreach(row=user_flows, query=results)
+
+&lt;/code>&lt;/pre></description></item></channel></rss>

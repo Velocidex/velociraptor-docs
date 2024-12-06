@@ -1,0 +1,268 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.3"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Cloud Deployment :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1733484288 rel=stylesheet><link href=/css/fontawesome-all.min.css?1733484288 rel=stylesheet><link href=/css/featherlight.min.css?1733484288 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1733484288 rel=stylesheet><link href=/css/auto-complete.css?1733484288 rel=stylesheet><link href=/css/theme.css?1733484288 rel=stylesheet><link href=/css/tabs.css?1733484288 rel=stylesheet><link href=/css/hugo-theme.css?1733484288 rel=stylesheet><link href=/css/theme-mine.css?1733484288 rel=stylesheet><link href=/css/dark.css?1733484288 rel=stylesheet><link href=/css/syntax.css?1733484288 rel=stylesheet><link href=/css/light.css?1733484288 rel=stylesheet><link href=/css/hljs.css?1733484288 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1733484288 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1733484288></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/deployment/cloud/><nav id=sidebar><div id=header-wrapper><div id=header><script>function darkmode(){$("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/"}function lightmode(){$("body").removeClass("dark").addClass("light"),document.cookie="theme=lightmode;path=/"}const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?darkmode():lightmode()</script><div class="btn btn-default ThemeSelector darkmode" onclick=darkmode()><i class="fas fa-moon"></i></div><div class="btn btn-default ThemeSelector lightmode" onclick=lightmode()><i class="fas fa-sun"></i></div><a href=https://docs.velociraptor.app/><img src=https://docs.velociraptor.app//images/logo.svg></a></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/self-signed/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/self-signed/>Self-Signed SSL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/ class="dd-item active haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/>Cloud Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/multifrontend/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/multifrontend/>Multi-Frontend</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/troubleshooting/>Troubleshooting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/>Config Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/_reference/ class=dd-item><div><a href=/docs/deployment/references/_reference/></a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/clients/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/clients/>Inspecting clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/vfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/vfs/>The VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/artifacts/>Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/hunting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/hunting/>Hunting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL Fundamentals</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/notebooks/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/>Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filenames</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/remote_uploads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/offline_triage/remote_uploads/>Remote Uploads</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/client_monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/client_monitoring/>Client Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/extending_vql/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/basic/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/basic/>Basic VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux Specific</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows Specific</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server Side</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/plugin/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/plugin/>Client Side</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/misc/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/misc/>Misc</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2024</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/cloud/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Cloud Deployment</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#before-you-begin>Before You Begin</a></li><li><a href=#provision-a-virtual-machine>Provision a Virtual Machine</a><ul><li><a href=#get-a-domain-name>Get a domain name</a></li><li><a href=#assign-an-ip>Assign an IP</a></li></ul></li><li><a href=#configure-velociraptor-to-use-lets-encrypt>Configure Velociraptor to use Let&rsquo;s Encrypt</a></li><li><a href=#configuring-google-oauth-sso>Configuring Google OAuth SSO</a><ul><li><a href=#oauth-identity-management>OAuth Identity management</a></li><li><a href=#registering-velociraptor-as-an-oauth-application>Registering Velociraptor as an OAuth application</a></li><li><a href=#generating-configuration>Generating configuration</a></li></ul></li><li><a href=#grant-access-to-velociraptor>Grant Access to Velociraptor</a><ul><li><a href=#deploying-to-the-server>Deploying to the server</a></li></ul></li><li><a href=#server-upgrades>Server upgrades</a><ul><li><a href=#reverting-versions>Reverting versions</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Cloud Deployment</h1><p>With cloud deployments you can create a proper SSL certificate using
+the free Let&rsquo;s Encrypt CA. This eliminates the bad certificate browser
+warning seen in the Self Signed Deployment method. Velociraptor uses
+the Let&rsquo;s Encrypt protocol to obtain and manage its own certificates
+(and automatically rotate them when they expire).</p><h2 id=before-you-begin>Before You Begin</h2><p>Note the following requirements:</p><ul><li>You must use a DNS name as Let&rsquo;s Encrypt will not issue a
+certificate for an IP address. The DNS name can be a Dynamic DNS
+name managed by Google Domains.</li><li>Ports 80 and 443 must publicly accessible. Let&rsquo;s Encrypt uses both
+ports to issue certificates.</li><li>You can optionally configure Authentication via SSO providers.</li></ul><h2 id=provision-a-virtual-machine>Provision a Virtual Machine</h2><p>Next we provision an Ubuntu VM from any cloud provider. The size of
+your VM depends on the number of endpoints in your environment. An 8
+or 16Gb VM should be sufficient for around 5-10k clients.
+Additionally you will need sufficient disk space to hold the data you
+collect. We recommend starting with a modest amount of storage and
+then back up data or increase the storage volume as needed.</p><div class="mynotices warning"><div heading=" Network filtering requirements "><p>Our virtual machine must be able to receive connections over both
+ports 80 and 443. Be sure to check inbound filtering Access Control
+Lists to ensure that access is allowed. When using SSL, both the
+client communication and the Admin GUI are served over the same ports
+to benefit from SSL transport encryption. The Let&rsquo;s Encrypt protocol
+requires Let&rsquo;s Encrypt&rsquo;s servers to connect to the VM on port 80 -
+however the Admin GUI will only be served over SSL.</p></div></div><h3 id=get-a-domain-name>Get a domain name</h3><p>An SSL certificate says that the DNS name is owned by the server that
+presents it. Since you cannot currently get a Let&rsquo;s Encrypt
+certificate for an IP address. you&rsquo;ll need buy a DNS domain from any
+provider. You&rsquo;ll then need to set up a DNS A Record to point at your
+Velociraptor server’s external IP. You can use a dynamic DNS client
+such as ddclient to update your DNS->IP mapping
+dynamically. Alternatively, Velociraptor directly supports updating
+Google Domains Dynamic DNS so this is the easiest option since it
+requires the least amount of configuration. In this example we use
+Google Domains to purchase our domain, but any other domain provider
+would work as well.</p><h3 id=assign-an-ip>Assign an IP</h3><p>You can deploy a Virtual Machine over a static IP address or allow the
+cloud provider to assign a dynamic IP address. If you use a dynamic IP
+address you must also configure Dynamic DNS. Google Domains allows you
+to assign a dynamic DNS entry for our domain by selecting a Dynamic
+DNS record:</p><p><figure id=091ea538a524a778ffc8e40e5dc75408><div data-featherlight=#091ea538a524a778ffc8e40e5dc75408 class=figure><img src=sso1.png alt="DynDNS Dashboard"></div><figcaption><a class=image-link href=sso1.png><i class="fa fa-download"></i></a>
+DynDNS Dashboard</figcaption></figure></p><p>After the dynamic address is created, you need to get the credentials
+for updating the IP address from the console. You will use these
+credentials during the interactive configuration process below.</p><h2 id=configure-velociraptor-to-use-lets-encrypt>Configure Velociraptor to use Let&rsquo;s Encrypt</h2><p>Let’s Encrypt allows Velociraptor to issue its own
+certificates. Selecting the Let&rsquo;s Encrypt option ensures:</p><ul><li>The server will fetch certificates automatically from Let&rsquo;s
+Encrypt&rsquo;s servers when first accessed by the browser.</li><li>Both the Frontend and GUI will be served over the standard SSL port
+(443).</li><li>The GUI is externally available, but protected over SSL.</li><li>Clients will connect to the public DNS name over SSL.</li></ul><p>Use the guided configuration wizard to select this operation mode:</p><pre><code class=language-text>$ ./output/velociraptor config generate -i
+?
+Welcome to the Velociraptor configuration generator
+---------------------------------------------------
+
+I will be creating a new deployment configuration for you. I will
+begin by identifying what type of deployment you need.
+
+  [Use arrows to move, space to select, type to filter]
+  Self Signed SSL
+&gt; Automatically provision certificates with Lets Encrypt
+</code></pre><div class="mynotices tip"><div heading=tip><p>You must have both ports 80 and 443 publicly accessible by allowing
+any inbound firewall rules! Letsencrypt uses both to issue
+certificates. If you forgot to open port 80, Letsencrypt will fail to
+issue the certificate and this might result in blocking the domain
+name from getting an SSL certificate for several days. If you find
+this happened, simply change the DynDNS name and start again.</p></div></div><p>The first time you connect to the Admin GUI or to the frontend, the server
+will obtain its own certificates from Let&rsquo;s Encrypt. You should see no SSL
+warnings in your browser.</p><h2 id=configuring-google-oauth-sso>Configuring Google OAuth SSO</h2><p>In the previous sections you set up Velociraptor&rsquo;s GUI over
+SSL. Next, you need to create users and assign them
+passwords manually. The trouble with user account management is that
+we cannot enforce 2-factor authentication, password policies,
+or any of the usual enterprise requirements for user account
+management. Users who have to remember too many passwords may be inclined to use an easily guessable password.</p><p>Most enterprise systems require an SSO mechanism to manage user
+accounts and passwords. Manual user account management simply does not
+scale.</p><p>Velociraptor supports a number of choices of authentication providers:</p><ol><li>Basic Authentication - this stores usernames and passwords in
+Velociraptor&rsquo;s own datastore.</li><li>Google, Azure or GitHub OAuth2 providers - these providers authenticate users via OAuth2.</li><li>OIDC - uses the Open ID Connect protocol to support many IAM providers (e.g. Okta)</li></ol><h3 id=oauth-identity-management>OAuth Identity management</h3><p>In the following sections, we demonstrate how Velociraptor can be configured to
+use Google&rsquo;s OAuth mechanism to verify a user&rsquo;s identity. This
+requires a user to authenticate to Google via their usual method -
+if their account requires 2 factor authentication, then users need to
+log in this way.</p><p>Once the user authenticates to Google, they are redirected back into
+the Velociraptor application with a token that allows the application
+to request information about the user (for example, the username or
+email address).</p><div class="mynotices note"><div heading=" What is OAuth2 used for? "><p>OAuth is an authentication protocol. This means Velociraptor can be
+pretty confident the user is who they claim they are. However, this does not
+automatically grant them access to the application. A Velociraptor
+administrator must still manually grant user access before a user can
+log in.</p></div></div><p>Before using Google to authenticate, you need to register your
+Velociraptor deployment as an OAuth App with Google.</p><h3 id=registering-velociraptor-as-an-oauth-application>Registering Velociraptor as an OAuth application</h3><p>Register Velociraptor as an OAuth app
+by accessing the Google cloud console at
+<a href=https://console.cloud.google.com>https://console.cloud.google.com</a>. You must set up a cloud
+account and create a cloud project even if you do not host
+your server on Google&rsquo;s Cloud Platform.</p><p>Your ultimate goal is to obtain OAuth credentials to give our
+Velociraptor app, there are a few things set up
+first. Navigate to <code>APIs and Services</code> in the GCP console and select
+<code>Credentials</code> and the <code>OAuth Consent Screen</code> tab.</p><p><figure id=9c8e77333d046d43b34218e805542bdc><div data-featherlight=#9c8e77333d046d43b34218e805542bdc class=figure><img src=sso11.png alt="Creating application credentials"></div><figcaption><a class=image-link href=sso11.png><i class="fa fa-download"></i></a>
+Creating application credentials</figcaption></figure></p><p>Further down you need to provide an authorized domain</p><p><figure id=3825e5676e990c7b3e1b943ffe4f3c54><div data-featherlight=#3825e5676e990c7b3e1b943ffe4f3c54 class=figure><img src=sso12.png alt="Authorizing domains"></div><figcaption><a class=image-link href=sso12.png><i class="fa fa-download"></i></a>
+Authorizing domains</figcaption></figure></p><p>In order to add an Authorized domain you need to <em>verify it</em>. Google&rsquo;s
+help pages explain it further:</p><div class="mynotices tip"><div heading=tip><p><strong>Authorized domains</strong>: To protect you and your users, Google
+restricts your OAuth 2.0 application to using Authorized
+Domains. If you have verified the domain with Google, you can use
+any Top Private Domain as an Authorized Domain.</p></div></div><p>In this example we assume that you purchased your domain with Google
+domains which makes this step easier since it is already verified.</p><p>We can go back to the cloud console and <code>Create Credentials/OAuth client ID</code>:</p><p><figure id=3dc0bd9997e760aead192b5445751a4a><div data-featherlight=#3dc0bd9997e760aead192b5445751a4a class=figure><img src=sso15.png alt="Creating OAuth2 client ID"></div><figcaption><a class=image-link href=sso15.png><i class="fa fa-download"></i></a>
+Creating OAuth2 client ID</figcaption></figure></p><p>Now select <code>Web App</code> and set the <code>Authorized redirect URIs</code> to
+<code>https://&lt;Your Domain Name>/auth/google/callback</code> -
+This is the URL that successful OAuth authentication will redirect
+to. Velociraptor accepts this redirect and uses it to log the user on.</p><p><figure id=26350079900961c7e05b20cad0cdffe1><div data-featherlight=#26350079900961c7e05b20cad0cdffe1 class=figure><img src=sso16.png alt="Specifying the redirect URL"></div><figcaption><a class=image-link href=sso16.png><i class="fa fa-download"></i></a>
+Specifying the redirect URL</figcaption></figure></p><p>If all goes well the Google cloud console will give us a client ID and
+a client secret.</p><h3 id=generating-configuration>Generating configuration</h3><p>To generate a self signed deployment, start by running the <code>config generate</code> command to invoke the configuration wizard</p><pre><code class=language-sh>velociraptor config generate -i
+</code></pre><p><figure id=23eb755506aa7402e417ebe01903534f><div data-featherlight=#23eb755506aa7402e417ebe01903534f class=figure><img src="config.png?classes=shadow" alt="Generating Cloud Deployment"></div><figcaption><a class=image-link href="config.png?classes=shadow"><i class="fa fa-download"></i></a>
+Generating Cloud Deployment</figcaption></figure></p><p>The configuration wizard asks a number of questions and creates a
+server and client configuration.</p><ul><li><strong>What OS will the server be deployed on?</strong> This choice will affect the
+defaults for various options. Production deployments are typically
+done on a Linux machine (but the configuration can be generated on
+Windows).</li><li><strong>Path to the datastore directory:</strong> Velociraptor uses flat files for
+all storage. This path is where Velociraptor will write the
+files. You should mount any network filesystems or storage devices
+on this path.</li><li><strong>The public DNS name of the Frontend:</strong> The clients will connect to the
+server using this DNS name so it should be publically accessible
+(Note this is a DNS name and not a URL).</li><li><strong>Google OAuth2 Client ID and Secret</strong> are obtained from above.</li><li><strong>GUI Username or email address to authorize:</strong> The initial set of
+administrator accounts can be stored in the configuration file. When
+Velociraptor starts it will automatically add these accounts as
+administrators. When using SSO, Velociraptor does not use any
+passwords so only the user names will be recorded.</li></ul><h2 id=grant-access-to-velociraptor>Grant Access to Velociraptor</h2><p>The OAuth flow ensures the user&rsquo;s identity is correct but does not
+give them permission to log into Velociraptor. Note that having an
+OAuth enabled application on the web allows anyone with a Google
+identity to authenticate to the application but the user is still
+required to be authorized explicitly. If a user is rejected, we can
+see the following in the Audit logs:</p><pre><code class=language-json>   {
+     &quot;level&quot;: &quot;error&quot;,
+     &quot;method&quot;: &quot;GET&quot;,
+     &quot;msg&quot;: &quot;User rejected by GUI&quot;,
+     &quot;remote&quot;: &quot;192.168.0.10:40570&quot;,
+     &quot;time&quot;: &quot;2018-12-21T18:17:47+10:00&quot;,
+     &quot;user&quot;: &quot;mike@velocidex.com&quot;
+   }
+</code></pre><p>In order to authorize the user we must explicitly add them using the
+Velociraptor Admin tool:</p><pre><code class=language-text>$ velociraptor --config ~/server.config.yaml user add mike@velocidex.com
+Authentication will occur via Google - therefore no password needs to be set.
+</code></pre><p>Note that this time, Velociraptor does not ask for a password at all,
+since authentication occurs using Google&rsquo;s SSO. If we hit refresh in
+the browser we should be able to see the Velociraptor application dashboard.</p><p>We can see that the logged in user is authenticated by Google, and we
+can also see the user&rsquo;s Google avatar at the top right for some more
+eye candy :-).</p><p><figure id=30988fdfecd8f495ffd344a38e8ec5f5><div data-featherlight=#30988fdfecd8f495ffd344a38e8ec5f5 class=figure><img src=dashboard.png alt="Velociraptor Dashboard"></div><figcaption><a class=image-link href=dashboard.png><i class="fa fa-download"></i></a>
+Velociraptor Dashboard</figcaption></figure></p><div class="mynotices note"><div heading=note><p>Velociraptor will retain its OAuth token for 24 hours. Each day users
+will need to re-grant OAuth credentials. Therefore revoking a user
+from the Google Admin console may take a full day to take effect. To
+remove access sooner you should simply remove all permissions from the
+user using <code>velociraptor user grant '{}'</code>.</p></div></div><h3 id=deploying-to-the-server>Deploying to the server</h3><p>Once a server configuration file is created, you need to create a server Debian package embedding the config file. The Debian package the Velociraptor executable, the server configuration file and relevant startup scripts.</p><p>Run the following command to create the server:</p><pre><code class=language-sh>velociraptor.exe --config server.config.yaml debian server --binary velociraptor-v0.6.0-linux-amd64
+</code></pre><div class="mynotices warning"><div heading=warning><p>Make sure the debian file is well protected. A compromise of the file will leak private key material enabling a MITM attack against Velociraptor.</p></div></div><p>You can check the installation using <code>service velociraptor_server status</code>.</p><pre><code class=language-bash>$ sudo dpkg -i velociraptor_0.3.0_server.deb
+Selecting previously unselected package velociraptor-server.
+(Reading database ... 384556 files and directories currently installed.)
+Preparing to unpack velociraptor_0.3.0_server.deb ...
+Unpacking velociraptor-server (0.3.0) ...
+Setting up velociraptor-server (0.3.0) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.service → /etc/systemd/system/velociraptor_server.service.
+
+$ sudo service velociraptor_server status
+● velociraptor_server.service - Velociraptor linux amd64
+   Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2019-07-07 08:49:24 AEST; 17s ago
+ Main PID: 2275 (velociraptor)
+    Tasks: 13 (limit: 4915)
+   Memory: 30.2M
+   CGroup: /system.slice/velociraptor_server.service
+           └─2275 /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend
+
+Jul 07 08:49:24 mic-Inspiron systemd[1]: Started Velociraptor linux amd64.
+</code></pre><div class="mynotices tip"><div heading=tip><p>If you prefer to use Windows for your day to day work, you can build the Debian package
+on your windows machine but you must specify the <code>--binary</code> flag to
+the <code>debian server</code> command with a path to the linux binary. You can
+obtain a copy of the linux binary from the Github releases page.</p></div></div><h2 id=server-upgrades>Server upgrades</h2><p>To upgrade the Velociraptor server to a new version, simply download
+the latest release binary from the <a href=https://github.com/Velocidex/velociraptor/releases>GitHub Release
+Page</a> and
+regenerate a new debian package as described above, but using the
+existing configuration file.</p><div class="mynotices note"><div heading=" Backing up your configuration file "><p>The configuration file contains cryptographic keys that allow clients
+and server to communicate. Each time the configuration is regenerated
+(e.g. using <code>velociraptor config generate</code>), new keys are created.</p><p>It is imperative to backup the configuration file somewhere safe
+(perhaps offline) and re-use the same file when upgrading to a new
+version of Velociraptor in order to preserve the key material and
+maintain client communication.</p></div></div><p>From time to time, the schema of the configuration file may evolve
+with newer versions. When a newer versions of Velociraptor encounters
+an older configuration file, it attempts to upgrade the configuration
+file to the latest version. This happens automatically and it is
+usually a seamless process.</p><p>During the debian package preparation the upgraded file is embedded
+into the server package so you will receive an upgraded configuration
+file installed to the <code>/etc/</code> directory. You can see the version that
+wrote the configuration file in the <code>version</code> part of the
+configuration file.</p><div class="mynotices tip"><div heading=" Upgrading servers "><p>If you wanted to completely change the way the server is configured by
+regenerating the config file (e.g. if you need to switch from self
+signed to autocert server) you may need to stand up a completely new
+server (with a different DNS name, certificates, keys etc).</p><p>You can still use the old server in order to push the new MSI to
+existing clients, but as the new MSI is installed, the new client
+config file overwrites the old one and the new velociraptor client
+will connect to the new server.</p><p>This method allows the orderly migration of Velociraptor clients from
+an old server to a new server by simply user remote upgrade.</p></div></div><h3 id=reverting-versions>Reverting versions</h3><p>It is generally ok to revert from later versions to earlier versions
+since the migration process is generally non destructive.</p><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1733484288></script><script src=/js/perfect-scrollbar.min.js?1733484288></script><script src=/js/perfect-scrollbar.jquery.min.js?1733484288></script><script src=/js/jquery.sticky.js?1733484288></script><script src=/js/featherlight.min.js?1733484288></script><script src=/js/highlight.min.js?1733484288></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1733484288></script><script src=/js/learn.js?1733484288></script><script src=/js/hugo-learn.js?1733484288></script></body></html>

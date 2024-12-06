@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sso on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/sso/</link><description>Recent content in Sso on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 26 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/sso/index.xml" rel="self" type="application/rss+xml"/><item><title>How can I configure Velociraptor for multiple SSO providers</title><link>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</link><pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</guid><description>&lt;h1 id="how-can-i-configure-velociraptor-for-multiple-sso-providers">How can I configure Velociraptor for multiple SSO providers&lt;/h1>
+&lt;p>Velociraptor can be configured to use a single SSO provider using the usual configuration building wizard (see &lt;a href="https://docs.velociraptor.app/docs/deployment/cloud/#configuring-google-oauth-sso">Here&lt;/a>), but the wizard does not offer to configure multiple providers.&lt;/p>
+&lt;p>Sometimes we want to have multiple providers so we can allow users from another organization to be able to log into Velociraptor. To do this we need to configure the SSO authenticator manually in the configuration file.&lt;/p>
+&lt;p>Simply run &lt;code>velociraptor config generate -i&lt;/code> and select the OAuth provider for the first provider. In the end your config file will have the following section where &lt;code>oauth_client_id&lt;/code> and &lt;code>oauth_client_secret&lt;/code> refer to the Google OAuth app you created:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+&lt;/code>&lt;/pre>
+&lt;p>To provide multiple authenticators, you will need to manually change to the &lt;code>multi&lt;/code> authenticator type:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: multi
+ sub_authenticators:
+ - type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+ - type: Github
+ oauth_client_id: 123456
+ oauth_client_secret: 76521376523
+ - type: oidc
+ oidc_issuer: https://accounts.google.com
+ oidc_name: Rapid7
+ avatar: https://example.com/avatar.png
+ oauth_client_id: XXXXX
+ oauth_client_secret: AAAAA
+&lt;/code>&lt;/pre>
+&lt;p>Note that you can have multiple &lt;code>OIDC&lt;/code> authenticators and each can have a separate name and an icon associated with it (e.g. if multiple organizations use separate Okta logins).&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="47a0513752ad43ed9f3f48bd62462858">
+ &lt;div data-featherlight="#47a0513752ad43ed9f3f48bd62462858" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png" alt="Logging in with multiple providers">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Logging in with multiple providers
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="granting-a-user-a-role">Granting a user a role.&lt;/h2>
+&lt;p>Velociraptor will trust any of the configured authenticators, to identify the user and based on the username, grant the user the appropriate roles on the Velociraptor server. You will need to grant the user a role either through the command line:&lt;/p>
+&lt;pre>&lt;code>velociraptor user add --role administrator mike@gmail.comm
+&lt;/code>&lt;/pre>
+&lt;p>Or via a notebook cell:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT user_create(user=&amp;quot;mike@gmail.com&amp;quot;, role=&amp;quot;administrator&amp;quot;)
+FROM scope()
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Trusting multiple providers ">&lt;p>Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.&lt;/p>
+&lt;p>In simple terms, if a user has username &amp;ldquo;mike&amp;rdquo; on &lt;code>OIDC&lt;/code> provider 1 and another user can get say a Github account for the user &amp;ldquo;mike&amp;rdquo;, then the second user can impersonate the first user by logging in with the second provider.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item></channel></rss>
