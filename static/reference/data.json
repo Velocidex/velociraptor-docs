@@ -191,7 +191,6 @@
         "name": "array",
         "description": "Create an array.",
         "type": "Function",
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -308,6 +307,7 @@
                 "description": "Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
         },
@@ -342,7 +342,6 @@
                 "description": "How long to wait for destructors to run (default 60 seconds)."
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -363,7 +362,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -423,7 +422,9 @@
         "description": "Access the file using the best accessor possible.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -440,6 +441,7 @@
                 "required": true
             }
         ],
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -470,6 +472,7 @@
                 "description": "If provided only restore providers matching this regex."
             }
         ],
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -490,7 +493,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -511,7 +514,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -532,6 +535,7 @@
                 "required": true
             }
         ],
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -562,7 +566,7 @@
                 "description": "Type of path (e.g. windows, linux)"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -593,7 +597,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -607,7 +610,9 @@
         "description": "Access the content of bzip2 files.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -640,7 +645,6 @@
                 "description": "The latest age of the cache."
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -708,11 +712,14 @@
                 "description": "A path to a raw USN file to carve. If not provided we carve the image file or the device."
             }
         ],
+        "category": "parsers",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -740,7 +747,7 @@
                 "description": "If specified we run all queries asynchronously and combine the output."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -769,7 +776,6 @@
                 "required": true
             }
         ],
-        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -817,6 +823,7 @@
                 "repeated": true
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "SERVER_ADMIN"
         },
@@ -1080,7 +1087,6 @@
                 "description": "A Valid remapping configuration in YAML or JSON format."
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE"
         },
@@ -1178,7 +1184,9 @@
         "description": "Open a collector zip file as if it was a directory - automatically\nexpand sparse files.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -1188,7 +1196,9 @@
         "description": "Open a collector zip file as if it was a directory.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -1217,7 +1227,7 @@
                 "repeated": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1228,9 +1238,8 @@
     },
     {
         "name": "combine",
-        "description": "Combine the output of several queries into the same result set.A convenience plugin acting like chain(async=TRUE).",
+        "description": "Combine the output of several queries into the same result set.",
         "type": "Plugin",
-        "category": "event",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1256,7 +1265,7 @@
                 "description": "Use bash rules (Uses Windows rules by default)."
             }
         ],
-        "category": "plugin",
+        "category": "parsers",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1282,7 +1291,7 @@
                 "description": "A path to write the output - default is the path with a .gz extension"
             }
         ],
-        "category": "server",
+        "category": "encode",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE,FILESYSTEM_READ"
         },
@@ -1296,9 +1305,9 @@
     },
     {
         "name": "connections",
-        "description": "List all active connections",
+        "description": "List all active connections\n",
         "type": "Plugin",
-        "category": "plugin",
+        "category": "linux",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -1344,7 +1353,6 @@
                 "description": "If true we ensure the destination directories exist"
             }
         ],
-        "category": "basic",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE,FILESYSTEM_READ"
         },
@@ -1367,7 +1375,7 @@
                 "description": "Not used anymore"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1512,6 +1520,7 @@
                 "description": "The name of the export. If not set this will be named according to the notebook id and timestamp"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "PREPARE_RESULTS"
         },
@@ -1541,7 +1550,7 @@
                 "required": true
             }
         ],
-        "category": "plugin",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1555,7 +1564,9 @@
         "description": "Makes a string appears as an in memory file.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -1593,7 +1604,7 @@
     },
     {
         "name": "delete_events",
-        "description": "Delete all the files that make up a flow.",
+        "description": "Delete events from a flow.",
         "type": "Plugin",
         "args": [
             {
@@ -1624,6 +1635,7 @@
                 "description": "If not specified, just show what files will be removed"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "DELETE_RESULTS"
         },
@@ -1655,6 +1667,7 @@
                 "type": "bool"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "DELETE_RESULTS"
         },
@@ -1670,7 +1683,7 @@
         "name": "dict",
         "description": "Construct a dict from arbitrary keyword args.",
         "type": "Function",
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1734,7 +1747,6 @@
                 "description": "Type of path (e.g. windows, linux)"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1744,15 +1756,10 @@
         ]
     },
     {
-        "name": "dns",
-        "description": "Monitor dns queries.",
-        "type": "Plugin",
-        "category": "windows"
-    },
-    {
         "name": "ebpf_events",
         "description": "Dumps information about potential ebpf_events that can be used by the\n`watch_ebpf` plugin.",
         "type": "Plugin",
+        "category": "linux",
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -1887,7 +1894,6 @@
                 "description": "Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'"
             }
         ],
-        "category": "server",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -1915,7 +1921,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1935,6 +1941,7 @@
                 "required": true
             }
         ],
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1954,7 +1961,6 @@
                 "description": "The items to enumerate"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2002,7 +2008,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -2026,7 +2031,6 @@
                 "repeated": true
             }
         ],
-        "category": "plugin",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2046,6 +2050,7 @@
                 "description": "The count of sessions to retrieve (default 64) "
             }
         ],
+        "category": "windows",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -2078,7 +2083,9 @@
         "description": "Allow reading an EWF file.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -2116,7 +2123,7 @@
                 "description": "If specified we change to this working directory first."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "EXECVE"
         },
@@ -2140,7 +2147,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -2166,7 +2173,9 @@
         "description": "Access the FAT filesystem inside an image by parsing FAT.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -2277,7 +2286,9 @@
         "description": "Access files using the operating system's API.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -2287,6 +2298,7 @@
         "description": "Access the filesystem using the OS APIs.",
         "type": "Accessor",
         "platforms": [
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -2296,7 +2308,9 @@
         "description": "Access files using the operating system's API.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -2350,7 +2364,6 @@
         "name": "filesystems",
         "description": "Enumerates mounted filesystems.\n",
         "type": "Plugin",
-        "category": "plugin",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2382,7 +2395,7 @@
                 "description": "A VQL lambda to use to filter elements"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2402,7 +2415,7 @@
                 "required": true
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2429,6 +2442,7 @@
                 "required": true
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "READ_RESULTS"
         },
@@ -2530,13 +2544,8 @@
                 "description": "Run this query over the item."
             }
         ],
-        "category": "plugin",
         "platforms": [
-            "darwin_amd64_cgo",
-            "darwin_arm64_cgo",
-            "linux_amd64_cgo",
-            "windows_386_cgo",
-            "windows_amd64_cgo"
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -2571,7 +2580,7 @@
                 "description": "If set we only extract the column from row."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2597,7 +2606,7 @@
                 "description": "An array of elements to apply into the format string."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2611,7 +2620,10 @@
         "description": "Provide access to the server's filestore and datastore.",
         "type": "Accessor",
         "platforms": [
-            "linux_amd64_cgo"
+            "darwin_amd64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
         ],
         "category": "accessors"
     },
@@ -2620,7 +2632,10 @@
         "description": "Provide access to the server's filestore and datastore.",
         "type": "Accessor",
         "platforms": [
-            "linux_amd64_cgo"
+            "darwin_amd64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
         ],
         "category": "accessors"
     },
@@ -2660,7 +2675,6 @@
                 "required": true
             }
         ],
-        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2701,7 +2715,6 @@
                 "description": "Wait for this many listeners to connect before starting the query"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2729,7 +2742,6 @@
                 "required": true
             }
         ],
-        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2760,7 +2772,7 @@
                 "type": "Any"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2800,6 +2812,7 @@
                 "type": "string"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
         },
@@ -2831,7 +2844,6 @@
         "name": "getpid",
         "description": "Returns the current pid of the Velociraptor process.",
         "type": "Function",
-        "category": "basic",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -2882,7 +2894,7 @@
                 "description": "If set we do not follow links to other filesystems."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -2893,37 +2905,6 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
-    },
-    {
-        "name": "grep",
-        "description": "Search a file for keywords.",
-        "type": "Function",
-        "args": [
-            {
-                "name": "path",
-                "type": "string",
-                "description": "path to open.",
-                "required": true
-            },
-            {
-                "name": "accessor",
-                "type": "string",
-                "description": "An accessor to use."
-            },
-            {
-                "name": "keywords",
-                "type": "string",
-                "description": "Keywords to search for.",
-                "repeated": true,
-                "required": true
-            },
-            {
-                "name": "context",
-                "type": "int",
-                "description": "Extract this many bytes as context around hits."
-            }
-        ],
-        "category": "plugin"
     },
     {
         "name": "grok",
@@ -2994,6 +2975,7 @@
                 "required": true
             }
         ],
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3007,7 +2989,9 @@
         "description": "Access the content of gzip files.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -3061,7 +3045,7 @@
                 "repeated": true
             }
         ],
-        "category": "plugin",
+        "category": "encode",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -3195,7 +3179,7 @@
                 "repeated": true
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -3233,7 +3217,7 @@
                 "description": "Format integer with comma (e.g. 1,230)"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3393,6 +3377,7 @@
                 "type": "bool"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "SERVER_ADMIN"
         },
@@ -3454,11 +3439,15 @@
                 "description": "Hunt Id to look up or a flow id created by that hunt (e.g. F.CRUU3KIE5D73G.H )."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "READ_RESULTS"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "darwin_amd64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -3550,6 +3539,7 @@
                 "repeated": true
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "START_HUNT"
         },
@@ -3603,7 +3593,7 @@
                 "type": "types.LazyAny"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3632,7 +3622,7 @@
                 "type": "StoredQuery"
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3653,6 +3643,7 @@
                 "required": true
             }
         ],
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3709,7 +3700,7 @@
         "name": "info",
         "description": "Get information about the running host.",
         "type": "Plugin",
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -3732,7 +3723,7 @@
                 "description": "The integer to round"
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3877,7 +3868,6 @@
                 "description": "A network order IPv4 address (as big endian)."
             }
         ],
-        "category": "plugin",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3896,7 +3886,7 @@
                 "type": "Any"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3916,7 +3906,7 @@
                 "description": "The item to enumerate."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3943,7 +3933,7 @@
                 "description": "The separator. Defaults to an empty string if not explicitly set"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4026,7 +4016,7 @@
                 "description": "If set use this key to cache the JS VM."
             }
         ],
-        "category": "plugin",
+        "category": "experimental",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4058,7 +4048,7 @@
                 "description": "If set use this key to cache the JS VM."
             }
         ],
-        "category": "plugin",
+        "category": "experimental",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4069,7 +4059,7 @@
     },
     {
         "name": "killkillkill",
-        "description": "Kills the client and forces a restart - this is very aggressive!",
+        "description": "Sends a kill message to the client and forces a restart - this is very aggressive!\n",
         "type": "Function",
         "args": [
             {
@@ -4078,7 +4068,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "server",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -4131,7 +4121,9 @@
         "description": "Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion.",
         "type": "Function",
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -4139,6 +4131,7 @@
         "description": "Access the NTFS filesystem by parsing NTFS structures.",
         "type": "Accessor",
         "platforms": [
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -4155,7 +4148,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4180,6 +4173,7 @@
                 "description": "The accessor to use."
             }
         ],
+        "category": "parsers",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -4199,7 +4193,7 @@
             {
                 "name": "type",
                 "type": "string",
-                "description": "The type of link. Currently one of collection, hunt, artifact, event"
+                "description": "The type of link. Currently one of collection, hunt, artifact, event, debug"
             },
             {
                 "name": "client_id",
@@ -4245,8 +4239,11 @@
                 "description": "If set the link accesses a different org. Otherwise we accesses the current org."
             }
         ],
+        "category": "server",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -4278,7 +4275,7 @@
                 "description": "Level to log at (DEFAULT, WARN, ERROR, INFO, DEBUG)."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4297,6 +4294,7 @@
                 "type": "string"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "READ_RESULTS"
         },
@@ -4425,7 +4423,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4465,6 +4463,7 @@
                 "required": true
             }
         ],
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4501,11 +4500,11 @@
                 "description": "Additional magic to load"
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
@@ -4683,7 +4682,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4697,7 +4695,9 @@
         "description": "Access files bundled inside the Velociraptor binary itself.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -4730,7 +4730,7 @@
                 "description": "The name of this cache."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4744,7 +4744,9 @@
         "description": "The `mft` accessor is used to access arbitrary MFT streams as\nfiles.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -4760,7 +4762,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4796,7 +4797,7 @@
                 "required": true
             }
         ],
-        "category": "utils",
+        "category": "developer",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4831,7 +4832,7 @@
                 "description": "This call will clear previous mocks for this plugin"
             }
         ],
-        "category": "utils",
+        "category": "developer",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4844,6 +4845,7 @@
         "name": "mock_clear",
         "description": "Resets all mocks.",
         "type": "Function",
+        "category": "developer",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4878,6 +4880,7 @@
                 "description": "This call will clear previous mocks for this plugin"
             }
         ],
+        "category": "developer",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4995,6 +4998,7 @@
                 "description": "Stop end events reach this time (event sources)."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "READ_RESULTS"
         },
@@ -5011,7 +5015,9 @@
         "description": "Parse a MSCFB file as an archive.\n",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -5053,7 +5059,6 @@
                 "description": "Seconds to wait before retry - default 0 - do not retry"
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -5069,11 +5074,12 @@
         "name": "netstat",
         "description": "Collect network information.",
         "type": "Plugin",
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
@@ -5118,6 +5124,7 @@
                 "description": "An environment to initialize the notebook with"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -5178,6 +5185,7 @@
                 "description": "Set the type of the export (html or zip)."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "PREPARE_RESULTS"
         },
@@ -5206,6 +5214,7 @@
                 "description": "Include more information"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "READ_RESULTS"
         },
@@ -5255,11 +5264,14 @@
                 "description": "The name of the attachment"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -5296,6 +5308,7 @@
                 "description": "If this is set, we do not calculate the cell but set this as the rendered output."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -5311,7 +5324,7 @@
         "name": "now",
         "description": "Returns the current time in seconds since epoch.",
         "type": "Function",
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -5325,6 +5338,7 @@
         "description": "Access the NTFS filesystem by parsing NTFS structures.",
         "type": "Accessor",
         "platforms": [
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -5334,6 +5348,7 @@
         "description": "Access the NTFS filesystem by considering all VSS.",
         "type": "Accessor",
         "platforms": [
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -5343,7 +5358,9 @@
         "description": "Allow reading another file from a specific offset.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -5387,6 +5404,7 @@
         "name": "org",
         "description": "Return the details of the current org.",
         "type": "Function",
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -5412,6 +5430,7 @@
                 "description": "An ID for the new org (if not set use a random ID)."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "ORG_ADMIN"
         },
@@ -5440,6 +5459,7 @@
                 "description": "If not specified, just show what org will be removed"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "ORG_ADMIN"
         },
@@ -5455,6 +5475,7 @@
         "name": "orgs",
         "description": "Retrieve the list of orgs on this server.",
         "type": "Plugin",
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -5467,6 +5488,7 @@
         "name": "panic",
         "description": "Crash the program with a panic!",
         "type": "Plugin",
+        "category": "developer",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -5842,6 +5864,7 @@
                 "description": "Only parse events older than this time (default all times)."
             }
         ],
+        "category": "parsers",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -6488,6 +6511,7 @@
                 "required": true
             }
         ],
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6518,7 +6542,6 @@
                 "description": "A merge patch to apply"
             }
         ],
-        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6550,7 +6573,6 @@
                 "description": "Type of path (e.g. 'windows')"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6576,7 +6598,7 @@
                 "description": "Type of path (e.g. 'windows')"
             }
         ],
-        "category": "basic",
+        "category": "parsers",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6622,7 +6644,7 @@
                 "description": "The accessor to use to parse the path with"
             }
         ],
-        "category": "plugin",
+        "category": "parsers",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6670,7 +6692,9 @@
         "description": "Read from a VQL pipe.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -6696,7 +6720,6 @@
                 "description": "The separator that will be used to split each read (default: no separator will be used)"
             }
         ],
-        "category": "plugin",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6732,6 +6755,7 @@
                 "description": "Encryption scheme to use. Defaults to RSA. Currently supported: PGP,RSA"
             }
         ],
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6767,6 +6791,7 @@
                 "description": "Encryption scheme to use. Defaults to X509. Currently supported: PGP,X509"
             }
         ],
+        "category": "encode",
         "metadata": {
             "permissions": "SERVER_ADMIN"
         },
@@ -6795,7 +6820,7 @@
                 "description": "The accessor to use."
             }
         ],
-        "category": "parsers",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -6936,6 +6961,7 @@
             "permissions": "MACHINE_STATE"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
@@ -6947,6 +6973,7 @@
         "description": "Access process memory like a file.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
             "windows_amd64_cgo"
         ],
@@ -7056,6 +7083,7 @@
                 "required": true
             }
         ],
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7068,6 +7096,7 @@
         "name": "process_tracker_pslist",
         "description": "List all processes from the process tracker.",
         "type": "Plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7183,7 +7212,7 @@
                 "description": "The type of profile (this is a regex of debug output types that will be shown)."
             }
         ],
-        "category": "plugin",
+        "category": "developer",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -7206,6 +7235,7 @@
                 "description": "Emit information in verbose form."
             }
         ],
+        "category": "developer",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -7221,6 +7251,7 @@
         "name": "profile_memory",
         "description": "Enumerates all in use memory within the runtime.",
         "type": "Plugin",
+        "category": "developer",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -7266,7 +7297,7 @@
                 "description": "A pid to list. If this is provided we are able to operate much faster by only opening a single process."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -7277,19 +7308,6 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
-    },
-    {
-        "name": "query",
-        "description": "Launch a subquery and materialize it into a list of rows.",
-        "type": "Function",
-        "args": [
-            {
-                "name": "vql",
-                "type": "StoredQuery",
-                "required": true
-            }
-        ],
-        "category": "basic"
     },
     {
         "name": "query",
@@ -7349,6 +7367,7 @@
                 "description": "If specified we inherit the scope instead of building a new one."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "IMPERSONATION"
         },
@@ -7371,7 +7390,6 @@
                 "description": "Selects a random number up to this range."
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7402,7 +7420,7 @@
                 "description": "Step (default 1)"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7416,7 +7434,9 @@
         "description": "Reconstruct sparse files from idx and base",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7439,7 +7459,6 @@
                 "required": true
             }
         ],
-        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7453,7 +7472,9 @@
         "description": "Access the Ext4 filesystem inside an image by parsing the image.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7463,7 +7484,9 @@
         "description": "Access the filesystem using the OS API.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7473,7 +7496,9 @@
         "description": "Access the NTFS filesystem inside an image by parsing NTFS.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7483,7 +7508,9 @@
         "description": "Access keys and values by parsing a raw registry hive.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7543,7 +7570,7 @@
                 "description": "An accessor to use."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -7583,7 +7610,7 @@
                 "description": "An accessor to use."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -7631,6 +7658,7 @@
         "description": "Access the registry like a filesystem using the OS APIs.",
         "type": "Accessor",
         "platforms": [
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7647,7 +7675,7 @@
                 "required": true
             }
         ],
-        "category": "plugin",
+        "category": "windows",
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7665,7 +7693,7 @@
                 "required": true
             }
         ],
-        "category": "plugin",
+        "category": "windows",
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7700,7 +7728,7 @@
                 "description": "Set to create missing intermediate keys"
             }
         ],
-        "category": "plugin",
+        "category": "windows",
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7766,7 +7794,7 @@
                 "description": "A key for caching"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7780,6 +7808,7 @@
         "description": "Access the registry like a filesystem using the OS APIs.",
         "type": "Accessor",
         "platforms": [
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -7829,7 +7858,7 @@
                 "description": "Separator to use (default native)"
             }
         ],
-        "category": "basic",
+        "category": "parsers",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -7913,6 +7942,7 @@
                 "required": true
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -7936,7 +7966,6 @@
                 "required": true
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE"
         },
@@ -8011,7 +8040,7 @@
                 "type": "string"
             }
         ],
-        "category": "parsers",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8025,7 +8054,9 @@
         "description": "Allows access to S3 buckets.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -8048,7 +8079,6 @@
                 "required": true
             }
         ],
-        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8062,7 +8092,9 @@
         "description": "Present the content of a scope variable as a file.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -8071,7 +8103,7 @@
         "name": "scope",
         "description": "return the scope.",
         "type": "Function",
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8084,7 +8116,7 @@
         "name": "scope",
         "description": "The scope plugin returns the current scope as a single row.",
         "type": "Plugin",
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8111,7 +8143,7 @@
                 "required": true
             }
         ],
-        "category": "event",
+        "category": "server",
         "metadata": {
             "permissions": "SERVER_ADMIN,PUBLISH"
         },
@@ -8166,7 +8198,6 @@
                 "description": "Encoding format (csv,json,yaml,hex,base64)"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8179,6 +8210,7 @@
         "name": "server_frontend_cert",
         "description": "Get Server Frontend Certificate",
         "type": "Function",
+        "category": "server",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -8249,7 +8281,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8345,6 +8377,7 @@
                 "description": "If specified we use this callback to determine a details column if the sigma rule does not specify it."
             }
         ],
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8385,7 +8418,9 @@
             }
         ],
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -8405,7 +8440,6 @@
                 "description": "The number of ms to sleep"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8438,7 +8472,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8452,7 +8485,9 @@
         "description": "Access smb shares (e.g. Windows shares).",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -8551,7 +8586,9 @@
         "description": "Allows reading another file by overlaying a sparse map on top of\nit.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -8578,7 +8615,7 @@
                 "description": "The separator as string that will be used to split"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8732,7 +8769,6 @@
                 "description": "Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'"
             }
         ],
-        "category": "server",
         "metadata": {
             "permissions": "COLLECT_SERVER"
         },
@@ -8780,7 +8816,6 @@
                 "type": "Any"
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -8861,7 +8896,9 @@
         "description": "Access a remote system's filesystem via `SSH/SFTP`.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -8914,6 +8951,7 @@
                 "description": "An accessor to use."
             }
         ],
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -8943,7 +8981,6 @@
                 "description": "An accessor to use."
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -8967,7 +9004,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -8998,7 +9035,6 @@
                 "description": "The suffix to strip"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9029,7 +9065,7 @@
                 "description": "End index of substring"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9049,7 +9085,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9062,7 +9097,7 @@
         "name": "switch",
         "description": "Conditional execution of multiple queries in order",
         "type": "Plugin",
-        "category": "plugin",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9076,6 +9111,7 @@
         "name": "sysinfo",
         "description": "Collect system information on Linux clients",
         "type": "Function",
+        "category": "linux",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -9094,7 +9130,7 @@
                 "description": "If set we delay removal as much as possible."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE"
         },
@@ -9133,7 +9169,7 @@
                 "description": "If set we delay removal as much as possible."
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE"
         },
@@ -9157,6 +9193,7 @@
                 "required": true
             }
         ],
+        "category": "windows",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -9289,11 +9326,14 @@
                 "description": "Name/Id of child timeline to delete. If not specified deletes the entire timeline"
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "NOTEBOOK_EDITOR"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -9308,11 +9348,14 @@
                 "description": "The notebook ID the timeline is stored in."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "READ_RESULTS"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -9350,7 +9393,7 @@
                 "description": "A format specifier as per the Golang time.Parse"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9378,7 +9421,9 @@
             }
         ],
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -9399,6 +9444,7 @@
                 "description": "The accessor to use"
             }
         ],
+        "category": "encode",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -9420,7 +9466,7 @@
                 "type": "Any"
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9454,6 +9500,7 @@
         "description": "Upload a trace file.",
         "type": "Function",
         "version": 1,
+        "category": "developer",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9467,8 +9514,12 @@
         "description": "Print the underlying Go type of the variable.",
         "type": "Function",
         "platforms": [
-            "linux_amd64_cgo"
-        ]
+            "darwin_amd64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
+        ],
+        "free_form_args": true
     },
     {
         "name": "unhex",
@@ -9481,7 +9532,7 @@
                 "description": "Hex string to decode"
             }
         ],
-        "category": "basic",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9523,7 +9574,7 @@
                 "description": "The type of file (default autodetected from file extension - zip or tgz or tar.gz)."
             }
         ],
-        "category": "basic",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE,FILESYSTEM_READ"
         },
@@ -9547,7 +9598,6 @@
                 "required": true
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9598,7 +9648,7 @@
                 "description": "Birth time to record"
             }
         ],
-        "category": "plugin",
+        "category": "popular",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -9609,31 +9659,6 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
-    },
-    {
-        "name": "upload",
-        "description": "Upload files to the server.",
-        "type": "Plugin",
-        "args": [
-            {
-                "name": "files",
-                "type": "string",
-                "description": "A list of files to upload",
-                "repeated": true,
-                "required": true
-            },
-            {
-                "name": "accessor",
-                "type": "string",
-                "description": "The accessor to use"
-            },
-            {
-                "name": "mtime",
-                "type": "Any",
-                "description": "Modified time to record"
-            }
-        ],
-        "category": "plugin"
     },
     {
         "name": "upload_azure",
@@ -9774,7 +9799,6 @@
                 "required": true
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -9865,7 +9889,6 @@
                 "description": "Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'"
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -9927,7 +9950,6 @@
                 "description": "Host key to verify. Blank to disable"
             }
         ],
-        "category": "basic",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -10041,7 +10063,6 @@
                 "description": "If specified, set a HTTP User-Agent."
             }
         ],
-        "category": "basic",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -10127,7 +10148,6 @@
                 "description": "A url to parse"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10153,6 +10173,7 @@
                 "description": "The org under which we query the user's ACL."
             }
         ],
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10261,6 +10282,7 @@
                 "description": "A dict of permissions to set (e.g. as obtained from the gui_users() function)."
             }
         ],
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10311,8 +10333,11 @@
                 "description": "Set the user's default password for Zip Exports."
             }
         ],
+        "category": "server",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -10338,7 +10363,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10359,7 +10384,7 @@
                 "required": true
             }
         ],
-        "category": "basic",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10372,7 +10397,6 @@
         "name": "uuid",
         "description": "Generate a UUID.",
         "type": "Function",
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10395,6 +10419,7 @@
         ],
         "category": "windows",
         "platforms": [
+            "darwin_amd64_cgo",
             "darwin_arm64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -10414,7 +10439,6 @@
                 "type": "string"
             }
         ],
-        "category": "basic",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10428,7 +10452,9 @@
         "description": "Access client's VFS filesystem on the server.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -10461,6 +10487,7 @@
                 "description": "Depth of directory to list (default 0)."
             }
         ],
+        "category": "server",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -10477,7 +10504,9 @@
         "description": "Allow reading a VHDX file.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -10487,7 +10516,10 @@
         "description": "Allow reading a VMDK file.",
         "type": "Accessor",
         "platforms": [
-            "linux_amd64_cgo"
+            "darwin_amd64_cgo",
+            "linux_amd64_cgo",
+            "windows_386_cgo",
+            "windows_amd64_cgo"
         ],
         "category": "accessors"
     },
@@ -10588,6 +10620,7 @@
                 "description": "Include process environment variables."
             }
         ],
+        "category": "linux",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -10721,6 +10754,7 @@
                 "description": "Emit raw events (not parsed)."
             }
         ],
+        "category": "event",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -10755,6 +10789,7 @@
                 "description": "Maximum size of line buffer."
             }
         ],
+        "category": "event",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -10850,7 +10885,7 @@
         "name": "whoami",
         "description": "Returns the username that is running the query.",
         "type": "Function",
-        "category": "plugin",
+        "category": "server",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10908,6 +10943,7 @@
                 "description": "When writing a memory image use this compression (default none) can be none, s2, snappy, gzip."
             }
         ],
+        "category": "windows",
         "metadata": {
             "permissions": "MACHINE_STATE"
         },
@@ -11041,7 +11077,6 @@
                 "required": true
             }
         ],
-        "category": "plugin",
         "metadata": {
             "permissions": "FILESYSTEM_WRITE"
         },
@@ -11115,6 +11150,7 @@
                 "description": "File accessor"
             }
         ],
+        "category": "experimental",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
@@ -11141,7 +11177,7 @@
                 "required": true
             }
         ],
-        "category": "parsers",
+        "category": "encode",
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11213,10 +11249,12 @@
                 "description": "The Yara variables to use."
             }
         ],
+        "category": "parsers",
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
+            "darwin_amd64_cgo",
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
@@ -11240,9 +11278,12 @@
                 "description": "Remove metadata to make rules smaller."
             }
         ],
+        "category": "parsers",
         "platforms": [
+            "darwin_amd64_cgo",
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -11251,7 +11292,9 @@
         "description": "Open a zip file as if it was a directory.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"
@@ -11261,7 +11304,9 @@
         "description": "Open a zip file as if it was a directory.",
         "type": "Accessor",
         "platforms": [
+            "darwin_amd64_cgo",
             "linux_amd64_cgo",
+            "windows_386_cgo",
             "windows_amd64_cgo"
         ],
         "category": "accessors"

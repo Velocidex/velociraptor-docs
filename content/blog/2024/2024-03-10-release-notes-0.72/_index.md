@@ -522,8 +522,8 @@ Velociraptor maintains some critical metadata in various files. In
 this release we implemented an automated backup and restore
 framework. This framework is able to backup some critical parts of the
 server using the VQL plugins [backup()]({{% ref
-"/vql_reference/misc/backup/" %}}) and [backup_restore()]({{% ref
-"/vql_reference/misc/backup_restore/" %}}), as well as periodically
+"/vql_reference/server/backup/" %}}) and [backup_restore()]({{% ref
+"/vql_reference/server/backup_restore/" %}}), as well as periodically
 (by default daily).
 
 * Backup all users and ACLs

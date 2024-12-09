@@ -307,7 +307,7 @@ offline collector.
 
 The sftp uploading functionality is actually implemented by the
 `upload_sftp()` plugin [documented here]({{< ref
-"/vql_reference/basic/#upload_sftp" >}}). This means that you can use
+"/vql_reference/other/upload_sftp" >}}). This means that you can use
 this functionality in any VQL query at all - either on the client side
 or on the server side.
 

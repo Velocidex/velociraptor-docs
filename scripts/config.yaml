@@ -90,8 +90,8 @@ content/docs/artifacts/server/_index.md:
 
 
 content/docs/artifacts/misc/_index.md:
-  title: Miscelaneous Artifacts
-  linktitle: Miscelaneous
+  title: Miscellaneous Artifacts
+  linktitle: Miscellaneous
   description: Various Artifacts which do not fit into other categories.
   toc: true
   prefix:
