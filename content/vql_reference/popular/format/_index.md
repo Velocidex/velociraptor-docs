@@ -60,7 +60,7 @@ returns:\
 
 **2. Indexed argument interpolation**
 
-Here the arguments are subtituted according to their positional index number
+Here the arguments are substituted according to their positional index number
 (1-indexed).
 
 ```vql
@@ -70,7 +70,7 @@ SELECT format(format='%[2]v %[1]v, or %[3]v %[2]v %[1]v.',
 returns:\
 `to be, or not to be.`
 
-Note that the same agument can be used more than once.
+Note that the same argument can be used more than once.
 
 **3. Timestamp formatting**
 
