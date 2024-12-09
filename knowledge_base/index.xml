@@ -1,0 +1,1852 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Knowledge Base on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/knowledge_base/</link><description>Recent content in Knowledge Base on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 06 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/knowledge_base/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I get a list of hunts across multiple organizations?</title><link>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</link><pubDate>Fri, 06 Dec 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</guid><description>&lt;h1 id="how-do-i-get-a-list-of-hunts-across-multiple-organizations">How do I get a list of hunts across multiple organizations?&lt;/h1>
+&lt;p>Are you looking for a way to generate user metrics across the entire server (like Hunts run per user)?&lt;/p>
+&lt;p>Orgs are separated out so when you run a query you are running that query within the context of the org. Normally the hunts scheduled in an organization can be accessed using the &lt;a href="https://docs.velociraptor.app/vql_reference/server/hunts/">hunts()&lt;/a> plugin, but that normally acts within a single Org.&lt;/p>
+&lt;p>To run a query in another org, you can switch org contexts using the &lt;a href="https://docs.velociraptor.app/vql_reference/misc/query/">query()&lt;/a> plugin.&lt;/p>
+&lt;p>So for example to see all hunts in all orgs:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM foreach(
+ row={
+ SELECT OrgId FROM orgs()
+ },
+ query={
+ SELECT * FROM query(query={
+ SELECT * FROM hunts()
+ }, org_id=OrgId)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>This query iterates over all the orgs, then runs the &lt;code>SELECT * FROM hunts()&lt;/code> query within the org context.&lt;/p>
+&lt;p>You can simplify the query using LET stored queries:&lt;/p>
+&lt;pre>&lt;code class="language-sql">LET MyQuery = SELECT * FROM hunts()
+LET AllOrgs = SELECT OrgId FROM orgs()
+
+SELECT * FROM foreach(row=AllOrgs,
+ query={
+ SELECT * FROM query(query=MyQuery, org_id=OrgId)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>Of course your user account must have access to the orgs. Each org has a separate ACL for each user, so your user needs to have at least the &lt;code>READ_RESULTS&lt;/code> permission to be able to see the org.&lt;/p>
+&lt;p>Some plugins (e.g. &lt;a href="https://docs.velociraptor.app/vql_reference/server/hunt/">hunt()&lt;/a> ) support orgs directly for convenience but generally you should use the above approach. This will also remind you that each such query is running in a separate org context and therefore can not see other data at the same time.&lt;/p></description></item><item><title>How do I use the files inside the offline collector ZIP?</title><link>https://docs.velociraptor.app/knowledge_base/tips/fuse_mount/</link><pubDate>Wed, 06 Nov 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/fuse_mount/</guid><description>&lt;h1 id="how-do-i-use-the-files-inside-the-offline-collector-zip">How do I use the files inside the offline collector ZIP?&lt;/h1>
+&lt;p>The Velociraptor offline collector is a convenient way to collect bulk
+triage data quickly and efficiently, without having to install any new
+software. The offline collector produces a zip file where metadata
+about the collection and bulk files are stored.&lt;/p>
+&lt;p>However, because the container format is a ZIP file there are some
+caveats about the way files are stored within it:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>To enhance compatibility certain characters are escaped from a
+filename. For example, Velociraptor supports any form of paths but
+windows paths such as &lt;code>\\.\C:&lt;/code> representing a device are not
+supported in a zip file (because they can not be extracted properly
+on windows).&lt;/p>
+&lt;p>Therefore Velociraptor will escape these paths inside the ZIP file.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Some other programs try to preserve the timestamps of the acquired
+files inside the ZIP file. This is problematic because the ZIP
+format only supports storing one timestamp at a resolution of 1
+second.&lt;/p>
+&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Timestamps in triage collections ">&lt;p>Some external tools attempt to use the acquired file timestamp in the
+analysis and parsing of the file itself (e.g. prefetch parsing). This
+is a mistake because it assumes the files being parsed are on the
+originating system and they have not been collected or moved first. By
+copying or manipulating files in any way those timestamps will change
+increasing the chances of incorrect analysis.&lt;/p>
+&lt;p>Some triage tools go out of their way to preserve these timestamps at
+the filesystem level - for example by creating a container NTFS image
+instead of a ZIP file. While this helps to preserve some timestamps by
+essentially timestomping the collected files into the correct
+timestamp it is a workaround at best.&lt;/p>
+&lt;p>Velociraptor instead relies on timestamps being stored in the metadata
+file and not within the ZIP file itself.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="structure-of-the-collected-files">Structure of the collected files&lt;/h2>
+&lt;p>Lets examine the structure of the offline collection:&lt;/p>
+&lt;pre>&lt;code>$ unzip -l Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip
+Archive: Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip
+Length Date Time Name
+--------- ---------- ----- ----
+ 32 2024-10-15 16:16 uploads/ntfs/%5C%5C.%5CC%3A/$Extend/$UsnJrnl%3A$Max
+ 8192 2024-10-15 17:12 uploads/ntfs/%5C%5C.%5CC%3A/$Boot
+ 1048576 2024-10-15 17:12 uploads/ntfs/%5C%5C.%5CC%3A/$Extend/$RmMetadata/$TxfLog/$Tops%3A$T
+ 1152 2021-05-08 18:15 uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Server Manager.lnk
+ 1190 2024-10-15 00:06 uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Azure Arc Setup.lnk
+ 2349 2021-05-08 18:15 uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Immersive Control Panel.lnk
+...
+ 3256 1980-00-00 00:00 results/Windows.KapeFiles.Targets%2FAll File Metadata.json.index
+ 137590 1980-00-00 00:00 results/Windows.KapeFiles.Targets%2FAll File Metadata.json
+ 3256 1980-00-00 00:00 results/Windows.KapeFiles.Targets%2FUploads.json.index
+ 222960 1980-00-00 00:00 results/Windows.KapeFiles.Targets%2FUploads.json
+ 6192 1980-00-00 00:00 log.json.index
+ 175374 1980-00-00 00:00 log.json
+ 910 2024-11-06 03:46 collection_context.json
+ 280433 2024-11-06 03:46 requests.json
+ 813 2024-11-06 03:46 client_info.json
+ 3448 1980-00-00 00:00 uploads.json.index
+ 154136 1980-00-00 00:00 uploads.json
+--------- -------
+776656838 442 files
+&lt;/code>&lt;/pre>
+&lt;p>We see the following:&lt;/p>
+&lt;ol>
+&lt;li>The files collected using the &lt;code>ntfs&lt;/code> accessor are stored in the
+prefix &lt;code>uploads/ntfs/&lt;/code>.&lt;/li>
+&lt;li>Since those NTFS paths contain device names (with backslashes) that
+can not appear in a Windows filename, Velociraptor will escape the
+backslashes (So &lt;code>\\.C:&lt;/code> becomes &lt;code>%5C%5C.%5CC%3A&lt;/code>). If you also
+collect files from &lt;code>VSS&lt;/code> they will be shown with the VSS device
+name escaped.&lt;/li>
+&lt;li>Files acquired using the &lt;code>auto&lt;/code> accessor are stored with a prefix
+is &lt;code>uploads/auto/&lt;/code>. Those filenames usually start with the drive
+name e.g. &lt;code>C:&lt;/code> which has a &lt;code>:&lt;/code> character. This is not usually
+allowed in a windows filename, so the character is escaped into
+&lt;code>C%3A&lt;/code>&lt;/li>
+&lt;li>You can see that some of the files do retain the ZIP timestamp -
+this is done on a best effort basis as ZIP can only represent one
+timestamp with a second resolution.&lt;/li>
+&lt;li>The actual file metadata is stored in the &lt;code>results&lt;/code> folder.&lt;/li>
+&lt;/ol>
+&lt;p>Let&amp;rsquo;s examine the metadata:&lt;/p>
+&lt;pre>&lt;code class="language-json">$ unzip -p Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip 'results/Windows.KapeFiles.Targets%2FUploads.json' | head -50 | tail -2
+
+{&amp;quot;CopiedOnTimestamp&amp;quot;:1730828739,&amp;quot;SourceFile&amp;quot;:&amp;quot;C:\\Users\\Default\\NTUSER.DAT&amp;quot;,&amp;quot;DestinationFile&amp;quot;:&amp;quot;C:\\Users\\Default\\NTUSER.DAT&amp;quot;,&amp;quot;FileSize&amp;quot;:262144,&amp;quot;SourceFileSha256&amp;quot;:&amp;quot;e05793b7ad9bb379514dcb59e778daeb76660cd19a009ee1d8d0dbcd4ed25de0&amp;quot;,&amp;quot;Created&amp;quot;:&amp;quot;2021-05-08T08:06:51.7462883Z&amp;quot;,&amp;quot;Changed&amp;quot;:&amp;quot;2024-10-14T15:32:30.3560316Z&amp;quot;,&amp;quot;Modified&amp;quot;:&amp;quot;2024-10-14T15:32:30.3560316Z&amp;quot;,&amp;quot;LastAccessed&amp;quot;:&amp;quot;2024-10-14T15:32:30.3560316Z&amp;quot;,&amp;quot;_Source&amp;quot;:&amp;quot;Generic.Collectors.File/Uploads&amp;quot;}
+
+{&amp;quot;CopiedOnTimestamp&amp;quot;:1730828739,&amp;quot;SourceFile&amp;quot;:&amp;quot;C:\\Windows\\System32\\winevt\\Logs\\HardwareEvents.evtx&amp;quot;,&amp;quot;DestinationFile&amp;quot;:&amp;quot;C:\\Windows\\System32\\winevt\\Logs\\HardwareEvents.evtx&amp;quot;,&amp;quot;FileSize&amp;quot;:69632,&amp;quot;SourceFileSha256&amp;quot;:&amp;quot;f5f9e97a6b1ec8d46a9bd5b9d4ccae96521b85517b0337b248814d2e974a968b&amp;quot;,&amp;quot;Created&amp;quot;:&amp;quot;2024-10-15T06:16:46.6761566Z&amp;quot;,&amp;quot;Changed&amp;quot;:&amp;quot;2024-10-15T06:17:06.4886135Z&amp;quot;,&amp;quot;Modified&amp;quot;:&amp;quot;2024-10-15T06:17:06.4886135Z&amp;quot;,&amp;quot;LastAccessed&amp;quot;:&amp;quot;2024-10-15T06:17:06.4886135Z&amp;quot;,&amp;quot;_Source&amp;quot;:&amp;quot;Generic.Collectors.File/Uploads&amp;quot;}
+&lt;/code>&lt;/pre>
+&lt;p>The metadata contains the precise filename seen, all the timestamps
+and the correct hashes of the files collected.&lt;/p>
+&lt;h2 id="preserving-file-names-and-timestamps">Preserving file names and timestamps&lt;/h2>
+&lt;p>While you can extract the files using a regular ZIP program, the
+program will likely not take into account the various transformations
+made by the offline collector. If you need to have those preserved you
+can use the
+&lt;a href="https://docs.velociraptor.app/artifact_references/pages/windows.kapefiles.extract/">Windows.KapeFiles.Extract&lt;/a>
+artifact to extract the files to a local directory.&lt;/p>
+&lt;pre>&lt;code class="language-bash">velociraptor-v0.73.2-linux-amd64 -v artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip --args OutputDirectory=/tmp/MyOutput/
+&lt;/code>&lt;/pre>
+&lt;p>This will extract the files from the container to the directory
+&lt;code>/tmp/MyOutput/&lt;/code> preserving their timestamps.&lt;/p>
+&lt;h2 id="using-fuse-to-mount-the-collection">Using FUSE to mount the collection&lt;/h2>
+&lt;p>On Linux, a mechanism called &lt;code>fuse&lt;/code> (Filesystem in Userspace) exists
+to allow an application to mount a &lt;code>filesystem&lt;/code> as a directory on the
+global filesystem. While extracting the collection using the above
+method works, it still results in rewriting the same files again on
+the system, therefore using more disk space and time.&lt;/p>
+&lt;p>Instead we can use Velociraptor to mount the offline collection onto a
+local directory - transparently decompressing data and applying the
+file metadata as various timestamps.&lt;/p>
+&lt;pre>&lt;code>./velociraptor-v0.73.2-linux-amd64 -v fuse container /tmp/mnt/ Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip --emulate_timestamps --unix_path_escaping --map_device_names_to_letters --strip_colons_on_drive_letters
+&lt;/code>&lt;/pre>
+&lt;p>The above command will mount the container on the directory
+&lt;code>/tmp/mnt&lt;/code>. The following options are supported:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>--emulate_timestamps&lt;/code> will recreate all timestamps from the metadata file.&lt;/li>
+&lt;li>&lt;code>--unix_path_escaping&lt;/code> will allow some characters which are not allowed on windows by are allowed on Unix (e.g. &lt;code>:&lt;/code>)&lt;/li>
+&lt;li>&lt;code>--map_device_names_to_letters&lt;/code> will replace NTFS style devices like &lt;code>\\.\C:&lt;/code> with drive letters &lt;code>C:&lt;/code>&lt;/li>
+&lt;li>&lt;code>--strip_colons_on_drive_letters&lt;/code> will remove &lt;code>:&lt;/code> characters completely so &lt;code>C:&lt;/code> will become a directory called &lt;code>C&lt;/code>&lt;/li>
+&lt;/ul></description></item><item><title>Error "Parameter refers to an unknown artifact" when collecting a CLIENT artifact</title><link>https://docs.velociraptor.app/knowledge_base/tips/collect_artifact_unknown/</link><pubDate>Sat, 31 Aug 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/collect_artifact_unknown/</guid><description>&lt;h1 id="error-parameter-refers-to-an-unknown-artifact-when-collecting-a-client-artifact">Error &amp;ldquo;Parameter refers to an unknown artifact&amp;rdquo; when collecting a CLIENT artifact&lt;/h1>
+&lt;p>Before an artifact is collected from the client, the artifact is
+compiled into a VQL request by the artifact compiler. This actually
+transforms the vql and injects dependent artifacts into the request so
+the client can evaluate it. The client&amp;rsquo;s VQL engine will &lt;strong>never&lt;/strong> use
+built in artifacts and must always have artifacts injected in the request.&lt;/p>
+&lt;p>The reason for that is that if an artifact is updated on the server
+(e.g. by upgrading the server or edit the custom artifact) the client
+must be given the latest version of the artifact.&lt;/p>
+&lt;p>When the VQL compiler sees a statement like:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * FROM Artifact.Dependant.Artifact()
+&lt;/code>&lt;/pre>
+&lt;p>It will recognize the the the VQL is dependent on the artifact
+&lt;code>Dependent.Artifact&lt;/code> and will inject it into the VQL request. You can
+see this in the &lt;code>Request&lt;/code> tab - the &lt;code>artifacts&lt;/code> section of the request
+will include dependent artifact definitions (in this case the artifact
+calls &lt;code>Generic.Utils.FetchBinary&lt;/code>).&lt;/p>
+&lt;pre>&lt;code class="language-json">[
+ {
+ &amp;quot;session_id&amp;quot;: &amp;quot;F.CR3B2IIN3E8GK&amp;quot;,
+ &amp;quot;request_id&amp;quot;: &amp;quot;1&amp;quot;,
+ &amp;quot;FlowRequest&amp;quot;: {
+ &amp;quot;VQLClientActions&amp;quot;: [
+ {
+ &amp;quot;query_id&amp;quot;: &amp;quot;1&amp;quot;,
+ &amp;quot;total_queries&amp;quot;: &amp;quot;1&amp;quot;,
+ ....
+ &amp;quot;artifacts&amp;quot;: [
+ {
+ &amp;quot;name&amp;quot;: &amp;quot;Generic.Utils.FetchBinary&amp;quot;,
+ &amp;quot;parameters&amp;quot;: [
+&lt;/code>&lt;/pre>
+&lt;p>This issue comes up commonly in two scenarios:&lt;/p>
+&lt;h3 id="using-the-vql-shell-to-collect-a-custom-artifact">Using the VQL shell to collect a custom artifact&lt;/h3>
+&lt;p>In this case the GUI will collect the artifact &lt;code>Generic.Client.VQL&lt;/code>
+which essentially evaluates the query provided as a string on the
+client.&lt;/p>
+&lt;p>Because the query is given as an opaque string parameter, the artifact
+compiler does not see any dependencies and can not inject them into
+the request. Built in artifacts are allowed in this case but custom
+artifacts are not supported.&lt;/p>
+&lt;p>If you need to collect a custom artifact from the endpoint, just
+collect it as normal - do not use the VQL shell for that.&lt;/p>
+&lt;h3 id="using-the-collect-plugin-on-the-client-to-prepare-a-collection-zip-file">Using the &lt;code>collect()&lt;/code> plugin on the client to prepare a collection zip file.&lt;/h3>
+&lt;p>Another similar issue occurs when writing a custom artifact that uses
+the &lt;code>collect()&lt;/code> plugin. Similarly because the artifacts to collect are
+given as strings, the compiler has no idea these are a dependency.&lt;/p>
+&lt;p>For example this VQL code&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * from collect(artifacts=['Generic.Collectors.File'],
+ args=dict(`Generic.Collectors.File`=dict(`collectionSpec`=collectionSpec,
+ `Root`=Root)),
+ password='infected',
+ output=tempzip)
+&lt;/code>&lt;/pre>
+&lt;p>To fix this artifact the &lt;code>Generic.Collectors.File&lt;/code> artifact must be
+given as a dependency. Either include it in the artifact&amp;rsquo;s &lt;code>import&lt;/code>
+section or add the following VQL statement:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET _ = SELECT * FROM Artifact.Generic.Collectors.File()
+&lt;/code>&lt;/pre>
+&lt;p>That statement will not actually run the artifact (it is a lazy LET
+statement) but the compiler&amp;rsquo;s static analyzer will identify the
+artifact as a dependency and be able to inject it into the request.&lt;/p></description></item><item><title>How to manage storage space on the server</title><link>https://docs.velociraptor.app/knowledge_base/tips/deleting_old_data/</link><pubDate>Fri, 19 Jul 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/deleting_old_data/</guid><description>&lt;h1 id="how-to-manage-storage-space-on-the-server">How to manage storage space on the server&lt;/h1>
+&lt;p>Velociraptor can collect a lot of data quickly but usually the data is
+only relevant for short periods of time.&lt;/p>
+&lt;p>Disk space management is an important part of Velociraptor
+administrators tasks. You can keep an eye on the disk utilization as
+shown on the dashboard.&lt;/p>
+&lt;p>If you need to grow the disk during an investigation, and you are
+using a cloud VM from Amazon with Elastic Block Storage (EBS), disk
+space management is very easy. In the AWS cloud it is possible to
+resize disk space dynamically. See &lt;a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html">Requesting
+Modifications&lt;/a>
+to Your EBS Volumes and &lt;a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html">Extending a Linux File System After
+Resizing&lt;/a>
+a Volume. You can do this without even restarting the server.&lt;/p>
+&lt;p>If you must attach a new volume you can migrate data from the old
+datastore directory (as specified in the config file) to the new
+directory by simply copying all the files. You must ensure permissions
+remain the same (typically files are owned by the &lt;code>velociraptor&lt;/code> low
+privilege local linux account).&lt;/p>
+&lt;p>It is also possible to start with an empty datastore directory and
+only copy selected files:&lt;/p>
+&lt;ol>
+&lt;li>The &lt;code>users&lt;/code> directory contains user accounts (hashed password etc)&lt;/li>
+&lt;li>The &lt;code>acl&lt;/code> directory contains user ACLs&lt;/li>
+&lt;li>The &lt;code>artifact_definitions&lt;/code> contains custom artifacts&lt;/li>
+&lt;li>The &lt;code>config&lt;/code> directory contains various configuration settings.&lt;/li>
+&lt;li>The &lt;code>orgs&lt;/code> directory contains data from various orgs.&lt;/li>
+&lt;/ol>
+&lt;p>Velociraptor will automatically re-enroll clients with the same client
+id (The client id is set by the client itself) as needed.&lt;/p>
+&lt;p>You can also check the backups directory to recover from backup.&lt;/p>
+&lt;h2 id="management-of-old-collections">Management of old collections&lt;/h2>
+&lt;p>You can automatically delete old collections using the
+&lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemanyflows/">Server.Utils.DeleteManyFlows
+&lt;/a> and
+&lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemonitoringdata/">Server.Utils.DeleteMonitoringData
+&lt;/a>
+artifacts. These are server artifacts which can delete flows and
+monitoring data older than the specified time.&lt;/p></description></item><item><title>How do I enable password protected VFS downloads?</title><link>https://docs.velociraptor.app/knowledge_base/tips/download_password/</link><pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/download_password/</guid><description>&lt;h1 id="how-do-i-enable-password-protected-vfs-downloads">How do I enable password protected VFS downloads?&lt;/h1>
+&lt;p>You can just export them from the GUI!&lt;/p>
+&lt;p>Set the password in your user preferences you can enable password
+protected exports.&lt;/p>
+&lt;p>Highlight the directory you want to export.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="fe07eee1f0268775c646e844b05bff2d">
+ &lt;div data-featherlight="#fe07eee1f0268775c646e844b05bff2d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/01.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="01.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Hit the export button - this will start a server collection to take a
+snapshot of the vfs - you can set any filtering globs (so for example
+don&amp;rsquo;t export all the files - maybe only &lt;code>*.exe&lt;/code>).&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="d9b6f4554ead74cebd62effb6a671a52">
+ &lt;div data-featherlight="#d9b6f4554ead74cebd62effb6a671a52" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/02.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="02.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>By default it just does &lt;code>**&lt;/code> which is everything under the directory.
+This makes a collection and adds a link to it.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="9a11768d2c2eea7c331011b06a7d4eb2">
+ &lt;div data-featherlight="#9a11768d2c2eea7c331011b06a7d4eb2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/03.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="03.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Then click that and export like any other collection.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="9675c1ff34145d7b1a68d3ddb6c0e555">
+ &lt;div data-featherlight="#9675c1ff34145d7b1a68d3ddb6c0e555" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/04.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="04.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Password can be set in the user preferences (the top right tile
+with the username). This will enable the lock feature of the zip
+export - make sure to click close button to save the password (instead
+of just clicking outside the modal dialog).&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="79d59b191996ede84d98442fd4613cb0">
+ &lt;div data-featherlight="#79d59b191996ede84d98442fd4613cb0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/05.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How do you generate random characters?</title><link>https://docs.velociraptor.app/knowledge_base/tips/random/</link><pubDate>Wed, 09 Aug 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/random/</guid><description>&lt;h1 id="how-do-you-generate-random-characters">How do you generate random characters?&lt;/h1>
+&lt;p>Using the rand() function we can manipulate the results to output a character set then use the WHERE condition to filter for the characters of interest.&lt;/p>
+&lt;p>For example output 32 random printable characters:&lt;/p>
+&lt;pre>&lt;code> LET RandomChars = SELECT format(format=&amp;quot;%c&amp;quot;, args=rand(range=255)) AS Character
+ FROM range(end=9999999999)
+ WHERE Character =~ &amp;quot;[ -~]&amp;quot;
+ LIMIT 32
+
+SELECT join(array=RandomChars.Character) as Characters FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>Modify the Character WHERE regex and LIMIT for desired results.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="38553b02f52f84b6918c01edc23043b4">
+ &lt;div data-featherlight="#38553b02f52f84b6918c01edc23043b4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/random/https://github.com/Velocidex/velociraptor-docs/assets/13081800/15d5e7f3-f519-4446-bbcb-fb42d97f4197" alt="image">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://github.com/Velocidex/velociraptor-docs/assets/13081800/15d5e7f3-f519-4446-bbcb-fb42d97f4197">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ image
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How can I clone an organization with all its hunts and artifacts to another instance?</title><link>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</link><pubDate>Mon, 24 Jul 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</guid><description>&lt;h1 id="how-can-i-clone-an-organization-with-all-its-hunts-and-artifacts-to-another-instance">How can I clone an organization with all its hunts and artifacts to another instance?&lt;/h1>
+&lt;p>There are a few use cases where you need to migrate data from an instance to another. It could be for educational purpose to provide pre-filled labs, or to provide a third party with the exact insights you had during your investigation. Event for archiving, being able to reload a dataset in Velociraptor to review what was done if something went amiss, being able to export and import an organization dataset could prove useful.&lt;/p>
+&lt;h2 id="exporting">Exporting&lt;/h2>
+&lt;p>Everything related to an organization is stored in a directory under &lt;code>&amp;lt;file store&amp;gt;/orgs&lt;/code>. There is:&lt;/p>
+&lt;ul>
+&lt;li>A directory with the org ID&lt;/li>
+&lt;li>A configuration file &lt;code>&amp;lt;orgId&amp;gt;.json.db&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>We need to transfer both to the destination server.&lt;/p>
+&lt;ol>
+&lt;li>Identify the org ID, either with the &lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/">&lt;code>Server.Orgs.ListOrgs&lt;/code> Artifact&lt;/a> or scrolling down the Velociraptor &lt;em>root org&lt;/em> home page.&lt;/li>
+&lt;li>Archive the folder and the &lt;code>json.db&lt;/code> file (mind the star)&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-bash">tar czf transport-&amp;lt;org name&amp;gt;.tar.gz &amp;lt;file store&amp;gt;/orgs/&amp;lt;org id&amp;gt;* 
+&lt;/code>&lt;/pre>
+&lt;ol start="3">
+&lt;li>Transfer the resulting archive to the destination Velociraptor server.&lt;/li>
+&lt;/ol>
+&lt;h2 id="importing">Importing&lt;/h2>
+&lt;ol>
+&lt;li>Decompress the archive under the &lt;code>&amp;lt;file store&amp;gt;/orgs&lt;/code> directory.&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" No orgs folder ">&lt;p>The &lt;code>orgs&lt;/code> directory is created with the first organization. After a fresh install of Velociraptor, it doesn&amp;rsquo;t exist until you create an org. You may also simply create the directory.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;ol start="2">
+&lt;li>Verify file ownership and permissions are similar to other directories in the file store&lt;/li>
+&lt;li>Start Velociraptor&lt;/li>
+&lt;li>You should see the organization with all its content as it were on the origin server&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Can&amp;#39;t see the org ">&lt;p>Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: &lt;code>&amp;lt;file store&amp;gt;/orgs/&amp;lt;org id&amp;gt;/acl/&amp;lt;username&amp;gt;.json.db&lt;/code> to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>What to do about error "Plugin info not found"</title><link>https://docs.velociraptor.app/knowledge_base/tips/plugin_not_found/</link><pubDate>Fri, 05 May 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/plugin_not_found/</guid><description>&lt;h1 id="what-to-do-about-error-plugin-info-not-found">What to do about error &amp;ldquo;Plugin info not found&amp;rdquo;&lt;/h1>
+&lt;p>Velociraptor VQL queries can run on the server in the context of
+server artifacts or notebook queries. Usually server side VQL is used
+to post-process collected results, manage the server configuration,
+schedule new collections etc.&lt;/p>
+&lt;p>However, server side VQL can do a lot more than that - including shell
+out to external binaries, read and write files on the server or
+connect to external servers. In some deployments (especially shared
+deployments) it is desirable to block any functionality on the server
+which may interfere with other users or server security or
+configuration.&lt;/p>
+&lt;p>In recent Velociraptor versions the administrator can add an allow
+list to the configuration file. This forces server side VQL to only
+register plugins on the allow list, so potentially dangerous plugins
+are not present at all (regardless of the Velociraptor permission
+model).&lt;/p>
+&lt;p>The configuration wizard will offer this functionality using the
+question:&lt;/p>
+&lt;pre>&lt;code>Do you want to restrict VQL functionality on the server?
+
+This is useful for a shared server where users are not fully trusted.
+It removes potentially dangerous plugins like execve(),filesystem access etc.
+&lt;/code>&lt;/pre>
+&lt;p>If you selected this during configuration you will receive these
+errors in the notebook (or using the API) for any plugins not in the
+allow list:&lt;/p>
+&lt;pre>&lt;code>ERROR:Plugin info not found.
+&lt;/code>&lt;/pre>
+&lt;p>If you decide you need this particular plugin you can either add to
+the allow list in the server configuration file. Or you may remove the
+allow list entirely (which allows all plugins to be registered).&lt;/p></description></item><item><title>Custom quarantine exclusions</title><link>https://docs.velociraptor.app/knowledge_base/tips/quarantine/</link><pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/quarantine/</guid><description>&lt;h1 id="custom-quarantine-exclusions">Custom quarantine exclusions&lt;/h1>
+&lt;p>We may want to add custom exclusions to Velociraptor quarantine and allow communication to another IP&lt;/p>
+&lt;ol>
+&lt;li>Add machine in scope to a new label: e.g NewQuarantine&lt;/li>
+&lt;li>Remove standard quarantine&lt;/li>
+&lt;li>Run a hunt targeting your label above or a collection on the single machine&lt;/li>
+&lt;li>Select relevant quarantine content: Windows.Remediation.Quarantine&lt;/li>
+&lt;li>Add additional IP exclusions
+Action = Permit
+SrcAddr = me
+DstAddr = IP to exclude
+Mirrored = yes for bidirectional communication
+Description&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+&lt;figure id="8c9697ec17bdb2b45f90bbf198f8e9bb">
+ &lt;div data-featherlight="#8c9697ec17bdb2b45f90bbf198f8e9bb" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/quarantine/https://user-images.githubusercontent.com/13081800/222630435-4882554a-eefa-4a78-9ae2-fe41d3d60874.png" alt="image">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/13081800/222630435-4882554a-eefa-4a78-9ae2-fe41d3d60874.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ image
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How can I convert decimal?</title><link>https://docs.velociraptor.app/knowledge_base/tips/decimaldecode/</link><pubDate>Wed, 02 Nov 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/decimaldecode/</guid><description>&lt;h1 id="how-can-i-convert-decimal">How can I convert decimal?&lt;/h1>
+&lt;p>During investigation you may find logs or other data with decimal-encoded strings - we can leverage the format() function to convert to data.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET decimal = ( 91,78,101,116,46,83,101,114,118,105,99,101,80,111,105,110,116,77,97,110,97,103,101,114,93,58,58,83,101,114,118,101,114,67,101,114,116,105,102,105,99,97,116,101,86,97,108,105,100,97,116,105,111,110,67,97,108,108,98,97,99,107,32,61,32,123,36,116,114,117,101,125,10,116,114,121,123,10,91,82,101,102,93,46,65,115,115,101,109,98,108,121,46,71,101,116,84,121,112,101,40,39,83,121,115,39,43,39,116,101,109,46,77,97,110,39,43,39,97,103,101,109,101,110,116,46,65,117,116,39,43,39,111,109,97,116,105,111,110,46,65,109,39,43,39,115,105,85,116,39,43,39,105,108,115,39,41,46,71,101,116,70,105,101,108,100,40,39,97,109,39,43,39,115,105,73,110,105,39,43,39,116,70,97,105,108,101,100,39,44,32,39,78,111,110,80,39,43,39,117,98,108,105,99,44,83,116,97,39,43,39,116,105,99,39,41,46,83,101,116,86,97,108,117,101,40,36,110,117,108,108,44,32,36,116,114,117,101,41,10,125,99,97,116,99,104,123,125,10,91,78,101,116,46,83,101,114,118,105,99,101,80,111,105,110,116,77,97,110,97,103,101,114,93,58,58,83,101,114,118,101,114,67,101,114,116,105,102,105,99,97,116,101,86,97,108,105,100,97,116,105,111,110,67,97,108,108,98,97,99,107,32,61,32,123,36,116,114,117,101,125,10,91,83,121,115,116,101,109,46,78,101,116,46,83,101,114,118,105,99,101,80,111,105,110,116,77,97,110,97,103,101,114,93,58,58,83,101,99,117,114,105,116,121,80,114,111,116,111,99,111,108,32,61,32,91,83,121,115,116,101,109,46,78,101,116,46,83,101,99,117,114,105,116,121,80,114,111,116,111,99,111,108,84,121,112,101,93,39,83,115,108,51,44,84,108,115,44,84,108,115,49,49,44,84,108,115,49,50,39,10,73,69,88,32,40,78,101,119,45,79,98,106,101,99,116,32,78,101,116,46,87,101,98,67,108,105,101,110,116,41,46,68,111,119,110,108,111,97,100,83,116,114,105,110,103,40,39,104,116,116,112,115,58,47,47,49,48,46,48,46,49,46,55,58,52,52,51,47,73,110,118,111,107,101,45,77,105,109,105,107,97,116,122,46,112,115,49,39,41,10,36,99,109,100,32,61,32,73,110,118,111,107,101,45,77,105,109,105,107,97,116,122,32,45,67,111,109,109,97,110,100,32,39,112,114,105,118,105,108,101,103,101,58,58,100,101,98,117,103,32,115,101,107,117,114,108,115,97,58,58,108,111,103,111,110,112,97,115,115,119,111,114,100,115,32,101,120,105,116,39,10,36,114,101,113,117,101,115,116,32,61,32,91,83,121,115,116,101,109,46,78,101,116,46,87,101,98,82,101,113,117,101,115,116,93,58,58,67,114,101,97,116,101,40,39,104,116,116,112,115,58,47,47,49,48,46,48,46,49,46,55,58,52,52,51,47,39,41,10,36,114,101,113,117,101,115,116,46,77,101,116,104,111,100,32,61,32,39,80,79,83,84,39,10,36,114,101,113,117,101,115,116,46,67,111,110,116,101,110,116,84,121,112,101,32,61,32,39,97,112,112,108,105,99,97,116,105,111,110,47,120,45,119,119,119,45,102,111,114,109,45,117,114,108,101,110,99,111,100,101,100,39,10,36,98,121,116,101,115,32,61,32,91,83,121,115,116,101,109,46,84,101,120,116,46,69,110,99,111,100,105,110,103,93,58,58,65,83,67,73,73,46,71,101,116,66,121,116,101,115,40,36,99,109,100,41,10,36,114,101,113,117,101,115,116,46,67,111,110,116,101,110,116,76,101,110,103,116,104,32,61,32,36,98,121,116,101,115,46,76,101,110,103,116,104,10,36,114,101,113,117,101,115,116,83,116,114,101,97,109,32,61,32,36,114,101,113,117,101,115,116,46,71,101,116,82,101,113,117,101,115,116,83,116,114,101,97,109,40,41,10,36,114,101,113,117,101,115,116,83,116,114,101,97,109,46,87,114,105,116,101,40,36,98,121,116,101,115,44,32,48,44,32,36,98,121,116,101,115,46,76,101,110,103,116,104,41,10,36,114,101,113,117,101,115,116,83,116,114,101,97,109,46,67,108,111,115,101,40,41,10,36,114,101,113,117,101,115,116,46,71,101,116,82,101,115,112,111,110,115,101,40,41 )
+
+LET convert_decimal(data) = SELECT format(format='%c',args=_value) as Value FROM foreach(row=data)
+
+SELECT join(array=convert_decimal(data=decimal).Value,sep='') as Data FROM scope()
+
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="a7c1586dcc25ea266e7ea61a3ef5faf2">
+ &lt;div data-featherlight="#a7c1586dcc25ea266e7ea61a3ef5faf2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/decimaldecode/https://user-images.githubusercontent.com/13081800/199373835-a27910e7-40ea-4dcc-a818-baff4e19b40c.png" alt="image">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/13081800/199373835-a27910e7-40ea-4dcc-a818-baff4e19b40c.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ image
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How can I automate the creation of the offline collector?</title><link>https://docs.velociraptor.app/knowledge_base/tips/automate_offline_collector/</link><pubDate>Mon, 10 Oct 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/automate_offline_collector/</guid><description>&lt;h1 id="how-can-i-automate-the-creation-of-the-offline-collector">How can I automate the creation of the offline collector?&lt;/h1>
+&lt;p>The Velociraptor Offline collector is a &lt;a href="https://docs.velociraptor.app/docs/offline_triage/#offline-collections">pre-configured triage and
+acquisition tool&lt;/a>.&lt;/p>
+&lt;p>Velociraptor features a convenient GUI to allow creating the offline
+collector&amp;rsquo;s including building the configuration file and embedding it
+inside the collector.&lt;/p>
+&lt;p>But what if we need to automate the creation of the collector? While a
+GUI is nice it can be made much more efficient to automate the
+collector.&lt;/p>
+&lt;p>When building the collector using the GUI you might notice that the
+GUI simply preconfigured and launches a new server artifact and the
+server simply collects that.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="c15c9b133f0428fb04c02bbfa4983bb9">
+ &lt;div data-featherlight="#c15c9b133f0428fb04c02bbfa4983bb9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/automate_offline_collector/create_collector.png" alt="The Create Offline Collector artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="create_collector.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ The Create Offline Collector artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can actually collect the same artifact using the command line (on
+the server) or using the API (from anywhere). Here is an example with
+PowerShell (assuming the server is running on Windows):&lt;/p>
+&lt;pre>&lt;code class="language-powershell">velociraptor.exe --config server.config.yaml -v artifacts collect
+ Server.Utils.CreateCollector
+ --args OS=Windows
+ --args artifacts='[&amp;quot;&amp;quot;&amp;quot;Generic.System.Pstree&amp;quot;&amp;quot;&amp;quot;]'
+ --args parameters='{&amp;quot;&amp;quot;&amp;quot;Generic.System.Pstree&amp;quot;&amp;quot;&amp;quot;:{}}'
+ --args target=ZIP
+ --args opt_admin=N
+ --args opt_prompt=N
+ --output collector.zip
+&lt;/code>&lt;/pre>
+&lt;p>This command will create a new offline collector binary and store it
+inside the file &lt;code>collector.zip&lt;/code>&lt;/p>
+&lt;p>We can now extract the executable from the ZIP file (using powershell)&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading=" Escaping quotes ">&lt;p>Note that running this in powershell requires quotes to be escaped in
+the powershell specific way. Usually it means expanding double quotes
+(&lt;code>&amp;quot;&lt;/code>) into 3 double quotes (&lt;code>&amp;quot;&amp;quot;&amp;quot;&lt;/code>)&lt;/p>
+&lt;p>&lt;a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules">https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_quoting_rules&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="a-collector-creation-script">A collector creation script&lt;/h2>
+&lt;p>There is a simple script that makes it easier to create the collector without a GUI here
+&lt;a href="https://github.com/Velocidex/velociraptor/tree/master/docs/offline_collector">https://github.com/Velocidex/velociraptor/tree/master/docs/offline_collector&lt;/a>&lt;/p>
+&lt;p>This script uses a specification file to avoid the need to escaping on
+the command line. The specification file is simply the same as what
+will be generated by the GUI (So you can check the output of the GUI
+for the ultimate reference what each variable means).&lt;/p>
+&lt;p>To run the script simply create a new directory and point the script
+to the Velociraptor binary for your platform and the spec file.&lt;/p>
+&lt;p>The script will create a small Velociraptor deployment in the current
+directory and automatically download any third party tools needed.&lt;/p>
+&lt;p>The script should work with earlier versions but was tested for
+Release 0.7.0 onwards.&lt;/p></description></item><item><title>How do I re-collect a failed artifact in a hunt?</title><link>https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/</link><pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/</guid><description>&lt;h1 id="how-do-i-re-collect-a-failed-artifact-in-a-hunt">How do I re-collect a failed artifact in a hunt?&lt;/h1>
+&lt;p>Sometimes collecting an artifact in a hunt does not work as
+expected.&lt;/p>
+&lt;p>Most commonly the issue is that the timeout or upload limit
+for collecting the artifact is exceeded and Velociraptor cancels the
+collection to prevent placing the endpoint under too much strain.&lt;/p>
+&lt;p>How do we work around this? We can recollect the artifact only on that
+failed endpoint with a few button clicks.&lt;/p>
+&lt;p>In the following example I will start a collection for the &lt;code>$MFT&lt;/code> but
+I will only set the timeout to 10 seconds and &lt;code>100Mb&lt;/code> uploaded.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="0ba972a70fb6250f0ee496937816f5da">
+ &lt;div data-featherlight="#0ba972a70fb6250f0ee496937816f5da" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/hunting_by_label.png" alt="Hunting for Files">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="hunting_by_label.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Hunting for Files
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the hunt resources screen I can specify limits for collection from
+any one client. These limits are intended to set reasonable boundaries
+for how much data I am expecting to collect so we do not overload the
+network or the endpoint itself.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="0236c3a1bc3ef7011b95d15fe95e50ce">
+ &lt;div data-featherlight="#0236c3a1bc3ef7011b95d15fe95e50ce" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/setting_resources.png" alt="Setting resource limits">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="setting_resources.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Setting resource limits
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Clearly these limits are too small for this client because the
+collection was cancelled after 10 seconds. Normally the default
+timeout of 10 Minutes, but collecting such a lot of data may take
+longer than that.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="c5b5bd78121f5d048b804c18df1cc2bc">
+ &lt;div data-featherlight="#c5b5bd78121f5d048b804c18df1cc2bc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/timed_out.png" alt="Collection timed out">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="timed_out.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collection timed out
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Although some data was transferred, not all the data was fully
+collected. This might be acceptable but if this machine is really
+compromised how can I recollect the same artifact?&lt;/p>
+&lt;p>By inspecting the collections for each client in the &lt;code>Clients&lt;/code> tab, I
+can quickly see which one failed.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="bc4c15b33d5358cfb85ac5b40f6d57f2">
+ &lt;div data-featherlight="#bc4c15b33d5358cfb85ac5b40f6d57f2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/failed_collection.png" alt="Inspecting failed collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="failed_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Inspecting failed collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since a hunt is just a grouping of regular collections, I can navigate
+to the client in the interface (by clicking the client button) and
+find the hunt&amp;rsquo;s collection that failed.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="4c00e77178b78da5f50b6eb01e57de17">
+ &lt;div data-featherlight="#4c00e77178b78da5f50b6eb01e57de17" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/copy_collection.png" alt="Copying the collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="copy_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Copying the collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now I just copy the collection as normal and here I can update the
+resource limits if needed (or maybe change some of the parameters).&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="828032523771120ecaa25224dc9e4ca0">
+ &lt;div data-featherlight="#828032523771120ecaa25224dc9e4ca0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/successful_collection.png" alt="Successful Collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="successful_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Successful Collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now that this collection is completed I can just look at the results
+of the collections by itself or download the collection files for
+further analysis.&lt;/p>
+&lt;p>However, it is much more useful to keep all related collections in the
+same hunt. This helps when analyzing the hunt results in the notebook
+or exporting all the related files at once.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Hunts are a set of collections ">&lt;p>It is best to think of a &lt;code>hunt&lt;/code> as just a set of related artifact
+collections. You can add/remove collections from this set at will.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>I am adding the new collection to the hunt manually by clicking the
+&lt;code>Add to Hunt&lt;/code> button.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="148b3895b977cdc2068a2da55191249f">
+ &lt;div data-featherlight="#148b3895b977cdc2068a2da55191249f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/manually_adding_hunt_collection.png" alt="Manually Adding the collection to the hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="manually_adding_hunt_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Manually Adding the collection to the hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The interface shows me all hunts that collected the same artifact so I
+choose which hunt to add it to.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="1b371e4db1eaa277f42eea9c0bdaae1c">
+ &lt;div data-featherlight="#1b371e4db1eaa277f42eea9c0bdaae1c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/new_hunt_collection.png" alt="The new collection is now part of the hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="new_hunt_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ The new collection is now part of the hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now the new successful collection is part of the hunt. I can see it as
+a second entry in the client&amp;rsquo;s list.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading=" Deleting the old collection ">&lt;p>Velociraptor does not automatically delete the old failed collection
+because it may still have some useful data (some data &lt;strong>was&lt;/strong>
+transferred).&lt;/p>
+&lt;p>If you do not want the old data any more, then just click the &lt;code>Delete Flow&lt;/code> button once a better collection is available.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="using-vql">Using VQL&lt;/h2>
+&lt;p>The above discussion was how to manually redo collections in the GUI
+but if there are many collections, it might be easier to use VQL to do
+this.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET NewCollections = SELECT ClientId, FlowId,
+ collect_client(client_id=ClientId,
+ artifacts=Flow.request.artifacts,
+ spec=Flow.request.specs,
+ max_bytes=1000000000,
+ timeout=600) AS NewCollection
+FROM hunt_flows(hunt_id=HuntId)
+WHERE Flow.state =~ &amp;quot;ERROR&amp;quot;
+
+SELECT ClientId, NewCollection, hunt_add(
+ client_id=ClientId,
+ hunt_id=HuntId,
+ flow_id=NewCollection.flow_id) AS Hunt
+FROM NewCollections
+&lt;/code>&lt;/pre>
+&lt;ol>
+&lt;li>
+&lt;p>The &lt;code>NewCollections&lt;/code> query gets all Flows in the &lt;code>ERROR&lt;/code> state
+within a hunt and schedules a new collection using the same
+artifacts but increasing the maximum upload size to 1gb and timeout
+to 600 seconds.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The next query adds the new collection to the hunt.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Note this query will only work after &lt;a href="https://github.com/Velocidex/velociraptor/commit/768021225bd617bb279fe424dcdf29c6d7d467b4">#2067&lt;/a>&lt;/p></description></item><item><title>How to control hunting by label groups?</title><link>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</link><pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</guid><description>&lt;h1 id="how-to-control-hunting-by-label-groups">How to control hunting by label groups?&lt;/h1>
+&lt;p>In Velociraptor, &lt;code>Hunts&lt;/code> are sets of the same collections across
+clients. For example, a hunt for &lt;code>Scheduled Tasks&lt;/code> will automatically
+collect the scheduled tasks from each client.&lt;/p>
+&lt;p>When creating the hunt it is possible to target the hunt to a
+&lt;code>Label&lt;/code>. This only schedules the hunt on clients that have that same
+label. This is useful when collecting a lot of data which does not
+make sense to collect from every machine in the fleet. For example in
+the following screenshot I am limiting the heavy triaging collection
+to machines with the label &lt;code>Triage&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="1912e2fbc6ef8afb41e2a31045e48e4f">
+ &lt;div data-featherlight="#1912e2fbc6ef8afb41e2a31045e48e4f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/limiting_hunts.png" alt="Limiting a hunt to a label">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="limiting_hunts.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Limiting a hunt to a label
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="assigning-clients-to-the-hunt">Assigning clients to the hunt.&lt;/h2>
+&lt;p>Normally when we limit a hunt for a label we immediately schedule the
+hunt on all machines with that label.&lt;/p>
+&lt;p>However it also works the other way around - When a label is added on
+a client, if the hunt targets this label, the client will be
+automatically added to the hunt!&lt;/p>
+&lt;p>This means it is possible to create heavy hunts targeting specific
+labels, and then as the investigation progresses, simply assign the
+label to the client to automatically cause the hunt to collect on that
+client.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="ea294614153c0d0ea666c75a2d1b6b1f">
+ &lt;div data-featherlight="#ea294614153c0d0ea666c75a2d1b6b1f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/apply_label.png" alt="Apply a label to a client to trigger hunt participation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="apply_label.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Apply a label to a client to trigger hunt participation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How do I get the latest release binary?</title><link>https://docs.velociraptor.app/knowledge_base/tips/getting_latest_release/</link><pubDate>Sat, 03 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/getting_latest_release/</guid><description>&lt;h1 id="how-do-i-get-the-latest-release-binary">How do I get the latest release binary?&lt;/h1>
+&lt;p>The Velociraptor release process uses a release branch to prepare a
+new release. Releases go through a release candidate (RC) process with
+one or more release builds. Sometimes after the release a new patch
+release is made to backport critical bug fixes.&lt;/p>
+&lt;p>If you need to automate downloading of the latest release binary,
+simply use the GitHub API which presents detailed release information
+in JSON form. You can use a tool such as &lt;code>jq&lt;/code> to extract the download
+URL:&lt;/p>
+&lt;pre>&lt;code class="language-bash">WINDOWS_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases/latest | jq
+-r '[.assets | sort_by(.created_at) | reverse | .[] | .browser_download_url | select(test(&amp;quot;windows-amd64.exe$&amp;quot;))][0]')
+LINUX_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases/latest | jq
+-r '[.assets | sort_by(.created_at) | reverse | .[] | .browser_download_url | select(test(&amp;quot;linux-amd64$&amp;quot;))][0]')
+MACOS_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases/latest | jq
+-r '[.assets | sort_by(.created_at) | reverse | .[] | .browser_download_url | select(test(&amp;quot;darwin-amd64$&amp;quot;))][0]')
+&lt;/code>&lt;/pre>
+&lt;p>The above &lt;code>jq&lt;/code> filter sorts all asserts by creation data and filters
+the relevant binaries, then extracts the most recent binary.&lt;/p>
+&lt;p>Powershell can also be used to download the latest binary for 64 bit Windows as per this example:&lt;/p>
+&lt;pre>&lt;code class="language-PowerShell">#Get the latest entry from the GitHub API
+$VeloLatest = Invoke-WebRequest https://api.github.com/repos/velocidex/velociraptor/releases/latest
+#Parse out the url to the binary
+$VeloURL = ($VeloLatest.content | convertfrom-json).assets.browser_download_url | select-string windows-amd64.exe | select-object -First 1
+#Download and write to a file
+Invoke-WebRequest -Uri $VeloURL.tostring() -OutFile velociraptor.exe
+#Verify the Authenticode Signature
+Get-AuthenticodeSignature .\velociraptor.exe
+&lt;/code>&lt;/pre>
+&lt;h2 id="verifying-signatures">Verifying signatures&lt;/h2>
+&lt;p>Velociraptor releases are signed using Authenticode on Windows as well
+as using GPG. To verify the signatures using gpg:&lt;/p>
+&lt;pre>&lt;code>$ gpg --verify velociraptor-v0.6.5-2-linux-amd64.sig
+gpg: assuming signed data in 'velociraptor-v0.6.5-2-linux-amd64'
+gpg: Signature made Wed Jul 27 02:49:33 2022 AEST
+gpg: using RSA key 0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1
+gpg: Good signature from &amp;quot;Velociraptor Team (Velociraptor - Dig deeper! https://docs.velociraptor.app/) &amp;lt;support@velocidex.com&amp;gt;&amp;quot; [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg: There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 0572 F28B 4EF1 9A04 3F4C BBE0 B22A 7FB1 9CB6 CFA1
+&lt;/code>&lt;/pre>
+&lt;p>You may need to import the key first into your keyring:&lt;/p>
+&lt;pre>&lt;code>$ gpg --receive-keys 0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1
+gpg: key B22A7FB19CB6CFA1: public key &amp;quot;Velociraptor Team (Velociraptor - Dig deeper! https://docs.velociraptor.app/) &amp;lt;support@velocidex.com&amp;gt;&amp;quot; imported
+gpg: Total number processed: 1
+gpg: imported: 1
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" API limiting ">&lt;p>GitHub limits how many unauthenticated API requests are allowed per IP
+address. If you need to increase this limit, create a personal access
+token (see
+&lt;a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token&lt;/a>)&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How can I url/percent decode a string?</title><link>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</link><pubDate>Mon, 06 Jun 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</guid><description>&lt;h1 id="how-can-i-urlpercent-decode-a-string">How can I url/percent decode a string?&lt;/h1>
+&lt;p>During investigation you may find logs or other data with percent-encoded strings.
+Since 0.6.5 we have included a lambda function in regex_replace() that enables decode and managing errors to enable analysis.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET Line = '''http://target/login.asp?userid=bob%27%3b%20update%20logintable%20set%20passwd%3d%270wn3d%27%3b--%00'''
+
+SELECT regex_replace(source=Line, replace_lambda=&amp;quot;x=&amp;gt;unhex(string=x[1:]) || x&amp;quot;, re=&amp;quot;%..&amp;quot;) as Decoded FROM scope() 
+
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="aa37781dd65ae86c26e8f0a7a277e0b6">
+ &lt;div data-featherlight="#aa37781dd65ae86c26e8f0a7a277e0b6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/urldecode/https://user-images.githubusercontent.com/13081800/172098424-d78c73f9-e7d2-405b-99ca-129eba4350c0.png" alt="Url Decode: results">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/13081800/172098424-d78c73f9-e7d2-405b-99ca-129eba4350c0.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Url Decode: results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Similarly, to URL encode we can run a similar function:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET Line = '''http://target/login.asp?userid=bob'; update logintable set passwd='0wn3d';--'''
+
+SELECT
+ url(path=Line).String[1:] as URLFunction,
+ regex_replace(source=Line,replace_lambda=&amp;quot;x=&amp;gt;format(format='%%%02x',args=x)&amp;quot;, re=&amp;quot;[^a-z0-9\\-_.~:/?]&amp;quot;) as ManualMethod
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="600d14b14b1231b510b009def8c13544">
+ &lt;div data-featherlight="#600d14b14b1231b510b009def8c13544" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/urldecode/https://user-images.githubusercontent.com/13081800/187116187-9347d6be-5566-49b0-98d6-65ce0d2ff0cc.png" alt="Url Encode: results">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/13081800/187116187-9347d6be-5566-49b0-98d6-65ce0d2ff0cc.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Url Encode: results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How can I make a multipart/form-data POST request in VQL</title><link>https://docs.velociraptor.app/knowledge_base/tips/multiparts_uploads/</link><pubDate>Sat, 21 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multiparts_uploads/</guid><description>&lt;h1 id="how-can-i-make-a-multipartform-data-post-request-in-vql">How can I make a multipart/form-data POST request in VQL&lt;/h1>
+&lt;p>VQL can be used to make http requests using the &lt;code>http_client()&lt;/code>
+plugin. While &lt;code>GET&lt;/code> requests are usually pretty straight forward,
+sometimes we need to upload using something called
+&lt;code>multipart/form-data&lt;/code> POST. What is it and how can VQL do this?&lt;/p>
+&lt;h2 id="what-is-multipartform-data-post">What is &lt;code>multipart/form-data&lt;/code> POST?&lt;/h2>
+&lt;p>This is a standard way of serializing multiple &amp;ldquo;parts&amp;rdquo; into a single
+request. A &amp;ldquo;part&amp;rdquo; here is a value of a parameter or usually a
+file. Traditionally this came from a HTML &amp;ldquo;form&amp;rdquo; element, but often
+these are used for APIs now without a browser interface at all.&lt;/p>
+&lt;p>The idea is that we define a &amp;ldquo;boundary&amp;rdquo; - a special string which is so
+unique it might not appear accidentally in the data, then we separate
+the parts using this boundary:&lt;/p>
+&lt;pre>&lt;code>--boundary
+Headers
+
+Data
+--boundary
+Headers
+
+Data
+--boundary--
+&lt;/code>&lt;/pre>
+&lt;ol>
+&lt;li>Each part starts with &amp;ldquo;&amp;ndash;&amp;rdquo; followed by the boundary and a line feed.&lt;/li>
+&lt;li>Next come the headers which describe things about this part
+followed by two line feeds.&lt;/li>
+&lt;li>Next come the body of the part&lt;/li>
+&lt;li>Finally after the last part, the end is signaled by &amp;ldquo;&amp;ndash;&amp;rdquo; followed
+by the boundary and another &amp;ldquo;&amp;ndash;&amp;rdquo; followed by new line.&lt;/li>
+&lt;/ol>
+&lt;p>The most confusing part of this is that when looking at examples, the
+boundary is often something like
+&lt;code>-----------------------------9051914041544843365972754266&lt;/code> making it
+virtually impossible to see the extra &amp;ldquo;&amp;ndash;&amp;rdquo; at the start and end (you
+have to carefully count to realize the boundary header adds two
+extra dashes!).&lt;/p>
+&lt;h2 id="combining-in-vql">Combining in VQL&lt;/h2>
+&lt;p>Anyway once the whole this is demystified it is really easy to create
+this in VQL. Here is an example:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET Boundary = &amp;quot;-----------------------------9051914041544843365972754266&amp;quot;
+
+-- A Helper function to make a regular form variable.
+LET Data(Name, Value) = format(
+ format='--%s\r\nContent-Disposition: form-data; name=&amp;quot;%s&amp;quot;\r\n\r\n\r\n%v\r\n',
+ args=[Boundary, Name, Value])
+
+-- A Helper function to embed a file content.
+LET File(Filename, ParameterName, ContentType, Data) = format(
+ format='--%s\r\nContent-Disposition: form-data; name=&amp;quot;%s&amp;quot;; filename=&amp;quot;%s&amp;quot;\r\nContent-Type: %s\r\n\r\n%v\r\n',
+ args=[Boundary, ParameterName, Filename, ContentType, Data])
+
+-- The End boundary signals the last part
+LET END = format(format=&amp;quot;%s--\r\n&amp;quot;, args=Boundary)
+
+-- Now make the HTTP request and post the form
+-- Remember the Content-Type header which includes the boundary!
+SELECT * FROM http_client(
+ method=&amp;quot;POST&amp;quot;,
+ url=&amp;quot;http://www.example.com/formhandler&amp;quot;,
+ headers=dict(`Content-Type`=&amp;quot;multipart/form-data; boundary=&amp;quot; + Boundary),
+ data=Data(Name=&amp;quot;name&amp;quot;, Value=&amp;quot;Bar&amp;quot;) +
+ File(Filename=&amp;quot;Hello.txt&amp;quot;, ParameterName=&amp;quot;file_upload&amp;quot;, ContentType=&amp;quot;text/plain&amp;quot;, Data=&amp;quot;this is a test&amp;quot;) +
+ END)
+&lt;/code>&lt;/pre>
+&lt;p>In this example I used some utility functions to make it easier to build the
+different parts and make sure the encoding structure is always correct.&lt;/p></description></item><item><title>Applying labels to hunt results</title><link>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</link><pubDate>Fri, 20 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</guid><description>&lt;h1 id="applying-labels-to-hunt-results">Applying labels to hunt results&lt;/h1>
+&lt;p>Sometimes it is useful to label clients from a hunt.&lt;/p>
+&lt;p>For the following example, I will label all machines with rows from the Windows.Carving.CobaltStrike artifact with a label &amp;ldquo;CobaltStrike&amp;rdquo;.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT ClientId,Fqdn,Rule,
+ label(client_id=ClientId,labels=['CobaltStrike'],op='set') as SetLabel
+FROM source(artifact=&amp;quot;Windows.Carving.CobaltStrike&amp;quot;)
+GROUP BY ClientId
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="37d46915203878b19ceb1f55ac1a77c4">
+ &lt;div data-featherlight="#37d46915203878b19ceb1f55ac1a77c4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/huntlabel/https://user-images.githubusercontent.com/13081800/169450498-39d31902-81ec-4b7c-8c6c-72abe0419c7e.png" alt="Label clients from hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/13081800/169450498-39d31902-81ec-4b7c-8c6c-72abe0419c7e.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Label clients from hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How can I quickly reconfigure an offline collector?</title><link>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</link><pubDate>Fri, 06 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</guid><description>&lt;h1 id="how-can-i-quickly-reconfigure-an-offline-collector">How can I quickly reconfigure an offline collector?&lt;/h1>
+&lt;p>The offline collector is a pre-configured version of Velociraptor that automatically collects certain artifacts when invoked with no command line args. The offline collector is a full Velociraptor binary that simply has a custom configuration embedded - so you can use the collector binary to perform any operations that Velociraptor would.&lt;/p>
+&lt;p>Usually the collector is built using the GUI by selecting the correct artifacts and injecting parameters into the embedded configuration file. But sometimes we might want to slightly modify the embedded configuration, and firing up a GUI to rebuild a new collector from scratch is a bit too much work.&lt;/p>
+&lt;p>There is actually an easier way to quickly modify the embedded configuration.&lt;/p>
+&lt;ol>
+&lt;li>First extract the existing embedded config from the collector into a local file:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>Collector_velociraptor-v0.6.4-windows-amd64.exe config show &amp;gt; config.yaml
+&lt;/code>&lt;/pre>
+&lt;ol start="2">
+&lt;li>Next we can edit the config file - for example, if we need to tweak the parameters&lt;/li>
+&lt;li>Finally we repack the new configuration file into the existing collector:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>Collector_velociraptor-v0.6.4-windows-amd64.exe config repack config.yaml new_collector.exe
+&lt;/code>&lt;/pre>
+&lt;p>You can verify the new collector has the modified configuration using &lt;code>new_collector.exe config show&lt;/code>&lt;/p>
+&lt;p>This method is suitable for small changes in the embedded configuration - it is always more reliable to use the GUI to prepare a completely new collector, but for small tweaks this method may be quicker.&lt;/p></description></item><item><title>How can I override the configuration file?</title><link>https://docs.velociraptor.app/knowledge_base/tips/merging_config/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/merging_config/</guid><description>&lt;h1 id="how-can-i-override-the-configuration-file">How can I override the configuration file?&lt;/h1>
+&lt;p>Velociraptor relies on the configuration file to control the operation
+of the server or client. Usually the configuration file is generated
+interactively using the &lt;code>velociraptor config generate -i&lt;/code> command.&lt;/p>
+&lt;p>Many people want to automate the configuration generation or override
+the configuration in some way. This short tip covers some of the
+common ways to do that.&lt;/p>
+&lt;h2 id="automating-configuration-generation">Automating configuration generation.&lt;/h2>
+&lt;p>When generating a new configuration, Velociraptor will generate new
+key material and create a reasonable skeleton for the supported
+deployment scenario. In the following command, Velociraptor will emit
+a basic configuration file template to standard output, which can be
+easily redirected to a file:&lt;/p>
+&lt;pre>&lt;code>$ velociraptor-v0.6.4-linux-amd64 config generate &amp;gt; /tmp/config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>To customize the generated configuration we can apply a JSON
+merge/patch step. &lt;a href="https://datatracker.ietf.org/doc/html/rfc7396">JSON
+merge&lt;/a> and &lt;a href="http://jsonpatch.com/">JSON
+patch&lt;/a> are standard ways of specifying a
+transformation on a JSON object.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>Normally the configuration file is in YAML but you can also view it in
+JSON using the &lt;code>--json&lt;/code> flag to the &lt;code>config show&lt;/code> command:&lt;/p>
+&lt;pre>&lt;code>velociraptor --config config.yaml config show --json
+&lt;/code>&lt;/pre>
+&lt;p>Since YAML is a superset of JSON you can also provide this JSON blob
+to Velociraptor as the actual configuration (no need to convert it
+back to YAML). This helps to prepare the JSON merge patch - simply
+remove the fields you dont want to change and change the fields you do
+want to change.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>For example, imagine we want to specify a new URL for clients to
+connect to. We can merge the following JSON blob with the config:&lt;/p>
+&lt;pre>&lt;code>$ velociraptor --config /tmp/config.yaml config show --merge '{&amp;quot;Client&amp;quot;:{&amp;quot;server_urls&amp;quot;:[&amp;quot;https://192.168.1.11:8000/&amp;quot;, &amp;quot;https://192.168.1.12:8000/&amp;quot;]}}' &amp;gt; /tmp/new_config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>It may be more convenient to store the JSON merge blob in a file
+instead of specifying on the command line - use the &lt;code>--merge_file&lt;/code>
+option to provide it.&lt;/p>
+&lt;h2 id="overriding-configuration-at-runtime">Overriding configuration at runtime&lt;/h2>
+&lt;p>While the &lt;code>config show&lt;/code> command can be used to manipulate the
+configuration file, sometimes we want to change a few values at
+runtime on a temporary basis.&lt;/p>
+&lt;p>The first option is using the &lt;code>--config_override&lt;/code> flag to specify the
+path to a JSON merge file that overrides the configuration at
+runtime. Velociraptor will load the configuration file specified by
+the &lt;code>--config&lt;/code> flag as normal, but then will apply the JSON merge blob
+to override specific fields.&lt;/p>
+&lt;p>This is useful for specifying a larger configuration manipulation - it
+will not change the main config file at all, but will change the
+running configuration&lt;/p>
+&lt;h2 id="overriding-configuration-via-command-line-flags">Overriding configuration via command line flags&lt;/h2>
+&lt;p>Velociraptor allows most configuration settings to be overriden by
+suitable command line flags. Since there are so many flags, the usual
+help shown with the &lt;code>--help&lt;/code> flag does not include these configuration
+overriding flags.&lt;/p>
+&lt;p>You can see all the defined flags by enabling the DEBUG environment
+variable:&lt;/p>
+&lt;pre>&lt;code>$ DEBUG=1 ./velociraptor --help
+
+...
+ --config.client-writeback-darwin=CONFIG.CLIENT-WRITEBACK-DARWIN
+ --config.client-writeback-linux=CONFIG.CLIENT-WRITEBACK-LINUX
+ --config.client-writeback-windows=CONFIG.CLIENT-WRITEBACK-WINDOWS
+ --config.client-tempdir-linux=CONFIG.CLIENT-TEMPDIR-LINUX
+ --config.client-tempdir-windows=CONFIG.CLIENT-TEMPDIR-WINDOWS
+&lt;/code>&lt;/pre>
+&lt;p>This is useful to override specific settings temporarily - for example
+when running the server in a cloud environment, the bind port is
+determined by the platform. In this case it is easier to simply
+override this on the command line rather than manipulate the config
+file.&lt;/p>
+&lt;pre>&lt;code>velociraptor --config /etc/velociraptor/server.config.yaml frontend --config.frontend-bind-port=$PORT
+&lt;/code>&lt;/pre></description></item><item><title>How can I save my favorite collections for the future?</title><link>https://docs.velociraptor.app/knowledge_base/tips/favorites/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/favorites/</guid><description>&lt;h1 id="how-can-i-save-my-favorite-collections-for-the-future">How can I save my favorite collections for the future?&lt;/h1>
+&lt;p>Sometimes we tend to collect the same set of artifacts together,
+possibly with some specific parameters. It gets tedious to constantly
+reconfigure the &lt;code>New Collection&lt;/code> interface with the same set of
+artifacts.&lt;/p>
+&lt;p>This where the &lt;code>favorites&lt;/code> feature comes in. We can save existing
+collections including the artifacts collected and their
+parameters. Then in future we just need to restore our collections
+from our favorites.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="40df04caa5af69c051a81f33ff2e565a">
+ &lt;div data-featherlight="#40df04caa5af69c051a81f33ff2e565a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/favorites/fav.png" alt="Saving a collection as a favorite">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="fav.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Saving a collection as a favorite
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The favorite can be restored in future by simply adding a new
+collection, clicking the favorite button and searching for it.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="43befe2b5c6796c74b67fdaa3b5bbdf6">
+ &lt;div data-featherlight="#43befe2b5c6796c74b67fdaa3b5bbdf6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/favorites/fav2.png" alt="Restoring a favorite collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="fav2.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Restoring a favorite collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="creating-favorites-programmatically">Creating favorites programmatically&lt;/h2>
+&lt;p>Favorites are stored into the user&amp;rsquo;s profile, since each user might
+have a different set of artifacts they normally use.&lt;/p>
+&lt;p>It is possible however to create favorites using VQL with the &lt;a href="https://docs.velociraptor.app/vql_reference/server/favorites_save/">favorites_save()&lt;/a> function:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT favorites_save(type=&amp;quot;CLIENT&amp;quot;, name=&amp;quot;MyFavorite&amp;quot;,
+specs='''
+[{&amp;quot;artifact&amp;quot;:&amp;quot;Windows.Search.FileFinder&amp;quot;,
+ &amp;quot;parameters&amp;quot;: {
+ &amp;quot;env&amp;quot;: [{
+ &amp;quot;key&amp;quot;: &amp;quot;SearchFilesGlob&amp;quot;,
+ &amp;quot;value&amp;quot;: &amp;quot;HKEY_USERS/*/Software/Sysinternals/*/*&amp;quot;
+ }, {
+ &amp;quot;key&amp;quot;: &amp;quot;Accessor&amp;quot;,
+ &amp;quot;value&amp;quot;: &amp;quot;registry&amp;quot;
+ }]}}]''')
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>Note the &lt;code>spec&lt;/code> parameter is a JSON encoded blob of the various
+artifact parameters.&lt;/p>
+&lt;p>By including the VQL in a notebook, any user can collect it and
+install the favorites in their own profile.&lt;/p></description></item><item><title>How to fix "certificate has expired or not yet valid error"?</title><link>https://docs.velociraptor.app/knowledge_base/tips/rolling_certificates/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/rolling_certificates/</guid><description>&lt;h1 id="how-to-fix-certificate-has-expired-or-not-yet-valid-error">How to fix &amp;ldquo;certificate has expired or not yet valid error&amp;rdquo;?&lt;/h1>
+&lt;p>When Velociraptor generates a configuration file it also generates
+some certificates to secure it&amp;rsquo;s internal PKI.&lt;/p>
+&lt;p>The CA certificate is embedded in the client&amp;rsquo;s configuration file and
+underpins the entire Velociraptor communications protocol - all
+certificates are issued by this internal CA. The Velociraptor CA is
+set to expire in 10 years.&lt;/p>
+&lt;p>The Server certificate is signed by the CA certificate and is set to
+expire in 1 year by default. When the certificate expires, clients
+will be unable to connect to the server any more.&lt;/p>
+&lt;p>You can check the expiry time of the server certificate using curl and
+openssl:&lt;/p>
+&lt;pre>&lt;code>$ curl -s -k https://127.0.0.1:8000/server.pem | openssl x509 -text | grep -A 2 Validity
+Validity
+ Not Before: Apr 13 12:05:46 2022 GMT
+ Not After : Apr 13 12:05:46 2023 GMT
+&lt;/code>&lt;/pre>
+&lt;p>Reissuing a new server certificate can be performed at any time using the
+&lt;code>config reissue_certs&lt;/code> command. The procedure amounts to generating a new
+server configuration which is derived from the old one, and then replacing the
+old config with the new config.&lt;/p>
+&lt;p>Additionally the &lt;code>config rotate_keys&lt;/code> command can be used to regenerate both
+the server certificate and the associated private key. Although this is not
+necessary for operational purposes, it is considered good security practice
+to rotate keys and certificates periodically, and particularly after a
+suspected systems compromise.&lt;/p>
+&lt;h2 id="setting-a-non-standard-validity">Setting a non-standard validity&lt;/h2>
+&lt;p>The latest release has a &lt;code>--validity&lt;/code> option can be used to extend the validity
+beyond the default of one year. For example, to generate a config containing a
+server certificate which is valid for 2 years, you would run the command:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor --config server.config.yaml config reissue_certs --validity 730 &amp;gt; new.server.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>If you expect your server to be a long-term instance then you don&amp;rsquo;t have to
+start with the default 1-year validity and wait for the certificate to expire.
+You can generate a new config on day 1 based on the initial config using the
+&lt;code>config reissue_certs&lt;/code> command. You can then use the new config for the new
+server installation.&lt;/p>
+&lt;h2 id="rotating-certificates">Rotating certificates&lt;/h2>
+
+&lt;div class="mynotices info">
+ &lt;div heading="info">&lt;p>For server versions older than 0.72.3 please use the following commands instead
+of those shown below:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Current command&lt;/em> -&amp;gt; &lt;em>Command for versions &amp;lt;0.72.3&lt;/em>&lt;/li>
+&lt;li>&lt;code>velociraptor config reissue_certs&lt;/code> -&amp;gt; &lt;code>velociraptor config reissue_key&lt;/code>&lt;/li>
+&lt;li>&lt;code>velociraptor config rotate_keys&lt;/code> -&amp;gt; &lt;code>velociraptor config rotate_key&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>To rotate server certificates, simply use the following command to
+generate a new configuration file containing rotated certificates:&lt;/p>
+&lt;pre>&lt;code>$ velociraptor config reissue_certs --config /etc/velociraptor/server.config.yaml &amp;gt; /tmp/new_key.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>Alternatively, you can regenerate the server&amp;rsquo;s private keys and rotate the
+certificates at the same time:&lt;/p>
+&lt;pre>&lt;code>$ velociraptor config rotate_keys --config /etc/velociraptor/server.config.yaml &amp;gt; /tmp/new_key.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>The previous two commands will not affect the CA private key and
+certificate, which is valid for 10 years, as described in the
+previous section.&lt;/p>
+&lt;p>You can view the new certificate using jq and openssl (here &lt;code>jq&lt;/code> is
+used to show the PEM certificate of the frontend and &lt;code>openssl&lt;/code> is used
+to decode it)&lt;/p>
+&lt;pre>&lt;code>$ velociraptor --config /tmp/new_key.config.yaml config show --json | jq -r .Frontend.certificate | openssl x509 -text | grep -A 2 Validity
+Validity
+ Not Before: Apr 25 21:01:51 2022 GMT
+ Not After : Apr 25 21:01:51 2023 GMT
+&lt;/code>&lt;/pre>
+&lt;p>Now back up the old configuration file and replace it with the new
+file, then restart the server. Clients should reconnect automatically.&lt;/p></description></item><item><title>What do I do about "version GLIBC_2.14 not found" errors?</title><link>https://docs.velociraptor.app/knowledge_base/tips/glibc_errors/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/glibc_errors/</guid><description>&lt;h1 id="what-do-i-do-about-version-glibc_214-not-found-errors">What do I do about &amp;ldquo;version GLIBC_2.14 not found&amp;rdquo; errors?&lt;/h1>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" TLDR - use the `musl` build ">&lt;p>Use the &lt;code>musl&lt;/code> built binary for older Linux systems. You can
+find this build together with the others on the release page with the
+&lt;code>-musl&lt;/code> suffix in the name.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>On Linux, binaries always link to the C library dynamically. This
+happens even with a static binary like Velociraptor. The C library is
+intimately linked to the version of Linux installed on the system and
+it is generally not possible to upgrade the C library without also
+upgrading the entire Linux distribution.&lt;/p>
+&lt;p>During the build process, the compiler creates a version requirement
+for this C library embedded in the binary itself. You can see the
+exact version of all libraries needed at runtime using the &lt;code>read_elf&lt;/code>
+program:&lt;/p>
+&lt;pre>&lt;code>$ readelf -V velociraptor-v0.6.4-linux-amd64
+...
+Version needs section '.gnu.version_r' contains 3 entries:
+ Addr: 0x00000000004106a0 Offset: 0x0106a0 Link: 7 (.dynstr)
+ 000000: Version: 1 File: libdl.so.2 Cnt: 1
+ 0x0010: Name: GLIBC_2.2.5 Flags: none Version: 10
+ 0x0020: Version: 1 File: libpthread.so.0 Cnt: 2
+ 0x0030: Name: GLIBC_2.3.2 Flags: none Version: 6
+ 0x0040: Name: GLIBC_2.2.5 Flags: none Version: 5
+ 0x0050: Version: 1 File: libc.so.6 Cnt: 8
+ 0x0060: Name: GLIBC_2.11 Flags: none Version: 12
+ 0x0070: Name: GLIBC_2.7 Flags: none Version: 11
+ 0x0080: Name: GLIBC_2.14 Flags: none Version: 9
+ 0x0090: Name: GLIBC_2.15 Flags: none Version: 8
+ 0x00a0: Name: GLIBC_2.4 Flags: none Version: 7
+ 0x00b0: Name: GLIBC_2.3.4 Flags: none Version: 4
+ 0x00c0: Name: GLIBC_2.2.5 Flags: none Version: 3
+ 0x00d0: Name: GLIBC_2.3 Flags: none Version: 2
+&lt;/code>&lt;/pre>
+&lt;p>In the above example this binary requires at least &lt;code>GLIBC_2.15&lt;/code> to
+run. You can tell what version of libc you have on any particular
+system using the local package manager.&lt;/p>
+&lt;pre>&lt;code>$ dpkg -l libc6:amd64
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name Version Architecture Description
++++-==============-=============-============-=================================
+ii libc6:amd64 2.33-0ubuntu5 amd64 GNU C Library: Shared libraries
+&lt;/code>&lt;/pre>
+&lt;p>In this case this system has GLIBC version 2.33 which is higher than
+the minimum required version of 2.15.&lt;/p>
+&lt;p>However for older systems, the locally installed GLIBC may be older
+than required. This results in an error when we attempt to run it. For
+example on an old CentOS 6 system:&lt;/p>
+&lt;pre>&lt;code>$ ./velociraptor-v0.6.4-linux-amd64
+./velociraptor-v0.6.4-linux-amd64: /lib64/libc.so.6: version `GLIBC_2.14' not found (required by ./velociraptor-v0.6.4-linux-amd64)
+./velociraptor-v0.6.4-linux-amd64: /lib64/libc.so.6: version `GLIBC_2.15' not found (required by ./velociraptor-v0.6.4-linux-amd64)
+&lt;/code>&lt;/pre>
+&lt;p>Since the version requirement is added at build time, we really need
+to build on an old system to ensure the linked to GLIBC is old enough.&lt;/p>
+&lt;p>Velociraptor uses the &lt;a href="https://www.musl-libc.org/">musl&lt;/a> project to
+build completely static binaries independent of the GLIBC installed on
+the system. While this feature is considered experimental it seems to
+work well and produces truly portable binaries.&lt;/p>
+&lt;p>We recommend that version to only be used for clients on older
+systems, although it might also work for a server too (but really you
+should be running servers on modern patched systems).&lt;/p></description></item><item><title>What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?</title><link>https://docs.velociraptor.app/knowledge_base/tips/startup_artifacts/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/startup_artifacts/</guid><description>&lt;h1 id="what-is-the-easiest-way-to-have-velociraptor-start-with-a-custom-server-artifact-automatically-loaded">What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?&lt;/h1>
+&lt;p>Velociraptor frontend process has a component called the &lt;code>Artifact Repository&lt;/code>. This component knows about all the artifacts that are
+defined. When the server starts up, it loads artifacts into the
+repository from the following sources.&lt;/p>
+&lt;ol>
+&lt;li>Built in artifacts are embedded into the binary itself.&lt;/li>
+&lt;li>It is possible to provide custom artifacts inside the configuration
+file itself.&lt;/li>
+&lt;li>Providing a directory with the &lt;code>--definitions&lt;/code> flag will cause
+Velociraptor to scan the directory for artifact YAML files.&lt;/li>
+&lt;li>Finally, the server will load artifacts from the configured
+filestore path under &lt;code>&amp;lt;filestore&amp;gt;/artifact_definitions&lt;/code>. These are
+usually the custom artifacts defined through the GUI.&lt;/li>
+&lt;/ol>
+&lt;p>The location of where an artifact came from does not matter,
+Velociraptor organizes artifacts internally using the artifact
+name. It is customary to denote custom artifacts with the &lt;code>Custom.&lt;/code>
+prefix but this is not mandatory.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Velociraptor does not allow a custom artifact to override a built in
+artifact (i.e. have the same name). Built in artifacts are protected
+because overriding built in artifacts may break the proper
+functionality of Velociraptor. If you want to customize a built in
+artifact, simply change the name when you save it.&lt;/p>
+&lt;p>Velociraptor considers artifacts defined in the config file, or given
+in the &lt;code>--definitions&lt;/code> directory as &amp;ldquo;built in&amp;rdquo;.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="specifying-a-startup-artifact">Specifying a startup artifact.&lt;/h2>
+&lt;p>When the Velociraptor server is run for the very first time, it
+creates an install record in the filestore
+&lt;code>&amp;lt;filestore&amp;gt;/config/install_time.json.db&lt;/code>. It can then setup initial
+artifacts to collect as specified by the config file:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">Frontend:
+ default_client_monitoring_artifacts:
+ - Generic.Client.Stats
+ initial_server_artifacts:
+ - MyServerArtifact
+ default_server_monitoring_artifacts:
+ - MyCustomServerMonitor
+&lt;/code>&lt;/pre>
+&lt;p>In the above snippet, we see the following parameters:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;code>default_client_monitoring_artifacts&lt;/code> specifies the initial client
+monitoring table that will be created. By default, Velociraptor
+collects endpoint CPU and Memory telemetry from all endpoints. You
+can remove this, or specify a different client artifact to collect.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>default_server_monitoring_artifacts&lt;/code> specifies an initial set of
+server event artifacts to collect.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>initial_server_artifacts&lt;/code> is a list of server artifacts that will
+be automatically launched on the server on initial startup. You can
+specify the names of any artifacts here (including custom artifacts)
+which can be bootstrapped to perform any kinds of server
+configuration needed. The artifacts are simply scheduled and will
+appear in the usual &lt;code>Server Artifacts&lt;/code> screen.&lt;/p>
+&lt;/li>
+&lt;/ul>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Currently it is not possible to specify parameters for initial
+artifacts so if you need to tweak the parameters it is best to create
+a custom artifact that in turn launches the needed artifacts with the
+correct parameters.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How do I search for registry keys</title><link>https://docs.velociraptor.app/knowledge_base/tips/registry_finder/</link><pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/registry_finder/</guid><description>&lt;h1 id="how-do-i-search-for-registry-keys">How do I search for registry keys&lt;/h1>
+&lt;p>To search the registry simply use the &amp;ldquo;registry&amp;rdquo; accessor with the &lt;code>Windows.Search.FileFinder&lt;/code> artifact.&lt;/p>
+&lt;p>This works because Velociraptor can glob the registry as if it were a filesystem (See &lt;a href="https://docs.velociraptor.app/docs/forensic/filesystem/#filesystem-accessors">Filesystem Accessors&lt;/a>&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="b534ad35ffc810e2dd8b1120d71f604f">
+ &lt;div data-featherlight="#b534ad35ffc810e2dd8b1120d71f604f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/registry_finder/https://user-images.githubusercontent.com/3856546/165133750-a694844a-5bb5-44bc-94a8-fd715a6efe4a.png" alt="Searching the registry">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/165133750-a694844a-5bb5-44bc-94a8-fd715a6efe4a.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Searching the registry
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>How do I use my own SSL certificates?</title><link>https://docs.velociraptor.app/knowledge_base/tips/ssl/</link><pubDate>Mon, 18 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/ssl/</guid><description>&lt;h1 id="how-do-i-use-my-own-ssl-certificates">How do I use my own SSL certificates?&lt;/h1>
+&lt;p>Use case: For an on-premises deployment, Let&amp;rsquo;s Encrypt may not be an option. You may want to use your own enterprise/corporate Certificate Authority (CA) or another 3rd party.&lt;/p>
+&lt;p>Thanks to recent enhancements by the Velociraptor developers, this is quite a simple task. The below is a simple test configuration used and may need adapting to your environment.&lt;/p>
+&lt;p>Prior to commencing we have a plaintext PEM private key, certificate for our Velociraptor server, and the certificate chain of our enterprise CA, including the root and multiple intermediaries.&lt;/p>
+&lt;h3 id="generate-the-configuration">Generate the configuration&lt;/h3>
+&lt;p>Using Ubuntu we generated a stock standard &amp;ldquo;Self Signed SSL&amp;rdquo; configuration:&lt;/p>
+&lt;p>&lt;code>./velociraptor-v0.6.3-2-linux-amd64 config generate -i&lt;/code>&lt;/p>
+&lt;img width="491" alt="image" src="https://user-images.githubusercontent.com/30587915/163787136-f9e6f16f-5119-4cd0-ba43-741ab64cdc42.png">
+&lt;h3 id="update-the-serverconfigyaml">Update the server.config.yaml&lt;/h3>
+&lt;p>Locate the frontend section and add the &lt;code>tls_certificate_filename&lt;/code> and &lt;code>tls_private_key_filename&lt;/code> parameters. Enter the absolute path to these files. For testing, we placed in /etc however there is better places for production use.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">Frontend:
+ tls_certificate_filename: /etc/velociraptor.pem
+ tls_private_key_filename: /etc/velociraptor.key
+&lt;/code>&lt;/pre>
+&lt;img width="221" alt="image" src="https://user-images.githubusercontent.com/30587915/163787153-9734cbb8-ddbf-4140-b4d6-1c89e19afa7c.png">
+&lt;h3 id="update-the-clientconfigyaml">Update the client.config.yaml&lt;/h3>
+&lt;p>In the client section modify &lt;code>use_self_signed_ssl&lt;/code> to be false, and add the CA root/intermediary certificates to be trusted by the client:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">use_self_signed_ssl: false
+
+Crypto:
+ root_certs: |
+ -----BEGIN CERTIFICATE-----
+ XXXXX
+ -----END CERTIFICATE-----
+ -----BEGIN CERTIFICATE-----
+ XXXXX
+ -----END CERTIFICATE-----
+ -----BEGIN CERTIFICATE-----
+ XXXXX
+ -----END CERTIFICATE-----
+ ...
+&lt;/code>&lt;/pre>
+&lt;h3 id="test">Test&lt;/h3>
+&lt;p>Launching the server we should be able to connect to the GUI using our new certificate. Note this must be trusted by browser/system to prevent errors.&lt;/p>
+&lt;p>Launching the client, it should connect securely without error, using the trusted CA chain and the new server certificate.&lt;/p>
+&lt;p>No changes need to be made to the pinned certificate name, nor do any certificates need to be modified in the configuration files.&lt;/p></description></item><item><title>How do I set a proxy for client communications?</title><link>https://docs.velociraptor.app/knowledge_base/tips/proxy/</link><pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/proxy/</guid><description>&lt;h1 id="how-do-i-set-a-proxy-for-client-communications">How do I set a proxy for client communications?&lt;/h1>
+&lt;p>Many enterprise environments require a proxy to be set before outbound
+web communications is allowed. The Velociraptor client uses HTTP to
+communicate with the server, and therefore must use a proxy to
+connect in such environments.&lt;/p>
+&lt;p>It is possible to specify the HTTP proxy using the configuration file
+or environment variables.&lt;/p>
+&lt;h3 id="environment-variables">Environment variables.&lt;/h3>
+&lt;p>Environment variables may be configured using group policy or similar
+methods. Setting the &lt;code>http_proxy&lt;/code> and &lt;code>https_proxy&lt;/code> environment
+variables will force the client to go through the specified proxy.&lt;/p>
+&lt;p>The rules for environment variables are described
+&lt;a href="https://go.dev/src/net/http/transport.go#422">here&lt;/a>:&lt;/p>
+&lt;pre>&lt;code class="language-go">// ProxyFromEnvironment returns the URL of the proxy to use for a
+// given request, as indicated by the environment variables
+// HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions
+// thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https
+// requests.
+//
+// The environment values may be either a complete URL or a
+// &amp;quot;host[:port]&amp;quot;, in which case the &amp;quot;http&amp;quot; scheme is assumed.
+// The schemes &amp;quot;http&amp;quot;, &amp;quot;https&amp;quot;, and &amp;quot;socks5&amp;quot; are supported.
+// An error is returned if the value is a different form.
+&lt;/code>&lt;/pre>
+&lt;h3 id="setting-a-proxy-in-the-configuration-file">Setting a proxy in the configuration file&lt;/h3>
+&lt;p>You can also hard code the proxy in the configuration file&amp;rsquo;s Client
+section:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">Client:
+ proxy: http://proxy.example.com:3128/
+ server_urls:
+ - https://velo.example.com:8100/
+&lt;/code>&lt;/pre></description></item><item><title>How to increase notebook timeout</title><link>https://docs.velociraptor.app/knowledge_base/tips/notebook_timeout/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/notebook_timeout/</guid><description>&lt;h1 id="how-to-increase-notebook-timeout">How to increase notebook timeout&lt;/h1>
+&lt;p>In the notebook, VQL queries are limited to 10 minutes. Once the timeout is expired, the query is cancelled.
+Regular collections from clients also have a timeout, that timeout can be changed in the new collection wizard GUI to give the query more time.&lt;/p>
+&lt;p>But there is no similar control for the notebook cells. In the notebook, the time limit serves to limit server load - because the notebook queries are run on the server we don&amp;rsquo;t want them to take too long or make it too easy to extend the timeout too long.&lt;/p>
+&lt;p>If you find that your cell query is routinely exceeding the timeout, you can use one of the following approaches:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Make the query more efficient - for example using multi-threaded queries or the &lt;code>parallelize()&lt;/code> plugin.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Turn the query into a server artifact. Large queries are often very reusable and if you can turn it into an artifact, it might be useful again. Running a server artifact allows the timeout to be increased if needed.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>As a last resort update the default notebook timeout in the configuration file. Find or add the section called &lt;code>defaults&lt;/code> and add the following setting:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-yaml">Frontend:
+... other settings ...
+defaults:
+ notebook_cell_timeout_min: 20
+&lt;/code>&lt;/pre></description></item><item><title>How do I upgrade my server and clients?</title><link>https://docs.velociraptor.app/knowledge_base/tips/upgrading/</link><pubDate>Sun, 27 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/upgrading/</guid><description>&lt;h1 id="how-do-i-upgrade-my-server-and-clients">How do I upgrade my server and clients?&lt;/h1>
+&lt;p>To upgrade the Velociraptor server to a new version, simply download the latest release binary from the GitHub Release Page and regenerate a new &lt;code>Debian&lt;/code> package as described above, but using the existing configuration file.&lt;/p>
+&lt;p>See &lt;a href="https://docs.velociraptor.app/docs/deployment/cloud/#server-upgrades">this page for more details&lt;/a>&lt;/p>
+&lt;p>To upgrade the Velociraptor clients, you will need to push out new MSIs using the existing client configuration files.&lt;/p>
+&lt;p>More details on &lt;a href="https://docs.velociraptor.app/docs/deployment/clients/#client-upgrades">Client upgrades&lt;/a>&lt;/p>
+&lt;h2 id="supported-upgrade-scenarios">Supported Upgrade Scenarios&lt;/h2>
+&lt;p>Matching client and server versions is the most supported configuration.
+See &lt;a href="https://docs.velociraptor.app/docs/overview/support/#client-and-server-versioning">the support policy&lt;/a>&lt;/p>
+&lt;p>Before upgrading perform testing of the combination of client and server versions to be used, compatibility of mixed versions is best efforts based on community testing and issues being reported.&lt;/p>
+&lt;ul>
+&lt;li>Check &lt;a href="https://github.com/Velocidex/velociraptor/issues">GitHub&lt;/a> for issues reported by the community.&lt;/li>
+&lt;li>Read &lt;a href="https://github.com/Velocidex/velociraptor/releases">release notes&lt;/a> for all versions between the current version, and the version you are moving to if skipping versions. Generally though avoid skipping versions.&lt;/li>
+&lt;/ul>
+&lt;h2 id="other-tips">Other tips&lt;/h2>
+&lt;ul>
+&lt;li>Recent versions of clients and servers generally can communicate with each other without a problem, but new functionality may not be available on old clients. Artifacts like &lt;a href="https://github.com/Velocidex/velociraptor/issues/1566">this&lt;/a> will (0.6.4+) help reduce this.&lt;/li>
+&lt;li>Upgrading the server before clients is more common, so version problems are more likely to have been caught in community testing with this approach.&lt;/li>
+&lt;li>Consider running a parallel deployment as the most compatible way to upgrade. Such as when upgrading and there are known breaking changes between the current client and target server versions (going from self signed to auto cert), or when there are large version differences (unusual combinations of client and server).&lt;/li>
+&lt;/ul></description></item><item><title>In VQL, can I SELECT a column with special characters in its name?</title><link>https://docs.velociraptor.app/knowledge_base/tips/identifier_with_space/</link><pubDate>Sun, 27 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/identifier_with_space/</guid><description>&lt;h1 id="in-vql-can-i-select-a-column-with-special-characters-in-its-name">In VQL, can I SELECT a column with special characters in its name?&lt;/h1>
+&lt;p>Sometimes a VQL query will emit a column name with special characters in its name, such as a dot, space or other special characters.&lt;/p>
+&lt;p>You can still refer to this column using backticks around the identifier name:&lt;/p>
+&lt;pre>&lt;code class="language-vql">-- This will not work because VQL will interpret the dot as an operator
+SELECT Raddr.IP FROM ...
+
+-- This will work because VQL will treat the entire thing as a single identifier
+SELECT `Raddr.IP` FROM ...
+&lt;/code>&lt;/pre>
+&lt;p>You can read more about &lt;a href="https://docs.velociraptor.app/docs/vql/#identifiers-with-spaces">VQL identifiers&lt;/a>&lt;/p></description></item><item><title>How can I automatically apply labels to clients?</title><link>https://docs.velociraptor.app/knowledge_base/tips/automating_labels/</link><pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/automating_labels/</guid><description>&lt;h1 id="how-can-i-automatically-apply-labels-to-clients">How can I automatically apply labels to clients?&lt;/h1>
+&lt;p>Sometimes it is useful to automatically label clients based on client
+state. You can do this automatically by running a &lt;a href="https://docs.velociraptor.app/docs/server_automation/server_monitoring/">Server Event
+Artifact&lt;/a>
+that automatically applies labels based on some criteria.&lt;/p>
+&lt;p>When a client appears for the first time on a Velociraptor deployment,
+the server instructs the client to enrol, and automatically runs the
+&lt;code>Generic.Client.Info&lt;/code> artifact on it. This artifact is designed to
+collect basic information about the endpoint.&lt;/p>
+&lt;p>We can watch the system for any new collections of the artifact and
+apply labels based on their results.&lt;/p>
+&lt;p>For the following example, I will label a client with the label
+&amp;ldquo;Server&amp;rdquo; if it is running any kind of Windows Server Operating System.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET interrogations = SELECT *
+FROM watch_monitoring(artifact=&amp;quot;System.Flow.Completion&amp;quot;)
+WHERE Flow.artifacts_with_results =~ &amp;quot;Generic.Client.Info/BasicInformation&amp;quot;
+
+LET results = SELECT *, ClientId
+FROM source(
+ artifact=&amp;quot;Generic.Client.Info/BasicInformation&amp;quot; ,
+ client_id=ClientId, flow_id=FlowId)
+WHERE Platform =~ &amp;quot;Server&amp;quot;
+
+SELECT *,
+label(client_id=ClientId, labels=&amp;quot;Server&amp;quot;, op=&amp;quot;set&amp;quot;)
+FROM foreach(row=interrogations, query=results)
+&lt;/code>&lt;/pre>
+&lt;ol>
+&lt;li>The &lt;code>interrogations&lt;/code> query will watch for any flow completion with
+results for the &lt;code>Generic.Client.Info/BasicInformation&lt;/code> source. This
+will provide the flow id and the client id.&lt;/li>
+&lt;li>The &lt;code>results&lt;/code> query will read all the results from the
+collection. Typically the Release field will contain the Windows
+Release information. We filter out all rows but those that match
+the word &amp;ldquo;Server&amp;rdquo; to only see results from the Windows Server
+platform.&lt;/li>
+&lt;li>Finally for each interrogations we get the results and finally
+&amp;ldquo;set&amp;rdquo; the label &amp;ldquo;Server&amp;rdquo; on the client id.&lt;/li>
+&lt;/ol>
+&lt;p>Now that we have the VQL worked out, we just package it in a YAML
+artifact by giving it a name.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">name: AutomateServerLabels
+type: SERVER_EVENT
+sources:
+- query: |
+ LET interrogations = SELECT *
+ FROM watch_monitoring(artifact=&amp;quot;System.Flow.Completion&amp;quot;)
+ WHERE Flow.artifacts_with_results =~ &amp;quot;Generic.Client.Info/BasicInformation&amp;quot;
+
+ LET results = SELECT *, ClientId
+ FROM source(
+ artifact=&amp;quot;Generic.Client.Info/BasicInformation&amp;quot; ,
+ client_id=ClientId, flow_id=FlowId)
+ WHERE Platform =~ &amp;quot;Server&amp;quot;
+
+ SELECT *
+ label(client_id=ClientId, labels=&amp;quot;Server&amp;quot;, op=&amp;quot;set&amp;quot;)
+ FROM foreach(row=interrogations, query=results)
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="ad98c8260b582fa91c5a55cf3e5f1e1f">
+ &lt;div data-featherlight="#ad98c8260b582fa91c5a55cf3e5f1e1f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/automating_labels/artifact.png" alt="Adding a new artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adding a new artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now we can enable monitoring of these events by adding the artifact to
+the server event table&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="e141c9a3e348b7ef1353ad61128ce063">
+ &lt;div data-featherlight="#e141c9a3e348b7ef1353ad61128ce063" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/automating_labels/installing_event_monitoring.png" alt="Installing server event monitoring">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="installing_event_monitoring.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Installing server event monitoring
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Refreshing labels ">&lt;p>The above artifact will automatically label clients when the &lt;code>Generic.Client.Info&lt;/code> collection is run on the clients. This collection runs when the client is first seen but you can run it at any time.&lt;/p>
+&lt;p>To relabel all clients - even after they were enrolled, you can just
+start a hunt for &lt;code>Generic.Client.Info&lt;/code> at any time.&lt;/p>
+&lt;p>Note that labels are either Set or Cleared for it is fine to re-apply
+the label many times.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How can I configure Velociraptor for multiple SSO providers</title><link>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</link><pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</guid><description>&lt;h1 id="how-can-i-configure-velociraptor-for-multiple-sso-providers">How can I configure Velociraptor for multiple SSO providers&lt;/h1>
+&lt;p>Velociraptor can be configured to use a single SSO provider using the usual configuration building wizard (see &lt;a href="https://docs.velociraptor.app/docs/deployment/cloud/#configuring-google-oauth-sso">Here&lt;/a>), but the wizard does not offer to configure multiple providers.&lt;/p>
+&lt;p>Sometimes we want to have multiple providers so we can allow users from another organization to be able to log into Velociraptor. To do this we need to configure the SSO authenticator manually in the configuration file.&lt;/p>
+&lt;p>Simply run &lt;code>velociraptor config generate -i&lt;/code> and select the OAuth provider for the first provider. In the end your config file will have the following section where &lt;code>oauth_client_id&lt;/code> and &lt;code>oauth_client_secret&lt;/code> refer to the Google OAuth app you created:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+&lt;/code>&lt;/pre>
+&lt;p>To provide multiple authenticators, you will need to manually change to the &lt;code>multi&lt;/code> authenticator type:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: multi
+ sub_authenticators:
+ - type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+ - type: Github
+ oauth_client_id: 123456
+ oauth_client_secret: 76521376523
+ - type: oidc
+ oidc_issuer: https://accounts.google.com
+ oidc_name: Rapid7
+ avatar: https://example.com/avatar.png
+ oauth_client_id: XXXXX
+ oauth_client_secret: AAAAA
+&lt;/code>&lt;/pre>
+&lt;p>Note that you can have multiple &lt;code>OIDC&lt;/code> authenticators and each can have a separate name and an icon associated with it (e.g. if multiple organizations use separate Okta logins).&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="47a0513752ad43ed9f3f48bd62462858">
+ &lt;div data-featherlight="#47a0513752ad43ed9f3f48bd62462858" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png" alt="Logging in with multiple providers">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Logging in with multiple providers
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="granting-a-user-a-role">Granting a user a role.&lt;/h2>
+&lt;p>Velociraptor will trust any of the configured authenticators, to identify the user and based on the username, grant the user the appropriate roles on the Velociraptor server. You will need to grant the user a role either through the command line:&lt;/p>
+&lt;pre>&lt;code>velociraptor user add --role administrator mike@gmail.comm
+&lt;/code>&lt;/pre>
+&lt;p>Or via a notebook cell:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT user_create(user=&amp;quot;mike@gmail.com&amp;quot;, role=&amp;quot;administrator&amp;quot;)
+FROM scope()
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Trusting multiple providers ">&lt;p>Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.&lt;/p>
+&lt;p>In simple terms, if a user has username &amp;ldquo;mike&amp;rdquo; on &lt;code>OIDC&lt;/code> provider 1 and another user can get say a Github account for the user &amp;ldquo;mike&amp;rdquo;, then the second user can impersonate the first user by logging in with the second provider.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How do I debug the client while it is running?</title><link>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</guid><description>&lt;h1 id="how-do-i-debug-the-client-while-it-is-running">How do I debug the client while it is running?&lt;/h1>
+&lt;p>Sometimes we collect artifacts from clients but for some reason things seem to take longer than expected. Velociraptor has mechanisms to gain visibility into how clients behave and what queries are running.&lt;/p>
+&lt;h2 id="query-logs">Query logs&lt;/h2>
+&lt;p>The first port of call is viewing the query logs in the logs tab of the relevant collection.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="7c86ff2b12e4fdf25f00b8e09d60698f">
+ &lt;div data-featherlight="#7c86ff2b12e4fdf25f00b8e09d60698f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/https://user-images.githubusercontent.com/3856546/159195874-ec6c8322-cb70-4254-861a-95888db94201.png" alt="Viewing the query logs">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/159195874-ec6c8322-cb70-4254-861a-95888db94201.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Viewing the query logs
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As the query is running, it will emit a message to let us know that it is waiting for rows. We use this to determine that the query is still running on the client.&lt;/p>
+&lt;h2 id="collecting-profiles">Collecting profiles&lt;/h2>
+&lt;p>The &lt;code>Generic.Client.Profile&lt;/code> artifact allows us to collect internal state of the client. Simply collect this from the client, while other queries are running&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="a0871aaf4dcd4891fffd377e8a831ecf">
+ &lt;div data-featherlight="#a0871aaf4dcd4891fffd377e8a831ecf" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/https://user-images.githubusercontent.com/3856546/159196011-28808471-4111-42ba-bfd3-819381bdf596.png" alt="Client Profile">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/159196011-28808471-4111-42ba-bfd3-819381bdf596.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Client Profile
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most common thing to collect include:&lt;/p>
+&lt;ol>
+&lt;li>The Goroutine dump shows a stack trace of all currently running goroutines (similar to threads). This helps us understand if there is a deadlock or another bug.&lt;/li>
+&lt;li>The logs delivers a recent dump of client logs. Normally the client does &lt;strong>not&lt;/strong> write it&amp;rsquo;s logs to file to avoid information leakage issues. You can see the logs on the console by running the client with the &lt;code>-v&lt;/code> flag, but each client also keeps the last 1000 messages in a memory buffer so they can be available if needed. This option sends the recent logs to the server.&lt;/li>
+&lt;li>Query logs are a recent log of VQL queries running on the endpoint. This gives us an idea of exactly what the client is doing.&lt;/li>
+&lt;li>Metrics are internal program counters that provide visibility of performance related items.&lt;/li>
+&lt;/ol>
+&lt;p>When asking for help on Discord or our mailing list, we will often ask for the profiles collected from the client (or server). At a minimum we will need the above items to diagnose any issues.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>The nice thing about collecting profiles is that the client does &lt;strong>not&lt;/strong> need to be restarted and we do not need to run a special debug build - all clients are capable of collecting profile information at any time.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h3 id="references">References&lt;/h3>
+&lt;p>You can read more about &lt;a href="https://docs.velociraptor.app/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/">profiling Velociraptor here&lt;/a>.&lt;/p></description></item><item><title>How do I deploy the client as agentless (without install)?</title><link>https://docs.velociraptor.app/knowledge_base/tips/deploying_in_agentless_mode/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/deploying_in_agentless_mode/</guid><description>&lt;h1 id="how-do-i-deploy-the-client-as-agentless-without-install">How do I deploy the client as agentless (without install)?&lt;/h1>
+&lt;p>Sometimes we need to deploy Velociraptor in an IR and can not install
+it permanently as a service.&lt;/p>
+&lt;h2 id="windows-environments">Windows Environments&lt;/h2>
+&lt;p>It is possible to deploy the client using Group Policy by using
+&lt;code>Scheduled task&lt;/code> feature to cause domain connected machines to run the
+client. See details &lt;a href="https://docs.velociraptor.app/blog/html/2019/03/02/agentless_hunting_with_velociraptor/">here&lt;/a>.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The first step is to place the client and the generated
+&lt;code>client.config.yaml&lt;/code> on a public read only windows share.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Update the config file&amp;rsquo;s writeback location to somewhere writable
+on the client (e.g. &lt;code>C:\Windows\Temp\velo.writeback.yaml&lt;/code>)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Next create a &lt;code>Scheduled Task&lt;/code> in a new group policy object that
+applies to the relevant OU.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The scheduled task should be launched as &lt;code>NT_AUTHORITY\SYSTEM&lt;/code> from
+the read only share. With the appropriate command line. For example:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>\\dc\deployment\velociraptor.exe --config \\dc\deployment\client.config.yaml client --mutant MyVeloName
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Controlling number of instances ">&lt;p>Window&amp;rsquo;s Group Policy allows setting only a single instance of the
+program to run at the time, however we found in practice this is not
+reliable and sometimes GPO will launch dozens of copies of
+Velociraptor over time. To avoid this we use the &lt;code>--mutant&lt;/code> flag which
+will exit if a mutant of this name already exists.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="linux-environments">Linux Environments&lt;/h2>
+&lt;h3 id="systemd">Systemd&lt;/h3>
+&lt;p>It is possible to execute a program in a &amp;ldquo;transient scope&amp;rdquo;, which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the need to create persistent configurations.
+Using &lt;code>systemd-run&lt;/code> the process will be executed and its parent will be the &lt;code>init&lt;/code> process, and will not terminate until the host is rebooted.&lt;/p>
+&lt;p>To execute the Velociraptor binary run the following:&lt;/p>
+&lt;pre>&lt;code>systemd-run -u velociraptor_tmp /tmp/velociraptor.bin client --config /tmp/client.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>Once the service is running, you should now be free to terminate the SSH / management session without terminating the process.&lt;/p>
+&lt;p>You can manually terminate the service with: &lt;code>systemctl stop velociraptor_tmp.service &lt;/code>&lt;/p>
+&lt;p>You can check it&amp;rsquo;s status with: &lt;code>systemctl status velociraptor_tmp.service&lt;/code>&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Temporary locations ">&lt;p>On Linux /tmp is cleaned up by a service, which gets triggered on shutdown.
+You will need to arrange for the Velociraptor binary and configuration file to be transferred again if the host reboots.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>You can read more about the &lt;code>systemd-run&lt;/code> here for flags etc: &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd-run.html">https://www.freedesktop.org/software/systemd/man/systemd-run.html&lt;/a>&lt;/p></description></item></channel></rss>
