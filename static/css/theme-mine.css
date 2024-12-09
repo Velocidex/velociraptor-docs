@@ -251,6 +251,11 @@ blockquote h1 {
 
 .input-group .form-control {
     font-size: 20px !important;
+    padding: 1.5em !important;
+}
+
+.input-group-addon .fas.fa-search {
+    font-size: 20px !important;
 }
 
 div.mynotices {
@@ -415,8 +420,8 @@ code.hljs {
 }
 
 .label.label-info {
-    background-color: transparent;
-    border: solid 1px var(--MAIN-TEXT-color);
+    background-color: #e5e4e2;
+    border: none;
     color: var(--MAIN-TEXT-color);
     font-size: 14px;
     margin: 5px;

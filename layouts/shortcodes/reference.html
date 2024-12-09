@@ -71,8 +71,8 @@ function DrawResults(data) {
       template.find(".link").attr("href", getLink(item));
       template.find(".type").append(item.type)
       template.find(".idea-tag").append(
-          `<i class="linkcolour label label-info pull-right">category: ` +
-              (item.category || "misc") + `</i>`);
+          `<i class="linkcolour label label-info pull-right">` +
+              (item.category || "other") + `</i>`);
 
       if (item.metadata && item.metadata.permissions) {
           let html = $(`
@@ -133,7 +133,7 @@ function getLink(item) {
     if (item.category) {
         return "/vql_reference/" + item.category + "/" + item.name;
     }
-    return "/vql_reference/misc/" + item.name;
+    return "/vql_reference/other/" + item.name;
 }
 
 </script>

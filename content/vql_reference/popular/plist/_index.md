@@ -11,7 +11,7 @@ no_edit: true
 
 
 ## plist
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
+<span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
 
@@ -19,12 +19,12 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-file|A list of files to parse.|list of OSPath (required)
+file|A list of files to parse.|OSPath (required)
 accessor|The accessor to use.|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 
-Parses a plist file.
+Parse plist file
 

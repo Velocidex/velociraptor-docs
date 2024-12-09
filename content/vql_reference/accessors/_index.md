@@ -1,14 +1,14 @@
 ---
 title: Accessors
-weight: 80
+weight: 100
 linktitle: Accessors
 index: true
 no_edit: true
 no_children: true
 ---
 
-Accessors are used to access bulk data from various sources using
-a standard file like interface.
+Accessors are used to access bulk data from various sources using a standard
+file-like interface.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
 |[auto](auto)|<span class='vql_type'>Accessor</span>|Access the file using the best accessor possible|
