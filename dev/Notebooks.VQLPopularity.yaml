@@ -1,11 +1,11 @@
 name: Notebooks.VQLPopularity
 description: |
-  Counts occurences of functions and plugins in the artifact repository. 
-  The goal if to highlight the top 50 ones that are useful
-  
-  It's best to use this on a clean datastore and import external artifacts 
+  Counts occurences of functions and plugins in the artifact repository.
+  The goal is to highlight the top 50 ones that are useful
+
+  It's best to use this on a clean datastore and import external artifacts
   for consideration.
-  
+
   For "popular" items I chose the top 20 plugins and the top 30 functions.
   The threshold is arbitrary but the results do represent the more useful ones.
   Currently this leaves 3x as many uncategorized so it seems like a reasonable
@@ -29,11 +29,11 @@ export: |
   LET parsed = SELECT parse_yaml(accessor="data", filename=serialize(format="yaml", item=mapslice)) AS item FROM splitted
   LET parsed2 = SELECT * FROM foreach(row=parsed.item)
   LET vql = SELECT *, S.metadata AS metadata, S.version AS version, S.free_form_args AS free_form_args, S.category AS category FROM parsed2
-  
+
   -- We want to consider uncategorized items only and the existing popular ones (in case they are no longer popular)
   LET plugins = SELECT name FROM vql WHERE lowcase(string=type) = "plugin" AND (NOT category OR category = "popular")
   LET functions = SELECT name FROM vql WHERE lowcase(string=type) = "function" AND (NOT category OR category = "popular")
-  
+
   LET definitions = SELECT name,
          serialize(item=sources+export, format="yaml") AS text
   FROM artifact_definitions(deps=FALSE, sanitize=TRUE)
@@ -48,7 +48,7 @@ sources:
         -- select plugins.name from scope()
         -- select functions.name from scope()
         -- select alltext from scope()
-        
+
         LET plugin_matches = SELECT *
           FROM foreach(
             row=plugins.name,
@@ -59,9 +59,9 @@ sources:
                 accessor="data",
                 regex='''FROM(?:\s+)(?-i)(''' + _value + ''')\(''')
             })
-        
+
         SELECT _value AS plugin_match FROM foreach(row=plugin_matches.g1)
-        
+
         LET function_matches = SELECT *
           FROM foreach(
             row=functions.name,
@@ -72,5 +72,5 @@ sources:
                 accessor="data",
                 regex='''[^F][^R][^O][^M](?:\s+)(?-i)(''' + _value + ''')\(''')
             })
-        
+
         SELECT _value AS function_match FROM foreach(row=function_matches.g1)
