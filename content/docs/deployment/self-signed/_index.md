@@ -39,19 +39,34 @@ possibility of a MITM attack when accessing the Admin GUI.
 {{% /notice %}}
 
 ## Generate the configuration file
-You can generate the file using either a configuration wizard that guides you through the process, or automate this step using a script we provide.
+You can generate a configuration file using either a configuration wizard that
+guides you through the process, or through the automate the merge process that
+we describe below.
 
 ### Option A: Use the configuration wizard
 
-Run the `config
-generate` command to invoke the configuration wizard.
+For a guided approach run `config generate` with the `-i` (interactive) flag
+which will invoke the configuration wizard.
 
-```sh
-velociraptor config generate -i
+{{< tabs >}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor config generate -i
 ```
-The configuration wizard appears.
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor.exe config generate -i
+```
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor config generate -i
+```
+{{% /tab %}}
+{{< /tabs >}}
 
-![Generating Self Signed Deployment](self-signed-generation.png?classes=shadow)
+![Generating a configuration for a self-signed Deployment](self-signed-generation.gif)
 
 The configuration wizard includes a set of questions to guide you through the first step of the deployment process.
 
@@ -69,60 +84,107 @@ The configuration wizard includes a set of questions to guide you through the fi
   but this not recommended because it is less flexible. If the
   server's IP address changes it will be impossible to contact the
   clients.
-* **The frontend port to listen on:** The front end receives client
+* **The Frontend port to listen on:** The Frontend receives client
   connections. You should allow inbound access to this port from
   anywhere.
 * **The port for the Admin GUI to listen on:** The Admin GUI receives browser
   connections. As discussed above, in self-signed mode the Admin GUI will
   only bind to the local host.
-* **GUI Username or email address to authorize:** The initial set of
-  administrator accounts can be stored in the configuration file. When
-  Velociraptor starts, it automatically adds these accounts as
-  administrators. When using self-signed SSL mode, the only
-  authentication method available is `Basic Authentication`.
-  Velociraptor stores the username and hashed passwords in the
-  datastore.
+* **Initial GUI users:** The initial set of administrator accounts can be stored
+  in the configuration file. When Velociraptor starts, it automatically adds
+  these accounts as administrators. When using self-signed SSL mode, the only
+  authentication method available is `Basic Authentication`. Velociraptor stores
+  the username and hashed passwords in the datastore.
+* **Extended certificate validity:** You may choose to override the default
+  1-year certificate expiry if you intend to deploy a long-term server instance.
 
 ### Option B: Automate the config file generation
 
-Velociraptor supports a JSON merge, which allows you to automate the generation of the configuration file.
+Running the `config generate` command without the interactive flag will generate
+a basic sensible configuration using the self-signed SSL option, which you can
+then manually customize to your needs. Alternatively you can use this command
+with the JSON merge flag (`--merge`). This allows you to automate the generation
+and customization of the configuration in a single step, which you may want to
+do in automated build environments.
 
-```sh
-velociraptor config generate --merge
-    '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+{{< tabs >}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor config generate --merge '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
 ```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor.exe config generate --merge '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+```
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor config generate --merge '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+```
+{{% /tab %}}
+{{< /tabs >}}
 
-The service adds a new Velociraptor user to run under.
-You can now access the Velociraptor server using your browser.
-
-The first time you navigate to the SSL URL the server will obtain a
-certificate from Let's Encrypt. There will be a small pause as this
-happens.
-
-You will be redirected to Google for authentication - Velociraptor
-does not handle any credentials in this configuration. Google will
-determine if the user authenticated properly and display
-the user’s email address and avatar.
 
 ## Create the server package
 
-You'll need to run a command that instructs Velociraptor to create a server Debian package using the linux binary specified. The
-package will contain the Velociraptor executable, the server
-configuration file and relevant startup scripts.
+You'll need to run a command that instructs Velociraptor to create a server
+Debian package using the linux binary specified. The package will contain the
+Velociraptor executable, the server configuration file and relevant startup
+scripts.
 
 Use the following command:
-```sh
-velociraptor.exe --config server.config.yaml debian server --binary velociraptor-v0.6.0-linux-amd64
+
+{{< tabs >}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor --config server.config.yaml debian server --binary velociraptor-linux-amd64
 ```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor.exe --config server.config.yaml debian server --binary velociraptor-linux-amd64
+```
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor --config server.config.yaml debian server --binary velociraptor-linux-amd64
+```
+{{% /tab %}}
+{{< /tabs >}}
+
 
 {{% notice warning %}}
-The Debian package contains the server configuration file, which contains all required key materials. Make sure the debian file is well protected since a compromise of the file will leak private key material enabling a MITM attack against Velociraptor.
+
+The Debian package contains the server configuration file, which contains all
+required key materials. Make sure this file is well protected since a compromise
+of the file will leak private key material enabling a MITM attack against
+Velociraptor.
+
 {{% /notice %}}
 
 ## Install a new server
+
 Push the debian package to the server using Secure Copy Protocol (SCP):
-```scp velociraptor_server*.deb mike@123.45.67.89:/tmp/```
+
+```shell
+scp velociraptor_server.deb user@123.45.67.89:/tmp/
+```
 
 ## Install the package
+
 Run the following command to install the server package:
-```sudo dpkg -i velociraptor_*_server.deb```
+
+```shell
+sudo dpkg -i velociraptor_server.deb
+```
+
+The service adds a new Velociraptor user to run under. You can now access the
+Velociraptor server using your browser.
+
+The first time you navigate to the SSL URL the server will obtain a certificate
+from Let's Encrypt. There will be a small pause as this happens.
+
+You will be redirected to Google for authentication - Velociraptor does not
+handle any credentials in this configuration. Google will determine if the user
+authenticated properly and display the user’s email address and avatar.

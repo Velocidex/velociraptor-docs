@@ -127,6 +127,9 @@ a:hover {
     background-color: var(--MAIN-LINK-HOVER-color);
 }
 
+#body .padding {
+   padding: 1rem 2rem;
+}
 
 #sidebar {
     background-color: var(--MENU-SECTIONS-BG-color);

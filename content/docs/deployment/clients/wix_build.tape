@@ -1,5 +1,5 @@
 Output ./wix_build.gif
-Output ./wix_build.mp4
+# Output ./wix_build.mp4
 
 # Settings:
 Set Shell bash
@@ -41,8 +41,9 @@ Sleep 2s
 # Run the command by pressing enter.
 Enter
 
-Sleep 10s
-Screenshot ./wix_build.png
+# Sleep 10s
+# If we needed a screenshot then this would be the best time to do it.
+# Screenshot ./wix_build.png
 
 # Admire the output for a bit.
 Sleep 10s
