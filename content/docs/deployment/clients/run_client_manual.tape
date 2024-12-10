@@ -20,7 +20,7 @@ Set Padding 20
 Hide
 Type "PS1='\[\033[1;34m\]root@computer \[\033[1;32m\]~ \[\033[1;34m\]# \[$(tput sgr0)\]'"
 Enter
-Type "alias velociraptor='velociraptor-v0.73.3-linux-amd64'"
+Type "alias velociraptor='/home/me/projects/velociraptor/output/velociraptor-v0.73.3-linux-amd64'"
 Enter
 Type "find /tmp -type f -iname 'Velociraptor.writeback*' -delete"
 Enter
@@ -43,8 +43,9 @@ Set PlaybackSpeed 0.5
 # Run the command by pressing enter.
 Enter
 
-Sleep 565ms
-Screenshot ./run_client_manual.png
+# Sleep 565ms
+# If we needed a screenshot then this would be the best time to do it.
+# Screenshot ./run_client_manual.png
 
 # Admire the output for a bit.
 Sleep 3s

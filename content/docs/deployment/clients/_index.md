@@ -72,9 +72,9 @@ network connectivity.
 
 ![](run_client_manual.gif)
 
-The first time the client connects to the server it will **enroll**. The enrollment
-process requires the client to reveal basic information about itself to the
-server.
+The first time the client connects to the server it will **enroll**. The
+enrollment process requires the client to reveal basic information about itself
+to the server.
 
 Note that this type of interactive execution will work effectively the same way
 for all versions of the client (Windows, Linux, or Mac). In the sections that

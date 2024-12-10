@@ -12,8 +12,7 @@ pre: <i class="fas fa-book"></i>
 head: <hr>
 ---
 
-This page lists all the plugins, functions and accessors which are available in
-Velociraptor.
+{{% expand "This page lists all the plugins, functions and accessors which are available in Velociraptor." %}}
 
 - **Plugins** are the data sources of VQL queries. While SQL queries refer to
 static tables of data, VQL queries refer to plugins, which generate data rows to
@@ -43,5 +42,7 @@ what's available, we have also provided listings by general categories [which yo
 can access in the sidebar](/vql_reference/popular/).
 
 {{% /notice %}}
+
+{{% /expand %}}
 
 {{% reference %}}

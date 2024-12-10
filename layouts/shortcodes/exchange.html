@@ -68,6 +68,10 @@ $.ajax({
   DrawResults(data);
 });
 
+$(document).ready(function () {
+    $('#myInput').focus();
+});
+
 function doSearch() {
   // Declare variables
   let input = document.getElementById('myInput');
