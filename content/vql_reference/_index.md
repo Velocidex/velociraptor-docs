@@ -35,8 +35,6 @@ value instead of a sequence of rows) are only present in column specifications
 
 {{% /notice %}}
 
-{{% /expand %}}
-
 {{% notice tip %}}
 
 If you are not exactly sure what you're looking for or just want to browse
@@ -44,5 +42,7 @@ what's available, we have also provided listings by general categories [which yo
 can access in the sidebar](/vql_reference/popular/).
 
 {{% /notice %}}
+
+{{% /expand %}}
 
 {{% reference %}}
