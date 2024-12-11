@@ -699,8 +699,8 @@ table thead th {
 }
 
 .vqlargs + table {
-    margin-top: 3em;
-    margin-bottom: 3em;
+    margin-top: 0;
+    margin-bottom: 1em;
 }
 
 .vqlargs + table td {

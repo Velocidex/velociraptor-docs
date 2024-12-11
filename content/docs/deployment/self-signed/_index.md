@@ -110,17 +110,25 @@ do in automated build environments.
 {{< tabs >}}
 {{% tab name="Linux" %}}
 ```shell
-./velociraptor config generate --merge '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+./velociraptor config generate --merge \
+      '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}' \
+      > server.config.yaml
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
 ```shell
-velociraptor.exe config generate --merge '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+velociraptor.exe config generate ^
+      --merge "{"""autocert_domain""": """domain.com""", """autocert_cert_cache""": """/foo/bar"""}" ^
+      > server.config.yaml
 ```
+Note that while this can be run on Windows the quote escaping is arduous and
+likely to be error-prone. We therefore don't recommend it.
 {{% /tab %}}
 {{% tab name="macOS" %}}
 ```shell
-./velociraptor config generate --merge '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}'
+./velociraptor config generate --merge \
+      '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}' \
+      > server.config.yaml
 ```
 {{% /tab %}}
 {{< /tabs >}}
