@@ -21,6 +21,10 @@ $.ajax({
   DrawResults(data);
 });
 
+$(document).ready(function () {
+  $('#myInput').focus();
+});
+
 function matchItem(filter, item) {
     if (item.title.toUpperCase().includes(filter) ||
         item.description.toUpperCase().includes(filter)) {

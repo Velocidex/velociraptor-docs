@@ -70,3 +70,10 @@ body.light div.btn.lightmode {
     color: var(--MAIN-TEXT-background-color);
     background: var(--MAIN-TEXT-color);
 }
+
+h1, .h1 { font-size: 36px !important; }
+h2, .h2 { font-size: 30px !important; }
+h3, .h3 { font-size: 27px !important; }
+h4, .h4 { font-size: 24px !important; }
+h5, .h5 { font-size: 22px !important; }
+h6, .h6 { font-size: 20px !important; }

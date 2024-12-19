@@ -16,7 +16,7 @@ The following CVEs have been noted.
 
 Please upgrade to [the current release]({{< baseurl >}}/downloads).
 
-{{% children description="true" %}}
+{{% children "description"=true "style"="h3" %}}
 
 Please consider subscribing to our [Security Advisories RSS feed]({{< baseurl >}}/rss) to receive
 timely notifications.
