@@ -8,7 +8,7 @@ weight: 80
 ### Debugging a remote client
 
 In the section
-[Debugging Velociraptor](http://localhost:1313/docs/deployment/troubleshooting/#debugging-velociraptor)
+[Debugging Velociraptor](/docs/deployment/troubleshooting/#debugging-velociraptor)
 we explain how to bring up the debug server by providing the `--debug`
 commandline, but existing clients are not normally already running with this
 flag. Often we are trying to collect an artifact from a remote client and we
