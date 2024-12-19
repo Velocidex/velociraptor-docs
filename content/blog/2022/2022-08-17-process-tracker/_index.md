@@ -10,7 +10,7 @@ date: 2022-09-07
 
 One of the advantages of running Velociraptor on the endpoint
 constantly is the ability to monitor the endpoint using [client
-monitoring queries]({{% ref "/docs/client_monitoring/" %}}). Gaining
+monitoring queries]({{% ref "/docs/clients/monitoring/" %}}). Gaining
 visibility to volatile information is critical to reconstructing past
 activity and responding to new threats.
 

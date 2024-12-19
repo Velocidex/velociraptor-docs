@@ -318,6 +318,9 @@ VQL query. When provided with the `--api_config` flag, Velociraptor
 will use that api configuration file to connect remotely to the API
 server and run the query there.
 
+Running VQL queries through the API client is equivalent to running them in a
+[notebook](/docs/vql/notebooks/) on the server.
+
 This can be chained to other tools and automation orchestrated with a
 simple bash script:
 

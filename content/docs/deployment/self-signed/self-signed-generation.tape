@@ -36,26 +36,24 @@ Enter
 Sleep 1s
 Enter
 Sleep 1s
-Type "?"
-Sleep 1s
+Enter
+Sleep 3s
 Enter
 Sleep 1s
 Enter
 Sleep 1s
 Enter
 Sleep 1s
+Enter
+Sleep 1s
+Enter
+Backspace 9
 Type "192.168.1.1"
-Enter
-Sleep 1s
-Type "?"
 Sleep 1s
 Enter
 Sleep 1s
 Enter
 Sleep 1s
-Enter
-Sleep 1s
-Type "y"
 Enter
 Sleep 1s
 Enter
@@ -65,20 +63,13 @@ Sleep 1s
 Type "admin"
 Enter
 Sleep 1s
-Type "iouherguher9uhger9uhg9erhvg"
-Sleep 1s
+Type "MYverylongC0MPL3Xpassword"
 Enter
 Sleep 1s
 Enter
 Sleep 1s
 Enter
-Sleep 1s
-Enter
-Sleep 1s
-Enter
-Sleep 1s
-Enter
-Sleep 1s
+Sleep 3s
 Enter
 Type "ls *.yaml"
 Enter
@@ -91,7 +82,5 @@ Sleep 3s
 
 # Cleanup
 Hide
-Type "rm -v client.config.yaml"
-Enter
 Type "rm -v server.config.yaml"
 Enter

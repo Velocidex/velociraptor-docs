@@ -1,8 +1,8 @@
 ---
-title: "The VFS"
+title: "Virtual File System"
 date: 2021-06-09T04:12:50Z
 draft: false
-weight: 10
+weight: 50
 ---
 
 Once we selected a client, we often want to quickly look at the
@@ -134,7 +134,7 @@ Similarly the `registry` accessor provides file like access to the registry.
 
 ![Registry Accessor](image65.png)
 
-## Interactively investigating an endpoint
+### Interactively investigating an endpoint
 
 Although the VFS presents a familiar interface, it is not ideal for
 quickly finding the files and registry keys we are usually interested
@@ -144,5 +144,5 @@ then click over multiple directories searching for these files.
 To automate collection it is better to write special purpose `VQL
 Artifacts` to identity the information of interest.
 
-Our next section explores what artifacts are and how we collect them
-using Velociraptor.
+The [Artifacts](/docs/vql/artifacts/) section explores what Velociraptor
+artifacts are and how we collect them.

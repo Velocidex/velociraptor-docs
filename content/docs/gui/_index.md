@@ -87,6 +87,33 @@ also run arbitrary VQL in dashboards!
 
 {{% /notice %}}
 
+### Table GUI Widgets
+
+A common UI element in the Velociraptor GUI is the table widget. Since
+Velociraptor deals with VQL queries and all queries simply return a
+list of rows, the GUI presents a lot of results in a table form.
+
+All Velociraptor tables have some common tools available as can be
+seen above:
+
+1. The Column Selector - allows users to show/hide columns. This is
+   useful when there are many columns and the table takes up a lot of
+   horizontal real estate, or when some columns provide too much
+   details
+
+2. View Raw JSON - All VQL queries simply return a result set encoded
+   as a list of JSON objects. For more complex tables it is sometimes
+   easier to see the precise JSON returned, and clicking on this
+   button displays the raw json in a dialog box.
+
+![Raw JSON](image59.png)
+
+3. Export table as CSV or JSON - Clicking on the export table button
+   simply exports the **visible** columns as a CSV file. This is a
+   great way of filtering out uninteresting columns and producing more
+   targeted CSV files for post processing in e.g. Excel.
+
+
 ## Continue on your tour
 
 {{% children %}}
