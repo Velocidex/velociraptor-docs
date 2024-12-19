@@ -47,7 +47,10 @@ artifacts. The artifacts to collect are provided in the
 `artifacts` parameter. Artifact parameters are provided in the
 `spec` parameter (see example below).
 
-### NOTES
+### Notes
+
+No caching is currently provided so this may generate a lot
+of load on DNS servers when scanning many rows.
 
 1. In the GUI hunts are always created in the paused
 state. This is not the default state when using this function (all

@@ -57,10 +57,6 @@ If you want to display the links in the notebook within the GUI
 table you will need to set the column type to `url_internal` or
 `url`.
 
-NOTE: This function makes no effort to check if the link is
-actually valid - i.e. it does not check that the client id refers
-to a real client, flow id to a real flow, etc.
-
 ### Example
 
 ```vql
@@ -77,5 +73,11 @@ SELECT link_to(hunt_id="H.1234") AS HuntLink,
        link_to(upload=Upload) AS Download
 FROM scope()
 ```
+
+### Notes
+
+This function makes no effort to check if the link is
+actually valid - i.e. it does not check that the client id refers
+to a real client, flow id to a real flow, etc.
 
 

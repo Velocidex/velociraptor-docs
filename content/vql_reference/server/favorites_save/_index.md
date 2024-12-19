@@ -34,7 +34,9 @@ previously used collection.
 
 This VQL function provides an interface for this functionality.
 
-NOTE: A favorite belongs to the calling user - this function will
+### Notes
+
+A favorite belongs to the calling user - this function will
 update the favorite for the calling user only.
 
 

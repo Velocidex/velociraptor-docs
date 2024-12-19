@@ -2752,7 +2752,7 @@
     },
     {
         "name": "get",
-        "description": "Gets the member field from item.",
+        "description": "Gets the member field from the item.",
         "type": "Function",
         "args": [
             {
@@ -8260,7 +8260,7 @@
     },
     {
         "name": "set",
-        "description": "Sets the member field of the item. If item is omitted sets the scope.",
+        "description": "Sets the member field of the item.",
         "type": "Function",
         "args": [
             {
@@ -8390,6 +8390,7 @@
         "name": "sigma_log_sources",
         "description": "Constructs a Log sources object to be used in sigma rules. Call with args being category/product/service and values being stored queries. You may use a * as a placeholder for any of these fields.",
         "type": "Function",
+        "version": 2,
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",

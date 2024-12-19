@@ -39,7 +39,9 @@ FROM glob(
    accessor='s3')
 ```
 
-NOTE: It is more convenient to use the [secrets support]({{< ref
+### Notes
+
+It is more convenient to use the [secrets support]({{< ref
 "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}})
 introduced in version 0.72 to manage these credentials.
 

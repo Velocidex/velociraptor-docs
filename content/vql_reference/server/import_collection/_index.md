@@ -46,7 +46,9 @@ endpoint) we generate a random client ID for a new client.
 If you specify an existing client id, the collection will be
 uploaded into that client.
 
-NOTE: Combine this function with the hunt_add() function to add a
+### Notes
+
+Combine this function with the hunt_add() function to add a
 manual offline collection to an ongoing hunt.
 
 

@@ -54,7 +54,9 @@ a={
 })
 ```
 
-NOTE: The `generate()` function produces a stored query that can be
+### Notes
+
+The `generate()` function produces a stored query that can be
 used as the target of any `SELECT ... FROM` statement. Therefore
 it does not make sense to materialize the output of `generate()`
 because it is equivalent to materializing the actual target query

@@ -56,7 +56,9 @@ SELECT FullPath, Size, magic(path=FullPath, magic=Magic)
 FROM glob(globs="/var/lib/*")
 ```
 
-NOTE: `magic()` requires reading the headers of each file which
+### Notes
+
+`magic()` requires reading the headers of each file which
 causes the file to be opened. If you have on-access scanning such
 as Windows Defender "Realtime monitoring", applying magic() on
 many files (e.g. in a glob) may result in substantial load on the

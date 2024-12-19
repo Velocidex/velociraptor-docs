@@ -32,7 +32,9 @@ Retrieve the results of a flow.
 
 This is similar to the source() plugin.
 
-NOTE: Since a collection can collect multiple artifacts you must
+### Notes
+
+Since a collection can collect multiple artifacts you must
 specify the artifact you are interested in.
 
 

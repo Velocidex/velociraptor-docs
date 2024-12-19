@@ -35,7 +35,7 @@ acquainted with the commonly used functions and plugins.
 |[flatten](flatten)|<span class='vql_type'>Plugin</span>|Flatten the columns in query|
 |[foreach](foreach)|<span class='vql_type'>Plugin</span>|Executes 'query' once for each row in the 'row' query|
 |[format](format)|<span class='vql_type'>Function</span>|Format one or more items according to a format string|
-|[get](get)|<span class='vql_type'>Function</span>|Gets the member field from item|
+|[get](get)|<span class='vql_type'>Function</span>|Gets the member field from the item|
 |[glob](glob)|<span class='vql_type'>Plugin</span>|Retrieve files based on a list of glob expressions|
 |[http_client](http_client)|<span class='vql_type'>Plugin</span>|Make a http request|
 |[humanize](humanize)|<span class='vql_type'>Function</span>|Format items in human readable way|
