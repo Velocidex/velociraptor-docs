@@ -15,7 +15,7 @@ however this amounts to running the Velociraptor binary and providing it with a
 client configuration file. The configuration file provides the client with
 cryptographic material and settings. We saw how to generate the client
 configuration file in
-[this previous section](/docs/deployment/self-signed/#generate-the-configuration-file).
+[this previous section]({{< ref "/docs/deployment/self-signed/#generate-the-configuration-file" >}}).
 
 On this page we explain how to run, and optionally install, clients on the most
 common platforms. There is no single "correct" way to deploy and use
@@ -97,7 +97,7 @@ the section [Agentless deployment](#agentless-deployment).
 ### Windows
 
 The recommended way to install Velociraptor as a client on Windows is via the
-release MSI which you can find on our [Downloads](/downloads/) page. Previous
+release MSI which you can find on our [Downloads]({{< ref "/downloads/" >}}) page. Previous
 releases can be found on the [Releases page at Github](https://github.com/Velocidex/velociraptor/releases).
 
 An MSI is a standard Windows installer package. The benefit of using this
@@ -138,7 +138,7 @@ identify the location of *your* server, we can't package the configuration file
 in the official release. Therefore, the official MSI does not include a valid
 configuration file. You will need to modify the release MSI to include your
 client configuration file, which you
-[generated earlier](/docs/deployment/self-signed/#generate-the-configuration-file),
+[generated earlier]({{< ref "/docs/deployment/self-signed/#generate-the-configuration-file" >}}),
 and this is done through a process we call "repacking".
 
 The official release installs the Velociraptor executable into
@@ -151,7 +151,7 @@ will be upgraded and the client configuration file will be overwritten.
 
 The easiest way to repack the MSI package so that it includes your client config
 file is by using the
-[`Server.Utils.CreateMSI`](/artifact_references/pages/server.utils.createmsi/)
+[`Server.Utils.CreateMSI`]({{< ref "/artifact_references/pages/server.utils.createmsi/" >}})
 server artifact.
 
 1. In the Velociraptor web GUI, simply switch to the relevant Organization, then
@@ -191,7 +191,7 @@ To repack the MSI with a custom config on the command line we use the `config`
 command, and the `repack` subcommand, with the `--msi` flag.
 
 In all cases we need to tell Velociraptor which MSI we want to repack (usually
-it's the [official release MSI](/downloads/): either 64-bit or 32-bit) and what
+it's the [official release MSI]({{< ref "/downloads/" >}}): either 64-bit or 32-bit) and what
 the output file should be named.
 
 {{< tabs >}} {{% tab name="Linux" %}}
@@ -211,7 +211,7 @@ velociraptor.exe config repack --msi velociraptor-windows.msi client.config.yaml
 {{% /tab %}}
 {{< /tabs >}}
 
-If you are using Velociraptor [organizations](/docs/deployment/orgs/) ("orgs")
+If you are using Velociraptor [organizations]({{< ref "/docs/deployment/orgs/" >}}) ("orgs")
 then you can obtain the client configuration file for each org from the Home
 page in the GUI. Ensure that you are in the `root` org so that the configs for
 all orgs are accessible.
@@ -452,7 +452,7 @@ provide specific advice or step-by-step instructions for these tools.
 
 Some of the additional considerations and complexities with deployments in macOS
 environments are described in
-[this presentation](/presentations/2022_velocon/#mac-response--the-good-the-bad-and-the-ugly).
+[this presentation]({{< ref "/presentations/2022_velocon/#mac-response--the-good-the-bad-and-the-ugly" >}}).
 
 ### Linux
 
@@ -623,7 +623,7 @@ the Go 1.20 release. This means that Windows XP, Windows server 2003, and
 Windows 7/Vista can no longer be built using a supported version of Go. We may
 make occasional (depending on demand for it) builds for Windows 7 using an old
 unsupported version of Go, but these will not be supported and may not be the
-latest version. Please see [our Support Policy](/docs/overview/support/).
+latest version. Please see [our Support Policy]({{< ref "/docs/overview/support/" >}}).
 
 We also distribute 32-bit binaries for Windows but not for Linux. If you need
 32-bit Linux builds you will need to build from source. You can do this easily
@@ -655,7 +655,7 @@ reboot. So this method is suitable for quick hunts on corporate (non roaming)
 assets.
 
 <!--
-See this [blog post](/blog/html/2019/03/02/agentless_hunting_with_velociraptor.html) for details of how to deploy Velociraptor in agentless mode.
+See this [blog post]({{< ref "/blog/html/2019/03/02/agentless_hunting_with_velociraptor.html" >}}) for details of how to deploy Velociraptor in agentless mode.
 -->
 
 #### Create a network share

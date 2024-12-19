@@ -153,7 +153,7 @@ into the hunt.
 
 Note that I can use this technique to automatically schedule clients
 into various hunts using the VQL
-[label()](/vql_reference/server/label/) function. Therefore I can use
+[label()]({{< ref "/vql_reference/server/label/" >}}) function. Therefore I can use
 this technique to automatically add clients to various hunts based on
 previous findings.
 
@@ -208,7 +208,7 @@ to keep the old collection around or just delete it.
 ![Hunt with additional collection](manual_hunt_3.png)
 
 You can add collections to a hunt using the
-[hunt_add()](/vql_reference/server/hunt_add/) VQL function which
+[hunt_add()]({{< ref "/vql_reference/server/hunt_add/" >}}) VQL function which
 allows unlimited automation around which flows are added to hunt (and
 can also automate the relaunching of the collections).
 

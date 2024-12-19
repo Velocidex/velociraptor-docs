@@ -144,5 +144,5 @@ then click over multiple directories searching for these files.
 To automate collection it is better to write special purpose `VQL
 Artifacts` to identity the information of interest.
 
-The [Artifacts](/docs/vql/artifacts/) section explores what Velociraptor
+The [Artifacts]({{< ref "/docs/vql/artifacts/" >}}) section explores what Velociraptor
 artifacts are and how we collect them.

@@ -681,7 +681,7 @@ way regardless of who launched the collection in the first place.
 
 However this may give lower privilege users a lot of power over the
 entire network. For example the artifact
-[Windows.System.PowerShell](/artifact_references/pages/windows.system.powershell/) allows
+[Windows.System.PowerShell]({{< ref "/artifact_references/pages/windows.system.powershell/" >}}) allows
 running arbitrary shell commands on the endpoint. While this is a
 useful capability in limited situations it may lead to severe
 compromise if misused!
