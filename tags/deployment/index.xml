@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Deployment on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/deployment/</link><description>Recent content in Deployment on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 19 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>How to manage storage space on the server</title><link>https://docs.velociraptor.app/knowledge_base/tips/deleting_old_data/</link><pubDate>Fri, 19 Jul 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/deleting_old_data/</guid><description>&lt;h1 id="how-to-manage-storage-space-on-the-server">How to manage storage space on the server&lt;/h1>
+&lt;p>Velociraptor can collect a lot of data quickly but usually the data is
+only relevant for short periods of time.&lt;/p>
+&lt;p>Disk space management is an important part of Velociraptor
+administrators tasks. You can keep an eye on the disk utilization as
+shown on the dashboard.&lt;/p>
+&lt;p>If you need to grow the disk during an investigation, and you are
+using a cloud VM from Amazon with Elastic Block Storage (EBS), disk
+space management is very easy. In the AWS cloud it is possible to
+resize disk space dynamically. See &lt;a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/requesting-ebs-volume-modifications.html">Requesting
+Modifications&lt;/a>
+to Your EBS Volumes and &lt;a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html">Extending a Linux File System After
+Resizing&lt;/a>
+a Volume. You can do this without even restarting the server.&lt;/p>
+&lt;p>If you must attach a new volume you can migrate data from the old
+datastore directory (as specified in the config file) to the new
+directory by simply copying all the files. You must ensure permissions
+remain the same (typically files are owned by the &lt;code>velociraptor&lt;/code> low
+privilege local linux account).&lt;/p>
+&lt;p>It is also possible to start with an empty datastore directory and
+only copy selected files:&lt;/p>
+&lt;ol>
+&lt;li>The &lt;code>users&lt;/code> directory contains user accounts (hashed password etc)&lt;/li>
+&lt;li>The &lt;code>acl&lt;/code> directory contains user ACLs&lt;/li>
+&lt;li>The &lt;code>artifact_definitions&lt;/code> contains custom artifacts&lt;/li>
+&lt;li>The &lt;code>config&lt;/code> directory contains various configuration settings.&lt;/li>
+&lt;li>The &lt;code>orgs&lt;/code> directory contains data from various orgs.&lt;/li>
+&lt;/ol>
+&lt;p>Velociraptor will automatically re-enroll clients with the same client
+id (The client id is set by the client itself) as needed.&lt;/p>
+&lt;p>You can also check the backups directory to recover from backup.&lt;/p>
+&lt;h2 id="management-of-old-collections">Management of old collections&lt;/h2>
+&lt;p>You can automatically delete old collections using the
+&lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemanyflows/">Server.Utils.DeleteManyFlows
+&lt;/a> and
+&lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemonitoringdata/">Server.Utils.DeleteMonitoringData
+&lt;/a>
+artifacts. These are server artifacts which can delete flows and
+monitoring data older than the specified time.&lt;/p></description></item><item><title>How to use your own certificates to secure your Velociraptor deployment</title><link>https://docs.velociraptor.app/blog/2024/2024-07-22-how-to-use-your-own-certificates/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2024/2024-07-22-how-to-use-your-own-certificates/</guid><description>&lt;p>This article was reproduced with permission from
+&lt;a href="https://reliancecyber.com/how-to-use-your-own-certificates-to-secure-your-velociraptor-deployment/">reliancecyber.com&lt;/a>. It
+outlines some of the practical steps needed to deploy Velociraptor
+with custom certificates and some step by step troubleshooting steps
+that can be used to diagnose deployment issues.&lt;/p>
+&lt;h2 id="using-digicert-as-the-certificate-authority">Using DigiCert as the certificate Authority&lt;/h2>
+&lt;p>Velociraptor is a robust open-source tool designed for endpoint
+monitoring and digital forensics and response.&lt;/p>
+&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>Velociraptor is a robust open-source tool designed for endpoint
+monitoring and digital forensics and response. Whether you deploy it
+on-premise or in the cloud, securing communication between the
+Velociraptor server and its clients is crucial. This blog post will
+guide you through creating and installing TLS certificates using
+DigiCert as your Certificate Authority (CA).&lt;/p>
+&lt;p>This guide has been written to provide additional guidance to the
+following official Velociraptor articles.&lt;/p>
+&lt;p>&lt;a href="https://docs.velociraptor.app/knowledge_base/tips/ssl/">How do I use my own SSL certificates?&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://docs.velociraptor.app/docs/deployment/security/">Velociraptor Security Configuration&lt;/a>.&lt;/p>
+&lt;h2 id="prerequisites">Prerequisites&lt;/h2>
+&lt;p>Before getting started, ensure you have the following:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Domain name&lt;/em>: Own or control a domain name, such as example.com.&lt;/li>
+&lt;li>&lt;em>Accessible Velociraptor server&lt;/em>: Ensure your server is accessible via
+a domain name, e.g., DNS A record points to your Velociraptor
+server’s Public IP.&lt;/li>
+&lt;li>&lt;em>DigiCert&lt;/em> account: A valid SSL certificate from DigiCert for your domain.&lt;/li>
+&lt;li>&lt;em>OpenSSL&lt;/em>: Installed on your machine.&lt;/li>
+&lt;/ul>
+&lt;h2 id="creating-the-certificate-files">Creating the certificate files&lt;/h2>
+&lt;p>You will need three key files for the Velociraptor server:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Velociraptor.pem&lt;/em>: Contains the public certificate identifying your
+Velociraptor server.&lt;/li>
+&lt;li>&lt;em>your_domain_name.key&lt;/em>: Contains the private key for your SSL
+certificate. Keep this file secure.&lt;/li>
+&lt;li>&lt;em>CA_chain.pem&lt;/em>: Contains the certificate chain of your enterprise
+CA, including intermediate and root certificates.&lt;/li>
+&lt;/ul>
+&lt;p>DigiCert will provide the following files:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Private Key&lt;/em>: &lt;code>your_domain_name.key&lt;/code>&lt;/li>
+&lt;li>&lt;em>Primary Certificate&lt;/em>: &lt;code>your_domain_name.crt&lt;/code>&lt;/li>
+&lt;li>&lt;em>Intermediate Certificate&lt;/em>: &lt;code>DigiCertCA.crt&lt;/code>&lt;/li>
+&lt;li>&lt;em>Root Certificate&lt;/em>: &lt;code>TrustedRoot.crt&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>For details on how to request your certificates &lt;a href="https://www.digicert.com/faq/public-trust-and-certificates/how-do-i-order-a-tls-ssl-certificate">How do I Order a TLS/SSL Certificate? | DigiCert FAQ&lt;/a>&lt;/p>
+&lt;h2 id="creating-velociraptorpem">Creating Velociraptor.pem&lt;/h2>
+&lt;p>To create the Velociraptor.pem file, you need to convert the Primary
+Certificate (&lt;code>your_domain_name.crt&lt;/code>) file from CRT to PEM format.&lt;/p>
+&lt;p>Open a terminal and run the following command:&lt;/p>
+&lt;pre>&lt;code>openssl x509 -in your_domain_name.crt -out velociraptor.pem -outform PEM
+&lt;/code>&lt;/pre>
+&lt;p>Verify the certificate details:&lt;/p>
+&lt;pre>&lt;code>openssl x509 -in velociraptor.pem -text -noout
+&lt;/code>&lt;/pre>
+&lt;p>You should see the details of your certificate, such as the issuer,
+the subject, the validity period, and the public key.&lt;/p>
+&lt;h2 id="verifying-the-key-file">Verifying the key file&lt;/h2>
+&lt;p>Ensure the private key (&lt;code>your_domain_name.key&lt;/code>) is in PEM format and
+decrypted. When viewed, the file should look like this:&lt;/p>
+&lt;pre>&lt;code>-----BEGIN RSA PRIVATE KEY-----
+
+ {base64 encoded data}
+
+-----END RSA PRIVATE KEY-----
+&lt;/code>&lt;/pre>
+&lt;p>To verify that the key format is valid, run the following command:&lt;/p>
+&lt;pre>&lt;code>openssl rsa -in your_domain_name.key -check
+&lt;/code>&lt;/pre>
+&lt;p>You should see &lt;code>RSA key ok&lt;/code>.&lt;/p>
+&lt;h2 id="creating-ca_chainpem">Creating CA_chain.pem&lt;/h2>
+&lt;p>To create the CA_chain.pem file, you need to combine the intermediate
+certificate (&lt;code>DigiCertCA.crt&lt;/code>) and the root certificate
+(&lt;code>TrustedRoot.crt&lt;/code>) into one file. This can be done by simply
+concatenating the two files using a text editor or a command line
+tool. For example, you can run the following command:&lt;/p>
+&lt;pre>&lt;code>cat DigiCertCA.crt TrustedRoot.crt &amp;gt; CA_chain.pem
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Ensure the order is correct: server certificate first, followed by intermediate certificates (you may have more than one), and finally the root certificate.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>You should now have the following files in your cert folder:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Velociraptor.pem&lt;/em> (contains only the server certificate)&lt;/li>
+&lt;li>&lt;em>your_domain_name.key&lt;/em> (contains the unencrypted private key)&lt;/li>
+&lt;li>&lt;em>CA_chain.pem&lt;/em> (contains the certificate chain of your enterprise CA)&lt;/li>
+&lt;/ul>
+&lt;h2 id="configuring-velociraptor">Configuring Velociraptor&lt;/h2>
+&lt;p>To enable TLS encryption for the Velociraptor server and client:&lt;/p>
+&lt;h3 id="generate-a-self-signed-ssl-configuration">Generate a Self-Signed SSL Configuration:&lt;/h3>
+&lt;pre>&lt;code>./velociraptor-0.72.3-linux-amd64 config generate -i
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>Note&lt;/strong>: The version number may be different for the most recent release.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="e0c68f6eeeab6ad71ad11ff215aa841e">
+ &lt;div data-featherlight="#e0c68f6eeeab6ad71ad11ff215aa841e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-07-22-how-to-use-your-own-certificates/Configuring-Velociraptor.png" alt="The velociraptor configuration generator screenshot">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="Configuring-Velociraptor.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ The velociraptor configuration generator screenshot
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>In this configuration I set frontend to communicate over port 443 as
+most firewalls in a network will allow this traffic outbound making it
+easier for the deployment of clients.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="update-the-server-configuration">Update the Server Configuration:&lt;/h2>
+&lt;p>To use your own Certificates, you need to update the server
+configuration file (&lt;code>server.config.yaml&lt;/code>)&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Locate the frontend section and add the &lt;code>tls_certificate_filename&lt;/code>
+and &lt;code>tls_private_key_filename&lt;/code> parameters (these are not included by
+default).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Enter the absolute path to these files. For testing, we placed them
+in /etc, but you may want to use a different location for
+production use.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-yaml">Frontend:
+
+ tls_certificate_filename: /etc/velociraptor.pem
+
+ tls_private_key_filename: /etc/your_domain_key.key
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+&lt;figure id="aca675e823e5bfc2151ee4680342183c">
+ &lt;div data-featherlight="#aca675e823e5bfc2151ee4680342183c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-07-22-how-to-use-your-own-certificates/Configuring-server-update-Velociraptor.png" alt="Configuring server update Velociraptor">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="Configuring-server-update-Velociraptor.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Configuring server update Velociraptor
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="update-the-client-configuration">Update the client configuration:&lt;/h2>
+&lt;p>&lt;strong>Note&lt;/strong>: if you have already exported a &lt;code>client.config.yaml&lt;/code>, then you
+need to update the client section in both &lt;code>server.config.yaml&lt;/code>
+configuration file and the &lt;code>client.config.yaml&lt;/code> configuration
+file. Remember, the client configuration is embedded into the server
+configuration file, so you need to update it there as well.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>In the client section, modify &lt;code>use_self_signed_ssl&lt;/code> to be
+&lt;strong>false&lt;/strong>. This will tell the client to use the CA certificate instead
+of the server certificate for verification.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Copy and paste the CA root and intermediate certificates (created
+in the &lt;code>CA_chain.pem&lt;/code> file) to the &lt;code>root_certs&lt;/code> parameter. This will
+allow the client to trust the CA certificate chain. For example:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-yaml">use_self_signed_ssl: false
+Crypto:
+ root_certs: |
+ -----BEGIN CERTIFICATE-----
+ The Intermediate Certificate
+
+ -----END CERTIFICATE-----
+
+ -----BEGIN CERTIFICATE-----
+
+ The Root Certificate
+
+ -----END CERTIFICATE-----
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>As discussed in the certificate section, ensure that the intermediate
+and root certificates are in the correct order. The server certificate
+should come first, followed by any intermediate certs, and finally the
+root trusted authority certificate (if self-signed) for more
+information, please see
+&lt;a href="https://www.rfc-editor.org/rfc/rfc4346#section-7.4.2">https://www.rfc-editor.org/rfc/rfc4346#section-7.4.2&lt;/a>&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="testing-the-tls-encryption">Testing the TLS Encryption&lt;/h2>
+&lt;p>To verify the TLS encryption:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>GUI&lt;/strong>: Launch the Velociraptor server and connect to the GUI using
+your web browser. You should be able to access the GUI using the new
+certificate. You may need to trust the certificate in your browser
+or system to prevent errors.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Frontend&lt;/strong>: Launch the Velociraptor client and check the logs for
+any errors. The client should connect securely to the server using
+the trusted CA chain and the new server certificate.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>No changes need to be made to the pinned certificate name, nor do
+any certificates need to be modified in the configuration files.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="troubleshooting">Troubleshooting&lt;/h2>
+&lt;h3 id="connectioncertificate-errors">Connection/certificate errors:&lt;/h3>
+&lt;p>To validate that the certificates you are using are in the right
+format, you can use the command to diagnose issues:&lt;/p>
+&lt;pre>&lt;code>openssl [x509|rsa] -in CERT_FILE -text -noout
+&lt;/code>&lt;/pre>
+&lt;p>If the certificates are in the right format and valid you should use
+curl to confirm connectivity by requesting the &lt;code>server.pem&lt;/code> file from
+the velociraptor server (as detailed in &lt;a href="https://docs.velociraptor.app/docs/deployment/troubleshooting/">Troubleshooting and
+Debugging&lt;/a>).&lt;/p>
+&lt;h3 id="use-curl-from-the-server-localhost">Use curl from the server localhost&lt;/h3>
+&lt;pre>&lt;code>curl https://localhost/server.pem -vvv
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>Reason&lt;/strong>: This command tests the server’s ability to serve the
+certificate file (&lt;code>server.pem&lt;/code>) over HTTPS from the local machine. Using
+the &lt;code>-vvv&lt;/code> flag enables verbose output, providing detailed information
+about the connection process, including SSL/TLS handshake details. It
+helps to confirm that:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Local Server Configuration&lt;/strong>: The server is properly configured to
+handle HTTPS requests.&lt;/li>
+&lt;li>&lt;strong>Certificate Availability&lt;/strong>: The certificate file is accessible and
+correctly served by the server.&lt;/li>
+&lt;/ol>
+&lt;h3 id="use-curl-from-the-server-localhost-allowing-self-signed-certificates">Use curl from the server localhost allowing self-signed certificates&lt;/h3>
+&lt;pre>&lt;code>curl https://localhost/server.pem -vvv -k
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>Reason&lt;/strong>: This command includes the -k option, which allows
+connections to servers using self-signed certificates. It helps to:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Bypass SSL Verification&lt;/strong>: Ensure that the server can still serve the
+certificate even when SSL verification is bypassed. This is useful
+for testing purposes when using self-signed certificates.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Debugging&lt;/strong>: Identify issues related to SSL verification failures
+that might not be apparent when SSL verification is enforced.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="use--curl-from-the-localhost-via-dns">Use curl from the localhost via DNS&lt;/h3>
+&lt;pre>&lt;code>curl https://www.example.com/server.pem -vvv
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>Reason&lt;/strong>: Running this command from the localhost but using the
+domain name tests:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>DNS Resolution&lt;/strong>: Ensure that the domain name resolves correctly to the local server.&lt;/li>
+&lt;li>&lt;strong>SSL/TLS Configuration&lt;/strong>: Confirm that the server is correctly serving the certificate over the domain name.&lt;/li>
+&lt;/ol>
+&lt;h3 id="use-curl-from-a-remote-client">Use curl from a remote client&lt;/h3>
+&lt;pre>&lt;code>curl https://www.example.com/server.pem -vvv
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>Reason&lt;/strong>: This command tests the following from a remote client (a
+different machine than the server):&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>External Connectivity&lt;/strong>: Ensure that the server is accessible over
+the internet or network and that there are no firewall or network
+issues preventing access.&lt;/li>
+&lt;li>&lt;strong>SSL/TLS Configuration&lt;/strong>: Confirm that the SSL/TLS setup is correct
+and the server is properly serving the certificate to external
+clients.&lt;/li>
+&lt;li>&lt;strong>Certificate Acceptance&lt;/strong>: Verify that the client can accept and
+validate the certificate, ensuring the trust chain is correctly
+established.&lt;/li>
+&lt;/ol>
+&lt;p>These steps validate the entire communication path, from local server
+configuration to remote client connectivity.&lt;/p>
+&lt;h2 id="proxy-errors">Proxy Errors:&lt;/h2>
+&lt;p>A proxy or SSL inspection device is a network device that inspects and
+modifies the traffic between the client and the server. Sometimes
+these devices can cause problems, especially if they are not
+configured properly or are incompatible with the server’s TLS version
+or cipher suite.&lt;/p>
+&lt;p>One possible error is this Server reports:&lt;/p>
+&lt;blockquote>
+&lt;p>http: TLS handshake error from XX.XX.XX.XX: :22439 read tcp XX.XX.XX.XX:443-&amp;gt; XX.XX.XX.XX:22439: read: connection reset by peer&lt;/p>
+&lt;/blockquote>
+&lt;p>This means the server-client TLS connection was interrupted. This
+could be due to network issues, firewall settings, or expired
+certificates.&lt;/p>
+&lt;p>Another possible error reported by the client:&lt;/p>
+&lt;blockquote>
+&lt;p>wsarecv: An existing connection was forcibly closed by the remote host.&lt;/p>
+&lt;/blockquote>
+&lt;p>This means the server or something in between closed the connection
+abruptly. This could be due to server overload, crash, or shutdown, or
+a proxy or SSL inspection device that interferes with the connection.&lt;/p>
+&lt;p>To check if there is a proxy or SSL inspection device that is causing the connection errors, run this command:&lt;/p>
+&lt;pre>&lt;code>curl https[://]server.com/server.pem -vvv
+&lt;/code>&lt;/pre>
+&lt;p>This command tries to download the server’s certificate file using
+curl. If the command succeeds, there is no proxy or SSL inspection
+device that is blocking or altering the connection. If the command
+fails or idles, there is something in between that is preventing or
+delaying the connection.&lt;/p>
+&lt;p>If you suspect that there is a proxy or SSL inspection device that is
+causing the connection errors, try these solutions:&lt;/p>
+&lt;ul>
+&lt;li>Review the configurations of the proxy or SSL inspection device and
+make sure they are compatible with the server’s TLS version and
+cipher suite. You can use tools like &lt;code>SSL Labs&lt;/code> or &lt;code>TestSSL&lt;/code> to check
+the server’s TLS configuration and compare it with the proxy or SSL
+inspection device.&lt;/li>
+&lt;li>Disable or bypass the proxy or SSL inspection device temporarily and
+see if the connection errors go away. This can help you isolate the
+problem and confirm that the proxy or SSL inspection device is the
+culprit.&lt;/li>
+&lt;li>Contact the administrator or vendor of the proxy or SSL inspection
+device and ask for help or guidance on how to resolve the
+issue. They might have some tips or updates that can fix the
+problem.&lt;/li>
+&lt;/ul>
+&lt;p>For full details on troubleshooting or for any other debugging issues,
+please see &lt;a href="https://docs.velociraptor.app/docs/deployment/troubleshooting/">Troubleshooting and Debugging&lt;/a>&lt;/p>
+&lt;h2 id="about-the-author">About the author&lt;/h2>
+&lt;p>
+
+
+
+
+
+&lt;figure id="3157db7f26b7206f7caa86c7371c3012">
+ &lt;div data-featherlight="#3157db7f26b7206f7caa86c7371c3012" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-07-22-how-to-use-your-own-certificates/Untitled-design-5-e1721652417163.png" alt="Picture of Chris Hayes - Head of IR">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="Untitled-design-5-e1721652417163.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Picture of Chris Hayes - Head of IR
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="chris-hayes-head-of-incident-response-at-reliance-cyber">Chris Hayes, Head of Incident Response at Reliance Cyber&lt;/h3>
+&lt;p>Chris possesses over 10 years of experience across a series of Cyber roles within both the private public sector. As ex-military, Chris has responded to some of the largest and most high-profile cyber-attacks in addition to tracking sophisticated nation state threat actor groups.&lt;/p></description></item><item><title>How can I clone an organization with all its hunts and artifacts to another instance?</title><link>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</link><pubDate>Mon, 24 Jul 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</guid><description>&lt;h1 id="how-can-i-clone-an-organization-with-all-its-hunts-and-artifacts-to-another-instance">How can I clone an organization with all its hunts and artifacts to another instance?&lt;/h1>
+&lt;p>There are a few use cases where you need to migrate data from an instance to another. It could be for educational purpose to provide pre-filled labs, or to provide a third party with the exact insights you had during your investigation. Event for archiving, being able to reload a dataset in Velociraptor to review what was done if something went amiss, being able to export and import an organization dataset could prove useful.&lt;/p>
+&lt;h2 id="exporting">Exporting&lt;/h2>
+&lt;p>Everything related to an organization is stored in a directory under &lt;code>&amp;lt;file store&amp;gt;/orgs&lt;/code>. There is:&lt;/p>
+&lt;ul>
+&lt;li>A directory with the org ID&lt;/li>
+&lt;li>A configuration file &lt;code>&amp;lt;orgId&amp;gt;.json.db&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>We need to transfer both to the destination server.&lt;/p>
+&lt;ol>
+&lt;li>Identify the org ID, either with the &lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/">&lt;code>Server.Orgs.ListOrgs&lt;/code> Artifact&lt;/a> or scrolling down the Velociraptor &lt;em>root org&lt;/em> home page.&lt;/li>
+&lt;li>Archive the folder and the &lt;code>json.db&lt;/code> file (mind the star)&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-bash">tar czf transport-&amp;lt;org name&amp;gt;.tar.gz &amp;lt;file store&amp;gt;/orgs/&amp;lt;org id&amp;gt;* 
+&lt;/code>&lt;/pre>
+&lt;ol start="3">
+&lt;li>Transfer the resulting archive to the destination Velociraptor server.&lt;/li>
+&lt;/ol>
+&lt;h2 id="importing">Importing&lt;/h2>
+&lt;ol>
+&lt;li>Decompress the archive under the &lt;code>&amp;lt;file store&amp;gt;/orgs&lt;/code> directory.&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" No orgs folder ">&lt;p>The &lt;code>orgs&lt;/code> directory is created with the first organization. After a fresh install of Velociraptor, it doesn&amp;rsquo;t exist until you create an org. You may also simply create the directory.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;ol start="2">
+&lt;li>Verify file ownership and permissions are similar to other directories in the file store&lt;/li>
+&lt;li>Start Velociraptor&lt;/li>
+&lt;li>You should see the organization with all its content as it were on the origin server&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Can&amp;#39;t see the org ">&lt;p>Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: &lt;code>&amp;lt;file store&amp;gt;/orgs/&amp;lt;org id&amp;gt;/acl/&amp;lt;username&amp;gt;.json.db&lt;/code> to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>What to do about error "Plugin info not found"</title><link>https://docs.velociraptor.app/knowledge_base/tips/plugin_not_found/</link><pubDate>Fri, 05 May 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/plugin_not_found/</guid><description>&lt;h1 id="what-to-do-about-error-plugin-info-not-found">What to do about error &amp;ldquo;Plugin info not found&amp;rdquo;&lt;/h1>
+&lt;p>Velociraptor VQL queries can run on the server in the context of
+server artifacts or notebook queries. Usually server side VQL is used
+to post-process collected results, manage the server configuration,
+schedule new collections etc.&lt;/p>
+&lt;p>However, server side VQL can do a lot more than that - including shell
+out to external binaries, read and write files on the server or
+connect to external servers. In some deployments (especially shared
+deployments) it is desirable to block any functionality on the server
+which may interfere with other users or server security or
+configuration.&lt;/p>
+&lt;p>In recent Velociraptor versions the administrator can add an allow
+list to the configuration file. This forces server side VQL to only
+register plugins on the allow list, so potentially dangerous plugins
+are not present at all (regardless of the Velociraptor permission
+model).&lt;/p>
+&lt;p>The configuration wizard will offer this functionality using the
+question:&lt;/p>
+&lt;pre>&lt;code>Do you want to restrict VQL functionality on the server?
+
+This is useful for a shared server where users are not fully trusted.
+It removes potentially dangerous plugins like execve(),filesystem access etc.
+&lt;/code>&lt;/pre>
+&lt;p>If you selected this during configuration you will receive these
+errors in the notebook (or using the API) for any plugins not in the
+allow list:&lt;/p>
+&lt;pre>&lt;code>ERROR:Plugin info not found.
+&lt;/code>&lt;/pre>
+&lt;p>If you decide you need this particular plugin you can either add to
+the allow list in the server configuration file. Or you may remove the
+allow list entirely (which allows all plugins to be registered).&lt;/p></description></item><item><title>How do I get the latest release binary?</title><link>https://docs.velociraptor.app/knowledge_base/tips/getting_latest_release/</link><pubDate>Sat, 03 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/getting_latest_release/</guid><description>&lt;h1 id="how-do-i-get-the-latest-release-binary">How do I get the latest release binary?&lt;/h1>
+&lt;p>The Velociraptor release process uses a release branch to prepare a
+new release. Releases go through a release candidate (RC) process with
+one or more release builds. Sometimes after the release a new patch
+release is made to backport critical bug fixes.&lt;/p>
+&lt;p>If you need to automate downloading of the latest release binary,
+simply use the GitHub API which presents detailed release information
+in JSON form. You can use a tool such as &lt;code>jq&lt;/code> to extract the download
+URL:&lt;/p>
+&lt;pre>&lt;code class="language-bash">WINDOWS_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases/latest | jq
+-r '[.assets | sort_by(.created_at) | reverse | .[] | .browser_download_url | select(test(&amp;quot;windows-amd64.exe$&amp;quot;))][0]')
+LINUX_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases/latest | jq
+-r '[.assets | sort_by(.created_at) | reverse | .[] | .browser_download_url | select(test(&amp;quot;linux-amd64$&amp;quot;))][0]')
+MACOS_URL=$(curl -s https://api.github.com/repos/velocidex/velociraptor/releases/latest | jq
+-r '[.assets | sort_by(.created_at) | reverse | .[] | .browser_download_url | select(test(&amp;quot;darwin-amd64$&amp;quot;))][0]')
+&lt;/code>&lt;/pre>
+&lt;p>The above &lt;code>jq&lt;/code> filter sorts all asserts by creation data and filters
+the relevant binaries, then extracts the most recent binary.&lt;/p>
+&lt;p>Powershell can also be used to download the latest binary for 64 bit Windows as per this example:&lt;/p>
+&lt;pre>&lt;code class="language-PowerShell">#Get the latest entry from the GitHub API
+$VeloLatest = Invoke-WebRequest https://api.github.com/repos/velocidex/velociraptor/releases/latest
+#Parse out the url to the binary
+$VeloURL = ($VeloLatest.content | convertfrom-json).assets.browser_download_url | select-string windows-amd64.exe | select-object -First 1
+#Download and write to a file
+Invoke-WebRequest -Uri $VeloURL.tostring() -OutFile velociraptor.exe
+#Verify the Authenticode Signature
+Get-AuthenticodeSignature .\velociraptor.exe
+&lt;/code>&lt;/pre>
+&lt;h2 id="verifying-signatures">Verifying signatures&lt;/h2>
+&lt;p>Velociraptor releases are signed using Authenticode on Windows as well
+as using GPG. To verify the signatures using gpg:&lt;/p>
+&lt;pre>&lt;code>$ gpg --verify velociraptor-v0.6.5-2-linux-amd64.sig
+gpg: assuming signed data in 'velociraptor-v0.6.5-2-linux-amd64'
+gpg: Signature made Wed Jul 27 02:49:33 2022 AEST
+gpg: using RSA key 0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1
+gpg: Good signature from &amp;quot;Velociraptor Team (Velociraptor - Dig deeper! https://docs.velociraptor.app/) &amp;lt;support@velocidex.com&amp;gt;&amp;quot; [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg: There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 0572 F28B 4EF1 9A04 3F4C BBE0 B22A 7FB1 9CB6 CFA1
+&lt;/code>&lt;/pre>
+&lt;p>You may need to import the key first into your keyring:&lt;/p>
+&lt;pre>&lt;code>$ gpg --receive-keys 0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1
+gpg: key B22A7FB19CB6CFA1: public key &amp;quot;Velociraptor Team (Velociraptor - Dig deeper! https://docs.velociraptor.app/) &amp;lt;support@velocidex.com&amp;gt;&amp;quot; imported
+gpg: Total number processed: 1
+gpg: imported: 1
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" API limiting ">&lt;p>GitHub limits how many unauthenticated API requests are allowed per IP
+address. If you need to increase this limit, create a personal access
+token (see
+&lt;a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token&lt;/a>)&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How to fix "certificate has expired or not yet valid error"?</title><link>https://docs.velociraptor.app/knowledge_base/tips/rolling_certificates/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/rolling_certificates/</guid><description>&lt;h1 id="how-to-fix-certificate-has-expired-or-not-yet-valid-error">How to fix &amp;ldquo;certificate has expired or not yet valid error&amp;rdquo;?&lt;/h1>
+&lt;p>When Velociraptor generates a configuration file it also generates
+some certificates to secure it&amp;rsquo;s internal PKI.&lt;/p>
+&lt;p>The CA certificate is embedded in the client&amp;rsquo;s configuration file and
+underpins the entire Velociraptor communications protocol - all
+certificates are issued by this internal CA. The Velociraptor CA is
+set to expire in 10 years.&lt;/p>
+&lt;p>The Server certificate is signed by the CA certificate and is set to
+expire in 1 year by default. When the certificate expires, clients
+will be unable to connect to the server any more.&lt;/p>
+&lt;p>You can check the expiry time of the server certificate using curl and
+openssl:&lt;/p>
+&lt;pre>&lt;code>$ curl -s -k https://127.0.0.1:8000/server.pem | openssl x509 -text | grep -A 2 Validity
+Validity
+ Not Before: Apr 13 12:05:46 2022 GMT
+ Not After : Apr 13 12:05:46 2023 GMT
+&lt;/code>&lt;/pre>
+&lt;p>Reissuing a new server certificate can be performed at any time using the
+&lt;code>config reissue_certs&lt;/code> command. The procedure amounts to generating a new
+server configuration which is derived from the old one, and then replacing the
+old config with the new config.&lt;/p>
+&lt;p>Additionally the &lt;code>config rotate_keys&lt;/code> command can be used to regenerate both
+the server certificate and the associated private key. Although this is not
+necessary for operational purposes, it is considered good security practice
+to rotate keys and certificates periodically, and particularly after a
+suspected systems compromise.&lt;/p>
+&lt;h2 id="setting-a-non-standard-validity">Setting a non-standard validity&lt;/h2>
+&lt;p>The latest release has a &lt;code>--validity&lt;/code> option can be used to extend the validity
+beyond the default of one year. For example, to generate a config containing a
+server certificate which is valid for 2 years, you would run the command:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor --config server.config.yaml config reissue_certs --validity 730 &amp;gt; new.server.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>If you expect your server to be a long-term instance then you don&amp;rsquo;t have to
+start with the default 1-year validity and wait for the certificate to expire.
+You can generate a new config on day 1 based on the initial config using the
+&lt;code>config reissue_certs&lt;/code> command. You can then use the new config for the new
+server installation.&lt;/p>
+&lt;h2 id="rotating-certificates">Rotating certificates&lt;/h2>
+
+&lt;div class="mynotices info">
+ &lt;div heading="info">&lt;p>For server versions older than 0.72.3 please use the following commands instead
+of those shown below:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Current command&lt;/em> -&amp;gt; &lt;em>Command for versions &amp;lt;0.72.3&lt;/em>&lt;/li>
+&lt;li>&lt;code>velociraptor config reissue_certs&lt;/code> -&amp;gt; &lt;code>velociraptor config reissue_key&lt;/code>&lt;/li>
+&lt;li>&lt;code>velociraptor config rotate_keys&lt;/code> -&amp;gt; &lt;code>velociraptor config rotate_key&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>To rotate server certificates, simply use the following command to
+generate a new configuration file containing rotated certificates:&lt;/p>
+&lt;pre>&lt;code>$ velociraptor config reissue_certs --config /etc/velociraptor/server.config.yaml &amp;gt; /tmp/new_key.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>Alternatively, you can regenerate the server&amp;rsquo;s private keys and rotate the
+certificates at the same time:&lt;/p>
+&lt;pre>&lt;code>$ velociraptor config rotate_keys --config /etc/velociraptor/server.config.yaml &amp;gt; /tmp/new_key.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>The previous two commands will not affect the CA private key and
+certificate, which is valid for 10 years, as described in the
+previous section.&lt;/p>
+&lt;p>You can view the new certificate using jq and openssl (here &lt;code>jq&lt;/code> is
+used to show the PEM certificate of the frontend and &lt;code>openssl&lt;/code> is used
+to decode it)&lt;/p>
+&lt;pre>&lt;code>$ velociraptor --config /tmp/new_key.config.yaml config show --json | jq -r .Frontend.certificate | openssl x509 -text | grep -A 2 Validity
+Validity
+ Not Before: Apr 25 21:01:51 2022 GMT
+ Not After : Apr 25 21:01:51 2023 GMT
+&lt;/code>&lt;/pre>
+&lt;p>Now back up the old configuration file and replace it with the new
+file, then restart the server. Clients should reconnect automatically.&lt;/p></description></item><item><title>What do I do about "version GLIBC_2.14 not found" errors?</title><link>https://docs.velociraptor.app/knowledge_base/tips/glibc_errors/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/glibc_errors/</guid><description>&lt;h1 id="what-do-i-do-about-version-glibc_214-not-found-errors">What do I do about &amp;ldquo;version GLIBC_2.14 not found&amp;rdquo; errors?&lt;/h1>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" TLDR - use the `musl` build ">&lt;p>Use the &lt;code>musl&lt;/code> built binary for older Linux systems. You can
+find this build together with the others on the release page with the
+&lt;code>-musl&lt;/code> suffix in the name.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>On Linux, binaries always link to the C library dynamically. This
+happens even with a static binary like Velociraptor. The C library is
+intimately linked to the version of Linux installed on the system and
+it is generally not possible to upgrade the C library without also
+upgrading the entire Linux distribution.&lt;/p>
+&lt;p>During the build process, the compiler creates a version requirement
+for this C library embedded in the binary itself. You can see the
+exact version of all libraries needed at runtime using the &lt;code>read_elf&lt;/code>
+program:&lt;/p>
+&lt;pre>&lt;code>$ readelf -V velociraptor-v0.6.4-linux-amd64
+...
+Version needs section '.gnu.version_r' contains 3 entries:
+ Addr: 0x00000000004106a0 Offset: 0x0106a0 Link: 7 (.dynstr)
+ 000000: Version: 1 File: libdl.so.2 Cnt: 1
+ 0x0010: Name: GLIBC_2.2.5 Flags: none Version: 10
+ 0x0020: Version: 1 File: libpthread.so.0 Cnt: 2
+ 0x0030: Name: GLIBC_2.3.2 Flags: none Version: 6
+ 0x0040: Name: GLIBC_2.2.5 Flags: none Version: 5
+ 0x0050: Version: 1 File: libc.so.6 Cnt: 8
+ 0x0060: Name: GLIBC_2.11 Flags: none Version: 12
+ 0x0070: Name: GLIBC_2.7 Flags: none Version: 11
+ 0x0080: Name: GLIBC_2.14 Flags: none Version: 9
+ 0x0090: Name: GLIBC_2.15 Flags: none Version: 8
+ 0x00a0: Name: GLIBC_2.4 Flags: none Version: 7
+ 0x00b0: Name: GLIBC_2.3.4 Flags: none Version: 4
+ 0x00c0: Name: GLIBC_2.2.5 Flags: none Version: 3
+ 0x00d0: Name: GLIBC_2.3 Flags: none Version: 2
+&lt;/code>&lt;/pre>
+&lt;p>In the above example this binary requires at least &lt;code>GLIBC_2.15&lt;/code> to
+run. You can tell what version of libc you have on any particular
+system using the local package manager.&lt;/p>
+&lt;pre>&lt;code>$ dpkg -l libc6:amd64
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name Version Architecture Description
++++-==============-=============-============-=================================
+ii libc6:amd64 2.33-0ubuntu5 amd64 GNU C Library: Shared libraries
+&lt;/code>&lt;/pre>
+&lt;p>In this case this system has GLIBC version 2.33 which is higher than
+the minimum required version of 2.15.&lt;/p>
+&lt;p>However for older systems, the locally installed GLIBC may be older
+than required. This results in an error when we attempt to run it. For
+example on an old CentOS 6 system:&lt;/p>
+&lt;pre>&lt;code>$ ./velociraptor-v0.6.4-linux-amd64
+./velociraptor-v0.6.4-linux-amd64: /lib64/libc.so.6: version `GLIBC_2.14' not found (required by ./velociraptor-v0.6.4-linux-amd64)
+./velociraptor-v0.6.4-linux-amd64: /lib64/libc.so.6: version `GLIBC_2.15' not found (required by ./velociraptor-v0.6.4-linux-amd64)
+&lt;/code>&lt;/pre>
+&lt;p>Since the version requirement is added at build time, we really need
+to build on an old system to ensure the linked to GLIBC is old enough.&lt;/p>
+&lt;p>Velociraptor uses the &lt;a href="https://www.musl-libc.org/">musl&lt;/a> project to
+build completely static binaries independent of the GLIBC installed on
+the system. While this feature is considered experimental it seems to
+work well and produces truly portable binaries.&lt;/p>
+&lt;p>We recommend that version to only be used for clients on older
+systems, although it might also work for a server too (but really you
+should be running servers on modern patched systems).&lt;/p></description></item><item><title>What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?</title><link>https://docs.velociraptor.app/knowledge_base/tips/startup_artifacts/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/startup_artifacts/</guid><description>&lt;h1 id="what-is-the-easiest-way-to-have-velociraptor-start-with-a-custom-server-artifact-automatically-loaded">What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?&lt;/h1>
+&lt;p>Velociraptor frontend process has a component called the &lt;code>Artifact Repository&lt;/code>. This component knows about all the artifacts that are
+defined. When the server starts up, it loads artifacts into the
+repository from the following sources.&lt;/p>
+&lt;ol>
+&lt;li>Built in artifacts are embedded into the binary itself.&lt;/li>
+&lt;li>It is possible to provide custom artifacts inside the configuration
+file itself.&lt;/li>
+&lt;li>Providing a directory with the &lt;code>--definitions&lt;/code> flag will cause
+Velociraptor to scan the directory for artifact YAML files.&lt;/li>
+&lt;li>Finally, the server will load artifacts from the configured
+filestore path under &lt;code>&amp;lt;filestore&amp;gt;/artifact_definitions&lt;/code>. These are
+usually the custom artifacts defined through the GUI.&lt;/li>
+&lt;/ol>
+&lt;p>The location of where an artifact came from does not matter,
+Velociraptor organizes artifacts internally using the artifact
+name. It is customary to denote custom artifacts with the &lt;code>Custom.&lt;/code>
+prefix but this is not mandatory.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Velociraptor does not allow a custom artifact to override a built in
+artifact (i.e. have the same name). Built in artifacts are protected
+because overriding built in artifacts may break the proper
+functionality of Velociraptor. If you want to customize a built in
+artifact, simply change the name when you save it.&lt;/p>
+&lt;p>Velociraptor considers artifacts defined in the config file, or given
+in the &lt;code>--definitions&lt;/code> directory as &amp;ldquo;built in&amp;rdquo;.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="specifying-a-startup-artifact">Specifying a startup artifact.&lt;/h2>
+&lt;p>When the Velociraptor server is run for the very first time, it
+creates an install record in the filestore
+&lt;code>&amp;lt;filestore&amp;gt;/config/install_time.json.db&lt;/code>. It can then setup initial
+artifacts to collect as specified by the config file:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">Frontend:
+ default_client_monitoring_artifacts:
+ - Generic.Client.Stats
+ initial_server_artifacts:
+ - MyServerArtifact
+ default_server_monitoring_artifacts:
+ - MyCustomServerMonitor
+&lt;/code>&lt;/pre>
+&lt;p>In the above snippet, we see the following parameters:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;code>default_client_monitoring_artifacts&lt;/code> specifies the initial client
+monitoring table that will be created. By default, Velociraptor
+collects endpoint CPU and Memory telemetry from all endpoints. You
+can remove this, or specify a different client artifact to collect.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>default_server_monitoring_artifacts&lt;/code> specifies an initial set of
+server event artifacts to collect.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>initial_server_artifacts&lt;/code> is a list of server artifacts that will
+be automatically launched on the server on initial startup. You can
+specify the names of any artifacts here (including custom artifacts)
+which can be bootstrapped to perform any kinds of server
+configuration needed. The artifacts are simply scheduled and will
+appear in the usual &lt;code>Server Artifacts&lt;/code> screen.&lt;/p>
+&lt;/li>
+&lt;/ul>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Currently it is not possible to specify parameters for initial
+artifacts so if you need to tweak the parameters it is best to create
+a custom artifact that in turn launches the needed artifacts with the
+correct parameters.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How do I use my own SSL certificates?</title><link>https://docs.velociraptor.app/knowledge_base/tips/ssl/</link><pubDate>Mon, 18 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/ssl/</guid><description>&lt;h1 id="how-do-i-use-my-own-ssl-certificates">How do I use my own SSL certificates?&lt;/h1>
+&lt;p>Use case: For an on-premises deployment, Let&amp;rsquo;s Encrypt may not be an option. You may want to use your own enterprise/corporate Certificate Authority (CA) or another 3rd party.&lt;/p>
+&lt;p>Thanks to recent enhancements by the Velociraptor developers, this is quite a simple task. The below is a simple test configuration used and may need adapting to your environment.&lt;/p>
+&lt;p>Prior to commencing we have a plaintext PEM private key, certificate for our Velociraptor server, and the certificate chain of our enterprise CA, including the root and multiple intermediaries.&lt;/p>
+&lt;h3 id="generate-the-configuration">Generate the configuration&lt;/h3>
+&lt;p>Using Ubuntu we generated a stock standard &amp;ldquo;Self Signed SSL&amp;rdquo; configuration:&lt;/p>
+&lt;p>&lt;code>./velociraptor-v0.6.3-2-linux-amd64 config generate -i&lt;/code>&lt;/p>
+&lt;img width="491" alt="image" src="https://user-images.githubusercontent.com/30587915/163787136-f9e6f16f-5119-4cd0-ba43-741ab64cdc42.png">
+&lt;h3 id="update-the-serverconfigyaml">Update the server.config.yaml&lt;/h3>
+&lt;p>Locate the frontend section and add the &lt;code>tls_certificate_filename&lt;/code> and &lt;code>tls_private_key_filename&lt;/code> parameters. Enter the absolute path to these files. For testing, we placed in /etc however there is better places for production use.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">Frontend:
+ tls_certificate_filename: /etc/velociraptor.pem
+ tls_private_key_filename: /etc/velociraptor.key
+&lt;/code>&lt;/pre>
+&lt;img width="221" alt="image" src="https://user-images.githubusercontent.com/30587915/163787153-9734cbb8-ddbf-4140-b4d6-1c89e19afa7c.png">
+&lt;h3 id="update-the-clientconfigyaml">Update the client.config.yaml&lt;/h3>
+&lt;p>In the client section modify &lt;code>use_self_signed_ssl&lt;/code> to be false, and add the CA root/intermediary certificates to be trusted by the client:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">use_self_signed_ssl: false
+
+Crypto:
+ root_certs: |
+ -----BEGIN CERTIFICATE-----
+ XXXXX
+ -----END CERTIFICATE-----
+ -----BEGIN CERTIFICATE-----
+ XXXXX
+ -----END CERTIFICATE-----
+ -----BEGIN CERTIFICATE-----
+ XXXXX
+ -----END CERTIFICATE-----
+ ...
+&lt;/code>&lt;/pre>
+&lt;h3 id="test">Test&lt;/h3>
+&lt;p>Launching the server we should be able to connect to the GUI using our new certificate. Note this must be trusted by browser/system to prevent errors.&lt;/p>
+&lt;p>Launching the client, it should connect securely without error, using the trusted CA chain and the new server certificate.&lt;/p>
+&lt;p>No changes need to be made to the pinned certificate name, nor do any certificates need to be modified in the configuration files.&lt;/p></description></item><item><title>How do I set a proxy for client communications?</title><link>https://docs.velociraptor.app/knowledge_base/tips/proxy/</link><pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/proxy/</guid><description>&lt;h1 id="how-do-i-set-a-proxy-for-client-communications">How do I set a proxy for client communications?&lt;/h1>
+&lt;p>Many enterprise environments require a proxy to be set before outbound
+web communications is allowed. The Velociraptor client uses HTTP to
+communicate with the server, and therefore must use a proxy to
+connect in such environments.&lt;/p>
+&lt;p>It is possible to specify the HTTP proxy using the configuration file
+or environment variables.&lt;/p>
+&lt;h3 id="environment-variables">Environment variables.&lt;/h3>
+&lt;p>Environment variables may be configured using group policy or similar
+methods. Setting the &lt;code>http_proxy&lt;/code> and &lt;code>https_proxy&lt;/code> environment
+variables will force the client to go through the specified proxy.&lt;/p>
+&lt;p>The rules for environment variables are described
+&lt;a href="https://go.dev/src/net/http/transport.go#422">here&lt;/a>:&lt;/p>
+&lt;pre>&lt;code class="language-go">// ProxyFromEnvironment returns the URL of the proxy to use for a
+// given request, as indicated by the environment variables
+// HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions
+// thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https
+// requests.
+//
+// The environment values may be either a complete URL or a
+// &amp;quot;host[:port]&amp;quot;, in which case the &amp;quot;http&amp;quot; scheme is assumed.
+// The schemes &amp;quot;http&amp;quot;, &amp;quot;https&amp;quot;, and &amp;quot;socks5&amp;quot; are supported.
+// An error is returned if the value is a different form.
+&lt;/code>&lt;/pre>
+&lt;h3 id="setting-a-proxy-in-the-configuration-file">Setting a proxy in the configuration file&lt;/h3>
+&lt;p>You can also hard code the proxy in the configuration file&amp;rsquo;s Client
+section:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">Client:
+ proxy: http://proxy.example.com:3128/
+ server_urls:
+ - https://velo.example.com:8100/
+&lt;/code>&lt;/pre></description></item><item><title>How can I configure Velociraptor for multiple SSO providers</title><link>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</link><pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</guid><description>&lt;h1 id="how-can-i-configure-velociraptor-for-multiple-sso-providers">How can I configure Velociraptor for multiple SSO providers&lt;/h1>
+&lt;p>Velociraptor can be configured to use a single SSO provider using the usual configuration building wizard (see &lt;a href="https://docs.velociraptor.app/docs/deployment/cloud/#configuring-google-oauth-sso">Here&lt;/a>), but the wizard does not offer to configure multiple providers.&lt;/p>
+&lt;p>Sometimes we want to have multiple providers so we can allow users from another organization to be able to log into Velociraptor. To do this we need to configure the SSO authenticator manually in the configuration file.&lt;/p>
+&lt;p>Simply run &lt;code>velociraptor config generate -i&lt;/code> and select the OAuth provider for the first provider. In the end your config file will have the following section where &lt;code>oauth_client_id&lt;/code> and &lt;code>oauth_client_secret&lt;/code> refer to the Google OAuth app you created:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+&lt;/code>&lt;/pre>
+&lt;p>To provide multiple authenticators, you will need to manually change to the &lt;code>multi&lt;/code> authenticator type:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: multi
+ sub_authenticators:
+ - type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+ - type: Github
+ oauth_client_id: 123456
+ oauth_client_secret: 76521376523
+ - type: oidc
+ oidc_issuer: https://accounts.google.com
+ oidc_name: Rapid7
+ avatar: https://example.com/avatar.png
+ oauth_client_id: XXXXX
+ oauth_client_secret: AAAAA
+&lt;/code>&lt;/pre>
+&lt;p>Note that you can have multiple &lt;code>OIDC&lt;/code> authenticators and each can have a separate name and an icon associated with it (e.g. if multiple organizations use separate Okta logins).&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="47a0513752ad43ed9f3f48bd62462858">
+ &lt;div data-featherlight="#47a0513752ad43ed9f3f48bd62462858" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png" alt="Logging in with multiple providers">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Logging in with multiple providers
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="granting-a-user-a-role">Granting a user a role.&lt;/h2>
+&lt;p>Velociraptor will trust any of the configured authenticators, to identify the user and based on the username, grant the user the appropriate roles on the Velociraptor server. You will need to grant the user a role either through the command line:&lt;/p>
+&lt;pre>&lt;code>velociraptor user add --role administrator mike@gmail.comm
+&lt;/code>&lt;/pre>
+&lt;p>Or via a notebook cell:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT user_create(user=&amp;quot;mike@gmail.com&amp;quot;, role=&amp;quot;administrator&amp;quot;)
+FROM scope()
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Trusting multiple providers ">&lt;p>Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.&lt;/p>
+&lt;p>In simple terms, if a user has username &amp;ldquo;mike&amp;rdquo; on &lt;code>OIDC&lt;/code> provider 1 and another user can get say a Github account for the user &amp;ldquo;mike&amp;rdquo;, then the second user can impersonate the first user by logging in with the second provider.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How do I debug the client while it is running?</title><link>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</guid><description>&lt;h1 id="how-do-i-debug-the-client-while-it-is-running">How do I debug the client while it is running?&lt;/h1>
+&lt;p>Sometimes we collect artifacts from clients but for some reason things seem to take longer than expected. Velociraptor has mechanisms to gain visibility into how clients behave and what queries are running.&lt;/p>
+&lt;h2 id="query-logs">Query logs&lt;/h2>
+&lt;p>The first port of call is viewing the query logs in the logs tab of the relevant collection.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="7c86ff2b12e4fdf25f00b8e09d60698f">
+ &lt;div data-featherlight="#7c86ff2b12e4fdf25f00b8e09d60698f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/https://user-images.githubusercontent.com/3856546/159195874-ec6c8322-cb70-4254-861a-95888db94201.png" alt="Viewing the query logs">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/159195874-ec6c8322-cb70-4254-861a-95888db94201.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Viewing the query logs
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As the query is running, it will emit a message to let us know that it is waiting for rows. We use this to determine that the query is still running on the client.&lt;/p>
+&lt;h2 id="collecting-profiles">Collecting profiles&lt;/h2>
+&lt;p>The &lt;code>Generic.Client.Profile&lt;/code> artifact allows us to collect internal state of the client. Simply collect this from the client, while other queries are running&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="a0871aaf4dcd4891fffd377e8a831ecf">
+ &lt;div data-featherlight="#a0871aaf4dcd4891fffd377e8a831ecf" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/https://user-images.githubusercontent.com/3856546/159196011-28808471-4111-42ba-bfd3-819381bdf596.png" alt="Client Profile">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="https://user-images.githubusercontent.com/3856546/159196011-28808471-4111-42ba-bfd3-819381bdf596.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Client Profile
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most common thing to collect include:&lt;/p>
+&lt;ol>
+&lt;li>The Goroutine dump shows a stack trace of all currently running goroutines (similar to threads). This helps us understand if there is a deadlock or another bug.&lt;/li>
+&lt;li>The logs delivers a recent dump of client logs. Normally the client does &lt;strong>not&lt;/strong> write it&amp;rsquo;s logs to file to avoid information leakage issues. You can see the logs on the console by running the client with the &lt;code>-v&lt;/code> flag, but each client also keeps the last 1000 messages in a memory buffer so they can be available if needed. This option sends the recent logs to the server.&lt;/li>
+&lt;li>Query logs are a recent log of VQL queries running on the endpoint. This gives us an idea of exactly what the client is doing.&lt;/li>
+&lt;li>Metrics are internal program counters that provide visibility of performance related items.&lt;/li>
+&lt;/ol>
+&lt;p>When asking for help on Discord or our mailing list, we will often ask for the profiles collected from the client (or server). At a minimum we will need the above items to diagnose any issues.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>The nice thing about collecting profiles is that the client does &lt;strong>not&lt;/strong> need to be restarted and we do not need to run a special debug build - all clients are capable of collecting profile information at any time.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h3 id="references">References&lt;/h3>
+&lt;p>You can read more about &lt;a href="https://docs.velociraptor.app/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/">profiling Velociraptor here&lt;/a>.&lt;/p></description></item><item><title>How do I deploy the client as agentless (without install)?</title><link>https://docs.velociraptor.app/knowledge_base/tips/deploying_in_agentless_mode/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/deploying_in_agentless_mode/</guid><description>&lt;h1 id="how-do-i-deploy-the-client-as-agentless-without-install">How do I deploy the client as agentless (without install)?&lt;/h1>
+&lt;p>Sometimes we need to deploy Velociraptor in an IR and can not install
+it permanently as a service.&lt;/p>
+&lt;h2 id="windows-environments">Windows Environments&lt;/h2>
+&lt;p>It is possible to deploy the client using Group Policy by using
+&lt;code>Scheduled task&lt;/code> feature to cause domain connected machines to run the
+client. See details &lt;a href="https://docs.velociraptor.app/blog/html/2019/03/02/agentless_hunting_with_velociraptor/">here&lt;/a>.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The first step is to place the client and the generated
+&lt;code>client.config.yaml&lt;/code> on a public read only windows share.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Update the config file&amp;rsquo;s writeback location to somewhere writable
+on the client (e.g. &lt;code>C:\Windows\Temp\velo.writeback.yaml&lt;/code>)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Next create a &lt;code>Scheduled Task&lt;/code> in a new group policy object that
+applies to the relevant OU.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The scheduled task should be launched as &lt;code>NT_AUTHORITY\SYSTEM&lt;/code> from
+the read only share. With the appropriate command line. For example:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>\\dc\deployment\velociraptor.exe --config \\dc\deployment\client.config.yaml client --mutant MyVeloName
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Controlling number of instances ">&lt;p>Window&amp;rsquo;s Group Policy allows setting only a single instance of the
+program to run at the time, however we found in practice this is not
+reliable and sometimes GPO will launch dozens of copies of
+Velociraptor over time. To avoid this we use the &lt;code>--mutant&lt;/code> flag which
+will exit if a mutant of this name already exists.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="linux-environments">Linux Environments&lt;/h2>
+&lt;h3 id="systemd">Systemd&lt;/h3>
+&lt;p>It is possible to execute a program in a &amp;ldquo;transient scope&amp;rdquo;, which enables it to be controlled and inspected just like a regular service (unit) in Linux, without the need to create persistent configurations.
+Using &lt;code>systemd-run&lt;/code> the process will be executed and its parent will be the &lt;code>init&lt;/code> process, and will not terminate until the host is rebooted.&lt;/p>
+&lt;p>To execute the Velociraptor binary run the following:&lt;/p>
+&lt;pre>&lt;code>systemd-run -u velociraptor_tmp /tmp/velociraptor.bin client --config /tmp/client.config.yaml
+&lt;/code>&lt;/pre>
+&lt;p>Once the service is running, you should now be free to terminate the SSH / management session without terminating the process.&lt;/p>
+&lt;p>You can manually terminate the service with: &lt;code>systemctl stop velociraptor_tmp.service &lt;/code>&lt;/p>
+&lt;p>You can check it&amp;rsquo;s status with: &lt;code>systemctl status velociraptor_tmp.service&lt;/code>&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Temporary locations ">&lt;p>On Linux /tmp is cleaned up by a service, which gets triggered on shutdown.
+You will need to arrange for the Velociraptor binary and configuration file to be transferred again if the host reboots.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>You can read more about the &lt;code>systemd-run&lt;/code> here for flags etc: &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd-run.html">https://www.freedesktop.org/software/systemd/man/systemd-run.html&lt;/a>&lt;/p></description></item></channel></rss>
