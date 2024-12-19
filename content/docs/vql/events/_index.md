@@ -60,4 +60,4 @@ hits the notebook's 10 Minute timeout or the user clicks the `Stop`
 
 To learn more about how Velociraptor uses event queries to monitor
 events on endpoints, see [Client Monitoring]({{< ref
-"/docs/client_monitoring/" >}})
+"/docs/clients/monitoring/" >}})

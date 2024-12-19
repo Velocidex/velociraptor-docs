@@ -2,7 +2,7 @@
 title: "Client Monitoring"
 date: 2021-06-30T12:31:08Z
 draft: false
-weight: 50
+weight: 40
 ---
 
 We have previously seen the VQL [Event Queries]({{< ref
@@ -39,7 +39,9 @@ etc). Sometimes there will be a related non-event plugin for example
 while `watch_etvx()` watches the file for new events and does not
 terminate.
 
-You can search for all plugins on the [VQL Reference page]({{< ref "/vql_reference/" >}}), so simply read about all available event queries [here]({{< ref "/vql_reference/event/" >}}).
+You can search for all plugins on the
+[VQL Reference page]({{< ref "/vql_reference/" >}}), so simply read about all
+available event queries [here]({{< ref "/vql_reference/event/" >}}).
 
 {{% /notice %}}
 
@@ -64,7 +66,7 @@ server which in turn, writes them to the filestore.
 ![Client Event Architecture](client_events_arch.svg)
 
 
-## Installing client event queries.
+### Installing client event queries.
 
 Each client has a set of event queries that it is constantly running
 called an `Event Table`. The server can update the client's event
@@ -94,7 +96,7 @@ executions some of the time, simply apply the relevant label.
 
 {{% /notice %}}
 
-## Selecting event artifacts to apply
+### Selecting event artifacts to apply
 
 Velociraptor uses an "Artifact" to package VQL queries in a structured
 YAML file. Event queries are no different - they are contained within
@@ -122,14 +124,14 @@ can not select it.
 
 {{% /notice %}}
 
-## Inspecting the current monitoring table
+### Inspecting the current monitoring table
 
 The current configuration can be viewed by simply clicking the "Show
 client monitoring table" button.
 
 ![Inspecting client monitoring table](inspecting_table.png)
 
-## Viewing collected events.
+### Viewing collected events.
 
 Once the client syncs its client monitoring table, it will start
 forwarding events to the server. Events are simply rows returned by
@@ -147,7 +149,8 @@ You can see the timeline view is split into three rows:
 
 1. `Table View` visualizes the time range visible in the table currently.
 2. `Available` shows the days which have any events in them.
-3. `Logs` visualizes the days that have any logs in them (You can view query logs by selecting the `Logs` pull down on the top right).
+3. `Logs` visualizes the days that have any logs in them (You can view query
+   logs by selecting the `Logs` pull down on the top right).
 
 In order to keep the table brief the timestamps are abbreviated - you
 can hover the mouse over those to get the full timestamp. Usually the
@@ -178,7 +181,7 @@ installed.
 
 {{% /notice %}}
 
-## Further processing client monitoring events.
+### Further processing client monitoring events.
 
 Client event queries simply run on the endpoint and forward rows to
 the server. The event queries generally fall into two types:
@@ -197,5 +200,5 @@ the server. The event queries generally fall into two types:
 
 In either case, Velociraptor itself does not do anything with the
 events collected by default, other than write them to storage. Further
-server side processing is needed using [server side event queries]({{<
-ref "/docs/server_automation/server_monitoring/" >}}).
+server side processing is needed using
+[server side event queries]({{<ref "/docs/server_automation/server_monitoring/" >}}).

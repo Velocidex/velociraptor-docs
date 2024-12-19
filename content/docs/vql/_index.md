@@ -2,7 +2,7 @@
 title: "VQL Fundamentals"
 date: 2021-06-11T05:55:46Z
 draft: false
-weight: 30
+weight: 35
 ---
 
 VQL is central to the design and functionality of Velociraptor, and a solid grasp of VQL is critical to understanding and extending Velociraptor.

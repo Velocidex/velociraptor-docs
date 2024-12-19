@@ -11,7 +11,7 @@ We have previously seen the VQL [Event Queries]({{< ref
 "/docs/vql/events/" >}}) are simply VQL queries that never terminate,
 generating a row for each event that occurs. We also saw how these
 event queries can be used to collect real time telemetry from endpoint
-with [Client Monitoring]({{< ref "/docs/client_monitoring/" >}}).
+with [Client Monitoring]({{< ref "/docs/clients/monitoring/" >}}).
 
 In this section we describe how event queries can be used to
 monitoring server events and perform real time post processing on
@@ -128,7 +128,7 @@ plugin) or push rows to Elastic or Splunk (using the
 
 I previously described how client event queries can be used to collect
 real time telemetry from endpoint with [Client Monitoring]({{< ref
-"/docs/client_monitoring/" >}}). However, we also saw that
+"/docs/clients/monitoring/" >}}). However, we also saw that
 Velociraptor simply writes the resulting events to storage. How can we
 post process or escalate based on client events that occur on the
 endpoint?

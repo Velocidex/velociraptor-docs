@@ -626,7 +626,7 @@ collection and analysis of forensic artifacts.
 
 Velociraptor's VQL language is fully asynchronous and can watch for
 changes on the endpoint in real time. In Velociraptor's terminology we
-can write [Event Monitoring Queries]({{% ref "/docs/client_monitoring/" %}}).
+can write [Event Monitoring Queries]({{% ref "/docs/clients/monitoring/" %}}).
 
 Rather than parsing event log files as log sources for Sigma rule
 matching, we can tweak the VQL slightly to feed real time events into
