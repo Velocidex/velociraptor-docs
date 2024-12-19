@@ -43,7 +43,9 @@ SELECT expand(path="My Username is %USERNAME%")
 FROM scope()
 ```
 
-NOTE: The environment strings are set per user and Velociraptor's
+### Notes
+
+The environment strings are set per user and Velociraptor's
 own environment may not reflect any other process's
 environment. See `Windows.Forensics.ProcessInfo` for a
 forensically sound manner of obtaining the environment from any

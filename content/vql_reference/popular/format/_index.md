@@ -89,11 +89,11 @@ for advanced use cases.
 
 ### See also
 
-- [log](vql_reference/basic/log/): a function which uses the same string
+- [log]({{< ref "/vql_reference/popular/log/" >}}): a function which uses the same string
   formatting as the `format` function.
-- [timestamp_format](/vql_reference/misc/timestamp_format/): a function
+- [timestamp_format]({{< ref "/vql_reference/other/timestamp_format/" >}}): a function
   that simplifies the string formatting of timestamp objects.
-- [typeof](/vql_reference/basic/format/): a dedicated function equivalent
+- [typeof]({{< ref "/vql_reference/other/typeof/" >}}): a dedicated function equivalent
   to the special use case: `format(format="%T",args=x)`
 
 

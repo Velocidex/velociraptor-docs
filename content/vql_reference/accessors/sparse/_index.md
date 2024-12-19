@@ -41,7 +41,7 @@ The uploaded file will contain only 10 bytes but will retain the 5
 byte "hole" in the middle.
 
 This accessor is most useful when uploading or masking parts of other
-files - for example uploading a carved files from a larger image. NOTE
+files - for example uploading a carved files from a larger image. Note
 that delegate offsets are retained in this accessor (so for example
 offset 10 in this accessor corresponds to offset 10 in the delegate
 regardless of the sparse map).

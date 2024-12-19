@@ -47,7 +47,9 @@ tools on the client.
 
 https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
 
-NOTE: The plugin receives an array of arguments which are passed
+### Notes
+
+The plugin receives an array of arguments which are passed
 to the `execve()` system call as an array (on Windows they are
 properly escaped into a command line). This means that you do not
 need to escape or quote any special characters in the command.
