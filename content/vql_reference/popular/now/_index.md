@@ -47,6 +47,6 @@ comparison.
 
 ### See also
 
-- [timestamp](/vql_reference/basic/timestamp/)
+- [timestamp]({{< ref "/vql_reference/popular/timestamp/" >}})
 
 

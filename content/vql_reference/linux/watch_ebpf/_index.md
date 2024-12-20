@@ -34,7 +34,7 @@ See https://github.com/Velocidex/tracee_velociraptor for more details.
 
 ### See also
 
-- [ebpf_events](/vql_reference/misc/ebpf_events/): Dumps information about
+- [ebpf_events]({{< ref "/vql_reference/linux/ebpf_events/" >}}): Dumps information about
   potential ebpf_events.
 
 

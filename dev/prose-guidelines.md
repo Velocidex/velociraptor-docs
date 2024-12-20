@@ -59,6 +59,11 @@ use platform alternatives where applicable
 When providing command examples we should use a consistent order for the
 command components: `[binary]` `[command]` `[subcommand]` `[flags]` `[args]`
 
+### Page links
+
+Use the Hugo shortcode `[]({{< ref "/abc/xyz/" >}})` for page links so that Hugo
+will do link checking.
+
 ## Page content structure
 
 ### KB articles

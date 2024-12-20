@@ -75,10 +75,6 @@ FROM scope()
 In this case the artifact names are repeated in the spec and the
 artifacts parameter.
 
-NOTE: When constructing the dictionaries for the spec parameter
-you will often need to specify a field name containing full
-stop. You can escape this using the backticks like the example above.
-
 ### Example - conditional collections
 
 In this example we wish to create an artifact with check buttons
@@ -109,5 +105,11 @@ SELECT collect_client(
          client_id='C.49982ba4c2ccef20') AS collection
 FROM scope()
 ```
+
+### Notes
+
+When constructing the dictionaries for the spec parameter
+you will often need to specify a field name containing full
+stop. You can escape this using the backticks like the example above.
 
 

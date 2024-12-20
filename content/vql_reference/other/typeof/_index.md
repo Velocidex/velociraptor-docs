@@ -54,6 +54,6 @@ unexpected data type.
 
 ### See also
 
-- [format](/vql_reference/basic/format/)
+- [format]({{< ref "/vql_reference/popular/format/" >}})
 
 
