@@ -1,0 +1,537 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Triage.Sysmon :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1734702287 rel=stylesheet><link href=/css/fontawesome-all.min.css?1734702287 rel=stylesheet><link href=/css/featherlight.min.css?1734702287 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1734702287 rel=stylesheet><link href=/css/auto-complete.css?1734702287 rel=stylesheet><link href=/css/theme.css?1734702287 rel=stylesheet><link href=/css/tabs.css?1734702287 rel=stylesheet><link href=/css/hugo-theme.css?1734702287 rel=stylesheet><link href=/css/theme-mine.css?1734702287 rel=stylesheet><link href=/css/dark.css?1734702287 rel=stylesheet><link href=/css/syntax.css?1734702287 rel=stylesheet><link href=/css/light.css?1734702287 rel=stylesheet><link href=/css/hljs.css?1734702287 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1734702287 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1734702287></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/sysmontriage/><nav id=sidebar><div id=header-wrapper><div id=header><script>function darkmode(){$("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/"}function lightmode(){$("body").removeClass("dark").addClass("light"),document.cookie="theme=lightmode;path=/"}const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?darkmode():lightmode()</script><div class="btn btn-default ThemeSelector darkmode" onclick=darkmode()><i class="fas fa-moon"></i></div><div class="btn btn-default ThemeSelector lightmode" onclick=lightmode()><i class="fas fa-sun"></i></div><a href=https://docs.velociraptor.app/><img src=https://docs.velociraptor.app//images/logo.svg></a></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/self-signed/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/self-signed/>Self-Signed SSL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/>Cloud Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/multifrontend/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/multifrontend/>Multi-Frontend</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/troubleshooting/>Troubleshooting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/>Config Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/_reference/ class=dd-item><div><a href=/docs/deployment/references/_reference/></a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/artifacts/>Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/hunting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/hunting/>Hunting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/labels/>Client Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/monitoring/>Client Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL Fundamentals</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/notebooks/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/>Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filenames</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/remote_uploads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/offline_triage/remote_uploads/>Remote Uploads</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/extending_vql/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item parent haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2024</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/SysmonTriage.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Triage.Sysmon</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Windows.Triage.Sysmon</h1><p>This artifact allows collecting Sysmon Events for Triage around a timestamp.</p><p>By default collection will be 600 seconds from the current time and allows
+fast triage of a machine with recent telemetry.</p><pre><code class=language-yaml>
+name: Windows.Triage.Sysmon
+author: Matt Green - @mgreen27
+description: |
+   This artifact allows collecting Sysmon Events for Triage around a timestamp.
+   
+   By default collection will be 600 seconds from the current time and allows 
+   fast triage of a machine with recent telemetry.
+   
+type: CLIENT
+
+parameters:
+   - name: TargetTime
+     description: the timestamp we want to box time around. Default is current time.
+     type: timestamp
+   - name: TargetTimeBox
+     description: the time box in seconds we want around TargetTime.
+     default: 600
+     type: int
+   - name: IdRegex
+     description: Regex of Sysmon EventIDs to include. Default is all.
+     default: .
+   - name: IocRegex
+     description: Regex of strings to search for in Sysmon events. Default is any.
+     default: .
+   - name: FilterRegex
+     description: Regex of strings to filter out of results. Default is none.
+     
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- firstly set boxed timebounds
+      LET DateAfterTime &lt;= if(condition=TargetTime,
+        then=timestamp(epoch=TargetTime.Unix - TargetTimeBox), else=timestamp(epoch=now() - TargetTimeBox))
+      LET DateBeforeTime &lt;= if(condition=TargetTime,
+        then=timestamp(epoch=TargetTime.Unix + TargetTimeBox), else=timestamp(epoch=now() + TargetTimeBox))
+        
+      -- run query and output rows
+      SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
+                EvtxGlob='''%SystemRoot%\System32\Winevt\Logs\*Sysmon*.evtx''',
+                ChannelRegex='Sysmon',
+                DateAfter= DateAfterTime,
+                DateBefore= DateBeforeTime,
+                IdRegex=IdRegex,
+                IocRegex=IocRegex,
+                WhitelistRegex=FilterRegex )
+
+    notebook:
+      - type: vql_suggestion
+        name: 1. Process event timeline
+        template: |
+            /*
+            ## 1: Process creation
+            Comment in fields as needed.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --EventData.RuleName as RuleName
+                --EventData.UtcTime as UtcTime
+                --EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.OriginalFileName as OriginalFileName
+                --,dict(FileVersion = EventData.FileVersion, Description = EventData.Description, Product = EventData.Product,Company = EventData.Company,OriginalFileName = EventData.OriginalFileName) as VersionInformation
+                ,EventData.CommandLine as CommandLine
+                --,EventData.CurrentDirectory as CurrentDirectory
+                ,EventData.User as User
+                --,EventData.LogonGuid as LogonGuid
+                --,EventData.LogonId as LogonId
+                --,EventData.TerminalSessionId as TerminalSessionId
+                --,EventData.IntegrityLevel as IntegrityLevel
+                --,parse_string_with_regex(string=EventData.Hashes, regex=["MD5=(?P&lt;MD5&gt;[^,]+)","SHA1=(?P&lt;SHA1&gt;[^,]+)","SHA256=(?P&lt;SHA256&gt;[^,]+)","IMPHASH=(?P&lt;IMPHASH&gt;[^,]+)"] ) as Hash
+                --,EventData.ParentProcessGuid as ParentProcessGuid
+                ,EventData.ParentProcessId as ParentProcessId
+                ,EventData.ParentImage as ParentImage
+                ,EventData.ParentCommandLine as ParentCommandLine
+                --,EventData.ParentUser as ParentUser
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 1
+ 
+      - type: vql_suggestion
+        name: 2 Change file time
+        template: |
+            /*
+            ## 2: A process changed a file creation time
+                The change file creation time event is registered when a file creation time is 
+                explicitly modified by a process. This event helps tracking the real creation 
+                time of a file. Attackers may change the file creation time of a backdoor to 
+                make it look like it was installed with the operating system. Note that many 
+                processes legitimately change the creation time of a file; it does not 
+                necessarily indicate malicious activity.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --EventData.RuleName as RuleName
+                --EventData.UtcTime as UtcTime
+                --EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFilename as TargetFilename
+                ,EventData.CreationUtcTime as CreationUtcTime
+                ,EventData.PreviousCreationUtcTime as PreviousCreationUtcTime
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 2
+
+      - type: vql_suggestion
+        name: 3. Network event timeline
+        template: |             
+            /*
+            ## 3. Network connection
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.Protocol as Protocol
+                ,EventData.Initiated as Initiated
+                ,EventData.SourceIsIpv6 as SourceIsIpv6
+                ,EventData.SourceIp as SourceIp
+                ,EventData.SourceHostname as SourceHostname
+                ,EventData.SourcePort as SourcePort
+                ,EventData.SourcePortName as SourcePortName
+                ,EventData.DestinationIsIpv6 as DestinationIsIpv6
+                ,EventData.DestinationIp as DestinationIp
+                ,EventData.DestinationHostname as DestinationHostname
+                ,EventData.DestinationPort as DestinationPort
+                ,EventData.DestinationPortName as DestinationPortName
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 3
+       
+       
+      - type: vql_suggestion
+        name: 8. CreateRemoteThread
+        template: |           
+            /*
+            ## 8: CreateRemoteThread
+            The CreateRemoteThread event detects when a process creates a thread in another 
+            process. This technique is used by malware to inject code and hide in other 
+            processes. The event indicates the source and target process. It gives 
+            information on the code that will be run in the new thread: StartAddress, 
+            StartModule and StartFunction. Note that StartModule and StartFunction fields 
+            are inferred, they might be empty if the starting address is outside loaded 
+            modules or known exported functions.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.SourceProcessGuid as SourceProcessGuid
+                ,EventData.SourceProcessId as SourceProcessId
+                ,EventData.SourceImage as SourceImage
+                ,EventData.SourceUser as SourceUser
+                --,EventData.TargetProcessGuid as TargetProcessGuid
+                ,EventData.TargetImage as TargetImage
+                ,EventData.TargetUser as TargetUser
+                ,EventData.NewThreadId as NewThreadId
+                ,EventData.StartAddress as StartAddress
+                ,EventData.StartModule as StartModule
+                ,EventData.StartFunction as StartFunction
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 8
+     
+      - type: vql_suggestion
+        name: 10. ProcessAccess
+        template: |          
+            /*
+            ## 10: ProcessAccess
+            The process accessed event reports when a process opens another process, 
+            an operation that’s often followed by information queries or reading 
+            and writing the address space of the target process. This enables 
+            detection of hacking tools that read the memory contents of processes 
+            like Local Security Authority (Lsass.exe) in order to steal credentials 
+            for use in Pass-the-Hash attacks. Enabling it can generate significant 
+            amounts of logging if there are diagnostic utilities active that 
+            repeatedly open processes to query their state, so it generally 
+            should only be done so with filters that remove expected accesses.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.SourceProcessGuid as SourceProcessGuid
+                ,EventData.SourceProcessId as SourceProcessId
+                ,EventData.SourceThreadId as SourceThreadId
+                ,EventData.SourceImage as SourceImage
+                ,EventData.SourceUser as SourceUser
+                --,EventData.TargetProcessGuid as TargetProcessGuid
+                ,EventData.TargetProcessId as TargetProcessId
+                ,EventData.TargetImage as TargetImage
+                ,EventData.TargetUser as TargetUser
+                ,EventData.GrantedAccess as GrantedAccess
+                ,EventData.CallTrace as CallTrace
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 10
+
+      - type: vql_suggestion
+        name: 11. FileCreate
+        template: |             
+            /*
+            ## 11: FileCreate
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFilename as TargetFilename
+                ,EventData.CreationUtcTime as CreationUtcTime
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 11
+
+      - type: vql_suggestion
+        name: 12 13 14. Registry events
+        template: |                 
+            /*
+            ## 12, 13, 14: Registry
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.EventType as EventType
+                ,EventData.TargetObject as TargetObject
+                ,EventData.Details as Details
+                ,EventData.NewName as NewName
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID in ( 12, 13, 14 )
+
+      - type: vql_suggestion
+        name: 15. FileCreateStreamHash
+        template: | 
+            /*
+            ## 15: FileCreateStreamHash
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFileName as TargetFileName
+                ,EventData.CreationUtcTime as CreationUtcTime
+                --,parse_string_with_regex(string=EventData.Hash, regex=["MD5=(?P&lt;MD5&gt;[^,]+)","SHA1=(?P&lt;SHA1&gt;[^,]+)","SHA256=(?P&lt;SHA256&gt;[^,]+)"] ) as Hash
+                ,EventData.Hash as Hash
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 15
+
+      - type: vql_suggestion
+        name: 17 18. Named Pipes
+        template: | 
+            /*
+            ## 17, 18: Named Pipes
+            17: Pipe created
+            18: Pipe connected
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.EventType as EventType
+                ,EventData.PipeName as PipeName
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID in ( 17,18 )
+            
+            
+            /*
+            
+      - type: vql_suggestion
+        name: 19 20 21. WMI Eventing
+        template: |            
+            ## 19,20,21: WMI Eventing
+            19: WmiEventFilter activity detected.  
+            20: WmiEventConsumer activity detected.  
+            21: WmiEventConsumerToFilter activity detected.  
+            
+            Note: some fields for each event will be null.  
+            Comment in and out relevant fields.
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.EventType as EventType
+                ,EventData.Operation as Operation
+                ,EventData.EventNamespace as EventNamespace
+                ,EventData.Name as Name
+                ,EventData.Query as Query
+                ,EventData.Type as Type
+                ,EventData.Destination as Destination
+                ,EventData.Consumer as Consumer
+                ,EventData.Filter as Filter
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID in ( 19,20,21 )
+
+      - type: vql_suggestion
+        name: 22. DNS event timeline
+        template: |            
+            /*
+            ## 22: DNSEvent
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.QueryName as QueryName
+                ,EventData.QueryStatus as QueryStatus
+                ,EventData.QueryResults as QueryResults
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 22
+
+      - type: vql_suggestion
+        name: 23. FileDelete
+        template: |             
+            /*
+            ## 23: FileDelete
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.TargetFilename as TargetFilename
+                --,parse_string_with_regex(string=EventData.Hashes, regex=["MD5=(?P&lt;MD5&gt;[^,]+)","SHA1=(?P&lt;SHA1&gt;[^,]+)","SHA256=(?P&lt;SHA256&gt;[^,]+)"] ) as Hashes
+                ,EventData.Hashes as Hashes
+                ,EventData.Archived as Archived
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 23
+
+      - type: vql_suggestion
+        name: 24. ClipboardChange
+        template: |             
+            /*
+            ## 24: ClipboardChange
+            */
+            SELECT EventTime, Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                --,EventData.ProcessGuid as ProcessGuid
+                ,EventData.ProcessId as ProcessId
+                ,EventData.Image as Image
+                ,EventData.User as User
+                ,EventData.Session as Session
+                ,EventData.ClientInfo as ClientInfo
+                --,parse_string_with_regex(string=EventData.Hashes, regex=["MD5=(?P&lt;MD5&gt;[^,]+)","SHA1=(?P&lt;SHA1&gt;[^,]+)","SHA256=(?P&lt;SHA256&gt;[^,]+)"] ) as Hashes
+                ,EventData.Hashes as Hashes
+                ,EventData.Archived as Archived
+                --,EventData
+                --,Message
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+            WHERE EventID = 24
+
+      - type: vql_suggestion
+        name: Timesketch format
+        template: |                
+            SELECT EventTime as datetime
+                ,Computer,EventID
+                --,Channel,Provider
+                --,EventData.RuleName as RuleName
+                --,EventData.UtcTime as UtcTime
+                ,get(item=dict(
+                    `1` = 'Process Create',
+                    `2` = 'File creation time changed',
+                    `3` = 'Network connection detected',
+                    `4` = 'Sysmon service state changed',
+                    `5` = 'Process terminated',
+                    `6` = 'Driver loaded',
+                    `7` = 'Image loaded',
+                    `8` = 'CreateRemoteThread detected',
+                    `9` = 'RawAccessRead detected',
+                    `10` = 'Process accessed',
+                    `11` = 'File created',
+                    `12` = 'Registry object added or deleted',
+                    `13` = 'Registry value set',
+                    `14` = 'Registry object renamed',
+                    `15` = 'File stream created',
+                    `16` = 'Sysmon config state changed',
+                    `17` = 'Pipe Created"',
+                    `18` = 'Pipe Connected',
+                    `19` = 'WmiEventFilter activity detected',
+                    `20` = 'WmiEventConsumer activity detected',
+                    `21` = 'WmiEventConsumerToFilter activity detected',
+                    `22` = 'Dns query',
+                    `23` = 'File Delete archived',
+                    `24` = 'Clipboard changed',
+                    `25` = 'Process Tampering',
+                    `26` = 'File Delete logged',
+                    `27` = 'File Block Executable',
+                    `28` = 'File Block Shredding',
+                    `255` = 'Error'),
+                    member=str(str=EventID)) as timestamp_desc
+                ,Message as message
+                --,EventData
+            FROM source(artifact="Exchange.Windows.Triage.Sysmon")
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1734702287></script><script src=/js/perfect-scrollbar.min.js?1734702287></script><script src=/js/perfect-scrollbar.jquery.min.js?1734702287></script><script src=/js/jquery.sticky.js?1734702287></script><script src=/js/featherlight.min.js?1734702287></script><script src=/js/highlight.min.js?1734702287></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1734702287></script><script src=/js/learn.js?1734702287></script><script src=/js/hugo-learn.js?1734702287></script></body></html>
