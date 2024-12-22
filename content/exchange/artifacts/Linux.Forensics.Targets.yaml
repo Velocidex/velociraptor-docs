@@ -1,0 +1,37 @@
+name: Linux.Forensics.Targets
+author: Cedric MAURUGEON - @kidrek
+description: |
+  This artifact collects all necessary artifacts files and directories from Linux operating system. 
+  
+reference:
+  - https://github.com/ForensicArtifacts/artifacts/blob/main/artifacts/data/linux.yaml
+
+parameters:
+  - name: BootTargets
+    default: /boot/grub/grub.cfg,/boot/grub2/grub.cfg,/boot/initramfs*,/boot/initrd*,/etc/init.d/**,/etc/insserv.conf,/etc/insserv.conf.d/**
+  - name: CertificateTargets
+    default: /etc/ca-certificates.conf,/etc/ssl/certs/ca-certificates.crt,/usr/share/ca-certificates/**,/usr/local/share/ca-certificates/**
+  - name: CronTargets
+    default: /etc/anacrontab,/etc/crontab,/etc/cron.d/**,/etc/cron.daily/**,/etc/cron.hourly/**,/etc/cron.monthly/**,/etc/cron.weekly/**,/var/spool/anacron/cron.daily,/var/spool/anacron/cron.hourly,/var/spool/anacron/cron.monthly,/var/spool/anacron/cron.weekly,/var/at/tabs/**,/var/spool/at/**,/var/spool/cron/**,/var/spool/cron/crontabs/**,/etc/cron.allow,/etc/cron.deny,/etc/at.allow,/etc/at.deny
+  - name: LogTargets
+    default: /var/log/auth*,/var/log/cron.log*,/var/log/daemon*,/var/log/kern*,/var/log/journal/**,/var/log/lastlog,/var/log/mail*,/var/log/messages*,/var/log/secure*,/var/log/syslog*,/etc/rsyslog.conf,/etc/rsyslog.d/**,/var/log/apache2/**,/var/log/nginx/**,/var/log/ufw.log*,/var/log/dpkg.log*,/var/log/apt/history.log*,/var/log/apt/term.log*
+  - name: NetworkTargets
+    default: /etc/network/if-up.d/**,/etc/network/if-down.d/**,/etc/resolv.conf,/etc/default/ufw,/etc/ufw/sysctl.conf,/etc/ufw/*.rules,/etc/ufw/applications.d/**
+  - name: PackageTargets
+    default: /etc/apt/sources.list,/etc/apt/sources.list.d/*,/etc/apt/trusted.gpg,/etc/apt/trusted.gpg.d/*,/etc/apt/trustdb.gpg,/usr/share/keyrings/*,/var/lib/dpkg/status,/etc/yum.conf,/etc/yum.repos.d/*.repo
+  - name: ServiceTargets
+    default: /etc/systemd/system.control/*.timer,/etc/systemd/systemd.attached/*.timer,/etc/systemd/system/*.timer,/etc/systemd/user/*.timer,/lib/systemd/system/*.timer,/lib/systemd/user/*.timer,/run/systemd/generator.early/*.timer,/run/systemd/generator.late/*.timer,/run/systemd/generator/*.timer,/run/systemd/system.control/*.timer,/run/systemd/systemd.attached/*.timer,/run/systemd/system/*.timer,/run/systemd/transient/*.timer,/run/systemd/user/*.timer,/run/user/*/systemd/generator.early/*.timer,/run/user/*/systemd/generator.late/*.timer,/run/user/*/systemd/generator/*.timer,/run/user/*/systemd/transient/*.timer,/run/user/*/systemd/user.control/*.timer,/run/user/*/systemd/user/*.timer,/usr/lib/systemd/system/*.timer,/usr/lib/systemd/user/*.timer,/home/*/.config/systemd/user.control/*.timer,/home/*/.config/systemd/user/*.timer,/home/*/.local/share/systemd/user/*.timer,/etc/systemd/system.control/*.service,/etc/systemd/systemd.attached/*.service,/etc/systemd/system/*.service,/etc/systemd/user/*.service,/lib/systemd/system/*.service,/lib/systemd/user/*.service,/run/systemd/generator.early/*.service,/run/systemd/generator.late/*.service,/run/systemd/generator/*.service,/run/systemd/system.control/*.service,/run/systemd/systemd.attached/*.service,/run/systemd/system/*.service,/run/systemd/transient/*.service,/run/systemd/user/*.service,/run/user/*/systemd/generator.early/*.service,/run/user/*/systemd/generator.late/*.service,/run/user/*/systemd/generator/*.service,/run/user/*/systemd/transient/*.service,/run/user/*/systemd/user.control/*.service,/run/user/*/systemd/user/*.service,/usr/lib/systemd/system/*.service,/usr/lib/systemd/user/*.service,/home/*/.config/systemd/user.control/*.service,/home/*/.config/systemd/user/*.service,/home/*/.local/share/systemd/user/*.service
+  - name: SystemTargets
+    default: /etc/fstab,/etc/hostname,/etc/ntp.conf,/etc/issue,/etc/issue.net,/etc/ld.so.preload,/etc/localtime,/etc/modules.conf,/etc/modprobe.d/*,/etc/debian_version,/etc/centos-release,/etc/enterprise-release,/etc/oracle-release,/etc/redhat-release,/etc/rocky-release,/etc/SuSE-release,/etc/system-release,/etc/lsb-release,/etc/os-release,/usr/lib/os-release,/etc/udev/rules.d/*,/usr/lib/udev/rules.d/*,/etc/timezone,/etc/ssh/**,/dev/shm/**
+  - name: UserTargets
+    default: /etc/passwd,/etc/shadow,/etc/sudoers,/etc/sudoers.d/**,/etc/group,/home/*/.ssh/*,/home/*/.config/mozilla/**,/home/*/snap/firefox/common/.mozilla/**,/home/*/.config/google-chrome/**,/home/*/snap/chromium/common/chromium/Default/**,/home/*/.aliases,/home/*/.profile,/home/*/.bash_history,/home/*/.bashrc,/home/*/.zsh_history,/home/*/.zshrc,/home/*/.wget-hsts,
+
+
+
+precondition: SELECT OS From info() where OS = 'linux'
+
+sources:
+  - name: Uploaded
+    query: |
+      SELECT OSPath, upload(file=OSPath) AS Upload
+      FROM glob(globs=split(string=BootTargets + "," + CertificateTargets + "," + CronTargets + "," + LogTargets + "," + NetworkTargets + "," + PackageTargets + "," + ServiceTargets + "," + SystemTargets + "," + UserTargets, sep=","))
