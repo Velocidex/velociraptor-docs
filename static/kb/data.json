@@ -1,13 +1,33 @@
 [
     {
+        "title": "Set operations in VQL",
+        "link": "/knowledge_base/tips/set_operations",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-12-16"
+    },
+    {
+        "title": "How do I get a list of hunts across multiple organizations?",
+        "link": "/knowledge_base/tips/multi_org",
+        "tags": [],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-12-06"
+    },
+    {
         "title": "How do I use the files inside the offline collector ZIP?",
         "link": "/knowledge_base/tips/fuse_mount",
         "tags": [
             "forensics"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2024-11-06"
     },
     {
@@ -378,5 +398,18 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to set up OIDC authentication using Keycloak",
+        "link": "/knowledge_base/tips/setup_keycloak",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]
