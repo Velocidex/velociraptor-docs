@@ -37,7 +37,7 @@ it is better to start simple and be sure that it's working as expected before
 possibly adding complexity to it.
 
 In this simplified setup we have two hosts, with DNS names `keycloak.local` and
-`velociraptor.local`. Substitute your DNS names where aplicable. The two hosts
+`velociraptor.local`. Substitute your DNS names where applicable. The two hosts
 don't need to be on the same network but the Velociraptor host needs to be able
 to DNS-resolve the name of the Keycloak server and reach it on port 443. It's
 not necessary that the Keycloak server be able to resolve the Velociraptor
@@ -260,7 +260,7 @@ The `oidc_name` can be anything you want but it must exactly match
 client configuration in Keycloak.
 
 Keycloak requires that the `oidc_issuer` field specify the path
-`/realms/myrealm` as this is where is serves the OpenID Enpoint Configuration
+`/realms/myrealm` as this is where is serves the OpenID Endpoint Configuration
 that Velociraptor will need to access. If you have somehow gotten this wrong
 then Velociraptor will log an error such as:
 `[ERROR] can not get information from OIDC provider, check https://keycloak.local/.well-known/openid-configuration is correct and accessible from the server.`
@@ -297,7 +297,7 @@ In this case the `GUI.public_url` is set to `https://velociraptor.local:8889/`.
 
 We have created 2 users in Keycloak but these users don't yet exist in
 Velociraptor. Velociraptor has it's own permissions model and therefore needs to
-know about any users so that once they autheticate the correct permissions can
+know about any users so that once they authenticate the correct permissions can
 be applied.
 
 Users can be created using VQL in Velociraptor notebooks but since we have now
@@ -373,11 +373,11 @@ causes a negative effect can be reverted back to a known working state. This is
 a much easier approach than diving in with a complex configuration and spending
 hours troubleshooting why it doesn't work.
 
-Since the Docker installation used in thei guide is non-permanent it will reset
+Since the Docker installation used in the guide is non-permanent it will reset
 when you restart the docker VM. For testing and experimenting that's a good
 thing as you gain familiarity by going through the process. As mentioned,
-Keycloak suports multifactor authentication, complex authentication flow
-options, themable login screens, and many other cool features. However for
+Keycloak supports multifactor authentication, complex authentication flow
+options, themeable login screens, and many other cool features. However for
 permanent configuration you will need to learn how to create a persistent
 Keycloak database, possibly using a different deployment method.
 
