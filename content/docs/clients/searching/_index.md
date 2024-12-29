@@ -3,7 +3,7 @@ title: "Searching for clients"
 date: 2024-12-18
 draft: false
 weight: 10
-last_reviewed: 2024-12-24
+last_reviewed: 2024-12-29
 ---
 
 To work with a specific client, search for it using the search bar at the top of
@@ -28,7 +28,7 @@ autocompletion to guide your choices.
 
 ![Searching autocompletion](search_autocomplete.png)
 
-The following search operators are available:
+The following **search operators** are available:
 
 - `all` : show all clients
 - `label`: search clients by label
@@ -41,7 +41,7 @@ In addition, if you have configured indexing of selected
 [client metadata]({{< ref "/docs/clients/metadata/" >}}) fields then those field
 names will also be available as search operators.
 
-The following search terms are recognized:
+The following **search terms** are recognized:
 
 - `none`: currently only supported with the `label` operator and used to return
   unlabelled clients.
@@ -70,9 +70,16 @@ apply more refined filtering using VQL constructs such as `WHERE` clauses.
 
 {{% notice note "Searching index update frequency" %}}
 
-The search index is rebuilt periodically to avoid inconsistencies. By default
-this occurs every 5 minutes. The frequency of this process can be configured in
-the server configuration file using the key `defaults.reindex_period_seconds`.
+The recency ("freshness") of the client info data is determined by how often
+[client interrogation]({{< ref "/docs/clients/interrogation/" >}})
+is run. By default this data is updated daily but the frequency of collection
+can be changed in the client configuration file using the setting
+`Client.client_info_update_time`.
+
+The search index on the server is rebuilt periodically to avoid inconsistencies.
+By default this occurs every 5 minutes. The frequency of this process can be
+configured in the server configuration file using the setting
+`defaults.reindex_period_seconds`.
 
 {{% /notice %}}
 
@@ -84,10 +91,11 @@ The results from the search are shown as a paged table.
 
 The table contains seven columns:
 
-1. Client **selection checkboxes**. You can select one or more (or all) clients
+1. **Client selection checkboxes**. You can select one or more (or all) clients
    from the search results and then perform bulk operations on them. Once any
-   clients are selected the **Label Clients**, **Delete Clients**, and **Kill
-   Clients** buttons will become available in the toolbar above the client list.
+   clients are selected then the **Label Clients**, **Delete Clients**, and
+   **Kill Clients** buttons will become available in the toolbar above the
+   client list.
 
 2. The **online status** of the host is shown as a color icon.
    - A green dot indicates that the host is currently connected to the server.
@@ -107,7 +115,7 @@ The table contains seven columns:
    stored on the endpoint in the client writeback file. Clicking on the client
    id will take you to the client's information screen and switch all client
    views to the selected client. The client indicator at the top-center of the
-   screen shows you which client you are currently working with.
+   screen shows you which client you currently have selected.
 
 4. The **Hostname** reported by the client.
 
@@ -120,11 +128,26 @@ The table contains seven columns:
    the server only and are used for organizing clients, targeting hunts and
    other client management functions.
 
+{{% notice note "A note about deleting clients" %}}
 
+You might be wondering what happens if you delete active clients?
 
-Once you view a particular client, it will be automatically added to your
-Most Recently Used (MRU) list. The **Recent Hosts** search preset will show you
-the clients on this list.
+When you select one or more clients (using the selection checkboxes) and then
+delete them, this action deletes their records from the client info index and
+deletes any existing collections data associated with them from the datastore.
+
+If the client is still active, or temporarily offline and later becomes active,
+the client will continue as though nothing happened. It's old data will be gone
+due to the delete action but the client doesn't know or care about data it
+previously sent to the server. The client retains it's Client ID. The server
+will instruct the client to perform a new interrogation flow so that it's client
+info record can be updated.
+
+{{% /notice %}}
+
+Once you select and view a particular client, as described in the next section,
+it will be automatically added to your Most Recently Used (MRU) list. The
+**Recent Hosts** search preset will show you the clients on this list.
 
 ![Recently viewed clients](search_presets.png)
 
@@ -139,46 +162,55 @@ are currently working with.
 
 ![Client Overview](client_overview.svg)
 
+### Client Info, Labels and Metadata
+
 Velociraptor maintains some basic information about the host, such as its
 hostname, labels, last seen IP, and last seen time. This is shown in the
-**Overview** page. Velociraptor gathers this information from the endpoint upon
-first enrollment and periodically thereafter through a process that we refer to
-as [Interrogation]({{< ref "/docs/clients/interrogation/" >}}).
-
+**Overview** and **VQL Drilldown** pages. Velociraptor gathers this
+information from the endpoint upon first enrollment and periodically thereafter
+through a process that we refer to as
+[Interrogation]({{< ref "/docs/clients/interrogation/" >}}).
 You can manually refresh this information at any time by clicking the
-**Interrogate** button, which schedules collection of the `Generic.Client.Info`
-artifact from the endpoint.
+**Interrogate** button.
 
-Each client can have associated arbitrary metadata. You can use this metadata in
-VQL via Notebooks and server artifacts. Client metadata is explained in more
-detail [here]({{< ref "/docs/clients/metadata/" >}}).
+Hosts may have **labels** attached to them. A label is any name associated with
+a host. Labels are useful when we need to hunt or perform other operations on a
+well defined group of hosts. We can restrict a hunt to one or more labels to
+avoid collecting unnecessary data or to target specific operating systems.
+Labels are explained [here]({{< ref "/docs/clients/labels/" >}})
+in more detail.
 
-{{% notice tip "Quarantining a host" %}}
-
-You can quarantine a host from this screen using the **Quarantine Host**
-(<i class="fas fa-suitcase-medical"></i>) button. Quarantining a host will
-reconfigure the hosts's network stack to only allow it to communicate with the
-Velociraptor server. This allows you to continue investigating the host remotely
-while preventing the host from making other network connections.
-
-Quarantining is implemented using an event monitoring query which means it
-persists across client reboots. A quarantined client will gain the label
-`Quarantine` so you can easily search for all quarantined hosts using the label
-search feature above.
-
-Removing the quarantine label from a host will immediately unquarantine the
-host. Read further how to automatically apply and remove labels based on various
-events - this allows you to automatically quarantine a host too!
-
-{{% /notice %}}
-
-### VQL drilldown
+Each client can have associated arbitrary metadata. You can use this
+metadata in VQL, in Notebooks or in server artifacts. **Client metadata** is
+explained [here]({{< ref "/docs/clients/metadata/" >}})
+in more detail.
 
 The **VQL Drilldown** page shows more information about the client, including
 telemetry of the client's footprint on the endpoint and more information about
 the endpoint.
 
+The **Shell** page allows you to run shell commands on the client. This is
+explained [here]({{< ref "/docs/clients/shell/" >}})
+in more detail.
+
 ![VQL Drilldown](vql_drilldown.png)
+
+#### Quarantining a host
+
+You can quarantine a host using the **Quarantine Host** (<i class="fas
+fa-briefcase-medical"></i>) button.
+
+Quarantining a host will reconfigure the
+hosts's network stack to only allow it to communicate with the Velociraptor
+server. This allows you to continue investigating the host remotely while
+preventing the host from making other network connections. Client Quarantine is
+explained [here]({{< ref "/docs/clients/quarantine/" >}}) in more detail.
+
+### The VFS
+
+With a client selected we can browse it's filesystem using the Virtual
+FileSystem (VFS) viewer. The VFS is explained
+[here]({{< ref "/docs/clients/vfs/" >}}) in more detail.
 
 ### Collections
 

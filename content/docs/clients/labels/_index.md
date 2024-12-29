@@ -1,22 +1,34 @@
 ---
-title: "Client Labels"
+title: "Labels"
 date: 2024-12-18
 draft: false
 weight: 20
+last_reviewed: 2024-12-29
 ---
 
-Hosts may have labels attached to them. A label is any name associated
-with a host. Labels are useful when we need to hunt for a well defined
-group of hosts. We can restrict the hunt to one or more labels to
-avoid collecting unnecessary data or accessing machines we should not
-be.
+Clients can have one or more **labels** attached to them. You're probably
+already familiar with concept which is alternatively referred to as "tags" but
+we just happen to call them labels. Labels are useful when we need to hunt or
+perform other operations on a well-defined group of hosts. For example, we can
+restrict a hunt to one or more labels to avoid collecting unnecessary data, or
+to target specific hosts, or to avoid specific hosts.
 
-It is possible to manipulate the labels via the search screen. Simply
-select the hosts in the GUI and then click the "add labels" button.
+Although labels are associated with clients, the clients themselves have no
+knowledge of the labels being applied to them. That is, labels are a purely a
+server-side construct that are used to organize clients. The VQL functions to
+query and manipulate labels are only available in VQL queries running on the
+server.
+
+## Adding or removing labels manually
+
+Manual manipulation of labels can be done in the GUI's client search screen.
+
+To add labels, select the hosts in the GUI and then click the "add labels"
+button.
 
 ![Adding labels](labels.png)
 
-### Manipulating labels via VQL
+## Adding or removing labels via VQL
 
 Although it is possible to manipulate labels via the GUI, It is
 usually easier to use VQL queries to add or remove labels via the
@@ -55,6 +67,14 @@ machines then simple add or remove machines from the group.  Similarly
 it is possible to restrict a hunt to a label group then simply add
 clients to the label group in order to automatically add them to the
 hunt.
+
+In addition, it's possible to create
+[server monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}})
+artifacts which automatically add or remove labels based on flow completion
+status and results. Thus we can implement automatic label manipulation via VQL
+which in turn initiates further actions (such as assigning the client to a
+particular hunt based on a previous hunt's results) and thereby accomplishes
+very powerful multi-phase automation.
 
 {{% /notice %}}
 

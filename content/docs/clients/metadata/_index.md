@@ -1,5 +1,5 @@
 ---
-title: "Client Metadata"
+title: "Metadata"
 date: 2024-12-18
 draft: false
 weight: 30

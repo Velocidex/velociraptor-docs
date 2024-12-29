@@ -5,13 +5,9 @@ draft: false
 weight: 50
 ---
 
-Once we selected a client, we often want to quickly look at the
-client's filesystem. The Velociraptor GUI has a Virtual Filesystem
-View (VFS) screen.
-
-The VFS is simply a server side cache of the files on the endpoint. It
-is merely a familiar GUI to allow to interactively fetch and
-inspect of the client's filesystem.
+The VFS is a server side cache of the files on the endpoint. It is merely a
+familiar GUI to allow to interactively fetch and inspect of the client's
+filesystem.
 
 ![The Virtual Filesystem](vfs_view.png)
 

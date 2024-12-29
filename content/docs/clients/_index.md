@@ -3,10 +3,13 @@ title: "Managing Clients"
 date: 2024-12-19
 draft: false
 weight: 30
+last_reviewed: 2024-12-29
 ---
 
-Velociraptor clients are endpoints with the Velociraptor agent running on them.
-Since Velociraptor maintains a persistent connection to the server, each
+Velociraptor **clients** are endpoints with the Velociraptor agent running on
+them.
+
+Since Velociraptor clients maintain a persistent connection to the server, each
 endpoint is immediately available to interact with.
 
 Typically we begin our investigation by searching for a client, selecting it,

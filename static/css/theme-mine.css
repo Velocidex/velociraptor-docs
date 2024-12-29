@@ -332,6 +332,11 @@ div.mynotices.tip > div {
     box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
 }
 
+#body img {
+    margin: 2rem auto 1rem auto;
+    text-align: center;
+}
+
 a[data-featherlight] img {
     box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
 }
@@ -898,14 +903,17 @@ td.signature {
 figure div.figure {
     cursor: pointer;
     margin: 0 auto;
-    max-width: 600px;
+    max-width: 80%;
+    text-align: center;
 }
 
 figure div.figure svg,
 figure div.figure img {
-    width: 100%;
-
+    max-width: 80%;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
     height: auto;
+    margin: 1rem auto 0rem auto;
+    text-align: center;
 }
 
 .featherlight .featherlight-content img {
