@@ -12,10 +12,10 @@ description: |
 author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity, Fukusuke Takahashi - @fukusuket
 
 tools:
- - name: Hayabusa-3.0.0
-   url: https://github.com/Yamato-Security/hayabusa/releases/download/v3.0.0/hayabusa-3.0.0-win-x64-live-response.zip
-   expected_hash: 684d6e4b4c480e727b07618260227ee31fdf44aaa68a218270a77292542b5936
-   version: 3.0.0
+ - name: Hayabusa-3.0.1
+   url: https://github.com/Yamato-Security/hayabusa/releases/download/v3.0.1/hayabusa-3.0.1-win-x64-live-response.zip
+   expected_hash: 68e4d9991e452ed25dfcc3b7589d84e87288fff0f9fa5d9f2cc544bf63dbeddb
+   version: 3.0.1
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -111,7 +111,7 @@ sources:
    query: |
         -- Fetch the binary
         LET Toolzip <= SELECT FullPath
-        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-3.0.0", IsExecutable=FALSE)
+        FROM Artifact.Generic.Utils.FetchBinary(ToolName="Hayabusa-3.0.1", IsExecutable=FALSE)
 
         LET TmpDir <= tempdir()
 
@@ -119,7 +119,7 @@ sources:
         LET _ <= SELECT *
         FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
 
-        LET HayabusaExe <= TmpDir + '\\hayabusa-3.0.0-win-x64.exe'
+        LET HayabusaExe <= TmpDir + '\\hayabusa-3.0.1-win-x64.exe'
 
         -- Optionally update the rules
         LET _ <= if(condition=UpdateRules, then={
