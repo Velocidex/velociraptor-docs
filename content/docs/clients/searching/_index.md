@@ -48,7 +48,8 @@ The following **search terms** are recognized:
 
 Search patterns can utlize the wildcard symbol `*` anywhere in the pattern. The
 wildcard can occur more than once in a pattern. If specified on it's own `*` is
-equivalent to the search operator `all`.
+equivalent to the search operator `all`, which is also the same as searching
+with an empty search expression.
 
 
 {{% notice tip "Searching clients using VQL" %}}

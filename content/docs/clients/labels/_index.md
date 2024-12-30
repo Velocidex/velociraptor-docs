@@ -71,13 +71,18 @@ it is possible to restrict a hunt to a label group then simply add
 clients to the label group in order to automatically add them to the
 hunt.
 
+For a practical example of using labels with client monitoring, please see the
+artifact
+[Windows.Remediation.QuarantineMonitor]({{< ref "/artifact_references/pages/windows.remediation.quarantinemonitor/" >}})
+which is used to enforce network quarantine based on the `quarantine` label.
+
 In addition, it's possible to create
 [server monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}})
 artifacts which automatically add or remove labels based on flow completion
-status and results. Thus we can implement automatic label manipulation via VQL
-which in turn initiates further actions (such as assigning the client to a
+status and results. Thus we can implement event-driven label manipulation via
+VQL which in turn initiates further actions (such as assigning the client to a
 particular hunt based on a previous hunt's results). In this way we can
-accomplish very powerful multi-phased automation that is driven by labelling.
+accomplish very powerful multi-phased automation that is directed by labelling.
 
 {{% /notice %}}
 

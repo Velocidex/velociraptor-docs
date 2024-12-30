@@ -3,6 +3,7 @@ title: "Monitoring"
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 40
+last_reviewed: 2024-12-30
 ---
 
 We have previously seen the VQL [Event Queries]({{< ref
@@ -32,16 +33,17 @@ server.
 
 {{% notice tip %}}
 
-VQL event plugins generally start with the word "watch" to indicate
-they are event plugins (e.g. `watch_etw`, `watch_evtx`, `watch_usn`
-etc). Sometimes there will be a related non-event plugin for example
-`parse_evtx()` simply parses the event log file beginning to end,
-while `watch_etvx()` watches the file for new events and does not
-terminate.
+VQL event plugins generally start with the word "watch" to indicate they are
+event plugins (e.g. `watch_etw`, `watch_evtx`, `watch_usn` etc). Usually event
+plugins will have a corresponding non-event plugin, for example `watch_etvx()`
+is an event plugin that watches evtx files for new events and does not
+terminate, while `parse_evtx()` is a non-event plugin which simply parses the
+evtx files from beginning to end.
 
-You can search for all plugins on the
-[VQL Reference page]({{< ref "/vql_reference/" >}}), so simply read about all
-available event queries [here]({{< ref "/vql_reference/event/" >}}).
+You can search for all available plugins in the
+[VQL Reference]({{< ref "/vql_reference/" >}}),
+or browse the event plugins listed
+[here]({{< ref "/vql_reference/event/" >}}).
 
 {{% /notice %}}
 

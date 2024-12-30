@@ -1,8 +1,9 @@
 ---
 title: "Metadata"
-date: 2024-12-18
+date: 2024-12-30
 draft: false
 weight: 30
+last_reviewed: 2024-12-30
 ---
 
 Client metadata is an arbitrary key-value store that holds user-defined
