@@ -3,36 +3,39 @@ title: "Labels"
 date: 2024-12-18
 draft: false
 weight: 20
-last_reviewed: 2024-12-29
+last_reviewed: 2024-12-30
 ---
 
-Clients can have one or more **labels** attached to them. You're probably
-already familiar with concept which is alternatively referred to as "tags" but
-we just happen to call them labels. Labels are useful when we need to hunt or
-perform other operations on a well-defined group of hosts. For example, we can
-restrict a hunt to one or more labels to avoid collecting unnecessary data, or
-to target specific hosts, or to avoid specific hosts.
+Clients can have one or more **labels** attached to them. In some software
+applications the same concept is called "tags" but we just happen to call them
+labels. Labels are useful when we need to hunt or perform other operations on a
+well-defined group of hosts. For example, we can restrict a hunt to one or more
+labels to avoid collecting unnecessary data, or to target specific hosts, or to
+avoid specific hosts.
 
 Although labels are associated with clients, the clients themselves have no
-knowledge of the labels being applied to them. That is, labels are a purely a
-server-side construct that are used to organize clients. The VQL functions to
-query and manipulate labels are only available in VQL queries running on the
-server.
+knowledge of the labels that have been applied to them. That is, labels are a
+purely a server-side construct that are used to organize clients. The VQL
+functions to query and manipulate labels are only available in VQL queries
+running on the server.
 
 ## Adding or removing labels manually
 
 Manual manipulation of labels can be done in the GUI's client search screen.
 
 To add labels, select the hosts in the GUI and then click the "add labels"
+(<i class="fas fa-tags"></i>)
 button.
 
-![Adding labels](labels.png)
+![Adding labels](labels.svg)
+
+![Removing labels](labels_remove.svg)
 
 ## Adding or removing labels via VQL
 
-Although it is possible to manipulate labels via the GUI, It is
-usually easier to use VQL queries to add or remove labels via the
-`label()` plugin.
+Although it is possible to manipulate labels manually in the GUI, it is usually
+easier to use VQL queries to add or remove labels via the `label()` plugin,
+especially when you need to apply label changes to many clients.
 
 For example, let's say we wanted to label all machines with the local
 user of `mike`. I would follow the following steps:
@@ -73,28 +76,27 @@ In addition, it's possible to create
 artifacts which automatically add or remove labels based on flow completion
 status and results. Thus we can implement automatic label manipulation via VQL
 which in turn initiates further actions (such as assigning the client to a
-particular hunt based on a previous hunt's results) and thereby accomplishes
-very powerful multi-phase automation.
+particular hunt based on a previous hunt's results). In this way we can
+accomplish very powerful multi-phased automation that is driven by labelling.
 
 {{% /notice %}}
 
 
 ### Built-in Labels
 
-While one can add labels to machines using the GUI this is not
-practical for labeling very large numbers of client, for example
-belonging to a particular Active Directory Organizational Unit
-(OU). It is reasonable to want to quickly select those machines
-belonging to a particular OU.
+Sometimes you may want clients to have certain labels immediately from the time
+of deployment, for example you might want to label clients as belonging to a
+particular Active Directory Organizational Unit (OU) where the client was
+deployed via a specific Group Policy.
 
-We can use labels to identify machines installed by a specific group
-policy. For example, suppose we have a particular OU called
-`Sales`. We want to ensure that Velociraptor clients in the Sales team
-are specifically marked by the `Sales` label.
+Labels can be pre-assigned to clients via the client config.
 
-Simply modify the client's configuration file to contain the Sales
-label, and this label will be automatically applied when the client is
-enrolled:
+Supposing we have a particular OU called `Sales`. We want to ensure that
+Velociraptor clients in the Sales team are specifically marked with the `Sales`
+label.
+
+To achieve this we edit the client's configuration and specify that the `Sales`
+label applies to this client.
 
 ```yaml
 Client:
@@ -102,13 +104,22 @@ Client:
   - Sales
 ```
 
-Then we apply the Group Policy Object only on the Sales OU which will
-result in those clients being enrolled with the Sales label
-automatically.
+With this added to the config, when the client enrolls it will tell the server
+to apply the `Sales` label to it.
+
+We then
+[repackage the client MSI]({{< ref "/docs/deployment/clients/#repacking-the-official-release-msi" >}})
+so that it contains this modified config and then deploy it via Group Policy
+only on the Sales OU. This will result in those clients being enrolled with the
+`Sales` label automatically.
+
 
 {{% notice note %}}
 
 Although any labels can be deleted on the server, the labels specified in the
 client config file will return after the client restarts.
+
+You can also change the labels in the client config at any time and any new
+labels will be applied when the client restarts.
 
 {{% /notice %}}

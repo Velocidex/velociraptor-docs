@@ -20,14 +20,14 @@ Some of the information collected by this artifact is added to the client info
 database and specific fields are also indexed so that we can perform
 [fast searches for clients]({{< ref "/docs/clients/searching/" >}}).
 
-## Information updates
+## Client information updates
 
-In very old versions of Velociraptor this information was not kept up to date
-unless users explicitly created periodic hunts for `Generic.Client.Info`. However this
-information is now recollected automatically on a recurring basis. Of course you
-can still manually collect the artifact or schedule it through a hunt if you
-want to be sure you have the absolute latest info. You can also change the
-frequency at which the data is collected, as explained below.
+In old versions of Velociraptor this information was not kept up to date unless
+users explicitly created periodic hunts for `Generic.Client.Info`. However this
+information is now recollected automatically on a recurring basis in the
+background. Of course you can still manually collect the artifact or schedule it
+through a hunt if you want to be sure you have the absolute latest info. You can
+also change the frequency at which the data is collected, as explained below.
 
 If you wish to change the update frequency this can be done via the config
 setting `Client.client_info_update_time`. The update is initiated by the client
