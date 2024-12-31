@@ -96,7 +96,7 @@ be indexed. These fields should not be too large so as to keep the index size
 smallish so we recommended that you only index fields that are really useful and
 then also consider limiting it's use to fields containing short strings.
 
-Fields dsignated as indexed can be searched in the GUI search bar using the
+Fields designated as indexed can be searched in the GUI search bar using the
 field name as a search operator. Search expressions for indexed metadata fields
 thus have the form: `<field_name>:<string_to_match>`.
 

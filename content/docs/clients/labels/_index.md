@@ -82,7 +82,7 @@ artifacts which automatically add or remove labels based on flow completion
 status and results. Thus we can implement event-driven label manipulation via
 VQL which in turn initiates further actions (such as assigning the client to a
 particular hunt based on a previous hunt's results). In this way we can
-accomplish very powerful multi-phased automation that is directed by labelling.
+accomplish very powerful multi-phased automation that is directed by labeling.
 
 {{% /notice %}}
 

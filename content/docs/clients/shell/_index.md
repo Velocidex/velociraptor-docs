@@ -43,7 +43,7 @@ explicitly granted the `EXECVE` permission to allow them to do so too.
 
 Nevertheless, in some environments it may be unacceptable to allow running of
 arbitrary shells or other executables. You can prevent clients from running
-executables (including shells and therfore shell commands) via the config
+executables (including shells and therefore shell commands) via the config
 setting `Client.prevent_execve`. However this significantly limits your DFIR
 efficacy because many artifacts depend on being able to launch external
 programs.

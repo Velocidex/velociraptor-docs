@@ -195,7 +195,7 @@ the server. The event queries generally fall into two categories:
 2. Selective and targeted queries. These artifacts contain refined detection and
    enrichment logic within the VQL query itself such that only high value events
    are actually forwarded. These more targeted queries send fewer rows, but each
-   event is expecte to have significant value, especially if it represents a
+   event is expected to have significant value, especially if it represents a
    detection.
 
 In either case, the Velociraptor server does not do anything with the

@@ -1612,3 +1612,14 @@ subcommand
 toolset
 toolsets
 wix
+
+FileSystem
+autocompletion
+checkboxes
+dropdown
+freeform
+recency
+unlabelled
+IPSec
+QuarantineMonitor
+nftables

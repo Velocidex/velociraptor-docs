@@ -46,7 +46,7 @@ The following **search terms** are recognized:
 - `none`: currently only supported with the `label` operator and used to return
   unlabelled clients.
 
-Search patterns can utlize the wildcard symbol `*` anywhere in the pattern. The
+Search patterns can utilize the wildcard symbol `*` anywhere in the pattern. The
 wildcard can occur more than once in a pattern. If specified on it's own `*` is
 equivalent to the search operator `all`, which is also the same as searching
 with an empty search expression.
@@ -111,7 +111,7 @@ The table contains seven columns:
 3. The **Client ID** of the host. All clients have a unique ID starting with `C.`.
 
    The client ID is a unique identifier, unlike hostnames or other endpoint
-   identifiers which have no quarantee of uniqueness and which may change over
+   identifiers which have no guarantee of uniqueness and which may change over
    time. The client ID is derived from the client's cryptographic key and is
    stored on the endpoint in the client writeback file. Clicking on the client
    id will take you to the client's information screen and switch all client
