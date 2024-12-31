@@ -6,7 +6,7 @@ weight: 20
 ---
 
 With Velociraptor, you can collect the same artifact from multiple
-endpoints at the same time using a `Hunt`. Hunts allow you to do the
+endpoints at the same time using a **Hunt**. Hunts allow you to do the
 following:
 
 * Monitor offline endpoints by scheduling hunts collecting artifacts
@@ -20,7 +20,7 @@ following:
 ## What is a hunt?
 
 A hunt is a logical collection of a one or more artifacts from a group
-of systems. The `Hunt Manager` is a Velociraptor component that is
+of systems. The **Hunt Manager** is a Velociraptor component that is
 responsible for scheduling collections of clients that met certain
 criteria, then keep track of these collections inside the hunt.
 
@@ -30,12 +30,12 @@ automated using the hunt manager.
 
 ## Schedule a new hunt
 
-To schedule a new hunt, select the "Hunt Manager" <i class="fas
-fa-crosshairs"></i> from the sidebar and then select "New Hunt" button
-<i class="fas fa-plus"></i> to see the `New Hunt Wizard`.
+To schedule a new hunt, select the **Hunt Manager** <i class="fas
+fa-crosshairs"></i> from the sidebar and then select **New Hunt** button
+<i class="fas fa-plus"></i> to see the **New Hunt Wizard**.
 
 Provide the hunt with a description and set the expiration date. You
-can also target machines containing the same label (A `Label Group`),
+can also target machines containing the same label (A **Label Group**),
 or exclude the hunt from these machines.
 
 ![New Hunt](image89.png)
@@ -172,13 +172,13 @@ SELECT * FROM hunt_results(hunt_id="H.123", artifact="Windows.System.Pslist")
 This is very convenient - hunts are really a way to group related
 collections together.
 
-Normally the `Hunt Manager` component described above is responsible
+Normally the **Hunt Manager** component described above is responsible
 for scheduling collections on clients depending on certain conditions
 (e.g. labels or OS matches), and adding them to the hunt. However the
 scheduling step is a different separate step from adding the
 collection to the hunt.
 
-It is possible to schedule the collection manually and **then** also
+It is possible to schedule the collection manually and ***then*** also
 add the collection to the hunt. This method gives the ultimate
 flexibility in managing hunt membership.
 
@@ -191,13 +191,13 @@ data to be added to the hunt.
 In the above example, I redo the collection of
 `Windows.KapeFiles.Targets` that the hunt scheduled previously by
 navigating to the collection view in that specific client. Then I
-`Copy` the collection by pressing the <i class="fas fa-copy"></i>
+**Copy** the collection by pressing the <i class="fas fa-copy"></i>
 button. I can now update things like, timeout or change the parameters
 a bit as required.
 
 ![Manually rescheduling a collection](manual_hunt_1.png)
 
-Next, I add the collection to the hunt by clicking the `Add to Hunt` <i class="fas
+Next, I add the collection to the hunt by clicking the **Add to Hunt** <i class="fas
 fa-crosshairs"></i> button.
 
 ![Add collection to hunt](manual_hunt_2.png)
@@ -213,7 +213,7 @@ allows unlimited automation around which flows are added to hunt (and
 can also automate the relaunching of the collections).
 
 To help you with manipulating hunts with the notebook, hunt notebooks
-offer a `Cell Suggestion` to assist with managing the hunt progress.
+offer a **Cell Suggestion** to assist with managing the hunt progress.
 
 ![Adding a Hunt Progress cell suggestion](hunt_suggestion_1.png)
 

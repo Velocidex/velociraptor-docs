@@ -6,18 +6,18 @@ weight: 15
 ---
 
 Velociraptor's superpower is a powerful query language termed
-`VQL`. You might be surprised to learn that you have already been
+**VQL**. You might be surprised to learn that you have already been
 using VQL all this time. When clicking in the VFS interface to sync a
 directory listing or download files, the GUI was collecting artifacts
 behind the scenes.
 
-Click on the `Collected Artifacts` sidebar screen to view the
+Click on the **Collected Artifacts** sidebar screen to view the
 artifacts that have been collected so far.
 
 ![Collected Artifacts](collected_artifacts.png)
 
 This screen consists of two panes - the top pane shows a list of all
-the `Artifacts` collected so far from this endpoint, while the bottom
+the **Artifacts** collected so far from this endpoint, while the bottom
 pane shows information about the selected artifact.
 
 All artifacts have a **Name**. In our example, you can see that we
@@ -39,7 +39,7 @@ queries return a sequence of rows.
 
 ## What are Artifacts?
 
-An `Artifact` is a way to package one or more VQL queries in a
+An **Artifact** is a way to package one or more VQL queries in a
 human readable YAML file, name it, and allow users to
 collect it. An Artifact file simply embodies the query required to
 collect or answer a specific question about the endpoint.
@@ -69,7 +69,7 @@ are stored and how to parse them - this is completely unnecessary with
 Velociraptor, since we have a built-in artifact ready to collect these
 tasks!
 
-Start a new collection by clicking the `New Collection` button <i
+Start a new collection by clicking the **New Collection** button <i
 class="fas fa-plus"></i>. This will open the new collection wizard as
 show below.
 
@@ -80,7 +80,7 @@ The Wizard contains a number of steps but you can skip them if they
 are not needed.
 
 In the first step, search for an artifact to collect the type of
-information you are after. In this case we will search for `task` to
+information you are after. In this case we will search for "task" to
 see our `Windows.System.TaskScheduler` artifact.
 
 {{% notice tip "Saving collections to a favorite list" %}}
@@ -101,7 +101,7 @@ The next step allows us to modify artifact parameters.
 Each Artifact parameter has a default value.
 
 For the purposes of our example, we will upload some raw XML
-files. Click `Launch` to start the collection. After a short time, the
+files. Click **Launch** to start the collection. After a short time, the
 collection will complete.
 
 ![Collection Complete](viewing_complete_collection.png)
@@ -113,7 +113,7 @@ We can see more information about this collection in the tabs in the
 bottom pane:
 
 1. **Logs** - As the VQL query is executing on the endpoint, the query may
-   produce log messages. This is called the `Query Log` and it is
+   produce log messages. This is called the **Query Log** and it is
    forwarded to the server. We are able to see how the query is
    progressing based on the query log.
 
@@ -135,7 +135,7 @@ bottom pane:
 
 ## Inspecting and modifying artifacts
 
-The `View Artifacts` screen allows you to search and find all
+The **View Artifacts** screen allows you to search and find all
 artifacts loaded into Velociraptor. Search for an artifact in the
 search screen and select an artifact to view.
 

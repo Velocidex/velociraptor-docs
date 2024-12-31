@@ -1,26 +1,41 @@
 ---
-title: "Client Labels"
+title: "Labels"
 date: 2024-12-18
 draft: false
-weight: 20
+weight: 30
+last_reviewed: 2024-12-30
 ---
 
-Hosts may have labels attached to them. A label is any name associated
-with a host. Labels are useful when we need to hunt for a well defined
-group of hosts. We can restrict the hunt to one or more labels to
-avoid collecting unnecessary data or accessing machines we should not
-be.
+Clients can have one or more **labels** attached to them. In some software
+applications the same concept is called "tags" but we just happen to call them
+labels. Labels are useful when we need to hunt or perform other operations on a
+well-defined group of hosts. For example, we can restrict a hunt to one or more
+labels to avoid collecting unnecessary data, or to target specific hosts, or to
+avoid specific hosts.
 
-It is possible to manipulate the labels via the search screen. Simply
-select the hosts in the GUI and then click the "add labels" button.
+Although labels are associated with clients, the clients themselves have no
+knowledge of the labels that have been applied to them. That is, labels are a
+purely a server-side construct that are used to organize clients. The VQL
+functions to query and manipulate labels are only available in VQL queries
+running on the server.
 
-![Adding labels](labels.png)
+## Adding or removing labels manually
 
-### Manipulating labels via VQL
+Manual manipulation of labels can be done in the GUI's client search screen.
 
-Although it is possible to manipulate labels via the GUI, It is
-usually easier to use VQL queries to add or remove labels via the
-`label()` plugin.
+To add labels, select the hosts in the GUI and then click the "add labels"
+(<i class="fas fa-tags"></i>)
+button.
+
+![Adding labels](labels.svg)
+
+![Removing labels](labels_remove.svg)
+
+## Adding or removing labels via VQL
+
+Although it is possible to manipulate labels manually in the GUI, it is usually
+easier to use VQL queries to add or remove labels via the `label()` plugin,
+especially when you need to apply label changes to many clients.
 
 For example, let's say we wanted to label all machines with the local
 user of `mike`. I would follow the following steps:
@@ -56,25 +71,37 @@ it is possible to restrict a hunt to a label group then simply add
 clients to the label group in order to automatically add them to the
 hunt.
 
+For a practical example of using labels with client monitoring, please see the
+artifact
+[Windows.Remediation.QuarantineMonitor]({{< ref "/artifact_references/pages/windows.remediation.quarantinemonitor/" >}})
+which is used to enforce network quarantine based on the `quarantine` label.
+
+In addition, it's possible to create
+[server monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}})
+artifacts which automatically add or remove labels based on flow completion
+status and results. Thus we can implement event-driven label manipulation via
+VQL which in turn initiates further actions (such as assigning the client to a
+particular hunt based on a previous hunt's results). In this way we can
+accomplish very powerful multi-phased automation that is directed by labeling.
+
 {{% /notice %}}
 
 
 ### Built-in Labels
 
-While one can add labels to machines using the GUI this is not
-practical for labeling very large numbers of client, for example
-belonging to a particular Active Directory Organizational Unit
-(OU). It is reasonable to want to quickly select those machines
-belonging to a particular OU.
+Sometimes you may want clients to have certain labels immediately from the time
+of deployment, for example you might want to label clients as belonging to a
+particular Active Directory Organizational Unit (OU) where the client was
+deployed via a specific Group Policy.
 
-We can use labels to identify machines installed by a specific group
-policy. For example, suppose we have a particular OU called
-`Sales`. We want to ensure that Velociraptor clients in the Sales team
-are specifically marked by the `Sales` label.
+Labels can be pre-assigned to clients via the client config.
 
-Simply modify the client's configuration file to contain the Sales
-label, and this label will be automatically applied when the client is
-enrolled:
+Supposing we have a particular OU called `Sales`. We want to ensure that
+Velociraptor clients in the Sales team are specifically marked with the `Sales`
+label.
+
+To achieve this we edit the client's configuration and specify that the `Sales`
+label applies to this client.
 
 ```yaml
 Client:
@@ -82,13 +109,22 @@ Client:
   - Sales
 ```
 
-Then we apply the Group Policy Object only on the Sales OU which will
-result in those clients being enrolled with the Sales label
-automatically.
+With this added to the config, when the client enrolls it will tell the server
+to apply the `Sales` label to it.
+
+We then
+[repackage the client MSI]({{< ref "/docs/deployment/clients/#repacking-the-official-release-msi" >}})
+so that it contains this modified config and then deploy it via Group Policy
+only on the Sales OU. This will result in those clients being enrolled with the
+`Sales` label automatically.
+
 
 {{% notice note %}}
 
 Although any labels can be deleted on the server, the labels specified in the
 client config file will return after the client restarts.
+
+You can also change the labels in the client config at any time and any new
+labels will be applied when the client restarts.
 
 {{% /notice %}}

@@ -155,7 +155,7 @@ file is by using the
 server artifact.
 
 1. In the Velociraptor web GUI, simply switch to the relevant Organization, then
-   select `Server Artifacts` from the sidebar on the left side of the page.
+   select **Server Artifacts** from the sidebar on the left side of the page.
 
 ![](create_msi_add.svg)
 
@@ -167,7 +167,7 @@ server artifact.
 3. It will take a moment to download the latest release MSI files (64bit and
    32-bit) and the repack them with your client config file.
 
-4. The repacked MSI will then be available in the `Uploaded Files` tab of the
+4. The repacked MSI will then be available in the **Uploaded Files** tab of the
    artifact collection.
 
 ![](create_msi_uploaded.svg)
@@ -440,7 +440,7 @@ on the system.
 After installation you can check the service's status with:
 - `ps -eaf | grep velo` or
 - `sudo launchctl print system/com/velocidex.velociraptor` or
-- Navigate to `Applications > Utilities > Activity Monitor` and search for
+- Navigate to **Applications > Utilities > Activity Monitor** and search for
   Process Name `velociraptor`.
 
 Organizations that use macOS at scale usually have their own packaging and
@@ -490,12 +490,12 @@ locations. That is, the binary and client configuration files for Linux will be
 in the same locations regardless of whether you installed using an `rpm` or a
 `deb` package.
 
-Our `deb` and `rpm` installers support both `systemd` and `SysVinit`, and will
+Our `deb` and `rpm` installers support both **systemd** and **SysVinit**, and will
 detect and use the appropriate one. We do not provide installer support for
 other init systems such as Upstart, init.d or OpenRC. If you need to create
 installer packages for platforms that use other init systems then you will have
 to do it manually. However you can probably re-use most of the service
-configuration information that we use for `systemd` and `SysVinit`, which is
+configuration information that we use for **systemd** and **SysVinit**, which is
 available in our GitHub repo.
 
 After installation the binary will be located at

@@ -91,6 +91,13 @@ h2, h3, h4, h5 {
     color: var(--MAIN-TITLES-TEXT-color) !important;
 }
 
+body h1, body .h1 { font-size: 36px; }
+body h2, body .h2 { font-size: 30px; }
+body h3, body .h3 { font-size: 27px; }
+body h4, body .h4 { font-size: 24px; }
+body h5, body .h5 { font-size: 22px; }
+body h6, body .h6 { font-size: 20px; }
+
 .children-h2 p, .children-h3 p, .children-li p {
     font-size: inherit;
 }
@@ -178,16 +185,6 @@ a:hover {
 
 div.section {
     opacity: 1;
-}
-
-h1 {
-    text-transform: capitalize;
-    font-size: 2rem !important;
-}
-
-h4 {
-    font-size: 1.2rem !important;
-    font-family: "Iosevka Term";
 }
 
 pre {
@@ -335,10 +332,18 @@ div.mynotices.tip > div {
     box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
 }
 
+#body img {
+    margin: 2rem auto 1rem auto;
+    text-align: center;
+}
+
 a[data-featherlight] img {
     box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
 }
 
+h1 {
+    text-transform: capitalize;
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Noto Sans', sans-serif !important;
@@ -834,6 +839,7 @@ details > summary:first-of-type {
 
 #body-inner table {
     border: none;
+    margin-bottom: 1em;
 }
 
 #body-inner table tbody {
@@ -897,14 +903,17 @@ td.signature {
 figure div.figure {
     cursor: pointer;
     margin: 0 auto;
-    max-width: 600px;
+    max-width: 80%;
+    text-align: center;
 }
 
 figure div.figure svg,
 figure div.figure img {
-    width: 100%;
-
+    max-width: 80%;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
     height: auto;
+    margin: 1rem auto 0rem auto;
+    text-align: center;
 }
 
 .featherlight .featherlight-content img {
