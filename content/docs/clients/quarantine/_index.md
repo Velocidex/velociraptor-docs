@@ -2,7 +2,7 @@
 title: "Quarantine"
 date: 2024-12-24
 draft: false
-weight: 35
+weight: 50
 last_reviewed: 2024-12-30
 ---
 For Windows and Linux clients you can quarantine the host using the

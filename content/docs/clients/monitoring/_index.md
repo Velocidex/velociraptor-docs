@@ -2,7 +2,7 @@
 title: "Monitoring"
 date: 2021-06-30T12:31:08Z
 draft: false
-weight: 40
+weight: 60
 last_reviewed: 2024-12-30
 ---
 
@@ -74,7 +74,7 @@ the datastore.
 ## Installing client event queries.
 
 To edit the client monitoring table you must first have a client selected. Then
-from the sidebar choose **Client Events** and the click the "Update client
+from the sidebar choose **Client Events** and then click the "Update client
 monitoring table" button.
 
 ![Update client monitoring table](updating_client_events.svg)
@@ -108,18 +108,17 @@ removing the label when done.
 
 ### Selecting event artifacts to apply
 
-Velociraptor uses [Artifacts]({{< ref "/docs/vql/artifacts/" >}}) to package VQL
-queries in a structured YAML file, and this applies to event queries too. Event
-artifacts are identified by `type: CLIENT_EVENT` in the definition YAML.
+Velociraptor uses [Artifacts]({{< ref "/docs/vql/artifacts/" >}}) which package
+VQL queries in a structured YAML file, and this applies to event queries too.
+Event artifacts are identified by `type: CLIENT_EVENT` in the definition YAML.
 
 In the steps that follow the artifact selection UI looks very similar to the new
 collection UI or new hunt UI. The main difference is that the artifact selection
 UI in the Event selection workflow only shows client event artifacts, that is
 artifacts which have `CLIENT_EVENT` as their type.
 
-If you add a new event artifact, be sure to designate it as a
-`CLIENT_EVENT` type or else it will not appear in the artifact selection list
-for client events.
+If you create a new event artifact, be sure to mark it as a `CLIENT_EVENT` type
+or else it will not appear in the artifact selection list for client events.
 
 In the next step we can select which artifacts will be applied to this label
 group.
@@ -129,15 +128,7 @@ DNS lookup from clients.
 
 ![Monitoring for DNS lookups](dns_monitoring.png)
 
-{{% notice note "Searching for artifact" %}}
 
-
-
-
-
-
-
-{{% /notice %}}
 
 ### Inspecting the current monitoring table
 
@@ -150,70 +141,64 @@ The current configuration can be viewed by clicking the
 
 Once the client syncs its client monitoring table, it will start
 forwarding events to the server. Events are simply rows returned by
-the VQL query. The server simply stores these rows in the filestore
+the VQL query. The server simply stores these rows in the datastore
 and provides a timeline based UI to inspect the data.
 
-![Viewing client events](viewing_client_events.png)
+![Viewing client events](viewing_client_events.svg)
 
 The view is split into two halves. The top half is the timeline view
-while the bottom half is the table view. The events can be viewed in
+while the bottom half is the table view. The events are viewed in
 the table, while the timeline view provides a quick way to navigate
-different time ranges.
+to specific time ranges.
 
-You can see the timeline view is split into three rows:
+The timeline view is split into three rows:
 
 1. `Table View` visualizes the time range visible in the table currently.
 2. `Available` shows the days which have any events in them.
 3. `Logs` visualizes the days that have any logs in them (You can view query
    logs by selecting the `Logs` pull down on the top right).
 
-In order to keep the table brief the timestamps are abbreviated - you
-can hover the mouse over those to get the full timestamp. Usually the
-exact timestamp in the table is not important as we can see a
-visualization of the time range in the timeline above.
-
 You can zoom in and out of the visible time ranges using `Ctrl-Mouse
 Wheel` or by clicking the timeline itself.
 
-![Interacting with the timeline](event-monitoring-1.png)
+![Interacting with the timeline](event-monitoring-1.svg)
 
 By clicking the tool bar it is possible to page through the table to
 view visible events. If you need to export the data, simply click the
 `Export` button and select either JSON or CSV format. The export
-functionality applies to the visible time range so you can finely tune
+functionality applies to the visible time range only so you can fine-tune
 which events should be exported (simply zoom the visible range in or
-out).
+out to include only the desired data).
 
 {{% notice note "Client side buffering" %}}
 
-Although VQL queries emit rows in real time, Velociraptor does not
-forward the event row immediately to the server. This is done to avoid
-too-frequent communications with the server. Instead, the client will
-batch rows in memory (by default for 120 seconds) and send them in a
-single POST upload. This means that it could take up to 2 minutes for
-events to appear at the server once a new client event table is
-installed.
+Although VQL queries emit rows in real time, the Velociraptor client does not
+immediately forward the event row to the server. This is done to avoid
+too-frequent communications with the server. Instead, the client will batch rows
+in memory (by default for 120 seconds) and send each batch in a single POST
+upload. This means that it could take up to 2 minutes for events to appear at
+the server once a new artifact is added to the client event table.
 
 {{% /notice %}}
 
 ### Further processing client monitoring events.
 
 Client event queries simply run on the endpoint and forward rows to
-the server. The event queries generally fall into two types:
+the server. The event queries generally fall into two categories:
 
-1. Collecting real time data such as ETW logs, process executions
-   logs, Sysmon logs etc. These are typically collected by
-   Velociraptor and sent directory to an external system (e.g. Elastic
-   or Splunk). Typically the VQL for such queries contains minimal
-   filtering and simply forwards all events to the server.
+1. Those that collect real time data such as ETW logs, process executions logs,
+   Sysmon logs etc. These are typically collected by Velociraptor and sent
+   directory to an external system (e.g. Elastic or Splunk). Typically the VQL
+   for such queries contains minimal filtering and the client acts mainly as an
+   event forwarder for these event sources.
 
-2. Selective and targeted queries. These artifacts contain refined
-   detection and enrichment log within the VQL query itself such that
-   only high value events are actually forwarded. These more targeted
-   queries send few rows but when an event is detected, it probably
-   should be escalated.
+2. Selective and targeted queries. These artifacts contain refined detection and
+   enrichment logic within the VQL query itself such that only high value events
+   are actually forwarded. These more targeted queries send fewer rows, but each
+   event is expecte to have significant value, especially if it represents a
+   detection.
 
-In either case, Velociraptor itself does not do anything with the
-events collected by default, other than write them to storage. Further
-server side processing is needed using
-[server side event queries]({{<ref "/docs/server_automation/server_monitoring/" >}}).
+In either case, the Velociraptor server does not do anything with the
+events collected by default, other than write them to storage. If you want the
+server to perform additional actions with the incoming events then you should
+use [server side event queries]({{<ref "/docs/server_automation/server_monitoring/" >}}).

@@ -2,7 +2,7 @@
 title: "Labels"
 date: 2024-12-18
 draft: false
-weight: 20
+weight: 30
 last_reviewed: 2024-12-30
 ---
 
