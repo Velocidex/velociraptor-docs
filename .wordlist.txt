@@ -1623,3 +1623,15 @@ unlabelled
 IPSec
 QuarantineMonitor
 nftables
+
+<url-free> content/knowledge_base/tips/setup_keycloak.md
+--------------------------------------------------------------------------------
+Authentik
+Keycloak
+Keycloak's
+OpenID
+Zitadel
+acknowledgement
+multifactor
+themeable
+
