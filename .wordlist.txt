@@ -1635,3 +1635,12 @@ acknowledgement
 multifactor
 themeable
 
+<url-free> content/vql_reference/other/serialize/_index.md
+--------------------------------------------------------------------------------
+SearchFilesGlobTable
+tlist
+
+<url-free> content/vql_reference/parsers/yara_lint/_index.md
+--------------------------------------------------------------------------------
+prefilter
+
