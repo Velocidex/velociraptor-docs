@@ -93,6 +93,7 @@ for advanced use cases.
   formatting as the `format` function.
 - [timestamp_format]({{< ref "/vql_reference/other/timestamp_format/" >}}): a function
   that simplifies the string formatting of timestamp objects.
+- [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
 - [typeof]({{< ref "/vql_reference/other/typeof/" >}}): a dedicated function equivalent
   to the special use case: `format(format="%T",args=x)`
 

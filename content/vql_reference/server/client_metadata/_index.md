@@ -32,4 +32,9 @@ Client metadata is a set of free form key/value data. Artifacts
 may use this metdata or it may simply be used as part of your IR
 processes.
 
+### See also
+
+- [client_set_metadata]({{< ref "/vql_reference/server/client_set_metadata/" >}}):
+  Sets client metadata.
+
 

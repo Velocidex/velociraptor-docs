@@ -66,7 +66,7 @@ acquainted with the commonly used functions and plugins.
 |[sigma](sigma)|<span class='vql_type'>Plugin</span>|Evaluate sigma rules|
 |[split](split)|<span class='vql_type'>Function</span>|Splits a string into an array based on a regexp separator|
 |[stat](stat)|<span class='vql_type'>Function</span>|Get file information|
-|[str](str)|<span class='vql_type'>Function</span>|Returns the string representation of provided data|
+|[str](str)|<span class='vql_type'>Function</span>|Returns the string representation of the provided data|
 |[substr](substr)|<span class='vql_type'>Function</span>|Create a substring from a string|
 |[switch](switch)|<span class='vql_type'>Plugin</span>|Conditional execution of multiple queries in order|
 |[tempdir](tempdir)|<span class='vql_type'>Function</span>|Create a temporary directory|

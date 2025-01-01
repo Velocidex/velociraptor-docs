@@ -1,5 +1,57 @@
 [
     {
+        "title": "Linux.Forensics.Targets",
+        "author": "kidrek",
+        "description": "This artifact collects all necessary artifacts files and directories from Linux operating system. \n",
+        "link": "/exchange/artifacts/pages/linux.forensics.targets",
+        "tags": [],
+        "author_link": "https://github.com/kidrek",
+        "author_avatar": "https://avatars.githubusercontent.com/u/202946?v=4",
+        "date": "2024-12-27"
+    },
+    {
+        "title": "Docker.Image.Export",
+        "author": "DoppioRistretto",
+        "description": "Uses the Docker UNIX socket to export a Docker image to a\ntempfile and upload to Velociraptor.",
+        "link": "/exchange/artifacts/pages/docker.image.export",
+        "tags": [
+            "docker"
+        ],
+        "author_link": "https://github.com/DoppioRistretto",
+        "author_avatar": "https://avatars.githubusercontent.com/u/28914750?v=4",
+        "date": "2024-12-09"
+    },
+    {
+        "title": "Windows.Forensics.NotificationsDatabase",
+        "author": "zaneGittins",
+        "description": "Parses the Win10/11 notifications database, which contains events for badges, tiles, and toasts shown to each user.\n",
+        "link": "/exchange/artifacts/pages/windows.forensics.notificationsdatabase",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2024-12-06"
+    },
+    {
+        "title": "Windows.ESET.Logs",
+        "author": "j91321",
+        "description": "Parse logs from ESET antivirus products. This log contains information about detections made by the ESET modules such as Real-time filesystem proteciton, Firewall, HIPS, Device Control, HTTP filter, AMSI Scanner etc.\n",
+        "link": "/exchange/artifacts/pages/esetlogs",
+        "tags": [],
+        "author_link": "https://github.com/j91321",
+        "author_avatar": "https://avatars.githubusercontent.com/u/10012872?v=4",
+        "date": "2024-12-01"
+    },
+    {
+        "title": "Server.Enrichment.JsonLookup",
+        "author": "shortstack",
+        "description": "Allows pulling in JSON lists from an external URL to perform lookups against",
+        "link": "/exchange/artifacts/pages/server.enrichment.jsonlookup",
+        "tags": [],
+        "author_link": "https://github.com/shortstack",
+        "author_avatar": "https://avatars.githubusercontent.com/u/1244979?v=4",
+        "date": "2024-11-30"
+    },
+    {
         "title": "Linux.Forensics.ProcFD",
         "author": "chrisdfir",
         "description": "This artifact collects metadata about open file descriptors from active processes on a Linux system. \nOutputs include regular files, sockets, device files, and deleted files used by each process.\n",
@@ -94,7 +146,7 @@
     {
         "title": "Linux.Event.Network.Nethogs",
         "author": "misje",
-        "description": "Monitor network bandwidth per process, using \"nethogs\". This artifact will\nlist all processes that produces (non-local) network traffic on the client,\nleveraging the process tracker, and displays the total bytes received and sent\nin the given time frame.",
+        "description": "Monitor network use per process using the tool \"nethogs\". This artifact will\nlist all processes that produces (non-local) network traffic on the client.\nThe NetstatEnriched artifact is used to provide detailed information about the\nprocess using netstat and the process tracker, along with the bytes received\nand sent in bytes per second.",
         "link": "/exchange/artifacts/pages/linux.event.network.nethogs",
         "tags": [],
         "author_link": "https://github.com/misje",
@@ -104,7 +156,7 @@
     {
         "title": "Linux.Network.Nethogs",
         "author": "misje",
-        "description": "Monitor network bandwidth per process, using \"nethogs\". This artifact will\nlist all processes that produces (non-local) network traffic on the client,\nleveraging the process tracker, and displays the total bytes received and sent\nin the given time frame.",
+        "description": "Monitor network use per process using the tool \"nethogs\". This artifact will\nlist all processes that produces (non-local) network traffic on the client.\nThe NetstatEnriched artifact is used to provide detailed information about the\nprocess using netstat and the process tracker, along with the bytes received\nand sent in bytes per second.",
         "link": "/exchange/artifacts/pages/linux.network.nethogs",
         "tags": [],
         "author_link": "https://github.com/misje",
@@ -484,7 +536,7 @@
     {
         "title": "Windows.Sys.LoggedInUsers",
         "author": "zaneGittins",
-        "description": "Get all currently logged in users via WMI.\n",
+        "description": "Get all currently logged in users via wmi.\n",
         "link": "/exchange/artifacts/pages/windows.sys.loggedinusers",
         "tags": [],
         "author_link": "https://github.com/zaneGittins",
@@ -1093,7 +1145,7 @@
     {
         "title": "Server.Utils.DeleteClientLabel",
         "author": "mgreen27",
-        "description": "This artifact completely removes a client from the data store if a configured \nlabel is set.",
+        "description": "This artifact completely removes a client from the data store if a configured\nlabel is set.",
         "link": "/exchange/artifacts/pages/deleteclientlabel",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -2283,7 +2335,7 @@
     {
         "title": "Exchange.Label.User",
         "author": "scudette",
-        "description": "This artifact watches for new client enrolments and automatically\nlabel the client with the required label if the user exists.",
+        "description": "This artifact watches for new client enrollments and automatically\nlabel the client with the required label if the user exists.",
         "link": "/exchange/artifacts/pages/exchange.label.user",
         "tags": [
             "server",
