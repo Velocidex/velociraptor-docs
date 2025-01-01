@@ -29,17 +29,24 @@ metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict
 
 Sets client metadata.
 
-Client metadata is a set of free form key/value data (see
-client_metadata() function).
+Client metadata is a set of free form key-value pairs, i.e. a dict.
 
-For existing keys, the value is overwritten. Setting a metadata
-key with a `NULL` value deletes that entry.
+When updating metadata the result is the same as adding 2 dicts.
+For existing keys, the value is overwritten.
+
+Setting a metadata key with a `NULL` value deletes that entry.
 
 ### Example
 
 ```vql
-SELECT client_set_metadata(ClientId="C.1234", Foo="Bar")
-FROM scope()
+SELECT client_set_metadata(client_id=client_id, metadata=dict(department="Lab02"))
+FROM clients()
+WHERE os_info.hostname =~ "TRAINING"
 ```
+
+### See also
+
+- [client_metadata]({{< ref "/vql_reference/server/client_metadata/" >}}):
+  Returns client metadata from the datastore.
 
 

@@ -1,5 +1,18 @@
 [
     {
+        "title": "How to set up OIDC authentication using Keycloak",
+        "link": "/knowledge_base/tips/setup_keycloak",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2024-12-28"
+    },
+    {
         "title": "Set operations in VQL",
         "link": "/knowledge_base/tips/set_operations",
         "tags": [
@@ -398,18 +411,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "How to set up OIDC authentication using Keycloak",
-        "link": "/knowledge_base/tips/setup_keycloak",
-        "tags": [
-            "configuration",
-            "sso",
-            "deployment"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

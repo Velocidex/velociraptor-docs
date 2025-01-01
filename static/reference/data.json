@@ -864,7 +864,7 @@
     },
     {
         "name": "client_info",
-        "description": "Returns client info (like the fqdn) from the datastore.",
+        "description": "Returns client info (like the fqdn) for a specific client from the\ndatastore.",
         "type": "Function",
         "version": 2,
         "args": [
@@ -939,7 +939,7 @@
     },
     {
         "name": "clients",
-        "description": "Retrieve the list of clients.",
+        "description": "Returns client info for one or more clients from the datastore.",
         "type": "Plugin",
         "args": [
             {
@@ -2725,7 +2725,7 @@
     },
     {
         "name": "geoip",
-        "description": "Lookup an IP Address using the MaxMind GeoIP database. You can get\na copy of the database from https://www.maxmind.com/. The database\nmust be locally accessible so this probably only makes sense on\nthe server.\n",
+        "description": "Lookup an IP Address using the MaxMind GeoIP database.",
         "type": "Function",
         "version": 1,
         "args": [
@@ -8183,7 +8183,7 @@
     },
     {
         "name": "serialize",
-        "description": "Encode an object as a string (csv or json).",
+        "description": "Encode an object as a string.",
         "type": "Function",
         "args": [
             {
@@ -8995,7 +8995,7 @@
     },
     {
         "name": "str",
-        "description": "Returns the string representation of provided data",
+        "description": "Returns the string representation of the provided data",
         "type": "Function",
         "args": [
             {
@@ -11264,7 +11264,7 @@
     },
     {
         "name": "yara_lint",
-        "description": "Clean a set of yara rules. This removed invalid or unsupported rules.",
+        "description": "Clean a set of yara rules. This removes invalid or unsupported rules.",
         "type": "Function",
         "args": [
             {

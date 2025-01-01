@@ -31,10 +31,10 @@ available on clients!
 |[cancel_flow](cancel_flow)|<span class='vql_type'>Function</span>|Cancels the flow|
 |[client_create](client_create)|<span class='vql_type'>Function</span>|Create a new client in the data store|
 |[client_delete](client_delete)|<span class='vql_type'>Plugin</span>|Delete all information related to a client from the filestore|
-|[client_info](client_info)|<span class='vql_type'>Function</span>|Returns client info (like the fqdn) from the datastore|
+|[client_info](client_info)|<span class='vql_type'>Function</span>|Returns client info (like the fqdn) for a specific client from the|
 |[client_metadata](client_metadata)|<span class='vql_type'>Function</span>|Returns client metadata from the datastore|
 |[client_set_metadata](client_set_metadata)|<span class='vql_type'>Function</span>|Sets client metadata|
-|[clients](clients)|<span class='vql_type'>Plugin</span>|Retrieve the list of clients|
+|[clients](clients)|<span class='vql_type'>Plugin</span>|Returns client info for one or more clients from the datastore|
 |[collect_client](collect_client)|<span class='vql_type'>Function</span>|Launch an artifact collection against a client|
 |[create_flow_download](create_flow_download)|<span class='vql_type'>Function</span>|Creates a download pack for the flow|
 |[create_hunt_download](create_hunt_download)|<span class='vql_type'>Function</span>|Creates a download pack for a hunt|
