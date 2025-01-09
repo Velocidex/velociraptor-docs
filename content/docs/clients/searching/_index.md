@@ -129,7 +129,7 @@ The table contains seven columns:
    the server only and are used for organizing clients, targeting hunts and
    other client management functions.
 
-{{% notice note "A note about deleting clients" %}}
+{{% notice note "Deleting active clients" %}}
 
 You might be wondering what happens if you delete active clients?
 
@@ -139,10 +139,11 @@ deletes any existing collections data associated with them from the datastore.
 
 If the client is still active, or temporarily offline and later becomes active,
 the client will continue as though nothing happened. It's old data will be gone
-due to the delete action but the client doesn't know or care about data it
-previously sent to the server. The client retains it's Client ID. The server
-will instruct the client to perform a new interrogation flow so that it's client
-info record can be updated.
+due to the delete action but the client doesn't know or care about data that it
+previously sent to the server. The client still has it's Client ID.
+
+The server will re-enroll the client and instruct the client to perform a new
+interrogation flow so that it's client info record can be updated.
 
 {{% /notice %}}
 
