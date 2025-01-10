@@ -1,5 +1,6 @@
 ---
-title: "Troubleshooting"
+title: "Troubleshooting Client Issues"
+menutitle: "Troubleshooting"
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 70
@@ -10,14 +11,17 @@ last_reviewed: 2024-12-30
 
 In the
 [Deployment troubleshooting section]({{< ref "/docs/deployment/troubleshooting/#debugging-velociraptor" >}})
-we explain how to bring up the debug server by providing the `--debug`
-commandline, but existing clients are normally already running without this
-flag. Often we are trying to collect an artifact from a remote client and we
-want to see what is actually happening in the client process itself.
+we explain how to bring up the debug server by providing the `--debug` flag on
+the command line. However clients are often remote and it's therefore not always
+possible to debug the client by starting it with this flag. Often we are also
+trying to troubleshoot an issue that happens while collecting an artifact from a
+remote client and we want to see what is actually happening in the client
+process itself.
 
-We can do this by collecting the artifact `Generic.Client.Profile` from the
-client. This artifact has access to the same data exposed through the debug
-server, but does not require the debug flag to be enabled in advance.
+We can debug the client while it is running without starting the debug server
+using the artifact `Generic.Client.Profile`. This artifact has access to the
+same data exposed through the debug server, but does not require the debug flag
+to be enabled in advance.
 
 ![Collecting the client profile](client_profile_artifact.png)
 

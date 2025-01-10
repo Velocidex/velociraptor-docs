@@ -1,12 +1,11 @@
 ---
-title: "Shell Commands"
+title: "Client Shell Commands"
+menutitle: "Shell Commands"
 date: 2024-12-19
 draft: false
 weight: 60
 last_reviewed: 2024-12-30
 ---
-
-### Remote shell commands
 
 Velociraptor's collects data from endpoints using
 [Artifacts]({{< ref "/docs/vql/artifacts/" >}})

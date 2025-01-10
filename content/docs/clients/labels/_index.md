@@ -1,5 +1,6 @@
 ---
-title: "Labels"
+title: "Client Labels"
+menutitle: "Labels"
 date: 2024-12-18
 draft: false
 weight: 30

@@ -1,5 +1,6 @@
 ---
-title: "Virtual File System"
+title: "The Virtual File System"
+menutitle: "Virtual File System"
 date: 2021-06-09T04:12:50Z
 draft: false
 weight: 50
@@ -144,7 +145,7 @@ filesystem information from the endpoint.
 
 The `file` accessor simply uses the OS's APIs to list files or
 directories and fetch data. The `ntfs` accessor uses Velociraptor's
-built in NTFS parser to be able to access hidden NTFS files and
+built-in NTFS parser to be able to access hidden NTFS files and
 Alternate Data Streams (ADS).
 
 Similarly the `registry` accessor provides file-like access to the registry.

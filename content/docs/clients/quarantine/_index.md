@@ -1,5 +1,6 @@
 ---
-title: "Quarantine"
+title: "Host Quarantine"
+menutitle: "Quarantine"
 date: 2024-12-24
 draft: false
 weight: 50

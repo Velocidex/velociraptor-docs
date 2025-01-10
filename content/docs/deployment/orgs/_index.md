@@ -1,10 +1,10 @@
 ---
 menutitle: "Organizations"
-title: Organizations and Muti-Tenancy
+title: Organizations and Multi-tenancy
 weight: 15
 ---
 
-Velociraptor supports multiple orgs in a fully multi tenancy
+Velociraptor supports multiple orgs in a full multi-tenancy
 configuration. Orgs are light weight and can be added and removed
 easily with minimal impact on resource requirements.
 
