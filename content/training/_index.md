@@ -22,7 +22,7 @@ allowfullscreen scrolling='no' style="display:block;overflow:hidden;overflow:hid
 
 The full video playlist is available
 [here](https://www.youtube.com/playlist?list=PLz4xB83Y3Vbjtqr_ttOkBWZZ_ewEVVPXQ)
-on Youtube.
+on YouTube.
 
 {{% notice info %}}
 
