@@ -478,6 +478,11 @@ iframe.youtube {
     width: 100%;
 }
 
+.youtube iframe {
+    height: 60vh;
+    width: 100%;
+}
+
 .carousel-choices {
     margin-top: 10px;
 }

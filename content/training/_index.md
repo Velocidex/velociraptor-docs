@@ -1,65 +1,37 @@
 ---
 menutitle: "Training"
-title: "Velociraptor Training"
+title: "Training Resources"
 date: 2021-06-12T14:03:59Z
 draft: false
 weight: 90
 pre: <i class="fas fa-graduation-cap"></i>
-carousel:
-  - name: Session 01<br>Installation and Overview
-    description: |
-     <div class="carousel-description">
-       <h4>Velociraptor Installation and Overview.</h4>
-
-       In this module we install Velociraptor in a cloud environment and have a quick overview of the GUI.
-     </div>
-       <iframe class="youtube" src="https://www.youtube.com/embed/70CBB9MdNWM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-  - name: Session 02<br>VQL Fundamentals Pt 1
-    description: |
-     <div class="carousel-description">
-       <h4>VQL Fundamentals Pt 1.</h4> This module covers the basics of the Velociraptor Query Language.
-     </div>
-       <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/h1HMYnRLQlo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-  - name: Session 03<br>VQL Fundamentals Pt 2
-    description: |
-     <div class="carousel-description">
-       <h4>VQL Fundamentals Pt 2.</h4> Continue our journey of VQL.
-     </div>
-       <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/tsmb_CuLVlE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-  - name: Session 04<br>Forensic Analysis Pt 1
-    description: |
-     <div class="carousel-description">
-       <h4>Forensic Analysis Pt 1.</h4> Armed with our understanding of VQL, we continue to apply it to perform initial triage.
-     </div>
-       <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/SD1_Ev-JqCs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-  - name: Session 05<br>Forensic Analysis Pt 2
-    description: |
-     <div class="carousel-description">
-       <h4>Forensic Analysis Pt 2.</h4> Moving on to more complex forensic analysis techniques. We examine the Windows Event logs, and ETW.
-     </div>
-       <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/HP8XLyGOkBA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-  - name: Session 06<br>Offline collection
-    description: |
-     <div class="carousel-description">
-       <h4>Offline collection and hunting.</h4> This module covers the use case of offline collection - deploying a pre-configured autonomous collector that fetches the required data easily.
-     </div>
-       <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/DX1CcoNl_q8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-  - name: Session 07<br>Extending VQL and API
-    description: |
-     <div class="carousel-description">
-       <h4>Extending VQL and the Velociraptor API.</h4> In this module we show how to extend VQL using powershell or external tools. We also cover the Velociraptor API and server side automation.
-     </div>
-       <iframe class="youtube" src="https://www.youtube-nocookie.com/embed/H5g5zJGV454" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 ---
 
+## Scheduled courses
 
-{{% carousel %}}
+_We currently have no courses scheduled._
 
-Slides for the training course can be found [here](https://drive.google.com/drive/folders/1BIMaJ4jzghIsTcFiSmDthBUmE1Ca2HnC?ths=true).
+## Training course slides
+
+Click [here](https://training.velociraptor.app/) to view in a new tab.
+
+<iframe name="training slides" src="https://training.velociraptor.app/" frameborder='no' allowtransparency='true'
+allowfullscreen scrolling='no' style="display:block;overflow:hidden;overflow:hidden;height:120vh;width:100%;top:0px;left:0px;right:0px;bottom:0px;padding:20px;zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0;" height="100vh" width="100%"></iframe>
+
+## Training course videos
+
+The full video playlist is available
+[here](https://www.youtube.com/playlist?list=PLz4xB83Y3Vbjtqr_ttOkBWZZ_ewEVVPXQ)
+on YouTube.
+
+{{% notice info %}}
+
+Please note that these videos are not up to date with the
+[latest version]({{< ref "/downloads/" >}}).
+The slide deck above is more recent and contains additional sections which don't
+have corresponding videos.
+
+{{% /notice %}}
+
+{{< youtube class="youtube" title="Velociraptor Installation and Overview" id="70CBB9MdNWM" >}}
+
