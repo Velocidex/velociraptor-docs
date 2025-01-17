@@ -1,0 +1,299 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Triage and acquisition :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1737111702 rel=stylesheet><link href=/css/fontawesome-all.min.css?1737111702 rel=stylesheet><link href=/css/featherlight.min.css?1737111702 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1737111702 rel=stylesheet><link href=/css/auto-complete.css?1737111702 rel=stylesheet><link href=/css/theme.css?1737111702 rel=stylesheet><link href=/css/tabs.css?1737111702 rel=stylesheet><link href=/css/hugo-theme.css?1737111702 rel=stylesheet><link href=/css/theme-mine.css?1737111702 rel=stylesheet><link href=/css/dark.css?1737111702 rel=stylesheet><link href=/css/syntax.css?1737111702 rel=stylesheet><link href=/css/light.css?1737111702 rel=stylesheet><link href=/css/hljs.css?1737111702 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1737111702 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1737111702></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/offline_triage/><nav id=sidebar><div id=header-wrapper><div id=header><script>function darkmode(){$("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/"}function lightmode(){$("body").removeClass("dark").addClass("light"),document.cookie="theme=lightmode;path=/"}const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?darkmode():lightmode()</script><div class="btn btn-default ThemeSelector darkmode" onclick=darkmode()><i class="fas fa-moon"></i></div><div class="btn btn-default ThemeSelector lightmode" onclick=lightmode()><i class="fas fa-sun"></i></div><a href=https://docs.velociraptor.app/><img src=https://docs.velociraptor.app//images/logo.svg></a></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/self-signed/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/self-signed/>Self-Signed SSL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/>Cloud Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/multifrontend/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/multifrontend/>Multi-Frontend</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/troubleshooting/>Troubleshooting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/>Config Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/_reference/ class=dd-item><div><a href=/docs/deployment/references/_reference/></a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/artifacts/>Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/hunting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/hunting/>Hunting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL Fundamentals</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/notebooks/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/>Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filenames</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class="dd-item active haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/remote_uploads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/offline_triage/remote_uploads/>Remote Uploads</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/extending_vql/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2024</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/offline_triage/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Triage and acquisition</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><ul><li><a href=#collecting-files>Collecting files</a></li></ul></li><li><a href=#offline-collections>Offline collections</a><ul><li><a href=#encrypting-the-offline-collection>Encrypting the offline collection</a></li><li><a href=#the-generic-offline-collector>The Generic offline collector</a></li><li><a href=#building-an-offline-collector-on-the-command-line>Building an offline collector on the command line</a></li><li><a href=#include-third-party-binaries>Include third party binaries</a></li><li><a href=#collecting-across-the-network>Collecting across the network</a></li></ul></li><li><a href=#importing-collections-into-the-gui>Importing collections into the GUI</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Triage and acquisition</h1><p>In DFIR Triaging means to quickly collect information about the system
+in order to establish its potential relevance to a forensic
+investigation.</p><p>While many think of triage as collecting files (perhaps as an
+alternative to full disk acquisition), in Velociraptor, there is no
+real difference between collecting files or other non-volatile
+artifacts: Everything that Velociraptor collects is just a VQL
+Artifact.</p><p>We like to think of triage as simply capturing machine state - where
+the state may be bulk files (like the <code>$MFT</code> or registry hives) or any
+other volatile data, such as process information, network connections
+etc.</p><h3 id=collecting-files>Collecting files</h3><p>Being able to efficiently and quickly collect and preserve evidence is
+important for being able to capture machine state at a point in
+time. It is also useful to be able to use these collected files with
+other forensic tools that might be able to handle the file formats
+involved.</p><p>One of the most commonly used artifact is the
+<code>Windows.KapeFiles.Targets</code> artifact. This artifact is automatically
+built from the open source
+<a href=https://github.com/EricZimmerman/KapeFiles target=_blank>KapeFiles</a>
+repository.</p><p>While originally developed to support the non-opensource Kape tool,
+this repository contains many types of files which might be relevant
+to collect in a triage scenario. Each Kape &ldquo;Target&rdquo; is essentially a
+glob expression with a name.</p><p>In Velociraptor <code>Windows.KapeFiles.Targets</code> is the most popular
+artifact for mass file collection. It does no analysis but simply
+collects a bunch of files based on the targets specified.</p><p>Start by selecting the artifact from the &ldquo;New Collection&rdquo; wizard</p><p><figure id=1a8f685c15feef92820538fea13ff231><div data-featherlight=#1a8f685c15feef92820538fea13ff231 class=figure><img src=image2.png alt="The Windows.KapeFiles.Targets artifact"></div><figcaption><a class=image-link href=image2.png><i class="fa fa-download"></i></a>
+The Windows.KapeFiles.Targets artifact</figcaption></figure></p><p>Next we need to select the &ldquo;Targets&rdquo; in the &ldquo;Configure Parameters&rdquo;
+step. Many targets are simply collections of other targets. For
+example the <code>_BasicCollection</code> target automatically includes a number
+of other useful targets.</p><p><figure id=316a76dd607f18f9361ef29bc395b2bb><div data-featherlight=#316a76dd607f18f9361ef29bc395b2bb class=figure><img src=image7.png alt="Selecting recursive targets"></div><figcaption><a class=image-link href=image7.png><i class="fa fa-download"></i></a>
+Selecting recursive targets</figcaption></figure></p><p>The <code>Windows.KapeFiles.Targets</code> artifact can transfer a large quantity
+of data from the endpoints, and take a long time to run. We therefore
+often need to update the resource control of the collection.</p><p><figure id=f508b5059efcee6e9724be365a2a9c7f><div data-featherlight=#f508b5059efcee6e9724be365a2a9c7f class=figure><img src=image6.png alt="Specifying a maximum upload limit"></div><figcaption><a class=image-link href=image6.png><i class="fa fa-download"></i></a>
+Specifying a maximum upload limit</figcaption></figure></p><p>Once the collection is launched, we can monitor progress in the &ldquo;Artifact Collection&rdquo; tab.</p><p><figure id=1b65d98f3c4a2af27230ed9dbb91419e><div data-featherlight=#1b65d98f3c4a2af27230ed9dbb91419e class=figure><img src=image4.png alt="Monitoring collection progress"></div><figcaption><a class=image-link href=image4.png><i class="fa fa-download"></i></a>
+Monitoring collection progress</figcaption></figure></p><div class="mynotices note"><div heading=" Note about large file collections "><p>Velociraptor is very careful about the performance and resource impact
+on endpoints. When collecting many files if it is often hard to
+determine in advance how much data will be collected or how long it
+will take. For safety, Velociraptor allows limits to be set after
+which the collection is cancelled. You can also interactively cancel
+the collection by clicking the &ldquo;Stop&rdquo; button.</p><p>Be aware that a lot of data can be collected which might fill up the
+VM disk.</p><blockquote><p>Math is a harsh mistress:
+Collecting 100Mb from 10,000 endpoints = 1Tb</p><p>Note that typically $MFT is around 300-400Mb so collecting the $MFT
+from many endpoints is going to be huge!</p></blockquote><p><figure id=715e45bfa498ec4248d34f466a366e39><div data-featherlight=#715e45bfa498ec4248d34f466a366e39 class=figure><img src=image5.png alt="Collections are automatically cancelled when they read the limit"></div><figcaption><a class=image-link href=image5.png><i class="fa fa-download"></i></a>
+Collections are automatically cancelled when they read the limit</figcaption></figure></p></div></div><h2 id=offline-collections>Offline collections</h2><p>We have seen previously how to collect many files using the
+<code>Windows.KapeFiles.Targets</code> artifact in the usual client/server
+mode. But what if we are unable to deploy Velociraptor on a new
+network in client/server mode? With Velociraptor not installed on the
+endpoint, how shall we collect and triage artifacts?</p><p>Velociraptor is just a VQL engine! All we need is Velociraptor to be
+able to collect the VQL artifacts into a file, and then we can
+transport the file ourselves for analysis. Velociraptor does not
+really need a server&mldr;</p><p>Often we rely of an external helper (such as a local admin) to
+actually perform the collection for us. However, these helpers are
+often not DFIR experts. We would like to provide them with a solution
+that performs the required collection with minimal intervention - even
+to the point where they do not need to type any command line
+arguments.</p><p>The <code>Offline collector</code> aims to solve this problem. Velociraptor
+allows the user to build a specially configured binary (which is
+actually just a preconfigured Velociraptor binary itself) that will
+automatically collect the artifacts we need.</p><p>Velociraptor allow us to build such a collector with the GUI using an
+intuitive process.</p><p><figure id=5fb6b9fb09f1795dc718ea6dcb234c98><div data-featherlight=#5fb6b9fb09f1795dc718ea6dcb234c98 class=figure><img src=image3.png alt="Creating a new Offline Collector"></div><figcaption><a class=image-link href=image3.png><i class="fa fa-download"></i></a>
+Creating a new Offline Collector</figcaption></figure></p><p>Select the offline collector builder from the <code>Server Artifacts</code>
+page. The artifacts selection page and the parameters page are exactly
+the same as previously shown.</p><p><figure id=82c6dca13cd687ba57eb2481cc429eae><div data-featherlight=#82c6dca13cd687ba57eb2481cc429eae class=figure><img src=image16.png alt="Offline Collector artifacts selection"></div><figcaption><a class=image-link href=image16.png><i class="fa fa-download"></i></a>
+Offline Collector artifacts selection</figcaption></figure></p><p>Next select the collector configuration page.</p><p><figure id=7bb0671450044db96cc70d695c43c6f8><div data-featherlight=#7bb0671450044db96cc70d695c43c6f8 class=figure><img src=offline1.png alt="Offline Collector configuration"></div><figcaption><a class=image-link href=offline1.png><i class="fa fa-download"></i></a>
+Offline Collector configuration</figcaption></figure></p><p>Here we get to choose what kind of collector we would like:</p><ul><li><p>Target Operating System: This specifies the specific version of the
+Velociraptor binary that will be packed.</p></li><li><p>Encryption: It is possible to specify a scheme to encrypt the zip
+file that will be created. Read more about this below.</p></li><li><p>Collection Type: This controls where the collection is stored.</p><ul><li><p>Zip Archive: The collection will be stored in a zip file in the
+same directory the collector is launched from.</p></li><li><p>Google Cloud Bucket: The zip file will be uploaded to a cloud
+bucket. When selecting this you can provide GCP credentials to control
+the upload bucket.</p></li><li><p>AWS Bucket: The zip file will be uploaded to a cloud
+bucket. When selecting this you can provide AWS credentials and
+details to control the upload bucket.</p></li><li><p>SFTP: This allows the collector to upload the file to an SFTP
+server using a private key.</p></li></ul></li></ul><p>The <code>Offline Collector Builder</code> is simply a GUI wrapper around the
+<code>Server.Utils.CreateCollector</code> server artifact. Once it is collected,
+the artifact will automatically upload the pre-configured collector it
+created into the collection and the file will be available for
+download from the &ldquo;Uploads&rdquo; tab. Simply click on the link to get the
+collector.</p><p><figure id=fafd01aac799e6355dfb28b045fce72c><div data-featherlight=#fafd01aac799e6355dfb28b045fce72c class=figure><img src=image13.png alt="Retrieving the Offline Collector binary"></div><figcaption><a class=image-link href=image13.png><i class="fa fa-download"></i></a>
+Retrieving the Offline Collector binary</figcaption></figure></p><p>Once the collector is run without command line arguments, the
+collection will automatically start. No need for the user to enter
+command line parameters, although they do need to be running in an
+elevated administrator shell.</p><p><figure id=6d977c6cc2885e481cd0b5b1da3a11eb><div data-featherlight=#6d977c6cc2885e481cd0b5b1da3a11eb class=figure><img src=image14.png alt="Running the Offline Collector in the console"></div><figcaption><a class=image-link href=image14.png><i class="fa fa-download"></i></a>
+Running the Offline Collector in the console</figcaption></figure></p><p>The collector creates a zip file containing the collected files as
+well as an optional report.</p><p><figure id=c2ae079605f21410a58c893e8059c1fd><div data-featherlight=#c2ae079605f21410a58c893e8059c1fd class=figure><img src=image29.png alt="Viewing the Offline Collector in the console"></div><figcaption><a class=image-link href=image29.png><i class="fa fa-download"></i></a>
+Viewing the Offline Collector in the console</figcaption></figure></p><h3 id=encrypting-the-offline-collection>Encrypting the offline collection</h3><p>The offline collector can capture a lot of privacy and security
+sensitive information. Typically we want to produce an encrypted Zip
+file so that it can not be extracted by anyone other than authorized
+users.</p><p>The offline collector supports a number of encryption schemes, but
+they all produce an encrypted zip file. While the ZIP encryption
+format uses <code>AES</code> to encrypt the contents of files with a password, file
+names and metadata are not encrypted. This can lead to a lot of
+information leakage by simply listing the archive (which does not
+require a password).</p><p>Velociraptor solves this problem by compressing the files inside
+another ZIP file named <code>data.zip</code> and then encrypting the content of
+that file. Therefore when listing an encrypted file we see only a
+metadata file and <code>data.zip</code></p><p>Velociraptor supports a number of ways to derive the password with
+which to protect the collection:</p><ol><li><p>The <code>Password</code> method specifies a password in the embedded
+configuration file. This password is passed directly to the ZIP
+library to encrypt the file.</p><p>While simple to use this scheme is not recommended as the password
+is stored in clear text inside the offline collector and can be
+easily extracted (by running <code>Collector.exe config show</code>)</p></li><li><p>The <code>X509</code> method is the recommended method to use in all
+cases. This scheme embeds the Velociraptor server&rsquo;s public
+certificate in the offline collector. During collection, a random
+password is generated which is then encrypted using the embedded
+Velociraptor certificate and stored in the container inside a
+metadata file.</p><p>After the password is used to encrypt the container, it is
+discarded. The only way to recover the password is to decrypt it
+using the server&rsquo;s private key. This way if the collector binary or
+the collection are compromised - it is impossible to recover the
+password without the server&rsquo;s configuration file (that contains the
+private key).</p><p>If the <code>X509</code> method is used, the collected ZIP files will be
+decrypted automatically and transparently when they are imported
+into the same server that produced the offline collector.</p></li></ol><h3 id=the-generic-offline-collector>The Generic offline collector</h3><p>Normally the Velociraptor offline collector builder computes a preset
+configuration file and embeds it inside the regular Velociraptor
+binary for ease of use. However this can cause some problems in some
+cases:</p><ol><li>By modifying the official Velociraptor binary, the Authenticode
+signature is invalidated. Therefore the offline collector will need
+to be re-signed to pass many integrity checks.</li><li>The amount of space within the binary reserved for the offline
+collector is limited. This means that very large artifacts will
+cause the space to be exceeded.</li><li>We have also seen recent MacOS systems refuse to run a binary that
+has been modified. Therefore regular offline collector packing does
+not work on recent MacOS versions.</li></ol><p>In recent versions of Velociraptor we now offer a new type of
+collector called the <code>Generic</code> collector.</p><p><figure id=df9a98b7d2a3bfa04a85594fd1d2a5bd><div data-featherlight=#df9a98b7d2a3bfa04a85594fd1d2a5bd class=figure><img src=generic_collector.png alt></div><figcaption><a class=image-link href=generic_collector.png><i class="fa fa-download"></i></a></figcaption></figure></p><p>This will embed the configuration into a shell script instead of the
+Velociraptor binary. Users can then launch the offline collector using
+the unmodified official binary by specifying the <code>--embedded_config</code>
+flag:</p><pre><code>velociraptor-v0.7.0-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
+</code></pre><p><figure id=8980b3e53effa0e347200925e2705aff><div data-featherlight=#8980b3e53effa0e347200925e2705aff class=figure><img src=generic_collector_running.png alt></div><figcaption><a class=image-link href=generic_collector_running.png><i class="fa fa-download"></i></a></figcaption></figure></p><p>While the method is required for MacOS, it can also be used for
+Windows in order to preserve the binary signature or accommodate
+larger artifacts.</p><h3 id=building-an-offline-collector-on-the-command-line>Building an offline collector on the command line</h3><p>The easiest way of building an offline collector is using the GUI as
+described above. However, for cases where automation is required, it
+is also possible to build an offline collector using the commandline
+only.</p><p>This works by writing settings into a <code>Spec File</code>. Velociraptor uses
+this file to prepare the offline collector automatically. To obtain
+the initial template for the file run the following command:</p><pre><code>$ mkdir /tmp/datastore/
+$ ./velociraptor-v0.72.4-linux-amd64 collector --datastore /tmp/datastore/ &gt; /tmp/datastore/spec.yaml
+velociraptor-v0.72.4-linux-amd64: error: collector: No Spec file provided
+</code></pre><p>The first command prepares a temporary datastore location (this is
+similar to the <code>velociraptor gui</code> command which builds an entire
+deployment in that directory).</p><p>Because we have not provided any <code>Spec File</code> parameter, Velociraptor
+will print a template to the output which we redirect to a file.</p><p>Next edit the spec file (which is heavily documented). Most options
+are similar to the ones presented in the GUI builder.</p><p>To build the collector, run the command with the generated <code>spec file</code>.</p><pre><code class=language-text>$ ./velociraptor-v0.72.4-linux-amd64 collector --datastore /tmp/datastore/ /tmp/datastore/spec.yaml
+...
+Running query LET _ &lt;= SELECT name FROM artifact_definitions()
+[INFO] 2024-07-10T09:12:28Z Compiled all artifacts.
+[]Running query LET Spec &lt;= parse_yaml(filename=SPECFILE)
+[]Running query LET _K = SELECT _key FROM items(item=Spec.Artifacts)
+[]Running query SELECT * FROM Artifact.Server.Utils.CreateCollector(OS=Spec.OS, artifacts=serialize(item=_K._key), parameters=serialize(item=Spec.Artifacts), target=Spec.Target, target_args=Spec.TargetArgs, encryption_scheme=Spec.EncryptionScheme, encryption_args=Spec.EncryptionArgs, opt_verbose=Spec.OptVerbose, opt_banner=Spec.OptBanner, opt_prompt=Spec.OptPrompt, opt_admin=Spec.OptAdmin, opt_tempdir=Spec.OptTempdir, opt_level=Spec.OptLevel, opt_filename_template=Spec.OptFilenameTemplate, opt_collector_filename=Spec.OptCollectorTemplate, opt_format=Spec.OptFormat, opt_output_directory=Spec.OptOutputDirectory, opt_cpu_limit=Spec.OptCpuLimit, opt_progress_timeout=Spec.OptProgressTimeout, opt_timeout=Spec.OptTimeout, opt_version=Spec.OptVersion)
+[INFO] 2024-07-10T09:12:28Z Downloading tool VelociraptorWindows FROM https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-windows-amd64.exe
+client_repack: Will Repack the Velociraptor binary with 5733 bytes of config
+Adding binary Autorun_386
+Adding binary Autorun_amd64
+Uploaded /tmp/datastore/Collector_velociraptor-v0.72.4-windows-amd64.exe (60829135 bytes)
+[
+ {
+   &quot;Repacked&quot;: {
+      &quot;Path&quot;: &quot;/tmp/datastore/Collector_velociraptor-v0.72.4-windows-amd64.exe&quot;,
+      &quot;Size&quot;: 60829135,
+      &quot;sha256&quot;: &quot;968b8802c10faeaec2a86b9295f66aeee45b79e30a3028be2162a8718b4a98e9&quot;,
+      &quot;md5&quot;: &quot;3c9375283665d68817008d7a8f232796&quot;,
+      &quot;Components&quot;: [
+         &quot;Collector_velociraptor-v0.72.4-windows-amd64.exe&quot;
+      ]
+   },
+   &quot;_Source&quot;: &quot;Server.Utils.CreateCollector&quot;
+ }
+]
+</code></pre><p>As the output shows, Velociraptor will automatically download any
+required binaries for inclusion in the collector. External binaries
+will be cached in the datastore so the next time the command is run it
+will just use those efficiently.</p><p>As mentioned previously it is recommended to use the <code>X509</code> encryption
+method for the offline collector. Simply change the following part of
+the spec file:</p><pre><code class=language-yaml>EncryptionScheme: X509
+</code></pre><p>The <code>velociraptor collector</code> command is similar to the <code>velociraptor gui</code> command in using a directory on the disk to create a full
+deployment with a <code>server.config.yaml</code> containing keys. When using the
+<code>X509</code> command, the <code>server.config.yaml</code> file will be placed in that
+datastore directory.</p><p>If you want to give other people the ability to decrypt the collection
+you can share that <code>server.config.yaml</code> file with them and allow them
+to unpack using:</p><pre><code class=language-bash>velociraptor --config server.config.yaml unzip collection.zip --dump_dir /output/dir
+</code></pre><h3 id=include-third-party-binaries>Include third party binaries</h3><p>Sometimes we want to collect the output from other third party
+executables. It would be nice to be able to package them together with
+Velociraptor and include their output in the collection file.</p><p>Velociraptor fully supports incorporating external tools. When
+creating the offline collection, Velociraptor will automatically pack
+any third party binaries it needs to collect the artifacts specified.</p><h3 id=collecting-across-the-network>Collecting across the network</h3><p>By having a single executable collector, all we need is to run it
+remotely. We can use another EDR solution that allows remote execution
+if available. Alternatively, we can use Window&rsquo;s own remote management
+mechanisms (such as PsExec or WinRM) to deploy our binary across the
+network. Simply, copy our collector binary across the network to C$
+share on the remote system and use, e.g. <code>wmic</code> to launch our binary
+on the remote host.</p><p><figure id=6aa07f6148a21e4fef7bf2bbc9285ae3><div data-featherlight=#6aa07f6148a21e4fef7bf2bbc9285ae3 class=figure><img src=image45.png alt="Collecting across the network"></div><figcaption><a class=image-link href=image45.png><i class="fa fa-download"></i></a>
+Collecting across the network</figcaption></figure></p><h2 id=importing-collections-into-the-gui>Importing collections into the GUI</h2><p>We can use the offline collector to fetch multiple artifacts from the
+endpoint. The results consist of bulk data as well as JSON file
+containing the result of any artifacts collected.</p><p>You can re-import these collection into the GUI so you can use the
+same notebook port processing techniques on the data. It also allows
+you to keep the results from several offline collections within the
+same host record in the Velociraptor GUI.</p><blockquote><p>Offline collection + Import is very similar to client/server except
+that instead of the client connecting over the internet, the data is
+delivered via sneakernet!</p></blockquote><p>Importing an offline collection can be done via the
+<code>Server.Utils.ImportCollection</code> artifact. This artifact will inspect
+the zip file from a path specified on the server and import it as a
+new collection (with new collection id) into either a specified client
+or a new randomly generated client.</p><p><figure id=8661d2639ff74e3e9ed64b34fff6949b><div data-featherlight=#8661d2639ff74e3e9ed64b34fff6949b class=figure><img src=image48.png alt="Importing Offline Collector collections"></div><figcaption><a class=image-link href=image48.png><i class="fa fa-download"></i></a>
+Importing Offline Collector collections</figcaption></figure></p><div class="mynotices tip"><div heading=" Copying the collections to the server "><p>Offline collections are typically very large, this is why we do not
+have a GUI facility to upload the collection zip file into the
+server. You will need to use an appropriate transfer mechanism (such
+as SFTP or SCP) to upload to the server itself.</p></div></div><h1 id=local-collection-considerations>Local collection considerations</h1><p>Local collection can be done well without a server and permanent agent
+installed. A disadvantage is that we do not get feedback of how the
+collection is going and how many resources are consumed.</p><p>Offline collections are typically planned in advance and it is a bit
+more difficult to pivot and dig deeper based on analysis results to
+search for more results. For this reason offline collections tend to
+err on the side of collecting more data rather than being more
+targeted and focused on answering the investigative questions.</p><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1737111702></script><script src=/js/perfect-scrollbar.min.js?1737111702></script><script src=/js/perfect-scrollbar.jquery.min.js?1737111702></script><script src=/js/jquery.sticky.js?1737111702></script><script src=/js/featherlight.min.js?1737111702></script><script src=/js/highlight.min.js?1737111702></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1737111702></script><script src=/js/learn.js?1737111702></script><script src=/js/hugo-learn.js?1737111702></script></body></html>
