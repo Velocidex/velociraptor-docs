@@ -7,6 +7,17 @@ weight: 70
 last_reviewed: 2024-12-30
 ---
 
+{{% notice note %}}
+
+The steps in this section assume you are troubleshooting a client that has
+already enrolled and is actively communicating with the server. If the client is
+not communicating with the server or has never connected then please see the
+section
+[Debugging client communications]({{< ref "/docs/deployment/troubleshooting/#debugging-client-communications" >}})
+in the Deployment Troubleshooting section.
+
+{{% /notice %}}
+
 ### Debugging a remote client
 
 In the
