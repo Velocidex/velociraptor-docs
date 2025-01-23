@@ -62,7 +62,7 @@ sources:
 
     - name: Latest Data Transfer
       query: |
-        LET InputLogPath = SELECT FullPath FROM glob(globs=FreeFileSyncGlob)
+        LET InputLogPath = SELECT OSPath FROM glob(globs=FreeFileSyncGlob)
         
         LET extract_file(message)= parse_string_with_regex(string=message,
             regex=
@@ -98,7 +98,7 @@ sources:
     - name: FileUpload
       query: |
         LET logs_search = SELECT 
-            FullPath,
+            OSPath,
             get(item=Data, field="mft") as Inode,
             Mode.String AS Mode,
             Size,
@@ -107,11 +107,11 @@ sources:
             Ctime AS CTime,
             Atime AS ATime,
             IsDir, Data
-        FROM glob(globs=SearchFreeFileSyncLogs, accessor=auto)
+        FROM glob(globs=SearchFreeFileSyncLogs)
       
-        SELECT FullPath, Size,
+        SELECT OSPath, Size,
             BTime, MTime, ATime,
-            upload(file=FullPath, accessor=auto) AS Upload
+            upload(file=OSPath) AS Upload
         FROM logs_search
 
 column_types:
