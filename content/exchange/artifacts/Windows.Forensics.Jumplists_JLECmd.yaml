@@ -48,7 +48,7 @@ sources:
       -- decompress utility
       LET payload = SELECT *
         FROM unzip(filename=jlecmdpackage[0].FullPath,
-            output_directory=tmpdir)
+            output_directory=tmpdir) WHERE OriginalPath =~ "JLECmd.exe"
 
       -- execute payload
       LET deploy <= SELECT *

@@ -20,7 +20,7 @@ tools:
   - name: Chainsaw
     url: https://github.com/WithSecureLabs/chainsaw/releases/download/v2.9.0/chainsaw_all_platforms+rules+examples.zip
     version: 2.9.0
-    expected_hash: 9F809EA14B71E7C53FDE8EBEF7F3A82881F4DCACEC97566B29CC914324667EDA
+    expected_hash: 9f809ea14b71e7c53fde8ebef7f3a82881f4dcacec97566b29cc914324667eda
      
 precondition: SELECT OS From info() where OS = 'windows'
 

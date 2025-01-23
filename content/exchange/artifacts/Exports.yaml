@@ -21,17 +21,17 @@ sources:
         WHERE NOT IsDir
 
       LET all_binary_info = SELECT
-            dict(FullPath=FullPath,Name=Name,Size=Size,IsLink=IsLink) as FileDetails,
+            dict(OSPath=OSPath,Name=Name,Size=Size,IsLink=IsLink) as FileDetails,
             dict(Mtime=Mtime,Atime=Atime,Ctime=Ctime,Btime=Btime) as SI,
-            parse_pe(file=FullPath) as BinaryInfo,
-            authenticode(filename=FullPath) as Authenticode,
-            hash(path=FullPath) as Hash
+            parse_pe(file=OSPath) as BinaryInfo,
+            authenticode(filename=OSPath) as Authenticode,
+            hash(path=OSPath) as Hash
           FROM Targets
           WHERE BinaryInfo
 
       LET binary_exports = SELECT
-            dict(FullPath=FullPath,Name=Name,Size=Size,IsLink=IsLink) as FileDetails,
-            parse_pe(file=FullPath).Exports as Exports
+            dict(OSPath=OSPath,Name=Name,Size=Size,IsLink=IsLink) as FileDetails,
+            parse_pe(file=OSPath).Exports as Exports
           FROM Targets
           WHERE Exports
 

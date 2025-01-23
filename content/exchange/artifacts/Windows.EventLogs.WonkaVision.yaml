@@ -13,8 +13,14 @@ author: Wes Lambert - @therealwlambert
 parameters:
    - name: TargetGlob
      default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
-   - name: TargetVSS
-     type: bool
+   - name: VSSAnalysisAge
+     type: int
+     default: 0
+     description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
    - name: IdRegex
      default: .
      type: regex
@@ -28,7 +34,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-        LET RunWV <= if(condition=RunWonkaVision, then={SELECT * FROM chain(a={SELECT * FROM Artifact.Custom.Windows.Kerberos.WonkaVision()}, b=sleep(time=10))})
+        LET RunWV <= if(condition=RunWonkaVision, then={SELECT * FROM chain(a={SELECT * FROM Artifact.Exchange.Windows.Detection.WonkaVision()}, b=sleep(time=10))})
         LET EventDescriptionTable <= SELECT * FROM parse_csv(accessor="data", filename='''
           ID,Description
           9988,Possible compromised session
@@ -47,6 +53,6 @@ sources:
             EventData.Data[0] AS EventDataOriginal
         FROM Artifact.Windows.EventLogs.EvtxHunter(
             EvtxGlob=TargetGlob,
-            SearchVSS=TargetVSS,
+            VSSAnalysisAge=VSSAnalysisAge,
             IdRegex=IdRegex)
         WHERE Provider =~ "Wonka"
