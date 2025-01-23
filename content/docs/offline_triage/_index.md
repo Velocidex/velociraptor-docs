@@ -81,7 +81,7 @@ VM disk.
 > Note that typically $MFT is around 300-400Mb so collecting the $MFT
 > from many endpoints is going to be huge!
 
-![Collections are automatically cancelled when they read the limit](image5.png)
+![Collections are automatically cancelled when they reach the limit](image5.png)
 
 {{% /notice %}}
 
@@ -113,13 +113,15 @@ automatically collect the artifacts we need.
 Velociraptor allow us to build such a collector with the GUI using an
 intuitive process.
 
-![Creating a new Offline Collector](image3.png)
+![Creating a new Offline Collector](image3.svg)
 
 Select the offline collector builder from the `Server Artifacts`
 page. The artifacts selection page and the parameters page are exactly
 the same as previously shown.
 
 ![Offline Collector artifacts selection](image16.png)
+
+![Offline Collector parameters configuration](image17.png)
 
 Next select the collector configuration page.
 
@@ -149,14 +151,14 @@ Here we get to choose what kind of collector we would like:
     * SFTP: This allows the collector to upload the file to an SFTP
       server using a private key.
 
-The `Offline Collector Builder` is simply a GUI wrapper around the
+The **Offline Collector Builder** is simply a GUI wrapper around the
 `Server.Utils.CreateCollector` server artifact. Once it is collected,
 the artifact will automatically upload the pre-configured collector it
 created into the collection and the file will be available for
 download from the "Uploads" tab. Simply click on the link to get the
 collector.
 
-![Retrieving the Offline Collector binary](image13.png)
+![Retrieving the Offline Collector binary](image13.svg)
 
 Once the collector is run without command line arguments, the
 collection will automatically start. No need for the user to enter
@@ -236,18 +238,32 @@ cases:
    not work on recent MacOS versions.
 
 In recent versions of Velociraptor we now offer a new type of
-collector called the `Generic` collector.
+collector called the "Generic collector".
 
 ![](generic_collector.png)
 
 This will embed the configuration into a shell script instead of the
-Velociraptor binary. Users can then launch the offline collector using
-the unmodified official binary by specifying the `--embedded_config`
-flag:
+Velociraptor binary. You can then launch the offline collector using the
+unmodified official binary by specifying the `--embedded_config` flag:
 
+{{< tabs >}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor-darwin-amd64 -- --embedded_config Collector_velociraptor-collector
 ```
-velociraptor-v0.7.0-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
+{{% /tab %}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor-linux-amd64 -- --embedded_config Collector_velociraptor-collector
 ```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
+```
+{{% /tab %}}
+{{< /tabs >}}
+
 
 ![](generic_collector_running.png)
 
@@ -374,9 +390,14 @@ same notebook port processing techniques on the data. It also allows
 you to keep the results from several offline collections within the
 same host record in the Velociraptor GUI.
 
-> Offline collection + Import is very similar to client/server except
-> that instead of the client connecting over the internet, the data is
-> delivered via sneakernet!
+{{% notice tip "Offline Collectors are Out-Of-Band Clients!" %}}
+
+An offline collector is essentially an out-of-band client. Instead of the client
+connecting over the internet, the data is delivered via sneakernet! The data is
+then imported into the server which creates a normal client record and
+associated collections. The data can then be queried as with any other client.
+
+{{% /notice %}}
 
 Importing an offline collection can be done via the
 `Server.Utils.ImportCollection` artifact. This artifact will inspect
