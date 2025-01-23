@@ -43,7 +43,8 @@ sources:
           
       -- Run the command     
       LET _ <= SELECT *
-        FROM execve(argv=[CISCatPath, "-b", BaselinePath, '-p', ProfileName])
+        FROM Artifact.Windows.System.PowerShell(Command=format(format='& "%v" -b %v -p "%v"', 
+                                                args=[CISCatPath, BaselinePath, ProfileName]))
 
       SELECT * 
          FROM foreach( row={
