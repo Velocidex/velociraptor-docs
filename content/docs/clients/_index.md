@@ -2,7 +2,7 @@
 title: "Managing Clients"
 date: 2024-12-19
 draft: false
-weight: 30
+weight: 20
 last_reviewed: 2024-12-29
 ---
 

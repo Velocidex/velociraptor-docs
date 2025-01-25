@@ -3,6 +3,9 @@ title: "Artifacts"
 date: 2021-06-12T05:20:45Z
 draft: false
 weight: 30
+aliases:
+  - "/docs/gui/artifacts/"
+  - "/docs/vql/artifacts/"
 ---
 
 Velociraptor allows packaging VQL queries inside mini-programs called

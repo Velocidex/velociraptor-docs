@@ -161,4 +161,4 @@ customized version as you please.
 ## Learn more
 
 To learn more about how to write your own artifacts click
-[here]({{< ref "/docs/vql/artifacts/" >}}/)
+[here]({{< ref "/docs/artifacts/" >}})

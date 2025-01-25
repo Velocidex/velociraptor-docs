@@ -22,7 +22,7 @@ integrates well with other tools.
 Generally there are two main requirements for Velociraptor integration:
 
 1. Velociraptor can itself control other systems. This can be achieved
-   using VQL and the execve() or http_client() plugins (See [Extending VQL]({{< ref "/docs/extending_vql" >}}) for an example)
+   using VQL and the execve() or http_client() plugins (See [Extending VQL]({{< ref "/docs/vql/extending_vql/" >}}) for an example)
 
 2. Velociraptor can be controlled by external tools. This allows
    external tools to enrich and automate Velociraptor using an
@@ -319,7 +319,7 @@ will use that api configuration file to connect remotely to the API
 server and run the query there.
 
 Running VQL queries through the API client is equivalent to running them in a
-[notebook]({{< ref "/docs/vql/notebooks/" >}}) on the server.
+[notebook]({{< ref "/docs/notebooks/" >}}) on the server.
 
 This can be chained to other tools and automation orchestrated with a
 simple bash script:

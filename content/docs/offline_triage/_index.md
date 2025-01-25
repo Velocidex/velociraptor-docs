@@ -2,7 +2,7 @@
 title: "Triage and acquisition"
 date: 2021-06-27T04:31:24Z
 draft: false
-weight: 45
+weight: 50
 ---
 
 In DFIR Triaging means to quickly collect information about the system

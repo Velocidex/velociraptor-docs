@@ -2,7 +2,9 @@
 title: "Hunting"
 date: 2021-06-09T04:13:25Z
 draft: false
-weight: 20
+weight: 40
+aliases:
+  - "/docs/gui/hunting/"
 ---
 
 With Velociraptor, you can collect the same artifact from multiple
