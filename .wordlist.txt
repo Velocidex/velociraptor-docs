@@ -1648,3 +1648,10 @@ prefilter
 --------------------------------------------------------------------------------
 ScheduleHunt
 YouTube
+
+<url-free> content/docs/artifacts/parameters/_index.md
+--------------------------------------------------------------------------------
+artifactset
+multichoice
+unparsed
+

@@ -29,5 +29,5 @@ e.g. Custom.Generic.Client.Info
 - Using artifact_set()
 - Add from folder specified via the Frontend.artifact_definitions_directory config setting
 - Add from folder specified via the --definitions command line flag (less likely to be used unless you're running your server in a terminal)
-- Embed artifacts in the config's autoexec.artifact_definitions section
+- Embed artifacts in the configuration autoexec.artifact_definitions section
 
