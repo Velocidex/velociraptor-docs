@@ -2,7 +2,7 @@
 title: "Server Automation"
 date: 2021-06-30T12:31:08Z
 draft: false
-weight: 60
+weight: 65
 ---
 
 Velociraptor's unprecedented flexibility arises from the power of

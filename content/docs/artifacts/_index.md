@@ -3,20 +3,31 @@ title: "Artifacts"
 date: 2021-06-12T05:20:45Z
 draft: false
 weight: 30
+aliases:
+  - "/docs/gui/artifacts/"
+  - "/docs/vql/artifacts/"
 ---
 
-Velociraptor allows packaging VQL queries inside mini-programs called
-`Artifacts`. An artifact is simply a structured YAML file containing a
-query, with a name attached to it. This allows Velociraptor users to
-search for the query by name or description and simply run the query
-on the endpoint without necessarily needing to understand or type the
-query into the UI.
+## What are Artifacts?
 
-Therefore Artifacts can be thought of as VQL modules.
+At it's core Velociraptor is simply a VQL engine . That is, it processes a VQL
+query producing a series of rows and sends those rows to the server.
 
-Usually an artifact is geared towards collecting a single type of
-information from the endpoint. For example consider the following
-artifact:
+An **Artifact** is a way to package one or more VQL queries and related data in
+a human readable YAML file, give it a name, and allow users to collect it. An
+Artifact file encapsulates one or more queries to collect data or answer a
+specific question about the endpoint.
+
+Artifacts can be thought of as VQL "modules". By encapsulating a VQL query
+inside a YAML file, users do not need to understand the query to use it. This
+facilitates knowledge sharing with more experienced users.
+
+### A Basic Example
+
+Usually an artifact is geared towards collecting a single type of information
+from the endpoint.
+
+For example consider the following artifact:
 
 ```yaml
 name: Custom.Artifact.Name
@@ -41,7 +52,7 @@ sources:
       LIMIT 10
 ```
 
-The Artifact contains a number of important parameters:
+The Artifact contains a number of important YAML fields:
 
 1. **Name**: The artifact contains a name. By convention the name is
    segmented by dots in a hierarchy. The Name appears in the GUI and
@@ -102,7 +113,7 @@ Currently the following parameter types are supported
 * **json_array**: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
 * **bool**: The parameter is a boolean (TRUE/YES/Y/OK)
 
-### Example
+### A More Advanced Example
 
 Let's take a look at a typical artifact `Windows.Detection.Mutants`.
 

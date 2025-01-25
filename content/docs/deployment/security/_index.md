@@ -647,8 +647,8 @@ depend on a plugin which is not in the allow list will fail).
 ## Securing VQL
 
 Velociraptor uses VQL extensively in the form of [artifacts]({{% ref
-"/docs/vql/artifacts" %}}) and [notebooks]({{% ref
-"/docs/vql/notebooks" %}}). Since a VQL query can do many potentially
+"/docs/artifacts/" %}}) and [notebooks]({{% ref
+"/docs/notebooks" %}}). Since a VQL query can do many potentially
 dangerous actions, it is important to restrict the type of actions the
 query can perform based on the user's ACL token. When the VQL query is
 started, the user's ACL token is loaded into the query environment. As

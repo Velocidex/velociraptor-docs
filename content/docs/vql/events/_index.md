@@ -2,7 +2,7 @@
 title: "Event Queries"
 date: 2021-06-12T20:57:18Z
 draft: false
-weight: 80
+weight: 20
 ---
 
 Normally a VQL query returns a result set and then terminates. For

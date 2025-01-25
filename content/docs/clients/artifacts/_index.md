@@ -1,8 +1,9 @@
 ---
-title: "Artifacts"
+title: "Collecting Artifacts"
+menutitle: "Collecting Artifacts"
 date: 2021-06-09T04:03:42Z
 draft: false
-weight: 15
+weight: 25
 ---
 
 Velociraptor's superpower is a powerful query language termed
@@ -36,26 +37,6 @@ Collections also take parameters. In the previous example, the
 A collection of artifacts can return rows or upload
 files. This is because an artifact is simply a VQL query and all
 queries return a sequence of rows.
-
-## What are Artifacts?
-
-An **Artifact** is a way to package one or more VQL queries in a
-human readable YAML file, name it, and allow users to
-collect it. An Artifact file simply embodies the query required to
-collect or answer a specific question about the endpoint.
-
-Ultimately Velociraptor is simply a VQL engine . That is, it processes a
-VQL query producing a series of rows and sends those rows to
-the server.
-
-{{% notice note "Why does Velociraptor use Artifacts?" %}}
-
-Artifacts encapsulate a VQL query inside a YAML file so that end users
-do not need to understand the query to use it. This makes artifacts
-easier to use and facilitates knowledge sharing with more experienced
-users.
-
-{{% /notice %}}
 
 ### Example: collect scheduled tasks from endpoint.
 
@@ -161,4 +142,4 @@ customized version as you please.
 ## Learn more
 
 To learn more about how to write your own artifacts click
-[here]({{< ref "/docs/vql/artifacts/" >}}/)
+[here]({{< ref "/docs/artifacts/" >}})

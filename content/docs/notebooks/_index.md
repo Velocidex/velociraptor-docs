@@ -2,7 +2,9 @@
 title: "Notebooks"
 date: 2021-06-11T15:32:04Z
 draft: false
-weight: 20
+weight: 35
+aliases:
+  - "/docs/vql/notebooks/"
 ---
 
 Notebooks are interactive collaborative documents which can interleave
@@ -102,7 +104,7 @@ endpoint.
 
 ## Sharing Notebooks
 
-By default, notebooks are private to the user who created them. 
+By default, notebooks are private to the user who created them.
 When creating or editing a notebook, you can choose to share it with
 all users by clicking the Public check box. You can also share it with
 only some users by selecting their names in the Collaborators field.

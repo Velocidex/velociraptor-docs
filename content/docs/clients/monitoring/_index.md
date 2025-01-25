@@ -109,7 +109,7 @@ removing the label when done.
 
 ### Selecting event artifacts to apply
 
-Velociraptor uses [Artifacts]({{< ref "/docs/vql/artifacts/" >}}) which package
+Velociraptor uses [Artifacts]({{< ref "/docs/artifacts/" >}}) which package
 VQL queries in a structured YAML file, and this applies to event queries too.
 Event artifacts are identified by `type: CLIENT_EVENT` in the definition YAML.
 

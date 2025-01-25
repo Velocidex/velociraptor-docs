@@ -1,0 +1,18 @@
+{{/*  https://github.com/squidfingers/hugo-shortcodes/blob/main/layouts/shortcodes/include.html  */}}
+{{- $file := .Get 0 -}}
+{{- $path := "" -}}
+{{- if hasPrefix $file "/" -}}
+  {{- $path = $file -}}
+{{- else -}}
+  {{- $path = printf "%s%s" $.Page.File.Dir $file -}}
+{{- end -}}
+{{- if fileExists $path -}}
+  {{- $content := readFile $path | replaceRE "^---[\\s\\S]+?---" "" -}}
+  {{- if hasSuffix $file ".md" -}}
+    {{ $content | $.Page.RenderString (dict "display" "block") -}}
+  {{- else -}}
+    {{ $content | safeHTML -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "Shortcode %q: file %q not found at %s" .Name $path .Position -}}
+{{- end -}}

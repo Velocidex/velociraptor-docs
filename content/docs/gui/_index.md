@@ -1,6 +1,6 @@
 ---
 title: "The Admin GUI"
-weight: 20
+weight: 15
 ---
 
 The Admin GUI is a web application that can be used to interact and
@@ -113,7 +113,3 @@ seen above:
    great way of filtering out uninteresting columns and producing more
    targeted CSV files for post processing in e.g. Excel.
 
-
-## Continue on your tour
-
-{{% children %}}

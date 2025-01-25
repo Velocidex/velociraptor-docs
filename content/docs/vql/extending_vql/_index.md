@@ -2,7 +2,7 @@
 title: "Extending VQL"
 date: 2021-06-27T04:29:26Z
 draft: false
-weight: 53
+weight: 40
 ---
 
 VQL is really a glue language - we rely on VQL plugins and functions
