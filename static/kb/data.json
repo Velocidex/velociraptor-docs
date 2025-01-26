@@ -411,5 +411,17 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How can I automatically add and update custom client metadata?",
+        "link": "/knowledge_base/tips/automating_metadata",
+        "tags": [
+            "automation",
+            "metadata"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]
