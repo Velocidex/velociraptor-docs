@@ -1,16 +1,31 @@
 # How can I automatically apply labels to clients?
 
-Labels are used to target clients in Velociraptor. All clients that share a
-particular label can be treated as a group in common operations such as hunts
-and client monitoring. Labels can also be used to search for and filter clients
-in the GUI and in VQL queries.
+[Labels]({{< ref "/docs/clients/labels/" >}}) are used to target clients in
+Velociraptor. All clients that share a particular label can be treated as a
+group in common operations such as hunts and client monitoring. Labels can also
+be used to search for and filter clients in the GUI and in VQL queries.
 
 Sometimes it is useful to automatically label clients based on some property of
 the client or the results of a collection. You can do this by running a
-[Server Event Artifact]({{< ref "/docs/server_automation/server_monitoring/" >}})
+[Server Event]({{< ref "/docs/server_automation/server_monitoring/" >}}) artifact
 which automatically applies labels based on some criteria that you define.
 
-In this article we demonstrate two use case: one basic and one more advanced.
+In this article we demonstrate two use cases: a basic and a more advanced one.
+
+{{% notice note "Labels or Metadata?" %}}
+
+Metadata is a set of fields associated with each client. Labels can also be
+regarded as information associated with a client, but in Velociraptor labels are
+a more transient kind of information and are designed to be added and removed
+relatively frequently. Labels provide a way to group clients whereas Metadata
+provides a way to store information *about* each client.
+
+It's important that you choose the appropriate one for your use case. This
+article is about automating Labels but if you want to do similar automation of
+Metadata then you may find this article more useful:
+[How can I automatically add & update client metadata?]({{< ref "/knowledge_base/tips/automating_metadata/" >}})
+
+{{% /notice %}}
 
 ## Basic Use Case: Labelling based on default interrogation data
 
@@ -152,7 +167,7 @@ name of the edited artifact will be `Custom.Generic.Client.Info` which is
 exactly what we want it to be.
 
 In the custom version we add a new source after the existing ones (around line
-85 in the current default artifact):
+115 in the current default artifact):
 
 ```vql
   - name: RecentDefenderDetections
