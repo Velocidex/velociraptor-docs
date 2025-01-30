@@ -14,7 +14,7 @@ kb_root_directory = "content/knowledge_base/tips/"
 org = "Velocidex"
 project = "velociraptor-docs"
 
-# Each yaml file will be converted to a markdown if needed.
+# Each yaml file will be converted to markdown if needed.
 template = """---
 title: %s
 author: "%s"
