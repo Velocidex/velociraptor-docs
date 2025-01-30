@@ -420,8 +420,8 @@ We then add this new artifact to our Server Event Monitoring.
 
 ![Add artifact to server event monitoring](add_event_monitoring_direct.png)
 
-Now all we need to do is either run the artifacts directly and the metadata will
-be updated. You can create a hunt for these artifacts if you want to update the
+Now all we need to do is run the artifacts directly and the metadata will be
+updated. You can create a hunt for these artifacts if you want to update the
 data for all your clients.
 
 The two approaches are not mutually exclusive: You can have both
