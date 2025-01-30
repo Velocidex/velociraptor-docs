@@ -189,7 +189,7 @@ searchable via the search bar in the GUI. So you might be thinking
 However there are performance consequences to indexing metadata fields,
 especially if you have a large number of clients. In our case we are also going
 to have fields who's value may change with every interrogation and that will
-require changes to the index and consequent reindexing. So ideally you should
+require changes to the index and consequent re-indexing. So ideally you should
 only index fields that are going to be useful for GUI searches. You can still
 search all fields in VQL.
 

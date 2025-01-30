@@ -11,7 +11,7 @@ it does is mmap the whole file into memory and so a rule can match any part of
 the file at the same time
 
 so when you call yara() without an accessor specified (or with "auto" accessor)
-we just delegate to libyara to do the scanning. Iif you use an accessor then we
+we just delegate to libyara to do the scanning. If you use an accessor then we
 read the data in buffers and scan a buffer at the time
 (https://docs.velociraptor.app/vql_reference/parsers/yara/ - this is where
 blocksize comes in)
