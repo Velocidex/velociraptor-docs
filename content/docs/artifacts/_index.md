@@ -81,43 +81,11 @@ The Artifact contains a number of important YAML fields:
    should have exactly one `SELECT` clause and it must be at the end
    of the query potentially following any `LET` queries.
 
-## Parameters
-
-Artifact parameters allow the user to customize the collection in a
-controlled way - without needing to edit the VQL. The GUI will present
-a form that allows the user to update the parameters prior to each
-collection.
-
-Parameters may define a type. This type will be used to hint to the
-GUI how to render the form element. The type also determines how the
-parameter is sent to the client and ensures the parameter appears as
-that type in the query.
-
-Prior to launching the query on the endpoint, Velociraptor will
-populate the scope with the parameters. This allows the VQL query to
-directly access the parameters.
-
-Artifact parameters are sent to the client as strings The client
-automatically parses them into a VQL type depending on the parameter's
-type specification.  The GUI uses type specification to render an
-appropriate UI
-
-### Parameter types
-
-Currently the following parameter types are supported
-
-* **int, integer**: The parameter is an integer
-* **timestamp**: The parameter is a timestamp
-* **csv**: Parameter appears as a list of dicts formatted as a CSV
-* **json**: Parameter is a JSON encoded dict
-* **json_array**: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
-* **bool**: The parameter is a boolean (TRUE/YES/Y/OK)
-
 ### A More Advanced Example
 
 Let's take a look at a typical artifact `Windows.Detection.Mutants`.
 
-![Mutants artifact](mutants.png)
+![Mutants artifact](mutants.svg)
 
 This artifact uncovers the mutants (named mutexes) on a system, using
 two methods. First we enumerate all handles, and check which process
@@ -132,44 +100,7 @@ results.
 We also see some parameters declared to allow a user to filter by
 process name or mutant name.
 
-## Preconditions and source queries
 
-A precondition is a query that is run before collecting the artifact
-to determine if the artifact should be collected at all. The
-precondition makes it safe to collect artifacts without needing to
-worry about if the artifact is designed for this particular
-architecture or operating system. For example, performing a hunt for a
-Windows only artifact is safe to target all clients because Linux
-clients will just ignore it and return no rows. Most preconditions
-target specific operating systems or architectures but the precondition
-can be an arbitrary query.
-
-You can specify a precondition at the top level of the artifact or at
-each source:
-
-* For a top level precondition, after testing for the precondition,
-  the queries from each source are run in series within the same query
-  scope. This means you can define a VQL variable in an earlier source
-  and use it in another source.
-* If the precondition is specified at the source level, the VQL engine
-  has no idea if any particular source will be use or not. Therefore
-  the engine treats each source as an independent query within its own
-  scope. Since sources are independent they will run in parallel and
-  any VQL variable defined in one source will not be visible to other
-  sources.
-
-## Artifact writing tips
-
-Typically we have a new idea for a new detection. The first step is to
-develop the VQL that will detect the anomaly by writing the VQL in a
-notebook cell on the target operating system itself (usually we use
-`velociraptor gui` to start a new local server).
-
-While developing the VQL, Use the `log()` VQL function librally to
-provide print debugging.
-
-Use format(format="%T %v", args=[X, X]) to learn about a value's type
-and value.
 
 ## Calling artifacts from VQL
 
