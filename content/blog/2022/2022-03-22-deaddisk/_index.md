@@ -11,7 +11,7 @@ author: "Mike Cohen"
 date: 2022-03-20
 ---
 
-{{% notice note %}}
+{{% notice info %}}
 
 This article discusses a feature available since 0.6.4 release. This
 feature is still considered experimental and we are seeking feedback
@@ -103,23 +103,38 @@ discussion the following accessors are important:
 * The **ntfs** accessor is used to access files using the built in
   NTFS parser.
 
-## Mounting the image
+{{% notice note "Supported disk image formats" %}}
 
-The first step is to mount my dead disk image on my system so it can
-be accessed by Velociraptor. Since this is a `vmdk` image, I can use
-`vmware-mount` to mount a "flat" image easily:
+Velociraptor currently supports the following 4 disk image formats via built-in
+[accessors]({{< ref "/vql_reference/accessors/" >}}):
 
-```
-$ sudo vmware-mount -f /vmware/TestVM/Windows\ 10\ x64.vmdk /mnt
-$ ls -l /mnt/
-total 62914560
--rw------- 1 mic mic 64424509440 Jan  5 16:42 flat
-```
+- `EWF`: Expert Witness Compression Format, sometimes called "E01 images"
+- `VMDK`: virtual hard drive format introduced by VMware
+- `VHDX`: virtual hard drive format introduced by Microsoft
+- raw format: bit-by-bit copy of a hard drive, also know as "DD" or "flat" format
 
-The entire disk image is now available as a classic `dd` style image
-within the `/mnt/flat` file.
+The `deaddisk` command described below recognizes the first three formats based
+on *file extension* and Velociraptor is able to read these formats natively
+without any additional steps. If the target image file has any other extension
+then the `deaddisk` command will treat it as raw format.
 
-## Remounting configuration
+If you have any other image format then the recommended course of action is to
+"cross-mount" the image to raw format. There are several tools which can do
+this, for example [xmount](https://www.pinguin.lu/xmount). Alternatively you can
+convert the image to one of the natively-supported formats, and many tools exist
+which can do that. The downside of converting formats is that it requires a lot
+of disk space and can take a long time, therefore cross-mounting is preferable
+because it "translates" one format to another without conversion.
+
+Most virtual machine platforms can usually export to several formats. In
+particular note that VMware can export for raw format (also called "flat") but
+retains the `.vmdk` file extension. In that case you would need to remove the
+file extension so that Velociraptor's `deaddisk` command will treat it as a raw
+image instead of VMDK format.
+
+{{% /notice %}}
+
+## Remapping configuration
 
 Velociraptor normally interrogates the live machine it is running
 on. However in this case we want to emulate the system under
@@ -130,12 +145,12 @@ configuration file.
 
 Although I can write these rules by hand, Velociraptor offers a quick
 tool that automates a lot of the remapping rule generation. Simply
-point velociraptor at the mounted flat image using the
+point velociraptor at the image file using the
 `--add_windows_disk` flag, and it will produce a new remapping yaml
 config:
 
 ```
-$ velociraptor-v0.6.4-linux-amd64 -v deaddisk --add_windows_disk /mnt/flat /tmp/remapping.yaml
+$ velociraptor-linux-amd64 -v deaddisk --add_windows_disk /mnt/flat /tmp/remapping.yaml
 velociraptor: Enumerating partitions using Windows.Forensics.PartitionTable
 velociraptor: Searching for a Windows directory at the top level
 velociraptor: Adding windows partition at offset 122683392
