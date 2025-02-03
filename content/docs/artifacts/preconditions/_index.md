@@ -6,7 +6,57 @@ draft: false
 weight: 30
 ---
 
-This section will cover artifact preconditions.
+<!-- ## Preconditions
+
+A precondition is a query that will run before the main
+collection. If the precondition returns any rows then it is deemed
+to be TRUE and therefore the main query will be run. Otherwise, the
+request will be ignored by the client. Preconditions allow one to
+control execution of the artifact so it is safe to collect it on a
+wider group of systems (e.g. Linux only artifacts may safely collect
+on windows but will do nothing at all).
+
+Artifacts have two places where preconditions may be
+defined. Preconditions may be defined at the top level, in which
+case they apply to all sources. However preconditions may also be
+defined on each source, in this case the source will not be
+collected unless the precondition is true.
+
+Consider the following artifact:
+
+```yaml
+name: MultiSourceSerialMode
+sources:
+- name: Source1
+precondition: SELECT * FROM info() WHERE OS = "linux"
+query: |
+	LET X <= SELECT ....
+	SELECT ...
+- name: Source2
+precondition: SELECT * FROM info() WHERE OS = "windows"
+query: |
+	SELECT * FROM X
+```
+
+Source1 will only run on Linux systems, and Source2 on Windows
+systems. Therefore it is impossible to share scope between the two
+sources since Source2 can never see the variable X defined by
+Source1.
+
+Therefore when preconditions are defined at the source level, the
+artifact will be collected in "Parallel Mode", implying each source
+has its own scope.
+
+## Summary
+
+The following rules summarise if the artifact is collected in
+parallel mode (i.e. sources in separate requests) or Serial Mode
+(i.e. all sources in the same request).
+
+* Event artifacts:                  Parallel Mode
+* No preconditions:                 Serial Mode
+* Precondition at the top level:    Serial Mode
+* Precondition at source level:     Parallel Mode -->
 
 ## How preconditions are evaluated
 

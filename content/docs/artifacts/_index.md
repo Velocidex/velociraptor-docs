@@ -18,6 +18,12 @@ a human readable YAML file, give it a name, and allow users to collect it. An
 Artifact file encapsulates one or more queries to collect data or answer a
 specific question about the endpoint.
 
+<!-- Artifacts are YAML files which encapsultate VQL queries in human
+readable contextual package. The launcher service is responsible for
+compiling artifacts into direct client requests. Clients run direct
+VQL statements derived from the artifacts, while users write,
+customize, or launch artifacts. -->
+
 Artifacts can be thought of as VQL "modules". By encapsulating a VQL query
 inside a YAML file, users do not need to understand the query to use it. This
 facilitates knowledge sharing with more experienced users.
@@ -101,18 +107,6 @@ We also see some parameters declared to allow a user to filter by
 process name or mutant name.
 
 
-
-## Calling artifacts from VQL
-
-You can call other artifacts from your own VQL using the
-`Artifact.<artifact name>` plugin notation. Args to the `Artifact()`
-plugin are passed as artifact parameters.
-
-![Calling artifacts](calling_artifacts.png)
-
-When calling artifacts types are not converted. Make sure you pass the
-expected types
-
 {{% notice info "Compiling artifacts into VQL requests" %}}
 
 When collecting an artifact from the client, the server **compiles**
@@ -123,3 +117,8 @@ compiled VQL to the client. This allows us to upgrade artifact
 definitions on the server without needing to update the client itself.
 
 {{% /notice %}}
+
+The pages in this section explain the key concepts for creating and using
+Velociraptor artifacts.
+
+{{% children %}}
