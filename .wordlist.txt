@@ -1663,3 +1663,7 @@ Labelling
 labelled
 realworld
 
+<url-free> content/blog/2022/2022-03-22-deaddisk/_index.md
+--------------------------------------------------------------------------------
+VMware
+xmount
