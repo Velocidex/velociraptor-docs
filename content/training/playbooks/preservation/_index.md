@@ -191,7 +191,7 @@ When collecting raw files from the endpoint we need to make a tradeoff:
 
 1. Collecting fewer files may miss some files that are needed later
    during analysis.
-2. Collecting more files will result in smaller collection.
+2. Collecting more files will result in larger collection.
 
 Ultimately it is not possible to know in advance what type of evidence
 may be relevant. For example, we might collect the `$MFT` in our
