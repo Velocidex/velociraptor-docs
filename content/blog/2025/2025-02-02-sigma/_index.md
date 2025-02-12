@@ -100,7 +100,7 @@ selections to address specific fields within the event.
 
 ## Sigma Models
 
-Becuase Sigma does not specify exactly how to interpret the rule, we
+Because Sigma does not specify exactly how to interpret the rule, we
 need something else to be able to properly evaluate a Sigma rule:
 
 1. Specific `Log Sources` need to be declared - rules can only access
@@ -131,9 +131,9 @@ respective schema (which is well defined).
 
 One of the main criticisms of Sigma is that it is not well defined
 (unlike the `Elastic Common Schema` for example), making
-interoperation fairly error prone and difficult.
+inter-operation fairly error prone and difficult.
 
-In Velociraptor, we avoid this issue by definiting a `Sigma Model`
+In Velociraptor, we avoid this issue by defining a `Sigma Model`
 precisely and only evaluating rules within that well defined model. We
 end up with various "flavors" of Sigma rules.
 
@@ -202,12 +202,12 @@ In Velociraptor we are less concerned with portability and more
 concerned with having Sigma rules as a way of implementing an easy to
 use and powerful detection engine. Velociraptor defines a range of
 different `Sigma Models`, some are defined with the intention to
-directly cosume a large set of rules from another project (For example
+directly consume a large set of rules from another project (For example
 the
 [Windows.Sigma.Base](https://sigma.velocidex.com/docs/models/windows_base/)
 model was written to consume Hayabusa rules for the
 [Windows.Hayabusa.Ruleset](https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/)
-artifact), while others are defined to make powerfull telemetry events
+artifact), while others are defined to make powerful telemetry events
 available to rule writers (For example the
 [Windows.ETW.Base](https://sigma.velocidex.com/docs/models/windows_etw_base/)
 model exposes ETW sources not usually available in centralized server
@@ -271,7 +271,7 @@ The workflow is illustrated above:
 
 2. `Replay/Test Mode`: In this mode we can replay the JSON files
    collected previously back into the same `Sigma Engine`. Except that
-   this time, instead of using the real log source, we substitude a
+   this time, instead of using the real log source, we substitute a
    mock log source which replays events back from JSON files. This
    step can be done on any platform since the events are
    isolated.
@@ -316,14 +316,14 @@ concentrate on the suspicious uses.
 
 My first step is to collect relevant events from the relevant `Sigma
 Model`. I do this by collecting the
-`Windows.Sigma.Base.CaptureTestSet` artifact. This companion aritfact
+`Windows.Sigma.Base.CaptureTestSet` artifact. This companion artifact
 to the `Windows.Sigma.Base` artifact uses the same log sources but
 simply records the raw events.
 
 ![Capturing Raw Events from the test system](capturing_events.svg)
 
 In this case I will only collect events from the `bits_client` log
-source and only those events that mention URLs. I can timebox the
+source and only those events that mention URLs. I can time box the
 events to only collect recent events if I want but in this case I will
 collect from all available time to get a good selection of URLs used.
 
@@ -397,7 +397,7 @@ For this detection, I will search for event ID 59, which reveal the
 URL associated with the bits job. However, I will suppress jobs from
 URLs accessing specific domains.
 
-Pressing `?` will autosuggest any of the field mappings defined within
+Pressing `?` will suggest any of the field mappings defined within
 the model.
 
 ![Auto-Completion of Field Mappings](sigma_studio_5.svg)
@@ -427,7 +427,7 @@ detection:
 details: "Bits Job %JobTitle% accessed URL %Url%"
 ```
 
-* The rule consums events from the `windows/bits-client` log source
+* The rule consumes events from the `windows/bits-client` log source
   (which in this model ends up reading the events from the
   `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx`
   log file.
@@ -514,7 +514,7 @@ event log files on the endpoint (triaging existing logs). On the other
 hand the `Windows.Sigma.BaseEvents` model watches log files in real
 time to generate Sigma based events on current activity.
 
-Similarly the `Linux.Sigma.EBPF` model surfaces real time telementry
+Similarly the `Linux.Sigma.EBPF` model surfaces real time telemetry
 collected from EBPF sensors on Linux and makes these available to
 Sigma rule authors. This flexibility allows applying Sigma in many
 different scenarios, making it a power technique.
