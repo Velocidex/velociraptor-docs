@@ -3,7 +3,7 @@ title: "Binary parsing"
 weight: 50
 ---
 
-Parsing binary is very a important capability for forensic analysis and
+Parsing binary is a very important capability for forensic analysis and
 DFIR - we encounter binary data in many contexts, such as file
 formats, network traffic and more.
 
@@ -55,10 +55,10 @@ partial parsing is still very valuable.
 
 At a high level a binary parser is a tool we use to extract meaning
 from binary data. The parser encodes semantic information about what
-each bytes in the binary sequence means. It really emulates the
+each byte in the binary sequence means. It really emulates the
 software that usually reads the data by constructing something similar
-to the original (often closed code) meaning. Sometimes not all the
-information is known or can be interpreted - so parsers can be
+to the original (often closed source code) meaning. Sometimes not all
+the information is known or can be interpreted - so parsers can be
 incomplete.
 
 Parsers typically fall into two general types: `Procedural` and
