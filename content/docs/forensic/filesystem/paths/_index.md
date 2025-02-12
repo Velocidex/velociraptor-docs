@@ -342,7 +342,7 @@ The OSPath object is now capable of more complex path manipulations:
    OSPath to plugins because they will automatically parse the
    string into an OSPath object.
 
-{{% notice warning "Glob's root parameter" %}}
+{{% notice info "Glob's root parameter" %}}
 
 When using the `glob()` plugin, remember that Glob expressions are
 always flat strings (i.e. a glob is not a pathspec). An OSPath should
