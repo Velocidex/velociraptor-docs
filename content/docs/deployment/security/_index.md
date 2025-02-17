@@ -309,7 +309,7 @@ To implement this strategy you need to:
 #### Generating client side certificates
 
 The client side certificate is just a certificate signed by the internal CA. The
-server will verify the validy of the client certificate but does not track
+server will verify the validity of the client certificate but does not track
 issued certificates or provide a CRL mechanism. The client certificate is not
 used to individually identify clients, so we only need to issue one certificate
 that allows us to verify all clients. All clients will present the
