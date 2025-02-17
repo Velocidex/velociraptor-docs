@@ -351,6 +351,16 @@ Note that this client certificate will only be used if the server requests it,
 so it is fine to add the client certificate to the client config even if you
 only intend to enable mTLS later.
 
+{{% notice info %}}
+
+Client certificates generated as described above will be valid for 1 year. It is
+highly likely that you will upgrade your clients before this 1-year period
+elapses and so we recommended that you issue a new client cert during the
+upgrade process by including an updated (i.e. with a new client cert) client
+config in your client package, for example MSI for Windows clients.
+
+{{% /notice %}}
+
 #### Requiring client side certificates
 
 On the server you can require frontend connections to present valid
