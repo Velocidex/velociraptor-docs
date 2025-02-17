@@ -220,7 +220,7 @@ typically start off with a normal configuration as generated with
 
 ![Generating a basic configuration](basic_generation.png)
 
-In the above example I generate a self signed configuration with a
+In the above example I generate a self-signed configuration with a
 server at `master.velocidex-training.com`. I will use the dynamic DNS
 setting to automatically update the frontend dns mapping.
 

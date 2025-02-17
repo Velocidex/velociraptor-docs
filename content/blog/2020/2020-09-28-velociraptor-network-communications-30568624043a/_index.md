@@ -23,7 +23,7 @@ In the following discussion we will refer to a typical Velociraptor configuratio
 ```sh
 velociraptor config generate -i
 ```
-For this example we select a typical self signed deployment.
+For this example we select a typical self-signed deployment.
 
 <script src="https://gist.github.com/scudette/b0e80d3d039a74bfa2e41130f0c4955d.js" charset="utf-8"></script>
 
@@ -82,17 +82,17 @@ Note that this verification is essential in order to prevent the client from acc
 
 Velociraptor currently supports 2 modes for deployment via the config wizard:
 
-* Self signed mode uses internal CAs for the TLS certificates. The client knows it is in self signed mode if the **Client.use_self_signed_ssl** flag is true.
+* Self-signed mode uses internal CAs for the TLS certificates. The client knows it is in self-signed mode if the **Client.use_self_signed_ssl** flag is true.
 
 * Proper certificates minted by Let’s encrypt.
 
-Velociraptor verifies self signed TLS certificates using its built in CA. This essentially pins the server’s certificate inside the client — even if a MITM was able to mint another certificate (even if it was trusted by the global roots!) it would not be valid since it was not issued by Velociraptor’s internal CA which is the only CA we trust in this mode! In this way self signed mode is more secure than use a public CA.
+Velociraptor verifies self-signed TLS certificates using its built in CA. This essentially pins the server’s certificate inside the client — even if a MITM was able to mint another certificate (even if it was trusted by the global roots!) it would not be valid since it was not issued by Velociraptor’s internal CA which is the only CA we trust in this mode! In this way self-signed mode is more secure than use a public CA.
 
 The **Client.pinned_server_name** specifies the common name of the server (or DNS name in the Server Alternate Name (SAN) field). The client verifies that the certificate is correct **AND** that the name is the same as the pinned name. You typically do not need to change this setting.
 
-If the client is not in self signed mode (i.e. **Client.use_self_signed_ssl** is false or not present), it expects to verify TLS connections using the system’s root certificate store. In this configuration, Velociraptor is susceptible to a MITM SSL inspection proxy, and we must rely on the internal encryption mechanism as described in the previous section to protect communications.
+If the client is not in self-signed mode (i.e. **Client.use_self_signed_ssl** is false or not present), it expects to verify TLS connections using the system’s root certificate store. In this configuration, Velociraptor is susceptible to a MITM SSL inspection proxy, and we must rely on the internal encryption mechanism as described in the previous section to protect communications.
 
-**NOTE**: In practice we find that often customer networks do contain SSL inspection proxies and using self signed certificates breaks communications altogether. We typically prefer to deploy Let’s Encrypt certificates for reliability and better interoperability.
+**NOTE**: In practice we find that often customer networks do contain SSL inspection proxies and using self-signed certificates breaks communications altogether. We typically prefer to deploy Let’s Encrypt certificates for reliability and better interoperability.
 
 ### Debugging client communications
 
@@ -114,7 +114,7 @@ Once you enable connectivity, you might encounter another problem
 
 The **Unable to parse PEM** message indicates that the client is trying to fetch the **server.pem** file but it is not able to validate it. This often happens with captive portal type of proxies which interfere with the data transferred. It can also happen if your DNS setting point to a completely different server.
 
-We can verify the **server.pem** manually by using curl (note that when using self signed mode you might need to provide curl with the -k flag to ignore the certificate errors):
+We can verify the **server.pem** manually by using curl (note that when using self-signed mode you might need to provide curl with the -k flag to ignore the certificate errors):
 
 ![](../../img/1P9W4CnX9qNLGiRgnHGyLAw.png)
 
@@ -157,7 +157,7 @@ On the client’s side, the server appears to be a proper SSL server. The client
 
 We have seen that Velociraptor utilizes its own PKI to secure client/server communication. This PKI is used both to prevent interception of messages as well as preventing messages from being forged. The server verifies the client the message came from and the client verifies the server before it connects to it.
 
-In addition, Velociraptor uses standard TLS communications to deliver messages using POST requests. TLS connections can either be self signed (but pinned) or use public CA PKI. Using a standard network protocol allows Velociraptor to easily fit into any modern corporate network (which might include SSL interception proxies etc).
+In addition, Velociraptor uses standard TLS communications to deliver messages using POST requests. TLS connections can either be self-signed (but pinned) or use public CA PKI. Using a standard network protocol allows Velociraptor to easily fit into any modern corporate network (which might include SSL interception proxies etc).
 
 By understanding how the communication takes place, we saw how we can debug network problems and even configure a reverse proxy for TLS offloading — an important feature to be able to scale even higher.
 
