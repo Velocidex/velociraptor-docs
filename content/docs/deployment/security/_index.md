@@ -329,7 +329,7 @@ No role added to user Client. You will need to do this later using the 'acl gran
 This will create an API configuration file for an API user called "Client",
 containing the key pair that we need. However the `config api_client` command
 shown above will not actually create a user on the Velociraptor server since we
-deliberately didn't specify the `--roles` flag.
+deliberately didn't specify the `--role` flag.
 
 It is critical that the user has no roles or permissions on the server to
 prevent this key from being used to connect to the API ports. Therefore the
