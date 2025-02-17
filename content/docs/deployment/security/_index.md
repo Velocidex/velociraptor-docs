@@ -286,7 +286,7 @@ In this scenario, the client needs to verify the TLS connections using this cust
 ### Deploying mTLS authentication
 
 An additional layer of security can be provided by enabling
-**Mutual TLS (mTLS) authentication** between clients and server.
+Mutual TLS (mTLS) authentication between clients and server.
 This mechanism requires the client to present a valid client certificate before
 the server even allows a connection to the frontend. The client certificate is
 included in the client configuration file.
@@ -326,7 +326,7 @@ No role added to user Client. You will need to do this later using the 'acl gran
 
 {{% notice warning "API User permissions" %}}
 
-This will create an API configuration file for an API user called `Client`,
+This will create an API configuration file for an API user called "Client",
 containing the key pair that we need. However the `config api_client` command
 shown above will not actually create a user on the Velociraptor server since we
 deliberately didn't specify the `--config_api_add_roles` flag.
@@ -346,6 +346,19 @@ and [Client.Crypto.client_certificate_private_key]({{% ref "/docs/deployment/ref
 or into the server config if you intend to use the GUI to repack the MSI or
 generate client configs for multiple orgs (service restart will be required to
 read these new config items).
+
+```yaml
+Client:
+   Crypto:
+      client_certificate: |
+        -----BEGIN CERTIFICATE-----
+        <certificate>
+        -----END CERTIFICATE-----
+      client_certificate_private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        <key>
+        -----END RSA PRIVATE KEY-----
+```
 
 Note that this client certificate will only be used if the server requests it,
 so it is fine to add the client certificate to the client config even if you
@@ -375,7 +388,7 @@ makes troubleshooting a bit more challenging.
 
 For example the following will fail:
 
-```
+```sh
 $ curl -k https://127.0.0.1:8000/server.pem
 curl: (56) OpenSSL SSL_read: error:0A000412:SSL routines::sslv3 alert bad certificate, errno 0
 ```
@@ -394,7 +407,8 @@ above):
 ```
 
 Now we can use curl to connect successfully
-```
+
+```sh
 curl -k https://127.0.0.1:8000/server.pem --cert /tmp/client.pem | openssl x509 -text
 ```
 
@@ -434,7 +448,7 @@ and salt will be initialized from the configuration file. For other
 authentication methods that do not use passwords, the password hashes
 are ignored.
 
-```
+```yaml
 GUI:
   initial_users:
   - name: mic
@@ -512,7 +526,7 @@ privilege escalation as the user can modify an existing server
 artifact to run VQL to grant them other roles, and trick an
 administrator in running that artifact.
 
-This is why we say that some roles are `Administrator Equivalent`
+This is why we say that some roles are "Administrator Equivalent"
 because it is easy to escalate from them to more powerful
 roles. Typically we try to limit access to trusted users anyway and
 not rely too much on the user roles.
@@ -607,7 +621,7 @@ collecting telemetry. While it is convenient to have Velociraptor
 already deployed and active in the environment, this may increase the
 risk for misuse when not used for response.
 
-For this purpose Velociraptor has a `lockdown mode`. This mode
+For this purpose Velociraptor has a "lockdown mode". This mode
 prevents Velociraptor from performing any active modification to the
 environment.
 
