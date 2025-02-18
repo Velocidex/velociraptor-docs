@@ -87,7 +87,7 @@ interfere with the data transferred. It can also happen if your DNS
 setting point to a completely different server.
 
 We can verify the **server.pem** manually by using curl (note that
-when using self signed mode you might need to provide curl with the -k
+when using self-signed mode you might need to provide curl with the -k
 flag to ignore the certificate errors):
 
 ![Fetching the server certificate](1P9W4CnX9qNLGiRgnHGyLAw.png)

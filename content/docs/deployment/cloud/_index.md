@@ -208,7 +208,7 @@ a client secret.
 
 ### Generating configuration
 
-To generate a self signed deployment, start by running the `config
+To generate a self-signed deployment, start by running the `config
 generate` command to invoke the configuration wizard
 
 ```sh

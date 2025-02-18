@@ -23,6 +23,6 @@ Before upgrading perform testing of the combination of client and server version
 
  - Recent versions of clients and servers generally can communicate with each other without a problem, but new functionality may not be available on old clients. Artifacts like [this](https://github.com/Velocidex/velociraptor/issues/1566) will (0.6.4+) help reduce this.
  - Upgrading the server before clients is more common, so version problems are more likely to have been caught in community testing with this approach.
- - Consider running a parallel deployment as the most compatible way to upgrade. Such as when upgrading and there are known breaking changes between the current client and target server versions (going from self signed to auto cert), or when there are large version differences (unusual combinations of client and server).
+ - Consider running a parallel deployment as the most compatible way to upgrade. Such as when upgrading and there are known breaking changes between the current client and target server versions (going from self-signed to auto cert), or when there are large version differences (unusual combinations of client and server).
 
 Tags: #configuration #admin
