@@ -4,9 +4,9 @@ description: |
    Send a message to telegram when clients become enrolled.
 
    This artifact triggers when a client is interrogated within 60
-   seconds of it being seen for the first time. You can manually 
+   seconds of it being seen for the first time. You can manually
    configure information such as FirstSeenDelay, timestamp, etc.
-   
+
    Inspired by `Server.Slack.Clients.Enrolled`.
 type: SERVER_EVENT
 
@@ -31,7 +31,7 @@ sources:
                    condition=TeleChatID,
                    then=TeleChatID,
                    else=server_metadata().TeleID)
-                   
+
         LET urlTele = if(
                    condition=TeleURL,
                    then=TeleURL,
@@ -39,7 +39,7 @@ sources:
 
         -- Returns an event for each interrogation that occurs within 60 seconds
         -- of first seen timestamp.
-        
+
         LET completions = SELECT client_id AS ClientId,
                          os_info.hostname AS Hostname,
                          os_info.fqdn AS Fqdn,
@@ -62,9 +62,9 @@ sources:
               format="json", item=dict(chat_id=chatID, text=Message)),
               url=urlTele)
 
-        LET send_massage = SELECT * 
+        LET send_message = SELECT *
         FROM foreach(
-          row=completions, 
+          row=completions,
           query={
             SELECT Content, Response, Headers.Date
             FROM SendToTele(
@@ -72,10 +72,10 @@ sources:
                 format="[Info] New client has been enrolled!\nTime: %v!\nHostname: %s\nIP: %s\nOS: %v",
                 args=[FirstSeen, Hostname, LastIP, OSrelease]))
         })
-        
+
         -- Check every minute using clock() plugin
         SELECT * FROM foreach(
         row={
           SELECT * FROM clock(period=FirstSeenDelay
           )},
-        query=send_massage)
+        query=send_message)
