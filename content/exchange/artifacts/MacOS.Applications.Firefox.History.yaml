@@ -23,16 +23,16 @@ precondition: SELECT OS From info() where OS = 'darwin'
 sources:
   - query: |
       LET history_files = SELECT
-         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=FullPath).User AS User,
-         FullPath
+         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=OSPath).User AS User,
+         OSPath
       FROM glob(globs=historyGlobs)
 
       SELECT * FROM foreach(row=history_files,
         query={
-           SELECT User, FullPath,
+           SELECT User, OSPath,
               visit_time, visited_url, title,description,  visit_count, typed, frecency,
               last_visit_date, rev_host, preview_image_url
           FROM sqlite(
-             file=FullPath,
+             file=OSPath,
              query=urlSQLQuery)
           })

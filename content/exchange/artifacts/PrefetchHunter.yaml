@@ -38,7 +38,7 @@ sources:
       LET prefetch = SELECT * 
             Executable,
             FilesAccessed,
-            FullPath,
+            OSPath,
             Hash,
             Binary,
             ModificationTime,CreationTime
@@ -50,7 +50,7 @@ sources:
       -- flattern FilesAccessed and apply filter
         SELECT Executable,
             FilesAccessed as FileAccessed,
-            FullPath,
+            OSPath,
             ModificationTime,CreationTime,
             Hash,
             Binary
