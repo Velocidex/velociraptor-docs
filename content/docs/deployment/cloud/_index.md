@@ -240,7 +240,7 @@ server and client configuration.
   passwords so only the user names will be recorded.
 
 
-## Grant Access to Velociraptor
+### Grant Access to Velociraptor
 
 The OAuth flow ensures the user's identity is correct but does not
 give them permission to log into Velociraptor. Note that having an
@@ -288,53 +288,122 @@ user using `velociraptor user grant '{}'`.
 
 {{% /notice %}}
 
-### Deploying to the server
+## Deploying the server
 
-Once a server configuration file is created, you need to create a server Debian package embedding the config file. The Debian package the Velociraptor executable, the server configuration file and relevant startup scripts.
+Once a server configuration file is created, you need to create a server
+installation package which contains the Velociraptor executable, the server
+configuration file and relevant startup scripts.
 
-Run the following command to create the server:
+You then install the server installation package on your server using standard
+package management tools.
 
-```sh
-velociraptor.exe --config server.config.yaml debian server --binary velociraptor-v0.6.0-linux-amd64
+### Creating the server installation package
+
+{{% notice info %}}
+
+While the server installation package can be _created_ on any platform, as shown
+below, we strongly recommend _running_ the server on Linux.
+
+Running the server on Windows or macOS is technically possible but unsupported
+and we therefore don't provide any server packaging options for those platforms.
+
+{{% /notice %}}
+
+The following command will create the server deb package:
+
+{{< tabs >}} {{% tab name="Linux" %}}
+```shell
+./velociraptor-linux debian server --config server.config.yaml --binary velociraptor-linux-<arch>
 ```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor-windows.exe debian server --config server.config.yaml --binary velociraptor-linux-<arch>
+```
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor-darwin debian server --config server.config.yaml --binary velociraptor-linux-<arch>
+```
+{{% /tab %}}
+{{< /tabs >}}
+
+This will create a deb package named `velociraptor_server_<version>_<arch>.deb`
+containing the server configuration plus the installation scripts necessary to
+install the server as a service on debian-based systems. To create a server
+installation package for rpm-based systems the command `velociraptor rpm server`
+can be substituted in the above step.
+
+The basename of the output file name can be specified adding the `--output` flag
+to the command if you want anything other than the default name.
+
+If the `--binary` flag is not used then the package will be created using the
+Velociraptor binary which invoked the command. That is, the `--binary` flag is
+not needed if you are creating the server installation package on the same
+system or architecture that you intend to deploy the server on.
+
+Additional command options can be viewed by running `velociraptor debian server -h`
+or `velociraptor rpm server -h`.
 
 {{% notice warning %}}
-Make sure the debian file is well protected. A compromise of the file will leak private key material enabling a MITM attack against Velociraptor.
+
+Make sure the installation package file is well protected. A compromise of the
+file will leak private key material enabling a MITM attack against Velociraptor.
+
 {{% /notice %}}
 
-You can check the installation using `service velociraptor_server status`.
+### Installing the server installation package
 
-```bash
-$ sudo dpkg -i velociraptor_0.3.0_server.deb
-Selecting previously unselected package velociraptor-server.
-(Reading database ... 384556 files and directories currently installed.)
-Preparing to unpack velociraptor_0.3.0_server.deb ...
-Unpacking velociraptor-server (0.3.0) ...
-Setting up velociraptor-server (0.3.0) ...
-Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.service → /etc/systemd/system/velociraptor_server.service.
+The server installation package is installed using the regular package
+management tools.
 
-$ sudo service velociraptor_server status
-● velociraptor_server.service - Velociraptor linux amd64
-   Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
-   Active: active (running) since Sun 2019-07-07 08:49:24 AEST; 17s ago
- Main PID: 2275 (velociraptor)
-    Tasks: 13 (limit: 4915)
-   Memory: 30.2M
-   CGroup: /system.slice/velociraptor_server.service
-           └─2275 /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend
+**Debian-based systems:**
 
-Jul 07 08:49:24 mic-Inspiron systemd[1]: Started Velociraptor linux amd64.
+```shell
+sudo dpkg -i velociraptor_server_<version>_<arch>.deb
 ```
 
-{{% notice tip %}}
+**RPM-based systems:**
 
-If you prefer to use Windows for your day to day work, you can build the Debian package
-on your windows machine but you must specify the `--binary` flag to
-the `debian server` command with a path to the linux binary. You can
-obtain a copy of the linux binary from the Github releases page.
+```shell
+sudo rpm -i velociraptor_server_<version>_<arch>.rpm
+```
 
-{{% /notice %}}
+On Debian-based systems the installation output should look something like this.
 
+```sh
+$ sudo dpkg -i velociraptor_server_0.74.0.rc1_amd64.deb
+Selecting previously unselected package velociraptor-server.
+(Reading database ... 527397 files and directories currently installed.)
+Preparing to unpack velociraptor_server_0.74.0.rc1_amd64.deb ...
+Unpacking velociraptor-server (0.74.0.rc1) ...
+Setting up velociraptor-server (0.74.0.rc1) ...
+Adding group `velociraptor' (GID 138) ...
+Done.
+Adding system user `velociraptor' (UID 128) ...
+Adding new user `velociraptor' (UID 128) with group `velociraptor' ...
+Not creating home directory `/etc/velociraptor/'.
+Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.service → /etc/systemd/system/velociraptor_server.service.
+```
+
+On systems that use systemd you can check the service status after installation
+using the command `systemctl status velociraptor_server.service`.
+
+```
+$ sudo systemctl status velociraptor_server.service
+● velociraptor_server.service - Velociraptor server
+     Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2025-02-22 12:33:23 SAST; 1min 1s ago
+   Main PID: 4941 (velociraptor.bi)
+      Tasks: 10 (limit: 4537)
+     Memory: 54.1M
+        CPU: 2.163s
+     CGroup: /system.slice/velociraptor_server.service
+             └─4941 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+
+Feb 22 12:33:23 linux64-client systemd[1]: Started Velociraptor server.
+
+```
 
 ## Server upgrades
 
@@ -386,7 +455,15 @@ an old server to a new server by simply user remote upgrade.
 
 {{% /notice %}}
 
-### Reverting versions
+## Reverting versions
 
 It is generally ok to revert from later versions to earlier versions
-since the migration process is generally non destructive.
+since the migration process is generally non-destructive.
+
+## Uninstalling the server
+
+The server can be uninstalled with the following command.
+
+```sh
+sudo dpkg -r velociraptor-server
+```
