@@ -4,58 +4,6 @@ menutitle: Troubleshooting
 weight: 100
 ---
 
-### Troubleshooting deployments
-
-Sometimes things don't work when you first try them. This page will go
-through the common issues people find when deploying Velociraptor
-clients and the steps needed to debug them.
-
-#### Server fails to start
-
-If the server fails to start, you can try to start it by hand to see
-any logs or issues. Typically the Linux service will report something
-unhelpful such as:
-
-```
-# service velociraptor_server status
-● velociraptor_server.service - Velociraptor linux amd64
-    Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
-    Active: activating (auto-restart) (Result: exit-code) since Fri 2021-12-31 15:32:58 AEST; 1min 1s ago
-   Process: 3561364 ExecStart=/usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend (code=exited, status=1/FAILURE)
-  Main PID: 3561364 (code=exited, status=1/FAILURE)
-```
-
-You can usually get more information from the system log files,
-usually `/var/log/syslog`. Alternative you can try to start the
-service by hand and see any issues on the console.
-
-First change to the Velociraptor user and then start the service as that user.
-
-```
-# sudo -u velociraptor bash
-$ velociraptor frontend -v
-Dec 31 15:47:18 devbox velociraptor[3572509]: velociraptor.bin: error: frontend: loading config file: failed to acquire target io.Writer: failed to create a new file /mnt/data/logs/Velociraptor_debug.log.202112270000: failed to open file /mnt/data/logs/Velociraptor_debug.log.202112270000: open /mnt/data/logs/Velociraptor_debug.log.202112270000: permission denied
-```
-
-In this case, Velociraptor can not start because it can not write on
-its logs directory. Other errors might be disk full or various
-permission denied problems.
-
-{{% notice warning "Incorrect permissions in the filestore" %}}
-
-Because Velociraptor normally runs as a low privileged user, it needs
-to maintain file ownership as the `velociraptor` user. Sometimes
-permissions change by accident (usually this happens by running
-velociraptor as root and interacting with the file store - you should
-**always** change to the `velociraptor` user before interacting with
-the server).
-
-It is worth checking file permissions (using `ls -l`) and recursively
-returning file ownership back to the `velociraptor` user (using the
-command `chown -R velociraptor:velociraptor /path/to/filestore/`)
-
-{{% /notice %}}
-
 ### Debugging client communications
 
 If the client does not appear to properly connect to the server, the
