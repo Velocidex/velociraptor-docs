@@ -6,7 +6,10 @@ draft: false
 weight: 80
 ---
 
-This section provides strategies and steps for troubleshooting common scenarios.
+Sometimes things don't work when you first try them.
 
-{{% children %}}
+This section provides strategies and steps for troubleshooting the most common
+issues that people encounter when deploying and using Velociraptor .
+
+{{% children style="h4" description=true %}}
 
