@@ -7,22 +7,22 @@ pre: <i class="fas fa-download"></i>
 release: 0.73.3
 base_release: 0.73
 arches:
-  - desc: Windows AMD64 (64 bits) Executable
+  - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
     hash: fe9f9a9033779ed6be0cc20ea053106adba3bfd18ebcb78f7b8c19ca58ec105e
     platform: windows
 
-  - desc: Windows AMD64 (64 bits) MSI
+  - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
     hash: 0ccf5033fa86a1a7571ac5df93a782049f228404d67478e96487afdae4a535ba
     platform: windows
 
-  - desc: Windows 32 bits Executable
+  - desc: Windows 32-bit Executable
     name: windows-386.exe
     hash: 5a40eadd1bb781ee6958bc34509f2977ddbc983052b9f5423c10391c62946215
     platform: windows
 
-  - desc: Windows 32 bits MSI
+  - desc: Windows 32-bit MSI
     name: windows-386.msi
     hash: 67fde8015d961c0cdb0ff2efcd382c0813803c5c21841131ebe045a2a45a23ac
     platform: windows

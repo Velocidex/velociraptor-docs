@@ -64,7 +64,7 @@ reporting the client id and hostname of the client that came back
 online.
 
 ```vql
-LET send_massage = SELECT * FROM foreach(row=hits,
+LET send_message = SELECT * FROM foreach(row=hits,
 query={
    SELECT client_id, Hostname, LastSeen, Content, Response
    FROM http_client(
@@ -88,7 +88,7 @@ query.
 // Check every minute
 SELECT * FROM foreach(
    row={SELECT * FROM clock(period=60)},
-   query=send_massage)
+   query=send_message)
 ```
 
 ### Step 4: Creating a monitoring artifact
