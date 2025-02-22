@@ -303,7 +303,6 @@ package management tools.
 
 While the server installation package can be _created_ on any platform, as shown
 below, we strongly recommend _running_ the server on Linux.
-
 Running the server on Windows or macOS is technically possible but unsupported
 and we therefore don't provide any server packaging options for those platforms.
 
