@@ -1,32 +1,42 @@
 ---
-title: "Self-Signed SSL"
-date: 2021-06-09T04:00:52Z
+title: "Quickstart"
+date: 2021-06-09
+last_reviewed: 2025-02-23
 draft: false
 weight: 5
+aliases:
+  - "/docs/deployment/self-signed/"
 ---
 
-Velociraptor deployments are secured using a self-signed Certificate Authority (CA) that is generated during the initial configuration generation step. The client’s configuration contains the signed CA, which is used to verify all certificates needed during communications.
+Velociraptor deployments are secured using a self-signed Certificate Authority
+(CA) that is generated during the initial configuration generation step. The
+client’s configuration contains the signed CA, which is used to verify all
+certificates needed during communications.
 
-In `self-signed SSL` mode, Velociraptor issues its own server
+In self-signed SSL mode, Velociraptor issues its own server
 certificate using its internal CA. This means the Admin GUI and front end
 also use a self-signed server certificate.
 
-## When to use this method
+## When to use this deployment mode
+
 This type of deployment is most appropriate for on-premises scenarios
 where internet access is not available or egress is blocked.
 
 ## Self-Signed Certificates
+
 Self-signed SSL certificates trigger SSL warnings in all web
 browsers. When accessing the Admin GUI you will receive a
 certificate warning about the possibility of a MITM attack.
 
-As a precaution, Velociraptor only exports the GUI port
-on the loopback interface. You may change the `GUI.bind_address`
+As a precaution, by default Velociraptor only binds the Admin GUI port
+to the loopback interface. You may change the `GUI.bind_address`
 setting to "0.0.0.0" to receive external connections on this
 port, but this is not recommended. Instead, you should use SSH
 tunneling to connect to the local loopback interface.
 
-Velociraptor doesn't support other self-signed SSL certificates, and we don't recommend attempting to create and upload your own internal self-signed certificate to Velociraptor.
+Velociraptor doesn't support other self-signed SSL certificates, and we don't
+recommend attempting to add your own internal self-signed certificate to
+Velociraptor.
 
 {{% notice info "SSL Intercepting proxies" %}}
 

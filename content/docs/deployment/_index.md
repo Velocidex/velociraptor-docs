@@ -1,19 +1,29 @@
 ---
 title: "Deployment"
 date: 2021-06-09T03:52:24Z
+last_reviewed: 2025-02-23
 draft: false
 weight: 10
 ---
 
-You can deploy full-scale Velociraptor using either the [SSL-Self
-Signed]({{< relref "self-signed" >}}) or [Cloud Deployment]({{< relref
+Velociraptor offers many deployment options that allow us to operate in all
+kinds of environments.
+
+There is no single "right" way to use Velociraptor so in
+this section we'll describe the commonly used (and recommended) deployment modes.
+
+
+[SSL-Self
+Signed]({{< relref "quickstart" >}}) or [Cloud Deployment]({{< relref
 "cloud" >}}) method, or set up a Velociraptor environment on your
 local machine for testing environment. For more information, see
 [Instant Velociraptor](#instant-velociraptor).
 
 {{% notice note "Using Velociraptor integrated with Rapid7 InsightIDR?"%}}
 
-These deployment steps apply to open source Velociraptor only. Read the  [InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration) to learn more about how Velociraptor is deployed with the Insight Platform.
+These deployment steps apply to open source Velociraptor only. Read the
+[InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration)
+to learn more about how Velociraptor is deployed with the Rapid7 Insight Platform.
 
 {{% /notice %}}
 
@@ -23,7 +33,7 @@ Below is a typical Velociraptor deployment
 
 ![A typical Velociraptor deployment](overview.png)
 
-Major parts include:
+Major components include:
 
 1. The `client` is the instance of the Velociraptor agent running on the endpoint.
 2. The `frontend` is the server component communicating with the client.
@@ -94,27 +104,4 @@ to work with a persistently stored data store.
 
 {{% /notice %}}
 
-### Verifying your download
 
-The Velociraptor releases are signed using gpg with key ID `0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1`.
-You can verify the signature using `gpg`:
-
-```
-$ gpg --verify velociraptor-v0.6.2-linux-amd64.sig
-gpg: assuming signed data in 'velociraptor-v0.6.2-linux-amd64'
-gpg: Signature made Wed Nov  3 02:44:15 2021 AEST
-gpg:                using RSA key 0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1
-gpg: Good signature from "Velociraptor Team (Velociraptor - Dig deeper!  https://docs.velociraptor.app/) <support@velocidex.com>" [unknown]
-gpg: WARNING: This key is not certified with a trusted signature!
-gpg:          There is no indication that the signature belongs to the owner.
-Primary key fingerprint: 0572 F28B 4EF1 9A04 3F4C  BBE0 B22A 7FB1 9CB6 CFA1
-```
-
-You can import the key from your favorite key server:
-```
-$ gpg --search-keys 0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1
-gpg: data source: https://keys.openpgp.org:443
-(1)     Velociraptor Team (Velociraptor - Dig deeper!  https
-          3072 bit RSA key B22A7FB19CB6CFA1, created: 2021-10-29
-Keys 1-1 of 1 for "0572F28B4EF19A043F4CBBE0B22A7FB19CB6CFA1".  Enter number(s), N)ext, or Q)uit >
-```

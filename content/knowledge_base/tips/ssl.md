@@ -8,7 +8,7 @@ Prior to commencing we have a plaintext PEM private key, certificate for our Vel
 
 
 ### Generate the configuration
-Using Ubuntu we generated a stock standard "Self Signed SSL" configuration:
+Using Ubuntu we generated a stock standard "Self-signed SSL" configuration:
 
 `./velociraptor-v0.6.3-2-linux-amd64 config generate -i`
 

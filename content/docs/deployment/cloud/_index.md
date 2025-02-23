@@ -1,24 +1,34 @@
 ---
-title: Cloud Deployment
+menutitle: Cloud Deployment
+title: Cloud Server Deployment
+draft: false
 weight: 10
 ---
 
-With cloud deployments you can create a proper SSL certificate using
-the free Let's Encrypt CA. This eliminates the bad certificate browser
-warning seen in the Self Signed Deployment method. Velociraptor uses
-the Let's Encrypt protocol to obtain and manage its own certificates
-(and automatically rotate them when they expire).
+For cloud deployments you can create a proper SSL certificate using the free
+[Let's Encrypt CA](https://letsencrypt.org/).
+This eliminates the "bad certificate" browser warning seen in the
+[Self-signed Deployment]({{< ref "/docs/deployment/quickstart/" >}}) mode.
+Velociraptor uses the Let's Encrypt protocol to obtain and manage its own
+certificates, and to automatically rotate them when they expire.
+
+## When to use this deployment mode
+
+This type of deployment is most appropriate for scenarios where a cloud-based
+server is required. Clients will connect to the server (Frontend port) via the
+internet.
 
 ## Before You Begin
+
 Note the following requirements:
-* You must use a DNS name as Let's Encrypt will not issue a
-  certificate for an IP address. The DNS name can be a Dynamic DNS
-  name managed by Google Domains.
-* Ports 80 and 443 must publicly accessible. Let's Encrypt uses both
-  ports to issue certificates.
+* You _must_ use a DNS name. Let's Encrypt will not issue a certificate for an
+  IP address. The DNS name can be a Dynamic DNS name managed by Google Domains.
+* Ports 80 and 443 _must_ be publicly accessible. Let's Encrypt uses both ports
+  to issue certificates.
 * You can optionally configure Authentication via SSO providers.
 
 ## Provision a Virtual Machine
+
 Next we provision an Ubuntu VM from any cloud provider.  The size of
 your VM depends on the number of endpoints in your environment.  An 8
 or 16Gb VM should be sufficient for around 5-10k clients.
@@ -39,32 +49,28 @@ however the Admin GUI will only be served over SSL.
 {{% /notice %}}
 
 ### Get a domain name
+
 An SSL certificate says that the DNS name is owned by the server that
 presents it. Since you cannot currently get a Let's Encrypt
 certificate for an IP address. you'll need buy a DNS domain from any
 provider. You'll then need to set up a DNS A Record to point at your
-Velociraptor server’s external IP.  You can use a dynamic DNS client
-such as ddclient to update your DNS->IP mapping
-dynamically. Alternatively, Velociraptor directly supports updating
-Google Domains Dynamic DNS so this is the easiest option since it
-requires the least amount of configuration.  In this example we use
-Google Domains to purchase our domain, but any other domain provider
-would work as well.
+Velociraptor server’s external IP.
 
 ### Assign an IP
 
-You can deploy a Virtual Machine over a static IP address or allow the
-cloud provider to assign a dynamic IP address. If you use a dynamic IP
-address you must also configure Dynamic DNS. Google Domains allows you
-to assign a dynamic DNS entry for our domain by selecting a Dynamic
-DNS record:
+You can assign your Virtual Machine a static IP address or allow the
+cloud provider to assign a dynamic IP address.
 
+If you use a dynamic IP address you must also configure Dynamic DNS.
+Velociraptor directly supports updating Cloudflare or No-IP Dynamic DNS so these
+are the easiest options since they requires the least amount of configuration.
 
-![DynDNS Dashboard](sso1.png)
+Alternatively you can install an external dynamic DNS client such as ddclient to
+update your DNS->IP mapping dynamically.
 
-After the dynamic address is created, you need to get the credentials
-for updating the IP address from the console. You will use these
-credentials during the interactive configuration process below.
+After the dynamic address is created, you need to note the credentials for
+updating the IP address (as configured with your DDNS provider) as you will use
+these during the interactive configuration process below.
 
 
 ## Configure Velociraptor to use Let's Encrypt
@@ -81,32 +87,34 @@ certificates. Selecting the Let's Encrypt option ensures:
 Use the guided configuration wizard to select this operation mode:
 
 ```text
-$ ./output/velociraptor config generate -i
-?
+$ ./velociraptor config generate -i
 Welcome to the Velociraptor configuration generator
----------------------------------------------------
 
-I will be creating a new deployment configuration for you. I will
-begin by identifying what type of deployment you need.
+This wizard creates a configuration file for a new deployment.
 
-  [Use arrows to move, space to select, type to filter]
-  Self Signed SSL
-> Automatically provision certificates with Lets Encrypt
+Let's begin by configuring the server itself.
+
+┃ Deployment Type
+
+┃ This wizard can create the following distinct deployment types.
+┃    Self Signed SSL
+┃  ● Automatically provision certificates with Lets Encrypt
+┃    Authenticate users with SSO
 ```
 
-{{% notice tip %}}
+{{% notice info %}}
 
-You must have both ports 80 and 443 publicly accessible by allowing
-any inbound firewall rules! Letsencrypt uses both to issue
-certificates. If you forgot to open port 80, Letsencrypt will fail to
-issue the certificate and this might result in blocking the domain
-name from getting an SSL certificate for several days. If you find
-this happened, simply change the DynDNS name and start again.
+You _must_ have both ports 80 and 443 publicly accessible by allowing these in
+any inbound firewall rules! Let's Encrypt uses both ports when issuing
+certificates. If you forgot to open port 80, Let's Encrypt will fail to
+issue the certificate. Repeated failures might result in them blocking the DNS
+name from requesting a certificate for several days. If you find that
+this has happened then you will need to change the DNS name and start again.
 
 {{% /notice %}}
 
 The first time you connect to the Admin GUI or to the frontend, the server
-will obtain its own certificates from Let's Encrypt. You should see no SSL
+will obtain its own certificate from Let's Encrypt. You should see no SSL
 warnings in your browser.
 
 
@@ -125,10 +133,10 @@ scale.
 
 Velociraptor supports a number of choices of authentication providers:
 
-1. Basic Authentication - this stores usernames and passwords in
+1. **Basic Authentication**: this stores usernames and passwords in
    Velociraptor's own datastore.
-2. Google, Azure or GitHub OAuth2 providers - these providers authenticate users via OAuth2.
-3. OIDC - uses the Open ID Connect protocol to support many IAM providers (e.g. Okta)
+2. **OAuth2**: these providers authenticate users via OAuth2 (e.g. Google, Azure or GitHub)
+3. **OIDC**: uses the Open ID Connect protocol to support many IAM providers (e.g. Okta)
 
 ### OAuth Identity management
 
