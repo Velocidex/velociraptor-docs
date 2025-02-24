@@ -173,10 +173,10 @@ In this section we'd like to draw your attention to the fact that repacking the
 Windows MSI package can be done on _any_ platform. It does not have to be done
 on Windows.
 
-Also note that in the commands below we have omitted version numbers from the
-file names to make the commands more concise, however it is useful to include
-the version number and architecture tags in your output file names so that you
-know exactly what they are.
+Also note that in the commands below we have omitted version numbers
+and architecture tags from the file names to make the commands more concise,
+however it is useful to include the version number and architecture tags in your
+output file names so that you know exactly what they are.
 
 {{% /notice %}}
 
