@@ -1,12 +1,12 @@
 ---
-title: "Quickstart"
+menutitle: "Quick Start"
+title: "Quick Start Guide"
 date: 2021-06-09
-last_reviewed: 2025-02-23
+last_reviewed: 2025-02-24
 draft: false
 weight: 5
-aliases:
-  - "/docs/deployment/self-signed/"
 ---
+
 
 Velociraptor deployments are secured using a self-signed Certificate Authority
 (CA) that is generated during the initial configuration generation step. The

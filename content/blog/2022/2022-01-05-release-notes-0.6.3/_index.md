@@ -43,7 +43,7 @@ latency of EFS IO was causing unacceptable performance issues.
 In this release we employed a number of strategies to improve
 performance on EFS (and potentially other distributed filesystems
 e.g. NFS). You can read all about the [new changes here]({{< ref
-"/docs/deployment/cloud/multifrontend/" >}}), but the gist of it is
+"/docs/deployment/server/multifrontend/" >}}), but the gist of it is
 that added caching and delayed writing strategies help to isolate the
 GUI performance from the underlying EFS latency, making the GUI
 snappy and quick even with slow filesystems.

@@ -1,7 +1,8 @@
 ---
-title: "Deployment"
+menutitle: "Deployment"
+title: "Deployment Overview"
 date: 2021-06-09T03:52:24Z
-last_reviewed: 2025-02-23
+last_reviewed: 2025-02-24
 draft: false
 weight: 10
 ---
@@ -14,8 +15,9 @@ this section we'll describe the commonly used (and recommended) deployment modes
 
 
 [SSL-Self
-Signed]({{< relref "quickstart" >}}) or [Cloud Deployment]({{< relref
-"cloud" >}}) method, or set up a Velociraptor environment on your
+Signed]({{< relref "quickstart" >}}) or
+[Cloud Deployment]({{< ref "/docs/deployment/server" >}}) method,
+or set up a Velociraptor environment on your
 local machine for testing environment. For more information, see
 [Instant Velociraptor](#instant-velociraptor).
 
@@ -27,7 +29,6 @@ to learn more about how Velociraptor is deployed with the Rapid7 Insight Platfor
 
 {{% /notice %}}
 
-## Deployment Overview
 
 Below is a typical Velociraptor deployment
 
@@ -50,6 +51,23 @@ At a high level, your Velociraptor deployment will consist of 3 tasks: setting u
 | Task 1: Deploy a Server | Choose the deployment method that works best for you: <ul><li>Self-Signed SSL - recommended for on-premises environments</li><li>Cloud Deployment - recommended for easy deployments</li><li>Instant Velociraptor - recommended if you want to install Velociraptor as a self-contained client and server on your local machine for testing purposes</li></ul> |
 | Task 2: Deploy Clients  | Deploy clients on your endpoints using one of the recommended methods:<ul><li>Run clients interactively</li><li>Install using Custom MSI</li><li> Install the Client as a Service</li><li>Agentless Deployment</li></ul>                                                                                                                                             |
 | Task 3: Authorize Users | Grant user access to the Velociraptor console.
+
+{{% notice note "Velociraptor binaries" %}}
+
+**Velociraptor only has one binary per operating system and architecture.**
+
+We don't have separate client binaries and server binaries. The command line
+options tell the binary whether to behave as a server or as a client. Therefore
+you can run the server or the client on any platform that we have a binary for.
+
+_Please note however that the server is only fully supported on Linux_ due to
+performance considerations inherent in other platforms such as Windows. But if
+you are learning or just playing around then it might be convenient for you to
+run the server or client on whatever platform you prefer. Just keep in mind
+that for production deployments we strongly recommend that the server should run
+on Linux and that issues with other platforms will not be supported.
+
+{{% /notice %}}
 
 ## Typical Deployment
 

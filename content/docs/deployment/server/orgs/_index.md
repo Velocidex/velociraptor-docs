@@ -1,7 +1,10 @@
 ---
 menutitle: "Organizations"
 title: Organizations and Multi-tenancy
-weight: 15
+weight: 20
+draft: false
+aliases:
+  - "/docs/deployment/orgs/"
 ---
 
 Velociraptor supports multiple orgs in a full multi-tenancy
@@ -26,7 +29,7 @@ Each org is logically completely separate from other orgs:
 
 * Each org contains a different set of clients. A Client is configured
   to access an org by way of a shared secret in its configuration file
-  ([Client.nonce]({{% ref "/docs/deployment/references/#Client.nonce"
+  ([`Client.nonce`]({{% ref "/docs/deployment/references/#Client.nonce"
   %}})). It is not possible for a client to connect to a different org
   without knowing this shared secret.
 * Storage for each Org is separated within the data-store directory in

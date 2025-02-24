@@ -14,28 +14,21 @@ There are several ways to run clients, depending on your needs. Ultimately
 however this amounts to running the Velociraptor binary and providing it with a
 client configuration file. The configuration file provides the client with
 cryptographic material and settings. We saw how to generate the client
-configuration file in
-[the Quickstart guide]({{< ref "/docs/deployment/quickstart/#generate-the-configuration-file" >}}).
+configuration file in the
+[server deployment guide]({{< ref "/docs/quickstart/#generate-the-configuration-file" >}}).
 
 On this page we explain how to run, and optionally install, clients on the most
 common platforms. There is no single "correct" way to deploy and use
 Velociraptor so here we also try to highlight the pros and cons of the most
 common approaches.
 
-{{% notice note %}}
+{{% notice note "Velociraptor Binaries" %}}
 
 **Velociraptor only has one binary per operating system and architecture.**
 
 We don't have separate client binaries and server binaries. The command line
 options tell the binary whether to behave as a server or as a client. Therefore
-you can run the server or the client on any platform that we have a binary for.
-
-_Please note however that the server is only fully supported on Linux_ due to
-performance considerations inherent in other platforms such as Windows. But if
-you are learning or just playing around then it might be convenient for you to
-run the server or client on whatever platform you prefer. Just keep in mind
-that for production deployments we strongly recommend that the server should run
-on Linux and that issues with other platforms will not be supported.
+you can run the client on any platform that we have a binary for.
 
 {{% /notice %}}
 
@@ -138,7 +131,7 @@ identify the location of *your* server, we can't package the configuration file
 in the official release. Therefore, the official MSI does not include a valid
 configuration file. You will need to modify the release MSI to include your
 client configuration file, which you
-[generated earlier]({{< ref "/docs/deployment/quickstart/#generate-the-configuration-file" >}}),
+[generated earlier]({{< ref "/docs/quickstart/#generate-the-configuration-file" >}}),
 and this is done through a process we call "repacking".
 
 The official release installs the Velociraptor executable into
@@ -211,7 +204,7 @@ velociraptor.exe config repack --msi velociraptor-windows.msi client.config.yaml
 {{% /tab %}}
 {{< /tabs >}}
 
-If you are using Velociraptor [organizations]({{< ref "/docs/deployment/orgs/" >}}) ("orgs")
+If you are using Velociraptor [organizations]({{< ref "/docs/deployment/server/orgs/" >}}) ("orgs")
 then you can obtain the client configuration file for each org from the Home
 page in the GUI. Ensure that you are in the `root` org so that the configs for
 all orgs are accessible.

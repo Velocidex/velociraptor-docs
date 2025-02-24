@@ -1,6 +1,8 @@
 ---
 menutitle: Multi-Frontend
 title: Multi-Frontend Configuration
+draft: false
+weight: 10
 ---
 
 {{% notice warning %}}
@@ -8,8 +10,8 @@ title: Multi-Frontend Configuration
 This configuration is currently considered **experimental!** We have
 reports of it working well but there may still be bugs and issues. We
 highly recommend that if you intend to run in this mode, please
-contact us at support@velocidex.com or on discord and provide feedback
-or issues.
+contact us at support@velocidex.com or on [Discord]({{< ref "/discord/" >}})
+and provide feedback or issues.
 
 Being experimental, this feature also falls outside our [support
 policy]({{< ref "/docs/overview/support/" >}}) and features may change

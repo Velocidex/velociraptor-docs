@@ -1,14 +1,17 @@
 ---
-menutitle: Cloud Deployment
-title: Cloud Server Deployment
+menutitle: Server Deployment
+title: Server Deployment
 draft: false
 weight: 10
+aliases:
+  - "/docs/deployment/cloud/"
+  - "/docs/deployment/self-signed/"
 ---
 
 For cloud deployments you can create a proper SSL certificate using the free
 [Let's Encrypt CA](https://letsencrypt.org/).
 This eliminates the "bad certificate" browser warning seen in the
-[Self-signed Deployment]({{< ref "/docs/deployment/quickstart/" >}}) mode.
+[Self-signed Deployment]({{< ref "/docs/quickstart/" >}}) mode.
 Velociraptor uses the Let's Encrypt protocol to obtain and manage its own
 certificates, and to automatically rotate them when they expire.
 
@@ -62,8 +65,10 @@ You can assign your Virtual Machine a static IP address or allow the
 cloud provider to assign a dynamic IP address.
 
 If you use a dynamic IP address you must also configure Dynamic DNS.
-Velociraptor directly supports updating Cloudflare or No-IP Dynamic DNS so these
-are the easiest options since they requires the least amount of configuration.
+Velociraptor directly supports updating
+[Cloudflare](https://www.cloudflare.com/learning/dns/glossary/dynamic-dns/) or
+[No-IP](https://www.noip.com/) Dynamic DNS so these are the easiest options
+since they requires the least amount of configuration.
 
 Alternatively you can install an external dynamic DNS client such as ddclient to
 update your DNS->IP mapping dynamically.
