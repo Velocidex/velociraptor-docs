@@ -90,6 +90,15 @@
         ]
     },
     {
+        "title": "Elastic.Events.Clients",
+        "description": "This server monitoring artifact will watch a selection of client or\nserver monitoring artifacts for new events and push those to an\nelastic index.",
+        "link": "/artifact_references/pages/elastic.events.clients",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Elastic.Events.Upload",
         "description": "This server monitoring artifact will watch a selection of client or\nserver monitoring artifacts for new events and push those to an\nelastic index.",
         "link": "/artifact_references/pages/elastic.events.upload",
@@ -444,6 +453,15 @@
         "title": "Linux.Detection.AnomalousFiles",
         "description": "Detects anomalous files in a Linux filesystem.",
         "link": "/artifact_references/pages/linux.detection.anomalousfiles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Detection.Yara.Glob",
+        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "link": "/artifact_references/pages/linux.detection.yara.glob",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -838,7 +856,7 @@
     },
     {
         "title": "Linux.Utils.InstallDeb",
-        "description": "Install a deb package and configure it with debconf answers. The package\nmay either be specified by name or be an uploaded file. If the package\nalready exists, it may be optionally reconfigured with debconf answers.\n",
+        "description": "Install a deb package and configure it with debconf answers. The package\nmay either be specified by name, as an uploaded file or as a \"tool\". If the\npackage already exists, it may be optionally reconfigured with debconf\nanswers.",
         "link": "/artifact_references/pages/linux.utils.installdeb",
         "type": "client",
         "tags": [
@@ -900,6 +918,24 @@
         ]
     },
     {
+        "title": "MacOS.Detection.Yara.Glob",
+        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "link": "/artifact_references/pages/macos.detection.yara.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Detection.Yara.Process",
+        "description": "This artifact enables running Yara over processes in memory.",
+        "link": "/artifact_references/pages/macos.detection.yara.process",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "MacOS.Forensics.AppleDoubleZip",
         "description": "Search for zip files containing leaked download URLs included by\nMacOS users.",
         "link": "/artifact_references/pages/macos.forensics.appledoublezip",
@@ -948,6 +984,15 @@
         "title": "MacOS.Search.FileFinder",
         "description": "Find files on the filesystem using the filename or content.",
         "link": "/artifact_references/pages/macos.search.filefinder",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Sys.Pslist",
+        "description": "List processes and their running binaries.\n",
+        "link": "/artifact_references/pages/macos.sys.pslist",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2232,6 +2277,15 @@
         ]
     },
     {
+        "title": "Windows.Collectors.File",
+        "description": "Collects files using a set of globs. All globs must be on the same\ndevice. The globs will be searched in one pass - so you can provide\nmany globs at the same time.\n",
+        "link": "/artifact_references/pages/windows.collectors.file",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Detection.Amcache",
         "description": "This artifact collects AMCache entries with a SHA1 hash to enable threat\ndetection.",
         "link": "/artifact_references/pages/windows.detection.amcache",
@@ -2403,6 +2457,15 @@
         ]
     },
     {
+        "title": "Windows.Detection.Yara.Glob",
+        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "link": "/artifact_references/pages/windows.detection.yara.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Detection.Yara.NTFS",
         "description": "This artifact searches the MFT, returns a list of target files then runs Yara\nover the target list.",
         "link": "/artifact_references/pages/windows.detection.yara.ntfs",
@@ -2478,6 +2541,15 @@
         "title": "Windows.ETW.EdgeURLs",
         "description": "This client event artifact collects all URLs accessed by the Edge browser.",
         "link": "/artifact_references/pages/windows.etw.edgeurls",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.FileCreation",
+        "description": "This artifact follows the Microsoft-Windows-Kernel-File provider.",
+        "link": "/artifact_references/pages/windows.etw.filecreation",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
@@ -3063,6 +3135,15 @@
         "title": "Windows.Network.ArpCache",
         "description": "Address resolution cache, both static and dynamic (from ARP, NDP).",
         "link": "/artifact_references/pages/windows.network.arpcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.InterfaceAddresses",
+        "description": "Network interfaces and relevant metadata. This artifact works on all\nsupported OSs.\n",
+        "link": "/artifact_references/pages/windows.network.interfaceaddresses",
         "type": "client",
         "tags": [
             "Client Artifact"

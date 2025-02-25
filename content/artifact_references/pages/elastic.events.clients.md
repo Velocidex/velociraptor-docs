@@ -4,23 +4,28 @@ hidden: true
 tags: [Server Event Artifact]
 ---
 
-This server monitoring artifact will watch a selection of client
-monitoring artifacts for new events and push those to an elastic
-index.
+This server monitoring artifact will watch a selection of client or
+server monitoring artifacts for new events and push those to an
+elastic index.
 
 NOTE: You must ensure you are collecting these artifacts from the
-clients by adding them to the "Client Events" GUI.
+clients by adding them to the "Client Events" GUI, or for server
+artifacts, the "Server Events" GUI.
 
 
-```yaml
-name: Elastic.Events.Clients
+<pre><code class="language-yaml">
+name: Elastic.Events.Upload
+aliases:
+- Elastic.Events.Clients
+
 description: |
-  This server monitoring artifact will watch a selection of client
-  monitoring artifacts for new events and push those to an elastic
-  index.
+  This server monitoring artifact will watch a selection of client or
+  server monitoring artifacts for new events and push those to an
+  elastic index.
 
   NOTE: You must ensure you are collecting these artifacts from the
-  clients by adding them to the "Client Events" GUI.
+  clients by adding them to the "Client Events" GUI, or for server
+  artifacts, the "Server Events" GUI.
 
 type: SERVER_EVENT
 
@@ -30,7 +35,7 @@ parameters:
   - name: Username
   - name: Password
   - name: APIKey
-  - name: artifactsToWatch
+  - name: ClientArtifactsToWatch
     type: artifactset
     artifact_type: CLIENT_EVENT
     default: |
@@ -38,6 +43,12 @@ parameters:
       Windows.Detection.PsexecService
       Windows.Events.ProcessCreation
       Windows.Events.ServiceCreation
+  - name: ServerArtifactsToWatch
+    type: artifactset
+    artifact_type: SERVER_EVENT
+    default: |
+      Artifact
+      Server.Audit.Logs
   - name: DisableSSLSecurity
     type: bool
     description: Disable SSL certificate verification
@@ -56,9 +67,13 @@ parameters:
 
 sources:
   - query: |
-      LET artifacts_to_watch = SELECT Artifact
-        FROM artifactsToWatch
-        WHERE log(message="Uploading artifact " + Artifact + " to Elastic")
+      LET artifacts_to_watch = SELECT * FROM chain(
+        a={SELECT Artifact FROM ClientArtifactsToWatch},
+        b={SELECT Artifact FROM ServerArtifactsToWatch})
+      WHERE NOT Artifact =~ "Elastic.Events.Upload"
+        AND log(message="Uploading artifact " + Artifact + " to Elastic")
+
+      LET s = scope()
 
       LET events = SELECT * FROM foreach(
           row=artifacts_to_watch,
@@ -66,7 +81,7 @@ sources:
           query={
              SELECT *, "Artifact_" + Artifact as _index,
                     Artifact,
-                    client_info(client_id=ClientId).os_info.hostname AS Hostname,
+                    client_info(client_id=s.ClientId || "server").os_info.hostname AS Hostname,
                     timestamp(epoch=now()) AS timestamp
              FROM watch_monitoring(artifact=Artifact)
           })
@@ -85,4 +100,5 @@ sources:
           disable_ssl_security=DisableSSLSecurity,
           type="ClientEvents")
 
-```
+</code></pre>
+

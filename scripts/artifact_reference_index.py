@@ -58,6 +58,34 @@ def cleanDescription(description):
   top_paragraph = description.split("\n\n")[0]
   return top_paragraph
 
+def write_page(data, content, index):
+  base_name = data["name"]
+  filename_name = os.path.join(artifact_page_directory, base_name.lower())
+
+  description = data.get("description", "")
+
+  record = {
+    "title": data["name"],
+    "description": cleanDescription(description),
+    "link": os.path.join("/artifact_references/pages/",
+                         base_name.lower()).replace("\\", "/"),
+    "type": data.get("type", "client").lower(),
+  }
+  record["tags"] = [getTag(record["type"])]
+
+  index.append(record)
+
+  md_filename = filename_name + ".md"
+  with open(md_filename, "w") as fd:
+     fd.write(template % (
+       data["name"],
+       getTag(record["type"]),
+       data.get("description", ""),
+
+       # Escape the content into a html block to avoid bugs in
+       # markdown parsing.
+       html.escape(content, quote=False)))
+
 def build_markdown(artifact_root_directory):
   index = []
 
@@ -73,31 +101,12 @@ def build_markdown(artifact_root_directory):
         content = stream.read()
         data = yaml.safe_load(content)
 
-        base_name = data["name"]
-        filename_name = os.path.join(artifact_page_directory, base_name.lower())
+        write_page(data, content, index)
 
-        description = data.get("description", "")
-
-        record = {
-          "title": data["name"],
-          "description": cleanDescription(description),
-          "link": os.path.join("/artifact_references/pages/",
-                               base_name.lower()).replace("\\", "/"),
-          "type": data.get("type", "client").lower(),
-        }
-        record["tags"] = [getTag(record["type"])]
-
-        index.append(record)
-
-        md_filename = filename_name + ".md"
-        with open(md_filename, "w") as fd:
-           fd.write(template % (
-             data["name"],
-             getTag(record["type"]),
-             data.get("description", ""),
-             # Escape the content into a html block to avoid bugs in
-             # markdown parsing.
-             html.escape(content, quote=False)))
+        # Make copies for all the aliases so they can be easily found
+        for alias in data.get("aliases", []):
+          data["name"] = alias
+          write_page(data, content, index)
 
   index = sorted(index, key=lambda x: x["title"])
 
