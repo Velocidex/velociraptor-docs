@@ -8,7 +8,10 @@ Sometimes we wish to move a client from one org ID to another. This
 requires updating the config on the client and rekeying the client.
 
 This artifact will replace the client's config file and restart
-it. The config file will be verified before replacing it.
+it. The config file will be verified before replacing it. If set to
+not rekey, the client will retain its client id but will be killed -
+the service manager should restart it and cause the new config to
+reload.
 
 This artifact has a notebook suggestion that allows a client to be
 changed to a different org.
@@ -21,7 +24,10 @@ description: |
   requires updating the config on the client and rekeying the client.
 
   This artifact will replace the client's config file and restart
-  it. The config file will be verified before replacing it.
+  it. The config file will be verified before replacing it. If set to
+  not rekey, the client will retain its client id but will be killed -
+  the service manager should restart it and cause the new config to
+  reload.
 
   This artifact has a notebook suggestion that allows a client to be
   changed to a different org.
@@ -34,6 +40,10 @@ parameters:
    - name: WaitPeriod
      type: int
      default: 10
+   - name: RekeyClient
+     type: bool
+     default: Y
+     description: Should the client rekey its client ID.
 
 sources:
   - query: |
@@ -46,12 +56,16 @@ sources:
         LET Config &lt;=  parse_yaml(accessor="data", filename=ConfigYaml)
 
         LET DoIt = if(condition=ValidateConfig(Config=Config),
-          else=log(message="Config is invalid") AND FALSE,
+          else=log(level="ERROR", message="Config is invalid") AND FALSE,
           then=if(condition=CheckConfigPath(ConfigPath=ConfigPath).OSPath,
-             else=log(message="Config Path %v is invalid", args=ConfigPath) AND FALSE,
+             else=log(level="ERROR",
+                      message="Config Path %v is invalid",
+                      args=ConfigPath) AND FALSE,
              then=copy(accessor="data", filename=ConfigYaml, dest=ConfigPath)
-                AND log(message="Rekeying in %v seconds ", args=WaitPeriod)
-                AND rekey(wait=WaitPeriod)
+                AND if(condition= RekeyClient,
+                then=log(message="Rekeying in %v seconds ", args=WaitPeriod)
+                     AND rekey(wait=WaitPeriod),
+                else=pskill(pid=getpid()))
         ))
 
         SELECT DoIt AS Success FROM scope()

@@ -63,15 +63,6 @@
         ]
     },
     {
-        "title": "Custom.Server.Enrichment.Virustotal",
-        "description": "Submit a file hash or IP to Virustotal for details. Default Public API restriction is 4 requests/min.",
-        "link": "/artifact_references/pages/custom.server.enrichment.virustotal",
-        "type": "server",
-        "tags": [
-            "Server Artifact"
-        ]
-    },
-    {
         "title": "Demo.Plugins.Fifo",
         "description": "This is a demo of the fifo() plugin. The Fifo plugin collects and\ncaches rows from its inner query. Every subsequent execution of the\nquery then reads from the cache. The plugin will expire old rows\ndepending on its expiration policy - so we always see recent rows.",
         "link": "/artifact_references/pages/demo.plugins.fifo",
@@ -468,6 +459,33 @@
         ]
     },
     {
+        "title": "Linux.Events.DNS",
+        "description": "This artifact uses eBPF to track DNS requests from various processes.",
+        "link": "/artifact_references/pages/linux.events.dns",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.EBPF",
+        "description": "This artifact forwards EBPF events generated on the endpoint.\n",
+        "link": "/artifact_references/pages/linux.events.ebpf",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.HTTPConnections",
+        "description": "This artifact uses eBPF to track HTTP and parse connections from\nvarious processes.",
+        "link": "/artifact_references/pages/linux.events.httpconnections",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
         "title": "Linux.Events.Journal",
         "description": "Watches the binary journal logs. Systemd uses a binary log format to\nstore logs.\n",
         "link": "/artifact_references/pages/linux.events.journal",
@@ -505,11 +523,20 @@
     },
     {
         "title": "Linux.Events.TrackProcesses",
-        "description": "This artifact uses auditd and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
+        "description": "This artifact uses ebpf and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
         "link": "/artifact_references/pages/linux.events.trackprocesses",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Forensics.ImmutableFiles",
+        "description": "Attackers sometimes enable immutable files in Linux.",
+        "link": "/artifact_references/pages/linux.forensics.immutablefiles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -1017,6 +1044,24 @@
         ]
     },
     {
+        "title": "Notebooks.Demo",
+        "description": "A notebook demonstrating features of notebooks\n",
+        "link": "/artifact_references/pages/notebooks.demo",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.Sigma.Studio",
+        "description": "A notebook to help develop Sigma rules.\n",
+        "link": "/artifact_references/pages/notebooks.sigma.studio",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
         "title": "Notebooks.Timelines",
         "description": "The notebook creates a default Super-Timeline.",
         "link": "/artifact_references/pages/notebooks.timelines",
@@ -1164,6 +1209,15 @@
         "title": "Server.Enrichment.HybridAnalysis",
         "description": "Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.",
         "link": "/artifact_references/pages/server.enrichment.hybridanalysis",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.Virustotal",
+        "description": "Submit a file hash or IP to Virustotal for details. Default Public API restriction is 4 requests/min.",
+        "link": "/artifact_references/pages/server.enrichment.virustotal",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1821,9 +1875,9 @@
         "title": "Server.Utils.SaveFavoriteFlow",
         "description": "Users may collect various artifacts from hosts. Sometimes it might\ntake a bit of effort to setup and configure just the perfect\ncombination of parameters and artifacts to collect.",
         "link": "/artifact_references/pages/server.utils.savefavoriteflow",
-        "type": "client",
+        "type": "server",
         "tags": [
-            "Client Artifact"
+            "Server Artifact"
         ]
     },
     {
@@ -2091,6 +2145,24 @@
         "title": "Windows.Applications.OfficeMacros",
         "description": "Office macros are a favourite initial infection vector. Many users\nclick through the warning dialogs.",
         "link": "/artifact_references/pages/windows.applications.officemacros",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Outlook.PST",
+        "description": "This artifact fetch emails and attachments from outlook PST file.\nThis artifact parse for outlook pst files and display the details and save \nall attachments to user specified directory.\n",
+        "link": "/artifact_references/pages/windows.applications.outlook.pst",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Outlook.PST.Header",
+        "description": "This artifact fetch emails and header details such as SPF, DMARC and DKIM from outlook PST file.\n",
+        "link": "/artifact_references/pages/windows.applications.outlook.pst.header",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2412,9 +2484,27 @@
         ]
     },
     {
-        "title": "Windows.ETW.FileCreation",
-        "description": "This artifact watches the Microsoft-Windows-Kernel-File provider\nfor new file creation events.",
-        "link": "/artifact_references/pages/windows.etw.filecreation",
+        "title": "Windows.ETW.KernelFile",
+        "description": "This artifact follows the Microsoft-Windows-Kernel-File provider.",
+        "link": "/artifact_references/pages/windows.etw.kernelfile",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.KernelNetwork",
+        "description": "This artifact follows the Microsoft-Windows-Kernel-Network provider.",
+        "link": "/artifact_references/pages/windows.etw.kernelnetwork",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.KernelProcess",
+        "description": "This artifact follows the Microsoft-Windows-Kernel-Process provider.",
+        "link": "/artifact_references/pages/windows.etw.kernelprocess",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
@@ -2502,9 +2592,9 @@
         ]
     },
     {
-        "title": "Windows.EventLogs.Kerbroasting",
-        "description": "This Artifact will return all successful Kerberos TGS Ticket events for\nService Accounts (SPN attribute) implemented with weak encryption. These\ntickets are vulnerable to brute force attack and this event is an indicator\nof a Kerbroasting attack.",
-        "link": "/artifact_references/pages/windows.eventlogs.kerbroasting",
+        "title": "Windows.EventLogs.Kerberoasting",
+        "description": "This Artifact will return all successful Kerberos TGS Ticket events for\nService Accounts (SPN attribute) implemented with weak encryption. These\ntickets are vulnerable to brute force attack and this event is an indicator\nof a Kerberoasting attack.",
+        "link": "/artifact_references/pages/windows.eventlogs.kerberoasting",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2701,7 +2791,7 @@
     },
     {
         "title": "Windows.Forensics.JumpLists",
-        "description": "The automaticdestinatinons jumplist is an OLE2 container containing\nLNK files as individual streams\n",
+        "description": "The automaticdestinations jumplist is an OLE2 container containing LNK files\nas individual streams\n",
         "link": "/artifact_references/pages/windows.forensics.jumplists",
         "type": "client",
         "tags": [
@@ -2739,6 +2829,15 @@
         "title": "Windows.Forensics.Prefetch",
         "description": "Windows keeps a cache of prefetch files. When an executable is run,\nthe system records properties about the executable to make it faster\nto run next time. By parsing this information we are able to\ndetermine when binaries are run in the past. On Windows10 we can see\nthe last 8 execution times and creation time (9 potential executions).",
         "link": "/artifact_references/pages/windows.forensics.prefetch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Pst",
+        "description": "Parses PST files.\n",
+        "link": "/artifact_references/pages/windows.forensics.pst",
         "type": "client",
         "tags": [
             "Client Artifact"

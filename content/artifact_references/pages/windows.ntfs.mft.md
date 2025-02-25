@@ -156,7 +156,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
@@ -174,7 +174,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
@@ -197,7 +197,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
@@ -221,7 +221,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)

@@ -38,6 +38,7 @@ parameters:
 sources:
   - notebook:
       - type: markdown
+        name: Timeline Description
         template: |
           # {{ Scope "TimelineName" }}
 
@@ -51,6 +52,7 @@ sources:
           {{ Scope "TimelineName" | Timeline }}
 
       - type: vql
+        name: Timeline Interactive Cell
         template: |
           /*
           # Timeline Annotations

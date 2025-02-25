@@ -34,6 +34,7 @@ file-like interface.
 |[offset](offset)|<span class='vql_type'>Accessor</span>|Allow reading another file from a specific offset|
 |[pipe](pipe)|<span class='vql_type'>Accessor</span>|Read from a VQL pipe|
 |[process](process)|<span class='vql_type'>Accessor</span>|Access process memory like a file|
+|[pst](pst)|<span class='vql_type'>Accessor</span>|An accessor to open attachments in PST files|
 |[ranged](ranged)|<span class='vql_type'>Accessor</span>|Reconstruct sparse files from idx and base|
 |[raw_ext4](raw_ext4)|<span class='vql_type'>Accessor</span>|Access the Ext4 filesystem inside an image by parsing the image|
 |[raw_file](raw_file)|<span class='vql_type'>Accessor</span>|Access the filesystem using the OS API|

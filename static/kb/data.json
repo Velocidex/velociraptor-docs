@@ -2,10 +2,14 @@
     {
         "title": "How can I automatically add & update client metadata?",
         "link": "/knowledge_base/tips/automating_metadata",
-        "tags": [],
+        "tags": [
+            "configuration",
+            "vql",
+            "deployment"
+        ],
         "author": "predictiple",
-        "author_link": "https://github.com/predictiple",
         "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
         "date": "2025-01-30"
     },
     {
@@ -420,5 +424,16 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to setup an SFTP server",
+        "link": "/knowledge_base/tips/setting_up_sftp",
+        "tags": [
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

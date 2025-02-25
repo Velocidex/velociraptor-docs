@@ -22,6 +22,7 @@ Arg | Description | Type
 flow_id||string (required)
 client_id||string (required)
 really_do_it||bool
+sync|If specified we ensure data is available immediately|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">DELETE_RESULTS</span>
 
