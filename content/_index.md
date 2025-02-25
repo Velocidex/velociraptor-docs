@@ -21,11 +21,11 @@ carousel:
 
 ---
 
-{{% notice warning "CVE-2024-10526 published on 2024-11-03" %}}
+{{% notice warning "CVE-2025-0914 published on 2025-02-25" %}}
 
-Please upgrade your client to mitigate `CVE-2024-10526` to at least
-release `0.73.3`. Alternatively run a hunt to update file permissions.
-[More details](/announcements/advisories/cve-2024-10526)
+If you use the `prevent_execve` option, please upgrade your client to
+mitigate `CVE-2025-0914` to at least release `0.73.4`. [More
+details]({{% ref "/announcements/advisories/cve-2025-0914" %}})
 
 {{% /notice %}}
 

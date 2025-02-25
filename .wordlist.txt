@@ -1674,3 +1674,7 @@ triages
 <url-free> content/docs/deployment/security/_index.md
 --------------------------------------------------------------------------------
 CRL
+FolderPath
+pst
+io
+prem

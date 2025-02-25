@@ -116,6 +116,7 @@ sources:
                Mtime AS MTime,
                Atime AS ATime,
                Ctime AS CTime,
+               Btime AS BTime,
                IsDir, Mode
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   accessor="file", nosymlink=DoNotFollowSymlinks)
@@ -147,7 +148,7 @@ sources:
             },
             query={
                SELECT OSPath, Inode, Mode,
-                      Size, ATime, MTime, CTime,
+                      Size, ATime, MTime, CTime, BTime,
                       str(str=String.Data) As Keywords
 
                FROM yara(files=OSPath,
@@ -159,7 +160,7 @@ sources:
         else={SELECT * FROM modified_before})
 
     SELECT OSPath, Inode, Mode, Size, ATime,
-             MTime, CTime, get(field='Keywords') AS Keywords,
+             MTime, CTime, BTime, get(field='Keywords') AS Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
                               accessor="file")) AS Upload,
@@ -174,6 +175,8 @@ column_types:
   - name: MTime
     type: timestamp
   - name: CTime
+    type: timestamp
+  - name: BTime
     type: timestamp
   - name: Upload
     type: preview_upload

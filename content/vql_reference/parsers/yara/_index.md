@@ -30,6 +30,7 @@ blocksize|Blocksize for scanning (1mb).|uint64
 key|If set use this key to cache the  yara rules.|string
 namespace|The Yara namespece to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
+force_buffers|Force buffer scan in all cases.|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 

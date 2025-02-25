@@ -17,6 +17,7 @@ type: NOTEBOOK
 sources:
   - notebook:
     - type: markdown
+      name: Welcome page
       template: |
         # Welcome to Velociraptor notebooks!
 
