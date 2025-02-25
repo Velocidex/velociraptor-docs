@@ -4,15 +4,21 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Using Windows.Collectors.File is deprecated. Please use
-Generic.Collectors.File instead.
+Collects files using a set of globs. All globs must be on the same
+device. The globs will be searched in one pass - so you can provide
+many globs at the same time.
 
 
-```yaml
-name: Windows.Collectors.File
+<pre><code class="language-yaml">
+name: Generic.Collectors.File
 description: |
-    Using Windows.Collectors.File is deprecated. Please use
-    Generic.Collectors.File instead.
+   Collects files using a set of globs. All globs must be on the same
+   device. The globs will be searched in one pass - so you can provide
+   many globs at the same time.
+
+aliases:
+  - Windows.Collectors.File
+
 parameters:
   - name: collectionSpec
     description: |
@@ -22,28 +28,76 @@ parameters:
     default: |
        Glob
        Users\*\NTUser.dat
+
   - name: Root
     description: |
-      On Windows, this is the device to apply all the glob on. On *NIX,
-      this should be a path to a subdirectory but must not be a real
-      device from /dev.
+      On Windows, this is the device to apply all the glob on
+      (e.g. `C:`). On *NIX, this should be a path to a subdirectory or
+      /.
     default: "C:"
+
   - name: Accessor
-    default: lazy_ntfs
+    default: auto
     description: |
-      On Windows, this can be left on `lazy_ntfs'. For *NIX, this value
-      must be set to `file' since the ntfs accessors are not available.
-  - name: Separator
-    description: |
-      The path separator used to construct the final globs from the root
-      and the partial globs in `collectionSpec'.
-    default: "\\"
+      On Windows, this can be changed to `ntfs`.
+
+  - name: NTFS_CACHE_TIME
+    type: int
+    description: How often to flush the NTFS cache. (Default is never).
+    default: "1000000"
+
 
 sources:
-   - name: Forward query to new Artifact
-     queries:
-      - SELECT * FROM Artifact.Generic.Collectors.File(Accessor=Accessor,
-          collectionSpec=collectionSpec, Root=Root, Separator=Separator)
-          WHERE log(message="Using Windows.Collectors.File is deprecated. Use Generic.Collectors.File instead.")
+   - name: All Matches Metadata
+     query: |
+      LET RootPath &lt;= pathspec(Path=Root, accessor=Accessor)
 
-```
+      -- Generate the collection globs for each device
+      LET specs = SELECT RootPath + Glob AS Glob
+            FROM collectionSpec
+            WHERE log(message=format(
+               format="Processing Device %v with %v: glob is %v",
+               args=[Root, Accessor, Glob]))
+
+      -- Join all the collection rules into a single Glob plugin. This ensure we
+      -- only make one pass over the filesystem. We only want LFNs.
+      LET hits = SELECT OSPath AS SourceFile, Size,
+               Btime AS Created,
+               Ctime AS Changed,
+               Mtime AS Modified,
+               Atime AS LastAccessed
+        FROM glob(globs=specs.Glob, accessor=Accessor)
+        WHERE NOT IsDir AND log(message="Found " + SourceFile)
+
+      -- Pass all the results to the next query. This will serialize
+      -- to disk if there are too many results.
+      LET all_results &lt;=
+         SELECT Created, Changed, LastAccessed, Modified, Size, SourceFile
+         FROM hits
+
+      SELECT * FROM all_results
+
+   - name: Uploads
+     query: |
+      -- Upload the files
+      LET uploaded_files = SELECT * FROM foreach(row={
+          SELECT * FROM all_results
+        },
+        workers=30,
+        query={
+          SELECT Created, Changed, LastAccessed, Modified, SourceFile, Size,
+               upload(file=SourceFile,
+                      accessor=Accessor,
+                      mtime=Modified) AS Upload
+            FROM scope()
+        })
+
+      -- Separate the hashes into their own column.
+      SELECT now() AS CopiedOnTimestamp, SourceFile,
+             Upload.Path AS DestinationFile,
+               Size AS FileSize, Upload.sha256 AS SourceFileSha256,
+               Created, Changed, Modified, LastAccessed
+        FROM uploaded_files
+
+</code></pre>
+
