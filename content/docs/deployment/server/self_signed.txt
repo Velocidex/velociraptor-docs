@@ -1,0 +1,20 @@
+In self-signed SSL mode, Velociraptor issues its own server
+certificate using its internal CA. This means the Admin GUI and front end
+also use a self-signed server certificate.
+
+## When to use this deployment mode
+
+This type of deployment is most appropriate for on-premises scenarios
+where internet access is not available or egress is blocked.
+
+## Self-Signed Certificates
+
+Self-signed SSL certificates trigger SSL warnings in all web
+browsers. When accessing the Admin GUI you will receive a
+certificate warning about the possibility of a MITM attack.
+
+
+
+Velociraptor doesn't support other self-signed SSL certificates, and we don't
+recommend attempting to add your own internal self-signed certificate to
+Velociraptor.

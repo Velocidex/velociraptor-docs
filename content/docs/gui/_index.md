@@ -38,7 +38,7 @@ application that can be adjusted.
 
 * `Org selector`: The Org selector allows a user to switch to a
   different org. See the [Organizations]({{% ref
-  "/docs/deployment/server/orgs/" %}}) section for more information on
+  "/docs/deployment/orgs/" %}}) section for more information on
   multi-tenancy in Velociraptor.
 
 * `Password`: If the deployment uses `Basic` authentication mode, this

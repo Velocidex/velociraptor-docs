@@ -1,0 +1,5 @@
+
+Velociraptor deployments are secured using a self-signed Certificate Authority
+(CA) that is generated during the initial configuration generation step. The
+client’s configuration contains the signed CA, which is used to verify all
+certificates needed during communications.

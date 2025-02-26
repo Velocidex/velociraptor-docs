@@ -1,6 +1,6 @@
 ---
 title: Deploying Clients
-weight: 20
+weight: 25
 last_reviewed: 2024-11-30
 ---
 
@@ -204,7 +204,7 @@ velociraptor.exe config repack --msi velociraptor-windows.msi client.config.yaml
 {{% /tab %}}
 {{< /tabs >}}
 
-If you are using Velociraptor [organizations]({{< ref "/docs/deployment/server/orgs/" >}}) ("orgs")
+If you are using Velociraptor [organizations]({{< ref "/docs/deployment/orgs/" >}}) ("orgs")
 then you can obtain the client configuration file for each org from the Home
 page in the GUI. Ensure that you are in the `root` org so that the configs for
 all orgs are accessible.

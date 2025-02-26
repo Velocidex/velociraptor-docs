@@ -1,0 +1,11 @@
+### Self-Signed
+
+### Let's Encrypt
+
+The first time you navigate to the SSL URL the server will obtain a certificate
+from Let's Encrypt. There will be a small pause as this happens.
+
+You will be redirected to Google for authentication - Velociraptor does not
+handle any credentials in this configuration. Google will determine if the user
+authenticated properly and display the user’s email address and avatar.
+
