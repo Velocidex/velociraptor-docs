@@ -1,0 +1,275 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Extending VQL :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1740542453 rel=stylesheet><link href=/css/fontawesome-all.min.css?1740542453 rel=stylesheet><link href=/css/featherlight.min.css?1740542453 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1740542453 rel=stylesheet><link href=/css/auto-complete.css?1740542453 rel=stylesheet><link href=/css/theme.css?1740542453 rel=stylesheet><link href=/css/tabs.css?1740542453 rel=stylesheet><link href=/css/hugo-theme.css?1740542453 rel=stylesheet><link href=/css/theme-mine.css?1740542453 rel=stylesheet><link href=/css/dark.css?1740542453 rel=stylesheet><link href=/css/syntax.css?1740542453 rel=stylesheet><link href=/css/light.css?1740542453 rel=stylesheet><link href=/css/hljs.css?1740542453 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1740542453 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1740542453></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/vql/extending_vql/><nav id=sidebar><div id=header-wrapper><div id=header><script>function darkmode(){$("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/"}function lightmode(){$("body").removeClass("dark").addClass("light"),document.cookie="theme=lightmode;path=/"}const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?darkmode():lightmode()</script><div class="btn btn-default ThemeSelector darkmode" onclick=darkmode()><i class="fas fa-moon"></i></div><div class="btn btn-default ThemeSelector lightmode" onclick=lightmode()><i class="fas fa-sun"></i></div><a href=https://docs.velociraptor.app/><img src=https://docs.velociraptor.app//images/logo.svg></a></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/self-signed/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/self-signed/>Self-Signed SSL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/>Cloud Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/multifrontend/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/multifrontend/>Multi-Frontend</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/troubleshooting/>Troubleshooting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/_reference/ class=dd-item><div><a href=/docs/deployment/references/_reference/></a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class="dd-item active"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filenames</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/remote_uploads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/offline_triage/remote_uploads/>Remote Uploads</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2024</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/vql/extending_vql/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Extending VQL</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#extending-vql---artifacts>Extending VQL - Artifacts</a><ul><li><a href=#extending-artifacts---powershell>Extending artifacts - PowerShell</a></li><li><a href=#dealing-with-output>Dealing with output</a></li><li><a href=#reusing-powershell-artifacts>Reusing powershell artifacts</a></li></ul></li><li><a href=#remediation>Remediation</a><ul><li><a href=#example-remediate-scheduled-tasks>Example: Remediate scheduled tasks</a></li></ul></li><li><a href=#using-external-tools>Using external tools</a><ul><li><a href=#the-autoruns-artifact>The Autoruns artifact</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Extending VQL</h1><p>VQL is really a glue language - we rely on VQL plugins and functions
+to do all the heavy lifting. VQL was never designed to be an all
+powerful language - users will hit the limits of what is possible in
+VQL pretty quickly.</p><p>To take full advantage of the power of VQL, we need to be able to
+easily extend its functionality. This section illustrates how VQL can
+be extended by including powershell scripts and external binaries.</p><p>For the ultimate level of control and automation, the Velociraptor API
+can be used to interface directly to the Velociraptor server utilizing
+many supported languages (like Java, C++, C#, Python).</p><h2 id=extending-vql---artifacts>Extending VQL - Artifacts</h2><p>The most obvious way for extending VQL is simply writing additional
+artifacts. We have seen this done extensively in previous pages: Once
+an artifact is added to Velociraptor, other artifacts can easily reuse
+it by simply calling it.</p><p>Artifacts serve to encapsulate VQL queries and allow us to build more
+complex content, but ultimately we are still limited with the basic
+capabilities of the VQL engine. Adding more artifacts can not extend
+the basic functionality provided by the built in VQL plugins and
+functions.</p><h3 id=extending-artifacts---powershell>Extending artifacts - PowerShell</h3><p>Powershell is a powerful systems automation language mainly used on
+Windows systems where is comes built in and almost always available.</p><p>Many complex software products contain powershell modules around
+automation and system administration. It does not make sense for
+Velociraptor to directly support complex software packages such as
+Office365, Azure which already come with extensive powershell support.</p><p>But it is critical to be able to recover forensically relevant data
+from these package. Therefore it makes sense to wrap powershell
+scripts in VQL artifacts.</p><p>In the following we see how to wrap a simple powershell snippet in
+VQL. The process for wrapping other powershell snippets is very
+similar.</p><p>For this example we will use the following very simple snippet of
+PowerShell which simply lists the names, process id and binary path of
+all running processes.</p><pre><code class=language-powershell>Get-Process | Select Name, Id, Path
+</code></pre><p><figure id=90d6889dffcc389de93185b50f54c3cc><div data-featherlight=#90d6889dffcc389de93185b50f54c3cc class=figure><img src=image8.png alt="Powershell snippet for listing processes"></div><figcaption><a class=image-link href=image8.png><i class="fa fa-download"></i></a>
+Powershell snippet for listing processes</figcaption></figure></p><p>In order to run powershell code from Velociraptor we will use the
+<code>execve()</code> plugin to shell out to powershell. The <code>execve()</code> plugin
+takes a list of args and builds a correctly escaped command line.</p><div class="mynotices warning"><div heading=warning><p>The <code>execve()</code> plugin takes a <strong>list</strong> of command line arguments
+(i.e. <code>argv</code>). Velociraptor will combine this list into a valid
+command line by itself taking care to escape specific args (On
+Windows). Do not attempt to construct this list from a single command
+line string, since this will likely produce an opportunity for
+<a href=https://owasp.org/www-community/attacks/Command_Injection target=_blank>Command Line
+Injection</a>
+if the commandline incorporates a user provided string.</p><p>Velociraptor minimizes the potential for this by requiring each
+argument to be explicitly provided.</p></div></div><p>Here is a simple artifact that runs the powershell script via <code>execve()</code></p><pre><code class=language-yaml>name: Custom.PowershellTest
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+        LET PowershellScript = '''Get-Process | SELECT Name, Id, Path'''
+        SELECT * FROM execve(argv=[&quot;Powershell&quot;, &quot;-ExecutionPolicy&quot;,
+            &quot;unrestricted&quot;, &quot;-c&quot;, PowershellScript])
+</code></pre><p><figure id=8377d51a7eee4ac3d315bdc7faa36897><div data-featherlight=#8377d51a7eee4ac3d315bdc7faa36897 class=figure><img src=ps1.png alt="Extending VQL with Powershell"></div><figcaption><a class=image-link href=ps1.png><i class="fa fa-download"></i></a>
+Extending VQL with Powershell</figcaption></figure></p><p>Collecting the artifact will result in the output of the powershell
+script in an Stdout column.</p><p><figure id=b373837beda826cd8d08770425df5625><div data-featherlight=#b373837beda826cd8d08770425df5625 class=figure><img src=ps2.png alt="Extending VQL with Powershell - unstructured output"></div><figcaption><a class=image-link href=ps2.png><i class="fa fa-download"></i></a>
+Extending VQL with Powershell - unstructured output</figcaption></figure></p><div class="mynotices tip"><div heading=" Encoding Powershell scripts "><p>In the above artifact we relied on Velociraptor to properly escape the
+powershell script to the powershell interpreter on the
+commandline. For more reliable encoding, we can base64 encode the
+script:</p><pre><code class=language-sql>SELECT * FROM execve(argv=[&quot;Powershell&quot;, &quot;-ExecutionPolicy&quot;,
+ &quot;unrestricted&quot;, &quot;-EncodedCommand&quot;,
+ base64encode(string=utf16_encode(string=PowershellScript))])
+</code></pre><p>Alternative, we can write the Powershell script into a temporary file
+and run it from there:</p><pre><code class=language-sql>LET ps1 &lt;= tempfile(extension=&quot;.ps1&quot;, data=PowershellScript)
+SELECT * FROM execve(
+  argv=[&quot;Powershell&quot;, &quot;-ExecutionPolicy&quot;, &quot;unrestricted&quot;, ps1)
+</code></pre></div></div><h3 id=dealing-with-output>Dealing with output</h3><p>Using the <code>execve()</code> plugin we can see the output in the <code>Stdout</code>
+column. However, it would be better to be able to deal with structured
+output. Ideally we would like the powershell enabled artifact to
+produce structured data that can be further processed by VQL.</p><p>We can use powershell&rsquo;s <code>ConvertTo-Json</code> to convert output to JSON,
+and then use Velociraptor&rsquo;s <code>parse_json()</code> plugin to obtain structured
+output.</p><pre><code class=language-yaml>name: Custom.PowershellTest
+sources:
+  - precondition:
+        SELECT OS From info() where OS = 'windows'
+
+    query: |
+        LET PowershellScript = '''Get-Process | SELECT Name, Id, Path | ConvertTo-Json'''
+        SELECT * FROM foreach(
+          row={
+            SELECT Stdout FROM execve(argv=[&quot;Powershell&quot;, &quot;-ExecutionPolicy&quot;,
+                &quot;unrestricted&quot;, &quot;-c&quot;, PowershellScript], length=1000000)
+          }, query={
+            SELECT * FROM parse_json_array(data=Stdout)
+        })
+</code></pre><p>Normally the <code>execve()</code> plugin emits a row with the child process&rsquo;s
+Stdout as soon as data is available. However in this case, splitting
+the output will break the JSON string and prevent Velociraptor from
+properly parsing it. Therefore, we supply the <code>length=1000000</code>
+parameter indicating that Stdout will be buffered up to the specified
+length before emitting the row.</p><p><figure id=0026d365f01bf65f4eb5e0bee76fb90c><div data-featherlight=#0026d365f01bf65f4eb5e0bee76fb90c class=figure><img src=ps3.png alt="Extending with Powershell - structured output"></div><figcaption><a class=image-link href=ps3.png><i class="fa fa-download"></i></a>
+Extending with Powershell - structured output</figcaption></figure></p><p>Note how the output now appears as a regular table with rows and
+columns. This allows VQL or operate on the result set as if it was
+natively generated by a VQL plugin!</p><h3 id=reusing-powershell-artifacts>Reusing powershell artifacts</h3><p>Since our powershell script is now encapsulated, we can use it inside
+other artifacts and plain VQL. Users of this artifact dont care what
+the PowerShell Script is or what it does - we have encapsulation!</p><p><figure id=f57a2b09c5bcc237c3b8ef1d48c57ec3><div data-featherlight=#f57a2b09c5bcc237c3b8ef1d48c57ec3 class=figure><img src=ps4.png alt="Reusing an artifact from VQL"></div><figcaption><a class=image-link href=ps4.png><i class="fa fa-download"></i></a>
+Reusing an artifact from VQL</figcaption></figure></p><h2 id=remediation>Remediation</h2><p>Remediation means to restore the network from a compromised state -
+Usually remove persistence, and clean up infected machines. Unlike
+traditional DFIR work that focuses on detection with minimal
+interference of the endpoint, remediation aims to modify the endpoint
+in order to actively remove threats and harden the endpoint against
+future compromise.</p><div class="mynotices warning"><div heading=" Remediation is a risky operation "><p>Remediation is inherently risky! If a bug occurs that breaks the
+endpoints, it is possible to damage the network quickly. Always
+structure your artifacts so they show a dry run - what would have been
+modified before actually performing the remediation. Always test your
+remediation artifacts on selected endpoints before starting a wide
+hunt everywhere.</p></div></div><h3 id=example-remediate-scheduled-tasks>Example: Remediate scheduled tasks</h3><p>For this example we will schedule a task to run daily. This emulates a
+common persistence used by malware to re-infect the machine daily,
+even after the machine is cleaned up.</p><pre><code class=language-ps1>SCHTASKS /CREATE /SC DAILY /TN &quot;EvilTask&quot; /TR &quot;dir c:&quot; /ST 20:01
+</code></pre><p>First let us find our evil task by collecting the
+<code>Windows.System.TaskScheduler</code> artifact.</p><p><figure id=d288b2910007b08c867158d41085a243><div data-featherlight=#d288b2910007b08c867158d41085a243 class=figure><img src=scheduled_tasks.png alt="Collecting Scheduled tasks"></div><figcaption><a class=image-link href=scheduled_tasks.png><i class="fa fa-download"></i></a>
+Collecting Scheduled tasks</figcaption></figure></p><p>Once we identify the malicious scheduled task we can remove it. An
+example of such a remediation artifact is in
+<code>Windows.Remediation.ScheduledTasks</code> artifact. Here is the relevant
+VQL from that artifact.</p><pre><code class=language-sql>SELECT * FROM foreach(row=tasks,
+  query={
+    SELECT * FROM if(condition= ReallyDoIt='Y',
+      then={
+        SELECT OSPath, Name, Command, Arguments, ComHandler, UserId, _XML
+        FROM execve(argv=[&quot;powershell&quot;,
+           &quot;-ExecutionPolicy&quot;, &quot;Unrestricted&quot;, &quot;-encodedCommand&quot;,
+              base64encode(string=utf16_encode(
+              string=format(format=script, args=[Name])))
+        ])
+      }, else={
+        SELECT OSPath, Name, Command, Arguments, ComHandler, UserId, _XML
+        FROM scope()
+      })
+  })
+</code></pre><p>Note the <code>ReallyDoIt</code> condition ensuring a dry run - if the parameter
+is not set, the artifact will report all the tasks that match but will
+not actually remove them.</p><p>We can perform a wider hunt to uncover potential malicious tasks and
+see if any false positives will be found.</p><h2 id=using-external-tools>Using external tools</h2><p>Velociraptor is an extremely capable tool, but there will always be
+situations where there will be a gap in its capabilities. We
+previously saw how we can extend VQL using powershell, but what if we
+have an external binary we would like to run on the endpoint?</p><p>We know how to shell out to an external binary using the <code>execve()</code>
+plugin, but how do we ensure the binary exists on the endpoint in the
+first place?</p><p>Velociraptor has the ability to manage external tools for artifacts
+that need to use them:</p><ul><li>Velociraptor will ensure the tool is uploaded to the endpoint</li><li>If the tool version is updated, Velociraptor will ensure the new version is used.</li><li>Many artifacts need to use the same external binary each time, it
+makes sense to cache the binary on the endpoint so subsequent
+execution simply use the same binary.</li></ul><p>As an admin, you can control aspects of this process, such as require
+the tool to be downloaded from a certain URL (e.g. an S3 bucket).</p><p>As an artifact writer you can specify your artifact will use a certain
+tool and provide a hint of where to download it from.</p><h3 id=the-autoruns-artifact>The Autoruns artifact</h3><p>We will go through an example to understand this process. Let&rsquo;s
+consider the <code>Windows.Sysinternals.Autoruns</code> artifact. This is a
+commonly used artifact that launches the <code>autorunsc.exe</code> binary
+(looking for common malware persistence) on the endpoint, collects the
+output and converts the results to a table.</p><ol><li><p>The artifact defines an external tool by specifying the <code>tools</code>
+attribute. The most important part is the <code>name</code> field, naming the
+tool uniquely.</p><p>We can also provide a URL where the binary will be downloaded from
+if required.</p></li></ol><pre><code class=language-sql>name: Windows.Sysinternals.Autoruns
+tools:
+  - name: Autorun_amd64
+    url: https://live.sysinternals.com/tools/autorunsc64.exe
+</code></pre><ol start=2><li>Next we call the <code>Generic.Utils.FetchBinary</code> artifact within the
+query in order to materialize the tool on the endpoint. In this
+case we fetch the correct tool based on the architecture.</li></ol><pre><code class=language-sql>sources:
+  - query: |
+      LET os_info &lt;= SELECT Architecture FROM info()
+
+      // Get the path to the binary.
+      LET bin &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+              ToolName= &quot;Autorun_&quot; + os_info[0].Architecture,
+              ToolInfo=ToolInfo)
+</code></pre><ol start=3><li>Next we simply run the tool and collect its output.</li></ol><pre><code class=language-sql>      LET output = SELECT * FROM execve(argv=[
+           bin[0].OSPath,
+           '-nobanner', '-accepteula', '-t', '-a', '*', '-c', '*'],
+           length=10000000)
+</code></pre><p>Let&rsquo;s collect the artifact. Simply click &ldquo;New collection&rdquo; then search
+for the autoruns artifact.</p><p><figure id=b76f3b50570af911ad1be1c75450366f><div data-featherlight=#b76f3b50570af911ad1be1c75450366f class=figure><img src=autoruns.png alt="Collecting the Autoruns artifact"></div><figcaption><a class=image-link href=autoruns.png><i class="fa fa-download"></i></a>
+Collecting the Autoruns artifact</figcaption></figure></p><p>We immediately see the tools in the artifact description. These links
+allow us to configure the tool. We can see the hash and the URL the
+tool will be fetched from. The server keeps track of the binary hash
+and requires it to match what was downloaded.</p><p><figure id=72f8a1fbbc53d1a3a7af6135324545c6><div data-featherlight=#72f8a1fbbc53d1a3a7af6135324545c6 class=figure><img src=tools.png alt="The Autoruns tools setup screen"></div><figcaption><a class=image-link href=tools.png><i class="fa fa-download"></i></a>
+The Autoruns tools setup screen</figcaption></figure></p><p>As an administrator we have the option to override the binary with our
+own copy by uploading into the GUI. We can also provide an alternative
+URL to serve the binary from.</p><p><figure id=af57d35cd0314b0af6e1721d34984296><div data-featherlight=#af57d35cd0314b0af6e1721d34984296 class=figure><img src=autoruns2.png alt="Autoruns artifact query logs"></div><figcaption><a class=image-link href=autoruns2.png><i class="fa fa-download"></i></a>
+Autoruns artifact query logs</figcaption></figure></p><p>Once the artifact is launched we can see how it works from the query
+logs:</p><ol><li>First the artifact waits for a random time in order to not
+overwhelm the server.</li><li>Next the endpoint will download the binary from a server provided
+URL. The server also tells the endpoint the tool&rsquo;s expected hash.</li><li>The endpoint compares the hash of the file it downloaded with the
+expected hash.</li><li>Once the hashes agree, the endpoint will copy the executable into
+the permanent cache directory.</li><li>The tool is now launched and the output parsed in VQL rows.</li></ol><div class="mynotices tip"><div heading=" Encapsulation of artifacts "><p>You can call any artifact from your own VQL regardless of whether they
+use tools. For example, the <code>Windows.Sysinternals.Autoruns</code> artifact
+can be used directly. Velociraptor will ensure dependent tools are
+present on the endpoint for all dependencies.</p><pre><code class=language-sql>SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
+WHERE Category =~ &quot;Services&quot; AND `Launch String` =~ &quot;COMSPEC&quot;
+</code></pre></div></div><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1740542453></script><script src=/js/perfect-scrollbar.min.js?1740542453></script><script src=/js/perfect-scrollbar.jquery.min.js?1740542453></script><script src=/js/jquery.sticky.js?1740542453></script><script src=/js/featherlight.min.js?1740542453></script><script src=/js/highlight.min.js?1740542453></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1740542453></script><script src=/js/learn.js?1740542453></script><script src=/js/hugo-learn.js?1740542453></script></body></html>
