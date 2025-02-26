@@ -162,7 +162,7 @@ delete the old datastore folder or point it to a new folder using the
 ## Other ways to use Velociraptor
 
 As mentioned above, there is not only one prescribed way to use Velociraptor,
-although deploying it in client-server mode is the primary way of deploying it,
+although deploying it in client-server mode is the primary way of deploying it
 and typical of most realworld deployments. However Velociraptor's extensive
 capabilities can also be used in innovative and unconventional ways - even ones
 we haven't thought of yet! We would love to hear about your creative ideas and
