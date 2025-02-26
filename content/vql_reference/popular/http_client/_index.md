@@ -46,7 +46,7 @@ headers and parameters may be specified. The plugin reads the
 specified number of bytes per returned row.
 
 If `disable_ssl_security` is specified we do not enforce SSL
-integrity. This is required to connect to self-signed ssl web
+integrity. This is required to connect to self signed ssl web
 sites. For example many API handlers are exposed over such
 connections.
 
@@ -55,8 +55,8 @@ connections.
 When connecting to the Velociraptor frontend itself, even in self
 signed mode, we will ensure certs are properly verified. You can
 therefore safely export files from the Frontend's public directory
-over self-signed SSL. When connecting to a self-signed Velociraptor
-frontend, we ensure the self-signed certificate was issued by the
+over self signed SSL. When connecting to a self signed Velociraptor
+frontend, we ensure the self signed certificate was issued by the
 Velociraptor internal CA - i.e. we pin the Frontend's certificate in
 the binary.
 
