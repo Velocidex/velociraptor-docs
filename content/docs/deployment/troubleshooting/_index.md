@@ -4,13 +4,13 @@ menutitle: Troubleshooting
 weight: 100
 ---
 
-### Troubleshooting deployments
+## Troubleshooting deployments
 
 Sometimes things don't work when you first try them. This page will go
 through the common issues people find when deploying Velociraptor
 clients and the steps needed to debug them.
 
-#### Server fails to start
+### Server fails to start
 
 If the server fails to start, you can try to start it by hand to see
 any logs or issues. Typically the Linux service will report something
@@ -135,7 +135,7 @@ certificate is created with a 10 year validity.
 
 {{% /notice %}}
 
-### Debugging Velociraptor
+## Debugging Velociraptor
 
 Velociraptor is a powerful program with a lot of
 functionality. Sometimes it is important to find out what is happening
@@ -150,7 +150,7 @@ collector.
 
 You can read more about profiling in [Profiling the Beast]({{% ref "/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/" %}})
 
-#### Starting the debug server
+### Starting the debug server
 
 When provided with the `--debug` flag, Velociraptor will start the
 debug server on port 6060 (use `--debug_port` to change it). By
@@ -163,7 +163,7 @@ The debug server has a number of different profiles and new ones will
 be introduced, so below we just cover some of the most useful profiles
 you can view.
 
-##### Notebook workers
+#### Notebook workers
 
 Notebooks are very useful feature of the server allowing for complex
 postprocessing of collected data. Sometimes these queries are very
@@ -173,7 +173,7 @@ limited number of notebook workers (by default 5).
 
 ![Inspecting the notebook workers](notebook_workers.png)
 
-##### Currently running queries
+#### Currently running queries
 
 This view shows the queries currently running in this process. For
 example queries will run as part of the notebook evaluation, currently
@@ -185,7 +185,7 @@ currently collecting artifacts.
 You can also see all recent queries (even the ones that have completed
 already). This helps to understand what exactly the client is doing.
 
-##### ETW Subsystem
+#### ETW Subsystem
 
 This profile shows the current state of the ETW subsystem on
 Windows. We can see what providers Velociraptor is subscribed to, how
@@ -195,7 +195,7 @@ were received from the provider.
 ![Inspecting the ETW subsystem](etw_profile.png)
 
 
-##### Go profiling information
+#### Go profiling information
 
 For even more low level view of the program execution, we can view the
 `Built in Go Profiles` which include detailed heap allocation,
@@ -206,7 +206,7 @@ This type of information is critical for developers to understand what
 the code is doing, and you should forward it in any bug reports or
 discussions to help the Velociraptor developer team.
 
-#### Debugging the offline collector
+### Debugging the offline collector
 
 The offline collector is a one shot collector which simply runs,
 collects several preconfigured artifacts into a zip file and
@@ -234,14 +234,14 @@ download goroutine, heap allocation and other profiles from the debug
 server and forward these to the Velociraptor team to resolve any issues.
 
 
-#### Debugging the server
+### Debugging the server
 
 It is also possible to collect the profile from the server without the
 use of the `--debug` flag using the `Server.Monitor.Profile`
 artifact. This is the server equivalent of the
 `Generic.Client.Profile` artifact.
 
-#### Collecting metrics
+### Collecting metrics
 
 When Velociraptor is run in production it is often necessary to build
 dashboards to monitor the server's characteristics, such as memory
