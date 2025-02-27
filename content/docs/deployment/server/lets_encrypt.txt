@@ -29,14 +29,6 @@ however the Admin GUI will only be served over SSL.
 
 {{% /notice %}}
 
-### Get a domain name
-
-An SSL certificate says that the DNS name is owned by the server that
-presents it. Since you cannot currently get a Let's Encrypt
-certificate for an IP address. you'll need buy a DNS domain from any
-provider. You'll then need to set up a DNS A Record to point at your
-Velociraptor server’s external IP.
-
 ### Assign an IP
 
 You can assign your Virtual Machine a static IP address or allow the
@@ -54,6 +46,24 @@ update your DNS->IP mapping dynamically.
 After the dynamic address is created, you need to note the credentials for
 updating the IP address (as configured with your DDNS provider) as you will use
 these during the interactive configuration process below.
+
+### Get a DNS name and SSL certificate
+
+An SSL certificate says that the DNS name is owned by the server that
+presents it. Since you cannot currently get a Let's Encrypt
+certificate for an IP address. you'll need buy a DNS domain from any
+provider. You'll then need to set up a DNS A Record to point at your
+Velociraptor server’s external IP.
+
+### DDNS
+You can use a dynamic DNS client
+such as ddclient to update your DNS->IP mapping
+dynamically. Alternatively, Velociraptor directly supports updating
+Google Domains Dynamic DNS so this is the easiest option since it
+requires the least amount of configuration.  In this example we use
+Google Domains to purchase our domain, but any other domain provider
+would work as well.
+
 
 
 ## Configure Velociraptor to use Let's Encrypt

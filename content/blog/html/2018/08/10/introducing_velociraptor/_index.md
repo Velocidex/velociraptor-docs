@@ -56,7 +56,7 @@ In short we really wanted something like this:
 
 ![](image5.png)
 
-Quick Start
+Quickstart
 ===========
 
 In this section we go through a typical deployment scenario of

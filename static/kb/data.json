@@ -1,11 +1,20 @@
 [
     {
+        "title": "How to set up authentication using Google OAuth SSO",
+        "link": "/knowledge_base/tips/setup_google_oauth",
+        "tags": [],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-02-26"
+    },
+    {
         "title": "How can I automatically add & update client metadata?",
         "link": "/knowledge_base/tips/automating_metadata",
         "tags": [],
         "author": "predictiple",
-        "author_link": "https://github.com/predictiple",
         "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
         "date": "2025-01-30"
     },
     {
@@ -420,5 +429,18 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to set up Google OAuth SSO",
+        "link": "/knowledge_base/tips/setup_google_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

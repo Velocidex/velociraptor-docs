@@ -1,6 +1,6 @@
 ---
-menutitle: "Quick Start"
-title: "Quick Start Guide"
+menutitle: "Quickstart"
+title: "Quickstart Guide"
 date: 2021-06-09
 last_reviewed: 2025-02-24
 draft: false

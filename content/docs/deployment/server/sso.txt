@@ -1,3 +1,14 @@
+Most enterprise systems require an SSO mechanism to manage user
+accounts and passwords. Manual user account management simply does not
+scale.
+
+Velociraptor supports a number of choices of authentication providers:
+
+1. **Basic Authentication**: this stores usernames and passwords in
+   Velociraptor's own datastore.
+2. **OAuth2**: these providers authenticate users via OAuth2 (e.g. Google, Azure or GitHub)
+3. **OIDC**: uses the Open ID Connect protocol to support many IAM providers (e.g. Okta)
+
 
 ## When to use this deployment mode
 
@@ -15,16 +26,7 @@ we cannot enforce 2-factor authentication, password policies,
 or any of the usual enterprise requirements for user account
 management. Users who have to remember too many passwords may be inclined to use an easily guessable password.
 
-Most enterprise systems require an SSO mechanism to manage user
-accounts and passwords. Manual user account management simply does not
-scale.
 
-Velociraptor supports a number of choices of authentication providers:
-
-1. **Basic Authentication**: this stores usernames and passwords in
-   Velociraptor's own datastore.
-2. **OAuth2**: these providers authenticate users via OAuth2 (e.g. Google, Azure or GitHub)
-3. **OIDC**: uses the Open ID Connect protocol to support many IAM providers (e.g. Okta)
 
 ### OAuth Identity management
 
