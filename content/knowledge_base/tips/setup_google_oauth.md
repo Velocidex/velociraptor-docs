@@ -14,8 +14,8 @@ information about the user (for example, the username or email address).
 Please note the following requirements:
 
 * Your Velociraptor server must have a valid SSL certificate already issued and
-  configured. This can be a certificate issued by Let's Encrypt or another
-  public CA.
+  configured. This can be a certificate issued by Let's Encrypt or
+  [another public CA]({{< ref "/knowledge_base/tips/ssl/" >}}).
 
 * Google restricts OAuth 2.0 applications to using Authorized Domains. According
   to Google:
@@ -59,8 +59,7 @@ In order to add an Authorized Domain you need to *verify it*. Google's help page
 In this example we assume that you purchased your domain with Google
 domains which makes this step easier since it is already verified.
 
-We can go back to the cloud console and `Create Credentials/OAuth
-client ID`:
+We can go back to the cloud console and `Create Credentials` > `OAuth client ID`:
 
 ![Creating OAuth2 client ID](sso15.png)
 
@@ -90,36 +89,37 @@ velociraptor config generate -i
 ![Enter OAuth credentials](config3.png)
 
 The configuration wizard asks a number of questions and creates a
-server and client configuration.
+server configuration file. The first question is "Deployment Type" and you
+should choose the option **Authenticate users with SSO**.
+
+In addition to other common configuration questions the
+following are relevant to configuring SSO:
 
 
-* **What OS will the server be deployed on?** This choice will affect the
-  defaults for various options. Production deployments are typically
-  done on a Linux machine (but the configuration can be generated on
-  Windows).
-* **Path to the datastore directory:** Velociraptor uses flat files for
-  all storage. This path is where Velociraptor will write the
-  files. You should mount any network filesystems or storage devices
-  on this path.
-* **The public DNS name of the Frontend:** The clients will connect to the
-  server using this DNS name so it should be publically accessible
-  (Note this is a DNS name and not a URL).
-* **Google OAuth2 Client ID and Secret** are obtained from above.
+
+
+* **What is the public DNS name of the Master Frontend**: This should match the
+  CN field of your valid SSL certificate.
+* **Select the SSO Authentication Provider**: Here you should choose the option "Google".
+* **Enter the OAuth Client ID**: the name as specified in Google Cloud Console.
+* **Enter the OAuth Client Secret**: as specified in Google Cloud Console.
 * **GUI Username or email address to authorize:** The initial set of
   administrator accounts can be stored in the configuration file. When
   Velociraptor starts it will automatically add these accounts as
-  administrators. When using SSO, Velociraptor does not use any
-  passwords so only the user names will be recorded.
+  administrators. When using SSO, Velociraptor does not use any passwords so
+  only the user names will be requested. While accounts can be specified here it
+  is optional as they can also be created later, as we'll show below. Entering a
+  blank value will cause the wizard to move on to the next question.
 
 
 ## Grant Access to Velociraptor
 
-The OAuth flow ensures the user's identity is correct but does not
-give them permission to log into Velociraptor. Note that having an
-OAuth enabled application on the web allows anyone with a Google
-identity to authenticate to the application but the user is still
-required to be authorized explicitly. If a user is rejected, we can
-see the following in the Audit logs:
+The OAuth flow ensures the user's identity is correct but does not give them
+permission to log into Velociraptor. Note that having an OAuth-enabled
+application on the web allows anyone with a Google identity to authenticate to
+the application but the user is still required to be authorized explicitly. If a
+user is rejected, you will see messages similar to the following in the Audit
+log:
 
 ```json
    {
@@ -139,13 +139,26 @@ Velociraptor Admin tool:
 $ velociraptor --config ~/server.config.yaml user add mike@velocidex.com
 Authentication will occur via Google - therefore no password needs to be set.
 ```
-Note that this time, Velociraptor does not ask for a password at all,
-since authentication occurs using Google's SSO. If we hit refresh in
-the browser we should be able to see the Velociraptor application dashboard.
+
+Note that Velociraptor does not ask for a password, since authentication will
+occur using Google's SSO.
+
+## Authenticate and access the Velociraptor GUI
+
+Since you have added users from the command line you will need to restart the
+Velociraptor service:
+
+```sh
+sudo systemctl restart velociraptor_server
+```
+
+Then access the GUI. If your web browser is already logged into Google then the
+authentication process should be transparent. If not then you will be directed
+to Google to authenticate and you will then be redirected back to the
+Velociraptor GUI after successful logon.
 
 We can see that the logged in user is authenticated by Google, and we
-can also see the user's Google avatar at the top right for some more
-eye candy :-).
+can also see the user's Google avatar at the top right.
 
 ![Velociraptor Dashboard](dashboard.png)
 

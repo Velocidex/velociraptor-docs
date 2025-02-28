@@ -36,40 +36,47 @@ Below is a typical Velociraptor deployment
 
 ![A typical Velociraptor deployment](overview.png)
 
-Major components include:
+We use the following terminology for Velociraptor's main components:
 
-1. The `client` is the instance of the Velociraptor agent running on the endpoint.
-2. The `frontend` is the server component communicating with the client.
-3. The `gui` is the web application server that presents the administrative interface.
-4. The `API` server is used to accept API requests.
+1. A **client** is an instance of Velociraptor running on the endpoint, that is
+   it's our endpoint "agent".
+2. The **frontend** is the server component that communicates with the client.
+3. The **GUI** is the web application server that provides the administrative
+   interface.
+4. The **API** is our gRPC-based API server.
+
+## Deployment Platforms
+
+_Velociraptor only has one binary per operating system + architecture combination._
+
+Velociraptor does not have separate client binaries and server binaries. The
+binary can act as a server, a client or a number of utility programs depending on
+the command line parameters passed to it.
+
+While this technically allows you to run the server or the client on any
+platform that we have a binary for,
+_please note that the server is only fully supported on Linux_
+due to performance considerations inherent in other platforms such as Windows.
+However for non-production deployments (e.g. development or testing) it
+might be convenient for you to run the server or client on whatever platform you
+prefer. Just keep in mind that for production deployments we strongly recommend
+that the server should run on Linux and that issues with other platforms will
+not be supported.
+
+In particular we do not support Windows-based servers at scale, although you can
+install the server on Windows for a demo or for a small number of endpoints.
+
 
 ## Deployment Milestones
 
 At a high level, your Velociraptor deployment will consist of 3 tasks: setting up a server, deploying clients, and granting user access to the console.
 
 
-| Milestone               | Description                                                                                                                                                                                                                                                                                                                                      |
-|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Milestone | Description |
+|:---:|---|
 | Task 1: Deploy a Server | Choose the deployment method that works best for you: <ul><li>Self-Signed SSL - recommended for on-premises environments</li><li>Cloud Deployment - recommended for easy deployments</li><li>Instant Velociraptor - recommended if you want to install Velociraptor as a self-contained client and server on your local machine for testing purposes</li></ul> |
 | Task 2: Deploy Clients  | Deploy clients on your endpoints using one of the recommended methods:<ul><li>Run clients interactively</li><li>Install using Custom MSI</li><li> Install the Client as a Service</li><li>Agentless Deployment</li></ul>                                                                                                                                             |
 | Task 3: Authorize Users | Grant user access to the Velociraptor console.
-
-{{% notice note "Velociraptor binaries" %}}
-
-**Velociraptor only has one binary per operating system and architecture.**
-
-We don't have separate client binaries and server binaries. The command line
-options tell the binary whether to behave as a server or as a client. Therefore
-you can run the server or the client on any platform that we have a binary for.
-
-_Please note however that the server is only fully supported on Linux_ due to
-performance considerations inherent in other platforms such as Windows. But if
-you are learning or just playing around then it might be convenient for you to
-run the server or client on whatever platform you prefer. Just keep in mind
-that for production deployments we strongly recommend that the server should run
-on Linux and that issues with other platforms will not be supported.
-
-{{% /notice %}}
 
 ## Typical Deployment
 
@@ -79,7 +86,7 @@ The **Velociraptor Server** is typically deployed on a cloud VM and runs a numbe
 The endpoints themselves run the Velociraptor Client as a service. The client is simply the Velociraptor instance running on the endpoint.
 Velociraptor Clients maintain a persistent connection with the server. This allows the server to issue a task to the clients as soon as it is scheduled by the user.  (Many other solutions rely on periodic polling between endpoint and the server leading to latency between issuing a new task and receiving the results - not so with Velociraptor).
 
-Velociraptor is distributed as a **Single Binary**, which can act as a server, client or a number of utility programs depending on command line flags.
+
 Velociraptor does not use an external datastore - all data is stored within the server’s filesystem in regular files and directories, making backups and data lifecycle management a breeze. You do not need any additional infrastructure such as databases or cloud services. Velociraptor is compatible with distributed file systems such as Amazon EFS, Google Filestore or generic NFS.
 
 **A typical deployment includes the following steps:**
@@ -89,14 +96,7 @@ Velociraptor does not use an external datastore - all data is stored within the 
 4. Install the server package on the VM. Once installed you will be able to access the  Admin GUI and front end.
 5. Create client packages for target operating systems (for example, MSI for windows).
 
-{{% notice info "Deployment platform" %}}
-We typically use Ubuntu or Debian based VMs to deploy the server in
-production. We do not support Windows based servers at scale, although
-you can install the server on windows for a demo or for a few
-endpoints.
-{{% /notice %}}
-
-![Decision tree for the main deployment options](decision_tree.svg)
+![Decision tree for the main configuration options](decision_tree.svg)
 
 ## Instant Velociraptor
 
@@ -130,22 +130,22 @@ velociraptor.exe gui
 {{< /tabs >}}
 
 Note that, unlike a production-ready server, it is fine to run this on any
-supported platform. While client capabilities do vary per platform, the server
+supported platform. The client capabilities do vary per platform, but the server
 component is identical across platforms. For testing and artifact development
 this mode is especially useful because it gives you direct access to run VQL on
 the target operating system via [notebooks]({{< ref "/docs/notebooks/" >}}).
 
-* The Server only listens on the local loopback interface.
-* The Client connects to the server over the loopback.
-A data store directory is set to the user’s temp folder.
-A single administrator user is created with username `admin` and `password`.
-A browser is launched with those credentials to connect to the welcome screen.
+* The server only listens on the local loopback interface.
+* The client connects to the server over the loopback.
+* A data store directory is set to the user’s temp folder.
+* A single administrator user is created with username `admin` and `password`.
+* The default web browser is launched with those credentials to connect to the GUI.
 
 {{% notice info "Persisting your data" %}}
 
-By default the `gui` command uses the temp folder (the location of which varies
-per platform) as it's data store. The `gui` command also automatically creates
-new server and client configuration files in the datastore folder. This allows
+By default the `gui` command uses the temp folder as it's data store (by default
+a subfolder named `gui_datastore`). The `gui` command also automatically creates
+new server and client configuration files in this datastore folder. This allows
 you to re-run the `gui` command and get the same working environment with
 persistent data.
 
@@ -168,8 +168,7 @@ capabilities can also be used in innovative and unconventional ways - even ones
 we haven't thought of yet! We would love to hear about your creative ideas and
 unusual use cases so we can continue to make Velociraptor better for everyone!
 
-Here are some other - less conventional - ways that you could deploy
-Velociraptor.
+Here are some other - unconventional - ways that you could deploy Velociraptor.
 
 ### Command line investigation tool
 
@@ -191,13 +190,27 @@ All the parsing plugins and functions are available in VQL queries, so this can
 even be used to inspect or analyze acquired forensic file artifacts, for example
 Sqlite databases or event logs.
 
-Using this capability it's possible to build Velociraptor into forensic data
-processing pipelines.
+Example:
+
+```
+```
+
+Using this capability it's possible to use Velociraptor as a command-line Swiss
+Army Knife or build it into forensic data processing pipelines.
 
 ### Instant Velociraptor as a desktop analysis tool
 
-
+While [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) is normally
+used for testing or demonstrations, it can actually be used as a standalone
+forensic environment for a single computer.
 
 ### Standalone offline collector
+
+[Offline collectors]() are created with the expectation that the data will be
+imported into a Velociraptor server, but this doesn't have to be the case. You
+may just be interested in extracting the data and working with it elsewhere
+using other tools.
+
+### Querying data and extracting files from disk images.
 
 
