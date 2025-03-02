@@ -39,6 +39,7 @@ reports:
       &lt;div class="card col-10"&gt;
       &lt;img src="./velo.svg" height="150"&gt;
       &lt;div class="card-body"&gt;
+      {{ $X := Query "LET DebugLink &lt;= link_to(type='debug', org='root')" | Expand }}
 
       # Welcome to Velociraptor!
 
@@ -51,6 +52,7 @@ reports:
       * &lt;a href="#/events/server/Server.Audit.Logs"&gt;Inspect Server Audit Log&lt;/a&gt;
       * &lt;a href="#/secrets"&gt;Manage Server Secrets&lt;/a&gt;
       * &lt;a href="#/artifacts/Server.Internal.Welcome"&gt;Customize this welcome screen&lt;/a&gt;
+      * &lt;a href="{{ Scope "DebugLink" }}"&gt;Debug the server&lt;/a&gt;
 
       Or simply search for a client in the search bar above.
 

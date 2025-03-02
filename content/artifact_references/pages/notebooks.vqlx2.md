@@ -17,14 +17,17 @@ type: NOTEBOOK
 sources:
   - notebook:
     - type: vql
+      name: First Cell
       output: |
         &lt;&lt; 1st cell: Click here to edit &gt;&gt;
       template: |
         SELECT * FROM orgs()
     - type: vql
+      name: Second Cell
       output: |
         &lt;&lt; 2nd cell: Click here to edit &gt;&gt;
       template: |
         SELECT * FROM gui_users() WHERE name = whoami()
+
 </code></pre>
 

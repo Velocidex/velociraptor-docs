@@ -52,7 +52,7 @@ number of algorithms such as:
 ### Example
 
 ```vql
-SELECT winpmem(image_path='c:/test.dd', compression='s2') FROM scope()"
+SELECT winpmem(image_path='c:/test.dd', compression='s2') FROM scope()
 ```
 
 

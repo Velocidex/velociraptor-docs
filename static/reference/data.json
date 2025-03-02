@@ -1665,6 +1665,11 @@
             {
                 "name": "really_do_it",
                 "type": "bool"
+            },
+            {
+                "name": "sync",
+                "type": "bool",
+                "description": "If specified we ensure data is available immediately"
             }
         ],
         "category": "server",
@@ -2068,6 +2073,11 @@
                 "type": "Lambda",
                 "description": "Lambda function to evaluate e.g. x=>1+1 where x will be the current scope.",
                 "required": true
+            },
+            {
+                "name": "args",
+                "type": "Any",
+                "description": "An array of elements to use as args for the lambda function. If not provided we pass the scope"
             }
         ],
         "platforms": [
@@ -2204,6 +2214,15 @@
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "favorites_list",
+        "description": "List all user's favorites.",
+        "type": "Plugin",
+        "platforms": [
+            "linux_amd64_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -2567,7 +2586,7 @@
             {
                 "name": "async",
                 "type": "bool",
-                "description": "If set we run all queries asynchronously (implies workers=1000)."
+                "description": "If set we run all queries asynchronously (implies workers=100)."
             },
             {
                 "name": "workers",
@@ -3058,6 +3077,15 @@
         ]
     },
     {
+        "name": "help",
+        "description": "Dump information about all VQL functions and plugins.",
+        "type": "Plugin",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "host",
         "description": "Perform a DNS resolution.",
         "type": "Function",
@@ -3375,6 +3403,16 @@
             {
                 "name": "really_do_it",
                 "type": "bool"
+            },
+            {
+                "name": "workers",
+                "type": "int64",
+                "description": "Delete with this many workers (default 2)"
+            },
+            {
+                "name": "archive",
+                "type": "bool",
+                "description": "Set this to only archive the hunt - it will still be accessible but will be hidden from the GUI"
             }
         ],
         "category": "server",
@@ -4405,6 +4443,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "linux_amd64_cgo",
             "windows_386_cgo",
@@ -4579,6 +4620,16 @@
                 "name": "root_ca",
                 "type": "string",
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'"
+            },
+            {
+                "name": "headers",
+                "type": "ordereddict.Dict",
+                "description": "A dict of headers to send."
             }
         ],
         "metadata": {
@@ -4660,6 +4711,16 @@
                 "name": "root_ca",
                 "type": "string",
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'"
+            },
+            {
+                "name": "headers",
+                "type": "ordereddict.Dict",
+                "description": "A dict of headers to send."
             }
         ],
         "category": "server",
@@ -4912,7 +4973,7 @@
     },
     {
         "name": "monitoring",
-        "description": "Extract monitoring log from a client. If client_id is not specified we watch the global journal which contains event logs from all clients.",
+        "description": "Extract monitoring log from a client.\n",
         "type": "Plugin",
         "args": [
             {
@@ -4946,11 +5007,6 @@
                 "name": "start_row",
                 "type": "int64",
                 "description": "Start reading the result set from this row"
-            },
-            {
-                "name": "count",
-                "type": "int64",
-                "description": "Maximum number of clients to fetch (default unlimited)'"
             }
         ],
         "category": "server",
@@ -6249,6 +6305,41 @@
         ]
     },
     {
+        "name": "parse_pst",
+        "description": "Parse a PST file and extract email data.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "The PST file to parse.",
+                "required": true
+            },
+            {
+                "name": "FolderPath",
+                "type": "string",
+                "description": "The folder path to save the attachments from emails."
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "raw",
+                "type": "bool",
+                "description": "If set we emit the raw message object for all objects"
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "parse_records_with_regex",
         "description": "Parses a file with a set of regexp and yields matches as records.  The\nfile is read into a large buffer. Then each regular expression is\napplied to the buffer, and all matches are emitted as rows.",
         "type": "Plugin",
@@ -7294,7 +7385,7 @@
             {
                 "name": "pid",
                 "type": "int64",
-                "description": "A pid to list. If this is provided we are able to operate much faster by only opening a single process."
+                "description": "A process ID to list. If not provided list all processes."
             }
         ],
         "category": "popular",
@@ -7308,6 +7399,16 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "pst",
+        "description": "An accessor to open attachments in PST files.",
+        "type": "Accessor",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "query",
@@ -7676,6 +7777,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7694,6 +7798,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7729,6 +7836,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -8561,12 +8671,12 @@
             {
                 "name": "count",
                 "type": "int64",
-                "description": "Maximum number of clients to fetch (default unlimited)'"
+                "description": "Maximum number of rows to fetch (default unlimited)"
             },
             {
                 "name": "orgs",
                 "type": "string",
-                "description": "Run the query over these orgs. If empty use the current org.'",
+                "description": "Run the query over these orgs. If empty use the current org.",
                 "repeated": true
             }
         ],
@@ -10684,6 +10794,18 @@
                 "name": "description",
                 "type": "string",
                 "description": "Description for this GUID provider"
+            },
+            {
+                "name": "kernel_tracer_type",
+                "type": "string",
+                "description": "A list of event types to fetch from the kernel tracer (can be registry, process, image_load, network, driver, file, thread, handle)",
+                "repeated": true
+            },
+            {
+                "name": "kernel_tracer_stacks",
+                "type": "string",
+                "description": "A list of kernel tracer event types to append stack traces to (can be any of the types accepted by kernel_tracer_type)",
+                "repeated": true
             }
         ],
         "category": "event",
@@ -11115,6 +11237,11 @@
                 "name": "buffer_size",
                 "type": "int",
                 "description": "Maximum size of buffer before flushing to file."
+            },
+            {
+                "name": "max_time",
+                "type": "int",
+                "description": "Maximum time before flushing the buffer (10 sec)."
             }
         ],
         "metadata": {
@@ -11248,6 +11375,11 @@
                 "name": "vars",
                 "type": "ordereddict.Dict",
                 "description": "The Yara variables to use."
+            },
+            {
+                "name": "force_buffers",
+                "type": "bool",
+                "description": "Force buffer scan in all cases."
             }
         ],
         "category": "parsers",

@@ -31,8 +31,8 @@ notebook_cell_id|The notebook cell read from (should also include notebook id)|s
 notebook_cell_version|The notebook cell version to read from (should also include notebook id and notebook cell)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
-count|Maximum number of clients to fetch (default unlimited)'|int64
-orgs|Run the query over these orgs. If empty use the current org.'|list of string
+count|Maximum number of rows to fetch (default unlimited)|int64
+orgs|Run the query over these orgs. If empty use the current org.|list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 

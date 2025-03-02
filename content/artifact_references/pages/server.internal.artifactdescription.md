@@ -52,7 +52,7 @@ reports:
       ### Tools
 
       {{ range $artifact.Tools -}}
-      * &lt;grr-tool-viewer name="{{.Name}}" version="{{.Version}}"&gt;&lt;/grr-tool-viewer&gt;
+      * &lt;velo-tool-viewer name="{{.Name}}" version="{{.Version}}"&gt;&lt;/velo-tool-viewer&gt;
       {{ end }}
 
       {{ end }}
@@ -113,22 +113,39 @@ reports:
 
       {{ range $source := $artifact.Sources }}
 
-      {{ if or $source.Queries $source.Query }}
+      {{ if or $source.Queries $source.Query $source.Notebook }}
 
       ### Source {{ $source.Name }}
+
       {{ if $source.Query }}
 
       ```vql
       {{ $source.Query }}
       ```
 
-      {{- else -}}
+      {{- else if $source.Queries -}}
 
       ```vql
       {{ range $query := $source.Queries -}}
       {{- $query -}}
       {{ end }}
       ```
+
+      {{ end }}
+
+      {{ if len $source.Notebook }}
+
+      #### Notebook cells
+
+      {{ range $notebook := $source.Notebook }}
+
+      {{ if $notebook.Name }}
+      * `{{ $notebook.Type }}`: {{ $notebook.Name }}
+      {{ else }}
+      * `{{ $notebook.Type }}`
+      {{ end }}
+      {{ end }}
+
       {{ end }}
 
       {{ end }}
