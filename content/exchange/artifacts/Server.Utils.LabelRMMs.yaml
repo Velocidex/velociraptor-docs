@@ -1,0 +1,56 @@
+name: Server.Utils.LabelRMMs
+author: Herbert Bärschneider
+description: |
+    This (server monitoring) artifact tags systems with the RMM tools present on them.
+    The artifact is dependent on the artifact Windows.Detection.RMMs (found on the Artifact Exchange)
+    
+    After activating this monitoring artifact on the server, run the (client) artifact on systems of interest.
+    
+    The (server monitoring) artifact itself produces no relevant output. It should lead to the clients being tagged with the names of present RMM tools.
+
+type: SERVER_EVENT
+
+parameters:
+   - name: LabelBasedOnNetworkIndicators
+     type: bool
+     default: false
+     description: Activate tagging of systems based on network indicators for RMMs; please consider that these are more likely to create false positives
+
+sources:
+  - name: WindowsInstalledPrograms
+    query: |
+      LET rmm_findings = SELECT * FROM watch_monitoring(artifact="System.Flow.Completion")
+      WHERE Flow.artifacts_with_results =~ "Exchange.Windows.Detection.RMMs/InstalledPrograms"
+      
+      SELECT * FROM foreach(
+        row=rmm_findings, 
+        query={ 
+          SELECT * FROM foreach(
+            row={
+              SELECT RMM FROM source(artifact="Exchange.Windows.Detection.RMMs/InstalledPrograms")
+              GROUP BY RMM -- cheap deduplication
+              },
+            query={
+              SELECT label(client_id=ClientId, labels=RMM, op="set") FROM info()
+              })
+          })
+      
+  - name: WindowsResolvedDomains
+    precondition:
+      SELECT OS From info() Where LabelBasedOnNetworkIndicators
+    query: |
+      LET rmm_findings = SELECT * FROM watch_monitoring(artifact="System.Flow.Completion")
+      WHERE Flow.artifacts_with_results =~ "Exchange.Windows.Detection.RMMs/ResolvedDomains"
+      
+      SELECT * FROM foreach(
+        row=rmm_findings, 
+        query={ 
+          SELECT * FROM foreach(
+            row={
+              SELECT RMM FROM source(artifact="Exchange.Windows.Detection.RMMs/ResolvedDomains")
+              GROUP BY RMM -- cheap deduplication
+              },
+            query={
+              SELECT label(client_id=ClientId, labels=RMM, op="set") FROM info()
+              })
+          })
