@@ -57,11 +57,10 @@ While this technically allows you to run the server or the client on any
 platform that we have a binary for,
 _please note that the server is only fully supported on Linux_
 due to performance considerations inherent in other platforms such as Windows.
-However for non-production deployments (e.g. development or testing) it
-might be convenient for you to run the server or client on whatever platform you
-prefer. Just keep in mind that for production deployments we strongly recommend
-that the server should run on Linux and that issues with other platforms will
-not be supported.
+However for non-production deployments (e.g. development or testing) it might be
+convenient for you to run the server on whatever platform you prefer. Just keep
+in mind that for production deployments we strongly recommend that the server
+should run on Linux and that issues with other platforms will not be supported.
 
 In particular we do not support Windows-based servers at scale, although you can
 install the server on Windows for a demo or for a small number of endpoints.
@@ -69,14 +68,14 @@ install the server on Windows for a demo or for a small number of endpoints.
 
 ## Deployment Milestones
 
-At a high level, your Velociraptor deployment will consist of 3 tasks: setting up a server, deploying clients, and granting user access to the console.
+At a high level, your Velociraptor deployment will consist of 3 tasks: setting up a server, deploying clients, and granting user access to the server's web UI.
 
 
 | Milestone | Description |
 |:---:|---|
 | Task 1: Deploy a Server | Choose the deployment method that works best for you: <ul><li>Self-Signed SSL - recommended for on-premises environments</li><li>Cloud Deployment - recommended for easy deployments</li><li>Instant Velociraptor - recommended if you want to install Velociraptor as a self-contained client and server on your local machine for testing purposes</li></ul> |
 | Task 2: Deploy Clients  | Deploy clients on your endpoints using one of the recommended methods:<ul><li>Run clients interactively</li><li>Install using Custom MSI</li><li> Install the Client as a Service</li><li>Agentless Deployment</li></ul>                                                                                                                                             |
-| Task 3: Authorize Users | Grant user access to the Velociraptor console.
+| Task 3: Authorize Users | Grant user access to the Velociraptor server's web UI.
 
 ## Typical Deployment
 
@@ -103,7 +102,7 @@ Velociraptor does not use an external datastore - all data is stored within the 
 If you want to instantly start a Velociraptor instance for evaluation, learning,
 experimentation, testing, or any another reason, you can run "Instant
 Velociraptor". This is a fully functional, self-contained Velociraptor system on
-to your local machine. In this mode of operation you'll get the server and a
+to your local machine. In this mode of operation you'll get the server plus a
 single client running within the same process on your machine. All the necessary
 configuration is taken care of automatically. With a single command you can be
 ready to dive right in to the fun stuff!
@@ -138,7 +137,7 @@ the target operating system via [notebooks]({{< ref "/docs/notebooks/" >}}).
 * The server only listens on the local loopback interface.
 * The client connects to the server over the loopback.
 * A data store directory is set to the user’s temp folder.
-* A single administrator user is created with username `admin` and `password`.
+* A single administrator user is created with username `admin` and password `password`.
 * The default web browser is launched with those credentials to connect to the GUI.
 
 {{% notice info "Persisting your data" %}}
@@ -159,7 +158,7 @@ delete the old datastore folder or point it to a new folder using the
 
 {{% /notice %}}
 
-## Other ways to use Velociraptor
+<!-- ## Other ways to use Velociraptor
 
 As mentioned above, there is not only one prescribed way to use Velociraptor,
 although deploying it in client-server mode is the primary way of deploying it
@@ -214,3 +213,4 @@ using other tools.
 ### Querying data and extracting files from disk images.
 
 
+### Ephemeral clients -->

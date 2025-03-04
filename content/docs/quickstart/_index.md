@@ -93,7 +93,7 @@ To keep things simple, in this deployment scenario we are going to assume that:
 
 2. No DNS records have been configured for the server. While it is definitely
    preferable for the clients to be able to resolve and connect to the server by
-   DNS name, for Slef-Signed SSL mode it is not a requirement. Here we will use
+   DNS name, for Self-Signed SSL mode it is not a requirement. Here we will use
    IP addresses in our configuration, but that means you need to be sure that
    your server's IP address is static and will not change for the duration of
    your deployment. Alternatively you should set up an DNS A record for your
