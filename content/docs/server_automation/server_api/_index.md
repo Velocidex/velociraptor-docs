@@ -120,54 +120,78 @@ values `API.hostname` and `API.bindaddress` in the server configuration, so you
 should ensure that these are set correctly before generating the API config
 file.
 
-You can change the permission of an existing certificate (or user) by granting a
-different role using the `acl grant` command. The `acl grant` command _replaces_
-the existing roles - it does not add to them.
+#### Managing API roles
 
-Example:
-```
-$ velociraptor --config server.config.yaml acl grant Mike --role investigator,api
-```
+The Velociraptor GUI contains a User Management screen where you can inspect all
+the currently issued API users as well as GUI users. There is inherently no
+difference between API users and GUI users other than the fact that API users
+are authenticated with certificates.
 
-{{% notice tip "Granting roles" %}}
+![User Management](user_management.png)
 
-For an API key to be able to connect the key must have the `api` role as well.
-This is a minimum role to allow external connections. The `administrator` role
-is very powerful and we recommend external programs not be given this role.
-Instead consider carefully what permission the external program requires on the
-server and select the appropriate "least permissions" role for it.
 
-If an API client's credentials are compromised you can remove all its roles
-using the `acl grant` command. This prevents the credentials from being used on the
-server at all.
+##### Granting roles
 
-```
-$ velociraptor --config server.config.yaml acl grant Mike --role ""
-```
+For an API user to be able to connect it must have at least the `api` role. This
+is the minimum role to allow external connections to the API. In addition the
+API user will need roles granted that provide it with the permissions that you
+need it to have. The roles and permissions should be appropriate for your
+specific use case. Note that the `administrator` role is very powerful and we
+recommend that external programs NOT be given this role. Instead consider
+carefully what permission the external program requires on the server and select
+the appropriate role for it based on "least permissions" principles.
 
-Note role role changes made from the CLI require a service restart. You will see
-a message recommending this after running the `acl grant` command.
 
-{{% /notice %}}
+##### Inspecting roles
 
 At any time you can inspect the roles given to the user using the `acl show`
 command.
 
 ```
-$ velociraptor --config /etc/velociraptor/server.config.yaml acl show Mike
+$ velociraptor --config server.config.yaml acl show bob@local
 {"roles":["administrator","api"]}
 ```
 
-{{% notice tip "Managing API roles" %}}
+Or you can view the roles and effective permissions in the GUI's User Management
+screen:
 
-Since release 0.6.7 the Velociraptor GUI contains a user management pane. You
-can use this to inspect all the currently issued API users as well as GUI users
-(There is inherently no difference between API users and GUI users other than
-the fact that API users are authenticated with certificates).
+![User Management > Roles and Permissions](viewing_acls.png)
 
-![User Management](user_management.png)
+Or you can query the roles using VQL:
 
-{{% /notice %}}
+```vql
+SELECT * FROM gui_users() WHERE name = "bob@local"
+```
+
+##### Changing roles
+
+Roles can be easily added or removed in the GUI's User Management screen.
+
+On the command line you can change the permissions of an existing
+user by granting a different role using the `acl grant` command. The `acl grant`
+command _replaces_ the existing roles - it does not add to them.
+
+```
+$ velociraptor --config server.config.yaml acl grant Mike --role investigator,api
+```
+
+Note that role role changes made from the CLI require a service restart. You
+will see a message recommending this after running the `acl grant` command.
+Changes made in the GUI or VQL do not require a service restart.
+
+##### Removing roles
+
+If an API client's credentials are compromised you can remove all its roles
+using the `acl grant` command. This prevents the credentials from being used on
+the server at all.
+
+```
+$ velociraptor --config server.config.yaml acl grant Mike --role ""
+```
+
+In the GUI this can be achieved by deselecting all roles from the user in all
+orgs.
+
 
 ## Python bindings
 
