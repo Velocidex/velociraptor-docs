@@ -4,7 +4,7 @@ title: "Quickstart Guide"
 date: 2025-02-27
 last_reviewed: 2025-02-27
 draft: false
-weight: 5
+weight: 10
 aliases:
   - "/docs/deployment/self-signed/"
 ---
@@ -134,12 +134,11 @@ Linux in this guide.
 {{% /notice %}}
 
 
-![Client config is a subset of the full config](config_yaml.svg)
 
 ## What next?
 
-Here are other steps you may want to consider:
+Here are the next steps you may want to consider:
 
-- One
+- [Velociraptor Security Configuration]({{< ref "/docs/deployment/security/" >}})
 - Two
 - Three

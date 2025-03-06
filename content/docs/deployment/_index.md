@@ -70,6 +70,18 @@ install the server on Windows for a demo or for a small number of endpoints.
 
 At a high level, your Velociraptor deployment will consist of 3 tasks: setting up a server, deploying clients, and granting user access to the server's web UI.
 
+**Task 1: Deploy a Server**
+- Choose the deployment method that works best for you:
+
+**Task 2: Deploy Clients**
+- Deploy clients on your endpoints using one of the recommended methods:
+  - Run clients interactively
+  - Install using Custom MSI
+  - Install the Client as a Service
+  - Agentless Deployment
+
+**Task 3: Authorize Users**
+- Grant user access to the Velociraptor server's web UI
 
 | Milestone | Description |
 |:---:|---|

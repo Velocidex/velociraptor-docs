@@ -4,18 +4,11 @@ weight: 25
 last_reviewed: 2024-11-30
 ---
 
-We refer to Velociraptor endpoint agents as "clients".
+We refer to Velociraptor endpoint agents as **clients**.
 
 Clients connect to the server and wait for instructions, which mostly consist of
 VQL queries. They then run the VQL queries assigned to them by the server and
 return the results to the server.
-
-There are several ways to run clients, depending on your needs. Ultimately
-however this amounts to running the Velociraptor binary and providing it with a
-client configuration file. The configuration file provides the client with
-cryptographic material and settings. We saw how to generate the client
-configuration file in the
-[server deployment guide]({{< ref "/docs/quickstart/#generate-the-configuration-file" >}}).
 
 On this page we explain how to run, and optionally install, clients on the most
 common platforms. There is no single "correct" way to deploy and use
@@ -28,9 +21,39 @@ common approaches.
 
 We don't have separate client binaries and server binaries. The command line
 options tell the binary whether to behave as a server or as a client. Therefore
-you can run the client on any platform that we have a binary for.
+you can run the client on any platform and architecture that we have a binary
+for.
+
+For platforms and architectures where we don't have a precompiled binary you may
+still be able to compile one yourself from source, provided that Golang supports
+the target platform+architecture combination.
 
 {{% /notice %}}
+
+## Generating the client configuration file
+
+There are several ways to run clients, depending on your needs. Ultimately
+however this amounts to running the Velociraptor binary and providing it with a
+**client configuration file**. The configuration file provides the client with
+cryptographic material, connection information and other client-related
+settings.
+
+We saw how to generate the server configuration file in the
+[server deployment guide]({{< ref "/docs/deployment/server/#generate-the-configuration-file" >}}).
+The client configuration is contained within the server configuration.
+
+![Client config is a subset of the full config](client_config_yaml.svg)
+
+Generating the client config effectively amounts to extracting the `Client`
+section from the full config. There are two ways to accomplish this:
+
+1. Using the Admin GUI (recommended)
+2. Using the command line
+
+### Obtaining the client config from the GUI
+
+### Obtaining the client config on the command line
+
 
 ## Running clients interactively
 

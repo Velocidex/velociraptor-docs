@@ -161,3 +161,11 @@ connect to the local loopback address.
 ## Install the server package
 
 ## Accessing the GUI
+
+## What next?
+
+Here are the next steps you may want to consider:
+
+- [Velociraptor Security Configuration]({{< ref "/docs/deployment/security/" >}})
+- Two
+- Three

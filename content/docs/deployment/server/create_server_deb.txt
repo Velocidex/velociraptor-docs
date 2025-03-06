@@ -222,6 +222,9 @@ an old server to a new server by simply user remote upgrade.
 
 {{% /notice %}}
 
+For more information about additional upgrade considerations, see
+[How do I upgrade my server and clients?]({{< ref "/knowledge_base/tips/upgrading/" >}})
+
 ## Reverting versions
 
 It is generally ok to revert from later versions to earlier versions
