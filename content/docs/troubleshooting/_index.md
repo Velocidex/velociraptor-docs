@@ -9,7 +9,17 @@ weight: 80
 Sometimes things don't work when you first try them.
 
 This section provides strategies and steps for troubleshooting the most common
-issues that people encounter when deploying and using Velociraptor .
+issues that people encounter when deploying and using Velociraptor.
+
+{{% notice tip "Are you running the latest version?" %}}
+
+Velociraptor development moves fast and bug fixes are a top priority for us! So
+before you begin troubleshooting, it's always worth checking that you're running
+the latest version, just in case your issue is one that's already been fixed.
+The current version is available on our [Downloads]({{< ref "/downloads/" >}})
+page.
+
+{{% /notice %}}
 
 {{% children style="h4" description=true %}}
 
