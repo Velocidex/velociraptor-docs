@@ -1,0 +1,203 @@
+name: Windows.Detection.Honeyfile
+author: Zane Gittins
+description: |
+   This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It first enables system-wide file auditing to monitor file access, 
+   then creates the honeyfiles based on the specified parameters, and finally monitors access events in the security event log. HexString is the starting magic bytes of the honeyfile. 
+   The size of the file will be a random value between MinSize and MaxSize.
+   
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: CLIENT_EVENT
+
+parameters:
+  - name: Honeyfiles
+    description: The honeyfiles to generate and monitor.
+    type: csv
+    default: |
+      PathGlob,Enabled,HexString,MinSize,MaxSize
+      "C:\Users\\*\Documents\KeePass\KeePass.kdbx",Y,03D9A29A67FB4BB5,1024,2048
+      "C:\Users\\*\AppData\Local\KeePass\KeePass.config.xml",Y,3C3F786D6C,512,1024
+      "C:\Users\\*\AppData\Local\LastPass\lastpass.conf",Y,3C3F786D6C,512,1024
+      "C:\Users\\*\AppData\Roaming\LastPass\loginState.xml",Y,3C3F786D6C,512,1024
+      "C:\Users\\*\AppData\Roaming\WinSCP\WinSCP.ini",Y,5B436F6E66696775726174696F6E5D,512,1024
+      "C:\Users\\*\.aws\credentials",Y,5B64656661756C745D,512,2048
+      "C:\Users\\*\.aws\config",Y,5B64656661756C745D,512,2048
+      "C:\Users\\*\.ssh\my_id_rsa",Y,2D2D2D2D2D424547494E205253412050524956415445204B45592D2D2D2D2D,1024,4096
+      "C:\Users\\*\.gcloud\credentials.db",Y,5343514C697465,512,2048
+      "C:\Users\\*\.azure\azureProfile.json",Y,7B0D0A,512,2048
+  - name: ProcessExceptionsRegex
+    description: Except these processes from detections when they access honeyfiles.
+    type: string
+    default: "SearchProtocolHost.exe"
+  - name: AccessListExceptionsRegex
+    description: Except these accesslists from detections.
+    type: string
+    default: "%%1538"
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+     LET PowershellScript = '''#Requires -Version 5.0
+        param(
+            [string]$Path,
+            [string]$HexString,
+            [int]$MinSize,
+            [int]$MaxSize
+        )
+        $ErrorActionPreference = "SilentlyContinue"
+        $global:ReturnData = @()
+        class Honeyfile {
+            [string]$Path   = ""
+            [string]$Error  = ""
+        }
+        function Set-AuditACL {
+            [CmdletBinding()]
+            param (
+                [Parameter(Mandatory=$true)][string]$Path
+            )
+            try {
+                $acl = Get-Acl -Path $Path
+                $AuditUser = "Everyone"
+                $AuditRules = "Read,Write"
+                $AuditType = "Success,Failure"
+                $AccessRule = New-Object System.Security.AccessControl.FileSystemAuditRule($AuditUser, $AuditRules, "None", "None", $AuditType)
+                $acl.SetAuditRule($AccessRule)
+                Set-Acl -Path $Path -AclObject $acl
+                return $true
+            }
+            catch {
+                return $false
+            }
+        }
+        function Get-GlobToPaths {
+            [CmdletBinding()]
+            param (
+                [Parameter(Mandatory=$true)][string]$PathGlob
+            )
+            $filePaths = @()
+            if ($Path -match "^(?<prefix>.*?)[\\\/]\*(?<suffix>[\\\/].*)$") {
+                $prefix = $matches['prefix']
+                $suffix = $matches['suffix']
+                if (Test-Path $prefix) {
+                    $directories = Get-ChildItem -Path $prefix -Directory -ErrorAction SilentlyContinue
+                    foreach ($dir in $directories) {
+                        $finalPath = Join-Path -Path $dir.FullName -ChildPath $suffix.TrimStart('\','/')
+                        $filePaths += $finalPath
+                    }
+                }
+                else {
+                    Write-Verbose "Base directory '$prefix' does not exist."
+                    return $
+                }
+            }
+            else {
+                $filePaths += $Path
+            }
+            return $filePaths
+        }
+        function New-Honeyfile {
+            [CmdletBinding()]
+            param (
+                [Parameter(Mandatory=$true)][string]$Path,
+                [Parameter(Mandatory=$true)][string]$HexString,
+                [Parameter(Mandatory=$true)][int]$MinSize,
+                [Parameter(Mandatory=$true)][int]$MaxSize
+            )
+            # Remove an optional 0x prefix (case-insensitive).
+            $trimmedHex = $HexString -replace '^0[xX]', ''
+            # Also remove any spaces or other non-hex characters (optional if you expect strictly "0xDEADBEEF").
+            $trimmedHex = $trimmedHex -replace '\s+', ''
+            # Convert the cleaned hex string into a byte array.
+            $magicBytes = for ($i = 0; $i -lt $trimmedHex.Length; $i += 2) {
+                [Convert]::ToByte($trimmedHex.Substring($i, 2), 16)
+            }
+             # Get multiple file paths if our given path has a glob.
+             $filePaths = Get-GlobToPaths -PathGlob $Path
+             # For each file path, create the file/directory, and set audit acl.
+             foreach ($file in $filePaths) {
+                $NewFile = [Honeyfile]::new()
+                $NewFile.Path = $file
+                # Ensure the target directory exists.
+                $directory = Split-Path -Path $file -Parent
+                if (!(Test-Path -Path $directory)) {
+                    New-Item -ItemType Directory -Path $directory -Force | Out-Null
+                }
+                # Only create the file if it does not already exist.
+                if (!(Test-Path -Path $file)) {
+                    $fileSize = Get-Random -Minimum $MinSize -Maximum ($MaxSize + 1)
+                    $content = New-Object byte[] $fileSize
+                    [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($content)
+                    $lengthToCopy = [Math]::Min($magicBytes.Length, $content.Length)
+                    [Array]::Copy($magicBytes, 0, $content, 0, $lengthToCopy)
+                    [System.IO.File]::WriteAllBytes($file, $content)
+                    Write-Verbose "Created honeyfile at $file with size $fileSize bytes."
+                }
+                else {
+                    Write-Verbose "Honeyfile already exists at $file. Skipping creation."
+                    $NewFile.Error = "Honeyfile already exist"
+                }
+                # Attempt to set the audit acl on the file.
+                if(Set-AuditACL -Path $file) {
+                    $NewFile.Error = "Success"
+                } else {
+                    $NewFile.Error = "Failed to set audit acl."
+                }
+                $global:ReturnData += $NewFile
+            }
+        }
+        # Ensure file system auditing is enabled.
+        auditpol /set /category:"Object Access" /subcategory:"File System" /success:enable /failure:enable | Out-Null
+        # Create honeyfiles
+        New-Honeyfile -Path $Path -HexString $HexString -MinSize $MinSize -MaxSize $MaxSize
+        # Return results to Velociraptor
+        return ConvertTo-Json -InputObject @($global:ReturnData)
+       '''
+     LET ps1 <= tempfile(
+         extension=".ps1",
+         data=PowershellScript)
+     LET CreateFiles = SELECT *
+       FROM foreach(
+         row={
+           SELECT 
+                  Stdout
+           FROM execve(
+             argv=["Powershell", "-ExecutionPolicy", "unrestricted", "-File", ps1, "-Path", PathGlob, "-HexString", HexString, "-MinSize", MinSize, "-MaxSize", MaxSize],
+             length=1000000)
+           WHERE Enabled =~ "Y"
+         },
+         query={
+           SELECT *
+           FROM parse_json_array(data=Stdout)
+         })
+     LET WatchFiles <= SELECT *
+       FROM foreach(
+         row=Honeyfiles,
+         query=CreateFiles)
+       WHERE Error = "Success"
+     // Capture start time + 30 second offset to avoid reading events from setting up the honeyfiles.
+     LET StartTime <= timestamp(
+         epoch=(now() + 30))
+     LET AuditEvents = SELECT *
+       FROM watch_evtx(filename="C:\\Windows\\system32\\winevt\\Logs\\Security.evtx")
+       WHERE System.EventID.Value = 4663
+        AND timestamp(
+              epoch=System.TimeCreated.SystemTime) > StartTime
+             AND NOT EventData.ProcessName =~ ProcessExceptionsRegex
+                  AND NOT EventData.AccessList =~ AccessListExceptionsRegex
+     SELECT *
+     FROM foreach(
+       row=AuditEvents,
+       query={
+         SELECT 
+                timestamp(
+                  epoch=System.TimeCreated.SystemTime) AS Timestamp,
+                EventData.ObjectName AS ObjectName,
+                EventData.SubjectDomainName AS DomainName,
+                EventData.SubjectUserName AS User,
+                EventData.AccessList AS AccessList,
+                EventData.AccessMask AS AccessMask,
+                EventData.ProcessId AS Pid,
+                EventData.ProcessName AS ProcessName
+         FROM WatchFiles
+         WHERE EventData.ObjectName = Path
+       })
