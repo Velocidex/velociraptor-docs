@@ -177,6 +177,7 @@ sources:
                     string=System.TimeStamp) AS Timestamp,
                   EventData.FileName AS FileName,
                   EventData.IoFlags AS IoFlags,
+                  System.ProcessID AS Pid,
                   ProcInfo.Name AS ExeName,
                   ProcInfo.Username AS User,
                   ProcInfo.Exe AS Image,
