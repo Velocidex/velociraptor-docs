@@ -55,28 +55,33 @@ sources:
                DeployHoneyFiles=True,
                HoneyUserRegex=HoneyUserRegex)
            })
-       SELECT *
-       FROM delay(
-         query={
-           SELECT 
-                  timestamp(
-                    string=System.TimeStamp) AS Timestamp,
-                  get(
-                    item=WatchFiles,
-                    field=EventData.FileName) AS IsHoneyFile,
-                  EventData.FileName AS FileName,
-                  process_tracker_get(
-                    id=System.ProcessID).Data AS ProcInfo,
-                  join(
-                    array=process_tracker_callchain(
-                      id=System.ProcessID).Data.Name,
-                    sep="->") AS CallChain,
-                  EventData.IoFlags AS IoFlags
-           FROM watch_etw(guid='kernel',
-                          kernel_tracer_type=['file'])
-           WHERE System.KernelEventType = "ReadFile"
-            AND IsHoneyFile != NULL
-                 AND Timestamp > StartTime
-                      AND NOT ProcInfo.Exe =~ ProcessExceptionsRegex
-         },
-         delay=1)
+       LET AuditEvents = SELECT *
+         FROM delay(
+           query={
+             SELECT 
+                    timestamp(
+                      string=System.TimeStamp) AS Timestamp,
+                    get(
+                      item=WatchFiles,
+                      field=EventData.FileName) AS IsHoneyFile,
+                    *
+             FROM watch_etw(guid='kernel',
+                            kernel_tracer_type=['file'])
+             WHERE System.KernelEventType = "ReadFile"
+              AND IsHoneyFile != NULL
+                   AND Timestamp > StartTime
+           },
+           delay=1)
+       SELECT 
+              Timestamp,
+              EventData.FileName AS FileName,
+              process_tracker_get(
+                id=System.ProcessID).Data AS ProcInfo,
+              join(
+                array=process_tracker_callchain(
+                  id=System.ProcessID).Data.Name,
+                sep="->") AS CallChain,
+              System.ProcessID AS Pid,
+              EventData.IoFlags AS IoFlags
+       FROM AuditEvents
+       WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
