@@ -73,7 +73,7 @@ parameters:
    description: "Update rules before scanning"
    type: bool
    default: Y
- - name: SortEvents
+ - name: Sort
    description: "Sort events before saving the file"
    type: bool
    default: N
@@ -141,7 +141,7 @@ sources:
           "--" + OutputTimeFormat,
           "--threads", str(str=Threads),
           if(condition=OutputFormat = "jsonl", then="-L"),
-          if(condition=SortEvents, then="--sort-events"),
+          if(condition=Sort, then="--sort"),
           if(condition=NoisyRules, then="--enable-noisy-rules"),
           if(condition=EIDFilter, then="--eid-filter"),
           if(condition=TimeOffset, then="--time-offset"),           if(condition=TimeOffset, then=TimeOffset),
