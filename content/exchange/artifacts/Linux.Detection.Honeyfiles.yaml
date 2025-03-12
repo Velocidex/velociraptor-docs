@@ -142,7 +142,7 @@ sources:
               AND IsHoneyFile != NULL
                    AND System.ProcessID != getpid()
            },
-           delay=1)
+           delay=5)
        SELECT 
               Timestamp,
               System.ProcessID AS Pid,
