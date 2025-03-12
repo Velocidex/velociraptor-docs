@@ -1,7 +1,7 @@
 name: Linux.Detection.Honeyfiles
 author: Zane Gittins & Matt Green (@mgreen27).
 description: |
-    This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich etw events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.
+    This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.
 
     * TargetPath - Location to create honeyfile.
     * Enabled - Only generate the honeyfile if this is set to 'Y'
@@ -21,6 +21,10 @@ parameters:
          "%USERPROFILE%/.aws/credentials",Y,5B64656661756C745D,512,2048
          "%USERPROFILE%/.gcloud/credentials.db",Y,53514c69746520666f726d6174203300,512,2048
          "%USERPROFILE%/.azure/azureProfile.json",Y,7B0D0A,512,2048
+   - name: ProcessExceptionsRegex
+     description: Except these processes from detections when they access honeyfiles.
+     type: string
+     default: "/usr/bin/updatedb"
    - name: HoneyUserRegex
      description: User name regex that will be used to host honeyfiles.
      type: string
@@ -151,3 +155,4 @@ sources:
                   id=System.ProcessID).Data.Name,
                 sep="->") AS CallChain
        FROM AuditEvents
+       WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
