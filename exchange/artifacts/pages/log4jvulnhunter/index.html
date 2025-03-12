@@ -1,0 +1,372 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Generic.Detection.Log4jVulnHunter :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1741822027 rel=stylesheet><link href=/css/fontawesome-all.min.css?1741822027 rel=stylesheet><link href=/css/featherlight.min.css?1741822027 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1741822027 rel=stylesheet><link href=/css/auto-complete.css?1741822027 rel=stylesheet><link href=/css/theme.css?1741822027 rel=stylesheet><link href=/css/tabs.css?1741822027 rel=stylesheet><link href=/css/hugo-theme.css?1741822027 rel=stylesheet><link href=/css/theme-mine.css?1741822027 rel=stylesheet><link href=/css/dark.css?1741822027 rel=stylesheet><link href=/css/syntax.css?1741822027 rel=stylesheet><link href=/css/light.css?1741822027 rel=stylesheet><link href=/css/hljs.css?1741822027 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1741822027 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1741822027></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/log4jvulnhunter/><nav id=sidebar><div id=header-wrapper><div id=header><script>function darkmode(){$("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/"}function lightmode(){$("body").removeClass("dark").addClass("light"),document.cookie="theme=lightmode;path=/"}const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?darkmode():lightmode()</script><div class="btn btn-default ThemeSelector darkmode" onclick=darkmode()><i class="fas fa-moon"></i></div><div class="btn btn-default ThemeSelector lightmode" onclick=lightmode()><i class="fas fa-sun"></i></div><a href=https://docs.velociraptor.app/><img src=https://docs.velociraptor.app//images/logo.svg></a></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/self-signed/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/self-signed/>Self-Signed SSL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/>Cloud Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/cloud/multifrontend/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/cloud/multifrontend/>Multi-Frontend</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/deployment/troubleshooting/>Troubleshooting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/_reference/ class=dd-item><div><a href=/docs/deployment/references/_reference/></a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/troubleshooting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/clients/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filenames</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/remote_uploads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/offline_triage/remote_uploads/>Remote Uploads</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item parent haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-circleXX fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2024</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Log4jVulnHunter.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Generic.Detection.Log4jVulnHunter</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Generic.Detection.Log4jVulnHunter</h1><p>This artifact searches for Vulnerable log4j libraries.</p><p>The artifact:</p><ul><li>firstly searches for jar, war and ear files</li><li>then recursively checks content by name then hash for vulnerable
+versions.</li><li>reports hit details.</li></ul><p>The artifact is optimised to recursively search through embedded
+jar,war and ear files by extracting any discovered jar containers
+to a tempfile on disk. Select UploadHits to upload Discovered
+file for further analysis. It is recommended to increase default
+artifact timeout for large servers or target glob.</p><p>Some examples of path glob may include:</p><ul><li>Specific container: <code>/path/here/log4j-core-2.0-alpha2.jar</code></li><li>Wildcards: <code>/var/www/*.{jar,war,ear}</code></li><li>More wildcards: <code>/var/www/**/*.jar</code></li><li>Windows: <code>C:/**/*.jar</code></li></ul><p>NOTE: this artifact runs the glob plugin with the nosymlink switch
+turned on. This will NOT follow any symlinks and may cause
+unexpected results if unknowingly targeting a folder with
+symlinks.</p><pre><code class=language-yaml>
+name: Generic.Detection.Log4jVulnHunter
+author: "Matt Green - @mgreen27"
+description: |
+    This artifact searches for Vulnerable log4j libraries.
+
+    The artifact:
+
+    * firstly searches for jar, war and ear files
+    * then recursively checks content by name then hash for vulnerable
+      versions.
+    * reports hit details.
+
+    The artifact is optimised to recursively search through embedded
+    jar,war and ear files by extracting any discovered jar containers
+    to a tempfile on disk.  Select UploadHits to upload Discovered
+    file for further analysis.  It is recommended to increase default
+    artifact timeout for large servers or target glob.
+
+    Some examples of path glob may include:
+
+    * Specific container: `/path/here/log4j-core-2.0-alpha2.jar`
+    * Wildcards: `/var/www/*.{jar,war,ear}`
+    * More wildcards: `/var/www/**/*.jar`
+    * Windows: `C:/**/*.jar`
+
+    NOTE: this artifact runs the glob plugin with the nosymlink switch
+    turned on.  This will NOT follow any symlinks and may cause
+    unexpected results if unknowingly targeting a folder with
+    symlinks.
+
+reference:
+  - https://www.lunasec.io/docs/blog/log4j-zero-day/
+  - https://github.com/lunasec-io/lunasec/blob/master/tools/log4shell/findings.json
+  - https://github.com/mubix/CVE-2021-44228-Log4Shell-Hashes
+
+parameters:
+  - name: TargetGlob
+    default: "**/*.{jar,war,ear}"
+  - name: MaxRecursions
+    description: Number of recursions to allow checking inside archives. Default is 10 layers.
+    default: 10
+    type: int
+  - name: UploadHits
+    description: Select to upload hits to server.
+    type: bool
+  - name: IocLookupTable
+    type: csv
+    default: |
+        JarName,FileName,SHA256,JndiFileName,JndiSHA256,Version,Cve,Severity
+        log4j-core-2.0-beta9.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-osgi-reduced-2.0-beta9.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-2.0.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29,org/apache/logging/log4j/core/lookup/JndiLookup.class,fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29,2.0.0,CVE-2021-44228," 10.0"
+        log4j-core-2.0-rc1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-osgi-reduced-2.0-rc1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-2.0-rc2.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2,org/apache/logging/log4j/core/lookup/JndiLookup.class,a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2,2.0.0-rc2,CVE-2021-44228," 10.0"
+        log4j-core-2.0.1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,2.0.1,CVE-2021-44228," 10.0"
+        log4j-core-2.0.2.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c,org/apache/logging/log4j/core/lookup/JndiLookup.class,9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c,2.0.2,CVE-2021-44228," 10.0"
+        log4j-core-2.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.10.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,1fa92c00fa0b305b6bbe6e2ee4b012b588a906a20a05e135cbe64c9d77d676de,org/apache/logging/log4j/core/lookup/JndiLookup.class,5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279,"2.12.0, 2.12.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,1fa92c00fa0b305b6bbe6e2ee4b012b588a906a20a05e135cbe64c9d77d676de,org/apache/logging/log4j/core/lookup/JndiLookup.class,5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279,"2.12.0, 2.12.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,b1960d63a3946f9e16e1920624f37c152b58b98932ed04df99ed5d9486732afb,org/apache/logging/log4j/core/lookup/JndiLookup.class,febbc7867784d0f06934fec59df55ee45f6b24c55b17fff71cc4fca80bf22ebb,2.12.2,CVE-2021-44228," 10.0"
+        log4j-core-2.13.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.3.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.14.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,77323460255818f4cbfe180141d6001bfb575b429e00a07cbceabd59adf334d6,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,"2.14.0, 2.14.1",CVE-2021-44228," 10.0"
+        log4j-core-2.14.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,77323460255818f4cbfe180141d6001bfb575b429e00a07cbceabd59adf334d6,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,"2.14.0, 2.14.1",CVE-2021-44228," 10.0"
+        log4j-core-2.15.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,db07ef1ea174e000b379732681bd835cfede648a7971bf4e9a0d31981582d69e,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,2.15.0,CVE-2021-45046," 9.0"
+        log4j-core-2.16.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,5210e6aae7dd8a61cd16c56937c5f2ed43941487830f46e99d0d3f45bfa6f953,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,2.16.0,CVE-2021-45105," 7.5"
+        log4j-core-2.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.3.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.4.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.4.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.5.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.6.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.6.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.6.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.7.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,cee2305065bb61d434cdb45cfdaa46e7da148e5c6a7678d56f3e3dc8d7073eae,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,764b06686dbe06e3d5f6d15891250ab04073a0d1c357d114b7365c70fa8a7407,org/apache/logging/log4j/core/lookup/JndiLookup.class,d4ec57440cd6db6eaf6bcb6b197f1cbaf5a3e26253d59578d51db307357cbf15,2.8.2,CVE-2021-44228," 10.0"
+        log4j-core-2.9.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.9.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.0-beta9.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-osgi-reduced-2.0-beta9.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-2.0.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29,org/apache/logging/log4j/core/lookup/JndiLookup.class,fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29,2.0.0,CVE-2021-44228," 10.0"
+        log4j-core-2.0-rc1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-osgi-reduced-2.0-rc1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-2.0-rc2.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2,org/apache/logging/log4j/core/lookup/JndiLookup.class,a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2,2.0.0-rc2,CVE-2021-44228," 10.0"
+        log4j-core-2.0.1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,2.0.1,CVE-2021-44228," 10.0"
+        log4j-core-2.0.2.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c,org/apache/logging/log4j/core/lookup/JndiLookup.class,9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c,2.0.2,CVE-2021-44228," 10.0"
+        log4j-core-2.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.10.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,1fa92c00fa0b305b6bbe6e2ee4b012b588a906a20a05e135cbe64c9d77d676de,org/apache/logging/log4j/core/lookup/JndiLookup.class,5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279,"2.12.0, 2.12.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,1fa92c00fa0b305b6bbe6e2ee4b012b588a906a20a05e135cbe64c9d77d676de,org/apache/logging/log4j/core/lookup/JndiLookup.class,5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279,"2.12.0, 2.12.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,b1960d63a3946f9e16e1920624f37c152b58b98932ed04df99ed5d9486732afb,org/apache/logging/log4j/core/lookup/JndiLookup.class,febbc7867784d0f06934fec59df55ee45f6b24c55b17fff71cc4fca80bf22ebb,2.12.2,CVE-2021-44228," 10.0"
+        log4j-core-2.13.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.3.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.14.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,77323460255818f4cbfe180141d6001bfb575b429e00a07cbceabd59adf334d6,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,"2.14.0, 2.14.1",CVE-2021-44228," 10.0"
+        log4j-core-2.14.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,77323460255818f4cbfe180141d6001bfb575b429e00a07cbceabd59adf334d6,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,"2.14.0, 2.14.1",CVE-2021-44228," 10.0"
+        log4j-core-2.15.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,db07ef1ea174e000b379732681bd835cfede648a7971bf4e9a0d31981582d69e,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,2.15.0,CVE-2021-45046," 9.0"
+        log4j-core-2.16.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,5210e6aae7dd8a61cd16c56937c5f2ed43941487830f46e99d0d3f45bfa6f953,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,2.16.0,CVE-2021-45105," 7.5"
+        log4j-core-2.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.3.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.4.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.4.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.5.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.6.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.6.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.6.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.7.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,cee2305065bb61d434cdb45cfdaa46e7da148e5c6a7678d56f3e3dc8d7073eae,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,764b06686dbe06e3d5f6d15891250ab04073a0d1c357d114b7365c70fa8a7407,org/apache/logging/log4j/core/lookup/JndiLookup.class,d4ec57440cd6db6eaf6bcb6b197f1cbaf5a3e26253d59578d51db307357cbf15,2.8.2,CVE-2021-44228," 10.0"
+        log4j-core-2.9.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.9.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.0.1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,2.0.1,CVE-2021-44228," 10.0"
+        log4j-core-2.0-rc1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,org/apache/logging/log4j/core/lookup/JndiLookup.class,39a495034d37c7934b64a9aa686ea06b61df21aa222044cc50a47d6903ba1ca8,"2.0.0-beta9, 2.0.0-rc1",CVE-2021-44228," 10.0"
+        log4j-core-2.0-rc2.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2,org/apache/logging/log4j/core/lookup/JndiLookup.class,a03e538ed25eff6c4fe48aabc5514e5ee687542f29f2206256840e74ed59bcd2,2.0.0-rc2,CVE-2021-44228," 10.0"
+        log4j-core-2.0.1.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,org/apache/logging/log4j/core/lookup/JndiLookup.class,964fa0bf8c045097247fa0c973e0c167df08720409fd9e44546e0ceda3925f3e,2.0.1,CVE-2021-44228," 10.0"
+        log4j-core-2.0.2.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c,org/apache/logging/log4j/core/lookup/JndiLookup.class,9626798cce6abd0f2ffef89f1a3d0092a60d34a837a02bbe571dbe00236a2c8c,2.0.2,CVE-2021-44228," 10.0"
+        log4j-core-2.0.jar,org/apache/logging/log4j/core/lookup/JndiLookup.class,fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29,org/apache/logging/log4j/core/lookup/JndiLookup.class,fd6c63c11f7a6b52eff04be1de3477c9ddbbc925022f7216320e6db93f1b7d29,2.0.0,CVE-2021-44228," 10.0"
+        log4j-core-2.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.10.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.11.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,1fa92c00fa0b305b6bbe6e2ee4b012b588a906a20a05e135cbe64c9d77d676de,org/apache/logging/log4j/core/lookup/JndiLookup.class,5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279,"2.12.0, 2.12.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,1fa92c00fa0b305b6bbe6e2ee4b012b588a906a20a05e135cbe64c9d77d676de,org/apache/logging/log4j/core/lookup/JndiLookup.class,5c104d16ff9831b456e4d7eaf66bcf531f086767782d08eece3fb37e40467279,"2.12.0, 2.12.1",CVE-2021-44228," 10.0"
+        log4j-core-2.12.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,b1960d63a3946f9e16e1920624f37c152b58b98932ed04df99ed5d9486732afb,org/apache/logging/log4j/core/lookup/JndiLookup.class,febbc7867784d0f06934fec59df55ee45f6b24c55b17fff71cc4fca80bf22ebb,2.12.2,CVE-2021-44228," 10.0"
+        log4j-core-2.13.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.13.3.jar,org/apache/logging/log4j/core/net/JndiManager.class,c3e95da6542945c1a096b308bf65bbd7fcb96e3d201e5a2257d85d4dedc6a078,org/apache/logging/log4j/core/lookup/JndiLookup.class,2b32bfc0556ea59307b9b2fde75b6dfbb5bf4f1d008d1402bc9a2357d8a8c61f,"2.13.0, 2.13.1, 2.13.2, 2.13.3",CVE-2021-44228," 10.0"
+        log4j-core-2.14.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,77323460255818f4cbfe180141d6001bfb575b429e00a07cbceabd59adf334d6,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,"2.14.0, 2.14.1",CVE-2021-44228," 10.0"
+        log4j-core-2.14.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,77323460255818f4cbfe180141d6001bfb575b429e00a07cbceabd59adf334d6,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,"2.14.0, 2.14.1",CVE-2021-44228," 10.0"
+        log4j-core-2.15.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,db07ef1ea174e000b379732681bd835cfede648a7971bf4e9a0d31981582d69e,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,2.15.0,CVE-2021-45046," 9.0"
+        log4j-core-2.16.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,5210e6aae7dd8a61cd16c56937c5f2ed43941487830f46e99d0d3f45bfa6f953,org/apache/logging/log4j/core/lookup/JndiLookup.class,84057480ba7da6fb6d9ea50c53a00848315833c1f34bf8f4a47f11a14499ae3f,2.16.0,CVE-2021-45105," 7.5"
+        log4j-core-2.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.3.jar,org/apache/logging/log4j/core/net/JndiManager.class,ae950f9435c0ef3373d4030e7eff175ee11044e584b7f205b7a9804bbe795f9c,org/apache/logging/log4j/core/lookup/JndiLookup.class,a768e5383990b512f9d4f97217eda94031c2fa4aea122585f5a475ab99dc7307,"2.1.0, 2.2.0, 2.3.0",CVE-2021-44228," 10.0"
+        log4j-core-2.4.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.4.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.5.jar,org/apache/logging/log4j/core/net/JndiManager.class,3bff6b3011112c0b5139a5c3aa5e698ab1531a2f130e86f9e4262dd6018916d7,org/apache/logging/log4j/core/lookup/JndiLookup.class,a534961bbfce93966496f86c9314f46939fd082bb89986b48b7430c3bea903f7,"2.4.0, 2.4.1, 2.5.0",CVE-2021-44228," 10.0"
+        log4j-core-2.6.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.6.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.6.jar,org/apache/logging/log4j/core/net/JndiManager.class,6540d5695ddac8b0a343c2e91d58316cfdbfdc5b99c6f3f91bc381bc6f748246,org/apache/logging/log4j/core/lookup/JndiLookup.class,e8ffed196e04f81b015f847d4ec61f22f6731c11b5a21b1cfc45ccbc58b8ea45,"2.6.0, 2.6.1, 2.6.2",CVE-2021-44228," 10.0"
+        log4j-core-2.7.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,cee2305065bb61d434cdb45cfdaa46e7da148e5c6a7678d56f3e3dc8d7073eae,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.8.2.jar,org/apache/logging/log4j/core/net/JndiManager.class,764b06686dbe06e3d5f6d15891250ab04073a0d1c357d114b7365c70fa8a7407,org/apache/logging/log4j/core/lookup/JndiLookup.class,d4ec57440cd6db6eaf6bcb6b197f1cbaf5a3e26253d59578d51db307357cbf15,2.8.2,CVE-2021-44228," 10.0"
+        log4j-core-2.8.jar,org/apache/logging/log4j/core/net/JndiManager.class,1584b839cfceb33a372bb9e6f704dcea9701fa810a9ba1ad3961615a5b998c32,org/apache/logging/log4j/core/lookup/JndiLookup.class,66c89e2d5ae674641138858b571e65824df6873abb1677f7b2ef5c0dd4dbc442,"2.7.0, 2.8.0, 2.8.1",CVE-2021-44228," 10.0"
+        log4j-core-2.9.0.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+        log4j-core-2.9.1.jar,org/apache/logging/log4j/core/net/JndiManager.class,293d7e83d4197f0496855f40a7745cfcdd10026dc057dfc1816de57295be88a6,org/apache/logging/log4j/core/lookup/JndiLookup.class,0f038a1e0aa0aff76d66d1440c88a2b35a3d023ad8b2e3bac8e25a3208499f7e,"2.10.0, 2.11.0, 2.11.1, 2.11.2, 2.9.0, 2.9.1",CVE-2021-44228," 10.0"
+
+sources:
+  - query: |
+      -- this section searches by filename and hashes hits
+      LET target_files = SELECT * 
+        FROM if(condition=version(plugin='glob') &gt;= 2,
+            then={ SELECT * FROM glob(globs=TargetGlob,recursion_callback='x=&gt;x.IsLink OR x.Data.DevMajor = NULL OR x.Data.DevMajor &gt; 7') },
+            else={ SELECT * FROM glob(globs=TargetGlob,nosymlink=True) })
+
+      -- recursive search function
+      LET Recurse(File, OriginalFile, Container, RecursionRounds) = SELECT * FROM foreach(
+                row={
+                    SELECT *
+                    FROM glob(accessor="zip", root=url(path=File, scheme="file"), globs="/**")
+                    WHERE NOT IsDir AND Size &gt; 0
+                },
+                query={
+                    SELECT *
+                      FROM if(condition=Name =~ ".(jar|war|ear)$",
+                            then={
+                                SELECT * FROM Recurse(
+                                    OriginalFile=OriginalFile + "/" + url(parse=FullPath).Fragment,
+                                    File=copy(dest=tempfile(extension=".zip", remove_last=TRUE),
+                                        accessor="zip", filename=FullPath),
+                                    Container=Container, RecursionRounds = RecursionRounds + 1)
+                                WHERE RecursionRounds &lt; MaxRecursions
+
+                            },
+                            else={
+                              SELECT * FROM switch(
+                                path={
+                                    SELECT Container,
+                                        'Path detection' as Description,
+                                        Name, url(parse=FullPath).Fragment AS ZipPath, OriginalFile,
+                                        hash(path=FullPath,accessor='zip').SHA256 as SHA256h
+                                    FROM scope()
+                                    WHERE ZipPath in IocLookupTable.FilePath
+                                        OR basename(path=ZipPath) in IocLookupTable.JarName
+                                        OR basename(path=Container) in IocLookupTable.JarName
+                                },
+                                hash={
+                                    SELECT Container,
+                                        'Hash detection' as Description,
+                                        Name, url(parse=FullPath).Fragment AS ZipPath, OriginalFile, Size,
+                                        hash(path=FullPath,accessor='zip').SHA256 as SHA256h
+                                    FROM scope()
+                                    WHERE SHA256h in IocLookupTable.SHA256
+                                        OR SHA256h in IocLookupTable.JndiSHA256
+
+                                })
+                            })
+                    })
+
+      -- CVE lookup
+      LET find_cve(hash,originalfile) = if(condition= hash in IocLookupTable.SHA256,
+                then= {
+                    SELECT Version,Cve,Severity
+                    FROM IocLookupTable
+                    WHERE SHA256 = hash
+                    GROUP BY Version,Cve,Severity
+                },
+            else= if(condition= basename(path=originalfile) in IocLookupTable.JarName,
+                then= {
+                    SELECT Version,Cve,Severity
+                    FROM IocLookupTable
+                    WHERE basename(path=originalfile) = JarName
+                    GROUP BY Version,Cve,Severity
+                }))[0]
+
+      -- find hits
+      LET hits &lt;= SELECT
+                Container as FullPath,
+                if(condition= Container=OriginalFile,
+                    then= Null,
+                    else= OriginalFile ) as Embedded,
+                if(condition= Description=~ 'Hash',
+                    then= format(format='%s: %s',args=[Description, SHA256h]),
+                else= if(condition= basename(path=Container) in IocLookupTable.JarName,
+                    then = format(format='%s: %s',args=[Description, Container]),
+                else= if(condition= basename(path=OriginalFile) in IocLookupTable.JarName,
+                    then = format(format='%s: %s',args=[Description, OriginalFile]),
+                else= format(format='%s: %s',args=[Description, ZipPath])
+                    ))) as Description,
+                CVEDetails.Version as Log4jVersion,
+                CVEDetails.Cve as CVE,
+                CVEDetails.Severity as Severity
+        FROM foreach(row=target_files,
+            query={
+                SELECT *,
+                    find_cve(hash=SHA256h,originalfile=OriginalFile) as CVEDetails
+                FROM Recurse(File=FullPath, OriginalFile=FullPath,Container=FullPath,RecursionRounds=0)
+                WHERE CVEDetails
+                LIMIT 1
+            })
+
+      -- upload files that have hits
+      LET upload_hits=SELECT *,
+            upload(file=FullPath) AS Upload
+        FROM hits
+
+      -- return rows
+      SELECT * FROM if(condition=UploadHits,
+        then=upload_hits,
+        else=hits)
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1741822027></script><script src=/js/perfect-scrollbar.min.js?1741822027></script><script src=/js/perfect-scrollbar.jquery.min.js?1741822027></script><script src=/js/jquery.sticky.js?1741822027></script><script src=/js/featherlight.min.js?1741822027></script><script src=/js/highlight.min.js?1741822027></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1741822027></script><script src=/js/learn.js?1741822027></script><script src=/js/hugo-learn.js?1741822027></script></body></html>
