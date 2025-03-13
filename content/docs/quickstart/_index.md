@@ -15,8 +15,10 @@ one or more clients, as quickly and simply as possible.
 The Velociraptor server will be configured to use self-signed SSL certificates
 and Basic authentication, which is a relatively simple configuration scheme
 suitable for short-term (e.g. testing/evaluation) non-production use, ideally on a
-private network. For production deployments, Single Sign-on (SSO) authentication
-is strongly recommended, however it requires a slightly more complicated
+private network.
+
+For production deployments, Single Sign-on (SSO) authentication
+is strongly recommended. However it requires a slightly more complicated
 certificate scheme and public DNS configuration. To explore these other options
 please see the [Deployment]({{< ref "/docs/deployment/" >}}) section.
 
@@ -57,32 +59,36 @@ Velociraptor offers should be preferred.
 - a computer running Linux (any modern Debian or RPM-based distro should be
   fine) on which you can install the **Velociraptor server** component.
 
-  Ubuntu is commonly used and we use it for testing so this is recommended
-  unless you have a strong preference for something else. The distro needs to
-  be one that uses systemd though, which most do these days.
+  - Ubuntu is commonly used and we use it for testing, so it is generally
+    recommended unless you have a strong preference for something else. If you
+    choose to use another Linux distro then please note that it needs to be one
+    that uses systemd, although most do these days.
 
-  The sizing of your server depends on the number of endpoints in your
-  environment. A typical server with 8-16GB memory should be sufficient for
-  around 5-10k clients, so for a limited deployment that should be more than
-  sufficient. You will need enough disk space to hold the data that you
-  collect from your endpoints.
+  - The sizing of your server depends on the number of endpoints in your
+    environment. A typical server with 8-16GB memory should be sufficient for
+    around 5-10k clients, so for a limited deployment that should be more than
+    sufficient. You will need enough disk space to hold the data that you
+    collect from your endpoints, and that of course depends entirely on what you
+    intend to collect, how frequently you collect it, etc.
 
 - One or more computers running Windows on which you can install the
-  **Velociraptor client** component. This can actually be be any supported
-  operating system, but in this guide we describe the process for a Windows
-  client since it is still the most common target operating system.
-  See [Deploying Clients]({{< ref "/docs/deployment/clients/" >}})
-  for instructions of deploying clients to other platforms.
+  **Velociraptor client** component.
 
-  The Windows version should be at least Windows 10. Older versions may require
-  a special build of the Velociraptor binary, as noted
-  [here]({{< ref "/downloads/#release-notes" >}}),
-  because earlier versions are not supported by the latest version of Go, nor by
-  Microsoft.
+  - This can be be any supported client operating system, but in this guide we
+    describe the process for a Windows client since it is still by far the most
+    common target operating system. See
+    [Deploying Clients]({{< ref "/docs/deployment/clients/" >}})
+    for instructions of deploying clients to other platforms.
 
-  If you're just testing, you can install the client on the same machine as the
-  server if you want to. It's not commonly done but the server and client will not
-  conflict with each other.
+  - The Windows version should be at least Windows 10. Older versions may
+    require a special build of the Velociraptor binary, as noted
+    [here]({{< ref "/downloads/#release-notes" >}}),
+    because earlier versions are not supported by the latest version of Go, nor
+    by Microsoft.
+
+  - If you're just testing, you can install the client on the same machine as
+    the server if you want to. It's not commonly done but the server and client
+    will not conflict with each other.
 
 ## Simplifying assumptions:
 
@@ -93,10 +99,10 @@ To keep things simple, in this deployment scenario we are going to assume that:
 
 2. No DNS records have been configured for the server. While it is definitely
    preferable for the clients to be able to resolve and connect to the server by
-   DNS name, for Self-Signed SSL mode it is not a requirement. Here we will use
-   IP addresses in our configuration, but that means you need to be sure that
-   your server's IP address is static and will not change for the duration of
-   your deployment. Alternatively you should set up an DNS A record for your
+   DNS name, for Self-Signed SSL mode this is not a requirement. Here we will
+   use IP addresses in our configuration, but that means you need to be sure
+   that your server's IP address is static and will not change for the duration
+   of your deployment. Alternatively you should set up an DNS A record for your
    server and use that instead of an IP address in the steps below. In this
    article we will use `<server_ip>` as shorthand for the IP address of the
    server, but you should substitute your server's actual IP in the commands or

@@ -34,9 +34,8 @@ the target platform+architecture combination.
 
 There are several ways to run clients, depending on your needs. Ultimately
 however this amounts to running the Velociraptor binary and providing it with a
-**client configuration file**. The configuration file provides the client with
-cryptographic material, connection information and other client-related
-settings.
+**client configuration file**, which provides the client with cryptographic
+material, connection information and other client-related settings.
 
 We saw how to generate the server configuration file in the
 [server deployment guide]({{< ref "/docs/deployment/server/#generate-the-configuration-file" >}}).
@@ -44,15 +43,73 @@ The client configuration is contained within the server configuration.
 
 ![Client config is a subset of the full config](client_config_yaml.svg)
 
-Generating the client config effectively amounts to extracting the `Client`
-section from the full config. There are two ways to accomplish this:
+When we "generate" a client config file we are effectively extracting the `Client`
+section from the full config. If you are using the
+[orgs]({{< ref "/docs/deployment/orgs/" >}})
+feature then you will need a separate client config file for each org, since the
+config also contains a `nonce` value that associates the client with a specific
+org.
+
+There are two ways to accomplish this task which we explain below:
 
 1. Using the Admin GUI (recommended)
 2. Using the command line
 
-### Obtaining the client config from the GUI
+{{% notice tip "MSI repacking" %}}
 
-### Obtaining the client config on the command line
+If you are _only_ interested in Windows clients and will _only_ be creating MSI
+installer packages, then the MSI repacking method described
+[here]({{< relref "#option-1-using-the-velociraptor-gui" >}})
+will use the client config for the current org. In that case you don't actually
+need to download the client config file, although you may still want to read
+this section to understand more about the topic of client config files.
+
+{{% /notice %}}
+
+#### Option 1: Obtaining the client config from the GUI
+
+The simplest way of obtaining the client config file is to download it from the
+GUI.
+
+Navigate to the **Current Orgs** section on the **Home** screen and then click on
+the file name to download the YAML file.
+
+![Downloading client configs from the GUI](home_client_configs.svg)
+
+The config files for each org contain the correct client `nonce` for connecting
+to that org.
+
+#### Option 2: Obtaining the client config on the command line
+
+The client config can also be obtained using the CLI. Although this is not the
+preferred way, it is useful in some situations such as automated build
+environments.
+
+{{< tabs >}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
+```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor.exe config client --org "root" --config server.config.yaml > client.root.config.yaml
+```
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
+```
+{{% /tab %}}
+{{< /tabs >}}
+
+This command reads the datastore location from the config specified in the
+`--config` flag, and for non-root orgs these orgs must already exist in the
+datastore.
+
+Note that the `--org` flag expects the Org ID, not the org name. If the `--org`
+flag is not specified then the command will default to the root org, which
+always exists.
 
 
 ## Running clients interactively
@@ -114,7 +171,8 @@ the section [Agentless deployment](#agentless-deployment).
 
 The recommended way to install Velociraptor as a client on Windows is via the
 release MSI which you can find on our [Downloads]({{< ref "/downloads/" >}}) page. Previous
-releases can be found on the [Releases page at Github](https://github.com/Velocidex/velociraptor/releases).
+releases can be found on the [Releases page](https://github.com/Velocidex/velociraptor/releases)
+at Github.
 
 An MSI is a standard Windows installer package. The benefit of using this
 installer format is that most enterprise system administration tools are capable
@@ -163,7 +221,7 @@ points to this executable. The service starts automatically at boot time (with
 a random delay). If an existing Velociraptor service is already installed, it
 will be upgraded and the client configuration file will be overwritten.
 
-**Option 1: Using the Velociraptor GUI**
+##### Option 1: Using the Velociraptor GUI
 
 The easiest way to repack the MSI package so that it includes your client config
 file is by using the
@@ -188,7 +246,7 @@ server artifact.
 
 ![](create_msi_uploaded.svg)
 
-**Option 2: Using the command line**
+##### Option 2: Using the command line
 
 {{% notice note %}}
 

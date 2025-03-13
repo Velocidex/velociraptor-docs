@@ -83,11 +83,6 @@ At a high level, your Velociraptor deployment will consist of 3 tasks: setting u
 **Task 3: Authorize Users**
 - Grant user access to the Velociraptor server's web UI
 
-| Milestone | Description |
-|:---:|---|
-| Task 1: Deploy a Server | Choose the deployment method that works best for you: <ul><li>Self-Signed SSL - recommended for on-premises environments</li><li>Cloud Deployment - recommended for easy deployments</li><li>Instant Velociraptor - recommended if you want to install Velociraptor as a self-contained client and server on your local machine for testing purposes</li></ul> |
-| Task 2: Deploy Clients  | Deploy clients on your endpoints using one of the recommended methods:<ul><li>Run clients interactively</li><li>Install using Custom MSI</li><li> Install the Client as a Service</li><li>Agentless Deployment</li></ul>                                                                                                                                             |
-| Task 3: Authorize Users | Grant user access to the Velociraptor server's web UI.
 
 ## Typical Deployment
 
@@ -140,17 +135,24 @@ velociraptor.exe gui
 {{% /tab %}}
 {{< /tabs >}}
 
-Note that, unlike a production-ready server, it is fine to run this on any
-supported platform. The client capabilities do vary per platform, but the server
-component is identical across platforms. For testing and artifact development
-this mode is especially useful because it gives you direct access to run VQL on
-the target operating system via [notebooks]({{< ref "/docs/notebooks/" >}}).
+Since this mode is not intended to be a production server, it is fine to run
+this on any platform. The client capabilities do vary per platform, but the
+server component is identical across platforms. This mode is especially
+usefulfor testing and artifact development because it allows you to run VQL
+directly on the target operating system via
+[Velociraptor notebooks]({{< ref "/docs/notebooks/" >}}).
+
+In this mode:
 
 * The server only listens on the local loopback interface.
 * The client connects to the server over the loopback.
-* A data store directory is set to the user’s temp folder.
-* A single administrator user is created with username `admin` and password `password`.
+* A data store directory is set to the user’s temp folder, unless specified
+  otherwise (see note below).
+* A single administrator user is created with the username `admin` and password
+  `password`.
 * The default web browser is launched with those credentials to connect to the GUI.
+
+![Instant mode automatically enrolls a single client](gui_windows.svg)
 
 {{% notice info "Persisting your data" %}}
 

@@ -108,6 +108,9 @@ This command can be broken into:
    new certificate name. The role is used to test permissions of what
    the caller may do.
 
+The API client certificate is valid for 1 year. Before expiry you should create
+a new API client configuration file, containing a new client certificate, to
+avoid being impacted by the certificate expiry.
 
 You can also change the permission of an existing certificate (or
 user) by simply granting a different role.
