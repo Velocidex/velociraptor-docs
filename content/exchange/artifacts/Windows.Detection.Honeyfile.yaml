@@ -30,7 +30,7 @@ parameters:
   - name: ProcessExceptionsRegex
     description: Except these processes from detections when they access honeyfiles.
     type: string
-    default: "SearchProtocolHost.exe"
+    default: "SearchProtocolHost.exe|Explorer.exe"
   - name: HoneyUserRegex
     description: User name regex that will be used to host honeyfiles.
     type: string
@@ -139,11 +139,11 @@ sources:
                       string=System.TimeStamp) AS Timestamp,
                     get(
                       item=WatchFiles,
-                      field=EventData.FileName) AS IsHoneyFile,
+                      field=EventData.OpenPath) AS IsHoneyFile,
                     *
              FROM watch_etw(guid='kernel',
                             kernel_tracer_type=['file'])
-             WHERE System.KernelEventType = "ReadFile"
+             WHERE (System.KernelEventType = "CreateFile")
               AND IsHoneyFile != NULL
                    AND System.ProcessID != getpid()
            },
@@ -151,7 +151,7 @@ sources:
        SELECT 
               Timestamp,
               System.ProcessID AS Pid,
-              EventData.FileName AS FileName,
+              EventData.OpenPath AS FileName,
               IsHoneyFile,
               process_tracker_get(
                 id=System.ProcessID).Data AS ProcInfo,
