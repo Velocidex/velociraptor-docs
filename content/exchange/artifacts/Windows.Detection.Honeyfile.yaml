@@ -2,7 +2,9 @@ name: Windows.Detection.Honeyfiles
 author: Zane Gittins & Matt Green (@mgreen27).
 description: |
     This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using the NT Kernel Logger etw provider.  The process tracker must be enabled, we use this to enrich etw events. You also must be using Velociraptor >= 0.74 to support the NT Kernel Logger. Honeyfiles created by this artifact are removed at exit.
-
+    
+    WARNING: May cause high cpu usage depending on how many file operations are taking place.
+    
     * TargetPath - Location to create honeyfile.
     * Enabled - Only generate the honeyfile if this is set to 'Y'
     * MagicBytes - The starting magic bytes of the honeyfile. 
