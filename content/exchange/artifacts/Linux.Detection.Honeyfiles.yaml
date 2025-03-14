@@ -34,7 +34,6 @@ sources:
         SELECT OS From info() WHERE OS = 'linux'
 
     query: |
-       LET _ <= atexit(query={ SELECT * FROM remove_honeyfiles })
        LET RandomChars(size) = SELECT 
                                       format(format="%02x", args=rand(range=256)) AS HexByte
          FROM range(end=size)
@@ -120,39 +119,47 @@ sources:
                                    check_exist(
                                      path=TargetPath)[0].IsHoneyFile AS IsHoneyFile
          FROM copy_honeyfiles
+       LET _ <= atexit(
+           query={
+             SELECT *
+             FROM remove_honeyfiles
+           })
        LET WatchFiles <= to_dict(
            item={
              SELECT 
                     TargetPath AS _key,
                     IsHoneyFile AS _value
              FROM add_honeyfiles
+             WHERE IsHoneyFile
            })
-       LET AuditEvents = SELECT *
-         FROM delay(
-           query={
-             SELECT 
-                    timestamp(
-                      string=System.Timestamp) AS Timestamp,
-                    get(
-                      item=WatchFiles,
-                      field=EventData.pathname) AS IsHoneyFile,
-                    *
-             FROM watch_ebpf(events=["security_file_open"])
-             WHERE System.EventName = "security_file_open"
-              AND IsHoneyFile != NULL
-                   AND System.ProcessID != getpid()
-           },
-           delay=5)
-       SELECT 
-              Timestamp,
-              System.ProcessID AS Pid,
-              EventData.pathname AS FileName,
-              IsHoneyFile,
-              process_tracker_get(
-                id=System.ProcessID).Data AS ProcInfo,
-              join(
-                array=process_tracker_callchain(
-                  id=System.ProcessID).Data.Name,
-                sep="->") AS CallChain
-       FROM AuditEvents
-       WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
+       LET CurrentPid <= getpid()
+       LET TargetEvents = SELECT *
+         FROM watch_ebpf(events=["security_file_open"])
+         WHERE System.EventName = "security_file_open"
+          AND System.ProcessID != CurrentPid
+       LET AuditEvents = SELECT *,
+                                timestamp(
+                                  string=System.Timestamp) AS Timestamp,
+                                get(
+                                  item=WatchFiles,
+                                  field=EventData.pathname) AS IsHoneyFile
+         FROM TargetEvents
+         WHERE IsHoneyFile != NULL
+       SELECT *
+       FROM delay(
+         query={
+           SELECT 
+                  Timestamp,
+                  System.ProcessID AS Pid,
+                  EventData.pathname AS FileName,
+                  IsHoneyFile,
+                  process_tracker_get(
+                    id=System.ProcessID).Data AS ProcInfo,
+                  join(
+                    array=process_tracker_callchain(
+                      id=System.ProcessID).Data.Name,
+                    sep="->") AS CallChain
+           FROM AuditEvents
+           WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
+         },
+         delay=5)
