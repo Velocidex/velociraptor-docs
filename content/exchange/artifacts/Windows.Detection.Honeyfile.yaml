@@ -2,13 +2,12 @@ name: Windows.Detection.Honeyfiles
 author: Zane Gittins & Matt Green (@mgreen27).
 description: |
     This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.
-    
+
     * TargetPath - Location to create honeyfile.
     * Enabled - Only generate the honeyfile if this is set to 'Y'
-    * MagicBytes - The starting magic bytes of the honeyfile. 
+    * MagicBytes - The starting magic bytes of the honeyfile.
     * MinSize,MaxSize - The size of the honeyfile will be a random value between MinSize and MaxSize.
-   
-# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+
 type: CLIENT_EVENT
 
 parameters:
@@ -83,23 +82,24 @@ sources:
          FROM foreach(row=target_users, query=enumerate_path)
        
        LET copy_honeyfiles = SELECT
-           *,
-           if(condition=Enabled =~ "^(Y|YES)$"
-               AND (NOT Size OR IsHoneyFile),
-              then=copy(dest=TargetPath,
-                        create_directories='y',
-                        accessor='data',
-                        filename=unhex(
-                          string=MagicBytes + join(
-                            array=RandomChars(size=_PaddingSize).HexByte) +
-                            format(format='%x', args='VRHoney'))),
-              else="File does not exist") AS CreateHoneyFile
+           *, if(condition=Enabled =~ "^(Y|YES)$"
+                  AND (NOT Size OR IsHoneyFile),
+                 then=log(message="Creating file %v", dedup=-1, args=TargetPath)
+                  && copy(dest=TargetPath,
+                          create_directories='y',
+                          accessor='data',
+                          filename=unhex(
+                            string=MagicBytes + join(
+                              array=RandomChars(size=_PaddingSize).HexByte) +
+                              format(format='%x', args='VRHoney'))),
+                 else="File does not exist") AS CreateHoneyFile
          FROM show_honeyfiles
        
        LET remove_honeyfiles = SELECT
            *, _PaddingSize,
            if(condition=IsHoneyFile,
-              then=rm(filename=TargetPath),
+              then=log(message="Removing %v", args=TargetPath, dedup=-1)
+               && rm(filename=TargetPath),
               else="File does not exist") AS RemoveHoneyFile
          FROM show_honeyfiles
        
@@ -140,9 +140,7 @@ sources:
          FROM TargetEvents
          WHERE IsHoneyFile != NULL
        
-       SELECT *
-       FROM delay(query={
-           SELECT
+       LET Events = SELECT
            Timestamp,
            IsHoneyFile,
            System.ProcessID AS Pid,
@@ -150,7 +148,8 @@ sources:
            process_tracker_get(id=System.ProcessID).Data AS ProcInfo,
            join(array=process_tracker_callchain(id=System.ProcessID).Data.Name,
                 sep="->") AS CallChain
-           FROM AuditEvents
-           WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
-         },
-                  delay=5)
+         FROM AuditEvents
+         WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
+       
+       SELECT *
+       FROM delay(query=Events, delay=5)
