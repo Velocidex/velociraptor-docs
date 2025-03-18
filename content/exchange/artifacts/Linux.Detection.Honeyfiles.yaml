@@ -30,7 +30,7 @@ parameters:
      default: "."
 sources:
   - precondition:
-        SELECT OS From info() WHERE OS = 'linux'
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 0
 
     query: |
        LET RandomChars(size) = SELECT
@@ -134,12 +134,20 @@ sources:
            Timestamp,
            System.ProcessID AS Pid,
            EventData.pathname AS FileName,
-           IsHoneyFile,
            process_tracker_get(id=System.ProcessID).Data AS ProcInfo,
            join(array=process_tracker_callchain(id=System.ProcessID).Data.Name,
-                sep="->") AS CallChain
+                sep="->") AS CallChain,
+           (System.ProcessID+EventData.pathname) as DedupKey
          FROM AuditEvents
          WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
        
-       SELECT *
-       FROM delay(query=Track, delay=5)
+       SELECT 
+         Timestamp,
+         Pid,
+         FileName,
+         ProcInfo,
+         CallChain 
+       FROM dedup(query={
+          SELECT *,
+          FROM delay(query=Track, delay=5)
+       },key="DedupKey",timeout=2)
