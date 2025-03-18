@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Acquisition on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/acquisition/</link><description>Recent content in Acquisition on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://docs.velociraptor.app/tags/acquisition/index.xml" rel="self" type="application/rss+xml"/><item><title>Preserving Forensic Evidence</title><link>https://docs.velociraptor.app/training/playbooks/preservation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/training/playbooks/preservation/</guid><description>&lt;h2 id="scenario">Scenario&lt;/h2>
+&lt;p>As a system administrator you have a high level of confidence a
+certain endpoint is compromised. You wish to preserve critical
+evidence while arranging for a more experienced DFIR professional to
+examine the evidence.&lt;/p>
+&lt;h2 id="main-takeaways">Main takeaways&lt;/h2>
+&lt;ol>
+&lt;li>This technique is a &amp;ldquo;shotgun&amp;rdquo; approach - it typically collects a
+lot of data.&lt;/li>
+&lt;li>Not very targeted.&lt;/li>
+&lt;li>Does not scale to many endpoints - use when very confident an
+endpoint is compromised.&lt;/li>
+&lt;li>DFIR skill required - LOW.&lt;/li>
+&lt;/ol>
+&lt;h2 id="steps-to-take">Steps to take&lt;/h2>
+&lt;p>Some common artifacts that are used in a preservation collection:&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>Windows.KapeFiles.Targets&lt;/code> - collects files such as &lt;code>$MFT&lt;/code>, log files etc.&lt;/li>
+&lt;li>&lt;code>Windows.Memory.Acquisition&lt;/code> - collects a physical memory image.&lt;/li>
+&lt;/ol>
+&lt;h3 id="if-velociraptor-is-already-installed-on-the-endpoint">If Velociraptor is already installed on the endpoint&lt;/h3>
+&lt;p>For collecting from a single endpoint&lt;/p>
+&lt;ol>
+&lt;li>Search for the client you want to acquire from the main search screen.&lt;/li>
+&lt;li>Select &lt;code>Collected Artifacts&lt;/code> from the sidebar, then select &lt;code>New Collection&lt;/code> from the toolbar.&lt;/li>
+&lt;li>For Windows systems, select &lt;code>Windows.KapeFiles.Targets&lt;/code>.&lt;/li>
+&lt;li>Select the &lt;code>BasicCollection&lt;/code> or &lt;code>Kape Triage&lt;/code> or &lt;code>SANS Triage&lt;/code>
+targets. These targets select the most common raw files used by
+DFIR analysts.&lt;/li>
+&lt;li>This artifact can collect a large amount of data, we recommend to
+place resource limits to ensure that collection is not too
+excessive.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+&lt;figure id="5cf390d3460eed477d886ef1527cfc6f">
+ &lt;div data-featherlight="#5cf390d3460eed477d886ef1527cfc6f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/preservation/kape_targets.png" alt="Selecting the Windows.KapeFiles.Targets artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="kape_targets.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Selecting the Windows.KapeFiles.Targets artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>If you will have a number of endpoints to collect you can use a hunt
+to combine the data together:&lt;/p>
+&lt;ol>
+&lt;li>In the &lt;code>Hunt Manager&lt;/code> screen, create a new hunt. Restrict the hunt
+to a label &lt;code>acquisition&lt;/code>.&lt;/li>
+&lt;li>Proceed to collect the same artifacts as above&lt;/li>
+&lt;li>As the investigation proceeds, when you find a client that warrants
+a preservation collection, simply add a label &lt;code>acquisition&lt;/code> to the
+client. The &lt;code>Windows.KapeFiles.Targets&lt;/code> will be automatically
+scheduled on this client.&lt;/li>
+&lt;li>You can view all acquired clients in the hunt overview page, and
+create a large zip export of all preserved files.&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Ensure the hunt is restricted by labels! ">&lt;p>Make sure this hunt is restricted by labels! If it is not, it will be
+scheduled on all clients and may result in a lot of data being
+transferred to the server - this can result in the server&amp;rsquo;s bandwidth
+being saturated, disk becoming full or server becoming unresponsive.&lt;/p>
+&lt;p>If this happens you can stop the hunt in the GUI which will cancel all
+in-flight collections and eventually recover the server&amp;rsquo;s bandwidth.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h3 id="if-velociraptor-is-not-installed-on-the-endpoint">If Velociraptor is not installed on the endpoint&lt;/h3>
+&lt;p>If Velociraptor is not already installed on the endpoint, you can use
+an &lt;code>offline collector&lt;/code>. The Velociraptor &lt;code>Offline Collector&lt;/code> is a
+preconfigured version of Velociraptor which can run on the endpoint
+and write all raw files into a ZIP archive.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="4b7ec0e7a12454640ec611d566f84e3f">
+ &lt;div data-featherlight="#4b7ec0e7a12454640ec611d566f84e3f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/preservation/offline_collector.png" alt="Creating an offline collector">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="offline_collector.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating an offline collector
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can use a number of methods to push the offline to collection to
+the endpoint:&lt;/p>
+&lt;ol>
+&lt;li>Use an existing EDR or endpoint security product to run the binary
+and retrieve the collected ZIP file.&lt;/li>
+&lt;li>Use Group Policy to schedule a task that runs the collector from a
+remote share.&lt;/li>
+&lt;li>Use &lt;code>WinRM&lt;/code> or &lt;code>PsExec&lt;/code> to run the collector remotely (by careful
+of pass the hash type attacks though).&lt;/li>
+&lt;/ol>
+&lt;p>We recommend using the X509 encryption scheme to store the raw data to
+an encrypted container. This helps to protect it in transit.&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;figure id="8a6ee2ea5a71727c84827312945d1e57">
+ &lt;div data-featherlight="#8a6ee2ea5a71727c84827312945d1e57" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/preservation/encryoted_collector.png" alt="Encrypting the collected data">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="encryoted_collector.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Encrypting the collected data
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can also configure the offline collector to automatically upload
+the collection to a cloud storage, such as &lt;code>S3&lt;/code>, &lt;code>Google Cloud Storage&lt;/code> or a &lt;code>Windows file share&lt;/code>.&lt;/p>
+&lt;h2 id="when-to-use-this-technique">When to use this technique?&lt;/h2>
+&lt;p>This technique should be used sparingly, usually targeting few
+systems, as it can transfer a large amount of data.&lt;/p>
+&lt;p>Typically this technique is used when the endpoint is likely to be
+destroyed (e.g. re-imaged) or become inaccessible in the near
+future. The method is most suitable for preservation of raw data.&lt;/p>
+&lt;h2 id="when-not-to-use-this-technique">When not to use this technique?&lt;/h2>
+&lt;p>This workflow is not appropriate for triage. A triage workflow is
+about discovering unknown compromised endpoints and therefore by
+definition must be applied to a large number of endpoints. The
+&lt;code>Preserving Forensic Evidence&lt;/code> workflow can not be applied to a large
+number of endpoints.&lt;/p>
+&lt;p>The traditional digital forensics workflow consists of the following
+steps:&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>Acquisition&lt;/code> step collects a large amount of raw data to a central
+server.&lt;/li>
+&lt;li>&lt;code>Analysis&lt;/code> step applies parsers and various dedicated tools in a
+central &amp;ldquo;forensics workstation&amp;rdquo; on all the raw data collected.&lt;/li>
+&lt;li>&lt;code>Interpretation&lt;/code> step involves examining the output from the
+various parsers to answer case specific questions.&lt;/li>
+&lt;/ol>
+&lt;p>Many newcomers to Velociraptor have been trained with this workflow
+and try to apply it to Velociraptor.&lt;/p>
+&lt;p>However this centralist approach to digital forensics does not scale
+in practice. When trying to apply this approach to a large network of
+endpoints, users are often overwhelmed with data (it is almost a right
+of passage for new Velociraptor users to completely fill their
+server&amp;rsquo;s disk because they tried to collect all the log files from all
+the endpoints)&lt;/p>
+&lt;p>Velociraptor&amp;rsquo;s philosophy is different:&lt;/p>
+&lt;ol>
+&lt;li>Velociraptor considers the endpoint to be the ultimate source of truth.&lt;/li>
+&lt;li>Therefore we rarely need to fetch the raw data from the endpoint!
+Since Velociraptor can parse the raw data directly on the endpoint
+we prefer asking case relevant questions from the entire network
+directly.&lt;/li>
+&lt;/ol>
+&lt;p>To explain this point, let&amp;rsquo;s consider an example where we want to know
+if an executable file was recently downloaded onto the endpoint. We
+will attempt to parse the USN Journal to answer this question.&lt;/p>
+&lt;p>The very traditional Digital Forensics process (i.e. back in the 90s)
+would require acquiring a bit for bit disk image of the suspected
+endpoint with a write blocker attached! Probably no-one does this any
+more!&lt;/p>
+&lt;p>A more modern approach is to use a digital acquisition tool to copy
+just the &lt;code>C:\$Extend\$UsnJrnl:$J&lt;/code> file in it&amp;rsquo;s entirety for
+&lt;code>Acquisition&lt;/code>, then apply a separate tool to parse the journal and
+search for any files written to the disk with a &lt;code>.exe&lt;/code> extension.&lt;/p>
+&lt;p>While this approach is better than acquiring the entire disk image
+(Average disks are of the range of 1-2Tb these days), it still
+requires collecting several hundred MB of data from each endpoint. If
+you have 10,000 endpoints this quickly becomes intractable.&lt;/p>
+&lt;p>Velociraptor&amp;rsquo;s approach is different: Since the endpoint is considered
+the source of truth, we just directly run our analysis on the
+endpoint. Collecting the &lt;code>Windows.Forensics.Usn&lt;/code> artifact with a
+&lt;code>FileNameRegex&lt;/code> filter of &lt;code>.exe$&lt;/code> will query each machine to parse
+their own local copy of the USN journal to find all executables
+directly.&lt;/p>
+&lt;p>We can collect this artifact using a hunt from the entire network at
+once. Since each endpoint will be doing the analysis in parallel,
+results will return in minutes regardless of how many endpoint there
+are!&lt;/p>
+&lt;p>This is why we consider simple acquisition followed by central
+analysis workflows to be inferior to directly collecting the right
+artifacts.&lt;/p>
+&lt;p>You should use the &lt;code>Preserving Forensic Evidence&lt;/code> workflow only on
+systems that are known to have been compromised and you want to
+preserve the raw files for some reason.&lt;/p>
+&lt;h3 id="other-considerations">Other considerations&lt;/h3>
+&lt;p>When collecting raw files from the endpoint we need to make a tradeoff:&lt;/p>
+&lt;ol>
+&lt;li>Collecting fewer files may miss some files that are needed later
+during analysis.&lt;/li>
+&lt;li>Collecting more files will result in larger collection.&lt;/li>
+&lt;/ol>
+&lt;p>Ultimately it is not possible to know in advance what type of evidence
+may be relevant. For example, we might collect the &lt;code>$MFT&lt;/code> in our
+initial acquisition but subsequent analysis can show that certain
+files are critical (e.g. files in the user&amp;rsquo;s &lt;code>Downloads&lt;/code> directory).&lt;/p>
+&lt;p>In a &lt;code>Preserving Forensic Evidence&lt;/code> workflow we can not go back to the
+source of truth and check the files in the &lt;code>Downloads&lt;/code> directory!&lt;/p>
+&lt;p>Therefore it is always better to have Velociraptor already installed
+on the endpoint so we can pivot during the analysis phase and get
+additional information as required.&lt;/p></description></item></channel></rss>
