@@ -1,0 +1,76 @@
+name: Custom.Windows.EventLogs.Network.Share.Access
+
+description: |
+   Mounting file shares is a very common technique used by 
+    adversaries to move laterally through an environment—both to distribute malware and to collect data to steal. 
+    To audit network shares, the “Object Access -> Audit File Share” option must be configured within the 
+    Advanced Audit Policy Configuration. Once enabled, Event ID 5140 will record any access to network shares 
+    on the system. Share name, logon account, and the remote IP address are recorded, all of which can be useful for 
+    filtering. Further, Event IDs 5142–5144 track shares that have been created, modified, or deleted (SANS FOR508)
+
+author: Yaniv Radunsky @ 10root cyber security
+
+precondition: SELECT OS FROM info() WHERE OS = 'windows'
+
+parameters:
+  - name: EvtxGlob
+    default: '%SystemRoot%\System32\winevt\Logs\Security.evtx'
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
+  - name: StartDate
+    type: timestamp
+    description: "Parse events on or after this date (YYYY-MM-DDTmm:hh:ssZ)"
+  - name: EndDate
+    type: timestamp
+    description: "Parse events on or before this date (YYYY-MM-DDTmm:hh:ssZ)"
+  - name: PathRegex
+    default: "."
+    type: regex
+  - name: ChannelRegex
+    default: "."
+    type: regex
+  - name: IDRegex
+    default: "(^5140$|^5141$|^5142$|^5143$|^5144$|^5145$)"
+    type: regex
+
+sources:
+  - query: |
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
+
+      // expand provided glob into a list of paths on the file system (fs)
+      LET fspaths =
+          SELECT OSPath FROM glob(globs=expand(path=EvtxGlob), accessor=Accessor)
+          WHERE OSPath =~ PathRegex
+
+      // function returning parsed evtx from list of paths
+      LET evtxsearch(pathList) = SELECT * FROM foreach(
+            row=pathList,
+            query={
+              SELECT *,
+                timestamp(epoch=int(int=System.TimeCreated.SystemTime)) AS TimeCreated,
+                System.Channel as Channel,
+                System.EventRecordID as EventRecordID,
+                System.EventID.Value as EventID,
+                OSPath
+              FROM parse_evtx(filename=OSPath, accessor=Accessor)
+              WHERE
+                if(condition=StartDate,
+                   then=TimeCreated >= timestamp(string=StartDate),
+                   else=true)
+                AND if(condition=EndDate,
+                       then=TimeCreated <= timestamp(string=EndDate),
+                       else=true)
+                AND Channel =~ ChannelRegex
+                AND str(str=EventID) =~ IDRegex
+            }
+          )
+
+      SELECT * FROM evtxsearch(pathList=fspaths)
+      GROUP BY EventRecordID, Channel
