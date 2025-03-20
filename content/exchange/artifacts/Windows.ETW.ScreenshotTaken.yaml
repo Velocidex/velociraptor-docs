@@ -31,6 +31,7 @@ sources:
                         any=4096)
          WHERE System.ID = 1
           AND EventData.Hwnd = "0x0"
+               AND (EventData.Type = "2147483654" OR EventData.Type = "2147483655")
        // 33=GdiSysMemToken OR 52=PhysicalSurfCreate
        LET ScreenshotEvents = SELECT *
          FROM watch_etw(guid="{8c416c79-d49b-4f01-a467-e56d3aa8234c}")
