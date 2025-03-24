@@ -38,7 +38,7 @@ sources:
              FROM watch_etw(
                guid="{8c416c79-d49b-4f01-a467-e56d3aa8234c}",
                level=4,
-               any=4096,
+               any=5120,
                description="Microsoft-Windows-Win32k")
              WHERE System.ID = 1
                AND EventData.Hwnd = "0x0"
