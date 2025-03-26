@@ -595,6 +595,11 @@
                 "type": "StoredQuery",
                 "description": "Run this query over the item.",
                 "required": true
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "If specified we flush incomplete batches in this many seconds."
             }
         ],
         "platforms": [
@@ -1169,7 +1174,7 @@
         ],
         "category": "server",
         "metadata": {
-            "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
+            "permissions": "COLLECT_CLIENT,COLLECT_SERVER,COLLECT_BASIC"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -1570,6 +1575,38 @@
             "windows_amd64_cgo"
         ],
         "category": "accessors"
+    },
+    {
+        "name": "dedup",
+        "description": "Dedups the query based on a column. This will suppress rows with identical values for the key column",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "key",
+                "type": "string",
+                "description": "A column name to use as dedup key.",
+                "required": true
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generate items.",
+                "required": true
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "LRU expires in this much time (default 60 sec)."
+            },
+            {
+                "name": "size",
+                "type": "int64",
+                "description": "Size of the LRU cache."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
     },
     {
         "name": "delay",
@@ -2732,6 +2769,11 @@
                 "name": "fan_out",
                 "type": "int64",
                 "description": "Wait for this many listeners to connect before starting the query"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "A description to add to debug server"
             }
         ],
         "platforms": [
@@ -8160,6 +8202,78 @@
         ]
     },
     {
+        "name": "rsyslog",
+        "description": "Send an RFC5424 compliant remote syslog message.",
+        "type": "Function",
+        "version": 2,
+        "args": [
+            {
+                "name": "port",
+                "type": "uint64",
+                "description": "Destination port to connect to. If not specified we use 514"
+            },
+            {
+                "name": "protocol",
+                "type": "string",
+                "description": "Protocol to use, default UDP but can be TCP or TLS"
+            },
+            {
+                "name": "message",
+                "type": "string",
+                "description": "Message to log.",
+                "required": true
+            },
+            {
+                "name": "facility",
+                "type": "int64",
+                "description": "Facility of this message"
+            },
+            {
+                "name": "severity",
+                "type": "int64",
+                "description": "Severity of this message"
+            },
+            {
+                "name": "timestamp",
+                "type": "time.Time",
+                "description": "Timestamp of this message, if omitted we use the current time."
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "Hostname associated with this message. If omitted we use the current hostname."
+            },
+            {
+                "name": "app_name",
+                "type": "string",
+                "description": "Application that generated the log"
+            },
+            {
+                "name": "proc_id",
+                "type": "string",
+                "description": "Process ID that generated this log"
+            },
+            {
+                "name": "sd_id",
+                "type": "string",
+                "description": "When sending structured data, this is the Structured Data ID"
+            },
+            {
+                "name": "args",
+                "type": "ordereddict.Dict",
+                "description": "A dict to be interpolated into the message as structured data, according to RFC5424."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "s3",
         "description": "Allows access to S3 buckets.",
         "type": "Accessor",
@@ -11219,7 +11333,7 @@
             {
                 "name": "filename",
                 "type": "OSPath",
-                "description": "CSV files to open",
+                "description": "JSONL files to open",
                 "required": true
             },
             {
@@ -11242,6 +11356,11 @@
                 "name": "max_time",
                 "type": "int",
                 "description": "Maximum time before flushing the buffer (10 sec)."
+            },
+            {
+                "name": "append",
+                "type": "bool",
+                "description": "Append JSONL records to existing file."
             }
         ],
         "metadata": {
