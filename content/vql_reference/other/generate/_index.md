@@ -24,6 +24,7 @@ query|Run this query to generator rows.|StoredQuery
 delay|Wait before starting the query|int64
 with_file_buffer|Enable file buffering|bool
 fan_out|Wait for this many listeners to connect before starting the query|int64
+description|A description to add to debug server|string
 
 ### Description
 

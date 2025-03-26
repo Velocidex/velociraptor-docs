@@ -19,11 +19,12 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-filename|CSV files to open|OSPath (required)
+filename|JSONL files to open|OSPath (required)
 accessor|The accessor to use|string
 query|query to write into the file.|StoredQuery (required)
 buffer_size|Maximum size of buffer before flushing to file.|int
 max_time|Maximum time before flushing the buffer (10 sec).|int
+append|Append JSONL records to existing file.|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 
