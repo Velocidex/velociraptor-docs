@@ -28,7 +28,7 @@ If you're really in a hurry you can start a self-contained
 [Instant Velociraptor](#instant-velociraptor)
 on your local machine which will allow you to experiment and get a feel for how
 Velociraptor works, without having to deal with any of the network complexities.
-One command is all that's needed!
+One command is all that's needed to get started!
 
 {{% /notice %}}
 
@@ -88,7 +88,7 @@ Velociraptor offers should be preferred.
 
   - If you're just testing, you can install the client on the same machine as
     the server if you want to. It's not commonly done but the server and client
-    will not conflict with each other.
+    will not conflict with each other if run on the same machine.
 
 ## Simplifying assumptions:
 
@@ -113,11 +113,9 @@ To keep things simple, in this deployment scenario we are going to assume that:
 ## Download the Velociraptor binaries
 
 Before we start configuring or running anything you'll need to download the
-latest binaries from our [Downloads]({{< ref "/downloads/" >}}) page.
-
+latest binary from our [Downloads]({{< ref "/downloads/" >}}) page.
 You will need to download the binary that matches your server platform and
-architecture, plus the binary for each platform+architecture that you
-intend to run clients on.
+architecture.
 
 {{% notice note "One binary to rule them all!" %}}
 
@@ -140,6 +138,19 @@ Linux in this guide.
 {{% /notice %}}
 
 
+In a terminal on your server you can run the following commands to download the
+latest binary and then make it executable:
+
+```sh
+wget -O velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.73/velociraptor-v0.73.4-linux-amd64
+chmod +x velociraptor
+```
+
+## Create the server config file
+
+```sh
+velociraptor config generate -i
+```
 
 ## What next?
 

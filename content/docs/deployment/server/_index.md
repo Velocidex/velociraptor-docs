@@ -15,10 +15,10 @@ aliases:
 ## Generating the configuration file
 
 You can generate a configuration file using either a configuration wizard that
-guides you through the process, or through the automate the merge process that
+guides you through the process, or through the automate/merge process that
 we describe below.
 
-
+![Decision tree for the main configuration options](decision_tree.svg)
 
 ### Option A: Use the configuration wizard
 

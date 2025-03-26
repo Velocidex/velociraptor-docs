@@ -31,78 +31,97 @@ to learn more about how Velociraptor is deployed with the Rapid7 Insight Platfor
 
 {{% /notice %}}
 
-
-Below is a typical Velociraptor deployment
+## Typical Deployment
 
 ![A typical Velociraptor deployment](overview.png)
 
 We use the following terminology for Velociraptor's main components:
 
-1. A **client** is an instance of Velociraptor running on the endpoint, that is
+1. A **Client** is an instance of Velociraptor running on the endpoint, that is
    it's our endpoint "agent".
-2. The **frontend** is the server component that communicates with the client.
+2. The **Frontend** is the server component that communicates with the client.
 3. The **GUI** is the web application server that provides the administrative
    interface.
 4. The **API** is our gRPC-based API server.
 
+Each deployment relies on a unique **configuration file**, which include
+information such as connection URLs, DNS names, and unique cryptographic keys.
+Since key material is unique to each deployment, one Velociraptor deployment
+cannot connect with another deployment.
+
+The **Velociraptor Server** is typically deployed on a cloud VM and runs a
+number of components as separate threads. The server provids an Admin UI - a Web
+application that can be used to control Velociraptor and orchestrate hunts and
+collections from the endpoints.
+
+The endpoints themselves run the **Velociraptor Client**, typically installed as
+a service. Velociraptor Clients maintain a persistent connection with the
+server. This allows the client to execute tasks issued by the server in
+near-realtime. Many other solutions rely on periodic polling between endpoint
+and the server leading to latency between issuing a new task and receiving the
+results - not so with Velociraptor!
+
+Velociraptor does not use any external database - all data is stored within
+the server’s filesystem in regular files and directories. This makes backups and
+data lifecycle management a breeze. You do not need any additional
+infrastructure such as databases or cloud storage services. Due to it's
+file-oriented design, Velociraptor is compatible with distributed file systems
+such as Amazon EFS, Google Filestore or generic NFS.
+
+A typical deployment includes the following steps:
+
+1. Plan your deployment and generate a configuration file for the server which
+   includes the main configuration options.
+2. Create a server installation package that includes the generated
+   configuration file.
+3. Set up a VM or a physical server to host the server component.
+4. Install the server package. Once installed you will be able to access the
+   Admin GUI and front end.
+5. Create client installation packages for your target operating systems (for
+   example, MSI for windows).
+6. Deploy the client installation packages using your preferred deployment
+   solution.
+
+
 ## Deployment Platforms
 
-_Velociraptor only has one binary per operating system + architecture combination._
-
-Velociraptor does not have separate client binaries and server binaries. The
-binary can act as a server, a client or a number of utility programs depending on
-the command line parameters passed to it.
+Velociraptor only has one binary per operating system + architecture
+combination. We do not have separate client binaries and server binaries. The
+binary can act as a server, a client or a number of utility programs depending
+on the command line parameters passed to it.
 
 While this technically allows you to run the server or the client on any
 platform that we have a binary for,
-_please note that the server is only fully supported on Linux_
+**please note that the server is only fully supported on Linux**
 due to performance considerations inherent in other platforms such as Windows.
-However for non-production deployments (e.g. development or testing) it might be
-convenient for you to run the server on whatever platform you prefer. Just keep
-in mind that for production deployments we strongly recommend that the server
-should run on Linux and that issues with other platforms will not be supported.
+However for non-production deployments - for example evaluation, development or
+testing - it might be convenient for you to run the server on a different
+platform, and you may choose to do so, but please keep in mind that for
+production deployments the server should run on Linux. Issues with other
+platforms will not be supported.
 
-In particular we do not support Windows-based servers at scale, although you can
-install the server on Windows for a demo or for a small number of endpoints.
-
+Binaries for the the most common platforms and architectures are available on
+our [Downloads]({{< ref "/downloads/" >}}) page.
 
 ## Deployment Milestones
 
-At a high level, your Velociraptor deployment will consist of 3 tasks: setting up a server, deploying clients, and granting user access to the server's web UI.
+At a high level, your Velociraptor deployment will consist of 3 tasks: setting
+up a server, deploying clients, and granting user access to the server's web UI.
 
 **Task 1: Deploy a Server**
-- Choose the deployment method that works best for you:
+- [Choose the deployment options]({{< ref "/docs/deployment/server/" >}}) that
+  work best for you and install your server.
 
 **Task 2: Deploy Clients**
-- Deploy clients on your endpoints using one of the recommended methods:
+- [Deploy clients]({{< ref "/docs/deployment/clients/" >}}) on your endpoints
+  using one of the recommended methods:
   - Run clients interactively
-  - Install using Custom MSI
-  - Install the Client as a Service
+  - Install the client as a service using a custom MSI package
   - Agentless Deployment
 
 **Task 3: Authorize Users**
-- Grant user access to the Velociraptor server's web UI
+- Grant users access to the Velociraptor server's web UI
 
-
-## Typical Deployment
-
-Each deployment relies on unique configuration files, which include information such as connection URLs, DNS names, and unique cryptographic keys. Since key material is unique to each deployment, one Velociraptor deployment cannot connect with another deployment.
-
-The **Velociraptor Server** is typically deployed on a cloud VM and runs a number of components as separate threads. The GUI serves the Admin UI - a Web application that can be used to control Velociraptor and orchestrate hunts and collections from the endpoints.
-The endpoints themselves run the Velociraptor Client as a service. The client is simply the Velociraptor instance running on the endpoint.
-Velociraptor Clients maintain a persistent connection with the server. This allows the server to issue a task to the clients as soon as it is scheduled by the user.  (Many other solutions rely on periodic polling between endpoint and the server leading to latency between issuing a new task and receiving the results - not so with Velociraptor).
-
-
-Velociraptor does not use an external datastore - all data is stored within the server’s filesystem in regular files and directories, making backups and data lifecycle management a breeze. You do not need any additional infrastructure such as databases or cloud services. Velociraptor is compatible with distributed file systems such as Amazon EFS, Google Filestore or generic NFS.
-
-**A typical deployment includes the following steps:**
-1. Generate a configuration file for the server and clients.
-2. Create a server package that includes the generated configuration file.
-3. Set up a cloud VM for the server (If deploying in the cloud) or create a new physical server.
-4. Install the server package on the VM. Once installed you will be able to access the  Admin GUI and front end.
-5. Create client packages for target operating systems (for example, MSI for windows).
-
-![Decision tree for the main configuration options](decision_tree.svg)
 
 ## Instant Velociraptor
 
@@ -138,7 +157,7 @@ velociraptor.exe gui
 Since this mode is not intended to be a production server, it is fine to run
 this on any platform. The client capabilities do vary per platform, but the
 server component is identical across platforms. This mode is especially
-usefulfor testing and artifact development because it allows you to run VQL
+useful for testing and artifact development because it allows you to run VQL
 directly on the target operating system via
 [Velociraptor notebooks]({{< ref "/docs/notebooks/" >}}).
 
@@ -154,7 +173,7 @@ In this mode:
 
 ![Instant mode automatically enrolls a single client](gui_windows.svg)
 
-{{% notice info "Persisting your data" %}}
+{{% notice info "Instant Velociraptor: Persisting your data" %}}
 
 By default the `gui` command uses the temp folder as it's data store (by default
 a subfolder named `gui_datastore`). The `gui` command also automatically creates
@@ -223,6 +242,10 @@ forensic environment for a single computer.
 imported into a Velociraptor server, but this doesn't have to be the case. You
 may just be interested in extracting the data and working with it elsewhere
 using other tools.
+
+### Sneakernet Velociraptor clients
+
+### Sneakernet Velociraptor server
 
 ### Querying data and extracting files from disk images.
 
