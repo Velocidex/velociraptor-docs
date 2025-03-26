@@ -40,7 +40,7 @@ First change to the Velociraptor user and then start the service as that user.
 
 ```
 # sudo -u velociraptor bash
-$ velociraptor frontend -v
+$ /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend -v
 Dec 31 15:47:18 devbox velociraptor[3572509]: velociraptor.bin: error: frontend: loading config file: failed to acquire target io.Writer: failed to create a new file /mnt/data/logs/Velociraptor_debug.log.202112270000: failed to open file /mnt/data/logs/Velociraptor_debug.log.202112270000: open /mnt/data/logs/Velociraptor_debug.log.202112270000: permission denied
 ```
 
