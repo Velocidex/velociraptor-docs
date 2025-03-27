@@ -21,15 +21,15 @@ sources:
   - name: AppCrashReport
     query: |
 
-        LET files = SELECT FullPath FROM glob(globs=["C:/Users/*/AppData/Local/Microsoft/Windows/WER/*/*/Report.wer",
+        LET files = SELECT OSPath FROM glob(globs=["C:/Users/*/AppData/Local/Microsoft/Windows/WER/*/*/Report.wer",
                                                      "C:/ProgramData/Microsoft/Windows/WER/*/*/Report.wer"])
         
         LET parsed_reports = SELECT * FROM foreach(row=files,
                                                    query={
-                                                      SELECT FullPath,
+                                                      SELECT OSPath,
                                                              to_dict(item={
                                                                         SELECT _key,_value 
-                                                                        FROM parse_records_with_regex(file=utf16(string=read_file(filename=FullPath)),
+                                                                        FROM parse_records_with_regex(file=utf16(string=read_file(filename=OSPath)),
                                                                                                     accessor="data",
                                                                                                     regex="(?P<_key>.*)=(?P<_value>.*)\r\n")
                                                                         }
@@ -48,25 +48,25 @@ sources:
                     else="No hash information") as SHA1,
                 Report.OriginalFilename,        
                 Report,
-                FullPath as ReportFileName
+                OSPath as ReportFileName
         FROM parsed_reports
         
   - name: WERInternalMetadata
     query: |
     
-        LET files = SELECT FullPath FROM glob(globs=["C:/Users/*/AppData/Local/Microsoft/Windows/WER/*/*/*InternalMetadata.xml",
+        LET files = SELECT OSPath FROM glob(globs=["C:/Users/*/AppData/Local/Microsoft/Windows/WER/*/*/*InternalMetadata.xml",
                                                      "C:/ProgramData/Microsoft/Windows/WER/*/*/*InternalMetadata.xml"])
         
         
         LET parsed_reports = SELECT * FROM foreach(row=files,
                                                    query={
-                                                      SELECT FullPath, parse_xml(
+                                                      SELECT OSPath, parse_xml(
                                                                accessor='data',
                                                                file=regex_replace(
                                                                     source=utf16(string=Data),
                                                                     re='<[?].+?>',
                                                                     replace='')) AS XML
-                                                      FROM read_file(filenames=FullPath)
+                                                      FROM read_file(filenames=OSPath)
                                                   })
       
         SELECT  XML.WERReportMetadata.ReportInformation.CreationTime as timestamp,
@@ -77,19 +77,19 @@ sources:
                 XML.WERReportMetadata.ProblemSignatures.EventType as EventType,
                 XML.WERReportMetadata.ProblemSignatures.Parameter0 as Parameter0,
                 XML,
-                FullPath
+                OSPath
         FROM parsed_reports
 
   - name: WERProcessTree
     query: |
     
-        LET files = SELECT FullPath FROM glob(globs=["C:/Users/*/AppData/Local/Microsoft/Windows/WER/*/*/*.csv",
+        LET files = SELECT OSPath FROM glob(globs=["C:/Users/*/AppData/Local/Microsoft/Windows/WER/*/*/*.csv",
                                                      "C:/ProgramData/Microsoft/Windows/WER/*/*/*.csv"])
         
         LET parsed_reports = SELECT * FROM foreach(row=files,
                                                    query={
                                                       SELECT *
-                                                      FROM parse_csv(filename=utf16(string=read_file(filename=FullPath)),accessor="data")
+                                                      FROM parse_csv(filename=utf16(string=read_file(filename=OSPath)),accessor="data")
                                                   })
       
         SELECT *
