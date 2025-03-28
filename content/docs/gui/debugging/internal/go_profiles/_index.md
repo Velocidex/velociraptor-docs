@@ -1,11 +1,12 @@
 ---
 title: "Golang"
 weight: 20
+description: Show built in Go Profiles
 ---
 
-These show the built in Golang profiles provide detailed profiling and
-instrumentation of the running process. They are most useful for
-developers and are very important if you seek help from the
+These show the built in Golang profiles. These profiles provide
+detailed instrumentation of the running process. They are most useful
+for developers and are very important if you seek help from the
 Velociraptor developer team, who will often ask for these.
 
 ![Built in Golang profiles](built_in.png)
@@ -22,9 +23,9 @@ Here is an example trace
 ![An example trace from allocations](alloc.png)
 
 Above we see two sample allocations. The first line shows that
-currently there are 2 allocations live, worth 1.3Mb in total (which
+currently there are 2 allocations alive, worth 1.3Mb in total (which
 have not been garbage collected yet). However over the life of the
-program there were 2194 allocation (most have been freed and
+program there were 2194 allocation (but most have been freed and
 reclaimed).
 
 ```
@@ -34,7 +35,7 @@ reclaimed).
 Next we see a trace back of where these allocations came from. We can
 see that these particular allocations happen from compressing data to
 be sent to the server. This helps debug where excessive memory
-allocations are made.
+allocations are made or a memory leak is suspected.
 
 ## Goroutines
 
@@ -68,8 +69,8 @@ profiling is built into every production Go binary - this makes it
 very easy to capture this information in running deployed systems
 under real world workload.
 
-The profile measure the amount of time spent in each function during a
-30 second interval. When you click on that link the browser will wait
+The profile measures the amount of time spent in each function during a
+30 second interval. When you click on the link the browser will wait
 for 30 seconds and then download a binary profile file.
 
 You can view the file using a tool like `kcachegrind` after converting
@@ -83,14 +84,14 @@ go tool pprof -callgrind -output=/tmp/profile.grind /tmp/profile.bin && kcachegr
 
 
 The above shows where time is spent in the program. On the top right
-pane we see a call tree, with each function calling the different
-functions. Next to each node in the tree we see the total time spent
-in each function. The different between time on entering the function
-and the sum of all time of the called functions represents the time
-"lost" inside each function.
+pane we see a call tree, with each function calling its different
+sub-functions. Next to each node in the tree we see the total time
+spent within each function. The difference between time on entering
+the function and the sum of all times spent in the called functions
+represents the time "lost" inside each function.
 
 The bottom pane shows the time used on each line inside the
-function. We can see how much each operation "costs".
+function. We can see how much each operation "costs" in terms of time.
 
 Developers can use this to find "hot spots" or places with very high
-CPU use that can be optimized.
+CPU use that should be optimized to speed up operations.

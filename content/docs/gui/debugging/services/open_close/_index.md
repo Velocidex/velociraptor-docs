@@ -1,6 +1,7 @@
 ---
 title: "Tempfiles"
 weight: 50
+description: Track tempfiles used by the process.
 ---
 
 Velociraptor uses temporary files for a variety is purposes. It is
@@ -20,7 +21,7 @@ The profile indicates:
 In the above example, we see two temporary files created from the VQL
 `tempfile()` function and one created by the VQL engine during a
 materialize operation (e.g. expanding a `LET` ). All files were
-suitable closed as determined by the non zero destroyed time.
+suitably closed as determined by the non zero destroyed time.
 
 
 ## Open Close
@@ -32,9 +33,9 @@ objects within Velociraptor that need to be closed.
 
 ![Open Closed profile](openclosed.png)
 
-We typically want to see all files being suitable closed unless they
-are used currently. Some files are held open for a short time to avoid
-needing to re-open them.
+We typically want to see all files being suitably closed unless they
+are used currently. Some files are held open for a short time after
+use, to avoid needing to re-open them if accessed soon after.
 
 The above example shows we recently opened the raw `C:` device and
 some more files used during a flow export operation.

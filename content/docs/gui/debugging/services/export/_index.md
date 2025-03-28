@@ -1,16 +1,16 @@
 ---
 title: "Export"
 weight: 10
+description: Report the state of current exports
 ---
 
 The Velociraptor GUI allows exporting collections from Flows or Hunts
 into a Zip file. If the collection is very large this can take some
-time. While the GUI shows some progress information, this profile
-shows a lot more details.
+time. While the GUI shows some progress information:
 
 ![Export Progress as shown by the GUI](export_progress.png)
 
-The profile shows a lot more information
+The profile shows a lot more information:
 
 ![Export Containers profile](profile.png)
 
@@ -22,6 +22,6 @@ Zip files (this is the way to utilize multiple cores when preparing a
 Zip file).
 
 However, when you have a single very large file (e.g. a memory image)
-the compression might pause for a while and progress will appear to
-have stalled. In that case you can verify the progress using the
-Export Progress Profile.
+the compression might pause for a while the large file is compressed,
+leading for the progress to appear to have stalled. In that case you
+can verify the progress using the Export Progress Profile.

@@ -1,6 +1,7 @@
 ---
 title: "Metrics"
 weight: 10
+description: Report all the current process running metrics.
 ---
 
 Metrics are counters in the program that are used to collect high
@@ -100,5 +101,6 @@ there were 4556 operations in total (completed in the `+Inf`
 bucket). However only 4528 operations completed within 0.01
 seconds. If the underlying filesystem is slow (as for example in
 running over NFS or a another network filesystem), many operations
-will not complete quickly and so most operations will take longer to
-complete (i.e. higher latency).
+will not complete quickly and so the histograms will show few
+operations completing within a short time, and most operations
+completing in longer time bins (i.e. higher latency).

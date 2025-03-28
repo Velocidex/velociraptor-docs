@@ -1,5 +1,7 @@
 ---
 title: "Flows"
+description:  Report the state of the client's flow manager
+weight: 50
 ---
 
 The Client Flows profile shows information about currently executing
