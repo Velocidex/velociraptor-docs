@@ -1,9 +1,10 @@
 ---
 title: "Throttler"
 weight: 20
+description:  Track operations of the Throttler
 ---
 
-An important criteria for Velociraptor is to ensure the impact on the
+An important criteria for Velociraptor is to ensure the impact on
 endpoint performance is limited. This helps in cases when we need to
 perform intensive tasks on the endpoint. We want to make sure the end
 system is still usable and reduce our impact on the end user.
@@ -49,15 +50,18 @@ endpoint (e.g. with only a single core).
 
 While we always aim to have as little CPU impact as possible on the
 endpoint, it is not appropriate to collect artifacts with artificially
-low CPU utilization. A low CPU limit means that the query is paused
-more often and takes longer to complete - it is a trade off between
-how long the query takes to complete and overall impact on the
+low CPU utilization limits. A low CPU limit means that the query is
+paused more often and takes longer to complete - it is a trade off
+between how long the query takes to complete and overall impact on the
 endpoint.
 
-Client collections have a time limit as well, so reducing the CPU
-limit may cause the query to exceed to the time limit causing
-collection to fail. Similar Client Monitoring queries may not get to
-run and miss events increasing the detection latency or even failing
-to detect anything.
+Client artifact collections have a time limit as well (by default 10
+minutes), so reducing the CPU limit may cause the query to exceed to
+the time limit, causing collection to fail.
+
+Similarly, Client Monitoring queries may not get to run when heavier
+collections are proceeding (pushing CPU use above threshold). This may
+cause them to miss events, increasing detection latency or even
+failing to detect important events.
 
 {{% /notice %}}

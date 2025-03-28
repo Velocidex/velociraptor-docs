@@ -1,6 +1,7 @@
 ---
 title: "Monitoring"
 weight: 10
+description:  Report stats on client monitoring artifacts
 ---
 
 
@@ -23,15 +24,17 @@ next opportunity.
 The above example shows a typical output from the client monitoring
 profile. We usually consider the following aspects:
 
-1. Which client monitoring queries are actually run on the client?
+1. Which client monitoring queries are actually running on the client?
 2. How much data do these transfer to the server.
 
 
-While it is easy to add a lot of client monitoring queries to forward
-a large number of events, these do not come for free! Additional
-monitoring means additional CPU use on the end point. Similarly
-forwarding more events means more network traffic and additional
-storage requirements on the server.
+While it is easy to add a lot of client monitoring queries and to
+forward a large number of events to the server, these do not come for
+free!
+
+Additional monitoring means additional CPU use on the end
+point. Similarly forwarding more events means more network traffic and
+additional storage requirements on the server.
 
 You can examine the client monitoring queries assigned from the server.
 
@@ -55,10 +58,12 @@ events. It is easy to now estimate the total storage required
 endpoints will require about 85gb per day). Do you have a way to
 process this data? What do you do with this data? Is it useful?
 
+You will have to make a call if the value gained is worth the storage
+and network costs in your specific deployment.
 
 #### Example `Windows.Hayabusa.Monitoring`
 
-We see also in this example we are collecting the
+We see also in this example that we are collecting the
 `Windows.Hayabusa.Monitoring` artifact. This artifact applies a set of
 Sigma rules to the event logs to surface high valued events only.
 
@@ -67,10 +72,11 @@ sent to the server, since only high level events are forwarded (those
 that match the detection rules).
 
 However in this case, the Sigma rules selected are of `Critical, High
-and Medium` severity. These rules set low fidelity and so end up
-firing on more events than necessary.
+and Medium` severity. Many of these rules have low fidelity and so end
+up firing on more events than necessary (there are many false
+positives!).
 
-We can see the effect of this choice from this profile - the artifact
+We can see the effect of this choice from the profile - the artifact
 forwarded 450 rows totaling about 0.7mb in 2 hours. These are too
 many to be considered useful for detection. A better tuned set of
 rules will be more effective and transfer less data.
@@ -80,16 +86,17 @@ rules will be more effective and transfer less data.
 
 The final example is the `Windows.Detection.Honeyfiles` artifact that
 places a number of juicy sounding files on the system (e.g. AWS keys,
-ssh keys etc). The artifact then uses ETW to monitor any access to
+SSH keys etc). The artifact then uses ETW to monitor any access to
 these files and sends events for each file accessed. If an attacker is
 simply looking for useful files to compromise they might copy or read
 those files which will trip the detection.
 
 This is an example of an effective client monitoring rule. When this
 artifact sends an event, it is extremely high valued (presuming the
-user of this system does not actually read the juicy honey files on
-it). We see that this artifact did not send any events at all and so
-has no storage or network overheads!
+user of this system does not normally interact with the honey
+files).
 
-When an event is finally sent to the server it would probably require
-further investigation!
+In this example, we see that this artifact did not send any events at
+all and so has no storage or network overheads! When an event is
+finally sent to the server it would probably require further
+investigation!

@@ -27,9 +27,8 @@ Profile`:
 The glob profiles shows the last 10 directories the plugin inspected,
 and the count of files within these directories.
 
-A common reason for glob operations slow down is when the plugin
+A common reason for glob operations to slow down is when the plugin
 accesses files on a network share or recurses through many symbolic
 links (for example on Linux, if the `/proc/` filesystem is not
-properly excluded). Viewing the most recent directories accessed by
-glob will reveal such issues as recursive symlink loops or network
-mounts.
+properly excluded, the plugin may enter a symlink cycle). Viewing the
+most recent directories accessed by glob will reveal such issues.

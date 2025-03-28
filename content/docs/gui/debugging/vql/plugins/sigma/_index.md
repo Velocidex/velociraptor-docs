@@ -33,11 +33,12 @@ was taken on a system that is running the live Sigma rules using the
 We see that the Sigma engine has 4133 rules loaded. The `Sysmon` log
 source has 2057 rules following it. During the life of the process,
 772 events were evaluated through those 2057 rules in 31 seconds (This
-works out to about 20us per rule. The artifact was running for 4.5
+works out to about 20us per rule). The artifact was running for 4.5
 hours at this time, so 31 seconds amortized over this time is
 reasonable. Note also that different log sources are evaluated on
 different cores so on multi core systems, the performance impact is
 minimal.
 
 We also see the `Raw Access Read` rule fired 129 times. This might
-indicate that the rule requires tuning, perhaps to add an allow list.
+indicate that the rule requires tuning, perhaps to add an allow list,
+since it seems to have a lot of false positives.
