@@ -1688,3 +1688,5 @@ UDP
 rsyslog
 sd
 Dedups
+recurses
+Datadog
