@@ -219,8 +219,8 @@ doing.
 You can start the offline collector by adding the `--debug` flags to
 its execution in a similar way to above.
 
-```
-Collector_velociraptor-v0.7.1-windows-amd64.exe -- --debug --debug_port 6061
+```sh
+Collector_velociraptor-v0.74.1-windows-amd64.exe -- --debug --debug_port 6061
 ```
 
 ![Inspecting the ETW subsystem](debugging_offline_collector.png)

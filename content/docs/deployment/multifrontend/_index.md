@@ -214,7 +214,7 @@ holding the client's connection open for too long.
   EFS storage asynchronously. This removes the perception of latency
   from most datastore operations.
 
-# Configuration
+## Configuration
 
 This section describes how to configure a multi server deployment. We
 typically start off with a normal configuration as generated with
@@ -222,12 +222,11 @@ typically start off with a normal configuration as generated with
 
 ![Generating a basic configuration](basic_generation.png)
 
-In the above example I generate a self signed configuration with a
-server at `master.velocidex-training.com`. I will use the dynamic DNS
+In the above example we generated a self signed configuration with a
+server at `master.velocidex-training.com`. We will use the dynamic DNS
 setting to automatically update the frontend dns mapping.
 
-Now I derive a multi-server configuration from this basic
-configuration.
+Now we derive a multi-server configuration from this basic configuration.
 
 ```bash
 velociraptor --config server.config.yaml config frontend
@@ -245,7 +244,7 @@ Client:
     - https://minion.velocidex-training.com:8100/
 ```
 
-This will cause clients to randomly connect to one of the servers.
+This will cause clients to randomly select which server to connect to.
 
 The API server is now listening on all interfaces and can be accessed
 by the public hostname. This is required for minions to connect to the
@@ -286,18 +285,20 @@ which stores file in a memory cache while syncing them with the
 storage asynchronously.
 
 The minion, on the other hand will connect to the master via the
-remote datastore (a gRPC based datastore implementation)..
+remote datastore (a gRPC based datastore implementation).
 
-## Making deb package.
+## Creating the server installation package.
 
-Now we can create the deb package using the normal method:
+The normal deb packaging command will create two packages when given a
+multi-frontend configuration:
+
 ```yaml
-$ ./velociraptor-v0.6.3-rc1-linux-amd64 --config server.config.yaml debian server
+$ ./velociraptor --config server.config.yaml debian server
 $ ls -l *.deb
--rw-rw-r-- 1 mic mic 16347350 Jan  1 06:25 velociraptor_0.6.3-rc1_server_master_master.velocidex-training.com-8000.deb
--rw-rw-r-- 1 mic mic 16347356 Jan  1 06:25 velociraptor_0.6.3-rc1_server_minion_minion.velocidex-training.com-8100.deb
+-rw-rw-r-- 1 me me 27429604 Mar 28 16:32 velociraptor_server__master_master.velocidex-training.com-8000_0.74.1_amd64.deb
+-rw-rw-r-- 1 me me 27429604 Mar 28 16:32 velociraptor_server__minion_minion.velocidex-training.com-8100_0.74.1_amd64.deb
 ```
 
-We expect each of these packages to be deployed on their own virtual
+Each of these packages should be deployed on their own virtual
 machine instances.  Each VM should be built with the same EFS volume
-mounted on `/opt/velociraptor`
+mounted on `/opt/velociraptor`.
