@@ -1,0 +1,84 @@
+name: Generic.VSCode.Extensions
+author: "Andreas Misje – @misje"
+description: |
+  List all installed Visual Studio code extensions
+
+  This artifact lists all installed VS Code exensions on all supported
+  operating systems. This list can be used to hunt for known malicious
+  extensions by name or ID.
+
+  The artifact returns the raw JSON from the extensions file. The notebook
+  provides a more user-friendly view.
+
+type: CLIENT
+
+parameters:
+  - name: ExtensionGlobs
+    description: |
+      Where to look for extension.json files on varios OSes
+    type: csv
+    default: |
+      OS,Glob
+      windows,C:\Users\*\.vscode\extensions\extensions.json
+      linux,/home/*/.vscode/extensions/extensions.json
+      darwin,/Users/*/.vscode/extensions/extensions.json
+
+column_types:
+  - name: ID
+    description: Extension name
+  - name: _UUID
+    description: Extension unique identifier
+  - name: Version
+    description: Extension version
+  - name: UpToDate
+    description: Whether VSCode considers this version up-to-date
+  - name: Publisher
+    description: The name of the publisher
+  - name: _PublisherID
+    description: Publisher unique identifier
+  - name: InstalledAt
+    type: timestamp
+    description: When the extension was installed
+  - name: _Location
+    description: Local path to extension files
+  - name: _Info
+    description: All available information about the extension
+
+sources:
+  - query: |
+      LET Info <= SELECT OS
+        FROM info()
+      LET Globs = SELECT Glob
+        FROM ExtensionGlobs
+        WHERE OS = Info[0].OS
+      SELECT *
+      FROM foreach(
+        row={
+          SELECT OSPath
+          FROM glob(globs=Globs.Glob)
+        },
+        query={
+          SELECT OSPath,
+                 parse_json_array(data=Data) AS Extensions
+          FROM read_file(filenames=OSPath)
+        })
+    notebook:
+      - type: vql
+        name: Visual Studio Code extensions
+        template: |
+          SELECT 
+                   OSPath AS _ExtensionsFile,
+                   Extensions.identifier.id AS ID,
+                   Extensions.identifier.uuid AS _UUID,
+                   Extensions.version AS Version,
+                   Extensions.metadata.updated AS UpToDate,
+                   Extensions.metadata.publisherDisplayName AS Publisher,
+                   Extensions.metadata.publisherId AS _PublisherID,
+                   timestamp(epoch=Extensions.metadata.installedTimestamp) AS InstalledAt,
+                   Extensions.location.path AS _Location,
+                   Extensions AS _Info
+            FROM flatten(query={
+                           SELECT *
+                           FROM source()
+                         })
+            WHERE Extensions
