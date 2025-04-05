@@ -1,0 +1,84 @@
+name: Windows.Detection.RMMs
+author: Herbert Bärschneider
+description: |
+    This artifact searches for RMMs present in the environment, based on data from the LOLRMM project.
+    It is meant to create awareness of the RMM tools present in the environment. The results are also meant to be used for tagging the systems appropriately.
+    Attackers like using RMM tools for persistence. These can be either brought in by the attacker or already present ones. Organizations are also often unaware which RMM tools they currently use in their environment.
+    
+    The finding of RMMs depends on data from the LOLRMM project, which is normally downloaded from the internet on demand; this data can also be served locally, if systems do not have unrestricted internet access.
+    
+    The artifact shows RMM tools present as installed programs as well as resolved domain names. If no output comes back, this might be due to the following 
+    + the organization uses no RMM tools
+    + the data from the LOLRMM project is not sufficient to identify the RMM tools present in the environment
+    
+    The output of this artifact is of informational nature.
+    You have to speak with the persons responsible for the systems to check if identified RMM tools are legitimate.
+    
+    Not all RMM tools are properly installed on a Windows machine; as such, they will not show up in the data sourced for their identification by this artifact.
+    Furthermore, RMM tools that manage their own DNS cache will not be detected by the query utilizing the Windows DNS cache.
+
+reference:
+    - https://lolrmm.io/
+    - https://attack.mitre.org/techniques/T1219/
+
+type: CLIENT
+
+tools:
+ - name: OverviewLOLRMMs
+   url: https://lolrmm.io/api/rmm_tools.csv
+
+parameters:
+   - name: ReallyDoIt
+     type: bool
+     default: false
+     description: Please consider that this artifact downloads over 250KB on each client which might overload the organizations internet access
+
+sources:
+  - name: InstalledPrograms
+    precondition:
+      SELECT OS From info() Where ReallyDoIt
+    query: |
+      LET CsvFile = SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="OverviewLOLRMMs", IsExecutable=FALSE)
+      LET LOLRMMInfo <= SELECT * FROM parse_csv(filename=CsvFile[0].FullPath) -- typical name stored under "Name" and typical installation files stored as comma-separated list under "InstallationPaths"
+      LET InstalledPrograms = SELECT * FROM Artifact.Windows.Sys.Programs()
+      
+      SELECT * FROM foreach(
+        row={SELECT Name AS RMM, InstallationPaths FROM LOLRMMInfo},
+        query={
+          SELECT *, RMM, InstallationPaths FROM InstalledPrograms
+          WHERE InstallationPaths != "" AND InstallLocation != "" -- removes matches on empty stuff
+            AND ( DisplayName =~ RMM 
+              OR InstallLocation =~ regex_replace(source=regex_replace(source=regex_replace(source=regex_replace(source=regex_replace(source=InstallationPaths,re=", ",replace="|"),re="\\\\\\|",replace="|"),re="\\\\",replace="\\\\"),re="\\.",replace="\\."),re="\\*",replace=".*") -- turning the multiple elements in the InstallationPaths string into a cheap regex; depends on the function "regex_replace" doing global replacements, which was true during testing with velociraptor v0.73.3
+              -- replacements (to build the regex):
+              -- - turn the comma-separator between the elements into regex "Or" separators
+              -- - removing trailing "\" for installation paths, because the RMM data ends directories with a slash but the installed programs does not always list directories with a trailing slash
+              -- - replace single slashes with double slashes, so that path dividers are properly escaped for usage in a regex
+              -- - escape dots (".") so that they do not match any character, but rather only the specific dot character
+              -- - replace astrisks ("*") with a variant that properly expresses the "match anything" semantic in regex
+            )
+          })
+  - name: ResolvedDomains
+    precondition:
+      SELECT OS From info() Where ReallyDoIt
+    query: |
+      LET CsvFile = SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="OverviewLOLRMMs", IsExecutable=FALSE)
+      LET LOLRMMInfo <= SELECT * FROM parse_csv(filename=CsvFile[0].FullPath) -- typical name stored under "Name" and typical network indicators stored as array under "Artifacts.Network", with each array element having a field "Domains" containing an array of strings of domain names
+      LET ResolvedDomains = SELECT * FROM Artifact.Windows.System.DNSCache()
+      
+      SELECT * FROM foreach(
+        row={SELECT Name AS RMM, `Artifacts`.Network AS NetworkIndicators FROM LOLRMMInfo},
+        query={
+          SELECT * FROM foreach(
+            row={SELECT * FROM NetworkIndicators},
+            query={
+              SELECT * FROM foreach(
+                row=Domains, -- need to use the field "Domains" directly, as a simple query would not allow me to access the unnamed elements in the field using "_value"
+                query={
+                  SELECT *, RMM, _value AS NetworkIndicatorValue FROM ResolvedDomains
+                  WHERE Name =~ regex_replace(source=regex_replace(source=_value,re="\\.",replace="\\."),re="\\*",replace=".*") -- turning the string into a cheap regex; depends on the function "regex_replace" doing global replacements, which was true during testing with velociraptor v0.73.3
+                  -- replacements (to build the regex):
+                  -- - escape dots (".") so that they do not match any character, but rather only the specific dot character
+                  -- - replace astrixes ("*") with a variant that properly expresses the "match anything" semantic in regex
+                  })
+              })
+          })
