@@ -120,7 +120,7 @@ Currently the following parameter types are supported
 * **upload**: The parameter contains a string which is uploaded from a file. NOTE- this is limited to 4mb - if you need larger files use `upload_file`. The GUI will present a file upload widget to allow you to upload a file for this request only!
 * **upload_file**: The parameter will be the name of a temporary file on the endpoint containing the contents of the uploaded file.
 * **server_metadata**: The server will populate this parameter from the server metadata service prior to launching the artifact. The parameter will not be settable in the GUI
-* **artifactset**: A set of artifacts. This is probably only useful on server artifacts as clients do not have access to arbitrary artifacts.
+* **artifactset**: A set of artifacts. This is probably only useful on server artifacts as clients do not have access to arbitrary artifacts. You must also include the `artifact_type` parameter which can be `CLIENT`, `SERVER`, `CLIENT_EVENT`, `SERVER_EVENT`
 * **json**, **json_array**, **xml**, **yaml**: This is a data blob encoded as a string.
 
 
