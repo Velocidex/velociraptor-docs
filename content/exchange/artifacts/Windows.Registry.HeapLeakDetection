@@ -1,0 +1,60 @@
+name: Windows.Registry.HeapLeakDetection
+description: |
+    Collect keys and values under HeapLeakDetection in the registry.
+
+    HeapLeakDetection, specifically the registry key at HKLM\Software\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications, is a powerful forensic artifact for investigating suspicious executables. This key tracks programs that Windows RADAR (Runtime Application Self-healing and Detection At Runtime) flags for memory leak detection.
+
+    Forensic Value:
+    - Alternative evidence source when traditional artifacts are missing
+    - Temporal correlation for suspicious executables
+    - Behavioral insights into application memory patterns
+    - Resilience against common anti-forensic techniques
+
+    This artifact collects the application names and their LastDetectionTime from the registry path:
+    'HKLM\Software\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications'.
+
+    The LastDetectionTime is converted from Windows FILETIME to a human-readable format.
+
+type: CLIENT
+
+author: BusterBaxter5
+
+precondition:
+  SELECT * FROM info() WHERE OS = 'windows'
+
+parameters:
+  - name: RegistryPath
+    default: HKLM\Software\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications\**
+    description: Registry path to search for HeapLeakDetection keys.
+
+sources:
+  - query: |
+      LET keys <= SELECT 
+            basename(path=OSPath.Dirname) as AppName,
+            Data.value as LastDetectionTime,
+            OSPath.Dirname.Path as KeyPath,
+            OSPath.DelegatePath as HiveName,
+            OSPath,
+            ModTime as Modified
+        FROM glob(globs=RegistryPath, accessor='registry')
+        WHERE Data.name = 'LastDetectionTime'
+
+      LET convert_filetime(filetime) = SELECT 
+            datetime(filetime/10000000 - 11644473600, 'unixepoch') as HumanReadableTime
+      LET results = SELECT 
+            AppName,
+            KeyPath,
+            HiveName,
+            convert_filetime(LastDetectionTime) as LastDetectionTime,
+            Modified
+        FROM keys
+
+      SELECT * FROM results
+
+column_types:
+  - name: LastDetectionTime
+    type: timestamp
+
+reference:
+  - https://harelsegev.github.io/posts/the-mystery-of-the-heapleakdetection-registry-key/
+  - https://x.com/samaritan_o/status/1848743680384889031
