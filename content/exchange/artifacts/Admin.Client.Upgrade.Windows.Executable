@@ -1,0 +1,44 @@
+name: Admin.Client.Upgrade.Windows.Executable
+
+author: https://github.com/DrPwner
+
+description: |
+    This is a slightly modified version of the existing Admin.Client.Upgrade.Windows Artifact,
+    since the only "Upgrade Agent" artifact is for the .msi version of Velociraptor.
+    Remotely push new client updates using the executable installer.
+  
+    NOTE: This artifact requires that you supply a client executable using the tools interface.
+    Simply click on the tool in the GUI and upload the Velociraptor executable.
+    
+    
+type: CLIENT
+tools:
+  - name: VelociraptorExecutable
+    url: ""
+parameters:
+  - name: SleepDuration
+    default: 600
+    type: int
+    description: The executable file is typically very large and we do not want to overwhelm the server so we stagger the download over this many seconds.
+sources:
+  - query: |
+      // Get the Velociraptor executable directly from the temp directory
+      LET bin <= SELECT OSPath AS TempPath
+      FROM Artifact.Generic.Utils.FetchBinary(
+         ToolName="VelociraptorExecutable", IsExecutable=TRUE,
+         SleepDuration=SleepDuration)
+      
+      // Execute the binary to install the service directly from temp
+      LET install_result <= SELECT *, TempPath FROM foreach(row=bin,
+      query={
+         SELECT *, TempPath FROM execve(
+              argv=[TempPath, "service", "install"],
+              length=60000)
+      })
+      
+      // Final query returning results
+      SELECT 
+          bin.TempPath AS TempPath,
+          install_result.Stdout AS InstallOutput,
+          install_result.Stderr AS InstallErrors
+      FROM bin
