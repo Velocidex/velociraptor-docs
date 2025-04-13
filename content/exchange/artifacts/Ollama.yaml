@@ -1,7 +1,7 @@
 name: Server.Enrichment.Ollama
 author: Matt Green - @mgreen27
 description: |
-  This artifact allows enrichment using Ollama AI. Best used to 
+  This artifact allows enrichment using Ollama AI. 
   
   Paramaters:
   
