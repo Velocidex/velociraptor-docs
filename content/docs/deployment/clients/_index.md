@@ -238,11 +238,11 @@ server artifact.
 
 ![](create_msi_artifact.png)
 
-3. It will take a moment to download the latest release MSI files (64bit and
-   32-bit) and the repack them with your client config file.
+3. It will take a moment to download the latest release MSI files (both 64-bit
+   and 32-bit) from GitHub and then repack them with your client config file.
 
-4. The repacked MSI will then be available in the **Uploaded Files** tab of the
-   artifact collection.
+4. The repacked MSI files will then be available in the **Uploaded Files** tab
+   of the artifact collection.
 
 ![](create_msi_uploaded.svg)
 
@@ -564,7 +564,8 @@ locations. That is, the binary and client configuration files for Linux will be
 in the same locations regardless of whether you installed using an `rpm` or a
 `deb` package.
 
-Our `deb` and `rpm` installers support both **systemd** and **SysVinit**, and will
+Our `rpm` installer supports both **systemd** and **SysVinit**, since very old
+RPM-based systems are still relatively common, so our installer will
 detect and use the appropriate one. We do not provide installer support for
 other init systems such as Upstart, init.d or OpenRC. If you need to create
 installer packages for platforms that use other init systems then you will have
@@ -677,7 +678,7 @@ will be auto-generated and include the version number and architecture.
 2. **Install the package.**
 
 ```shell
-sudo rpm -i velociraptor_client_amd64.rpm
+sudo rpm -Uvh velociraptor_client_amd64.rpm
 ```
 
 After installation you can check the service status with the command:

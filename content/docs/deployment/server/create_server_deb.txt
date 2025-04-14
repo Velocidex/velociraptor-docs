@@ -133,7 +133,7 @@ sudo dpkg -i velociraptor_server_<version>_<arch>.deb
 **RPM-based systems:**
 
 ```shell
-sudo rpm -i velociraptor_server_<version>_<arch>.rpm
+sudo rpm -Uvh velociraptor_server_<version>_<arch>.rpm
 ```
 
 On Debian-based systems the installation output should look something like this.

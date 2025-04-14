@@ -22,6 +22,8 @@ we describe below.
 
 ### Option A: Use the configuration wizard
 
+https://github.com/Velocidex/velociraptor/blob/master/tools/survey/README.md
+
 For a guided approach run `config generate` with the `-i` (interactive) flag
 which will invoke the configuration wizard.
 
@@ -45,7 +47,7 @@ velociraptor.exe config generate -i
 {{% /tab %}}
 {{< /tabs >}}
 
-![Generating a configuration for a self-signed Deployment](self-signed-generation.gif)
+![Generating a configuration for a self-signed deployment](self-signed-generation.gif)
 
 The configuration wizard includes a set of questions to guide you through the first step of the deployment process.
 
