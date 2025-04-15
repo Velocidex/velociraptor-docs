@@ -13,11 +13,10 @@ collections on hosts and retrieve the results of those collections.
 
 ## Why an API?
 
-Modern detection and DFIR work consist of many different products and
-tools all working together. In reality Velociraptor is just a part of
-a larger ecosystem consisting of network detections, SIEM or other
-tools. It is therefore important to ensure that Velociraptor
-integrates well with other tools.
+Modern threat detection and DFIR work consists of many different products and
+tools all working together. In reality Velociraptor is just a part of a larger
+ecosystem consisting of network detections, SIEM or other tools. It is therefore
+important to ensure that Velociraptor integrates well with other tools.
 
 Generally there are two main requirements for Velociraptor integration:
 
@@ -85,75 +84,114 @@ server is now listening on all interfaces.
 [INFO] 2021-11-07T01:57:26+10:00 Starting gRPC API server on 0.0.0.0:8001
 ```
 
-### Creating a client API certificate
+### Creating an API client configuration
 
-You can create a new client api certificate which allows the client
-program to identify itself with the server. The server will verify
-that the certificate is signed by the Velociraptor CA prior to
-accepting connections. The produced YAML file contains private keys,
-public certificates and the CA's certificate.
+You can create a new client api config file which includes a client certificate
+that allows the client program to identify itself with the server. The server
+will verify that the certificate is signed by the Velociraptor CA prior to
+accepting connections. The produced YAML file contains private keys, public
+certificates, the CA's certificate, and connection parameters.
 
-```sh
-velociraptor --config server.config.yaml config api_client --name Mike --role administrator api.config.yaml
+Example:
+```
+$ velociraptor --config server.config.yaml config api_client --name Mike --role administrator api.config.yaml
 ```
 
 This command can be broken into:
-1. `--config server.config.yaml` load the server config which contains
-   the CA private keys needed to sign a new minted certificate.
-2. `config api_client` generate an api_client certificate
-3. `--name Mike`: Certificates represent identities. The name of the
-   certificate will be used to identify the caller and place ACLs on
-   it.
-4. `--role administrator`: This option will also assign a role to the
-   new certificate name. The role is used to test permissions of what
-   the caller may do.
+1. `--config server.config.yaml`: load the server config which contains
+   the CA private keys needed to sign a new minted certificate. This also allows
+   the CLI command to create a new user in the server's datastore.
+
+2. `config api_client`: generate an api_client configuration, including client
+   certificate.
+
+3. `--name Mike`: Certificates represent user identities. The name of the
+   certificate will be used to identify the caller and enforce ACLs on it.
+
+4. `--role administrator`: This option will also assign a role to the new
+   identity. The role is used to test permissions of what the caller may do. If
+   `--role` is specified then the user will be created on the server if it does
+   not already exist. In the example above the user is granted the role
+   `administrator` which includes all the permissions of the minimal API role
+   `api` - see note below.
+
+The API connection string included in the API config is constructed from the
+values `API.hostname` and `API.bindaddress` in the server configuration, so you
+should ensure that these are set correctly before generating the API config
+file.
+
+#### Managing API roles
+
+The Velociraptor GUI contains a User Management screen where you can inspect all
+the currently issued API users as well as GUI users. There is inherently no
+difference between API users and GUI users other than the fact that API users
+are authenticated with certificates.
+
+![User Management](user_management.png)
 
 
-You can also change the permission of an existing certificate (or
-user) by simply granting a different role.
+##### Granting roles
+
+For an API user to be able to connect it must have at least the `api` role. This
+is the minimum role to allow external connections to the API. In addition the
+API user will need roles granted that provide it with the permissions that you
+need it to have. The roles and permissions should be appropriate for your
+specific use case. Note that the `administrator` role is very powerful and we
+recommend that external programs NOT be given this role. Instead consider
+carefully what permission the external program requires on the server and select
+the appropriate role for it based on "least permissions" principles.
+
+
+##### Inspecting roles
+
+At any time you can inspect the roles given to the user using the `acl show`
+command.
 
 ```
-velociraptor --config /etc/velociraptor/server.config.yaml acl grant Mike --role administrator,api
-```
-
-{{% notice tip "Granting roles" %}}
-
-For an API key to be able to connect the key must have the `api` role
-as well. This is a minimum role to allow external connections. The
-`administrator` role is very powerful and we recommend external
-programs not be given this role. Instead think what permission the
-external program requires on the server and select the appropriate
-role for it.
-
-If a key is compromised you can remove its role using the same
-command. This prevents the key from being used on the server at all.
-
-```
-velociraptor --config /etc/velociraptor/server.config.yaml acl grant Mike --role ""
-```
-
-{{% /notice %}}
-
-At any time you can inspect the roles given to the key using the `acl
-show` command.
-
-```
-$ velociraptor --config /etc/velociraptor/server.config.yaml acl show Mike
+$ velociraptor --config server.config.yaml acl show bob@local
 {"roles":["administrator","api"]}
 ```
 
-{{% notice tip "Managing API roles" %}}
+Or you can view the roles and effective permissions in the GUI's User Management
+screen:
 
-Since release 0.6.7 the Velociraptor GUI contains a user management
-pane. You can use this to inspect all the currently issued API users
-as well as GUI users (There is inherently no difference between API
-users and GUI users other than the fact that API users are
-authenticated with certificates).
+![User Management > Roles and Permissions](viewing_acls.png)
 
-Ensure the `any query` permission is provided to an API user so they
-can connect over the API.
+Or you can query the roles using VQL:
 
-{{% /notice %}}
+```vql
+SELECT * FROM gui_users() WHERE name = "bob@local"
+```
+
+##### Changing roles
+
+Roles can be easily added or removed in the GUI's User Management screen.
+
+On the command line you can change the permissions of an existing
+user by granting a different role using the `acl grant` command. The `acl grant`
+command _replaces_ the existing roles - it does not add to them.
+
+```
+$ velociraptor --config server.config.yaml acl grant Mike --role investigator,api
+```
+
+Note that role role changes made from the CLI require a service restart. You
+will see a message recommending this after running the `acl grant` command.
+Changes made in the GUI or VQL do not require a service restart.
+
+##### Removing roles
+
+If an API client's credentials are compromised you can remove all its roles
+using the `acl grant` command. This prevents the credentials from being used on
+the server at all.
+
+```
+$ velociraptor --config server.config.yaml acl grant Mike --role ""
+```
+
+In the GUI this can be achieved by deselecting all roles from the user in all
+orgs.
+
 
 ## Python bindings
 

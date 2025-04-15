@@ -26,7 +26,7 @@ Datastore:
 '''
 VELO_CONFIG_FILENAME = "/tmp/velo.config.yaml"
 VELO_FILENAME = "/tmp/velociraptor"
-VELO_URL = "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.3-linux-amd64-musl"
+VELO_URL = "https://github.com/Velocidex/velociraptor/releases/download/v0.73/velociraptor-v0.73.4-linux-amd64-musl"
 EXCHANGE_PATH = os.path.abspath("./content/exchange/artifacts/")
 VELO_LOGFILE = "/tmp/velo.log"
 

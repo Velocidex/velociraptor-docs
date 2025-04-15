@@ -261,6 +261,15 @@
         ]
     },
     {
+        "title": "Generic.Detection.Logs",
+        "description": "This artifact enables grep of Logs to hunt for strings of interest. Default\ntarget glob includes /var/log/, Apache and Windows IIS paths.",
+        "link": "/artifact_references/pages/generic.detection.logs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Generic.Detection.Yara.Glob",
         "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
         "link": "/artifact_references/pages/generic.detection.yara.glob",

@@ -1684,3 +1684,9 @@ prem
 Fibratus
 Verifier
 presumbit
+UDP
+rsyslog
+sd
+Dedups
+recurses
+Datadog

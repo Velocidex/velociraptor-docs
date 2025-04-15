@@ -1,5 +1,16 @@
 [
     {
+        "title": "How to setup an SFTP server",
+        "link": "/knowledge_base/tips/setting_up_sftp",
+        "tags": [
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2025-02-25"
+    },
+    {
         "title": "How can I automatically add & update client metadata?",
         "link": "/knowledge_base/tips/automating_metadata",
         "tags": [
@@ -424,16 +435,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "How to setup an SFTP server",
-        "link": "/knowledge_base/tips/setting_up_sftp",
-        "tags": [
-            "deployment"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

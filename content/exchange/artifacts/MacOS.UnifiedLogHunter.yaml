@@ -1,15 +1,15 @@
 name: MacOS.UnifiedLogHunter
 description: |
         This artifact allows for live hunting through Apple's Unified Logs using the native `log` command.
-        
+
         The Unified Logs can be a great resource for learning about system events. There are many logging subsystems that can provide a wealth of data for investigators.
-        
+
         However, users should ensure their searches are scoped appropriately (date/time/event type/etc), as a lot of data can be returned, which could affect the ability to review the collected data or potentially impact client performance.
-        
+
         The `Predicate` parameter can be used to filter logs. Example filters are included as artifact parameters.
-        
+
         Users may need to adjust the `Length` parameter to accomodate a large number of events being returned.
-        
+
         If you would like to perform an offline collection, or only care about collecting the raw files associated with this data, consider using [Exchange.MacOS.UnifiedLogParser](https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedlogparser/).
 reference:
   - https://github.com/jamf/jamfprotect/tree/main/unified_log_filters
@@ -21,11 +21,10 @@ type: CLIENT
 author: Wes Lambert - @therealwlambert|@weslambert@infosec.exchange
 parameters:
   - name: StartDate
-    default: timestamp
     type: timestamp
   - name: EndDate
     default:
-    type: timestamp  
+    type: timestamp
   - name: Predicate
     description: Use a custom filter
     default:
@@ -47,7 +46,7 @@ parameters:
     type: bool
   - name: Failed Local Password Login
     description: Look for failures for local logins using a password
-    type: bool 
+    type: bool
   - name: Successful Local Password Login
     description: Look for successful logins using a password
     type: bool
@@ -71,9 +70,9 @@ parameters:
     type: bool
   - name: Keychain DB Unlock
     description: Look for keychain database unlock attempts
-    type: bool    
+    type: bool
   - name: Permissions and Access Violations
-    description: Looks for TCC permisssions and access violations 
+    description: Looks for TCC permisssions and access violations
     type: bool
   - name: Session Creation and Destruction
     description: Looks for session creation and Destruction
@@ -99,9 +98,9 @@ parameters:
   - name: XProtect Remediator scanning activity
     type: bool
     description: Look for XProtect scanning activity
-  - name: Length 
-    type: int 
-    default: 10000000  
+  - name: Length
+    type: int
+    default: 10000000
 required_permissions:
   - EXECVE
 precondition: SELECT OS From info() where OS = 'darwin' AND StartDate AND EndDate
@@ -134,14 +133,14 @@ sources:
             Successful Local TouchID Login,process == "loginwindow" AND eventMessage CONTAINS[c] "APEventTouchIDMatch"
             Successful Local User Password Change,subsystem == "com.apple.opendirectoryd" AND process == "opendirectoryd" AND category == "auth" AND eventMessage CONTAINS "Password changed for"
             XProtect Remediator scanning activity,subsystem == "com.apple.XProtectFramework.PluginAPI" && category == "XPEvent.structured"''')
-      
+
       LET QueriesToRun <= SELECT Q FROM QueryTable WHERE if(condition=RunAllQueries, then=QueryName, else=get(field=QueryName))
-                                              
-      LET Raw <= SELECT * FROM foreach(row={ SELECT * FROM chain( a=QueriesToRun, b=if(condition=Predicate, then={ SELECT Predicate AS Q FROM scope()}))}, 
+
+      LET Raw <= SELECT * FROM foreach(row={ SELECT * FROM chain( a=QueriesToRun, b=if(condition=Predicate, then={ SELECT Predicate AS Q FROM scope()}))},
                                        query={ SELECT Stdout FROM execve(
-                   length=Length, 
+                   length=Length,
                    argv=[
-                     "log", 
+                     "log",
                      "show",
                      "--start",
                      grok(grok="%{TIMESTAMP_ISO8601:Date}", data=StartDate).Date,
@@ -151,7 +150,7 @@ sources:
                      Q,
                      "--style",
                      "json"])}, async=TRUE) WHERE NOT Stdout = "[]"
-      SELECT 
+      SELECT
         timestamp(string=get(member="timestamp")) AS EventTime,
         get(member="machTimestamp") AS _TimeSinceBoot,
         get(member="traceID") AS _TraceID,

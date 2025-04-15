@@ -22,6 +22,7 @@ not yet been categorized.
 |[collect](collect)|<span class='vql_type'>Plugin</span>|Collect artifacts into a local file|
 |[combine](combine)|<span class='vql_type'>Plugin</span>|Combine the output of several queries into the same result set|
 |[copy](copy)|<span class='vql_type'>Function</span>|Copy a file|
+|[dedup](dedup)|<span class='vql_type'>Plugin</span>|Dedups the query based on a column|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
 |[dirname](dirname)|<span class='vql_type'>Function</span>|Return the directory path|
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
@@ -66,6 +67,7 @@ not yet been categorized.
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
 |[rm](rm)|<span class='vql_type'>Function</span>|Remove a file from the filesystem using the API|
+|[rsyslog](rsyslog)|<span class='vql_type'>Function</span>|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
 |[serialize](serialize)|<span class='vql_type'>Function</span>|Encode an object as a string|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
