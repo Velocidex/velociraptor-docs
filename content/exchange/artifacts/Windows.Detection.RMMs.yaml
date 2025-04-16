@@ -17,6 +17,8 @@ description: |
     Not all RMM tools are properly installed on a Windows machine; as such, they will not show up in the data sourced for their identification by this artifact.
     Furthermore, RMM tools that manage their own DNS cache will not be detected by the query utilizing the Windows DNS cache.
 
+    Supported by SEC Defence (https://sec-consult.com)
+
 reference:
     - https://lolrmm.io/
     - https://attack.mitre.org/techniques/T1219/

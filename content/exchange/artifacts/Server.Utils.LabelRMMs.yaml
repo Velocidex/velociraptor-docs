@@ -8,6 +8,8 @@ description: |
     
     The (server monitoring) artifact itself produces no relevant output. It should lead to the clients being tagged with the names of present RMM tools.
 
+    Supported by SEC Defence (https://sec-consult.com)
+
 type: SERVER_EVENT
 
 parameters:
