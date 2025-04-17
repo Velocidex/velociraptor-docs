@@ -15,7 +15,7 @@ Using Ubuntu we generated a stock standard "Self Signed SSL" configuration:
 <img width="491" alt="image" src="https://user-images.githubusercontent.com/30587915/163787136-f9e6f16f-5119-4cd0-ba43-741ab64cdc42.png">
 
 ### Update the server.config.yaml
-Locate the frontend section and add the `tls_certificate_filename` and `tls_private_key_filename` parameters. Enter the absolute path to these files. For testing, we placed in /etc however there is better places for production use.
+Locate the frontend section and add the `tls_certificate_filename` and `tls_private_key_filename` parameters. Enter the absolute path to these files. For testing, we placed in /etc however there are better places for production use.
 ```yaml
 Frontend:
   tls_certificate_filename: /etc/velociraptor.pem
