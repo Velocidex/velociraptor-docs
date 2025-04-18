@@ -126,10 +126,10 @@ sources:
             /* If the globs are specified in the correct order, picking the
                last item will get a correct override behaviour: */
             /* Filter out all empty strings and keep integers: */
-            filter(list=enumerate(items=User), regex='.', condition='x=>true')[-1] AS EUser,
-            filter(list=enumerate(items=Group), regex='.', condition='x=>true')[-1] AS EGroup,
-            filter(list=enumerate(items=FileMode), regex='.', condition='x=>true')[-1] AS FMode,
-            filter(list=enumerate(items=DirMode), regex='.', condition='x=>true')[-1] AS DMode
+            filter(list=enumerate(items=User), regex='.+')[-1] AS EUser,
+            filter(list=enumerate(items=Group), regex='.+')[-1] AS EGroup,
+            filter(list=enumerate(items=FileMode), regex='.+')[-1] AS FMode,
+            filter(list=enumerate(items=DirMode), regex='.+')[-1] AS DMode
             /* globs() can of course take a list of globs, like FilesToInspect.Globs,
                but by using that approach, we would no longer be able to tie
                User, Group etc. to the individual globs: */
