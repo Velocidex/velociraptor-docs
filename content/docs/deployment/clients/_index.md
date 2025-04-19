@@ -459,7 +459,7 @@ environments are described in
 - Identifier: `/usr/local/sbin/velociraptor`
 - Identifier Type: `Path`
 - Code Requirement: `identifier "com.velocidex.velociraptor" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "UL6CGN7MAL"`
-- Under "App or Service" Configure **SystemPolicyAllFiles** set to **Allow**, effectevly granting "Full Disk Access"
+- Under "App or Service" Configure **SystemPolicyAllFiles** set to **Allow**, effectively granting "Full Disk Access"
 - Scope: You can select **All Computers** but this is up to you
 
 *This configuration would be the same for all MDM solutions for MacOS, just different UI*
@@ -515,11 +515,11 @@ EOL
 sudo ./$filename --config client.config.yaml service install;
 ```
 
-7. Naviage to **Policies > New**
+7. Navigate to **Policies > New**
 8. Configure installation policy:
 - Scope: `Smart Group we created in 3.` (Make sure that the Profile we created in **1.** is deployed to the same scope OR "All Computers"
 - Scripts: `Script we created in 5.`
-- Triggers: Up to you. 
+- Triggers: Up to you.
 
 ### Linux
 

@@ -336,6 +336,22 @@ obtain a copy of the linux binary from the Github releases page.
 {{% /notice %}}
 
 
+#### Using RPM
+
+Some Linux distributions use RPM as their package management. The process is similar. First create an installation RPM package:
+
+```
+$ ./velociraptor-v0.74.2-linux-amd64 --config server.config.yaml rpm server
+Creating  package at velociraptor-server-0.74.2.x86_64.rpm
+```
+
+Then install the package on the server
+```
+# rpm -U ./velociraptor-server-0.74.2.x86_64.rpm
+Created symlink '/etc/systemd/system/multi-user.target.wants/velociraptor_server.service' → '/etc/systemd/system/velociraptor_server.service'.
+```
+
+
 ## Server upgrades
 
 To upgrade the Velociraptor server to a new version, simply download
