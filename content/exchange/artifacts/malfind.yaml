@@ -1,7 +1,7 @@
 name: Windows.Detection.Malfind
 author: Matt Green - @mgreen27
 description: |
-    This artifact checks the VAD for executable sections that are not maped to disk 
+    This artifact checks the VAD for executable sections that are not mapped to disk 
     and has suspicious content which may indicate process injection.
     
     User options allow targetting process, modifying suspicious content yara, or 
