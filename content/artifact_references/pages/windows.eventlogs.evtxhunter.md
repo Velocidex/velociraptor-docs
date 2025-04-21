@@ -102,7 +102,10 @@ parameters:
   - name: DateBefore
     type: timestamp
     description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
-
+  - name: MessageDB
+    type: hidden
+    description: "Add message DB path if desired for offline parsing"
+    
 imports:
   - Windows.Sys.AllUsers
 
@@ -139,7 +142,7 @@ sources:
                     get(field="UserData") as UserData,
                     get(field="Message") as Message,
                     OSPath
-                FROM parse_evtx(filename=OSPath, accessor=Accessor)
+                FROM parse_evtx(filename=OSPath, accessor=Accessor, messagedb=MessageDB)
                 WHERE ( EventData OR UserData OR Message )
                     AND EventTime &lt; DateBeforeTime
                     AND EventTime &gt; DateAfterTime

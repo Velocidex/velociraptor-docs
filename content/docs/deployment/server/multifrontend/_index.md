@@ -224,7 +224,7 @@ typically start off with a normal configuration as generated with
 
 In the above example we generated a self signed configuration with a
 server at `master.velocidex-training.com`. We will use the dynamic DNS
-setting to automatically update the frontend dns mapping.
+setting to automatically update the frontend DNS mapping.
 
 Now we derive a multi-server configuration from this basic configuration.
 

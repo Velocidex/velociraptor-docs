@@ -123,7 +123,7 @@ certificates at the same time:
 $ velociraptor config rotate_keys --config /etc/velociraptor/server.config.yaml > /tmp/new_key.config.yaml
 ```
 
-The `config rotate_key` command updates the following configuration items:
+The `config rotate_keys` command updates the following configuration items:
 - `GUI.gw_certificate`
 - `GUI.gw_private_key`
 - `Frontend.certificate`

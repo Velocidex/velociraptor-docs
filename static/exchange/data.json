@@ -1,5 +1,25 @@
 [
     {
+        "title": "Linux.Detection.Honeyfiles",
+        "author": "zaneGittins",
+        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.",
+        "link": "/exchange/artifacts/pages/linux.detection.honeyfiles",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-18"
+    },
+    {
+        "title": "MacOS.Forensics.ASL",
+        "author": "ydkhatri",
+        "description": "This artifact parses the ASL (Apple System Log) v2 files located at \n/private/var/log/asl/*.asl\n",
+        "link": "/exchange/artifacts/pages/macos.forensics.asl",
+        "tags": [],
+        "author_link": "https://github.com/ydkhatri",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13247440?v=4",
+        "date": "2025-02-19"
+    },
+    {
         "title": "Linux.Forensics.Targets",
         "author": "kidrek",
         "description": "This artifact collects all necessary artifacts files and directories from Linux operating system. \n",
@@ -236,7 +256,7 @@
     {
         "title": "Windows.EventLogs.SysmonProcessEnriched.yaml",
         "author": "zaneGittins",
-        "description": "Gather sysmon process creation events from the sysmon operational event log. Enrich with authenticode signature of image and call chain.\nCaches authenticode signature by the hash of the image for ClearCacheSeconds (default, 1hr).\nPrerequisites: Sysmon, and the process tracker.\n",
+        "description": "Gather sysmon process creation events from the sysmon operational event log. Enrich with authenticode signature of image and call chain.\nCaches authenticode signature by the hash of the image for an hour to reduce number of times it fetches the authenticode signature.\nPrerequisites: Sysmon, and the process tracker artifact.\n",
         "link": "/exchange/artifacts/pages/windows.eventlogs.sysmonprocessenriched",
         "tags": [],
         "author_link": "https://github.com/zaneGittins",
@@ -1883,16 +1903,6 @@
         "date": "2022-08-12"
     },
     {
-        "title": "Windows.KapeFiles.Remapping",
-        "author": "scudette",
-        "description": "This artifact automates the rebuilding of remapping rules to be able to easily\npost process the results of the Windows.KapeFiles.Targets.",
-        "link": "/exchange/artifacts/pages/windows.kapefiles.remapping",
-        "tags": [],
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-08-04"
-    },
-    {
         "title": "Server.Enrichment.MalwareBazaar",
         "author": "weslambert",
         "description": "Query MalwareBazaar for a hash.",
@@ -2772,5 +2782,15 @@
         "author_link": "https://github.com/ffh571",
         "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
         "date": "2021-06-23"
+    },
+    {
+        "title": "Windows.Detection.Honeyfiles",
+        "author": "",
+        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.",
+        "link": "/exchange/artifacts/pages/windows.detection.honeyfile",
+        "tags": [],
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

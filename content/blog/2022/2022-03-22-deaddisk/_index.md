@@ -11,14 +11,6 @@ author: "Mike Cohen"
 date: 2022-03-20
 ---
 
-{{% notice info %}}
-
-This article discusses a feature available since 0.6.4 release. This
-feature is still considered experimental and we are seeking feedback
-and wider testing.
-
-{{% /notice %}}
-
 Velociraptor's killer feature is its VQL language making it possible
 to write powerful queries that triage and extract valuable forensic
 evidence from the running system. One of the most attractive features

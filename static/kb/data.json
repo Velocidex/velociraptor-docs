@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "title": "How to set up authentication using Google OAuth SSO",
         "link": "/knowledge_base/tips/setup_google_oauth",
         "tags": [
@@ -13,9 +14,27 @@
         "date": "2025-02-26"
     },
     {
+||||||| 2d0fd987cd
+=======
+        "title": "How to setup an SFTP server",
+        "link": "/knowledge_base/tips/setting_up_sftp",
+        "tags": [
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2025-02-25"
+    },
+    {
+>>>>>>> master
         "title": "How can I automatically add & update client metadata?",
         "link": "/knowledge_base/tips/automating_metadata",
-        "tags": [],
+        "tags": [
+            "configuration",
+            "vql",
+            "deployment"
+        ],
         "author": "predictiple",
         "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
         "author_link": "https://github.com/predictiple",

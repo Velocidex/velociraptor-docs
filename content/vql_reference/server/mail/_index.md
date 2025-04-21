@@ -31,8 +31,13 @@ auth_username|The SMTP username we authenticate to the server.|string
 auth_password|The SMTP username password we use to authenticate to the server.|string
 skip_verify|Skip SSL verification(default: False).|bool
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
+secret|Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'|string
+headers|A dict of headers to send.|ordereddict.Dict
 
 ### Description
 
 Send Email to a remote server.
+
+See the mail() function for more details.
+
 

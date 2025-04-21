@@ -451,10 +451,12 @@ for all official releases.
 If your organization has the necessary toolsets, skills and other resources for
 creating macOS installation packages then you may choose to do so. The
 Velociraptor client is a single binary, with no package or library dependencies,
-plus a configuration file which is probably the simplest kind of package that
+plus a configuration file, which is probably the simplest kind of package that
 any packaging expert will ever have to deal with.
 
-For smaller deployments we provide a self-installing capability in the
+#### Manual Deployment
+
+For small deployments we provide a self-installing capability in the
 Velociraptor binary. The `service install` directive can be used to install
 Velociraptor so that it persists through reboots and starts automatically. The
 following command installs the binary and the config to `/usr/local/sbin`.
@@ -517,16 +519,93 @@ After installation you can check the service's status with:
 - Navigate to **Applications > Utilities > Activity Monitor** and search for
   Process Name `velociraptor`.
 
+#### Automated deployment using MDM
+
 Organizations that use macOS at scale usually have their own packaging and
-deployment processes worked out using their preferred toolset.
+deployment processes worked out using their preferred toolset and MDM solution.
+For example
 [Jamf](https://www.jamf.com/) or
 [Microsoft Intune](https://learn.microsoft.com/en-us/mem/intune/fundamentals/deployment-guide-platform-macos)
-are commonly used mobile device management (MDM) solutions, but we can't
-provide specific advice or step-by-step instructions for these tools.
+are commonly used mobile device management (MDM) solutions.
 
-Some of the additional considerations and complexities with deployments in macOS
+Below is a community-provided example of the steps required for Jamf Pro.
+Unfortunately we cannot provide detailed instructions for other MDM solutions,
+and we recommend that you consult the documentation for your chosen MDM
+solution.
+
+Some of the considerations and complexities regarding deployments in macOS
 environments are described in
 [this presentation]({{< ref "/presentations/2022_velocon/#mac-response--the-good-the-bad-and-the-ugly" >}}).
+and may be helpful.
+
+##### Jamf Pro deployment example
+
+1. Navigate to **Configuration Profiles > New**
+2. Configure **Privacy Preferences Policy Control**
+- Identifier: `/usr/local/sbin/velociraptor`
+- Identifier Type: `Path`
+- Code Requirement: `identifier "com.velocidex.velociraptor" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "UL6CGN7MAL"`
+- Under "App or Service" Configure **SystemPolicyAllFiles** set to **Allow**, effectively granting "Full Disk Access"
+- Scope: You can select **All Computers** but this is up to you
+
+*This configuration would be the same for all MDM solutions for MacOS, just different UI*
+![](jamf_pro_profile_policy.png)
+
+
+3. Navigate to **Smart Computer Groups > New**
+4. Configure the group
+- **Running Services** `does not have` **com.velocidex.velociraptor**
+- *and* **Architecture Type** `is` **arm64**
+
+*you can also use **x86_64** instead of **arm** for intel based devices*
+![](jamf_pro_smart_group.png)
+
+5. Navigate to **Settings > Scripts > New**
+6. Create your installer script.
+
+*This is an example based on **v0.74.1**, you may want to install the client differently*
+```
+echo "Start script";
+velociraptor_DIR="/Users/Shared/velociraptor_install";
+filename="velociraptor-v0.74.1-darwin-arm64";
+mkdir $velociraptor_DIR;
+cd $velociraptor_DIR;
+
+checksum="e6496519402e139de376c1c964302cc5f9b338c1d88a52b0579c9121d1992fba";
+
+# Installing Downloading velociraptor
+curl -L -O "https://github.com/Velocidex/velociraptor/releases/download/v0.74/$filename"
+temp_checksum=$(shasum -a 256 $filename | cut -d ' ' -f1);
+if [[ $temp_checksum != $checksum ]]; then
+    echo "Downloaded hash ($temp_checksum) is not matching the check $checksum";
+    rm -f $filepath;
+    exit;
+fi
+
+chmod a+x $filename;
+
+cat >client.config.yaml << EOL
+version:
+  name: velociraptor
+  version: 0.74.1
+  commit: 7e3ae67d3
+  build_time: "2025-03-26T02:36:53Z"
+  compiler: go1.23.2
+  system: linux
+  architecture: arm64
+Client:
+.....................
+.....................
+EOL
+
+sudo ./$filename --config client.config.yaml service install;
+```
+
+7. Navigate to **Policies > New**
+8. Configure installation policy:
+- Scope: `Smart Group we created in 3.` (Make sure that the Profile we created in **1.** is deployed to the same scope OR "All Computers"
+- Scripts: `Script we created in 5.`
+- Triggers: Up to you.
 
 ### Linux
 

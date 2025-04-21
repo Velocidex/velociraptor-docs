@@ -82,8 +82,8 @@ a simple string.
 
 ## The OSPath abstraction
 
-Recent Velociraptor releases, introduced the `OSPath` abstraction to
-handle various paths:
+In recent Velociraptor releases the `OSPath` abstraction was introduced to
+handle paths in a consistent and resilient way:
 
 1. Internally paths are always a list of components. For example, the
    windows path `C:\Windows\System32` is represented internally as the
@@ -321,9 +321,9 @@ will begin) as a full OSPath object that we construct to represent the
 top level of the zip archive (i.e. globing will proceed within the zip
 file).
 
-By default `Path="/"` can be omitted since this is the default
+In practice `Path="/"` can be omitted since this is the default
 value. Similarly, `DelegateAccessor="auto"` can also be omitted since
-this is the default accessor. Simplifying the above query.
+this is the default accessor, thus simplifying the above query.
 
 We can transparently now pass the OSPath object that glob will return
 directly into any VQL function or plugin that accepts a file
@@ -338,11 +338,11 @@ The OSPath object is now capable of more complex path manipulations:
    directly to any plugins that deal with directories.
 
 2. Note that more complex `Pathspec` based paths are represented as a
-   JSON encoded object. It is ok to pass the stringified version the
-   OSPath around to plugins because they will automatically parse the
+   JSON encoded object. It is ok to pass the stringified version of
+   OSPath to plugins because they will automatically parse the
    string into an OSPath object.
 
-{{% notice warning "Glob's root parameter" %}}
+{{% notice info "Glob's root parameter" %}}
 
 When using the `glob()` plugin, remember that Glob expressions are
 always flat strings (i.e. a glob is not a pathspec). An OSPath should
