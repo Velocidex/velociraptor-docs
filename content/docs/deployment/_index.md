@@ -92,36 +92,38 @@ on the command line parameters passed to it.
 
 While this technically allows you to run the server or the client on any
 platform that we have a binary for,
-**please note that the server is only fully supported on Linux**
-due to performance considerations inherent in other platforms such as Windows.
-However for non-production deployments - for example evaluation, development or
-testing - it might be convenient for you to run the server on a different
-platform, and you may choose to do so, but please keep in mind that for
-production deployments the server should run on Linux. Issues with other
-platforms will not be supported.
+_please note that the server is only fully supported on Linux_.
+This is mainly due to performance considerations inherent in other platforms
+such as Windows. However for non-production deployments - for example
+evaluation, development or testing - it might be convenient for you to run the
+server on a different platform, and you may decide to do so, but please keep in
+mind that for production deployments the server should run on Linux. Issues with
+other platforms will receive limited support.
 
 Binaries for the the most common platforms and architectures are available on
 our [Downloads]({{< ref "/downloads/" >}}) page.
 
 ## Deployment Milestones
 
-At a high level, your Velociraptor deployment will consist of 3 tasks: setting
-up a server, deploying clients, and granting user access to the server's web UI.
+At a high level, deploying Velociraptor consists of 3 tasks: setting up a
+server, deploying clients, and granting user access to the server's web UI.
 
 **Task 1: Deploy a Server**
 - [Choose the deployment options]({{< ref "/docs/deployment/server/" >}}) that
   work best for you and install your server.
 
-**Task 2: Deploy Clients**
-- [Deploy clients]({{< ref "/docs/deployment/clients/" >}}) on your endpoints
-  using one of the recommended methods:
-  - Run clients interactively
-  - Install the client as a service using a custom MSI package
-  - Agentless Deployment
-
-**Task 3: Authorize Users**
+**Task 2: Authorize Users**
 - Grant users access to the Velociraptor server's web UI
 
+**Task 3: Deploy Clients**
+- [Deploy clients]({{< ref "/docs/deployment/clients/" >}}) on your endpoints
+  using one of the following methods:
+  - Run clients interactively
+  - Install the client as a service using a custom installer package
+  - Agentless Deployment
+
+Although the above represents the "standard" deployment model, there are other
+less conventional ways to use Velociraptor.
 
 ## Instant Velociraptor
 
@@ -191,63 +193,166 @@ delete the old datastore folder or point it to a new folder using the
 
 {{% /notice %}}
 
-<!-- ## Other ways to use Velociraptor
+## Other ways to use Velociraptor
 
-As mentioned above, there is not only one prescribed way to use Velociraptor,
-although deploying it in client-server mode is the primary way of deploying it
-and typical of most realworld deployments. However Velociraptor's extensive
-capabilities can also be used in innovative and unconventional ways - even ones
-we haven't thought of yet! We would love to hear about your creative ideas and
-unusual use cases so we can continue to make Velociraptor better for everyone!
+As mentioned above, there isn't a single prescribed way to use Velociraptor.
 
-Here are some other - unconventional - ways that you could deploy Velociraptor.
+Although deploying it in client-server mode is the primary deployment model and
+typical of most deployments, Velociraptor's extensive capabilities can also be
+used in innovative and unconventional ways - even ones we haven't thought of
+yet! We would love to hear about your creative ideas and unusual use cases so we
+can continue to make Velociraptor better for everyone!
+
+Here are some other (unconventional) ways that you could use Velociraptor.
 
 ### Command line investigation tool
 
-We can run VQL queries or artifacts from the CLI and write the results to local
-files.
+We can run any VQL query or any Velociraptor artifacts from the CLI and
+optionally write the results to local files. Using this capability it's possible
+to use Velociraptor as a command line DFIR "Swiss Army Knife" or build it into
+forensic data processing pipelines.
 
-All the built-in Velociraptor [artifacts]() are available in the binary.
+Most CLI-based forensics tools perform a specific, limited set of functions.
+However with Velociraptor's CLI you have full access to VQL and all the
+functions and plugins that Velociraptor provides. So this capability can be used
+to inspect a live system or analyze acquired file-based forensic artifacts, for
+example Sqlite databases or event logs.
 
-Commands:
-  artifacts
-    list [<flags>] [<regex>]
-    show <name>
-    collect [<flags>] <artifact_name>...
+The CLI provides the following commands which support this mode of operation:
 
-Custom artifacts can be used too by pointing the binary to a folder using the
-`--definitions` CLI flag.
+**The query command**
 
-All the parsing plugins and functions are available in VQL queries, so this can
-even be used to inspect or analyze acquired forensic file artifacts, for example
-Sqlite databases or event logs.
+The `query` command accepts any VQL query and runs it against the local system.
+The results can optionally be written to file in a variety of formats.
 
 Example:
 
 ```
+velociraptor.exe query "SELECT * FROM pslist()" --format jsonl --output pslist.json
 ```
 
-Using this capability it's possible to use Velociraptor as a command-line Swiss
-Army Knife or build it into forensic data processing pipelines.
 
-### Instant Velociraptor as a desktop analysis tool
+**The artifacts command**
+
+The `artifacts collect` command runs any [Velociraptor artifact]({{< ref "/docs/artifacts/" >}})
+which can contain one or more packaged VQL queries.
+
+You can use `artifacts list` to list the available artifacts, and
+`artifacts show` to view the contents of a specific artifact.
+
+```txt
+  artifacts
+    list [<flags>] [<regex>]
+    show <name>
+    collect [<flags>] <artifact_name>...
+```
+
+All the built-in Velociraptor artifacts are available within the binary.
+
+Custom artifacts can be used too by pointing the binary to a folder containing
+these artifacts using the `--definitions` flag.
+
+As with the `query` command, the results can optionally be written to file in a
+variety of formats.
+
+Examples:
+
+```txt
+velociraptor.exe artifacts list ".*Audit.*"
+Server.Audit.Logs
+Windows.System.AuditPolicy
+```
+
+```txt
+velociraptor.exe artifacts show "Windows.System.AuditPolicy"
+name: Windows.System.AuditPolicy
+
+description: |
+   Artifact using auditpol to retrieve the logging settings
+   defined in the Windows Audit Policy.
+
+   Use this artifact to determine what Windows event logs are audited
+   and if there are any discrepancies across the environment.
+
+type: CLIENT
+...
+```
+
+```txt
+velociraptor.exe artifacts collect "Windows.System.AuditPolicy" --format json --output auditpol.json
+```
+
+
+### Instant Velociraptor as a local investigation tool
 
 While [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) is normally
 used for testing or demonstrations, it can actually be used as a standalone
-forensic environment for a single computer.
+GUI-based forensic tool.
+
+The `gui` command starts the server and a single client within a single process.
+This client is no different from one that's seperately deployed, and can be used
+to interrogate the local system as you would do for any remote client.
+
+{{% notice warning "Minimizing data pollution"%}}
+
+Obviously this idea is not suitable for all investigation scenarios as the
+server component will need to write data to it's datastore. Also, using a web
+browser on the target machine and any other activity risks polluting the
+forensic data. If these risks are acceptable to you, you may still want to
+minimize them by:
+- locating the datastore on an external drive using the `--datastore` flag.
+- changing the writeback and tempdir locations in the client config to also be
+  on an external drive.
+
+{{% /notice %}}
+
+### Instant Velociraptor as an desktop environment for analysts
+
+[Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) can also be used
+as a standalone graphical forensic desktop environment, for aquired forensic
+artifacts.
+
+[Velociraptor notebooks]({{< ref "/docs/notebooks/" >}}) have access to the
+local filesystem, and can therefore read any files within it and work with the
+extracted data.
+
+In addition to forensic artifacts you can also read the most common text-based
+file formats, for example json or csv, and then work with that data in the
+notebook interface. In this way Velociraptor notebooks can function very
+similarly to [Jupyter notebooks](https://docs.jupyter.org/en/latest/) with the
+[Python Pandas](https://pandas.pydata.org/docs/user_guide/10min.html) library,
+which were indeed a significant inspiration for Velociraptor notebooks.
+In this mode of operation, the client component may not be needed and you can
+disable it by adding the `--no-client` flag to the `gui` command.
+
+However the client component may be useful if you want to use
+[remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}}) which will allow
+you to inspect and analyze disk image files using Velociraptor's deaddisk
+feature. The `gui` command creates the client config file in the datastore
+folder, to which you can add the remapping config, if needed.
 
 ### Standalone offline collector
 
-[Offline collectors]() are created with the expectation that the data will be
-imported into a Velociraptor server, but this doesn't have to be the case. You
-may just be interested in extracting the data and working with it elsewhere
-using other tools.
+[Offline collectors]({{< ref "/docs/offline_triage/#offline-collections" >}})
+are usually created with the expectation that the data will be imported into a
+Velociraptor server, but this doesn't have to be the case. You may just be
+interested in extracting the data and working with it elsewhere using other
+tools. In this use case the only reason for having a Velociraptor server is to
+create the offline collector, and you can use an
+[Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) for that purpose.
 
-### Sneakernet Velociraptor clients
+It's important to note that Velociraptor offline collectors have all the
+capabilities of a normal Velociraptor client. _They are not limited to doing
+file acquisition!_ You can run any Velociraptor artifact, including custom ones,
+and the results are written to jsonl formatted files (and/or CSV format, if
+you prefer) which can be read by most data processing tools.
 
-### Sneakernet Velociraptor server
+As a variation on this idea, you can import the offline collection archives back
+into the standalone (i.e. non-networked) Instant Velociraptor, and work with
+them the same as you would with data collected from network-connected clients.
+That is, an Instant Velociraptor deployment using only offline collectors
+amounts to a sneakernet Velociraptor deployment!
 
-### Querying data and extracting files from disk images.
-
+<!-- ### Sneakernet Velociraptor server
 
 ### Ephemeral clients -->

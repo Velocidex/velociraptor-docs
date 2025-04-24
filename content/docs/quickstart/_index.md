@@ -459,8 +459,8 @@ The Admin GUI should now be accessible with a web browser by connecting to
 `https://127.0.0.1:8889`, or using your server's IP address if you changed the
 `GUI.bind_address` setting in Step 2.
 
-Log in using the admin account that you created in the config wizard to arrive
-at the Welcome screen.
+Log in using the admin account that you created in the config wizard. You will
+arrive at the Welcome screen.
 
 ![Welcome to Velociraptor!](welcome.png)
 
@@ -475,25 +475,27 @@ the section [Deploying Clients]({{< ref "/docs/deployment/clients/" >}}).
 
 The most important thing to know is that all Velociraptor clients need a client
 configuration, which is specific to the deployment. This configuration is a
-subset of the full configuration and the server is therefore able to
-[provide it to us in the form of a YAML file]({{< ref "/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui" >}}),
-or use it internally when generating a client installation package (here we care
-about doing the latter).
+subset of the full YAML-based configuration. Because the server has access to
+the full configuration it is able to provide the client configuration to us
+[in the form of a YAML file]({{< ref "/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui" >}}),
+or it can use it internally when generating a client installation package.
+In this guide we intend to do the latter (for Windows clients).
 
 ![Client config is a subset of the full config](client_config_yaml.svg)
 
-The most commonly deployed client by far is the 64-bit Windows one. The standard
+The most commonly deployed client by far is 64-bit Windows. The standard
 installer package format for Windows in enterprise environments is still the MSI
-format. We publish a prebuilt MSI package on our GitHub Release page, however
-since the Velociraptor client requires *your* unique configuration file to
-identify the location of *your* server, we can't package *your* configuration
-file in the official release. Therefore the official MSI does not include a
-valid configuration file. You will need to modify the official release MSI to
-include your client configuration file and this is done through a process we
-call "repacking". We have a streamlined process for generating a custom MSI
-package (containing the deployment-specific client config) which can be done
-entirely in the Admin GUI. This is the quickest and easiest way to generate the
-MSI package, so it's the one we will use here.
+format.
+
+We publish a prebuilt MSI package on our GitHub Release page, however since the
+Velociraptor client requires *your* unique configuration file which is linked to
+*your* server, we don't package a working configuration file in the official
+release MSI. The official MSI contains a placeholder configuration file. You
+will need to modify the official release MSI to include your client
+configuration file, and this is easily done through a process we call
+"repacking". We have a streamlined process for generating a custom MSI package
+which can be done entirely in the Admin GUI. This is the quickest and easiest
+way to generate the MSI package, and so it's the one we will use here.
 
 1. In the Velociraptor web GUI select **Server Artifacts** from the sidebar on
    the left side of the page.
@@ -518,11 +520,13 @@ MSI package, so it's the one we will use here.
 
 Download the MSI files. You will then need to copy them to a network share, USB
 stick or other medium that allows you to access them from your Windows
-endpoints.
+endpoints. In this simplified scenario we will only be installing the client
+manually. For full-scale deployments the MSI is typically rolled out through
+enterprise application management tools.
 
 ## Step 7: Install the client on endpoints
 
-
+On your Windows endpoints the installation is
 
 ## What next?
 

@@ -1,21 +1,5 @@
 [
     {
-<<<<<<< HEAD
-        "title": "How to set up authentication using Google OAuth SSO",
-        "link": "/knowledge_base/tips/setup_google_oauth",
-        "tags": [
-            "configuration",
-            "sso",
-            "deployment"
-        ],
-        "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "author_link": "https://github.com/scudette",
-        "date": "2025-02-26"
-    },
-    {
-||||||| 2d0fd987cd
-=======
         "title": "How to setup an SFTP server",
         "link": "/knowledge_base/tips/setting_up_sftp",
         "tags": [
@@ -27,7 +11,6 @@
         "date": "2025-02-25"
     },
     {
->>>>>>> master
         "title": "How can I automatically add & update client metadata?",
         "link": "/knowledge_base/tips/automating_metadata",
         "tags": [
@@ -36,8 +19,8 @@
             "deployment"
         ],
         "author": "predictiple",
-        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
         "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
         "date": "2025-01-30"
     },
     {
@@ -49,8 +32,8 @@
             "deployment"
         ],
         "author": "predictiple",
-        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
         "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
         "date": "2024-12-28"
     },
     {
@@ -60,8 +43,8 @@
             "vql"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2024-12-16"
     },
     {
@@ -69,8 +52,8 @@
         "link": "/knowledge_base/tips/multi_org",
         "tags": [],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2024-12-06"
     },
     {
@@ -80,8 +63,8 @@
             "forensics"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2024-11-06"
     },
     {
@@ -91,8 +74,8 @@
             "vql"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2024-08-31"
     },
     {
@@ -103,8 +86,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2024-07-19"
     },
     {
@@ -116,8 +99,8 @@
             "gui"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2024-03-18"
     },
     {
@@ -128,8 +111,8 @@
             "vql"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2023-08-09"
     },
     {
@@ -141,8 +124,8 @@
             "deployment"
         ],
         "author": "Jil",
-        "author_avatar": "https://avatars.githubusercontent.com/u/382017?v=4",
         "author_link": "https://github.com/Jil",
+        "author_avatar": "https://avatars.githubusercontent.com/u/382017?v=4",
         "date": "2023-07-24"
     },
     {
@@ -154,8 +137,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2023-05-05"
     },
     {
@@ -166,8 +149,8 @@
             "containment"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2023-03-04"
     },
     {
@@ -179,8 +162,8 @@
             "vql"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2022-11-02"
     },
     {
@@ -191,8 +174,8 @@
             "collector"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-10-10"
     },
     {
@@ -204,8 +187,8 @@
             "labels"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-09-10"
     },
     {
@@ -216,8 +199,8 @@
             "vql"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-09-10"
     },
     {
@@ -228,8 +211,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-09-03"
     },
     {
@@ -242,8 +225,8 @@
             "vql"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2022-06-06"
     },
     {
@@ -253,8 +236,8 @@
             "vql"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-05-21"
     },
     {
@@ -264,8 +247,8 @@
             "labels"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2022-05-20"
     },
     {
@@ -273,8 +256,8 @@
         "link": "/knowledge_base/tips/reconfigure_offline_collector",
         "tags": [],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-05-06"
     },
     {
@@ -285,19 +268,19 @@
             "GUI"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-26"
     },
     {
-        "title": "What do I do about \"version GLIBC_2.14 not found\" errors?",
+        "title": "What do I do about \"version GLIBC_2.xx not found\" errors?",
         "link": "/knowledge_base/tips/glibc_errors",
         "tags": [
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-26"
     },
     {
@@ -307,8 +290,8 @@
             "configuration"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-26"
     },
     {
@@ -319,8 +302,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-26"
     },
     {
@@ -331,8 +314,8 @@
             "configuration"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-26"
     },
     {
@@ -343,8 +326,8 @@
             "searching"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-25"
     },
     {
@@ -355,8 +338,8 @@
             "deployment"
         ],
         "author": "ajburnell",
-        "author_avatar": "https://avatars.githubusercontent.com/u/30587915?v=4",
         "author_link": "https://github.com/ajburnell",
+        "author_avatar": "https://avatars.githubusercontent.com/u/30587915?v=4",
         "date": "2022-04-18"
     },
     {
@@ -367,8 +350,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-04-15"
     },
     {
@@ -378,8 +361,8 @@
             "configuration"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-29"
     },
     {
@@ -389,8 +372,8 @@
             "vql"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-27"
     },
     {
@@ -401,8 +384,8 @@
             "admin"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-27"
     },
     {
@@ -413,8 +396,8 @@
             "labels"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-26"
     },
     {
@@ -426,8 +409,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-26"
     },
     {
@@ -438,8 +421,8 @@
             "debugging"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-21"
     },
     {
@@ -449,8 +432,21 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to set up authentication using Google OAuth SSO",
+        "link": "/knowledge_base/tips/setup_google_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

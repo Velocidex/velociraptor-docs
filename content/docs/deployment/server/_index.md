@@ -4,7 +4,7 @@ title: Server Deployment
 draft: false
 weight: 5
 aliases:
-  - "/docs/deployment/cloud/"
+  # - "/docs/deployment/cloud/"
 ---
 
 

@@ -56,7 +56,7 @@ In short we really wanted something like this:
 
 ![](image5.png)
 
-Quickstart
+<!-- Quickstart
 ===========
 
 In this section we go through a typical deployment scenario of
@@ -208,12 +208,9 @@ through a number of steps:
     a number of VQL queries.
 4.  We can now search for the client using the GUI search box.
 
-![](image8.png)
+![](image8.png) -->
 
-Introducing Velociraptor
-------------------------
-
-This post introduces Velociraptor - a new end point monitoring and IR
+Velociraptor is a new end point monitoring and IR
 tool built upon GRR\'s groundwork and experience. To be clear, we reused
 some of GRR\'s code and some design elements, but Velociraptor is a new
 project and is largely a rewrite of GRR\'s codebase. Like GRR,
