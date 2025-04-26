@@ -8,7 +8,6 @@ last reviewed: 2025-04-26
 summary: "Guidance on selecting the right options for your deployment."
 ---
 
-## Key deployment decisions
 
 https://github.com/Velocidex/velociraptor/blob/master/tools/survey/README.md
 

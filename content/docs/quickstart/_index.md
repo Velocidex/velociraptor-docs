@@ -531,7 +531,7 @@ On your Windows endpoints, installation is done by running the MSI that you
 created in the previous step.
 
 The MSI installs the client as a Windows service, so it requires elevated
-privileges and you will be prompted with the usual UAC prompt to allow the
+privileges and you may be prompted with the familiar UAC prompt to allow the
 installation to continue.
 
 After installation you will have the client running as the "Velociraptor

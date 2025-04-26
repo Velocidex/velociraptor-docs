@@ -32,14 +32,54 @@ and clients operate, plus cryptographic material that is used to secure
 several aspects of the deployment, such a client-server communications.
 
 Velociraptor includes a command line
-"[configuration wizard](https://github.com/Velocidex/velociraptor/blob/master/tools/survey/README.md)"
+[configuration wizard](https://github.com/Velocidex/velociraptor/blob/master/tools/survey/README.md)
 which guides you through the key decisions and provides sensible defaults for
 most options. Ultimately it produces a YAML configuration file that contains
 settings which both the Velociraptor server and clients will use. The
-configuration wizard is the recommended way to generate a new configuration,
-although it is common to manually tweak some settings in the configuration file
-before deployment, or sometimes in response to new features or issues
-encountered after deployment.
+configuration wizard (`config generate -i`) is the recommended way to generate a
+_new_ configuration, although it is common to manually tweak some settings in
+the configuration file before deployment, or sometimes in response to new
+features or issues encountered after deployment.
+
+Running the `config generate` command without the interactive flag will generate
+a basic sensible configuration using the self-signed SSL option and Basic
+authentication, similar to the deployment described in our
+[Quickstart Guide]({{< ref "/docs/quickstart/" >}}).
+You can then manually customize the configuration settings in the YAML file to
+your needs. Alternatively you can use this command to create an initial config
+and also use the JSON merge flag (`--merge`) to apply customization. This allows
+you to automate the generation and customization of the configuration in a
+single step, which you may want to do in automated build environments.
+
+
+{{< tabs >}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor config generate --merge \
+      '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}' \
+      > server.config.yaml
+```
+_Example: Config generate with merge_
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor.exe config generate ^
+      --merge "{"""autocert_domain""": """domain.com""", """autocert_cert_cache""": """/foo/bar"""}" ^
+      > server.config.yaml
+```
+_Example: Config generate with merge_
+Note that while this can be run on Windows the quote escaping is arduous and
+likely to be error-prone. We therefore don't recommend it.
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor config generate --merge \
+      '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}' \
+      > server.config.yaml
+```
+_Example: Config generate with merge_
+{{% /tab %}}
+{{< /tabs >}}
 
 Because the configuration file is a key component to your deployment and
 contains security-sensitive material you should always keep it secure and
