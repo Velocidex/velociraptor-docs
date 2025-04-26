@@ -2,6 +2,10 @@
 title: Troubleshooting and Debugging
 menutitle: Troubleshooting
 weight: 100
+summary: |
+  Sometimes things don’t work when you first try them. This page will go through
+  the common issues encountered when deploying Velociraptor clients, and the
+  steps needed to debug them.
 ---
 
 ## Troubleshooting deployments

@@ -11,4 +11,4 @@ possible. Velociraptor's strength lies in the wide array of VQL
 plugins and functions that are geared towards making DFIR
 investigations and detections effective.
 
-{{% children "description"=true "style"="h3" %}}
+{{% children "description"=false %}}

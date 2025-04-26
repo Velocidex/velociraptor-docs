@@ -2,6 +2,10 @@
 menutitle: Security
 title: Velociraptor Security Configuration
 weight: 46
+summary: |
+  Velociraptor is a highly privileged service with elevated access to thousands
+  of endpoints across the enterprise. It is therefore crucial to secure the
+  deployment as much as possible.
 ---
 
 Velociraptor is a highly privileged service with elevated access to
@@ -32,26 +36,33 @@ Every Velociraptor deployment creates an internal PKI which underpins
 it. The configuration wizard create an internal CA with an X509
 certificate and a private key. This CA is used to
 
-1. Create [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}}) and any additional certificates
-   for key rotation.
+1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
+   and any additional certificates for key rotation.
 
-1. [CA public certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}}) is embedded in the client’s configuration and
-   is used to verify server communications.
+2. Verifying the server during client-server comminications. [The CA public
+   certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
+   is embedded in the client’s configuration and is used to verify (and therefore trust) the server.
 
-1. The internal CA is used to create API keys for programmatic
-   access. The server is then able to verify API clients.
+3. Creating API keys for programmatic access. The server is then able to verify
+   API clients.
+
+4. Creating client certificates for (optional) mTLS. This allows clients to be
+   authenticated using certificates.
 
 The configuration file contains the CA's X509 certificate in the
-**Client.ca_certificate** parameter (it is therefore embedded in the
+`Client.ca_certificate` parameter (it is therefore embedded in the
 client configuration). The private key is contained in the
-**CA.private_key** parameter.
+`CA.private_key` parameter.
 
 {{% notice warning "Protecting the CA private key" %}}
 
-In a secure installation you should remove the **CA.private_key**
-section from the server config and keep it offline. You only need it
-to create new API keys using the *velociraptor config api_client*
-command, and the server does not need it in normal operations.
+In a secure installation you should remove the `CA.private_key` section from
+the server config and keep it offline. You only need it to
+[create new API keys]({{< ref "/docs/server_automation/server_api/#creating-an-api-client-configuration" >}})
+and when
+[rotating server certificates]({{< ref "/knowledge_base/tips/rolling_certificates/" >}})
+(typically after 1 year).
+The server does not need it during normal operations.
 
 {{% /notice %}}
 

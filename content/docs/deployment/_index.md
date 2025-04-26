@@ -109,7 +109,7 @@ At a high level, deploying Velociraptor consists of 3 tasks: setting up a
 server, deploying clients, and granting user access to the server's web UI.
 
 **Task 1: Deploy a Server**
-- [Choose the deployment options]({{< ref "/docs/deployment/server/" >}}) that
+- [Choose the deployment options]({{< ref "/docs/deployment/server#key-deployment-decisions" >}}) that
   work best for you and install your server.
 
 **Task 2: Authorize Users**
@@ -117,15 +117,28 @@ server, deploying clients, and granting user access to the server's web UI.
 
 **Task 3: Deploy Clients**
 - [Deploy clients]({{< ref "/docs/deployment/clients/" >}}) on your endpoints
-  using one of the following methods:
+  using one or possibly a combination of the following methods:
   - Run clients interactively
   - Install the client as a service using a custom installer package
   - Agentless Deployment
+  - Create and run "offline collectors" (which are essentially out-of-band clients)
 
-Although the above represents the "standard" deployment model, there are other
-less conventional ways to use Velociraptor.
 
-## Instant Velociraptor
+## Other ways to use Velociraptor
+
+While deploying Velociraptor in client-server mode, as described above, is the
+recommended deployment model and typical of most deployments, Velociraptor's
+extensive capabilities can also be used in innovative and unconventional ways -
+even ones we haven't thought of yet!
+
+There isn't a single prescribed way to use Velociraptor. We would love to hear
+about your creative ideas and unusual use cases so we can continue to make
+Velociraptor better for everyone.
+
+The following are some other (less conventional) ways that you can use
+Velociraptor.
+
+### "Instant Velociraptor"
 
 If you want to instantly start a Velociraptor instance for evaluation, learning,
 experimentation, testing, or any another reason, you can run "Instant
@@ -133,7 +146,7 @@ Velociraptor". This is a fully functional, self-contained Velociraptor system on
 to your local machine. In this mode of operation you'll get the server plus a
 single client running within the same process on your machine. All the necessary
 configuration is taken care of automatically. With a single command you can be
-ready to dive right in to the fun stuff!
+ready to dive right into the fun stuff!
 
 To do this, download the Velociraptor executable for your
 platform from the [Downloads page](/downloads/) and run the `gui` CLI command.
@@ -193,17 +206,6 @@ delete the old datastore folder or point it to a new folder using the
 
 {{% /notice %}}
 
-## Other ways to use Velociraptor
-
-As mentioned above, there isn't a single prescribed way to use Velociraptor.
-
-Although deploying it in client-server mode is the primary deployment model and
-typical of most deployments, Velociraptor's extensive capabilities can also be
-used in innovative and unconventional ways - even ones we haven't thought of
-yet! We would love to hear about your creative ideas and unusual use cases so we
-can continue to make Velociraptor better for everyone!
-
-Here are some other (unconventional) ways that you could use Velociraptor.
 
 ### Command line investigation tool
 
@@ -283,14 +285,14 @@ velociraptor.exe artifacts collect "Windows.System.AuditPolicy" --format json --
 ```
 
 
-### Instant Velociraptor as a local investigation tool
+### "Instant Velociraptor" as a local investigation tool
 
 While [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) is normally
 used for testing or demonstrations, it can actually be used as a standalone
 GUI-based forensic tool.
 
 The `gui` command starts the server and a single client within a single process.
-This client is no different from one that's seperately deployed, and can be used
+This client is no different from one that's separately deployed, and can be used
 to interrogate the local system as you would do for any remote client.
 
 {{% notice warning "Minimizing data pollution"%}}
@@ -306,7 +308,7 @@ minimize them by:
 
 {{% /notice %}}
 
-### Instant Velociraptor as an desktop environment for analysts
+### "Instant Velociraptor" as an desktop environment for analysts
 
 [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) can also be used
 as a standalone graphical forensic desktop environment, for aquired forensic
@@ -331,13 +333,13 @@ you to inspect and analyze disk image files using Velociraptor's deaddisk
 feature. The `gui` command creates the client config file in the datastore
 folder, to which you can add the remapping config, if needed.
 
-### Standalone offline collector
+### Standalone offline collectors
 
 [Offline collectors]({{< ref "/docs/offline_triage/#offline-collections" >}})
 are usually created with the expectation that the data will be imported into a
 Velociraptor server, but this doesn't have to be the case. You may just be
 interested in extracting the data and working with it elsewhere using other
-tools. In this use case the only reason for having a Velociraptor server is to
+tools. In that case the only reason for having a Velociraptor server is to
 create the offline collector, and you can use an
 [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) for that purpose.
 
@@ -356,3 +358,7 @@ amounts to a sneakernet Velociraptor deployment!
 <!-- ### Sneakernet Velociraptor server
 
 ### Ephemeral clients -->
+
+## What's next?
+
+{{% children "description"=true %}}

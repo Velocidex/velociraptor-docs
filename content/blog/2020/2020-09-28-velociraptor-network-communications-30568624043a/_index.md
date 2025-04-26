@@ -33,7 +33,7 @@ Clients (Velociraptor instances running on endpoints) connect to the server over
 
 ### Velociraptor’s internal PKI
 
-Every Velociraptor deployments creates an internal PKI which underpins it. The configuration wizard create an internal CA with an X509 certificate and a private key. This CA is used to
+Every Velociraptor deployments creates an internal PKI which underpins it. The configuration wizard creates an internal CA with an X509 certificate and a private key. This CA is used to:
 
 1. Create initial server certificates and any additional certificates for key rotation.
 

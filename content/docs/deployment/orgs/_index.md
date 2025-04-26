@@ -4,6 +4,8 @@ title: Organizations and Multi-tenancy
 last_reviewed: 2025-02-24
 draft: false
 weight: 20
+summary: |
+  Velociraptor supports multiple orgs in a full multi-tenancy configuration.
 ---
 
 Velociraptor supports multiple orgs in a full multi-tenancy
@@ -23,7 +25,7 @@ This is useful in a number of scenarios:
    Velociraptor users.
 
 In Velociraptor, multi-tenancy is implemented by dividing the clients into
-separate `Organizations` or `Orgs`.
+separate **Organizations** or **Orgs**.
 
 Each org is logically completely separate from other orgs:
 
@@ -97,7 +99,7 @@ org will always fail.
 
 {{% /notice %}}
 
-You can use the `Server.Orgs.NewOrg` artifact to create a new org
+You can use the `Server.Orgs.NewOrg` server artifact to create a new org
 
 ![Creating a new Org](new_org_1.svg)
 

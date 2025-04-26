@@ -2,7 +2,7 @@
 menutitle: "Quickstart"
 title: "Quickstart Guide"
 date: 2025-02-27
-last_reviewed: 2025-02-27
+last_reviewed: 2025-04-26
 draft: false
 weight: 10
 aliases:
@@ -396,7 +396,7 @@ packaging system.
 
 **Debian-based server installation:**
 
-```sh
+```
 $ sudo dpkg -i velociraptor_server_0.74.1_amd64.deb
 Selecting previously unselected package velociraptor-server.
 (Reading database ... 527396 files and directories currently installed.)
@@ -476,10 +476,11 @@ the section [Deploying Clients]({{< ref "/docs/deployment/clients/" >}}).
 The most important thing to know is that all Velociraptor clients need a client
 configuration, which is specific to the deployment. This configuration is a
 subset of the full YAML-based configuration. Because the server has access to
-the full configuration it is able to provide the client configuration to us
-[in the form of a YAML file]({{< ref "/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui" >}}),
-or it can use it internally when generating a client installation package.
-In this guide we intend to do the latter (for Windows clients).
+the full configuration it is able to provide the client configuration to us when
+needed
+[in the form of a YAML file]({{< ref "/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui" >}}).
+The server can also use it internally, for example when generating a client
+installation package (for Windows clients), as we will show in this guide.
 
 ![Client config is a subset of the full config](client_config_yaml.svg)
 
@@ -526,12 +527,32 @@ enterprise application management tools.
 
 ## Step 7: Install the client on endpoints
 
-On your Windows endpoints the installation is
+On your Windows endpoints, installation is done by running the MSI that you
+created in the previous step.
 
-## What next?
+The MSI installs the client as a Windows service, so it requires elevated
+privileges and you will be prompted with the usual UAC prompt to allow the
+installation to continue.
 
-Here are the next steps you may want to consider:
+After installation you will have the client running as the "Velociraptor
+Service" which you can see in the Services app.
 
-- [Velociraptor Security Configuration]({{< ref "/docs/deployment/security/" >}})
-- Managing clients
-- Orgs
+![Velociraptor client service](velociraptor_windows_service.png)
+
+Returning to your Velociraptor server, you can find the newly enrolled client by
+clicking the <i class="fas fa-search"></i> button in the "Search clients" bar at
+the top of the page.
+
+![Your first client](your_first_client.png)
+
+## What's next?
+
+After installating your first client, here are the next steps you may want to
+consider:
+
+- [Learn about managing clients]({{< ref "/docs/clients/" >}})
+- [Create non-Windows client installers]({{< ref "/docs/deployment/clients/" >}})
+- [Explore additional security configuration options]({{< ref "/docs/deployment/security/" >}})
+- [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
+  distinct sets of clients.
+- [Plan for a more durable and secure installation]({{< ref "/docs/deployment/server/" >}})

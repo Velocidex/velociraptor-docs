@@ -2,6 +2,8 @@
 title: Deploying Clients
 weight: 25
 last_reviewed: 2024-11-30
+summary: |
+  How to run, and optionally install, clients on the most common platforms.
 ---
 
 We refer to Velociraptor endpoint agents as **clients**.

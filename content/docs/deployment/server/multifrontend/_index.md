@@ -2,7 +2,10 @@
 menutitle: Multi-Frontend
 title: Multi-Frontend Configuration
 draft: false
-weight: 10
+weight: 40
+summary: |
+  Guidance on scaling your deployment and Velociraptor's (experimental)
+  Multi-Frontend deployment model.
 ---
 
 {{% notice warning %}}
