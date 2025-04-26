@@ -1,0 +1,102 @@
+
+For cloud deployments you can create a proper SSL certificate using the free
+[Let's Encrypt CA](https://letsencrypt.org/).
+This eliminates the "bad certificate" browser warning seen in the
+[Self-signed Deployment]({{< ref "/docs/quickstart/" >}}) mode.
+Velociraptor uses the Let's Encrypt protocol to obtain and manage its own
+certificates, and to automatically rotate them when they expire.
+
+## Before You Begin
+
+Note the following requirements:
+* You _must_ use a DNS name. Let's Encrypt will not issue a certificate for an
+  IP address. The DNS name can be a Dynamic DNS name managed by ~~Google Domains~~.
+* Ports 80 and 443 _must_ be publicly accessible. Let's Encrypt uses both ports
+  to issue certificates.
+* You can optionally configure Authentication via SSO providers.
+
+
+
+{{% notice warning "Network filtering requirements" %}}
+
+Our virtual machine must be able to receive connections over both
+ports 80 and 443. Be sure to check inbound filtering Access Control
+Lists to ensure that access is allowed. When using SSL, both the
+client communication and the Admin GUI are served over the same ports
+to benefit from SSL transport encryption. The Let's Encrypt protocol
+requires Let's Encrypt's servers to connect to the VM on port 80 -
+however the Admin GUI will only be served over SSL.
+
+{{% /notice %}}
+
+### Assign an IP
+
+You can assign your Virtual Machine a static IP address or allow the
+cloud provider to assign a dynamic IP address.
+
+If you use a dynamic IP address for your server than you must also configure
+Dynamic DNS. Velociraptor directly supports updating
+[Cloudflare](https://www.cloudflare.com/learning/dns/glossary/dynamic-dns/) or
+[No-IP](https://www.noip.com/) Dynamic DNS so these are the easiest options
+since they requires the least amount of configuration.
+
+Alternatively, and for other DDNS providers, you can install an external dynamic
+DNS client such as ddclient to update your DNS->IP mapping dynamically.
+
+After the dynamic address is created, you need to note the credentials for
+updating the IP address (as configured with your DDNS provider) as you will use
+these during the interactive configuration process.
+
+### Get a DNS name and SSL certificate
+
+An SSL certificate says that the DNS name is owned by the server that
+presents it. Since you cannot currently get a Let's Encrypt
+certificate for an IP address. you'll need buy a DNS domain from any
+provider. You'll then need to set up a DNS A Record to point at your
+Velociraptor server’s external IP.
+
+
+
+## Configure Velociraptor to use Let's Encrypt
+
+Let’s Encrypt allows Velociraptor to issue its own
+certificates. Selecting the Let's Encrypt option ensures:
+* The server will fetch certificates automatically from Let's
+  Encrypt's servers when first accessed by the browser.
+* Both the Frontend and GUI will be served over the standard SSL port
+  (443).
+* The GUI is externally available, but protected over SSL.
+* Clients will connect to the public DNS name over SSL.
+
+Use the guided configuration wizard to select this operation mode:
+
+```text
+$ ./velociraptor config generate -i
+Welcome to the Velociraptor configuration generator
+
+This wizard creates a configuration file for a new deployment.
+
+Let's begin by configuring the server itself.
+
+┃ Deployment Type
+
+┃ This wizard can create the following distinct deployment types.
+┃    Self Signed SSL
+┃  ● Automatically provision certificates with Lets Encrypt
+┃    Authenticate users with SSO
+```
+
+{{% notice info %}}
+
+You _must_ have both ports 80 and 443 publicly accessible by allowing these in
+any inbound firewall rules! Let's Encrypt uses both ports when issuing
+certificates. If you forgot to open port 80, Let's Encrypt will fail to
+issue the certificate. Repeated failures might result in them blocking the DNS
+name from requesting a certificate for several days. If you find that
+this has happened then you will need to change the DNS name and start again.
+
+{{% /notice %}}
+
+The first time you connect to the Admin GUI or to the frontend, the server
+will obtain its own certificate from Let's Encrypt. You should see no SSL
+warnings in your browser.
