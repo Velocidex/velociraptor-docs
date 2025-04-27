@@ -41,9 +41,11 @@ _new_ configuration, although it is common to manually tweak some settings in
 the configuration file before deployment, or sometimes in response to new
 features or issues encountered after deployment.
 
-Running the `config generate` command without the interactive flag will generate
-a basic sensible configuration using the self-signed SSL option and Basic
-authentication, similar to the deployment described in our
+![Generating a configuration for a self-signed deployment](self-signed-generation.gif)
+
+Running the `config generate` command _without_ the interactive flag will
+generate a basic sensible configuration using the self-signed SSL option and
+Basic authentication, similar to the deployment described in our
 [Quickstart Guide]({{< ref "/docs/quickstart/" >}}).
 You can then manually customize the configuration settings in the YAML file to
 your needs. Alternatively you can use this command to create an initial config

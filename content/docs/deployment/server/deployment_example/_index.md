@@ -9,16 +9,26 @@ aliases:
   - "/docs/deployment/cloud/"
 summary: |
   In this example we will walk through the process of deploying the server using
-  Let's Encrypt certificates and Google SSO as the authentication provider.
+  Let's Encrypt certificates, and optionally an SSO authentication provider.
 ---
 
 In this example we will walk through the process of deploying the server using
-Let's Encrypt certificates and Google SSO as the authentication provider.
+Let's Encrypt certificates, and optionally an SSO authentication provider. This
+type of deployment is most appropriate
 
-This is a typical deployment choice for long-term deployments (both cloud-hosted
-and on-premises), although the choice of authentication provider is usually
-determined by each organizations existing Identity and Access Management (IAM)
-policies and infrastructure.
+This is a common deployment choice for long-term deployments (both cloud-hosted
+and on-premises), or for scenarios where a cloud-based server is required (and
+where clients will connect to the server via the internet).
+
+Most enterprise systems require an SSO mechanism to manage user accounts and
+passwords, one reason being that manual user account management simply does not
+scale. The choice of authentication provider is usually determined by each
+organizations existing Identity and Access Management (IAM) policies and
+infrastructure.
+
+Velociraptor supports the most popular SSO providers and protocols. These
+providers can be a cloud-based IDPs or on-premises IDM solutions.
+
 
 ## Before You Begin
 
@@ -29,7 +39,7 @@ Note the following requirements:
   issue certificates.
 - You can optionally configure Authentication via one or more SSO providers.
 
-### Provision a Virtual Machine
+#### Provision a Virtual Machine
 
 Next we provision a Linux VM from any cloud provider. The size of your VM
 depends on the number of endpoints in your environment. A standard VM with 8 or
@@ -37,6 +47,11 @@ depends on the number of endpoints in your environment. A standard VM with 8 or
 need sufficient disk space to hold the data you collect. We recommend starting
 with a modest amount of storage and then periodically back up and purge old
 data, or else increase the storage volume size as needed.
+
+Ubuntu is commonly used for production Velociraptor deployments and we use it
+for testing, so it is generally recommended unless you have a strong preference
+for something else. If you choose to use another Linux distro then please note
+that it needs to be one that uses systemd, although most do these days.
 
 {{% notice info "Network filtering requirements" %}}
 
@@ -48,6 +63,13 @@ Let's Encrypt protocol requires Let's Encrypt's servers to connect to the VM on
 port 80 for the purpose of certificate issuance and renewal, however
 Velociraptor will only provide services on the SSL-secured port 443.
 
+If you forgot to open port 80, Let's Encrypt will fail to issue the
+certificate and repeated failures might result in them
+[blocking the domain name](https://letsencrypt.org/docs/rate-limits/#authorization-failures-per-hostname-per-account)
+from getting an SSL certificate for several days. If you find that this has
+happened and you can't afford to wait, then you will need to change to a new
+DynDNS name and start again.
+
 Several Velociraptor features do require outbound access from the server to GitHub,
 although [it is possible]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
 for the server to operate without any intenet access.
@@ -55,7 +77,7 @@ for the server to operate without any intenet access.
 {{% /notice %}}
 
 
-### Get a domain name
+#### Get a DNS name for your server
 
 An SSL certificate says that the DNS name is owned by the server that presents
 it. You will need a public DNS name ("A" record) pointing to your Velociraptor
@@ -65,26 +87,40 @@ server’s external IP. This is because:
 - DNS names are integral to SSO and therefore required.
 
 
-### Assign an IP
+#### Assign an IP address
 
-You can assign your Virtual Machine a static IP address or allow the
-cloud provider to assign a dynamic IP address.
-
+You can assign your Virtual Machine a static IP address or a dynamic IP address.
 If you use a dynamic IP address for your server then you must also configure
-Dynamic DNS. Velociraptor directly supports updating
+Dynamic DNS.
+
+Velociraptor natively supports updating
 [Cloudflare](https://www.cloudflare.com/learning/dns/glossary/dynamic-dns/) or
 [No-IP](https://www.noip.com/) Dynamic DNS, so these are the easiest options to
-use since they requires the least amount of configuration.
-Alternatively, or for other DDNS providers, you can install an external Dynamic
-DNS client such as [ddclient](https://ddclient.net/) to update your
-DNS->IP mapping.
+use since they require no external DDNS update mechanism. For other DDNS
+providers, you can install an external Dynamic DNS client such as
+[ddclient](https://ddclient.net/) to update your DNS->IP mapping.
 
 After the dynamic address is created, you need to note the credentials (as
-configured with your DDNS provider) for updating the IP address as you will need
-to supply these during the interactive configuration process.
+configured with your DDNS provider) for updating the IP address, as you will
+need to supply these during Velociraptor's interactive configuration process.
 
 
-## Generating the configuration file
+## Prepare the server installation package
+
+Before installing anything we need to prepare by creating the Velociraptor
+config, and then package that config into a deb or rpm installer package which
+we will then install on the Velociraptor server.
+
+These pre-installation steps can be done on any platform.
+
+### 1. Generate the configuration file
+
+Central to every Velociraptor deployment is a
+[YAML](https://www.tutorialspoint.com/yaml/yaml_basics.htm)
+[configuration file]({{< ref "/docs/deployment/references/" >}}).
+This file contains all the configuration parameters that define how your server
+and clients operate, plus cryptographic material that is used to secure
+several aspects of the deployment, such a client-server communications.
 
 To generate a new configuration file we use the `config generate` command. The
 `-i` flag tells it to run in interactive mode, which means it will launch a
@@ -109,51 +145,23 @@ velociraptor.exe config generate -i
 {{% /tab %}}
 {{< /tabs >}}
 
+{{% notice tip %}}
 
-The configuration wizard includes a set of questions to guide you through the first step of the deployment process.
+The aim of the wizard is to make it easy to configure Velociraptor in the most
+common deployment scenarios. Even though these scenarios will not be a perfect
+fit for everyone, most users should be able to start with these deploment modes
+and tweak the configuration to their specific needs.
 
-* **What OS will the server be deployed on?** This choice will affect the
-  defaults for various options. Velociraptor is typically
-  deployed on a Linux machine (but the configuration can be generated on
-  Windows).
-* **Path to the datastore directory:** Velociraptor uses flat files for
-  all storage. This path is where Velociraptor will write the
-  files. You should mount any network filesystems or storage devices
-  on this path.
-* **The public DNS name of the Frontend:** The clients will connect to the
-  server using this DNS name so it should be publically accessible. If
-  you are using self-signed SSL you may specify an IP address here,
-  but this not recommended because it is less flexible. If the
-  server's IP address changes it will be impossible to contact the
-  clients.
-* **The Frontend port to listen on:** The Frontend receives client
-  connections. You should allow inbound access to this port from
-  anywhere.
-* **The port for the Admin GUI to listen on:** The Admin GUI receives browser
-  connections. As discussed above, in self-signed mode the Admin GUI will
-  only bind to the local host.
-* **Initial GUI users:** The initial set of administrator accounts can be stored
-  in the configuration file. When Velociraptor starts, it automatically adds
-  these accounts as administrators. When using self-signed SSL mode, the only
-  authentication method available is `Basic Authentication`. Velociraptor stores
-  the username and hashed passwords in the datastore.
-* **Extended certificate validity:** You may choose to override the default
-  1-year certificate expiry if you intend to deploy a long-term server instance.
+The end result of running the configuration wizard is a YAML configuration file.
+So there is no harm in doing "dry runs" and examining or comparing resulting
+files to better understand how the choices affect the resulting configuration.
 
+{{% /notice %}}
 
+#### Deployment Type
 
-## Configure Velociraptor to use Let's Encrypt (with SSO)
-
-Let’s Encrypt allows Velociraptor to issue its own
-certificates. Selecting the Let's Encrypt option ensures:
-* The server will fetch certificates automatically from Let's
-  Encrypt's servers when first accessed by the browser.
-* Both the Frontend and GUI will be served over the standard SSL port
-  (443).
-* The GUI is externally available, but protected over SSL.
-* Clients will connect to the public DNS name over SSL.
-
-Use the guided configuration wizard to select this operation mode:
+On the first screen of the configuration wizard you will be asked to select the
+Deployment Type.
 
 ```text
 $ ./velociraptor config generate -i
@@ -170,232 +178,315 @@ $ ./velociraptor config generate -i
 ┃    Authenticate users with SSO
 ```
 
-If you intend to use SSO authentication (discussed below) then choose the option
-"Authenticate users with SSO" which implicitly includes Let's Encrypt
-certificate management.
+* If you don't intend to use SSO, or intend to configure it manually later, then
+  choose **Automatically provision certificates with Lets Encrypt**. \
+  _This deployment option will enable Basic authentication instead of SSO._
+* If you do want to use SSO then choose the option **Authenticate users with
+  SSO**. \
+  _This deployment option also configures the deployment to use Let's Encrypt certificates._
 
-The configuration wizard asks a number of questions and creates a
-server and client configuration.
+For either of the above choices the resulting config will specify that
+Velociraptor's Frontend (which clients connect to) and GUI listen on port 443,
+secured by TLS. The certificates will, in both cases, be automatically issued
+via Let's Encrypt.
 
-* **What OS will the server be deployed on?** This choice will affect the
-  defaults for various options. Production deployments are typically
-  done on a Linux machine (but the configuration can be generated on
-  Windows).
-* **Path to the datastore directory:** Velociraptor uses flat files for
-  all storage. This path is where Velociraptor will write the
-  files. You should mount any network filesystems or storage devices
-  on this path.
-* **The public DNS name of the Frontend:** The clients will connect to the
-  server using this DNS name so it should be publically accessible
-  (Note this is a DNS name and not a URL).
-* **Google OAuth2 Client ID and Secret** are obtained from above.
-* **GUI Username or email address to authorize:** The initial set of
-  administrator accounts can be stored in the configuration file. When
-  Velociraptor starts it will automatically add these accounts as
-  administrators. When using SSO, Velociraptor does not use any
-  passwords so only the user names will be recorded.
+> Self-signed SSL with Basic authentication is most often used when Velociraptor
+> is deployed on private networks for temporary situations such as incident
+> response. For long-term deployments, the other modes of operation that
+> Velociraptor offers should be preferred. We describe the process of deploying
+> in this mode in our [Quickstart Guide]({{< ref "/docs/quickstart/" >}}).
+> Self-signed mode is incompatible with SSO authentication.
 
-{{% notice info "Let's Encrypt failures can result in request blacklisting!" %}}
-
-You must have both ports 80 and 443 publicly accessible via any inbound
-firewall rules! Let's Encrypt uses both ports in the certificate enrollment
-process. If you forgot to open port 80, Let's Encrypt will fail to issue the
-certificate and repeated failures might result in them
-[blocking the domain name](https://letsencrypt.org/docs/rate-limits/#authorization-failures-per-hostname-per-account)
-from getting an SSL certificate for several days. If you find that this has
-happened and you can't afford to wait, then you will need to change to a new
-DynDNS name and start again.
-
-{{% /notice %}}
-
-The first time you connect to the Admin GUI or to the frontend, the server
-will obtain its own certificate from Let's Encrypt. You should see no SSL
-warnings in your browser.
-
-Now that you have set up Velociraptor's GUI and Frontend to operate over
-SSL, the next step is to create user accounts that can access the GUI.
-
-It is possible to assign passwords to these accounts and use Basic
-authentication, as we explain in the
-[Quickstart Guide]({{< ref "/docs/quickstart/#step-2-create-the-server-configuration-file" >}}).
-However in enterprise and cloud environments it is highly recommended to use
-stronger authentication mechanisms which provide, for example, 2-factor
-authentication, password policies, or any of the usual enterprise requirements
-for user account management. Most enterprise systems utilize a SSO provider to
-manage user accounts and authentication because manual user account management
-simply does not scale.
-
-
-
-
-### OAuth Identity management
-
-In the following sections, we demonstrate how Velociraptor can be configured to
-use Google's OAuth mechanism to verify a user's identity. This
-requires a user to authenticate to Google via their usual method -
-if their account requires 2 factor authentication, then users need to
-log in this way.
-
-Once the user authenticates to Google, they are redirected back into
-the Velociraptor application with a token that allows the application
-to request information about the user (for example, the username or
-email address).
-
-
-{{% notice note "What is OAuth2 used for?" %}}
-
-OAuth is an authentication protocol. This means Velociraptor can be
-pretty confident the user is who they claim they are. However, this does not
-automatically grant them access to the application.  A Velociraptor
-administrator must still manually grant user access before a user can
-log in.
-
-{{% /notice %}}
-
-Before using Google to authenticate, you need to register your
-Velociraptor deployment as an OAuth App with Google.
-
-### Generating configuration
-
-To generate a self-signed deployment, start by running the `config
-generate` command to invoke the configuration wizard
-
-```sh
-velociraptor config generate -i
-```
-
-![Generating Cloud Deployment](config.png?classes=shadow)
-
-The configuration wizard asks a number of questions and creates a
-server and client configuration.
-
+Also on the first page you will be asked:
 
 * **What OS will the server be deployed on?** This choice will affect the
-  defaults for various options. Production deployments are typically
-  done on a Linux machine (but the configuration can be generated on
-  Windows).
-* **Path to the datastore directory:** Velociraptor uses flat files for
-  all storage. This path is where Velociraptor will write the
-  files. You should mount any network filesystems or storage devices
-  on this path.
-* **The public DNS name of the Frontend:** The clients will connect to the
-  server using this DNS name so it should be publically accessible
-  (Note this is a DNS name and not a URL).
-* **Google OAuth2 Client ID and Secret** are obtained from above.
-* **GUI Username or email address to authorize:** The initial set of
-  administrator accounts can be stored in the configuration file. When
-  Velociraptor starts it will automatically add these accounts as
-  administrators. When using SSO, Velociraptor does not use any
-  passwords so only the user names will be recorded.
+  defaults for various options, mainly path specifications which would be
+  different on Windows. Velociraptor is typically deployed on a Linux
+  machine (but the configuration can be generated on Windows).
 
+#### Server configuration
 
-## Grant Access to Velociraptor
+The next few questions on the seconds page of the config wizard relate to the
+configuration of the server itself:
 
-The OAuth flow ensures the user's identity is correct but does not
-give them permission to log into Velociraptor. Note that having an
-OAuth enabled application on the web allows anyone with a Google
-identity to authenticate to the application but the user is still
-required to be authorized explicitly. If a user is rejected, we can
-see the following in the Audit logs:
+* **Path to the datastore directory**: Velociraptor uses flat files for all
+  storage. This path is where Velociraptor will write it's files. You should
+  mount any network filesystems or storage devices on this path.
 
-```json
-   {
-     "level": "error",
-     "method": "GET",
-     "msg": "User rejected by GUI",
-     "remote": "192.168.0.10:40570",
-     "time": "2018-12-21T18:17:47+10:00",
-     "user": "mike@velocidex.com"
-   }
-```
+* **Path to the logs directory**: The default value is usually acceptable.
 
-In order to authorize the user we must explicitly add them using the
-Velociraptor Admin tool:
+* **Internal PKI Certificate Expiration**: This internal certificate is
+  generated and stored in the configuration file. This option _does not_ affect
+  the Let's Encrypt certificates, which are issued and automatically renewed at
+  least every 90 days. You may choose to override the default 1-year certificate
+  expiry if you intend to deploy a long-term server instance.
+
+For the next 2 questions you should probably accept the defaults, unless you're
+really sure that you want to change these and understand the impacts. Remember
+that you can change any option at a later time by manually editing the config
+file.
+
+* **Do you want to restrict VQL functionality on the server?**
+
+* **Use registry for client writeback?**
+
+#### Network configuration
+
+On the third page of the config wizard you will be asked for network-related
+information for your deployment:
+
+* **The public DNS name of the Frontend?**: The clients will connect to the
+  server using this DNS name.
+
+* **DNS Type**: As mentioned previously, if your server has a dynamic IP address
+  then you need to have set up DDNS updating for the server's DNS name. We
+  support Cloudflare and NOIP DDNS providers internally, and if you choose one
+  of these options you will be asked to supply DDNS update credentials. If you
+  are using an external update mechanisms such as dd client, then choose "None -
+  Configure DNS manually".
+
+* **Would you like to try the new experimental websocket comms?**: We recommend
+  this option, especially for large deployments since it provides more efficient
+  client-server communications. However, as the question note advises, you
+  should test that this traffic is not blocked/restricted in your environment
+  before choosing this option.
+
+#### Authentication configuration
+
+If you initially chose **Authenticate users with SSO** then you can skip the
+next section and go to [SSO authentication](#configure-sso-authentication).
+
+##### Configure Basic Authentication
+
+If you initially chose **Automatically provision certificates with Lets Encrypt**
+then on the 4th screen of the config wizard you will be asked to add Admin users.
+
+The initial set of administrator accounts specified here will be stored in the
+configuration file. When Velociraptor starts, it automatically creates these
+accounts as administrators in the datastore, so that you can access the Admin
+GUI.
+
+You typically don't need to add more than one admin user as additional users
+(admin or non-admin) can be added after installation. It is common to only have
+1 admin user and many non-admin users, with the latter being used for day-to-day
+DFIR work. So after adding one user you can enter a blank username and password
+which will allow you to continue.
 
 ```text
-$ velociraptor --config ~/server.config.yaml user add mike@velocidex.com
-Authentication will occur via Google - therefore no password needs to be set.
+ Adding Admin User Number 0
+ Enter an empty username or Ctrl-C to stop
+
+┃ Username
+┃ > admin
+
+┃ Password
+┃ > <your_password>
 ```
-Note that this time, Velociraptor does not ask for a password at all,
-since authentication occurs using Google's SSO. If we hit refresh in
-the browser we should be able to see the Velociraptor application dashboard.
 
-We can see that the logged in user is authenticated by Google, and we
-can also see the user's Google avatar at the top right for some more
-eye candy :-).
+Since you chose to use only Basic authentication you can [skip](#config-wizard-finish)
+the next step which applies to SSO configuration.
 
-![Velociraptor Dashboard](dashboard.png)
+##### Configure SSO Authentication
 
+If you initially chose **Authenticate users with SSO** then the 4th screen of
+the config wizard will ask you to choose your SSO provider and the subsequent
+screen will ask for details which may vary depending on your choice of provider.
 
-{{% notice note %}}
+Since this step also requires that you set up SSO at your provider, we refer you
+to the following Knowledge Base articles which explain the provider-specific
+steps for an OAuth2 provider and an OIDC provider:
 
-Velociraptor will retain its OAuth token for 24 hours. Each day users
-will need to re-grant OAuth credentials. Therefore revoking a user
-from the Google Admin console may take a full day to take effect. To
-remove access sooner you should simply remove all permissions from the
-user using `velociraptor user grant '{}'`.
+* [How to set up authentication using Google OAuth SSO]({{< ref "/knowledge_base/tips/setup_google_oauth/" >}})
+* [How to set up OIDC authentication using Keycloak]({{< ref "/knowledge_base/tips/setup_keycloak/" >}})
 
-{{% /notice %}}
+The config wizard only presents the most commonly-used providers and options,
+but we support several others as explained
+[here]({{< ref "/docs/deployment/server/key_concepts/#authentication-providers" >}}).
+It is even possible to add [multiple authentication providers]({{< ref "/knowledge_base/tips/multiple_oauth/" >}}).
 
-### Deploying to the server
+Once you have completed the SSO configuration you can proceed to the final
+step in the configuration wizard...
 
-Once a server configuration file is created, you need to create a server Debian package embedding the config file. The Debian package the Velociraptor executable, the server configuration file and relevant startup scripts.
+##### Config Wizard Finish
 
-Run the following command to create the server:
+The final step of the config wizard will offer to write the config file to your
+working directory.
+
+- **Name of file to write**: `server.config.yaml`
+
+You can accept the default file name and the wizard will then exit.
+
+### 2. Make any further changes to the config file
+
+At this point you may want to review the generated config file and make any
+adjustments that you deem necessary.
+
+For example, by default the configuration wizard binds the GUI to only the
+loopback interface, `127.0.0.1`, to minimize the potential attack surface. If
+you have configured SSO authentication you may want to expose the GUI port to
+the internet. Note that this is highly discouraged if you are using Basic
+authentication.
+
+If you need to access the GUI from other network hosts then open the
+configuration file in a text editor and change:
+
+```yaml
+GUI:
+  bind_address: 127.0.0.1
+```
+
+to:
+
+```yaml
+GUI:
+  bind_address: 0.0.0.0
+```
+
+(Please note that only the values `127.0.0.1` or `0.0.0.0` are valid for this
+setting.)
+
+If you do decide to expose the GUI to pulic networks then we recommend you also
+restrict access to specific IP ranges using the
+[GUI.allowed_cidr]({{<  ref "/docs/deployment/security/#restricting-access-to-the-gui-from-ip-blocks" >}})
+setting.
+
+### 3. Create the server installation package
+
+The server component will be installed and run as a service on your Linux
+machine. In addition to installing the Velociraptor binary and configuration file, the
+installation also creates a service account (named `velociraptor`) and
+service configuration so that it can run as a service. The installation package
+takes care of these setup tasks, and we generate it using a single command.
+
+As mentioned previously, the Velociraptor binary provides several utility
+functions on the command line. One of these is the ability to generate Linux
+installation packages, specifically `deb` packages for Debian-based systems and
+`rpm` packages for RPM-based systems.
+
+To create the server installation package, run the appropriate command below in
+your working directory.
+
+**Debian-based server:**
 
 ```sh
-velociraptor.exe --config server.config.yaml debian server --binary velociraptor-v0.6.0-linux-amd64
+./velociraptor debian server --config ./server.config.yaml
 ```
 
-{{% notice warning %}}
-Make sure the debian file is well protected. A compromise of the file will leak private key material enabling a MITM attack against Velociraptor.
+or
+
+**RPM-based server:**
+
+```sh
+./velociraptor rpm server --config ./server.config.yaml
+```
+
+The output file will be automatically named to include the version and
+architecture, but you can choose any file name you want and specify it with the
+`--output <your_file_name>` flag.
+
+If you did not perform the previous steps on your server then you will need to
+copy the server installation file to your server.
+
+{{% notice warning "Make sure the server installation package file is well protected!" %}}
+
+The server installation package that we created also contains a copy of the
+server config, so you should handle it with the same security considerations as
+the config file itself.
+
+A compromise of the file will allow access to private key material enabling a
+MITM attacks against Velociraptor.
+
 {{% /notice %}}
 
-You can check the installation using `service velociraptor_server status`.
+## Install the server component
 
-```bash
-$ sudo dpkg -i velociraptor_0.3.0_server.deb
+Install the server package using the command below according to your server's
+packaging system.
+
+**Debian-based server installation:**
+
+```
+$ sudo dpkg -i velociraptor_server_0.74.2_amd64.deb
 Selecting previously unselected package velociraptor-server.
-(Reading database ... 384556 files and directories currently installed.)
-Preparing to unpack velociraptor_0.3.0_server.deb ...
-Unpacking velociraptor-server (0.3.0) ...
-Setting up velociraptor-server (0.3.0) ...
+(Reading database ... 527396 files and directories currently installed.)
+Preparing to unpack velociraptor_server_0.74.2_amd64.deb ...
+Unpacking velociraptor-server (0.74.2) ...
+Setting up velociraptor-server (0.74.2) ...
 Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.service → /etc/systemd/system/velociraptor_server.service.
-
-$ sudo service velociraptor_server status
-● velociraptor_server.service - Velociraptor linux amd64
-   Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
-   Active: active (running) since Sun 2019-07-07 08:49:24 AEST; 17s ago
- Main PID: 2275 (velociraptor)
-    Tasks: 13 (limit: 4915)
-   Memory: 30.2M
-   CGroup: /system.slice/velociraptor_server.service
-           └─2275 /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend
-
-Jul 07 08:49:24 mic-Inspiron systemd[1]: Started Velociraptor linux amd64.
 ```
 
-{{% notice tip %}}
+or
 
-If you prefer to use Windows for your day to day work, you can build the Debian package
-on your windows machine but you must specify the `--binary` flag to
-the `debian server` command with a path to the linux binary. You can
-obtain a copy of the linux binary from the Github releases page.
-
-{{% /notice %}}
-
-
-#### Using RPM
-
-Some Linux distributions use RPM as their package management. The process is similar. First create an installation RPM package:
+**RPM-based server installation:**
 
 ```
-$ ./velociraptor-v0.74.2-linux-amd64 --config server.config.yaml rpm server
-Creating  package at velociraptor-server-0.74.2.x86_64.rpm
-```
-
-Then install the package on the server
-```
-# rpm -Uvh ./velociraptor-server-0.74.2.x86_64.rpm
+$ sudo rpm -Uvh velociraptor-server-0.74.2.x86_64.rpm
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:velociraptor-server-0:0.74.2-A   ################################# [100%]
 Created symlink '/etc/systemd/system/multi-user.target.wants/velociraptor_server.service' → '/etc/systemd/system/velociraptor_server.service'.
 ```
+
+Now that the service is installed we can check its status in a few ways.
+
+**Check the service status:**
+
+```
+$ systemctl status velociraptor_server.service
+● velociraptor_server.service - Velociraptor server
+     Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2025-04-08 12:25:34 SAST; 3min 5s ago
+   Main PID: 3514 (velociraptor.bi)
+      Tasks: 19 (limit: 4537)
+     Memory: 67.2M
+        CPU: 4.249s
+     CGroup: /system.slice/velociraptor_server.service
+             ├─3514 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+             └─3522 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+
+Apr 08 12:25:34 linux64-client systemd[1]: Started Velociraptor server.
+```
+
+**Check that the Frontend and GUI are listening:**
+
+```sh
+$ nc -vz 127.0.0.1 443
+Connection to 127.0.0.1 443 port [tcp/*] succeeded!
+```
+
+**Check that the connection is secured by Let's Encrypt SSL:**
+
+```sh
+$ curl -s -k https://127.0.0.1:443/server.pem | openssl x509 -text
+```
+
+
+## Log in to the Admin GUI
+
+The Admin GUI should now be accessible with a web browser by connecting to
+`https://<your_server_name>`.
+
+Log in using either an admin account that you created in the config wizard (if
+not using SSO), or one of the authorized accounts you created during the SSO
+setup procedure. For SSO you will first be directed to the SSO provider's login
+page and then, once authenticated, you will be redirected back to the
+Velociraptor application.
+
+You will then arrive at the Welcome screen.
+
+![Welcome to Velociraptor!](welcome.png)
+
+You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
+
+
+## What's next?
+
+After installating your first client, here are the next steps you may want to
+consider:
+
+- [Learn about managing clients]({{< ref "/docs/clients/" >}})
+- [Create non-Windows client installers]({{< ref "/docs/deployment/clients/" >}})
+- [Explore additional security configuration options]({{< ref "/docs/deployment/security/" >}})
+- [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
+  distinct sets of clients.

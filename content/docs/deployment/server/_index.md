@@ -18,7 +18,7 @@ deployment up and running as quickly as possible, while assuming that the
 operating environment will provide sufficient security for the expected duration
 of the deployment.
 
-For longer-terms deployments it is essential to plan your installation taking
+For longer-term deployments it is essential to plan your installation taking
 into consideration all the
 [security mechanisms]({{< ref "/docs/deployment/security/" >}})
 that Velociraptor offers, such as using publicly verifiable SSL certificates

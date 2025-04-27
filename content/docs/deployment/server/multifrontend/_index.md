@@ -4,7 +4,7 @@ title: Multi-Frontend Configuration
 draft: false
 weight: 40
 summary: |
-  Guidance on scaling your deployment and Velociraptor's (experimental)
+  Guidance on scaling your deployment and using Velociraptor's (experimental)
   Multi-Frontend deployment model.
 ---
 
