@@ -201,7 +201,7 @@ Also on the first page you will be asked:
 * **What OS will the server be deployed on?** This choice will affect the
   defaults for various options, mainly path specifications which would be
   different on Windows. Velociraptor is typically deployed on a Linux
-  machine (but the configuration can be generated on Windows).
+  machine, although the configuration can be generated on Windows or macOS.
 
 #### Server configuration
 
