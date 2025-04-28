@@ -49,10 +49,16 @@ certificate and a private key. This CA is used to
 4. Creating client certificates for (optional) mTLS. This allows clients to be
    authenticated using certificates.
 
-The configuration file contains the CA's X509 certificate in the
-`Client.ca_certificate` parameter (it is therefore embedded in the
-client configuration). The private key is contained in the
-`CA.private_key` parameter.
+The configuration file contains the CA’s X509 certificate in the
+`Client.ca_certificate` key (and is therefore included in the client
+configuration). The private key is contained in the `CA.private_key` parameter.
+Since the client’s configuration contains the (trusted) CA's certificate, it is
+able to verify the server's certificate during communications.
+
+The internal CA will be used to verify the different Velociraptor components in
+all cases, regardless of whether other TLS certificates are used. While it is
+possible to reissue/rotate server certificates the CA certificate can not be
+reissued without re-deploying all the clients.
 
 {{% notice warning "Protecting the CA private key" %}}
 
@@ -66,10 +72,6 @@ The server does not need it during normal operations.
 
 {{% /notice %}}
 
-The internal CA will be used to verify the different Velociraptor
-components in all cases, regardless if other TLS certificates are
-used. While it is possible to roll server certificates the CA
-certificate can not be rolled without re-deploying all the clients.
 
 ### Messages
 
@@ -234,14 +236,6 @@ that the GUI is accessible from the world as it is sharing the same
 port as the frontend service and we can not use traditional port
 filtering to restrict access.
 
-#### Restricting access to the GUI from IP blocks
-
-If your administrators normally access the GUI from a predictable
-network IP block you can add a list of network addresses in the
-[GUI.allowed_cidr]({{% ref
-"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
-config file. This setting will automatically reject connections to the
-GUI applications from IP addresses outside the allowed range.
 
 ### Deployment with TLS certificates signed by external CA
 
@@ -293,6 +287,15 @@ In this scenario, the client needs to verify the TLS connections using this cust
    Note that only the TLS communications will be visible to the TLS
    interception proxy. It will be unable to see any clear text since
    there are always two layers of encryption.
+
+### Restricting access to the GUI from IP blocks
+
+If your users normally access the GUI from a predictable
+network IP block you can add a list of network addresses in the
+[GUI.allowed_cidr]({{% ref
+"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
+config file. This setting will automatically reject connections to the
+GUI applications from IP addresses outside the allowed range.
 
 ### Deploying mTLS authentication
 
@@ -425,7 +428,7 @@ curl -k https://127.0.0.1:8000/server.pem --cert /tmp/client.pem | openssl x509 
 
 ## Securing the server
 
-In the following section I will discuss how the GUI application can be
+In the following sections we discuss how the GUI application can be
 further secured. Since Velociraptor commands such privileged access to
 the network it is important to ensure this access can not be misused.
 

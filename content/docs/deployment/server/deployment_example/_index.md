@@ -4,7 +4,7 @@ title: Deployment Example
 draft: false
 weight: 30
 date: 2025-02-27
-last reviewed: 2025-04-26
+last reviewed: 2025-04-27
 aliases:
   - "/docs/deployment/cloud/"
 summary: |
