@@ -17,8 +17,6 @@ deployments.
 
 * [Velociraptor's configuration file](#velociraptors-configuration-file)
 * [Velociraptor’s internal PKI](#velociraptors-internal-pki)
-* [Certificate Schemes](#certificate-schemes)
-* [Authentication Providers](#authentication-providers)
 * [Velociraptor Binaries](#velociraptor-binaries)
 
 
@@ -111,7 +109,7 @@ private key. This CA is used for:
 1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
    and any additional certificates for key rotation.
 
-2. Verifying the server during client-server comminications. [The CA public
+2. Verifying the server during client-server communications. [The CA public
    certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
    is embedded in the client’s configuration and is used to verify (and therefore trust) the server.
 
@@ -126,6 +124,9 @@ The configuration file contains the CA’s X509 certificate in the
 `Client.ca_certificate` parameter (and is therefore embedded in the client
 configuration). The private key is contained in the `CA.private_key` parameter.
 
+The client’s configuration contains the CA's certificate which is regarded as
+trusted, and which is used to verify the server'scertificate during
+communications.
 
 {{% notice warning "Protecting the CA private key" %}}
 
@@ -139,19 +140,6 @@ The server does not need it during normal operations.
 
 {{% /notice %}}
 
-## Certificate Schemes
-
-## Authentication Providers
-
-Velociraptor supports a number of choices for authentication providers:
-
-1. Basic Authentication - this stores usernames and passwords in Velociraptor's
-   own datastore.
-2. OAuth2 - providers such as Google, Azure or GitHub support SSO via OAuth2.
-3. OIDC - uses the Open ID Connect protocol to support many IAM providers (e.g.
-   Okta)
-4. SAML - Security Assertion Markup Language, also supported by many public SSO providers.
-5. [Multi]({{< ref "/knowledge_base/tips/multiple_oauth/" >}}) - a combination of the abovementioned auth methods.
 
 ## Velociraptor Binaries
 
@@ -175,6 +163,12 @@ server on Linux.
 Binaries for the latest version are listed on our
 [Downloads]({{< ref "/downloads/" >}}) page, with the binaries themselves being
 hosted on Github.
+
+We provide binaries for the most common client platform and architecture
+combinations, but if you have a need for an unusual platform/architecture it is
+possible to build one for almost any combination supported by Go. Instructions
+for building from source are provided on our
+[GitHub page](https://github.com/Velocidex/velociraptor/?tab=readme-ov-file#building-from-source).
 
 The binaries used for clients and for the server should ideally be kept at the
 same minor version, although there shouldn't be any issues if the client is one

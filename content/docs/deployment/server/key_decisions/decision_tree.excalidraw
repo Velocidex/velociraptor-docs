@@ -673,7 +673,7 @@
       "backgroundColor": "transparent",
       "fillStyle": "solid",
       "strokeWidth": 2,
-      "strokeStyle": "dashed",
+      "strokeStyle": "solid",
       "roughness": 1,
       "opacity": 100,
       "groupIds": [],
@@ -683,11 +683,11 @@
         "type": 2
       },
       "seed": 1355322765,
-      "version": 167,
-      "versionNonce": 159122419,
+      "version": 168,
+      "versionNonce": 572202941,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1745568819354,
+      "updated": 1745787495831,
       "link": null,
       "locked": false,
       "points": [

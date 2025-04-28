@@ -68,7 +68,7 @@ certificate and repeated failures might result in them
 [blocking the domain name](https://letsencrypt.org/docs/rate-limits/#authorization-failures-per-hostname-per-account)
 from getting an SSL certificate for several days. If you find that this has
 happened and you can't afford to wait, then you will need to change to a new
-DynDNS name and start again.
+DNS name and start again.
 
 Several Velociraptor features do require outbound access from the server to GitHub,
 although [it is possible]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
@@ -358,10 +358,10 @@ installation also creates a service account (named `velociraptor`) and
 service configuration so that it can run as a service. The installation package
 takes care of these setup tasks, and we generate it using a single command.
 
-As mentioned previously, the Velociraptor binary provides several utility
-functions on the command line. One of these is the ability to generate Linux
-installation packages, specifically `deb` packages for Debian-based systems and
-`rpm` packages for RPM-based systems.
+The Velociraptor binary provides several utility functions on the command line.
+One of these is the ability to generate Linux installation packages,
+specifically `deb` packages for Debian-based systems and `rpm` packages for
+RPM-based systems.
 
 To create the server installation package, run the appropriate command below in
 your working directory.
@@ -385,7 +385,12 @@ architecture, but you can choose any file name you want and specify it with the
 `--output <your_file_name>` flag.
 
 If you did not perform the previous steps on your server then you will need to
-copy the server installation file to your server.
+copy the server installation file to your server. For example, you could push
+the debian package to the server using Secure Copy Protocol (SCP):
+
+```shell
+scp velociraptor_server.deb user@123.45.67.89:/tmp/
+```
 
 {{% notice warning "Make sure the server installation package file is well protected!" %}}
 
@@ -486,7 +491,7 @@ After installating your first client, here are the next steps you may want to
 consider:
 
 - [Learn about managing clients]({{< ref "/docs/clients/" >}})
-- [Create non-Windows client installers]({{< ref "/docs/deployment/clients/" >}})
+- [Create client installers]({{< ref "/docs/deployment/clients/" >}})
 - [Explore additional security configuration options]({{< ref "/docs/deployment/security/" >}})
 - [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
   distinct sets of clients.

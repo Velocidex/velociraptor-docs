@@ -1,6 +1,0 @@
-As a precaution, by default Velociraptor only binds the Admin GUI port
-to the loopback interface. You may change the `GUI.bind_address`
-setting to "0.0.0.0" to receive external connections on this
-port, but this is not recommended. Instead, you should use SSH
-tunneling to connect to the local loopback interface.
-

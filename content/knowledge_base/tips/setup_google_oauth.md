@@ -160,7 +160,7 @@ Velociraptor GUI after successful logon.
 We can see that the logged in user is authenticated by Google, and we
 can also see the user's Google avatar at the top right.
 
-![Velociraptor Dashboard](dashboard.png)
+<!-- ![Velociraptor Dashboard](dashboard.png) -->
 
 
 {{% notice note %}}
