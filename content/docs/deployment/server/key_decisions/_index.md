@@ -31,7 +31,7 @@ files to better understand how the choices affect the resulting configuration.
 
 The most significant choices to make prior to deployment are:
 - [the certificate scheme]({{< ref "/docs/deployment/server/key_concepts/#certificate-schemes" >}})
-- [the authentication scheme]({{< ref "http://localhost:1313/docs/deployment/server/key_concepts/#authentication-providers" >}})
+- [the authentication scheme]({{< ref "/docs/deployment/server/key_concepts/#authentication-providers" >}})
 
 As shown in the diagram below, the most common choices for the certificate
 scheme is either Self-signed SSL or Let's Encrypt SSL, which are the choices
