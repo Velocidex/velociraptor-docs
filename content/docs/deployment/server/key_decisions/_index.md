@@ -14,16 +14,17 @@ decide which are the best choices for your deployment.
 Velociraptor aims to be as flexible as possible, but many users come from an
 environment full of products where a vendor prescribes how their product should
 be deployed and used. Unfortunately some people like to be told "the right way"
-to implement a solution Velociraptor is designed to support difficult
+to implement a solution. However Velociraptor is designed to support difficult
 environments (which you may encounter in IR situations) and allow for
-[creative uses]({{< ref "/docs/deployment/#other-ways-to-use-velociraptor" >}}).
+[creative uses]({{< ref "/docs/deployment/#other-ways-to-use-velociraptor" >}})
+so there isn't really one "right" way to use or deploy Velociraptor.
 
-To guide your choices we have an interactive configuration wizard (accessed by
-running the `velociraptor config generate -i` command). The aim of the wizard is
-to make it easy to configure Velociraptor in the most common deployment
-scenarios. Even though these scenarios will not be a perfect fit for everyone,
-most users should be able to start with these deployment modes and then tweak
-the resulting configuration to their specific needs.
+To guide your choices we have an interactive configuration wizard, which is
+accessed by running the `velociraptor config generate -i` command. The aim of
+the wizard is to make it easy to configure Velociraptor in the most common
+deployment scenarios. Even though these scenarios will not be a perfect fit for
+everyone, most users should be able to start with these deployment modes and
+then tweak the resulting configuration to their specific needs.
 
 The end result of running the configuration wizard is a YAML configuration file.
 So there is no harm in doing "dry runs" and examining or comparing resulting

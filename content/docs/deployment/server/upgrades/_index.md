@@ -28,11 +28,10 @@ after upgrading, just in case changes are made by the upgrade!
 
 {{% /notice %}}
 
-From time to time, the schema of the configuration file may evolve
-with newer versions. When a newer version of Velociraptor encounters
-an older configuration file, it attempts to upgrade the configuration
-file to the latest version. This happens automatically and it is
-usually a seamless process.
+From time to time, the schema of the configuration file may evolve with newer
+versions. When a newer version of Velociraptor encounters an older configuration
+file, it attempts to upgrade the configuration file to the latest version. This
+happens automatically and is usually a seamless process.
 
 During the installation package preparation the upgraded config file is embedded
 into the server package so you will receive an upgraded configuration file
