@@ -26,9 +26,9 @@ options tell the binary whether to behave as a server or as a client. Therefore
 you can run the client on any platform and architecture that we have a binary
 for.
 
-For platforms and architectures where we don't have a precompiled binary you may
-still be able to compile one yourself from source, provided that Golang supports
-the target platform+architecture combination.
+For platforms and architectures where we don't have a binary you may still be
+able to compile one yourself from source, provided that Golang supports the
+target platform+architecture combination.
 
 {{% /notice %}}
 

@@ -72,7 +72,7 @@ DNS name and start again.
 
 Several Velociraptor features do require outbound access from the server to GitHub,
 although [it is possible]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
-for the server to operate without any intenet access.
+for the server to operate without any internet access.
 
 {{% /notice %}}
 
@@ -149,7 +149,7 @@ velociraptor.exe config generate -i
 
 The aim of the wizard is to make it easy to configure Velociraptor in the most
 common deployment scenarios. Even though these scenarios will not be a perfect
-fit for everyone, most users should be able to start with these deploment modes
+fit for everyone, most users should be able to start with these deployment modes
 and tweak the configuration to their specific needs.
 
 The end result of running the configuration wizard is a YAML configuration file.
@@ -345,7 +345,7 @@ GUI:
 (Please note that only the values `127.0.0.1` or `0.0.0.0` are valid for this
 setting.)
 
-If you do decide to expose the GUI to pulic networks then we recommend you also
+If you do decide to expose the GUI to public networks then we recommend you also
 restrict access to specific IP ranges using the
 [GUI.allowed_cidr]({{<  ref "/docs/deployment/security/#restricting-access-to-the-gui-from-ip-blocks" >}})
 setting.
@@ -487,7 +487,7 @@ You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
 
 ## What's next?
 
-After installating your first client, here are the next steps you may want to
+After installing your first client, here are the next steps you may want to
 consider:
 
 - [Learn about managing clients]({{< ref "/docs/clients/" >}})

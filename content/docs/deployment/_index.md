@@ -50,7 +50,7 @@ Since key material is unique to each deployment, one Velociraptor deployment
 cannot connect with another deployment.
 
 The **Velociraptor Server** is typically deployed on a cloud VM and runs a
-number of components as separate threads. The server provids an Admin UI - a Web
+number of components as separate threads. The server provides an Admin UI - a Web
 application that can be used to control Velociraptor and orchestrate hunts and
 collections from the endpoints.
 
@@ -311,7 +311,7 @@ minimize them by:
 ### "Instant Velociraptor" as an desktop environment for analysts
 
 [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) can also be used
-as a standalone graphical forensic desktop environment, for aquired forensic
+as a standalone graphical forensic desktop environment, for acquired forensic
 artifacts.
 
 [Velociraptor notebooks]({{< ref "/docs/notebooks/" >}}) have access to the
@@ -329,7 +329,7 @@ disable it by adding the `--no-client` flag to the `gui` command.
 
 However the client component may be useful if you want to use
 [remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}}) which will allow
-you to inspect and analyze disk image files using Velociraptor's deaddisk
+you to inspect and analyze disk image files using Velociraptor's dead disk
 feature. The `gui` command creates the client config file in the datastore
 folder, to which you can add the remapping config, if needed.
 

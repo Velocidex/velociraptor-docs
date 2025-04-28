@@ -124,7 +124,7 @@ Apr 08 12:25:34 linux64-client systemd[1]: Started Velociraptor server.
 It is generally ok to revert from later versions to earlier versions since the
 migration process is generally non destructive.
 
-The process is indentical to the one for in-place upgrades described above,
+The process is identical to the one for in-place upgrades described above,
 except that you would create the installer package using the earlier version of
 the Velociraptor binary.
 

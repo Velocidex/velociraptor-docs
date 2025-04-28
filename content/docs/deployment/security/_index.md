@@ -39,7 +39,7 @@ certificate and a private key. This CA is used to
 1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
    and any additional certificates for key rotation.
 
-2. Verifying the server during client-server comminications. [The CA public
+2. Verifying the server during client-server communications. [The CA public
    certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
    is embedded in the client’s configuration and is used to verify (and therefore trust) the server.
 

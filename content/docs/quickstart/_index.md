@@ -101,7 +101,7 @@ To keep things simple in this deployment scenario we are going to assume that:
    DNS name, in Self-Signed SSL mode this is not a requirement. Here we will use
    IP addresses in our configuration, but that means you need to ensure that
    your server's IP address will not change for the duration of your deployment.
-   Alternatively you chould set up an DNS A record for your server and use that
+   Alternatively you should set up an DNS A record for your server and use that
    name instead of an IP address in the steps below.
 
    <!-- In this article we will use
@@ -547,7 +547,7 @@ the top of the page.
 
 ## What's next?
 
-After installating your first client, here are the next steps you may want to
+After installing your first client, here are the next steps you may want to
 consider:
 
 - [Learn about managing clients]({{< ref "/docs/clients/" >}})

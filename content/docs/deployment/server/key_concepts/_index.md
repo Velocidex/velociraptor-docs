@@ -267,7 +267,7 @@ recommend attempting to add your own self-signed certificates to Velociraptor.
 
 #### CA-issued Certificates
 
-For CA-issed certificates we prefer Let's Encrypt since these are free and
+For CA-issued certificates we prefer Let's Encrypt since these are free and
 Velociraptor has the built-in capability to request and rotate certificates from
 Let's Encrypt. Other CAs are also supported, including private CAs, although
 this requires

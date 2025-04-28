@@ -1459,7 +1459,6 @@ MiB
 ibytes
 
 # content/blog/2024/2024-03-10-release-notes-0.72/_index.md
-CloudFlare
 EWF
 TCT
 Websocket
@@ -1690,3 +1689,29 @@ sd
 Dedups
 recurses
 Datadog
+
+<url-free> content/knowledge_base/tips/setup_google_oauth.md
+--------------------------------------------------------------------------------
+CN
+
+<url-free> content/docs/deployment/_index.md
+--------------------------------------------------------------------------------
+Quickstart
+subfolder
+
+<url-free> content/docs/deployment/server/deployment_example/_index.md
+--------------------------------------------------------------------------------
+Cloudflare
+DDNS
+IDM
+IDPs
+NOIP
+distro
+
+<url-free> content/docs/deployment/server/key_concepts/_index.md
+--------------------------------------------------------------------------------
+abovementioned
+
+<url-free> content/docs/quickstart/_index.md
+--------------------------------------------------------------------------------
+prebuilt
