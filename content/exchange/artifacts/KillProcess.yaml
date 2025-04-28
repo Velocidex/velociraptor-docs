@@ -35,11 +35,5 @@ sources:
         FROM watch_etw(guid="{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}", any=0x10)
         WHERE System.ID = 1 AND ImageName =~ name_regex
         
-      SELECT * FROM foreach(row=watch_processes,
-        query={
-            SELECT CreateTime,ImageName,Pid,MandatoryLabel,ProcessTokenElevationType,TokenIsElevated,
-                if(condition= ReturnCode=0,
-                    then= Stdout,
-                    else= 'There was a problem on tasklill attempt. ' + Stderr) as TaskKill
-            FROM execve(argv=["taskkill", "/PID", Pid, "/T", "/F"])
-        })
+      SELECT *, pskill(pid=Pid) as TaskKill
+      FROM watch_processes
