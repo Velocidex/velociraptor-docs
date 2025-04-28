@@ -2,6 +2,10 @@
 menutitle: Security
 title: Velociraptor Security Configuration
 weight: 46
+summary: |
+  Velociraptor is a highly privileged service with elevated access to thousands
+  of endpoints across the enterprise. It is therefore crucial to secure the
+  deployment as much as possible.
 ---
 
 Velociraptor is a highly privileged service with elevated access to
@@ -32,33 +36,42 @@ Every Velociraptor deployment creates an internal PKI which underpins
 it. The configuration wizard create an internal CA with an X509
 certificate and a private key. This CA is used to
 
-1. Create [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}}) and any additional certificates
-   for key rotation.
+1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
+   and any additional certificates for key rotation.
 
-1. [CA public certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}}) is embedded in the client’s configuration and
-   is used to verify server communications.
+2. Verifying the server during client-server communications. [The CA public
+   certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
+   is embedded in the client’s configuration and is used to verify (and therefore trust) the server.
 
-1. The internal CA is used to create API keys for programmatic
-   access. The server is then able to verify API clients.
+3. Creating API keys for programmatic access. The server is then able to verify
+   API clients.
 
-The configuration file contains the CA's X509 certificate in the
-**Client.ca_certificate** parameter (it is therefore embedded in the
-client configuration). The private key is contained in the
-**CA.private_key** parameter.
+4. Creating client certificates for (optional) mTLS. This allows clients to be
+   authenticated using certificates.
+
+The configuration file contains the CA’s X509 certificate in the
+`Client.ca_certificate` key (and is therefore included in the client
+configuration). The private key is contained in the `CA.private_key` parameter.
+Since the client’s configuration contains the (trusted) CA's certificate, it is
+able to verify the server's certificate during communications.
+
+The internal CA will be used to verify the different Velociraptor components in
+all cases, regardless of whether other TLS certificates are used. While it is
+possible to reissue/rotate server certificates the CA certificate can not be
+reissued without re-deploying all the clients.
 
 {{% notice warning "Protecting the CA private key" %}}
 
-In a secure installation you should remove the **CA.private_key**
-section from the server config and keep it offline. You only need it
-to create new API keys using the *velociraptor config api_client*
-command, and the server does not need it in normal operations.
+In a secure installation you should remove the `CA.private_key` section from
+the server config and keep it offline. You only need it to
+[create new API keys]({{< ref "/docs/server_automation/server_api/#creating-an-api-client-configuration" >}})
+and when
+[rotating server certificates]({{< ref "/knowledge_base/tips/rolling_certificates/" >}})
+(typically after 1 year).
+The server does not need it during normal operations.
 
 {{% /notice %}}
 
-The internal CA will be used to verify the different Velociraptor
-components in all cases, regardless if other TLS certificates are
-used. While it is possible to roll server certificates the CA
-certificate can not be rolled without re-deploying all the clients.
 
 ### Messages
 
@@ -223,14 +236,6 @@ that the GUI is accessible from the world as it is sharing the same
 port as the frontend service and we can not use traditional port
 filtering to restrict access.
 
-#### Restricting access to the GUI from IP blocks
-
-If your administrators normally access the GUI from a predictable
-network IP block you can add a list of network addresses in the
-[GUI.allowed_cidr]({{% ref
-"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
-config file. This setting will automatically reject connections to the
-GUI applications from IP addresses outside the allowed range.
 
 ### Deployment with TLS certificates signed by external CA
 
@@ -282,6 +287,15 @@ In this scenario, the client needs to verify the TLS connections using this cust
    Note that only the TLS communications will be visible to the TLS
    interception proxy. It will be unable to see any clear text since
    there are always two layers of encryption.
+
+### Restricting access to the GUI from IP blocks
+
+If your users normally access the GUI from a predictable
+network IP block you can add a list of network addresses in the
+[GUI.allowed_cidr]({{% ref
+"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
+config file. This setting will automatically reject connections to the
+GUI applications from IP addresses outside the allowed range.
 
 ### Deploying mTLS authentication
 
@@ -414,7 +428,7 @@ curl -k https://127.0.0.1:8000/server.pem --cert /tmp/client.pem | openssl x509 
 
 ## Securing the server
 
-In the following section I will discuss how the GUI application can be
+In the following sections we discuss how the GUI application can be
 further secured. Since Velociraptor commands such privileged access to
 the network it is important to ensure this access can not be misused.
 

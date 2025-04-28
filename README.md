@@ -20,7 +20,7 @@ To develop on the site:
    hugo serve
    ```
 
-   2. Alternativly you can run hugo in docker as such:
+   2. Alternatively you can run hugo in docker as such:
    ```
    docker run --rm -it -v $(pwd):/src -p 1313:1313 hugomods/hugo server
    ```

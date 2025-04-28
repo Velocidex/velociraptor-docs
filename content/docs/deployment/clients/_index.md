@@ -1,43 +1,118 @@
 ---
 title: Deploying Clients
-weight: 20
+weight: 25
 last_reviewed: 2024-11-30
+summary: |
+  How to run, and optionally install, clients on the most common platforms.
 ---
 
-We refer to Velociraptor endpoint agents as "clients".
+We refer to Velociraptor endpoint agents as **clients**.
 
 Clients connect to the server and wait for instructions, which mostly consist of
 VQL queries. They then run the VQL queries assigned to them by the server and
 return the results to the server.
-
-There are several ways to run clients, depending on your needs. Ultimately
-however this amounts to running the Velociraptor binary and providing it with a
-client configuration file. The configuration file provides the client with
-cryptographic material and settings. We saw how to generate the client
-configuration file in
-[this previous section]({{< ref "/docs/deployment/self-signed/#generate-the-configuration-file" >}}).
 
 On this page we explain how to run, and optionally install, clients on the most
 common platforms. There is no single "correct" way to deploy and use
 Velociraptor so here we also try to highlight the pros and cons of the most
 common approaches.
 
-{{% notice note %}}
+{{% notice note "Velociraptor Binaries" %}}
 
 **Velociraptor only has one binary per operating system and architecture.**
 
 We don't have separate client binaries and server binaries. The command line
 options tell the binary whether to behave as a server or as a client. Therefore
-you can run the server or the client on any platform that we have a binary for.
+you can run the client on any platform and architecture that we have a binary
+for.
 
-_Please note however that the server is only fully supported on Linux_ due to
-performance considerations inherent in other platforms such as Windows. But if
-you are learning or just playing around then it might be convenient for you to
-run the server or client on whatever platform you prefer. Just keep in mind
-that for production deployments we strongly recommend that the server should run
-on Linux and that issues with other platforms will not be supported.
+For platforms and architectures where we don't have a binary you may still be
+able to compile one yourself from source, provided that Golang supports the
+target platform+architecture combination.
 
 {{% /notice %}}
+
+## Generating the client configuration file
+
+There are several ways to run clients, depending on your needs. Ultimately
+however this amounts to running the Velociraptor binary and providing it with a
+**client configuration file**, which provides the client with cryptographic
+material, connection information and other client-related settings.
+
+We saw how to generate the server configuration file in the
+[server deployment guide]({{< ref "/docs/deployment/server/#generate-the-configuration-file" >}}).
+The client configuration is contained within the server configuration.
+
+![Client config is a subset of the full config](client_config_yaml.svg)
+
+When we "generate" a client config file we are effectively extracting the `Client`
+section from the full config. If you are using the
+[orgs]({{< ref "/docs/deployment/orgs/" >}})
+feature then you will need a separate client config file for each org, since the
+config also contains a `nonce` value that associates the client with a specific
+org.
+
+There are two ways to accomplish this task which we explain below:
+
+1. Using the Admin GUI (recommended)
+2. Using the command line
+
+{{% notice tip "MSI repacking" %}}
+
+If you are _only_ interested in Windows clients and will _only_ be creating MSI
+installer packages, then the MSI repacking method described
+[here]({{< relref "#option-1-using-the-velociraptor-gui" >}})
+will use the client config for the current org. In that case you don't actually
+need to download the client config file, although you may still want to read
+this section to understand more about the topic of client config files.
+
+{{% /notice %}}
+
+#### Option 1: Obtaining the client config from the GUI
+
+The simplest way of obtaining the client config file is to download it from the
+GUI.
+
+Navigate to the **Current Orgs** section on the **Home** screen and then click on
+the file name to download the YAML file.
+
+![Downloading client configs from the GUI](home_client_configs.svg)
+
+The config files for each org contain the correct client `nonce` for connecting
+to that org.
+
+#### Option 2: Obtaining the client config on the command line
+
+The client config can also be obtained using the CLI. Although this is not the
+preferred way, it is useful in some situations such as automated build
+environments.
+
+{{< tabs >}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
+```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor.exe config client --org "root" --config server.config.yaml > client.root.config.yaml
+```
+{{% /tab %}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
+```
+{{% /tab %}}
+{{< /tabs >}}
+
+This command reads the datastore location from the config specified in the
+`--config` flag, and for non-root orgs these orgs must already exist in the
+datastore.
+
+Note that the `--org` flag expects the Org ID, not the org name. If the `--org`
+flag is not specified then the command will default to the root org, which
+always exists.
+
 
 ## Running clients interactively
 
@@ -98,7 +173,8 @@ the section [Agentless deployment](#agentless-deployment).
 
 The recommended way to install Velociraptor as a client on Windows is via the
 release MSI which you can find on our [Downloads]({{< ref "/downloads/" >}}) page. Previous
-releases can be found on the [Releases page at Github](https://github.com/Velocidex/velociraptor/releases).
+releases can be found on the [Releases page](https://github.com/Velocidex/velociraptor/releases)
+at Github.
 
 An MSI is a standard Windows installer package. The benefit of using this
 installer format is that most enterprise system administration tools are capable
@@ -138,7 +214,7 @@ identify the location of *your* server, we can't package the configuration file
 in the official release. Therefore, the official MSI does not include a valid
 configuration file. You will need to modify the release MSI to include your
 client configuration file, which you
-[generated earlier]({{< ref "/docs/deployment/self-signed/#generate-the-configuration-file" >}}),
+[generated earlier]({{< ref "/docs/quickstart/#generate-the-configuration-file" >}}),
 and this is done through a process we call "repacking".
 
 The official release installs the Velociraptor executable into
@@ -147,7 +223,7 @@ points to this executable. The service starts automatically at boot time (with
 a random delay). If an existing Velociraptor service is already installed, it
 will be upgraded and the client configuration file will be overwritten.
 
-**Option 1: Using the Velociraptor GUI**
+##### Option 1: Using the Velociraptor GUI
 
 The easiest way to repack the MSI package so that it includes your client config
 file is by using the
@@ -164,15 +240,15 @@ server artifact.
 
 ![](create_msi_artifact.png)
 
-3. It will take a moment to download the latest release MSI files (64bit and
-   32-bit) and the repack them with your client config file.
+3. It will take a moment to download the latest release MSI files (both 64-bit
+   and 32-bit) from GitHub and then repack them with your client config file.
 
-4. The repacked MSI will then be available in the **Uploaded Files** tab of the
-   artifact collection.
+4. The repacked MSI files will then be available in the **Uploaded Files** tab
+   of the artifact collection.
 
 ![](create_msi_uploaded.svg)
 
-**Option 2: Using the command line**
+##### Option 2: Using the command line
 
 {{% notice note %}}
 
@@ -180,10 +256,10 @@ In this section we'd like to draw your attention to the fact that repacking the
 Windows MSI package can be done on _any_ platform. It does not have to be done
 on Windows.
 
-Also note that in the commands below we have omitted version numbers from the
-file names to make the commands more concise, however it is useful to include
-the version number and architecture tags in your output file names so that you
-know exactly what they are.
+Also note that in the commands below we have omitted version numbers
+and architecture tags from the file names to make the commands more concise,
+however it is useful to include the version number and architecture tags in your
+output file names so that you know exactly what they are.
 
 {{% /notice %}}
 
@@ -377,10 +453,12 @@ for all official releases.
 If your organization has the necessary toolsets, skills and other resources for
 creating macOS installation packages then you may choose to do so. The
 Velociraptor client is a single binary, with no package or library dependencies,
-plus a configuration file which is probably the simplest kind of package that
+plus a configuration file, which is probably the simplest kind of package that
 any packaging expert will ever have to deal with.
 
-For smaller deployments we provide a self-installing capability in the
+#### Manual Deployment
+
+For small deployments we provide a self-installing capability in the
 Velociraptor binary. The `service install` directive can be used to install
 Velociraptor so that it persists through reboots and starts automatically. The
 following command installs the binary and the config to `/usr/local/sbin`.
@@ -443,17 +521,27 @@ After installation you can check the service's status with:
 - Navigate to **Applications > Utilities > Activity Monitor** and search for
   Process Name `velociraptor`.
 
+#### Automated deployment using MDM
+
 Organizations that use macOS at scale usually have their own packaging and
-deployment processes worked out using their preferred toolset.
+deployment processes worked out using their preferred toolset and MDM solution.
+For example
 [Jamf](https://www.jamf.com/) or
 [Microsoft Intune](https://learn.microsoft.com/en-us/mem/intune/fundamentals/deployment-guide-platform-macos)
-are commonly used mobile device management (MDM) solutions. Please see Jamf Pro example below.
+are commonly used mobile device management (MDM) solutions.
 
-Some of the additional considerations and complexities with deployments in macOS
+Below is a community-provided example of the steps required for Jamf Pro.
+Unfortunately we cannot provide detailed instructions for other MDM solutions,
+and we recommend that you consult the documentation for your chosen MDM
+solution.
+
+Some of the considerations and complexities regarding deployments in macOS
 environments are described in
 [this presentation]({{< ref "/presentations/2022_velocon/#mac-response--the-good-the-bad-and-the-ugly" >}}).
+and may be helpful.
 
-### Jamf Pro (macOS)
+##### Jamf Pro deployment example
+
 1. Navigate to **Configuration Profiles > New**
 2. Configure **Privacy Preferences Policy Control**
 - Identifier: `/usr/local/sbin/velociraptor`
@@ -557,7 +645,8 @@ locations. That is, the binary and client configuration files for Linux will be
 in the same locations regardless of whether you installed using an `rpm` or a
 `deb` package.
 
-Our `deb` and `rpm` installers support both **systemd** and **SysVinit**, and will
+Our `rpm` installer supports both **systemd** and **SysVinit**, since very old
+RPM-based systems are still relatively common, so our installer will
 detect and use the appropriate one. We do not provide installer support for
 other init systems such as Upstart, init.d or OpenRC. If you need to create
 installer packages for platforms that use other init systems then you will have
@@ -670,7 +759,7 @@ will be auto-generated and include the version number and architecture.
 2. **Install the package.**
 
 ```shell
-sudo rpm -i velociraptor_client_amd64.rpm
+sudo rpm -Uvh velociraptor_client_amd64.rpm
 ```
 
 After installation you can check the service status with the command:

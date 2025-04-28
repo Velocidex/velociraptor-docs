@@ -23,7 +23,7 @@ to help us reproduce it!
 ## The Release process
 
 Velociraptor release numbers follow [semantic versioning](https://semver.org/)
-(e.g. 0.6.2). Currently our major version is 0, meaning that we do not
+(e.g. 0.74.1). Currently our major version is 0, meaning that we do not
 consider the public API to be stable in relation to interoperability
 with older or future versions.
 
@@ -31,7 +31,7 @@ Our development occurs against the GitHub master branch and
 periodically we prepare a new release by following this process:
 
 1. A release branch is prepared from master with a name reflecting the
-   release number (e.g. v0.6.2)
+   release number (e.g. v0.74-release)
 2. No more new features are committed to this branch - it is in
    feature freeze.
 3. A release candidate (RC) is prepared and binaries for our supported
@@ -45,7 +45,7 @@ periodically we prepare a new release by following this process:
 
 If bugs are identified after the release that are deemed critical, we
 may back port these bugs to the last release branch and make a revised
-patched release at that version (e.g. v0.6.2-1). We generally do not
+patched release at that version (e.g. v0.73.2). We generally do not
 update any previous releases older than the current release.
 
 
@@ -60,7 +60,7 @@ bug fixes and new features become available with later versions.
 The Velociraptor team only tests compatible versions of client and
 server thoroughly (in our CI pipeline). The most supported
 configuration is when the client and server versions match exactly
-(e.g. a 0.6.2 server communicating with a 0.6.2 client).
+(e.g. a 0.74.1 server communicating with a 0.74.1 client).
 
 Nevertheless we do attempt to achieve compatibility between the latest
 version of the server and recent clients, however this is done on a
@@ -111,7 +111,7 @@ initially.
 The Velociraptor server may be upgraded by keeping the same server
 configuration file, and data store as the previous version. We
 generally ensure that suitable migration code is run on upgrades on a
-best effort basis. See [server upgrades documentation]({{<ref "/docs/deployment/cloud/#server-upgrades" >}}).
+best effort basis. See [server upgrades documentation]({{<ref "/docs/deployment/server/#server-upgrades" >}}).
 
 The release notes may indicate additional caveats or steps that need
 to be taken during the upgrade.
