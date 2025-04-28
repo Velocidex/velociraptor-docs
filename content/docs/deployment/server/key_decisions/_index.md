@@ -51,11 +51,11 @@ clients).
 For enterprise deployments or servers that need to be exposed to the internet,
 SSO authentication is highly recommended.
 
-It is important to note that Self-Signed SSL is incompatible with SSO. That
-said, there are certainly scenarios where Self-signed SSL is a perfectly
-reasonable choice. If you decide to use Self-signed certificates then you can
-only use Basic authentication, and you should then seriously consider additional
-measures to secure the Admin GUI.
+If you decide to use Self-signed certificates then the configuration wizard will
+only set up the Basic authentication provider, as these options are frequently
+used together. You can still manually configure SSO, but if you choose to use
+Basic authentication then you should then seriously consider additional measures
+to secure the Admin GUI.
 
 In all cases, we recommend that you review all the security options described in
 the section

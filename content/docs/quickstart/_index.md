@@ -29,8 +29,8 @@ Please note that in this simple configuration the Velociraptor server should
 not be exposed to the public internet, particularly because Basic
 authentication mode is vulnerable to brute-force attacks.
 [SSO authentication]({{< ref "/knowledge_base/tips/setup_google_oauth/" >}}) is
-recommended for production deployments, but it cannot be used with self-signed
-certificates, which we will be using in this guide for expediency.
+recommended for production deployments, but SSO providers typically don't allow
+self-signed certificates, which we will be using in this guide for expediency.
 
 If you have chosen to install the server component on a cloud VM then you should
 leave the GUI port bound to the loopback address and use SSH tunneling to
@@ -46,7 +46,7 @@ Velociraptor offers should be preferred.
 {{% notice tip "Need to go even quicker?" %}}
 
 If you're really in a hurry you can start a self-contained
-[Instant Velociraptor](#instant-velociraptor)
+[Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}})
 on your local machine which will allow you to experiment and get a feel for how
 Velociraptor works, without having to deal with any of the network complexities.
 One command is all that's needed to get started!
