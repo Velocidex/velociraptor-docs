@@ -13,8 +13,7 @@ summary: |
 ---
 
 In this example we will walk through the process of deploying the server using
-Let's Encrypt certificates, and optionally an SSO authentication provider. This
-type of deployment is most appropriate
+Let's Encrypt certificates, and optionally an SSO authentication provider.
 
 This is a common deployment choice for long-term deployments (both cloud-hosted
 and on-premises), or for scenarios where a cloud-based server is required (and
@@ -202,7 +201,7 @@ Also on the first page you will be asked:
 * **What OS will the server be deployed on?** This choice will affect the
   defaults for various options, mainly path specifications which would be
   different on Windows. Velociraptor is typically deployed on a Linux
-  machine (but the configuration can be generated on Windows).
+  machine, although the configuration can be generated on Windows or macOS.
 
 #### Server configuration
 
@@ -463,7 +462,7 @@ Connection to 127.0.0.1 443 port [tcp/*] succeeded!
 **Check that the connection is secured by Let's Encrypt SSL:**
 
 ```sh
-$ curl -s -k https://127.0.0.1:443/server.pem | openssl x509 -text
+$ openssl s_client -connect 127.0.0.1:443 -showcerts
 ```
 
 

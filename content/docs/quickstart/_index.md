@@ -28,9 +28,11 @@ please see the [Deployment]({{< ref "/docs/deployment/" >}}) section.
 Please note that in this simple configuration the Velociraptor server should
 not be exposed to the public internet, particularly because Basic
 authentication mode is vulnerable to brute-force attacks.
-[SSO authentication]({{< ref "/knowledge_base/tips/setup_google_oauth/" >}}) is
-recommended for production deployments, but SSO providers typically don't allow
-self-signed certificates, which we will be using in this guide for expediency.
+[SSO authentication]({{< ref "/knowledge_base/tips/setup_google_oauth/" >}})
+is recommended for production deployments, but SSO is rarely configured with
+self-signed certificates (since it goes against the idea of a trusted
+authentication flow), and we intend to use self-signed certificates in this
+guide for expediency.
 
 If you have chosen to install the server component on a cloud VM then you should
 leave the GUI port bound to the loopback address and use SSH tunneling to

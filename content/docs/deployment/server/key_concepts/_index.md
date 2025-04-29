@@ -91,7 +91,7 @@ does not change unless you edit it, so remember to update your backup copy
 whenever you make any changes.
 
 The configuration file contains sensible default values for most settings, and
-for non-critical keys Velociraptor will default to these defaults if such keys
+for non-critical keys Velociraptor will default to these values if such keys
 are not specified. Editing the file manually to customize and tweak it for your
 local deployment is normal and expected.
 
