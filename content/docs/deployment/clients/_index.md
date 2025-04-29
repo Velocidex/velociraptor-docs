@@ -214,7 +214,7 @@ identify the location of *your* server, we can't package the configuration file
 in the official release. Therefore, the official MSI does not include a valid
 configuration file. You will need to modify the release MSI to include your
 client configuration file, which you
-[generated earlier]({{< ref "/docs/quickstart/#generate-the-configuration-file" >}}),
+[generated earlier]({{< ref "/docs/deployment/quickstart/#generate-the-configuration-file" >}}),
 and this is done through a process we call "repacking".
 
 The official release installs the Velociraptor executable into

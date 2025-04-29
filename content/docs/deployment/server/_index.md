@@ -2,13 +2,13 @@
 menutitle: Server Deployment
 title: Server Deployment
 draft: false
-weight: 5
+weight: 10
 date: 2025-02-27
 last reviewed: 2025-04-27
 summary: "How to plan and implement your server deployment"
 ---
 
-In our [Quickstart Guide]({{< ref "/docs/quickstart/" >}}) we cover the process
+In our [Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}) we cover the process
 for performing a simplified deployment, secured with Self-signed SSL
 certificates and Basic authentication. This type of deployment is most suited to
 short-term uses such as training environments, temporary on-site incident

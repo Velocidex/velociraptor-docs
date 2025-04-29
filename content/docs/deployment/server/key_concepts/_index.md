@@ -47,7 +47,7 @@ do this in response to new features or issues encountered after deployment.
 Running the `config generate` command _without_ the interactive flag will
 generate a basic sensible configuration using the self-signed SSL option and
 Basic authentication, similar to the deployment described in our
-[Quickstart Guide]({{< ref "/docs/quickstart/" >}}).
+[Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}).
 You can then manually customize the configuration settings in the YAML file to
 your needs. Alternatively you can use this command to create an initial config
 and also use the JSON merge flag (`--merge`) to apply customization. This allows
