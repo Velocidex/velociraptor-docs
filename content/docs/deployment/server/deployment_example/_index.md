@@ -193,7 +193,7 @@ via Let's Encrypt.
 > is deployed on private networks for temporary situations such as incident
 > response. For long-term deployments, the other modes of operation that
 > Velociraptor offers should be preferred. We describe the process of deploying
-> in this mode in our [Quickstart Guide]({{< ref "/docs/quickstart/" >}}).
+> in this mode in our [Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}).
 > Self-signed mode is incompatible with SSO authentication.
 
 Also on the first page you will be asked:

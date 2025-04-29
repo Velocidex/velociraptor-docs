@@ -1712,6 +1712,6 @@ distro
 --------------------------------------------------------------------------------
 abovementioned
 
-<url-free> content/docs/quickstart/_index.md
+<url-free> content/docs/deployment/quickstart/_index.md
 --------------------------------------------------------------------------------
 prebuilt
