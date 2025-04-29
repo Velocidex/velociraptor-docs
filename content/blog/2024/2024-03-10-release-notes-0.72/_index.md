@@ -422,14 +422,14 @@ Traditionally we used Google Domains as our default Dynamic DNS
 provider, but Google has decided to shut down this service abruptly
 forcing us to switch to alternative providers.
 
-The 0.72 release has now switched to `CloudFlare` as our default
+The 0.72 release has now switched to `Cloudflare` as our default
 preferred Dynamic DNS provider. We also added `noip.com` as a second
 option.
 
-Setting up CloudFlare as your preferred dynamic DNS provider requires
+Setting up Cloudflare as your preferred dynamic DNS provider requires
 the following steps:
 
-1. Sign into CloudFlare and buy a domain name.
+1. Sign into Cloudflare and buy a domain name.
 2. go to https://dash.cloudflare.com/profile/api-tokens to generate an
    API token. Select `Edit Zone DNS` in the API Token templates.
 

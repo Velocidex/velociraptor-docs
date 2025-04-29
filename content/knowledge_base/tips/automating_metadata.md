@@ -444,4 +444,4 @@ WHERE LastUser = "Mary"
 
 ![Running a search in a notebook](vql_search.png)
 
-Tags: #automation #metadata
+Tags: #configuration #vql #deployment

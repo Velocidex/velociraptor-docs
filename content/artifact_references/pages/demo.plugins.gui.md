@@ -107,7 +107,19 @@ parameters:
 
   - name: FileUpload1
     type: upload
-    description: FileUpload1 can receive a file upload. The upload content will be available in this variable when executing on the client.
+    description: |
+      FileUpload1 can receive a file upload.
+
+      The upload content will be available in this variable when
+      executing on the client.
+
+  - name: FileUpload2
+    type: upload_file
+    description: |
+      FileUpload2 can receive a file upload.
+
+      The upload content will be stored in a temp file which will be
+      available in this variable when executing on the client.
 
   - name: ArtifactSelections
     type: artifactset
@@ -129,7 +141,8 @@ sources:
              ChoiceSelector, MultiChoiceSelector, Flag, Flag2, Flag3,
              OffFlag, StartDate, StartDate2, StartDate3,
              CSVData, CSVData2, JSONData, JSONData2,
-             len(list=FileUpload1) AS FileUpload1Length
+             len(list=FileUpload1) AS FileUpload1Length,
+             stat(filename=FileUpload2) AS FileUpload2Stats
       FROM scope()
 
     notebook:
@@ -143,7 +156,8 @@ sources:
           */
           SELECT * FROM info()
 
-      - type: md
+      - type: markdown
+        name: Test Template
         template: |
           # GUI Notebook tests
 
@@ -154,15 +168,21 @@ sources:
           **Each of the below cells should have a H2 heading**
 
           ## Check that notebook environment variables are populated
-          {{ $x := Query "SELECT * FROM items(\
-             item=dict(NotebookId=NotebookId, ClientId=ClientId,\
-                       FlowId=FlowId, ArtifactName=ArtifactName))" | Expand }}
+
+          Some of these are populated from the artifact parameters.
+
+          {{ $x := Query "LET X = scope() SELECT * FROM items(\
+             item=dict(NotebookId=X.NotebookId, ClientId=X.ClientId,\
+                       FlowId=X.FlowId, ArtifactName=X.ArtifactName, \
+                       ChoiceSelector=X.ChoiceSelector, StartDate=X.StartDate, \
+                       HuntId=X.HuntId))" | Expand }}
 
           {{ range $x }}
           * {{ Get . "_key" }} - {{ Get . "_value" }}
           {{- end -}}
 
-      - type: md
+      - type: markdown
+        name: Test Code Highlighting
         template: |
           ## Code syntax highlighting for VQL
 
@@ -171,6 +191,7 @@ sources:
           ```
 
       - type: vql
+        name: Test Markdown in VQL cell
         template: |
           /*
           ## A VQL cell with a heading.
@@ -212,6 +233,7 @@ sources:
           FROM scope()
 
       - type: Markdown
+        name: Scatter Chart
         template: |
           ## Scatter Chart with a named column
 
@@ -270,6 +292,7 @@ sources:
           {{ Query "LineTest" | LineChart }}
 
       - type: Markdown
+        name: Line Chart
         template: |
           ## A Line Chart
 
@@ -287,6 +310,7 @@ sources:
           {{ Query "Q" | TimeChart }}
 
       - type: vql
+        name: Test Timeline
         template: |
           /*
           ## Adding timelines
@@ -321,6 +345,7 @@ sources:
           FROM scope()
 
       - type: Markdown
+        name: Test Cell Environment
         env:
           - key: Timeline
             value: Test "Timeline 你好世界"
@@ -333,6 +358,7 @@ sources:
           {{ Scope "Timeline" | Timeline }}
 
       - type: VQL
+        name: Test Table Scrolling
         template: |
           /*
           # Test table scrolling.
@@ -351,6 +377,7 @@ sources:
           FROM range(start=0, end=100, step=1)
 
       - type: VQL
+        name: Test Column Types
         template: |
           /*
           # Column types set in the artifact's `column_types` field
@@ -375,6 +402,7 @@ sources:
           FROM source()
 
       - type: VQL
+        name: Test JSON renderer
         template: |
           /* Test the JSON renderer. */
           LET Strings = SELECT "Hello World" AS A FROM range(end=100)
@@ -407,6 +435,7 @@ sources:
           FROM scope()
 
       - type: VQL
+        name: Test Links
         template: |
           /*
           # Test the link_to() VQL Function

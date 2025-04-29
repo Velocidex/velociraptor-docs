@@ -1,6 +1,6 @@
 # How can I configure Velociraptor for multiple SSO providers
 
-Velociraptor can be configured to use a single SSO provider using the usual configuration building wizard (see [Here](https://docs.velociraptor.app/docs/deployment/cloud/#configuring-google-oauth-sso)), but the wizard does not offer to configure multiple providers.
+Velociraptor can be configured to use a single SSO provider using the usual configuration building wizard (see [Here](https://docs.velociraptor.app/docs/deployment/server/#configuring-google-oauth-sso)), but the wizard does not offer to configure multiple providers.
 
 Sometimes we want to have multiple providers so we can allow users from another organization to be able to log into Velociraptor. To do this we need to configure the SSO authenticator manually in the configuration file.
 

@@ -1459,7 +1459,6 @@ MiB
 ibytes
 
 # content/blog/2024/2024-03-10-release-notes-0.72/_index.md
-CloudFlare
 EWF
 TCT
 Websocket
@@ -1663,3 +1662,56 @@ Labelling
 labelled
 realworld
 
+<url-free> content/blog/2022/2022-03-22-deaddisk/_index.md
+--------------------------------------------------------------------------------
+VMware
+xmount
+
+forwading
+triages
+
+<url-free> content/docs/deployment/security/_index.md
+--------------------------------------------------------------------------------
+CRL
+FolderPath
+pst
+io
+prem
+
+<url-free> content/blog/2025/2025-02-23-release-notes-0.74/_index.md
+--------------------------------------------------------------------------------
+Fibratus
+Verifier
+presumbit
+UDP
+rsyslog
+sd
+Dedups
+recurses
+Datadog
+
+<url-free> content/knowledge_base/tips/setup_google_oauth.md
+--------------------------------------------------------------------------------
+CN
+
+<url-free> content/docs/deployment/_index.md
+--------------------------------------------------------------------------------
+Quickstart
+subfolder
+
+<url-free> content/docs/deployment/server/deployment_example/_index.md
+--------------------------------------------------------------------------------
+Cloudflare
+DDNS
+IDM
+IDPs
+NOIP
+distro
+
+<url-free> content/docs/deployment/server/key_concepts/_index.md
+--------------------------------------------------------------------------------
+abovementioned
+
+<url-free> content/docs/quickstart/_index.md
+--------------------------------------------------------------------------------
+prebuilt

@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 func|Lambda function to evaluate e.g. x=>1+1 where x will be the current scope.|Lambda (required)
+args|An array of elements to use as args for the lambda function. If not provided we pass the scope|Any
 
 ### Description
 

@@ -196,6 +196,11 @@ pre code, pre.code {
     font-family: "Iosevka Term" !important;
 }
 
+blockquote p {
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
 div.progress  {
     height: auto;
     overflow: auto;
@@ -712,25 +717,6 @@ table thead th {
 .vqlargs + table th {
     background: var(--CODE-SECTION-BG-color);
     padding: 10px;
-}
-
-
-body:after{
-    content: "beta";
-    position: fixed;
-    width: 80px;
-    height: 25px;
-    background: var(--BETA-color);
-    top: 7px;
-    left: -20px;
-    text-align: center;
-    font-size: 13px;
-    font-family: sans-serif;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    line-height: 27px;
-    transform:rotate(-45deg);
 }
 
 #body img.captioned {

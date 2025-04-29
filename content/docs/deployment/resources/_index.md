@@ -1,6 +1,10 @@
 ---
 title: Performance
 weight: 50
+summary: |
+  In this page we discuss some of the performance limitations of the platform.
+  It is important to understand how performance affects the framework and how
+  Velociraptor manages finite resources to scale up efficiently.
 ---
 
 With the present architecture, Velociraptor only supports a file based

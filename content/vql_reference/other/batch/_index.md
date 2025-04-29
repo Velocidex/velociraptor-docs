@@ -22,6 +22,7 @@ Arg | Description | Type
 batch_size|Size of batch (defaults to 10).|int64
 batch_func|A VQL Lambda that determines when a batch is ready. Example 'x=>len(list=x) >= 10'.|string
 query|Run this query over the item.|StoredQuery (required)
+timeout|If specified we flush incomplete batches in this many seconds.|uint64
 
 ### Description
 

@@ -123,7 +123,7 @@ sources:
                 `Computer Info`.DomainRole AS DomainRole
               FROM source(client_id=client_id,
                   flow_id=last_interrogate_flow_id,
-                  artifact="Generic.Client.Info/WindowsInfo")
+                  source="WindowsInfo")
           })
           -- WHERE DomainRole =~ "Controller"
 
@@ -161,7 +161,7 @@ reports:
 
       {{ define "computerinfo" }}
       LET X &lt;= SELECT *
-        FROM source(artifact='Generic.Client.Info/LinuxInfo')
+        FROM source(source="LinuxInfo')
         LIMIT 1
 
       SELECT humanize(bytes=TotalPhysicalMemory) AS  TotalPhysicalMemory,
@@ -182,8 +182,8 @@ reports:
         {{ $windows_info | Table }}
       {{ end }}
 
-      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(artifact='Generic.Client.Info/LinuxInfo') LIMIT 1 SELECT * FROM X" }}
-      {{ if Query "SELECT * FROM source(artifact='Generic.Client.Info/LinuxInfo')" | Expand }}
+      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
+      {{ if Query "SELECT * FROM source(source='LinuxInfo')" | Expand }}
       # Linux agent information
 
       ### Network Info
