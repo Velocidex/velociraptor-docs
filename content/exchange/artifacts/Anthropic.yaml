@@ -1,4 +1,4 @@
-name: Server.Enrichment.Anthropic
+name: Server.Enrichment.AI.Anthropic
 author: Matt Green - @mgreen27
 description: |
   Query Anthropic AI for analysis of data.
