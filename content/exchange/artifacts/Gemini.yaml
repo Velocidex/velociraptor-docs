@@ -47,7 +47,7 @@ parameters:
       type: string
       description: The model used for processing the prompt
       default: gemini-2.0-flash
-    - name: ApiKey
+    - name: GeminiApiKey
       type: string
       description: Token for Gemini. Leave blank here if using server metadata store.
     - name: MaxTokens
@@ -57,9 +57,9 @@ parameters:
 sources:
   - query: |
         LET Creds <= if(
-            condition=ApiKey,
-            then=ApiKey,
-            else=server_metadata().ApiKey)
+            condition=GeminiApiKey,
+            then=GeminiApiKey,
+            else=server_metadata().GeminiApiKey)
         LET parts = if(condition=PromptData,
                         then= dict(text=PrePrompt + Prompt + serialize(item=PromptData)),
                         else= dict(text=PrePrompt + Prompt)
