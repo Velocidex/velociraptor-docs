@@ -1,4 +1,4 @@
-name: Server.Enrichment.OpenAI
+name: Server.Enrichment.AI.OpenAI
 author: Matt Green - @mgreen27 refactored orginal from Wes Lambert - @therealwlambert|@weslambert@infosec.exchange
 description: |
   Query OpenAI for analysis of data.
