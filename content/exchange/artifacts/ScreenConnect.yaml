@@ -4,29 +4,29 @@ author: Matt Green - @mgreen27 - Rapid7 Labs
 description: |
    This artifact extracts useful data for triage of ConnectWise ScreenConnect
    CVE-2024-1709 and CVE-2024-1708 impacting versions 23.9.7 and prior.
-   
-   This artifact will:   
-   
-   1. Check for Webshells in ```/App_Extensions/**/*.{aspx,ashx}``` path.  
-   Some observed legitimate webapp strings have been excluded.   
-   NOTE: Use WebshellsUSN to find potential exploits that cleanup shells.   
-   
-   2. Parse ```C:\Program Files\ScreenConnect\App_data\User.Xml``` file.   
-   Usually this file is set during first use and reset during exploit. 
-   Check for timestamp discrepancies and obviously evil usernames/email 
-   (@poc.com).  
-   
-   3. Parse ```security.db```.   
-   Add time filter. Results are stacked, check for unusual access patterns 
+
+   This artifact will:
+
+   1. Check for Webshells in ```/App_Extensions/**/*.{aspx,ashx}``` path.
+   Some observed legitimate webapp strings have been excluded.
+   NOTE: Use WebshellsUSN to find potential exploits that cleanup shells.
+
+   2. Parse ```C:\Program Files\ScreenConnect\App_data\User.Xml``` file.
+   Usually this file is set during first use and reset during exploit.
+   Check for timestamp discrepancies and obviously evil usernames/email
+   (@poc.com).
+
+   3. Parse ```security.db```.
+   Add time filter. Results are stacked, check for unusual access patterns
    and malicious IPs.
-   
+
    4. List and upload (optionally) all ScreenConnect files.
-   
+
    Collect additional artifacts as desired for support.
 
 reference:
     - https://www.rapid7.com/blog/post/2024/02/20/etr-high-risk-vulnerabilities-in-connectwise-screenconnect/
-   
+
 type: CLIENT
 
 parameters:
@@ -37,11 +37,11 @@ parameters:
      description: Excluded webshell strings.
      default: ScreenConnect
    - name: DateAfter
-     description: Search for security events after this date 
+     description: Search for security events after this date
      type: timestamp
      default: "2024-02-20"
    - name: DateBefore
-     description: Search for security events before this date 
+     description: Search for security events before this date
      type: timestamp
    - name: UploadFiles
      description: If selected Upload all ScreenConnect files for review
@@ -52,12 +52,12 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - name: Webshells
     query: |
-      LET shells = SELECT OSPath, Mtime,Atime,Ctime,Btime 
+      LET shells = SELECT OSPath, Mtime,Atime,Ctime,Btime
         FROM glob(globs=TargetGlob + "/App_Extensions/**/*.{aspx,ashx}")
         WHERE NOT IsDir
-      
+
       SELECT * FROM foreach(row=shells, query={
-        SELECT 
+        SELECT
             OSPath,
             dict(
                 Mtime=Mtime,
@@ -70,7 +70,7 @@ sources:
                         then= Contents=~ExcludedWebshellStrings,
                         else= False )
       })
-      
+
   - name: WebshellsUsn
     query: |
       SELECT Timestamp,OSPath,Reason,MFTId,Sequence,ParentMFTId,ParentSequence,Usn
@@ -82,8 +82,8 @@ sources:
 
   - name: UserXml
     query: |
-      SELECT 
-        OSPath, 
+      SELECT
+        OSPath,
         dict(
             Mtime=Mtime,
             Atime=Atime,
@@ -96,18 +96,18 @@ sources:
   - name: SecurityEvents
     query: |
       LET MaxDate <= if(condition= DateBefore, then=DateBefore, else= '2030-01-01')
-      
-      LET db = SELECT OSPath, Mtime,Atime,Ctime,Btime 
+
+      LET db = SELECT OSPath, Mtime,Atime,Ctime,Btime
         FROM glob(globs=TargetGlob + '/security.db')
-      
+
       LET sqlquery = "SELECT * FROM SecurityEvent"
-      
+
       LET results = SELECT * FROM foreach(row=db,query= {
             SELECT * FROM sqlite(file=OSPath,query=sqlquery)
             WHERE Time > DateAfter AND Time < MaxDate
         })
 
-      SELECT 
+      SELECT
         EventType,
         OperationResult,
         ip(netaddr4_be=int(
@@ -124,13 +124,16 @@ sources:
 
   - name: Files
     query: |
-        LET TargetGlobs = (
-                "C:/Windows/Temp/ScreenConnect*/**",
-                "C:/Program Files/ScreenConnect*/**",
-                "C:/Program Files (x86)/ScreenConnect*/**",
-                "C:/ProgramData/ScreenConnect*/**",
-                "C:/Users/*/Documents/ConnectWiseControl/**" )
-        SELECT * 
+        LET TargetGlobTable = '''
+        Glob
+        C:/Windows/Temp/ScreenConnect*/**
+        C:/Program Files/ScreenConnect*/**
+        C:/Program Files (x86)/ScreenConnect*/**
+        C:/ProgramData/ScreenConnect*/**
+        C:/Users/*/Documents/ConnectWiseControl/**
+        '''
+
+        SELECT *
         FROM Artifact.Windows.Search.FileFinder(
                             Upload_File=UploadFiles,
-                            SearchFilesGlob=TargetGlobs )
+                            SearchFilesGlobTable=TargetGlobTable )
