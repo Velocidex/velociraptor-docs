@@ -21,8 +21,11 @@ description: |
   
   e.g
   
-  `LET results = SELECT Category, Signer,ImagePath,LaunchString FROM source(artifact="Windows.Sysinternals.Autoruns")`  
+  `LET results = SELECT field1, field2, field3.... FROM source() WHERE ...`  
   `SELECT * FROM Artifact.Server.Enrichment.AI.Gemini(Prompt="Review Autoruns data:",PromptData=results)`
+
+  NOTE: there appears to be a bug in serialize() that is causing some issues in some large collections. 
+  If you run into issues try reducing token size and filtering unnecessary data.
   
 type: SERVER
 
@@ -52,7 +55,7 @@ parameters:
       description: Token for Gemini. Leave blank here if using server metadata store.
     - name: MaxTokens
       type: int
-      default: 64000
+      default: 100000
 
 sources:
   - query: |
