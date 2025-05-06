@@ -74,7 +74,7 @@ sources:
             parse_json(data=Content).candidates[0].content.parts[0].text AS ResponseText,
             parse_json(data=Content) AS ResponseDetails
         FROM http_client(
-            url='https://generativelanguage.googleapis.com/v1beta/models/' + Model + ':generateContent?key=' + ApiKey,
+            url='https://generativelanguage.googleapis.com/v1beta/models/' + Model + ':generateContent?key=' + Creds,
             headers=dict(`Content-Type`="application/json"),
             method="POST",
             data=Data
