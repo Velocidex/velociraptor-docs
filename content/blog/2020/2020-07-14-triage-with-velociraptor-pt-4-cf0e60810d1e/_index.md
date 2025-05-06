@@ -33,7 +33,7 @@ In order to start a Velociraptor server I will create new server configuration f
 
 ![](../../img/15wHG_tix0ZpeXIJuYScWKg.png)
 
-We will be running the server on **Windows**, Using the **FileBaseDataStore** with a **Self Signed SSL** configuration. I will also add a user called “**mic**” to the server (basically I pressed enter on each question to accept the default).
+We will be running the server on **Windows**, Using the **FileBaseDataStore** with a **Self-signed SSL** configuration. I will also add a user called “**mic**” to the server (basically I pressed enter on each question to accept the default).
 
 Now I can start the frontend using:
 

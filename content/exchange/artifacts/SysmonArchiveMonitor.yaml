@@ -2,12 +2,12 @@ name: Windows.Events.SysmonArchiveMonitor
 author: Matt Green - @mgreen27
 description: |
    This artifact enables automatic management of the Sysmon archive folder.
-   
-   FileDelete is a super usefuil capability offered by Sysmon enabling archive 
-   of deleted files. It is typically used to archive interesting files or to target 
+
+   FileDelete is a super usefuil capability offered by Sysmon enabling archive
+   of deleted files. It is typically used to archive interesting files or to target
    collection during an active engagement.
-   
-   Requrements: Exchange.Windows.Sysinternals.SysmonArchive
+
+   Requrements: Windows.Sysinternals.SysmonArchive
 
 reference:
     - https://github.com/trustedsec/SysmonCommunityGuide/blob/master/chapters/file-delete.md
@@ -29,18 +29,18 @@ parameters:
      description: Desired time to wait between checks. Default is 10 mins (600s).
      default: 600
      type: int64
-     
-     
+
+
 sources:
   - query: |
       LET schedule = SELECT UTC.String AS Now
         FROM clock(period=CheckDelay)
-        
+
       -- on each schedule run Windows.Sysinternals.SysmonArchive
-      SELECT * FROM foreach(row=schedule, 
+      SELECT * FROM foreach(row=schedule,
                 query={
                     SELECT *
-                    FROM Artifact.Exchange.Windows.Sysinternals.SysmonArchive(
+                    FROM Artifact.Windows.Sysinternals.SysmonArchive(
                                         ArchiveSize=ArchiveSize,
                                         SysmonArchiveGlob=SysmonArchiveGlob,
                                         DeleteFiles=True,

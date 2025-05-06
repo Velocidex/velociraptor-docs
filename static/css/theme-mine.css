@@ -196,6 +196,11 @@ pre code, pre.code {
     font-family: "Iosevka Term" !important;
 }
 
+blockquote p {
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
 div.progress  {
     height: auto;
     overflow: auto;

@@ -6,8 +6,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2025-02-25"
     },
     {
@@ -273,7 +273,7 @@
         "date": "2022-04-26"
     },
     {
-        "title": "What do I do about \"version GLIBC_2.14 not found\" errors?",
+        "title": "What do I do about \"version GLIBC_2.xx not found\" errors?",
         "link": "/knowledge_base/tips/glibc_errors",
         "tags": [
             "deployment"
@@ -435,5 +435,18 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to set up authentication using Google OAuth SSO",
+        "link": "/knowledge_base/tips/setup_google_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

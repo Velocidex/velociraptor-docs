@@ -5,7 +5,7 @@ date: 2025-01-25
 weight: 55
 ---
 
-Artifacts are the core way in which users interact with Velociraptor:
+Artifacts are the main way in which users interact with Velociraptor:
 Users launch artifact collections from clients and collect artifacts
 on the Velociraptor server.
 
