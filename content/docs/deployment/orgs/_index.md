@@ -1,11 +1,15 @@
 ---
-menutitle: "Organizations"
+menutitle: Organizations
 title: Organizations and Multi-tenancy
-weight: 15
+last_reviewed: 2025-02-24
+draft: false
+weight: 20
+summary: |
+  Velociraptor supports multiple orgs in a full multi-tenancy configuration.
 ---
 
 Velociraptor supports multiple orgs in a full multi-tenancy
-configuration. Orgs are light weight and can be added and removed
+configuration. Orgs are lightweight and can be added and removed
 easily with minimal impact on resource requirements.
 
 This is useful in a number of scenarios:
@@ -20,22 +24,23 @@ This is useful in a number of scenarios:
    require much more controlled access and different set of
    Velociraptor users.
 
-In Velociraptor, multi-tenancy is implemented by dividing the clients into separate `Organizations` or `Orgs`.
+In Velociraptor, multi-tenancy is implemented by dividing the clients into
+separate **Organizations** or **Orgs**.
 
 Each org is logically completely separate from other orgs:
 
 * Each org contains a different set of clients. A Client is configured
   to access an org by way of a shared secret in its configuration file
-  ([Client.nonce]({{% ref "/docs/deployment/references/#Client.nonce"
-  %}})). It is not possible for a client to connect to a different org
+  ([`Client.nonce`]({{% ref "/docs/deployment/references/#Client.nonce" %}})).
+  It is not possible for a client to connect to a different org
   without knowing this shared secret.
 * Storage for each Org is separated within the data-store directory in
   an org specific sub-directory. This means you can backup, restore or
-  delete orgs very easily since data is separate.
+  delete orgs very easily since the data is separate.
 * Users have access control lists (ACLs) within the respective
   Org. This means that the same user can have different roles and
   permissions in different orgs. Orgs can have their own administrator
-  user which can perform administrative actions on the org without
+  user who can perform administrative actions on the org without
   affecting other orgs.
 * Custom artifacts can be maintained in different Orgs. Users within
   an org can independently create and update custom artifacts without
@@ -43,7 +48,7 @@ Each org is logically completely separate from other orgs:
 * VQL running in notebooks or server artifacts will automatically and
   transparently use the correct org without affecting or being able to
   access other orgs.
-* Orgs can be created and destroyed easily at runtime.
+* Orgs can be created and destroyed easily at runtime (via VQL).
 
 ### The Root org
 
@@ -69,48 +74,68 @@ other orgs do not have:
 
 ###  Switching to different orgs
 
-You can switch to other orgs your user account has access to using the
+You can switch to any other orgs your user account has access to using the
 user preferences tile in the GUI.
 
-![Selecting Org](selecting_orgs.png)
+![Selecting Org](selecting_orgs.svg)
 
 Normally in order to see an org in the drop down selector, your
 Velociraptor user account needs at least `Reader` level access to that
-org. Unless your user is also an `Org Administrator` on the `root`
-org, in which case you can switch or see any org.
+org.
 
-### Creating a new Org.
+If your user has the role `Org Administrator` on the `root` org, then you can
+see all orgs in listings for the purpose of administering them (for example
+adding users), but in order to switch to an org your user _also_ has to have at
+least the `Reader` role in that org..
 
-You can use the `Server.Orgs.NewOrg` artifact to create a new org
+### Creating a new Org
 
-![Creating a new Org](new_org.png)
-
-{{% notice tip "Managing Orgs" %}}
+{{% notice tip "Orgs are always managed from the Root org" %}}
 
 Since the `Org Administrator` permission is only meaningful for the
-root org you will need to change to the root org in the GUI first, in
-order to create or delete new orgs.
+root org you should ensure that you are in the root org in the GUI before
+creating or deleting orgs. Attempting to create or delete orgs from a non-root
+org will always fail.
 
 {{% /notice %}}
+
+You can use the `Server.Orgs.NewOrg` server artifact to create a new org
+
+![Creating a new Org](new_org_1.svg)
+
+![Specifying parameters for new Org](new_org_2.png)
+
+As a convenience this artifact also allows you to select other server artifacts
+that will be run in the new org after it is created. Typically you would want to
+create a MSI installer for Windows clients, so this is selected by default.
+However you may also create the MSI at a later time (for example after a version
+upgrade) using the procedure [described below]({{< relref "#creating-client-installer-packages" >}})
+
+As you can see, the `Server.Orgs.NewOrg` artifact is just running VQL to create
+the new org. You could alternatively run the same VQL in a global notebook or in
+a "bootstrap" artifact when setting up new servers.
+
+#### Assigning users to the new org
 
 Once the new org is created you can assign users to the Org using the
 [Adding a New User]({{% ref
 "/docs/deployment/security/#adding-a-new-user" %}}) procedure.
 
-### Preparing a deployment for the new Org
+### Preparing client deployment for the new Org
 
 Clients are configured to connect to one org only. While the
 cryptographic keys (e.g. The internal CA Certificate) of clients from
-all Orgs are the same, the [Client.nonce]({{% ref
+all Orgs are the same, the [`Client.nonce`]({{% ref
 "/docs/deployment/references/#Client.nonce" %}}) is different for each
-Org. The server uses this nonce to assign the client into the correct
-Org. The nonce is embedded in the client's configuration file and acts
+Org. The server uses this nonce to associate the client with the correct
+Org. The nonce is included in the client's configuration file and acts
 as a shared secret between all the Org clients and the server.
 
+#### Creating client installer packages
+
 To create an installation package that connects to the new Org, you
-need to [build an MSI]({{% ref
-"/docs/deployment/clients/#official-release-msi" %}}) within the
-target Org:
+need to [build an MSI]({{% ref "/docs/deployment/clients/#official-release-msi" %}})
+within the target Org:
 
 1. First switch to the relevant Org with the GUI selector
 2. Launch the server artifact `Server.Utils.CreateMSI` within the context of the target Org.
@@ -119,10 +144,12 @@ The produced MSI will connect to the target Org.
 
 For non-Windows platforms you will currently need to build the
 installation packages manually with the Org specific client config
-file. You can download the correct Org specific configuration file
+file, as explained in
+[Deploying Clients]({{< ref "https://docs.velociraptor.app/docs/deployment/clients/#linux" >}}).
+You can download the correct org-specific configuration file
 from the main dashboard as show below.
 
-![Downloading the Org Specific Configuration File](downloading_org_config.png)
+![Downloading the Org Specific Configuration File](downloading_org_config.svg)
 
 
 ### Auditing User Actions

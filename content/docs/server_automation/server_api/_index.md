@@ -129,6 +129,9 @@ are authenticated with certificates.
 
 ![User Management](user_management.png)
 
+The API client certificate is valid for 1 year. Before expiry you should create
+a new API client configuration file, containing a new client certificate, to
+avoid being impacted by the certificate expiry.
 
 ##### Granting roles
 
@@ -214,7 +217,7 @@ pip install pyvelociraptor
 
 In order to connect to the gRPC port, check the connection string
 setting in the api configuration file. If you want to connect to the
-api from a difference host you will need to update the connection
+api from a different host you will need to update the connection
 string to include the correct IP address or hostname.
 
 ```yaml
