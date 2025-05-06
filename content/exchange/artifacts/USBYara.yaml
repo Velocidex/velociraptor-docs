@@ -6,7 +6,7 @@ description: |
 
   This artifact requires:
 
-    * Exchange.Windows.Monitor.USBPlugIn (imported from Exchange)
+    * Windows.Monitor.USBPlugIn (imported from Exchange)
     * Generic.Detection.Yara.Glob
 
   Yara rule deployed and target path can be modified.
@@ -40,8 +40,10 @@ parameters:
 sources:
   - query: |
       SELECT * FROM foreach(
-            row={ SELECT DriveName,TimeCreated FROM Artifact.Exchange.Windows.Monitor.USBPlugIn() },
-            query={
+            row={
+              SELECT DriveName,TimeCreated
+              FROM Artifact.Windows.Monitor.USBPlugIn()
+            }, query={
                 SELECT
                     TimeCreated as EventTime,
                     { SELECT Fqdn from info() } as Hostname,
