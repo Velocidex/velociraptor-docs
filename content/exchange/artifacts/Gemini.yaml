@@ -25,7 +25,8 @@ description: |
   `SELECT * FROM Artifact.Server.Enrichment.AI.Gemini(Prompt="Review Autoruns data:",PromptData=results)`
 
   NOTE: there appears to be a bug in serialize() that is causing some issues in some large collections. 
-  If you run into issues try reducing token size and filtering unnecessary data.
+  If you run into issues try reducing token size and filtering unnecessary data. 
+  This is resolved in head 0.74.2 commit:99dba70 and full 1000000 tokens can be used
   
 type: SERVER
 
