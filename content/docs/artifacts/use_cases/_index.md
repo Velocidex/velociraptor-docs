@@ -1,10 +1,18 @@
 ---
-menutitle: "Other Use Cases"
-title: "Other Use Cases"
+menutitle: "Sourceless Artifacts"
+title: "Sourceless Artifacts"
 date: 2025-01-25
-draft: true
+draft: false
 weight: 70
+summary: "Interesting use cases for artifacts"
+last_reviewed: 2025-04-30
 ---
+
+## Using server artifacts for server automation
+
+### Server Bootstrap Artifacts
+
+## Source-free Artifacts
 
 Artifacts can have ZERO or more sources.
 It may seem strange at first to think about artifact with no sources, however this allows for some interesting use cases, for example:

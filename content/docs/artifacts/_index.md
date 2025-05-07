@@ -1,34 +1,142 @@
 ---
-title: "Artifacts"
+menutitle: "Artifacts"
+title: "Velociraptor Artifacts"
 date: 2021-06-12T05:20:45Z
 draft: false
 weight: 30
 aliases:
-  - "/docs/gui/artifacts/"
   - "/docs/vql/artifacts/"
+#   - "/docs/gui/artifacts/"
 ---
+
+Velociraptor Artifacts are a key component of the platform, providing numerous
+benefits for digital forensics and incident response workflows.
+
 
 ## What are Artifacts?
 
-At it's core Velociraptor is simply a VQL engine . That is, it processes a VQL
-query producing a series of rows and sends those rows to the server.
+At it's core Velociraptor is simply a VQL engine . It processes a VQL query
+producing a series of rows and sends those rows to the server.
 
-An **Artifact** is a way to package one or more VQL queries and related data in
-a human readable YAML file, give it a name, and allow users to collect it. An
-Artifact file encapsulates one or more queries to collect data or answer a
-specific question about the endpoint.
+Artifacts allow us to package one or more VQL queries and related data into a
+human-readable [YAML](https://www.tutorialspoint.com/yaml/yaml_basics.htm) file
+which is stored within the Velociraptor server's datastore.
 
-<!-- Artifacts are YAML files which encapsultate VQL queries in human
-readable contextual package. The launcher service is responsible for
-compiling artifacts into direct client requests. Clients run direct
-VQL statements derived from the artifacts, while users write,
-customize, or launch artifacts. -->
+Artifacts are intended to be self-documenting through good descriptions and
+well-structured VQL. This allows other users to collect specific information
+from endpoints without necessarily needing to understand or remember the queries
+and related data encapsulated in the artifact. This approach facilitates
+knowledge sharing between users with varying skill levels, within the
+Velociraptor community, and the broader DFIR community.
 
-Artifacts can be thought of as VQL "modules". By encapsulating a VQL query
-inside a YAML file, users do not need to understand the query to use it. This
-facilitates knowledge sharing with more experienced users.
+Artifacts can also be directly used within other VQL queries.
 
-### A Basic Example
+Here is the basic structure of a simple artifact:
+
+![Artifacts are YAML but they can contain VQL](artifact_concept.svg)
+
+{{% notice note %}}
+
+Don't confuse Velociraptor Artifacts with forensic artifacts! Although they are
+historically somewhat related, and there is also a correspondence in the sense
+that Velociraptor Artifacts usually (but don't have to) target specific
+information sources on endpoints which are traditionally described as
+["forensic artifacts"](https://github.com/ForensicArtifacts).
+
+{{% /notice %}}
+
+## Why use Artifacts instead of just running VQL queries directly?
+
+In Velociraptor all VQL queries are packaged in Artifacts. VQL cannot be run
+directly on clients, with the exception of the standalone
+[CLI `query` command]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}).
+In client-server mode, VQL queries are always delivered to the client in the
+form of artifacts.
+
+When performing a collection against a client, the server _compiles_ the
+artifact and it's dependencies into raw VQL statements and sends these to the
+client for evaluation. The compiled artifacts do not include comments and
+informational fields (such as author, description, or references) since these
+server no purpose on the client. We never rely on the artifact definitions
+embedded in the client itself - instead we always send the compiled VQL to the
+client.
+
+Artifacts are stored and managed on the server. This allows us to centrally
+upgrade, customize, or add new artifact definitions without needing to update
+the clients.
+
+Here are some of the key benefits of Velociraptor Artifacts:
+
+- **Encapsulation and Reusability**: \
+  Artifacts bundle VQL statements and related configurations into a single,
+  reusable unit. Once an artifact is written, the user does not need to remember
+  or re-enter the query. Artifacts can be
+  [called from other VQL queries]({{< ref "/docs/artifacts/calling_artifacts/" >}})
+  as if they were [standard plugins]({{< ref "/vql_reference/" >}}),
+  encouraging the development of reusable components that can be combined like
+  Lego bricks.
+
+- **Sharing and Community Collaboration**: \
+  By encapsulating one or more queries VQL query inside a YAML file, users do
+  not need to understand the query to use it. This facilitates knowledge sharing
+  between users with varying skill levels, as well as documenting and sharing
+  knowledge about forensic evidence amongst experts.
+  Platforms like the [Velociraptor Artifact Exchange]({{< ref "/exchange/">}})
+  exist for this purpose, promoting knowledge sharing and code reusability
+  within the Velociraptor and broader DFIR community.
+
+- **Extending Velociraptor Functionality**: \
+  Artifacts offer a powerful way to extend Velociraptor's capabilities. They can
+  wrap external tools like PowerShell scripts or other binaries, thus making
+  them callable through VQL. This allows us to rapidly add new features and
+  adapt to different systems or file formats rapidly, without requiring source
+  code changes, rebuilding, or redeploying the Velociraptor client or server
+  binaries.
+
+- **Discoverability and Ease of Use**: \
+  Artifacts abstract the underlying complexity, allowing users to run powerful
+  queries or external tools simply by calling the artifact by name, often with
+  configurable parameters. Artifacts that have clear names and descriptions are
+  easier to find within the GUI, and easier for other users to understand. The
+  Artifact collection and Hunt creation workflows provides a user-friendly
+  interface to find, view and launch them.
+
+- **Targeted and Efficient Collection**: \
+  While artifacts can collect files, they are central to Velociraptor's
+  philosophy of performing processing directly on the endpoint and returning
+  only targeted, high-value results, rather than collecting bulk data for
+  offline analysis. This distributed processing approach contributes
+  significantly to Velociraptor's scalability.
+
+- **Parameterization**: \
+  Artifacts can declare parameters, allowing users to customize how the
+  underlying VQL query runs directly from the GUI or when called from other VQL.
+
+- **Operational Safety and Standardization**: \
+  Artifact sources can define preconditions – VQL queries that run first to
+  determine if the main query is relevant or safe to execute on a specific
+  endpoint. If the precondition returns no rows, the source's collection is
+  skipped. This makes it safe to deploy hunts involving numerous diverse
+  artifacts across an entire fleet. In addition, artifacts serve as a
+  foundational unit for testing and quality assurance.
+
+- **Integration of External Tools**: \
+  Artifacts provide a structured way to declare dependencies on external
+  binaries. Velociraptor handles the logic to ensure these tools are uploaded to
+  the endpoint, updated when necessary, and cached for efficiency.
+
+- **Support for Dead Disk Analysis**: \
+  Artifacts written for live endpoint analysis can often be reused without
+  modification to analyze dead disk images by utilizing Velociraptor's accessor
+  remapping feature. This allows leveraging the same powerful analysis logic in
+  different contexts.
+
+- **Modular Workflow Creation**: \
+  By encapsulating VQL queries, artifacts serve as building blocks that can be
+  combined to create custom incident response workflows directly using VQL on
+  the server.
+
+### A Simple Example
 
 Usually an artifact is geared towards collecting a single type of information
 from the endpoint.
@@ -45,8 +153,6 @@ type: CLIENT
 parameters:
    - name: FirstParameter
      default: Default Value of first parameter
-
-precondition: ""
 
 sources:
   - name: MySource
@@ -87,59 +193,20 @@ The Artifact contains a number of important YAML fields:
    should have exactly one `SELECT` clause and it must be at the end
    of the query potentially following any `LET` queries.
 
-## Parameters
-
-Artifact parameters allow the user to customize the collection in a
-controlled way - without needing to edit the VQL. The GUI will present
-a form that allows the user to update the parameters prior to each
-collection.
-
-Parameters may define a type. This type will be used to hint to the
-GUI how to render the form element. The type also determines how the
-parameter is sent to the client and ensures the parameter appears as
-that type in the query.
-
-Prior to launching the query on the endpoint, Velociraptor will
-populate the scope with the parameters. This allows the VQL query to
-directly access the parameters.
-
-Artifact parameters are sent to the client as strings The client
-automatically parses them into a VQL type depending on the parameter's
-type specification.  The GUI uses type specification to render an
-appropriate UI
-
-### Parameter types
-
-Currently the following parameter types are supported
-
-* **int, integer**: The parameter is an integer
-* **timestamp**: The parameter is a timestamp. The GUI will present a time widget to assist you in selecting a timestamp
-* **csv**: Parameter appears as a list of dicts formatted as a CSV. The GUI will present a CSV editor to assist in pasting or editing structured CSV data.
-* **json**: Parameter is a JSON encoded dict
-* **json_array**: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
-* **bool**: The parameter is a boolean (TRUE/YES/Y/OK)
-* **int**, **in64**, **integer**: The parameter is an integer.
-* **float**: The parameter is a float.
-* **string**: The parameter is a string (the default type)
-* **regex**: The parameter is a Regular Expression. The GUI will present a Regular Expression editor to help you write it.
-* **redacted**: The parameter should be redacted. The value of this parameter is redacted in the request or other places where it may be logged.
-* **upload**: The parameter contains a string which is uploaded from a file. NOTE- this is limited to 4mb - if you need larger files use `upload_file`. The GUI will present a file upload widget to allow you to upload a file for this request only!
-* **upload_file**: The parameter will be the name of a temporary file on the endpoint containing the contents of the uploaded file.
-* **server_metadata**: The server will populate this parameter from the server metadata service prior to launching the artifact. The parameter will not be settable in the GUI
-* **artifactset**: A set of artifacts. This is probably only useful on server artifacts as clients do not have access to arbitrary artifacts. You must also include the `artifact_type` parameter which can be `CLIENT`, `SERVER`, `CLIENT_EVENT`, `SERVER_EVENT`
-* **json**, **json_array**, **xml**, **yaml**: This is a data blob encoded as a string.
 
 
 ### A More Advanced Example
 
-Let's take a look at a typical artifact `Windows.Detection.Mutants`.
+Let's take a look at a typical artifact named `Windows.Detection.Mutants`.
 
 ![Mutants artifact](mutants.svg)
 
-This artifact uncovers the mutants (named mutexes) on a system, using
-two methods. First we enumerate all handles, and check which process
-is holding a handle to a mutant object. Alternatively we enumerate the
-kernel object manager to receive the same information.
+This artifact uncovers the mutants (a.k.a mutexes) on a system, using
+two methods:
+- First we enumerate all handles, and check which process is holding a handle to
+  a mutant object.
+- Alternatively we enumerate the kernel object manager to receive the same
+  information.
 
 Therefore this artifact contains two sources - each gets similar
 information in a different way. A user who is just interested in
@@ -150,18 +217,28 @@ We also see some parameters declared to allow a user to filter by
 process name or mutant name.
 
 
-{{% notice info "Compiling artifacts into VQL requests" %}}
+## Saving, loading, and importing artifacts
 
-When collecting an artifact from the client, the server **compiles**
-the artifact and it's dependencies into raw VQL statements and sends
-these to the client for evaluation. We never rely on the artifact
-definitions embedded in the client itself - instead we always send the
-compiled VQL to the client. This allows us to upgrade artifact
-definitions on the server without needing to update the client itself.
+for the root org's artifact repository:
+datastore/artifact_definitions
 
-{{% /notice %}}
+for other orgs, each org has their own artifact repository:
+/datastore1/orgs/OQRA0/artifact_definitions
+
+
+--definitions
+
+included in config: artifacts defined in the `autoexec.artifact_definitions` section
+
+
+### Built-in vs. Custom Artifacts
+
+
+### Custom overrides
+
+
 
 The pages in this section explain the key concepts for creating and using
 Velociraptor artifacts.
 
-{{% children %}}
+{{% children description="true" %}}

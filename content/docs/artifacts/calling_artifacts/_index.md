@@ -4,7 +4,13 @@ title: "Calling other artifacts from VQL"
 date: 2025-01-31
 draft: false
 weight: 35
+summary: "How to launch artifacts from other artifacts"
+last_reviewed: 2025-04-30
 ---
+
+
+
+## Calling artifacts from VQL
 
 You can call other artifacts from your own VQL using the
 `Artifact.<artifact name>` plugin notation. Args to the `Artifact()`

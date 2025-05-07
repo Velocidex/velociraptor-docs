@@ -9,6 +9,7 @@ no_edit: true
 disableToc: true
 chapter: false
 pre: <i class="fas fa-code"></i>
+summary: "Search our library of community-contributed artifacts"
 ---
 
 {{< include-content "/content/exchange/_index.md" >}}

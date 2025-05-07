@@ -9,6 +9,7 @@ no_edit: true
 disableToc: true
 chapter: false
 pre: <i class="fas fa-book"></i>
+summary: "Search our library of built-in artifacts"
 ---
 
 {{< include-content "/content/artifact_references/_index.md" >}}
