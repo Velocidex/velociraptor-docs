@@ -1,0 +1,44 @@
+name: Windows.Forensics.WSLBash_History
+description: |
+  This plug-in aims to provide a way for Velociraptor to extract artifact from WSL2 Linux without cloning the whole ext4.vhdx file from the target host.
+  It integrates and leverage The Sleuth Kit (TSL) to read the ext4.vhdx file.
+
+author: Jason Yung | wh0arey0u
+
+parameters:
+  - name: UserProfile
+    type: string
+
+tools:
+  - name: TSK
+    url: https://github.com/sleuthkit/sleuthkit/releases/download/sleuthkit-4.14.0/sleuthkit-4.14.0-win32.zip
+
+type: Client
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+  - query: |
+        LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="TSK", IsExecutable=FALSE)
+        
+        LET TmpDir <= tempdir()
+        
+        LET _ <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+        
+
+        LET FcatLocation <= path_join(
+           components=[TmpDir, 'sleuthkit-4.14.0-win32', 'bin', 'fcat.exe'],
+           path_type='windows')
+           
+        LET Packages_path = path_join(components=['C:', 'Users', '*', 'AppData', 'Local', 'Packages', '*', 'LocalState', 'ext4.vhdx'], path_type='windows')
+        LET ext4 = "ext4.vhdx"
+        SELECT * FROM foreach(
+            row={
+                SELECT FullPath AS vhdx FROM glob(globs=Packages_path)
+                WHERE Name =~ "ext4.vhdx" 
+        },
+        query={
+                SELECT * FROM execve(
+                                    argv=[FcatLocation, path_join(components=['home', UserProfile, '.bash_history'], path_type='linux'),vhdx])
+        }
+        )
