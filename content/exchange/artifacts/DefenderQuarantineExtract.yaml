@@ -25,13 +25,13 @@ parameters:
 
 sources:
   - query: |
-        LET Targets <= SELECT Mtime, Name, FullPath FROM glob(globs=TargetGlob)
+        LET Targets <= SELECT Mtime, Name, OSPath FROM glob(globs=TargetGlob)
 
         LET DefenderRC4Key <= unhex(string=DefenderRC4KeyHex)
 
-        LET DeQuarantine = SELECT read_file(filename=crypto_rc4(key=DefenderRC4Key, string=read_file(filename=FullPath, accessor="file")), accessor="data", offset=204) as DecodedFile,
+        LET DeQuarantine = SELECT read_file(filename=crypto_rc4(key=DefenderRC4Key, string=read_file(filename=OSPath, accessor="file")), accessor="data", offset=204) as DecodedFile,
                             Name,
-                            FullPath,
+                            OSPath,
                             Mtime
                            FROM Targets
 
@@ -39,16 +39,16 @@ sources:
                             hash(path=DecodedFile, accessor="data") as Hash,
                             DecodedFile,
                             Name,
-                            FullPath,
+                            OSPath,
                             Mtime
                         FROM DeQuarantine
 
         SELECT
             Mtime,
             Magic,
-            if(condition=Magic=~"PE", then=parse_pe(file=DecodedFile, accessor="data")) as ParsedPE,
+            parse_pe(file=DecodedFile, accessor="data") as ParsedPE,
             Hash,
-            FullPath,
+            OSPath,
             if(condition=UploadDecodedFiles,
              then={
                 SELECT
