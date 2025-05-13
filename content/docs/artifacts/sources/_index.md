@@ -4,22 +4,16 @@ title: "Artifact Sources"
 date: 2025-01-25
 draft: false
 weight: 20
-summary: "blah blah blah"
+summary: "Sources describe how the artifact produces data"
 last_reviewed: 2025-04-30
 ---
 
-This section will cover artifact sources.
+Sources describe how the artifact produces data.
 
-## Named sources
-
-## Notebook cell templates
-
-<!-- ## Sources
-
-An artifact may contains several sources. Each source represents a
-single SELECT query and potentially multiple LET queries. Ultimately
-each source returns a single table of results. If an artifact wishes
-to return multiple tables, it should define multiple sources.
+An artifact may contains several sources. Each source represents a single SELECT
+query and potentially multiple LET queries. Ultimately each source returns a
+single table of results. If an artifact wishes to return multiple tables, it
+should define multiple sources.
 
 It is sometimes useful to run multiple sources in the same
 scope. This allows for example a result set to be calculated in the
@@ -53,4 +47,22 @@ query: |
 
 Consider the above artifact which will run serially - First Source1
 and then Source2 in the same request. Therefore Source2 can see any
-queries or results defined in Source1. -->
+queries defined in Source1 and any results from Source1.
+
+## Named sources
+
+[How does it work when you have multiple unnamed sources?]
+
+## Notebook cell templates
+
+message NotebookSourceCell {
+    string template = 1;
+    string type = 2;
+    string name = 4;
+    string output = 5;
+    repeated ArtifactEnv env = 3;
+
+
+
+
+

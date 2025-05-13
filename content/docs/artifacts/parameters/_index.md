@@ -5,10 +5,8 @@ date: 2025-01-25
 draft: false
 weight: 10
 summary: "Artifacts parameters and how they work"
-last_reviewed: 2025-04-30
+last_reviewed: 2025-05-13
 ---
-
-## Parameters
 
 Artifact parameters allow the user to customize the collection in a
 controlled way - without needing to edit the VQL. The GUI will present
@@ -26,24 +24,27 @@ directly access the parameters.
 
 Artifact parameters are sent to the client as strings The client
 automatically parses them into a VQL type depending on the parameter's
-type specification.  The GUI uses type specification to render an
+type specification. The GUI uses type specification to render an
 appropriate UI
 
 Artifacts may accept parameters which are added to the
-scope prior to execution. NOTE: all parameters are strings - if you
-need something else the query can unpack e.g. from JSON using the
-`JSONParse()` VQL function.
+scope prior to execution.
 
-There is no way to make a parameters as required.
+
+There is no way to make a parameter require a value. You should ensure that your
+parameters either have a sensible default value or design your artifact in such
+a way that it doesn't fail, or fails gracefully (for example, by providing a
+user-friendly log message) if no value is specified. The `validating_regex`
+field can be used to indicate to the user that their entered value is not valid.
 
 ## Parameter fields
 
-The parameter **name** is the only required field. If nothing else is specified
+For parameters `name` is the only required field. If nothing else is specified
 to further describe tha parameter then it is by default a text field; that is a
 simple text string.
 
 However each parameter can optionally have any of several attributes that
-specify the parameter type and additional information that is used by the GUI
+specify the parameter type and additional information which is used by the GUI
 for displaying and editing the parameter.
 
 [Descriptions of the parameter fields](https://github.com/Velocidex/velociraptor/blob/52dc005b1594723716dc6b3e3a7a719a885b74ef/docs/references/server.config.yaml#L1050)
@@ -53,7 +54,8 @@ for displaying and editing the parameter.
 - type
 - friendly_name
 - validating_regex (this is just a visual indicator. It will not stop you from running the artifact)
-- artifact_type (only used for type = artifactset)
+- artifact_type (string: only used for type = artifactset)
+- sources (bool: only used for type = artifactset)
 
 
 ### Parameter types
@@ -116,8 +118,12 @@ Currently the following parameter types are supported
 
 ## How parameters are processed
 
-Parameters are essentially VQL variables. The values are converted to the
+All parameters are defined as strings. The values are then converted to the
 specified data type at runtime.
+
 - Demonstrate this:
    - using typeof()
    - by overriding a parameter value with a VQL assignment.
+
+Parameters are essentially VQL variables. That is they are accessible in VQL as
+variables, and their data type will correspond to the parameter's type.

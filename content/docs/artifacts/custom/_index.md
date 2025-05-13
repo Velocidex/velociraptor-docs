@@ -1,14 +1,14 @@
 ---
 menutitle: "Custom Artifacts"
-title: "Artifact Sources"
+title: "Custom Artifacts"
 date: 2025-01-25
 draft: false
-weight: 50
-summary: "Customizing built-in artifacts"
+weight: 120
+summary: "Customizing built-in artifacts or creating your own"
 last_reviewed: 2025-04-30
 ---
 
-This section will cover custom artifacts.
+> Customizing built-in artifacts or creating your own
 
 ## Custom vs Built-in Artifacts
 

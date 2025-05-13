@@ -1,13 +1,23 @@
 ---
-menutitle: "Calling other artifacts"
-title: "Calling other artifacts from VQL"
-date: 2025-01-31
+menutitle: "Artifacts via VQL"
+title: "Managing and calling artifacts via VQL"
+date: 2025-05-13
 draft: false
-weight: 35
-summary: "How to launch artifacts from other artifacts"
-last_reviewed: 2025-04-30
+weight: 120
+summary: "How to manage and call artifacts via VQL"
+last_reviewed: 2025-05-13
 ---
 
+## Working with the internal artifact repository in VQL
+
+select * from artifact_definitions()
+/vql_reference/server/artifact_definitions/
+
+/vql_reference/server/artifact_set/
+
+/vql_reference/server/artifact_set_metadata/
+
+/vql_reference/server/artifact_delete/
 
 
 ## Calling artifacts from VQL

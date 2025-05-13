@@ -188,9 +188,10 @@ is easy to escalate to full admin with that permission.
 
 ## Required permissions
 
-`required_permissions`
+`required_permissions` - A list of permissions required to collect this
+artifact.
 
-## Server artifacts and Impersonation
+## Server Artifacts and Impersonation
 
 The above discussion centered around controlling access to client
 artifacts. But sometimes we need to also control access to server

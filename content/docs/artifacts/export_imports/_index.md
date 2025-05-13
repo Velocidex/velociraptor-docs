@@ -3,7 +3,7 @@ menutitle: "Exports & Imports"
 title: "Exports & Imports"
 date: 2025-01-25
 draft: false
-weight: 40
+weight: 30
 summary: "Sharing VQL across sources and artifacts"
 last_reviewed: 2025-04-30
 ---

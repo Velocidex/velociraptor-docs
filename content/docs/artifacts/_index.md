@@ -47,10 +47,12 @@ information sources on endpoints which are traditionally described as
 
 ## Why use Artifacts instead of just running VQL queries directly?
 
-In Velociraptor all VQL queries are packaged in Artifacts. VQL cannot be run
-directly on clients, with the exception of the standalone
-[CLI `query` command]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}).
-In client-server mode, VQL queries are always delivered to the client in the
+VQL queries are typically packaged in a type of logical container which we call Artifacts. VQL cannot be run
+directly on clients.
+
+The Velociraptor CLI does have the ability to run queries directly using the
+[`query` command]({{< ref "/docs/deployment/#command-line-investigation-tool" >}})
+however in client-server mode VQL queries are always delivered to the client in the
 form of artifacts.
 
 When performing a collection against a client, the server _compiles_ the
@@ -71,7 +73,7 @@ Here are some of the key benefits of Velociraptor Artifacts:
   Artifacts bundle VQL statements and related configurations into a single,
   reusable unit. Once an artifact is written, the user does not need to remember
   or re-enter the query. Artifacts can be
-  [called from other VQL queries]({{< ref "/docs/artifacts/calling_artifacts/" >}})
+  [called from other VQL queries]({{< ref "/docs/artifacts/vql/" >}})
   as if they were [standard plugins]({{< ref "/vql_reference/" >}}),
   encouraging the development of reusable components that can be combined like
   Lego bricks.
@@ -197,16 +199,17 @@ The Artifact contains a number of important YAML fields:
 
 ### A More Advanced Example
 
-Let's take a look at a typical artifact named `Windows.Detection.Mutants`.
+Let's take a look at a more typical artifact named `Windows.Detection.Mutants` -
+one of Velociraptor's 400+ built-in artifacts.
 
 ![Mutants artifact](mutants.svg)
 
 This artifact uncovers the mutants (a.k.a mutexes) on a system, using
 two methods:
-- First we enumerate all handles, and check which process is holding a handle to
-  a mutant object.
-- Alternatively we enumerate the kernel object manager to receive the same
-  information.
+1. First we enumerate all handles, and check which process is holding a handle to
+   a mutant object.
+2. Alternatively we enumerate the kernel object manager to receive the same
+   information.
 
 Therefore this artifact contains two sources - each gets similar
 information in a different way. A user who is just interested in
@@ -219,26 +222,35 @@ process name or mutant name.
 
 ## Saving, loading, and importing artifacts
 
-for the root org's artifact repository:
-datastore/artifact_definitions
 
-for other orgs, each org has their own artifact repository:
+
+- in the datastore. This is the location used when artifacts are created or
+  edited in the GUI.
+  - for the root org's artifact repository:
+    datastore/artifact_definitions
+  - for other orgs, each org has their own artifact repository:
 /datastore1/orgs/OQRA0/artifact_definitions
-
-
---definitions
-
-included in config: artifacts defined in the `autoexec.artifact_definitions` section
+- embedded in the config's `autoexec.artifact_definitions` section
+- a directory specified by the `artifact_definitions_directory` config setting
+- a directory specified by the `--definitions` CLI flag
 
 
 ### Built-in vs. Custom Artifacts
 
+loaded embedded in the config or loaded from a directory using the
+`artifact_definitions_directory` config setting or the CLI `--definitions` flag
+are they cannot be modified at runtime.
 
-### Custom overrides
+### Custom artifact overrides
 
+Artifacts loaded from the sources described above will override built-in
+artifacts if they have the same artifact name.
 
+Artifacts beginning with the prefix `Custom.` will override built-in artifacts
+under certain circumstance...???
 
-The pages in this section explain the key concepts for creating and using
-Velociraptor artifacts.
+## What's next?
+
+Learn more about the key concepts for creating, managing and using artifacts.
 
 {{% children description="true" %}}
