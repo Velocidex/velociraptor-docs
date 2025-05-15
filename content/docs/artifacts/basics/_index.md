@@ -9,31 +9,51 @@ summary: |
 last_reviewed: 2025-04-30
 ---
 
-> Understanding the most commonly used artifact fields is crucial for working
-> with artifacts. This section outlines the most commonly used artifact fields
-> and explains how to use them.
+Understanding the most commonly used artifact fields is crucial for working with
+artifacts. These are the ones you really need to know about. This page outlines
+the most commonly used top-level artifact fields and explains how to use them.
 
-## Summary
+Less frequently used and more advanced fields are described separately, with a
+brief overview and links to more detailed information being provided towards the
+end of this page. But for easy reference, we provide a brief outline of those
+fields here too.
+
+### Basic Fields Summary
+
+These fields are used in most artifacts.
 
 | Field Name         | Description                               | Searchable? | YAML Data Type |
 |--------------------|-------------------------------------------|:------------:|:-------------:|
-| [name]({{< relref "#-name-" >}}) | Artifact's unique identifier. Required | Yes | string |
+| [name]({{< relref "#-name-" >}}) | Artifact's unique identifier. **Required** | Yes | string |
 | [aliases]({{< relref "#-aliases-" >}}) | Allows for multiple names to be used for the same artifact. | Yes | sequence |
-| [type]({{< relref "#-type-" >}}) | Artifact category (e.g., CLIENT or SERVER). | Filterable | string |
+| [type]({{< relref "#-type-" >}}) | Artifact category (e.g. CLIENT or SERVER). | Filterable | string |
 | [description]({{< relref "#-description-" >}}) | Prose describing the artifact’s purpose and usage. | Yes | string |
 | [author]({{< relref "#-author-" >}}) | Records the artifact's author. | No | string |
 | [reference]({{< relref "#-reference-" >}}) | Links to external resources or further information. | No | sequence |
 | [parameters]({{< relref "#-parameters-" >}}) | Parameters to be provided to the artifact. | No | sequence |
-| [sources]({{< relref "#-sources-" >}}) | Describes how the artifact produces data. | No | sequence |
+| [sources]({{< relref "#-sources-" >}}) | Defines how the artifact produces data. | No | sequence |
 | [column_types]({{< relref "#-column_types-" >}}) | Defines specific GUI formatting for selected results columns. | No | sequence |
+
+### Advanced Fields Summary
+
+These fields are
+
+| Field Name         | Description                               |
+|--------------------|-------------------------------------------|
+| [resources]({{< relref "#-resources-" >}}) | Defines various resource limits that apply when the artifact is collected. |
 
 
 {{% notice info "Field names are case-sensitive!" %}}
 
-This is due to YAML keys being case-sensitive, e.g. the fields "Name" and "name" would be treated as different
-keys in a YAML document. All artifact field names are lowercase, by convention.
+Due to YAML keys being case-sensitive (that is, the fields "Name" and "name"
+would be treated as different keys in a YAML document), all artifact field names
+are case-sensitive and, by convention, also lowercase.
 
 {{% /notice %}}
+
+## Basic Fields
+
+These are the basic building blocks of most artifacts.
 
 ### [ name ]
 
@@ -146,20 +166,48 @@ screen.
 
 ### [ type ]
 
-Artifact types:
+The artifact `type` field is mainly used to determine where the artifact can be
+used in the GUI, with the exception of the `INTERNAL` type.
 
-CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT, INTERNAL, NOTEBOOK
+This field categorizes the artifact into one of the six available types:
 
-If the artifact `type` field is not specified then it's assumed to be the
-default type: `CLIENT`.
+- The `CLIENT` type is the most commonly used. This is also the default type if
+  the field is not specified. Artifacts of this type can be collected on clients.
 
-`SERVER` artifacts are used for:
+- The `SERVER` type is used for:
 - administrative tasks, e.g. creating new orgs
 - housekeeping tasks, e.g. pruning old clients and cleaning up associated data
   that's taking up space on disk.
 
-The artifact types are also available as [search filters]({{< ref "/docs/artifacts/gui/" >}})
+- The `SERVER_EVENT`
+
+- The `INTERNAL` type is generally only used for system event queues (for
+  example, for master/minion communications), and is rarely used for custom
+  artifacts. This type of artifact is similar to the `SERVER_EVENT` type but
+  their data not written to disk to ensure maximum performance. This artifact
+  type is still visible to users since there are some situations where there's a
+  need to monitor the associated queues. Most such artifacts have the word
+  "Internal" [in their name](){{< ref "/tags/internal-artifact/" >}}.
+
+- The `NOTEBOOK` type is a relatively recent development. Artifacts of this type
+  are also called [Notebook Templates]({{< ref "/docs/artifacts/notebook_templates/" >}}).
+
+
+Although the value of the `type` field is not case-sensitive, for historical
+reasons most artifacts use uppercase for the field's value, but this is not
+a field requirement.
+
+The artifact types (with the exception of the `INTERNAL` type) are available as
+[search filters]({{< ref "/docs/artifacts/gui/" >}})
 on the Artifacts screen.
+
+Artifacts will be hidden from the artifact selection lists in the GUI if they
+have
+[no `sources`]({{< ref "/docs/artifacts/use_cases/#source-free-artifacts" >}}).
+This is to prevent users from running artifacts that will not return any data,
+and also to prevent confusion which might arise if these were selectable in the
+artifact selection lists.
+
 
 ## Informational fields
 
@@ -247,3 +295,21 @@ For a more detailed discussion of `sources` see the
 [Sources]({{< ref "/docs/artifacts/sources/" >}}) section.
 
 ### [ column_types ]
+
+The `column_types` field allows you to customize how specific columns (i.e.
+fields returned by a queries in an artifact) are displayed in the artifact's
+results tables in the GUI. That is, this field allows you to define formatting
+for specific columns that are returned by the artifact.
+
+If the column type is not specified for a particular field then Velociraptor
+will try to guess the appropriate display format based on the data itself.
+
+For a more detailed discussion of `column_types` see the
+[Sources]({{< ref "/docs/artifacts/column_types/" >}}) section.
+
+
+
+## Advanced Fields
+
+### [ resources ]
+

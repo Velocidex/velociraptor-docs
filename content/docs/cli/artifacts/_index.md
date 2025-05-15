@@ -4,7 +4,7 @@ title: 'The "artifacts" command group'
 date: 2025-05-13
 draft: false
 weight: 10
-summary: "CLI commands for working with artifact definitions"
+summary: "Commands for working with artifact definitions"
 last_reviewed: 2025-05-13
 ---
 
@@ -184,11 +184,14 @@ Reads one of more artifact definitions as YAML files, and reformats the VQL
 sections in them using Velociraptor's internal VQL formatter.
 
 This command is mostly intended for automated build environments and CI
-pipelines, where consistent formatting across many artifacts is required.
+pipelines, where consistent formatting across many artifacts is required. The
+reformatting ensures that VQL queries are consistently formatted, making them
+easier to read, maintain, and debug.
 
-WARNING: The input artifacts will be modified on disk! Make sure you have backup
-copies of your artifacts before applying `reformat` to them, in case you don't
-like the resultant formatting.
+WARNING: The reformatted VQL is **inserted back into the original YAML**,
+replacing the old text while preserving the rest of the structure! Make sure you
+have backup copies of your artifacts before applying `reformat` to them, just in
+case you don't like the resultant formatting.
 
 **Example:**
 

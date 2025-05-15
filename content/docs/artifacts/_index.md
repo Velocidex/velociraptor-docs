@@ -222,20 +222,46 @@ process name or mutant name.
 
 ## Saving, loading, and importing artifacts
 
+Velociraptor ships with hundreds of built-in artifacts, which are compiled into
+the binary itself. You can use the
+[`artifacts` CLI command]({{< ref "/docs/artifacts/cli/" >}}) to list and
+examine these artifacts.
 
+When Velociraptor is run, the built-in artifacts are read directly from the
+binary, and not written to disk. Only custom artifacts are written to disk, and
+these are only written to the datastore directory.
 
-- in the datastore. This is the location used when artifacts are created or
+`Datastore.location`
+
+`artifact_definitions_directory`
+
+The default location for custom artifacts is the datastore. This is the location used when artifacts are created or
   edited in the GUI.
   - for the root org's artifact repository:
     datastore/artifact_definitions
   - for other orgs, each org has their own artifact repository:
 /datastore1/orgs/OQRA0/artifact_definitions
+
 - embedded in the config's `autoexec.artifact_definitions` section
 - a directory specified by the `artifact_definitions_directory` config setting
 - a directory specified by the `--definitions` CLI flag
 
 
-### Built-in vs. Custom Artifacts
+{{% notice info "Be aware of filesystem permissions when working in the datastore!" %}}
+
+If installed as a service, Velociraptor's datastore directory is owned by the
+service account named `velociraptor` and accessible to the `velociraptor` user
+group. New users often overlook this fact and create files in the
+datastore using the `root` account, which means that the Velociraptor service
+cannot read them.
+
+To avoid this issue, always remember to switch to the `velociraptor` user if you
+do want to add artifacts directly to the datastore. On most Linux systems this can be done with the
+command `sudo -u velociraptor bash`.
+
+{{% /notice %}}
+
+### Built-in vs. Compiled-in vs. Custom Artifacts
 
 Artifacts loaded from the config (i.e. embedded) or loaded from a directory using the
 `artifact_definitions_directory` config setting or the CLI `--definitions` flag
@@ -243,6 +269,14 @@ are deemed "built-in" and they cannot be modified at runtime. Editing these
 artifact, as with any compiled-in artifact will result in a copy with the
 `Custom.` prefix added to the name.
 
+You can run the following notebook query to see how a particular artifact has
+been classified by the server:
+
+```vql
+SELECT name, built_in, compiled_in
+FROM artifact_definitions()
+WHERE name =~ "Custom.Artifact.Name"
+```
 
 
 ### Custom artifact overrides

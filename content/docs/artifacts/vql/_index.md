@@ -25,9 +25,13 @@ SELECT name, built_in, compiled_in FROM artifact_definitions()
 
 ## Calling artifacts from VQL
 
-You can call other artifacts from your own VQL using the
-`Artifact.<artifact name>` plugin notation. Args to the `Artifact()`
-plugin are passed as artifact parameters.
+Artifacts can be called directly from other VQL queries as if they were another
+VQL plugin. This allows you to chain artifacts together or use one artifact's
+results as input for another. This feature encourages building reusable VQL
+artifacts like "Lego bricks".
+
+You can call other artifacts using the `Artifact.<artifact name>` plugin
+notation. Args to the `Artifact()` plugin are passed as artifact parameters.
 
 ![Calling artifacts](calling_artifacts.png)
 

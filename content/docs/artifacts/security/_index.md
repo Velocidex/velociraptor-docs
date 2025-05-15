@@ -1,5 +1,5 @@
 ---
-menutitle: "Security"
+menutitle: "Artifact Security"
 title: "Artifact Security"
 date: 2025-01-25
 weight: 120
@@ -186,7 +186,7 @@ is easy to escalate to full admin with that permission.
 
 {{% /notice %}}
 
-## Required permissions
+## Required Permissions
 
 `required_permissions` - A list of permissions required to collect this
 artifact.
@@ -196,6 +196,10 @@ Commonly used:
 - EXECVE
 - MACHINE_STATE
 - SERVER_ADMIN
+
+## Tracking Artifact Modifications
+
+`Server.Internal.ArtifactModification` event queue and logging
 
 ## Server Artifacts and Impersonation
 
