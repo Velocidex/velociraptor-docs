@@ -3,7 +3,7 @@ menutitle: "Artifact Writing Tips"
 title: "Artifact Writing Tips"
 date: 2025-01-25
 draft: false
-weight: 90
+weight: 120
 summary: "Advice for writing and testing artifacts"
 last_reviewed: 2025-04-30
 ---

@@ -3,7 +3,7 @@ title: Managing Artifacts
 menutitle: Managing Artifacts
 date: 2025-05-03
 draft: false
-weight: 80
+weight: 5
 noDisqus: true
 no_edit: true
 disableToc: true

@@ -3,7 +3,7 @@ menutitle: "Tools"
 title: "Tools"
 date: 2025-01-25
 draft: false
-weight: 65
+weight: 120
 summary: "Defining and adding tools in artifacts"
 last_reviewed: 2025-04-30
 ---

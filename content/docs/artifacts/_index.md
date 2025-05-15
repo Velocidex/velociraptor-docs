@@ -237,9 +237,13 @@ process name or mutant name.
 
 ### Built-in vs. Custom Artifacts
 
-loaded embedded in the config or loaded from a directory using the
+Artifacts loaded from the config (i.e. embedded) or loaded from a directory using the
 `artifact_definitions_directory` config setting or the CLI `--definitions` flag
-are they cannot be modified at runtime.
+are deemed "built-in" and they cannot be modified at runtime. Editing these
+artifact, as with any compiled-in artifact will result in a copy with the
+`Custom.` prefix added to the name.
+
+
 
 ### Custom artifact overrides
 

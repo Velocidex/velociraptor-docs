@@ -2,7 +2,7 @@
 menutitle: "Security"
 title: "Artifact Security"
 date: 2025-01-25
-weight: 55
+weight: 120
 summary: "How to secure artifacts"
 last_reviewed: 2025-04-30
 ---
@@ -190,6 +190,12 @@ is easy to escalate to full admin with that permission.
 
 `required_permissions` - A list of permissions required to collect this
 artifact.
+
+Commonly used:
+
+- EXECVE
+- MACHINE_STATE
+- SERVER_ADMIN
 
 ## Server Artifacts and Impersonation
 

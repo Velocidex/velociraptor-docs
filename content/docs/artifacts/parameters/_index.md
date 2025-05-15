@@ -3,7 +3,7 @@ menutitle: "Parameters"
 title: "Artifact Parameters"
 date: 2025-01-25
 draft: false
-weight: 10
+weight: 20
 summary: "Artifacts parameters and how they work"
 last_reviewed: 2025-05-13
 ---

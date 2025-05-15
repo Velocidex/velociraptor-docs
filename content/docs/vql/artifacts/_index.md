@@ -1,9 +1,9 @@
 ---
 title: Velociraptor Artifacts
-menutitle: Artifacts
+menutitle: VQL in Artifacts
 date: 2025-05-03
 draft: false
-weight: 80
+weight: 40
 noDisqus: true
 no_edit: true
 disableToc: true

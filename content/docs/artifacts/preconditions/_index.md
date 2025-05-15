@@ -3,7 +3,7 @@ menutitle: "Preconditions"
 title: "Artifact Preconditions"
 date: 2025-01-25
 draft: false
-weight: 40
+weight: 50
 summary: "Preconditions and how they work"
 last_reviewed: 2025-04-30
 ---

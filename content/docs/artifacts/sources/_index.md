@@ -3,7 +3,7 @@ menutitle: "Sources"
 title: "Artifact Sources"
 date: 2025-01-25
 draft: false
-weight: 20
+weight: 30
 summary: "Sources describe how the artifact produces data"
 last_reviewed: 2025-04-30
 ---

@@ -3,7 +3,7 @@ menutitle: "Novel Use Cases"
 title: "Novel Use Cases"
 date: 2025-01-25
 draft: false
-weight: 75
+weight: 120
 summary: "Interesting alternative use cases for artifacts"
 last_reviewed: 2025-04-30
 ---

@@ -3,7 +3,7 @@ menutitle: "Basic Fields"
 title: "Basic Artifact Fields"
 date: 2025-01-25
 draft: false
-weight: 5
+weight: 10
 summary: |
   The most commonly used artifact fields and how to use them.
 last_reviewed: 2025-04-30
@@ -25,6 +25,8 @@ last_reviewed: 2025-04-30
 | [reference]({{< relref "#-reference-" >}}) | Links to external resources or further information. | No | sequence |
 | [parameters]({{< relref "#-parameters-" >}}) | Parameters to be provided to the artifact. | No | sequence |
 | [sources]({{< relref "#-sources-" >}}) | Describes how the artifact produces data. | No | sequence |
+| [column_types]({{< relref "#-column_types-" >}}) | Defines specific GUI formatting for selected results columns. | No | sequence |
+
 
 {{% notice info "Field names are case-sensitive!" %}}
 
@@ -243,3 +245,5 @@ Artifacts screen.
 
 For a more detailed discussion of `sources` see the
 [Sources]({{< ref "/docs/artifacts/sources/" >}}) section.
+
+### [ column_types ]
