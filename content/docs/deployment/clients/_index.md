@@ -546,7 +546,10 @@ and may be helpful.
 2. Configure **Privacy Preferences Policy Control**
 - Identifier: `/usr/local/sbin/velociraptor`
 - Identifier Type: `Path`
-- Code Requirement: `identifier "com.velocidex.velociraptor" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "UL6CGN7MAL"`
+- Code Requirement: 
+```
+identifier "com.velocidex.velociraptor" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "UL6CGN7MAL"
+```
 - Under "App or Service" Configure **SystemPolicyAllFiles** set to **Allow**, effectively granting "Full Disk Access"
 - Scope: You can select **All Computers** but this is up to you
 
@@ -559,7 +562,7 @@ and may be helpful.
 - **Running Services** `does not have` **com.velocidex.velociraptor**
 - *and* **Architecture Type** `is` **arm64**
 
-*you can also use **x86_64** instead of **arm** for intel based devices*
+*You can also use **x86_64** instead of **arm64** for Intel-based devices*
 ![](jamf_pro_smart_group.png)
 
 5. Navigate to **Settings > Scripts > New**
@@ -575,7 +578,7 @@ cd $velociraptor_DIR;
 
 checksum="e6496519402e139de376c1c964302cc5f9b338c1d88a52b0579c9121d1992fba";
 
-# Installing Downloading velociraptor
+#Downloading velociraptor
 curl -L -O "https://github.com/Velocidex/velociraptor/releases/download/v0.74/$filename"
 temp_checksum=$(shasum -a 256 $filename | cut -d ' ' -f1);
 if [[ $temp_checksum != $checksum ]]; then
@@ -608,6 +611,16 @@ sudo ./$filename --config client.config.yaml service install;
 - Scope: `Smart Group we created in 3.` (Make sure that the Profile we created in **1.** is deployed to the same scope OR "All Computers"
 - Scripts: `Script we created in 5.`
 - Triggers: Up to you.
+
+{{% notice note "Mac settings may not show FDA is enabled" %}}
+
+In **Settings > Privacy & Security > Full Disk Access** `velociraptor` can still appear as disabled, even when it is correctly configured in the MDM Profile. To ensure the FDA has been enabled, follow the verification steps:
+
+- Run [MacOS.System.TCC](https://docs.velociraptor.app/artifact_references/pages/macos.system.tcc/) artifact in Velociraptor
+- If return output is empty **> no Full Disk Access (FDA)**
+- If you see actual data **> Full Disk Access (FDA) is enabled for `velociraptor`!**
+
+{{% /notice %}}
 
 ### Linux
 
