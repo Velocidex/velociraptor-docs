@@ -27,7 +27,7 @@ Follow the following steps:
 
 ## Step 3
 
-Replace all the localhost IPs to listen on all intertfaces (0.0.0.0)
+Replace all the localhost IPs to listen on all interfaces (0.0.0.0)
 `sed -e '/bind_address:/{s/127.0.0.1/0.0.0.0/}' -i /etc/velociraptor/server.config.yaml`
 
 ## Step 4

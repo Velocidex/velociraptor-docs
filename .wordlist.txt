@@ -1713,5 +1713,7 @@ distro
 abovementioned
 
 <url-free> content/docs/deployment/quickstart/_index.md
---------------------------------------------------------------------------------
 prebuilt
+
+<url-free> content/knowledge_base/tips/cloudflare_tunnel.md
+CloudFlare
