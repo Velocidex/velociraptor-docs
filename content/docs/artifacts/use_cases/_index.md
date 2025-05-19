@@ -1,6 +1,6 @@
 ---
 menutitle: "Novel Use Cases"
-title: "Novel Use Cases"
+title: "Novel use cases for artifacts"
 date: 2025-01-25
 draft: false
 weight: 120
@@ -10,7 +10,21 @@ last_reviewed: 2025-04-30
 
 ## Using server artifacts for server automation
 
-### Server Bootstrap Artifacts
+### Server "Bootstrap" Artifacts
+
+Config settings vs. equivalent VQL functions:
+
+`GUI.initial_users`
+`GUI.initial_orgs`
+`Frontend.default_server_monitoring_artifacts`
+`Frontend.default_client_monitoring_artifacts`
+`Frontend.initial_server_artifacts`
+
+VQL functions that can be useful initialize a new server, which don't have
+equivalent config settings:
+
+- [hunt_add()](): to create hunts
+- create notebooks
 
 ## Source-free Artifacts
 

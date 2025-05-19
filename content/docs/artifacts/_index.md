@@ -59,9 +59,12 @@ When performing a collection against a client, the server _compiles_ the
 artifact and it's dependencies into raw VQL statements and sends these to the
 client for evaluation. The compiled artifacts do not include comments and
 informational fields (such as author, description, or references) since these
-server no purpose on the client. We never rely on the artifact definitions
-embedded in the client itself - instead we always send the compiled VQL to the
-client.
+server no purpose on the client. This also reduces the risk of artifact
+information leakage on a potentially compromised client, as well as reducing the
+size of the artifacts sent to the client.
+
+We never rely on the artifact definitions embedded in the client itself -
+instead we always send the compiled VQL to the client.
 
 Artifacts are stored and managed on the server. This allows us to centrally
 upgrade, customize, or add new artifact definitions without needing to update
@@ -196,7 +199,6 @@ The Artifact contains a number of important YAML fields:
    of the query potentially following any `LET` queries.
 
 
-
 ### A More Advanced Example
 
 Let's take a look at a more typical artifact named `Windows.Detection.Mutants` -
@@ -220,63 +222,120 @@ We also see some parameters declared to allow a user to filter by
 process name or mutant name.
 
 
-## Saving, loading, and importing artifacts
+## Loading, importing, and saving artifacts
 
-Velociraptor ships with hundreds of built-in artifacts, which are compiled into
+Velociraptor ships with hundreds of built-in artifacts which are compiled into
 the binary itself. You can use the
 [`artifacts` CLI command]({{< ref "/docs/artifacts/cli/" >}}) to list and
 examine these artifacts.
 
 When Velociraptor is run, the built-in artifacts are read directly from the
-binary, and not written to disk. Only custom artifacts are written to disk, and
-these are only written to the datastore directory.
+binary, and are not written to disk.
 
-`Datastore.location`
+Only custom artifacts are written to disk, and these are only written to the
+datastore directory.
 
-`artifact_definitions_directory`
+### Loading artifacts at startup
 
-The default location for custom artifacts is the datastore. This is the location used when artifacts are created or
-  edited in the GUI.
+The default location for custom artifacts is the datastore. This is the location
+used when artifacts are
+[created or edited in the GUI]({{< ref "/docs/gui/artifacts/" >}}).
+
   - for the root org's artifact repository:
     datastore/artifact_definitions
   - for other orgs, each org has their own artifact repository:
 /datastore1/orgs/OQRA0/artifact_definitions
 
-- embedded in the config's `autoexec.artifact_definitions` section
-- a directory specified by the `artifact_definitions_directory` config setting
-- a directory specified by the `--definitions` CLI flag
+`Datastore.location`
 
+`artifact_definitions_directory`
 
 {{% notice info "Be aware of filesystem permissions when working in the datastore!" %}}
 
 If installed as a service, Velociraptor's datastore directory is owned by the
 service account named `velociraptor` and accessible to the `velociraptor` user
-group. New users often overlook this fact and create files in the
-datastore using the `root` account, which means that the Velociraptor service
-cannot read them.
+group. New users often overlook this fact and create files in the datastore
+using their own user account or the `root` account, which means that the
+Velociraptor service cannot read them.
 
-To avoid this issue, always remember to switch to the `velociraptor` user if you
-do want to add artifacts directly to the datastore. On most Linux systems this can be done with the
-command `sudo -u velociraptor bash`.
+Working directly with artifact files in the datastore is discouraged, but if you
+need to do this you can avoid creating permissions problems by switching to the
+`velociraptor` user. On most Linux systems this can be done with the command
+`sudo -u velociraptor bash`.
 
 {{% /notice %}}
 
+Custom artifacts loaded from these sources are deemed "built-in":
+
+- embedded in the config's `autoexec.artifact_definitions` section
+- a directory specified by the `Frontend.artifact_definitions_directory` config setting
+- additional directories specified by the `defaults.artifact_definitions_directories` config setting
+- a directory specified by the `--definitions` CLI flag
+
+### Importing artifacts during runtime
+
+Artifacts loaded at server startup, in the locations described above, are deemed
+"built-in" and cannot be modified. Any changes to the artifacts in those
+locations will not be effective without a server restart.
+
+Ways to do it:
+
+[artifact packs]({{< ref "/docs/gui/artifacts/#importing-artifact-packs" >}})
+
+[server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+
+VQL
+
+
+
+
 ### Built-in vs. Compiled-in vs. Custom Artifacts
 
-Artifacts loaded from the config (i.e. embedded) or loaded from a directory using the
-`artifact_definitions_directory` config setting or the CLI `--definitions` flag
-are deemed "built-in" and they cannot be modified at runtime. Editing these
-artifact, as with any compiled-in artifact will result in a copy with the
-`Custom.` prefix added to the name.
+Artifacts loaded from the binary, loaded from the config (i.e. embedded), or
+loaded from a directory using the `artifact_definitions_directory` or
+`artifact_definitions_directories` config settings, or from a path specified by
+the CLI `--definitions` flag are deemed "built-in" and they cannot be modified
+during runtime.
 
-You can run the following notebook query to see how a particular artifact has
-been classified by the server:
+To summarize:
+
+| Loaded from                                 | considered <br>built-in? | considered <br>compiled-in? |
+|:--------------------------------------------|:------------------------:|:---------------------------:|
+| binary                                      |           yes            |             yes             |
+| `autoexec.artifact_definitions`             |           yes            |             no              |
+| `Frontend.artifact_definitions_directory`   |           yes            |             no              |
+| `defaults.artifact_definitions_directories` |           yes            |             no              |
+| `--definitions` CLI flag                    |           yes            |             no              |
+
+Attempting to edit any **compiled-in** artifact in the GUI will result in a copy
+being created with the `Custom.` prefix added to the name.
+
+Attempting to edit any **built-in** artifact in the GUI will create a copy but
+you'll need to ensure that you choose a new name for it.
+
+You can run the following VQL query in a notebook to see how a particular
+artifact has been classified by the server:
 
 ```vql
 SELECT name, built_in, compiled_in
 FROM artifact_definitions()
-WHERE name =~ "Custom.Artifact.Name"
+WHERE name =~ "Artifact.Name"
 ```
+
+Artifacts which are not given the **built-in** designation are considered
+**custom**. In the GUI's artifact screen these artifacts are shown with the
+<i class="fa-solid fa-user-pen"></i> icon.
+
+### Saving artifacts
+
+All artifacts created during runtime are saved to the `artifact_definitions`
+directory in the datastore. Artifacts in this location are readable and
+writeable.
+
+All other artifact sources mentioned above are deemed **built-in** and are
+read-only.
+
+### Orgs, artifact inheritence, and masking
 
 
 ### Custom artifact overrides

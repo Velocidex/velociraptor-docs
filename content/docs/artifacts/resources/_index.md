@@ -1,11 +1,11 @@
 ---
-menutitle: "Resource Usage"
+menutitle: "Resource Limits"
 title: "Limiting resource usage"
 date: 2025-05-13
 draft: false
 weight: 120
 summary: "How to limit an artifact's resource usage"
-last_reviewed: 2025-05-13
+last_reviewed: 2025-05-18
 ---
 
 Resource limits can be placed on queries and collections. These limits are

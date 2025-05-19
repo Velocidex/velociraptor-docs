@@ -183,6 +183,15 @@ a:hover {
     border-color: var(--MENU-SECTION-HR-color);
 }
 
+.fa-chevron-right {
+    color: transparent !important;
+    padding: 0 3px 0 0;
+}
+
+.svg-inline--fa {
+    padding: 0 3px 0 0;
+}
+
 div.section {
     opacity: 1;
 }
@@ -708,6 +717,7 @@ table thead th {
 .vqlargs + table {
     margin-top: 0;
     margin-bottom: 1em;
+    width: 100% !important;
 }
 
 .vqlargs + table td {
@@ -831,6 +841,7 @@ details > summary:first-of-type {
 #body-inner table {
     border: none;
     margin-bottom: 1em;
+    width: max-content;
 }
 
 #body-inner table tbody {
@@ -849,6 +860,7 @@ details > summary:first-of-type {
 
 #body-inner tbody td {
     border: none;
+    padding: 5px;
 }
 
 .search_results table {
