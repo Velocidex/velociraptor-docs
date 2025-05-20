@@ -57,6 +57,9 @@ precondition: |
 parameters:
   - name: ServiceName
     description: Override the name of the driver service to install.
+  - name: DriverPath
+    description: Where to unpack the driver before loading it.
+    default: C:\Windows\Temp\winpmem.sys
   - name: Compression
     default: None
     type: choices
@@ -72,6 +75,7 @@ sources:
       LET Tempfile &lt;= tempfile(extension=".pmem")
 
       LET ImageInfo &lt;= winpmem(
+         driver_path=DriverPath,
          service=ServiceName,
          image_path=Tempfile,
          compression=Compression)

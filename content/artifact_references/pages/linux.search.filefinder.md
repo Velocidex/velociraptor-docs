@@ -123,6 +123,14 @@ parameters:
     default: N
     description: If specified we are allowed to follow symlinks while globbing
 
+  - name: ROOT
+    type: hidden
+    description: The root from which to start searching.
+
+  - name: ACCESSOR
+    type: hidden
+    default: "file"
+
 sources:
 - query: |
     -- This list comes from cat /proc/devices and represents actual
@@ -173,8 +181,9 @@ sources:
                IsDir, Mode, Data
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   recursion_callback=RecursionCallback,
+                  root=ROOT,
                   one_filesystem=OneFilesystem,
-                  accessor="file", nosymlink=DoNotFollowSymlinks)
+                  accessor=ACCESSOR, nosymlink=DoNotFollowSymlinks)
 
     LET more_recent = SELECT * FROM if(
         condition=MoreRecentThan,
@@ -211,7 +220,7 @@ sources:
                FROM yara(files=OSPath,
                          key="A",
                          rules=YaraRule,
-                         accessor="file")
+                         accessor=ACCESSOR)
             })
         }, else={
           SELECT *, NULL AS Keywords FROM modified_before
@@ -221,10 +230,10 @@ sources:
              MTime, CTime, Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
-                              accessor="file")) AS Upload,
+                              accessor=ACCESSOR)) AS Upload,
                if(condition=Calculate_Hash and Mode.IsRegular,
                   then=hash(path=OSPath,
-                            accessor="file")) AS Hash
+                            accessor=ACCESSOR)) AS Hash
     FROM keyword_search
 
 column_types:

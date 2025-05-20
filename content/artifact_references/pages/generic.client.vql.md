@@ -13,7 +13,7 @@ description: |
   Run arbitrary VQL on the endpoint.
 
 required_permissions:
-  - EXECVE
+  - IMPERSONATION
 
 parameters:
   - name: Command

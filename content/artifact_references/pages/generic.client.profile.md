@@ -117,10 +117,9 @@ export: |
 
 sources:
   - query: |
-      SELECT Type,
-             if(condition=get(field="OSPath"),
-                then=upload(name=Type + ".bin", file=OSPath)) AS File,
-             get(member="Line") AS Line
+      LET X = scope()
+
+      SELECT *, X.OSPath &amp;&amp; X.Type &amp;&amp; upload(name=X.Type + ".bin", file=X.OSPath) AS File
       FROM profile(allocs=Allocs, block=Block, goroutine=Goroutine,
                    heap=Heap, mutex=Mutex, profile=Profile, trace=Trace,
                    logs=Logs, queries=QueryLogs, metrics=Metrics,
@@ -170,7 +169,7 @@ sources:
 
   - name: Metrics
     query: |
-      SELECT Line.name AS Name, Line.value as value
+      SELECT *
       FROM profile(metrics=TRUE)
 
   - name: Everything

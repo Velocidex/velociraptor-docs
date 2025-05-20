@@ -18,6 +18,7 @@ not yet been categorized.
 |[atexit](atexit)|<span class='vql_type'>Function</span>|Install a query to run when the query is unwound|
 |[batch](batch)|<span class='vql_type'>Plugin</span>|Batches query rows into multiple arrays|
 |[cache](cache)|<span class='vql_type'>Function</span>|Creates a cache object|
+|[cache_dns](cache_dns)|<span class='vql_type'>Function</span>|Add a DNS record to the cache|
 |[cidr_contains](cidr_contains)|<span class='vql_type'>Function</span>|Calculates if an IP address falls within a range of CIDR specified|
 |[collect](collect)|<span class='vql_type'>Plugin</span>|Collect artifacts into a local file|
 |[combine](combine)|<span class='vql_type'>Plugin</span>|Combine the output of several queries into the same result set|
@@ -69,6 +70,9 @@ not yet been categorized.
 |[rm](rm)|<span class='vql_type'>Function</span>|Remove a file from the filesystem using the API|
 |[rsyslog](rsyslog)|<span class='vql_type'>Function</span>|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
+|[secret_define](secret_define)|<span class='vql_type'>Function</span>|Define a new secret template|
+|[secret_modify](secret_modify)|<span class='vql_type'>Function</span>|Modify the secret|
+|[secrets](secrets)|<span class='vql_type'>Plugin</span>|Retrieve the list of secrets on the server|
 |[serialize](serialize)|<span class='vql_type'>Function</span>|Encode an object as a string|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
 |[similarity](similarity)|<span class='vql_type'>Function</span>|Compare two Dicts for similarity|
