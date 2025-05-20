@@ -30,3 +30,30 @@ default_details|If specified we use this callback to determine a details column 
 
 Evaluate sigma rules.
 
+For a full description of this plugin see
+* https://docs.velociraptor.app/blog/2023/2023-11-15-sigma_in_velociraptor/
+* https://docs.velociraptor.app/blog/2024/2024-05-09-detection-engineering/
+* https://docs.velociraptor.app/blog/2025/2025-02-02-sigma/
+
+A Curated set of Sigma Models and rules is maintained at https://sigma.velocidex.com/
+
+## Extensions to the Sigma rule format.
+
+The following extensions are supported by Velociraptor's `sigma()`
+plugin:
+
+1. The `vql` field can specify a VQL lambda which will be used to
+   construct or enrich the event with additional fields. This
+   happens prior to event matching so it applies on all events
+   (event ones that do not match). Therefore this section should
+   be fairly light weight.
+
+2. The `enrichment` field specifies a VQL lambda which will be
+   used to build an enrichment object after a match is made. This
+   is used to additional information for the analyst to assess.
+
+3. The `vql` modifier can be used to specify a VQL lambda that
+   will be used in a detection clause. The lambda will receive the
+   field and should return a boolean value.
+
+

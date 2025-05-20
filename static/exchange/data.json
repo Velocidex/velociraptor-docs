@@ -1,9 +1,79 @@
 [
     {
+        "title": "Server.Enrichment.AI.Gemini",
+        "author": "mgreen27",
+        "description": "Query Gemini AI for analysis of data.",
+        "link": "/exchange/artifacts/pages/gemini",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-05-01"
+    },
+    {
+        "title": "Server.Enrichment.AI.Anthropic",
+        "author": "mgreen27",
+        "description": "Query Anthropic AI for analysis of data.",
+        "link": "/exchange/artifacts/pages/anthropic",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-04-30"
+    },
+    {
+        "title": "Server.Enrichment.AI.Ollama",
+        "author": "mgreen27",
+        "description": "This artifact allows enrichment using Ollama AI. ",
+        "link": "/exchange/artifacts/pages/ollama",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-04-14"
+    },
+    {
+        "title": "Server.Enrichment.SecureAnnex",
+        "author": "shortstack",
+        "description": "Submit an extension to the Secure Annex API.",
+        "link": "/exchange/artifacts/pages/server.enrichment.secureannex",
+        "tags": [],
+        "author_link": "https://github.com/shortstack",
+        "author_avatar": "https://avatars.githubusercontent.com/u/1244979?v=4",
+        "date": "2025-03-30"
+    },
+    {
+        "title": "Windows.Detection.Keylogger",
+        "author": "zaneGittins",
+        "description": "This artifact is my attempt at implementing keylogger detection based on research presented by [Asuka Nakajima at NULLCON](https://speakerdeck.com/asuna_jp/nullcon-goa-2025-windows-keylogger-detection-targeting-past-and-present-keylogging-techniques) using the Microsoft-Windows-Win32k ETW provider.",
+        "link": "/exchange/artifacts/pages/windows.detection.keylogger",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-25"
+    },
+    {
+        "title": "Windows.ETW.ScreenshotTaken",
+        "author": "zaneGittins",
+        "description": "This artifact detects screen captures by correlating events from the Microsoft-Windows-Win32k ETW provider which are triggered by common Windows API calls made when taking a screenshot. This can be useful for detecting remote access trojans, infostealers, and data exfiltration. Tested against Sliver, Meterpreter, and Empire. This will also trigger on legitimate tools such as ZoomIt, Greenshot, MsTeams, etc. which can be excluded on a case by case basis via the ProcessExceptionsRegex parameter.\n",
+        "link": "/exchange/artifacts/pages/windows.etw.screenshottaken",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-25"
+    },
+    {
         "title": "Linux.Detection.Honeyfiles",
         "author": "zaneGittins",
         "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.",
         "link": "/exchange/artifacts/pages/linux.detection.honeyfiles",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-18"
+    },
+    {
+        "title": "Windows.Detection.Honeyfiles",
+        "author": "zaneGittins",
+        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.",
+        "link": "/exchange/artifacts/pages/windows.detection.honeyfile",
         "tags": [],
         "author_link": "https://github.com/zaneGittins",
         "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
@@ -60,16 +130,6 @@
         "author_link": "https://github.com/j91321",
         "author_avatar": "https://avatars.githubusercontent.com/u/10012872?v=4",
         "date": "2024-12-01"
-    },
-    {
-        "title": "Server.Enrichment.JsonLookup",
-        "author": "shortstack",
-        "description": "Allows pulling in JSON lists from an external URL to perform lookups against",
-        "link": "/exchange/artifacts/pages/server.enrichment.jsonlookup",
-        "tags": [],
-        "author_link": "https://github.com/shortstack",
-        "author_avatar": "https://avatars.githubusercontent.com/u/1244979?v=4",
-        "date": "2024-11-30"
     },
     {
         "title": "Linux.Forensics.ProcFD",
@@ -709,7 +769,7 @@
     {
         "title": "Windows.EventLogs.RemoteAccessVPN",
         "author": "ekt0-syn",
-        "description": "This Artifact enables scoping EventLogs from Microsoft VPN, served by \nRemote Access Service server role. \nIt is designed to assist in identifying VPN connections on organizations that \nare using Microsoft VPN service. It targets both server and client side logs.",
+        "description": "This Artifact enables scoping EventLogs from Microsoft VPN, served by\nRemote Access Service server role.\nIt is designed to assist in identifying VPN connections on organizations that\nare using Microsoft VPN service. It targets both server and client side logs.",
         "link": "/exchange/artifacts/pages/windows.eventlogs.remoteaccessvpn",
         "tags": [],
         "author_link": "https://github.com/ekt0-syn",
@@ -735,16 +795,6 @@
         "author_link": "https://github.com/SBattaglia-R7",
         "author_avatar": "https://avatars.githubusercontent.com/u/40576678?v=4",
         "date": "2023-08-14"
-    },
-    {
-        "title": "Linux.PrivilegeEscalationDetection",
-        "author": "leogrossi",
-        "description": "This artifact searches for potential privilege escalation indicators on Linux systems. It identifies processes running as root that were spawned by processes not running as root, which could indicate unauthorized privilege escalation. Created by Leonardo Grossi.\n",
-        "link": "/exchange/artifacts/pages/linux.privilegeescalationdetection",
-        "tags": [],
-        "author_link": "https://github.com/leogrossi",
-        "author_avatar": "https://avatars.githubusercontent.com/u/69981202?v=4",
-        "date": "2023-08-01"
     },
     {
         "title": "Generic.Forensics.CyLR",
@@ -777,9 +827,9 @@
         "date": "2023-07-16"
     },
     {
-        "title": "Custom.Windows.Nirsoft.LastActivityView",
+        "title": "Windows.Nirsoft.LastActivityView",
         "author": "hasamba",
-        "description": "LastActivityView is a tool for Windows operating system that collects information from various sources on a running system, and displays a log of actions made by the user and events occurred on this computer. The activity displayed by LastActivityView includes: Running .exe file, Opening open/save dialog-box, Opening file/folder from Explorer or other software, software installation, system shutdown/start, application or system crash, network connection/disconnection and more...\n",
+        "description": "LastActivityView is a tool for Windows operating system that\ncollects information from various sources on a running system, and\ndisplays a log of actions made by the user and events occurred on\nthis computer. The activity displayed by LastActivityView includes:\nRunning .exe file, Opening open/save dialog-box, Opening file/folder\nfrom Explorer or other software, software installation, system\nshutdown/start, application or system crash, network\nconnection/disconnection and more...\n",
         "link": "/exchange/artifacts/pages/windows.nirsoft.lastactivityview",
         "tags": [],
         "author_link": "https://github.com/hasamba",
@@ -839,7 +889,7 @@
     {
         "title": "Windows.EventLogs.MoveIt",
         "author": "mgreen27",
-        "description": "This Artifact enables scoping EventLogs from Progress Software's MoveIT File \nTransfer. It is designed to assist in identifying exfiltration resulting from\nthe exploitation of CVE-2023-34362",
+        "description": "This Artifact enables scoping EventLogs from Progress Software's MoveIT File\nTransfer. It is designed to assist in identifying exfiltration resulting from\nthe exploitation of CVE-2023-34362",
         "link": "/exchange/artifacts/pages/moveitevtx",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -1175,7 +1225,7 @@
     {
         "title": "Windows.Detection.PublicIP",
         "author": "mgreen27",
-        "description": "This artifact queries for RDP and Authentication events with a Public IP \nsource. The artifact uses Windows.EventLogs.RDPAuth and has several built in \nnotebooks for analysis.\n",
+        "description": "This artifact queries for RDP and Authentication events with a Public IP\nsource. The artifact uses Windows.EventLogs.RDPAuth and has several built in\nnotebooks for analysis.\n",
         "link": "/exchange/artifacts/pages/publicip",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -1433,7 +1483,7 @@
         "date": "2022-12-06"
     },
     {
-        "title": "Server.Enrichment.OpenAI",
+        "title": "Server.Enrichment.AI.OpenAI",
         "author": "weslambert",
         "description": "Query OpenAI for analysis of data.",
         "link": "/exchange/artifacts/pages/server.enrichment.openai",
@@ -1745,7 +1795,7 @@
     {
         "title": "Windows.Detection.ISOMount",
         "author": "cquinn-r7",
-        "description": "Following Microsoft's decision to block macros by default on MS Office applications, threat actors are increasingly using container files such as ISO files to distribute malware. \nThis artifact will extract evidence of container files being mounted that may be malicious from the Microsoft-Windows-VHDMP-Operational EventLog. \nThe artifact targets the string \".(iso|vhd|vhdx|img)$\" in event IDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).\n",
+        "description": "Following Microsoft's decision to block macros by default on MS\nOffice applications, threat actors are increasingly using container\nfiles such as ISO files to distribute malware.  This artifact will\nextract evidence of container files being mounted that may be\nmalicious from the Microsoft-Windows-VHDMP-Operational EventLog.\nThe artifact targets the string \".(iso|vhd|vhdx|img)$\" in event\nIDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).\n",
         "link": "/exchange/artifacts/pages/windows.detection.isomount",
         "tags": [],
         "author_link": "https://github.com/cquinn-r7",
@@ -1895,7 +1945,7 @@
     {
         "title": "Windows.Detection.Ntdsutil",
         "author": "mgreen27",
-        "description": "This artifact will extract evidence of Ntdsutil abuse from the application \neventlog. The artifact targets the string \"ntds.dit\" in event IDs: 216, 325,\n326 and 327.\n",
+        "description": "This artifact will extract evidence of Ntdsutil abuse from the application\neventlog. The artifact targets the string \"ntds.dit\" in event IDs: 216, 325,\n326 and 327.\n",
         "link": "/exchange/artifacts/pages/ntdsutil",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -2720,16 +2770,6 @@
         "date": "2021-07-06"
     },
     {
-        "title": "Linux.Memory.Acquisition",
-        "description": "Acquires a full memory image. We download LiME and use it to acquire\na full memory image.",
-        "link": "/exchange/artifacts/pages/linuxmemoryacquisition",
-        "tags": [],
-        "author": "makhno4n6",
-        "author_link": "https://github.com/makhno4n6",
-        "author_avatar": "https://avatars.githubusercontent.com/u/86801976?v=4",
-        "date": "2021-07-02"
-    },
-    {
         "title": "Linux.Volatility.Create.Profile",
         "description": "This artifact is used to create the profile to the environnements Debian / Ubuntu.\n",
         "link": "/exchange/artifacts/pages/volatility_profile",
@@ -2782,15 +2822,5 @@
         "author_link": "https://github.com/ffh571",
         "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
         "date": "2021-06-23"
-    },
-    {
-        "title": "Windows.Detection.Honeyfiles",
-        "author": "",
-        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.",
-        "link": "/exchange/artifacts/pages/windows.detection.honeyfile",
-        "tags": [],
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

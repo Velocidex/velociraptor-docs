@@ -74,7 +74,9 @@ type: CLIENT
 parameters:
   - name: ServiceName
     description: Override the name of the driver service to install.
-
+  - name: DriverPath
+    description: Where to unpack the driver before loading it.
+    default: C:\Windows\Temp\winpmem.sys
   - name: NumberOfHits
     description: THis artifact will stop by default at one hit. This setting allows additional hits
     default: 100
@@ -142,7 +144,7 @@ sources:
            })
 
       -- Load the winpmem binary
-      LET _ &lt;= winpmem(service=ServiceName)
+      LET _ &lt;= winpmem(service=ServiceName, driver_path=DriverPath)
 
       SELECT
          Rule,

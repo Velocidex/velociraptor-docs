@@ -2037,11 +2037,25 @@ basic, google, azure, oidc-cognito, github, saml, oidc, multi</div>
    <div class="reference-value-mapping">email</div>
 </li>
 
+<div class="item-comment">Allow IdP-initiated SAML flow.</div>
+<li id="GUI.authenticator.saml_allow_idp_initiated">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L566">
+       saml_allow_idp_initiated
+     </a>
+   </div>
+   <a href="#GUI.authenticator.saml_allow_idp_initiated" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
 <div class="item-comment"></div>
 <li id="GUI.authenticator.saml_user_roles">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L565">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L569">
        saml_user_roles
      </a>
    </div>
@@ -2070,7 +2084,7 @@ available in the 'oidc_issuer + /.well-known/openid-configuration' endpoint.</di
 <li id="GUI.authenticator.oidc_issuer">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L570">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L574">
        oidc_issuer
      </a>
    </div>
@@ -2087,7 +2101,7 @@ them recognizable.</div>
 <li id="GUI.authenticator.oidc_name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L576">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L580">
        oidc_name
      </a>
    </div>
@@ -2102,7 +2116,7 @@ redirect URL.</div>
 <li id="GUI.authenticator.oidc_auth_url_params">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L581">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L585">
        oidc_auth_url_params
      </a>
    </div>
@@ -2115,7 +2129,7 @@ redirect URL.</div>
 <li id="GUI.authenticator.oidc_auth_url_params.Key">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L581">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L585">
        Key
      </a>
    </div>
@@ -2132,7 +2146,7 @@ redirect URL.</div>
 <li id="GUI.authenticator.avatar">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L583">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L587">
        avatar
      </a>
    </div>
@@ -2146,7 +2160,7 @@ redirect URL.</div>
 <li id="GUI.authenticator.oauth_client_id">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L586">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L590">
        oauth_client_id
      </a>
    </div>
@@ -2160,7 +2174,7 @@ redirect URL.</div>
 <li id="GUI.authenticator.oauth_client_secret">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L587">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L591">
        oauth_client_secret
      </a>
    </div>
@@ -2176,7 +2190,7 @@ setup. You probably do not want this enabled in production.</div>
 <li id="GUI.authenticator.oidc_debug">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L592">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L596">
        oidc_debug
      </a>
    </div>
@@ -2191,7 +2205,7 @@ setting and should not be used except for specific situations.</div>
 <li id="GUI.authenticator.claims">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L602">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L606">
        claims
      </a>
    </div>
@@ -2208,7 +2222,7 @@ their OIDC accounts!</div>
 <li id="GUI.authenticator.claims.username">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L602">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L606">
        username
      </a>
    </div>
@@ -2227,7 +2241,7 @@ roles based on the OIDC server's roles.</div>
 <li id="GUI.authenticator.claims.roles">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L610">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L614">
        roles
      </a>
    </div>
@@ -2242,7 +2256,7 @@ For example:</div>
 <li id="GUI.authenticator.claims.role_map">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L615">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L619">
        role_map
      </a>
    </div>
@@ -2255,7 +2269,7 @@ For example:</div>
 <li id="GUI.authenticator.claims.role_map.Velociraptor.Reader">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L616">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L620">
        Velociraptor.Reader
      </a>
    </div>
@@ -2268,7 +2282,7 @@ For example:</div>
 <li id="GUI.authenticator.claims.role_map.Velociraptor.Reader.roles">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L617">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L621">
        roles
      </a>
    </div>
@@ -2299,7 +2313,7 @@ For example:</div>
 <li id="GUI.authenticator.tenant">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L620">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L624">
        tenant
      </a>
    </div>
@@ -2314,7 +2328,7 @@ cycle to the logon screen again.</div>
 <li id="GUI.authenticator.auth_redirect_template">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L624">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L628">
        auth_redirect_template
      </a>
    </div>
@@ -2332,7 +2346,7 @@ allowed.</div>
 <li id="GUI.authenticator.default_roles_for_unknown_user">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L632">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L636">
        default_roles_for_unknown_user
      </a>
    </div>
@@ -2354,7 +2368,7 @@ allowed.</div>
 <li id="GUI.authenticator.default_session_expiry_min">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L635">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L639">
        default_session_expiry_min
      </a>
    </div>
@@ -2370,7 +2384,7 @@ authenticators. NOTE: Sub authenticators must be oauth based
 <li id="GUI.authenticator.sub_authenticators">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L641">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L645">
        sub_authenticators
      </a>
    </div>
@@ -2388,7 +2402,7 @@ authenticators. NOTE: Sub authenticators must be oauth based
 <li id="GUI.authenticator.sub_authenticators.type">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L641">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L645">
        type
      </a>
    </div>
@@ -2416,7 +2430,7 @@ config and safely store it offline.</div>
 <li id="CA">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L649">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L653">
        CA
      </a>
    </div>
@@ -2430,7 +2444,7 @@ Client.ca_certificate</div>
 <li id="CA.private_key">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L649">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L653">
        private_key
      </a>
    </div>
@@ -2454,7 +2468,7 @@ directly talks with clients.</div>
 <li id="Frontend">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L657">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L661">
        Frontend
      </a>
    </div>
@@ -2467,7 +2481,7 @@ directly talks with clients.</div>
 <li id="Frontend.base_path">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L657">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L661">
        base_path
      </a>
    </div>
@@ -2484,7 +2498,7 @@ know what you are doing here!</div>
 <li id="Frontend.use_plain_http">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L663">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L667">
        use_plain_http
      </a>
    </div>
@@ -2508,7 +2522,7 @@ curl -kv https://localhost:8000/server.pem --cert client.pem --key key.pem</div>
 <li id="Frontend.require_client_certificates">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L678">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L682">
        require_client_certificates
      </a>
    </div>
@@ -2525,7 +2539,7 @@ an non existent setting (e.g. http://127.0.0.1:3128).</div>
 <li id="Frontend.proxy">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L684">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L688">
        proxy
      </a>
    </div>
@@ -2540,7 +2554,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L689">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L693">
        proxy_config
      </a>
    </div>
@@ -2553,7 +2567,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config.http">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L689">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L693">
        http
      </a>
    </div>
@@ -2567,7 +2581,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config.https">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L690">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L694">
        https
      </a>
    </div>
@@ -2581,7 +2595,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config.proxy_url_regexp">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L692">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L696">
        proxy_url_regexp
      </a>
    </div>
@@ -2594,7 +2608,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config.proxy_url_regexp.^https://localhost/">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L692">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L696">
        ^https://localhost/
      </a>
    </div>
@@ -2611,7 +2625,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config.pac">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L693">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L697">
        pac
      </a>
    </div>
@@ -2625,7 +2639,7 @@ Cllient.proxy_config settings but apply to the server.</div>
 <li id="Frontend.proxy_config.ignore_environment">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L694">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L698">
        ignore_environment
      </a>
    </div>
@@ -2644,7 +2658,7 @@ removed.</div>
 <li id="Frontend.do_not_compress_artifacts">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L699">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L703">
        do_not_compress_artifacts
      </a>
    </div>
@@ -2658,7 +2672,7 @@ removed.</div>
 <li id="Frontend.hostname">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L702">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L706">
        hostname
      </a>
    </div>
@@ -2673,7 +2687,7 @@ removed.</div>
 <li id="Frontend.bind_address">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L706">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L710">
        bind_address
      </a>
    </div>
@@ -2687,7 +2701,7 @@ removed.</div>
 <li id="Frontend.bind_port">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L707">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L711">
        bind_port
      </a>
    </div>
@@ -2706,7 +2720,7 @@ the external TLS certificates.</div>
 <li id="Frontend.certificate">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L715">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L719">
        certificate
      </a>
    </div>
@@ -2726,7 +2740,7 @@ the external TLS certificates.</div>
 <li id="Frontend.private_key">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L718">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L722">
        private_key
      </a>
    </div>
@@ -2752,7 +2766,7 @@ Be sure to set Client.use_self_signed_ssl=false when you set this.</div>
 <li id="Frontend.tls_certificate_filename">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L730">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L734">
        tls_certificate_filename
      </a>
    </div>
@@ -2766,7 +2780,7 @@ Be sure to set Client.use_self_signed_ssl=false when you set this.</div>
 <li id="Frontend.tls_private_key_filename">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L731">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L735">
        tls_private_key_filename
      </a>
    </div>
@@ -2782,7 +2796,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L738">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L742">
        dyn_dns
      </a>
    </div>
@@ -2795,7 +2809,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.type">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L738">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L742">
        type
      </a>
    </div>
@@ -2809,7 +2823,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.hostname">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L741">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L745">
        hostname
      </a>
    </div>
@@ -2823,7 +2837,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.ddns_username">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L742">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L746">
        ddns_username
      </a>
    </div>
@@ -2837,7 +2851,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.ddns_password">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L743">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L747">
        ddns_password
      </a>
    </div>
@@ -2851,7 +2865,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.ddns_hostname">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L746">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L750">
        ddns_hostname
      </a>
    </div>
@@ -2865,7 +2879,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.update_url">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L749">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L753">
        update_url
      </a>
    </div>
@@ -2879,7 +2893,7 @@ Google Domains although other providers may also work.</div>
 <li id="Frontend.dyn_dns.frequency">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L752">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L756">
        frequency
      </a>
    </div>
@@ -2894,7 +2908,7 @@ address (default is Google Domains)</div>
 <li id="Frontend.dyn_dns.checkip_url">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L756">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L760">
        checkip_url
      </a>
    </div>
@@ -2909,7 +2923,7 @@ address (default is Google Domains)</div>
 <li id="Frontend.dyn_dns.dns_server">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L760">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L764">
        dns_server
      </a>
    </div>
@@ -2923,7 +2937,7 @@ address (default is Google Domains)</div>
 <li id="Frontend.dyn_dns.api_token">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L763">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L767">
        api_token
      </a>
    </div>
@@ -2937,7 +2951,7 @@ address (default is Google Domains)</div>
 <li id="Frontend.dyn_dns.zone_name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L766">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L770">
        zone_name
      </a>
    </div>
@@ -2957,7 +2971,7 @@ front of the server.</div>
 <li id="Frontend.proxy_header">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L772">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L776">
        proxy_header
      </a>
    </div>
@@ -2972,7 +2986,7 @@ any additional artifacts that should be installed by default.</div>
 <li id="Frontend.default_server_monitoring_artifacts">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L777">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L781">
        default_server_monitoring_artifacts
      </a>
    </div>
@@ -2995,7 +3009,7 @@ artifacts will be assigned to all clients.</div>
 <li id="Frontend.default_client_monitoring_artifacts">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L782">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L786">
        default_client_monitoring_artifacts
      </a>
    </div>
@@ -3023,7 +3037,7 @@ root.</div>
 <li id="Frontend.run_as_user">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L791">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L795">
        run_as_user
      </a>
    </div>
@@ -3039,7 +3053,7 @@ sequences.</div>
 <li id="Frontend.initial_server_artifacts">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L797">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L801">
        initial_server_artifacts
      </a>
    </div>
@@ -3062,7 +3076,7 @@ API server.</div>
 <li id="Frontend.GRPC_pool_max_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L801">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L805">
        GRPC_pool_max_size
      </a>
    </div>
@@ -3076,7 +3090,7 @@ API server.</div>
 <li id="Frontend.GRPC_pool_max_wait">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L802">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L806">
        GRPC_pool_max_wait
      </a>
    </div>
@@ -3090,7 +3104,7 @@ API server.</div>
 <li id="Frontend.artifact_definitions_directory">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L805">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L809">
        artifact_definitions_directory
      </a>
    </div>
@@ -3108,7 +3122,7 @@ found) to draw attention to failures.</div>
 <li id="Frontend.collection_error_regex">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L812">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L816">
        collection_error_regex
      </a>
    </div>
@@ -3124,7 +3138,7 @@ performance on loaded servers.</div>
 <li id="Frontend.resources">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L819">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L823">
        resources
      </a>
    </div>
@@ -3137,7 +3151,7 @@ performance on loaded servers.</div>
 <li id="Frontend.resources.connections_per_second">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L819">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L823">
        connections_per_second
      </a>
    </div>
@@ -3153,7 +3167,7 @@ swarm effect and reduced load on the server.</div>
 <li id="Frontend.resources.notifications_per_second">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L824">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L828">
        notifications_per_second
      </a>
    </div>
@@ -3168,7 +3182,7 @@ enrollments)</div>
 <li id="Frontend.resources.enrollments_per_second">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L828">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L832">
        enrollments_per_second
      </a>
    </div>
@@ -3188,7 +3202,7 @@ server. Default is number of cores * 2.</div>
 <li id="Frontend.resources.concurrency">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L837">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L841">
        concurrency
      </a>
    </div>
@@ -3204,7 +3218,7 @@ reconnections under load and may degrade performance.</div>
 <li id="Frontend.resources.concurrency_timeout">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L842">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L846">
        concurrency_timeout
      </a>
    </div>
@@ -3220,7 +3234,7 @@ expense of more memory use.</div>
 <li id="Frontend.resources.max_upload_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L847">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L851">
        max_upload_size
      </a>
    </div>
@@ -3237,7 +3251,7 @@ else the system will see high CPU load from cache misses.</div>
 <li id="Frontend.resources.expected_clients">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L853">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L857">
        expected_clients
      </a>
    </div>
@@ -3255,7 +3269,7 @@ per client and globally.</div>
 <li id="Frontend.resources.per_client_upload_rate">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L861">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L865">
        per_client_upload_rate
      </a>
    </div>
@@ -3269,7 +3283,7 @@ per client and globally.</div>
 <li id="Frontend.resources.global_upload_rate">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L862">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L866">
        global_upload_rate
      </a>
    </div>
@@ -3285,7 +3299,7 @@ TLS handshake and network overheads due to frequent POST.</div>
 <li id="Frontend.resources.client_event_max_wait">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L867">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L871">
        client_event_max_wait
      </a>
    </div>
@@ -3301,7 +3315,7 @@ flushed to the master (default 10 sec).</div>
 <li id="Frontend.resources.minion_batch_wait_time_ms">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L872">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L876">
        minion_batch_wait_time_ms
      </a>
    </div>
@@ -3318,7 +3332,7 @@ IO. Default size of this cache is the expected_clients above.</div>
 <li id="Frontend.resources.client_info_lru_ttl">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L878">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L882">
        client_info_lru_ttl
      </a>
    </div>
@@ -3333,7 +3347,7 @@ master.</div>
 <li id="Frontend.resources.client_info_sync_time">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L882">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L886">
        client_info_sync_time
      </a>
    </div>
@@ -3347,7 +3361,7 @@ master.</div>
 <li id="Frontend.resources.client_info_write_time">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L883">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L887">
        client_info_write_time
      </a>
    </div>
@@ -3365,7 +3379,7 @@ truncated and events will be lost. Default is 1gb</div>
 <li id="Frontend.resources.max_journal_buffer_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L890">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L894">
        max_journal_buffer_size
      </a>
    </div>
@@ -3380,7 +3394,7 @@ sec). Index files are typically 150kb / 1000 clients.</div>
 <li id="Frontend.resources.index_snapshot_frequency">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L894">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L898">
        index_snapshot_frequency
      </a>
    </div>
@@ -3402,7 +3416,7 @@ store implementation.</div>
 <li id="Datastore">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L902">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L906">
        Datastore
      </a>
    </div>
@@ -3416,7 +3430,7 @@ FileBaseDataStore.</div>
 <li id="Datastore.implementation">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L902">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L906">
        implementation
      </a>
    </div>
@@ -3430,7 +3444,7 @@ FileBaseDataStore.</div>
 <li id="Datastore.location">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L905">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L909">
        location
      </a>
    </div>
@@ -3447,7 +3461,7 @@ options away from smaller and faster data.</div>
 <li id="Datastore.filestore_directory">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L911">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L915">
        filestore_directory
      </a>
    </div>
@@ -3461,7 +3475,7 @@ options away from smaller and faster data.</div>
 <li id="Datastore.memcache_write_mutation_max_age">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L914">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L918">
        memcache_write_mutation_max_age
      </a>
    </div>
@@ -3476,7 +3490,7 @@ flushed to disk. Default 100mb</div>
 <li id="Datastore.memcache_write_max_memory">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L918">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L922">
        memcache_write_max_memory
      </a>
    </div>
@@ -3493,7 +3507,7 @@ datastore implementations on the master and minion separately.</div>
 <li id="Datastore.minion_implementation">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L924">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L928">
        minion_implementation
      </a>
    </div>
@@ -3507,7 +3521,7 @@ datastore implementations on the master and minion separately.</div>
 <li id="Datastore.master_implementation">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L925">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L929">
        master_implementation
      </a>
    </div>
@@ -3523,7 +3537,7 @@ active or due to a bug!</div>
 <li id="Datastore.max_dir_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L930">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L934">
        max_dir_size
      </a>
    </div>
@@ -3540,7 +3554,7 @@ to disable disk space monitoring.</div>
 <li id="Datastore.min_allowed_file_space_mb">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L936">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L940">
        min_allowed_file_space_mb
      </a>
    </div>
@@ -3554,7 +3568,7 @@ to disable disk space monitoring.</div>
 <li id="Datastore.disk_check_frequency_sec">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L939">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L943">
        disk_check_frequency_sec
      </a>
    </div>
@@ -3569,7 +3583,7 @@ How long to expire the memcache (default 10 min)</div>
 <li id="Datastore.memcache_expiration_sec">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L944">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L948">
        memcache_expiration_sec
      </a>
    </div>
@@ -3586,7 +3600,7 @@ writes.</div>
 <li id="Datastore.memcache_write_mutation_buffer">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L950">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L954">
        memcache_write_mutation_buffer
      </a>
    </div>
@@ -3603,7 +3617,7 @@ filesystems (default 100).</div>
 <li id="Datastore.memcache_write_mutation_writers">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L956">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L960">
        memcache_write_mutation_writers
      </a>
    </div>
@@ -3624,7 +3638,7 @@ never flushing to disk.</div>
 <li id="Datastore.memcache_write_mutation_min_age">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L966">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L970">
        memcache_write_mutation_min_age
      </a>
    </div>
@@ -3638,7 +3652,7 @@ never flushing to disk.</div>
 <li id="Datastore.int64 memcache_write_mutation_max_age">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L967">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L971">
        int64 memcache_write_mutation_max_age
      </a>
    </div>
@@ -3654,7 +3668,7 @@ Maximum size of memcache lru (default 10000)</div>
 <li id="Datastore.memcache_datastore_max_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L972">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L976">
        memcache_datastore_max_size
      </a>
    </div>
@@ -3669,7 +3683,7 @@ FileBaseDataStore</div>
 <li id="Datastore.memcache_datastore_max_item_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L976">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L980">
        memcache_datastore_max_item_size
      </a>
    </div>
@@ -3683,7 +3697,7 @@ FileBaseDataStore</div>
 <li id="Datastore.memcache_datastore_max_dir_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L977">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L981">
        memcache_datastore_max_dir_size
      </a>
    </div>
@@ -3700,7 +3714,7 @@ FileBaseDataStore</div>
 <li id="Logging">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L984">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L988">
        Logging
      </a>
    </div>
@@ -3713,7 +3727,7 @@ FileBaseDataStore</div>
 <li id="Logging.output_directory">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L984">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L988">
        output_directory
      </a>
    </div>
@@ -3729,7 +3743,7 @@ to find the source of the log messages</div>
 <li id="Logging.separate_logs_per_component">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L989">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L993">
        separate_logs_per_component
      </a>
    </div>
@@ -3744,7 +3758,7 @@ server addresss or hostname. If a port is omitted we use port 514.</div>
 <li id="Logging.remote_syslog_server">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L993">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L997">
        remote_syslog_server
      </a>
    </div>
@@ -3758,7 +3772,7 @@ server addresss or hostname. If a port is omitted we use port 514.</div>
 <li id="Logging.remote_syslog_protocol">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L996">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1000">
        remote_syslog_protocol
      </a>
    </div>
@@ -3773,7 +3787,7 @@ Audit events.</div>
 <li id="Logging.remote_syslog_components">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1001">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1005">
        remote_syslog_components
      </a>
    </div>
@@ -3796,7 +3810,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.debug">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1007">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1011">
        debug
      </a>
    </div>
@@ -3809,7 +3823,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.debug.rotation_time">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1007">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1011">
        rotation_time
      </a>
    </div>
@@ -3823,7 +3837,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.debug.max_age">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1010">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1014">
        max_age
      </a>
    </div>
@@ -3837,7 +3851,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.debug.disabled">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1013">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1017">
        disabled
      </a>
    </div>
@@ -3854,7 +3868,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.info">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1016">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1020">
        info
      </a>
    </div>
@@ -3867,7 +3881,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.info.rotation_time">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1016">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1020">
        rotation_time
      </a>
    </div>
@@ -3881,7 +3895,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.info.max_age">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1017">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1021">
        max_age
      </a>
    </div>
@@ -3895,7 +3909,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.info.disabled">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1018">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1022">
        disabled
      </a>
    </div>
@@ -3912,7 +3926,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.error">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1021">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1025">
        error
      </a>
    </div>
@@ -3925,7 +3939,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.error.rotation_time">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1021">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1025">
        rotation_time
      </a>
    </div>
@@ -3939,7 +3953,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.error.max_age">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1022">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1026">
        max_age
      </a>
    </div>
@@ -3953,7 +3967,7 @@ configured here it is logged as normal.</div>
 <li id="Logging.error.disabled">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1023">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1027">
        disabled
      </a>
    </div>
@@ -3975,7 +3989,7 @@ to bind to 0.0.0.0 and point your scraper at it.</div>
 <li id="Monitoring">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1029">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1033">
        Monitoring
      </a>
    </div>
@@ -3988,7 +4002,7 @@ to bind to 0.0.0.0 and point your scraper at it.</div>
 <li id="Monitoring.bind_address">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1029">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1033">
        bind_address
      </a>
    </div>
@@ -4002,7 +4016,7 @@ to bind to 0.0.0.0 and point your scraper at it.</div>
 <li id="Monitoring.bind_port">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1030">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1034">
        bind_port
      </a>
    </div>
@@ -4017,7 +4031,7 @@ based on bind_address and bind_port above.</div>
 <li id="Monitoring.metrics_url">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1034">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1038">
        metrics_url
      </a>
    </div>
@@ -4034,7 +4048,7 @@ based on bind_address and bind_port above.</div>
 <li id="autoexec">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1043">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1047">
        autoexec
      </a>
    </div>
@@ -4050,7 +4064,7 @@ startup when used without parameters.</div>
 <li id="autoexec.argv">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1044">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1048">
        argv
      </a>
    </div>
@@ -4089,7 +4103,7 @@ generally.</div>
 <li id="autoexec.artifact_definitions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1056">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1060">
        artifact_definitions
      </a>
    </div>
@@ -4108,7 +4122,7 @@ within the system.</div>
 <li id="autoexec.artifact_definitions.name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1059">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1063">
        name
      </a>
    </div>
@@ -4123,7 +4137,7 @@ single summary paragraph</div>
 <li id="autoexec.artifact_definitions.description">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1063">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1067">
        description
      </a>
    </div>
@@ -4137,7 +4151,7 @@ single summary paragraph</div>
 <li id="autoexec.artifact_definitions.author">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1066">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1070">
        author
      </a>
    </div>
@@ -4151,7 +4165,7 @@ single summary paragraph</div>
 <li id="autoexec.artifact_definitions.type">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1069">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1073">
        type
      </a>
    </div>
@@ -4165,7 +4179,7 @@ single summary paragraph</div>
 <li id="autoexec.artifact_definitions.reference">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1073">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1077">
        reference
      </a>
    </div>
@@ -4190,7 +4204,7 @@ so the artifact may use it.</div>
 <li id="autoexec.artifact_definitions.tools">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1080">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1084">
        tools
      </a>
    </div>
@@ -4208,7 +4222,7 @@ so the artifact may use it.</div>
 <li id="autoexec.artifact_definitions.tools.name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1082">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1086">
        name
      </a>
    </div>
@@ -4223,7 +4237,7 @@ time, or when we update.</div>
 <li id="autoexec.artifact_definitions.tools.url">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1086">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1090">
        url
      </a>
    </div>
@@ -4239,7 +4253,7 @@ specified, the file will always be served locally.</div>
 <li id="autoexec.artifact_definitions.tools.github_project">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1091">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1095">
        github_project
      </a>
    </div>
@@ -4253,7 +4267,7 @@ specified, the file will always be served locally.</div>
 <li id="autoexec.artifact_definitions.tools.github_asset_regex">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1092">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1096">
        github_asset_regex
      </a>
    </div>
@@ -4269,7 +4283,7 @@ itself from the url above.</div>
 <li id="autoexec.artifact_definitions.tools.serve_locally">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1097">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1101">
        serve_locally
      </a>
    </div>
@@ -4285,7 +4299,7 @@ upgrading server versions.</div>
 <li id="autoexec.artifact_definitions.tools.admin_override">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1102">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1106">
        admin_override
      </a>
    </div>
@@ -4303,7 +4317,7 @@ the url above.</div>
 <li id="autoexec.artifact_definitions.tools.serve_url">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1111">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1115">
        serve_url
      </a>
    </div>
@@ -4317,7 +4331,7 @@ the url above.</div>
 <li id="autoexec.artifact_definitions.tools.serve_path">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1114">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1118">
        serve_path
      </a>
    </div>
@@ -4332,7 +4346,7 @@ served locally.</div>
 <li id="autoexec.artifact_definitions.tools.filestore_path">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1118">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1122">
        filestore_path
      </a>
    </div>
@@ -4349,7 +4363,7 @@ will be downloaded again.</div>
 <li id="autoexec.artifact_definitions.tools.filename">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1124">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1128">
        filename
      </a>
    </div>
@@ -4365,7 +4379,7 @@ correctly transferred.</div>
 <li id="autoexec.artifact_definitions.tools.hash">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1129">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1133">
        hash
      </a>
    </div>
@@ -4379,7 +4393,7 @@ correctly transferred.</div>
 <li id="autoexec.artifact_definitions.tools.materialize">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1132">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1136">
        materialize
      </a>
    </div>
@@ -4400,7 +4414,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.required_permissions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1137">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1141">
        required_permissions
      </a>
    </div>
@@ -4422,7 +4436,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1141">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1145">
        resources
      </a>
    </div>
@@ -4435,7 +4449,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources.timeout">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1141">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1145">
        timeout
      </a>
    </div>
@@ -4449,7 +4463,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources.ops_per_second">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1142">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1146">
        ops_per_second
      </a>
    </div>
@@ -4463,7 +4477,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources.cpu_limit">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1143">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1147">
        cpu_limit
      </a>
    </div>
@@ -4477,7 +4491,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources.iops_limit">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1144">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1148">
        iops_limit
      </a>
    </div>
@@ -4491,7 +4505,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources.max_rows">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1147">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1151">
        max_rows
      </a>
    </div>
@@ -4505,7 +4519,7 @@ allowed to collect this artifact.</div>
 <li id="autoexec.artifact_definitions.resources.max_upload_bytes">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1148">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1152">
        max_upload_bytes
      </a>
    </div>
@@ -4527,7 +4541,7 @@ OS condition).</div>
 <li id="autoexec.artifact_definitions.precondition">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1156">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1160">
        precondition
      </a>
    </div>
@@ -4542,7 +4556,7 @@ change the way the VQL is evaluated.</div>
 <li id="autoexec.artifact_definitions.parameters">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1161">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1165">
        parameters
      </a>
    </div>
@@ -4561,7 +4575,7 @@ scope during query execution.</div>
 <li id="autoexec.artifact_definitions.parameters.name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1164">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1168">
        name
      </a>
    </div>
@@ -4576,7 +4590,7 @@ we show the name).</div>
 <li id="autoexec.artifact_definitions.parameters.friendly_name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1168">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1172">
        friendly_name
      </a>
    </div>
@@ -4592,7 +4606,7 @@ representation of the type - e.g. "10" rather than 10.</div>
 <li id="autoexec.artifact_definitions.parameters.default">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1173">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1177">
        default
      </a>
    </div>
@@ -4606,7 +4620,7 @@ representation of the type - e.g. "10" rather than 10.</div>
 <li id="autoexec.artifact_definitions.parameters.description">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1176">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1180">
        description
      </a>
    </div>
@@ -4622,7 +4636,7 @@ csv, artifactset, json, json_array, bool, choices</div>
 <li id="autoexec.artifact_definitions.parameters.type">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1181">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1185">
        type
      </a>
    </div>
@@ -4637,7 +4651,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.parameters.choices">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1186">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1190">
        choices
      </a>
    </div>
@@ -4671,7 +4685,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.export">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1190">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1194">
        export
      </a>
    </div>
@@ -4685,7 +4699,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.imports">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1194">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1198">
        imports
      </a>
    </div>
@@ -4707,7 +4721,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.sources">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1198">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1202">
        sources
      </a>
    </div>
@@ -4725,7 +4739,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.sources.name">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1200">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1204">
        name
      </a>
    </div>
@@ -4739,7 +4753,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.sources.description">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1201">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1205">
        description
      </a>
    </div>
@@ -4753,7 +4767,7 @@ choices.</div>
 <li id="autoexec.artifact_definitions.sources.query">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1202">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1206">
        query
      </a>
    </div>
@@ -4768,7 +4782,7 @@ compatibility with very old artifacts.</div>
 <li id="autoexec.artifact_definitions.sources.queries">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1207">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1211">
        queries
      </a>
    </div>
@@ -4790,7 +4804,7 @@ compatibility with very old artifacts.</div>
 <li id="autoexec.artifact_definitions.sources.precondition">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1210">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1214">
        precondition
      </a>
    </div>
@@ -4805,7 +4819,7 @@ used when the artifact is collected or hunted for.</div>
 <li id="autoexec.artifact_definitions.sources.notebook">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1217">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1221">
        notebook
      </a>
    </div>
@@ -4824,7 +4838,7 @@ to the suggestion button. Also can be vql or markdown.</div>
 <li id="autoexec.artifact_definitions.sources.notebook.type">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1217">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1221">
        type
      </a>
    </div>
@@ -4838,7 +4852,7 @@ to the suggestion button. Also can be vql or markdown.</div>
 <li id="autoexec.artifact_definitions.sources.notebook.env">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1220">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1224">
        env
      </a>
    </div>
@@ -4856,7 +4870,7 @@ to the suggestion button. Also can be vql or markdown.</div>
 <li id="autoexec.artifact_definitions.sources.notebook.env.key">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1220">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1224">
        key
      </a>
    </div>
@@ -4870,7 +4884,7 @@ to the suggestion button. Also can be vql or markdown.</div>
 <li id="autoexec.artifact_definitions.sources.notebook.env.value">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1221">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1225">
        value
      </a>
    </div>
@@ -4890,7 +4904,7 @@ to the suggestion button. Also can be vql or markdown.</div>
 <li id="autoexec.artifact_definitions.sources.notebook.template">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1222">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1226">
        template
      </a>
    </div>
@@ -4925,7 +4939,7 @@ to the suggestion button. Also can be vql or markdown.</div>
 <li id="server_type">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1225">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1229">
        server_type
      </a>
    </div>
@@ -4942,7 +4956,7 @@ in a sensitive way.</div>
 <li id="obfuscation_nonce">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1231">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1235">
        obfuscation_nonce
      </a>
    </div>
@@ -4956,7 +4970,7 @@ in a sensitive way.</div>
 <li id="autocert_cert_cache">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1234">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1238">
        autocert_cert_cache
      </a>
    </div>
@@ -4970,7 +4984,7 @@ in a sensitive way.</div>
 <li id="defaults">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1242">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1246">
        defaults
      </a>
    </div>
@@ -4986,7 +5000,7 @@ change this.</div>
 <li id="defaults.notebook_cell_timeout_min">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1242">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1246">
        notebook_cell_timeout_min
      </a>
    </div>
@@ -5004,7 +5018,7 @@ default 50 rows.</div>
 <li id="defaults.notebook_default_new_cell_rows">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1249">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1253">
        notebook_default_new_cell_rows
      </a>
    </div>
@@ -5024,7 +5038,7 @@ process memory is smaller than the low memory mark.</div>
 <li id="defaults.notebook_memory_low_water_mark">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1259">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1263">
        notebook_memory_low_water_mark
      </a>
    </div>
@@ -5040,7 +5054,7 @@ down.</div>
 <li id="defaults.notebook_memory_high_water_mark">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1264">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1268">
        notebook_memory_high_water_mark
      </a>
    </div>
@@ -5060,7 +5074,7 @@ Minion.notebook_number_of_local_workers to 5.</div>
 <li id="defaults.notebook_number_of_local_workers">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1274">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1278">
        notebook_number_of_local_workers
      </a>
    </div>
@@ -5075,7 +5089,7 @@ up. The default is 10 seconds.</div>
 <li id="defaults.notebook_wait_time_for_worker_ms">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1278">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1282">
        notebook_wait_time_for_worker_ms
      </a>
    </div>
@@ -5090,7 +5104,7 @@ receive jobs over lower priority).</div>
 <li id="defaults.notebook_worker_priority">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1282">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1286">
        notebook_worker_priority
      </a>
    </div>
@@ -5106,7 +5120,7 @@ character.</div>
 <li id="defaults.csv_delimiter">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1287">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1291">
        csv_delimiter
      </a>
    </div>
@@ -5121,7 +5135,7 @@ this setting.</div>
 <li id="defaults.hunt_expiry_hours">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1291">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1295">
        hunt_expiry_hours
      </a>
    </div>
@@ -5136,7 +5150,7 @@ queries the GUI creates.</div>
 <li id="defaults.event_max_wait">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1295">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1299">
        event_max_wait
      </a>
    </div>
@@ -5150,7 +5164,7 @@ queries the GUI creates.</div>
 <li id="defaults.event_max_wait_jitter">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1296">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1300">
        event_max_wait_jitter
      </a>
    </div>
@@ -5169,7 +5183,7 @@ to true in order to get a responsive GUI.</div>
 <li id="defaults.event_change_notify_all_clients">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1304">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1308">
        event_change_notify_all_clients
      </a>
    </div>
@@ -5183,7 +5197,7 @@ to true in order to get a responsive GUI.</div>
 <li id="defaults.artifact_definitions_directories">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1308">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1312">
        artifact_definitions_directories
      </a>
    </div>
@@ -5207,7 +5221,7 @@ is a lot slower but has no memory limitations. Default 30000</div>
 <li id="defaults.max_in_memory_group_by">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1313">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1317">
        max_in_memory_group_by
      </a>
    </div>
@@ -5224,7 +5238,7 @@ approved VQL plugins to run.</div>
 <li id="defaults.allowed_plugins">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1320">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1324">
        allowed_plugins
      </a>
    </div>
@@ -5246,7 +5260,7 @@ approved VQL plugins to run.</div>
 <li id="defaults.allowed_functions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1322">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1326">
        allowed_functions
      </a>
    </div>
@@ -5268,7 +5282,7 @@ approved VQL plugins to run.</div>
 <li id="defaults.allowed_accessors">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1324">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1328">
        allowed_accessors
      </a>
    </div>
@@ -5291,7 +5305,7 @@ functions and accessors.</div>
 <li id="defaults.denied_plugins">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1329">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1333">
        denied_plugins
      </a>
    </div>
@@ -5313,7 +5327,7 @@ functions and accessors.</div>
 <li id="defaults.denied_functions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1332">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1336">
        denied_functions
      </a>
    </div>
@@ -5335,7 +5349,7 @@ functions and accessors.</div>
 <li id="defaults.denied_accessors">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1335">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1339">
        denied_accessors
      </a>
    </div>
@@ -5357,7 +5371,7 @@ functions and accessors.</div>
 <li id="defaults.acl_lru_timeout_sec">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1338">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1342">
        acl_lru_timeout_sec
      </a>
    </div>
@@ -5372,7 +5386,7 @@ them a chance to enrol first (default 10 sec).</div>
 <li id="defaults.unauthenticated_lru_timeout_sec">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1342">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1346">
        unauthenticated_lru_timeout_sec
      </a>
    </div>
@@ -5387,7 +5401,7 @@ its own but if this is set, we prevent any external access.</div>
 <li id="defaults.disable_inventory_service_external_access">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1346">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1350">
        disable_inventory_service_external_access
      </a>
    </div>
@@ -5402,7 +5416,7 @@ will apply for e.g. rotating certificates or issuing an api cert.</div>
 <li id="defaults.certificate_validity_days">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1350">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1354">
        certificate_validity_days
      </a>
    </div>
@@ -5417,7 +5431,7 @@ will be denied (Even for administrators).</div>
 <li id="defaults.lockdown_denied_permissions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1355">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1359">
        lockdown_denied_permissions
      </a>
    </div>
@@ -5479,7 +5493,7 @@ the default 10 minute timeout.</div>
 <li id="defaults.export_concurrency">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1368">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1372">
        export_concurrency
      </a>
    </div>
@@ -5493,7 +5507,7 @@ the default 10 minute timeout.</div>
 <li id="defaults.export_max_timeout_sec">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1369">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1373">
        export_max_timeout_sec
      </a>
    </div>
@@ -5510,7 +5524,7 @@ need to change it.</div>
 <li id="defaults.hunt_dispatcher_refresh_sec">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1375">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1379">
        hunt_dispatcher_refresh_sec
      </a>
    </div>
@@ -5524,7 +5538,7 @@ need to change it.</div>
 <li id="defaults.notebook_versions">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1378">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1382">
        notebook_versions
      </a>
    </div>
@@ -5539,7 +5553,7 @@ watch_syslog() will check for changes (default 3).</div>
 <li id="defaults.watch_plugin_frequency">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1382">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1386">
        watch_plugin_frequency
      </a>
    </div>
@@ -5553,7 +5567,7 @@ watch_syslog() will check for changes (default 3).</div>
 <li id="defaults.watch_plugin_buffer_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1385">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1389">
        watch_plugin_buffer_size
      </a>
    </div>
@@ -5570,7 +5584,7 @@ to disable backups.</div>
 <li id="defaults.backup_period_seconds">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1391">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1395">
        backup_period_seconds
      </a>
    </div>
@@ -5587,7 +5601,7 @@ thread in seconds (default 60 sec)</div>
 <li id="defaults.client_info_housekeeping_period">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1397">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1401">
        client_info_housekeeping_period
      </a>
    </div>
@@ -5605,7 +5619,7 @@ the following to true will restrict usernames to the set a-z and
 <li id="defaults.disable_unicode_usernames">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1404">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1408">
        disable_unicode_usernames
      </a>
    </div>
@@ -5620,7 +5634,7 @@ rebuilds the search index periodically to avoid inconsistencies.</div>
 <li id="defaults.reindex_period_seconds">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1408">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1412">
        reindex_period_seconds
      </a>
    </div>
@@ -5650,7 +5664,7 @@ client metadata.</div>
 <li id="defaults.indexed_client_metadata">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1431">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1435">
        indexed_client_metadata
      </a>
    </div>
@@ -5674,7 +5688,7 @@ disabled in some large deployments due to additional overheads.</div>
 <li id="defaults.disable_active_inflight_checks">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1436">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1440">
        disable_active_inflight_checks
      </a>
    </div>
@@ -5691,7 +5705,7 @@ disk. Probably only useful for debugging.</div>
 <li id="defaults.write_internal_events">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1442">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1446">
        write_internal_events
      </a>
    </div>
@@ -5707,7 +5721,7 @@ POST messages. If not set we use client defaults.</div>
 <li id="defaults.max_rows">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1447">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1451">
        max_rows
      </a>
    </div>
@@ -5721,7 +5735,7 @@ POST messages. If not set we use client defaults.</div>
 <li id="defaults.max_row_buffer_size">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1448">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1452">
        max_row_buffer_size
      </a>
    </div>
@@ -5735,7 +5749,7 @@ POST messages. If not set we use client defaults.</div>
 <li id="defaults.max_batch_wait">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1449">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1453">
        max_batch_wait
      </a>
    </div>
@@ -5751,7 +5765,7 @@ in the current collection.</div>
 <li id="defaults.max_logs">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1454">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1458">
        max_logs
      </a>
    </div>
@@ -5773,7 +5787,7 @@ lockdown to false and restarting the server.</div>
 <li id="lockdown">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1463">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1467">
        lockdown
      </a>
    </div>
@@ -5787,7 +5801,7 @@ lockdown to false and restarting the server.</div>
 <li id="debug_mode">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1466">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1470">
        debug_mode
      </a>
    </div>
@@ -5805,7 +5819,7 @@ velociraptor --minion --config server.config.yaml config show</div>
 <li id="Minion">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1475">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1479">
        Minion
      </a>
    </div>
@@ -5818,7 +5832,7 @@ velociraptor --minion --config server.config.yaml config show</div>
 <li id="Minion.notebook_number_of_local_workers">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1475">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1479">
        notebook_number_of_local_workers
      </a>
    </div>
@@ -5834,7 +5848,7 @@ minions to take over notebook calculations most of he time.</div>
 <li id="Minion.notebook_worker_priority">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1480">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1484">
        notebook_worker_priority
      </a>
    </div>
