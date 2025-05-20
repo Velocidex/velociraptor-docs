@@ -14,6 +14,22 @@ includes a feature-rich artifact editor.
 
 ![Artifacts screen](artifacts_main_screen.svg)
 
+![Artifacts toolbar](artifacts_toolbar.svg)
+
+{{% notice info %}}
+
+In order to create, modify or delete artifacts your user needs to have the
+`ARTIFACT_WRITER` permission.
+
+Users with this permission are generally considered to be "admin equivalent"
+since it is easy to escalate to full admin be designing artifacts to accomplish
+that goal.
+
+This permission is not needed to _run_ artifacts, so it is common to have some
+users who can only run artifacts and some other users who can create and manage
+artifacts.
+
+{{% /notice %}}
 
 ## Searching artifacts
 
@@ -21,30 +37,30 @@ The search bar on the right side of the Artifacts screen allows you to search by
 any text string, regular expression, and certain category expressions (see table
 below).
 
-As explained [here]({{< ref "/docs/artifacts/basics/" >}}) the `name`,
+As explained [here]({{< ref "/docs/artifacts/basic_fields/" >}}) the `name`,
 `aliases`, and `description` fields from all artifacts are indexed and
 searchable.
 
 When searching, you can also limit the results using predefined Category
 Filters, which are available as a drop-down list next to the search bar.
 
-| Category Filter | Filter expression | Notes |
-|---|---|---|
-| Client Artifacts | `type:CLIENT` |  |
-| Server Artifacts | `type:SERVER` |  |
-| Notebook templates | `type:NOTEBOOK` |  |
-| All Artifacts | `<none>` | Only includes artifacts with sources. |
-| Windows Only | `precondition:WINDOWS` |  |
-| Linux Only | `precondition:LINUX` |  |
-| macOS Only | `precondition:DARWIN` |  |
-| Client Monitoring | `type:CLIENT_EVENT` |  |
-| Server Monitoring | `type:SERVER_EVENT` |  |
-| Using Tools | `tool:.+` |  |
-| Exchange | `^exchange.+` |  |
-| BuiltIn Only | `builtin:yes` |  |
-| Custom Only | `builtin:no` |  |
-| Basic Only | `metadata:basic` |  |
-| Include Empty sources | `empty:true` | Same as "All Artifacts" filter but also includes artifacts without sources.\*\* |
+| Category Filter           | Filter expression      | Notes                                                                           |
+|---------------------------|------------------------|---------------------------------------------------------------------------------|
+| **Client Artifacts**      | `type:CLIENT`          |                                                                                 |
+| **Server Artifacts**      | `type:SERVER`          |                                                                                 |
+| **Notebook templates**    | `type:NOTEBOOK`        |                                                                                 |
+| **All Artifacts**         | `<none>`               | Only includes artifacts with sources.                                           |
+| **Windows Only**          | `precondition:WINDOWS` |                                                                                 |
+| **Linux Only**            | `precondition:LINUX`   |                                                                                 |
+| **macOS Only**            | `precondition:DARWIN`  |                                                                                 |
+| **Client Monitoring**     | `type:CLIENT_EVENT`    |                                                                                 |
+| **Server Monitoring**     | `type:SERVER_EVENT`    |                                                                                 |
+| **Using Tools**           | `tool:.+`              |                                                                                 |
+| **Exchange**              | `^exchange.+`          |                                                                                 |
+| **BuiltIn Only**          | `builtin:yes`          |                                                                                 |
+| **Custom Only**           | `builtin:no`           |                                                                                 |
+| **Basic Only**            | `metadata:basic`       |                                                                                 |
+| **Include Empty sources** | `empty:true`           | Same as "All Artifacts" filter but also includes <br>artifacts without sources.\*\* |
 
 \*\* For more information about artifacts without sources see
 [here]({{< ref "/docs/artifacts/use_cases/#source-free-artifacts" >}}).
@@ -71,49 +87,60 @@ multiple artifacts.
 ![Importing an artifact pack](artifacts_import_zip.png)
 
 When importing artifact packs you are given the option to add a custom prefix to
-the artifact name (if you want a `.` then you need to add it to your prefix),
-and the option to only import artifacts that match a name filter.
+the artifact name (if you want a `.` then you need to include it to your
+prefix!), and the option to only import artifacts that match a name filter.
 
 The file structure inside the zip doesn't matter. Velociraptor will search for
 all files in the zip with a `.yaml` or `.yml` file extension. The imported
 artifacts will be saved to the server's datastore using the file and folder
 structure described
-[here]({{< ref "/docs/artifacts/basics/#basic-fields" >}}).
+[here]({{< ref "/docs/artifacts/basic_fields/#basic-fields" >}}).
 
 ## Importing artifacts using server artifacts
 
 Velociraptor includes several server artifacts which can import additional
 artifacts from related external projects.
 
-|Project name|Project website|Import artifact|
-|--|--|--|
-|Velociraptor Artifact Exchange|https://docs.velociraptor.app/exchange/|`Server.Import.ArtifactExchange`|
-|Curated Sigma Rules <br>(Hayabusa/Hayabusa Live/ChopChopGo)|https://sigma.velocidex.com/|`Server.Import.CuratedSigma`|
-|RegistryHunter|https://registry-hunter.velocidex.com/|`Server.Import.RegistryHunter`|
-|Rapid7Labs|https://github.com/rapid7/Rapid7-Labs/tree/main/Vql|`Server.Import.Rapid7Labs`|
-|DetectRaptor|https://github.com/mgreen27/DetectRaptor|`Server.Import.ArtifactExchange`<br>-> `Server.Import.DetectRaptor`|
-|Audit: a collection of Audit <br>and Compliance related VQL artifacts|https://github.com/Velocidex/Audit|manually imported|
+| Project name                                                          | Project website                                                                         | Import artifact                                                     |
+|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| Velociraptor Artifact Exchange                                        | https://docs.velociraptor.app/exchange/                                                 | `Server.Import.ArtifactExchange`                                    |
+| Curated Sigma Rules <br>(Hayabusa/Hayabusa Live/ChopChopGo)           | https://sigma.velocidex.com/                                                            | `Server.Import.CuratedSigma`                                        |
+| RegistryHunter                                                        | https://registry-hunter.velocidex.com/                                                  | `Server.Import.RegistryHunter`                                      |
+| Rapid7Labs                                                            | https://github.com/rapid7/Rapid7-Labs/tree/main/Vql                                     | `Server.Import.Rapid7Labs`                                          |
+| DetectRaptor                                                          | https://github.com/mgreen27/DetectRaptor                                                | `Server.Import.ArtifactExchange`<br>-> `Server.Import.DetectRaptor` |
+| Audit: a collection of Audit <br>and Compliance related VQL artifacts | https://github.com/Velocidex/Audit                                                      | manually imported                                                   |
+| KapeFiles or SQLiteHunter                                             | https://github.com/EricZimmerman/KapeFiles<br>https://github.com/Velocidex/SQLiteHunter | `Server.Import.UpdatedBuiltin`                                      |
+| Artifacts from previous releases                                      | https://github.com/Velocidex/velociraptor/releases                                      | `Server.Import.PreviousReleases`                                    |
 
-The reason these artifacts are not included by default is that they are either
-rapidly developing and not synced to the release cycle, or considered
-experimental, or community contributed. Some, like RegistryHunter and Curated
-Sigma Rules, may be included by default in future as these projects mature.
+The reason that the artifacts imported by the above are not included by default
+is that they are either rapidly developing and not synced to the Velociraptor
+release cycle, or are considered experimental, or are community contributed.
+Some (probably RegistryHunter, SQLiteHunter and Curated Sigma Rules) may be
+included by default in future as these projects mature.
 
 ![Running server import artifacts](artifacts_server_import1.png)
 
 ![Customizing server import artifact parameters](artifacts_server_import2.png)
 
-We also have two server artifacts which are designed to bulk-import artifacts
-for the latest release or previous releases. The purpose these is to allow
-(slightly) older deployments to access the latest artifacts in situations where
-upgrading the server is not possible. Conversely we allow importing the
-artifacts from older releases to cater for situations where clients cannot be
-easily upgraded, yet need functionality only found in the latest artifacts.
+We also have two server artifacts which are designed to import artifacts
+for the latest release or previous releases.
 
-||||
-|--|--|--|
-|Latest Artifacts||`Server.Import.UpdatedBuiltin`|
-|Artifacts from previous versions||`Server.Import.PreviousReleases`|
+#### Server.Import.UpdatedBuiltin
+
+The purpose of the `Server.Import.UpdatedBuiltin` artifact is to update either
+of the following 2 artifacts which may be updated between releases:
+
+ - `Windows.KapeFiles.Targets`
+ - `Generic.Forensic.SQLiteHunter`
+
+By default, this artifact will add the prefix `Updated.` to the imported
+artifact.
+
+#### Server.Import.PreviousReleases
+
+The `Server.Import.PreviousReleases` artifact allows importing the artifacts
+from older releases. This is to cater for situations where clients cannot be
+easily upgraded, yet need functionality only found in the latest artifacts.
 
 {{% notice warning "Forward compatibility is not guaranteed!" %}}
 
@@ -128,19 +155,73 @@ client may not have. You should always test your particular scenario.
 
 ## Creating and editing artifacts
 
-**How to use the artifact editor.**
+In the Artifacts page you can create a new artifact by clicking the
+Add Artifact (<i class="fa-solid fa-plus"></i>) button in the artifacts toolbar.
 
-When you attempt to "edit" a built-in artifact in the GUI, you are actually
-creating a customized _copy_ of that artifact. The GUI automatically adds the
-prefix `Custom.` to the name of this new custom version. If you try to use the
-same name as an existing built-in artifact (or alias) then you will receive an
-error message and the artifact will not be saved.
+This brings up the artifact editor, populated with a very basic boilerplate
+artifact to help get you started.
 
-You cannot delete the original built-in artifacts through the GUI either; the
-delete button is greyed out for them.
+![New artifact](new_artifact.png)
 
-Syntax highlighting for YAML and VQL.
+When you select an existing
+[built-in artifact]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}})
+in the GUI, and then attempt to edit it, you are actually creating a custom
+_copy_ of that artifact.
 
+- If the artifact is a **compiled-in** artifact then editing it will result in a
+copy being created with the `Custom.` prefix added to the name.
+
+- If the artifact is a **built-in** artifact then editing it will result in a copy
+but you'll need to ensure that you choose a new name for it.
+
+- If the artifact is **custom** (that is, not built-in) then you can just edit it
+and save it, which will overwrite the previous version.
+
+If you try to use the same name as an existing built-in artifact (or an existing
+alias) then you will receive an error message and the artifact will refuse to be
+saved.
+
+You cannot delete built-in artifacts through the GUI either; the delete button
+is greyed out when they are selected.
+
+
+### Editor preferences and VQL reformatting
+
+The editor provides syntax highlighting for YAML and VQL. If you don't like the
+default colors, you can choose a different theme in the editor's preferences
+pane. These preferences are user-specific, that is, they are saved as
+preferences for your Velociraptor user.
+
+![The artifact editor](artifacts_editor.svg)
+
+There are many things that you can change in the editor's settings but the most
+common items to tweak are the theme and font size.
+
+![editor preferences](editor_preferences.png)
+
+The editor preferences you set here will also be used in other places in the
+GUI, for example [notebooks]({{< ref "/docs/notebooks/" >}}) which use the same
+editor component.
+
+VQL doesn't care about formatting, but for us humans it's nice to have VQL code
+that is neat and legible. The **Reformat VQL** button will reformat the code in
+all VQL blocks. In general it wraps and aligns the VQL so that it can be easily
+read.
+
+Note that this action applies to _all_ VQL blocks in the artifact.
+If you reformat the VQL and don't like the result then you can use the
+`Crtl`+`z` keyboard shortcut to revert the changes. You can also copy a section
+of reformatted VQL that you do like, revert the changes, and then paste that
+section over the original.
+
+### Keyboard shortcuts
+
+The artifact editor is based on the [Ace code editor](https://ace.c9.io/) and
+therefore supports it's extensive list of keyboard shortcuts, shown here:
+https://ace.c9.io/demo/keyboard_shortcuts.html
+
+Many of these keyboard shortcuts are the same as in other code editors that you
+may already be familiar with.
 
 ### Autosuggest/autocomplete
 
@@ -173,11 +254,6 @@ can simply select them from the suggestions list.
 
 ![autosuggest: local strings (e.g. existing variables)](autosuggest03.png)
 
-### Editor preferences and VQL reformatting
-
-![The artifact editor](artifacts_editor.svg)
-
-![editor preferences](editor_preferences.png)
 
 
 
@@ -189,19 +265,19 @@ the server's datastore and can therefore be deleted.
 This can be done:
 
 - from the toolbar in the Artifacts screen, or
-- via VQL (in a notebook or artifact) using the `artifact_delete` function, or
+- via VQL (in a notebook or artifact) using the `artifact_delete()` function, or
 - if you wish to perform bulk deletion you can use the built-in utility artifact
   `Server.Import.DeleteArtifacts`.
 
-Custom artifacts loaded from these sources are deemed "built-in":
+Artifacts loaded from these sources are deemed "built-in" and cannot be deleted:
 
 - embedded in the config's `autoexec.artifact_definitions` section
 - a directory specified by the `Frontend.artifact_definitions_directory` config setting
 - additional directories specified by the `defaults.artifact_definitions_directories` config setting
 - a directory specified by the `--definitions` CLI flag
 
-Built-in artifacts cannot be deleted. If you need to delete them then you should
-manually remove them from their source locations, and then restart the server.
+If you need to delete them then you should manually remove the corresponding
+YAML files from their source locations, and then restart the server.
 
 For a futher discussion of built-in artifacts please see
 [Built-in vs. Compiled-in vs. Custom Artifacts]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}).

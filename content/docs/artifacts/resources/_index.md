@@ -27,6 +27,12 @@ Limits are set using the `resources` key in the artifact definition.
       "max_batch_rows": 0,
       "max_batch_rows_buffer": 0
 
+// We extract the default resource limits from each artifact
+// definition and calculate a collection wide default. For
+// example if a collection specifies artifact A (with max_rows
+// = 10) and artifact B (with max_rows = 20), then the
+// collection will have max_rows = 20.
+
 If you define `resources` in your artifact, you only need to specify the subkeys
 relevant to the resources you want to limit. Default values will apply to any
 subkeys not specified, and as mentioned above users still have the opportunity

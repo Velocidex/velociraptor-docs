@@ -185,12 +185,8 @@ a:hover {
 
 .fa-chevron-right {
     color: transparent !important;
-    padding: 0 3px 0 0;
 }
 
-.svg-inline--fa {
-    padding: 0 3px 0 0;
-}
 
 div.section {
     opacity: 1;

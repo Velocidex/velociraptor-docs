@@ -198,6 +198,8 @@ The Artifact contains a number of important YAML fields:
    should have exactly one `SELECT` clause and it must be at the end
    of the query potentially following any `LET` queries.
 
+These and other artifact fields are discussed in more detail in the pages of
+this section.
 
 ### A More Advanced Example
 
@@ -225,34 +227,51 @@ process name or mutant name.
 ## Loading, importing, and saving artifacts
 
 Velociraptor ships with hundreds of built-in artifacts which are compiled into
-the binary itself. You can use the
-[`artifacts` CLI command]({{< ref "/docs/artifacts/cli/" >}}) to list and
-examine these artifacts.
+the binary itself.
 
-When Velociraptor is run, the built-in artifacts are read directly from the
-binary, and are not written to disk.
+You can use the
+[`artifacts` CLI command]({{< ref "/docs/artifacts/cli/" >}}), the
+[Artifacts screen in the GUI]({{< ref "/docs/gui/artifacts/" >}}), or
+[VQL's `artifact_definitions()` plugin]({{< ref "/vql_reference/server/artifact_definitions/" >}})
+to list and examine these artifacts.
 
-Only custom artifacts are written to disk, and these are only written to the
-datastore directory.
+When Velociraptor is run, its built-in artifacts are read directly from the
+binary and are not written to disk. Only custom artifacts are written to disk,
+and these are written to the `artifact_definitions` directory in the server's
+datastore.
 
 ### Loading artifacts at startup
 
-The default location for custom artifacts is the datastore. This is the location
-used when artifacts are
-[created or edited in the GUI]({{< ref "/docs/gui/artifacts/" >}}).
+The default location for custom artifacts is the server's datastore. This is the
+location used when artifacts are
+[imported, created or edited during runtime]({{< ref "/docs/gui/artifacts/" >}}).
 
-  - for the root org's artifact repository:
-    datastore/artifact_definitions
-  - for other orgs, each org has their own artifact repository:
-/datastore1/orgs/OQRA0/artifact_definitions
+- For the root org's artifact repository this is: `<datastore>/artifact_definitions`
 
-`Datastore.location`
+- For [other orgs]({{< ref "/docs/deployment/orgs/" >}}), each org has its own
+artifact repository: `<datastore>/orgs/<org_id>/artifact_definitions`
 
-`artifact_definitions_directory`
+The server's datastore location is specified by the
+`Frontend.Datastore.location` key in the
+[config]({{< ref "/docs/deployment/references/" >}}).
 
-{{% notice info "Be aware of filesystem permissions when working in the datastore!" %}}
+In addition to the default location, other artifact sources can be specified
+that Velociraptor should try to load artifacts from. The following config keys
+provide for additional artifact sources:
 
-If installed as a service, Velociraptor's datastore directory is owned by the
+- `autoexec.artifact_definitions`: artifact definitions embedded in the config.
+- `Frontend.artifact_definitions_directory`: a single directory.
+- `defaults.artifact_definitions_directories`: a list of directories.
+
+If you are running the server manually you can also use the `--definitions` CLI
+flag to specify an additional location.
+
+Velociraptor will search these locations recursively for any `.yaml` or `.yml`
+files and try to parse them as artifacts.
+
+{{% notice info "Be aware of filesystem permissions" %}}
+
+When installed as a service, Velociraptor's datastore directory is owned by the
 service account named `velociraptor` and accessible to the `velociraptor` user
 group. New users often overlook this fact and create files in the datastore
 using their own user account or the `root` account, which means that the
@@ -263,49 +282,39 @@ need to do this you can avoid creating permissions problems by switching to the
 `velociraptor` user. On most Linux systems this can be done with the command
 `sudo -u velociraptor bash`.
 
+For other files that the service account needs to read, such as the additional
+artifact definitions directories mentioned above, you need to ensure that the
+`velociraptor` user has read access to these directories.
+
 {{% /notice %}}
-
-Custom artifacts loaded from these sources are deemed "built-in":
-
-- embedded in the config's `autoexec.artifact_definitions` section
-- a directory specified by the `Frontend.artifact_definitions_directory` config setting
-- additional directories specified by the `defaults.artifact_definitions_directories` config setting
-- a directory specified by the `--definitions` CLI flag
-
-### Importing artifacts during runtime
-
-Artifacts loaded at server startup, in the locations described above, are deemed
-"built-in" and cannot be modified. Any changes to the artifacts in those
-locations will not be effective without a server restart.
-
-Ways to do it:
-
-[artifact packs]({{< ref "/docs/gui/artifacts/#importing-artifact-packs" >}})
-
-[server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
-
-VQL
-
-
 
 
 ### Built-in vs. Compiled-in vs. Custom Artifacts
 
-Artifacts loaded from the binary, loaded from the config (i.e. embedded), or
-loaded from a directory using the `artifact_definitions_directory` or
-`artifact_definitions_directories` config settings, or from a path specified by
-the CLI `--definitions` flag are deemed "built-in" and they cannot be modified
-during runtime.
+Artifacts loaded from the binary, or
+
+- embedded in the config's `autoexec.artifact_definitions` section, or
+- from a directory specified by the `Frontend.artifact_definitions_directory`
+  config setting, or
+- from additional directories specified by the
+  `defaults.artifact_definitions_directories` config setting, or
+- from a directory specified by the `--definitions` CLI flag
+
+are deemed "built-in" and they cannot be modified during runtime. Any changes to
+the artifacts in those locations will not be effective without a server restart.
 
 To summarize:
 
-| Loaded from                                 | considered <br>built-in? | considered <br>compiled-in? |
-|:--------------------------------------------|:------------------------:|:---------------------------:|
-| binary                                      |           yes            |             yes             |
-| `autoexec.artifact_definitions`             |           yes            |             no              |
-| `Frontend.artifact_definitions_directory`   |           yes            |             no              |
-| `defaults.artifact_definitions_directories` |           yes            |             no              |
-| `--definitions` CLI flag                    |           yes            |             no              |
+| Loaded from                                         | considered <br>built-in? | considered <br>compiled-in? |
+|:----------------------------------------------------|:------------------------:|:---------------------------:|
+| binary                                              |           yes            |             yes             |
+| config: `autoexec.artifact_definitions`             |           yes            |             no              |
+| config: `Frontend.artifact_definitions_directory`   |           yes            |             no              |
+| config: `defaults.artifact_definitions_directories` |           yes            |             no              |
+| `--definitions` CLI flag                            |           yes            |             no              |
+
+When you attempt to edit a built-in artifact in the GUI, you are actually
+creating a customized _copy_ of that artifact.
 
 Attempting to edit any **compiled-in** artifact in the GUI will result in a copy
 being created with the `Custom.` prefix added to the name.
@@ -317,34 +326,130 @@ You can run the following VQL query in a notebook to see how a particular
 artifact has been classified by the server:
 
 ```vql
-SELECT name, built_in, compiled_in
-FROM artifact_definitions()
+SELECT name, built_in, compiled_in FROM artifact_definitions()
 WHERE name =~ "Artifact.Name"
 ```
 
-Artifacts which are not given the **built-in** designation are considered
+Only artifacts embedded in the config are able to override artifacts included in
+the binary. For all artifacts from other sources, the name must be unique
+and not conflict with the names of the artifacts included in the binary. If
+there is a name conflict then the custom version will be ignored.
+
+Artifacts which are not given the built-in designation are considered
 **custom**. In the GUI's artifact screen these artifacts are shown with the
 <i class="fa-solid fa-user-pen"></i> icon.
 
-### Saving artifacts
+### Importing / creating, editing, and deleting artifacts at runtime
+
+Now that you know where artifacts are loaded from when the server starts, you
+might be wondering: how you create new artifacts in Velociraptor? There are
+several ways...
+
+In the GUI, as explained in more detail [here]({{< ref "/docs/gui/artifacts/" >}}),
+the available methods are:
+
+- creating or editing an artifact [using the artifact editor]({{< ref "/docs/gui/artifacts/#creating-and-editing-artifacts" >}})
+
+- importing [artifact packs]({{< ref "/docs/gui/artifacts/#importing-artifact-packs" >}})
+
+- importing artifacts [using server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+
+In VQL we can create artifacts using the
+[artifact_set()]({{< ref "/vql_reference/server/artifact_set/" >}}) function,
+and delete them using the
+[artifact_delete()]({{< ref "/vql_reference/server/artifact_delete/" >}}) function.
+
 
 All artifacts created during runtime are saved to the `artifact_definitions`
 directory in the datastore. Artifacts in this location are readable and
-writeable.
+writeable, which means they can be edited or deleted.
 
-All other artifact sources mentioned above are deemed **built-in** and are
-read-only.
+When the server starts it reads all artifacts stored in the
+`artifact_definitions` directory and marks these as "custom" (i.e. "not
+built-in). In the GUI's artifact previews these artifacts are labelled with
+"Custom Artifact". Note that the artifact name does not need to start with the
+word "Custom" - it's just a helpful convention to use.
 
-### Orgs, artifact inheritence, and masking
+![Custom artifact](custom_artifact.svg)
 
 
-### Custom artifact overrides
+## Orgs, artifact inheritance, and masking
 
-Artifacts loaded from the sources described above will override built-in
-artifacts if they have the same artifact name.
+If you use Velociraptor's [orgs]({{< ref "/docs/deployment/orgs/" >}})
+(multi-tenancy) feature then things can get a little confusing.
 
-Artifacts beginning with the prefix `Custom.` will override built-in artifacts
-under certain circumstance...???
+Each org has visibility of all the artifacts in the root org, including custom
+artifacts. In the Artifacts screen the built-in artifacts look no different to
+how they appear in the root org. And, as explain previously, they can't be
+edited or deleted (although custom copies of them can still be made).
+
+Custom artifacts defined in the root org are "inherited" by all non-root orgs
+and these artifacts are marked with a <i class="fa-solid fa-house"></i> icon in
+the artifact listing on the Artifacts screen.
+
+![custom artifact inherited from the root org](orgs_inherited1.png)
+
+Although custom artifacts created in the root org are visible to non-root orgs,
+these artifacts can only be edited or deleted from the root org.
+
+If you create a custom copy of an inherited artifact, and save it using the same
+name, the server stores that custom copy in the org's `artifact_definitions`
+directory - the artifact in the root org is not altered. The org-specific custom
+artifact will then have the <i class="fa-solid fa-user-pen"></i> icon.
+
+![custom artifact masking the inherited one](orgs_inherited2.png)
+
+What this means, in practical terms, is that the org-specific artifact is
+_masking_ the original artifact on which is was (or maybe wasn't!) based. If you
+perform a collection of that artifact then the org-specific copy will be used.
+
+If you delete the org-specific copy in the GUI then you will see the icon revert
+to the <i class="fa-solid fa-house"></i> icon. That is, the masking has been
+reversed and you can once again see the root org's artifact.
+
+This allows users in different orgs to create artifacts with the same names that
+possibly do very different things. The artifact namespaces for orgs are
+completely independent.
+
+Custom artifacts created in non-root orgs look and behave exactly the same as
+they do in the root org, except that they are not shared or inherited anywhere
+outside the org.
+
+
+## Automatic custom overrides
+
+Velociraptor provides automatic overriding of certain built-in artifacts with
+custom versions. That is, certain artifacts beginning with the prefix `Custom.`
+will, under specific circumstances, override their built-in equivalents to allow
+for customization.
+
+**Custom.Generic.Client.Info**
+
+The built-in artifact `Generic.Client.Info` is used to gather host information
+when a client enrolls or on-demand when clicking the
+[Interrogate]({{< ref "/docs/clients/interrogation/" >}})
+button on the host Overview page in the GUI. If a custom artifact name
+`Custom.Generic.Client.Info` exists in the artifact repository then it will be
+used instead when clients enroll or are interrogated. This override capability
+allows you to create a custom version of the artifact which gathers additional
+information and then have it work seamlessly via the GUI. This override
+behaviour does _not_ occur when either artifact is collected explicity.
+
+**Custom.Server.Monitor.Health**
+
+The built-in artifact `Server.Monitor.Health` provides the server dashboard
+(also known as the <i class="fa-solid fa-house"></i> **Home** page). The layout
+and content of this page is defined in this artifact. If an artifact exists
+named `Custom.Server.Monitor.Health` then it will be used instead of the
+default.
+
+**Custom.Server.Internal.Welcome**
+
+The built-in artifact `Server.Internal.Welcome` provides the GUI's Welcome
+page (what you see if you click on the green dinosaur) and defines the content
+and layout of the resulting web page. If you create a customized version named
+`Custom.Server.Internal.Welcome` then this will be used instead of the default
+artifact.
 
 ## What's next?
 

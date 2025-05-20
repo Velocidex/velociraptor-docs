@@ -20,11 +20,20 @@ Config settings vs. equivalent VQL functions:
 `Frontend.default_client_monitoring_artifacts`
 `Frontend.initial_server_artifacts`
 
-VQL functions that can be useful initialize a new server, which don't have
+VQL functions that can be useful when initializing a new server, which don't have
 equivalent config settings:
 
-- [hunt_add()](): to create hunts
+- [hunt_add()](): to create and start hunts
 - create notebooks
+- run [server artifacts which import other artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+
+## Running artifacts before client enrollment
+
+https://docs.velociraptor.app/exchange/artifacts/pages/defenderexclusion/
+
+ Client:
+   additional_event_artifacts:
+   - Windows.Utils.DefenderExclusionCompact
 
 ## Source-free Artifacts
 

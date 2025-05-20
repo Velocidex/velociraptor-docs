@@ -13,18 +13,16 @@ Understanding the most commonly used artifact fields is crucial for working with
 artifacts. These are the ones you really need to know about. This page outlines
 the most commonly used top-level artifact fields and explains how to use them.
 
-Less frequently used and more advanced fields are described separately, with a
-brief overview and links to more detailed information being provided towards the
-end of this page. But for easy reference, we provide a brief outline of those
-fields here too.
+Less frequently used fields that deal with more advanced functionality are
+described separately [here]({{< ref "" >}})
 
-### Basic Fields Summary
+### Summary
 
 These fields are used in most artifacts.
 
 | Field Name         | Description                               | Searchable? | YAML Data Type |
 |--------------------|-------------------------------------------|:------------:|:-------------:|
-| [name]({{< relref "#-name-" >}}) | Artifact's unique identifier. **Required** | Yes | string |
+| [name]({{< relref "#-name-" >}}) | Artifact's unique identifier. _Required_ | Yes | string |
 | [aliases]({{< relref "#-aliases-" >}}) | Allows for multiple names to be used for the same artifact. | Yes | sequence |
 | [type]({{< relref "#-type-" >}}) | Artifact category (e.g. CLIENT or SERVER). | Filterable | string |
 | [description]({{< relref "#-description-" >}}) | Prose describing the artifact’s purpose and usage. | Yes | string |
@@ -32,15 +30,6 @@ These fields are used in most artifacts.
 | [reference]({{< relref "#-reference-" >}}) | Links to external resources or further information. | No | sequence |
 | [parameters]({{< relref "#-parameters-" >}}) | Parameters to be provided to the artifact. | No | sequence |
 | [sources]({{< relref "#-sources-" >}}) | Defines how the artifact produces data. | No | sequence |
-| [column_types]({{< relref "#-column_types-" >}}) | Defines specific GUI formatting for selected results columns. | No | sequence |
-
-### Advanced Fields Summary
-
-These fields are
-
-| Field Name         | Description                               |
-|--------------------|-------------------------------------------|
-| [resources]({{< relref "#-resources-" >}}) | Defines various resource limits that apply when the artifact is collected. |
 
 
 {{% notice info "Field names are case-sensitive!" %}}
@@ -51,7 +40,7 @@ are case-sensitive and, by convention, also lowercase.
 
 {{% /notice %}}
 
-## Basic Fields
+## Fields
 
 These are the basic building blocks of most artifacts.
 
@@ -62,9 +51,10 @@ usually want our artifacts to have more than just a name, although there are
 [special cases]({{< ref "/docs/artifacts/event_queues/" >}})
 where not much else is required.
 
-Artifact names must be unique.
+Artifact names must be unique within the org's
+[artifact namespace]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}).
 
-**Naming rules**
+#### Naming rules
 
 1. The artifact's name can only consist of alphabetic characters (upper or
    lowercase), digits, and the characters `_` (underscore) and `.` (dot).
@@ -72,9 +62,9 @@ Artifact names must be unique.
 2. The name cannot contain `-`, spaces, or any other special characters.
 
 3. In addition, the artifact name and the parts of an artifacts name (which are
-   separated by a `.`) cannot start with a digit.
+   separated by a `.`) must start with an alphabetic character.
 
-**Naming conventions**
+#### Naming conventions
 
 As you'll see, most of the current artifacts tend to use CamelCase, although
 this is just a convention that has developed organically. You are free to use
@@ -294,6 +284,10 @@ Artifacts screen.
 For a more detailed discussion of `sources` see the
 [Sources]({{< ref "/docs/artifacts/sources/" >}}) section.
 
+
+
+## Advanced Fields
+
 ### [ column_types ]
 
 The `column_types` field allows you to customize how specific columns (i.e.
@@ -307,9 +301,8 @@ will try to guess the appropriate display format based on the data itself.
 For a more detailed discussion of `column_types` see the
 [Sources]({{< ref "/docs/artifacts/column_types/" >}}) section.
 
-
-
-## Advanced Fields
-
 ### [ resources ]
 
+### [ required_permissions ]
+
+### [ implied_permissions ]
