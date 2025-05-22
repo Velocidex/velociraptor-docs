@@ -108,22 +108,22 @@ artifacts from related external projects.
 | RegistryHunter                                                        | https://registry-hunter.velocidex.com/                                                  | `Server.Import.RegistryHunter`                                      |
 | Rapid7Labs                                                            | https://github.com/rapid7/Rapid7-Labs/tree/main/Vql                                     | `Server.Import.Rapid7Labs`                                          |
 | DetectRaptor                                                          | https://github.com/mgreen27/DetectRaptor                                                | `Server.Import.ArtifactExchange`<br>-> `Server.Import.DetectRaptor` |
-| Audit: a collection of Audit <br>and Compliance related VQL artifacts | https://github.com/Velocidex/Audit                                                      | manually imported                                                   |
 | KapeFiles or SQLiteHunter                                             | https://github.com/EricZimmerman/KapeFiles<br>https://github.com/Velocidex/SQLiteHunter | `Server.Import.UpdatedBuiltin`                                      |
 | Artifacts from previous releases                                      | https://github.com/Velocidex/velociraptor/releases                                      | `Server.Import.PreviousReleases`                                    |
 
 The reason that the artifacts imported by the above are not included by default
 is that they are either rapidly developing and not synced to the Velociraptor
-release cycle, or are considered experimental, or are community contributed.
-Some (probably RegistryHunter, SQLiteHunter and Curated Sigma Rules) may be
-included by default in future as these projects mature.
+release cycle, or are still considered experimental, or are community
+contributed. Some (probably RegistryHunter, SQLiteHunter and Curated Sigma
+Rules) may be included by default in future as these projects mature.
 
 ![Running server import artifacts](artifacts_server_import1.png)
 
 ![Customizing server import artifact parameters](artifacts_server_import2.png)
 
-We also have two server artifacts which are designed to import artifacts
-for the latest release or previous releases.
+We also have a built-in server artifact which updates selected artifacts to
+their latest version, and another which imports all artifacts from a previous
+releases.
 
 #### Server.Import.UpdatedBuiltin
 
@@ -269,15 +269,17 @@ This can be done:
 - if you wish to perform bulk deletion you can use the built-in utility artifact
   `Server.Import.DeleteArtifacts`.
 
-Artifacts loaded from these sources are deemed "built-in" and cannot be deleted:
+Artifacts loaded from these external sources are deemed "built-in" and cannot be
+deleted during runtime:
 
 - embedded in the config's `autoexec.artifact_definitions` section
 - a directory specified by the `Frontend.artifact_definitions_directory` config setting
 - additional directories specified by the `defaults.artifact_definitions_directories` config setting
 - a directory specified by the `--definitions` CLI flag
 
-If you need to delete them then you should manually remove the corresponding
-YAML files from their source locations, and then restart the server.
+If you need to delete such artifacts then you should manually remove the
+corresponding YAML documents from their source locations, and then restart the
+server.
 
 For a futher discussion of built-in artifacts please see
 [Built-in vs. Compiled-in vs. Custom Artifacts]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}).

@@ -187,6 +187,10 @@ a:hover {
     color: transparent !important;
 }
 
+hr {
+    background-color: #ccc;
+    height: 2px !important
+}
 
 div.section {
     opacity: 1;
@@ -837,7 +841,11 @@ details > summary:first-of-type {
 #body-inner table {
     border: none;
     margin-bottom: 1em;
-    width: max-content;
+    width: fit-content;
+}
+
+.gsc-control-cse > table {
+    width: 100% !important;
 }
 
 #body-inner table tbody {

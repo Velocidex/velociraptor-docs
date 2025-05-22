@@ -307,7 +307,7 @@ To summarize:
 
 | Loaded from                                         | considered <br>built-in? | considered <br>compiled-in? |
 |:----------------------------------------------------|:------------------------:|:---------------------------:|
-| binary                                              |           yes            |             yes             |
+| compiled into binary                                |           yes            |             yes             |
 | config: `autoexec.artifact_definitions`             |           yes            |             no              |
 | config: `Frontend.artifact_definitions_directory`   |           yes            |             no              |
 | config: `defaults.artifact_definitions_directories` |           yes            |             no              |
@@ -330,12 +330,24 @@ SELECT name, built_in, compiled_in FROM artifact_definitions()
 WHERE name =~ "Artifact.Name"
 ```
 
-Only artifacts embedded in the config are able to override artifacts included in
-the binary. For all artifacts from other sources, the name must be unique
-and not conflict with the names of the artifacts included in the binary. If
-there is a name conflict then the custom version will be ignored.
+Artifacts loaded from the external sources listed above are able to override
+artifacts included in the binary. For all artifacts, the name must be unique and
+not conflict with the names of the artifacts included in the binary. If there is
+a name conflict then the custom version will be ignored.
 
-Artifacts which are not given the built-in designation are considered
+When multiple external sources are specified which contain artifacts with the
+same name, then this is the order of precedence that applies (lowest wins):
+
+1. config: `autoexec.artifact_definitions`
+2. `--definitions` CLI flag
+3. config: `defaults.artifact_definitions_directories`
+4. config: `Frontend.artifact_definitions_directory`
+5. compiled into binary
+
+This is similar to the artifact masking which occurs for orgs, which we describe
+[here]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}).
+
+Artifacts which are not assigned the built-in designation are considered
 **custom**. In the GUI's artifact screen these artifacts are shown with the
 <i class="fa-solid fa-user-pen"></i> icon.
 

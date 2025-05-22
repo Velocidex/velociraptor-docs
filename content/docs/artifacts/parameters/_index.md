@@ -8,6 +8,9 @@ summary: "Artifacts parameters and how they work"
 last_reviewed: 2025-05-13
 ---
 
+Parameters are essentially VQL variables. That is they are accessible in VQL as
+variables, and their data type will correspond to the parameter's type.
+
 Artifact parameters allow the user to customize the collection in a
 controlled way - without needing to edit the VQL. The GUI will present
 a form that allows the user to update the parameters prior to each
@@ -39,7 +42,7 @@ field can be used to indicate to the user that their entered value is not valid.
 
 ## Parameter fields
 
-For parameters `name` is the only required field. If nothing else is specified
+For parameter's `name` is the only required field. If nothing else is specified
 to further describe tha parameter then it is by default a text field; that is a
 simple text string.
 
@@ -125,5 +128,3 @@ specified data type at runtime.
    - using typeof()
    - by overriding a parameter value with a VQL assignment.
 
-Parameters are essentially VQL variables. That is they are accessible in VQL as
-variables, and their data type will correspond to the parameter's type.

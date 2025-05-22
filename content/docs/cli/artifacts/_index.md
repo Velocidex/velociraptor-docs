@@ -1,10 +1,10 @@
 ---
-menutitle: "Artifacts"
+menutitle: "artifacts"
 title: 'The "artifacts" command group'
 date: 2025-05-13
 draft: false
-weight: 10
-summary: "Commands for working with artifact definitions"
+weight: 20
+summary: "Commands for working with artifacts"
 last_reviewed: 2025-05-13
 ---
 
@@ -14,41 +14,45 @@ GUI, or don't want or need to use it, such as when
 [performing a local investigation]({{< ref "/docs/deployment/#command-line-investigation-tool" >}})
 on a machine.
 
-You can use the `-h` (or `--help`) flag with all Velociraptor commands to see
-available options and usage details. Therefore, `velociraptor artifacts -h` or
-`velociraptor artifacts <command> -h` will provide specific help for these
-commands.
-
 When using the CLI, you can also make custom artifacts available by pointing the
 binary to a folder containing their definitions using the `--definitions` flag.
 This would allow the `artifacts` commands to work with the contents of those
 custom artifacts as well.
 
-The `artifacts` command group supports the following commands:
+If you want these commands work with your server's artifact repository, they
+will need access to the server's datastore, and therefore need to read the
+server.config.yaml in order to find the datastore. This means that these
+commands will need to be run with the `--config` (or `-c`) flag.
+
+If you do not specify `--config` then you will be working with the built-in
+artifact repository, which means the default artifacts compiled into the binary,
+and possibly also custom artifacts if using a binary that has an embedded
+config.
+
+----
 
 ### [ artifacts list ]
+
+You can use the `artifacts list` command to see the full list of artifacts that
+Velociraptor knows about. This is also a helpful command if you don't know or
+have forgotten the exact name of an artifact when using the `artifacts collect`
+command.
+
+This command is very similar to running a query in a notebook using the
+`artifact_definitions` plugin.
 
 ```text
 artifacts list [<flags>] [<regex>]
     Print all artifacts
 
     -d, --[no-]details ...  Show more details (Use -d -dd for even more)
+
+Args:
+  [<regex>]  Regex of names to match.
 ```
-
-You can use the `artifacts list` command to see the full list of artifacts that
-Velociraptor knows about. This is helpful if you don't know or have forgotten
-the name of an artifact.
-
-This command is very similar to running a query in a notebook using the
-`artifact_definitions()` plugin.
 
 - The regex expression is case-sensitive. To make it case-insensitive prefix your
   expression with the `(?i)` modifier.
-- By default the command does not show artifact details. The `-d` flag will
-  cause the artifact content to be displayed. This is very similar to using the
-  `artifacts show` command, except that it supports regex.
-- The `-dd` flag will display the normal artifact content _plus_ it's compiled
-  VQL form.
 
 **Examples:**
 
@@ -58,6 +62,12 @@ Linux.Sys.Services
 Windows.System.CriticalServices
 Windows.System.Services
 ```
+
+- By default the command does not show artifact details. The `-d` flag will
+  cause the artifact content to be displayed. This is very similar to using the
+  `artifacts show` command, except that it supports regex.
+- The `-dd` flag will display the normal artifact content _plus_ it's compiled
+  VQL form.
 
 ```sh
 $ velociraptor artifacts list Windows.System.Services -d
@@ -71,17 +81,22 @@ parameters:
     ...
 ```
 
-### [ artifacts show ]
+----
 
-```text
-artifacts show <name>
-    Show an artifact
-```
+### [ artifacts show ]
 
 The purpose of the `artifacts show` command is to view the contents of a
 specific Velociraptor artifact. This allows you to inspect the definition of an
 artifact, including its VQL query and parameters, directly from the command
 line.
+
+```text
+artifacts show <name>
+    Show an artifact
+
+Args:
+  <name>  Name to show.
+```
 
 - Wildcards and regex are _not_ supported. The command expects an exact artifact
   name.
@@ -100,24 +115,9 @@ parameters:
     ...
 ```
 
+----
+
 ### [ artifacts collect ]
-
-```text
-artifacts collect [<flags>] <artifact_name>...
-    Collect all artifacts
-
-    --output=""           When specified we create a zip file and store all output in it.
-    --timeout=0           Time collection out after this many seconds.
-    --progress_timeout=0  If specified we terminate the colleciton if no progress is made in this many seconds.
-    --cpu_limit=0         A number between 0 to 100 representing maximum CPU utilization.
-    --output_level=5      Compression level for zip output.
-    --[no-]require_admin  Ensure the user is an admin
-    --password=""         When specified we encrypt zip file with this password.
-    --format=json         Output format to use (text,json,csv,jsonl).
-    --args=ARGS ...       Artifact args (e.g. --args Foo=Bar).
-    --hard_memory_limit=HARD_MEMORY_LIMIT
-                          If we reach this memory limit in bytes we exit.
-```
 
 The `artifacts collect` command allows you to run Velociraptor artifacts from
 the command line. This command allows you to execute a specific artifact, which
@@ -171,14 +171,29 @@ Velociraptor binary. If you provide command line arguments, the binary will
 execute the command you requested instead of running its default embedded
 configuration.
 
+```text
+artifacts collect [<flags>] <artifact_name>...
+    Collect all artifacts
 
+    --output=""           When specified we create a zip file and store all output in it.
+    --timeout=0           Time collection out after this many seconds.
+    --progress_timeout=0  If specified we terminate the colleciton if no progress is made in this many seconds.
+    --cpu_limit=0         A number between 0 to 100 representing maximum CPU utilization.
+    --output_level=5      Compression level for zip output.
+    --[no-]require_admin  Ensure the user is an admin
+    --password=""         When specified we encrypt zip file with this password.
+    --format=json         Output format to use (text,json,csv,jsonl).
+    --args=ARGS ...       Artifact args (e.g. --args Foo=Bar).
+    --hard_memory_limit=HARD_MEMORY_LIMIT
+                          If we reach this memory limit in bytes we exit.
+
+Args:
+  <artifact_name>  The artifact name to collect.
+```
+
+---
 
 ### [ artifacts reformat ]
-
-```text
-artifacts reformat <paths>...
-    Reformat a set of artifacts
-```
 
 Reads one of more artifact definitions as YAML files, and reformats the VQL
 sections in them using Velociraptor's internal VQL formatter.
@@ -188,10 +203,24 @@ pipelines, where consistent formatting across many artifacts is required. The
 reformatting ensures that VQL queries are consistently formatted, making them
 easier to read, maintain, and debug.
 
-WARNING: The reformatted VQL is **inserted back into the original YAML**,
-replacing the old text while preserving the rest of the structure! Make sure you
+WARNING: The reformatted VQL is **inserted back into the original YAML file**,
+replacing the old VQL while preserving the rest of the structure! Make sure you
 have backup copies of your artifacts before applying `reformat` to them, just in
-case you don't like the resultant formatting.
+case you're dissatisfied with the resultant formatting.
+
+```text
+artifacts reformat <paths>...
+    Reformat a set of artifacts
+
+Args:
+  <paths>  Paths to artifact yaml files
+```
+
+- This command _requires_ a server config.
+
+- The reformatting will generally validate the artifact's YAML validity and VQL
+  syntax, however it does not do extensive checks. For more thorough artifact
+  checking please use the `artifacts verify` command described below.
 
 **Example:**
 
@@ -202,35 +231,33 @@ velociraptor --config server.config.yaml artifacts reformat *.yaml -v
 In the output you will see `Reformatted <artifact_name>.yaml: OK` for each
 matched artifact.
 
-- This command _requires_ a server config.
-
-- The reformatting will generally validate the artifact's YAML validity and VQL
-  syntax, however it does not do extensive checks. For more thorough artifact
-  checking please use the `artifacts verify` command described below.
-
+----
 
 ### [ artifacts verify ]
+
+Performs static analysis on artifacts. Its purpose is to flag issues within
+artifact definitions, such as invalid arguments. The command will not update or
+fix the target artifacts, but will report any issues found in them.
+
+This command is mostly intended for automated build environments, for CI
+(Continuous Integration) testing and review pipelines. It allows for the
+programmatic checking or "linting" of artifact definitions, including validation
+of VQL syntax, on the command line. While the Graphical User Interface (GUI)
+editor also performs linting, the `artifacts verify` command provides a way to
+do this outside the GUI environment.
+
+With failing artifacts the command sets errorlevel=1, which can be acted on by
+automation scripts.
 
 ```text
 artifacts verify [<flags>] <paths>...
     Verify a set of artifacts
 
     --[no-]builtin  Allow overriding of built in artifacts
+
+Args:
+  <paths>  Paths to artifact yaml files
 ```
-
-Performs static analysis on artifacts. Its purpose is to flag issues within
-artifact definitions, such as invalid arguments. The command will not update or
-fix the target artifacts, but will report any issues found in them.
-
-This command is mostly intended for automated build environments for CI
-(Continuous Integration) testing and review pipelines. It allows for the
-programmatic checking or "linting" of artifact definitions, including validation
-of VQL syntax on the command line. While the Graphical User Interface (GUI)
-editor also performs linting, the `artifacts verify` command provides a way to
-do this outside the GUI environment.
-
-With failing artifacts the command sets errorlevel=1, which can be acted on by
-automation scripts.
 
 **Example:**
 

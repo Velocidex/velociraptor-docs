@@ -10,7 +10,7 @@ last_reviewed: 2025-04-30
 
 Sources describe how the artifact produces data.
 
-An artifact may contains several sources. Each source represents a single SELECT
+An artifact may contain several sources. Each source represents a single SELECT
 query and potentially multiple LET queries. Ultimately each source returns a
 single table of results. If an artifact wishes to return multiple tables, it
 should define multiple sources.

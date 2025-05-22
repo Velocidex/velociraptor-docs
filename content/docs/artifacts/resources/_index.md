@@ -27,6 +27,9 @@ Limits are set using the `resources` key in the artifact definition.
       "max_batch_rows": 0,
       "max_batch_rows_buffer": 0
 
+There are two timeouts. The first is for the overall collection and for offline collections there is no timeout I don't think
+There is also a progress timeout which aims to catch cases where a query is somehow stuck.
+
 // We extract the default resource limits from each artifact
 // definition and calculate a collection wide default. For
 // example if a collection specifies artifact A (with max_rows
@@ -46,28 +49,26 @@ resources:
   cpu_limit: 50
 ```
 
-## Time Limits
+  - `timeout` (Query Timeout): A general timeout parameter can be set for a
+    query. This timeout applies to the entire query and cancels the collection
+    when exceeded. Timed-out flows might need to be re-run with increased
+    timeouts Setting a timeout is considered a way to make a query safe enough.
+    Queries are typically limited to 10 minutes (600 seconds).
 
-  - Query Timeout: A general timeout parameter can be set for a query. This
-    timeout applies to the entire query and cancels the collection when
-    exceeded. Timed-out flows might need to be re-run with increased timeouts
-    Setting a timeout is considered a way to make a query safe enough.
-
-  - Default Query Timeout: Queries are typically limited to 10 minutes. The
-    default query timeout is often 10 minutes (600 seconds)
+## Other Time Limits
 
   - `progress_timeout` (Max Idle Time in Seconds): This parameter, set in the
     resources section, terminates a query if no progress (rows emitted) is
-    detected within the specified time. By default, it is not set. In the
-    context of offline collectors, this kills the specific artifact that is not
-    making progress, allowing the collection to move on. This parameter can also
-    be provided to the `query()` plugin for more fine-grained control.
+    detected within the specified time. By default, it is not set (which means
+    there is no limit). In the context of offline collectors, this kills the
+    specific artifact that is not making progress, allowing the collection to
+    move on. This parameter can also be provided to the `query()` plugin for
+    more fine-grained control. This limit cannot currently be specified in an
+    artifact's `resources` section.
 
   - Notebook Query Timeout: The timeout for notebook queries is hardcoded to 10
     minutes.
 
-  - Artifact Default Timeout: Artifacts can have default timeout values,
-    typically 600 seconds (10 minutes).
 
 ## Resource Limits
 
