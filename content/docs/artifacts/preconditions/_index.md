@@ -118,3 +118,21 @@ each source:
   scope. Since sources are independent they will run in parallel and
   any VQL variable defined in one source will not be visible to other
   sources.
+
+
+```yaml
+name: RandomNumberGenerator
+description:
+parameters:
+  - name: RangeLimit
+    type: int
+    default: 100
+export: |
+  LET RandomNumber <= rand(range=RangeLimit)
+sources:
+  - name: FirstSource
+    query: SELECT RandomNumber, RangeLimit FROM scope()
+  - name: SecondSource
+    precondition: SELECT * FROM info()
+    query: SELECT RandomNumber, RangeLimit FROM scope()
+```

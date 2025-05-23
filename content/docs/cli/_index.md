@@ -136,6 +136,21 @@ velociraptor_collector.exe -- --nobanner
 This causes the banner to be hidden while the offline collector behaviour
 otherwise continues according to the embedded spec.
 
-## Learn more about the features available in the CLI
+{{% notice info "Be aware of filesystem permissions" %}}
+
+When installed as a service, Velociraptor's datastore directory is owned by the
+service account named `velociraptor` and accessible to the `velociraptor` user
+group. New users often overlook this fact and create files in the datastore
+using their own user account or the `root` account, which means that the
+Velociraptor service cannot read them.
+
+Some CLI commands work directly with files in the datastore, which can result in
+them being inadvertently owned by your user account. You can avoid creating
+permissions problems by switching to the `velociraptor` user. On most Linux
+systems this can be done with the command `sudo -u velociraptor bash`.
+
+{{% /notice %}}
+
+## Learn about the commands available in the CLI
 
 {{% children description="true" %}}

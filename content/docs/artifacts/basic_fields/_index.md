@@ -18,7 +18,7 @@ described separately [here]({{< ref "" >}}).
 
 ### Summary
 
-These fields are used in most artifacts.
+These fields are the basic building blocks of most artifacts.
 
 | Field Name         | Description                               | Searchable? | YAML Data Type |
 |--------------------|-------------------------------------------|:------------:|:-------------:|
@@ -40,9 +40,9 @@ are case-sensitive, and by convention also lowercase.
 
 {{% /notice %}}
 
-## Fields
+## Artifact Identity Fields
 
-These are the basic building blocks of most artifacts.
+These fields identify and characterize the artifact.
 
 ---
 
@@ -140,6 +140,10 @@ For example, if we have an artifact named `Generic.Detection.Yara.Glob` which
 can be used on any platform, then we might like to have an alias for each
 platform so that this artifact will be included in the results when anyone does
 a search for "Windows.Detection.*".
+
+Aliases occupy the same artifact namespace as the `name` field. This means that
+aliases cannot conflict with names of existing artifacts or other aliases. Each
+alias must be a unique name.
 
 ```yaml
 name: Generic.Detection.Yara.Glob
@@ -298,6 +302,12 @@ an alias for this field, however `reference` is preferred.
 
 The `reference` field is _not_ searched when using the search filter on the
 Artifacts screen.
+
+---
+
+## Parameters and Sources
+
+Are the meat (and also imports & exports)
 
 ---
 
