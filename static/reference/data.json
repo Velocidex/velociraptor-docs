@@ -6387,11 +6387,6 @@
                 "required": true
             },
             {
-                "name": "FolderPath",
-                "type": "string",
-                "description": "The folder path to save the attachments from emails."
-            },
-            {
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use"
@@ -8950,7 +8945,7 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The separator that will be used to split"
+                "description": "The separator regex that will be used to split"
             },
             {
                 "name": "sep_string",
@@ -10766,6 +10761,22 @@
             "darwin_arm64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "verify",
+        "description": "verify an artifact",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The artifact to verify. This can be an artifact source in yaml or json or the name of an artifact",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

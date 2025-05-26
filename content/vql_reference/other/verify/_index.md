@@ -1,5 +1,5 @@
 ---
-title: split
+title: verify
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## split
+## verify
 <span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
@@ -19,11 +19,12 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-string|The value to split|string (required)
-sep|The separator regex that will be used to split|string
-sep_string|The separator as string that will be used to split|string
+artifact|The artifact to verify. This can be an artifact source in yaml or json or the name of an artifact|string (required)
 
 ### Description
 
-Splits a string into an array based on a regexp separator.
+verify an artifact
+
+This function will verify the artifact and flag any potential errors or warnings.
+
 
