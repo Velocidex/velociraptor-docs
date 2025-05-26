@@ -96,9 +96,10 @@ To summarize:
 
 - VQL in the `export` section is always run (at least once) when the artifact is
   collected. If any of the sources have preconditions then the `export`
-  section's VQL will execute _once for each source_ (parallel execution). In the
-  absence of any source-level preconditions, the VQL executes once and all
-  sources have access to the same results.
+  section's VQL will execute _once for each source_
+  ([parallel execution]({{< ref "/docs/artifacts/preconditions/#serial-vs-parallel-execution" >}})).
+  In the absence of any source-level preconditions, the VQL executes once and
+  all sources have access to the same results.
 
 - Unlike `sources`, the `export` section's VQL doesn't directly produce results.
   The results need to be made available to the sources as variables if you want
@@ -168,7 +169,7 @@ So what does that tell us?
 - The artifact imported the export sections from the first 2 artifact before
   running.
 
-- The artifact also ran it's own `export` section VQL.
+- The artifact also ran it's own `export` section's VQL.
 
 - The `Greeting` variable was updated with each LET statement, ending up having
   the value `goodbye`.

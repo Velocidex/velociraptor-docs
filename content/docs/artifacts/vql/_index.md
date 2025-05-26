@@ -3,7 +3,7 @@ menutitle: "Artifacts via VQL"
 title: "Managing and calling artifacts via VQL"
 date: 2025-05-13
 draft: false
-weight: 120
+weight: 60
 summary: "How to manage and call artifacts via VQL"
 last_reviewed: 2025-05-13
 ---

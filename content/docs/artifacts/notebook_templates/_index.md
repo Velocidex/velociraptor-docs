@@ -2,8 +2,8 @@
 menutitle: "Notebook Templates"
 title: "Notebook Templates"
 date: 2025-05-13
-draft: false
-weight: 120
+draft: true
+weight: 145
 noDisqus: true
 no_edit: true
 disableToc: true

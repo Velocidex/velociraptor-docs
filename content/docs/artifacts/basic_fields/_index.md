@@ -20,8 +20,8 @@ described separately [here]({{< ref "" >}}).
 
 These fields are the basic building blocks of most artifacts.
 
-| Field Name         | Description                               | Searchable? | YAML Data Type |
-|--------------------|-------------------------------------------|:------------:|:-------------:|
+| Field Name         | Description                               | GUI Searchable? | YAML Data Type |
+|--------------------|-------------------------------------------|:---------------:|:--------------:|
 | [name]({{< relref "#-name-" >}}) | Artifact's unique identifier. _Required_ | Yes | string |
 | [aliases]({{< relref "#-aliases-" >}}) | Allows for multiple names to be used for the same artifact. | Yes | sequence |
 | [type]({{< relref "#-type-" >}}) | Artifact category (e.g. CLIENT or SERVER). | Filterable | string |
@@ -34,9 +34,9 @@ These fields are the basic building blocks of most artifacts.
 
 {{% notice info "Field names are case-sensitive!" %}}
 
-Due to YAML keys being case-sensitive (that is, the fields "Name" and "name"
-would be treated as different keys in a YAML document), all artifact field names
-are case-sensitive, and by convention also lowercase.
+Due to YAML keys being case-sensitive (the fields "Name" and "name" would be
+treated as different keys in a YAML document), all artifact field names are
+case-sensitive, and by convention also lowercase.
 
 {{% /notice %}}
 

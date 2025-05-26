@@ -1,10 +1,9 @@
 ---
-menutitle: "Artifact Security"
+menutitle: "Security"
 title: "Artifact Security"
 date: 2025-01-25
-weight: 120
+weight: 140
 summary: "How to secure artifacts"
-last_reviewed: 2025-04-30
 ---
 
 Artifacts are the main way in which users interact with Velociraptor:
@@ -177,31 +176,15 @@ for users:
 
 {{% notice warning "Allowing users to modify artifacts" %}}
 
-Users with the `ARTIFACT_WRITER` permission are allowed to modify the artifact
-itself. Therefore, if the user can change the artifact the above access control
-is bypassed.
+Users with the `ARTIFACT_WRITER` permission are allowed to modify the artifact itself. Therefore, if the user can change the artifact the above access control is bypassed.
 
 We consider users with `ARTIFACT_WRITER` as admin equivalent since it
 is easy to escalate to full admin with that permission.
 
 {{% /notice %}}
 
-## Required Permissions
 
-`required_permissions` - A list of permissions required to collect this
-artifact.
-
-Commonly used:
-
-- EXECVE
-- MACHINE_STATE
-- SERVER_ADMIN
-
-## Tracking Artifact Modifications
-
-`Server.Internal.ArtifactModification` event queue and logging
-
-## Server Artifacts and Impersonation
+## Server artifacts and Impersonation
 
 The above discussion centered around controlling access to client
 artifacts. But sometimes we need to also control access to server
