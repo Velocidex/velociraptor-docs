@@ -659,6 +659,29 @@
         ]
     },
     {
+        "name": "cache_dns",
+        "description": "Add a DNS record to the cache..",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The domain name to cache ",
+                "required": true
+            },
+            {
+                "name": "ip",
+                "type": "string",
+                "description": "The ip of the domain",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "cancel_flow",
         "description": "Cancels the flow.",
         "type": "Function",
@@ -1605,7 +1628,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -3152,6 +3176,11 @@
                 "name": "prefer_go",
                 "type": "bool",
                 "description": "Prefer calling the native Go implementation rather than the system."
+            },
+            {
+                "name": "tracker_only",
+                "type": "bool",
+                "description": "Only use the dns tracker - if the IP is not known then do not attempt to resolve it."
             }
         ],
         "metadata": {
@@ -8270,7 +8299,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -8346,6 +8376,94 @@
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secret_define",
+        "description": "Define a new secret template",
+        "type": "Function",
+        "args": [
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "verifier",
+                "type": "string",
+                "description": "A VQL Lambda function to verify the secret"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "A description of the secret type"
+            },
+            {
+                "name": "template",
+                "type": "ordereddict.Dict",
+                "description": "A Set of key/value pairs",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secret_modify",
+        "description": "Modify the secret",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the secret",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "delete",
+                "type": "bool",
+                "description": "Delete the secret completely"
+            },
+            {
+                "name": "add_users",
+                "type": "string",
+                "description": "A list of users to add to the secret",
+                "repeated": true
+            },
+            {
+                "name": "remove_users",
+                "type": "string",
+                "description": "A list of users to remove from the secret",
+                "repeated": true
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secrets",
+        "description": "Retrieve the list of secrets on the server.",
+        "type": "Plugin",
+        "platforms": [
+            "linux_amd64_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -11178,6 +11296,11 @@
                 "name": "compression",
                 "type": "string",
                 "description": "When writing a memory image use this compression (default none) can be none, s2, snappy, gzip."
+            },
+            {
+                "name": "driver_path",
+                "type": "string",
+                "description": "Specify where to extract the driver - by default we use the temp folder"
             }
         ],
         "category": "windows",
