@@ -130,7 +130,7 @@ WHERE artifact_set_metadata(basic=NOT name in BasicArtifacts.Artifacts, name=nam
 The artifact `Generic.Client.Info` is deemed basic and therefore this
 user can collect it.
 
-## Controlling access to artifacts
+## Controlling access to client artifacts
 
 Now that we have learned how to hide artifacts in the search GUI, and
 how to mark some artifacts as basic, we can proceed to tie down some
@@ -175,13 +175,144 @@ for users:
 
 {{% notice warning "Allowing users to modify artifacts" %}}
 
-Users with the `ARTIFACT_WRITER` permission are allowed to modify the artifact itself. Therefore, if the user can change the artifact the above access control is bypassed.
+Users with the `ARTIFACT_WRITER` permission are allowed to modify the
+artifact itself. Therefore, if the user can change the artifact the
+above access control is bypassed.
 
 We consider users with `ARTIFACT_WRITER` as admin equivalent since it
 is easy to escalate to full admin with that permission.
 
 {{% /notice %}}
 
+### Restricting dangerous client artifacts
+
+In the previous section we saw how to allow users **without the
+`COLLECT_CLIENT`** permission to launch some curated `basic`
+artifacts.
+
+However, if the user has `COLLECT_CLIENT` permissions, they are able
+to launch any client artifact. Once launched, the client will run the
+artifact without any ACL enforcement at all. However, not all client
+artifacts are created equal. Some client artifacts are more powerful
+than others.
+
+Some client artifacts allow running arbitrary commands on the
+endpoint. For example, as we have seen previously, the
+`Windows.System.CmdShell` artifact allows running arbitrary shell
+commands, because the commandline to run is a user supplied parameter
+directly passed to the shell, using the the `execve()` plugin. This
+can be leveraged for a complete domain compromise by e.g. running a
+malicious command on all assets in the environment.
+
+On the other hand, while the `Windows.Sysinternals.Autoruns` artifact
+also called the `execve()` plugin, the arguments supplied are
+sanitized from user input.
+
+If a user is not fully trusted, they may be allowed to collect the
+`Windows.Sysinternals.Autoruns` but definitely should be prevented
+from collecting the `Windows.System.CmdShell`.
+
+Because client artifacts do not use any ACL protection, as artifact
+writers, we need to be careful to not inadvertently give the user more
+permissions than intended on the endpoint.
+
+Client artifacts can specify the `required_permissions` field to
+direct the server to check the initiating user has those permissions
+before allowing the artifact to be scheduled. This field is used to
+restrict collection of powerful, risky artifacts to only
+administrative users.
+
+The corollary is that we should try to sanitize user input as much as
+possible to restrict the use of dangerous functions. For example:
+
+1. When using `execve()`, build the command line based on user input
+   but do not allow user input to be directly interpolated into the
+   command in such a way that it can change the meaning of the
+   command.
+
+2. When using an artifact that uses plugins that allow writing to
+   arbitrary files (e.g. `copy()`), do not allow the user to specify
+   the path and content of the files to write. This can be misused to
+   e.g. write startup locations and take over the endpoint. Similar
+   advice applies to writing registry keys, deleting files etc.
+
+{{% notice tip "Safely using execve()" %}}
+
+The `execve()` plugin allows artifacts to launch external
+commands. This plugin accepts a list of parameters (called `argv`)
+instead of a single command line. The plugin will construct a safe
+command line by escaping single arguments if necessary, so you should
+not need to worry about escaping.
+
+Specifically, do not launch commands via the shell:
+
+```sql
+SELECT * FROM execve(argv=["cmd.exe", "/c", "cacls " + DirectoryName])
+```
+
+Instead always directly run the target binary - Velociraptor will
+suitable escape the command line if required.
+
+```sql
+SELECT * FROM execve(argv=["cacls.exe", DirectoryName])
+```
+
+{{% /notice %}}
+
+
+How can we tell if a client artifact gives extra permissions to users?
+
+In recent versions, Velociraptor has a VQL query static analyzer,
+which among other warnings also suggests to check permissions:
+
+```
+$ velociraptor -v artifacts verify ./content/exchange/artifacts/*
+...
+[ERROR] 2025-05-23T11:55:30Z ./content/exchange/artifacts/RemoteIconForcedAuth.yaml: Call to Artifact.Windows.Forensics.Lnk contain unknown parameter Glob
+[INFO] 2025-05-23T11:55:30Z ./content/exchange/artifacts/RemoteIconForcedAuth.yaml: Suggestion: Add EXECVE to artifact's required_permissions or implied_permissions fields
+```
+
+The artifact verifier checks all plugins and functions in the artifact
+and ensures that dangerous permissions are listed in either of the
+following fields:
+
+1. The `required_permissions` field is used to restrict who can launch
+   the artifact. Only users who already have that permission can
+   launch it, therefore the artifact does not add additional
+   permissions.
+
+2. The `implied_permissions` field is used to declare that this
+   permission is handled appropriately in this artifact. For example,
+   the `execve()` plugin arguments are properly sanitized. Therefore,
+   the verifier can suppress this warning.
+
+Ideally you should aim to have no verifier warnings.
+
+### Client artifacts collection permissions model
+
+To summarize, when collecting client artifacts the following security
+features are available:
+
+1. If a user does not have the `COLLECT_CLIENT` permission, they can
+   not collect any artifacts.
+
+2. Giving a user the `COLLECT_BASIC` permissions allows them to collect
+   `Basic` artifacts. Any artifact can be denoted as `Basic` by
+   setting the metadata field.
+
+3. Giving the user the `COLLECT_CLIENT` permission allows the user to
+   collect any client artifact, as long as they also have the
+   permissions specified in the `required_permissions` fields of that
+   artifact.
+
+4. Artifacts with open ended capabilities (e.g. running arbitrary
+   commands), should restrict their `required_permissions` field to
+   users who already have that permission. This ensures users can not
+   collect artifacts that give them additional permissions.
+
+5. Artifacts that properly sanitize use of dangerous permissions,
+   should declare those in `implied_permissions` which allows the
+   verifier to suppress these warnings.
 
 ## Server artifacts and Impersonation
 
