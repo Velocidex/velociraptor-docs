@@ -249,6 +249,9 @@ do this outside the GUI environment.
 With failing artifacts the command sets errorlevel=1, which can be acted on by
 automation scripts.
 
+The same static analysis can be done via VQL using the
+[`verify` function]({{< ref "/docs/artifacts/cli/#-artifacts-verify-" >}}).
+
 ```text
 artifacts verify [<flags>] <paths>...
     Verify a set of artifacts

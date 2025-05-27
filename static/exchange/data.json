@@ -1,9 +1,59 @@
 [
     {
+        "title": "Server.Enrichment.Ollama",
+        "author": "mgreen27",
+        "description": "This artifact allows enrichment using Ollama AI. ",
+        "link": "/exchange/artifacts/pages/ollama",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-04-14"
+    },
+    {
+        "title": "Server.Enrichment.SecureAnnex",
+        "author": "shortstack",
+        "description": "Submit an extension to the Secure Annex API.",
+        "link": "/exchange/artifacts/pages/server.enrichment.secureannex",
+        "tags": [],
+        "author_link": "https://github.com/shortstack",
+        "author_avatar": "https://avatars.githubusercontent.com/u/1244979?v=4",
+        "date": "2025-03-30"
+    },
+    {
+        "title": "Windows.Detection.Keylogger",
+        "author": "zaneGittins",
+        "description": "This artifact is my attempt at implementing keylogger detection based on research presented by [Asuka Nakajima at NULLCON](https://speakerdeck.com/asuna_jp/nullcon-goa-2025-windows-keylogger-detection-targeting-past-and-present-keylogging-techniques) using the Microsoft-Windows-Win32k ETW provider.",
+        "link": "/exchange/artifacts/pages/windows.detection.keylogger",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-25"
+    },
+    {
+        "title": "Windows.ETW.ScreenshotTaken",
+        "author": "zaneGittins",
+        "description": "This artifact detects screen captures by correlating events from the Microsoft-Windows-Win32k ETW provider which are triggered by common Windows API calls made when taking a screenshot. This can be useful for detecting remote access trojans, infostealers, and data exfiltration. Tested against Sliver, Meterpreter, and Empire. This will also trigger on legitimate tools such as ZoomIt, Greenshot, MsTeams, etc. which can be excluded on a case by case basis via the ProcessExceptionsRegex parameter.\n",
+        "link": "/exchange/artifacts/pages/windows.etw.screenshottaken",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-25"
+    },
+    {
         "title": "Linux.Detection.Honeyfiles",
         "author": "zaneGittins",
         "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.",
         "link": "/exchange/artifacts/pages/linux.detection.honeyfiles",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-18"
+    },
+    {
+        "title": "Windows.Detection.Honeyfiles",
+        "author": "zaneGittins",
+        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.",
+        "link": "/exchange/artifacts/pages/windows.detection.honeyfile",
         "tags": [],
         "author_link": "https://github.com/zaneGittins",
         "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
@@ -2782,15 +2832,5 @@
         "author_link": "https://github.com/ffh571",
         "author_avatar": "https://avatars.githubusercontent.com/u/48983874?v=4",
         "date": "2021-06-23"
-    },
-    {
-        "title": "Windows.Detection.Honeyfiles",
-        "author": "",
-        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.",
-        "link": "/exchange/artifacts/pages/windows.detection.honeyfile",
-        "tags": [],
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

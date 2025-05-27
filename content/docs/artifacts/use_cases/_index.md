@@ -16,15 +16,20 @@ of yet!
 Artifacts are a powerful mechanism for encapsulating information, including but
 not limited to VQL.
 
-We have already seen that
-[notebook templates]({{< ref "/docs/artifacts/notebook_templates/" >}})
-are a special use case for artifact definitions. While notebook templates do
-have sources, these contain templates for notebook cells rather than queries.
-
 
 ## Server "Bootstrap" Artifacts
 
-https://docs.velociraptor.app/knowledge_base/tips/startup_artifacts/
+Velociraptor allows us to specify
+[startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
+via it's configuration. That
+is, instead of using the GUI to configure collection of CLIENT_EVENT and
+SERVER_EVENT artifacts, we can preconfigure these via the config.
+
+In addition, we can specify SERVER artifacts which are run when the Velociraptor
+server is run for the very first time. This allows artifacts to be created which
+serve as "bootstrap" scripts, so that most of the initial configuration can be
+automated.
+
 
 Config settings vs. equivalent VQL functions:
 
@@ -54,7 +59,7 @@ Such startup tasks could be, for example:
 - setting up or starting a VPN client (perhaps to enable the client to connect
   to the server)
 - adding an anti-malware exclusion (see for example
-  https://docs.velociraptor.app/exchange/artifacts/pages/defenderexclusion/)
+  [Windows.Utils.DefenderExclusion]({{< ref "/exchange/artifacts/pages/defenderexclusion/" >}}))
 
 The `Client.additional_event_artifacts` configuration item allows us to do this
 by specifying artifacts that should run when the client starts. Although these
@@ -75,16 +80,21 @@ Artifacts can have ZERO or more sources. It may seem strange at first to think
 about having artifacts with no sources, however this allows for some interesting
 use cases.
 
+We have already seen that
+[notebook templates]({{< ref "/docs/artifacts/notebook_templates/" >}})
+are a special use case for artifact definitions. While notebook templates do
+have sources, these contain templates for notebook cells rather than queries.
+
 Artifacts without sources cannot be directly launched via the GUI and are also
 filtered out from all the preset
 [filter views]({{< ref "/docs/artifacts/gui/#searching-artifacts" >}})
 on the Artifacts screen, except for the filter category "Include Empty Sources".
 This filter will show all artifacts including those that don't have sources.
 This aspect is useful because it means you can define source-free artifacts
-without them being collectible, and therefore such artifacts don't clutter
+without them being collectable, and therefore such artifacts don't clutter
 artifact selection lists or confuse users.
 
-#### Modular VQL reuse
+#### Export-only artifacts (sharing VQL via export-imports)
 
 An artifact with no sources and an
 [export]({{< ref "/docs/artifacts/export_imports/" >}}) section can be used:
@@ -100,9 +110,9 @@ then importing it when needed makes the latter artifact much more user-friendly.
 
 ![Reusing VQL can improve artifact legibility](export_reusability.svg)
 
-Ultimately when the _importing_ artifact is collected the imports are resolved and
-the compiled artifact is sent to the client which includes the imported VQL, so
-there is no saving in terms of network bandwidth. It just improves legibility
+Ultimately when the _importing_ artifact is collected the imports are resolved
+and the compiled artifact is sent to the client which includes the imported VQL,
+so there is no saving in terms of network bandwidth. It just improves legibility
 and code consistency.
 
 #### Event queues
@@ -120,5 +130,18 @@ DFIR-related information that could be useful to the team working on your server
 
 #### Tool definitions
 
-using a single source-free artifact to store all your tool definitions (which can then either be launched as a server artifact)
+It is possible to use a single source-free artifact to store all your tool
+definitions, which can then be referred to (by only the name and optionally a
+version nuber) in other artifacts that use those tools.
+
+In fact Velociraptor does this already with the  built-in
+`Server.Internal.ToolDependencies` artifact.
+
+If you define the artifact as a `SERVER` artifact then running it will download
+the tools from the URLs specified in the tool definitions. This provides a quick
+way to ensure that your server's tools inventory is populated with all the tools
+your artifacts will need _before_ you try to collect those artifacts. You can
+additionally use such an artifact as one of your
+"[bootstrap artifacts]({{< relref "/docs/artifacts/use_cases/#server-bootstrap-artifacts" >}})",
+as described above.
 

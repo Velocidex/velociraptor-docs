@@ -95,16 +95,37 @@ definitions:
 
 ### [ required_permissions ]
 
-A list of permissions required to collect this artifact.
+Specifies a list of permissions that a user must possess before the server will
+allow them to schedule or collect the artifact. This check is performed by the
+server when a user attempts to launch an individual collection or hunt that
+includes the artifact.
 
-Commonly used:
+The purpose of `required_permissions` is to restrict access to artifacts
+that can perform sensitive or potentially dangerous operations. Artifact authors
+determine which artifacts require additional permissions and add this field
+accordingly. For instance, artifacts that allow running arbitrary commands on an
+endpoint often require the `EXECVE` permission. Users who lack the required
+permissions cannot launch the collection of that artifact. This helps in
+enforcing a least privilege model by preventing users with lower roles, such as
+Investigator, from running potentially harmful artifacts if they do not have the
+necessary permissions.
 
-- EXECVE
-- MACHINE_STATE
-- SERVER_ADMIN
-- IMPERSONATION
+It's important to note that the required_permissions check is only performed on
+the artifact being launched. It does not apply to any dependent artifacts that
+the launched artifact might call. This design is deliberate, allowing
+administrators to create "wrapper artifacts" or curated versions of dangerous
+artifacts that can be used safely by lower-privilege users.
 
+A user with the `ARTIFACT_WRITER` permission can modify the artifact definition
+itself. This capability allows them to potentially bypass the
+required_permissions model by removing or changing the required permissions on
+the artifact.
 
+For more information see the
+[Artifact Security]({{< ref "/docs/artifacts/security/" >}})
+and
+[Roles and Permissions]({{< ref "/docs/deployment/security/#roles-and-permissions" >}})
+sections.
 
 ---
 
@@ -133,29 +154,41 @@ permission is properly controlled.
 
 ### [ impersonate ]
 
-If this is specified, we run this artifact as the named user,
-with that user's ACL token. This is similar to the Unix suid
-mechanism or the Windows impersonation mechanism in that it
-allows artifact writers to craft a curated set of powerful
-artifacts that can be run by low privileged users in a
-controlled way.
+For scenarios where you need to allow lower-privileged users to perform specific
+tasks that typically require higher permissions (like `EXECVE` for quarantine
+actions), the `impersonate` directive within an artifact's definition allows
+users with limited permissions (e.g., `COLLECT_BASIC`) to launch the artifact,
+which then executes the privileged actions under the impersonated user's
+authority, effectively granting permission only for that specific artifact's
+operation. This provides a way to safely delegate specific higher-privilege
+tasks without granting the launching user broad permissions like `EXECVE` which
+could provide full server shell access. You can also mark the artifact as
+"basic" using `artifact_set_metadata()` to allow users with `COLLECT_BASIC`
+permission to see and collect it.
+
+This is similar to the Unix suid mechanism or the Windows impersonation
+mechanism in that it allows artifact writers to craft a curated set of powerful
+artifacts that can be run by low privileged users in a controlled way.
 
 ---
 
 ### [ tools ]
 
-An optional list of tool descriptions. These are only used to
-initialize Velociraptor if there is no previous tool
-definition. It will not override existing tools. The user may
-override the tool name in order to control where it will be
-downloaded from.
+A list of third-party tool definitions, which will be used by the artifact.
+These can be executables _or any other file_ that the client will need when it
+runs the VQL in the artifact's sources.
+
+If the full tool definition is provided in another artifact, and therefore
+already know to the server, then you may only need to provide the tool's name
+and optionally its version in subsequent artifact definitions.
+
+
 
 ---
 
 ### [ precondition ]
 
 A VQL query to be evaluated prior to using this artifact.
-
 
 See [preconditions]() for further details of how this field works.
 
