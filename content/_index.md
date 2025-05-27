@@ -21,14 +21,6 @@ carousel:
 
 ---
 
-{{% notice warning "CVE-2025-0914 published on 2025-02-25" %}}
-
-If you use the `prevent_execve` option, please upgrade your client to
-mitigate `CVE-2025-0914` to at least release `0.73.4`. [More
-details]({{% ref "/announcements/advisories/cve-2025-0914" %}})
-
-{{% /notice %}}
-
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response
