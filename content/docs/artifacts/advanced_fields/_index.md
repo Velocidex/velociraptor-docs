@@ -137,18 +137,19 @@ client, which may be beyond the permissions which the user has on the server.
 
 On the client, artifacts do not run with ACL enforced, therefore they can do
 anything, including actions which the user launching the artifact does not have.
-For example, the user may have the investigator role which does not have EXECVE.
-However, when launching this artifact on the client, the artifact will be able
-to run actions requiring the EXEVE permission (because there is no ACL
+For example, the user may have the investigator role which does not have
+`EXECVE`. However, when launching this artifact on the client, the artifact will
+be able to run actions requiring the `EXEVE` permission (because there is no ACL
 enforcement on the client).
 
-Therefore we say this artifact implies the user has EXECVE - this is safe if the
-aritfact takes steps to ensure the user does not have arbitrary control over
-what to execute (for example, if the artifact launches a tool with restricted
-command line args).
+Therefore we say this artifact implies the user has `EXECVE` - this is safe if the
+artifact takes steps to ensure the user does not have arbitrary control over
+what to execute, for example, if the artifact launches a tool with restricted
+command line args.
 
-This field is only used by the static analysis engine to ensure that the implied
-permission is properly controlled.
+This field is only used by the
+[static analysis engine]({{< ref "/vql_reference/other/verify/" >}})
+to ensure that the implied permission is properly controlled.
 
 ---
 
@@ -156,15 +157,15 @@ permission is properly controlled.
 
 For scenarios where you need to allow lower-privileged users to perform specific
 tasks that typically require higher permissions (like `EXECVE` for quarantine
-actions), the `impersonate` directive within an artifact's definition allows
-users with limited permissions (e.g., `COLLECT_BASIC`) to launch the artifact,
-which then executes the privileged actions under the impersonated user's
-authority, effectively granting permission only for that specific artifact's
-operation. This provides a way to safely delegate specific higher-privilege
-tasks without granting the launching user broad permissions like `EXECVE` which
-could provide full server shell access. You can also mark the artifact as
-"basic" using `artifact_set_metadata()` to allow users with `COLLECT_BASIC`
-permission to see and collect it.
+actions), the `impersonate` directive allows users with limited permissions
+(e.g., `COLLECT_BASIC`) to launch the artifact, which then executes the
+privileged actions under the impersonated user's authority, effectively granting
+permission only for that specific artifact's operation. This provides a way to
+safely delegate specific higher-privilege tasks without granting the launching
+user broad permissions like `EXECVE` which could provide full server shell
+access. You can also mark the artifact as "basic" using
+`artifact_set_metadata()` to allow users with `COLLECT_BASIC` permission to see
+and collect it.
 
 This is similar to the Unix suid mechanism or the Windows impersonation
 mechanism in that it allows artifact writers to craft a curated set of powerful
@@ -179,7 +180,7 @@ These can be executables _or any other file_ that the client will need when it
 runs the VQL in the artifact's sources.
 
 If the full tool definition is provided in another artifact, and therefore
-already know to the server, then you may only need to provide the tool's name
+already known to the server, then you may only need to provide the tool's name
 and optionally its version in subsequent artifact definitions.
 
 

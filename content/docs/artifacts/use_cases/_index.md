@@ -22,30 +22,66 @@ not limited to VQL.
 Velociraptor allows us to specify
 [startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
 via it's configuration. That
-is, instead of using the GUI to configure collection of CLIENT_EVENT and
+is, instead of using the GUI to configure the collection of CLIENT_EVENT and
 SERVER_EVENT artifacts, we can preconfigure these via the config.
 
-In addition, we can specify SERVER artifacts which are run when the Velociraptor
-server is run for the very first time. This allows artifacts to be created which
-serve as "bootstrap" scripts, so that most of the initial configuration can be
-automated.
+The config settings which allow this are:
 
+- `Frontend.default_server_monitoring_artifacts`: specifies the initial client
+  monitoring table that will be created. By default, Velociraptor collects
+  endpoint CPU and Memory telemetry from all endpoints. You can remove this, or
+  specify a different client artifact to collect.
+- `Frontend.default_client_monitoring_artifacts`: specifies an initial set of
+  server event artifacts to collect.
 
-Config settings vs. equivalent VQL functions:
+We can also define users and orgs that will be created when the server is first
+run, using the following config settings:
 
-`GUI.initial_users`
-`GUI.initial_orgs`
-`Frontend.default_server_monitoring_artifacts`
-`Frontend.default_client_monitoring_artifacts`
-`Frontend.initial_server_artifacts`
+- `GUI.initial_users`
+- `GUI.initial_orgs`
 
-VQL functions that can be useful when initializing a new server, which don't have
-equivalent config settings:
+While this may be sufficient for some server setup situations, we may want to
+automate many other things during setup, so that we don't have to rely on manual
+configuration via the GUI. This flexibility is provided by the config setting
+`Frontend.initial_server_artifacts`, which allows us to specify one or more
+SERVER type artifacts that will be run when the Velociraptor server is started
+for the very first time. The server detects that it is being run for the first
+time by checking for the presence of the file `config/install_time.json.db` in
+the datastore: if the file is not found then the server assumes it's the first
+time it is being run.
 
-- create and customize user profiles using `user_create` and `user_options`.
-- [hunt_add()](): to create and start hunts
-- create notebooks
+Since the `initial_server_artifacts` setting allows us to run server artifacts,
+this gives us access to the full capabilities of VQL in setting up the server.
+There are many VQL functions that can be useful when initializing a new server,
+which don't have equivalent config settings.
+
+We could, for example:
+
+- create users _and_ customize user profiles using the `user_create` and
+  `user_options` functions.
+- create and start [hunts]({{< ref "/docs/hunting/" >}}) using the `hunt_add`
+  function.
+- create [notebooks]({{< ref "/docs/notebooks/" >}}) using the `notebook_create`
+  function (based on custom notebook templates).
 - run [server artifacts which import other artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+- run [artifacts which define and download tools]({{< relref "#tool-definitions" >}})
+  to the server's tool inventory, or we could add/update tools using VQL's
+  `inventory_add` and `inventory_get` functions.
+
+Because we can specify multiple SERVER artifacts in the
+`initial_server_artifacts` setting, we might choose to have one artifact that
+addresses each area of server initialization, or we could have one larger
+"bootstrap" artifact that does everything we want.
+
+These artifacts are just normal server artifacts which can be developed and
+tested by running them in the "Server Artifacts" screen in the GUI (obviously on
+a non-production/development server!).
+
+These initial server artifacts can also call other artifacts (built-in or
+custom) to aid in the setup process. Custom artifacts, as well as the
+"bootstrap" artifacts themselves, can be
+[embedded in the config or loaded from a folder]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}}).
+
 
 ## Running artifacts on client startup
 
@@ -67,12 +103,13 @@ artifacts are run as event artifacts (never expected to terminate), they can
 contain any valid client-side VQL.
 
 These artifacts will run every time the client starts, even before enrollment.
-Because artifacts are usually delivered from the server, and in this case the
-client might not have enrolled with the server yet, it requires the artifacts to
-be included in the client config's `autoexec.artifact_definitions` section.
+Because client artifacts are normally delivered from the server -- and in this
+case the client might not have enrolled with the server yet -- this setting
+requires the artifacts to be included in the client config's
+`autoexec.artifact_definitions` section.
 
-If these artifacts run before enrollment then the data produced will be queued
-and delivered to the server after enrollment, as event queries.
+If these artifacts are run before enrollment then the data produced will be
+queued and delivered to the server after enrollment, as event queries.
 
 ## Source-free Artifacts
 
@@ -84,6 +121,19 @@ We have already seen that
 [notebook templates]({{< ref "/docs/artifacts/notebook_templates/" >}})
 are a special use case for artifact definitions. While notebook templates do
 have sources, these contain templates for notebook cells rather than queries.
+
+Furthermore, if you've spent any time looking through the list of built-in
+artifacts, you may have noticed several that have little to nothing but an
+artifact name. The purpose of such artifacts is to establish
+[event queues]({{< ref "/docs/artifacts/event_queues/" >}})
+on the server, which intercept and queue messages from clients and from the
+server itself. These artifacts _can_ have sources, which would typically do
+something with the event messages, but they aren't required to have sources (for
+example, other artifacts may be created to act on the event queue's messages).
+
+![Server.Internal.ClientDelete establishes a server event queue](event_queues_01.svg)
+
+![That's all it contains](event_queues_02.png)
 
 Artifacts without sources cannot be directly launched via the GUI and are also
 filtered out from all the preset
@@ -117,16 +167,30 @@ and code consistency.
 
 #### Event queues
 
-An artifact with no sources can be used to define server and client event queues
+An artifact with no sources can be used to define server and client
+[event queues]({{< ref "/docs/artifacts/event_queues/" >}}).
+
+These may have sources, but can still be useful without them, as demonstrated by
+the `Server.Internal.ClientDelete` artifact shown above.
 
 #### Documentation
 
 Artifacts with no sources and only
 [informational fields]({{< ref "/docs/artifacts/basic_fields/#informational-fields" >}})
-can be used to store internal documentation - perhaps Velociraptor SOPs or other
-DFIR-related information that could be useful to the team working on your server.
+can be used to store internal documentation; particularly since the
+`description` field supports Markdown and is searchable in the GUI.
 
-![artifacts as documentation](artifact_documentation.png)
+You could perhaps use it to store Velociraptor SOP documentation or other
+DFIR-related information that could be useful to the team working on your
+server.
+
+As mentioned above, artifacts without sources cannot be directly launched via
+the GUI and are also filtered out from all the preset filter views on the
+Artifacts screen, which means that you can create such artifacts without them
+being collectable, and without them appearing on artifact selection lists where
+they might confuse users.
+
+![Artifacts as documentation](artifact_documentation.png)
 
 #### Tool definitions
 
