@@ -4,9 +4,6 @@ title: "Velociraptor Artifacts"
 date: 2021-06-12T05:20:45Z
 draft: false
 weight: 30
-aliases:
-  - "/docs/vql/artifacts/"
-#   - "/docs/gui/artifacts/"
 ---
 
 Velociraptor Artifacts are a key component of the platform, providing numerous
@@ -76,7 +73,7 @@ Here are some of the key benefits of Velociraptor Artifacts:
   Artifacts bundle VQL statements and related configurations into a single,
   reusable unit. Once an artifact is written, the user does not need to remember
   or re-enter the query. Artifacts can be
-  [called from other VQL queries]({{< ref "/docs/artifacts/vql/" >}})
+  [called from other VQL queries]({{< ref "/docs/vql/artifacts_calling/" >}})
   as if they were [standard plugins]({{< ref "/vql_reference/" >}}),
   encouraging the development of reusable components that can be combined like
   Lego bricks.
@@ -199,7 +196,7 @@ The Artifact contains a number of important YAML fields:
    of the query potentially following any `LET` queries.
 
 These and other artifact fields are discussed in more detail in the pages of
-this section.
+this section. The order of fields does not matter.
 
 ### A More Advanced Example
 

@@ -3,11 +3,10 @@ menutitle: "Export & Imports"
 title: "Export & Imports"
 date: 2025-01-25
 draft: false
-weight: 40
+weight: 50
 summary: "Sharing VQL across sources and artifacts"
 last_reviewed: 2025-05-23
 ---
-
 
 `export` (notice the singular) and `imports` (notice the plural) work together
 to allow artifacts to share VQL with each other. This allows us to write more
@@ -154,7 +153,7 @@ Notice that the first 2 artifacts have no sources. They could have sources but
 here we don't actually care what they do. But it's also interesting because it
 means that those first 2 artifacts can't be collected (at least not via the GUI)
 and it raises an interesting use case for such artifacts:
-[source-free artifacts]({{< ref "/docs/artifacts/use_cases/#source-free-artifacts" >}}),
+[sourceless artifacts]({{< ref "/docs/artifacts/use_cases/#sourceless-artifacts" >}}),
 which can be useful containers for storing reusable VQL snippets.
 
 If you collect the artifact `RandomGreeting3` you should see results similar to

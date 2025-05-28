@@ -12,4 +12,4 @@ pre: <i class="fas fa-book"></i>
 summary: "Search our library of built-in artifacts"
 ---
 
-{{< include-content "/content/artifact_references/_index.md" >}}
+{{% include-content "/artifact_references/" %}}

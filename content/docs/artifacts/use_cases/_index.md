@@ -105,13 +105,17 @@ contain any valid client-side VQL.
 These artifacts will run every time the client starts, even before enrollment.
 Because client artifacts are normally delivered from the server -- and in this
 case the client might not have enrolled with the server yet -- this setting
-requires the artifacts to be included in the client config's
+generally requires the artifacts to be included in the client config's
 `autoexec.artifact_definitions` section.
 
 If these artifacts are run before enrollment then the data produced will be
-queued and delivered to the server after enrollment, as event queries.
+queued and delivered to the server after enrollment, as event queries. To ensure
+that the server has a corresponding
+[event queue]({{< ref "/docs/artifacts/event_queues/#client-event-queues" >}})
+to receive these events, you'll also need to also add the artifact to the
+server's artifact repository.
 
-## Source-free Artifacts
+## Sourceless Artifacts
 
 Artifacts can have ZERO or more sources. It may seem strange at first to think
 about having artifacts with no sources, however this allows for some interesting
@@ -137,10 +141,10 @@ example, other artifacts may be created to act on the event queue's messages).
 
 Artifacts without sources cannot be directly launched via the GUI and are also
 filtered out from all the preset
-[filter views]({{< ref "/docs/artifacts/gui/#searching-artifacts" >}})
+[filter views]({{< ref "/docs/artifacts/managing/#searching-artifacts" >}})
 on the Artifacts screen, except for the filter category "Include Empty Sources".
 This filter will show all artifacts including those that don't have sources.
-This aspect is useful because it means you can define source-free artifacts
+This aspect is useful because it means you can define sourceless artifacts
 without them being collectable, and therefore such artifacts don't clutter
 artifact selection lists or confuse users.
 
@@ -155,7 +159,7 @@ This can help ensure consistency across artifacts and simplify artifacts that
 have large sections of generically reusable code. In particular, artifacts that
 include binary parser profiles can be difficult to read because you first have
 to scroll past the potentially very long profile definition to get to the VQL.
-Putting such lengthy blocks into a source-free artifact's export section and
+Putting such lengthy blocks into a sourceless artifact's export section and
 then importing it when needed makes the latter artifact much more user-friendly.
 
 ![Reusing VQL can improve artifact legibility](export_reusability.svg)
@@ -194,7 +198,7 @@ they might confuse users.
 
 #### Tool definitions
 
-It is possible to use a single source-free artifact to store all your tool
+It is possible to use a single sourceless artifact to store all your tool
 definitions, which can then be referred to (by only the name and optionally a
 version nuber) in other artifacts that use those tools.
 

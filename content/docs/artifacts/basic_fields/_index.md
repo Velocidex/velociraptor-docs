@@ -75,12 +75,12 @@ your own naming convention for your own artifacts.
 By default when you create a new artifact in the [artifact editor](), it will
 add the prefix `Custom.` to the name. This convention is usually helpful, but
 if you choose not to use it then that's fine too.
-If you [filter for custom artifacts]({{< ref "/docs/artifacts/gui/" >}})
+If you [filter for custom artifacts]({{< ref "/docs/artifacts/managing/" >}})
 on the Artifacts screen, then you will still see all the custom ones regardless
 of their name.
 
 Artifacts imported from the [Artifact Exchange]({{< ref "/exchange/" >}}) or
-[other sources]({{< ref "/docs/artifacts/gui/#importing-artifacts-using-server-artifacts" >}})
+[other sources]({{< ref "/docs/artifacts/managing/#importing-artifacts-using-server-artifacts" >}})
 may, by default, have a prefix added to their names. But again this is
 completely optional (it's implemented through the import artifact's VQL actually
 and configurable by an artifact parameter), and all imported artifacts are
@@ -216,7 +216,7 @@ All artifact types (with the exception of the `INTERNAL` type) are available as
 on the Artifacts screen.
 
 Artifacts are hidden from the artifact selection lists in the GUI if they have
-[no `sources`]({{< ref "/docs/artifacts/use_cases/#source-free-artifacts" >}}).
+[no `sources`]({{< ref "/docs/artifacts/use_cases/#sourceless-artifacts" >}}).
 This is to prevent users from running artifacts that will not return any data,
 and avoid the confusion which might arise if these were selectable in the
 artifact selection lists.
@@ -307,7 +307,10 @@ Artifacts screen.
 
 ## Parameters and Sources
 
-Are the meat (and also imports & exports)
+Parameters and sources (and less frequently also
+[imports & exports]({{< ref "/docs/artifacts/export_imports/" >}})),
+are the main components in most artifacts, since these contain the VQL that
+produces the data we're interested in.
 
 ---
 

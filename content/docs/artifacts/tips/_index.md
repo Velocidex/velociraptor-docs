@@ -109,14 +109,14 @@ your artifacts.
   those details in the description. This helps others to identify potential
   causes if your artifact unexpectedly stops working in future.
 
-- If your artifact desription needs to include URIs that you _don't_ want turned
+- If your artifact description needs to include URLs that you _don't_ want turned
   into clickable hyperlinks then enclose them in backticks. In addition you
-  could also defang those URIs to be even safer.
+  could also defang those URLs to be even safer.
 
 - Artifacts descriptions are rendered as HTML in various places within the GUI.
   The HTML level 2 heading is used for the artifact name, and level 3 headings
   are used for subsections of the artifact. So if you want to include headings
-  in your artifact description (for example "Notes" or Usage") markdown, then it
+  in your artifact description markdown (for example "Notes" or Usage"), then it
   is best if you make those headings level 3 (e.g. `### Notes`) or below so that
   they fit in nicely with the other headings.
 

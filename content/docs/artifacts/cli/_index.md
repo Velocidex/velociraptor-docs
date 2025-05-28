@@ -8,4 +8,4 @@ summary: "CLI commands for working with artifact definitions"
 last_reviewed: 2025-05-13
 ---
 
-{{< include-content "/content/docs/cli/artifacts/_index.md" >}}
+{{% include-content "/docs/cli/artifacts/" %}}

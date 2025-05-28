@@ -1,29 +1,12 @@
 ---
-menutitle: "Artifacts via VQL"
-title: "Managing and calling artifacts via VQL"
+title: "Calling artifacts from VQL"
+menutitle: "Calling Artifacts"
 date: 2025-05-13
 draft: false
-weight: 60
-summary: "How to manage and call artifacts via VQL"
-last_reviewed: 2025-05-13
+weight: 50
+summary: "How to call artifacts from VQL"
+last_reviewed: 2025-05-28
 ---
-
-## Working with the internal artifact repository in VQL
-
-select * from artifact_definitions()
-/vql_reference/server/artifact_definitions/
-
-SELECT name, built_in, compiled_in FROM artifact_definitions()
-
-
-/vql_reference/server/artifact_set/
-
-/vql_reference/server/artifact_set_metadata/
-
-/vql_reference/server/artifact_delete/
-
-
-## Calling artifacts from VQL
 
 Artifacts can be called directly from other VQL queries as if they were another
 VQL plugin. This allows you to chain artifacts together or use one artifact's
@@ -53,3 +36,6 @@ Some implicit parameters that are always allowed:
 		"SELECT * FROM Artifact.ArtifactWithSourcesAndPreconditions(source='Source1', preconditions=TRUE)",
 
 		service.repository/fixtures/plugin_test.go
+
+
+

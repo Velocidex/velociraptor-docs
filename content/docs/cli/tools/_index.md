@@ -7,7 +7,8 @@ weight: 90
 summary: "Commands for working with the tools inventory."
 ---
 
-Commands for working with thirdy-party binaries and files in the server's
+The following CLI commands are available for working with thirdy-party binaries
+and files in the server's
 [tools inventory]({{< ref "/docs/artifacts/tools/" >}}).
 
 {{% notice warning %}}

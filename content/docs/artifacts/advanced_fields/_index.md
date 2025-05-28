@@ -18,10 +18,10 @@ functionality.
 |--------------------|-------------------------------------------|
 | [column_types]({{< relref "#-column_types-" >}}) | Defines specific GUI formatting for selected results columns. | No | sequence |
 | [precondition]({{< relref "#-precondition-" >}}) | A VQL expression to be evaluated prior to using this artifact. |
-| [export]({{< relref "#-export-" >}}) | VQL that this artifact exports. |
-| [imports]({{< relref "#-imports-" >}}) | A list of other artifacts' export VQL to preload prior to this artifact. |
+| [export]({{< relref "#-export-" >}}) | VQL that this artifact exports to other artifacts. |
+| [imports]({{< relref "#-imports-" >}}) | A list of other artifacts with exported VQL to be used in this artifact. |
 | [resources]({{< relref "#-resources-" >}}) | Resource limits that apply when the artifact is collected. |
-| [tools]({{< relref "#-tools-" >}}) | Tools are external files that Velociraptor ensures are available to running artifacts. |
+| [tools]({{< relref "#-tools-" >}}) | Tools are external files that Velociraptor ensures are available to the artifact. |
 | [impersonate]({{< relref "#-impersonate-" >}}) | Run the artifact as a different user. |
 | [implied_permissions]({{< relref "#-implied_permissions-" >}}) | Projected permissions which the artifact will use on the client. |
 | [required_permissions]({{< relref "#-required_permissions-" >}}) | A list of permissions required to collect this artifact. |
@@ -37,8 +37,6 @@ case-sensitive and, by convention, also lowercase.
 
 
 ## Fields
-
-
 
 ---
 
@@ -57,8 +55,94 @@ If the column type is not specified for a particular field then Velociraptor
 will try to infer or guess the appropriate display format based on the data
 in the first row of the query results.
 
-The GUI's display can be impacted by rows with varying fields, potentially
-truncating columns if they don't appear in the initial rows viewed.
+It is particularly important to specify the column types if your artifact might
+produce rows with varying fields, because the GUI could potentially omit or
+incorrectly display columns if they don't appear in the initial rows returned.
+
+In the GUI you can override the column types using the "Format Columns" button
+in a notebook. This is also a good way to test column types while you are
+developing your artifact.
+
+![Format Columns](format_columns.png)
+
+`column_types` is a YAML sequence (list) and supports the following subfields:
+
+- `name`: the column name to apply the formatting to.
+- `type`: one of the allowed formatting types (see below).
+- `description` (optional): freeform text description.
+
+**Example:**
+
+```yaml
+column_types:
+  - name: ChildrenTree
+    type: tree
+```
+
+**Formatting types**
+
+These are the types currently supported:
+
+- string
+- number
+- mb
+- timestamp
+- nobreak
+- tree
+- url
+- url_internal
+- safe_url
+- flow
+- preview_upload
+- download
+- client
+- hex
+- base64
+- collapsed
+
+
+---
+
+### [ precondition ]
+
+A VQL query to be evaluated prior to using this artifact. If the query returns
+no rows then the artifact is skipped. If it produces ANY rows then the artifact
+will be used.
+
+Preconditions are also supported in `sources`, in addition to the artifact-level
+precondition.
+
+See [preconditions]({{< ref "/docs/artifacts/preconditions/" >}})
+for further details of how this field works.
+
+
+---
+
+### [ export ]
+
+The `export` field allows you to specify a block of VQL which can be imported by
+other artifacts (using `imports`, described below).
+
+VQL in this field is run prior to VQL in the `sources` section, and the results
+are made available to all sources. This means that such VQL can be used to
+define variables, custom functions, or modify parameter values prior to running
+each source.
+
+See [export & imports]({{< ref "/docs/artifacts/export_imports/" >}})
+for further details of how this field works.
+
+---
+
+### [ imports ]
+
+The `import` field defines a list of artifacts from which to import their
+`export` sections.
+
+The imported VQL is run after the VQL in the `export` section, and before the
+VQL in each source.
+
+See [export & imports]({{< ref "/docs/artifacts/export_imports/" >}})
+for further details of how this field works.
 
 ---
 
@@ -90,6 +174,125 @@ definitions:
 - `max_batch_wait`
 - `max_batch_rows`
 - `max_batch_rows_buffer`
+
+---
+
+### [ tools ]
+
+A list of third-party tool definitions, which will be used by the artifact.
+These can be executables _or any other file_ that the client will need when it
+runs the VQL in the artifact's sources.
+
+Tools can be defined within an artifact or, alternatively, by using the
+`inventory_add` VQL function.
+
+The inventory service is responsible for managing tools within Velociraptor
+artifacts. The inventory stores information about the various third-party tools
+known to Velociraptor. You can view this tool information by running the
+following query in a notebook.
+
+```vql
+SELECT * FROM inventory()
+```
+
+A tool is uniquely identified by its `name` and `version`.
+
+If the full tool definition is provided in another artifact, or has been defined
+via VQL, and therefore already known to the server, then you may only need to
+provide the tool's name and optionally its version in subsequent artifact
+definitions.
+
+A tool may be served by Velociraptor itself, or from an external URL. This
+decision is configured by the `serve_url` setting..
+
+Previously used tools are cached on the client. Before using a cached tool, the
+client verifies that the hash is still as expected (as provided by the server).
+If the hash verification fails then the client will download a new copy, and
+again verify the hash.
+
+These are the subfields available for defining each tool:
+
+- `name`: The unique identifier for this tool
+- `version`: Specify a version for the tool. This allows multiple versions of
+  the same tool to be used.
+- `url`: The URL to fetch the tool from when we download it the first time, or
+  when we update it.
+- `serve_locally`: If set, the tool will be served locally from the server -
+  otherwise the endpoint will download the file by itself from the url above.
+  The URL for the client to download the tool from is generated using the config
+  setting `Client.server_urls` on the server. Currently only the first URL from
+  `server_urls` is used, and tools are only served over HTTPS (not WSS).
+- `github_project`: As an alternative to a url we allow scraping of GitHub
+  releases using the github API. When this method is specified, the file will
+  always be served locally.
+- `github_asset_regex`: A regex to select a specific file from the available
+  GitHub releases.
+- `expected_hash`: Hex encoded sha256 hash of the expected hash of the file.
+  When the server downloads the file it will check it against the expected hash
+  and refuse to store or serve a file with an incorrect hash.  This is a way to
+  pin the dependency into the artifact definition to protect against supply side
+  attacks.
+
+**Examples:**
+
+```yaml
+tools:
+  - name: VelociraptorWindows
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.3-windows-amd64.exe
+    serve_locally: true
+    version: 0.74.3
+```
+Will download the specified binary, store it tagged with the specified version
+number, and serve it to clients from the Velociraptor server.
+
+
+```yaml
+tools:
+  - name: OSQueryWindows
+    github_project: Velocidex/OSQuery-Releases
+    github_asset_regex: windows-amd64.exe
+```
+Clients will download the binary matching the `github_asset_regex` directly from
+the GitHub repo, since `serve_locally` is not specified.
+
+Usually tools are used together with the built-in `Generic.Utils.FetchBinary`
+helper artifact. This artifact ensures that the defined tools are downloaded to
+the endpoint, if required, and performs other housekeeping functions. While
+using this artifact is highly recommended, it is not mandatory. When an artifact
+contains tool definitions, the following variables are added to the scope for
+each tool, which allow you to perform your own tool selection logic, downloads
+(for example using `http_client`), and hash verification:
+
+- `Tool_<name>_HASH`
+- `Tool_<name>_FILENAME`
+- `Tool_<name>_URL`
+
+The `Generic.Utils.FetchBinary` artifact makes use of these variables when
+provisioning the tool on the client.
+
+---
+
+### [ impersonate ]
+
+For scenarios where you need to allow lower-privileged users to perform specific
+tasks that typically require higher permissions (like `EXECVE` for quarantine
+actions), the `impersonate` directive allows users with limited permissions
+(e.g., `COLLECT_BASIC`) to launch the artifact, which then executes the
+privileged actions under the impersonated user's authority, effectively granting
+permission only for that specific artifact's operation. This provides a way to
+safely delegate specific higher-privilege tasks without granting the launching
+user broad permissions like `EXECVE` which could provide full server shell
+access. You can also mark the artifact as "basic" using
+`artifact_set_metadata()` to allow users with `COLLECT_BASIC` permission to see
+and collect it.
+
+This is similar to the Unix suid mechanism or the Windows impersonation
+mechanism in that it allows artifact writers to craft a curated set of powerful
+artifacts that can be run by low privileged users in a controlled way.
+
+See [Artifact Security]({{< ref "/docs/artifacts/security/#server-artifacts-and-impersonation" >}})
+for more information.
+
 
 ---
 
@@ -142,8 +345,8 @@ For example, the user may have the investigator role which does not have
 be able to run actions requiring the `EXEVE` permission (because there is no ACL
 enforcement on the client).
 
-Therefore we say this artifact implies the user has `EXECVE` - this is safe if the
-artifact takes steps to ensure the user does not have arbitrary control over
+Therefore we say this artifact implies the user has `EXECVE` - this is safe if
+the artifact takes steps to ensure the user does not have arbitrary control over
 what to execute, for example, if the artifact launches a tool with restricted
 command line args.
 
@@ -153,57 +356,9 @@ to ensure that the implied permission is properly controlled.
 
 ---
 
-### [ impersonate ]
-
-For scenarios where you need to allow lower-privileged users to perform specific
-tasks that typically require higher permissions (like `EXECVE` for quarantine
-actions), the `impersonate` directive allows users with limited permissions
-(e.g., `COLLECT_BASIC`) to launch the artifact, which then executes the
-privileged actions under the impersonated user's authority, effectively granting
-permission only for that specific artifact's operation. This provides a way to
-safely delegate specific higher-privilege tasks without granting the launching
-user broad permissions like `EXECVE` which could provide full server shell
-access. You can also mark the artifact as "basic" using
-`artifact_set_metadata()` to allow users with `COLLECT_BASIC` permission to see
-and collect it.
-
-This is similar to the Unix suid mechanism or the Windows impersonation
-mechanism in that it allows artifact writers to craft a curated set of powerful
-artifacts that can be run by low privileged users in a controlled way.
-
----
-
-### [ tools ]
-
-A list of third-party tool definitions, which will be used by the artifact.
-These can be executables _or any other file_ that the client will need when it
-runs the VQL in the artifact's sources.
-
-If the full tool definition is provided in another artifact, and therefore
-already known to the server, then you may only need to provide the tool's name
-and optionally its version in subsequent artifact definitions.
-
-
-
----
-
-### [ precondition ]
-
-A VQL query to be evaluated prior to using this artifact.
-
-See [preconditions]() for further details of how this field works.
-
----
-
-### [ imports ]
-
----
-
-### [ export ]
-
----
-
 ### [ reports ]
 
-Deprecated. Reports have been deprecated in favour of
-[notebooks]({{< ref "/docs/notebooks/" >}}).
+Historically this artifact section contained templates that were used to produce
+HTML reports. Reports have been deprecated in favour of
+[notebooks]({{< ref "/docs/notebooks/" >}}),
+however this is still used by some internal artifacts.

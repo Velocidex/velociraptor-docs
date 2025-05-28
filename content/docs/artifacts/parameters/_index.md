@@ -8,42 +8,35 @@ summary: "Artifacts parameters and how they work"
 last_reviewed: 2025-05-13
 ---
 
+Parameters allow the user to customize the collection of artifacts in a
+controlled way - without needing to edit the VQL. The GUI will present a form
+that allows the user to update the parameters prior to each collection.
+
+![The Demo.Plugins.GUI artifact demonstrates parameter UI components](demo_plugins_gui.png)
+
 Parameters are essentially VQL variables. That is they are accessible in VQL as
-variables, and their data type will correspond to the parameter's type.
+variables, and their VQL data type will correspond to the parameter's
+[type]({{< relref "#parameter-types" >}}).
+The parameter type is also used to hint to the GUI how to render the form
+element.
 
-Artifact parameters allow the user to customize the collection in a
-controlled way - without needing to edit the VQL. The GUI will present
-a form that allows the user to update the parameters prior to each
-collection.
+The type also determines how the parameter is sent to the client and
+ensures the parameter appears as that type in the query.
 
-Parameters may define a type. This type will be used to hint to the
-GUI how to render the form element. The type also determines how the
-parameter is sent to the client and ensures the parameter appears as
-that type in the query.
+Prior to launching the query on the endpoint, Velociraptor will populate the
+scope with the parameters. This allows the VQL query to directly access the
+parameters.
 
-Prior to launching the query on the endpoint, Velociraptor will
-populate the scope with the parameters. This allows the VQL query to
-directly access the parameters.
-
-Artifact parameters are sent to the client as strings The client
-automatically parses them into a VQL type depending on the parameter's
-type specification. The GUI uses type specification to render an
-appropriate UI
-
-Artifacts may accept parameters which are added to the
-scope prior to execution.
+Artifact parameters are sent to the client as strings. The client automatically
+parses them into a VQL type according to the on the parameter's type
+specification. The GUI uses the type specification to render an appropriate UI
+component for each type.
 
 
-There is no way to make a parameter require a value. You should ensure that your
-parameters either have a sensible default value or design your artifact in such
-a way that it doesn't fail, or fails gracefully (for example, by providing a
-user-friendly log message) if no value is specified. The `validating_regex`
-field can be used to indicate to the user that their entered value is not valid.
-
-## Parameter fields
+## Parameter definitions
 
 For parameter's `name` is the only required field. If nothing else is specified
-to further describe tha parameter then it is by default a text field; that is a
+to further describe the parameter then it is by default a text field; that is a
 simple text string.
 
 However each parameter can optionally have any of several attributes that
@@ -51,12 +44,19 @@ specify the parameter type and additional information which is used by the GUI
 for displaying and editing the parameter.
 
 [Descriptions of the parameter fields](https://github.com/Velocidex/velociraptor/blob/52dc005b1594723716dc6b3e3a7a719a885b74ef/docs/references/server.config.yaml#L1050)
-- name
-- description
-- default
-- type
-- friendly_name
-- validating_regex (this is just a visual indicator. It will not stop you from running the artifact)
+- `name`
+- `description`
+- `default`
+- `type`
+- `friendly_name`
+- `validating_regex`: There is no way to make a parameter require a value. This
+  field can be used to indicate to the user that their entered value is not valid.
+  However this is just a visual indicator. It will not prevent users from running
+  the artifact with invalid values. You should ensure that your parameters either
+  have a sensible default value or else design your artifact in such a way that it
+  doesn't fail, or fails gracefully (for example, by providing a helpful log
+  message) if no value or an invalid value is specified.
+
 - artifact_type (string: only used for type = artifactset)
 - sources (bool: only used for type = artifactset)
 
