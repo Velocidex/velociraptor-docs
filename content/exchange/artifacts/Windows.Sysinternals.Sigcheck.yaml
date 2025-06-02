@@ -1,0 +1,83 @@
+name: Custom.Windows.Sysinternals.Sigcheck
+description: |
+  Uses Sysinternals Sigcheck to scan the host for suspicious binaries.
+author: Aleksander Osterud - EMP Secure
+
+tools:
+  - name: Sigcheck_386
+    url: https://live.sysinternals.com/tools/sigcheck.exe
+    serve_locally: true
+
+  - name: Sigcheck_amd64
+    url: https://live.sysinternals.com/tools/sigcheck64.exe
+    serve_locally: true
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: TargetDir
+    description: Target directory to be scanned.
+    type: string
+    default: "c"
+  - name: ExtendedInfo
+    description: "Show extended version information. The entropy measure reported is the bits per byte of information of the file's contents."
+    type: bool
+  - name: ExecutablesOnly
+    description: "Scan executable images only (regardless of their extension)"
+    type: bool
+    default: Y
+  - name: ShowFileHashes
+    description: "Calculate and show file hashes"
+    type: bool
+    default: Y
+  - name: Recurse
+    description: "Recurse subdirectories"
+    type: bool
+    default: Y
+  - name: UnsignedUnknownOrNonZeroDetection
+    description: "If VirusTotal check is enabled, show files that are unknown by VirusTotal or have non-zero detection, otherwise show only unsigned files."
+    type: bool
+    default: Y
+  - name: VirustotalHashLookup
+    description: "Accept Virustotal terms and lookup hashes"
+    type: bool
+  - name: ToolInfo
+    type: hidden
+    description: Override Tool information.
+
+sources:
+  - query: |
+      LET scanDir <= TargetDir
+
+      LET os_info <= SELECT Architecture FROM info()
+
+      // Get the path to the binary.
+      LET bin <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+              ToolName= "Sigcheck_" + os_info[0].Architecture,
+              ToolInfo=ToolInfo)
+      LET Sigcheck_executable <= bin[0].OSPath
+      LET cmdline <= filter(list=(
+            Sigcheck_executable,
+            '-nobanner', '-accepteula',
+            if(condition=ExtendedInfo, then="-a"),
+            if(condition=ExecutablesOnly, then="-e"),
+            if(condition=ShowFileHashes, then="-h"),
+            if(condition=Recurse, then="-s"),
+            if(condition=UnsignedUnknownOrNonZeroDetection, then="-u"),
+            if(condition=VirustotalHashLookup, then="-vt"),
+            '-c', -- CSV output
+            str(scanDir)
+            ), regex=".+")    
+      // Call the binary and return all its output in a single row.
+      LET output = SELECT * FROM execve(argv=cmdline, length=10000000)
+
+      // Parse the CSV output and return it as rows. We can filter this further.
+      SELECT * FROM if(condition=bin,
+      then={
+        SELECT * FROM foreach(
+          row=output,
+          query={
+             SELECT * FROM parse_csv(filename=Stdout,
+                                     accessor="data")
+          })
+      })
