@@ -1,0 +1,38 @@
+name: Windows.System.ModifyACL
+description: |
+  This artifact modifies ACLs on files in the specified directory 
+  using the icacls command to grant full control to SYSTEM and deny access to Users and Everyone.
+  This artifact can be very crucial given the case that velociraptor is deployed on a critical network/infrastructure,
+  consequently, reducing cyber risk.
+
+author: Abed al Rahman Sidani
+
+parameters:
+  - name: TargetPath
+    default: C:\Path\To\Your\Folder
+    description: Path where permissions will be modified
+
+sources:
+  - query: |
+      // Check if path is specified
+      LET _ <= if(condition=NOT TargetPath,
+                  then=throw(message="TargetPath must be specified"))
+                  
+      // Construct PowerShell command
+      LET ps_cmd <= "icacls '" + TargetPath + "*.*' /grant 'NT AUTHORITY\\SYSTEM:(F)' /deny 'Users:(F)' /deny 'Everyone:(F)' /inheritance:r"
+      
+      // Execute PowerShell command
+      LET acl_result <= SELECT * FROM execve(
+          argv=["powershell", "-Command", ps_cmd],
+          length=10000)
+      
+      // Final result with detailed information
+      SELECT 
+          TargetPath AS Path,
+          ps_cmd AS ExecutedCommand,
+          acl_result.Stdout AS CommandOutput,
+          acl_result.Stderr AS CommandErrors,
+          if(condition=acl_result.ReturnCode = 0, 
+             then="Success", 
+             else="Failed") AS Status
+      FROM scope()
