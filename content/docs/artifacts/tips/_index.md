@@ -10,7 +10,9 @@ last_reviewed: 2025-04-30
 
 ## Development and testing workflow
 
-Typically we have a new idea for a new data collection or anomaly detection.
+Typically we have a new idea for a new data collection or anomaly detection. The
+following is a suggested workflow for creating and testing the VQL to implement
+your idea, and then packaging it into an reusable artifact.
 
 **1. Set up an artifact development environment**
 

@@ -14,6 +14,8 @@ https://github.com/Velocidex/velociraptor/blob/master/services/inventory/docs.go
 
 https://github.com/Velocidex/velociraptor/blob/721ab4736f131b8821786b200fe5de694ce4d544/artifacts/proto/artifact.proto#L253
 
+https://docs.velociraptor.app/docs/deployment/references/#defaults.disable_inventory_service_external_access
+
 Client.server_urls
 No round-robin: for tools we currently only use the first URL
 

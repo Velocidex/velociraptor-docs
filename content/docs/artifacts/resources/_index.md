@@ -8,6 +8,10 @@ summary: "How to limit an artifact's resource usage"
 last_reviewed: 2025-05-18
 ---
 
+https://docs.velociraptor.app/docs/gui/debugging/services/throttler/
+https://docs.velociraptor.app/docs/deployment/references/#defaults.disable_inventory_service_external_access
+https://docs.velociraptor.app/docs/deployment/references/#defaults.disable_inventory_service_external_access
+
 Resource limits can be placed on queries and collections. These limits are
 usually set in the artifact collection or hunt creation workflows in the GUI.
 However it is possible to predefine these limits in the artifact definitions
@@ -27,7 +31,7 @@ too long are cancelled.
 
 Resource control is specific to an artifact and what it does. For example, CPU
 limiting is useful for artifacts doing heavy processing like Yara scans but not
-for others.
+necessarily for others.
 
 Limits are set using the `resources` key in the artifact definition.
 
@@ -44,7 +48,7 @@ resources:
 
 If you define `resources` in your artifact, you only need to specify the subkeys
 relevant to the resources you want to limit. Default values will apply to any
-subkeys not specified, and as mentioned above users still have the opportunity
+subkeys not specified, and as mentioned above, users still have the opportunity
 to overide these limits in the GUI before collecting the artifact.
 
 **Example:**
@@ -96,6 +100,11 @@ collection will have max_rows = 20.
 
 
 ## Resource Limits
+
+Resource limits can be applied to any artifacts/collections, although the
+effectiveness of these limits depends on what the artifact actually does. In
+particular CPU and IO limits are not enforceable when running external
+applications via execve().
 
 - CPU Limit: This limits how much CPU the Velociraptor agent can use on average.
   Setting a CPU limit stops the query when the average CPU usage exceeds the
@@ -154,3 +163,4 @@ service recovery option should restart the client automatically.
 The server monitors memory usage and will cancel a query if it reaches a high
 limit. Memory is controlled via a nanny for the entire process, with hard and
 soft limits. If memory is exceeded, it kills the query.
+

@@ -1,5 +1,5 @@
 ---
-title: Performance and Monitoring
+title: Server Performance and Monitoring
 menutitle: Performance
 weight: 50
 summary: |

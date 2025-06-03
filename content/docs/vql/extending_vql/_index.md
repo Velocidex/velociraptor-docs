@@ -340,16 +340,4 @@ logs:
    the permanent cache directory.
 5. The tool is now launched and the output parsed in VQL rows.
 
-{{% notice tip "Encapsulation of artifacts" %}}
 
-You can call any artifact from your own VQL regardless of whether they
-use tools. For example, the `Windows.Sysinternals.Autoruns` artifact
-can be used directly. Velociraptor will ensure dependent tools are
-present on the endpoint for all dependencies.
-
-```sql
-SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
-WHERE Category =~ "Services" AND `Launch String` =~ "COMSPEC"
-```
-
-{{% /notice %}}

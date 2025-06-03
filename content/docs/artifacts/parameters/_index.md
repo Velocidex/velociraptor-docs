@@ -63,6 +63,10 @@ for displaying and editing the parameter.
 
 ### Parameter types
 
+Artifact parameters are always provided as strings. These string are are
+converted to the corresponding VQL data type according to the parameter's `type`
+specification.
+
 Currently the following parameter types are supported
 
 * **int, integer**: The parameter is an integer

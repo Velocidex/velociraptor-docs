@@ -4,7 +4,7 @@ title: "Other use cases for artifacts"
 date: 2025-01-25
 draft: false
 weight: 150
-summary: "Interesting alternative use cases for artifacts"
+summary: "Interesting use cases for artifacts"
 last_reviewed: 2025-04-30
 ---
 
@@ -15,6 +15,113 @@ of yet!
 
 Artifacts are a powerful mechanism for encapsulating information, including but
 not limited to VQL.
+
+## Wrapper Artifacts
+
+Using the `Artifact` plugin, you can
+[call other artifacts]({{< ref "/docs/vql/artifacts_calling/" >}}).
+A common use for this is to create "wrapper artifacts" which can:
+
+- combine multiple artifacts into a single artifact
+  ```yaml
+  name: Windows.Packs.Persistence
+  description: |
+    This artifact pack collects various persistence mechanisms in Windows.
+
+  sources:
+    - name: WMI Event Filters
+      query: SELECT * FROM Artifact.Windows.Persistence.PermanentWMIEvents()
+
+    - name: Startup Items
+      query: SELECT * FROM Artifact.Windows.Sys.StartupItems()
+
+    - name: Debug Bootstraping
+      query: SELECT * FROM Artifact.Windows.Persistence.Debug()
+  ```
+- filter or manipulate results from other artifacts
+  ```vql
+  SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
+  WHERE Category =~ "Services" AND `Launch String` =~ "COMSPEC"
+  ```
+- provide custom parameter defaults (i.e. your own "presets") to other
+  artifacts
+  ```yaml
+  name: Find.DotnetStartupHooks
+  description: Finds DOTNET_STARTUP_HOOKS using Windows.Search.FileFinder
+  parameters:
+    - name: SearchFilesGlobTable
+      type: csv
+      default: |
+        Glob
+        HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS\*
+        HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS\*
+    - name: Accessor
+      default: registry
+    - name: Upload_File
+      default: Y
+  sources:
+    - precondition: SELECT OS From info() where OS = 'windows'
+      query: |
+        SELECT * FROM Artifact.Windows.Search.FileFinder(SearchFilesGlobTable=SearchFilesGlobTable,
+                                                        Accessor=Accessor,
+                                                        Upload_File=Upload_File)
+  ```
+- simplify UI parameter choices for users by only presenting them with
+  parameters that you want them to change, while hiding and defining preset
+  values for parameters that you _don't_ want them to change
+  ```yaml
+  name: Find.DotnetStartupHooks
+  description: Finds DOTNET_STARTUP_HOOKS using Windows.Search.FileFinder
+  parameters:
+    - name: SearchFilesGlobTable
+      # This parameter can be customized by the user
+      type: csv
+      default: |
+        Glob
+        HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS\*
+        HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS\*
+    - name: Accessor
+      # This parameter is hidden from the user
+      default: registry
+      type: hidden
+    - name: Upload_File
+      # This parameter is hidden from the user
+      default: Y
+      type: hidden
+  sources:
+    - precondition: SELECT OS From info() where OS = 'windows'
+      query: |
+        SELECT * FROM Artifact.Windows.Search.FileFinder(SearchFilesGlobTable=SearchFilesGlobTable,
+                                                        Accessor=Accessor,
+                                                        Upload_File=Upload_File)
+  ```
+
+Wrapper artifacts can be used as a way to limit users' access to built-in
+artifact capabilities by using the above methods and then also
+[hiding the called artifact]({{< ref "/docs/artifacts/security/#hidden-artifacts" >}})
+from the GUI. In addition you could consider applying the security mechanisms
+described [here]({{< ref "/docs/artifacts/security/" >}}) which allow
+low-privilege users to only run certain "Basic" artifacts.
+
+## Utility Artifacts
+
+The last example showed how to make an artifact that performs a very specific
+task by wrapping the functionality contained in the more general-purpose
+`Windows.Search.FileFinder` artifact. In that context, the called artifact
+serves as a utility for the calling artifact.
+
+The calling artifact in the previous example contained much simpler logic than
+the called artifact, however that's not always the case: the
+`Windows.KapeFiles.Targets` artifact is an example of a relatively complex
+artifact that wraps the much simpler `Generic.Collectors.File` utility artifact.
+
+Another utility artifact that you will often see used is
+`Generic.Utils.FetchBinary`. This artifact contains VQL which ensures the
+delivery of third-party [tools]({{< ref "/docs/artifacts/tools/" >}}) to the endpoint, so you will see it called in
+just about every artifact that uses tools. These artifacts could easily have
+implemented the same logic to ensure tool delivery, but it is cleaner, more
+efficient, and more consistent to offload the logic to a purpose-built artifact
+that can be reused.
 
 
 ## Server "Bootstrap" Artifacts
@@ -83,7 +190,7 @@ custom) to aid in the setup process. Custom artifacts, as well as the
 [embedded in the config or loaded from a folder]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}}).
 
 
-## Running artifacts on client startup
+## Client startup artifacts
 
 Sometimes we may want the client to do something very early on, as soon as it
 starts and potentially even before client enrollment.
@@ -114,6 +221,7 @@ that the server has a corresponding
 [event queue]({{< ref "/docs/artifacts/event_queues/#client-event-queues" >}})
 to receive these events, you'll also need to also add the artifact to the
 server's artifact repository.
+
 
 ## Sourceless Artifacts
 
@@ -148,7 +256,7 @@ This aspect is useful because it means you can define sourceless artifacts
 without them being collectable, and therefore such artifacts don't clutter
 artifact selection lists or confuse users.
 
-#### Export-only artifacts (sharing VQL via export-imports)
+### Export-only artifacts (sharing VQL via export-imports)
 
 An artifact with no sources and an
 [export]({{< ref "/docs/artifacts/export_imports/" >}}) section can be used:
@@ -169,7 +277,7 @@ and the compiled artifact is sent to the client which includes the imported VQL,
 so there is no saving in terms of network bandwidth. It just improves legibility
 and code consistency.
 
-#### Event queues
+### Event queues
 
 An artifact with no sources can be used to define server and client
 [event queues]({{< ref "/docs/artifacts/event_queues/" >}}).
@@ -177,12 +285,13 @@ An artifact with no sources can be used to define server and client
 These may have sources, but can still be useful without them, as demonstrated by
 the `Server.Internal.ClientDelete` artifact shown above.
 
-#### Documentation
+### Documentation
 
 Artifacts with no sources and only
 [informational fields]({{< ref "/docs/artifacts/basic_fields/#informational-fields" >}})
 can be used to store internal documentation; particularly since the
-`description` field supports Markdown and is searchable in the GUI.
+`description` field [supports Markdown]({{< ref "/docs/artifacts/basic_fields/#-description-" >}})
+and is indexed and searchable in the GUI.
 
 You could perhaps use it to store Velociraptor SOP documentation or other
 DFIR-related information that could be useful to the team working on your
@@ -194,9 +303,9 @@ Artifacts screen, which means that you can create such artifacts without them
 being collectable, and without them appearing on artifact selection lists where
 they might confuse users.
 
-![Artifacts as documentation](artifact_documentation.png)
+![Artifacts-as-documentation](artifact_documentation.png)
 
-#### Tool definitions
+### Standalone Tool definitions
 
 It is possible to use a single sourceless artifact to store all your tool
 definitions, which can then be referred to (by only the name and optionally a

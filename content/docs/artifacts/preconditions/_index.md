@@ -95,7 +95,12 @@ to execute in parallel.
 
 This means that you can force your artifact to execute in parallel mode
 by adding a precondition to any source, even if the precondition itself
-doesn't actually do anything useful!
+doesn't actually do anything useful! It can be a query that always evaluates as
+TRUE, for example: `precondition: SELECT TRUE FROM scope()`.
+
+Conversely, if you want sources to have access to results from prior sources
+then you need to construct your artifact logic so that it doesn't require or use
+any source-level preconditions.
 
 {{% /notice %}}
 
@@ -231,12 +236,12 @@ Applies if the dpkg tool exists and is functioning, on Linux systems.
 ### 4. Checking plugin versions
 
 Sometimes Velociraptor's built-in functions and plugins need to evolve in a way
-that affects their output and which may not produce results in the particular
-format that previously written VQL expects. This is a very rare situation, but
-could happen.
-
-When such backwardly-incompatible changes need to be made, we increment the
-plugin's version number.
+that affects either their input (that is the accepted arguments may change),
+behaviour, or output. In the case of output changes the function/plugin may not
+produce results in the particular format that previously written VQL expects.
+This doesn't happen often, but when such backwardly-incompatible changes need to
+be made, we increment the plugin's version number. The version number is a
+simple integer.
 
 Plugin versions can be queried using the `version` function, and therefore
 preconditions can be created to check the version before running VQL that uses
@@ -245,9 +250,12 @@ it.
 **Example:**
 
 ```vql
-precondition: SELECT * FROM info() WHERE version(plugin="vfs_ls") > 1
+precondition: SELECT * FROM info() WHERE version(plugin="http_client") > 2
+query: SELECT Response FROM http_client(url=["http://a.example.com/test", "http://b.example.com/test"])
 ```
-Ensures that the client has the `vfs_ls` plugin greater than version 1.
+Ensures that the client has the `http_client` plugin greater than version 2
+(i.e. version 3 or above), since only version 3 or above
+[supports multiple URLs](https://github.com/Velocidex/velociraptor/pull/4265).
 
 ### 5. Checking date and time
 
