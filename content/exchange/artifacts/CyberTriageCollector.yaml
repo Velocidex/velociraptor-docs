@@ -148,9 +148,7 @@ sources:
         workers=30,
         query={
           SELECT SourceFile, Size,
-               upload(file=SourceFile,
-                      accessor=Accessor,
-                      mtime=Modified) AS Upload
+               upload(file=SourceFile, accessor=Accessor) AS Upload
             FROM scope()
         })
 
