@@ -10,9 +10,10 @@ summary: "How to find, manage, create and edit artifacts in the GUI"
 
 ## Finding, managing, creating and editing artifacts in the GUI
 
-Artifacts are created, edited and managed on the Artifacts screen in the GUI,
-which allows you to search and view all artifacts known to your server. It also
-includes a feature-rich artifact editor.
+In the GUI, Artifacts are created, edited and managed on the View Artifacts
+screen. Here you can search and view all artifacts known to your server. The GUI
+also includes a feature-rich artifact editor, which you can access on this
+screen.
 
 ![Artifacts screen](artifacts_main_screen.svg)
 
@@ -33,7 +34,7 @@ artifacts.
 
 {{% /notice %}}
 
-### Searching artifacts
+### Searching Artifacts
 
 The search bar on the right side of the Artifacts screen allows you to search by
 any text string, regular expression, and certain category expressions (see table
@@ -79,7 +80,7 @@ For example:
 
 
 
-### Importing artifact packs
+### Importing Artifact Packs
 
 There are
 [many ways to add artifact definitions]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}})
@@ -98,7 +99,7 @@ artifacts will be saved to the server's datastore using the file and folder
 structure described
 [here]({{< ref "/docs/artifacts/basic_fields/#basic-fields" >}}).
 
-### Importing artifacts using server artifacts
+### Importing Artifacts Using Server Artifacts
 
 Velociraptor includes several server artifacts which can import additional
 artifacts from related external projects.
@@ -155,7 +156,7 @@ client may not have. You should always test your particular scenario.
 {{% /notice %}}
 
 
-### Creating and editing artifacts
+### Creating and Editing Artifacts
 
 In the Artifacts page you can create a new artifact by clicking the
 Add Artifact (<i class="fa-solid fa-plus"></i>) button in the artifacts toolbar.
@@ -187,7 +188,7 @@ You cannot delete built-in artifacts through the GUI either; the delete button
 is greyed out when they are selected.
 
 
-#### Editor preferences and VQL reformatting
+#### Editor Preferences and VQL Reformatting
 
 The editor provides syntax highlighting for YAML and VQL. If you don't like the
 default colors, you can choose a different theme in the editor's preferences
@@ -216,7 +217,7 @@ If you reformat the VQL and don't like the result then you can use the
 of reformatted VQL that you do like, revert the changes, and then paste that
 section over the original.
 
-#### Keyboard shortcuts
+#### Keyboard Shortcuts
 
 The artifact editor is based on the [Ace code editor](https://ace.c9.io/) and
 therefore supports it's extensive list of keyboard shortcuts, shown here:
@@ -225,7 +226,7 @@ https://ace.c9.io/demo/keyboard_shortcuts.html
 Many of these keyboard shortcuts are the same as in other code editors that you
 may already be familiar with.
 
-#### Autosuggest/autocomplete
+#### Autosuggest/Autocomplete
 
 The artifact editor offers suggestions and completions, as you type, for VQL
 keywords, functions and plugins, as well as their arguments.
@@ -257,10 +258,10 @@ can simply select them from the suggestions list.
 ![autosuggest: local strings (e.g. existing variables)](autosuggest03.png)
 
 
-### Deleting artifacts
+### Deleting Artifacts
 
-All imported artifacts, and any others created during runtime, are created in
-the server's datastore and can therefore be deleted.
+All artifacts created or imported during runtime, are created in the server's
+datastore and can therefore be deleted.
 
 This can be done:
 

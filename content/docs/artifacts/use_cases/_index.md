@@ -9,9 +9,9 @@ last_reviewed: 2025-04-30
 ---
 
 While you can learn a lot about what artifacts are usually used for by looking
-through the hundreds of artifacts that ship with the Velociraptor binary, there
-are certainly many more use cases - including ones that nobody has even thought
-of yet!
+through the [hundreds of artifacts]({{< ref "/artifact_references/" >}})
+that ship with the Velociraptor binary, there are certainly many more use cases
+-- including ones that nobody has even thought of yet!
 
 Artifacts are a powerful mechanism for encapsulating information, including but
 not limited to VQL.
@@ -19,24 +19,29 @@ not limited to VQL.
 ## Wrapper Artifacts
 
 Using the `Artifact` plugin, you can
-[call other artifacts]({{< ref "/docs/vql/artifacts_calling/" >}}).
+[call other artifacts]({{< ref "/docs/vql/artifacts/calling/" >}}).
 A common use for this is to create "wrapper artifacts" which can:
 
 - combine multiple artifacts into a single artifact
   ```yaml
   name: Windows.Packs.Persistence
-  description: |
-    This artifact pack collects various persistence mechanisms in Windows.
-
+  description: This artifact pack collects various persistence mechanisms in Windows.
   sources:
     - name: WMI Event Filters
       query: SELECT * FROM Artifact.Windows.Persistence.PermanentWMIEvents()
-
     - name: Startup Items
       query: SELECT * FROM Artifact.Windows.Sys.StartupItems()
-
     - name: Debug Bootstraping
       query: SELECT * FROM Artifact.Windows.Persistence.Debug()
+  ```
+- add additional sources to an existing artifact
+  ```yaml
+  name: Generic.Client.DiskSpace.Extra
+  sources:
+    - name: DiskSpace
+      query: SELECT * FROM Artifact.Generic.Client.DiskSpace()
+    - name: ExtraInfo
+      query: SELECT * FROM ...
   ```
 - filter or manipulate results from other artifacts
   ```vql
@@ -115,14 +120,23 @@ the called artifact, however that's not always the case: the
 `Windows.KapeFiles.Targets` artifact is an example of a relatively complex
 artifact that wraps the much simpler `Generic.Collectors.File` utility artifact.
 
-Another utility artifact that you will often see used is
+Another utility artifact that you may often encounter is
 `Generic.Utils.FetchBinary`. This artifact contains VQL which ensures the
-delivery of third-party [tools]({{< ref "/docs/artifacts/tools/" >}}) to the endpoint, so you will see it called in
-just about every artifact that uses tools. These artifacts could easily have
-implemented the same logic to ensure tool delivery, but it is cleaner, more
-efficient, and more consistent to offload the logic to a purpose-built artifact
-that can be reused.
+delivery of [third-party tools]({{< ref "/docs/artifacts/tools/" >}}) to the
+endpoint, so you will see it called in just about every artifact that uses
+tools. These artifacts could easily have implemented the same logic to ensure
+tool delivery, but it is cleaner, more efficient, and more consistent to offload
+the logic to a purpose-built artifact that can be reliably reused.
 
+Artifacts designed to be used as utilities (sometimes also referred to as
+"helper" artifacts) might not be intended to be collected directly, and this may
+influence the design of the artifact. For example, the
+`Generic.Utils.FetchBinary` artifact is not intended to be collected directly
+and therefore doesn't need to be particularly user-friendly. To avoid confusing
+users with such artifacts you could choose to
+[hide these artifacts]({{< ref "/docs/artifacts/security/#hidden-artifacts" >}}),
+as mentioned previously. Hidden artifacts can still be called from other
+artifacts.
 
 ## Server "Bootstrap" Artifacts
 
@@ -130,9 +144,9 @@ Velociraptor allows us to specify
 [startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
 via it's configuration. That
 is, instead of using the GUI to configure the collection of CLIENT_EVENT and
-SERVER_EVENT artifacts, we can preconfigure these via the config.
+SERVER_EVENT artifacts, we can preconfigure these items via the config.
 
-The config settings which allow this are:
+The config settings which provide this are:
 
 - `Frontend.default_server_monitoring_artifacts`: specifies the initial client
   monitoring table that will be created. By default, Velociraptor collects
@@ -141,25 +155,31 @@ The config settings which allow this are:
 - `Frontend.default_client_monitoring_artifacts`: specifies an initial set of
   server event artifacts to collect.
 
-We can also define users and orgs that will be created when the server is first
-run, using the following config settings:
+The config also allows us to define users and orgs that will be created when the
+server is first run, using the following settings:
 
 - `GUI.initial_users`
 - `GUI.initial_orgs`
 
+#### Going beyond the config options
+
 While this may be sufficient for some server setup situations, we may want to
-automate many other things during setup, so that we don't have to rely on manual
-configuration via the GUI. This flexibility is provided by the config setting
-`Frontend.initial_server_artifacts`, which allows us to specify one or more
-SERVER type artifacts that will be run when the Velociraptor server is started
-for the very first time. The server detects that it is being run for the first
-time by checking for the presence of the file `config/install_time.json.db` in
-the datastore: if the file is not found then the server assumes it's the first
-time it is being run.
+automate many other things during setup so that we don't have to rely on
+time-consuming and potentially error-prone manual configuration via the GUI.
+
+This flexibility is provided by the config setting
+
+- `Frontend.initial_server_artifacts`
+
+which allows us to specify one or more SERVER type artifacts that will be run
+when the Velociraptor server is started for the very first time. The server
+detects that it is being run for the first time by checking for the presence of
+the file `config/install_time.json.db` in the datastore: if the file is not
+found then the server assumes it's the first time it is being run.
 
 Since the `initial_server_artifacts` setting allows us to run server artifacts,
 this gives us access to the full capabilities of VQL in setting up the server.
-There are many VQL functions that can be useful when initializing a new server,
+There are many VQL functions that can be useful when initializing a new server
 which don't have equivalent config settings.
 
 We could, for example:
@@ -170,23 +190,28 @@ We could, for example:
   function.
 - create [notebooks]({{< ref "/docs/notebooks/" >}}) using the `notebook_create`
   function (based on custom notebook templates).
+- configure client monitoring using the `set_client_monitoring` function or
+  server monitoring using the `set_server_monitoring` function.
 - run [server artifacts which import other artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
-- run [artifacts which define and download tools]({{< relref "#tool-definitions" >}})
-  to the server's tool inventory, or we could add/update tools using VQL's
-  `inventory_add` and `inventory_get` functions.
+- run [artifacts which define and download tools]({{< relref "#standalone-tool-definitions" >}})
+  to the server's tool inventory \
+  (or we could add/update tools using VQL's `inventory_add` and `inventory_get`
+  functions).
 
-Because we can specify multiple SERVER artifacts in the
-`initial_server_artifacts` setting, we might choose to have one artifact that
-addresses each area of server initialization, or we could have one larger
-"bootstrap" artifact that does everything we want.
+Because we can specify multiple server artifacts in the
+`initial_server_artifacts` setting, we might choose to have several artifacts
+where each one addresses a particular aspect of server initialization, or we
+could have one larger "bootstrap" artifact that does everything we want.
 
 These artifacts are just normal server artifacts which can be developed and
 tested by running them in the "Server Artifacts" screen in the GUI (obviously on
 a non-production/development server!).
 
-These initial server artifacts can also call other artifacts (built-in or
-custom) to aid in the setup process. Custom artifacts, as well as the
-"bootstrap" artifacts themselves, can be
+These initial server artifacts can also
+[call other artifacts]({{< ref "/docs/vql/artifacts/calling/" >}})
+(either built-in or custom) to aid in the setup process.
+
+Custom artifacts, as well as the "bootstrap" artifacts themselves, can be
 [embedded in the config or loaded from a folder]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}}).
 
 
@@ -308,8 +333,8 @@ they might confuse users.
 ### Standalone Tool definitions
 
 It is possible to use a single sourceless artifact to store all your tool
-definitions, which can then be referred to (by only the name and optionally a
-version nuber) in other artifacts that use those tools.
+definitions, which can then be referred to (using only the name and optionally a
+version number) in other artifacts that use those tools.
 
 In fact Velociraptor does this already with the  built-in
 `Server.Internal.ToolDependencies` artifact.
@@ -321,4 +346,7 @@ your artifacts will need _before_ you try to collect those artifacts. You can
 additionally use such an artifact as one of your
 "[bootstrap artifacts]({{< relref "/docs/artifacts/use_cases/#server-bootstrap-artifacts" >}})",
 as described above.
+
+Manually collecting such an artifact also serves as a way to update all the
+tools defined in the artifact.
 

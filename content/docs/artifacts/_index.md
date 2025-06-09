@@ -73,7 +73,7 @@ Here are some of the key benefits of Velociraptor Artifacts:
   Artifacts bundle VQL statements and related configurations into a single,
   reusable unit. Once an artifact is written, the user does not need to remember
   or re-enter the query. Artifacts can be
-  [called from other VQL queries]({{< ref "/docs/vql/artifacts_calling/" >}})
+  [called from other VQL queries]({{< ref "/docs/vql/artifacts/calling/" >}})
   as if they were [standard plugins]({{< ref "/vql_reference/" >}}),
   encouraging the development of reusable components that can be combined like
   Lego bricks.
@@ -227,7 +227,7 @@ Velociraptor ships with hundreds of built-in artifacts which are compiled into
 the binary itself.
 
 You can use the
-[`artifacts` CLI command]({{< ref "/docs/artifacts/cli/" >}}), the
+[`artifacts` CLI command]({{< ref "/docs/artifacts/managing/" >}}), the
 [Artifacts screen in the GUI]({{< ref "/docs/gui/artifacts/" >}}), or
 [VQL's `artifact_definitions()` plugin]({{< ref "/vql_reference/server/artifact_definitions/" >}})
 to list and examine these artifacts.
@@ -260,8 +260,8 @@ provide for additional artifact sources:
 - `Frontend.artifact_definitions_directory`: a single directory.
 - `defaults.artifact_definitions_directories`: a list of directories.
 
-If you are running the server manually you can also use the `--definitions` CLI
-flag to specify an additional location.
+If you are running the server manually in a terminal, you can use the
+`--definitions` CLI flag to specify an additional location.
 
 Velociraptor will search these locations recursively for any `.yaml` or `.yml`
 files and try to parse them as artifacts.
@@ -328,12 +328,15 @@ WHERE name =~ "Artifact.Name"
 ```
 
 Artifacts loaded from the external sources listed above are able to override
-artifacts included in the binary. For all artifacts, the name must be unique and
-not conflict with the names of the artifacts included in the binary. If there is
-a name conflict then the custom version will be ignored.
+artifacts included in the binary.
+
+For custom artifacts loaded from the server's datastore, the name must be unique
+and not conflict with the names of the artifacts included in the binary. If
+there is a name conflict then the custom version will be ignored.
 
 When multiple external sources are specified which contain artifacts with the
-same name, then this is the order of precedence that applies (lowest wins):
+same name, then this is the order of precedence that applies (lowest number
+wins):
 
 1. config: `autoexec.artifact_definitions`
 2. `--definitions` CLI flag

@@ -16,7 +16,7 @@ In this section we look at managing artifacts using the GUI, VQL and the CLI.
 {{% include-content "/docs/gui/artifacts/" %}}
 
 
-{{% include-content "/docs/vql/artifacts_managing/" %}}
+{{% include-content "/docs/vql/artifacts/managing/" %}}
 
 ## Managing and collecting artifacts from the CLI
 
