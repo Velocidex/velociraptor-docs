@@ -8,66 +8,84 @@ summary: "Artifacts parameters and how they work"
 last_reviewed: 2025-05-13
 ---
 
-Parameters allow the user to customize the collection of artifacts in a
-controlled way - without needing to edit the VQL. The GUI will present a form
-that allows the user to update the parameters prior to each collection.
+Parameters allow us to customize the collection of artifacts in a
+controlled way, without needing to edit the VQL.
+
+When the queries contained in artifacts are sent to the endpoint, the
+Velociraptor server populates the VQL scope with the parameters. This allows the
+VQL queries running on the client to directly access those parameters as
+variables.
+The VQL data type of each such variable will correspond to the parameter's
+[type]({{< relref "#parameter-types" >}}) specification.
+
+For hunts and individual collections, the GUI presents a **Configure Parameters**
+form that allows the user to update the parameters for all selected artifacts
+prior to launching the collection. The parameter type is also used to hint to
+the GUI how to render the corresponding form element.
 
 ![The Demo.Plugins.GUI artifact demonstrates parameter UI components](demo_plugins_gui.png)
 
-Parameters are essentially VQL variables. That is they are accessible in VQL as
-variables, and their VQL data type will correspond to the parameter's
-[type]({{< relref "#parameter-types" >}}).
-The parameter type is also used to hint to the GUI how to render the form
-element.
 
-The type also determines how the parameter is sent to the client and
-ensures the parameter appears as that type in the query.
+While the GUI provides a user-friendly UI component for each parameter type, all
+artifact parameters are sent to the client as strings. The client automatically
+parses them into a VQL data type according to the parameter's `type`
+specification.
 
-Prior to launching the query on the endpoint, Velociraptor will populate the
-scope with the parameters. This allows the VQL query to directly access the
-parameters.
-
-Artifact parameters are sent to the client as strings. The client automatically
-parses them into a VQL type according to the on the parameter's type
-specification. The GUI uses the type specification to render an appropriate UI
-component for each type.
-
+You can see how the parameters are provided to clients by examining the
+**Review** tab for any collection or hunt, prior to launching it, or the
+**Requests** tab, after launching it.
 
 ## Parameter definitions
 
-For parameter's `name` is the only required field. If nothing else is specified
-to further describe the parameter then it is by default a text field; that is a
-simple text string.
+Each parameter can optionally have additional attributes that specify the
+parameter's data type and additional information which is used by the GUI for
+displaying and editing the parameter.
 
-However each parameter can optionally have any of several attributes that
-specify the parameter type and additional information which is used by the GUI
-for displaying and editing the parameter.
+<!-- [Descriptions of the parameter fields](https://github.com/Velocidex/velociraptor/blob/52dc005b1594723716dc6b3e3a7a719a885b74ef/docs/references/server.config.yaml#L1050) -->
 
-[Descriptions of the parameter fields](https://github.com/Velocidex/velociraptor/blob/52dc005b1594723716dc6b3e3a7a719a885b74ef/docs/references/server.config.yaml#L1050)
-- `name`
-- `description`
-- `default`
-- `type`
-- `friendly_name`
-- `validating_regex`: There is no way to make a parameter require a value. This
-  field can be used to indicate to the user that their entered value is not valid.
-  However this is just a visual indicator. It will not prevent users from running
-  the artifact with invalid values. You should ensure that your parameters either
-  have a sensible default value or else design your artifact in such a way that it
-  doesn't fail, or fails gracefully (for example, by providing a helpful log
-  message) if no value or an invalid value is specified.
-
-- artifact_type (string: only used for type = artifactset)
-- sources (bool: only used for type = artifactset)
+- **name**: The parameter's `name` is the only required field. This is the
+  variable name that will be used in VQL queries to access the value of the
+  parameter.
+- **friendly_name**: An alternative human-friendly display name for the
+  parameter when it is presented to users in the GUI. If this field exists then
+  it is used in the GUI instead of the `name` field. This is useful in cases
+  where the parameter's name might not be easily understood by the user.
+- **description**: A description that is either displayed alongside the form
+  control for certain GUI form controls, or displayed as a popup when the user's
+  cursor hovers over the form control. This can be a multi-line text string if
+  you need to provide a detailed explanation to the user.
+- **default**: The default value of the parameter. This is always specified as a
+  string, although the GUI provides user-friendly form components that make
+  entering values for each type easier.
+- **type**: The data type of the parameter.
+  See [Parameter types]({{< relref "#parameter-types" >}}) for more information.
+  If `type` is not specified then it defaults to being a text field; that is a
+  simple text string.
+- **validating_regex**: Used to indicate to the user that their entered value is
+  not valid. However this is just a visual indicator - it will not prevent users
+  from running the artifact with invalid values. There is no way to make a
+  parameter require a value. You should ensure that your parameters either have
+  a sensible default value, or else design your artifact in such a way that it
+  fails gracefully (for example, by providing a helpful log message) if no value
+  or an invalid value is provided.
 
 
 ### Parameter types
 
-Artifact parameters are always provided as strings. These string are are
-converted to the corresponding VQL data type according to the parameter's `type`
-specification.
 
-Currently the following parameter types are supported
+#### How parameter types are processed
+
+All parameter values are defined as strings. These string values are then
+converted to the corresponding VQL data type according to the parameter's `type`
+specification when the collection request is compiled.
+
+- Demonstrate this:
+   - using typeof()
+   - by overriding a parameter value with a VQL assignment.
+
+Currently the following parameter types are supported.
+
+##### int / integer / int64
 
 * **int, integer**: The parameter is an integer
 * **timestamp**: The parameter is a timestamp. The GUI will present a time widget to assist you in selecting a timestamp
@@ -92,12 +110,35 @@ Currently the following parameter types are supported
 
 ## Parameter types
 
-Currently the following parameter types are supported
+Currently the following parameter types are supported:
+
+| type |  | VQL function |  | description |
+|---|---|---|---|---|
+| timestamp |  | timestamp |  | ![ test]( test.png ) |
+|  |  |  |  |  |
+|  |  |  |  |  |
 
 - artifactset
+  - artifact_type (string: only used for type = artifactset)
+  - sources (bool: only used for type = artifactset)
 - csv
 - bool
 - choice
+  - choices (list)
+- multichoice
+```
+  - name: Events
+    type: multichoice
+    description: Events to view
+    default: '["NameCreate", "NameDelete", "FileOpen", "Rename", "RenamePath", "CreateNewFile"]'
+    choices:
+      - NameCreate
+      - NameDelete
+      - FileOpen
+      - Rename
+      - RenamePath
+      - CreateNewFile
+```
 - float
 - hidden
 - int / integer / int64
@@ -115,20 +156,5 @@ Currently the following parameter types are supported
 - yara_lint?
 
 
-* **int, integer**: The parameter is an integer
-* **timestamp**: The parameter is a timestamp
-* **csv**: Parameter appears as a list of dicts formatted as a CSV
-* **json**: Parameter is a JSON encoded dict
-* **json_array**: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
-* **bool**: The parameter is a boolean (TRUE/YES/Y/OK)
 
-
-## How parameters are processed
-
-All parameters are defined as strings. The values are then converted to the
-specified data type at runtime.
-
-- Demonstrate this:
-   - using typeof()
-   - by overriding a parameter value with a VQL assignment.
 

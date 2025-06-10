@@ -265,7 +265,6 @@ Args:
 **Example:**
 
 ```sh
-velociraptor --config server.config.yaml artifacts verify *.yaml -v
+velociraptor artifacts verify ./**/*.yaml -v
 ```
 
-- This command _requires_ a server config.
