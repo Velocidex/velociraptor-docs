@@ -109,11 +109,35 @@ Backticks are used for
 [names with spaces or special characters]({{< ref "/docs/vql/fundamentals/#identifiers-with-spaces" >}})
 within the dictionary keys.
 
-Artifact parameters are always passed as (serialized) strings. The parameter
-[type]({{< ref "/docs/artifacts/parameters/#parameter-types" >}})
-in the called artifact is responsible for converting these strings to the
-corresponding VQL data type according to the parameter's type specification.
+Artifact parameters are passed to called artifacts while preserving their data
+type. For example, if you have the following 2 artifacts:
 
+```yaml
+name: Custom.Calling
+sources:
+  - query: |
+      LET TheTimeNow <= timestamp(epoch=now())
+      SELECT * FROM Artifact.Custom.Called(StartTime=TheTimeNow)
+```
+
+```yaml
+name: Custom.Called
+parameters:
+  - name: StartTime
+sources:
+  - query: SELECT typeof(a=StartTime) AS DataType FROM scope()
+```
+
+Then in the artifact `Custom.Called` the `StartTime` parameter will be a
+timestamp object, even though the parameter does not have the `timestamp`
+[type]({{< ref "/docs/artifacts/parameters/#parameter-types" >}}) defined.
+
+If the parameter in the called artifact needs to change the data type then you
+can either use the
+[serialize]({{< ref "/vql_reference/other/serialize/" >}}) or
+[str]({{< ref "/vql_reference/popular/str/" >}})
+functions to convert it to a string representation
+before passing it, or use the `.String` method which many data types have.
 
 ## Sources
 
