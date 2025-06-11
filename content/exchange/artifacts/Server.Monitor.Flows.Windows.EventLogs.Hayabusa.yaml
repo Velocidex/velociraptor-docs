@@ -1,0 +1,52 @@
+name: Server.Monitor.Flows.Windows.EventLogs.Hayabusa
+author: Whitney Champion - bluesky @whit.zip, Eric Capuano - bluesky @eric.zip
+description: |
+   This server monitoring artifact will automatically collect any KAPE triage artifacts, and send them for processing with Hayabusa.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ArtifactNameRegex
+   default: "Windows.KapeFiles.Targets"
+   description: A regular expression to select which artifacts to upload
+ - name: VelociraptorDataDir
+   default:
+
+sources:
+ - name: Process
+   query: |
+
+    -- Get flow completions for hunt/collection
+    LET completions = SELECT *, client_info(client_id=ClientId).os_info.fqdn AS Fqdn 
+        FROM watch_monitoring(artifact="System.Flow.Completion")
+        WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+        
+    -- Get flows and file data for each flow 
+    LET flows = SELECT * FROM foreach(
+        row=completions, 
+        query={
+            SELECT ClientId, *, Data["VFSPath"] AS VFSPath FROM enumerate_flow(client_id=ClientId, flow_id=FlowId) LIMIT 1
+        }
+    )
+    
+    -- Get location of evtx files to send to hayabusa 
+    LET evtx_files = SELECT * FROM foreach(
+        row=flows,
+        query={
+            SELECT ClientId, OSPath FROM stat(filename=VFSPath, accessor="fs") WHERE OSPath =~ ".evtx" LIMIT 1
+        }
+    )
+    
+    -- Get directory
+    LET directories = SELECT ClientId, parse_string_with_regex(string=OSPath, regex='fs:((/clients/[^/]+/collections/[^/]+/uploads/auto/C:/Windows/System32/winevt/)[^/]+/)') AS Directory FROM evtx_files
+    
+    -- Replace C: with C%3A to make the path correct
+    LET full_paths = SELECT ClientId, regex_replace(source=Directory.g1, re='C:',replace='C%3A') as Path FROM directories
+    
+    -- Send the directory of evtx files to Hayabusa
+    SELECT * FROM foreach(
+        row=full_paths,
+        query={
+            SELECT * FROM Artifact.Server.Process.Windows.EventLogs.Hayabusa(EvtxDirectory=VelociraptorDataDir + Path, ClientId=ClientId)
+        }
+    )
