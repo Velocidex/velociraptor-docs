@@ -23,6 +23,10 @@ form that allows the user to update the parameters for all selected artifacts
 prior to launching the collection. The parameter type also determines which form
 element should be used to appropriately render the parameter in the GUI.
 
+We have a built-in artifact named `Demo.Plugins.GUI` which demonstrates all the
+parameter UI types. You can use this artifact to familiarize yourself with the
+look and feel of each type.
+
 ![The Demo.Plugins.GUI artifact demonstrates parameter UI components](demo_plugins_gui.png)
 
 
@@ -63,15 +67,16 @@ displaying and editing the parameter.
   If `type` is not specified then it defaults to being a text field; that is a
   simple text string.
 
-- **validating_regex**: Used to indicate to the user that their entered value is
-  not valid. However this is just a visual indicator - it will not prevent users
-  from running the artifact with invalid values. There is no way to make a
-  parameter require a value. You should ensure that your parameters either have
-  a sensible default value, or else design your artifact in such a way that it
-  fails gracefully (for example, by providing a helpful log message) if no value
-  or an invalid value is provided. You can also implement additional validation
-  in your VQL and have it provide a default value if an acceptable value is not
-  found.
+- **validating_regex**: For string type parameters, this is used to indicate to
+  the user that their entered value is not valid. However this is just a visual
+  indicator - it will not prevent users from running the artifact with invalid
+  values. There is no way to make a parameter require a value. You should ensure
+  that your parameters either have a sensible default value, or else design your
+  artifact in such a way that it fails gracefully (for example, by providing a
+  helpful log message) if no value or an invalid value is provided. You can also
+  implement additional validation in your VQL and have it provide a default
+  value if an acceptable value is not found.
+
 
 With certain parameter types -- namely `choices`, `multichoice`, and
 `artifactset` -- additional fields become available that are necessary to
@@ -104,7 +109,8 @@ Note that the default value for the parameter is defined as a string, not a YAML
 integer. While this is not strictly necessary, as Velociraptor knows that values
 should be interpreted as strings and will silently convert them for certain YAML
 scalar types, it is good to be aware of this. It is especially important when
-dealing with compound data types such as JSON and JSON arrays.
+dealing with compound data types such as JSON dicts, JSON arrays, and other
+types of data blobs, which must be enclosed in quotes.
 
 When sending the artifact to a client, we can see in the Requests tab that a
 conversion function is added to the compiled VQL queries, assigning the result
@@ -137,136 +143,432 @@ type specification, and we can confirm this by using the [typeof]({{< ref
 
 ![](parameter_demo.png)
 
+### Parameter validation
+
+As mentioned previously, the `validating_regex` parameter field provides a way
+to give the user visual feedback when they are entering an invalid value for the
+parameter. However this does not prevent the user from proceeding with an
+invalid value.
+
+![](validating_regex.png)
+
 Because parameters are ultimately just variables, you can perform additional
 validation on the variable's value in your VQL and potentially override the
-parameter's value using VQL variable assignment if the user-supplied value is
+parameter's value using VQL variable assignment, if the user-supplied value is
 unacceptable.
 
-For example, if we use the `server_metadata` parameter type then the
+For example, consider the following artifact which uses the `server_metadata`
+parameter type:
 
 ```yaml
 name: GetServerMetadata
 
-type: SERVER
-
 parameters:
-   - name: name_of_metadata_key
-     type: server_metadata
+  - name: NameOfMetadataKey
+    type: server_metadata
+    default: "600"
+    validating_regex: ^\d{1,5}$
 
 sources:
   - query: |
-     SELECT name_of_metadata_key FROM scope() WHERE log(message="%v", args=name_of_metadata_key)
-
+     LET NameOfMetadataKey <= if(condition=NOT NameOfMetadataKey =~ '''^\d{1,5}$''', // recheck the validating regex
+                              then=600, // re-apply the default value
+                              else=int(int=NameOfMetadataKey)) // otherwise just convert it to an int
+     SELECT NameOfMetadataKey, typeof(a=NameOfMetadataKey) FROM scope()
 ```
 
-```vql
-LET Creds = if(
-           condition=IrisKey,
-           then=IrisKey,
-           else=server_metadata().IrisKey)
-```
+In this artifact we can't be sure that the metadata key actually exists, nor
+that it contains a valid value (we want it to _only_ be a 1-5 digit integer).
+It's also possible for the user to set a different value in the Configure
+Parameters screen of the collection wizard. To guard against invalid or missing
+values in this situation we can implement a few measures including additional
+validation in VQL:
+
+- the `validating_regex` parameter field will help guide the user towards
+  entering a valid value, however this is not enforceable.
+- although a `default_value` is defined for the parameter, this is only used if
+  the value stored in the server metadata key is undefined (i.e. the metadata
+  key does not exist).
+- if the user enters a valid value in the Configure Parameters screen, or if the
+  server metadata key exists and contains a valid value, then the VQL converts
+  this to an integer. The user-entered value takes precedence over the
+  metadata-defined value.
+- if the user enters an invalid value in the Configure Parameters screen, or if
+  the value defined in the server metadata key is invalid, then the VQL will
+  re-apply the default value as an int (no type conversion is necessary because
+  it's unquoted and therefore interpreted as an integer).
+
+While it's rarely necessary to be as guarded about parameter values as the above
+example is, it shows how you might implement stronger validation in your VQL, if
+your artifact requires it.
+
 
 ### Types
 
 The following parameter types are currently supported.
 
-#### type: string
+---
 
-**Description:** The parameter is a string (the default type).
+#### [ string ]
 
-**VQL conversion function:** not converted
+- **Description:** The parameter is a string (the default type).
 
-**UI form component:**
+- **VQL conversion function:** not converted
 
-![]( string.png )
+- **UI form component:** \
+  ![]( ui_string.png )
 
-#### type: timestamp
+---
 
-**Description:** The parameter is a timestamp.
+#### [ int / integer / int64 ]
 
-**VQL conversion function:** `LET X <= timestamp(epoch=X)`
+- **Description:** The parameter is an integer (int64 data type).
 
-**UI form component:**
+  When specifying the type, `int`, `integer`, and `int64` are all equivalent.
 
-![]( timestamp.png )
+  Note that a YAML integer as a parameter default, without the `int` type, will
+  be interpreted as a string.
 
-#### type: int / integer / int64
+  ```yaml
+  parameters:
+  - name: AnInt
+    default: 80 # <- will be interpreted as a string!
+  ```
 
-**Description:** The parameter is an integer
+- **VQL conversion function:** `LET X <= int(int=X)`
 
-**VQL conversion function:** `LET X <= int(int=X)`
+- **UI form component:** same as `string` type
 
-**UI form component:** as per `string` type
+---
 
-#### type:
+#### [ float ]
 
-**Description:**
-**VQL conversion function:** `LET my_greeting <= get(item=server_metadata(), member="greeting")`
-**UI form component:**
+- **Description:** The parameter is a float (float64 data type).
 
-#### type: server_metadata
+- **VQL conversion function:** `LET X <= parse_float(string=X)`
 
-**Description:**
-**VQL conversion function:** `LET X <= get(item=server_metadata(), member="X")`
-**UI form component:**
+- **UI form component:** same as `string` type
 
-* **csv**: Parameter appears as a list of dicts formatted as a CSV. The GUI will present a CSV editor to assist in pasting or editing structured CSV data.
-* **json**: Parameter is a JSON encoded dict
-* **json_array**: The parameter is a list of dicts encoded as a JSON blob (similar to csv)
-* **bool**: The parameter is a boolean (TRUE/YES/Y/OK)
-* **float**: The parameter is a float.
-* **string**: The parameter is a string (the default type)
-* **regex**: The parameter is a Regular Expression. The GUI will present a Regular Expression editor to help you write it.
-* **redacted**: The parameter should be redacted. The value of this parameter is redacted in the request or other places where it may be logged.
-* **upload**: The parameter contains a string which is uploaded from a file. NOTE- this is limited to 4mb - if you need larger files use `upload_file`. The GUI will present a file upload widget to allow you to upload a file for this request only!
-* **upload_file**: The parameter will be the name of a temporary file on the endpoint containing the contents of the uploaded file.
-* **server_metadata**: The server will populate this parameter from the server metadata service prior to launching the artifact. The parameter will not be settable in the GUI
-* **artifactset**: A set of artifacts. This is probably only useful on server
-  artifacts as clients do not have access to arbitrary artifacts. You must also
-  include the `artifact_type` parameter which can be `CLIENT`, `SERVER`,
-  `CLIENT_EVENT`, `SERVER_EVENT`, `NOTEBOOK`
-* **json**, **json_array**, **xml**, **yaml**: This is a data blob encoded as a string.
+---
 
+#### [ bool ]
 
+- **Description:** The parameter is a boolean (TRUE/YES/Y/OK).
 
+  A default value of `true` or `yes` or `y` or `ok` (case-insensitive) will
+  evaluate as `TRUE`. Any other value, including but not limited to `false`,
+  will evaluate as `FALSE`.
 
-- artifactset
-  - artifact_type (string: only used for type = artifactset)
-  - sources (bool: only used for type = artifactset)
-- csv
-- bool
-- choice
-  - choices (list)
-- multichoice
-```
-  - name: Events
-    type: multichoice
-    description: Events to view
-    default: '["NameCreate", "NameDelete", "FileOpen", "Rename", "RenamePath", "CreateNewFile"]'
-    choices:
-      - NameCreate
-      - NameDelete
-      - FileOpen
-      - Rename
-      - RenamePath
-      - CreateNewFile
-```
-- float
-- hidden
-- int / integer / int64
-- json
-- json_array / regex_array / multichoice https://github.com/Velocidex/velociraptor/pull/3392
-- redacted
-- string / regex / yara	- (these types are passed through unparsed)
-- server_metadata
-- starlark
-- timestamp
-- upload
-- upload_file
-- xml
-- yaml
-- yara_lint?
+- **VQL conversion function:** `LET X <= X =~ '^(Y|TRUE|YES|OK)$'`
 
+- **UI form component:** \
+  ![]( ui_bool.png )
 
+---
 
+#### [ timestamp ]
+
+- **Description:** The parameter is a timestamp ( Golang
+[time.Time object]({{< ref "/vql_reference/popular/timestamp/" >}})).
+
+- **VQL conversion function:** `LET X <= timestamp(epoch=X)`
+
+- **UI form component:** \
+  ![]( ui_timestamp.png )
+
+---
+
+#### [ choices ]
+
+- **Description:** Allows a single selection from a list of choices.
+
+  When using this type, the `choices` field should also be used as it contains
+  the list of items that can be chosen from.
+
+- **VQL conversion function:** not converted - the selected item is passed as a
+  string.
+
+- **UI form component:** \
+  ![](ui_choices.png)
+
+---
+
+#### [ multichoice ]
+
+- **Description:** A selection list allowing multiple selections. This returns
+  an array of the selected items.
+
+  When using this type, the `choices` field should also be used as it contains
+  the list of items that can be chosen from.
+
+  The default choices are specified as a list of items, which should be a subset
+  of the items in `choices`. These items will then be pre-selected in the
+  multichoice UI component.
+
+  **Example:**
+
+  ```yaml
+  parameters:
+    - name: Events
+      type: multichoice
+      description: Events to view
+      default: '["NameCreate", "NameDelete", "FileOpen", "Rename"]'
+      choices:
+        - NameCreate
+        - NameDelete
+        - FileOpen
+        - Rename
+        - RenamePath
+        - CreateNewFile
+  ```
+
+- **VQL conversion function:** `LET X <= parse_json_array(data=X)`
+
+- **UI form component:** \
+  ![](ui_multichoice.png)
+
+---
+
+#### [ server_metadata ]
+
+- **Description:** The server will populate this parameter from the server
+  metadata service prior to launching the artifact. It can therefore be used in
+  both client and server artifacts.
+
+  Metadata values are always strings, but you can store string representations
+  of other data types in metadata fields and then convert them to the required
+  data type in your VQL.
+
+- **VQL conversion function:** `LET X <= server_metadata().X` or `LET X <= get(item=server_metadata(), member="X")`
+
+- **UI form component:** same as `string` type
+
+---
+
+#### [ regex ]
+
+- **Description:** The parameter is a Regular Expression. The GUI will present a
+  regular expression editor with regex autosuggestions to help you write it.
+
+- **VQL conversion function:** not converted - passed as a string
+
+- **UI form component:** \
+  ![](ui_regex.png)
+
+---
+
+#### [ regex_array ]
+
+- **Description:** Allows for entry of a list of regular expressions, and returns
+  an array containing these expresions.
+
+- **VQL conversion function:** `LET X <= parse_json_array(data=X)`
+
+- **UI form component:** \
+  ![](ui_regex_array.png)
+
+---
+
+#### [ yara ]
+
+- **Description:** The parameter is a multiline string consisting of one or more
+  Yara rules. The GUI will present an editor with Yara syntax highlighting.
+
+- **VQL conversion function:** not converted - passed as a string
+
+- **UI form component:** \
+  ![](ui_yara.png)
+
+---
+
+#### [ json ]
+
+- **Description:** Parameter is a JSON encoded dict and returns an
+  ordereddict.Dict object.
+
+- **VQL conversion function:** `LET X <= parse_json(data=X)`
+
+- **UI form component:** same as `string` type
+
+---
+
+#### [ json_array ]
+
+- **Description:** The parameter accepts a list of items encoded as a JSON blob
+  (similar to csv) and returns an array object.
+
+- **VQL conversion function:** `LET X <= parse_json_array(data=X)`
+
+- **UI form component:** same as `string` type
+
+---
+
+#### [ csv ]
+
+- **Description:** Parameter accepts CSV-formatted data, and returns an array of
+  dicts.
+
+  The GUI will present a table-based CSV editor, which you can also switch to
+  a raw editing mode where you can paste in CSV-formatted data.
+
+- **VQL conversion function:** `LET X <= SELECT * FROM parse_csv(filename=X, accessor='data')`
+
+- **UI form component:** \
+  ![](ui_csv_01.png)
+
+  ![](ui_csv_02.png)
+
+---
+
+#### [ hidden ]
+
+- **Description:** String type that is not displayed in the GUI.
+
+  Although this parameter type is hidden, you can still pass values to it from
+  other artifacts.
+
+- **VQL conversion function:**  not converted - passed as a string
+
+- **UI form component:** not displayed
+
+---
+
+#### [ redacted ]
+
+- **Description:** The value of this parameter is redacted in the request or
+  other places where it may be logged.
+
+  This should not be considered a security mechanism. For securely passing
+  sensitive parameters to client you should use Velociraptor's
+  [secret management]({{< ref "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}})
+  feature.
+
+- **VQL conversion function:** not converted
+
+- **UI form component:** same as `string` type
+
+---
+
+#### [ upload ]
+
+- **Description:** Allows you to upload content from a file. The upload content
+  will be available in this variable (as a string) on the client. The GUI will
+  present a file upload widget to allow you to upload a file.
+
+  The file is delivered to the client from the server's `public` directory, with
+  the client retrieving it using the `http_client` plugin. The file content is
+  not written to disk on the endpoint.
+
+  Notes:
+  - The uploaded content is valid for this request only!
+  - The upload content is limited to 4MB - if you need larger files to the
+    endpoint use `upload_file` instead.
+  - You cannot set a default value for this type.
+
+- **VQL conversion function:** `LET X <= SELECT Content FROM http_client(url=X)`
+
+- **UI form component:** \
+  ![](ui_upload.png)
+
+---
+
+#### [ upload_file ]
+
+- **Description:** The parameter will be the name of a temporary file on the
+  endpoint containing a copy of the uploaded file.
+
+  This differs from the `upload` parameter type in that the file is written to
+  disk as a temp file, and the parameter then contains _the path to this file_.
+  This avoids the size limitation, but by writing the file to disk it's slightly
+  slower and the file is also susceptible to endpoint anti-malware scanning.
+
+  When using this parameter type your VQL will need to read the contents of the
+  file, typically using `read_file()` or similar functions.
+
+  Notes:
+  - The uploaded content is valid for this request only, as the temp file is
+    removed on the endpoint when the collection completes.
+  - You cannot set a default value for this type.
+
+- **VQL conversion function:**
+  ```vql
+  LET X_ <= SELECT Content FROM http_client(url=X, tempfile_extension='.tmp')
+  LET X <= X_.Content[0]
+  ```
+
+- **UI form component:** \
+  ![](ui_upload_file.png)
+
+---
+
+#### [ artifactset ]
+
+- **Description:** Allows selection of one or more artifacts from a set of
+  artifacts. Returns an array of artifact names, optionally including named
+  sources.
+
+  This parameter type is generally only useful on server artifacts as clients do
+  not have access to arbitrary artifacts.
+
+  When using this parameter type you must also include the `artifact_type` field
+  which can be one of `CLIENT`, `SERVER`, `CLIENT_EVENT`, `SERVER_EVENT`,
+  `NOTEBOOK`. This determines the type of artifacts that the user can select
+  from.
+
+  You can optionally include the `sources` parameter field (a boolean) which
+  determines whether or not to include artifact source names in the artifact
+  selection list. By default source names are not shown (i.e. `sources: False`).
+
+- **Example:**
+
+  ```yaml
+  parameters:
+    - name: ClientArtifactsToWatch
+      type: artifactset
+      artifact_type: CLIENT_EVENT
+      sources: TRUE
+      default: |
+        Artifact
+        Windows.Detection.PsexecService
+        Windows.Events.ProcessCreation
+        Windows.Events.ServiceCreation
+  ```
+
+- **VQL conversion function:** `LET X <= SELECT * FROM parse_csv(filename=X, accessor='data')`
+
+- **UI form component:** \
+  ![](ui_artifactset.png)
+
+---
+
+#### [ xml ]
+
+- **Description:** Accepts an XML document and parses it.
+
+- **VQL conversion function:** `LET X <= parse_xml(file=X, accessor="data")`
+
+- **UI form component:** same as `string` type
+
+---
+
+#### [ yaml ]
+
+- **Description:** Accepts an YAML document and parses it.
+
+- **VQL conversion function:** `LET X <= parse_yaml(filename=X, accessor="data")`
+
+- **UI form component:** same as `string` type
+
+---
+
+#### [ starlark ]
+
+- **Description:** Compile a [starlark]({{< ref "/vql_reference/parsers/starl/" >}})
+  code block. Returns the `*tools.StarlModule` data type.
+
+- **VQL conversion function:** `LET X <= starl(code=X)`
+
+- **UI form component:** same as `string` type
+
+---
 

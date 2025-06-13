@@ -18,7 +18,7 @@
 
 {{ else }}
 
-{{ if and ( hasSuffix $filename ".png" ) ( lt $src.Height 100 )}}
+{{ if and ( hasSuffix $filename ".png" ) ( lt $src.Height 200 )}}
 
 <img class="inline" src="{{ $src }}" />
 
