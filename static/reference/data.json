@@ -3198,12 +3198,13 @@
         "name": "http_client",
         "description": "Make a http request.",
         "type": "Plugin",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "url",
                 "type": "string",
                 "description": "The URL to fetch",
+                "repeated": true,
                 "required": true
             },
             {
@@ -8372,6 +8373,37 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secret_add",
+        "description": "Add a new secret",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the secret",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "secret",
+                "type": "ordereddict.Dict",
+                "description": "A Dict containing key/value pairs for the secret",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
