@@ -200,7 +200,7 @@ This field categorizes the artifact into one of the six available types:
   situations where there's a need to monitor the associated queues and the
   visibility of the associated artifacts advertises their existence. Most such
   artifacts have the word
-  "Internal" [in their name](){{< ref "/tags/internal-artifact/" >}}.
+  "Internal" [in their name]({{< ref "/tags/internal-artifact/" >}}).
 
 - The `NOTEBOOK` type is a relatively recent development. Artifacts of this type
   are also called [Notebook Templates]({{< ref "/docs/artifacts/notebook_templates/" >}}),
