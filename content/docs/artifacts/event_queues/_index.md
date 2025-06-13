@@ -72,13 +72,13 @@ SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type 
 
 | name | description |
 |---|---|
-| Server.Audit.Logs | This internal event artifact collects relevant audit events from the server. Audit events are significant auditable actions that a user takes, for example, starting a new collection, creating a new hunt, updating an artifact definition etc. |
-| Server.Internal.Alerts | An internal event queue for alerts. All alerts sent from clients are collected in this event queue. |
-| Server.Internal.ArtifactModification | This event artifact is an internal event stream over which notifications of artifact modifications are sent. Interested parties can watch for new artifact modification events and rebuild caches etc. |
-| Server.Internal.ClientDelete | An internal queue that receives events when a client is deleted. |
-| Server.Internal.MetadataModifications | This event artifact is an internal event stream over which notifications of server metadata modifications are sent. |
-| Server.Internal.TimelineAdd | This artifact will fire whenever a timeline is added to a super timeline. You can use this to monitor for users adding timelines and forward them to an external timeline system (e.g. TimeSketch) |
-| System.Hunt.Creation | An event artifact that fires when a user schedules a new hunt. |
+| `Server.Audit.Logs` | This internal event artifact collects relevant audit events from the server. Audit events are significant auditable actions that a user takes, for example, starting a new collection, creating a new hunt, updating an artifact definition etc. |
+| `Server.Internal.Alerts` | An internal event queue for alerts. All alerts sent from clients are collected in this event queue. |
+| `Server.Internal.ArtifactModification` | This event artifact is an internal event stream over which notifications of artifact modifications are sent. Interested parties can watch for new artifact modification events and rebuild caches etc. |
+| `Server.Internal.ClientDelete` | An internal queue that receives events when a client is deleted. |
+| `Server.Internal.MetadataModifications` | This event artifact is an internal event stream over which notifications of server metadata modifications are sent. |
+| `Server.Internal.TimelineAdd` | This artifact will fire whenever a timeline is added to a super timeline. You can use this to monitor for users adding timelines and forward them to an external timeline system (e.g. TimeSketch) |
+| `System.Hunt.Creation` | An event artifact that fires when a user schedules a new hunt. |
 
 ### Sending events to server event queues.
 
