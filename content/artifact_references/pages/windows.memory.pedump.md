@@ -62,7 +62,7 @@ sources:
               length=10) AS Header,
             upload(file=pe_dump(pid=Pid, base_offset=Address),
                    name=GetFilename(MappingName=MappingName, BaseOffset=Address)) AS Upload
-     FROM vad(pid=9604)
+     FROM vad(pid=Pid)
      WHERE Header =~ "^MZ" AND MappingName =~ FilenameRegex
 
 </code></pre>

@@ -49,7 +49,7 @@ description: |
      },
      query={
        SELECT *
-       FROM Artifact.Exchange.IRIS.Timeline.Add(
+       FROM Artifact.IRIS.Timeline.Add(
          AdditionalAssetId="1,2,3",
          AddToGraph=true,
          AddToSummary=false,
@@ -148,11 +148,22 @@ sources:
 
   - query: |
 
-      LET metadata_preparation = SELECT client_metadata(client_id=clientId) as metadata FROM scope() WHERE metadata.IRIS_AssetId
+      LET metadata_preparation = SELECT client_metadata(client_id=clientId) as metadata
+       FROM scope() WHERE metadata.IRIS_AssetId
 
-      LET syncAsset = SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(clientId=clientId,IrisURL=IrisURL,IrisCaseId=IrisCaseId,IrisKey=IrisKey,IrisRootCA=IrisRootCA,DisableSSLVerify=DisableSSLVerify)
+      LET syncAsset = SELECT * FROM Artifact.IRIS.Sync.Asset(
+         clientId=clientId,
+         IrisURL=IrisURL,
+         IrisCaseId=IrisCaseId,
+         IrisKey=IrisKey,
+         IrisRootCA=IrisRootCA,
+         DisableSSLVerify=DisableSSLVerify)
 
-      LET eventAsset1 = if(condition=metadata_preparation,then=array(a=metadata_preparation.metadata[0].IRIS_AssetId),else=if(condition=syncAsset.Result[0]="SUCCESS",then=array(a=metadata_preparation.metadata[0].IRIS_AssetId),else=[]))
+      LET eventAsset1 = if(
+         condition=metadata_preparation,
+         then=array(a=metadata_preparation.metadata[0].IRIS_AssetId),
+         else=if(condition=syncAsset.Result[0]="SUCCESS",
+                 then=array(a=metadata_preparation.metadata[0].IRIS_AssetId),else=[]))
 
       LET eventAsset2 = if(condition=AdditionalAssetId,then=split(string=AdditionalAssetId,sep=",|;"),else=[])
 

@@ -16,7 +16,7 @@ We'll guide you through the main decisions that you'll need to make, and point
 you to additional resources for less commonly used features and options.
 
 If you just want to get a simple deployment up and running then please see our
-[Quickstart Guide]({{< relref "quickstart" >}}).
+[Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}).
 
 If you're really in a hurry you can start a self-contained
 [Instant Velociraptor](#instant-velociraptor)

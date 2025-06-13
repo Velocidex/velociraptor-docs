@@ -2205,24 +2205,6 @@
         ]
     },
     {
-        "title": "Windows.Applications.Outlook.PST",
-        "description": "This artifact fetch emails and attachments from outlook PST file.\nThis artifact parse for outlook pst files and display the details and save \nall attachments to user specified directory.\n",
-        "link": "/artifact_references/pages/windows.applications.outlook.pst",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Windows.Applications.Outlook.PST.Header",
-        "description": "This artifact fetch emails and header details such as SPF, DMARC and DKIM from outlook PST file.\n",
-        "link": "/artifact_references/pages/windows.applications.outlook.pst.header",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Applications.SBECmd",
         "description": "Execute Eric Zimmerman's SBECmd and return output for analysis.",
         "link": "/artifact_references/pages/windows.applications.sbecmd",
@@ -3450,6 +3432,15 @@
         "title": "Windows.Search.VSS",
         "description": "This artifact will find all relevant files in the VSS. Typically\nused to out deduplicated paths for processing by other artifacts.",
         "link": "/artifact_references/pages/windows.search.vss",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Search.WSLFileFinder",
+        "description": "Find files within the VHDX containers of the Windows Subsystem for\nLinux (WSL) images.\n",
+        "link": "/artifact_references/pages/windows.search.wslfilefinder",
         "type": "client",
         "tags": [
             "Client Artifact"

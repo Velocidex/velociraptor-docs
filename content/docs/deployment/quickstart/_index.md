@@ -2,9 +2,9 @@
 menutitle: "Quickstart"
 title: "Quickstart Guide"
 date: 2025-02-27
-last_reviewed: 2025-04-26
+last_reviewed: 2025-04-28
 draft: false
-weight: 10
+weight: 5
 aliases:
   - "/docs/deployment/self-signed/"
 ---
