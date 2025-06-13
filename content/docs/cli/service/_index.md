@@ -23,7 +23,7 @@ installed service, even if it was installed using an installer package.
 
 Because packaging and distribution is a rather complicated topic, Velociraptor
 also includes the `service install` command in the Windows and Linux binaries.
-Other methods of packaging and installing should be preferably be used in
+Other methods of packaging and installing should preferably be used in
 production deployments, however we do still provide this basic install
 capability as an alternative for unusual deployment scenarios.
 
