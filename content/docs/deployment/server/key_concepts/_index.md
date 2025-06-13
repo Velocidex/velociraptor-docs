@@ -146,7 +146,7 @@ installation package.
 
 Because the server needs to know about the clients' settings and therefore
 maintains the client config section as part of `server.config.yaml`, it is
-recommended that you aways make client config changes in the server config,
+recommended that you always make client config changes in the server config,
 rather than maintaining separate client config files. Then whenever you need the
 latest version of your client config use the command
 `velociraptor -c ./server.config.yaml config client` to extract it.

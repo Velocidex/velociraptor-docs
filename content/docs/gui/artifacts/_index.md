@@ -185,7 +185,7 @@ alias) then you will receive an error message and the artifact will refuse to be
 saved.
 
 You cannot delete built-in artifacts through the GUI either; the delete button
-is greyed out when they are selected.
+is grayed out when they are selected.
 
 
 #### Editor Preferences and VQL Reformatting
@@ -282,7 +282,7 @@ If you need to delete such artifacts then you should manually remove the
 corresponding YAML documents from their source locations, and then restart the
 server.
 
-For a futher discussion of built-in artifacts please see
+For a more extensive discussion of built-in artifacts please see
 [Built-in vs. Compiled-in vs. Custom Artifacts]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}).
 
 

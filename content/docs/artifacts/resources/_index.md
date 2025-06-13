@@ -49,7 +49,7 @@ resources:
 If you define `resources` in your artifact, you only need to specify the subkeys
 relevant to the resources you want to limit. Default values will apply to any
 subkeys not specified, and as mentioned above, users still have the opportunity
-to overide these limits in the GUI before collecting the artifact.
+to override these limits in the GUI before collecting the artifact.
 
 **Example:**
 

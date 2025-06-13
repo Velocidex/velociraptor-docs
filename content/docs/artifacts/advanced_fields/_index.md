@@ -160,7 +160,7 @@ the artifact itself.
 If you define `resources` in your artifact, you only need to specify the subkeys
 relevant to the resources you want to limit. Default values will apply to any
 subkeys not specified and, as mentioned above, users still have the opportunity
-to overide these limits in the GUI before collecting the artifact.
+to override these limits in the GUI before collecting the artifact.
 
 The following resource limit settings are currently available in artifact
 definitions:
@@ -359,6 +359,6 @@ to ensure that the implied permission is properly controlled.
 ### [ reports ]
 
 Historically this artifact section contained templates that were used to produce
-HTML reports. Reports have been deprecated in favour of
+HTML reports. Reports have been deprecated in favor of
 [notebooks]({{< ref "/docs/notebooks/" >}}),
 however this is still used by some internal artifacts.

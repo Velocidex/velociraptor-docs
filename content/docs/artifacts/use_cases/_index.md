@@ -278,7 +278,7 @@ filtered out from all the preset
 on the Artifacts screen, except for the filter category "Include Empty Sources".
 This filter will show all artifacts including those that don't have sources.
 This aspect is useful because it means you can define sourceless artifacts
-without them being collectable, and therefore such artifacts don't clutter
+without them being collectible, and therefore such artifacts don't clutter
 artifact selection lists or confuse users.
 
 ### Export-only artifacts (sharing VQL via export-imports)
@@ -325,7 +325,7 @@ server.
 As mentioned above, artifacts without sources cannot be directly launched via
 the GUI and are also filtered out from all the preset filter views on the
 Artifacts screen, which means that you can create such artifacts without them
-being collectable, and without them appearing on artifact selection lists where
+being collectible, and without them appearing on artifact selection lists where
 they might confuse users.
 
 ![Artifacts-as-documentation](artifact_documentation.png)

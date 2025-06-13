@@ -1720,3 +1720,95 @@ CloudFlare
 
 utilised
 verifier
+
+<url-free> content/vql_reference/parsers/parse_lines/_index.md
+--------------------------------------------------------------------------------
+BOM
+
+<url-free> content/docs/vql/artifacts/calling/_index.md
+--------------------------------------------------------------------------------
+composable
+
+<url-free> content/docs/gui/keyboard_shortcuts/_index.md
+--------------------------------------------------------------------------------
+Goto
+
+<url-free> content/docs/gui/artifacts/_index.md
+--------------------------------------------------------------------------------
+Autocomplete
+Autosuggest
+ChopChopGo
+DetectRaptor
+PreviousReleases
+RegistryHunter
+SysmonBinary
+UpdatedBuiltin
+autosuggest
+config's
+
+<url-free> content/docs/cli/fuse/_index.md
+--------------------------------------------------------------------------------
+GetPrivateKeyFromScope
+
+<url-free> content/docs/cli/fs/_index.md
+--------------------------------------------------------------------------------
+cp
+
+<url-free> content/docs/cli/_index.md
+--------------------------------------------------------------------------------
+subcommands
+yq
+
+<url-free> content/docs/cli/deaddisk/_index.md
+--------------------------------------------------------------------------------
+deaddisk
+
+<url-free> content/docs/artifacts/tips/_index.md
+--------------------------------------------------------------------------------
+defang
+
+<url-free> content/docs/artifacts/use_cases/_index.md
+--------------------------------------------------------------------------------
+ClientDelete
+DefenderExclusion
+Sourceless
+sourceless
+
+<url-free> content/docs/artifacts/tools/_index.md
+--------------------------------------------------------------------------------
+cli
+
+<url-free> content/docs/artifacts/preconditions/_index.md
+--------------------------------------------------------------------------------
+thruthiness
+
+<url-free> content/docs/artifacts/event_queues/_index.md
+--------------------------------------------------------------------------------
+deduplicated
+
+<url-free> content/docs/artifacts/resources/_index.md
+--------------------------------------------------------------------------------
+hardcoded
+predefine
+subkeys
+
+<url-free> content/docs/artifacts/_index.md
+--------------------------------------------------------------------------------
+amongst
+org's
+
+<url-free> content/docs/artifacts/advanced_fields/_index.md
+--------------------------------------------------------------------------------
+WSS
+subfields
+
+<url-free> content/docs/artifacts/export_imports/_index.md
+--------------------------------------------------------------------------------
+RandomGreeting
+RandomNumberGenerator
+
+<url-free> content/docs/overview/related/_index.md
+--------------------------------------------------------------------------------
+Blauhaunt
+Socfortress
+

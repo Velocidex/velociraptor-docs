@@ -360,7 +360,7 @@ The following parameter types are currently supported.
 #### [ regex_array ]
 
 - **Description:** Allows for entry of a list of regular expressions, and returns
-  an array containing these expresions.
+  an array containing these expressions.
 
 - **VQL conversion function:** `LET X <= parse_json_array(data=X)`
 

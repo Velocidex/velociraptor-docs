@@ -123,26 +123,26 @@ SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type 
 
 | name | description |
 |---|---|
-| Server.Internal.ArtifactDescription |  |
-| Server.Internal.ClientConflict | This event artifact is an internal event stream receiving events about client conflict.  When two clients attempt to connect to the server with the same client id, the server rejects one of these with a 409 Conflict HTTP message. The client id will be forwarded on this artifact as well so the server may take action. |
-| Server.Internal.ClientInfo | An internal artifact collecting client information. This is used to update the client info indexes. Client send this automatically at startup and then every day. |
-| Server.Internal.ClientInfoSnapshot | An internal artifact that fires when the master node writes a new snapshot. Minion use this to trigger a refresh of their client info snapshots. |
-| Server.Internal.ClientPing | An internal event channel for notifying about client pings. |
-| Server.Internal.ClientScheduled | This event will be fired when a client was sent flows to process. |
-| Server.Internal.ClientTasks | This event will be fired when a client has new tasks scheduled. |
-| Server.Internal.Enrollment | This event artifact is an internal event stream over which client enrollments are sent. You can watch this event queue to be notified on any new clients enrolling for the first time. |
-| Server.Internal.FrontendMetrics | An internal queue that receives metrics from all frontends. The master Frontend manager service will aggregate these into a combined metric stream. |
-| Server.Internal.HuntModification | An internal queue to watch modifications of hunts. The hunt dispatcher from all nodes sends this mutation to the hunt manager which applies it. |
-| Server.Internal.HuntUpdate | An internal queue to notify hunt dispatchers on all minions that a certain hunt has changed and should be updated from the internal cache. |
-| Server.Internal.Interrogation | This event artifact is an internal event stream over which client interrogations are sent. When the interrogation service finishes updating a client record, it will send an event on this artifact. |
-| Server.Internal.Inventory | An internal artifact to listen to inventory (tools) changes. |
-| Server.Internal.Label | An internal artifact used to track new labeling events. |
-| Server.Internal.MasterRegistrations | The master will advertise to the minions the events it is interested in. |
-| Server.Internal.Notifications | This event artifact is an internal event stream over which client notifications are sent. A frontend will watch for events over this stream and if a client is actively connected to this frontend, the client will be notified that new work is available to it. |
-| Server.Internal.Ping | An internal queue for Ping requests. The queue is watched by the replication service on the slave nodes which will notify the target specified. |
-| Server.Internal.Pong | An internal queue for Ping replies |
-| Server.Internal.UserManager | An internal artifact notifying when user accounts are modified. |
-| System.Hunt.Participation | Endpoints may participate in hunts. This artifact collects which hunt each system participated in. |
+| `Server.Internal.ArtifactDescription` |  |
+| `Server.Internal.ClientConflict` | This event artifact is an internal event stream receiving events about client conflict.  When two clients attempt to connect to the server with the same client id, the server rejects one of these with a 409 Conflict HTTP message. The client id will be forwarded on this artifact as well so the server may take action. |
+| `Server.Internal.ClientInfo` | An internal artifact collecting client information. This is used to update the client info indexes. Client send this automatically at startup and then every day. |
+| `Server.Internal.ClientInfoSnapshot` | An internal artifact that fires when the master node writes a new snapshot. Minion use this to trigger a refresh of their client info snapshots. |
+| `Server.Internal.ClientPing` | An internal event channel for notifying about client pings. |
+| `Server.Internal.ClientScheduled` | This event will be fired when a client was sent flows to process. |
+| `Server.Internal.ClientTasks` | This event will be fired when a client has new tasks scheduled. |
+| `Server.Internal.Enrollment` | This event artifact is an internal event stream over which client enrollments are sent. You can watch this event queue to be notified on any new clients enrolling for the first time. |
+| `Server.Internal.FrontendMetrics` | An internal queue that receives metrics from all frontends. The master Frontend manager service will aggregate these into a combined metric stream. |
+| `Server.Internal.HuntModification` | An internal queue to watch modifications of hunts. The hunt dispatcher from all nodes sends this mutation to the hunt manager which applies it. |
+| `Server.Internal.HuntUpdate` | An internal queue to notify hunt dispatchers on all minions that a certain hunt has changed and should be updated from the internal cache. |
+| `Server.Internal.Interrogation` | This event artifact is an internal event stream over which client interrogations are sent. When the interrogation service finishes updating a client record, it will send an event on this artifact. |
+| `Server.Internal.Inventory` | An internal artifact to listen to inventory (tools) changes. |
+| `Server.Internal.Label` | An internal artifact used to track new labeling events. |
+| `Server.Internal.MasterRegistrations` | The master will advertise to the minions the events it is interested in. |
+| `Server.Internal.Notifications` | This event artifact is an internal event stream over which client notifications are sent. A frontend will watch for events over this stream and if a client is actively connected to this frontend, the client will be notified that new work is available to it. |
+| `Server.Internal.Ping` | An internal queue for Ping requests. The queue is watched by the replication service on the slave nodes which will notify the target specified. |
+| `Server.Internal.Pong` | An internal queue for Ping replies |
+| `Server.Internal.UserManager` | An internal artifact notifying when user accounts are modified. |
+| `System.Hunt.Participation` | Endpoints may participate in hunts. This artifact collects which hunt each system participated in. |
 
 ## Client event queues
 
@@ -153,7 +153,7 @@ With this type of artifact, the event queue and artifact sources are more
 tightly coupled: all rows emitted by the artifact's sources are sent to the
 corresponding event queue. That is, sources in a `CLIENT_EVENT` artifact
 generate data _on the client_. This differs from sources in server event
-artifacts which generall receive/process data (although they too can generate
+artifacts which generally receive/process data (although they too can generate
 data and send it to a queue).
 
 Unlike server event queues, you can't send messages to client event queues with

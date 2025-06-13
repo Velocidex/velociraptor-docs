@@ -374,7 +374,7 @@ and delete them using the
 
 All artifacts created during runtime are saved to the `artifact_definitions`
 directory in the datastore. Artifacts in this location are readable and
-writeable, which means they can be edited or deleted.
+writable, which means they can be edited or deleted.
 
 When the server starts it reads all artifacts stored in the
 `artifact_definitions` directory and marks these as "custom" (i.e. "not
@@ -445,7 +445,7 @@ button on the host Overview page in the GUI. If a custom artifact name
 used instead when clients enroll or are interrogated. This override capability
 allows you to create a custom version of the artifact which gathers additional
 information and then have it work seamlessly via the GUI. This override
-behaviour does _not_ occur when either artifact is collected explicity.
+behaviour does _not_ occur when either artifact is collected explicitly.
 
 **Custom.Server.Monitor.Health**
 
