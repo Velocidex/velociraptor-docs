@@ -69,6 +69,10 @@ src: local(""),
 font-display: block;
 }
 
+#TableOfContents {
+    font-size: 15px !important;
+}
+
 html, body {
     color: var(--MAIN-TEXT-color) !important;
     background-color: var(--MAIN-TEXT-background-color) !important;
