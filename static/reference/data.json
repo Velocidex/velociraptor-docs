@@ -3198,12 +3198,13 @@
         "name": "http_client",
         "description": "Make a http request.",
         "type": "Plugin",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "url",
                 "type": "string",
                 "description": "The URL to fetch",
+                "repeated": true,
                 "required": true
             },
             {
@@ -6387,11 +6388,6 @@
                 "required": true
             },
             {
-                "name": "FolderPath",
-                "type": "string",
-                "description": "The folder path to save the attachments from emails."
-            },
-            {
                 "name": "accessor",
                 "type": "string",
                 "description": "The accessor to use"
@@ -8380,6 +8376,37 @@
         ]
     },
     {
+        "name": "secret_add",
+        "description": "Add a new secret",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the secret",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "secret",
+                "type": "ordereddict.Dict",
+                "description": "A Dict containing key/value pairs for the secret",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "secret_define",
         "description": "Define a new secret template",
         "type": "Function",
@@ -8950,7 +8977,7 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The separator that will be used to split"
+                "description": "The separator regex that will be used to split"
             },
             {
                 "name": "sep_string",
@@ -10766,6 +10793,22 @@
             "darwin_arm64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "verify",
+        "description": "verify an artifact",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The artifact to verify. This can be an artifact source in yaml or json or the name of an artifact",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

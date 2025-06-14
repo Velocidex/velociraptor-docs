@@ -137,8 +137,8 @@ expected results:
 Because the BIOS information is unlikely to ever change we also want to collect
 something which *does* change. For purposes of demonstration let's query the
 last logged on user. We already have built-in artifacts that provide the
-relevant information for Windows and Linux so we will leverage those in our new
-artifact.
+relevant source information for Windows and Linux so we will leverage those in
+our new artifact.
 
 ```yaml
 name: Generic.Client.LastUser
@@ -341,7 +341,7 @@ existing client you will see the metadata fields populated.
 
 ![](metadata_populated.svg)
 
-The indexed fields will now be usable as
+The indexed fields will now be available as
 [search operators]({{< ref "/docs/clients/searching/" >}})
 in the client search bar.
 

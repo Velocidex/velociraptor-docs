@@ -81,12 +81,44 @@ the following:
 3. Think about why you want to collect a certain artifact, not what
    the artifact is and how to parse it.
 
-## Documentation overview
+## How to get started with Velociraptor
 
-The site is divided into the following parts
+For a new user with no prior knowledge of Velociraptor, we recommended that you
+follow this learning path:
 
-- [Deployment]({{< relref "../deployment/" >}}) where you will learn the different deployment options.
+1. Start by understanding what Velociraptor is and its purpose as a DFIR and
+   endpoint monitoring tool. Learn about its core function of collecting
+   endpoint information using VQL (the Velociraptor Query Language). Training
+   videos and initial documentation provide this foundational knowledge.
 
-- [GUI Tour]({{< relref "../gui/" >}}) provides a tour of the user interface.
+2. Learn how to install and set up Velociraptor, starting with a simple local
+   deployment, perhaps on a Windows VM for familiarity. The documentation,
+   especially our Quickstart Guide, and training sessions cover installation and
+   deployment basics.
 
-- [VQL Fundamentals]({{< relref "../vql/" >}}) provide a deep dive into VQL and how to write your own artifacts and queries.
+3. Become familiar with the Velociraptor GUI. Learn about Artifacts and get
+   familiar with using the Artifact Collector flow in the GUI to run some of the
+   many built-in artifacts on a single host. This demonstrates the tool's
+   capabilities and how to gather data without immediately needing to write
+   queries. Explore the artifact documentation to understand the different
+   artifact types and capabilities.
+
+4. Once you are comfortable running existing artifacts, dive into the
+   Velociraptor Query Language (VQL). This is a crucial step to unlock the
+   tool's full potential. Resources like the VQL Fundamentals documentation and
+   dedicated training videos are recommended. Practicing with simple examples in
+   a notebook is a good way to learn. Becoming familiar with the "VQL mindset"
+   is an important aspect.
+
+5. After building a foundation in VQL, explore more advanced topics. This
+   includes writing custom artifacts, understanding the client/server
+   architecture in more depth, learning about enterprise deployment
+   considerations (performance, resources), client monitoring, hunting, incident
+   response features like quarantine, and how to integrate with other tools. The
+   VQL reference documentation and community discussions offer insights into
+   specific functions and plugins. Throughout this learning journey, you are
+   encouraged to consult the extensive documentation available on the
+   Velociraptor website, including the main documentation pages, the VQL
+   reference, the knowledge base, the blog, and training materials. Engaging
+   with the community, such as on Discord, is also a valuable source of help and
+   examples.

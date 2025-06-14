@@ -20,7 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 string|The value to split|string (required)
-sep|The separator that will be used to split|string
+sep|The separator regex that will be used to split|string
 sep_string|The separator as string that will be used to split|string
 
 ### Description

@@ -1,4 +1,4 @@
-{{ $src := .Destination }}
+{{ $src := .Page.Resources.GetMatch (printf "%s" (.Destination | safeURL)) }}
 {{ $id := md5 $src }}
 {{ $filename := path.Join .Page.File.Dir $src }}
 {{ $caption := .PlainText }}
@@ -18,6 +18,12 @@
 
 {{ else }}
 
+{{ if and ( hasSuffix $filename ".png" ) ( lt $src.Height 200 )}}
+
+<img class="inline" src="{{ $src }}" />
+
+{{ else }}
+
 <figure id="{{ $id }}">
   <div data-featherlight="#{{ $id }}" class="figure">
     <img src="{{ $src }}" alt="{{ $caption }}">
@@ -28,4 +34,5 @@
   </figcaption>
 </figure>
 
+{{ end }}
 {{ end }}

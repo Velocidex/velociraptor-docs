@@ -20,7 +20,6 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 filename|The PST file to parse.|OSPath (required)
-FolderPath|The folder path to save the attachments from emails.|string
 accessor|The accessor to use|string
 raw|If set we emit the raw message object for all objects|bool
 

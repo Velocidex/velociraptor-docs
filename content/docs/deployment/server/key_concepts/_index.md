@@ -142,6 +142,17 @@ the client configuration to us when needed
 The server can also use it internally, for example when generating a client
 installation package.
 
+{{% notice tip "Make client config changes centrally" %}}
+
+Because the server needs to know about the clients' settings and therefore
+maintains the client config section as part of `server.config.yaml`, it is
+recommended that you always make client config changes in the server config,
+rather than maintaining separate client config files. Then whenever you need the
+latest version of your client config use the command
+`velociraptor -c ./server.config.yaml config client` to extract it.
+
+{{% /notice %}}
+
 ## Velociraptor Binaries
 
 Velociraptor does not have separate client binaries and server binaries. The

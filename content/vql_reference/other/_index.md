@@ -70,6 +70,7 @@ not yet been categorized.
 |[rm](rm)|<span class='vql_type'>Function</span>|Remove a file from the filesystem using the API|
 |[rsyslog](rsyslog)|<span class='vql_type'>Function</span>|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
+|[secret_add](secret_add)|<span class='vql_type'>Function</span>|Add a new secret|
 |[secret_define](secret_define)|<span class='vql_type'>Function</span>|Define a new secret template|
 |[secret_modify](secret_modify)|<span class='vql_type'>Function</span>|Modify the secret|
 |[secrets](secrets)|<span class='vql_type'>Plugin</span>|Retrieve the list of secrets on the server|
@@ -94,6 +95,7 @@ not yet been categorized.
 |[upload_webdav](upload_webdav)|<span class='vql_type'>Function</span>|Upload files to a WebDAV server|
 |[url](url)|<span class='vql_type'>Function</span>|Construct a URL or parse one|
 |[uuid](uuid)|<span class='vql_type'>Function</span>|Generate a UUID|
+|[verify](verify)|<span class='vql_type'>Function</span>|verify an artifact|
 |[version](version)|<span class='vql_type'>Function</span>|Gets the version of a VQL plugin or function|
 |[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_csv](write_csv)|<span class='vql_type'>Plugin</span>|Write a query into a CSV file|

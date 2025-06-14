@@ -69,6 +69,10 @@ src: local(""),
 font-display: block;
 }
 
+#TableOfContents {
+    font-size: 15px !important;
+}
+
 html, body {
     color: var(--MAIN-TEXT-color) !important;
     background-color: var(--MAIN-TEXT-background-color) !important;
@@ -181,6 +185,15 @@ a:hover {
 
 #sidebar hr {
     border-color: var(--MENU-SECTION-HR-color);
+}
+
+.fa-chevron-right {
+    color: transparent !important;
+}
+
+hr {
+    background-color: #ccc;
+    height: 2px !important
 }
 
 div.section {
@@ -708,6 +721,7 @@ table thead th {
 .vqlargs + table {
     margin-top: 0;
     margin-bottom: 1em;
+    width: 100% !important;
 }
 
 .vqlargs + table td {
@@ -831,6 +845,11 @@ details > summary:first-of-type {
 #body-inner table {
     border: none;
     margin-bottom: 1em;
+    width: fit-content;
+}
+
+.gsc-control-cse > table {
+    width: 100% !important;
 }
 
 #body-inner table tbody {
@@ -849,6 +868,7 @@ details > summary:first-of-type {
 
 #body-inner tbody td {
     border: none;
+    padding: 5px;
 }
 
 .search_results table {

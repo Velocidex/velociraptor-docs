@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-url|The URL to fetch|string (required)
+url|The URL to fetch|list of string (required)
 params|Parameters to encode as POST or GET query strings|ordereddict.Dict
 headers|A dict of headers to send.|ordereddict.Dict
 method|HTTP method to use (GET, POST, PUT, PATCH, DELETE)|string
@@ -62,7 +62,7 @@ the binary.
 
 {{% /notice %}}
 
-The `http_client()` plugin allows use to interact with any web
+The `http_client()` plugin allows us to interact with any web
 services. If the web service returns a json blob, we can parse it
 with the `parse_json()` function (or `parse_xml()` for SOAP
 endpoints). Using the parameters with a POST method we may
@@ -117,5 +117,28 @@ Here the files can be an array of dicts with the following fields:
 * key: The name of the form element that will receive the file
 * path: This is an OSPath object that we open and stream into the form.
 * accessor: Any accessor required for the path.
+
+### Using multiple URLs
+
+After version 3 of this plugin it is possible to provide a list of
+URLs to the `url` parameter. The plugin will attempt to connect to
+each of those in order until a successful connection is made
+(i.e. HTTP status 200). This allows us to provide fallback URLs
+for more resilient connections.
+
+The correct way to check for this is with the `version()` plugin:
+
+```vql
+LET HTTP_CLIENT(URLs) = SELECT * FROM if(
+ condition=version(plugin="http_client")>2,
+ then={
+   SELECT * FROM http_client(url=URLs)
+ }, else={
+   -- Just use the first one for old versions.
+   SELECT * FROM http_client(url=URLs[0])
+ })
+
+ SELECT * FROM HTTP_CLIENT(URLs=["http://www.google.com", "http://www.microsoft.com"])
+ ```
 
 

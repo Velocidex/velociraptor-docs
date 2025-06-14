@@ -54,6 +54,15 @@ For the last 2 cases above it is recommended to use bold text for emphasis the
 first time a term is used. When doing so it is not necessary to use quotes
 around the term.
 
+### Admonitions (notices)
+
+Try not to overuse them. Especially try not to have two or more of them
+together. Try to only use them when the reader's attention need to be drawn to
+something specific.
+
+Often the content in an admonition can be rewritten as part of the normal text
+body.
+
 ### Unordered lists
 
 Use `-` not `*`. Just for consistency.
@@ -75,6 +84,14 @@ Use the Hugo shortcode `[]({{< ref "/abc/xyz/" >}})` for page links so that Hugo
 will do link checking.
 
 ## Page content structure
+
+## Page metadata
+
+Always try to add a `summary`. When using the `children` shortcode it defaults
+to creating a summary if one is not defined, which means it grabs the first few
+paragraphs from the page. Usually this "auto-summary" is unsightly so it's
+better to carefully craft one rather than relying on "auto".
+
 
 ### KB articles
 
