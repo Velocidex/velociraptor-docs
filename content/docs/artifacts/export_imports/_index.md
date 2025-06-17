@@ -12,34 +12,37 @@ last_reviewed: 2025-05-23
 to allow artifacts to share VQL with each other. This allows us to write more
 concise and more consistent artifacts with reusable VQL.
 
-The `export` section is something like a quiet
-[source]({{< ref "/docs/artifacts/sources/" >}}).
-VQL stored in this field is executed when the artifact is collected but it's
-results are ephemeral (not emitted by the artifact), and made available to VQL
-in the `sources` section as scope variables.
-
 Artifacts can import the `export` section from other artifacts using the
 `imports` field's specification, which is a list of artifact names.
+
+The VQL compiler automatically inserts all VQL statements in the
+`export` section of each `imported` artifact before each [source]({{<
+ref "/docs/artifacts/sources/" >}}). This allows any functions or
+variables defined in the `export` sections to be visible to importing
+VQL queries. This makes it ideal to define reusable VQL code that can
+be shared by multiple artifacts.
+
 
 ![VQL reuse with export/imports](export_imports.svg)
 
 
 Any type of artifact can import the `export` section from any other type of
 artifact - it's not constrained by artifact type. So a notebook template
-(artifact type:NOTEBOOK) can simultaneously import the exports from a CLIENT
-type artifact and a SERVER_EVENT type artifact. Any `export` field in any
+(artifact type:NOTEBOOK) can simultaneously import the exports from a `CLIENT`
+type artifact and a `SERVER_EVENT` type artifact. Any `export` field in any
 artifact in the artifact repository is available to be imported by any other
 artifact.
 
-As you will see below, you can imagine this as artifacts implicitly "importing"
-their own `export` section.
-That is, the VQL stored in `export` can (and usually is) used by the artifact
-itself, which makes the `export` section a very useful place to put VQL utility
-queries, _even if you don't intend other artifacts to import them_. For example,
-if your new artifact has multiple sources and each one repeats the same queries
---perhaps as custom VQL functions-- then it might be better to move those to the
-`export` section where a single instance of the queries produce results that can
-be shared by all the sources.
+As you will see below, you can imagine this as artifacts implicitly
+"importing" their own `export` section.  That is, the VQL stored in
+`export` can (and usually is) used by the artifact itself, which makes
+the `export` section a very useful place to put VQL utility queries,
+_even if you don't intend other artifacts to import them_. For
+example, if your new artifact has multiple sources and each one
+repeats the same queries --perhaps as custom VQL functions-- then it
+might be better to move those to the `export` section where a single
+instance of the queries produce results that can be shared by all the
+sources.
 
 ## How export is processed
 

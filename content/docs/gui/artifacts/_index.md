@@ -147,11 +147,13 @@ easily upgraded, yet need functionality only found in the latest artifacts.
 
 {{% notice warning "Forward compatibility is not guaranteed!" %}}
 
-While clients should have no problems running older versions of the standard
-artifacts, we cannot guarantee that the latest artifact versions will be
-compatible with older clients. This depends mainly on whether or not the latest
-artifact versions contain VQL that uses new functions or plugins which the older
-client may not have. You should always test your particular scenario.
+While clients should have no problems running older versions of the
+standard artifacts, [we cannot guarantee]({{< ref
+"/docs/overview/support/" >}}) that the latest artifact versions will
+be compatible with older clients. This depends mainly on whether or
+not the latest artifact versions contain VQL that uses new functions
+or plugins which the older client may not have. You should always test
+your particular scenario.
 
 {{% /notice %}}
 
@@ -284,5 +286,3 @@ server.
 
 For a more extensive discussion of built-in artifacts please see
 [Built-in vs. Compiled-in vs. Custom Artifacts]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}).
-
-

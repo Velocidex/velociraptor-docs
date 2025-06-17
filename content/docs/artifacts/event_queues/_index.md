@@ -49,22 +49,35 @@ Many internally-generated events are sent to server event queues. For example,
 client enrollment events, flow completion events, and server audit events are
 each sent to their own queue.
 
+{{% notice info "Programmatically sending events to event queues" %}}
+
+Usually `SERVER_EVENT` and `CLIENT_EVENT` artifacts receive events
+from the VQL queries defined in their `sources` section, but this is
+not strictly necessary. Events may be sent from anywhere using the VQL
+[send_event()]({{< ref "/vql_reference/server/send_event/" >}})
+function, or via the API. This way it is possible to implement push
+notification to inform the server of certain events.
+
+Some events are sent internally by the server to their event queues
+(for example `System.Flow.Completion` events are sent when a flow is
+completed). In these cases there is no need for VQL queries to be
+defined as sources, and therefore some event artifacts do not have
+sources defined.
+
+It is still possible to receive events sent to these queues using
+`watch_monitoring()`, even though they do not have VQL queries.
+
+{{% /notice %}}
+
+
 ## Server event queues
 
-An artifact of type `SERVER_EVENT` establish a server event queue on the server,
-using the artifact name.
+An artifact of type `SERVER_EVENT` establish a server event queue on
+the server, using the artifact name.
 
-This type of artifact may or may not include sources because VQL in
-`SERVER_EVENT` artifact sources is used to process data retrieved from an event
-queue. Often such artifacts process data from other queues rather than their
-own, for example artifacts which process messages from the
-`System.Flow.Completion` queue are a common use case.
-
-If the artifact's sole purpose is to establish an event queue then it will not
-need to have any sources.
-
-The following are built-in `SERVER_EVENT` artifacts which only establish server
-event queues.
+The following are some built-in `SERVER_EVENT` artifacts which only
+establish server event queues. You can monitor events sent to these
+queues using the `watch_monitoring()` plugin.
 
 ```vql
 SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type =~ "server_event"
@@ -104,11 +117,11 @@ The event should appear in the selected server event queue:
 
 ## Internal event queues
 
-Artifacts of type `INTERNAL` establishes a server event queue on the server
-using the artifact name. Functionally they are very similar to the
-`SERVER_EVENT` artifact type, except that they are intended to handle transient
-data. As the name suggests, they are intended to handle internal messaging and
-are not backed by disk (unlike the `SERVER_EVENT` type) for performance reasons.
+Artifacts of type `INTERNAL` establishes a server event queue on the
+server using the artifact name. Functionally they are very similar to
+the `SERVER_EVENT` artifact type, except that they are intended to
+handle internal messaging and are not backed by disk (unlike the
+`SERVER_EVENT` type) for performance reasons.
 
 You can't send messages to internal event queues with the `send_event` VQL
 function, but you can use the `watch_monitoring` plugin to monitor them for

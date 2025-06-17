@@ -270,6 +270,19 @@ each tool, which allow you to perform your own tool selection logic, downloads
 The `Generic.Utils.FetchBinary` artifact makes use of these variables when
 provisioning the tool on the client.
 
+{{% notice info "Artifact tool definitions can be modified" %}}
+
+The setting described above are simply the initial defaults that are
+added to the inventory service when the artifact is first seen. These
+settings can be modified by an administrator in the tool setup
+screen. For example, the administrator may decide to serve the tool
+from a different URL with a different hash.
+
+The administrator configuration always overrides the settings in the
+artifact definition.
+
+{{% /notice %}}
+
 ---
 
 ### [ impersonate ]
@@ -313,7 +326,7 @@ enforcing a least privilege model by preventing users with lower roles, such as
 Investigator, from running potentially harmful artifacts if they do not have the
 necessary permissions.
 
-It's important to note that the required_permissions check is only performed on
+It's important to note that the `required_permissions` check is only performed on
 the artifact being launched. It does not apply to any dependent artifacts that
 the launched artifact might call. This design is deliberate, allowing
 administrators to create "wrapper artifacts" or curated versions of dangerous
@@ -338,11 +351,12 @@ A list of permissions implied by this artifact. This is used by the artifact
 writer to declare what additional permissions the artifact provides on the
 client, which may be beyond the permissions which the user has on the server.
 
-On the client, artifacts do not run with ACL enforced, therefore they can do
-anything, including actions which the user launching the artifact does not have.
-For example, the user may have the investigator role which does not have
-`EXECVE`. However, when launching this artifact on the client, the artifact will
-be able to run actions requiring the `EXEVE` permission (because there is no ACL
+On the client, artifacts do not run with ACL enforced, therefore they
+can do anything, including actions which the user launching the
+artifact does not have permissions for.  For example, the user may
+have the investigator role which does not have `EXECVE`. However, when
+launching this artifact on the client, the artifact will be able to
+run actions requiring the `EXEVE` permission (because there is no ACL
 enforcement on the client).
 
 Therefore we say this artifact implies the user has `EXECVE` - this is safe if
@@ -350,9 +364,11 @@ the artifact takes steps to ensure the user does not have arbitrary control over
 what to execute, for example, if the artifact launches a tool with restricted
 command line args.
 
-This field is only used by the
-[static analysis engine]({{< ref "/vql_reference/other/verify/" >}})
-to ensure that the implied permission is properly controlled.
+This field is only used by the [static analysis engine]({{< ref
+"/vql_reference/other/verify/" >}}) to ensure that the implied
+permission is properly controlled. It represents a promise by the
+artifact writer that this additional permission is safely handled
+within this artifact.
 
 ---
 

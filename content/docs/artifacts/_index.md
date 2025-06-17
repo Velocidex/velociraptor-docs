@@ -60,8 +60,8 @@ server no purpose on the client. This also reduces the risk of artifact
 information leakage on a potentially compromised client, as well as reducing the
 size of the artifacts sent to the client.
 
-We never rely on the artifact definitions embedded in the client itself -
-instead we always send the compiled VQL to the client.
+We never rely on the artifact definitions embedded in the client
+itself - instead we always send the compiled VQL to the client.
 
 Artifacts are stored and managed on the server. This allows us to centrally
 upgrade, customize, or add new artifact definitions without needing to update
@@ -79,13 +79,14 @@ Here are some of the key benefits of Velociraptor Artifacts:
   Lego bricks.
 
 - **Sharing and Community Collaboration**: \
-  By encapsulating one or more queries VQL query inside a YAML file, users do
-  not need to understand the query to use it. This facilitates knowledge sharing
-  between users with varying skill levels, as well as documenting and sharing
-  knowledge about forensic evidence amongst experts.
-  Platforms like the [Velociraptor Artifact Exchange]({{< ref "/exchange/">}})
-  exist for this purpose, promoting knowledge sharing and code reusability
-  within the Velociraptor and broader DFIR community.
+  By encapsulating one or more VQL queries inside a YAML file, users
+  do not need to understand the query itself in order to use it. This
+  facilitates knowledge sharing between users with varying skill
+  levels, as well as documenting and sharing knowledge about forensic
+  evidence amongst experts.  Platforms like the [Velociraptor Artifact
+  Exchange]({{< ref "/exchange/">}}) exist for this purpose, promoting
+  knowledge sharing and code reusability within the Velociraptor and
+  broader DFIR community.
 
 - **Extending Velociraptor Functionality**: \
   Artifacts offer a powerful way to extend Velociraptor's capabilities. They can
@@ -390,14 +391,20 @@ word "Custom" - it's just a helpful convention to use.
 If you use Velociraptor's [orgs]({{< ref "/docs/deployment/orgs/" >}})
 (multi-tenancy) feature then things can get a little confusing.
 
+The important thing to remember is that the root org serves as a
+supervisory org to all tenants. This means the root org can export
+custom artifacts to tenants automatically, but a tenant may not modify
+those directly (they can create a local copy).
+
 Each org has visibility of all the artifacts in the root org, including custom
 artifacts. In the Artifacts screen the built-in artifacts look no different to
 how they appear in the root org. And, as explain previously, they can't be
 edited or deleted (although custom copies of them can still be made).
 
-Custom artifacts defined in the root org are "inherited" by all non-root orgs
-and these artifacts are marked with a <i class="fa-solid fa-house"></i> icon in
-the artifact listing on the Artifacts screen.
+Custom artifacts defined in the root org are "inherited" by all
+non-root orgs and these artifacts are marked with a <i class="fa-solid
+fa-house"></i> icon in the artifact listing on the Artifacts screen to
+denote they came from the supervisory root org.
 
 ![custom artifact inherited from the root org](orgs_inherited1.png)
 
@@ -412,7 +419,7 @@ artifact will then have the <i class="fa-solid fa-user-pen"></i> icon.
 ![custom artifact masking the inherited one](orgs_inherited2.png)
 
 What this means, in practical terms, is that the org-specific artifact is
-_masking_ the original artifact on which is was (or maybe wasn't!) based. If you
+_masking_ the original artifact on which it was (or maybe wasn't!) based. If you
 perform a collection of that artifact then the org-specific copy will be used.
 
 If you delete the org-specific copy in the GUI then you will see the icon revert
