@@ -1,8 +1,9 @@
 ---
 menutitle: "Security"
-title: "Artifacts and Security"
+title: "Artifact Security"
 date: 2025-01-25
-weight: 55
+weight: 140
+summary: "How to secure artifacts"
 ---
 
 Artifacts are the main way in which users interact with Velociraptor:

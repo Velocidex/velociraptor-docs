@@ -945,7 +945,7 @@ after downloading it from the
 Installing the new MSI is simply a matter of using standard software management
 tools.
 
-{{% notice tip "Remotely upgrading Velociraptor" %}}
+{{% notice tip "Remotely upgrading clients" %}}
 
 It is possible to remotely upgrade the client by pushing a new MSI to the
 endpoint and installing it. This is handled by the `Admin.Client.Upgrade`

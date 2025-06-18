@@ -1,5 +1,25 @@
 [
     {
+        "title": "Linux.Sys.Getcap",
+        "author": "mgreen27",
+        "description": "Inspects extended file capabilities with getcap.  \nSince Linux 2.6.24, setcap can attach fine-grained privilege bits to \nexecutables, letting them perform the specific privileged actions they \nrequire instead of running as root.   \nIf a binary that\u2019s writable or executable by non-privileged users is granted \nexcessive capabilities, attackers can exploit it for privilege escalation.\n",
+        "link": "/exchange/artifacts/pages/getcap",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-06-11"
+    },
+    {
+        "title": "CyberTriage.Collector",
+        "author": "bcarrier",
+        "description": "Runs the Cyber Triage (http://cybertriage.com) Collector to copy forensic artifacts for automated analysis. The Dynamic collection will include EXEs, DLLs, and other files referenced by artifacts.\nThe output of the collection can be saved to a Velociraptor server, a Cyber Triage server, or cloud storage (S3 or Azure).\nConfiguration information is available at - https://docs.cybertriage.com/en/latest/chapters/integrations/velociraptor_collect.html\nIt requires the Velociraptor server to have copies of the Cyber Triage Deployer script and optional configuration files.\nHistory. 1.0 - Initial artifact creation\nContact support@cybertriage.com with any questions.\nCopyright (c) 2025 Sleuth Kit Labs LLC. All rights reserved.",
+        "link": "/exchange/artifacts/pages/cybertriagecollector",
+        "tags": [],
+        "author_link": "https://github.com/bcarrier",
+        "author_avatar": "https://avatars.githubusercontent.com/u/856501?v=4",
+        "date": "2025-06-10"
+    },
+    {
         "title": "Server.Enrichment.AI.Gemini",
         "author": "mgreen27",
         "description": "Query Gemini AI for analysis of data.",
@@ -1089,7 +1109,7 @@
     {
         "title": "Windows.Detection.RemoteIconForcedAuth",
         "author": "acedef",
-        "description": "Attackers plant SCF, URL, and LNK files with malicious icon file paths\non file shares to escalate privileges or maintain persistence. This attack \nonly requires the user to browse to the location of the malicious file.\nThis artifact enumerates file shares and returns an event for each file with a\nremote icon. It can also scan a target root directory since attackers commonly\nuse other locations like desktops.\n",
+        "description": "Attackers plant SCF, URL, and LNK files with malicious icon file paths\non file shares to escalate privileges or maintain persistence. This attack\nonly requires the user to browse to the location of the malicious file.\nThis artifact enumerates file shares and returns an event for each file with a\nremote icon. It can also scan a target root directory since attackers commonly\nuse other locations like desktops.\n",
         "link": "/exchange/artifacts/pages/remoteiconforcedauth",
         "tags": [],
         "author_link": "https://github.com/acedef",
