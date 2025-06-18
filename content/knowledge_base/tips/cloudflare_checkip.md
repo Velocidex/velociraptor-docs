@@ -1,6 +1,6 @@
-# How do I configure checkip for Cloudflare Dynamic DNS?
+# How do I configure check ip for Cloudflare Dynamic DNS?
 
-When deploying DDNS using cloudflare in 0.74.3 I noticed an error and onn investigation default lookup IP Velociraptor used has moved.
+When deploying Dynamic DNS using Cloudflare in 0.74.3 I noticed an error and on investigation default lookup IP Velociraptor used has moved.
 Running fron end in verbose mode: "[ERROR] 2025-06-18T00:13:23Z DynDns: Unable to set dns: Content for A record must be a valid IPv4 address."
 
 curl https://domains.google.com/checkip
@@ -16,7 +16,7 @@ checkip_url: https://wtfismyip.com/text
 
 
 Cloudflare configuration instructions: https://docs.velociraptor.app/blog/2024/2024-03-10-release-notes-0.72/#dynamic-dns-providers
-In the example below I am configuringL: vr_server.toplevel.domain
+In the example below I am configuring a host name: hostname.toplevel.domain
 
 ```
 dyn_dns:
