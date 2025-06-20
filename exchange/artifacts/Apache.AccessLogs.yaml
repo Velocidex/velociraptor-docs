@@ -1,0 +1,39 @@
+name: Generic.Apache.AccessLogs
+
+description: |
+  Parses Apache access logs to extract detailed request information.
+
+author: Harsh Jaroli, Krishna Patel
+
+reference:
+  - https://httpd.apache.org/docs/2.4/logs.html
+
+type: CLIENT
+
+parameters:
+  - name: AccessLogPath
+    default: /{/var/log/httpd,/var/log/apache2,/var/log/nginx,C:/Apache/logs}/{access.log,access_log}*
+
+  - name: ApacheAccessLogGrok
+    description: A Grok expression for parsing Apache access log lines.
+    default: >-
+      %{IPORHOST:client} - - \[%{HTTPDATE:timestamp}\] "%{WORD:method} %{URIPATHPARAM:request} HTTP/%{NUMBER:httpversion}" %{NUMBER:status} %{NUMBER:response_size}
+
+sources:
+  - query: |
+      // Basic Apache access log parsing via GROK expressions.
+      SELECT timestamp(string=Event.timestamp) AS Time,
+             Event.client AS ClientIP,
+             Event.method AS RequestMethod,
+             Event.request AS RequestURL,
+             Event.httpversion AS HTTPVersion,
+             Event.status AS ResponseStatus,
+             Event.response_size AS ResponseSize,
+             OSPath
+        FROM foreach(
+          row={
+              SELECT OSPath FROM glob(globs=AccessLogPath)
+          }, query={
+              SELECT grok(grok=ApacheAccessLogGrok, data=Line) AS Event, OSPath
+              FROM parse_lines(filename=OSPath)
+          })
