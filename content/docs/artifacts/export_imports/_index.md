@@ -49,7 +49,7 @@ It does not have to be imported by other artifacts in order to be useful.
 This makes the `export` section a very useful place to put VQL statements that
 are shared across multiple sources, even if you don't intend other artifacts to
 import them. For example, if your artifact has multiple sources and each one
-repeats the same `LET` statements (perhaps definiing the same custom VQL
+repeats the same `LET` statements (perhaps defining the same custom VQL
 functions) then it may be better to move such shared statements to the `export`
 section rather than having them duplicated VQL in multiple sources.
 
