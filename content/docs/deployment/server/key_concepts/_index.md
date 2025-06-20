@@ -71,8 +71,12 @@ velociraptor.exe config generate ^
       > server.config.yaml
 ```
 _Example: Config generate with merge_
+
 Note that while this can be run on Windows the quote escaping is arduous and
 likely to be error-prone. We therefore don't recommend it.
+Also note that it is recommended that this be done using cmd.exe since
+PowerShell redirection operators by default create files encoded in UTF-16LE
+(Unicode).
 {{% /tab %}}
 {{% tab name="macOS" %}}
 ```shell

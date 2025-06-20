@@ -424,7 +424,7 @@ perform a collection of that artifact then the org-specific copy will be used.
 
 If you delete the org-specific copy in the GUI then you will see the icon revert
 to the <i class="fa-solid fa-house"></i> icon. That is, the masking has been
-reversed and you can once again see the root org's artifact.
+undone and you can once again see the root org's artifact.
 
 This allows users in different orgs to create artifacts with the same names that
 possibly do very different things. The artifact namespaces for orgs are

@@ -140,47 +140,57 @@ artifacts.
 
 ## Server "Bootstrap" Artifacts
 
-Velociraptor allows us to specify
-[startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
-via it's configuration. That
-is, instead of using the GUI to configure the collection of CLIENT_EVENT and
-SERVER_EVENT artifacts, we can preconfigure these items via the config.
+#### Server initialization config options
+
+Instead of using the GUI to configure the collection of `CLIENT_EVENT` and
+`SERVER_EVENT` artifacts, we can preconfigure these items via the config.
 
 The config settings which provide this are:
 
-- `Frontend.default_server_monitoring_artifacts`: specifies the initial client
-  monitoring table that will be created. By default, Velociraptor collects
-  endpoint CPU and Memory telemetry from all endpoints. You can remove this, or
-  specify a different client artifact to collect.
-- `Frontend.default_client_monitoring_artifacts`: specifies an initial set of
-  server event artifacts to collect.
+- `Frontend.default_client_monitoring_artifacts`: specifies the initial client
+  monitoring table that will be created.
+
+  By default, Velociraptor collects endpoint CPU and Memory telemetry from all
+  clients using the `Generic.Client.Stats` artifact. You can remove this, or
+  specify a different set of `CLIENT_EVENT` artifacts to collect.
+
+- `Frontend.default_server_monitoring_artifacts`: specifies an initial set of
+  `SERVER_EVENT` artifacts that will be set in the server monitoring table and
+  thus collected.
+
+  By default, we collect only the `Server.Monitor.Health` artifact.
 
 The config also allows us to define users and orgs that will be created when the
 server is first run, using the following settings:
 
 - `GUI.initial_users`
+
 - `GUI.initial_orgs`
 
 #### Going beyond the config options
 
-While this may be sufficient for some server setup situations, we may want to
-automate many other things during setup so that we don't have to rely on
-time-consuming and potentially error-prone manual configuration via the GUI.
+While the options described above may be sufficient for some server setup
+situations, we may want to automate many other things during setup so that we
+don't have to rely on time-consuming and potentially error-prone manual
+configuration via the GUI.
 
-This flexibility is provided by the config setting
+Velociraptor allows us to specify
+[startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
+via the config setting
 
 - `Frontend.initial_server_artifacts`
 
-which allows us to specify one or more SERVER type artifacts that will be run
-when the Velociraptor server is started for the very first time. The server
-detects that it is being run for the first time by checking for the presence of
-the file `config/install_time.json.db` in the datastore: if the file is not
-found then the server assumes it's the first time it is being run.
+which allows us to specify one or more `SERVER` artifacts that will be run when
+the Velociraptor server is started for the very first time.
 
-Since the `initial_server_artifacts` setting allows us to run server artifacts,
-this gives us access to the full capabilities of VQL in setting up the server.
-There are many VQL functions that can be useful when initializing a new server
-which don't have equivalent config settings.
+The server detects that it is being run for the first time by checking for the
+presence of the file `config/install_time.json.db` in the datastore: if the file
+is not found then the server assumes it's the first time it is being run.
+
+Since this setting allows us to run artifacts on the server, this gives us
+access to the full capabilities of VQL in setting up the server. There are many
+VQL functions that can be useful when initializing a new server which don't have
+equivalent config settings.
 
 We could, for example:
 
@@ -257,7 +267,9 @@ use cases.
 We have already seen that
 [notebook templates]({{< ref "/docs/artifacts/notebook_templates/" >}})
 are a special use case for artifact definitions. While notebook templates do
-have sources, these contain templates for notebook cells rather than queries.
+have sources, these sources contain templates for notebook cells rather than
+just queries. The notebook cell templates themselves may or may not contain
+queries.
 
 Furthermore, if you've spent any time looking through the list of built-in
 artifacts, you may have noticed several that have little to nothing but an
@@ -265,8 +277,8 @@ artifact name. The purpose of such artifacts is to establish
 [event queues]({{< ref "/docs/artifacts/event_queues/" >}})
 on the server, which intercept and queue messages from clients and from the
 server itself. These artifacts _can_ have sources, which would typically do
-something with the event messages, but they aren't required to have sources (for
-example, other artifacts may be created to act on the event queue's messages).
+something with the event messages, but they aren't required to have sources; for
+example, other artifacts may be created to act on the event queue's messages.
 
 ![Server.Internal.ClientDelete establishes a server event queue](event_queues_01.svg)
 
@@ -336,17 +348,24 @@ It is possible to use a single sourceless artifact to store all your tool
 definitions, which can then be referred to (using only the name and optionally a
 version number) in other artifacts that use those tools.
 
-In fact Velociraptor does this already with the  built-in
-`Server.Internal.ToolDependencies` artifact.
+In fact Velociraptor itself takes this approach with the built-in
+`Server.Internal.ToolDependencies` artifact, which is used to provide tool
+definitions for the other Velociraptor binaries so that they are available for
+tasks such as creating offline collectors.
 
-If you define the artifact as a `SERVER` artifact then running it will download
-the tools from the URLs specified in the tool definitions. This provides a quick
-way to ensure that your server's tools inventory is populated with all the tools
-your artifacts will need _before_ you try to collect those artifacts. You can
-additionally use such an artifact as one of your
-"[bootstrap artifacts]({{< relref "/docs/artifacts/use_cases/#server-bootstrap-artifacts" >}})",
-as described above.
+If you define such an artifact as a `SERVER` artifact then running it will
+download the tools from the URLs specified in the tool definitions. This
+provides a quick way to ensure that your server's tools inventory is populated
+with all the tools that your `CLIENT` artifacts will need _before_ you collect
+those artifacts.
 
 Manually collecting such an artifact also serves as a way to update all the
-tools defined in the artifact.
+tools defined in the artifact, as it will re-download them when `serve_locally`
+is set to `true`.
+
+You can additionally use such an artifact as one of your
+"[server bootstrap artifacts]({{< relref "/docs/artifacts/use_cases/#server-bootstrap-artifacts" >}})",
+as described above.
+
+
 

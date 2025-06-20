@@ -73,9 +73,10 @@ you would use `SELECT * FROM Artifact.Windows.Sys.Users()`
 
 ![Calling artifacts from a notebook](calling_artifacts.png)
 
-The `Artifact` plugin is somewhat special in VQL. It's notable that it uses a
-capital 'A', unlike other plugins, and it's main argument is the called artifact
-name which immediately follows the plugin name, separated by a dot.
+The `Artifact` plugin is somewhat special in VQL. It's notable that it's name
+starts with a capital letter, unlike all other plugins. Also, unlike other
+plugins, it's main argument is the called artifact name - this immediately
+follows the plugin name, separated by a dot.
 
 ## Artifact dependency resolution
 

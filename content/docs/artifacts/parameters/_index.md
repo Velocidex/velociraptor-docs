@@ -235,7 +235,7 @@ The following parameter types are currently supported.
     default: 80 # <- will be interpreted as a string!
   ```
 
-- **VQL conversion function:** `LET X <= int(int=X)`
+- **VQL conversion function:** `LET x <= int(int=x)`
 
 - **UI form component:** same as `string` type
 
@@ -245,7 +245,7 @@ The following parameter types are currently supported.
 
 - **Description:** The parameter is a float (float64 data type).
 
-- **VQL conversion function:** `LET X <= parse_float(string=X)`
+- **VQL conversion function:** `LET x <= parse_float(string=x)`
 
 - **UI form component:** same as `string` type
 
@@ -259,7 +259,7 @@ The following parameter types are currently supported.
   evaluate as `TRUE`. Any other value, including but not limited to `false`,
   will evaluate as `FALSE`.
 
-- **VQL conversion function:** `LET X <= X =~ '^(Y|TRUE|YES|OK)$'`
+- **VQL conversion function:** `LET x <= x =~ '^(Y|TRUE|YES|OK)$'`
 
 - **UI form component:** \
   ![]( ui_bool.png )
@@ -271,7 +271,7 @@ The following parameter types are currently supported.
 - **Description:** The parameter is a timestamp ( Golang
 [time.Time object]({{< ref "/vql_reference/popular/timestamp/" >}})).
 
-- **VQL conversion function:** `LET X <= timestamp(epoch=X)`
+- **VQL conversion function:** `LET x <= timestamp(epoch=x)`
 
 - **UI form component:** \
   ![]( ui_timestamp.png )
@@ -322,7 +322,7 @@ The following parameter types are currently supported.
         - CreateNewFile
   ```
 
-- **VQL conversion function:** `LET X <= parse_json_array(data=X)`
+- **VQL conversion function:** `LET x <= parse_json_array(data=x)`
 
 - **UI form component:** \
   ![](ui_multichoice.png)
@@ -339,7 +339,7 @@ The following parameter types are currently supported.
   of other data types in metadata fields and then convert them to the required
   data type in your VQL.
 
-- **VQL conversion function:** `LET X <= server_metadata().X` or `LET X <= get(item=server_metadata(), member="X")`
+- **VQL conversion function:** `LET x <= server_metadata().x` or `LET x <= get(item=server_metadata(), member="x")`
 
 - **UI form component:** same as `string` type
 
@@ -362,7 +362,7 @@ The following parameter types are currently supported.
 - **Description:** Allows for entry of a list of regular expressions, and returns
   an array containing these expressions.
 
-- **VQL conversion function:** `LET X <= parse_json_array(data=X)`
+- **VQL conversion function:** `LET x <= parse_json_array(data=x)`
 
 - **UI form component:** \
   ![](ui_regex_array.png)
@@ -386,7 +386,7 @@ The following parameter types are currently supported.
 - **Description:** Parameter is a JSON encoded dict and returns an
   ordereddict.Dict object.
 
-- **VQL conversion function:** `LET X <= parse_json(data=X)`
+- **VQL conversion function:** `LET x <= parse_json(data=x)`
 
 - **UI form component:** same as `string` type
 
@@ -397,7 +397,7 @@ The following parameter types are currently supported.
 - **Description:** The parameter accepts a list of items encoded as a JSON blob
   (similar to csv) and returns an array object.
 
-- **VQL conversion function:** `LET X <= parse_json_array(data=X)`
+- **VQL conversion function:** `LET x <= parse_json_array(data=x)`
 
 - **UI form component:** same as `string` type
 
@@ -411,7 +411,7 @@ The following parameter types are currently supported.
   The GUI will present a table-based CSV editor, which you can also switch to
   a raw editing mode where you can paste in CSV-formatted data.
 
-- **VQL conversion function:** `LET X <= SELECT * FROM parse_csv(filename=X, accessor='data')`
+- **VQL conversion function:** `LET x <= SELECT * FROM parse_csv(filename=x, accessor='data')`
 
 - **UI form component:** \
   ![](ui_csv_01.png)
@@ -465,7 +465,7 @@ The following parameter types are currently supported.
     endpoint use `upload_file` instead.
   - You cannot set a default value for this type.
 
-- **VQL conversion function:** `LET X <= SELECT Content FROM http_client(url=X)`
+- **VQL conversion function:** `LET x <= SELECT Content FROM http_client(url=x)`
 
 - **UI form component:** \
   ![](ui_upload.png)
@@ -492,8 +492,8 @@ The following parameter types are currently supported.
 
 - **VQL conversion function:**
   ```vql
-  LET X_ <= SELECT Content FROM http_client(url=X, tempfile_extension='.tmp')
-  LET X <= X_.Content[0]
+  LET x_ <= SELECT Content FROM http_client(url=x, tempfile_extension='.tmp')
+  LET x <= x_.Content[0]
   ```
 
 - **UI form component:** \
@@ -534,7 +534,7 @@ The following parameter types are currently supported.
         Windows.Events.ServiceCreation
   ```
 
-- **VQL conversion function:** `LET X <= SELECT * FROM parse_csv(filename=X, accessor='data')`
+- **VQL conversion function:** `LET x <= SELECT * FROM parse_csv(filename=x, accessor='data')`
 
 - **UI form component:** \
   ![](ui_artifactset.png)
@@ -545,7 +545,7 @@ The following parameter types are currently supported.
 
 - **Description:** Accepts an XML document and parses it.
 
-- **VQL conversion function:** `LET X <= parse_xml(file=X, accessor="data")`
+- **VQL conversion function:** `LET x <= parse_xml(file=x, accessor="data")`
 
 - **UI form component:** same as `string` type
 
@@ -555,7 +555,7 @@ The following parameter types are currently supported.
 
 - **Description:** Accepts an YAML document and parses it.
 
-- **VQL conversion function:** `LET X <= parse_yaml(filename=X, accessor="data")`
+- **VQL conversion function:** `LET x <= parse_yaml(filename=x, accessor="data")`
 
 - **UI form component:** same as `string` type
 
@@ -566,7 +566,7 @@ The following parameter types are currently supported.
 - **Description:** Compile a [starlark]({{< ref "/vql_reference/parsers/starl/" >}})
   code block. Returns the `*tools.StarlModule` data type.
 
-- **VQL conversion function:** `LET X <= starl(code=X)`
+- **VQL conversion function:** `LET x <= starl(code=x)`
 
 - **UI form component:** same as `string` type
 

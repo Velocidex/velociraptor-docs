@@ -29,9 +29,9 @@ case:
    predefined channel.
 
 The full description of how to set up slack to receive messages from
-Velociraptor can be found in our blog post [Slack and
-Velociraptor]({{< ref "/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" >}}), but
-here we cover the high level details.
+Velociraptor can be found in our blog post
+[Slack and Velociraptor]({{< ref "/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" >}}),
+but here we cover the high level details.
 
 ### Step 1: Checking a group of clients for online status
 
@@ -99,15 +99,21 @@ forget to mark the artifact as `type: SERVER_EVENT`
 
 ![Slack announce clients online](checking_slack_artifact.png)
 
-The two main differences here are that this is a SERVER_EVENT artifact — i.e. it is running on the server continuously. I then use the clock() plugin to trigger the previous query to run every minute and scan for new clients coming online (line 27: **foreach** **clock** event, run the **send_message** query).
+The two main differences here are that this is a `SERVER_EVENT` artifact — i.e.
+it is running on the server continuously. I then use the clock() plugin to
+trigger the previous query to run every minute and scan for new clients coming
+online (line 27: **foreach** **clock** event, run the **send_message** query).
 
 ### Step 5: Install the artifact
 
-To install the artifact on the server, I will go to the Server Monitoring screen, and add it in the search view by clicking the “update server monitoring table” toolbar button.
+To install the artifact on the server, I will go to the Server Monitoring
+screen, and add it in the search view by clicking the “update server monitoring
+table” toolbar button.
 
 ![Adding a server event artifact](adding_server_event_artifact.png)
 
-Now I can add the label to any client I am interested in and within a minute of it coming back online I will receive an alert in my slack channel
+Now I can add the label to any client I am interested in and within a minute of
+it coming back online I will receive an alert in my slack channel
 
 ![Receiving slack alerts](slack_alerts.png)
 

@@ -33,6 +33,8 @@ Return the basename of the path.
 basename(path="/foo/bar") -> "bar"
 ```
 
-Related: `dirname()`
+### See also
+
+- [dirname]({{< ref "/vql_reference/other/dirname/" >}})
 
 

@@ -92,11 +92,13 @@ environments.
 ```shell
 ./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
 ```
-{{% /tab %}}
-{{% tab name="Windows" %}}
+{{% /tab %}} {{% tab name="Windows" %}}
 ```shell
 velociraptor.exe config client --org "root" --config server.config.yaml > client.root.config.yaml
 ```
+NOTE: it is recommended that this be
+done using cmd.exe since PowerShell redirection operators by default create
+files encoded in UTF-16LE (Unicode).
 {{% /tab %}}
 {{% tab name="macOS" %}}
 ```shell
@@ -546,7 +548,7 @@ and may be helpful.
 2. Configure **Privacy Preferences Policy Control**
 - Identifier: `/usr/local/sbin/velociraptor`
 - Identifier Type: `Path`
-- Code Requirement: 
+- Code Requirement:
 ```
 identifier "com.velocidex.velociraptor" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "UL6CGN7MAL"
 ```
@@ -724,6 +726,11 @@ need to tell it where to find the Linux binary.
 If the output file name is not specified (using the `--output` flag) then it
 will be auto-generated and include the version number and architecture.
 
+By default, if the `--binary` flag is not specified, then the installer package
+will be created using the binary that invoked the `debian client` command. To
+package a binary for a different architecture, for example arm64, you must
+specify the binary in the command.
+
 2. **Install the package.**
 
 ```shell
@@ -768,6 +775,10 @@ need to tell it where to find the Linux binary.
 If the output file name is not specified (using the `--output` flag) then it
 will be auto-generated and include the version number and architecture.
 
+By default, if the `--binary` flag is not specified, then the installer package
+will be created using the binary that invoked the `rpm client` command. To
+package a binary for a different architecture, for example arm64, you must
+specify the binary in the command.
 
 2. **Install the package.**
 

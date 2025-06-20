@@ -383,13 +383,11 @@ The output file will be automatically named to include the version and
 architecture, but you can choose any file name you want and specify it with the
 `--output <your_file_name>` flag.
 
-If you did not perform the previous steps on your server then you will need to
-copy the server installation file to your server. For example, you could push
-the debian package to the server using Secure Copy Protocol (SCP):
+By default, if the `--binary` flag is not specified, then the installer package
+will be created using the binary that invoked the command. To package a binary
+for a different architecture, for example arm64, you must specify the binary in
+the command.
 
-```shell
-scp velociraptor_server.deb user@123.45.67.89:/tmp/
-```
 
 {{% notice warning "Make sure the server installation package file is well protected!" %}}
 
@@ -401,6 +399,14 @@ A compromise of the file will allow access to private key material enabling a
 MITM attacks against Velociraptor.
 
 {{% /notice %}}
+
+If you did not perform the previous steps on your server then you will need to
+copy the server installation file to your server. For example, you could push
+the debian package to the server using Secure Copy Protocol (SCP):
+
+```shell
+scp velociraptor_server.deb user@123.45.67.89:/tmp/
+```
 
 ## Install the server component
 
