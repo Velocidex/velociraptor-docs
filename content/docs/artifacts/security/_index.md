@@ -28,6 +28,33 @@ Most users develop their own operating procedures specifying:
 In the below page we discuss how Velociraptor enabled each of these
 goals.
 
+{{% notice warning "Artifact Security is complicated!" %}}
+
+Being able to collect sensitive forensic information from endpoints at
+all is a very powerful permissions. It is important to emphasize that
+the below security measures are **not comprehensive**! There are many
+escalation paths for an `investigator` role to take over the
+endpoints - for example, acquiring `lsass.exe` memory or downloading
+the `SAM` or `NTDS.dit`
+
+You should consider the restrictions described below as best effort to
+avoid accidental errors - the true security boundary is in the ability
+to collect artifacts at all.
+
+Do not grant the `investigator` role to users you do not trust!
+
+Similarly, do not grant the `reader` role to users you do not trust to
+view all collected data (including PII and security sensitive data
+that is collected as part of the forensic process).
+
+Be especially careful with the implementation of `SOAR` like
+functionality via the API - extending the API to external programs
+increases the attack surface, especially if the `SOAR` application is
+able to schedule collections on endpoints. You can mitigate this to
+some extent using `Basic Artifacts` (see below).
+
+{{% /notice %}}
+
 ## Hidden artifacts
 
 The first goal is to clean up the vast number of artifacts that are

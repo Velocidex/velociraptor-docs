@@ -19,7 +19,36 @@ carousel:
    image: hunt.png
    description: Don't wait until an event occurs. Actively search for suspicious activities using our library of forensic artifacts, then customize to your specific threat hunting needs.
 
+navs:
+ - name: Overview
+   description: Velociraptor overview
+   link: /docs/overview/
+ - name: Quickstart
+   description: Quick Start
+   link: /docs/deployment/quickstart/
+ - name: Security
+   description: Lean about Velociraptor Security
+   link: /docs/overview/security/
+ - name: Configure
+   description: Configuration File Reference
+   link: /docs/deployment/references/
+
 ---
+
+{{% navs %}}
+
+
+{{% notice warning "CVE-2025-6264 published on 2025-06-20" %}}
+
+If you use rely on artifact `required_permissions` to prevent
+`investigator` users from running dangerous operations on the
+endpoint, please upgrade your server to mitigate `CVE-2025-6264` to at
+least release `0.74.3` and consider [this documentation]({{< ref
+"/docs/artifacts/security/#restricting-dangerous-client-artifacts"
+>}}). [More details]({{% ref "/announcements/advisories/cve-2025-6264"
+%}})
+
+{{% /notice %}}
 
 ## Velociraptor - Digging Deeper!
 

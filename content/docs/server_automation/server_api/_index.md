@@ -11,6 +11,22 @@ Velociraptor API. In this page you will learn how to connect to the
 server using the API and control it using a Python script to schedule
 collections on hosts and retrieve the results of those collections.
 
+{{% notice warning "API Security is complicated!" %}}
+
+Connecting an external program to Velociraptor via the API can enable
+a `SOAR` like workflow, automating the launching and reading or
+artifact data.
+
+This can increase the attack surface of the system, as compromise of
+the API keys can enable an attacker to act on the Velociraptor server
+with the permissions given to the key.
+
+Please, be aware of the implications of allowing automated collection on
+endpoints and review the information in [Artifact Security]({{< ref
+"/docs/artifacts/security/" >}}) carefully.
+
+{{% /notice %}}
+
 ## Why an API?
 
 Modern threat detection and DFIR work consists of many different products and
