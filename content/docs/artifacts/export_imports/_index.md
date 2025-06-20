@@ -5,204 +5,87 @@ date: 2025-01-25
 draft: false
 weight: 50
 summary: "Sharing VQL across sources and artifacts"
-last_reviewed: 2025-05-23
+last_reviewed: 2025-06-20
 ---
 
 `export` (notice the singular) and `imports` (notice the plural) work together
 to allow artifacts to share VQL with each other. This allows us to write more
-concise and more consistent artifacts with reusable VQL.
+concise and more consistent artifacts with reusable VQL that can be shared by
+multiple artifacts.
 
 Artifacts can import the `export` section from other artifacts using the
 `imports` field's specification, which is a list of artifact names.
 
-The VQL compiler automatically inserts all VQL statements in the
-`export` section of each `imported` artifact before each [source]({{<
-ref "/docs/artifacts/sources/" >}}). This allows any functions or
-variables defined in the `export` sections to be visible to importing
-VQL queries. This makes it ideal to define reusable VQL code that can
-be shared by multiple artifacts.
-
-
 ![VQL reuse with export/imports](export_imports.svg)
 
+The VQL compiler automatically inserts all VQL statements in the
+`export` section before each [source]({{< ref "/docs/artifacts/sources/" >}}).
 
-Any type of artifact can import the `export` section from any other type of
-artifact - it's not constrained by artifact type. So a notebook template
-(artifact type:NOTEBOOK) can simultaneously import the exports from a `CLIENT`
-type artifact and a `SERVER_EVENT` type artifact. Any `export` field in any
-artifact in the artifact repository is available to be imported by any other
-artifact.
+It then inserts the VQL statements in the `export` sections from the artifacts
+listed in the `imports` section before each source.
 
-As you will see below, you can imagine this as artifacts implicitly
-"importing" their own `export` section.  That is, the VQL stored in
-`export` can (and usually is) used by the artifact itself, which makes
-the `export` section a very useful place to put VQL utility queries,
-_even if you don't intend other artifacts to import them_. For
-example, if your new artifact has multiple sources and each one
-repeats the same queries --perhaps as custom VQL functions-- then it
-might be better to move those to the `export` section where a single
-instance of the queries produce results that can be shared by all the
-sources.
+The VQL statements (functions or variables) defined in these sections are then
+executed prior to the VQL defined in the artifact's sources. The order in which
+these statements are concatenated and then executed is:
 
-## How export is processed
+1. VQL from `exports`
+2. VQL from `imports` (possibly from multiple artifacts)
+3. VQL from `sources`
 
-To illustrate how `export` is processed, let's create the following trivial
-artifact:
+If the artifact's sources run in
+[series]({{< ref "/docs/artifacts/preconditions/#serial-vs-parallel-execution" >}})
+then the additional VQL from `export` and `imports` only executes once. If the
+sources run in parallel then the additional VQL is executed for each source.
+The execution mode is determined by the presence or absence of source-level
+[preconditions]({{< ref "/docs/artifacts/preconditions/" >}})).
 
-```yaml
-name: RandomNumberGenerator
-description:
-parameters:
-  - name: RangeLimit
-    type: int
-    default: 100
-export: |
-  LET RandomNumber <= rand(range=RangeLimit)
-  SELECT "Will this print?" AS Message FROM scope() WHERE log(message="%v", args=Message)
-sources:
-  - name: FirstSource
-    query: SELECT RandomNumber, RangeLimit FROM scope()
-  - name: SecondSource
-    query: SELECT RandomNumber, RangeLimit FROM scope()
-```
+## Export
 
-If you then collect the artifact (remember, it's a CLIENT type artifact by
-default) you should see results similar to this:
+Because the `export` section is added to each source, this is essentially the
+same as the artifact implicitly "importing" its own `export` section.  That is,
+the VQL stored in `export` can be (and usually is) used by the artifact itself.
+It does not have to be imported by other artifacts in order to be useful.
 
-![RandomNumberGenerator Results](random_number_01.png)
+This makes the `export` section a very useful place to put VQL statements that
+are shared across multiple sources, even if you don't intend other artifacts to
+import them. For example, if your artifact has multiple sources and each one
+repeats the same `LET` statements (perhaps defining the same custom VQL
+functions) then it may be better to move such shared statements to the `export`
+section rather than having them duplicated VQL in multiple sources.
 
-![RandomNumberGenerator Log](random_number_02.png)
+Unlike `sources`, the `export` section's VQL can't directly emit results. The
+results need to be made available to VQL in the sources as variables. Therefore
+there's no point in having bare queries (`SELECT` statements _not_ assigned to
+variables) in the `export` section; VQL in `export` typically only consists of
+one or more `LET` statements.
 
-So what does that tell us?
+Since the VQL in the `export` section is combined with the VQL in `sources` it
+has access to the artifact's `parameters`. Although artifact parameters are
+available to queries in `export` you need to consider that other artifacts might
+import from it, and these could then could fail since they would know nothing
+about the parameters (which are not imported). If you need your VQL in `export`
+to reference a parameter, then ideally you should ensure that such statements
+have a conditional fallback value so that other artifacts can reliably make use
+of your VQL. Alternatively, the other artifacts importing the VQL would need to
+ensure that they also provided the referenced parameter themselves.
 
-- `RandomNumber` was generated in the `export` section. This tells us that the
-  VQL in `export` was executed first, before the VQL in `sources`.
+An artifact can contain an `export` section but no `sources` and still be
+[imported by other artifacts]({{< ref "/docs/artifacts/use_cases/#export-only-artifacts-sharing-vql-via-export-imports" >}}).
+In such a scenario, the artifact serves only as a container for reusable VQL
+since it can't itself be run (because it has no sources).
 
-- `RandomNumber` used the value from the parameter `RangeLimit`. This tells us
-  that VQL in the `export` section had access to the artifact's `parameters`.
 
-- The value of `RandomNumber` in both sources is the same. Therefore we can
-  deduce that the `export` section only ran once (and this is actually related
-  to the sources running in series, due to the absence of source
-  [preconditions]({{< ref "/docs/artifacts/preconditions/" >}}))
-  since both sources got the same value for `RandomNumber`.
+## Imports
 
-- The `Message` field defined in the `export` section does not show up in the
-  results, but due to to the log() function it does appear in the collection
-  logs. This is because results of VQL queries (i.e. SELECT statements) in the
-  `export` section do run, but are only useful if they are assigned to a
-  variable. The log message also appears only once, confirming that our `export`
-  section only ran once.
+Any [type]({{< ref "/docs/artifacts/basic_fields/#-type-" >}})
+of artifact can import the `export` section from any other type of artifact -
+importing is not constrained by artifact type.
 
-To summarize:
+So, for example, a notebook template (artifact type:`NOTEBOOK`) can
+simultaneously import the exports from a `CLIENT` type artifact and a
+`SERVER_EVENT` type artifact. Any `export` field in any artifact within the
+artifact repository is available to be imported by any other artifact.
 
-- VQL in the `export` section is always run (at least once) when the artifact is
-  collected. If any of the sources have preconditions then the `export`
-  section's VQL will execute _once for each source_
-  ([parallel execution]({{< ref "/docs/artifacts/preconditions/#serial-vs-parallel-execution" >}})).
-  In the absence of any source-level preconditions, the VQL executes once and
-  all sources have access to the same results.
-
-- Unlike `sources`, the `export` section's VQL doesn't directly produce results.
-  The results need to be made available to the sources as variables if you want
-  sources to be able to work with the results. There's not much point to bare
-  queries (SELECT statements) in `export` unless they are assigned to variables,
-  however they are not disallowed.
-
-- VQL in the `export` section has access to the artifact's `parameters`.
-
-In the example above, the `export` VQL refers to an artifact parameter,
-`RangeLimit`. While this demonstrated that parameters are available to queries
-in `export` it's really a bad idea in practice because any other artifact
-importing from this one would fail since it would know nothing about that
-parameter. In real life, if you needed to reference a parameter, you would need
-to ensure that your queries in `export` had a conditional fallback value so that
-other artifacts could make use of your VQL. Alternatively, the artifacts
-importing the VQL would need to ensure that they also provided the referenced
-parameter themselves.
-
-## How imports are processed
-
-To examine how `imports` operate, let's now create 3 new trivial artifacts: two
-that export and one that imports.
-
-```yaml
-name: RandomGreeting1
-export: |
-  LET Greeting <= "hello!"
-  LET LogIt <= log(message="%v", args=Greeting, dedup=-1)
-```
-
-```yaml
-name: RandomGreeting2
-export: |
-  LET Greeting <= "goodbye!"
-  LET LogIt <= log(message="%v", args=Greeting, dedup=-1)
-```
-
-```yaml
-name: RandomGreeting3
-imports:
-  - RandomGreeting1
-  - RandomGreeting2
-export: |
-  LET Greeting <= "sayonara!"
-  LET LogIt <= log(message="%v", args=Greeting, dedup=-1)
-sources:
-  - query: SELECT Greeting FROM scope()
-```
-
-Notice that the first 2 artifacts have no sources. They could have sources but
-here we don't actually care what they do. But it's also interesting because it
-means that those first 2 artifacts can't be collected (at least not via the GUI)
-and it raises an interesting use case for such artifacts:
-[sourceless artifacts]({{< ref "/docs/artifacts/use_cases/#sourceless-artifacts" >}}),
-which can be useful containers for storing reusable VQL snippets.
-
-If you collect the artifact `RandomGreeting3` you should see results similar to
-this:
-
-![RandomGreeting3 Results](greeting_01.png)
-
-![RandomGreeting3 Log](greeting_02.png)
-
-So what does that tell us?
-
-- The artifact imported the export sections from the first 2 artifact before
-  running.
-
-- The artifact also ran it's own `export` section's VQL.
-
-- The `Greeting` variable was updated with each LET statement, ending up having
-  the value `goodbye`.
-
-Basically, the `export` section and the `imports` from the other 2 artifacts
-were concatenated like this:
-
-```vql
--- from RandomGreeting3
-LET Greeting <= "sayonara!"
-LET LogIt <= log(message="%v", args=Greeting, dedup=-1)
--- from RandomGreeting1
-LET Greeting <= "hello!"
-LET LogIt <= log(message="%v", args=Greeting, dedup=-1)
--- from RandomGreeting2
-LET Greeting <= "goodbye!"
-LET LogIt <= log(message="%v", args=Greeting, dedup=-1)
-```
-
-The 3 log messages were emitted (once) as it ran and the final value of
-`Greeting` was `goodbye`, which is what was passed to the single source in the
-`RandomGreeting3` artifact.
-
-Note that the ordering is preserved:
-
-- `export`
-  - RandomGreeting3
-- `imports`
-  - RandomGreeting1
-  - RandomGreeting2
-
-If our artifact had 2 sources, and if at least one of them had a precondition,
-then the above VQL would have executed twice due to parallel execution mode
-being triggered by the presence of the precondition.
+When importing from multiple artifacts, the VQL preserves the order of the
+`imports` list, and this is added _after_ the VQL from `export` (if defined in
+the importing artifact), but _before_ the VQL from each source.

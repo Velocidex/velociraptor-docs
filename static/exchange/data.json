@@ -1,5 +1,15 @@
 [
     {
+        "title": "Windows.Hunter.Yara.LOLDrivers",
+        "author": "klehri-r7",
+        "description": "This artifact scans system driver directories using two user-supplied YARA rules:",
+        "link": "/exchange/artifacts/pages/windows.hunter.yara.loldrivers",
+        "tags": [],
+        "author_link": "https://github.com/klehri-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/183785760?v=4",
+        "date": "2025-06-18"
+    },
+    {
         "title": "Linux.Sys.Getcap",
         "author": "mgreen27",
         "description": "Inspects extended file capabilities with getcap.  \nSince Linux 2.6.24, setcap can attach fine-grained privilege bits to \nexecutables, letting them perform the specific privileged actions they \nrequire instead of running as root.   \nIf a binary that\u2019s writable or executable by non-privileged users is granted \nexcessive capabilities, attackers can exploit it for privilege escalation.\n",

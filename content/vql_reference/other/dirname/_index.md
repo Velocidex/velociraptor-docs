@@ -33,6 +33,8 @@ Return the directory path.
 dirname(path="/usr/bin/ls") -> "/usr/bin"
 ```
 
-Related: `basename()`
+### See also
+
+- [basename]({{< ref "/vql_reference/popular/basename/" >}})
 
 

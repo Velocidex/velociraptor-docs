@@ -70,10 +70,6 @@ not yet been categorized.
 |[rm](rm)|<span class='vql_type'>Function</span>|Remove a file from the filesystem using the API|
 |[rsyslog](rsyslog)|<span class='vql_type'>Function</span>|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
-|[secret_add](secret_add)|<span class='vql_type'>Function</span>|Add a new secret|
-|[secret_define](secret_define)|<span class='vql_type'>Function</span>|Define a new secret template|
-|[secret_modify](secret_modify)|<span class='vql_type'>Function</span>|Modify the secret|
-|[secrets](secrets)|<span class='vql_type'>Plugin</span>|Retrieve the list of secrets on the server|
 |[serialize](serialize)|<span class='vql_type'>Function</span>|Encode an object as a string|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
 |[similarity](similarity)|<span class='vql_type'>Function</span>|Compare two Dicts for similarity|
