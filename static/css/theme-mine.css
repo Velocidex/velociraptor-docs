@@ -1035,3 +1035,37 @@ figure div.figure img {
     padding-left: 2em;
     background-size: 1.3em 1.3em
 }
+
+
+#body .nav {
+    position: inherit;
+    top: inherit;
+    bottom: inherit;
+    width: inherit;
+    font-size: inherit;
+    height: inherit;
+    cursor: pointer;
+    display: inherit;
+    text-align: inherit;
+}
+#body .nav > i {
+    display: inherit;
+    vertical-align: inherit;
+    text-align: inherit;
+}
+
+@media only all and (max-width: 59.938em) {
+    #body .nav {
+        display: inherit;
+        position: inherit
+        top: inherit;
+        width: inherit;
+        text-align: inherit;
+        height: inherit;
+        line-height: inherit;
+        padding-top: inherit;
+    }
+    #body .nav > i {
+        display: inherit;
+    }
+}
