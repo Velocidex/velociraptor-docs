@@ -167,8 +167,8 @@ The OSPath object has some convenient properties:
 * The `Dirname` property is an OSPath representing the directory
   containing the OSPath.
 
-* The `String` property provies a string representation of the OSPath object. If
-  comparing an OSpath to a string then this property is automatically used, for
+* The `String` property provides a string representation of the OSPath object. If
+  comparing an OSPath to a string then this property is automatically used, for
   example:
   `WHERE OSPath =~ "temp"` is the same as `WHERE OSPath.String =~ "temp"`.
 

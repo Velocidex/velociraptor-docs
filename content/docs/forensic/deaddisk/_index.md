@@ -9,11 +9,11 @@ summary: "Working with disk images"
 
 ## Tricky images
 
-Using guestmount
+Using `guestmount`
 
-Using vmware-mount
+Using `vmware-mount`
 
-Using losetup
+Using `losetup`
 
-Using kpartx
+Using `kpartx`
 

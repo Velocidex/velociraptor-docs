@@ -270,10 +270,10 @@ API.
 
 It's a bit more complicated to do this, but generally this is automatically done
 when you're using artifacts such as
-[Generic.Forensic.SQLiteHunter]({{< ref "/artifact_references/pages/generic.forensic.sqlitehunter/" >}}),
-[Windows.KapeFiles.Remapping]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}}),
+[`Generic.Forensic.SQLiteHunter`]({{< ref "/artifact_references/pages/generic.forensic.sqlitehunter/" >}}),
+[`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}}),
 or
-[Generic.Utils.DeadDiskRemapping]()
+[`Generic.Utils.DeadDiskRemapping`]()
 which already have the necessary VQL included.
 Here, for didactic purposes only, we're going to look at a simple example that
 combines the `ntuser.dat` files from multiple users and prefixes their paths
