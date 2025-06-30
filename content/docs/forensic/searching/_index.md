@@ -1,10 +1,9 @@
 ---
 title: "Searching Content"
-description: |
+summary: |
   A powerful DFIR technique is searching bulk data for patterns. YARA is a
   powerful keyword scanner that allows to search unstructured binary data
   based on user provided rules.
-
 date: 2021-06-17T02:30:41Z
 draft: false
 weight: 30
@@ -150,3 +149,14 @@ SELECT upload(file=FullPath) AS Upload
 FROM glob(globs='''C:\Users\*\Downloads\*''')
 WHERE NOT IsDir
 ```
+
+## The "data" accessor
+
+VQL contains many plugins that work on files. Sometimes we load data into memory
+as a string.  It is handy to be able to use all the normal file plugins with
+literal string data - this is what the `data` accessor is for.
+
+When the data accessor is used, it creates an in-memory file with the content of
+the file being the string that is passed as the filename.
+
+This allows us to use strings in plugins like `parse_csv()`

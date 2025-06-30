@@ -1,11 +1,25 @@
 [
     {
+        "title": "How do I configure check ip for Cloudflare Dynamic DNS?",
+        "link": "/knowledge_base/tips/cloudflare_checkip",
+        "tags": [
+            "deployment",
+            "cloudflare",
+            "ddns",
+            "checkip"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2025-06-18"
+    },
+    {
         "title": "How do I setup Velociraptor with a CloudFlare Tunnel?",
         "link": "/knowledge_base/tips/cloudflare_tunnel",
         "tags": [],
         "author": "gru3zi",
-        "author_link": "https://github.com/gru3zi",
         "author_avatar": "https://avatars.githubusercontent.com/u/44057919?v=4",
+        "author_link": "https://github.com/gru3zi",
         "date": "2025-05-19"
     },
     {
@@ -189,18 +203,6 @@
         "date": "2022-11-02"
     },
     {
-        "title": "How can I automate the creation of the offline collector?",
-        "link": "/knowledge_base/tips/automate_offline_collector",
-        "tags": [
-            "configuration",
-            "collector"
-        ],
-        "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "author_link": "https://github.com/scudette",
-        "date": "2022-10-10"
-    },
-    {
         "title": "How to control hunting by label groups?",
         "link": "/knowledge_base/tips/hunt_by_label",
         "tags": [
@@ -276,7 +278,11 @@
     {
         "title": "How can I quickly reconfigure an offline collector?",
         "link": "/knowledge_base/tips/reconfigure_offline_collector",
-        "tags": [],
+        "tags": [
+            "configuration",
+            "forensics",
+            "collector"
+        ],
         "author": "scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",

@@ -1,5 +1,10 @@
 ---
 title: "Binary parsing"
+summary: |
+    Velociraptor uses VQL to provide the flexibility for users to be able
+    to craft a VQL query in order to retrieve valuable machine state
+    data. Sometimes we need to parse binary data to answer these
+    questions.
 weight: 50
 ---
 

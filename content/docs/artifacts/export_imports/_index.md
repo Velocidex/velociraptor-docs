@@ -37,7 +37,7 @@ If the artifact's sources run in
 then the additional VQL from `export` and `imports` only executes once. If the
 sources run in parallel then the additional VQL is executed for each source.
 The execution mode is determined by the presence or absence of source-level
-[preconditions]({{< ref "/docs/artifacts/preconditions/" >}})).
+[preconditions]({{< ref "/docs/artifacts/preconditions/" >}}).
 
 ## Export
 
@@ -47,11 +47,11 @@ the VQL stored in `export` can be (and usually is) used by the artifact itself.
 It does not have to be imported by other artifacts in order to be useful.
 
 This makes the `export` section a very useful place to put VQL statements that
-are shared across multiple sources, even if you don't intend other artifacts to
-import them. For example, if your artifact has multiple sources and each one
+are shared across multiple sources, even if you don't intend for other artifacts
+to import them. For example, if your artifact has multiple sources and each one
 repeats the same `LET` statements (perhaps defining the same custom VQL
 functions) then it may be better to move such shared statements to the `export`
-section rather than having them duplicated VQL in multiple sources.
+section rather than having them duplicated in multiple sources.
 
 Unlike `sources`, the `export` section's VQL can't directly emit results. The
 results need to be made available to VQL in the sources as variables. Therefore
@@ -59,15 +59,16 @@ there's no point in having bare queries (`SELECT` statements _not_ assigned to
 variables) in the `export` section; VQL in `export` typically only consists of
 one or more `LET` statements.
 
-Since the VQL in the `export` section is combined with the VQL in `sources` it
+Since the VQL in the `export` section is combined with the VQL in `sources`, it
 has access to the artifact's `parameters`. Although artifact parameters are
-available to queries in `export` you need to consider that other artifacts might
-import from it, and these could then could fail since they would know nothing
-about the parameters (which are not imported). If you need your VQL in `export`
-to reference a parameter, then ideally you should ensure that such statements
-have a conditional fallback value so that other artifacts can reliably make use
-of your VQL. Alternatively, the other artifacts importing the VQL would need to
-ensure that they also provided the referenced parameter themselves.
+available to queries in `export` you should also consider that other artifacts
+might import from it, and that these could then could fail since they would know
+nothing about the source artifact's parameters (which are not imported). If you
+need your VQL in `export` to reference a parameter, then ideally you should
+ensure that such statements have a conditional fallback value so that other
+artifacts can reliably make use of your VQL. Alternatively, the other artifacts
+which are importing the VQL would need to ensure that they also provided the
+referenced parameter themselves.
 
 An artifact can contain an `export` section but no `sources` and still be
 [imported by other artifacts]({{< ref "/docs/artifacts/use_cases/#export-only-artifacts-sharing-vql-via-export-imports" >}}).
@@ -82,8 +83,8 @@ of artifact can import the `export` section from any other type of artifact -
 importing is not constrained by artifact type.
 
 So, for example, a notebook template (artifact type:`NOTEBOOK`) can
-simultaneously import the exports from a `CLIENT` type artifact and a
-`SERVER_EVENT` type artifact. Any `export` field in any artifact within the
+simultaneously import the export sections from a `CLIENT` type artifact and from
+a `SERVER_EVENT` type artifact. Any `export` field in any artifact within the
 artifact repository is available to be imported by any other artifact.
 
 When importing from multiple artifacts, the VQL preserves the order of the

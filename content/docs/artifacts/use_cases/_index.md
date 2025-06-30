@@ -44,9 +44,12 @@ A common use for this is to create "wrapper artifacts" which can:
       query: SELECT * FROM ...
   ```
 - filter or manipulate results from other artifacts
-  ```vql
-  SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
-  WHERE Category =~ "Services" AND `Launch String` =~ "COMSPEC"
+  ```yaml
+  name: Custom.Autoruns.ServicesCompsec
+  sources:
+    - query: |
+        SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
+        WHERE Category =~ "Services" AND `Launch String` =~ "COMSPEC"
   ```
 - provide custom parameter defaults (i.e. your own "presets") to other
   artifacts
@@ -78,19 +81,21 @@ A common use for this is to create "wrapper artifacts" which can:
   name: Find.DotnetStartupHooks
   description: Finds DOTNET_STARTUP_HOOKS using Windows.Search.FileFinder
   parameters:
-    - name: SearchFilesGlobTable
       # This parameter can be customized by the user
+    - name: SearchFilesGlobTable
       type: csv
       default: |
         Glob
         HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS\*
         HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS\*
-    - name: Accessor
+
       # This parameter is hidden from the user
+    - name: Accessor
       default: registry
       type: hidden
-    - name: Upload_File
+
       # This parameter is hidden from the user
+    - name: Upload_File
       default: Y
       type: hidden
   sources:

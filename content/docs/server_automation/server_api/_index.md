@@ -122,7 +122,9 @@ This command can be broken into:
    certificate.
 
 3. `--name Mike`: Certificates represent user identities. The name of the
-   certificate will be used to identify the caller and enforce ACLs on it.
+   certificate will be used to identify the caller and enforce ACLs on it. If
+   the user does not exist then it will be created in the datastore and the
+   server will need to be restarted for it to recognize the new user.
 
 4. `--role administrator`: This option will also assign a role to the new
    identity. The role is used to test permissions of what the caller may do. If
