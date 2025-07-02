@@ -41,7 +41,7 @@ On Linux things are a bit different:
    slash.
 
 For example, a Linux path looks like `/usr/bin/ls`. However, since
-Linux can have backslashes within directory names, the path
+Linux can have backslashes within file names and directory names, the path
 `/C:\Windows/System32` can actually refer to a single directory named
 `C:\Windows` which is contained in the root of the filesystem!
 
