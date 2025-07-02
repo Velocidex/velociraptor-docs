@@ -221,18 +221,6 @@
         "date": "2022-11-02"
     },
     {
-        "title": "How can I automate the creation of the offline collector?",
-        "link": "/knowledge_base/tips/automate_offline_collector",
-        "tags": [
-            "configuration",
-            "collector"
-        ],
-        "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "author_link": "https://github.com/scudette",
-        "date": "2022-10-10"
-    },
-    {
         "title": "How to control hunting by label groups?",
         "link": "/knowledge_base/tips/hunt_by_label",
         "tags": [
@@ -308,7 +296,11 @@
     {
         "title": "How can I quickly reconfigure an offline collector?",
         "link": "/knowledge_base/tips/reconfigure_offline_collector",
-        "tags": [],
+        "tags": [
+            "configuration",
+            "forensics",
+            "collector"
+        ],
         "author": "scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",

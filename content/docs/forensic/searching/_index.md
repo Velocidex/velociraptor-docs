@@ -1,10 +1,9 @@
 ---
 title: "Searching Content"
-description: |
+summary: |
   A powerful DFIR technique is searching bulk data for patterns. YARA is a
   powerful keyword scanner that allows to search unstructured binary data
   based on user provided rules.
-
 date: 2021-06-17T02:30:41Z
 draft: false
 weight: 30

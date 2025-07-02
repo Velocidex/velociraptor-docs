@@ -1,6 +1,10 @@
 ---
 title: "Evidence Of Execution"
 date: 2021-06-27T04:12:21Z
+summary: |
+    Windows has a rich set of forensic artifacts that we can use to infer
+    program execution. This page covers some of the more common evidence
+    of execution artifacts.
 draft: false
 weight: 60
 ---

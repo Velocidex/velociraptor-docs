@@ -1,9 +1,10 @@
 ---
 menutitle: "Artifacts"
 title: "Velociraptor Artifacts"
-date: 2021-06-12T05:20:45Z
+date: 2021-06-12
 draft: false
 weight: 30
+last_reviewed: 2025-06-21
 ---
 
 Velociraptor Artifacts are a key component of the platform, providing numerous

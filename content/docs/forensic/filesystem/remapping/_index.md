@@ -1,8 +1,9 @@
 ---
 title: "Remapping Accessors"
-description: |
-    VQL queries interact with the world via a well defined sandbox. This page described how remapping can be used to virtualize VQL queries within Velociraptor using remapping rules.
-
+summary: |
+    VQL queries interact with the world via a well defined sandbox.
+    This page describes how remapping can be used to virtualize VQL queries
+    within Velociraptor using remapping rules.
 date: 2024-04-11T23:25:17Z
 draft: false
 weight: 40

@@ -44,9 +44,12 @@ A common use for this is to create "wrapper artifacts" which can:
       query: SELECT * FROM ...
   ```
 - filter or manipulate results from other artifacts
-  ```vql
-  SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
-  WHERE Category =~ "Services" AND `Launch String` =~ "COMSPEC"
+  ```yaml
+  name: Custom.Autoruns.ServicesCompsec
+  sources:
+    - query: |
+        SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
+        WHERE Category =~ "Services" AND `Launch String` =~ "COMSPEC"
   ```
 - provide custom parameter defaults (i.e. your own "presets") to other
   artifacts
@@ -78,19 +81,21 @@ A common use for this is to create "wrapper artifacts" which can:
   name: Find.DotnetStartupHooks
   description: Finds DOTNET_STARTUP_HOOKS using Windows.Search.FileFinder
   parameters:
-    - name: SearchFilesGlobTable
       # This parameter can be customized by the user
+    - name: SearchFilesGlobTable
       type: csv
       default: |
         Glob
         HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS\*
         HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS\*
-    - name: Accessor
+
       # This parameter is hidden from the user
+    - name: Accessor
       default: registry
       type: hidden
-    - name: Upload_File
+
       # This parameter is hidden from the user
+    - name: Upload_File
       default: Y
       type: hidden
   sources:
@@ -174,18 +179,21 @@ situations, we may want to automate many other things during setup so that we
 don't have to rely on time-consuming and potentially error-prone manual
 configuration via the GUI.
 
+One of the limitations of the config settings in the previous section is that
+you can't specify custom parameter values for your default monitoring artifacts.
+
+To overcome these limitations and allow for almost unlimited flexibility,
 Velociraptor allows us to specify
 [startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
-via the config setting
+via the config setting:
 
 - `Frontend.initial_server_artifacts`
 
-which allows us to specify one or more `SERVER` artifacts that will be run when
-the Velociraptor server is started for the very first time.
-
-The server detects that it is being run for the first time by checking for the
-presence of the file `config/install_time.json.db` in the datastore: if the file
-is not found then the server assumes it's the first time it is being run.
+This setting allows us to specify one or more `SERVER` artifacts that will be
+run when the Velociraptor server is started for the very first time. The server
+detects that it is being run for the first time by checking for the presence of
+the file `config/install_time.json.db` in the datastore: if the file is not
+found then the server assumes it's the first time it is being run.
 
 Since this setting allows us to run artifacts on the server, this gives us
 access to the full capabilities of VQL in setting up the server. There are many
@@ -196,6 +204,7 @@ We could, for example:
 
 - create users _and_ customize user profiles using the `user_create` and
   `user_options` functions.
+- create orgs.
 - create and start [hunts]({{< ref "/docs/hunting/" >}}) using the `hunt_add`
   function.
 - create [notebooks]({{< ref "/docs/notebooks/" >}}) using the `notebook_create`

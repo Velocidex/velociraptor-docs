@@ -1,6 +1,11 @@
 ---
 menutitle: "Volatile State"
 title: "Volatile machine state"
+summary: |
+    Traditional forensic analysis relies on filesystem artifacts. However,
+    one of the best advantages of performing live response is the ability
+    to access the live system's state and uncover volatile indicators that
+    only exist briefly and might change in future.
 date: 2021-06-27T04:35:23Z
 draft: false
 weight: 90

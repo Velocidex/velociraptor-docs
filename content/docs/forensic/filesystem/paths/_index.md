@@ -1,25 +1,27 @@
 ---
 title: "Velociraptor Paths"
-description: |
-    In DFIR we often talk about paths and filesystems. However, these are usually more complex than they appear.
-
+summary: |
+    In DFIR we often talk about paths and filesystems.
+    However, these are usually more complex than they appear.
 date: 2024-04-11T23:25:17Z
 draft: false
 weight: 30
+last_reviewed: 2025-06-30
 ---
 
 In DFIR we often talk about paths and filesystems. However, these are
-usually more complex than they appear.
+actually more complex than they appear at first glance.
 
-Path handling is fundamental to forensic analysis, as a large amount
-of relevant information is still kept on disk within a
-filesystem. Superficially, We are all familiar with how paths work - a
-path is typically a string that we can provide to some OS API (for
-example the Windows `CreateFile()` or Linux `open()` API) which
-facilitates interacting with a file or a directory on the filesystem.
+Path handling is fundamental to forensic analysis, as a large amount of relevant
+information is still kept on disk within a filesystem.
+
+Superficially, we are all familiar with how paths work: a path is typically a
+string that we can provide to some OS API (for example the Windows
+`CreateFile()` or Linux `open()` API) which facilitates interacting with a file
+or a directory on the filesystem.
 
 Unfortunately, the structure of this string is often not well defined
-or consistent between operating systems! For example, on windows a
+or consistent between operating systems! For example, on Windows a
 path has the following characteristics:
 
 1. The path starts with a "drive letter" of the form `C:` or `D:`
@@ -34,56 +36,55 @@ On Linux things are a bit different:
 
 1. Paths begin with the slash character (the root of the filesystem)
 2. Path directories are separated by forward slash
-3. Directory names may contain backslashes but these are **not** path
-   separators! Filename may contain pretty much any character (except
-   null and forward slash).
+3. Directory names may contain backslashes but these are _not_ path separators!
+   Filenames may contain pretty much any character, except null and forward
+   slash.
 
 For example, a Linux path looks like `/usr/bin/ls`. However, since
-Linux can have backslashes with filenames, the path
+Linux can have backslashes within file names and directory names, the path
 `/C:\Windows/System32` can actually refer to a single directory named
 `C:\Windows` which is contained in the root of the filesystem!
 
 It gets even more complicated on Windows, where a `device name` may
 appear as the first element of the path. Here it refers to a physical
-device, for example `\\.\C:\Windows` means the `Windows` directory
-inside the filesystem on the device `\\.C:` - Yes the device can
-contain backslashes which are also path separators **except** when
-they refer to a device.
+device, for example `\\.\C:\Windows` refers to the `Windows` directory
+inside the filesystem on the device `\\.C:` - Yes the device name can
+contain backslashes which are also path separators _except_ when
+they refer to a device!
 
-A registry path has other rules:
+A Windows registry path has its own rules:
 
 1. It starts with the hive name, e.g. `HKEY_LOCAL_MACHINE` or `HKLM`
 2. Components are separated by backslashes
-3. While key names are analogous to directories, registry keys are
-   allowed to have forward slash characters.
-4. While Value name are analogous to files, value name may also have
-   backslashes!
+3. While key names are analogous to directories, registry keys _are_ allowed to
+   have forward slash characters.
+4. While Value names are analogous to files, these may also contain backslashes!
 
-For example the following registry path is valid
-`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\` `Windows
-Presentation
-Foundation\Namespaces\http://schemas.microsoft.com/netfx/2009/xaml/presentation`
-(with the last registry key being a URL) even though the registry key
-contains forward slashes it is just one key component!
+For example the following registry path is valid (with the last registry key being a URL) even though the registry key
+contains forward slashes, it is just a single key component!
+
+```text
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\Windows Presentation Foundation\Namespaces\http://schemas.microsoft.com/netfx/2009/xaml/presentation
+```
 
 With all these confusing rules we need to develop an abstraction that
 allows Velociraptor to handle all these cases correctly.
 
-Correct path handling is extremely important for Velociraptor, without
-it various subtle bugs are encountered where a path is emitted from
+Correct path handling is extremely important for Velociraptor. Without
+it various subtle bugs can be encountered where a path is emitted from
 one plugin (e.g. `glob()`) but misinterpreted by other plugins
 (e.g. `read_file()`) which fail to open the same file correctly. Since
 this interpretation depends on various contextual information (like
 which OS we are running on, or which accessor was used) we need a way
-to incorporate this information in the path itself.
+to incorporate this additional information in the path itself.
 
-Therefore in Velociraptor we represent paths as an OSPath object - not
-a simple string.
+Therefore in Velociraptor we represent paths as an `OSPath` **object** rather
+than a simple string.
 
 ## The OSPath abstraction
 
-In recent Velociraptor releases the `OSPath` abstraction was introduced to
-handle paths in a consistent and resilient way:
+Velociraptor's `OSPath` abstraction was introduced to handle paths in a
+consistent and resilient way:
 
 1. Internally paths are always a list of components. For example, the
    windows path `C:\Windows\System32` is represented internally as the
@@ -102,18 +103,18 @@ handle paths in a consistent and resilient way:
    serialized to and from a string. For example a Windows OSPath will
    serialize the components using the Windows path rules.
 
-For example, an OSPath with the following components `["C:",
-"Windows", "System32"]` will serialize to string:
+For example, an OSPath with the following components
+`["C:", "Windows", "System32"]` will serialize to a string as follows:
 
 * A Windows `OSPath` will serialize to `C:\Windows\System32`
 * A Linux `OSPath` will serialize to `/C:/Windows/System32`
-* A Windows NTFS aware OSPath will serialize to
+* A Windows NTFS-aware OSPath will serialize to
   `\\.\C:\Windows\System32` (i.e. device notation appropriate to the
   NTFS raw accessor).
 
 Velociraptor always represents paths as OSPath objects. You can create
 the OSPath object using the `pathspec()` function, or by providing a
-string to VQL functions that require an OSPath, the relevant accessor
+string to VQL functions that require an OSPath. The relevant accessor
 is used to parse that string into an OSPath object appropriate for
 that accessor.
 
@@ -131,15 +132,16 @@ FROM glob(globs="*", root="C:\\Windows", accessor="auto")
 ```
 
 The `glob()` plugin applies the glob expression on the filesystem and
-returns a single row for each matching file. Looking at the [reference
-for the glob()]({{< ref "/vql_reference/popular/glob/">}}) function, we
-can see that the `root` parameter is of type OSPath.
+returns a single row for each matching file. Looking at the
+[reference for the glob()]({{< ref "/vql_reference/popular/glob/">}}) function, we
+can see that the `root` parameter is of type `OSPath`.
 
 Since in the above query, the accessor specified is the `auto`
 accessor, VQL will call on that accessor to interpret the string to an
-OSPath before passing it to the `glob()` function. On windows, the
-`auto` accessor follows the Windows rules above (with `\\` being the
-path separator) to produce an OSPath like this:
+OSPath before passing it to the `glob()` function.
+
+On windows, the `auto` accessor follows the Windows rules described above (with
+`\\` being the path separator) to produce an OSPath like this:
 
 ```
 Components: ["C:", "Windows"]
@@ -151,21 +153,25 @@ Note that on Linux, the same path will be interpreted as:
 Components: ["C:\\Windows"]
 PathType: "Linux"
 ```
-
-Since the `\\` is not a path separator on Linux!
+since `\\` is not considered a path separator on Linux!
 
 The OSPath object has some convenient properties:
 
-* The `Components` field contains the list of path components in the
-  path. You can index the component to identify a specific directory
-  or filename.  (negative indexes are counted from the end of the
-  component array).
+* The `Components` field contains the list (VQL array type) of path components
+  comprising the path. You can index the component to identify a specific
+  directory or filename. This list of path components is zero-indexed with
+  negative indexes being counted from the end of the component array.
 
 * The `Basename` property is a shorthand to the last component
   (equivalent to `OSPath.Components[-1]`)
 
 * The `Dirname` property is an OSPath representing the directory
   containing the OSPath.
+
+* The `String` property provides a string representation of the OSPath object. If
+  comparing an OSPath to a string then this property is automatically used, for
+  example:
+  `WHERE OSPath =~ "temp"` is the same as `WHERE OSPath.String =~ "temp"`.
 
 * Path manipulation is very easy to do, since OSPath is overloading
   the addition operator to make path manipulation simple and
@@ -194,18 +200,17 @@ The above example shows some common manipulation techniques:
    name from `C:` too `D:` by first building an OSPath for `D:` drive
    then adding all the components (except the first one) from the
    glob's OSPath to it.
-
-```vql
-SELECT pathspec(Path="D:", path_type="windows") + OSPath[1:]
-FROM glob(globs="C:/Windows/*")
-```
+   ```vql
+   SELECT pathspec(Path="D:", path_type="windows") + OSPath[1:]
+   FROM glob(globs="C:/Windows/*")
+   ```
 
 ## Filesystem accessors and OSPath
 
-Velociraptor accesses filesystems by way of an `accessor`. You can think
-of an accessor as a specific driver that VQL can use to open a
-path. All VQL plugins or functions that accept files will also accept
-an accessor to use to open the file.
+Velociraptor accesses filesystems by way of an **accessor**. You can think of an
+accessor as a specific driver that VQL can use to open a path. All VQL plugins
+or functions that accept files will also accept an accessor to use to open the
+file.
 
 Consider the following VQL query:
 
@@ -215,15 +220,15 @@ FROM scope()
 ```
 
 The `read_file()` VQL function reads raw data from the specified
-file. The `path` argument is defined of type OSPath. Since we passed a
+file. The `path` argument is defined as type OSPath. Since we passed a
 string here, VQL will need to convert it into an OSPath by calling
-onto the "file" accessor and pass the provided path to it as an opaque
+onto the `file` accessor and pass the provided path to it as an opaque
 string.
 
 The `file` accessor is used to open files using the OS
 APIs. Therefore, it will interpret the path string according to the OS
 convention it is running on (i.e. on Windows it will create a Windows
-flavor of OSPath). However, were we to use another accessor, the
+"flavor" of OSPath). However, were we to use another accessor, the
 string path will be interpreted differently by the accessor.
 
 {{% notice note "Interpreting paths" %}}
@@ -234,20 +239,19 @@ according to its own rules. However, internally OSPath objects are
 passed directly into the VQL query.
 
 When a plugin receives an already parsed OSPath object, it may
-directly use it (since no parsing is required). Therefore in general,
+directly use it, since no parsing is required. Therefore in general,
 once an OSPath object is produced in the query, the same OSPath object
-should be passed around to other plugins/vql functions.
+should be passed around to other plugins and functions.
 
 ```vql
 SELECT read_file(filename=OSPath, accessor="file", length=5)
 FROM glob(globs="C:\\Windows\\notepad.exe")
 ```
 
-In the above the string `C:\Windows\notepad.exe` is parsed once into
-an OSPath object, but then `glob()` passes an OSPath object already so
-`read_file()` does not need to parse anything. This increases
-efficiency in VQL because we avoid having to parse and serialized
-paths all the time!
+In the above the string `C:\Windows\notepad.exe` is parsed _once_ by `glob()`
+into an OSPath object, which then passes an OSPath object to `read_file()`, so
+the latter does not need to do any path parsing. This increases efficiency in
+VQL because we avoid having to parse and serialize paths over and over again!
 
 {{% /notice %}}
 
@@ -266,42 +270,41 @@ open an archive member we need several pieces of information:
 The `zip` accessor therefore requires a more complex OSPath object
 containing additional information about the `Delegate` (i.e. the path
 and accessor that the zip accessor will delegate the actual reading
-to). An OSPath Delegate is another path and accessor used by an
+to). An OSPath **Delegate** is another path and accessor used by an
 accessor to be able to open the file it depends on.
 
-We call this more complex path specification a `pathspec` as it
+We call this more complex path specification a **pathspec** as it
 specifies more precisely what the accessor should do. In a VQL query
 we may build a pathspec from scratch using the `pathspec` function.
 
 ```vql
-SELECT read_file(
-  filename=pathspec(DelegateAccessor="file",
-                    DelegatePath="F:/hello.zip",
-                    Path="hello.txt"),
-  accessor="zip",
-  length=5)
+SELECT
+    read_file(filename=pathspec(DelegateAccessor="file",
+                                DelegatePath="F:/hello.zip",
+                                Path="hello.txt"),
+              accessor="zip",
+              length=5)
 FROM scope()
 ```
 
-In the above example I am calling the `read_file()` VQL function, and
-building an OSPath object directly using the `pathspec()` VQL
-function.
+In the above example I am calling the `read_file()` VQL function, and building
+an OSPath object directly using the `pathspec()` VQL function.
 
 The `zip` accessor receives the new OSPath object and
 
 1. Will open the zip container itself using the `Delegate`: i.e. the
-   "file" accessor, with a path of "F:/hello.zip".
+   `file` accessor, with a path of `F:/hello.zip`.
 2. After parsing the zip file, the `zip` accessor will open the member
    within it specified by the `Path` field. For zip files, the path is
-   interpreted as a forward slash separated unix like path (according
+   interpreted as a forward slash separated unix-like path (according
    to the zip specification). In this case the zip accessor will open
-   a member called `hello.txt` within that Zip file.
+   a member called `hello.txt` within that zip file.
 3. Finally the `read_file()` function will read that member file and
    receive the content of the `hello.txt` archive member.
 
-Note that in practice we rarely need to build the OSPath directly like
-in the example above, because the OSPath object is passed already from
-another plugin (e.g. `glob()`)
+Note that in practice we rarely need to build the OSPath directly as
+demonstrated in the example above, because usually an OSPath object is received
+already from another plugin (e.g. `glob()`)
 
 ## Nesting OSPath objects.
 
@@ -309,11 +312,12 @@ We can combine the previous two queries to search zip files
 
 ```vql
 SELECT OSPath,
-   read_file(filename=OSPath, accessor="zip", length=5)
-FROM glob(
-  globs="*.txt",
-  root=pathspec(DelegateAccessor="auto", DelegatePath="F:/hello.zip", Path="/"),
-  accessor="zip")
+       read_file(filename=OSPath, accessor="zip", length=5)
+FROM glob(globs="*.txt",
+          root=pathspec(DelegateAccessor="auto",
+                        DelegatePath="F:/hello.zip",
+                        Path="/"),
+          accessor="zip")
 ```
 
 This time we provide the `glob()` plugin the root (where searching
@@ -331,43 +335,41 @@ directly into any VQL function or plugin that accepts a file
 
 ![Handling nested OSPath objects](nested_pathspec.png)
 
-The OSPath object is now capable of more complex path manipulations:
+The OSPath object is capable of more complex path manipulations:
 
 1. The `OSPath.Dirname` property represents the fully qualified OSPath
    used to represent the container directory - we can simply pass it
    directly to any plugins that deal with directories.
 
-2. Note that more complex `Pathspec` based paths are represented as a
-   JSON encoded object. It is ok to pass the stringified version of
+2. Note that more complex `pathspec`-based paths are represented as a
+   JSON encoded object. It is ok to pass the stringified (`.String`) version of
    OSPath to plugins because they will automatically parse the
    string into an OSPath object.
 
 {{% notice info "Glob's root parameter" %}}
 
-When using the `glob()` plugin, remember that Glob expressions are
-always flat strings (i.e. a glob is not a pathspec). An OSPath should
-be passed to the `root` parameter to indicate where searching should
-start from. This allows `glob()` to search inside nested containers
-(e.g. zip files) by specifying the `root` parameter inside the zip
-file like in the example above.
+When using the `glob()` plugin, remember that Glob expressions are always flat
+strings (i.e. a glob expression is _not_ a pathspec). An OSPath should be passed
+to the `root` parameter to indicate where searching should start from. This
+allows `glob()` to search inside nested containers (e.g. zip files) by
+specifying the `root` parameter inside the zip file as in the example above.
 
 {{% /notice %}}
 
 ## Summary
 
-Path representation is surprisingly much more complex that it first
-appears. While paths are strings, internally Velociraptor treats them
-as a sequence of components with different flavors controlling how
-they are serialized and represented. This affords the VQL query a more
-powerful way to manipulate paths and build new paths based on them.
+Path representation is, surprisingly, much more complex that it first appears.
+While paths are usually represented as strings, internally Velociraptor treats
+them as a sequence of components with different "flavors" controlling how they
+are serialized and represented. This affords the VQL query a more powerful way
+to manipulate paths and build new paths based on them.
 
-For more complex accessors, paths are represented as a JSON serialized
-`OSPath` object, describing a delegate path as well. Using the
-`OSPath` object methods does the right thing even for more complex
-path and makes it a lot easier to manipulate (for example
-`OSPath.Dirname` is a valid and correct `OSPath` for the containing
-directory, even for more complex pathspec based paths)
+For more complex accessors, paths are represented as a JSON serialized `OSPath`
+object, describing a delegate path as well. Using the `OSPath` object's methods
+does "the right thing" even for more complex paths and makes it a lot easier to
+manipulate (for example `OSPath.Dirname` is a valid and correct `OSPath` for the
+containing directory, even for more complex pathspec based paths).
 
-Velociraptor's path handling abstraction is clear and simple and has
-consistent rules. We will see how this enables Velociraptor's
-remapping rules in the next section.
+Velociraptor's path handling abstraction is clear and has consistent rules. We
+will see how this enables Velociraptor's remapping rules in the
+[next section]({{< ref "/docs/forensic/filesystem/remapping/" >}}).

@@ -1,7 +1,9 @@
 ---
 title: "Dead disk Forensics"
 description: |
-   Velociraptor features some advanced forensics capabilities, but traditionally only works on live endpoints. In recent releases it is now also possible to use Velociraptor on dead disk images.
+   Velociraptor features some advanced forensics capabilities, but traditionally
+   only works on live endpoints. In recent releases it is now also possible to
+   use Velociraptor on dead disk images.
 
 tags:
  - Forensics
@@ -14,20 +16,21 @@ date: 2022-03-20
 Velociraptor's killer feature is its VQL language making it possible
 to write powerful queries that triage and extract valuable forensic
 evidence from the running system. One of the most attractive features
-is the ability to write VQL `artifacts` encapsulating powerful VQL
-queries. Users have access to a library of packaged `Artifacts` that
-come with Velociraptor as well as a vibrant community and an [Artifact
-Exchange]({{% ref "/exchange/" %}}).
+is the ability to write VQL [artifacts]({{< ref "/docs/artifacts/" >}})
+encapsulating powerful VQL queries. Users have access to a library of
+[packaged artifacts]({{< ref "/artifact_references/" >}})
+that come with Velociraptor as well as a vibrant community and an
+[Artifact Exchange]({{< ref "/exchange/" >}}).
 
 Previously Velociraptor was most useful as a live analysis
 platform. Either deployed as an agent on the live endpoint, or via the
-`Offline Collector` collecting artifacts from the running
-system. However, many users are sometimes faced with analyzing a dead
-disk image - for example, when handed a clone of a cloud VM disk after
-a compromise.
+[Offline Collector]({{< ref "/docs/offline_triage/#offline-collections" >}})
+collecting artifacts from the running system. However, many users are sometimes
+faced with analyzing a dead disk image - for example, when handed a clone of a
+cloud VM disk after a compromise.
 
 It would be really nice to be able to leverage the same VQL artifacts
-developed and shared by the community on a disk image or VM clone
+developed and shared by the community in a disk image or VM clone
 without having to start the VM and install Velociraptor on it.
 
 ## Dead disk analysis

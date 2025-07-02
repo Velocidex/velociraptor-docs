@@ -1,10 +1,10 @@
 ---
-title: "Searching Filenames"
-description: |
+title: "Searching Filesystems"
+summary: |
     One of the most common operations in DFIR is searching for files
-    based on their file names.
-
-date: 2021-06-12T23:25:17Z
+    efficiently. When searching for a file, we may search by filename, path,
+    file content, size or other properties.
+date: 2021-06-12
 draft: false
 weight: 20
 ---
@@ -13,43 +13,52 @@ One of the most common operations in DFIR is searching for files
 efficiently. When searching for a file, we may search by filename,
 file content, size or other properties.
 
-Velociraptor has the `glob()` plugin to search for files using a glob
-expression. Glob expressions use wildcards to search the filesystem
-for matches, and these are the most common tool for searching by
-filename. As we will see below, the `glob()` plugin is the foundation
-for many other artifacts.
+Velociraptor has the [glob]({{< ref "/vql_reference/popular/glob/" >}})
+plugin to search for files using a glob expression. Glob expressions use
+wildcards to search the filesystem for matches, and these are the most common
+tool for searching by filename. As you will see below, the `glob()` plugin is
+the foundation of many artifacts.
 
 The `glob()` plugin searches the filesystem by glob expression. The
 following represent the syntax of the glob expressions:
 
 * A `*` is a wildcard match (e.g. `*.exe` matches all files ending
   with ".exe")
-* Alternatives are expressed as comma separated strings in `{}`. For
-  example, `*.{exe,dll,sys}`
+* Alternatives are expressed as comma separated strings enclosed in `{}`.
+  For example, `*.{exe,dll,sys}`
 * Velociraptor supports recursive wildcards: A `**` denotes recursive
-  search, e.g. `C:\Users\**\*.exe`. NOTE: A `**` must appear in its
-  own path component to be considered a recursive search:
-  `C:\Users\mike**` will be interpreted the same as `C:\Users\mike*`
+  search, e.g. `C:\Users\**\*.exe`. \
+  NOTE: The `**` must appear in its own path component to be considered a
+  recursive search: `C:\Users\mike**` will be interpreted the same as
+  `C:\Users\mike*`
 * A Recursive search `**` can be followed by a number representing the
   depth of recursion search (default 30).
 
 For example, the following quickly searches all users' home
 directories for files with ".exe" extension.
 
-```sql
-SELECT * FROM glob(globs='C:\\Users\\**\\*.exe')
+```vql
+SELECT *
+FROM glob(globs='C:\\Users\\**\\*.exe')
 ```
 
-{{% notice warning "String escaping and VQL" %}}
+{{% notice info "String escaping and VQL" %}}
 
-VQL strings can include a backslash escape sequence. Since Windows
-paths often use backslashes for path separator you will need to escape
-the backslashes. Alternatively paths can be written with a forward
-slash `/` or a raw VQL string can be used - for example this is a bit
-easier to write:
+Strings in VQL can include a backslash escape sequence. Since Windows
+paths use backslashes for the path separator you will need to escape
+these backslashes with backslashes, which can be confusing.
 
-```sql
-SELECT * FROM glob(globs='''C:\Users\**\*.exe''')
+Paths can alternatively be written with a forward
+slash so that they don't need to be escaped:
+```vql
+SELECT *
+FROM glob(globs='C:/Users/**/*.exe')
+```
+
+or raw string notation can be used:
+```vql
+SELECT *
+FROM glob(globs='''C:\Users\**\*.exe''')
 ```
 
 {{% /notice %}}
@@ -60,21 +69,22 @@ provided, the `glob()` plugin will combine them into a single
 expression automatically to reduce filesystem access. It is always
 better to provide multiple glob expressions than to run the `glob()`
 plugin multiple times. For example the following will only make a
-single pass over the filesystem while searching for both exe and dll
+single pass over the filesystem while searching for both `exe` and `dll`
 files.
 
-```sql
-SELECT * FROM glob(globs=['C:/Users/**/*.exe',
-                          'C:/Users/**/*.dll'])
+```vql
+SELECT *
+FROM glob(globs=['C:/Users/**/*.exe', 'C:/Users/**/*.dll'])
 ```
 
 Velociraptor paths are separated by `/` or `\` into path
 components. Internally, paths are considered as made up of a list of
-components. Sometimes path component (e.g. a file or directory) can
+components. Sometimes path components (e.g. a file or directory name) can
 also contain path separator characters in which case the component is
 quoted in the path.
 
-To learn more about how paths are used in Velociraptor see [Velociraptor Paths]({{< ref "/docs/forensic/filesystem/paths/" >}})
+For a more in-depth discussion of paths in Velociraptor see
+[Velociraptor Paths]({{< ref "/docs/forensic/filesystem/paths/" >}})
 
 ### The Glob Root
 
@@ -124,9 +134,9 @@ Some of the more important columns available are
 4. `IsDir`, `IsLink` and `Mode` indicate what kind of file
    matched. (`Mode.String` can present the mode in a more human
    readable way).
-5. Finally the `glob()` plugin reports which glob expression matched
-   this particular file. This is handy when you provided a list of
-   glob expressions to the plugin.
+5. Finally, in `Globs` the plugin reports which glob expression matched this
+   particular file. This is handy when you provided a list of glob expressions
+   to the plugin and need to know which ones produced the match.
 
 
 ## Filesystem accessors
@@ -139,12 +149,15 @@ organized in a similar way to a filesystem, so maybe we can use a glob
 expression to search the registry?
 
 Velociraptor supports direct access to many different data sources
-with such hierarchical trees via `accessors` (Accessors are
-essentially filesystem access drivers). Some common accessors are
+with such hierarchical trees via
+[accessors]({{< ref "/vql_reference/accessors/" >}})
+(Accessors are essentially filesystem access drivers).
+
+Some common accessors are:
 
 * **file** - uses OS APIs to access files.
-* **ntfs** - uses raw NTFS parsing to access low level files
-* **registry** - uses OS APIs to access the windows registry
+* **ntfs** - uses raw NTFS parsing for low level filesystem access.
+* **registry** - uses OS APIs to access the windows registry.
 
 When no accessor is specified, Velociraptor uses an automatic accessor
 (called **auto**): On Windows, the **auto** accessor uses the **file**
@@ -156,103 +169,145 @@ bypass any OS level restrictions on reading files (such as filesystem
 permissions or some filter drivers that block access to files based on
 other rules - sometimes found in local security software).
 
-### The registry accessor
+### Searching the Windows registry
 
-This accessor uses the OS API to access the registry hives. The top
-level directory is a list of the common hives (e.g. `HKEY_USERS`). The
-accessor creates a registry abstraction to make it appear as a
-filesystem:
+The [`registry` accessor]({{< ref "/vql_reference/accessors/registry/" >}})
+(or `reg` for short) allows any filesystem functions and plugins to also work on
+the registry. For example, here we use the `glob` plugin to list keys:
 
-* Top level consists of the major hives
-* Values appear as files, Keys appear as directories
-* The Default value in a key is named “@”
-* Since reading the registry value is very quick anyway, the registry
-  accessor makes the Value's content available inside the Data
-  attribute.
-* Can escape components with `/` using quotes
-`HKEY_LOCAL_MACHINE\Microsoft\Windows\"http://www.microsoft.com/"`
+```vql
+SELECT *
+FROM glob(
+  globs="*",
+  root='''HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion''',
+  accessor="registry")
+WHERE Name = "Run"
+```
 
-### Raw registry parsing
+We can use the `read_file` function to read values as if they were files:
 
-In the previous section we looked for a key in the `HKEY_CURRENT_USER`
-hive.  Any artifacts looking in `HKEY_USERS` using the Windows API are
-limited to the set of users currently logged in! We need to parse the
-raw hive to reliably recover all users.
+```vql
+SELECT OSPath.Path AS Key,
+       Data,
+       Data.type AS Type,
+       expand(path=read_file(accessor='registry', filename=OSPath)) AS Content
+FROM glob(globs='HKU/*/Environment/*', accessor='registry')
+```
 
-Each user’s setting is stored in `C:\\Users\\<name>\\ntuser.dat` which
-is a raw registry hive file format. We can parse this file using the
+For convenience we also have the `read_reg_key` plugin which is similar to using
+both `glob` and `read_file` together, as in the previous example. The main
+difference is that `read_reg_key` returns the key's values as columns which
+makes it easier to work with them in VQL. Note that with this registry-specific
+plugin we do not need to specify the `registry` accessor, as that is the
+default.
+
+```vql
+SELECT *
+FROM read_reg_key(root='HKEY_USERS', globs='*/Environment')
+```
+
+#### Raw registry file parsing
+
+Registry hives are mounted and made available via the Windows registry API. When
+accessed through the API, most hives are composite representations built from
+data contained in multiple files on disk.
+
+For example, the `HKEY_USERS` registry hive consists of data that is specific to
+each user and is only loaded when the user logs on to the computer. Therefore
+any artifacts looking in `HKEY_USERS` using the Windows API are limited to the
+set of users who are currently logged in!
+
+Each user’s settings are stored in `C:\Users\<name>\ntuser.dat` which is a file
+in the standard Windows registry hive file format. To reliably read information
+for all users we need to parse the raw hive files for each user from disk.
+
+To cater for this requirement, Velociraptor supports reading hive files directly
+through its `raw_reg` accessor. Similar to the `registry` accessor described
+above, this accessor allows Velociraptor's filesystem-oriented VQL functions and
+plugins to work on registry files rather than relying on the API.
+
+##### Example: Find autorun files from ntuser.dat
+
+We specify to the `glob()` plugin that we want to open the raw registry file at
+`C:/Users/User/ntuser.dat` and glob for the pattern `/**/Run/*` within it.
+
+```vql
+SELECT *
+FROM glob(globs='/**/Run/*',
+          root=pathspec(DelegateAccessor="auto",
+                        DelegatePath='C:/Users/User/ntuser.dat'),
+          accessor="raw_reg")
+```
+
+Note that `root` argument provided to `glob` is an OSPath object which points
+the accessor to the file on disk. The results will include an OSPath object in
+the OSPath column for any matches. This allows these paths objects to be passed
+to any other VQL plugin that uses filenames where they can be accessed with the
 `raw_reg` accessor.
-
-When we need to parse a key or value using the raw registry we need to
-provide it with 3 pieces of information:
-
-1. The Registry hive file to parse (**path**)
-2. The Accessor to open that file (**scheme**)
-3. The Key or Value path within the registry file to open (**fragment**)
-
-Since the accessor can only receive a single string (file path), we
-pass these three pieces of information using a URL notation.
-
-{{% notice warning "URL manipulating" %}}
-
-Do not attempt to build the URL using string concatenation because
-this will fail to escape properly. Always use the `url()` VQL function
-to build the URL for use by the raw_reg accessor.
-
-{{% /notice %}}
 
 ![Raw Registry](raw_reg.png)
 
-In the above example, we specify to the `glob()` plugin that we want
-to open the raw registry file at `C:\\Users\\Mike\\ntuser.dat` and
-glob for the pattern `/*` within it.
+##### Example: Multiple registry files with remapping
 
-Note that the FullPath returned by the accessor is also in URL
-notation. This is done so that you can feed the FullPath directly to
-any plugin that uses filenames without conversion - since the raw
-registry accessor can read the urls it is producing.
+While the previous example is fine for reading a single registry file, for the
+`HKEY_USERS` situation mentioned above we'd like to read from multiple
+`ntuser.dat` files. In addition, you probably want to run queries that refer to
+registry paths as they would appear on a live system when using the registry
+API.
 
-If you need to extract the key path within the registry hive, you can
-use the `url()` function with the `parse` argument to parse the url
-again. The `Fragment` field represents the key path.
+This uses Velociraptor's powerful
+[accessor remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
+feature.
 
-```text
-url(scheme='file', path='C:/Users/test/ntuser.dat', fragment='/**/Run/*')
+It's a bit more complicated to do this, but generally this is automatically done
+when you're using artifacts such as:
+- [`Generic.Forensic.SQLiteHunter`]({{< ref "/artifact_references/pages/generic.forensic.sqlitehunter/" >}})
+- [`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}})
+- [`Generic.Utils.DeadDiskRemapping`]()
 
-file:///C:/Users/test/ntuser.dat#/**/Run/*
+which already have the necessary remapping logic included. If you're creating
+your own artifact that need to do this remapping then you can import the
+`export` section from
+[`Windows.Registry.NTUser`]({{< ref "/artifact_references/pages/windows.registry.ntuser/" >}})
+which contains the necessary VQL logic.
+
+Here, for didactic purposes only, we're going to look at a simple example that
+combines the `ntuser.dat` files from multiple users and prefixes their paths
+with `HKEY_USERS/<Username>/`.
+
+The VQL prepares a remapping configuration, then applies it (to the
+current scope), and the final query is a normal registry search query using
+`glob()`.
+
+```vql
+LET UserHives <= SELECT
+    dict(type="mount",
+         `from`=dict(accessor='raw_reg',
+                     prefix=pathspec(Path="/",
+                                     DelegateAccessor="auto",
+                                     DelegatePath=OSPath.String),
+                     path_type='registry'),
+         `on`=dict(accessor='registry',
+                   prefix="HKEY_USERS/" + OSPath[-2],
+                   path_type='registry')) AS user_mapping
+  FROM glob(globs="C:/Users/*/ntuser.dat")
+  WHERE NOT OSPath.Basename =~ "idx$"
+
+LET _ <= remap(config=dict(remappings=UserHives.user_mapping))
+
+SELECT Name,
+       OSPath
+FROM glob(globs="HKEY_USERS/**/Run/*", accessor="registry")
 ```
 
-#### Example: Find autorun files from ntuser.dat
-
-Let's combine the above query to search all Run keys in all user's
-ntuser.dat files.
-
-```sql
-SELECT * FROM foreach(
-row={
-   SELECT FullPath AS NTUserPath FROM glob(globs="C:/Users/*/ntuser.dat")
-}, query={
-   SELECT NTUserPath, url(parse=FullPath).Fragment AS Value, Mtime, Data.value
-   FROM glob(
-       globs=url(scheme="file", path=NTUserPath,
-                 fragment="SOFTWARE/Microsoft/Windows/**/Run/*"),
-       accessor="raw_reg")
-})
-```
-
-We glob for ntuser.dat files in all user's home directory, then
-foreach one of those, we search the raw registry hive for values under
-the Run or RunOnce key.
+In the final query we can use the `registry` accessor without concerning
+ourselves about the fact that we are querying offline registry files. This is
+because registry paths that match our remapping specification are transparently
+handled by the relevant accessors "under the hood".
 
 ![Raw Registry Run keys](raw_reg_run.png)
 
-### The "data" accessor
+Note that the remapping uses the username extracted from the registry file path
+to reconstruct the registry paths. This is not exactly how the API presents it
+(it uses SIDs which are less human-friendly) but for our purposes that's OK.
 
-VQL contains many plugins that work on files. Sometimes we load data
-into memory as a string.  It is handy to be able to use all the normal
-file plugins with literal string data - this is what the `data`
-accessor is for - when the data accessor is used, it creates an
-in-memory file with the content of the file being the string that is
-passed as the filename.
-
-This allows us to use strings in plugins like `parse_csv()`
