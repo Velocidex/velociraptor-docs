@@ -1,8 +1,8 @@
 ---
-title: "Searching Filenames"
+title: "Searching Filesystems"
 summary: |
     One of the most common operations in DFIR is searching for files
-    efficiently. When searching for a file, we may search by filename,
+    efficiently. When searching for a file, we may search by filename, path,
     file content, size or other properties.
 date: 2021-06-12
 draft: false
@@ -166,30 +166,11 @@ bypass any OS level restrictions on reading files (such as filesystem
 permissions or some filter drivers that block access to files based on
 other rules - sometimes found in local security software).
 
-### The registry accessor
+### Searching the Windows registry
 
-This accessor uses the OS API to access the registry hives. The top
-level directory is a list of the common hives (e.g. `HKEY_USERS`). The
-accessor creates a registry abstraction to make it appear as a
-filesystem where:
-
-* Top level consists of the major hives
-* Values appear as files, Keys appear as directories
-* The Default value in a key is named “@”
-* Since reading the registry value is very quick and efficient, the registry
-  accessor makes the Value's content available inside the Data attribute.
-* Path components that include `/` can be escaped using quotes, for example:
-`HKEY_LOCAL_MACHINE\Microsoft\Windows\"http://www.microsoft.com/"`
-
-The hives can also be referenced by their abbreviated (shorthand) names:
-
-- `HKLM` = `HKEY_LOCAL_MACHINE`
-- `HKU` = `HKEY_USERS`
-- `HKCU` = `HKEY_CURRENT_USER`
-
-The `registry` (or `reg` for short) accessor allows any filesystem functions and
-plugins to also work on the registry. For example, here we use the `glob` plugin
-to list keys:
+The [`registry` accessor]({{< ref "/vql_reference/accessors/registry/" >}})
+(or `reg` for short) allows any filesystem functions and plugins to also work on
+the registry. For example, here we use the `glob` plugin to list keys:
 
 ```vql
 SELECT *
@@ -222,7 +203,7 @@ SELECT *
 FROM read_reg_key(root='HKEY_USERS', globs='*/Environment')
 ```
 
-### Raw registry parsing
+#### Raw registry file parsing
 
 Registry hives are mounted and made available via the Windows registry API. When
 accessed through the API, most hives are composite representations built from
@@ -242,7 +223,7 @@ through its `raw_reg` accessor. Similar to the `registry` accessor described
 above, this accessor allows Velociraptor's filesystem-oriented VQL functions and
 plugins to work on registry files rather than relying on the API.
 
-#### Example: Find autorun files from ntuser.dat
+##### Example: Find autorun files from ntuser.dat
 
 We specify to the `glob()` plugin that we want to open the raw registry file at
 `C:/Users/User/ntuser.dat` and glob for the pattern `/**/Run/*` within it.
@@ -262,7 +243,7 @@ to any other VQL plugin that uses filenames where they can be accessed with the
 
 ![Raw Registry](raw_reg.png)
 
-#### Example: Multiple registry files with remapping
+##### Example: Multiple registry files with remapping
 
 While the previous example is fine for reading a single registry file, for the
 `HKEY_USERS` situation mentioned above we'd like to read from multiple
