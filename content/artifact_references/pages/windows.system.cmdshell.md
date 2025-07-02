@@ -54,7 +54,18 @@ parameters:
 
 sources:
   - query: |
-      SELECT * FROM execve(argv=["cmd.exe", "/c", Command])
+      LET SizeLimit &lt;= 4096
+      SELECT if(condition=len(list=Stdout) &lt; SizeLimit,
+                then=Stdout) AS Stdout,
+             if(condition=len(list=Stdout) &gt;= SizeLimit,
+                then=upload(accessor="data",
+                            file=Stdout, name="Stdout")) AS StdoutUpload
+
+      FROM execve(argv=["cmd.exe", "/c", Command], length=10000000)
+
+column_types:
+- name: StdoutUpload
+  type: preview_upload
 
 </code></pre>
 

@@ -51,7 +51,7 @@ sources:
            query={
               SELECT Username,
                 NTUser as Userhive,
-                OSPath.Path as Key,
+                Key.OSPath.Path as Key,
                 key.Mtime AS LastModified,
                 EnableUnsafeClientMailRules,
                 OutlookSecureTempFolder

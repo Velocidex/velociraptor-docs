@@ -60,13 +60,13 @@ sources:
         })
 
       LET ParsedValues = SELECT
-          OSPath.Dirname AS KeyPath,
+          OSPath.Dirname AS KeyPath, OSPath.Basename AS ValueName,
           parse_binary(profile=Profile, filename=Data.value,
                        accessor="data", struct="ItemIDList") as _Parsed,
           base64encode(string=Data.value) AS _RawData, ModTime
       FROM ShellValues
 
-      LET AllResults &lt;= SELECT KeyPath,
+      LET AllResults &lt;= SELECT KeyPath, ValueName,
         _Parsed.ShellBag.Description AS Description,
         _Parsed, _RawData, ModTime
       FROM ParsedValues
@@ -84,7 +84,7 @@ sources:
           },
           c={
             SELECT * FROM foreach(row={
-              SELECT KeyPath, Description, Depth
+              SELECT KeyPath, ValueName, Description, Depth
               FROM AllResults
               WHERE KeyPath = MRUPath.Dirname
               LIMIT 1
@@ -98,7 +98,7 @@ sources:
         })
 
         // Now display all hits and their reconstructed path
-        LET ReconstructedPath = SELECT ModTime, KeyPath, Description, {
+        LET ReconstructedPath = SELECT ModTime, KeyPath, ValueName, Description, {
            SELECT * FROM FormPath(
                 MRUPath=KeyPath, Description=Description, Depth=0)
         } AS Chain, _RawData, _Parsed
@@ -107,7 +107,7 @@ sources:
         SELECT ModTime,
            KeyPath AS _OSPath,
            KeyPath.DelegatePath AS Hive,
-           KeyPath.Path AS KeyPath, Description,
+           KeyPath.Path AS KeyPath, ValueName, Description,
                join(array=Chain.Name, sep=" -&gt; ") AS Path,
                _RawData, _Parsed
         FROM ReconstructedPath

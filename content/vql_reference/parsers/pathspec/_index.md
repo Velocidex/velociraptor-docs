@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 DelegateAccessor|An accessor to use.|string
 DelegatePath|A delegate to pass to the accessor.|string
+Delegate|A delegate to pass to the accessor (must be another pathspec).|LazyExpr
 Path|A path to open.|Any
 parse|Alternatively parse the pathspec from this string.|string
 path_type|Type of path this is (windows,linux,registry,ntfs).|string
