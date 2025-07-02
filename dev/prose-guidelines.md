@@ -54,6 +54,11 @@ For the last 2 cases above it is recommended to use bold text for emphasis the
 first time a term is used. When doing so it is not necessary to use quotes
 around the term.
 
+### Block code
+
+Preferably format VQL code blocks with the VQL formatter, for consistency.
+
+
 ### Admonitions (notices)
 
 Try not to overuse them. Especially try not to have two or more of them

@@ -38,7 +38,8 @@ For example, the following quickly searches all users' home
 directories for files with ".exe" extension.
 
 ```vql
-SELECT * FROM glob(globs='C:\\Users\\**\\*.exe')
+SELECT *
+FROM glob(globs='C:\\Users\\**\\*.exe')
 ```
 
 {{% notice info "String escaping and VQL" %}}
@@ -50,12 +51,14 @@ these backslashes with backslashes, which can be confusing.
 Paths can alternatively be written with a forward
 slash so that they don't need to be escaped:
 ```vql
-SELECT * FROM glob(globs='C:/Users/**/*.exe')
+SELECT *
+FROM glob(globs='C:/Users/**/*.exe')
 ```
 
 or raw string notation can be used:
 ```vql
-SELECT * FROM glob(globs='''C:\Users\**\*.exe''')
+SELECT *
+FROM glob(globs='''C:\Users\**\*.exe''')
 ```
 
 {{% /notice %}}
@@ -70,8 +73,8 @@ single pass over the filesystem while searching for both `exe` and `dll`
 files.
 
 ```vql
-SELECT * FROM glob(globs=['C:/Users/**/*.exe',
-                          'C:/Users/**/*.dll'])
+SELECT *
+FROM glob(globs=['C:/Users/**/*.exe', 'C:/Users/**/*.dll'])
 ```
 
 Velociraptor paths are separated by `/` or `\` into path
@@ -229,10 +232,11 @@ We specify to the `glob()` plugin that we want to open the raw registry file at
 `C:/Users/User/ntuser.dat` and glob for the pattern `/**/Run/*` within it.
 
 ```vql
-SELECT * FROM glob(globs='/**/Run/*',
-                   root=pathspec(DelegateAccessor="auto",
-                                 DelegatePath='C:/Users/User/ntuser.dat'),
-                   accessor="raw_reg")
+SELECT *
+FROM glob(globs='/**/Run/*',
+          root=pathspec(DelegateAccessor="auto",
+                        DelegatePath='C:/Users/User/ntuser.dat'),
+          accessor="raw_reg")
 ```
 
 Note that `root` argument provided to `glob` is an OSPath object which points
@@ -276,21 +280,24 @@ current scope), and the final query is a normal registry search query using
 `glob()`.
 
 ```vql
-LET UserHives <= SELECT dict(type="mount",
-                                     `from`=dict(accessor='raw_reg',
-                                                 prefix=pathspec(Path="/",
-                                                                 DelegateAccessor="auto",
-                                                                 DelegatePath=OSPath.String),
-                                                 path_type='registry'),
-                                     `on`=dict(accessor='registry',
-                                               prefix="HKEY_USERS/" + OSPath[-2],
-                                               path_type='registry')) AS user_mapping
-                 FROM glob(globs="C:/Users/*/ntuser.dat")
-                 WHERE NOT OSPath.Basename =~ "idx$"
+LET UserHives <= SELECT
+    dict(type="mount",
+         `from`=dict(accessor='raw_reg',
+                     prefix=pathspec(Path="/",
+                                     DelegateAccessor="auto",
+                                     DelegatePath=OSPath.String),
+                     path_type='registry'),
+         `on`=dict(accessor='registry',
+                   prefix="HKEY_USERS/" + OSPath[-2],
+                   path_type='registry')) AS user_mapping
+  FROM glob(globs="C:/Users/*/ntuser.dat")
+  WHERE NOT OSPath.Basename =~ "idx$"
 
 LET _ <= remap(config=dict(remappings=UserHives.user_mapping))
 
-SELECT Name, OSPath FROM glob(globs="HKEY_USERS/**/Run/*", accessor="registry")
+SELECT Name,
+       OSPath
+FROM glob(globs="HKEY_USERS/**/Run/*", accessor="registry")
 ```
 
 In the final query we can use the `registry` accessor without concerning

@@ -127,7 +127,8 @@ expression (containing wildcards).
 Consider the following query running on windows
 
 ```vql
-SELECT OSPath FROM glob(globs="*", root="C:\\Windows", accessor="auto")
+SELECT OSPath
+FROM glob(globs="*", root="C:\\Windows", accessor="auto")
 ```
 
 The `glob()` plugin applies the glob expression on the filesystem and
@@ -277,12 +278,12 @@ specifies more precisely what the accessor should do. In a VQL query
 we may build a pathspec from scratch using the `pathspec` function.
 
 ```vql
-SELECT read_file(
-  filename=pathspec(DelegateAccessor="file",
-                    DelegatePath="F:/hello.zip",
-                    Path="hello.txt"),
-  accessor="zip",
-  length=5)
+SELECT
+    read_file(filename=pathspec(DelegateAccessor="file",
+                                DelegatePath="F:/hello.zip",
+                                Path="hello.txt"),
+              accessor="zip",
+              length=5)
 FROM scope()
 ```
 
@@ -311,11 +312,12 @@ We can combine the previous two queries to search zip files
 
 ```vql
 SELECT OSPath,
-   read_file(filename=OSPath, accessor="zip", length=5)
-FROM glob(
-  globs="*.txt",
-  root=pathspec(DelegateAccessor="auto", DelegatePath="F:/hello.zip", Path="/"),
-  accessor="zip")
+       read_file(filename=OSPath, accessor="zip", length=5)
+FROM glob(globs="*.txt",
+          root=pathspec(DelegateAccessor="auto",
+                        DelegatePath="F:/hello.zip",
+                        Path="/"),
+          accessor="zip")
 ```
 
 This time we provide the `glob()` plugin the root (where searching
