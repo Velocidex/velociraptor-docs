@@ -65,7 +65,7 @@ download the tool from an external location, you may not want it to.
 
 If your collector uses artifacts which use tools then you should NOT use the
 method described here. You should instead rebuild your offline collector using
-the GUI or the CLI's `collector` command.
+the GUI or the CLI `collector` command.
 
 {{% /notice %}}
 
