@@ -55,6 +55,20 @@ file (see next section).
 
 ### Repacking to a different binary
 
+{{% notice warning "Limitations" %}}
+
+Repacking the config into a different binary will not transfer any bundled tools
+to the new binary! This will cause the collection to fail if the offline
+collector can't access these tools from an alternative location, such as from a
+URL defined in the embedded artifacts' tool definitions. And even if it can
+download the tool from an external location, you may not want it to.
+
+If your collector uses artifacts which use tools then you should NOT use the
+method described here. You should instead rebuild your offline collector using
+the GUI or the CLI's `collector` command.
+
+{{% /notice %}}
+
 You can use the `--exe` flag to specify a different target binary. This allows
 you to transfer an existing collector config to a different architecture, and/or
 to a newer binary version. For example:
