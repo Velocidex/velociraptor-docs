@@ -283,19 +283,32 @@ parameters:
       // template. This will be the name uploaded to the bucket.
       LET formatted_zip_name &lt;= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
-          re="[^0-9A-Za-z\\-]", replace="_") + ".zip"
+          re="[^0-9A-Za-z\\-]", replace="_")
 
       // This is where we write the files on the endpoint.
-      LET zip_filename &lt;= OutputPrefix + formatted_zip_name
+      LET zip_filename &lt;= OutputPrefix + ( formatted_zip_name + ".zip" )
+      LET LogFile &lt;= OutputPrefix + ( formatted_zip_name + ".log" )
 
-      // The log is always written to the executable path
-      LET log_filename &lt;= pathspec(parse= baseline[0].Exe + ".log")
+      LET _ &lt;= log(message="Log file is at %v", args=LogFile)
+
+      // Create the log file and start writing into it
+      // Just forward output from the logging() plugin
+      LET LogPipe &lt;= pipe(query={
+        SELECT format(format="[%v] %v %v\n",
+                      args=(level, time, msg)) AS Line
+        FROM logging(prelog=TRUE)
+      })
+
+      LET _ &lt;= background(query={
+          SELECT copy(accessor="pipe", filename="LogPipe", dest=LogFile) AS C
+          FROM scope()
+      })
 
       -- Remove the zip file and log file when done if the user asked for it.
       LET _ &lt;= if(condition=DeleteOnExit, then=atexit(query={
          SELECT rm(filename=zip_filename), rm(filename=log_filename) FROM scope()
          WHERE log(message="Removed Zip file %v", args=zip_filename)
-      }, env=dict(zip_filename=zip_filename, log_filename=log_filename)))
+      }, env=dict(zip_filename=zip_filename, log_filename=LogFile)))
 
       -- Make a random hex string as a random password
       LET RandomPassword &lt;= SELECT format(format="%02x",
@@ -352,7 +365,7 @@ parameters:
           upload_file(filename=Container,
                       name= upload_name + ".zip",
                       accessor="file") AS Upload,
-          upload_file(filename=log_filename,
+          upload_file(filename=LogFile,
                       name= upload_name + ".log",
                       accessor="file") AS LogUpload
 
@@ -537,8 +550,7 @@ sources:
       // Build the autoexec config file depending on the user's
       // collection type choices.
       LET autoexec &lt;= dict(autoexec=dict(
-          argv=("artifacts", "collect", "Collector",
-                "--logfile", CollectorName + ".log") + optional_cmdline.Opt,
+          argv=("artifacts", "collect", "Collector") + optional_cmdline.Opt,
           artifact_definitions=definitions)
       )
 

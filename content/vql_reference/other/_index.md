@@ -16,6 +16,7 @@ not yet been categorized.
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[array](array)|<span class='vql_type'>Function</span>|Create an array|
 |[atexit](atexit)|<span class='vql_type'>Function</span>|Install a query to run when the query is unwound|
+|[background](background)|<span class='vql_type'>Function</span>|Run a query in the background|
 |[batch](batch)|<span class='vql_type'>Plugin</span>|Batches query rows into multiple arrays|
 |[cache](cache)|<span class='vql_type'>Function</span>|Creates a cache object|
 |[cache_dns](cache_dns)|<span class='vql_type'>Function</span>|Add a DNS record to the cache|
@@ -80,6 +81,7 @@ not yet been categorized.
 |[stat](stat)|<span class='vql_type'>Plugin</span>|Get file information|
 |[strip](strip)|<span class='vql_type'>Function</span>|Strip prefix and/or suffix from a string|
 |[sum](sum)|<span class='vql_type'>Function</span>|Sums the items|
+|[template](template)|<span class='vql_type'>Function</span>|Expand a Go style template |
 |[timestamp_format](timestamp_format)|<span class='vql_type'>Function</span>|Format a timestamp into a string|
 |[typeof](typeof)|<span class='vql_type'>Function</span>|Print the underlying Go type of the variable|
 |[upcase](upcase)|<span class='vql_type'>Function</span>|Returns an uppercase version of the string|

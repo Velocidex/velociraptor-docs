@@ -44,6 +44,9 @@ reference:
 required_permissions:
   - EXECVE
 
+implied_permissions:
+  - FILESYSTEM_WRITE
+
 tools:
   - name: SharpHound
     url: https://github.com/BloodHoundAD/BloodHound/raw/master/Collectors/SharpHound.exe

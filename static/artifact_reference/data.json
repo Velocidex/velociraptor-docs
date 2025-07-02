@@ -54,15 +54,6 @@
         ]
     },
     {
-        "title": "Admin.Events.PostProcessUploads",
-        "description": "Sometimes we would like to post process uploads collected as part of\nthe hunt's artifact collections",
-        "link": "/artifact_references/pages/admin.events.postprocessuploads",
-        "type": "server_event",
-        "tags": [
-            "Server Event Artifact"
-        ]
-    },
-    {
         "title": "Demo.Plugins.Fifo",
         "description": "This is a demo of the fifo() plugin. The Fifo plugin collects and\ncaches rows from its inner query. Every subsequent execution of the\nquery then reads from the cache. The plugin will expire old rows\ndepending on its expiration policy - so we always see recent rows.",
         "link": "/artifact_references/pages/demo.plugins.fifo",
@@ -390,6 +381,15 @@
         "title": "Generic.System.Pstree",
         "description": "This artifact displays the call chain for every process on the\nsystem by traversing the process's parent ID.",
         "link": "/artifact_references/pages/generic.system.pstree",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Utils.DeadDiskRemapping",
+        "description": "Calculate a remapping configuration from a dead disk image.",
+        "link": "/artifact_references/pages/generic.utils.deaddiskremapping",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -1236,18 +1236,18 @@
         "title": "Server.Enrichment.GeoIP",
         "description": "This artifact can use the MaxMind database to Geo resolve an IP\naddress. You will need to provide a valid GeoIP database.",
         "link": "/artifact_references/pages/server.enrichment.geoip",
-        "type": "client",
+        "type": "server",
         "tags": [
-            "Client Artifact"
+            "Server Artifact"
         ]
     },
     {
         "title": "Server.Enrichment.GeoIPISP",
         "description": "This artifact can use the MaxMind database to Geo resolve an IP\naddress using the GeoIP ISP Database. You will need to provide a valid GeoIP ISP database.",
         "link": "/artifact_references/pages/server.enrichment.geoipisp",
-        "type": "client",
+        "type": "server",
         "tags": [
-            "Client Artifact"
+            "Server Artifact"
         ]
     },
     {
@@ -1812,6 +1812,15 @@
         "title": "Server.Utils.CreateCollector",
         "description": "A utility artifact to create a stand alone collector.",
         "link": "/artifact_references/pages/server.utils.createcollector",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.CreateLinuxPackages",
+        "description": "Build Deb and RPM packages ready for deployment in the current org.",
+        "link": "/artifact_references/pages/server.utils.createlinuxpackages",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -3601,7 +3610,7 @@
     },
     {
         "title": "Windows.System.AuditPolicy",
-        "description": "Artifact using auditpol to retrieve the logging settings \ndefined in the Windows Audit Policy.",
+        "description": "Artifact using auditpol to retrieve the logging settings\ndefined in the Windows Audit Policy.",
         "link": "/artifact_references/pages/windows.system.auditpolicy",
         "type": "client",
         "tags": [

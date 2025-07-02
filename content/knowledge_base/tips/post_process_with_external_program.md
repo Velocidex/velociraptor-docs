@@ -189,7 +189,7 @@ sources:
           })
 ```
 
-I can add it an install it as a server event monitor. Then each time I
+I can add it and install it as a server event monitor. Then each time I
 collect `Generic.Client.Info` the artifact will automatically post
 process the results.
 
@@ -206,3 +206,5 @@ You can also use `watch_monitoring()` with the name of the new
 artifact to watch for post processed results as well! ... `We need to
 go deeper!` - for example use `Elastic.Events.Upload` to upload those
 to Elastic.
+
+Tags: #vql

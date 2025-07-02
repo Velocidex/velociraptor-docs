@@ -63,6 +63,10 @@ tools:
 
 precondition: SELECT OS From info() where OS = 'windows'
 
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
 parameters:
   - name: userRegex
     default: .

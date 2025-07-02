@@ -27,6 +27,9 @@ tools:
 
 precondition: SELECT OS From info() where OS = 'windows'
 
+implied_permissions:
+  - EXECVE
+
 parameters:
   - name: All
     type: bool
