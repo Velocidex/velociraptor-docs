@@ -251,20 +251,27 @@ While the previous example is fine for reading a single registry file, for the
 registry paths as they would appear on a live system when using the registry
 API.
 
+This uses Velociraptor's powerful
+[accessor remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
+feature.
+
 It's a bit more complicated to do this, but generally this is automatically done
-when you're using artifacts such as
-[`Generic.Forensic.SQLiteHunter`]({{< ref "/artifact_references/pages/generic.forensic.sqlitehunter/" >}}),
-[`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}}),
-or
-[`Generic.Utils.DeadDiskRemapping`]()
-which already have the necessary VQL included.
+when you're using artifacts such as:
+- [`Generic.Forensic.SQLiteHunter`]({{< ref "/artifact_references/pages/generic.forensic.sqlitehunter/" >}})
+- [`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}})
+- [`Generic.Utils.DeadDiskRemapping`]()
+
+which already have the necessary remapping logic included. If you're creating
+your own artifact that need to do this remapping then you can import the
+`export` section from
+[`Windows.Registry.NTUser`]({{< ref "/artifact_references/pages/windows.registry.ntuser/" >}})
+which contains the necessary VQL logic.
+
 Here, for didactic purposes only, we're going to look at a simple example that
 combines the `ntuser.dat` files from multiple users and prefixes their paths
 with `HKEY_USERS/<Username>/`.
 
-This uses Velociraptor's powerful
-[accessor remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
-feature. The VQL prepares a remapping configuration, then applies it (to the
+The VQL prepares a remapping configuration, then applies it (to the
 current scope), and the final query is a normal registry search query using
 `glob()`.
 
