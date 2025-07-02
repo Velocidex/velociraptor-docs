@@ -48,3 +48,5 @@ The setting is under Zero Trust > Networks > Tunnels > *Your Tunnel Name*
 
 Start your Velociraptor
 `velociraptor -c  /etc/velociraptor/server.config.yaml frontend -v`
+
+Tags: #configuration #deployment

@@ -38,6 +38,9 @@ parameters:
     description: |
       The name of the service to restart after the upgrade.
 
+implied_permissions:
+  - EXECVE
+
 sources:
   - precondition:
       SELECT OS From info() where OS =~ 'linux'

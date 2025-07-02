@@ -88,6 +88,9 @@ author: Matt Green - @mgreen27
 required_permissions:
   - EXECVE
 
+implied_permissions:
+  - FILESYSTEM_WRITE
+
 tools:
   - name: Bulk_Extractor_Binary
     url: https://github.com/Velocidex/Tools/raw/main/BulkExtractor/bulk_extractor.exe

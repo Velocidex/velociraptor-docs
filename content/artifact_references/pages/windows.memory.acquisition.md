@@ -48,6 +48,9 @@ description: |
   go-winpmem.exe expand image.compressed image.raw
   ```
 
+implied_permissions:
+  - FILESYSTEM_WRITE
+
 precondition: |
   SELECT OS FROM info()
   WHERE OS = 'windows'

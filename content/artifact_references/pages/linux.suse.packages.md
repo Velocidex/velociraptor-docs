@@ -13,6 +13,9 @@ author: Hilko Bengen &lt;bengen@hilluzination.de&gt;
 description: |
   Parse list of installed packages from zypper output
 
+implied_permissions:
+  - EXECVE
+
 sources:
   - precondition: |
       SELECT OS From info() WHERE OS = 'linux'
@@ -22,11 +25,11 @@ sources:
         FROM execve(
           length=1000000,
           argv=["zypper", "--xmlout", "search", "--installed-only", "--details", "--type=package"])
-      
+
       LET xml = parse_xml(
           file=str(str=zypper_output.Stdout),
           accessor="data")
-      
+
       SELECT *
       FROM foreach(
         row=xml.stream.`search-result`.`solvable-list`.solvable,

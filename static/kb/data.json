@@ -1,5 +1,16 @@
 [
     {
+        "title": "How to automatically post process flows with an external program.",
+        "link": "/knowledge_base/tips/post_process_with_external_program",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-06-29"
+    },
+    {
         "title": "How do I configure check ip for Cloudflare Dynamic DNS?",
         "link": "/knowledge_base/tips/cloudflare_checkip",
         "tags": [
@@ -16,7 +27,10 @@
     {
         "title": "How do I setup Velociraptor with a CloudFlare Tunnel?",
         "link": "/knowledge_base/tips/cloudflare_tunnel",
-        "tags": [],
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
         "author": "gru3zi",
         "author_avatar": "https://avatars.githubusercontent.com/u/44057919?v=4",
         "author_link": "https://github.com/gru3zi",
@@ -86,7 +100,11 @@
     {
         "title": "How do I get a list of hunts across multiple organizations?",
         "link": "/knowledge_base/tips/multi_org",
-        "tags": [],
+        "tags": [
+            "vql",
+            "orgs",
+            "hunting"
+        ],
         "author": "scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
@@ -471,14 +489,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "How to automatically post process flows with an external program.",
-        "link": "/knowledge_base/tips/post_process_with_external_program",
-        "tags": [],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

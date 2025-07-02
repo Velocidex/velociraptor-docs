@@ -154,7 +154,8 @@ sources:
         -- Handle the correct partition types
         LET GetAccessor(Magic) =
         if(condition=Magic =~ "NTFS", then="raw_ntfs",
-           else=if(condition=Magic =~ "FAT", then="fat"))
+           else=if(condition=Magic =~ "FAT", then="fat",
+           else=if(condition=Magic =~ "EXT[2-4]", then="ext4")))
 
         LET ListTopDirectory(PartitionPath, Magic) =
         SELECT * FROM if(condition=GetAccessor(Magic=Magic), then={
@@ -173,7 +174,7 @@ sources:
             -- The OSPath to access the partition
             pathspec(
               DelegateAccessor="offset",
-              DelegatePath=pathspec(
+              Delegate=pathspec(
                  DelegateAccessor=Accessor,
                  DelegatePath=ImagePath,
                  Path=format(format="%d", args=StartOffset))) AS _PartitionPath

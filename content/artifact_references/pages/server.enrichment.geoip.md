@@ -1,7 +1,7 @@
 ---
 title: Server.Enrichment.GeoIP
 hidden: true
-tags: [Client Artifact]
+tags: [Server Artifact]
 ---
 
 This artifact can use the MaxMind database to Geo resolve an IP
@@ -43,6 +43,8 @@ export: |
 parameters:
   - name: IP
     description: An IP to lookup
+
+type: SERVER
 
 sources:
   - query: |
