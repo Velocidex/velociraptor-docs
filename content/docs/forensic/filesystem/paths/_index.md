@@ -70,7 +70,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\Windows Presentation Foundat
 With all these confusing rules we need to develop an abstraction that
 allows Velociraptor to handle all these cases correctly.
 
-Correct path handling is extremely important for Velociraptor Without
+Correct path handling is extremely important for Velociraptor. Without
 it various subtle bugs can be encountered where a path is emitted from
 one plugin (e.g. `glob()`) but misinterpreted by other plugins
 (e.g. `read_file()`) which fail to open the same file correctly. Since
