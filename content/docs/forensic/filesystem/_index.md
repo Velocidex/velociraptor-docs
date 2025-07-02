@@ -211,9 +211,11 @@ FROM glob(globs='HKU/*/Environment/*', accessor='registry')
 ```
 
 For convenience we also have the `read_reg_key` plugin which is similar to using
-both `glob` and `read_file` together, as in the previous example, which returns
-the key's values as columns. Note that with this registry-specific plugin we do
-not need to specify the `registry` accessor.
+both `glob` and `read_file` together, as in the previous example. The main
+difference is that `read_reg_key` returns the key's values as columns which
+makes it easier to work with them in VQL. Note that with this registry-specific
+plugin we do not need to specify the `registry` accessor, as that is the
+default.
 
 ```vql
 SELECT *
