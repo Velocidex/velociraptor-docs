@@ -59,6 +59,10 @@ parameters:
      default: LOCAL
      description: Default timezone for parsing timestamps
 
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'

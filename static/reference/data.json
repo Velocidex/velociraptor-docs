@@ -430,6 +430,22 @@
         "category": "accessors"
     },
     {
+        "name": "background",
+        "description": "Run a query in the background.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generator rows."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "backup",
         "description": "Generates a backup file.",
         "type": "Plugin",
@@ -4472,12 +4488,17 @@
         "args": [
             {
                 "name": "component",
-                "type": "string"
+                "type": "string",
+                "repeated": true
+            },
+            {
+                "name": "prelog",
+                "type": "bool"
             }
         ],
         "category": "server",
         "metadata": {
-            "permissions": "READ_RESULTS"
+            "permissions": "SERVER_ADMIN"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -6851,6 +6872,11 @@
                 "name": "DelegatePath",
                 "type": "string",
                 "description": "A delegate to pass to the accessor."
+            },
+            {
+                "name": "Delegate",
+                "type": "LazyExpr",
+                "description": "A delegate to pass to the accessor (must be another pathspec)."
             },
             {
                 "name": "Path",
@@ -9699,6 +9725,28 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "template",
+        "description": "Expand a Go style template .",
+        "type": "Function",
+        "args": [
+            {
+                "name": "template",
+                "type": "string",
+                "description": "A Go Template compatible string.",
+                "required": true
+            },
+            {
+                "name": "expansion",
+                "type": "ordereddict.Dict",
+                "description": "An object to be expanded into the template.",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

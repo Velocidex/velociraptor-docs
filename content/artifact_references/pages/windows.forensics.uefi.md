@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 This artifact enables disk analysis over an EFI System Partition (ESP).
 
-The artifact queries the specified pysical disk, parses the partition table
+The artifact queries the specified physical disk, parses the partition table
 to targets the ESPs File Allocation Table (FAT).
 
 The default artifact returns file information, and PE enrichment as typical EFI files are in the PE format.
@@ -27,7 +27,7 @@ author: Matt Green - @mgreen27
 description: |
   This artifact enables disk analysis over an EFI System Partition (ESP).
 
-  The artifact queries the specified pysical disk, parses the partition table
+  The artifact queries the specified physical disk, parses the partition table
   to targets the ESPs File Allocation Table (FAT).
 
   The default artifact returns file information, and PE enrichment as typical EFI files are in the PE format.

@@ -23,6 +23,8 @@ parameters:
   - name: ReadllyDoIt
     type: bool
 
+required_permissions:
+  - FILESYSTEM_WRITE
 
 sources:
   - query: |
