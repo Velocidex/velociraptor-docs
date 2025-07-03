@@ -4,7 +4,7 @@ description: "Debugging"
 ---
 
 Like any piece of software, Velociraptor makes a number of engineering
-tradeoffs, and may encounter some error conditions or event bugs. When
+tradeoffs, and may encounter some error conditions or even bugs. When
 faced with the prospect of an unresponsive server or client, or high
 CPU load, users often ask *"What is Velociraptor doing right now?"*
 
@@ -37,9 +37,10 @@ list. In this case, you will probably be asked to attach a profile to
 your request. This helps the developers to understand issues within
 the system.
 
-Simply collect the relevant artifact (either from the server or a
-client) and export the collection into a zip file. You can then send
-us the Zip file for analysis.
+Simply collect the relevant artifact (either from the server with
+`Server.Monitor.Profile` or a client with `Generic.Client.Profile`)
+and export the collection into a zip file from the GUI. You can then
+send us the Zip file for analysis.
 
 {{% /notice %}}
 
