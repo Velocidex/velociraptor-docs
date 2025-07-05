@@ -88,24 +88,24 @@ For example, the relevant part of the server configuration might be:
 
 ```yaml
 autoexec:
-    artifact_definitions:
+  artifact_definitions:
     - name: InitializeServer
       description: Setup the server on first run
       sources:
-      - query: |
-        LET _ <= SELECT *
-          FROM Artifact.Server.Import.CuratedSigma()
+        - query: |
+            LET _ <= SELECT *
+                     FROM Artifact.Server.Import.CuratedSigma()
 
-        SELECT add_client_monitoring(
-                  label="Monitoring",
-                  artifact="Windows.Hayabusa.Monitoring",
-                  parameters=dict(RuleLevel="Critical, High, and Medium",
-                                  RuleStatus="Stable")) AS Monitoring,
-              artifact_set_metadata(name="InitializeServer", hidden=TRUE)
-        FROM scope()
+            SELECT add_client_monitoring(
+                      label="Monitoring",
+                      artifact="Windows.Hayabusa.Monitoring",
+                      parameters=dict(RuleLevel="Critical, High, and Medium",
+                                      RuleStatus="Stable")) AS Monitoring,
+                  artifact_set_metadata(name="InitializeServer", hidden=TRUE)
+            FROM scope()
 
 Frontend:
-   initial_server_artifacts:
+  initial_server_artifacts:
     - InitializeServer
 ```
 

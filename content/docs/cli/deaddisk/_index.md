@@ -59,7 +59,7 @@ velociraptor client -c ./client.config.yaml --remap ./remapping.yaml
 The `deaddisk` command, by default, only supports Windows disk/partition images,
 and Windows partitions mounted to folders.
 
-From version 0.75 this CLI command uses the artifact
+From version 0.74.4 this CLI command uses the artifact
 `Generic.Utils.DeadDiskRemapping` internally to generate the remapping
 configuration file. So you can use this artifact in the GUI if you prefer - the
 resulting config will be identical since both methods use the same VQL.
