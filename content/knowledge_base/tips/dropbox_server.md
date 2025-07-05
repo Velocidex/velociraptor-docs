@@ -43,15 +43,15 @@ For this example we assume the dropbox server has the IP `192.168.1.1`
 
 2. Start the server using the following command:
 
-```
+```sh
 MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio server /tmp/minio --console-address ":9001" --address ":4566"
 ```
 
 This will start a server with the admin password provided and store
 all files in the `/tmp/minio` directory. The web console will be
-available on port 9001 and the API port will be 4566. You can view the
+available on port `9001` and the API port will be `4566`. You can view the
 web console for MinIO by navigating the browser to
-http://192.168.1.1:9001
+`http://192.168.1.1:9001`
 
 Please use a more complex password in reality, for this demonstration
 we will use a weak password.
@@ -60,7 +60,7 @@ we will use a weak password.
    the `mc` command available from
    https://dl.min.io/client/mc/release/
 
-```
+```sh
 wget https://dl.min.io/client/mc/release/linux-amd64/mc
 chmod +x ./mc
 
@@ -76,7 +76,7 @@ chmod +x ./mc
    console](https://training.velociraptor.app//modules/offline_collection/cloud_upload.html#/8),
    but using the command line it is quicker
 
-```
+```sh
 # Add a new uploader user with specific access key and secret key
 ./mc admin user add uploader access_key_123 secret_key_123
 ```
@@ -100,7 +100,7 @@ chmod +x ./mc
 ```
 
 
-```
+```sh
 # Create the policy from the JSON file
  ./mc admin policy create myminio uploader /tmp/uploader.policy.json
 
@@ -132,14 +132,15 @@ FROM glob(globs='/uploads/*', accessor='s3')
 ```
 
 Run this query with Velociraptor:
-```
+
+```sh
 velociraptor-v0.74.4-linux-amd64 -v query -f /tmp/test.vql
 ```
 
 The first query uploads a test file to the bucket, we then try to read
 it back out - this should be denied:
 
-```
+```text
 [INFO] 2025-07-05T02:26:32Z upload_S3: Uploading test.txt to uploads
 [
  {
@@ -158,7 +159,7 @@ You can verify the file is there using the MinIO Console.
    directory. The `--watch` flag will continuously watch the bucket to
    export files in real time (omit it for one shot export).
 
-```
+```sh
 ./mc mirror --watch myminio/uploads /tmp/backup/
 ```
 
