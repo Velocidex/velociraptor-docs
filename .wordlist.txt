@@ -1837,3 +1837,7 @@ deployable
 SIDs
 prelog
 
+
+dropbox
+uplinks
+MinIO
