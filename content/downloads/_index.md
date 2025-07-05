@@ -5,52 +5,52 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.74.4
+release: 0.74.5
 base_release: 0.74
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: b00684287278d00e247bbc35a1f2cdec6b456499311c60748fe4234b246dc9aa
+    hash: f39d1164fba6a6aeb9759f98bcb6424a96cd6b06833d66714e1be3fc249cd544
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: 2f494444267faf8f3455bd9dce604610b111102bb1f33220b08ddf9baf9a1cc1
+    hash: 4d8708501edabeab1c30c481b07138f8d06d18610491f100f4e268069b397376
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: e4a38333745db7c949ef273ccec74ed3ddff739f93f39a37fb0caa755f7b000c
+    hash: 6ab6f29f459a8eb180b5bc81a8f7711c696599d5068fb09e594e88d20151c452
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: f4deb6dfc26339d0649af4d7fa123e73ed78c0f78741a5ca43d0f1d5e8a8c8ed
+    hash: 05a3199f5bd721762e79c1436f4b806ca65a4d8350f0e9d710c5099315b3a776
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: e054c1b58b79bbab9ed2abfb75fd957598bf8b5294e7bec0e939f5d31056bd9f
+    hash: 710be6656b5668ff2bac551b80acee4958383aa5cfd8c9f7b895aa32046d9e35
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: 312d13f063b7c46776eda84f5d0ef0a17ac81eb6b01a056a65b7454bf9e646dc
+    hash: bd18b915b16f3db7778065208aecde522438c00970620c3bf5fb45860a506798
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: d5da82558921190f0c89f76bc18181b5475012a65fb33eb7dff3df80727f6325
+    hash: f2416a0dface7cbbd7194b50639141e185961b9c4199d81d66e4cda4151691de
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash: 212b34310b30dcb70506afba64fceb3e49d495e5c0bb27b6fcb747aac1b0d5ae
+    hash: a63ea7927c31a760f0307844362a27f812a3354a084e724441e50bebab23ff80
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash: 6671d3f73ce655bef4689d9cc02cf6bf9eb0636d7d1c871a960c61c7882e7c42
+    hash: 4e15e9f63bce88628df3720747945b9f7d097d1fccde9558a4c3d985221df8e5
     platform: apple
 
   - desc: FreeBSD AMD64
@@ -61,12 +61,12 @@ arches:
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
-    hash: 2216689ba402137f4896296cb3c7496fef8b34c20a76b321d0f04c86baf31dfa
+    hash: 51a58e048c1dae45efe02a9a088f856a7b63ed9ea47776678b1c5bb5f6f6fc72
     platform: windows
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
-    hash: 606f6a46976cba2c3f762e2ec93e56b232139fedd7d1c428fea3cf2ed0141ca5
+    hash: 2c6acdbab4c1914de72ec4d8f5e9f57d328405fa3192cd3bc11c08a96ddba99e
     platform: windows
 
 
@@ -101,9 +101,11 @@ However, note the following caveats:
 * This build may be insecure! since it includes unsupported
   dependencies.
 
-* We typically update to the latest version of Velociraptor but it may
-  be that in future we disable some feature (VQL plugins) that can not
-  be easily updated.
+* We might disable some feature (VQL plugins) that can not be easily
+  updated. These builds may miss some specific functionality.
+
+* If you need to use these builds for an offline collector we
+  recommend using [the generic collector]({{< ref "/docs/offline_triage/#the-generic-offline-collector" >}}).
 
 
 **Do not use this build in a general deployment!** Only use it for
