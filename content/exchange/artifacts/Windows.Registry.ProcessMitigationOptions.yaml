@@ -1,0 +1,21 @@
+name: Windows.Registry.ProcessMitigationOptions
+description: |
+   This artifact parses Exploit Guards MitigationOptions to see what security controls
+   are enabled for each process, and returns them in a 15 digit hexidecimal value. 
+   
+   Ref: https://theryuu.github.io/ifeo-mitigationoptions.txt
+
+type: CLIENT
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+        SELECT 
+            path_split(path=OSPath)[-2] AS ProcName, OSPath, 
+            Data.value AS DecValue, 
+            format(format="%015x", args=Data.value) AS HexValue
+        FROM glob(
+            globs="HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\*\\MitigationOptions", 
+            accessor="reg")
