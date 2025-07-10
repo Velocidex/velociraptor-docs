@@ -13,7 +13,7 @@ sources:
 
     query: |
         SELECT 
-            path_split(path=OSPath)[-2] AS ProcName, OSPath, 
+            OSPath[-2] AS ProcName, OSPath, 
             Data.value AS DecValue, 
             format(format="%015x", args=Data.value) AS HexValue
         FROM glob(
