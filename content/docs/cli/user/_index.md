@@ -2,6 +2,7 @@
 menutitle: "user"
 title: 'The "user" command group'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 100
 summary: "Commands for working with users"
@@ -26,7 +27,7 @@ To add or modify users during runtime you should instead use the `user`,
 
 ---
 
-### [ user add ]
+## [ user add ]
 
 ```text
 user add --role=ROLE <username> [<password>]
@@ -44,7 +45,7 @@ required or asked for.
 
 ---
 
-### [ user show ]
+## [ user show ]
 
 ```text
 user show [<flags>] <username>

@@ -2,7 +2,7 @@
 menutitle: "CLI"
 title: "The Velociraptor CLI"
 date: 2025-05-14
-last_reviewed: 2025-05-14
+last_reviewed: 2025-07-06
 draft: false
 weight: 80
 ---
@@ -24,7 +24,7 @@ Velociraptor's CLI commands generally consist of a command and optionally a
 subcommand, using a subject-verb syntax. For example `config show`.
 
 There are [global flags]({{< ref "/docs/cli/flags/" >}}) that can be used with
-any command, and also flags which are specific to each command and
+any command, and also flags that are specific to each command and
 subcommand.
 
 ## How to get help for commands
@@ -50,8 +50,8 @@ You can print a more verbose listing of help for all commands by using the
 `--help-long` flag:
 - `velociraptor --help-long`
 
-A huge list of command line flags and environment variables are supported - too
-many to show in the standard help listing. To see all of these, set the
+A huge number of command line flags and environment variables are supported -
+too many to show in the standard help listing. To see all of these, set the
 environment variable `DEBUG=1` before running the help command:
 
 `DEBUG=1 velociraptor -h`

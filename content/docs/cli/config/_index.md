@@ -17,7 +17,7 @@ loaded unless you use the `--config` flag.
 
 ---
 
-### [ config show ]
+ config show ]
 
 ```text
 config show [<flags>]
@@ -32,7 +32,7 @@ config show [<flags>]
 
 ---
 
-### [ config client ]
+ config client ]
 
 ```text
 config client
@@ -41,7 +41,7 @@ config client
 
 ---
 
-### [ config api_client ]
+ config api_client ]
 
 ```text
 config api_client --name=NAME [<flags>] <output>
@@ -58,7 +58,7 @@ Args:
 
 ---
 
-### [ config generate ]
+ config generate ]
 
 ```text
 config generate [<flags>]
@@ -73,7 +73,7 @@ config generate [<flags>]
 
 ---
 
-### [ config rotate_keys ]
+ config rotate_keys ]
 
 ```text
 config rotate_keys [<flags>]
@@ -84,7 +84,7 @@ config rotate_keys [<flags>]
 
 ---
 
-### [ config reissue_certs ]
+ config reissue_certs ]
 
 ```text
 config reissue_certs [<flags>]
@@ -95,7 +95,7 @@ config reissue_certs [<flags>]
 
 ---
 
-### [ config frontend ]
+ config frontend ]
 
 ```text
 config frontend
@@ -104,7 +104,7 @@ config frontend
 
 ---
 
-### [ config repack ]
+ config repack ]
 
 ```text
 config repack [<flags>] <config_file> <output>

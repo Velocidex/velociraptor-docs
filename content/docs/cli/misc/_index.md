@@ -2,6 +2,7 @@
 menutitle: "Miscellaneous"
 title: "Miscellaneous commands"
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 120
 summary: All other commands not previously covered.
@@ -11,7 +12,7 @@ All other commands not previously covered.
 
 ---
 
-#### [ client ]
+## [ client ]
 
 ```text
 client [<flags>]
@@ -23,7 +24,7 @@ client [<flags>]
 
 ---
 
-#### [ csv ]
+## [ csv ]
 
 ```text
 csv [<flags>] <files>...
@@ -39,7 +40,7 @@ Args:
 ----
 
 
-### [ debian ]
+## [ debian ]
 
 ```text
 debian server [<flags>]
@@ -59,7 +60,7 @@ debian client [<flags>]
 
 ----
 
-### [ frontend ]
+## [ frontend ]
 
 ```text
 frontend [<flags>]
@@ -74,7 +75,7 @@ frontend [<flags>]
 
 ----
 
-### [ golden ]
+## [ golden ]
 
 ```text
 golden [<flags>] <directory>
@@ -92,10 +93,8 @@ Args:
 
 ----
 
-### [ gui ]
+## [ gui ]
 
-For more information, see
-[Deployment > Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}}).
 
 ```text
 gui [<flags>]
@@ -106,9 +105,17 @@ gui [<flags>]
     --[no-]noclient        Do not bring up a client
 ```
 
+For more information, see
+[Deployment > Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}}).
+
 ----
 
-### [ hunts reconstruct ]
+## [ hunts reconstruct ]
+
+```text
+hunts reconstruct
+    Reconstruct all hunt objects from logs
+```
 
 This command aims to recover lost hunts, which may occur in unusual situations
 like the disk filling up unexpectedly, although its effectiveness depends on the
@@ -124,21 +131,17 @@ movement of files after recovery.
 
 The command can be run while the server is running or stopped.
 
-```text
-hunts reconstruct
-    Reconstruct all hunt objects from logs
-```
-
-**Usage:**
+#### Example
 
 ```sh
+# first change to the velociraptor user to avoid messing up the datastore's filesystem ACLs
 sudo -u velociraptor bash
 velociraptor hunts reconstruct --config /path/to/server.config.yaml
 ```
 
 ----
 
-### [ pool_client ]
+## [ pool_client ]
 
 ```text
 pool_client [<flags>]
@@ -152,34 +155,7 @@ pool_client [<flags>]
 
 ----
 
-### [ query ]
-
-For more information, see
-[Deployment > Command line investigation tool]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}).
-
-```text
-query [<flags>] <queries>...
-    Run a VQL query
-
-    -f, --[no-]from_files  Args are actually file names which will contain the VQL query
-        --timeout=0        Time collection out after this many seconds.
-        --org="root"       The Org ID to target with this query
-        --cpu_limit=0      A number between 0 to 100 representing maximum CPU utilization.
-        --format=json      Output format to use (text,json,csv,jsonl).
-        --dump_dir=""      Directory to dump output files.
-        --output=""        A file to store the output.
-        --env=ENV ...      Environment for the query.
-        --scope_file=""    Load scope from here. Creates a new file if file not found
-        --[no-]do_not_update_scope_file
-                           Do not update the scope file with the new scope
-
-Args:
-  <queries>  The VQL Query to run.
-```
-
-----
-
-### [ rpm ]
+## [ rpm ]
 
 ```text
 rpm client [<flags>]
@@ -199,7 +175,7 @@ rpm server [<flags>]
 
 ----
 
-### [ unzip ]
+## [ unzip ]
 
 ```text
 unzip [<flags>] <file> [<members>]
@@ -217,6 +193,8 @@ Args:
   [<members>]  Members glob to extract
 ```
 
+#### Notes
+
 - If the zip files are secured with the server's X509 certificate then you need
   to provide the config to the command using the `--config` flag so that it can
   access the secured archive. Otherwise you will see the error
@@ -228,7 +206,7 @@ Args:
 
 ----
 
-### [ version ]
+## [ version ]
 
 ```text
 version

@@ -25,7 +25,7 @@ To add or modify users during runtime you should instead use the `user`,
 
 ---
 
-### [ acl show ]
+ acl show ]
 
 ```text
 acl show [<flags>] <principal>
@@ -39,7 +39,7 @@ Args:
 
 ---
 
-### [ acl grant ]
+ acl grant ]
 
 ```text
 acl grant [<flags>] <principal> [<policy>]

@@ -35,7 +35,7 @@ datastore. This means that such commands need to be run with the `--config`
 
 ---
 
-### [ fs ls ]
+ fs ls ]
 
 Equivalent VQL:
 
@@ -55,7 +55,7 @@ Args:
   [<path>]  The path or glob to list
 ```
 
-**Examples:**
+#### Examples
 
 ```text
 velociraptor fs ls "C:\\Windows\\System32\\*.exe"
@@ -69,7 +69,7 @@ will list all registry keys under HKEY_LOCAL_MACHINE/SOFTWARE.
 
 ---
 
-### [ fs cp ]
+ fs cp ]
 
 Equivalent VQL:
 
@@ -99,7 +99,7 @@ Args:
   <dumpdir>  The directory to store files at.
 ```
 
-**Example:**
+#### Example
 
 ```text
 velociraptor --config ./server.config.yaml fs cp -l --accessor=fs "/**/*.msi" ../MSI
@@ -108,7 +108,7 @@ will copy msi files from the server filestore to a folder named MSI.
 
 ---
 
-### [ fs cat ]
+ fs cat ]
 
 ```text
 fs cat <path>
@@ -125,7 +125,7 @@ Args:
 
 ---
 
-### [ fs rm ]
+ fs rm ]
 
 Equivalent VQL:
 

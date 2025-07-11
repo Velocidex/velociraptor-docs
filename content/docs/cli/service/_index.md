@@ -2,6 +2,7 @@
 menutitle: "service"
 title: 'The "service" command group'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 80
 summary: Manipulate the Velociraptor client service on Windows and macOS.
@@ -10,8 +11,8 @@ summary: Manipulate the Velociraptor client service on Windows and macOS.
 These commands manipulate the Velociraptor **client service** on Windows and
 macOS. They are only available in the Windows or macOS (Darwin) binaries.
 
-The client
-[can be installed as a service]({{< ref "/docs/deployment/clients/" >}}).
+The client can be
+[installed as a service]({{< ref "/docs/deployment/clients/" >}}).
 Usually this is done using installer packaging:
 
 - MSI for Windows
@@ -29,7 +30,7 @@ capability as an alternative for unusual deployment scenarios.
 
 ---
 
-## Windows
+## Windows platform
 
 On Windows the `service` command group functions much like Microsoft's Service
 Control Manager (`sc.exe`), with the exception being that it can also install or
@@ -105,7 +106,7 @@ Windows client the service configuration's command line will be:
 
 ---
 
-## macOS
+## macOS platform
 
 
 ### [ service install ]

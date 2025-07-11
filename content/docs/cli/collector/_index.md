@@ -9,15 +9,15 @@ summary: "Build an offline collector"
 
 Builds an offline collector.
 
----
-
-### [ collector ]
-
 Typically offline collectors are built using a
 [user-friendly workflow]({{< ref "/docs/offline_triage/#offline-collections" >}})
 in the GUI. This command allows you to do the same thing on the command line,
 and is intended to support automated build environments. For new users the GUI
-is definitely the preferred way to accomplish the task.
+is definitely the recommended way to accomplish the task.
+
+---
+
+## [ collector ]
 
 ```text
 collector [<flags>] [<spec_file>]
