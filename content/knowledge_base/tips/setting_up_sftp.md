@@ -19,7 +19,7 @@ misconfigure things in ways that can leave a server open to exploitation.
 Unless you have a strong reason to prefer using SFTP we recommend you consider
 less arcane alternative options such as the one described in
 [How to set up a local S3 dropbox server]({{< ref "/knowledge_base/tips/dropbox_server/">}})
-using Minio.
+using MinIO.
 
 {{% /notice %}}
 
