@@ -26,7 +26,7 @@ other systems. Placing secrets in a centralized location allows
 artifacts to use them without exposing them to non-administrator users
 on the server.
 
-![The Server Metadata editor](server_metadata.png?classes=shadow&width=80pc)
+![The Server Metadata editor](server_metadata.png)
 
 ## User Preferences
 
@@ -72,7 +72,7 @@ application that can be adjusted.
 The Dashboard can be accessed from the Home icon on the sidebar. The
 dashboard shows the current state of the deployment at a high level.
 
-![The Server Dashboard](dashboard.png?classes=shadow&width=80pc)
+![The Server Dashboard](dashboard.png)
 
 The dashboard is divided into two parts. On the left, the total memory
 and CPU used by all frontends is down over the past day. On the right,
