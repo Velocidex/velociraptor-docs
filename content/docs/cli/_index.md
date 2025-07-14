@@ -16,7 +16,7 @@ cases are CLI equivalents of functions that are available in VQL.
 You can also do investigation of the local system using the CLI alone, as
 described [here]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}),
 [here]({{< ref "/docs/cli/artifacts/#-artifacts-collect-" >}}) and
-[here]({{< ref "/docs/cli/misc/#query" >}}).
+[here]({{< ref "/docs/cli/query/" >}}).
 
 ## General command syntax
 

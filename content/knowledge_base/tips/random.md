@@ -13,7 +13,7 @@ SELECT join(array=RandomChars.Character) as Characters FROM scope()
 ```
 Modify the Character WHERE regex and LIMIT for desired results.
 
-![image](259396221-15d5e7f3-f519-4446-bbcb-fb42d97f4197.png)
+![](259396221-15d5e7f3-f519-4446-bbcb-fb42d97f4197.png)
 
 
 Tags: #random, #vql
