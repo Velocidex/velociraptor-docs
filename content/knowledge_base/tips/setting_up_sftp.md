@@ -2,12 +2,26 @@
 
 There are many options for receiving uploaded files from the
 [offline collector]({{< ref "http://localhost:1313/docs/offline_triage/#offline-collections" >}}),
-for example using S3 buckets, Azure storage services and even the [AWS SFTP
-transfer service]({{% ref "blog/2021/2021-12-11-sftp-in-aws/" %}}).
+for example
+[using S3 buckets]({{< ref "/knowledge_base/tips/dropbox_server/">}}),
+Azure storage services and even the
+[AWS SFTP transfer service]({{% ref "blog/2021/2021-12-11-sftp-in-aws/" %}}).
 
 However sometimes it is simpler to set up your own SFTP server to
 receive incoming uploads (it is certainly cheaper than the AWS managed
 service).
+
+{{% notice warning %}}
+
+Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
+misconfigure things in ways that can leave a server open to exploitation.
+
+Unless you have a strong reason to prefer using SFTP we recommend you consider
+less arcane alternative options such as the one described in
+[How to set up a local S3 dropbox server]({{< ref "/knowledge_base/tips/dropbox_server/">}})
+using Minio.
+
+{{% /notice %}}
 
 This tip explains how to set up a server securely.
 
@@ -85,6 +99,14 @@ remote readdir("/files/"): Permission denied
 
 As you can see the `sftpupload` user does not have permission to read
 the directory but can upload files to it.
+
+If we try shell access via SSH it will correctly be denied:
+
+```sh
+$ ssh localhost
+This service allows sftp connections only.
+Connection to localhost closed.
+```
 
 ### Offline Collector configuration
 
