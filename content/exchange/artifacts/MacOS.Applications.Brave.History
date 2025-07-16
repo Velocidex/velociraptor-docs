@@ -1,0 +1,44 @@
+name: MacOS.Applications.Brave.History
+description: |
+  Read all users' Brave browser history on macOS.
+
+parameters:
+  - name: historyGlobs
+    default: "/Users/*/Library/Application Support/BraveSoftware/Brave-Browser/Default/History"
+  - name: urlSQLQuery
+    default: |
+      SELECT 
+        url AS visited_url,
+        title,
+        visit_count,
+        typed_count,
+        last_visit_time
+      FROM urls
+  - name: userRegex
+    default: .
+
+precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+
+sources:
+  - query: |
+      LET history_files = SELECT
+         parse_string_with_regex(regex="/Users/(?P<User>[^/]+)", string=OSPath).User AS User,
+         OSPath, Mtime
+      FROM glob(globs=historyGlobs)
+      WHERE User =~ userRegex
+
+      SELECT * FROM foreach(row=history_files,
+        query={
+          SELECT 
+            User,
+            OSPath,
+            Mtime,
+            visited_url,
+            title,
+            visit_count,
+            typed_count,
+            timestamp(epoch=last_visit_time/1000000 + 11644473600) AS last_visit_time
+          FROM sqlite(
+            file=OSPath,
+            query=urlSQLQuery)
+        })
