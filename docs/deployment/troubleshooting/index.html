@@ -1,0 +1,269 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Troubleshooting and Debugging :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1752751871 rel=stylesheet><link href=/css/font-awesome-all.min.css?1752751871 rel=stylesheet><link href=/css/featherlight.min.css?1752751871 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1752751871 rel=stylesheet><link href=/css/auto-complete.css?1752751871 rel=stylesheet><link href=/css/theme.css?1752751871 rel=stylesheet><link href=/css/tabs.css?1752751871 rel=stylesheet><link href=/css/hugo-theme.css?1752751871 rel=stylesheet><link href=/css/theme-mine.css?1752751871 rel=stylesheet><link href=/css/dark.css?1752751871 rel=stylesheet><link href=/css/syntax.css?1752751871 rel=stylesheet><link href=/css/light.css?1752751871 rel=stylesheet><link href=/css/hljs.css?1752751871 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1752751871 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1752751871></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/deployment/troubleshooting/><nav id=sidebar><div id=header-wrapper><div id=header><script>function darkmode(){$("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/"}function lightmode(){$("body").removeClass("dark").addClass("light"),document.cookie="theme=lightmode;path=/"}const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?darkmode():lightmode()</script><div class="btn btn-default ThemeSelector darkmode" onclick=darkmode()><i class="fas fa-moon"></i></div><div class="btn btn-default ThemeSelector lightmode" onclick=lightmode()><i class="fas fa-sun"></i></div><a href=https://docs.velociraptor.app/><img src=https://docs.velociraptor.app//images/logo.svg></a></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/troubleshooting/ class="dd-item active"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/troubleshooting/>Troubleshooting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/services/export/>Export</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/services/open_close/>Tempfiles</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/queries/>Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/plugins/windows_event/>Evtx</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/plugins/sigma/>Sigma</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/debugging/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/debugging/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/remote_uploads/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/remote_uploads/>Remote Uploads</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/flags/>CLI flags</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/troubleshooting/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Troubleshooting and Debugging</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#troubleshooting-deployments>Troubleshooting deployments</a><ul><li><a href=#server-fails-to-start>Server fails to start</a></li><li><a href=#debugging-client-communications>Debugging client communications</a></li></ul></li><li><a href=#debugging-velociraptor>Debugging Velociraptor</a><ul><li><a href=#starting-the-debug-server>Starting the debug server</a></li><li><a href=#debugging-the-offline-collector>Debugging the offline collector</a></li><li><a href=#debugging-the-server>Debugging the server</a></li><li><a href=#collecting-metrics>Collecting metrics</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Troubleshooting and Debugging</h1><h2 id=troubleshooting-deployments>Troubleshooting deployments</h2><p>Sometimes things don&rsquo;t work when you first try them. This page will go
+through the common issues people find when deploying Velociraptor
+clients and the steps needed to debug them.</p><h3 id=server-fails-to-start>Server fails to start</h3><p>If the server fails to start, you can try to start it by hand to see
+any logs or issues. Typically the Linux service will report something
+unhelpful such as:</p><pre><code># service velociraptor_server status
+● velociraptor_server.service - Velociraptor linux amd64
+    Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+    Active: activating (auto-restart) (Result: exit-code) since Fri 2021-12-31 15:32:58 AEST; 1min 1s ago
+   Process: 3561364 ExecStart=/usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend (code=exited, status=1/FAILURE)
+  Main PID: 3561364 (code=exited, status=1/FAILURE)
+</code></pre><p>You can usually get more information from the system log files,
+usually <code>/var/log/syslog</code>. Alternative you can try to start the
+service by hand and see any issues on the console.</p><p>First change to the Velociraptor user and then start the service as that user.</p><pre><code># sudo -u velociraptor bash
+$ velociraptor frontend -v
+Dec 31 15:47:18 devbox velociraptor[3572509]: velociraptor.bin: error: frontend: loading config file: failed to acquire target io.Writer: failed to create a new file /mnt/data/logs/Velociraptor_debug.log.202112270000: failed to open file /mnt/data/logs/Velociraptor_debug.log.202112270000: open /mnt/data/logs/Velociraptor_debug.log.202112270000: permission denied
+</code></pre><p>In this case, Velociraptor can not start because it can not write on
+its logs directory. Other errors might be disk full or various
+permission denied problems.</p><div class="mynotices warning"><div heading=" Incorrect permissions in the filestore "><p>Because Velociraptor normally runs as a low privileged user, it needs
+to maintain file ownership as the <code>velociraptor</code> user. Sometimes
+permissions change by accident (usually this happens by running
+velociraptor as root and interacting with the file store - you should
+<strong>always</strong> change to the <code>velociraptor</code> user before interacting with
+the server).</p><p>It is worth checking file permissions (using <code>ls -l</code>) and recursively
+returning file ownership back to the <code>velociraptor</code> user (using the
+command <code>chown -R velociraptor:velociraptor /path/to/filestore/</code>)</p></div></div><h3 id=debugging-client-communications>Debugging client communications</h3><p>If the client does not appear to properly connect to the server, the
+first thing is to run it manually (using the <code>velociraptor --config client.config.yaml client -v</code> command):</p><p><figure id=071b193f5ed18b1c4ce95d3b6c60ed2a><div data-featherlight=#071b193f5ed18b1c4ce95d3b6c60ed2a class=figure><img src=1TOeyrCcX69mtUdO8E4ZK9g.png alt="Running the client manually"></div><figcaption><a class=image-link href=1TOeyrCcX69mtUdO8E4ZK9g.png><i class="fa fa-download"></i></a>
+Running the client manually</figcaption></figure></p><p>In the above example, I ran the client manually with the -v switch. I
+see the client starting up and immediately trying to connect to its
+URL (in this case <code>https://test.velocidex-training.com/</code>) However
+this fails and the client will wait for a short time before retrying
+to connect again.</p><p><img class=inline src=1IzCgKdN28sjntuxd9mUJew.png></p><p>A common problem here is network filtering making it impossible to
+reach the server. You can test this by simply running curl with the
+server’s URL.</p><p>Once you enable connectivity, you might encounter another problem</p><p><figure id=485f4d0046c5b658ad00178f5ad07578><div data-featherlight=#485f4d0046c5b658ad00178f5ad07578 class=figure><img src=1p3MPNfTbXBzNMs-X4yv4SA.png alt="Captive portal interception"></div><figcaption><a class=image-link href=1p3MPNfTbXBzNMs-X4yv4SA.png><i class="fa fa-download"></i></a>
+Captive portal interception</figcaption></figure></p><p>The <strong>Unable to parse PEM</strong> message indicates that the client is
+trying to fetch the <strong>server.pem</strong> file but it is not able to validate
+it. This often happens with captive portal type of proxies which
+interfere with the data transferred. It can also happen if your DNS
+setting point to a completely different server.</p><p>We can verify the <strong>server.pem</strong> manually by using curl (note that
+when using self-signed mode you might need to provide curl with the -k
+flag to ignore the certificate errors):</p><p><figure id=bb9ab6e569b9309d63e98961c94db6c1><div data-featherlight=#bb9ab6e569b9309d63e98961c94db6c1 class=figure><img src=1P9W4CnX9qNLGiRgnHGyLAw.png alt="Fetching the server certificate"></div><figcaption><a class=image-link href=1P9W4CnX9qNLGiRgnHGyLAw.png><i class="fa fa-download"></i></a>
+Fetching the server certificate</figcaption></figure></p><p>Note that the <strong>server.pem</strong> is always signed by the velociraptor
+internal CA in all deployment modes (even with lets encrypt). You can
+view the certificate details by using openssl:</p><pre><code class=language-bash>curl https://test.velocidex-training.com/server.pem | openssl x509 -text
+</code></pre><p>If your server certificate has expired, the client will refuse to
+connect to it. To reissue the server certificate simply recreate the
+server configuration file (after suitably backing up the previous
+config file):</p><pre><code class=language-bash>velociraptor config reissue_certs --validity 365 --config server.config.yaml &gt; new_server.config.yaml
+</code></pre><p>Depending on which user invoked the Velociraptor binary, you may need
+to alter the permissions of the new server configuration file.</p><p>For example:</p><pre><code class=language-bash>chmod 600 new_server.config.yaml
+chown velociraptor:velociraptor new_server.config.yaml
+</code></pre><p>From here, you will need to move the updated server configuration into
+the appropriate location.</p><div class="mynotices warning"><div heading=" CA certificate expiry "><p>The above step was able to use the internal Velociraptor CA to reissue
+the server certificate (which is normally issued for 1 year), allowing
+us to rotate the certificate.</p><p>Currently there is no way to update the CA certificate without
+redeploying new clients (the CA certificate is embedded in the client
+config file). When generating the config file initially, the CA
+certificate is created with a 10 year validity.</p></div></div><h2 id=debugging-velociraptor>Debugging Velociraptor</h2><p>Velociraptor is a powerful program with a lot of
+functionality. Sometimes it is important to find out what is happening
+inside Velociraptor and if it doing what is expected. This is
+important for debugging or even just for understanding what is
+happening.</p><p>To see the inner workings of Velociraptor we can collect <code>profiles</code> of
+various aspects of the program. These profiles exist regardless of if
+Velociraptor is used in as a client or server or even an offline
+collector.</p><p>You can read more about profiling in <a href=/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/>Profiling the Beast</a></p><h3 id=starting-the-debug-server>Starting the debug server</h3><p>When provided with the <code>--debug</code> flag, Velociraptor will start the
+debug server on port 6060 (use <code>--debug_port</code> to change it). By
+default the debug server will only bind to localhost so you will need
+to either tunnel the port or use a local browser to connect to it.</p><p><figure id=778ec09b401804e19bcac5223cde5254><div data-featherlight=#778ec09b401804e19bcac5223cde5254 class=figure><img src=debug_server.png alt="Viewing the debug server"></div><figcaption><a class=image-link href=debug_server.png><i class="fa fa-download"></i></a>
+Viewing the debug server</figcaption></figure></p><p>The debug server has a number of different profiles and new ones will
+be introduced, so below we just cover some of the most useful profiles
+you can view.</p><h4 id=notebook-workers>Notebook workers</h4><p>Notebooks are very useful feature of the server allowing for complex
+postprocessing of collected data. Sometimes these queries are very
+large and take a long time to run. To limit the amount of resources
+the queries can take on the server, Velociraptor only creates a
+limited number of notebook workers (by default 5).</p><p><figure id=695ccab1e3801b3bd42997262eef5c43><div data-featherlight=#695ccab1e3801b3bd42997262eef5c43 class=figure><img src=notebook_workers.png alt="Inspecting the notebook workers"></div><figcaption><a class=image-link href=notebook_workers.png><i class="fa fa-download"></i></a>
+Inspecting the notebook workers</figcaption></figure></p><h4 id=currently-running-queries>Currently running queries</h4><p>This view shows the queries currently running in this process. For
+example queries will run as part of the notebook evaluation, currently
+installed event queries or in the case of the offline collector,
+currently collecting artifacts.</p><p><figure id=d7630544cbc9e6988b0bef546f3e1ced><div data-featherlight=#d7630544cbc9e6988b0bef546f3e1ced class=figure><img src=currently_running_queries.png alt="Inspecting the currently running queries"></div><figcaption><a class=image-link href=currently_running_queries.png><i class="fa fa-download"></i></a>
+Inspecting the currently running queries</figcaption></figure></p><p>You can also see all recent queries (even the ones that have completed
+already). This helps to understand what exactly the client is doing.</p><h4 id=etw-subsystem>ETW Subsystem</h4><p>This profile shows the current state of the ETW subsystem on
+Windows. We can see what providers Velociraptor is subscribed to, how
+many queries are currently watching that provider, and how many events
+were received from the provider.</p><p><figure id=df345108b43472ae90db4f0b524b9e83><div data-featherlight=#df345108b43472ae90db4f0b524b9e83 class=figure><img src=etw_profile.png alt="Inspecting the ETW subsystem"></div><figcaption><a class=image-link href=etw_profile.png><i class="fa fa-download"></i></a>
+Inspecting the ETW subsystem</figcaption></figure></p><h4 id=go-profiling-information>Go profiling information</h4><p>For even more low level view of the program execution, we can view the
+<code>Built in Go Profiles</code> which include detailed heap allocation,
+goroutine information and can capture a CPU profile for closer
+inspection.</p><p>This type of information is critical for developers to understand what
+the code is doing, and you should forward it in any bug reports or
+discussions to help the Velociraptor developer team.</p><h3 id=debugging-the-offline-collector>Debugging the offline collector</h3><p>The offline collector is a one shot collector which simply runs,
+collects several preconfigured artifacts into a zip file and
+terminates.</p><p>Sometimes the collector may take a long time or use too much
+memory. In this case you might want to gain visibility into what its
+doing.</p><p>You can start the offline collector by adding the <code>--debug</code> flags to
+its execution in a similar way to above.</p><pre><code class=language-sh>Collector_velociraptor-v0.74.1-windows-amd64.exe -- --debug --debug_port 6061
+</code></pre><p><figure id=cb5bede1d483d1c5b90bba3cbccfe1cd><div data-featherlight=#cb5bede1d483d1c5b90bba3cbccfe1cd class=figure><img src=debugging_offline_collector.png alt="Inspecting the ETW subsystem"></div><figcaption><a class=image-link href=debugging_offline_collector.png><i class="fa fa-download"></i></a>
+Inspecting the ETW subsystem</figcaption></figure></p><p>Note that the additional <code>--</code> is required to indicate that the
+additional parameters are not considered part of the command line (the
+offline collector requires running with no parameters).</p><p>The above will start the debug server on port 6061. You can then
+download goroutine, heap allocation and other profiles from the debug
+server and forward these to the Velociraptor team to resolve any issues.</p><h3 id=debugging-the-server>Debugging the server</h3><p>It is also possible to collect the profile from the server without the
+use of the <code>--debug</code> flag using the <code>Server.Monitor.Profile</code>
+artifact. This is the server equivalent of the
+<code>Generic.Client.Profile</code> artifact.</p><h3 id=collecting-metrics>Collecting metrics</h3><p>When Velociraptor is run in production it is often necessary to build
+dashboards to monitor the server&rsquo;s characteristics, such as memory
+user, requests per second etc.</p><p>Velociraptor exports a lot of important metrics using the standard
+<code>Prometheus</code> library. This information may be scraped from the
+server&rsquo;s monitoring port (by default
+http://127.0.0.1:8003/metrics). You can change the port and bind
+address for the metrics server using the <a href=/docs/deployment/references/#Monitoring.bind_port>Monitoring.bind_port
+</a>and <a href=/docs/deployment/references/#Monitoring.bind_address>Monitoring.bind_address
+</a>setting.</p><p>You can either manually see program metrics using curl or configure an
+external system like <a href=https://grafana.com/ target=_blank>Grafana</a>
+or
+<a href=https://www.datadoghq.com/ target=_blank>DataDog</a>
+to scrape these metrics.</p><pre><code>curl http://127.0.0.1:8003/metrics | less
+</code></pre><p>We recommend that proper monitoring be implemented in production systems.</p><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1752751871></script><script src=/js/perfect-scrollbar.min.js?1752751871></script><script src=/js/perfect-scrollbar.jquery.min.js?1752751871></script><script src=/js/jquery.sticky.js?1752751871></script><script src=/js/featherlight.min.js?1752751871></script><script src=/js/highlight.min.js?1752751871></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1752751871></script><script src=/js/learn.js?1752751871></script><script src=/js/hugo-learn.js?1752751871></script></body></html>
