@@ -83,7 +83,14 @@ sources:
                 then=Stdout) AS Stdout,
              if(condition=len(list=Stdout) &gt;= SizeLimit,
                 then=upload(accessor="data",
-                            file=Stdout, name="Stdout")) AS StdoutUpload
+                            file=Stdout,
+                            name="Stdout" + str(str=count()))) AS StdoutUpload,
+             if(condition=len(list=Stderr) &lt; SizeLimit,
+                then=Stderr) AS Stderr,
+             if(condition=len(list=Stderr) &gt;= SizeLimit,
+                then=upload(accessor="data",
+                            file=Stderr,
+                            name="Stderr" + str(str=count()))) AS StderrUpload
       FROM execve(argv=[PowerShellExe,
         "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
         base64encode(string=utf16_encode(string=Command))
@@ -91,6 +98,8 @@ sources:
 
 column_types:
 - name: StdoutUpload
+  type: preview_upload
+- name: StderrUpload
   type: preview_upload
 
 </code></pre>

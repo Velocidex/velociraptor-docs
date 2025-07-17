@@ -96,6 +96,8 @@ parameters:
         - lookupSID
         - token
         disabled_plugins:
+        - execve
+        - http_client
         - users
         - certificates
         - handles
