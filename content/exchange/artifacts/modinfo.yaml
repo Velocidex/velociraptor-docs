@@ -27,7 +27,7 @@ sources:
 
     query: |
        LET proc_mod = SELECT Name,
-                             dict(Source='/proc/mod',
+                             dict(Source='/proc/modules',
                                   Name=Name,
                                   Size=Size,
                                   UseCount=UseCount,
