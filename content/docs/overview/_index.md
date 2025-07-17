@@ -78,6 +78,45 @@ automating post processing and system administration. Velociraptor's
 VQL enables an open system, adaptable to any environment or
 requirement with ease.
 
+## How can you use Velociraptor?
+
+Velociraptor can be used in many ways depending on your requirements.
+
+![Some of the common ways to use Velociraptor](use_cases.svg)
+
+### Client Server deployment
+
+This is the most common way to use Velociraptor. The agent (In
+Velociraptor terminology `client`) is deployed as a service on all
+endpoints. The Velociraptor server may be deployed in the cloud or on
+premises.
+
+Clients connect back to the server using a persistent connection,
+ready to be tasks by the Velociraptor investigator to collect
+artifacts, hunt etc.
+
+This deployment method allows to rapidly iterate through the
+investigative process, collecting evidence, analysing and recollecting
+rapidly.
+
+### Offline collector
+
+If the Velociraptor client can not be installed on the endpoint,
+Velociraptor allows the creation of `Offline Collectors`. These are
+preconfigured binaries, set to collect specific artifacts into a local
+encrypted ZIP file. The collections can be automatically uploaded to a
+central repository such as a cloud storage service.
+
+Collections can be subsequently imported into the server for analysis,
+just like the client server model above.
+
+### Interactive analysis
+
+Velociraptor can be used for analysis of raw disk images. Using
+remapping rules, a `virtual client` can be launched which uses the
+disk image to collect the same VQL artifacts. This allows disk images
+to be analysed using the same procedure.
+
 ## The Velociraptor Philosophy
 
 Traditional DFIR procedures typically follow these high level phases:
