@@ -175,19 +175,6 @@
         ]
     },
     {
-        "name": "appcompatcache",
-        "description": "Parses the appcompatcache.",
-        "type": "Plugin",
-        "category": "windows",
-        "platforms": [
-            "darwin_amd64_cgo",
-            "darwin_arm64_cgo",
-            "linux_amd64_cgo",
-            "windows_386_cgo",
-            "windows_amd64_cgo"
-        ]
-    },
-    {
         "name": "array",
         "description": "Create an array.",
         "type": "Function",
@@ -438,7 +425,7 @@
             {
                 "name": "query",
                 "type": "StoredQuery",
-                "description": "Run this query to generator rows."
+                "description": "Run this query in the background."
             }
         ],
         "platforms": [
@@ -1605,7 +1592,7 @@
     },
     {
         "name": "data",
-        "description": "Makes a string appears as an in memory file.",
+        "description": "Makes a string appears as an in-memory file.",
         "type": "Accessor",
         "platforms": [
             "darwin_amd64_cgo",
@@ -1663,8 +1650,7 @@
             {
                 "name": "directory_name",
                 "type": "string",
-                "description": "Package files will be created inside this directory. If not specified we use a temporary directory",
-                "required": true
+                "description": "Package files will be created inside this directory. If not specified we use a temporary directory"
             },
             {
                 "name": "extra_args",
@@ -5512,6 +5498,11 @@
                 "description": "The cell of the notebook to update. If this is empty we add a new cell to the notebook"
             },
             {
+                "name": "delete",
+                "type": "bool",
+                "description": "If set the notebook cell is removed from the notebook."
+            },
+            {
                 "name": "type",
                 "type": "string",
                 "description": "Set the type of the cell if needed (markdown or vql)."
@@ -5519,8 +5510,7 @@
             {
                 "name": "input",
                 "type": "string",
-                "description": "The new cell content.",
-                "required": true
+                "description": "The new cell content."
             },
             {
                 "name": "output",
@@ -7920,7 +7910,7 @@
     },
     {
         "name": "reg",
-        "description": "Access the registry like a filesystem using the OS APIs.",
+        "description": "An alias for the `registry` accessor, which accesses the registry using the\nOS APIs.",
         "type": "Accessor",
         "platforms": [
             "windows_386_cgo",
@@ -8089,7 +8079,7 @@
     },
     {
         "name": "rekey",
-        "description": "Causes the client to rekey and regenerate a new client ID. DANGEROUS! This will change the client's identity and it will appear as a new client in the GUI.",
+        "description": "Causes the client to rekey and regenerate a new client ID. DANGEROUS! This\nwill change the client's identity and it will appear as a new client in the\nGUI.\n",
         "type": "Function",
         "args": [
             {
@@ -8375,8 +8365,7 @@
             {
                 "name": "directory_name",
                 "type": "string",
-                "description": "Package files will be created inside this directory. If not specified we use a temporary directory",
-                "required": true
+                "description": "Package files will be created inside this directory. If not specified we use a temporary directory"
             },
             {
                 "name": "extra_args",

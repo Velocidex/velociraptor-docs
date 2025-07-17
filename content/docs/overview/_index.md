@@ -6,22 +6,62 @@ chapter = false
 +++
 
 Velociraptor is a unique, advanced open-source endpoint monitoring,
-digital forensic and cyber response platform.
+digital forensic and cyber response platform. Velociraptor covers the
+entirety of the attack life cycle, providing responders a powerful
+capability to address past, present and future events.
 
-It was developed by Digital Forensic and Incident Response (DFIR) professionals who needed a
-powerful and efficient way to hunt for specific artifacts and monitor activities across
-fleets of endpoints. Velociraptor provides you with the ability to more effectively respond to a wide range of digital
-forensic and cyber incident response investigations and data breaches:
+## The incident response timeline
 
-* Reconstruct attacker activities through digital forensic analysis
-* Hunt for evidence of sophisticated adversaries
-* Investigate malware outbreaks and other suspicious network activities
-* Monitory continuously for suspicious user activities, such as files
-  copied to USB devices
-* Discover whether disclosure of confidential information occurred outside the network
-* Gather endpoint data over time for use in threat hunting and
-  future investigations
+The attack timeline consists of 3 general times; The initial attack,
+the time of response and future attacker activities.
 
+![Velociraptor and the attack timeline](attack_timeline.svg)
+
+
+### The initial attack
+
+If Velociraptor is not already deployed as a standard part of the
+environment, the initial attack is likely to have occurred at a prior
+time before Velociraptor's installation. This time could range from
+hours to weeks or months.
+
+Velociraptor's digital forensic capability provides a lens into these
+past activities: By utilizing the latest state of the art digital
+forensic artifacts and analysis technology, Velociraptor can reveal
+important clues of the initial vector of compromise.
+
+### The present time
+
+Once Velociraptor is installed in the environment, the primary goal is
+to quickly identify compromised assets. Velociraptor's powerful
+triaging artifacts can identify anomalies quickly and at scale. By
+scaling triage analysis to the entire environment (In Velociraptor's
+terminology: `Hunting the environment`) we are able to zero in on
+compromised assets quickly.
+
+Once identified, triaged assets can be analyzed in detail, preserving
+important volatile information such as processes, network connections
+and memory. These collections can be made with minimal endpoint
+impact, using Velociraptor's sophisticated control of endpoint
+resource usage.
+
+Additionally, Velociraptor can be used for remediation at scale. This
+makes recovering from incidents or securing systems against future
+attacks faster and more efficient.
+
+### Detecting future attacks
+
+Once installed in the environment, Velociraptor's client monitoring
+capability allows for live, realtime detection of malicious
+activity. By tapping into live event sources, such as Event Tracing
+for Windows (`ETW`) or `eBPF` on Linux, and utilizing `Sigma` rules,
+Velociraptor's detection engine can identify suspicious activity in
+real time.
+
+Velociraptor's real time monitoring can also ensure future compliance
+and detect when an endpoint falls out of compliance (either
+maliciously or accidentally). For example by changing configuration to
+weaken endpoint security.
 
 ## VQL - the Velociraptor difference
 
@@ -32,12 +72,15 @@ any aspect of an endpoint, groups of endpoints, or an entire
 network. It can also be used to create continuous monitoring rules on
 the endpoint, as well as automate tasks on the server.
 
-![Rocket Velociraptor](media/image4.png)
+Unlike other tools, VQL allows users to customize Velociraptor: From
+updating existing artifacts or adding entirely new artifacts, to fully
+automating post processing and system administration. Velociraptor's
+VQL enables an open system, adaptable to any environment or
+requirement with ease.
 
 ## The Velociraptor Philosophy
 
-Traditional DFIR procedures typically follow the following high level
-phases:
+Traditional DFIR procedures typically follow these high level phases:
 
 1. `Acquisition`: In this phase the investigator collects all the raw
    data for example, memory or disk images.

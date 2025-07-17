@@ -112,4 +112,3 @@ seen above:
    simply exports the **visible** columns as a CSV file. This is a
    great way of filtering out uninteresting columns and producing more
    targeted CSV files for post processing in e.g. Excel.
-

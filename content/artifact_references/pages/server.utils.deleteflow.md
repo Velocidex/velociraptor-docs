@@ -31,6 +31,10 @@ parameters:
   - name: FlowId
     description: The flow ID to delete
     default:
+  - name: FlowIds
+    description: Delete Multiple Flows
+    type: json_array
+    default: "[]"
   - name: ClientId
     description: The client id that the collection was done on
     default:
@@ -43,9 +47,18 @@ parameters:
 
 sources:
   - query: |
-       SELECT Type, Data.VFSPath AS VFSPath, Error
-       FROM delete_flow(flow_id=FlowId,
-          client_id=ClientId, really_do_it=ReallyDoIt, sync=Sync)
+       LET FlowIds &lt;= if(condition=FlowId, then=FlowIds + FlowId, else=FlowIds)
+
+       SELECT *
+       FROM foreach(row={
+         SELECT _value AS FlowId FROM foreach(row=FlowIds)
+         WHERE log(message="Deleteing Flow " + FlowId, dedup=-1)
+       },
+       query={
+         SELECT Type, Data.VFSPath AS VFSPath, Error
+         FROM delete_flow(flow_id=FlowId,
+            client_id=ClientId, really_do_it=ReallyDoIt, sync=Sync)
+       })
 
 </code></pre>
 
