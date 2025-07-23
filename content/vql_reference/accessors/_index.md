@@ -15,7 +15,7 @@ file-like interface.
 |[bzip2](bzip2)|<span class='vql_type'>Accessor</span>|Access the content of bzip2 files|
 |[collector](collector)|<span class='vql_type'>Accessor</span>|Open a collector zip file as if it was a directory - automatically|
 |[collector_sparse](collector_sparse)|<span class='vql_type'>Accessor</span>|Open a collector zip file as if it was a directory|
-|[data](data)|<span class='vql_type'>Accessor</span>|Makes a string appears as an in memory file|
+|[data](data)|<span class='vql_type'>Accessor</span>|Makes a string appears as an in-memory file|
 |[ewf](ewf)|<span class='vql_type'>Accessor</span>|Allow reading an EWF file|
 |[ext4](ext4)|<span class='vql_type'>Accessor</span>|Access files by parsing the raw ext4 filesystems|
 |[fat](fat)|<span class='vql_type'>Accessor</span>|Access the FAT filesystem inside an image by parsing FAT|
@@ -40,7 +40,7 @@ file-like interface.
 |[raw_file](raw_file)|<span class='vql_type'>Accessor</span>|Access the filesystem using the OS API|
 |[raw_ntfs](raw_ntfs)|<span class='vql_type'>Accessor</span>|Access the NTFS filesystem inside an image by parsing NTFS|
 |[raw_reg](raw_reg)|<span class='vql_type'>Accessor</span>|Access keys and values by parsing a raw registry hive|
-|[reg](reg)|<span class='vql_type'>Accessor</span>|Access the registry like a filesystem using the OS APIs|
+|[reg](reg)|<span class='vql_type'>Accessor</span>|An alias for the `registry` accessor, which accesses the registry using the|
 |[registry](registry)|<span class='vql_type'>Accessor</span>|Access the registry like a filesystem using the OS APIs|
 |[s3](s3)|<span class='vql_type'>Accessor</span>|Allows access to S3 buckets|
 |[scope](scope)|<span class='vql_type'>Accessor</span>|Present the content of a scope variable as a file|

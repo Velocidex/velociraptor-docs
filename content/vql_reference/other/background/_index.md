@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-query|Run this query to generator rows.|StoredQuery
+query|Run this query in the background.|StoredQuery
 
 ### Description
 

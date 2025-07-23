@@ -12,7 +12,6 @@ following are only available when running Velociraptor on Windows.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
 |[amsi](amsi)|<span class='vql_type'>Function</span>|AMSI is an interface on windows to scan a string for malware|
-|[appcompatcache](appcompatcache)|<span class='vql_type'>Plugin</span>|Parses the appcompatcache|
 |[authenticode](authenticode)|<span class='vql_type'>Function</span>|Parses authenticode information from PE files|
 |[certificates](certificates)|<span class='vql_type'>Plugin</span>|Collect certificate from the system trust store|
 |[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|

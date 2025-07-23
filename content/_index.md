@@ -32,23 +32,13 @@ navs:
  - name: Configure
    description: Configuration File Reference
    link: /docs/deployment/references/
+ - name: Troubleshooting
+   description: Troubleshooting deployments
+   link: /docs/deployment/troubleshooting/
 
 ---
 
 {{% navs %}}
-
-
-{{% notice warning "CVE-2025-6264 published on 2025-06-20" %}}
-
-If you use rely on artifact `required_permissions` to prevent
-`investigator` users from running dangerous operations on the
-endpoint, please upgrade your server to mitigate `CVE-2025-6264` to at
-least release `0.74.3` and consider [this documentation]({{< ref
-"/docs/artifacts/security/#restricting-dangerous-client-artifacts"
->}}). [More details]({{% ref "/announcements/advisories/cve-2025-6264"
-%}})
-
-{{% /notice %}}
 
 ## Velociraptor - Digging Deeper!
 

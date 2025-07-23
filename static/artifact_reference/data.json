@@ -1836,6 +1836,15 @@
         ]
     },
     {
+        "title": "Server.Utils.DeadDiskClient",
+        "description": "Automates the analysis of dead disk images in Velociraptor",
+        "link": "/artifact_references/pages/server.utils.deaddiskclient",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.DeleteClient",
         "description": "This artifact completely removes a client from the data store.",
         "link": "/artifact_references/pages/server.utils.deleteclient",
