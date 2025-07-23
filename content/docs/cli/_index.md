@@ -2,7 +2,7 @@
 menutitle: "CLI"
 title: "The Velociraptor CLI"
 date: 2025-05-14
-last_reviewed: 2025-07-06
+last_reviewed: 2025-07-14
 draft: false
 weight: 80
 ---
