@@ -1,0 +1,68 @@
+name: Linux.Persistence.LdPreload
+author: Matt Green - @mgreen27
+description: |
+  Parses the GNU glibc **LD_PRELOAD** mechanism. Any path listed in 
+  `/etc/ld.so.preload` or assigned to `LD_PRELOAD` is force‑loaded into every 
+  dynamically linked executable. A single 
+  rogue entry therefore grants system‑wide code execution and persistence at
+  process start‑up.
+  
+  The artifact has two scopes:
+
+  • Parses `/etc/ld.so.preload`   
+  • Checks `/proc/<pid>/environ` for an `LD_PRELOAD=` entry.
+
+references:
+    - https://attack.mitre.org/techniques/T1574/006/
+
+type: CLIENT
+
+parameters:
+  - name: TargetGlob
+    default: /etc/ld.so.preload
+  - name: ContentRegex
+    default: .
+    description: Regex to target suspicious content strings.
+    
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'linux' 
+    query: |
+       SELECT OSPath,
+              Mtime,
+              Atime,
+              Ctime,
+              Btime,
+              Size,
+              read_file(filename=OSPath)[0:5000] AS Content
+       FROM glob(globs=TargetGlob)
+       WHERE Content =~ ContentRegex
+
+  - name: Environment Variable
+    query: |
+       LET target_proc = SELECT OSPath,
+                                parse_string_with_regex(
+                                  regex='''LD_PRELOAD=(?<LD_PRELOAD>[^\x00]+)''',
+                                  string=read_file(filename=OSPath + '/environ')).LD_PRELOAD AS LD_PRELOAD
+         FROM glob(
+           globs='/proc/[0-9]*')
+         WHERE LD_PRELOAD
+       
+       LET parsed_proc = SELECT
+           *, int(int=OSPath[1]) AS Pid,
+           parse_string_with_regex(
+             string=read_file(filename=OSPath + '/status'),
+             regex=['''Name:\t(?P<Name>[^\n]+)\n''', '''Umask:\t(?P<Umask>[^\n]+)\n''', '''State:\t(?P<State>[^\n]+)\n''', '''Tgid:\t(?P<Tgid>[^\n]+)\n''', '''Ngid:\t(?P<Ngid>[^\n]+)\n''', '''Pid:\t(?P<Pid>[^\n]+)\n''', '''PPid:\t(?P<PPid>[^\n]+)\n''', '''TracerPid:\t(?P<TracerPid>[^\n]+)\n''', '''Uid:\t(?P<Uid>[^\n]+)\n''', '''Gid:\t(?P<Gid>[^\n]+)\n''', '''FDSize:\t(?P<FDSize>[^\n]+)\n''', '''Groups:\t(?P<Groups>[^\n]+)\n''', '''NStgid:\t(?P<NStgid>[^\n]+)\n''', '''NSpid:\t(?P<NSpid>[^\n]+)\n''', '''NSpgid:\t(?P<NSpgid>[^\n]+)\n''', '''NSsid:\t(?P<NSsid>[^\n]+)\n''', '''Kthread:\t(?P<Kthread>[^\n]+)\n''', '''VmPeak:\t(?P<VmPeak>[^\n]+)\n''', '''VmSize:\t(?P<VmSize>[^\n]+)\n''', '''VmLck:\t(?P<VmLck>[^\n]+)\n''', '''VmPin:\t(?P<VmPin>[^\n]+)\n''', '''VmHWM:\t(?P<VmHWM>[^\n]+)\n''', '''VmRSS:\t(?P<VmRSS>[^\n]+)\n''', '''RssAnon:\t(?P<RssAnon>[^\n]+)\n''', '''RssFile:\t(?P<RssFile>[^\n]+)\n''', '''RssShmem:\t(?P<RssShmem>[^\n]+)\n''', '''VmData:\t(?P<VmData>[^\n]+)\n''', '''VmStk:\t(?P<VmStk>[^\n]+)\n''', '''VmExe:\t(?P<VmExe>[^\n]+)\n''', '''VmLib:\t(?P<VmLib>[^\n]+)\n''', '''VmPTE:\t(?P<VmPTE>[^\n]+)\n''', '''VmSwap:\t(?P<VmSwap>[^\n]+)\n''', '''HugetlbPages:\t(?P<HugetlbPages>[^\n]+)\n''', '''CoreDumping:\t(?P<CoreDumping>[^\n]+)\n''', '''THP_enabled:\t(?P<THP_enabled>[^\n]+)\n''', '''untag_mask:\t(?P<untag_mask>[^\n]+)\n''', '''Threads:\t(?P<Threads>[^\n]+)\n''', '''SigQ:\t(?P<SigQ>[^\n]+)\n''', '''SigPnd:\t(?P<SigPnd>[^\n]+)\n''', '''ShdPnd:\t(?P<ShdPnd>[^\n]+)\n''', '''SigBlk:\t(?P<SigBlk>[^\n]+)\n''', '''SigIgn:\t(?P<SigIgn>[^\n]+)\n''', '''SigCgt:\t(?P<SigCgt>[^\n]+)\n''', '''CapInh:\t(?P<CapInh>[^\n]+)\n''', '''CapPrm:\t(?P<CapPrm>[^\n]+)\n''', '''CapEff:\t(?P<CapEff>[^\n]+)\n''', '''CapBnd:\t(?P<CapBnd>[^\n]+)\n''', '''CapAmb:\t(?P<CapAmb>[^\n]+)\n''', '''NoNewPrivs:\t(?P<NoNewPrivs>[^\n]+)\n''', '''Seccomp:\t(?P<Seccomp>[^\n]+)\n''', '''Seccomp_filters:\t(?P<Seccomp_filters>[^\n]+)\n''', '''Speculation_Store_Bypass:\t(?P<Speculation_Store_Bypass>[^\n]+)\n''', '''SpeculationIndirectBranch:\t(?P<SpeculationIndirectBranch>[^\n]+)\n''', '''Cpus_allowed:\t(?P<Cpus_allowed>[^\n]+)\n''', '''Cpus_allowed_list:\t(?P<Cpus_allowed_list>[^\n]+)\n''', '''Mems_allowed:\t(?P<Mems_allowed>[^\n]+)\n''', '''Mems_allowed_list:\t(?P<Mems_allowed_list>[^\n]+)\n''', '''voluntary_ctxt_switches:\t(?P<voluntary_ctxt_switches>[^\n]+)\n''', '''nonvoluntary_ctxt_switches:\t(?P<nonvoluntary_ctxt_switches>[^\n]+)\n''', '''x86_Thread_features:\t(?P<x86_Thread_features>[^\n]*)\n''', '''x86_Thread_features_locked:\t(?P<x86_Thread_features_locked>[^\n]*)\n''']) AS Status
+         FROM target_proc
+       
+       SELECT
+           Pid,
+           Status.PPid AS PPid,
+           Status.Name AS Name,
+           stat(filename=OSPath + '/exe').Data.Link AS Exe,
+           read_file(filename=OSPath + '/cmdline') AS Cmdline,
+           LD_PRELOAD,
+           stat(filename=OSPath + '/cwd').Data.Link AS WorkingDir,
+           split(string=read_file(filename=OSPath + '/environ'), sep='''\x00''') AS Environ
+       FROM parsed_proc
+       WHERE LD_PRELOAD =~ ContentRegex
