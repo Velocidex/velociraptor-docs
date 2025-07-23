@@ -63,6 +63,7 @@ sources:
            read_file(filename=OSPath + '/cmdline') AS Cmdline,
            LD_PRELOAD,
            stat(filename=OSPath + '/cwd').Data.Link AS WorkingDir,
-           split(string=read_file(filename=OSPath + '/environ'), sep='''\x00''') AS Environ
+           split(string=read_file(filename=OSPath + '/environ'), sep='''\x00''') AS Environ,
+           Status as _Status
        FROM parsed_proc
        WHERE LD_PRELOAD =~ ContentRegex
