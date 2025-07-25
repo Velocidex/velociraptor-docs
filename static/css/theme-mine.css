@@ -1069,3 +1069,23 @@ figure div.figure img {
         display: inherit;
     }
 }
+
+img.logo {
+    height: 180px;
+}
+
+body.dark img.logo.light {
+    display: none;
+}
+
+body.light img.logo.light {
+    display: inherit;
+}
+
+body.light img.logo.dark {
+    display: none;
+}
+
+body.dark img.logo.dark {
+    display: inherit;
+}

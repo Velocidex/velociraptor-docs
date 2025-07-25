@@ -92,7 +92,7 @@ endpoints. The Velociraptor server may be deployed in the cloud or on
 premises.
 
 Clients connect back to the server using a persistent connection,
-ready to be tasks by the Velociraptor investigator to collect
+ready to be tasked by the Velociraptor investigator to collect
 artifacts, hunt etc.
 
 This deployment method allows to rapidly iterate through the

@@ -14,25 +14,24 @@
   } else {
     lightmode();
   }
-  
+
 </script>
 
 <div class="btn btn-default ThemeSelector darkmode"
      onClick="darkmode()"
      >
   <i class="fas fa-moon"></i>
-  
+
 </div>
 
 <div class="btn btn-default ThemeSelector lightmode"
      onClick="lightmode()"
      >
      <i class="fas fa-sun"></i>
-  
+
 </div>
 
 <a href="{{ .Site.BaseURL }}">
-  <img src="{{ .Site.BaseURL }}/images/logo.svg" />
+  <img class="logo dark" src="{{ .Site.BaseURL }}/images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="{{ .Site.BaseURL }}/images/VeloR7_LightMode.svg" />
 </a>
-
-
