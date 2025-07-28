@@ -235,13 +235,9 @@ sources:
        LET IsDict(Var) = typeof(x=Var) = '*ordereddict.Dict'
 
        LET MetadataFieldAliases <= to_dict(item={
-           SELECT *
-           FROM foreach(row=ClientMetadata,
-                        query={
            SELECT Field AS _key,
                   Alias AS _value
-           FROM scope()
-         })
+           FROM ClientMetadata
          })
 
        LET RenameMetadata(Metadata) = to_dict(item={
