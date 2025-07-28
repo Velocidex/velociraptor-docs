@@ -19,9 +19,7 @@ of Velociraptor is its flexibility afforded by the use of the[
 Velociraptor Query Language (VQL).]({{< ref "/docs/vql/" >}})
 
 We have written before on how VQL can be extended by use of short
-[PowerShell scripts]({{% ref
-"/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/"
-%}}), by including these scripts directly in the Artifact
+[PowerShell scripts]({{% ref "/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/" %}}), by including these scripts directly in the Artifact
 definitions. This is a great way to extend the functionality provided
 by VQL, but what if we wanted to launch a completely separate binary
 on the endpoint, or a larger powershell module? How can Velociraptor
