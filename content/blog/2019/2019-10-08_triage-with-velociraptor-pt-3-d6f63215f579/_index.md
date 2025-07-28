@@ -94,7 +94,51 @@ file to the cloud. Finally we will delete the temporary file from the
 endpoint. As an added measure of security we specify a password on the
 collected zip file.
 
-<script src="https://gist.github.com/scudette/4eea88eb780af37c676b304168b3ffef.js" charset="utf-8"></script>
+```yaml
+autoexec:
+  # These parameters are run when the binary is started without args.
+  # It will just collect our custom artifact and quit.
+  argv: ["artifacts", "collect", "-v", "AcquireAndUploadToGCS"]
+  artifact_definitions:
+    - name: AcquireAndUploadToGCS
+      parameters:
+         - name: GCSKey
+           description: JSON Blob you get from GCS when you create a service account.
+           default: |
+              {
+               "type": "service_account",
+               "project_id": "velociraptor-demo",
+               "private_key_id": "XXXXXXX",
+               "private_key": "XXXXXXX",
+               "client_email": "uploader@velociraptor-demo.iam.gserviceaccount.com",
+               "client_id": "XXXXXX",
+               "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+               "token_uri": "https://oauth2.googleapis.com/token",
+               "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+               "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/uploader%40velociraptor-demo.iam.gserviceaccount.com"
+              }
+         - name: bucket
+           default: velociraptor-uploads-121
+         - name: project
+           default: velociraptor-demo
+
+      sources:
+         - queries:
+              # This collects the WebBrowsers target from KapeFiles into
+              # a tempfile, then uploads the tempfile to GCS with the
+              # above credentials.
+              - SELECT upload_gcs(
+                   file=Container,
+                   bucket=bucket,
+                   project=project,
+                   name=format(format="Collection %s.zip", args=[timestamp(epoch=now())]),
+                   credentials=GCSKey) AS Uploaded
+                FROM collect(
+                   artifacts="Windows.KapeFiles.Targets",
+                   args=dict(WebBrowsers="Y"),
+                   password="MyPassword",   // Use this password to encrypt the zip file.
+                   output=tempfile( extension=".zip"))
+```
 
 The above artifact is fairly easy to read:
 

@@ -1,7 +1,23 @@
 {{ $src := .Page.Resources.GetMatch (printf "%s" (.Destination | safeURL)) }}
+{{ $caption := .PlainText }}
+
+<!-- Not a page resource must be an external link -->
+{{ if not $src }}
+
+{{ $id := md5 .Destination }}
+<figure id="{{ $id }}">
+  <div data-featherlight="#{{ $id }}" class="figure">
+    <img src="{{ .Destination }}" alt="{{ $caption }}" />
+  </div>
+  <figcaption>
+    {{ $caption }}
+  </figcaption>
+</figure>
+
+{{ else }}
+
 {{ $id := md5 $src }}
 {{ $filename := path.Join .Page.File.Dir $src }}
-{{ $caption := .PlainText }}
 {{ if ( hasSuffix $filename ".svg" ) }}
   {{ $data := readFile $filename }}
   {{ $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` `` $data }}
@@ -34,5 +50,6 @@
   </figcaption>
 </figure>
 
+{{ end }}
 {{ end }}
 {{ end }}

@@ -54,7 +54,39 @@ Get-LocalGroupMember -Group “Administrators”
 
 Let’s turn this Powershell commandlet into a Velociraptor artifact
 
-<script src="https://gist.github.com/scudette/3b2ff76b8d032c800d38375e2cca0dd6.js"></script>
+```yaml
+name: Custom.GetLocalAdmins
+description: |
+   Gets a list of local admin accounts
+
+reference:
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember?view=powershell-5.1
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT
+type: CLIENT
+
+
+parameters:
+ - name: script
+   default: |
+       Get-LocalGroupMember -Group "Administrators" |SELECT -ExpandProperty SID -Property Name, PrincipalSource |select  Name, Value, PrincipalSource|convertto-json
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    queries:
+    - LET out = SELECT parse_json_array(data=Stdout) AS Output
+          FROM execve(argv=["powershell",
+               "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+                  base64encode(string=utf16_encode(
+                  string=script))
+            ], length=1000000)
+    - SELECT * FROM foreach(row=out.Output[0],
+      query={
+          SELECT Name, Value AS SID FROM scope()
+      })
+```
 
 The powershell script simply runs the commandlet and extracts the SID and the username, converting the result to JSON. On the VQL size we encode the script and shell out to Powershell, then decode the output from JSON and produce VQL rows.
 
@@ -78,7 +110,41 @@ We can collect the **Windows.System.Services** artifact and identify the malicio
 
 But now we would like to automatically clean it. We know the malicious service **PathName** value should match the keyword “marker.txt” (In reality we can come up with other unique keywords for the malicious service). So we just write the following artifact:
 
-<script src="https://gist.github.com/scudette/2185ae021fc78f880a0caaaec3fb03a2.js"></script>
+```yaml
+name: Custom.RemoveService
+description: |
+    Clean up malicious services.
+
+type: CLIENT
+
+parameters:
+ - name: script
+   default: |
+     $service = Get-WmiObject -Class Win32_Service -Filter "Name='%v'"
+     sc.exe stop "%v"
+     Start-Sleep -s 10
+     $service.delete()
+ - name: PathNameRegex
+   default: marker.txt
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    queries:
+    - LET services = SELECT Name, PathName FROM Artifact.Windows.System.Services()
+      WHERE PathName =~ PathNameRegex
+      AND log(message="Removing service "+Name)
+    - SELECT * FROM foreach(
+        row=services,
+        query={
+          SELECT Name, PathName, Stdout, Stderr FROM execve(argv=["powershell",
+              "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+              base64encode(string=utf16_encode(
+                string=format(format=script, args=[Name, Name])))
+          ])
+        })
+```
 
 The powershell component actually stops, and removes the bad service, while the VQL component runs the **Windows.System.Services** artifacts, filters out the keyword to identify the malicious service and then calls powershell to remove it.
 
