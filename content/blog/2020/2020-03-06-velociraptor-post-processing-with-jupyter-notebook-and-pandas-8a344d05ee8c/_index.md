@@ -84,7 +84,19 @@ Pandas is a popular data exploration and transformation library which works grea
 
 To test our connection, we run the simple query “SELECT * FROM info()” which just provides information about the running platform.
 
-<script src="https://gist.github.com/scudette/4db9f8b8c288d7d2650acd4a5908ea9f.js"></script>
+```python
+
+import pandas
+from pyvelociraptor import velo_pandas
+
+pandas.set_option('display.max_colwidth', None)
+pandas.set_option('display.max_columns', None)
+pandas.set_option('display.max_rows', None)
+
+pandas.DataFrame(velo_pandas.DataFrameQuery("""
+  SELECT * FROM info()
+"""))
+```
 
 If all goes well, the Velociraptor Python bindings will attempt to connect to the server, run the VQL statement on the server and present the results as a table within the notebook.
 
@@ -110,7 +122,16 @@ In a real investigation, the hunt will collect all the scheduled tasks from thou
 
 We start off by exploring the results of the hunt — simply select all columns from the hunt results but limit the result of only a small set for inspection. We will call the [hunt_results](https://www.velocidex.com/docs/vql_reference/server/#hunt-results) VQL plugin and provide it with the hunt id, the artifact we collected and the source in the artifact.
 
-<script src="https://gist.github.com/scudette/e990ca3fafb7302b05c6cf583e89a3a1.js"></script>
+```python
+
+pandas.DataFrame(velo_pandas.DataFrameQuery("""
+SELECT *
+FROM hunt_results(hunt_id='H.a127011b',
+    artifact='Windows.System.TaskScheduler',
+    source='Analysis')
+LIMIT 50
+"""))
+```
 
 It is very important to limit the query otherwise the server will send too many rows and take a long time. If this happens you can select Jupyter’s Kernel->Interrupt menu to abort the query.
 

@@ -42,7 +42,36 @@ While it is normal for a dll to forward to another dll, it is very unusual for a
 
 As usual I created a Velociraptor notebook and developed the VQL within it. The full query I entered in the notebook cell is shown below:
 
-<script src="https://gist.github.com/scudette/9a4aff9186028243e7b65da89ef538ad.js" charset="utf-8"></script>
+```vql
+LET Glob = '''C:\windows\**\*.dll'''
+
+-- Apply the glob to search for matching DLLs.
+LET DLLs = SELECT FullPath, Name, parse_pe(file=FullPath).Forwards AS Forwards,
+     lowcase(string=parse_string_with_regex(regex="^(?P<BareName>[^.]+)", string=Name).BareName) AS DLLBareName
+FROM glob(globs=Glob)
+WHERE NOT FullPath =~ "(WinSXS|Servicing)"
+
+-- For each DLL, extract the forward strings.
+SELECT * FROM foreach(row=DLLs, workers=20,
+query={
+  -- For each forwarded export, split the string into
+  -- a DLL path and export name
+  SELECT FullPath AS DllPath, ForwardedImport,
+         Parse.DllPath AS DllImportPath,
+         Parse.Export AS DLLExportFunc,
+         DLLBareName,
+         basename(path=lowcase(string=Parse.DllPath)) AS ExportDLLName
+  FROM foreach(row=Forwards,
+  query={
+      SELECT parse_string_with_regex(
+          regex="(?P<DllPath>.+)\\.(?P<Export>[^.]+$)", string=_value) AS Parse,
+          _value AS ForwardedImport
+      FROM scope()
+  })
+  -- Only select forwarded functions that forward to the same dll name.
+  WHERE ExportDLLName = DLLBareName
+})
+```
 
 1. First I search for all DLL files in the provided glob (excluding **winsxs** and **servicing** directory). I also lowercase the name of the dll and strip the extension.
 
