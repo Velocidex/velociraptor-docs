@@ -1,37 +1,34 @@
-<script>
-  function darkmode() {
-      $("body").addClass("dark").removeClass("light");
-      document.cookie = "theme=darkmode;path=/";
-  };
-  function lightmode() {
-      $("body").removeClass("dark").addClass("light");
-      document.cookie = "theme=lightmode;path=/";
-  };
-
-  const regex = new RegExp('theme=darkmode');
-  if (regex.test(document.cookie)) {
-    darkmode();
-  } else {
-    lightmode();
-  }
-
-</script>
-
-<div class="btn btn-default ThemeSelector darkmode"
-     onClick="darkmode()"
-     >
-  <i class="fas fa-moon"></i>
-
-</div>
-
-<div class="btn btn-default ThemeSelector lightmode"
-     onClick="lightmode()"
-     >
-     <i class="fas fa-sun"></i>
-
-</div>
-
 <a href="{{ .Site.BaseURL }}">
   <img class="logo dark" src="{{ .Site.BaseURL }}/images/VeloR7_DarkMode.svg" />
   <img class="logo light" src="{{ .Site.BaseURL }}/images/VeloR7_LightMode.svg" />
 </a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>

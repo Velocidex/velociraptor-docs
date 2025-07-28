@@ -43,9 +43,9 @@ We do not actually transfer the external program to the system
 automatically. If you need to run programs which are not usually
 installed (e.g. Sysinternal's autoruns.exe) you will need to use
 Velociraptor's external tools feature to deliver and manage the
-tools on the client.
-
-https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
+tools on the client. See
+https://docs.velociraptor.app/docs/vql/extending_vql/
+for more information.
 
 ### Notes
 

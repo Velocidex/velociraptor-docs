@@ -406,7 +406,37 @@ code.hljs {
 }
 
 .ThemeSelector {
-    float: right;
+    position: fixed;
+    left: 15px;
+    top: 20px;
+
+    padding: 2px 8px ;
+    margin-bottom: 0 ;
+    font-size: 14px ;
+    font-weight: normal ;
+    line-height: 1.42857143 ;
+    text-align: center ;
+    white-space: nowrap ;
+    vertical-align: middle ;
+    -ms-touch-action: manipulation ;
+    touch-action: manipulation ;
+    cursor: pointer ;
+    -webkit-user-select: none ;
+    -moz-user-select: none ;
+    -ms-user-select: none ;
+    user-select: none ;
+    background-image: none ;
+    border: 1px solid transparent ;
+    border-radius: 4px ;
+    border-color: var(--MENU-SECTION-HR-color);
+}
+
+body.light .ThemeSelector.lightmode {
+    display: none;
+}
+
+body.dark .ThemeSelector.darkmode {
+    display: none;
 }
 
 .pull-right {
@@ -1071,6 +1101,9 @@ figure div.figure img {
 }
 
 img.logo {
+    position: fixed;
+    top: 20px;
+    left: 25px;
     height: 180px;
 }
 

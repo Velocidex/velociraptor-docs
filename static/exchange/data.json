@@ -1,5 +1,65 @@
 [
     {
+        "title": "Linux.Persistence.LdPreload",
+        "author": "mgreen27",
+        "description": "Parses the GNU\u202fglibc **LD_PRELOAD** mechanism. Any path listed in \n`/etc/ld.so.preload` or assigned to `LD_PRELOAD` is force\u2011loaded into every \ndynamically linked executable. A single \nrogue entry therefore grants system\u2011wide code execution and persistence at\nprocess start\u2011up.",
+        "link": "/exchange/artifacts/pages/ldpreload",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-07-23"
+    },
+    {
+        "title": "Windows.Applications.MouseWithoutBorders",
+        "author": "0xSultan",
+        "description": "This artifact parses Microsoft Mouse Without Borders (MWB) runtime logs, module interface logs and the settings file.",
+        "link": "/exchange/artifacts/pages/windows.applications.mousewithoutborders",
+        "tags": [],
+        "author_link": "https://github.com/0xSultan",
+        "author_avatar": "https://avatars.githubusercontent.com/u/78733828?v=4",
+        "date": "2025-07-23"
+    },
+    {
+        "title": "Linux.Sys.Modinfo",
+        "author": "mgreen27",
+        "description": "Collects detailed metadata about Linux kernel modules using\u00a0modinfo. Useful for \nmalicious kernel module hunting.",
+        "link": "/exchange/artifacts/pages/modinfo",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-07-17"
+    },
+    {
+        "title": "Server.PostProcess.FluentBit",
+        "author": "predictiple",
+        "description": "Post-process collection results using [Fluent Bit](https://fluentbit.io/).",
+        "link": "/exchange/artifacts/pages/fluentbit",
+        "tags": [
+            "post",
+            "Elasticsearch",
+            "OpenSearch",
+            "Splunk",
+            "Graylog",
+            "BigQuery",
+            "Chronicle",
+            "CloudWatch",
+            "Amazon",
+            "S3",
+            "Azure",
+            "Datadog",
+            "Dynatrace",
+            "InfluxDB",
+            "Kafka",
+            "LogDNA",
+            "Loki",
+            "Oracle",
+            "PostgreSQL"
+        ],
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2025-07-13"
+    },
+    {
         "title": "Windows.Hunter.Yara.LOLDrivers",
         "author": "klehri-r7",
         "description": "This artifact scans system driver directories using two user-supplied YARA rules:",
@@ -2488,16 +2548,6 @@
         "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "date": "2022-01-08"
-    },
-    {
-        "title": "Generic.Detection.Log4jVulnHunter",
-        "author": "mgreen27",
-        "description": "This artifact searches for Vulnerable log4j libraries.",
-        "link": "/exchange/artifacts/pages/log4jvulnhunter",
-        "tags": [],
-        "author_link": "https://github.com/mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
-        "date": "2021-12-21"
     },
     {
         "title": "Generic.Detection.log4jRCE",
