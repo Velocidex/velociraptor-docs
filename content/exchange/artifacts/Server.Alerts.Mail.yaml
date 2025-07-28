@@ -531,7 +531,7 @@ sources:
                title=Title,
                table=Table(
                  Values=TableRowsDict),
-               footer='Sent from Velociraptor by Exchange.Server.Alerts.Mail',
+               footer='Sent from Velociraptor by Server.Alerts.Mail',
                summary=Summary)),
            else=PlainText)
 
