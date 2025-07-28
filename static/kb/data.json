@@ -1,5 +1,17 @@
 [
     {
+        "title": "How can I analyse a raw disk image?",
+        "link": "/knowledge_base/tips/image_analysis",
+        "tags": [
+            "forensics",
+            "triage"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2025-07-17"
+    },
+    {
         "title": "How to set up a local S3 dropbox server?",
         "link": "/knowledge_base/tips/dropbox_server",
         "tags": [
@@ -494,17 +506,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "How can I analyse a raw disk image?",
-        "link": "/knowledge_base/tips/image_analysis",
-        "tags": [
-            "forensics",
-            "triage"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

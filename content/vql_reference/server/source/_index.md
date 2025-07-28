@@ -70,3 +70,5 @@ When accessing another notebook cell, both the `notebook_id` and
 ```vql
 SELECT * FROM source(notebook_id="N.123", notebook_cell="NC.1234")
 ```
+
+
