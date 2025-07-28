@@ -438,8 +438,8 @@ sources:
        // Add some CSS to make the table look at least a bit nice:
        LET Body = if(
            condition=HTML,
-           then=format(
-             format='''<!DOCTYPE html>
+           then=template(
+             template='''<!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8">
@@ -461,7 +461,7 @@ sources:
               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
             .header {
-              background-color: %[1]s;
+              background-color: {{ .bgcolor }};
               color: #ffffff;
               text-align: center;
               padding: 20px;
@@ -475,7 +475,7 @@ sources:
               margin-top: 20px;
             }
             table {
-              width: 100%%;
+              width: 100%;
               border-collapse: collapse;
             }
             th, td {
@@ -509,26 +509,30 @@ sources:
         <body>
           <div class="email-container">
             <div class="header">
-              %[2]s
+              {{ .title }}
             </div>
             <div class="content">
-              <p>%[5]s</p>
+              <p>{{ .summary }}</p>
               <div class="table-container">
-                %[3]s
+                {{ .table }}
               </div>
             </div>
             <div class="footer">
-              %[4]s
+              {{ .footer }}
             </div>
           </div>
         </body>
         </html>''',
-             args=(if(
+             expansion=dict(
+               bgcolor=if(
                  condition=State = 'FINISHED',
                  then='#4CAF50',
-                 else='#DF0B0B'), Title, Table(
-                 Values=TableRowsDict), 'Sent from Velociraptor by Server.Alerts.Mail',
-                 Summary)),
+                 else='#DF0B0B'),
+               title=Title,
+               table=Table(
+                 Values=TableRowsDict),
+               footer='Sent from Velociraptor by Exchange.Server.Alerts.Mail',
+               summary=Summary)),
            else=PlainText)
 
        LET Results = SELECT *
