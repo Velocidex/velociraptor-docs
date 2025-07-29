@@ -33,7 +33,47 @@ The goal of the OSQuery integration is to make OSQuery appear as a natural exten
 
 Let’s have a look at the VQL artifact that implements OSQuery integration
 
-<script src="https://gist.github.com/scudette/acb3daec29048a84a18a11977d710ecc.js" charset="utf-8"></script>
+```yaml
+name: Windows.OSQuery.Generic
+description: |
+  OSQuery is an excellent tool for querying system state across the
+  three supported Velociraptor platform (Windows/Linux/MacOS).
+
+  You can read more about OSQuery on https://osquery.io/
+
+reference:
+  - https://osquery.io/
+  - https://github.com/osquery/osquery
+
+# I am not actually sure if OSQuery allows arbitrary command execution via SQL?
+required_permissions:
+  - EXECVE
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+tools:
+  - name: OSQueryWindows
+    github_project: Velocidex/OSQuery-Releases
+    github_asset_regex: windows-amd64.exe
+
+parameters:
+  - name: Query
+    default: "SELECT * FROM osquery_info"
+
+sources:
+  - query: |
+      LET binary <= SELECT FullPath
+      FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryWindows")
+
+      LET result = SELECT * FROM execve(
+         argv=[binary[0].FullPath, "--json", Query],
+         length=1000000)
+
+      SELECT * FROM foreach(row=result,
+      query={
+         SELECT * FROM parse_json_array(data=Stdout)
+      })
+```
 
 As described in a[ previous post](https://medium.com/velociraptor-ir/velociraptor-in-the-tool-age-d896dfe71b9), Velociraptor will deliver the OSQuery binary to the endpoint securely (line 29–30), then shell out to the binary executing the provided query (line 32–34). Finally the result is parsed from JSON and returned as a standard VQL result set (line 36–39).
 
@@ -51,7 +91,15 @@ The query identifies processes using named pipes, making it a nice signal or a b
 
 To test this query, I created a quick named pipe server in Powershell that creates a named pipe called **BlackJack**.
 
-<script src="https://gist.github.com/scudette/a520632012eb8abdc223fd27de24fb2f.js" charset="utf-8"></script>
+```powershell
+while (1) {
+  $npipeServer = new-object System.IO.Pipes.NamedPipeServerStream('BlackJack',
+     [System.IO.Pipes.PipeDirection]::InOut)
+
+  $npipeServer.WaitForConnection()
+  $npipeServer.Close()
+}
+```
 
 After selecting my test machine in the Velociraptor GUI, I created a new collection then searched for the OSQuery artifact. Since this is a Windows system, I select the Windows variant of the artifact.
 
@@ -77,7 +125,34 @@ I created a new custom Velociraptor artifact by wrapping some VQL around the exi
 
 The full artifact text is also shown here.
 
-<script src="https://gist.github.com/scudette/94ce124c4c04c9955b76a3b8130dd8fc.js" charset="utf-8"></script>
+```yaml
+name: Custom.OSQuery.BlackJack
+description: |
+   Get memory dumps of all processes with a named pipe called BlackJack
+
+parameters:
+   - name: NamedProcessRegex
+     default: BlackJack
+   - name: OSQuery_query
+     default: "SELECT proc.parent AS process_parent, proc.path AS process_path, proc.pid AS process_id, proc.cwd AS process_directory, pipe.pid AS pipe_pid, pipe.name AS pipe_name FROM processes proc JOIN pipes pipe ON proc.pid=pipe.pid;"
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET matching_processes = SELECT *
+      FROM Artifact.Windows.OSQuery.Generic(Query=OSQuery_query)
+      WHERE pipe_name =~ NamedProcessRegex
+      GROUP BY process_id
+
+      SELECT * FROM foreach(row=matching_processes,
+      query={
+          SELECT pipe_name, process_id, process_path,
+                    upload(file=FullPath) AS MemDump
+          FROM proc_dump(pid=int(int=process_id))
+      })
+```
 
 Velociraptor Artifacts are simply YAML files which encapsulate VQL queries and provide the whole thing with a name. Users now simply need to collect the **Custom.OSQuery.BlackJack** artifact without needing to write their own VQL.
 

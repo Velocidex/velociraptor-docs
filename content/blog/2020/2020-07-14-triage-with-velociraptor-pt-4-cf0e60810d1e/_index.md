@@ -102,7 +102,37 @@ reusable VQL in different contexts.
 
 Let’s try to collect the same artifact we did previously — the **hollows hunter** artifact. Just to recap the artifact is shown below
 
-<script src="https://gist.github.com/scudette/0f5d5102b6e3b1580b4feccdf7d59b53.js" charset="utf-8"></script>
+```vql
+name: Custom.Windows.Detection.ProcessHollowing
+description: |
+   Use hollows_hunter to detect suspicious process injections.
+
+   Upload any findings to the server, including process dumps.
+
+tools:
+ - name: hollows_hunter
+   url: https://github.com/hasherezade/hollows_hunter/releases/download/v0.2.7.1/hollows_hunter64.exe
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- Get the path to the hollows_hunter tool and a fresh temp directory.
+      LET binaries <= SELECT FullPath, tempdir() AS TempDir
+      FROM Artifact.Generic.Utils.FetchBinary(
+         ToolName="hollows_hunter")
+
+      -- Run the tool and relay back the output, as well as upload all the files from the tempdir.
+      SELECT * FROM chain(
+      a={SELECT Stdout, NULL AS Upload
+         FROM execve(argv=[binaries[0].FullPath,
+           "/json", "/dir", binaries[0].TempDir], length=100000)},
+      b={
+        SELECT upload(file=FullPath) AS Upload
+        FROM glob(globs="*", root=binaries[0].TempDir)
+      })
+```
 
 I will just add it to the Offline Collector builder
 
