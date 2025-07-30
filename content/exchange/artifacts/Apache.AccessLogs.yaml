@@ -27,7 +27,7 @@ parameters:
 
 sources:
   - query: |
-      // Basic Apache access log parsing via GROK expressions.
+      // accesslog parsing via GROK expressions.
       SELECT timestamp(string=Event.timestamp) AS Time,
              Event.client AS ClientIP,
              Event.method AS RequestMethod,
