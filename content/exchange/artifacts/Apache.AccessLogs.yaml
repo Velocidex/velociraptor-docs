@@ -3,6 +3,9 @@ name: Generic.CommonLogFormat.AccessLogs
 description: |
   Parses Apache access logs to extract detailed request information.
 
+aliases:
+  - Generic.Apache.AccessLogs
+
 author: Harsh Jaroli, Krishna Patel, Antonio Blescia (TheThMando)
 
 reference:
