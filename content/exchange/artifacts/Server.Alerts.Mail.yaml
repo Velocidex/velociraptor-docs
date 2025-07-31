@@ -167,9 +167,11 @@ sources:
              epoch=start_time) AS FlowStarted,
            FlowFinished,
            request.creator AS Creator,
-           format(
-             format='%.1f s',
-             args=[execution_duration / 1000000000.0]) AS Duration,
+           if(
+             condition=execution_duration,
+             then=format(
+               format='%.1f s',
+               args=[execution_duration / 1000000000.0])) AS Duration,
            request.artifacts AS Requested,
            request.specs AS Specs,
            request.urgent AS Urgent,
@@ -280,9 +282,11 @@ sources:
                                     sep='\n'))
 
        // Combine a timestamp and a duration string:
-       LET TimestampString(Timestamp) = format(
-           format='%v (%v)',
-           args=(Timestamp.String, humanize(time=Timestamp)))
+       LET TimestampString(Timestamp) = if(
+           condition=Timestamp.Unix,
+           then=format(format='%v (%v)',
+                       args=(Timestamp.String, humanize(time=Timestamp))),
+           else='(never)')
 
        // Join an array with ', ', and if it exceeds MaxLength, drop the remaining
        // items and add "( + N more)" instead:
@@ -359,9 +363,11 @@ sources:
                               else=join(array=TableRows(Values=Values).Row, sep='\n'))
 
        // Create either an HTML table or a plain-text bullet list:
-       LET TableOrBulletList(Values) = if(condition=HTML,
-                                          then=Table(Values=Values),
-                                          else=BulletList(Items=Values))
+       LET TableOrBulletList(Values) = if(
+           condition=Values,
+           then=if(condition=HTML,
+                   then=Table(Values=Values),
+                   else=BulletList(Items=Values)))
 
        // Create an HTML table or a plain-text bullet list of arguments:
        LET ArgumentTable = TableOrBulletList(
