@@ -1,12 +1,18 @@
-name: Generic.Apache.AccessLogs
+name: Generic.CommonLogFormat.AccessLogs
 
 description: |
   Parses Apache access logs to extract detailed request information.
 
-author: Harsh Jaroli, Krishna Patel
+aliases:
+  - Generic.Apache.AccessLogs
+
+author: Harsh Jaroli, Krishna Patel, Antonio Blescia (TheThMando)
 
 reference:
   - https://httpd.apache.org/docs/2.4/logs.html
+  - https://raw.githubusercontent.com/linuxacademy/content-elastic-log-samples/refs/heads/master/access.log
+  - https://raw.githubusercontent.com/elastic/examples/refs/heads/master/Common%20Data%20Formats/nginx_logs/nginx_logs
+  - https://datatracker.ietf.org/doc/html/rfc6872
 
 type: CLIENT
 
@@ -17,11 +23,11 @@ parameters:
   - name: ApacheAccessLogGrok
     description: A Grok expression for parsing Apache access log lines.
     default: >-
-      %{IPORHOST:client} - - \[%{HTTPDATE:timestamp}\] "%{WORD:method} %{URIPATHPARAM:request} HTTP/%{NUMBER:httpversion}" %{NUMBER:status} %{NUMBER:response_size}
+      %{IPORHOST:client} %{DATA:identity_check} %{DATA:remote_user} \[%{HTTPDATE:timestamp}\] "%{WORD:method} %{URIPATHPARAM:request} HTTP/%{NUMBER:httpversion}" %{NUMBER:status} %{NUMBER:response_size}( %{QUOTEDSTRING:referer})?( %{QUOTEDSTRING:user_agent})?
 
 sources:
   - query: |
-      // Basic Apache access log parsing via GROK expressions.
+      // accesslog parsing via GROK expressions.
       SELECT timestamp(string=Event.timestamp) AS Time,
              Event.client AS ClientIP,
              Event.method AS RequestMethod,
@@ -29,6 +35,8 @@ sources:
              Event.httpversion AS HTTPVersion,
              Event.status AS ResponseStatus,
              Event.response_size AS ResponseSize,
+             Event.referer As Referer,
+             Event.user_agent AS UserAgent,
              OSPath
         FROM foreach(
           row={
@@ -37,3 +45,4 @@ sources:
               SELECT grok(grok=ApacheAccessLogGrok, data=Line) AS Event, OSPath
               FROM parse_lines(filename=OSPath)
           })
+
