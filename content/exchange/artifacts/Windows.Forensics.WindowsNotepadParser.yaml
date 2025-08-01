@@ -25,6 +25,7 @@ tools:
   - name: WindowsNotepadParser
     url: https://github.com/ogmini/Notepad-State-Library/releases/download/v1.0.4/WindowsNotepadParser-Minimal-v1.0.4-standalone.zip
     version: 1.0.4
+    expected_hash: 4ac5a26bec26bf5f4c62354113d82dd34205c0b0ff3de71f18d2de1d09c03927
 
 parameters:
   - name: outputDirectory
