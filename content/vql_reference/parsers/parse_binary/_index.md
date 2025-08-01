@@ -21,7 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 filename|Binary file to open.|OSPath (required)
 accessor|The accessor to use|string
-profile|Profile to use (see https://github.com/Velocidex/vtypes).|string
+profile|Profile to use (see [https://github.com/Velocidex/vtypes](https://github.com/Velocidex/vtypes).|string
 struct|Name of the struct in the profile to instantiate.|string (required)
 offset|Start parsing from this offset|int64
 
