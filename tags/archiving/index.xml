@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Archiving on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/archiving/</link><description>Recent content in Archiving on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 24 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/archiving/index.xml" rel="self" type="application/rss+xml"/><item><title>How can I clone an organization with all its hunts and artifacts to another instance?</title><link>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</link><pubDate>Mon, 24 Jul 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</guid><description>&lt;h1 id="how-can-i-clone-an-organization-with-all-its-hunts-and-artifacts-to-another-instance">How can I clone an organization with all its hunts and artifacts to another instance?&lt;/h1>
+&lt;p>There are a few use cases where you need to migrate data from an instance to another. It could be for educational purpose to provide pre-filled labs, or to provide a third party with the exact insights you had during your investigation. Event for archiving, being able to reload a dataset in Velociraptor to review what was done if something went amiss, being able to export and import an organization dataset could prove useful.&lt;/p>
+&lt;h2 id="exporting">Exporting&lt;/h2>
+&lt;p>Everything related to an organization is stored in a directory under &lt;code>&amp;lt;file store&amp;gt;/orgs&lt;/code>. There is:&lt;/p>
+&lt;ul>
+&lt;li>A directory with the org ID&lt;/li>
+&lt;li>A configuration file &lt;code>&amp;lt;orgId&amp;gt;.json.db&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>We need to transfer both to the destination server.&lt;/p>
+&lt;ol>
+&lt;li>Identify the org ID, either with the &lt;a href="https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/" target="_blank" >&lt;code>Server.Orgs.ListOrgs&lt;/code> Artifact&lt;/a>
+ or scrolling down the Velociraptor &lt;em>root org&lt;/em> home page.&lt;/li>
+&lt;li>Archive the folder and the &lt;code>json.db&lt;/code> file (mind the star)&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-bash">tar czf transport-&amp;lt;org name&amp;gt;.tar.gz &amp;lt;file store&amp;gt;/orgs/&amp;lt;org id&amp;gt;* 
+&lt;/code>&lt;/pre>
+&lt;ol start="3">
+&lt;li>Transfer the resulting archive to the destination Velociraptor server.&lt;/li>
+&lt;/ol>
+&lt;h2 id="importing">Importing&lt;/h2>
+&lt;ol>
+&lt;li>Decompress the archive under the &lt;code>&amp;lt;file store&amp;gt;/orgs&lt;/code> directory.&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" No orgs folder ">&lt;p>The &lt;code>orgs&lt;/code> directory is created with the first organization. After a fresh install of Velociraptor, it doesn&amp;rsquo;t exist until you create an org. You may also simply create the directory.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;ol start="2">
+&lt;li>Verify file ownership and permissions are similar to other directories in the file store&lt;/li>
+&lt;li>Start Velociraptor&lt;/li>
+&lt;li>You should see the organization with all its content as it were on the origin server&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Can&amp;#39;t see the org ">&lt;p>Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: &lt;code>&amp;lt;file store&amp;gt;/orgs/&amp;lt;org id&amp;gt;/acl/&amp;lt;username&amp;gt;.json.db&lt;/code> to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item></channel></rss>
