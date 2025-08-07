@@ -1,0 +1,373 @@
+name: Server.Monitor.Alerts
+author: Andreas Misje – @misje
+description: |
+  Send an e-mail when an alert is created.
+
+  This artifact forwards alerts from Server.Internal.Alerts as e-mails. Alert
+  context, like client information, original timestamp, artifact name/type and
+  any other argument passed to `alert()` will be included, either in an HTML-
+  formatted table or as a clear-text bullet list.
+
+  Additional information about the client may be included as extra rows by using
+  ClientMetadata. This is handy to provide additional context, like serial number,
+  computer owner or department, if this is saved as client metadata.
+
+  Context data that is considered falsy (empty strings, null, 0, empty lists etc.)
+  are excluded from the details in the e-mail unless KeepEmptyRows is true.
+
+  Use [server secrets](https://docs.velociraptor.app/blog/2024/2024-03-10-release-notes-0.72/#secret-management)
+  for storing SMTP credentials, if needed. Unless you are running version later
+  than 0.74.5, you need to specify ServerPort and ServerSkipVerify even if you
+  have set server_port/skip_verify in your secret ([#4340](https://github.com/Velocidex/velociraptor/issues/4340)).
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Recipients
+    type: csv
+    description: |
+      E-mail addresses that will receive the message. Required unless
+      NotifyExecutor is true.
+    default: |
+      Address
+
+  - name: NotifyExecutor
+    description: |
+      If the alert originates from a collection, send an e-mail to the user
+      executing the flow (in addition to Recipients) if the username contains
+      an '@' character.
+    type: bool
+    default: false
+
+  - name: Sender
+    description: |
+      Sender e-mail address. REQUIRED.
+
+  - name: HTML
+    type: bool
+    description: |
+      Send an HTML-formatted message instead of plain text.
+    default: true
+
+  - name: ArtifactsToAlertOn
+    type: regex
+    description: |
+      Only forward alerts from these monitoring artifacts.
+    default: .+
+
+  - name: ArtifactsToIgnore
+    type: regex
+    description: |
+      Ignore alerts from these monitoring artifacts.
+
+  - name: AlertNameInclude
+    type: regex
+    description: |
+      Only forward alerts matching this name.
+    default: .+
+
+  - name: AlertNameExclude
+    type: regex
+    description: |
+      Ignore alerts matching this name.
+
+  - name: ServerSecret
+    description: |
+      Secret used to configure server, port, username, password and skip_verify.
+      Required.
+    default: notify_mail_secret
+
+  - name: ServerAddr
+    description: |
+      SMTP server hostname/address (REQUIRED if ServerSecret is not used)
+
+  - name: ServerPort
+    type: int
+    description: |
+      SMTP server port
+    default: 587
+
+  - name: ServerSkipVerify
+    type: bool
+    description: |
+      Do not verify the SMTP server's TLS certificate. Consider specifying the
+      RootCA instead.
+
+  - name: RootCA
+    description: |
+      Root CA certificates
+
+  - name: SendInterval
+    type: int
+    description: |
+      How long to wait (in seconds) between sending e-mails (throttling).
+    default: 10
+
+  - name: IncludeFlowDetails
+    type: bool
+    description: |
+      Include information about the flow, like the executor, artifact arguments
+      etc.
+
+  - name: KeepEmptyRows
+    type: bool
+    description: |
+      By default, rows with empty values are removed from the e-mail. In order
+      to keep the structure of e-mails consistent, empty rows may be kept with this
+      setting.
+
+  - name: ClientMetadata
+    type: csv
+    description: |
+      Include the following client metadata as useful context in the e-mail. If
+      Alias is set, the metadata key will be renamed to the alias. The metadata
+      are output as individual rows (considering prefix fields "Client " to make
+      their meaning clear).
+    default: |
+      Field,Alias
+
+  - name: SeverityTransforms
+    type: csv
+    description: |
+      A table of event_data members that may be used as a severity value, along
+      with an optional regex replacement. Used in SeverityThreshold and in e-mail
+      title and body. Last match is used.
+    default: |
+      Member,Regex,Replace
+
+  - name: SeverityThreshold
+    type: json_array
+    description: |
+      If severity is defined in SeverityTransforms and in event_data, the value
+      must be in this list in order for an e-mail to be produced.
+    default: "[]"
+
+imports:
+  - Server.Alerts.Mail
+
+sources:
+  - query: |
+       LET IncludeArtifact = NOT ArtifactsToAlertOn OR Artifact =~
+           ArtifactsToAlertOn
+       
+       LET ExcludeArtifact = ArtifactsToIgnore
+          AND Artifact =~ ArtifactsToIgnore
+       
+       LET ArtifactNameMatched = NOT Artifact OR (IncludeArtifact
+            AND NOT ExcludeArtifact)
+       
+       LET IncludeName = NOT AlertNameInclude OR Message =~
+           AlertNameInclude
+       
+       LET ExcludeName = AlertNameExclude
+          AND Message =~ AlertNameExclude
+       
+       LET NameMatched = IncludeName
+          AND NOT ExcludeName
+       
+       LET S = scope()
+       
+       LET Alerts = SELECT timestamp(epoch=now()) AS ServerTime,
+                           timestamp(epoch=timestamp) AS AlertTime,
+                           S.client_id AS ClientId,
+                           S.flow_id AS FlowId,
+                           name AS Message,
+                           S.artifact AS Artifact,
+                           S.artifact_Type AS ArtifactType,
+                           event_data AS Context
+         FROM watch_monitoring(artifact='Server.Internal.Alerts')
+         WHERE ArtifactNameMatched
+          AND NameMatched
+       
+       LET MetadataFieldAliases <= to_dict(item={
+           SELECT Field AS _key,
+                  Alias AS _value
+           FROM ClientMetadata
+         })
+       
+       LET ClientMetadata = if(condition=ClientId != 'server',
+                               then=RenameMetadata(Metadata=
+                                                     client_metadata(
+                                                       client_id=
+                                                         ClientId),
+                                                   Aliases=
+                                                     MetadataFieldAliases))
+       
+       LET CreatorAddrs = if(condition=NotifyExecutor
+                              AND Creator =~ '[^@]+@.+',
+                             then=(request.creator, ),
+                             else=[])
+       
+       // FIXME: for other artifact too:
+       LET IsHunt = FlowId =~ '\\.H$'
+       
+       // Get the hunt (if any) this flow is part of:
+       LET OurHunt = SELECT *
+         FROM HuntInfo(flow_id=FlowId)
+       
+       LET OrgInfo <= org()
+       
+       LET ClientInfo = dict(
+           `Organisation`=if(condition=OrgInfo.id != 'root', then=OrgInfo.name),
+           `ID`=Link(URL=link_to(client_id=ClientId, raw=true),
+                     Name=ClientId,
+                     HTML=HTML),
+           `FQDN`=client_info(client_id=ClientId).os_info.fqdn,
+           `System`=client_info(client_id=ClientId).os_info.system) +
+           ClientMetadata
+       
+       LET FlowInfo = SELECT dict(`Flow`=Link(
+                                    URL=link_to(
+                                      client_id=ClientId,
+                                      flow_id=FlowId,
+                                      tab='logs',
+                                      raw=true),
+                                    Name=FlowId,
+                                    HTML=HTML),
+                                  `Collection created`=TimestampString(
+                                    Timestamp=timestamp(epoch=create_time)),
+                                  `Collection started`=if(
+                                    condition=start_time,
+                                    then=TimestampString(
+                                      Timestamp=timestamp(epoch=start_time))),
+                                  `Duration`=if(
+                                    condition=execution_duration,
+                                    then=format(
+                                      format='%.1f s',
+                                      args=[execution_duration / 1000000000.0])),
+                                  `Creator`=request.creator,
+                                  `Requested`=BulletList(
+                                    Items=ArtifactLinks(
+                                      Artifacts=request.artifacts,
+                                      HTML=HTML).Link,
+                                    HTML=HTML,
+                                    KeepEmpty=KeepEmptyRows),
+                                  `Arguments`=ArgumentTable(
+                                    Specs=request.specs,
+                                    HTML=HTML,
+                                    KeepEmpty=KeepEmptyRows),
+                                  `With results`=BulletList(
+                                    Items=artifacts_with_results,
+                                    HTML=HTML,
+                                    KeepEmpty=KeepEmptyRows),
+                                  `Error`=if(condition=status, then=status),
+                                  `Urgent`=request.urgent,
+                                  `Hunt`=if(
+                                    condition=IsHunt,
+                                    then=Link(URL=link_to(
+                                                hunt_id=OurHunt[0].HuntId,
+                                                raw=true),
+                                              Name=OurHunt[0].HuntDesc ||
+                                                OurHunt[0].HuntId,
+                                              HTML=HTML)),
+                                  `Collected rows`=total_collected_rows,
+                                  `Uploaded files`=total_uploaded_files,
+                                  `Uploaded bytes`=if(
+                                    condition=total_uploaded_bytes,
+                                    then=humanize(bytes=total_uploaded_bytes),
+                                    else=0)) AS Info
+         FROM flows(client_id=ClientId, flow_id=FlowId)
+       
+       LET GetSeverity = get(item=Context, member=Member)
+       
+       LET Severities = SELECT Member AS Name,
+                               if(condition=Regex
+                                   AND Replace,
+                                  then=regex_replace(
+                                    source=GetSeverity,
+                                    re=Regex,
+                                    replace=Replace),
+                                  else=if(
+                                    condition=NOT Regex OR
+                                      GetSeverity =~ Regex,
+                                    then=GetSeverity)) AS Level
+         FROM SeverityTransforms
+       
+       // Used to remove the original severity field from the context:
+       LET SeverityDummyDict = to_dict(item={
+           SELECT Severities.Name[-1] AS _key
+           FROM scope()
+         })
+       
+       LET Title = if(
+           condition=ClientId = 'server',
+           then='Server alert',
+           else=format(format='Alert from client %v',
+                       args=client_info(client_id=ClientId).os_info.hostname))
+       
+       LET Boldify(String) = if(condition=HTML,
+                                then=format(format='<b>%v</b>', args=String),
+                                else=String)
+       
+       LET Summary = format(
+           format='An alert was sent from %v at %v: %v.',
+           args=(if(condition=ClientId = 'server',
+                    then='the server',
+                    else=client_info(client_id=ClientId).os_info.hostname),
+               AlertTime, Boldify(String=Message)))
+       
+       LET AlertInfo = dict(
+           `Server time`=if(condition=ServerTime > AlertTime,
+                            then=TimestampString(Timestamp=ServerTime)),
+           `Alert time`=TimestampString(Timestamp=AlertTime),
+           `Severity`=Severities.Level[-1],
+           `Message`=Message,
+           `Artifact`=if(condition=Artifact,
+                         then=Link(URL=link_to(artifact=Artifact, raw=true),
+                                   Name=Artifact,
+                                   HTML=HTML)),
+           `Artifact type`=ArtifactType) + Context - SeverityDummyDict
+       
+       LET Tables = dict(`Alert details`=Table(Values=AlertInfo,
+                                               HTML=HTML,
+                                               KeepEmpty=KeepEmptyRows),
+                         `Client details`=if(
+                           condition=ClientId != 'server',
+                           then=Table(Values=ClientInfo,
+                                      HTML=HTML,
+                                      KeepEmpty=KeepEmptyRows),
+                           else=''),
+                         `Flow details`=if(
+                           condition=IncludeFlowDetails
+                            AND FlowId,
+                           then=Table(Values=FlowInfo[0].Info,
+                                      HTML=HTML,
+                                      KeepEmpty=KeepEmptyRows),
+                           else=''))
+       
+       LET PlainText = format(format='%v\n\n%v\n\n%v',
+                              args=(Title, Summary, join(
+                                  array=items(item=Tables)._value,
+                                  sep='\n\n')))
+       
+       LET Footer = format(format='Sent from Velociraptor by %v',
+                           args=ArtifactLinks(Artifacts='Server.Monitor.Alerts',
+                                              HTML=HTML)[0].Link)
+       
+       LET Body = if(condition=HTML,
+                     then=MailTemplate(Title=Title,
+                                       Tables=Tables,
+                                       Summary=Summary,
+                                       Footer=Footer,
+                                       Warning=true),
+                     else=PlainText)
+       
+       LET Results = SELECT AlertInfo,
+                            if(condition=IncludeFlowDetails
+                                AND FlowId,
+                               then=FlowInfo[0].Info) AS FlowInfo
+         FROM Alerts
+       
+       SELECT mail(server=ServerAddr,
+                   root_ca=RootCA,
+                   to=Unique(Items=Recipients.Address + CreatorAddrs),
+                   server_port=ServerPort,
+                   skip_verify=ServerSkipVerify,
+                   `from`=Sender,
+                   subject=Title,
+                   body=Body,
+                   headers=if(condition=HTML, then=dict(`Content-Type`='text/html')),
+                   period=SendInterval) AS mailing
+       FROM Alerts
+       WHERE NOT Severities OR NOT SeverityThreshold OR Severities.Level[-1] IN
+         SeverityThreshold
