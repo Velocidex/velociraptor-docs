@@ -71,17 +71,18 @@ parameters:
       a lot of notifications, depending on the number of clients that will take
       part in the hunt.
 
-  - name: NotifyFailedOnly
-    type: bool
+  - name: ErrorHandling
+    type: multichoice
     description: |
-      Only send e-mails for flows that fail (filters still apply).
-
-  - name: IgnoreCancelled
-    type: bool
-    description: |
-      Ignore failed flows if the error is caused by a user cancelling the
-      collection.
-    default: true
+      Select when e-mails should be sent for failed flows. Use to get notifications
+      when flows in hunts fail, regardless of NotifyHunts, or regardless of artifact
+      filters. Ignore flows cancelled by a user by default.
+    choices:
+      - IncludeHunts
+      - IgnoreCancelled
+      - IgnoreArtifactFilters
+      - IgnoreDelay
+    default: '["IgnoreCancelled"]'
 
   - name: DelayThreshold
     type: int
@@ -89,7 +90,7 @@ parameters:
       Only create notifications if the flow has not finished within a certain
       number of seconds since it was created. Setting this to 0 will create an
       e-mail for every flow completion.
-    default: 20
+    default: 10
 
   - name: ServerSecret
     description: |
@@ -127,7 +128,7 @@ parameters:
     type: bool
     description: |
       By default, rows with empty values are removed from the e-mail. In order
-      to keep the structure e-mails consistent, empty rows may be kept with this
+      to keep the structure of e-mails consistent, empty rows may be kept with this
       setting.
 
   - name: ClientMetadata
@@ -140,6 +141,305 @@ parameters:
     default: |
       Field,Alias
 
+export: |
+   // If string is NULL, return an empty string instead:
+   LET NullStr(String) = if(condition=String = NULL, then='', else=String)
+   
+   LET IsDict(Var) = typeof(x=Var) = '*ordereddict.Dict'
+   
+   LET RenameMetadata(Metadata, Aliases) = to_dict(item={
+       SELECT _value || _key AS _key,
+              get(item=Metadata, field=_key) AS _value
+       FROM items(item=Aliases)
+     })
+   
+   // Create either HTML list items or plain-text "  - Value" strings for each
+   // item in Items. If Items is a dict and not an array, the plain-text
+   // will be of the form "  - Key: Value".
+   LET _BulletListQuery(Items, HTML, KeepEmpty) = SELECT
+       format(format=if(condition=HTML,
+                        then='<li>%[1]s</li>',
+                        else=if(condition=IsDict(Var=Items),
+                                then='  - %[2]s: %[1]s',
+                                else='  - %[1]s')),
+              args=(NullStr(String=_value), _key)) AS Row
+     FROM items(item=Items)
+     WHERE _value OR KeepEmpty
+   
+   // Produce a HTML or simple plain-text list from an array. If the array
+   // contains only one element, the HTML result will not be a list:
+   LET BulletList(Items, HTML, KeepEmpty) = if(
+       condition=HTML,
+       then=if(condition=len(list=Items) > 1,
+               then=format(format='<ul>%v</ul>',
+                           args=join(array=_BulletListQuery(
+                                       Items=Items,
+                                       HTML=HTML,
+                                       KeepEmpty=KeepEmpty).Row)),
+               else=Items[0]),
+       else='\n' + join(array=_BulletListQuery(
+                          Items=Items,
+                          HTML=HTML,
+                          KeepEmpty=KeepEmpty).Row,
+                        sep='\n'))
+   
+   // Combine a timestamp and a duration string:
+   LET TimestampString(Timestamp) = if(
+       condition=Timestamp.Unix,
+       then=format(format='%v (%v)',
+                   args=(Timestamp.String, humanize(time=Timestamp))),
+       else='(never)')
+   
+   // Join an array with ', ', and if it exceeds MaxLength, drop the remaining
+   // items and add "( + N more)" instead:
+   LET ShortenStringList(List, MaxLength) = if(
+       condition=len(list=List) > MaxLength,
+       then=join(array=List[:MaxLength], sep=', ') + format(
+         format=' (+ %v more)',
+         args=len(list=List) - MaxLength),
+       else=join(array=List, sep=', '))
+   
+   // Return unique values from a list:
+   LET Unique(Items) = items(item=to_dict(item={
+       SELECT _value AS _key
+       FROM foreach(row=Items)
+     }))._key
+   
+   // Convert a dict to HTML table rows, alternatively just plain-text with
+   // "Key: Value":
+   LET TableRows(Values, HTML, KeepEmpty) = SELECT
+       format(format=if(condition=HTML,
+                        then='<tr><td>%v</td><td>%v</td></tr>',
+                        else='%v: %v'),
+              args=(_key, NullStr(String=_value))) AS Row
+     FROM items(item=Values)
+     WHERE _value OR KeepEmpty
+   
+   // Wrap HTML in "table" tags:
+   LET HTMLTable(Values, KeepEmpty) = format(format='<table>%v</table>',
+                                             args=join(
+                                               array=TableRows(
+                                                 Values=
+                                                   Values,
+                                                 HTML=true,
+                                                 KeepEmpty=
+                                                   KeepEmpty).Row))
+   
+   // Create either an HTML table, or alternatively newline-separated
+   // key–value plain-text strings:
+   LET Table(Values, HTML, KeepEmpty) = if(condition=HTML,
+                                           then=HTMLTable(Values=Values),
+                                           else=join(
+                                             array=TableRows(
+                                               Values=
+                                                 Values,
+                                               HTML=HTML,
+                                               KeepEmpty=
+                                                 KeepEmpty).Row,
+                                             sep='\n'))
+   
+   // Create a more readable dict with artifact parameters arguments,
+   // using the artifact name as key, and as value, a dict with parameter
+   // name and values):
+   LET ArtifactArguments(Specs) = to_dict(item={
+       SELECT artifact AS _key,
+              to_dict(item={
+       SELECT key AS _key,
+              value AS _value
+       FROM foreach(row=parameters.env)
+     }) AS _value
+       FROM foreach(row=Specs)
+     })
+   
+   // Prepend artifact name to each parameter name. This is useful when
+   // more than one artifact is called, so that we know to which artifact
+   // the argument belongs to:
+   LET ArgumentsGrouped(Specs) = to_dict(item={
+       SELECT *
+       FROM foreach(row={
+       SELECT _key AS ArtifactName,
+              _value AS Params
+       FROM items(item=ArtifactArguments(Specs=Specs))
+     },
+                    query={
+       SELECT ArtifactName + '/' + _key AS _key,
+              _value
+       FROM items(item=Params)
+     })
+     })
+   
+   // When there is just one artifact, we do not have to group arguments by
+   // artifact, so drop it and create a dict of arguments from the single value
+   // in the artifact–arguments dict:
+   LET Arguments(Specs) = to_dict(item={
+       SELECT *
+       FROM foreach(row={
+       SELECT _value AS Params
+       FROM items(item=ArtifactArguments(Specs=Specs))
+     },
+                    query={
+       SELECT *
+       FROM items(item=Params)
+     })
+     })
+   
+   // Create either an HTML table or a plain-text bullet list:
+   LET TableOrBulletList(Values, HTML, KeepEmpty) = if(
+       condition=Values,
+       then=if(condition=HTML,
+               then=Table(Values=Values, HTML=HTML, KeepEmpty=KeepEmpty),
+               else=BulletList(Items=Values, HTML=HTML, KeepEmpty=KeepEmpty)))
+   
+   // Create an HTML table or a plain-text bullet list of arguments:
+   LET ArgumentTable(Specs, HTML, KeepEmpty) = TableOrBulletList(
+       Values=if(condition=len(list=Specs) = 1,
+                 then=Arguments(Specs=Specs),
+                 else=ArgumentsGrouped(Specs=Specs)),
+       HTML=HTML,
+       KeepEmpty=KeepEmpty)
+   
+   // Create an HTML link or alternatively a plain-text link with a name:
+   LET Link(URL, Name, HTML) = format(
+       format=if(condition=HTML,
+                 then='<a href="%[1]s">%[2]s</href>',
+                 else='%[2]s (%[1]s)'),
+       args=(URL, Name))
+   
+   LET HuntInfo(flow_id) = SELECT *
+     FROM foreach(row={
+       SELECT hunt_id,
+              hunt_description
+       FROM hunts()
+     },
+                  query={
+       SELECT hunt_id AS HuntId,
+              hunt_description AS HuntDesc
+       FROM hunt_flows(hunt_id=hunt_id)
+       WHERE FlowId = flow_id
+     })
+   
+   LET ArtifactLinks(Artifacts, HTML) = SELECT Link(
+                                                 URL=link_to(
+                                                   artifact=
+                                                     _value,
+                                                   raw=true),
+                                                 Name=
+                                                   _value,
+                                                 HTML=
+                                                   HTML) AS Link
+     FROM foreach(row=Artifacts)
+   
+   LET MailTemplate(Title, Tables, Summary, Footer, Warning) =
+       template(
+         template='''<!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f6f6f6;
+              color: #333333;
+              margin: 0;
+            }
+            .email-container {
+              max-width: 600px;
+              margin: 20px auto;
+              background-color: #ffffff;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+              background-color: {{ .bgcolor }};
+              color: #ffffff;
+              text-align: center;
+              padding: 20px;
+              border-radius: 8px 8px 0 0;
+              font-size: 24px;
+              margin: 0;
+              font-weight: normal;
+            }
+            .content {
+              padding: 0 20px;
+            }
+            h2 {
+              font-size: 18px;
+              font-weight: 600;
+              color: #555555;
+              margin-top: 0;
+              margin-bottom: 10px;
+            }
+            .table-container {
+              margin-top: 5px;
+              margin-bottom: 20px;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            td {
+              padding: 12px;
+              border: 1px solid #dddddd;
+            }
+            table table {
+              border-collapse: separate;
+              border-spacing: 10px 0;
+            }
+            table table td {
+              border: none;
+              padding: 0;
+            }
+            .footer {
+              text-align: center;
+              margin-top: 20px;
+              font-size: 12px;
+              color: #777777;
+            }
+            ul {
+              padding: 0;
+              margin: 0;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <h1 class="header">
+              {{ .title }}
+            </h1>
+            <div class="content">
+              <p>{{ .summary }}</p>
+              {{ range $tableName, $tableContent := .tables.ToDict }}
+              {{ if $tableContent }}
+              {{ if $.includeTableHeaders }}<h2>{{ $tableName }}</h2>{{ end }}
+              <div class="table-container">{{ $tableContent }}</div>
+              {{ end }}
+              {{ end }}
+            </div>
+            <div class="footer">
+              {{ .footer }}
+            </div>
+          </div>
+        </body>
+        </html>''',
+         expansion=dict(
+           bgcolor=if(
+             condition=Warning,
+             then='#DF0B0B',
+             else='#4CAF50'),
+           title=Title,
+           tables=if(
+             condition=IsDict(
+               Var=Tables),
+             then=Tables,
+             else=dict(
+               t=Tables)),
+           includeTableHeaders=IsDict(
+             Var=Tables),
+           footer=Footer,
+           summary=Summary))
+
 sources:
   - query: |
        // Get basic information about completed flows:
@@ -148,8 +448,38 @@ sources:
                                    FlowId
          FROM watch_monitoring(artifact='System.Flow.Completion')
          WHERE ClientId != 'server'
-          AND (NotifyHunts OR NOT FlowId =~ '\.H$')
-
+       
+       LET Failed = State != 'FINISHED'
+       
+       LET Cancelled = Status =~ '^Cancelled'
+       
+       LET IncludeHunts = (Failed
+            AND 'IncludeHunts' IN ErrorHandling) OR NOT FlowId =~ '\.H$'
+       
+       LET IncludeArtifact = NOT ArtifactsToAlertOn OR request.artifacts =~
+           ArtifactsToAlertOn
+       
+       LET ExcludeArtifact = ArtifactsToIgnore
+          AND len(list=request.artifacts) = 1
+               AND request.artifacts =~ ArtifactsToIgnore
+       
+       LET MatchesFilters = (Failed
+            AND 'IgnoreArtifactFilters' IN ErrorHandling) OR (
+             IncludeArtifact
+            AND NOT ExcludeArtifact)
+       
+       LET AboveDelayThreshold = (Failed
+            AND 'IgnoreDelay' IN ErrorHandling) OR FlowFinished.Unix -
+           timestamp(epoch=create_time).Unix >= atoi(string=DelayThreshold)
+       
+       LET IncludeCancelled = 'IgnoreCancelled' IN ErrorHandling OR NOT
+           Cancelled
+       
+       LET MatchesCritera = MatchesFilters
+          AND AboveDelayThreshold
+               AND IncludeHunts
+                    AND IncludeCancelled
+       
        // Look up more details about the flows using flows(), since the data
        // returned by watch_monitoring() may be incomplete (like the create_time field):
        LET FlowInfo = SELECT
@@ -184,32 +514,21 @@ sources:
          FROM flows(
            client_id=ClientId,
            flow_id=FlowId)
-         WHERE if(
-           condition=ArtifactsToIgnore
-            AND len(
-                  list=request.artifacts) = 1,
-           then=NOT request.artifacts =~ ArtifactsToIgnore,
-           else=TRUE)
-          AND request.artifacts =~ ArtifactsToAlertOn
-               AND FlowFinished.Unix - timestamp(
-                     epoch=create_time).Unix >= atoi(
-                     string=DelayThreshold)
-                    AND (NOT NotifyFailedOnly OR State != 'FINISHED')
-                         AND (NOT IgnoreCancelled OR NOT status =~ '^Cancelled')
-                              AND log(
-                                    message='Flow %v (%v) completed',
-                                    args=(FlowId, join(
-                                        array=request.artifacts,
-                                        sep=', ')))
-
+         WHERE MatchesCritera
+          AND log(
+                message='Flow %v (%v) completed',
+                args=(FlowId, join(
+                    array=request.artifacts,
+                    sep=', ')))
+       
        LET ResultWord = if(condition=State = 'FINISHED',
                            then='finished',
                            else='FAILED')
-
+       
        LET ResultString = if(condition=State = 'FINISHED',
                              then='finished collecting',
                              else='FAILED to collect')
-
+       
        LET Summary = format(
            format='Client %v (%v) has %v %v. It took %v and returned %v row(s). %v file(s) were uploaded, totalling %v',
            args=(ClientId, FQDN, ResultString, join(
@@ -217,183 +536,30 @@ sources:
                sep=', '), Duration, CollectedRows, UploadedFiles,
                humanize(
                  bytes=UploadedBytes)))
-
+       
+       LET IsHunt = FlowId =~ '\\.H$'
+       
        // Get the hunt (if any) this flow is part of:
        LET OurHunt = SELECT *
-         FROM foreach(row={
-           SELECT *
-           FROM hunts()
-         },
-                      query={
-           SELECT hunt_id AS HuntId,
-                  hunt_description AS HuntDesc
-           FROM hunt_flows(hunt_id=hunt_id)
-           WHERE FlowId = FlowId
-         })
-
-       // If string is NULL, return an empty string instead:
-       LET NullStr(String) = if(condition=String = NULL, then='', else=String)
-
-       LET IsDict(Var) = typeof(x=Var) = '*ordereddict.Dict'
-
+         FROM HuntInfo(flow_id=FlowId)
+       
        LET MetadataFieldAliases <= to_dict(item={
            SELECT Field AS _key,
                   Alias AS _value
            FROM ClientMetadata
          })
-
-       LET RenameMetadata(Metadata) = to_dict(item={
-           SELECT _value || _key AS _key,
-                  get(item=Metadata, field=_key) AS _value
-           FROM items(item=MetadataFieldAliases)
-         })
-
+       
        LET ClientMetadata = RenameMetadata(
-           Metadata=client_metadata(client_id=ClientId))
-
-       // Create either HTML list items or plain-text "  - Value" strings for each
-       // item in Items. If Items is a dict and not an array, the plain-text
-       // will be of the form "  - Key: Value".
-       LET _BulletListQuery(Items) = SELECT
-           format(format=if(condition=HTML,
-                            then='<li>%[1]s</li>',
-                            else=if(condition=IsDict(Var=Items),
-                                    then='  - %[2]s: %[1]s',
-                                    else='  - %[1]s')),
-                  args=(NullStr(String=_value), _key)) AS Row
-         FROM items(item=Items)
-         WHERE _value OR KeepEmptyRows
-
-       // Produce a HTML or simple plain-text list from an array. If the array
-       // contains only one element, the HTML result will not be a list:
-       LET BulletList(Items) = if(condition=HTML,
-                                  then=if(condition=len(list=Items) > 1,
-                                          then=format(format='<ul>%v</ul>',
-                                                      args=
-                                                        join(
-                                                             array=
-                                                               _BulletListQuery(
-
-                                                                 Items=
-                                                                   Items).Row)),
-                                          else=Items[0]),
-                                  else='\n' + join(
-                                    array=_BulletListQuery(Items=Items).Row,
-                                    sep='\n'))
-
-       // Combine a timestamp and a duration string:
-       LET TimestampString(Timestamp) = if(
-           condition=Timestamp.Unix,
-           then=format(format='%v (%v)',
-                       args=(Timestamp.String, humanize(time=Timestamp))),
-           else='(never)')
-
-       // Join an array with ', ', and if it exceeds MaxLength, drop the remaining
-       // items and add "( + N more)" instead:
-       LET ShortenStringList(List, MaxLength) = if(
-           condition=len(list=List) > MaxLength,
-           then=join(array=List[:MaxLength], sep=', ') + format(
-             format=' (+ %v more)',
-             args=len(list=List) - MaxLength),
-           else=join(array=List, sep=', '))
-
-       // Create a more readable dict with artifact parameters arguments,
-       // using the artifact name as key, and as value, a dict with parameter
-       // name and values):
-       LET ArtifactArguments = to_dict(item={
-           SELECT artifact AS _key,
-                  to_dict(item={
-           SELECT key AS _key,
-                  value AS _value
-           FROM foreach(row=parameters.env)
-         }) AS _value
-           FROM foreach(row=Specs)
-         })
-
-       // Prepend artifact name to each parameter name. This is useful when
-       // more than one artifact is called, so that we know to which artifact
-       // the argument belongs to:
-       LET ArgumentsGrouped = to_dict(item={
-           SELECT *
-           FROM foreach(row={
-           SELECT _key AS ArtifactName,
-                  _value AS Params
-           FROM items(item=ArtifactArguments)
-         },
-                        query={
-           SELECT ArtifactName + '/' + _key AS _key,
-                  _value
-           FROM items(item=Params)
-         })
-         })
-
-       // When there is just one artifact, we do not have to group arguments by
-       // artifact, so drop it and create a dict of arguments from the single value
-       // in the artifact–arguments dict:
-       LET Arguments = to_dict(item={
-           SELECT *
-           FROM foreach(row={
-           SELECT _value AS Params
-           FROM items(item=ArtifactArguments)
-         },
-                        query={
-           SELECT *
-           FROM items(item=Params)
-         })
-         })
-
-       // Convert a dict to HTML table rows, alternatively just plain-text with
-       // "Key: Value":
-       LET TableRows(Values) = SELECT
-           format(format=if(condition=HTML,
-                            then='<tr><td>%v</td><td>%v</td></tr>',
-                            else='%v: %v'),
-                  args=(_key, NullStr(String=_value))) AS Row
-         FROM items(item=Values)
-         WHERE _value OR KeepEmptyRows
-
-       // Wrap HTML in "table" tags:
-       LET HTMLTable(Values) = format(format='<table>%v</table>',
-                                      args=join(array=TableRows(Values=Values).Row))
-
-       // Create either an HTML table, or alternatively newline-separated
-       // key–value plain-text strings:
-       LET Table(Values) = if(condition=HTML,
-                              then=HTMLTable(Values=Values),
-                              else=join(array=TableRows(Values=Values).Row, sep='\n'))
-
-       // Create either an HTML table or a plain-text bullet list:
-       LET TableOrBulletList(Values) = if(
-           condition=Values,
-           then=if(condition=HTML,
-                   then=Table(Values=Values),
-                   else=BulletList(Items=Values)))
-
-       // Create an HTML table or a plain-text bullet list of arguments:
-       LET ArgumentTable = TableOrBulletList(
-           Values=if(condition=len(list=Requested) = 1,
-                     then=Arguments,
-                     else=ArgumentsGrouped))
-
-       // Creat an HTML link or alternatively a plain-text link with a name:
-       LET Link(URL, Name) = format(format=if(condition=HTML,
-                                              then='<a href="%[1]s">%[2]s</href>',
-                                              else='%[2]s (%[1]s)'),
-                                    args=(URL, Name))
-
+           Metadata=client_metadata(client_id=ClientId),
+           Aliases=MetadataFieldAliases)
+       
        LET OrgInfo <= org()
-
-       // Return unique values from a list:
-       LET Unique(Items) = items(item=to_dict(item={
-           SELECT _value AS _key
-           FROM foreach(row=Items)
-         }))._key
-
+       
        LET CreatorAddrs = if(condition=NotifyExecutor
                               AND Creator =~ '[^@]+@.+',
                              then=(Creator, ),
                              else=[])
-
+       
        // Main information dict used in the HTML e-mail:
        LET TableRowsDict = dict(`Organisation`=if(
                                   condition=OrgInfo.id != 'root',
@@ -403,143 +569,90 @@ sources:
                                                 client_id=
                                                   ClientId,
                                                 raw=true),
-                                              Name=FQDN),
+                                              Name=FQDN,
+                                              HTML=HTML),
                                 `New client`=NewClient) +
-           ClientMetadata + dict(
-           `Flow`=Link(URL=link_to(client_id=ClientId,
-                                   flow_id=FlowId,
-                                   tab='results',
-                                   raw=true),
-                       Name=FlowId),
-           `Collection created`=TimestampString(Timestamp=FlowCreated),
-           `Collection started`=TimestampString(Timestamp=FlowStarted),
-           `Collection finished`=TimestampString(Timestamp=FlowFinished),
-           `Duration`=Duration,
-           `Creator`=Creator,
-           `Requested`=BulletList(Items=Requested),
-           `Arguments`=ArgumentTable,
-           `With results`=BulletList(Items=WithResults),
-           `Error`=if(condition=Status, then=Status),
-           `Urgent`=Urgent,
-           `Hunt`=if(
-             condition=NotifyHunts
-              AND OurHunt.HuntId,
-             then=Link(URL=link_to(hunt_id=OurHunt[0].HuntId, raw=true),
-                       Name=OurHunt[0].HuntDesc || OurHunt[0].HuntId)),
-           `Collected rows`=CollectedRows,
-           `Uploaded files`=UploadedFiles,
-           `Uploaded bytes`=if(condition=UploadedBytes,
-                               then=humanize(bytes=UploadedBytes),
-                               else=0))
-
+           ClientMetadata + dict(`Flow`=Link(
+                                   URL=link_to(client_id=ClientId,
+                                               flow_id=FlowId,
+                                               tab='results',
+                                               raw=true),
+                                   Name=FlowId,
+                                   HTML=HTML),
+                                 `Collection created`=TimestampString(
+                                   Timestamp=FlowCreated),
+                                 `Collection started`=TimestampString(
+                                   Timestamp=FlowStarted),
+                                 `Collection finished`=TimestampString(
+                                   Timestamp=FlowFinished),
+                                 `Duration`=Duration,
+                                 `Creator`=Creator,
+                                 `Requested`=BulletList(Items=
+                                                          ArtifactLinks(
+                                                                        Artifacts=
+                                                                          Requested,
+       
+                                                                        HTML=
+                                                                          HTML).Link,
+                                                        HTML=
+                                                          HTML,
+                                                        KeepEmpty=
+                                                          KeepEmptyRows),
+                                 `Arguments`=ArgumentTable(
+                                   Specs=Specs,
+                                   HTML=HTML,
+                                   KeepEmpty=KeepEmptyRows),
+                                 `With results`=BulletList(
+                                   Items=WithResults,
+                                   HTML=HTML,
+                                   KeepEmpty=KeepEmptyRows),
+                                 `Error`=if(condition=Status, then=Status),
+                                 `Urgent`=Urgent,
+                                 `Hunt`=if(
+                                   condition=NotifyHunts
+                                    AND IsHunt
+                                         AND OurHunt.HuntId,
+                                   then=Link(URL=link_to(
+                                               hunt_id=OurHunt[0].HuntId,
+                                               raw=true),
+                                             Name=OurHunt[0].HuntDesc ||
+                                               OurHunt[0].HuntId,
+                                             HTML=HTML)),
+                                 `Collected rows`=CollectedRows,
+                                 `Uploaded files`=UploadedFiles,
+                                 `Uploaded bytes`=if(
+                                   condition=UploadedBytes,
+                                   then=humanize(bytes=UploadedBytes),
+                                   else=0))
+       
        LET Title = format(format='Client collection %v', args=ResultWord)
-
+       
        LET PlainText = format(format='%v\n\n%v\n\n%v',
-                              args=(Title, Summary, Table(Values=TableRowsDict)))
-
+                              args=(Title, Summary, Table(
+                                  Values=TableRowsDict,
+                                  HTML=false,
+                                  KeepEmpty=KeepEmptyRows)))
+       
+       LET Footer = format(format='Sent from Velociraptor by %v',
+                           args=ArtifactLinks(
+                             Artifacts='Server.Alerts.Mail',
+                             HTML=HTML)[0].Link)
+       
        // Add some CSS to make the table look at least a bit nice:
-       LET Body = if(
-           condition=HTML,
-           then=template(
-             template='''<!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              background-color: #f6f6f6;
-              color: #333333;
-              margin: 0;
-              padding: 0;
-            }
-            .email-container {
-              max-width: 600px;
-              margin: 20px auto;
-              background-color: #ffffff;
-              padding: 20px;
-              border-radius: 8px;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .header {
-              background-color: {{ .bgcolor }};
-              color: #ffffff;
-              text-align: center;
-              padding: 20px;
-              border-radius: 8px 8px 0 0;
-              font-size: 24px;
-            }
-            .content {
-              padding: 20px;
-            }
-            .table-container {
-              margin-top: 20px;
-            }
-            table {
-              width: 100%;
-              border-collapse: collapse;
-            }
-            th, td {
-              padding: 12px;
-              text-align: left;
-              border: 1px solid #dddddd;
-            }
-            th {
-              background-color: #f4f4f4;
-            }
-            table table {
-              border-collapse: separate;
-              border-spacing: 10px 0;
-            }
-            table table td {
-              border: none;
-              padding: 0;
-            }
-            .footer {
-              text-align: center;
-              margin-top: 20px;
-              font-size: 12px;
-              color: #777777;
-            }
-            ul {
-              padding: 0;
-              margin: 0;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="email-container">
-            <div class="header">
-              {{ .title }}
-            </div>
-            <div class="content">
-              <p>{{ .summary }}</p>
-              <div class="table-container">
-                {{ .table }}
-              </div>
-            </div>
-            <div class="footer">
-              {{ .footer }}
-            </div>
-          </div>
-        </body>
-        </html>''',
-             expansion=dict(
-               bgcolor=if(
-                 condition=State = 'FINISHED',
-                 then='#4CAF50',
-                 else='#DF0B0B'),
-               title=Title,
-               table=Table(
-                 Values=TableRowsDict),
-               footer='Sent from Velociraptor by Server.Alerts.Mail',
-               summary=Summary)),
-           else=PlainText)
-
+       LET Body = if(condition=HTML,
+                     then=MailTemplate(
+                       Title=Title,
+                       Tables=[Table(Values=TableRowsDict,
+                                     HTML=true,
+                                     KeepEmpty=KeepEmptyRows)],
+                       Summary=Summary,
+                       Footer=Footer,
+                       Warning=State != 'FINISHED'),
+                     else=PlainText)
+       
        LET Results = SELECT *
          FROM foreach(row=CompletedFlows, query=FlowInfo)
-
+       
        SELECT
            mail(server=ServerAddr,
                 root_ca=RootCA,
