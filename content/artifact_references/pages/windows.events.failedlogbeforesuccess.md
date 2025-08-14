@@ -22,8 +22,8 @@ be enabled via group policy.
 
 https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events
 
-You can set the policy in group policy management console (gpmc):
-Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy.
+You can set the policy in Group Policy Management Console (GPMC):
+`Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy`.
 
 
 <pre><code class="language-yaml">
@@ -47,8 +47,8 @@ description: |
 
   https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events
 
-  You can set the policy in group policy management console (gpmc):
-  Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy.
+  You can set the policy in Group Policy Management Console (GPMC):
+  `Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy`.
 type: CLIENT_EVENT
 
 parameters:

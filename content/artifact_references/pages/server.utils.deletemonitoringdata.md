@@ -14,7 +14,7 @@ optionally removes data older than the specified timestamp.
 
 **NOTE** This artifact will destroy all data irrevocably. Take
   care! You should always do a dry run first to see which flows
-  will match before using the ReallyDoIt option.
+  will match before using the `ReallyDoIt` option.
 
 
 <pre><code class="language-yaml">
@@ -30,7 +30,7 @@ description: |
 
    **NOTE** This artifact will destroy all data irrevocably. Take
      care! You should always do a dry run first to see which flows
-     will match before using the ReallyDoIt option.
+     will match before using the `ReallyDoIt` option.
 
 type: SERVER
 
@@ -68,9 +68,9 @@ sources:
       WHERE hostname =~ HostnameRegex
 
       LET SearchClients = SELECT * FROM if(
-           condition=SearchDeletedClients,
-           then=SearchDeletedClientsQuery,
-           else=SearchRegisteredClientsQuery)
+           condition=OnlyRegisteredClients,
+           then=SearchRegisteredClientsQuery,
+           else=SearchDeletedClientsQuery)
 
       SELECT * FROM foreach(row=SearchClients,
       query={
@@ -80,7 +80,7 @@ sources:
                if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
         FROM glob(
           globs="/**.json*", accessor="fs",
-          root="/clients/"+ client_id + "/monitoring")
+          root="/clients/"+ ClientId + "/monitoring")
         WHERE ArtifactName =~ ArtifactRegex
           AND Timestamp &lt; DateBefore
       }, workers=10)

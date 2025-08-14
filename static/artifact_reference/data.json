@@ -73,7 +73,7 @@
     },
     {
         "title": "Elastic.EventLogs.Sysmon",
-        "description": "Ship the the Sysmon event log in ECS schema.",
+        "description": "Ships the the Sysmon event log in ECS schema.",
         "link": "/artifact_references/pages/elastic.eventlogs.sysmon",
         "type": "client",
         "tags": [
@@ -118,7 +118,7 @@
     },
     {
         "title": "Generic.Applications.Office.Keywords",
-        "description": "Microsoft Office documents among other document format (such as\nLibraOffice) are actually stored in zip files. The zip file contain\nthe document encoded as XML in a number of zip members.",
+        "description": "Microsoft Office documents among other document format (such as\nLibraOffice) are actually stored in zip files. The zip file contains\nthe document encoded as XML in several zip members.",
         "link": "/artifact_references/pages/generic.applications.office.keywords",
         "type": "client",
         "tags": [
@@ -190,7 +190,7 @@
     },
     {
         "title": "Generic.Client.Rekey",
-        "description": "This artifact forces the client to reinitialize it's client id.",
+        "description": "This artifact forces the client to regenerate its client id.",
         "link": "/artifact_references/pages/generic.client.rekey",
         "type": "client",
         "tags": [
@@ -234,15 +234,6 @@
         ]
     },
     {
-        "title": "Generic.Collectors.SQLECmd",
-        "description": "Many applications maintain internal state using SQLite\ndatabases. The SQLECmd project is an open source resource for known\napplications and the type of forensic information we can recover.",
-        "link": "/artifact_references/pages/generic.collectors.sqlecmd",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Generic.Detection.HashHunter",
         "description": "This artifact enables searching for hashes.",
         "link": "/artifact_references/pages/generic.detection.hashhunter",
@@ -262,7 +253,7 @@
     },
     {
         "title": "Generic.Detection.Yara.Glob",
-        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "description": "This artifact returns a list of target files then runs YARA over the target\nlist.",
         "link": "/artifact_references/pages/generic.detection.yara.glob",
         "type": "client",
         "tags": [
@@ -271,7 +262,7 @@
     },
     {
         "title": "Generic.Detection.Yara.Zip",
-        "description": "This artifact enables running Yara on embeded compressed files.",
+        "description": "This artifact enables running YARA on embedded compressed files.",
         "link": "/artifact_references/pages/generic.detection.yara.zip",
         "type": "client",
         "tags": [
@@ -298,7 +289,7 @@
     },
     {
         "title": "Generic.Forensic.LocalHashes.Glob",
-        "description": "This artifact maintains a local (client side) database of file\nhashes. It is then possible to query this database using the\nGeneric.Forensic.LocalHashes.Query artifact",
+        "description": "This artifact maintains a local (client side) database of file\nhashes. It is then possible to query this database by using the\n`Generic.Forensic.LocalHashes.Query` artifact",
         "link": "/artifact_references/pages/generic.forensic.localhashes.glob",
         "type": "client",
         "tags": [
@@ -316,17 +307,8 @@
     },
     {
         "title": "Generic.Forensic.LocalHashes.Query",
-        "description": "This artifact maintains a local (client side) database of file\nhashes. It is then possible to query this database using the\nGeneric.Forensic.LocalHashes.Query artifact.",
+        "description": "This artifact maintains a local (client side) database of file\nhashes. It is then possible to query this database by using the\nGeneric.Forensic.LocalHashes.Query artifact.",
         "link": "/artifact_references/pages/generic.forensic.localhashes.query",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
-        "title": "Generic.Forensic.SQLiteHunter",
-        "description": "Hunt for SQLite files.",
-        "link": "/artifact_references/pages/generic.forensic.sqlitehunter",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -405,6 +387,15 @@
         ]
     },
     {
+        "title": "Generic.Utils.SendEmail",
+        "description": "A Utility artifact for sending emails.\n",
+        "link": "/artifact_references/pages/generic.utils.sendemail",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Linux.Applications.Chrome.Extensions",
         "description": "Fetch Chrome extensions.",
         "link": "/artifact_references/pages/linux.applications.chrome.extensions",
@@ -469,7 +460,7 @@
     },
     {
         "title": "Linux.Detection.Yara.Glob",
-        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "description": "This artifact returns a list of target files then runs YARA over the target\nlist.",
         "link": "/artifact_references/pages/linux.detection.yara.glob",
         "type": "client",
         "tags": [
@@ -478,7 +469,7 @@
     },
     {
         "title": "Linux.Detection.Yara.Process",
-        "description": "This artifact enables running Yara over processes in memory.",
+        "description": "This artifact enables running YARA over processes in memory.",
         "link": "/artifact_references/pages/linux.detection.yara.process",
         "type": "client",
         "tags": [
@@ -532,7 +523,7 @@
     },
     {
         "title": "Linux.Events.SSHBruteforce",
-        "description": "This is a monitoring artifact which detects a successful SSH login\npreceded by some failed attempts within the last hour.",
+        "description": "A monitoring artifact which detects a successful SSH login preceded by some\nfailed attempts within the last hour.",
         "link": "/artifact_references/pages/linux.events.sshbruteforce",
         "type": "client_event",
         "tags": [
@@ -550,7 +541,7 @@
     },
     {
         "title": "Linux.Events.TrackProcesses",
-        "description": "This artifact uses ebpf and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
+        "description": "This artifact uses eBPF and pslist to keep track of running\nprocesses by using the Velociraptor process tracker.",
         "link": "/artifact_references/pages/linux.events.trackprocesses",
         "type": "client_event",
         "tags": [
@@ -559,7 +550,7 @@
     },
     {
         "title": "Linux.Forensics.ImmutableFiles",
-        "description": "Attackers sometimes enable immutable files in Linux.",
+        "description": "Searches the filesystem for immutable files.",
         "link": "/artifact_references/pages/linux.forensics.immutablefiles",
         "type": "client",
         "tags": [
@@ -604,7 +595,7 @@
     },
     {
         "title": "Linux.Network.PacketCapture",
-        "description": "This artifact leverages tcpdump to natively capture packets.",
+        "description": "This artifact uses tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/linux.network.packetcapture",
         "type": "client",
         "tags": [
@@ -649,7 +640,7 @@
     },
     {
         "title": "Linux.Remediation.Quarantine",
-        "description": "This artifact applies quarantine to Linux systems via nftables.\nIt expects the target system to have nftables installed, and\nhence the availability of nft CLI.",
+        "description": "Applies network quarantine to a Linux system using nftables.",
         "link": "/artifact_references/pages/linux.remediation.quarantine",
         "type": "client",
         "tags": [
@@ -667,7 +658,7 @@
     },
     {
         "title": "Linux.Ssh.AuthorizedKeys",
-        "description": "Find and parse ssh authorized keys files.",
+        "description": "Finds and parses SSH authorized keys files.",
         "link": "/artifact_references/pages/linux.ssh.authorizedkeys",
         "type": "client",
         "tags": [
@@ -676,7 +667,7 @@
     },
     {
         "title": "Linux.Ssh.KnownHosts",
-        "description": "Find and parse ssh known hosts files.",
+        "description": "Finds and parses SSH known hosts files.",
         "link": "/artifact_references/pages/linux.ssh.knownhosts",
         "type": "client",
         "tags": [
@@ -712,7 +703,7 @@
     },
     {
         "title": "Linux.Sys.BashHistory",
-        "description": "This artifact enables grep of Bash and alternate shell history files.",
+        "description": "This artifact enables grep-like searching of Bash and alternate shell history\nfiles.",
         "link": "/artifact_references/pages/linux.sys.bashhistory",
         "type": "client",
         "tags": [
@@ -757,7 +748,7 @@
     },
     {
         "title": "Linux.Sys.LastUserLogin",
-        "description": "Find and parse system wtmp files. This indicate when the user last\nlogged in.\n",
+        "description": "Finds and parses system WTMP files.",
         "link": "/artifact_references/pages/linux.sys.lastuserlogin",
         "type": "client",
         "tags": [
@@ -766,7 +757,7 @@
     },
     {
         "title": "Linux.Sys.LogGrep",
-        "description": "This artifact enables grep and zgrep of linux logs and gzipped log files.\n",
+        "description": "This artifact enables zgrep-like searching of Linux logs, including gzipped\nlog files.\n",
         "link": "/artifact_references/pages/linux.sys.loggrep",
         "type": "client",
         "tags": [
@@ -775,7 +766,7 @@
     },
     {
         "title": "Linux.Sys.LogHunter",
-        "description": "This artifact enables grep of Linux, MacOS and Windows logs.\nParameters include SearchRegex and WhitelistRegex as regex terms.\nI have also included a Path exclusion regex to improve result output\nand automatically skip hitting notorious locations like /proc.",
+        "description": "Allows grep-like searching of Linux, MacOS and Windows logs.",
         "link": "/artifact_references/pages/linux.sys.loghunter",
         "type": "client",
         "tags": [
@@ -802,7 +793,7 @@
     },
     {
         "title": "Linux.Sys.SUID",
-        "description": "When the setuid or setgid bits are set on Linux or macOS for an\napplication, this means that the application will run with the\nprivileges of the owning user or group respectively [1]. Normally an\napplication is run in the current user\u2019s context, regardless of\nwhich user or group owns the application. There are instances where\nprograms need to be executed in an elevated context to function\nproperly, but the user running them doesn\u2019t need the elevated\nprivileges. Instead of creating an entry in the sudoers file, which\nmust be done by root, any user can specify the setuid or setgid flag\nto be set for their own applications. These bits are indicated with\nan \"s\" instead of an \"x\" when viewing a file's attributes via ls\n-l. The chmod program can set these bits with via bitmasking, chmod\n4777 [file] or via shorthand naming, chmod u+s [file].",
+        "description": "Searches for applications that have the `setuid` or `setgid` bits set.",
         "link": "/artifact_references/pages/linux.sys.suid",
         "type": "client",
         "tags": [
@@ -820,7 +811,7 @@
     },
     {
         "title": "Linux.Sys.Users",
-        "description": "Get User specific information like homedir, group etc from /etc/passwd.",
+        "description": "Get User specific information like homedir, group, etc. from `/etc/passwd`.",
         "link": "/artifact_references/pages/linux.sys.users",
         "type": "client",
         "tags": [
@@ -865,7 +856,7 @@
     },
     {
         "title": "Linux.Utils.InstallDeb",
-        "description": "Install a deb package and configure it with debconf answers. The package\nmay either be specified by name, as an uploaded file or as a \"tool\". If the\npackage already exists, it may be optionally reconfigured with debconf\nanswers.",
+        "description": "Install a deb package and configure it with debconf answers.",
         "link": "/artifact_references/pages/linux.utils.installdeb",
         "type": "client",
         "tags": [
@@ -928,7 +919,7 @@
     },
     {
         "title": "MacOS.Detection.Yara.Glob",
-        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "description": "This artifact returns a list of target files then runs YARA over the target\nlist.",
         "link": "/artifact_references/pages/macos.detection.yara.glob",
         "type": "client",
         "tags": [
@@ -937,7 +928,7 @@
     },
     {
         "title": "MacOS.Detection.Yara.Process",
-        "description": "This artifact enables running Yara over processes in memory.",
+        "description": "This artifact enables running YARA over processes in memory.",
         "link": "/artifact_references/pages/macos.detection.yara.process",
         "type": "client",
         "tags": [
@@ -973,7 +964,7 @@
     },
     {
         "title": "MacOS.Network.PacketCapture",
-        "description": "This artifact leverages tcpdump to natively capture packets.",
+        "description": "This artifact uses tcpdump to natively capture packets.",
         "link": "/artifact_references/pages/macos.network.packetcapture",
         "type": "client",
         "tags": [
@@ -1008,8 +999,17 @@
         ]
     },
     {
+        "title": "MacOS.Sys.SUID",
+        "description": "Searches for applications that have the `setuid` or `setgid` bits set.",
+        "link": "/artifact_references/pages/macos.sys.suid",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "MacOS.System.Dock",
-        "description": "This artifact examines the contents of the user's dock.  The\nproperty list entry for each application represented within the dock\ncan be modified to point to a malcious application.",
+        "description": "This artifact examines the contents of the user's dock.  The\nproperty list entry for each application represented within the dock\ncan be modified to point to a malicious application.",
         "link": "/artifact_references/pages/macos.system.dock",
         "type": "client",
         "tags": [
@@ -1081,7 +1081,7 @@
     },
     {
         "title": "Network.ExternalIpAddress",
-        "description": "Detect the external ip address of the end point.",
+        "description": "Identifies the external IP address of the endpoint using an external\nweb service.\n",
         "link": "/artifact_references/pages/network.externalipaddress",
         "type": "client",
         "tags": [
@@ -1135,7 +1135,7 @@
     },
     {
         "title": "Reporting.Default",
-        "description": "A default template for HTML export.  This template will be used to\nhost html exports such as the notebook and the reporting\ntemplates. Velociraptor will evaluate this template on the following\ndict:",
+        "description": "A default template for HTML export.  This template will be used to\nhost HTML exports such as the notebook and the reporting\ntemplates. Velociraptor will evaluate this template on the following\ndict:",
         "link": "/artifact_references/pages/reporting.default",
         "type": "server",
         "tags": [
@@ -1171,7 +1171,7 @@
     },
     {
         "title": "Server.Alerts.PsExec",
-        "description": "Send an email if execution of the psexec service was detected on\nany client. This is a server side artifact.",
+        "description": "Send an email if execution of the PsExec service was detected on\nany client. This is a server side artifact.",
         "link": "/artifact_references/pages/server.alerts.psexec",
         "type": "server_event",
         "tags": [
@@ -1180,7 +1180,7 @@
     },
     {
         "title": "Server.Alerts.TheHive.Alert",
-        "description": "Create a TheHive alert when monitored artifacts complete with results.\nMuch of this was borrowed from: https://gist.github.com/scudette/3a32abd19350c8fe3368661c4278869d",
+        "description": "Creates a TheHive alert when monitored artifacts complete with results.",
         "link": "/artifact_references/pages/server.alerts.thehive.alert",
         "type": "server_event",
         "tags": [
@@ -1189,7 +1189,7 @@
     },
     {
         "title": "Server.Alerts.TheHive.Case",
-        "description": "Create a TheHive case when monitored artifacts complete with results.  Add the ClientId, FlowId, and FQDN as tags to the case.  Add FQDN as an observable.\nMuch of this was borrowed from: https://gist.github.com/scudette/3a32abd19350c8fe3368661c4278869d",
+        "description": "Creates a TheHive case when monitored artifacts complete with results.",
         "link": "/artifact_references/pages/server.alerts.thehive.case",
         "type": "server_event",
         "tags": [
@@ -1243,7 +1243,7 @@
     },
     {
         "title": "Server.Enrichment.GeoIPISP",
-        "description": "This artifact can use the MaxMind database to Geo resolve an IP\naddress using the GeoIP ISP Database. You will need to provide a valid GeoIP ISP database.",
+        "description": "Look up geo-information for an IP address using the MaxMind \"GeoIP ISP\"\ndatabase.",
         "link": "/artifact_references/pages/server.enrichment.geoipisp",
         "type": "server",
         "tags": [
@@ -1270,7 +1270,7 @@
     },
     {
         "title": "Server.Enrichment.Virustotal",
-        "description": "Submit a file hash or IP to Virustotal for details. Default Public API restriction is 4 requests/min.",
+        "description": "Submit a file hash or IP to VirusTotal for details.",
         "link": "/artifact_references/pages/server.enrichment.virustotal",
         "type": "server",
         "tags": [
@@ -1279,7 +1279,7 @@
     },
     {
         "title": "Server.Hunts.AddFlow",
-        "description": "This artifact adds an exisiting flow to a running hunt.",
+        "description": "This artifact adds an existing flow to a running hunt.",
         "link": "/artifact_references/pages/server.hunts.addflow",
         "type": "server",
         "tags": [
@@ -1323,18 +1323,9 @@
         ]
     },
     {
-        "title": "Server.Import.CuratedSigma",
-        "description": "This artifact allows importing curated Sigma rules from\nhttps://sigma.velocidex.com",
-        "link": "/artifact_references/pages/server.import.curatedsigma",
-        "type": "server",
-        "tags": [
-            "Server Artifact"
-        ]
-    },
-    {
-        "title": "Server.Import.DeleteArtifacts",
-        "description": "This artifact will remove customized artifacts from the Velociraptor\nserver based on a regex.",
-        "link": "/artifact_references/pages/server.import.deleteartifacts",
+        "title": "Server.Import.Extras",
+        "description": "This artifact imports additional artifacts maintained outside the\nVelociraptor tree.",
+        "link": "/artifact_references/pages/server.import.extras",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1342,35 +1333,8 @@
     },
     {
         "title": "Server.Import.PreviousReleases",
-        "description": "When upgrading the Velociraptor server the built in artifacts may\nchange using newer VQL features that are not present on older\nclients.",
+        "description": "When upgrading the Velociraptor server, the built-in artifacts may change and\nuse newer VQL features that are not present in older clients.",
         "link": "/artifact_references/pages/server.import.previousreleases",
-        "type": "server",
-        "tags": [
-            "Server Artifact"
-        ]
-    },
-    {
-        "title": "Server.Import.Rapid7Labs",
-        "description": "This artifact will import curated artifacts by Rapid7 Labs.\n",
-        "link": "/artifact_references/pages/server.import.rapid7labs",
-        "type": "server",
-        "tags": [
-            "Server Artifact"
-        ]
-    },
-    {
-        "title": "Server.Import.RegistryHunter",
-        "description": "This artifact will import the latest Registry Hunter artifact.",
-        "link": "/artifact_references/pages/server.import.registryhunter",
-        "type": "server",
-        "tags": [
-            "Server Artifact"
-        ]
-    },
-    {
-        "title": "Server.Import.UpdatedBuiltin",
-        "description": "This artifact allows importing updated versions of some common built\nin artifacts. If you do not want to wait for the next full release\nyou can use this artifact to import a more recent version of some\nselect artifacts which might include later feature.",
-        "link": "/artifact_references/pages/server.import.updatedbuiltin",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1602,6 +1566,15 @@
         ]
     },
     {
+        "title": "Server.Internal.ResumedUploads",
+        "description": "An internal artifact that display all resumed uploads\n",
+        "link": "/artifact_references/pages/server.internal.resumeduploads",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Server.Internal.TimelineAdd",
         "description": "This artifact will fire whenever a timeline is added to a super\ntimeline. You can use this to monitor for users adding timelines and\nforward them to an external timeline system (e.g. TimeSketch)\n",
         "link": "/artifact_references/pages/server.internal.timelineadd",
@@ -1639,7 +1612,7 @@
     },
     {
         "title": "Server.Monitor.ClientConflict",
-        "description": "Sometimes the Velociraptor client is installed into a VM template\nimage with an existing write back file. In this case each VM\ninstance will start the client with the same client id.",
+        "description": "Forces conflicting clients to rekey themselves.",
         "link": "/artifact_references/pages/server.monitor.clientconflict",
         "type": "server_event",
         "tags": [
@@ -1666,7 +1639,7 @@
     },
     {
         "title": "Server.Monitor.Shell",
-        "description": "Velociraptor can get an interactive shell on the endpoint by using\nthe shell command. In order to use it, the user must be directly\nlogged on the server.",
+        "description": "Velociraptor can get an interactive shell on the endpoint by using\nthe shell command. To use it, the user must be directly\nlogged on the server.",
         "link": "/artifact_references/pages/server.monitor.shell",
         "type": "server_event",
         "tags": [
@@ -1711,7 +1684,7 @@
     },
     {
         "title": "Server.Orgs.ListOrgs",
-        "description": "This server artifact will list all currently configured orgs on the\nserver.",
+        "description": "This server artifact will list all currently configured orgs on the server.",
         "link": "/artifact_references/pages/server.orgs.listorgs",
         "type": "server",
         "tags": [
@@ -1720,7 +1693,7 @@
     },
     {
         "title": "Server.Orgs.NewOrg",
-        "description": "This server artifact will create a new org and assign the current\nuser as an admin to it.",
+        "description": "This server artifact will create a new org and assign the current user as an\nadmin to it.",
         "link": "/artifact_references/pages/server.orgs.neworg",
         "type": "server",
         "tags": [
@@ -1729,7 +1702,7 @@
     },
     {
         "title": "Server.Powershell.EncodedCommand",
-        "description": "It is possible to pass powershell an encoded script. This artifact\ndecodes the scripts.",
+        "description": "It is possible to pass PowerShell an encoded script. This artifact\ndecodes such scripts.",
         "link": "/artifact_references/pages/server.powershell.encodedcommand",
         "type": "server_event",
         "tags": [
@@ -1864,7 +1837,7 @@
     },
     {
         "title": "Server.Utils.DeleteFavoriteFlow",
-        "description": "This artifact allows the user to delete a previously saved\nfavorite. It will only addect the current user.\n",
+        "description": "This artifact allows the user to delete a previously saved\nfavorite. It will only affect the current user.\n",
         "link": "/artifact_references/pages/server.utils.deletefavoriteflow",
         "type": "client",
         "tags": [
@@ -1918,7 +1891,7 @@
     },
     {
         "title": "Server.Utils.KillClient",
-        "description": "This artifact agressively kills a client.",
+        "description": "This artifact aggressively kills a client.",
         "link": "/artifact_references/pages/server.utils.killclient",
         "type": "server",
         "tags": [
@@ -1929,6 +1902,15 @@
         "title": "Server.Utils.ListUsers",
         "description": "This server artifact is used to list all current users and their\npermissions and org access.",
         "link": "/artifact_references/pages/server.utils.listusers",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.Policy",
+        "description": "This artifact defines a set of security policies.\n",
+        "link": "/artifact_references/pages/server.utils.policy",
         "type": "server",
         "tags": [
             "Server Artifact"
@@ -1972,7 +1954,7 @@
     },
     {
         "title": "Server.Utils.UploadTools",
-        "description": "Velociraptor can use external tools to deploy binaries on the\nendpoint for some artifacts that require it. Usually these binaries\nare automatically downloaded by the server when required. However,\nsometimes a server is deployed on an air gapped network, or has\negress filtering implemented such that the server is unable to\ndownload binaries on demand.",
+        "description": "Velociraptor can use external tools to deploy binaries on the\nendpoint for some artifacts that require it. Usually these binaries\nare automatically downloaded by the server when required. However,\nsometimes a server is deployed on an air-gapped network, or has\negress filtering implemented such that the server is unable to\ndownload binaries on demand.",
         "link": "/artifact_references/pages/server.utils.uploadtools",
         "type": "server",
         "tags": [
@@ -2106,15 +2088,6 @@
         ]
     },
     {
-        "title": "Windows.Analysis.EvidenceOfExecution",
-        "description": "In many investigations it is useful to find evidence of program execution.",
-        "link": "/artifact_references/pages/windows.analysis.evidenceofexecution",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Applications.ChocolateyPackages",
         "description": "Chocolatey packages installed in a system.",
         "link": "/artifact_references/pages/windows.applications.chocolateypackages",
@@ -2143,7 +2116,7 @@
     },
     {
         "title": "Windows.Applications.Chrome.History",
-        "description": "Enumerates a targets chrome history. Source based on Hindsight and\ncode review of\nhttps://source.chromium.org/chromium/chromium/src/+/master:components/history/core/browser/history_types.h.",
+        "description": "Enumerates a targets chrome history.",
         "link": "/artifact_references/pages/windows.applications.chrome.history",
         "type": "client",
         "tags": [
@@ -2152,7 +2125,7 @@
     },
     {
         "title": "Windows.Applications.Edge.Favicons",
-        "description": "Enumerate the users Microsoft Edge favicons.",
+        "description": "Enumerate the user's Microsoft Edge favicons.",
         "link": "/artifact_references/pages/windows.applications.edge.favicons",
         "type": "client",
         "tags": [
@@ -2188,7 +2161,7 @@
     },
     {
         "title": "Windows.Applications.IISLogs",
-        "description": "This artifact enables grep of IISLogs.\nParameters include SearchRegex and WhitelistRegex as regex terms.\n",
+        "description": "This artifact enables grep of IISLogs.",
         "link": "/artifact_references/pages/windows.applications.iislogs",
         "type": "client",
         "tags": [
@@ -2197,7 +2170,7 @@
     },
     {
         "title": "Windows.Applications.MegaSync",
-        "description": "This artifact will parse MEGASync logs and enables using regex to search for\nentries of interest.",
+        "description": "Parses MEGASync logs and allows using regular expressions to search for\nentries of interest.",
         "link": "/artifact_references/pages/windows.applications.megasync",
         "type": "client",
         "tags": [
@@ -2215,7 +2188,7 @@
     },
     {
         "title": "Windows.Applications.OfficeMacros",
-        "description": "Office macros are a favourite initial infection vector. Many users\nclick through the warning dialogs.",
+        "description": "Scans through a given directory glob for common office files. Then tries to\nextract any embedded macros by parsing the OLE file structure.",
         "link": "/artifact_references/pages/windows.applications.officemacros",
         "type": "client",
         "tags": [
@@ -2242,7 +2215,7 @@
     },
     {
         "title": "Windows.Attack.ParentProcess",
-        "description": "Maps the Mitre Att&ck framework process executions into artifacts.",
+        "description": "Maps the MITRE Att&ck framework process executions into artifacts.",
         "link": "/artifact_references/pages/windows.attack.parentprocess",
         "type": "client",
         "tags": [
@@ -2251,7 +2224,7 @@
     },
     {
         "title": "Windows.Attack.Prefetch",
-        "description": "Maps the Mitre Att&ck framework process executions into\nartifacts. This pack was generated from\nhttps://github.com/teoseller/osquery-attck\n",
+        "description": "Maps the MITRE Att&ck framework process executions into artifacts.",
         "link": "/artifact_references/pages/windows.attack.prefetch",
         "type": "client",
         "tags": [
@@ -2260,7 +2233,7 @@
     },
     {
         "title": "Windows.Attack.UnexpectedImagePath",
-        "description": "Some malware are hiding in plain text by masqurading a legitimate\nexecutable name.",
+        "description": "Some malware are hiding in plain text by masquerading a legitimate\nexecutable name.",
         "link": "/artifact_references/pages/windows.attack.unexpectedimagepath",
         "type": "client",
         "tags": [
@@ -2269,7 +2242,7 @@
     },
     {
         "title": "Windows.Carving.CobaltStrike",
-        "description": "This artifact extracts cobalt strike configuration from a byte stream, process\nor file on disk such as a process dump. Best used as a triage step against a\ndetection of a cobalt strike beacon via a yara process scan.",
+        "description": "This artifact extracts Cobalt Strike configuration from a byte stream, process\nor file on disk such as a process dump. Best used as a triage step against a\ndetection of a Cobalt Strike beacon via a YARA process scan.",
         "link": "/artifact_references/pages/windows.carving.cobaltstrike",
         "type": "client",
         "tags": [
@@ -2332,7 +2305,7 @@
     },
     {
         "title": "Windows.Detection.ForwardedImports",
-        "description": "In Windows a common DLL hooking technique is to replace a dll with a\nforwarder dll - i.e. one that forwards all imports to the real\ndll. If the forwarder DLL is placed earlier in the import order, the\nmalicous DLL will be seamlessly loaded and injected into another\nprocess.",
+        "description": "In Windows a common DLL hooking technique is to replace a dll with a\nforwarder dll - i.e. one that forwards all imports to the real\ndll. If the forwarder DLL is placed earlier in the import order, the\nmalicious DLL will be seamlessly loaded and injected into another\nprocess.",
         "link": "/artifact_references/pages/windows.detection.forwardedimports",
         "type": "client",
         "tags": [
@@ -2368,7 +2341,7 @@
     },
     {
         "title": "Windows.Detection.PsexecService",
-        "description": "PSExec works by installing a new service in the system. The service\ncan be renamed using the -r flag and therefore it is not enough to\njust watch for a new service called psexecsvc.exe. This artifact\nimproves on this by scanning the service binary to detect the\noriginal psexec binary.",
+        "description": "PsExec works by installing a new service in the system. The service\ncan be renamed by using the `-r` flag and therefore it is not enough to\njust watch for a new service called `psexecsvc.exe`. This artifact\nimproves on this by scanning the service binary to detect the\noriginal PsExec binary.",
         "link": "/artifact_references/pages/windows.detection.psexecservice",
         "type": "client_event",
         "tags": [
@@ -2404,7 +2377,7 @@
     },
     {
         "title": "Windows.Detection.TemplateInjection",
-        "description": "This content will detect injected templates in Office and RTF documents.",
+        "description": "Detects injected templates in Office and RTF documents.",
         "link": "/artifact_references/pages/windows.detection.templateinjection",
         "type": "client",
         "tags": [
@@ -2458,7 +2431,7 @@
     },
     {
         "title": "Windows.Detection.Yara.Device",
-        "description": "This artifact enables running Yara over a Physical device and offset\nspecific targeting.",
+        "description": "This artifact enables running YARA over a Physical device and offset\nspecific targeting.",
         "link": "/artifact_references/pages/windows.detection.yara.device",
         "type": "client",
         "tags": [
@@ -2467,7 +2440,7 @@
     },
     {
         "title": "Windows.Detection.Yara.Glob",
-        "description": "This artifact returns a list of target files then runs Yara over the target\nlist.",
+        "description": "This artifact returns a list of target files then runs YARA over the target\nlist.",
         "link": "/artifact_references/pages/windows.detection.yara.glob",
         "type": "client",
         "tags": [
@@ -2476,7 +2449,7 @@
     },
     {
         "title": "Windows.Detection.Yara.NTFS",
-        "description": "This artifact searches the MFT, returns a list of target files then runs Yara\nover the target list.",
+        "description": "This artifact searches the MFT, returns a list of target files then runs YARA\nover the target list.",
         "link": "/artifact_references/pages/windows.detection.yara.ntfs",
         "type": "client",
         "tags": [
@@ -2485,7 +2458,7 @@
     },
     {
         "title": "Windows.Detection.Yara.PhysicalMemory",
-        "description": "This artifact enables running Yara over physical memory.",
+        "description": "This artifact enables running YARA over physical memory.",
         "link": "/artifact_references/pages/windows.detection.yara.physicalmemory",
         "type": "client",
         "tags": [
@@ -2494,7 +2467,7 @@
     },
     {
         "title": "Windows.Detection.Yara.Process",
-        "description": "This artifact enables running Yara over processes in memory.",
+        "description": "This artifact enables running YARA over processes in memory.",
         "link": "/artifact_references/pages/windows.detection.yara.process",
         "type": "client",
         "tags": [
@@ -2503,7 +2476,7 @@
     },
     {
         "title": "Windows.Detection.Yara.UEFI",
-        "description": "This artifact enables running yara over files in an EFI System Partition (ESP).\n",
+        "description": "This artifact enables running YARA over files in an EFI System Partition (ESP).\n",
         "link": "/artifact_references/pages/windows.detection.yara.uefi",
         "type": "client",
         "tags": [
@@ -2512,7 +2485,7 @@
     },
     {
         "title": "Windows.ETW.DNS",
-        "description": "This artifact monitors DNS queries using ETW.",
+        "description": "Monitors DNS queries using ETW.",
         "link": "/artifact_references/pages/windows.etw.dns",
         "type": "client_event",
         "tags": [
@@ -2521,7 +2494,7 @@
     },
     {
         "title": "Windows.ETW.DNSQueriesServer",
-        "description": "Logs dns queries on DNS servers. This is handy for identifying the true source system that is initiating malicious dns requests that you observed. Note that this can be resource intensive for the CPU on busy DNS servers - from 5% to 70% CPU load of one core, but memory consumption is very low. This is still a lot less then enabling DNS debug logging.\n",
+        "description": "Logs DNS queries on DNS servers.",
         "link": "/artifact_references/pages/windows.etw.dnsqueriesserver",
         "type": "client_event",
         "tags": [
@@ -2548,7 +2521,7 @@
     },
     {
         "title": "Windows.ETW.EdgeURLs",
-        "description": "This client event artifact collects all URLs accessed by the Edge browser.",
+        "description": "Collects all URLs accessed by the Edge browser using ETW.",
         "link": "/artifact_references/pages/windows.etw.edgeurls",
         "type": "client_event",
         "tags": [
@@ -2638,7 +2611,7 @@
     },
     {
         "title": "Windows.EventLogs.DHCP",
-        "description": "\nThis artifact parses the windows dhcp event log looking for evidence\nof IP address assignments.",
+        "description": "\nThis artifact parses the Windows DHCP event log looking for evidence\nof IP address assignments.",
         "link": "/artifact_references/pages/windows.eventlogs.dhcp",
         "type": "client",
         "tags": [
@@ -2665,7 +2638,7 @@
     },
     {
         "title": "Windows.EventLogs.ExplicitLogon",
-        "description": "This artifact enables querying for explicit logon events.  i.e Event ID 4648:\nA logon was attempted using explicit credentials.",
+        "description": "Searches the Windows Security event log for explicit logon events, that is\nEvent ID 4648: \"A logon was attempted using explicit credentials\".",
         "link": "/artifact_references/pages/windows.eventlogs.explicitlogon",
         "type": "client",
         "tags": [
@@ -2683,7 +2656,7 @@
     },
     {
         "title": "Windows.EventLogs.Modifications",
-        "description": "It is possible to disable windows event logs on a per channel or per\nprovider basis. Attackers may disable ciritcal log sources to\nprevent detections.",
+        "description": "It is possible to disable windows event logs on a per channel or per\nprovider basis. Attackers may disable critical log sources to\nprevent detections.",
         "link": "/artifact_references/pages/windows.eventlogs.modifications",
         "type": "client",
         "tags": [
@@ -2728,7 +2701,7 @@
     },
     {
         "title": "Windows.EventLogs.ServiceCreationComspec",
-        "description": "\nThis Detection hts on the string \"COMSPEC\" (nocase) in Windows Service\nCreation events. That is: EventID 7045 from the System event log.",
+        "description": "Detects the string \"COMSPEC\" (nocase) in Windows Service\nCreation (SCM) events. That is: EventID 7045 from the System event log.",
         "link": "/artifact_references/pages/windows.eventlogs.servicecreationcomspec",
         "type": "client",
         "tags": [
@@ -2755,7 +2728,7 @@
     },
     {
         "title": "Windows.Events.EventLogModifications",
-        "description": "It is possible to disable windows event logs on a per channel or per\nprovider basis. Attackers may disable ciritcal log sources to\nprevent detections.",
+        "description": "It is possible to disable windows event logs on a per channel or per\nprovider basis. Attackers may disable critical log sources to\nprevent detections.",
         "link": "/artifact_references/pages/windows.events.eventlogmodifications",
         "type": "client_event",
         "tags": [
@@ -2809,7 +2782,7 @@
     },
     {
         "title": "Windows.Events.TrackProcesses",
-        "description": "This artifact uses sysmon and pslist to keep track of running\nprocesses using the Velociraptor process tracker.",
+        "description": "Uses Sysmon and pslist to keep track of running processes by using the\nVelociraptor Process Tracker.",
         "link": "/artifact_references/pages/windows.events.trackprocesses",
         "type": "client_event",
         "tags": [
@@ -2818,7 +2791,7 @@
     },
     {
         "title": "Windows.Events.TrackProcessesBasic",
-        "description": "This artifact is a basic Process tracker using a simple polled\npslist(). The Process Tracker keeps track of exited processes, and\nresolves process callchains from it in memory cache.",
+        "description": "A basic process tracker which uses a simple polled pslist().",
         "link": "/artifact_references/pages/windows.events.trackprocessesbasic",
         "type": "client_event",
         "tags": [
@@ -2845,7 +2818,7 @@
     },
     {
         "title": "Windows.Forensics.BulkExtractor",
-        "description": "This content will execute bulk_extractor with record carving plugins from\n4n6ist. Initially developed to carve EventLogs from physical disk and\nunallocated space, this content may also be leveraged for other\nbulk extractor capability. Best use case is for remote targeted machine\ncollection to remove the need for a disk image.",
+        "description": "This content will execute bulk_extractor with record carving plugins from\n4n6ist. Initially developed to carve EventLogs from physical disk and\nunallocated space, this content may also be used for other\nbulk extractor capability. Best use case is for remote targeted machine\ncollection to remove the need for a disk image.",
         "link": "/artifact_references/pages/windows.forensics.bulkextractor",
         "type": "client",
         "tags": [
@@ -2854,7 +2827,7 @@
     },
     {
         "title": "Windows.Forensics.CertUtil",
-        "description": "The Windows Certutil binary is capable of downloading arbitrary\nfiles. Attackers typically use it to fetch tools undetected using\nLiving off the Land (LOL) techniques.",
+        "description": "The Windows Certutil binary is capable of downloading arbitrary files.\nAttackers typically use it to fetch tools undetected when using \"Living off\nthe Land\" (LOL) techniques.",
         "link": "/artifact_references/pages/windows.forensics.certutil",
         "type": "client",
         "tags": [
@@ -2881,7 +2854,7 @@
     },
     {
         "title": "Windows.Forensics.Lnk",
-        "description": "This artiact parses LNK shortcut files.",
+        "description": "This artifact parses LNK shortcut files.",
         "link": "/artifact_references/pages/windows.forensics.lnk",
         "type": "client",
         "tags": [
@@ -2890,11 +2863,20 @@
     },
     {
         "title": "Windows.Forensics.LocalHashes.Usn",
-        "description": "This artifact maintains a local (client side) database of file\nhashes. It is then possible to query this database using the\nGeneric.Forensic.LocalHashes.Query artifact\n",
+        "description": "This artifact maintains a local (client side) database of file\nhashes. It is then possible to query this database by using the\n`Generic.Forensic.LocalHashes.Query` artifact\n",
         "link": "/artifact_references/pages/windows.forensics.localhashes.usn",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.NotepadParser",
+        "description": "Parse the Windows 11 Notepad state files.",
+        "link": "/artifact_references/pages/windows.forensics.notepadparser",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
         ]
     },
     {
@@ -2926,7 +2908,7 @@
     },
     {
         "title": "Windows.Forensics.RDPCache",
-        "description": "This artifact parses, views and enables simplified upload of RDP \ncache files. ",
+        "description": "This artifact parses, views and enables simplified upload of RDP\ncache files.",
         "link": "/artifact_references/pages/windows.forensics.rdpcache",
         "type": "client",
         "tags": [
@@ -2944,7 +2926,7 @@
     },
     {
         "title": "Windows.Forensics.RecycleBin",
-        "description": "This artefact will parse the `$I` files found in the `$Recycle.Bin` folder to\nobtain the time of deletion and the original path and file name.",
+        "description": "This artifact will parse the `$I` files found in the `$Recycle.Bin` folder to\nobtain the time of deletion and the original path and file name.",
         "link": "/artifact_references/pages/windows.forensics.recyclebin",
         "type": "client",
         "tags": [
@@ -3025,7 +3007,7 @@
     },
     {
         "title": "Windows.KapeFiles.Extract",
-        "description": "The Windows.KapeFiles.Targets artifact collects files into a Zip\nfile. Zip files can not generally preserve timestamps since they\nonly have a single timestamp concept. Velociraptor will only record\nthe modified time in the zip file header itself but all the times\nare present in the metadata file:",
+        "description": "The Windows.KapeFiles.Targets artifact collects files into a Zip\nfile. Zip files cannot generally preserve timestamps since they\nonly have a single timestamp concept. Velociraptor will only record\nthe modified time in the zip file header itself but all the times\nare present in the metadata file:",
         "link": "/artifact_references/pages/windows.kapefiles.extract",
         "type": "server",
         "tags": [
@@ -3034,7 +3016,7 @@
     },
     {
         "title": "Windows.KapeFiles.Remapping",
-        "description": "This artifact automates the rebuilding of remapping rules to be\nable to easily post process the results of the\nWindows.KapeFiles.Targets.",
+        "description": "This artifact automates the rebuilding of remapping rules to be able to\neasily post-process the results of the Windows.KapeFiles.Targets.",
         "link": "/artifact_references/pages/windows.kapefiles.remapping",
         "type": "client",
         "tags": [
@@ -3042,17 +3024,8 @@
         ]
     },
     {
-        "title": "Windows.KapeFiles.Targets",
-        "description": "\nKape is a popular bulk collector tool for triaging a system\nquickly. While KAPE itself is not an opensource tool, the logic it\nuses to decide which files to collect is encoded in YAML files\nhosted on the KapeFiles project\n(https://github.com/EricZimmerman/KapeFiles) and released under an\nMIT license.",
-        "link": "/artifact_references/pages/windows.kapefiles.targets",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
-        ]
-    },
-    {
         "title": "Windows.Memory.Acquisition",
-        "description": "Acquires a full memory image using the built in WinPmem driver.",
+        "description": "Acquires a full memory image by using the built-in WinPmem driver.",
         "link": "/artifact_references/pages/windows.memory.acquisition",
         "type": "client",
         "tags": [
@@ -3061,7 +3034,7 @@
     },
     {
         "title": "Windows.Memory.Intezer",
-        "description": "This artifact will trigger an intezer agent scan on the endpoint.",
+        "description": "Runs an Intezer agent scan on the endpoint.",
         "link": "/artifact_references/pages/windows.memory.intezer",
         "type": "client",
         "tags": [
@@ -3097,7 +3070,7 @@
     },
     {
         "title": "Windows.NTFS.ADSHunter",
-        "description": "This artifact hunts\nfor Alternate Data Streams on NTFS file systems. \nAdversaries may use NTFS file attributes for covert storage in order to evade \ndetection. \nAlternate Data Streams (ADS) are additional $DATA attributes for an MFT entry in \nNTFS file systems. In NTFS, the primary $DATA attribute is \nnever named but subsequent $DATA attributes must be named.",
+        "description": "This artifact hunts\nfor Alternate Data Streams on NTFS file systems.\nAdversaries may use NTFS file attributes for covert storage to evade\ndetection.\nAlternate Data Streams (ADS) are additional $DATA attributes for an MFT entry in\nNTFS file systems. In NTFS, the primary $DATA attribute is\nnever named but subsequent $DATA attributes must be named.",
         "link": "/artifact_references/pages/windows.ntfs.adshunter",
         "type": "client",
         "tags": [
@@ -3106,7 +3079,7 @@
     },
     {
         "title": "Windows.NTFS.ExtendedAttributes",
-        "description": "Adversaries may use NTFS file attributes for defence evasion to hide malicious\ndata. This artifact parses NTFS Extended attributes ($EA).\nThe artifact firstly queries the MFT, then enriches NTFS data to check for\nExtended Attributes. Several filters can be applied such as file search,\nExtended Attribute size, name or content.",
+        "description": "Adversaries may use NTFS file attributes for defense evasion to hide malicious\ndata. This artifact parses NTFS Extended attributes ($EA).\nThe artifact firstly queries the MFT, then enriches NTFS data to check for\nExtended Attributes. Several filters can be applied such as file search,\nExtended Attribute size, name or content.",
         "link": "/artifact_references/pages/windows.ntfs.extendedattributes",
         "type": "client",
         "tags": [
@@ -3124,7 +3097,7 @@
     },
     {
         "title": "Windows.NTFS.MFT",
-        "description": "This artifact parses $MFT files and returns rows of each in scope  MFT record.\nThis artifact can be used as the basis for other artifacts where the MFT needs\nto be queried or for deleted file recovery.",
+        "description": "Parses $MFT files and returns rows of each in scope MFT record.",
         "link": "/artifact_references/pages/windows.ntfs.mft",
         "type": "client",
         "tags": [
@@ -3232,7 +3205,7 @@
     },
     {
         "title": "Windows.Persistence.PermanentWMIEvents",
-        "description": "This artifact reports currently deployed permanent WMI Event Consumers. The \nartifact collects Binding information, then presents associated Filters \nand Consumers.",
+        "description": "This artifact reports currently deployed permanent WMI Event Consumers. The\nartifact collects Binding information, then presents associated Filters\nand Consumers.",
         "link": "/artifact_references/pages/windows.persistence.permanentwmievents",
         "type": "client",
         "tags": [
@@ -3241,7 +3214,7 @@
     },
     {
         "title": "Windows.Persistence.PowershellProfile",
-        "description": "This Artifact will search and parse Powershell profile scripts.",
+        "description": "This Artifact will search and parse PowerShell profile scripts.",
         "link": "/artifact_references/pages/windows.persistence.powershellprofile",
         "type": "client",
         "tags": [
@@ -3250,7 +3223,7 @@
     },
     {
         "title": "Windows.Persistence.PowershellRegistry",
-        "description": "A common way of persistence is to install a hook into a user profile\nregistry hive, using powershell. When the user logs in, the\npowershell script downloads a payload and executes it.",
+        "description": "A common method of persistence is to install a hook into a user profile\nregistry hive, using PowerShell. When the user logs in, the PowerShell script\ndownloads a payload and executes it.",
         "link": "/artifact_references/pages/windows.persistence.powershellregistry",
         "type": "client",
         "tags": [
@@ -3331,7 +3304,7 @@
     },
     {
         "title": "Windows.Registry.PortProxy",
-        "description": "This artifact will return any items in the Windows PortProxy service\nregistry path. The most common configuration of this service is via the\nlolbin netsh.exe; Metaspoit and other common attack tools also have\nconfiguration modules.\n",
+        "description": "This artifact will return any items in the Windows PortProxy service\nregistry path. The most common configuration of this service is via the\nLOLBin `netsh.exe`. Metaspoit and other common attack tools also have\nconfiguration modules.\n",
         "link": "/artifact_references/pages/windows.registry.portproxy",
         "type": "client",
         "tags": [
@@ -3394,7 +3367,7 @@
     },
     {
         "title": "Windows.Remediation.Quarantine",
-        "description": "**Apply quarantine via Windows local IPSec policy**",
+        "description": "Applies quarantine via Windows local IPsec policy.",
         "link": "/artifact_references/pages/windows.remediation.quarantine",
         "type": "client",
         "tags": [
@@ -3466,7 +3439,7 @@
     },
     {
         "title": "Windows.Search.Yara",
-        "description": "Searches for a specific malicious file or set of files by a Yara rule.\n",
+        "description": "Searches for a specific malicious file or set of files by a YARA rule.\n",
         "link": "/artifact_references/pages/windows.search.yara",
         "type": "client",
         "tags": [
@@ -3538,7 +3511,7 @@
     },
     {
         "title": "Windows.Sys.Interfaces",
-        "description": "Report information about the systems interfaces. This artifact\nsimply parses the output from ipconfig /all.\n",
+        "description": "Report information about the systems interfaces. This artifact\nsimply parses the output from `ipconfig /all`.\n",
         "link": "/artifact_references/pages/windows.sys.interfaces",
         "type": "client",
         "tags": [
@@ -3592,7 +3565,7 @@
     },
     {
         "title": "Windows.Sysinternals.SysmonInstall",
-        "description": "Sysmon is a kernel level system monitor written by\nSysinternals. While we are not able to distribute Sysmon ourselves,\nVelociraptor can help you manage its deployment and installation.",
+        "description": "Sysmon is a kernel level system monitor written by Sysinternals. While we are\nnot able to distribute Sysmon ourselves, Velociraptor can help you manage its\ndeployment and installation.",
         "link": "/artifact_references/pages/windows.sysinternals.sysmoninstall",
         "type": "client",
         "tags": [
@@ -3601,7 +3574,7 @@
     },
     {
         "title": "Windows.Sysinternals.SysmonLogForward",
-        "description": "A client side event forwarder to forward sysmon events to the server.\n",
+        "description": "A client-side event forwarder to forward Sysmon events to the server.\n",
         "link": "/artifact_references/pages/windows.sysinternals.sysmonlogforward",
         "type": "client_event",
         "tags": [
@@ -3619,7 +3592,7 @@
     },
     {
         "title": "Windows.System.AuditPolicy",
-        "description": "Artifact using auditpol to retrieve the logging settings\ndefined in the Windows Audit Policy.",
+        "description": "Uses auditpol to retrieve the logging settings defined in the Windows Audit\nPolicy.",
         "link": "/artifact_references/pages/windows.system.auditpolicy",
         "type": "client",
         "tags": [
@@ -3628,7 +3601,7 @@
     },
     {
         "title": "Windows.System.CatFiles",
-        "description": "Windows stores many hashes in .cat files. These catalog files\ncontain a set of trusted hashes for drivers and other binaries,\neven if the PE files do not themselves contain authenticode\nsignatures.",
+        "description": "Windows stores many hashes in .cat files. These catalog files\ncontain a set of trusted hashes for drivers and other binaries,\neven if the PE files do not themselves contain Authenticode\nsignatures.",
         "link": "/artifact_references/pages/windows.system.catfiles",
         "type": "client",
         "tags": [
@@ -3664,7 +3637,7 @@
     },
     {
         "title": "Windows.System.DNSCache",
-        "description": "Windows maintains DNS lookups for a short time in the DNS cache.",
+        "description": "Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.",
         "link": "/artifact_references/pages/windows.system.dnscache",
         "type": "client",
         "tags": [
@@ -3709,7 +3682,7 @@
     },
     {
         "title": "Windows.System.PowerShell",
-        "description": "This artifact allows running arbitrary commands through the system\npowershell.",
+        "description": "This artifact allows running arbitrary commands through the system\nPowerShell.",
         "link": "/artifact_references/pages/windows.system.powershell",
         "type": "client",
         "tags": [
@@ -3718,7 +3691,7 @@
     },
     {
         "title": "Windows.System.Powershell.ModuleAnalysisCache",
-        "description": "ModuleAnalysisCache stores metadata about loaded Powershell modules.",
+        "description": "ModuleAnalysisCache stores metadata about loaded PowerShell modules.",
         "link": "/artifact_references/pages/windows.system.powershell.moduleanalysiscache",
         "type": "client",
         "tags": [
@@ -3799,7 +3772,7 @@
     },
     {
         "title": "Windows.System.UntrustedBinaries",
-        "description": "Windows runs a number of services and binaries as part of the\noperating system. Sometimes malware pretends to run as those well\nknown names in order to hide itself in plain sight. For example, a\nmalware service might call itself svchost.exe so it shows up in the\nprocess listing as a benign service.",
+        "description": "Windows runs several services and binaries as part of the\noperating system. Sometimes malware pretends to run as those well\nknown names to hide itself in plain sight. For example, a\nmalware service might call itself svchost.exe so it shows up in the\nprocess listing as a benign service.",
         "link": "/artifact_references/pages/windows.system.untrustedbinaries",
         "type": "client",
         "tags": [
@@ -3835,7 +3808,7 @@
     },
     {
         "title": "Windows.Timeline.MFT",
-        "description": "# Output all filtered MFT records.",
+        "description": "Enables querying the MFT with advanced filters such as time, path or other\nNTFS attributes.",
         "link": "/artifact_references/pages/windows.timeline.mft",
         "type": "client",
         "tags": [

@@ -6,7 +6,8 @@ tags: [Client Artifact]
 
 Remove malicious task from the Windows scheduled task list.
 
-Danger: You need to make sure to test this before running.
+WARNING: Removing scheduled tasks is potentially dangerous! You need to test
+this thoroughly before deploying this artifact widely to clients.
 
 
 <pre><code class="language-yaml">
@@ -14,7 +15,8 @@ name: Windows.Remediation.ScheduledTasks
 description: |
    Remove malicious task from the Windows scheduled task list.
 
-   Danger: You need to make sure to test this before running.
+   WARNING: Removing scheduled tasks is potentially dangerous! You need to test
+   this thoroughly before deploying this artifact widely to clients.
 
 type: CLIENT
 

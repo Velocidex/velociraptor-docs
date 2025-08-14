@@ -4,7 +4,7 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This Artifact will search and parse Powershell profile scripts.
+This Artifact will search and parse PowerShell profile scripts.
 
 PowerShell supports several profiles depending on the user or host program.
 Adversaries may create or modify these profiles to include arbitrary commands,
@@ -13,15 +13,15 @@ backdoored PowerShell session is opened the modified script will be executed
 unless the -NoProfile flag is used when it is launched.
 
 The artifact will by default search both User profiles and System-wide
-configured profiles. The user can also targert and exclude specific content
-with relevant regex filters
+configured profiles. The user can also target and exclude specific content
+with relevant regex filters.
 
 
 <pre><code class="language-yaml">
 name: Windows.Persistence.PowershellProfile
 author: Matt Green - @mgreen27
 description: |
-  This Artifact will search and parse Powershell profile scripts.
+  This Artifact will search and parse PowerShell profile scripts.
 
   PowerShell supports several profiles depending on the user or host program.
   Adversaries may create or modify these profiles to include arbitrary commands,
@@ -30,8 +30,8 @@ description: |
   unless the -NoProfile flag is used when it is launched.
 
   The artifact will by default search both User profiles and System-wide
-  configured profiles. The user can also targert and exclude specific content
-  with relevant regex filters
+  configured profiles. The user can also target and exclude specific content
+  with relevant regex filters.
 
 reference:
   - https://attack.mitre.org/techniques/T1546/013/
@@ -41,10 +41,10 @@ type: CLIENT
 parameters:
   - name: UserProfileGlob
     default: '\Documents\{WindowsPowerShell,Powershell}\{Profile,Microsoft.*_profile}.ps1'
-    description: Glob for Powershell user profiles.
+    description: Glob for PowerShell user profiles.
   - name: PSHomeProfileGlob
     default: 'C:\Windows\System32\{WindowsPowerShell,Powershell}\v1.0\{Profile,Microsoft.*_profile}.ps1'
-    description: Glob for Powershell PSHome profiles.
+    description: Glob for PowerShell PSHome profiles.
   - name: SearchStrings
     default: .
     type: regex

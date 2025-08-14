@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Parses and returns events from Windows evtx logs.
 
-Each event is returned in full, but results can be narrowed using a glob
+Each event is returned in full, but results can be narrowed by using a glob
 pattern for evtx files, a timespan, and regexes to match the evtx path, event
 channel, and/or event ID:
 
@@ -44,7 +44,7 @@ name: Windows.EventLogs.Evtx
 description: |
   Parses and returns events from Windows evtx logs.
 
-  Each event is returned in full, but results can be narrowed using a glob
+  Each event is returned in full, but results can be narrowed by using a glob
   pattern for evtx files, a timespan, and regexes to match the evtx path, event
   channel, and/or event ID:
 

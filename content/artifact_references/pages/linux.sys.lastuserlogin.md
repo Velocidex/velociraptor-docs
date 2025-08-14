@@ -4,15 +4,17 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Find and parse system wtmp files. This indicate when the user last
-logged in.
+Finds and parses system WTMP files.
+
+These indicate when users last logged in.
 
 
 <pre><code class="language-yaml">
 name: Linux.Sys.LastUserLogin
 description: |
-  Find and parse system wtmp files. This indicate when the user last
-  logged in.
+  Finds and parses system WTMP files.
+
+  These indicate when users last logged in.
 
 parameters:
   - name: wtmpGlobs
@@ -85,8 +87,7 @@ export: |
             "type": "uint32",
         }],
         ["ut_ip_address", 348, "int64"],
-    ]
-    ]
+      ]]
     ]]
     ]'''
 
@@ -107,7 +108,7 @@ sources:
                  ) AS Parsed
       FROM glob(globs=split(string=wtmpGlobs, sep=","))
 
-      // In Order to combine Login/Logout into one Table, we create a
+      // To combine Login/Logout into one Table, we create a
       // logout table first
       LET logout_table &lt;= SELECT * FROM foreach(row=parsed,
       query={
@@ -130,7 +131,7 @@ sources:
          query={
            SELECT OSPath,
               ut_type AS login_Type,
-              ut_id AS login_ID,
+              ut_terminal_identifier AS login_ID,
               ut_pid as login_PID,
               ut_hostname as login_Host,
               ut_user as login_User,

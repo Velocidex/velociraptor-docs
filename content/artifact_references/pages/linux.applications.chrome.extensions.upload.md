@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Upload all users chrome extension.
 
-We dont bother actually parsing anything here, we just grab all the
+We don't bother actually parsing anything here, we just grab all the
 extension files in user's home directory.
 
 
@@ -15,7 +15,7 @@ name: Linux.Applications.Chrome.Extensions.Upload
 description: |
   Upload all users chrome extension.
 
-  We dont bother actually parsing anything here, we just grab all the
+  We don't bother actually parsing anything here, we just grab all the
   extension files in user's home directory.
 
 parameters:

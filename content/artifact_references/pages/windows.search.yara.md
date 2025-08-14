@@ -4,13 +4,13 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Searches for a specific malicious file or set of files by a Yara rule.
+Searches for a specific malicious file or set of files by a YARA rule.
 
 
 <pre><code class="language-yaml">
 name: Windows.Search.Yara
 description: |
-  Searches for a specific malicious file or set of files by a Yara rule.
+  Searches for a specific malicious file or set of files by a YARA rule.
 
 parameters:
     - name: nameRegex
@@ -22,7 +22,7 @@ parameters:
       description: Also upload matching files.
     - name: yaraRule
       type: yara
-      description: The Yara Rule to search for.
+      description: The YARA Rule to search for.
       default: |
         rule Hit {
             strings:

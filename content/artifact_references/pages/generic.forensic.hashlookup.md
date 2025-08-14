@@ -9,8 +9,8 @@ various sources into a central location. It is possible to follow
 this artifact (e.g. with an external program using the API) to
 lookup the hashes with an external service.
 
-You can also send hashes to this artifact yourself using the
-`send_event()` vql Function. For example, the following will add
+You can also send hashes to this artifact yourself by using the
+`send_event()` VQL function. For example, the following will add
 hashes from the results of another artifact.
 
 ```vql
@@ -29,8 +29,8 @@ description: |
   this artifact (e.g. with an external program using the API) to
   lookup the hashes with an external service.
 
-  You can also send hashes to this artifact yourself using the
-  `send_event()` vql Function. For example, the following will add
+  You can also send hashes to this artifact yourself by using the
+  `send_event()` VQL function. For example, the following will add
   hashes from the results of another artifact.
 
   ```vql

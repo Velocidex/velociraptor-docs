@@ -4,27 +4,27 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact searches the MFT, returns a list of target files then runs Yara
+This artifact searches the MFT, returns a list of target files then runs YARA
 over the target list.
 
-There are 3 kinds of Yara rules that can be deployed:
+There are 3 kinds of YARA rules that can be deployed:
 
-1. Url link to a yara rule.
-2. Shorthand yara in the format `wide nocase ascii:string1,string2,string3`.
-3. or a Standard Yara rule attached as a parameter.
+1. URL link to a YARA rule.
+2. Shorthand YARA in the format `wide nocase ascii:string1,string2,string3`.
+3. or a Standard YARA rule attached as a parameter.
 
-Only one method of Yara will be applied and search order is as above.
+Only one method of YARA will be applied and search order is as above.
 
-The artifact leverages Windows.NTFS.MFT so similar regex filters can be applied
+The artifact uses Windows.NTFS.MFT so similar regex filters can be applied
 including Path, Size and date. The artifact also has an option to search across
-all attached drives and upload any files with Yara hits.
+all attached drives and upload any files with YARA hits.
 
 Some examples of path regex may include:
 
 * Extension at a path: `C:\\Windows\\System32\\.+\.dll$`
 * More wildcards: `Windows\\.+\\.+\.dll$`
 * Specific file: `Windows\\System32\\kernel32\.dll$`
-* Multiple extentions: `\.(php|aspx|resx|asmx)$`
+* Multiple extensions: `\.(php|aspx|resx|asmx)$`
 
 Note: no drive and forward slashes - these expressions are for paths
 relative to the root of the filesystem.
@@ -36,27 +36,27 @@ grouped by path to ensure files only downloaded once.
 name: Windows.Detection.Yara.NTFS
 author: Matt Green - @mgreen27
 description: |
-  This artifact searches the MFT, returns a list of target files then runs Yara
+  This artifact searches the MFT, returns a list of target files then runs YARA
   over the target list.
 
-  There are 3 kinds of Yara rules that can be deployed:
+  There are 3 kinds of YARA rules that can be deployed:
 
-  1. Url link to a yara rule.
-  2. Shorthand yara in the format `wide nocase ascii:string1,string2,string3`.
-  3. or a Standard Yara rule attached as a parameter.
+  1. URL link to a YARA rule.
+  2. Shorthand YARA in the format `wide nocase ascii:string1,string2,string3`.
+  3. or a Standard YARA rule attached as a parameter.
 
-  Only one method of Yara will be applied and search order is as above.
+  Only one method of YARA will be applied and search order is as above.
 
-  The artifact leverages Windows.NTFS.MFT so similar regex filters can be applied
+  The artifact uses Windows.NTFS.MFT so similar regex filters can be applied
   including Path, Size and date. The artifact also has an option to search across
-  all attached drives and upload any files with Yara hits.
+  all attached drives and upload any files with YARA hits.
 
   Some examples of path regex may include:
 
   * Extension at a path: `C:\\Windows\\System32\\.+\.dll$`
   * More wildcards: `Windows\\.+\\.+\.dll$`
   * Specific file: `Windows\\System32\\kernel32\.dll$`
-  * Multiple extentions: `\.(php|aspx|resx|asmx)$`
+  * Multiple extensions: `\.(php|aspx|resx|asmx)$`
 
   Note: no drive and forward slashes - these expressions are for paths
   relative to the root of the filesystem.

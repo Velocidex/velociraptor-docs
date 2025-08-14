@@ -5,7 +5,7 @@ tags: [Server Artifact]
 ---
 
 The Windows.KapeFiles.Targets artifact collects files into a Zip
-file. Zip files can not generally preserve timestamps since they
+file. Zip files cannot generally preserve timestamps since they
 only have a single timestamp concept. Velociraptor will only record
 the modified time in the zip file header itself but all the times
 are present in the metadata file:
@@ -37,7 +37,7 @@ velociraptor-v0.6.7-linux-amd64 artifacts collect Windows.KapeFiles.Extract --ar
 name: Windows.KapeFiles.Extract
 description: |
   The Windows.KapeFiles.Targets artifact collects files into a Zip
-  file. Zip files can not generally preserve timestamps since they
+  file. Zip files cannot generally preserve timestamps since they
   only have a single timestamp concept. Velociraptor will only record
   the modified time in the zip file header itself but all the times
   are present in the metadata file:

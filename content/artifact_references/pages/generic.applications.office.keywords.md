@@ -5,14 +5,14 @@ tags: [Client Artifact]
 ---
 
 Microsoft Office documents among other document format (such as
-LibraOffice) are actually stored in zip files. The zip file contain
-the document encoded as XML in a number of zip members.
+LibraOffice) are actually stored in zip files. The zip file contains
+the document encoded as XML in several zip members.
 
 This makes it difficult to search for keywords within office
 documents because the ZIP files are typically compressed.
 
 This artifact searches for office documents by file extension and
-glob then uses the zip filesystem accessor to launch a yara scan
+glob then uses the zip filesystem accessor to launch a YARA scan
 again the uncompressed data of the document. Keywords are more
 likely to match when scanning the decompressed XML data.
 
@@ -31,14 +31,14 @@ https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/
 name: Generic.Applications.Office.Keywords
 description: |
   Microsoft Office documents among other document format (such as
-  LibraOffice) are actually stored in zip files. The zip file contain
-  the document encoded as XML in a number of zip members.
+  LibraOffice) are actually stored in zip files. The zip file contains
+  the document encoded as XML in several zip members.
 
   This makes it difficult to search for keywords within office
   documents because the ZIP files are typically compressed.
 
   This artifact searches for office documents by file extension and
-  glob then uses the zip filesystem accessor to launch a yara scan
+  glob then uses the zip filesystem accessor to launch a YARA scan
   again the uncompressed data of the document. Keywords are more
   likely to match when scanning the decompressed XML data.
 

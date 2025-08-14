@@ -77,6 +77,9 @@ parameters:
      response will simply be ignored.
     default: /run/snapd.socket
 
+implied_permissions:
+- NETWORK
+
 precondition: |
  SELECT OS
  FROM info()
@@ -90,9 +93,9 @@ sources:
     query: |
      LET ColumnTypes &lt;= dict(`_Description`='nobreak')
 
-     /* First pass - split file into records start with
-        Package and end with \n\n.
-        Then parse each record using multiple RegExs.
+     /* First pass - split file into records starting with
+        Package and ending with \n\n.
+        Then parse each record using multiple regular expressions.
      */
      LET packages = SELECT parse_string_with_regex(
          string=Record,

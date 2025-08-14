@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Windows stores many hashes in .cat files. These catalog files
 contain a set of trusted hashes for drivers and other binaries,
-even if the PE files do not themselves contain authenticode
+even if the PE files do not themselves contain Authenticode
 signatures.
 
 This artifact extracts all the trusted hashes from a system by
@@ -18,7 +18,7 @@ name: Windows.System.CatFiles
 description: |
    Windows stores many hashes in .cat files. These catalog files
    contain a set of trusted hashes for drivers and other binaries,
-   even if the PE files do not themselves contain authenticode
+   even if the PE files do not themselves contain Authenticode
    signatures.
 
    This artifact extracts all the trusted hashes from a system by

@@ -4,9 +4,9 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Windows runs a number of services and binaries as part of the
+Windows runs several services and binaries as part of the
 operating system. Sometimes malware pretends to run as those well
-known names in order to hide itself in plain sight. For example, a
+known names to hide itself in plain sight. For example, a
 malware service might call itself svchost.exe so it shows up in the
 process listing as a benign service.
 
@@ -21,9 +21,9 @@ binaries so many will not be signed (e.g. conhost.exe).
 <pre><code class="language-yaml">
 name: Windows.System.UntrustedBinaries
 description: |
-  Windows runs a number of services and binaries as part of the
+  Windows runs several services and binaries as part of the
   operating system. Sometimes malware pretends to run as those well
-  known names in order to hide itself in plain sight. For example, a
+  known names to hide itself in plain sight. For example, a
   malware service might call itself svchost.exe so it shows up in the
   process listing as a benign service.
 

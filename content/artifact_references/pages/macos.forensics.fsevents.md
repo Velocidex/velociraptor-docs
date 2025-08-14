@@ -13,12 +13,12 @@ created on a specific date. Malware often creates plist files in
 /Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
 /Library/Internet Plugins.
 
-NOTE:
+#### NOTES
 
 - FSEvents do not have timestamps so we specify source file Mtime and
-Btime.
-- default timeout is only 600 seconds - you will need to increase for this
-colection to finish.
+  Btime.
+- The default timeout is only 600 seconds - you will probably need to
+  increase it to allow the collection to finish.
 
 
 <pre><code class="language-yaml">
@@ -33,12 +33,12 @@ description: |
    /Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
    /Library/Internet Plugins.
 
-   NOTE:
+   #### NOTES
 
    - FSEvents do not have timestamps so we specify source file Mtime and
-   Btime.
-   - default timeout is only 600 seconds - you will need to increase for this
-   colection to finish.
+     Btime.
+   - The default timeout is only 600 seconds - you will probably need to
+     increase it to allow the collection to finish.
 
 author: |
   Mike Cohen, Matt Green - @mgreen27, Yogesh Khatri (@swiftforensics), CyberCX

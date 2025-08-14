@@ -4,20 +4,20 @@ hidden: true
 tags: [Client Event Artifact]
 ---
 
-This artifact monitors DNS queries using ETW.
+Monitors DNS queries using ETW.
 
-There are several filteres availible to the user to filter out and target with
-regex, by default duplicate DNSCache requests are filtered out.
+There are several filters available to filter out and/or target using regular
+expressions. By default duplicate DNSCache requests are filtered out.
 
 
 <pre><code class="language-yaml">
 name: Windows.ETW.DNS
 author: Matt Green - @mgreen27
 description: |
-  This artifact monitors DNS queries using ETW.
+  Monitors DNS queries using ETW.
 
-  There are several filteres availible to the user to filter out and target with
-  regex, by default duplicate DNSCache requests are filtered out.
+  There are several filters available to filter out and/or target using regular
+  expressions. By default duplicate DNSCache requests are filtered out.
 
 type: CLIENT_EVENT
 

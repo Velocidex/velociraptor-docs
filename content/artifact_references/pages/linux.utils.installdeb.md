@@ -4,10 +4,11 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Install a deb package and configure it with debconf answers. The package
-may either be specified by name, as an uploaded file or as a "tool". If the
-package already exists, it may be optionally reconfigured with debconf
-answers.
+Install a deb package and configure it with debconf answers.
+
+The package may either be specified by name, as an uploaded file or as a
+"tool". If the package already exists, it may be optionally reconfigured with
+debconf answers.
 
 There are three ways to specify a package (listed in order of preference if
 all are set):
@@ -17,7 +18,7 @@ all are set):
   - DebTool: A deb package provided as a tool, specified by tool name. Since
     this is a utility artifact meant to be called by other artifacts, the
     tool should be specified in the artifact calling this artifact.
-    Alternatively, configure the tool using
+    Alternatively, configure the tool by using
     [VQL](https://docs.velociraptor.app/vql_reference/server/inventory_add/).
 
   - DebName: The name of the package to install, or an absolute path to a deb
@@ -35,10 +36,11 @@ all are set):
 name: Linux.Utils.InstallDeb
 author: Andreas Misje – @misje
 description: |
-   Install a deb package and configure it with debconf answers. The package
-   may either be specified by name, as an uploaded file or as a "tool". If the
-   package already exists, it may be optionally reconfigured with debconf
-   answers.
+   Install a deb package and configure it with debconf answers.
+
+   The package may either be specified by name, as an uploaded file or as a
+   "tool". If the package already exists, it may be optionally reconfigured with
+   debconf answers.
 
    There are three ways to specify a package (listed in order of preference if
    all are set):
@@ -48,7 +50,7 @@ description: |
      - DebTool: A deb package provided as a tool, specified by tool name. Since
        this is a utility artifact meant to be called by other artifacts, the
        tool should be specified in the artifact calling this artifact.
-       Alternatively, configure the tool using
+       Alternatively, configure the tool by using
        [VQL](https://docs.velociraptor.app/vql_reference/server/inventory_add/).
 
      - DebName: The name of the package to install, or an absolute path to a deb

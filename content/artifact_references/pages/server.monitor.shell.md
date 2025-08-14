@@ -5,13 +5,13 @@ tags: [Server Event Artifact]
 ---
 
 Velociraptor can get an interactive shell on the endpoint by using
-the shell command. In order to use it, the user must be directly
+the shell command. To use it, the user must be directly
 logged on the server.
 
 Obviously being able to run arbitrary commands on the end point is
 a powerful feature and should be used sparingly. There is an audit
 trail for shell commands executed and their output available by
-streaming all shell commands to the "Shell" client evnt monitoring
+streaming all shell commands to the "Shell" client event monitoring
 artifact.
 
 This server event artifact centralizes all shell access from all
@@ -22,13 +22,13 @@ clients into the same log file.
 name: Server.Monitor.Shell
 description: |
    Velociraptor can get an interactive shell on the endpoint by using
-   the shell command. In order to use it, the user must be directly
+   the shell command. To use it, the user must be directly
    logged on the server.
 
    Obviously being able to run arbitrary commands on the end point is
    a powerful feature and should be used sparingly. There is an audit
    trail for shell commands executed and their output available by
-   streaming all shell commands to the "Shell" client evnt monitoring
+   streaming all shell commands to the "Shell" client event monitoring
    artifact.
 
    This server event artifact centralizes all shell access from all

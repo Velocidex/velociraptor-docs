@@ -8,7 +8,7 @@ Find files on a remote filesystem using the filename or content.
 
 ## Security Note
 
-In order to access a remote share we require the credentials of a
+To access a remote share we require the credentials of a
 domain user. Currently only username/password are supported (i.e. no
 Kerberose). You should use Group Policy to create a user with read
 only access to the remote share.
@@ -29,7 +29,7 @@ description: |
 
   ## Security Note
 
-  In order to access a remote share we require the credentials of a
+  To access a remote share we require the credentials of a
   domain user. Currently only username/password are supported (i.e. no
   Kerberose). You should use Group Policy to create a user with read
   only access to the remote share.

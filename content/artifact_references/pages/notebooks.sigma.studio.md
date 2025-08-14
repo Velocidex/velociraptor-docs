@@ -31,7 +31,7 @@ parameters:
       - LinuxEvents
 
   - name: Debug
-    description: Enable this to match all rules (even if they did not match) in order to see what detections matched.
+    description: Enable this to match all rules (even if they did not match) to see what detections matched.
     type: bool
 
   - name: LogSource
@@ -79,7 +79,7 @@ sources:
 
           2. Collect event samples. Use the relevant `CaptureTestSet`
              artifact (e.g. `Windows.Sigma.Base.CaptureTestSet`) collect
-             events from the relevant log source. You can post process
+             events from the relevant log source. You can post-process
              the rows and filter in the notebook as usual.
 
           3. When you are ready to work with a test set, click `export
@@ -119,7 +119,7 @@ sources:
              LinuxEvents="Linux.Sigma.BaseEvents")
 
           // We need to store the profile in the datastore because it
-          // is too large to pass in a html tag.
+          // is too large to pass in a HTML tag.
           LET Rows &lt;= SELECT upload(
              accessor='data', file=Content,
              name='profile.json') AS Upload

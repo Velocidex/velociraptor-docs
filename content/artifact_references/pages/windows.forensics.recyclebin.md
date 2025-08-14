@@ -4,7 +4,7 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artefact will parse the `$I` files found in the `$Recycle.Bin` folder to
+This artifact will parse the `$I` files found in the `$Recycle.Bin` folder to
 obtain the time of deletion and the original path and file name.
 
 Supports Recycle Bin format found in Vista onwards. This will not parse INFO2
@@ -30,7 +30,7 @@ Limitations: This artifact uses the API to read available $I data. There may be 
 <pre><code class="language-yaml">
 name: Windows.Forensics.RecycleBin
 description: |
-  This artefact will parse the `$I` files found in the `$Recycle.Bin` folder to
+  This artifact will parse the `$I` files found in the `$Recycle.Bin` folder to
   obtain the time of deletion and the original path and file name.
 
   Supports Recycle Bin format found in Vista onwards. This will not parse INFO2

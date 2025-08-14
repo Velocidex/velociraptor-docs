@@ -4,16 +4,18 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Maps the Mitre Att&ck framework process executions into
-artifacts. This pack was generated from
+Maps the MITRE Att&ck framework process executions into artifacts.
+
+This pack was generated from
 https://github.com/teoseller/osquery-attck
 
 
 <pre><code class="language-yaml">
 name: Windows.Attack.Prefetch
 description: |
-   Maps the Mitre Att&amp;ck framework process executions into
-   artifacts. This pack was generated from
+   Maps the MITRE Att&amp;ck framework process executions into artifacts.
+
+   This pack was generated from
    https://github.com/teoseller/osquery-attck
 
 precondition: SELECT OS From info() where OS = 'windows'

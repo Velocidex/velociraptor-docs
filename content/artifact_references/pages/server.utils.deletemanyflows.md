@@ -12,7 +12,7 @@ them against some criteria. Flows that match are then removed.
 
 **NOTE** This artifact will destroy all data irrevocably. Take
   care! You should always do a dry run first to see which flows
-  will match before using the ReallyDoIt option.
+  will match before using the `ReallyDoIt` option.
 
 
 <pre><code class="language-yaml">
@@ -26,7 +26,7 @@ description: |
 
    **NOTE** This artifact will destroy all data irrevocably. Take
      care! You should always do a dry run first to see which flows
-     will match before using the ReallyDoIt option.
+     will match before using the `ReallyDoIt` option.
 
 type: SERVER
 

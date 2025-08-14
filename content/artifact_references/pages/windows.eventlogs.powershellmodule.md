@@ -7,10 +7,10 @@ tags: [Client Artifact]
 This Artifact will search and extract Module events (Event ID 4103) from
 Powershell-Operational Event Logs.
 
-Powershell is commonly used by attackers across all stages of the attack
+PowerShell is commonly used by attackers across all stages of the attack
 lifecycle. Although quite noisy Module logging can provide valuable insight.
 
-There are several parameter's available for search leveraging regex.
+There are several parameters available for search leveraging regex.
   - DateAfter enables search for events after this date.
   - DateBefore enables search for events before this date.
   - ContextRegex enables regex search over ContextInfo text field.
@@ -24,10 +24,10 @@ description: |
   This Artifact will search and extract Module events (Event ID 4103) from
   Powershell-Operational Event Logs.
 
-  Powershell is commonly used by attackers across all stages of the attack
+  PowerShell is commonly used by attackers across all stages of the attack
   lifecycle. Although quite noisy Module logging can provide valuable insight.
 
-  There are several parameter's available for search leveraging regex.
+  There are several parameters available for search leveraging regex.
     - DateAfter enables search for events after this date.
     - DateBefore enables search for events before this date.
     - ContextRegex enables regex search over ContextInfo text field.

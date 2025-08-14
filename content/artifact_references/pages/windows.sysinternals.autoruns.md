@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Uses Sysinternals autoruns to scan the host.
 
-Note this requires syncing the sysinternals binary from the host.
+Note this requires syncing the Sysinternals binary from the host.
 
 
 <pre><code class="language-yaml">
@@ -14,7 +14,7 @@ name: Windows.Sysinternals.Autoruns
 description: |
   Uses Sysinternals autoruns to scan the host.
 
-  Note this requires syncing the sysinternals binary from the host.
+  Note this requires syncing the Sysinternals binary from the host.
 
 tools:
   - name: Autorun_386

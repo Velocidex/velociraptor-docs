@@ -4,9 +4,9 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact extracts cobalt strike configuration from a byte stream, process
+This artifact extracts Cobalt Strike configuration from a byte stream, process
 or file on disk such as a process dump. Best used as a triage step against a
-detection of a cobalt strike beacon via a yara process scan.
+detection of a Cobalt Strike beacon via a YARA process scan.
 
 The User can define bytes, file glob, process name or pid regex as a target. The
 content will search for a configuration pattern, extract a defined byte size,
@@ -16,7 +16,7 @@ xor with discovered key, then attempt configuration extraction.
 (depending on version) but trivial to change.
 - Configuration is built in a typical index / type / length / value structure
 with either big endian values or zero terminated strings.
-- If no beacon is found, parser will fallback to CobaltStrike Shellcode analysis.
+- If no beacon is found, parser will fallback to Cobalt Strike Shellcode analysis.
 
 This content simply carves the configuration and does not unpack files on
 disk. That means pointing this artifact as a packed or obfuscated file may not
@@ -29,9 +29,9 @@ Unpacking later version.
 name: Windows.Carving.CobaltStrike
 author: Matt Green - @mgreen27
 description: |
-  This artifact extracts cobalt strike configuration from a byte stream, process
+  This artifact extracts Cobalt Strike configuration from a byte stream, process
   or file on disk such as a process dump. Best used as a triage step against a
-  detection of a cobalt strike beacon via a yara process scan.
+  detection of a Cobalt Strike beacon via a YARA process scan.
 
   The User can define bytes, file glob, process name or pid regex as a target. The
   content will search for a configuration pattern, extract a defined byte size,
@@ -41,7 +41,7 @@ description: |
   (depending on version) but trivial to change.
   - Configuration is built in a typical index / type / length / value structure
   with either big endian values or zero terminated strings.
-  - If no beacon is found, parser will fallback to CobaltStrike Shellcode analysis.
+  - If no beacon is found, parser will fallback to Cobalt Strike Shellcode analysis.
 
   This content simply carves the configuration and does not unpack files on
   disk. That means pointing this artifact as a packed or obfuscated file may not
@@ -427,7 +427,7 @@ sources:
       -- unique function to groupby value for enumerate
       LET unique(values) = SELECT _value as value FROM foreach(row=values) GROUP BY _value
 
-      -- section to dynamically generate Xor configuration yara hunt strings
+      -- section to dynamically generate Xor configuration YARA hunt strings
       LET a &lt;= unhex(string='01')
       LET b &lt;= unhex(string='02')
       LET c &lt;= unhex(string='03')
@@ -480,7 +480,7 @@ sources:
         WHERE Name = '.data' AND Size &gt; 15
 
 
-      -- scan DataBytes for CobaltStrike config
+      -- scan DataBytes for Cobalt Strike config
       LET ByteConfiguration = SELECT Rule,
                 len(list=TargetBytes) as Size,
                 hash(path=TargetBytes,accessor='data') as Hash,
@@ -702,7 +702,7 @@ sources:
             OR DecodedConfig.Server =~ '^[ -~]+' -- AND DecodedConfig.TargetUri )
             OR Rule='cobalt_strike_sleepfunction' )
 
-      -- add decoded data seperate to keep pretty output
+      -- add decoded data separate to keep pretty output
       LET output_decoded_data = SELECT *,
             upload(accessor = 'data',
                 file = if(condition = Rule='cobalt_strike_beacon',

@@ -5,7 +5,7 @@ tags: [Client Artifact]
 ---
 
 This artifact allows running arbitrary commands through the system
-powershell.
+PowerShell.
 
 Since Velociraptor typically runs as system, the commands will also
 run as System.
@@ -37,7 +37,7 @@ spaces in it:
 name: Windows.System.PowerShell
 description: |
   This artifact allows running arbitrary commands through the system
-  powershell.
+  PowerShell.
 
   Since Velociraptor typically runs as system, the commands will also
   run as System.

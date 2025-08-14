@@ -1846,3 +1846,6 @@ MinIO
 misconfigure
 
 Nextron
+
+fred
+UploadTools

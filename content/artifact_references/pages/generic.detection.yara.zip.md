@@ -4,15 +4,15 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact enables running Yara on embeded compressed files.
+This artifact enables running YARA on embedded compressed files.
 
 The artifact:
 
 * firstly searches for compressed zip files (PK header)
-* then applies yara on files inside.
+* then applies YARA on files inside.
 * files matching ZipFilenameRegex are recursively searched as above.
 
-The artifact is optimised to recursively search through embedded zip,
+The artifact is optimized to recursively search through embedded zip,
 jar,war and ear files by extracting any discovered containers.
 Select UploadHits to upload Discovered file for further analysis.  It is
 recommended to increase default artifact timeout for large servers or target
@@ -28,7 +28,7 @@ Some examples of path glob may include:
 NOTE: this artifact runs the glob plugin with the nosymlink switch
 turned on.  This will NOT follow any symlinks and may cause
 unexpected results if unknowingly targeting a folder with
-symlinks. Yara is not applied to the containers, only contained contents
+symlinks. YARA is not applied to the containers, only contained contents
 that are not containers.
 
 
@@ -36,15 +36,15 @@ that are not containers.
 name: Generic.Detection.Yara.Zip
 author: "Matt Green - @mgreen27"
 description: |
-    This artifact enables running Yara on embeded compressed files.
+    This artifact enables running YARA on embedded compressed files.
 
     The artifact:
 
     * firstly searches for compressed zip files (PK header)
-    * then applies yara on files inside.
+    * then applies YARA on files inside.
     * files matching ZipFilenameRegex are recursively searched as above.
 
-    The artifact is optimised to recursively search through embedded zip,
+    The artifact is optimized to recursively search through embedded zip,
     jar,war and ear files by extracting any discovered containers.
     Select UploadHits to upload Discovered file for further analysis.  It is
     recommended to increase default artifact timeout for large servers or target
@@ -60,7 +60,7 @@ description: |
     NOTE: this artifact runs the glob plugin with the nosymlink switch
     turned on.  This will NOT follow any symlinks and may cause
     unexpected results if unknowingly targeting a folder with
-    symlinks. Yara is not applied to the containers, only contained contents
+    symlinks. YARA is not applied to the containers, only contained contents
     that are not containers.
 
 parameters:

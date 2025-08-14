@@ -6,7 +6,7 @@ tags: [Client Artifact]
 
 Execute Eric Zimmerman's SBECmd and return output for analysis.
 
-SBECmd is a CLI for analyzing shellbags data.
+SBECmd is a CLI for analyzing Shellbags data.
 
 Objective:
 
@@ -21,7 +21,7 @@ Interpretation:
   browsed by the user.
 
 NOTE: Velociraptor can now parse Shellbags natively with the
-Windows.Forensics.Shellbags artifact.
+`Windows.Forensics.Shellbags` artifact.
 
 MITRE ATT&CK ID: TA0009 - Collection
 
@@ -31,7 +31,7 @@ name: Windows.Applications.SBECmd
 description: |
     Execute Eric Zimmerman's SBECmd and return output for analysis.
 
-    SBECmd is a CLI for analyzing shellbags data.
+    SBECmd is a CLI for analyzing Shellbags data.
 
     Objective:
 
@@ -46,7 +46,7 @@ description: |
       browsed by the user.
 
     NOTE: Velociraptor can now parse Shellbags natively with the
-    Windows.Forensics.Shellbags artifact.
+    `Windows.Forensics.Shellbags` artifact.
 
     MITRE ATT&amp;CK ID: TA0009 - Collection
 

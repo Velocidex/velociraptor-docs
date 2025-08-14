@@ -4,8 +4,8 @@ hidden: true
 tags: [Client Event Artifact]
 ---
 
-This artifact uses ebpf and pslist to keep track of running
-processes using the Velociraptor process tracker.
+This artifact uses eBPF and pslist to keep track of running
+processes by using the Velociraptor process tracker.
 
 The process tracker keeps track of exited processes, and resolves
 process call chains from it in memory cache.
@@ -14,7 +14,7 @@ This event artifact enables the global process tracker and makes it
 possible to run many other artifacts that depend on the process
 tracker.
 
-NOTE: Unlike Windows.Events.TrackProcesses, the eBPF program is
+NOTE: Unlike `Windows.Events.TrackProcesses`, the eBPF program is
 already built into Velociraptor so this artifact does not depend on
 external tools.
 
@@ -22,8 +22,8 @@ external tools.
 <pre><code class="language-yaml">
 name: Linux.Events.TrackProcesses
 description: |
-  This artifact uses ebpf and pslist to keep track of running
-  processes using the Velociraptor process tracker.
+  This artifact uses eBPF and pslist to keep track of running
+  processes by using the Velociraptor process tracker.
 
   The process tracker keeps track of exited processes, and resolves
   process call chains from it in memory cache.
@@ -32,7 +32,7 @@ description: |
   possible to run many other artifacts that depend on the process
   tracker.
 
-  NOTE: Unlike Windows.Events.TrackProcesses, the eBPF program is
+  NOTE: Unlike `Windows.Events.TrackProcesses`, the eBPF program is
   already built into Velociraptor so this artifact does not depend on
   external tools.
 
