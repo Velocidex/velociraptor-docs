@@ -4,27 +4,27 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact returns a list of target files then runs Yara over the target
+This artifact returns a list of target files then runs YARA over the target
 list.
 
-There are 2 kinds of Yara rules that can be deployed:
+There are 2 kinds of YARA rules that can be deployed:
 
-1. Url link to a yara rule.
-2. or a Standard Yara rule attached as a parameter.
+1. Url link to a YARA rule.
+2. or a Standard YARA rule attached as a parameter.
 
-Only one method of Yara will be applied and search order is as above.
+Only one method of YARA will be applied and search order is as above.
 
-The artifact leverages Glob for search so relevant filters can be applied
+The artifact uses Glob for search so relevant filters can be applied
 including Glob, Size and date. Date filters will target files with a timestamp
 before LatestTime and after EarliestTime. The artifact also has an option to
-upload any files with Yara hits.
+upload any files with YARA hits.
 
 Some examples of path glob may include:
 
 * Specific binary: `/usr/bin/ls`
 * Wildcards: `/var/www/*.js`
 * More wildcards: `/var/www/**/*.js`
-* Multiple extentions: `/var/www/*\.{php,aspx,js,html}`
+* Multiple extensions: `/var/www/*\.{php,aspx,js,html}`
 * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
 * Windows: `C:\Users\**\*.{exe,dll,ps1,bat}`
 
@@ -39,27 +39,27 @@ grouped by path to ensure files only downloaded once.
 name: Generic.Detection.Yara.Glob
 author: Matt Green - @mgreen27
 description: |
-  This artifact returns a list of target files then runs Yara over the target
+  This artifact returns a list of target files then runs YARA over the target
   list.
 
-  There are 2 kinds of Yara rules that can be deployed:
+  There are 2 kinds of YARA rules that can be deployed:
 
-  1. Url link to a yara rule.
-  2. or a Standard Yara rule attached as a parameter.
+  1. Url link to a YARA rule.
+  2. or a Standard YARA rule attached as a parameter.
 
-  Only one method of Yara will be applied and search order is as above.
+  Only one method of YARA will be applied and search order is as above.
 
-  The artifact leverages Glob for search so relevant filters can be applied
+  The artifact uses Glob for search so relevant filters can be applied
   including Glob, Size and date. Date filters will target files with a timestamp
   before LatestTime and after EarliestTime. The artifact also has an option to
-  upload any files with Yara hits.
+  upload any files with YARA hits.
 
   Some examples of path glob may include:
 
   * Specific binary: `/usr/bin/ls`
   * Wildcards: `/var/www/*.js`
   * More wildcards: `/var/www/**/*.js`
-  * Multiple extentions: `/var/www/*\.{php,aspx,js,html}`
+  * Multiple extensions: `/var/www/*\.{php,aspx,js,html}`
   * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
   * Windows: `C:\Users\**\*.{exe,dll,ps1,bat}`
 

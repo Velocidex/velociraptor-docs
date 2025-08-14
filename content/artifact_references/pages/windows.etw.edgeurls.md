@@ -4,11 +4,12 @@ hidden: true
 tags: [Client Event Artifact]
 ---
 
-This client event artifact collects all URLs accessed by the Edge browser.
+Collects all URLs accessed by the Edge browser using ETW.
 
-It is an example of an ETW artifact using the provider
+It also serves as an example of an ETW artifact, in this case using the
+provider:
 
-Microsoft-Windows-URLMon                 {245F975D-909D-49ED-B8F9-9A75691D6B6B}
+`Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
 
 NOTE: This artifact can generate a lot of data - you probably want
 to filter the URLs a bit and/or target collection to a narrow label
@@ -18,11 +19,12 @@ group.
 <pre><code class="language-yaml">
 name: Windows.ETW.EdgeURLs
 description: |
-  This client event artifact collects all URLs accessed by the Edge browser.
+  Collects all URLs accessed by the Edge browser using ETW.
 
-  It is an example of an ETW artifact using the provider
+  It also serves as an example of an ETW artifact, in this case using the
+  provider:
 
-  Microsoft-Windows-URLMon                 {245F975D-909D-49ED-B8F9-9A75691D6B6B}
+  `Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
 
   NOTE: This artifact can generate a lot of data - you probably want
   to filter the URLs a bit and/or target collection to a narrow label

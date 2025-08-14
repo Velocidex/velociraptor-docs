@@ -5,14 +5,14 @@ tags: [Client Artifact]
 ---
 
 Report information about the systems interfaces. This artifact
-simply parses the output from ipconfig /all.
+simply parses the output from `ipconfig /all`.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sys.Interfaces
 description: |
   Report information about the systems interfaces. This artifact
-  simply parses the output from ipconfig /all.
+  simply parses the output from `ipconfig /all`.
 
 implied_permissions:
   - EXECVE

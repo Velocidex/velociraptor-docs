@@ -4,14 +4,16 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact enables grep and zgrep of linux logs and gzipped log files.
+This artifact enables zgrep-like searching of Linux logs, including gzipped
+log files.
 
 
 <pre><code class="language-yaml">
 name: Linux.Sys.LogGrep
 author: "Matt Green - @mgreen27"
 description: |
-  This artifact enables grep and zgrep of linux logs and gzipped log files.
+  This artifact enables zgrep-like searching of Linux logs, including gzipped
+  log files.
 
 parameters:
   - name: TargetGlob

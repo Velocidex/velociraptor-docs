@@ -257,7 +257,13 @@
             {
                 "name": "prefix",
                 "type": "string",
-                "description": "Required name prefix"
+                "description": "Optional name prefix (deprecated ignored)"
+            },
+            {
+                "name": "tags",
+                "type": "string",
+                "description": "Optional tags to attach to the artifact.",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -292,6 +298,12 @@
                 "name": "basic",
                 "type": "bool",
                 "description": "Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it."
+            },
+            {
+                "name": "tags",
+                "type": "string",
+                "description": "Optional tags to attach to the artifact.",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -408,6 +420,9 @@
         "name": "auto",
         "description": "Access the file using the best accessor possible.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -429,7 +444,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -1669,7 +1685,8 @@
             "permissions": "COLLECT_SERVER,FILESYSTEM_WRITE,SERVER_ADMIN"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -2034,7 +2051,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -2258,13 +2275,18 @@
             },
             {
                 "name": "env",
-                "type": "LazyExpr",
+                "type": "ordereddict.Dict",
                 "description": "Environment variables to launch with."
             },
             {
                 "name": "cwd",
                 "type": "string",
                 "description": "If specified we change to this working directory first."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
             }
         ],
         "category": "popular",
@@ -2438,6 +2460,9 @@
         "name": "file",
         "description": "Access files using the operating system's API.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2460,6 +2485,9 @@
         "name": "file_nocase",
         "description": "Access files using the operating system's API.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2772,6 +2800,9 @@
         "name": "fs",
         "description": "Provide access to the server's filestore and datastore.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2784,6 +2815,9 @@
         "name": "fs_sparse",
         "description": "Provide access to the server's filestore and datastore.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -3277,8 +3311,7 @@
                 "name": "url",
                 "type": "string",
                 "description": "The URL to fetch",
-                "repeated": true,
-                "required": true
+                "repeated": true
             },
             {
                 "name": "params",
@@ -3354,7 +3387,7 @@
         ],
         "category": "popular",
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -4570,7 +4603,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -4783,7 +4816,7 @@
             }
         ],
         "metadata": {
-            "permissions": "SERVER_ADMIN"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -5266,7 +5299,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -5716,12 +5749,6 @@
         "type": "Plugin",
         "args": [
             {
-                "name": "query",
-                "type": "StoredQuery",
-                "description": "The query will be run in parallel over batches.",
-                "required": true
-            },
-            {
                 "name": "client_id",
                 "type": "string",
                 "description": "The client id to extract"
@@ -5770,6 +5797,12 @@
                 "name": "notebook_cell_table",
                 "type": "int64",
                 "description": "A notebook cell can have multiple tables.)"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "The query will be run in parallel over batches.",
+                "required": true
             },
             {
                 "name": "workers",
@@ -7217,6 +7250,9 @@
         "name": "process",
         "description": "Access process memory like a file.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -7558,6 +7594,9 @@
         "name": "pst",
         "description": "An accessor to open attachments in PST files.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "linux_amd64_cgo",
             "windows_amd64_cgo"
@@ -7738,6 +7777,9 @@
         "name": "raw_file",
         "description": "Access the filesystem using the OS API.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -7912,6 +7954,9 @@
         "name": "reg",
         "description": "An alias for the `registry` accessor, which accesses the registry using the\nOS APIs.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -8384,7 +8429,8 @@
             "permissions": "COLLECT_SERVER,FILESYSTEM_WRITE,SERVER_ADMIN"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -8455,6 +8501,9 @@
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
             }
         ],
+        "metadata": {
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "linux_amd64_cgo",
             "windows_amd64_cgo"
@@ -8464,6 +8513,42 @@
         "name": "s3",
         "description": "Allows access to S3 buckets.",
         "type": "Accessor",
+        "args": [
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
+            },
+            {
+                "name": "region",
+                "type": "string",
+                "description": "The region."
+            },
+            {
+                "name": "credentials_key",
+                "type": "string"
+            },
+            {
+                "name": "credentials_secret",
+                "type": "string"
+            },
+            {
+                "name": "credentials_token",
+                "type": "string"
+            },
+            {
+                "name": "endpoint",
+                "type": "string"
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool"
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "S3_CREDENTIALS",
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -8565,7 +8650,8 @@
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -9019,6 +9105,18 @@
         "name": "smb",
         "description": "Access smb shares (e.g. Windows shares).",
         "type": "Accessor",
+        "args": [
+            {
+                "name": "hosts",
+                "type": "ordereddict.Dict",
+                "description": "A dict mapping hostname to connection strings. The connection string consists of username and password joined by colon (e.g. fred:hunter2 ).",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "SMB_CREDENTIALS",
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -9305,7 +9403,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -9430,6 +9528,37 @@
         "name": "ssh",
         "description": "Access a remote system's filesystem via `SSH/SFTP`.",
         "type": "Accessor",
+        "args": [
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
+            },
+            {
+                "name": "username",
+                "type": "string",
+                "description": "The username to use to log into the remote system."
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "description": "The password to use to log into the remote system."
+            },
+            {
+                "name": "private_key",
+                "type": "string",
+                "description": "A private key to use to log into the remote system instead of a password."
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "The hostname to log into."
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "SSH_CONFIG",
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -9735,7 +9864,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -10447,7 +10577,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "NETWORK,FILESYSTEM_READ"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -10568,6 +10698,29 @@
         ]
     },
     {
+        "name": "upload_transactions",
+        "description": "View the outstanding transactions for uploads.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string"
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "upload_webdav",
         "description": "Upload files to a WebDAV server.",
         "type": "Function",
@@ -10621,7 +10774,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "FILESYSTEM_READ,NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -10995,7 +11148,8 @@
             }
         ],
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -11024,6 +11178,9 @@
         "name": "vfs",
         "description": "Access client's VFS filesystem on the server.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -11502,6 +11659,9 @@
         "name": "winpmem",
         "description": "Access physical memory like a file. Any filename will result in a sparse view of physical memory.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "windows_amd64_cgo"
         ],

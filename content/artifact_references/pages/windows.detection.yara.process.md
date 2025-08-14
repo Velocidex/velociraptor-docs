@@ -4,20 +4,20 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact enables running Yara over processes in memory.
+This artifact enables running YARA over processes in memory.
 
-There are 2 kinds of Yara rules that can be deployed:
+There are 2 kinds of YARA rules that can be deployed:
 
-1. Url link to a yara rule.
-3. or a Standard Yara rule attached as a parameter.
+1. URL link to a YARA rule.
+3. or a Standard YARA rule attached as a parameter.
 
-Only one method of Yara will be applied and search order is as above. The
+Only one method of YARA will be applied and search order is as above. The
 default is Cobalt Strike opcodes.
 
 Regex parameters can be applied for process name and pid for targeting. The
-artifact also has an option to upload any process with Yara hits.
+artifact also has an option to upload any process with YARA hits.
 
-Note: by default the Yara scan will stop after one hit. Multi-string rules will also only
+Note: by default the YARA scan will stop after one hit. Multi-string rules will also only
 show one string in returned rows.
 If upload is selected NumberOfHits is redundant and not advised as hits are
 grouped by path to ensure files only downloaded once.
@@ -27,20 +27,20 @@ grouped by path to ensure files only downloaded once.
 name: Windows.Detection.Yara.Process
 author: Matt Green - @mgreen27
 description: |
-  This artifact enables running Yara over processes in memory.
+  This artifact enables running YARA over processes in memory.
 
-  There are 2 kinds of Yara rules that can be deployed:
+  There are 2 kinds of YARA rules that can be deployed:
 
-  1. Url link to a yara rule.
-  3. or a Standard Yara rule attached as a parameter.
+  1. URL link to a YARA rule.
+  3. or a Standard YARA rule attached as a parameter.
 
-  Only one method of Yara will be applied and search order is as above. The
+  Only one method of YARA will be applied and search order is as above. The
   default is Cobalt Strike opcodes.
 
   Regex parameters can be applied for process name and pid for targeting. The
-  artifact also has an option to upload any process with Yara hits.
+  artifact also has an option to upload any process with YARA hits.
 
-  Note: by default the Yara scan will stop after one hit. Multi-string rules will also only
+  Note: by default the YARA scan will stop after one hit. Multi-string rules will also only
   show one string in returned rows.
   If upload is selected NumberOfHits is redundant and not advised as hits are
   grouped by path to ensure files only downloaded once.
@@ -115,7 +115,7 @@ sources:
     query: |
       -- check which Yara to use
       LET yara_rules &lt;= YaraUrl || YaraRule
-      
+
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
 
@@ -150,7 +150,7 @@ sources:
                         split(string=ProcessName, sep='\\.')[0], Pid,
                         String.Offset ]
                     )) as HitContext
-                
+
             FROM proc_yara(
                             pid=int(int=Pid),
                             rules=yara_rules,
@@ -163,7 +163,7 @@ sources:
       LET upload_hits = SELECT * FROM foreach(
         row=hits,
         query={
-            SELECT 
+            SELECT
                 ProcessName,
                 ExePath,
                 CommandLine,
@@ -181,7 +181,7 @@ sources:
                 ) as ProcessDump
             FROM proc_dump(pid=Pid)
           })
-          
+
       -- return rows
       SELECT * FROM if(condition=UploadHits,
         then=upload_hits,

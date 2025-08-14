@@ -73,6 +73,7 @@ parameters:
 implied_permissions:
   - SERVER_ADMIN
   - FILESYSTEM_WRITE
+  - NETWORK
 
 sources:
   - query: |

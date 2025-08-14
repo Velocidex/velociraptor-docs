@@ -6,7 +6,7 @@ tags: [Server Artifact]
 
 Automates the analysis of dead disk images in Velociraptor
 
-Velociraptor can analyze dead disk images using accessor
+Velociraptor can analyze dead disk images by using accessor
 remapping. The process involves detecting a suitable remapping
 configuration to remap various image partitions into the relevant
 accessors and emulate a "Virtual Host".
@@ -28,7 +28,7 @@ name: Server.Utils.DeadDiskClient
 description: |
   Automates the analysis of dead disk images in Velociraptor
 
-  Velociraptor can analyze dead disk images using accessor
+  Velociraptor can analyze dead disk images by using accessor
   remapping. The process involves detecting a suitable remapping
   configuration to remap various image partitions into the relevant
   accessors and emulate a "Virtual Host".

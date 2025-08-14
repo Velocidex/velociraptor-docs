@@ -90,6 +90,7 @@ not yet been categorized.
 |[upload_s3](upload_s3)|<span class='vql_type'>Function</span>|Upload files to S3|
 |[upload_sftp](upload_sftp)|<span class='vql_type'>Function</span>|Upload files to SFTP|
 |[upload_smb](upload_smb)|<span class='vql_type'>Function</span>|Upload files using the SMB file share protocol|
+|[upload_transactions](upload_transactions)|<span class='vql_type'>Plugin</span>|View the outstanding transactions for uploads|
 |[upload_webdav](upload_webdav)|<span class='vql_type'>Function</span>|Upload files to a WebDAV server|
 |[url](url)|<span class='vql_type'>Function</span>|Construct a URL or parse one|
 |[uuid](uuid)|<span class='vql_type'>Function</span>|Generate a UUID|

@@ -90,7 +90,7 @@ parameters:
   - name: Fetch_Xattr
     default: N
     type: bool
-    
+
   - name: Upload_File
     default: N
     type: bool
@@ -111,6 +111,11 @@ parameters:
     type: bool
     default: Y
     description: If specified we are allowed to follow symlinks while globbing
+
+  - name: UPLOAD_IS_RESUMABLE
+    type: bool
+    default: Y
+    description: If set the uploads can be resumed if the flow times out or errors.
 
 sources:
 - query: |

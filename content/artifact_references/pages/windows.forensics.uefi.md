@@ -9,13 +9,16 @@ This artifact enables disk analysis over an EFI System Partition (ESP).
 The artifact queries the specified physical disk, parses the partition table
 to targets the ESPs File Allocation Table (FAT).
 
-The default artifact returns file information, and PE enrichment as typical EFI files are in the PE format.
+The default artifact returns file information and PE enrichment, as typical
+EFI files are in the PE format.
 
-We can looks for anomalities in EFI such as:
+We can look for anomalies in EFI such as:
 
 - unexpected time stamps outside install / OS updates
 - unexpected paths (EFI/ is typically the root folder on this partition)
-- unexpected metadata: signer non microsoft or known vendor (note we expect non trusted certificates here as the authenticode api does not service ESP binaries)
+- unexpected metadata: signer non-Microsoft or known vendor (note we expect
+  non-trusted certificates here as the Authenticode API does not service ESP
+  binaries)
 
 NOTE: default returns EFI files, rerun with ```TargetGlob=**/*``` glob and
 return all files.
@@ -30,13 +33,16 @@ description: |
   The artifact queries the specified physical disk, parses the partition table
   to targets the ESPs File Allocation Table (FAT).
 
-  The default artifact returns file information, and PE enrichment as typical EFI files are in the PE format.
+  The default artifact returns file information and PE enrichment, as typical
+  EFI files are in the PE format.
 
-  We can looks for anomalities in EFI such as:
+  We can look for anomalies in EFI such as:
 
   - unexpected time stamps outside install / OS updates
   - unexpected paths (EFI/ is typically the root folder on this partition)
-  - unexpected metadata: signer non microsoft or known vendor (note we expect non trusted certificates here as the authenticode api does not service ESP binaries)
+  - unexpected metadata: signer non-Microsoft or known vendor (note we expect
+    non-trusted certificates here as the Authenticode API does not service ESP
+    binaries)
 
   NOTE: default returns EFI files, rerun with ```TargetGlob=**/*``` glob and
   return all files.

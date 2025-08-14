@@ -45,7 +45,7 @@ Args:
 debian server [<flags>]
     Create a server package from a server config file.
 
-    --output=OUTPUT  Filename to output
+    --output=OUTPUT  Output directory where package files will be written
     --binary=BINARY  The binary to package
 ```
 
@@ -185,7 +185,7 @@ Args:
 rpm client [<flags>]
     Create a client package from a server config file.
 
-    --output=OUTPUT  Filename to output
+    --output=OUTPUT  Output directory where package files will be written
     --binary=BINARY  The binary to package
 ```
 
@@ -234,5 +234,3 @@ Args:
 version
     Report the binary version and build information.
 ```
-
-

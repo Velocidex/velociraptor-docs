@@ -5,16 +5,16 @@ tags: [Client Event Artifact]
 ---
 
 This artifact maintains a local (client side) database of file
-hashes. It is then possible to query this database using the
-Generic.Forensic.LocalHashes.Query artifact
+hashes. It is then possible to query this database by using the
+`Generic.Forensic.LocalHashes.Query` artifact
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.LocalHashes.Usn
 description: |
   This artifact maintains a local (client side) database of file
-  hashes. It is then possible to query this database using the
-  Generic.Forensic.LocalHashes.Query artifact
+  hashes. It is then possible to query this database by using the
+  `Generic.Forensic.LocalHashes.Query` artifact
 
 type: CLIENT_EVENT
 

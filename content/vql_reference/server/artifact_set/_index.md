@@ -20,7 +20,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 definition|Artifact definition in YAML|string
-prefix|Required name prefix|string
+prefix|Optional name prefix (deprecated ignored)|string
+tags|Optional tags to attach to the artifact.|list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ARTIFACT_WRITER</span>
 <span class="permission_list linkcolour label label-important">SERVER_ARTIFACT_WRITER</span>

@@ -19,7 +19,6 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-query|The query will be run in parallel over batches.|StoredQuery (required)
 client_id|The client id to extract|string
 flow_id|A flow ID (client or server artifacts)|string
 hunt_id|Retrieve sources from this hunt (combines all results from all clients)|string
@@ -30,6 +29,7 @@ end_time|Stop end events reach this time (event sources).|int64
 notebook_id|The notebook to read from (should also include cell id)|string
 notebook_cell_id|The notebook cell read from (should also include notebook id)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
+query|The query will be run in parallel over batches.|StoredQuery (required)
 workers|Number of workers to spawn.)|int64
 batch|Number of rows in each batch.)|int64
 
