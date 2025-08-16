@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Parsing on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/parsing/</link><description>Recent content in Parsing on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 09 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/parsing/index.xml" rel="self" type="application/rss+xml"/><item><title>Verifying executables on Windows</title><link>https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/</link><pubDate>Wed, 09 Jun 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/</guid><description>&lt;p>How do we know if a windows executable is a legitimate program written
+by the purported developer and not malware? Users may run malicious
+binaries with increasingly devastating consequences, including
+compromise or ransomware.&lt;/p>
+&lt;p>To address this concern, Microsoft has introduced a standard called
+Authenticode, designed to sign trusted binaries, so they can be
+identified by the operating system. Additionally, recent versions of
+Windows will refuse load unsigned device drivers, therefore
+maintaining kernel integrity.&lt;/p>
+&lt;p>While the Authenticode standard itself is well documented, as DFIR
+practitioners we need to understand how Authenticode works, and how we
+can determine if an executable is trusted during our analysis.&lt;/p>
+&lt;p>This post explains the basics of Authenticode, and how Velociraptor can be used to extract Authenticode related information from remote systems. Since release 0.6.0, Velociraptor features an Authenticode parser allowing much deeper inspection of signed executables.&lt;/p>
+&lt;h3 id="is-a-binary-signed">Is a binary signed?&lt;/h3>
+&lt;p>Windows users can easily determine if a binary is signed by simply looking at the Explorer GUI: Right click on the binary and select “Properties” and the “Digital Signatures” tab. This offers a “Details” options where users can view if the signature is ok, who the developer was that signed the executable and other details.&lt;/p>
+&lt;p>For example, let’s inspect the Velociraptor binary itself which is signed.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="1cb2ba95106166696d23722fd956685e">
+ &lt;div data-featherlight="#1cb2ba95106166696d23722fd956685e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1o7geaGdWcYYrycpZq6fwRQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Obviously we can not use this method to verify thousands of binaries found on remote systems, so we need to understand how Authenticode is implemented under the covers.&lt;/p>
+&lt;p>Authenticode uses a number of file format standards to actually embed the signature information into the binary file itself, as illustrated in the &lt;a href="http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/Authenticode_PE.docx" target="_blank" >diagram below&lt;/a>
+:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c7779ef320b4c03db1aadbc273f212e4">
+ &lt;div data-featherlight="#c7779ef320b4c03db1aadbc273f212e4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/0aJlEkIX3M0d8aKnI.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The above diagram shows that signing information is embedded in the PE
+file itself, and consists of a PKCS#7 structure, itself an &lt;code>ASN.1&lt;/code>
+encoded binary blob. The information contains a hash of the PE file,
+and a list of certificates of verifying authorities.&lt;/p>
+&lt;p>Velociraptor can parse the authenticode information from the PE file
+using the parse_pe() VQL function. This allows a VQL query to extract
+signing information from any executable binary (Since this is just a
+file parser and does not use native APIs, you can use this function on
+all supported OSs).&lt;/p>
+&lt;p>Let’s parse Velociraptor’s own PE file in a Velociraptor notebook
+using the following simple query:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT parse_pe(file=’’’C:\Program Files\velociraptor\velociraptor.exe’’’)
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b651dd8ffdcfd00499b5252aefce90e3">
+ &lt;div data-featherlight="#b651dd8ffdcfd00499b5252aefce90e3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/16bcC41eUaZxiHUieQpd9Nw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Among all the usual PE file properties, we can now also spot an Authenticode section, providing information about the subject who signed the binary, the signing time and an expected hash of the file.&lt;/p>
+&lt;h3 id="authenticode-hashes">Authenticode hashes&lt;/h3>
+&lt;p>As we can see in the above screenshot, the authenticode standard provides an expected hash within the signature. However this is not the same as a file hash. We can verify this by simply calculating the hash using the VQL hash() function.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="733fa80b330de2d74bb18617361ce7d7">
+ &lt;div data-featherlight="#733fa80b330de2d74bb18617361ce7d7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1tqLP9HIDA8glYRg0ULZScA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>None of the calculated hashes is the same as the “ExpectedHash” provided in the Authenticode signature! This is because Authenticode hashes do not cover the entire PE file, as regular hashes do. Authenticode hashes only cover specific PE sections, in a specific order. They specifically allow PE sections to be reordered, and some regions in the file to be modified.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Many people find it surprising that signed PE files can be modified without invalidating the signature.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>This means that hash database detection commonly used in DFIR do not work to identify malicious signed binaries. I have demonstrated this recently in a &lt;a href="https://www.youtube.com/watch?v=dmmliSh91uQ" target="_blank" >video&lt;/a>
+ where I modified a vulnerable driver to change its file hash, maintaining it’s authenticode hash. This allowed the driver to be loaded, even through its file hash was completely different and not found on Virus Total.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bcaf341b357f7d11ec18f76489c085b3">
+ &lt;div data-featherlight="#bcaf341b357f7d11ec18f76489c085b3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/0unSBclcWJdSgJwhe" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Typically Authenticode hashes are not maintained by malware classifiers such as Virus Total so it is hard to verify if a file has been modified in this way.&lt;/p>
+&lt;h3 id="catalog-files">Catalog files&lt;/h3>
+&lt;p>Armed with our new understanding of Authenticode, we may run VQL queries to collect all authenticode information from windows executables. One might be surprised then to discover that many native windows binaries do not contain any authenticode information at all.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="08e9144d8f4b6999e6879ce58fe2624f">
+ &lt;div data-featherlight="#08e9144d8f4b6999e6879ce58fe2624f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/156Eq-sGsBkzTnREg7ymsFA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The example above shows that notepad.exe, does not typically contain embedded signing information. Similarly, if one clicks on the the notepad.exe binary in the GUI no digital signature information is shown&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d4064bf476a7477676ef1e9db7088a33">
+ &lt;div data-featherlight="#d4064bf476a7477676ef1e9db7088a33" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1nVs1beihcqM5MefgsK3d9g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Could Microsoft simply have forgotten to sign such an integral part of the OS as notepad.exe?&lt;/p>
+&lt;p>The answer turns out to be more interesting. When distributing a large
+number of binaries, a developer has the option of signing a “catalog
+file” instead of each individual binary. The catalog file is
+essentially a list of authenticode hashes that are all
+trusted. Catalog files are stored in
+&lt;code>C:\Windows\system32\CatRoot\{F750E6C3–38EE-11D1–85E5–00C04FC295EE}&lt;/code>&lt;/p>
+&lt;p>While .cat files are simply encoded in PKCS#7 format, they do contain a few Microsoft specific objects. Velociraptor can parse the PKCS#7 files directly and supports the extra extensions using the parse_pkcs7() VQL function.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="5d83e0749bb053c0c5a961646491c4a1">
+ &lt;div data-featherlight="#5d83e0749bb053c0c5a961646491c4a1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1WZ7Zezy8CRueD28qxklK7g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As can be seen in the above query, the cat file consists of a signer, and a list of hashes. Typically no filenames will be given for the hash (although sometimes there will be a filename hint). It is only the hashes that are important in cat files — this allows files to be renamed, but still verified.&lt;/p>
+&lt;p>Again these hashes are authenticode hashes as before, so you can not compare them against our usual hash databases like Virus Total. You can calculate the authenticode hash of a PE File using the VQL: &lt;em>parse_pe(file=FileName).AuthenticodeHash&lt;/em>&lt;/p>
+&lt;p>To verify that a PE file on disk is signed, one must:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Calculate the Authenticode PE hash of the file.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Enumerate all cat files on the system&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Parse each cat file to extract the list of hashes&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Check if any of these hashes match the one calculated in step 1.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>This process is obviously too slow for the OS itself to use. To speed things up, Windows uses a shortcut: A database file exists on the system which simply contains all the trusted hashes directly. The database uses the Microsoft ESE format and is located in C:\Windows\System32\catroot2*\catdb&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="205632703b035d312f9fb931e5300557">
+ &lt;div data-featherlight="#205632703b035d312f9fb931e5300557" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1LRhZH248S7dbHAW9vPOgbw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The file is typically locked so you would need to use Velociraptor to collect it (Velociraptor will automatically parse the file out of the NTFS volume). The database contains tables mapping the hash to a cat file name and may contain hashes of old cat files that have been uninstalled from the system.&lt;/p>
+&lt;h3 id="verifying-signed-files">Verifying Signed files&lt;/h3>
+&lt;p>So far we have learned how authenticode stores hashes in the PE file and we can verify if the hash of the current file matches the hash within the signature information, but how can we trust that this hash is correct?&lt;/p>
+&lt;p>To really verify a signature, Windows must verify the trust chain by following the certificates to a trusted root certificate. Windows maintains a list of trusted certificates in a “Certificate Root Store” within the registry. There are several stores, a main one for the OS and each user also has a certificate store in their NTUSER.dat hive.&lt;/p>
+&lt;p>Velociraptor can inspect the certificate root store using the certificates() plugin. This plugin uses the Windows APIs to query the root store and report the trusted certificates. It is typically important to verify the trusted certificate root store since if a adversary adds a new certificate to the root store, their executables will be trusted by the OS.&lt;/p>
+&lt;p>For example, I added the Velociraptor CA (a self-signed CA cert) to the windows root store below. I can see now that Windows trusts this certificate&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="58d9f968e158b5bd69763ae4af469016">
+ &lt;div data-featherlight="#58d9f968e158b5bd69763ae4af469016" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1wfJvLYsB8lD2iCMkHmMk2g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Where are the trusted certificates stored on the system? A quick registry search will show a set of keys and values for the trusted certificates within the windows registry&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8299e52df774aa18bf89d9425e117525">
+ &lt;div data-featherlight="#8299e52df774aa18bf89d9425e117525" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1ixxSaOLeJm2KtbEzMQu06A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The values are undocumented binary data. Luckily, Didier Stevens has previously written about the format of these registry keys &lt;a href="https://blog.nviso.eu/2019/08/28/extracting-certificates-from-the-windows-registry/" target="_blank" >here&lt;/a>
+ explaining these are simple length encoded items.&lt;/p>
+&lt;p>We can use Velociraptor’s built in binary parser to automatically parse these keys. The details are in the &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/System/RootCAStore.yaml" target="_blank" >Windows.System.RootCAStore artifact&lt;/a>
+ but collecting it from the endpoint is easy&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f520e111e541c632f6fcf9f35a5b4411">
+ &lt;div data-featherlight="#f520e111e541c632f6fcf9f35a5b4411" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1woqK6rwmqIgZRoFqH6rj_w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>An added bonus of parsing the certificate directly from the registry keys is that now we have a registry key modification time to indicate when the certificate was installed into the root store. A quick VQL search to narrow down recently installed certificates can quickly zero in on malicious alterations and provide a timeline of compromise. Adding new certificates to a root store is not commonly done and even then they are likely to be done by a software update (so they should apply to most systems in the fleet). A hunt collecting this artifact and stacking by frequency can reveal compromises in minutes.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7b06f3f519d49ca3cc0f27199d7f2633">
+ &lt;div data-featherlight="#7b06f3f519d49ca3cc0f27199d7f2633" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1AtlKRrylrUZn6voUArJb6A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="putting-it-all-together">Putting it all together&lt;/h3>
+&lt;p>In this blog post we looked at how authenticode signing works on Windows. We found that authenticode signatures can be embedded within the PE file, but that is not the whole story. Sometimes signatures are applied to a catalog file which contains the hash of the PE file instead.&lt;/p>
+&lt;p>Ultimately we simply need to know if a particular binary file is trusted or not. Velociraptor’s authenticode() function was upgraded in the 0.6.0 release to support both methods of trust automatically. Simply apply it to the PE file and it will include the method of trust as well.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="2d9f489ab0a4d5416145b7465323060a">
+ &lt;div data-featherlight="#2d9f489ab0a4d5416145b7465323060a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1VjBA5LZYvkpJaIBc-AtEAA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The above screenshot shows both our examples — The velociraptor binary was signed via embedded signature on the right and Notepad.exe was signed via catalog. In both cases Velociraptor is showing the signer and their issuers and if the file is trusted. We additionally get the catalog file that is used to verify the file if applicable.&lt;/p>
+&lt;p>If you would like to quickly verify your windows executables at scale, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>Parsing binary files</title><link>https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/</link><pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="04e6484cb069f50f7daf5fd935e53fab">
+ &lt;div data-featherlight="#04e6484cb069f50f7daf5fd935e53fab" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/05guWyV7JU51Gcg3T?width=600px" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>During the course of our DFIR work, we typically need to extract some
+information from endpoints from various files and registry keys on the
+system. Sometimes it is possible to extract the needed information
+using text processing tools — such as a regular expression applied on
+a configuration file.&lt;/p>
+&lt;p>In many cases however, the information we need is encoded inside a
+binary file. A large part of DFIR analysis involves parsing binary
+structures from files, registry keys and even event logs.&lt;/p>
+&lt;p>While it is always possible to write a dedicated parser for whatever
+file format we are interested in, this leads to operational
+complexities — if we download an adhoc parser for a particular file
+format, how do we push new program or script to the endpoint? how to
+ensure it has any dependencies (e.g. Python, .NET etc)?&lt;/p>
+&lt;p>The entire premise of VQL is that users should be able to rapidly
+issue new queries to the endpoint, in a consistent and easy to learn
+way. Wouldn’t it be great if users can parse binary files directly in
+VQL without needing to use external programs?&lt;/p>
+&lt;p>As of Velociraptor 0.5.5, VQL contains a powerful new built in binary
+parser. This post introduces the new parser and shows a practical
+example of using it to develop a powerful Velociraptor artifact.&lt;/p>
+&lt;h3 id="binary-parsing-overview">Binary parsing overview.&lt;/h3>
+&lt;p>Binary files store information for machine consumption — this is termed serialization. Ultimately serialization is a way to represent data as binary digits by encoding integers, structs and other concepts into a binary representation.&lt;/p>
+&lt;p>While it is certainly possible to write parsers that procedurally unpack various bits of data from the file, these are typically hard to maintain and understand. It is better to visualize what the data actually means and how it is laid onto the file. Therefore we want to write parsers in a descriptive way rather than procedural — Ideally we want the parser to be easy to understand and maintain.&lt;/p>
+&lt;p>Velociraptor’s binary parser has taken inspiration from other great parsers, such as Volatility and Rekall’s Vtype system (with some syntax simplification).&lt;/p>
+&lt;p>The best way to introduce the new parser is with an example so I will jump straight in!&lt;/p>
+&lt;h3 id="certutil-metadata-parsing">&lt;code>Certutil&lt;/code> metadata parsing&lt;/h3>
+&lt;p>The &lt;code>certutil&lt;/code> program is a native, built in Windows tool used to download certificate information. It is a commonly used &lt;a href="https://lolbas-project.github.io/lolbas/Binaries/Certutil/" target="_blank" >Lolbin&lt;/a>
+, with attackers misusing the tool to download malicious code to compromised endpoints (see &lt;a href="https://attack.mitre.org/software/S0160/" target="_blank" >Att&amp;amp;ck S0160&lt;/a>
+).&lt;/p>
+&lt;p>I was reading an excellent blog post recently titled &lt;a href="https://u0041.co/blog/post/3" target="_blank" >&lt;code>Certutil&lt;/code> Artifacts Analysis&lt;/a>
+ where &lt;code>Aalfaifi&lt;/code> analyses the forensic evidence left behind by &lt;code>certutil&lt;/code>. Let’s write a parser for this!&lt;/p>
+&lt;p>We start off by using &lt;code>certutil&lt;/code> in a malicious way — rather than downloading certificate revocation lists we will download an executable to the system for testing.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c1f5f2f768f59f8f9ddc5736b7b1181f">
+ &lt;div data-featherlight="#c1f5f2f768f59f8f9ddc5736b7b1181f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1c9DTl-Q04OAFY9T6CUidfw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The &lt;code>certutil&lt;/code> tool will download our executable and create a metadata file containing some very interesting data but what does it mean?&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="534bb2bebc97af0aaafd6a586ab6060a">
+ &lt;div data-featherlight="#534bb2bebc97af0aaafd6a586ab6060a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/13ZKzTgDOewJinIZPEk_5TQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Luckily &lt;code>Aalfaifi&lt;/code> has done the sleuthing work and their excellent article covers the details. I will interactively develop my VQL parser using the Velociraptor notebook. I first add a new notebook then add a VQL cell to it. I can now write and evaluate free form VQL.&lt;/p>
+&lt;p>Let’s begin by just hard coding the path to the metadata file I created. I will also define a profile and an initial struct called Header.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bfed676f2597ca816fc08485b3a87f6d">
+ &lt;div data-featherlight="#bfed676f2597ca816fc08485b3a87f6d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1Dr6MW-g3e7l_adVaf0ZpSw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="what-is-a-profile">What is a profile?&lt;/h3>
+&lt;p>A profile is a data driven template that describes how the data is overlaid onto the binary file. Velociraptor uses the profile to drive the parser but the profile is also meant for human consumption — it simply describes all the structs and their fields, sizes etc. Profiles are designed to be succinct and quick to write but also easy to read and understand.&lt;/p>
+&lt;p>The basic structure of a profile is a JSON encoded data structure:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>The Profile contains a list of struct definitions&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Each struct definition is a list of &lt;strong>[name, size, list of field definitions]&lt;/strong>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Each field definition is a list of** [name, offset, type, options]**&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>I will start to define the Header struct with the following fields (offsets and fields taken from the Blog post above)&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>UrlSize is a 32 bit integer laid at offset 12&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>HashSize is a 32 bit integer laid at offset 100&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>DownloadTime is a 64 bit timestamp at offset 16&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>You can see the profile and the resulting object in the screenshot below. Velociraptor calls the parse_binary() VQL function which opens the file and parses the struct &lt;strong>Header&lt;/strong> at offset 0.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="51d32885dfa59d250288659912eb2ae6">
+ &lt;div data-featherlight="#51d32885dfa59d250288659912eb2ae6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1WsI7L2niMYLC_N08v-eP1g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="dynamic-properties">Dynamic properties&lt;/h3>
+&lt;p>So far things are simple — we specified the offsets and types of each field and Velociraptor just parsed them. However, now we want to extract the URL. According to the Blog post the URL starts at offset 116 and has a length specified by the UrlSize field. It is then followed by the hash with a length specified by the HashSize field.&lt;/p>
+&lt;p>Because the offsets and sizes are not known in advance (URLs have different lengths), we need to define the profile dynamically. The profile will accept a &lt;strong>VQL lambda&lt;/strong> function in many places. The lambda function receives the partially parsed struct and can use it to derive other values dynamically at runtime.&lt;/p>
+&lt;p>We can specify the URL as being a &lt;strong>String&lt;/strong> type with a length determined dynamically by the &lt;strong>x.UrlSize&lt;/strong> field. Similarly we can declare the offset of the Hash field as the lambda &lt;strong>x=&amp;gt;x.UrlSize + 116&lt;/strong>&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b252eb2996e8a43fdb700ac71dd68523">
+ &lt;div data-featherlight="#b252eb2996e8a43fdb700ac71dd68523" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1HZ7HGESjXWLR3DfapFOAxA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c588823a62fb8137c9d3058390a9c0f9">
+ &lt;div data-featherlight="#c588823a62fb8137c9d3058390a9c0f9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1S3LmbPVR8HpY1dgojr1kxA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="putting-it-all-together">Putting it all together&lt;/h3>
+&lt;p>This was easy! We now know the url the &lt;code>certutil&lt;/code> tool downloaded
+from, the hash and the timestamp — all are critical in a DFIR
+investigation to distinguish the legitimate use of &lt;code>certutil&lt;/code> from
+malicious.&lt;/p>
+&lt;p>While the above VQL only parsed a single hard coded metadata file, in practice we want to search for all metadata files from all users and parse them in a single collection.&lt;/p>
+&lt;p>You can see the full artifact here &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/CertUtil.yaml" target="_blank" >https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/CertUtil.yaml&lt;/a>
+ including extra functionality like filtering out whitelisted domains, and an option to also fetch the downloaded file from the &lt;strong>CryptUrlCache&lt;/strong>&lt;/p>
+&lt;h3 id="collecting-the-new-artifact">Collecting the new &lt;strong>artifact&lt;/strong>&lt;/h3>
+&lt;p>I will now collect the artifact from my endpoint. Using the GUI, I click the &lt;strong>add new collection&lt;/strong> button, then search for my &lt;strong>Windows.Forensics.CertUtil&lt;/strong> artifact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d68d751d3ebefce5389c61b97e4d8295">
+ &lt;div data-featherlight="#d68d751d3ebefce5389c61b97e4d8295" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1j1yRTbk4mFoWNPBWKHHevA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now I can configure the whitelist and possibly also choose to download the cached files.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6e3f4bc5836636bd72436d770322d948">
+ &lt;div data-featherlight="#6e3f4bc5836636bd72436d770322d948" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1djMNYeKuRJ5xISGh7ssg9Q.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The files are parsed on the endpoint and we see the relevant information in seconds&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="59c469e0d439093aa5f32a0e76048cef">
+ &lt;div data-featherlight="#59c469e0d439093aa5f32a0e76048cef" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/../../img/1W9X8wH91FoezNlOk4gXzuA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Doing a hunt across all my endpoints will now tell me if &lt;code>certutil&lt;/code> was ever used to download a suspicious tool, from where, and potentially uploading the tool itself in the &lt;strong>CryptUrlCache&lt;/strong>.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>Although this was a simple example, the binary parser is extremely capable. Some other examples include &lt;strong>Windows.System.Powershell.ModuleAnalysisCache&lt;/strong> (parses the powershell module analysis cache) and &lt;strong>Windows.Forensic.Lnk&lt;/strong> (Parse link files) and many more.&lt;/p>
+&lt;p>Being able to go from reading an analysis in a blog post to running a hunt across your entire network in a matter of minutes is a truly powerful capability, allowing our DFIR team to be proactive and innovative. Having a powerful binary parser in your toolbox is a real bonus making many types of hunts possible.&lt;/p>
+&lt;p>If you are interested in learning more about Velociraptor, check out our hands on training courses on &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+ or join us on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+.&lt;/p></description></item></channel></rss>

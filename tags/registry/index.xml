@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Registry on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/registry/</link><description>Recent content in Registry on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://docs.velociraptor.app/tags/registry/index.xml" rel="self" type="application/rss+xml"/><item><title>HashRunKeys</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/hash_run_keys/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/hash_run_keys/</guid><description>&lt;p>Iterate over all the run keys and locate their binary then hash it.&lt;/p>
+&lt;p>Tags: #windows #registry #detection&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: HashRunKeys
+description: |
+ Iterate over all the run keys and locate their binary then hash it.
+
+ Tags: #windows #registry #detection
+
+parameters:
+ - name: runKeys
+ default: |
+ HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Run\*
+
+ - name: pathRegex
+ type: hidden
+
+ # Pick the first part - either quoted or not.
+ default: &amp;gt;-
+ (^"(?P&amp;lt;quoted_path&amp;gt;[^"]+)"|(?P&amp;lt;unquoted_path&amp;gt;^[^ ]+))
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+ query: |
+ LET paths = SELECT FullPath,Name, Data.value AS Value,
+ parse_string_with_regex(string=Data.value,
+ regex=pathRegex) as regData
+ FROM glob(globs=split(string=runKeys, sep="[, \\n]+"),
+ accessor="reg")
+ WHERE Data.value
+
+ -- Handle some variations we see in the value:
+ -- system32\drivers\XXX.sys -&amp;gt; %systemRoot%\System32\
+ -- \SystemRoot\ -&amp;gt; %SystemRoot%\
+ LET normalized = SELECT *,
+ expand(path=
+ regex_replace(re='(?i)^system32\\\\',
+ replace="%SystemRoot%\\system32\\",
+ source=regex_replace(
+ source=regData.quoted_path + regData.unquoted_path,
+ re="^\\\\SystemRoot\\\\",
+ replace="%SystemRoot%\\"))) AS RealPath
+ FROM paths
+
+ SELECT FullPath, Name, Value, RealPath,
+ hash(path=expand(path=RealPath)).SHA256 AS Hash
+ FROM normalized
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Registry.CapabilityAccessManager</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.capabilityaccessmanager/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.capabilityaccessmanager/</guid><description>&lt;p>The ConsentStore in CapabilityAccessManager can provide insight to
+what resources binaries have had access to, such as the microphone
+and webcam. This artefact returns non-Microsoft executables (ie:
+entries listed in the &lt;code>NonPackaged&lt;/code> path).&lt;/p>
+&lt;p>Additional Resources:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072" target="_blank" >https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/" target="_blank" >https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;p>Tags: #windows #registry&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Registry.CapabilityAccessManager
+description: |
+ The ConsentStore in CapabilityAccessManager can provide insight to
+ what resources binaries have had access to, such as the microphone
+ and webcam. This artefact returns non-Microsoft executables (ie:
+ entries listed in the `NonPackaged` path).
+
+ Additional Resources:
+
+ * https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072
+ * https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/
+
+ Tags: #windows #registry
+
+author: Zach Stanford - @svch0st, Phill Moore - @phillmoore
+type: CLIENT
+
+parameters:
+ - name: KeyList
+ description: List of reg locations and descriptions
+ type: csv
+ default: |
+ Glob,Description
+ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\*\NonPackaged\*, SoftwareHive
+ HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\*\NonPackaged\*, UserHive
+sources:
+ - queries:
+ - |
+
+ SELECT * FROM foreach(
+ row=KeyList,
+ query={
+ SELECT Description as SourceLocation,
+ path_split(path=FullPath)[-3] as Accessed,
+ regex_replace(source=basename(path=FullPath), re="#", replace="/") as Program,
+ {SELECT timestamp(winfiletime=atoi(string=Data.value)) FROM glob(globs=FullPath+'\\LastUsedTimeStart', accessor="reg")} as LastUsedTimeStart,
+ {SELECT timestamp(winfiletime=atoi(string=Data.value)) FROM glob(globs=FullPath+'\\LastUsedTimeStop', accessor="reg")} as LastUsedTimeStop,
+ dirname(path=FullPath) as KeyPath
+ FROM glob(globs=Glob, accessor="reg")
+ Where NOT Program = "Value"
+ }
+ )
+
+&lt;/code>&lt;/pre></description></item></channel></rss>
