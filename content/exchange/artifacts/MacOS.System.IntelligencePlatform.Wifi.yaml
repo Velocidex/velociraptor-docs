@@ -1,0 +1,40 @@
+name: MacOS.System.IntelligencePlatform.Wifi
+description: |
+
+  This artifact parses the views.db database, part of Apple Intelligence which 
+  provides detailed connect/disconnect events on recent wifi connections.
+
+type: CLIENT
+
+author: Yogesh Khatri - @swiftForensics, CyberCX
+
+parameters:
+- name: WifiIntelligenceGlob
+  default: /Users/*/Library/IntelligencePlatform/Artifacts/internal/views.db
+
+precondition:
+      SELECT OS From info() where OS = 'darwin'
+
+sources:
+  - query: |
+      LET list = SELECT OSPath
+        FROM glob(globs=WifiIntelligenceGlob)
+
+      LET events = SELECT *
+        FROM sqlite(file=OSPath, query="SELECT behaviorType, behaviorIdentifier, timestamp FROM wifiContextEvents ORDER BY timestamp")
+
+      LET EventsDetails =
+          SELECT * FROM foreach(
+              row=events,
+              query={ SELECT
+                  timestamp(epoch=timestamp + 978307200) AS Timestamp,
+                  behaviorType AS behaviorType,
+                  split(string=behaviorIdentifier, sep=':')[0] AS event,
+                  split(string=behaviorIdentifier, sep=':')[1] AS network,
+                  //behaviorIdentifier AS behaviorIdentifier,
+                  split(string=OSPath, sep='/')[2] AS User
+                 FROM scope()
+              }
+          )
+
+      SELECT * FROM foreach(row=list, query=EventsDetails)
