@@ -1,0 +1,25 @@
+name: Windows.Applications.Edge.History2023
+author: Adrian Lopez Moreno @AdrianX21
+description: |
+  This plugin reads the edge history and shows all the resources that the user has consulted.
+  I recommend using it via API to export the data more precisely, or work on a CSV.
+    Ex.
+      SELECT User,visited_url,title,visit_count,last_visit_time,hidden FROM source(client_id=collection.request.client_id, flow_id=collection.flow_id,artifact='Custom.Windows.Applications.Edge.History') WHERE last_visit_time =~ "TIME"
+      
+parameters:
+  - name: historyGlobs
+    default: \AppData\Local\Microsoft\Edge\User Data\*\History
+  - name: urlSQLQuery
+    default: |
+     SELECT * FROM 'urls'
+  - name: userRegex
+    default: .
+    type: regex
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+  - query: |
+      SELECT * FROM Artifact.Windows.Applications.Edge.History(
+         historyGlobs=historyGlobs, urlSQLQuery=urlSQLQuery,
+         userRegex=userRegex)
