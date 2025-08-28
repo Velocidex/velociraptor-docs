@@ -307,6 +307,35 @@ single element, VQL also allows a trailing comma to indicate a single
 element array. For example `(1, )` means an array with one member,
 whereas `(1)` means a single value of 1.
 
+### Dictionaries
+
+A dictionary (or in short a `dict`) is an associative data structure
+which associates keys with values. This is often called a `hash map`
+in other languages.
+
+VQL's dict appears in many places and used heavily internally. You can
+recognize that a dict is involved using the `typeof()` VQL function.
+
+Unlike some other languages, Velociraptor's dicts maintain their key
+order. You can iterate over the dict's key value pairs using the
+`items()` plugin:
+
+```vql
+LET MyDict <= dict(Foo=1, Bar=2, Baz=3)
+
+SELECT * FROM items(item=MyDict)
+```
+
+The dict has a number of very useful attributes:
+
+* `MyDict.Items`: Returns a list of key value pairs
+* `MyDict.Keys`: Returns a list of keys
+* `MyDict.Values`: Returns a list of Values
+* `MyDict.Len`: Returns the number of keys
+* `MyDict.ToMap`: Converts to an unordered map.
+* `MyDict.String`: Converts to a JSON representation of the dict.
+
+
 ### The scope() plugin
 
 VQL is strict about the syntax of a VQL statement. Each statement must

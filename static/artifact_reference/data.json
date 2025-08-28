@@ -372,9 +372,9 @@
         "title": "Generic.Utils.DeadDiskRemapping",
         "description": "Calculate a remapping configuration from a dead disk image.",
         "link": "/artifact_references/pages/generic.utils.deaddiskremapping",
-        "type": "client",
+        "type": "server",
         "tags": [
-            "Client Artifact"
+            "Server Artifact"
         ]
     },
     {
@@ -388,7 +388,7 @@
     },
     {
         "title": "Generic.Utils.SendEmail",
-        "description": "A Utility artifact for sending emails.\n",
+        "description": "A Utility artifact for sending emails.",
         "link": "/artifact_references/pages/generic.utils.sendemail",
         "type": "server",
         "tags": [
@@ -577,7 +577,7 @@
     },
     {
         "title": "Linux.Network.Netstat",
-        "description": "This artifact will parse /proc and reveal information\nabout current network connections.\n",
+        "description": "This artifact will parse /proc and reveal information\nabout current network connections.",
         "link": "/artifact_references/pages/linux.network.netstat",
         "type": "client",
         "tags": [
@@ -2793,6 +2793,15 @@
         "title": "Windows.Events.TrackProcessesBasic",
         "description": "A basic process tracker which uses a simple polled pslist().",
         "link": "/artifact_references/pages/windows.events.trackprocessesbasic",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.TrackProcessesETW",
+        "description": "This artifact uses ETW to track process execution using the\nVelociraptor Process Tracker.",
+        "link": "/artifact_references/pages/windows.events.trackprocessesetw",
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
