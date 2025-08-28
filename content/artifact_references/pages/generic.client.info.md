@@ -150,7 +150,8 @@ reports:
        SELECT * FROM sample(
          n=4,
          query={
-           SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+           SELECT Timestamp,
+                  rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source(artifact="Generic.Client.Stats",
                        client_id=ClientId,
@@ -173,7 +174,7 @@ reports:
       {{ end }}
 
       &lt;div&gt;
-      {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+      {{ Query "resources" | TimeChart "RSS.yaxis" 2 }}
       &lt;/div&gt;
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}

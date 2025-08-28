@@ -13,7 +13,8 @@ This event artifact enables the global process tracker and makes it possible
 to run many other artifacts that depend on the process tracker.
 
 This tracker DOES NOT require Sysmon and is **incompatible** with
-`Windows.Events.TrackProcesses` (only one should be running).
+`Windows.Events.TrackProcesses` and
+`Windows.Events.TrackProcessesETW` (only one should be running).
 
 
 <pre><code class="language-yaml">
@@ -28,7 +29,8 @@ description: |
   to run many other artifacts that depend on the process tracker.
 
   This tracker DOES NOT require Sysmon and is **incompatible** with
-  `Windows.Events.TrackProcesses` (only one should be running).
+  `Windows.Events.TrackProcesses` and
+  `Windows.Events.TrackProcessesETW` (only one should be running).
 
 type: CLIENT_EVENT
 

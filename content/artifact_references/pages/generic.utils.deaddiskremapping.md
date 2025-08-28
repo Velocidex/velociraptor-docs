@@ -1,7 +1,7 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
 hidden: true
-tags: [Client Artifact]
+tags: [Server Artifact]
 ---
 
 Calculate a remapping configuration from a dead disk image.
@@ -49,6 +49,8 @@ description: |
     for an NTFS partition with a `Windows` directory at the top
     level. We assume this is the windows drive and remap it to the C:
     drive.
+
+type: SERVER
 
 parameters:
   - name: ImagePath
