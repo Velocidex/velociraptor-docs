@@ -1,5 +1,17 @@
 [
     {
+        "title": "Detecting Velociraptor misuse",
+        "link": "/knowledge_base/tips/velocirator_misuse",
+        "tags": [
+            "deployment",
+            "forensics"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2025-08-28"
+    },
+    {
         "title": "How can I analyse a raw disk image?",
         "link": "/knowledge_base/tips/image_analysis",
         "tags": [
