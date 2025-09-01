@@ -60,7 +60,7 @@ index = sorted(index, key=lambda x: x["date"],
                reverse=True)
 
 with open(output_data_path, "w") as fd:
-  fd.write(json.dumps(index))
+  fd.write(json.dumps(index, indent=1))
   print("Writing data.json in %s" % output_data_path)
 
 if os.getenv('CI'):

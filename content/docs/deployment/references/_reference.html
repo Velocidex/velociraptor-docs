@@ -5299,18 +5299,527 @@ is a lot slower but has no memory limitations. Default 30000</div>
    <div class="reference-value-mapping">30000</div>
 </li>
 
+<div class="item-comment">How long to cache ACL policies (default 60 sec)</div>
+<li id="defaults.acl_lru_timeout_sec">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1349">
+       acl_lru_timeout_sec
+     </a>
+   </div>
+   <a href="#defaults.acl_lru_timeout_sec" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">60</div>
+</li>
+
+<div class="item-comment">Ignore messages from unauthenticated clients for this long - gives
+them a chance to enrol first (default 10 sec).</div>
+<li id="defaults.unauthenticated_lru_timeout_sec">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1353">
+       unauthenticated_lru_timeout_sec
+     </a>
+   </div>
+   <a href="#defaults.unauthenticated_lru_timeout_sec" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">10</div>
+</li>
+
+<div class="item-comment">Controls how exports work (creating hunt or collection exports to a
+zip file). On slow filesystems, increase the number of worker
+threads to increase parallelism. You can also increase the timeout
+if the filesystem is too slow to build large hunt zip files within
+the default 10 minute timeout.</div>
+<li id="defaults.export_concurrency">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1360">
+       export_concurrency
+     </a>
+   </div>
+   <a href="#defaults.export_concurrency" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">10</div>
+</li>
+
+<div class="item-comment"></div>
+<li id="defaults.export_max_timeout_sec">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1361">
+       export_max_timeout_sec
+     </a>
+   </div>
+   <a href="#defaults.export_max_timeout_sec" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">600</div>
+</li>
+
+<div class="item-comment">The server maintains an index of all hunts in order to quickly
+allow the GUI to filter/sort them. This setting controls how often
+to rebuild the hunt index (default 600 sec). You probably dont
+need to change it.</div>
+<li id="defaults.hunt_dispatcher_refresh_sec">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1367">
+       hunt_dispatcher_refresh_sec
+     </a>
+   </div>
+   <a href="#defaults.hunt_dispatcher_refresh_sec" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">600</div>
+</li>
+
+<div class="item-comment">Total number of cell versions we keep for undo/redo support.</div>
+<li id="defaults.notebook_versions">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1370">
+       notebook_versions
+     </a>
+   </div>
+   <a href="#defaults.notebook_versions" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">5</div>
+</li>
+
+<div class="item-comment">Watch plugin frequency sleep time in seconds: How often
+watch_syslog() will check for changes (default 3).</div>
+<li id="defaults.watch_plugin_frequency">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1374">
+       watch_plugin_frequency
+     </a>
+   </div>
+   <a href="#defaults.watch_plugin_frequency" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">3</div>
+</li>
+
+<div class="item-comment">Maximum length of the line that will be parsed (16kb)</div>
+<li id="defaults.watch_plugin_buffer_size">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1377">
+       watch_plugin_buffer_size
+     </a>
+   </div>
+   <a href="#defaults.watch_plugin_buffer_size" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">16384</div>
+</li>
+
+<div class="item-comment">Period in seconds when to produce a backup. Velociraptor will
+generate a backup of important metadata about the server. By
+default this happens daily but you can change it here (set to -1)
+to disable backups.</div>
+<li id="defaults.backup_period_seconds">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1383">
+       backup_period_seconds
+     </a>
+   </div>
+   <a href="#defaults.backup_period_seconds" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">86400</div>
+</li>
+
+<div class="item-comment">The server's client info manager runs housekeeping tasks
+periodically to determine if clients need to be notified. This
+setting controls how often to run the client info's house keeping
+thread in seconds (default 60 sec)</div>
+<li id="defaults.client_info_housekeeping_period">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1389">
+       client_info_housekeeping_period
+     </a>
+   </div>
+   <a href="#defaults.client_info_housekeeping_period" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">60</div>
+</li>
+
+<div class="item-comment">Disable unicode usernames. By default Velociraptor allows
+usernames to consist of any Unicode character for i8n support,
+however this opens the possibility for Homoglyph attacks. Setting
+the following to true will restrict usernames to the set a-z and
+0-9</div>
+<li id="defaults.disable_unicode_usernames">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1396">
+       disable_unicode_usernames
+     </a>
+   </div>
+   <a href="#defaults.disable_unicode_usernames" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
+<div class="item-comment">How often to refresh the search index (default 5 min). This
+rebuilds the search index periodically to avoid inconsistencies.</div>
+<li id="defaults.reindex_period_seconds">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1400">
+       reindex_period_seconds
+     </a>
+   </div>
+   <a href="#defaults.reindex_period_seconds" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">300</div>
+</li>
+
+<div class="item-comment">The client metadata is an arbitrary key/value store that holds
+user defined information per client. You can normally store
+anything in the client metadata but this information is not
+indexed, making searching on it slow (using VQL each client's
+metadata blob needs to be opened, read and matched).
+This setting allows you to define **some** fields in the client
+metadata that will be indexed. These fields should not be too
+large so as to keep the index size smallish so it is recommended
+to use only small strings. Once fields are defined here, the extra
+data can be searched in the GUI search bar using a verb such as
+<field_name>:match.
+For example, define here:
+indexed_client_metadata:
+- department
+Then a search for `department:accounting` will match all clients
+with the key department and value contains accounting in their
+client metadata.</div>
+<li id="defaults.indexed_client_metadata">
+   <i class="fa fa-angle-right fa-sm category-icon"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1423">
+       indexed_client_metadata
+     </a>
+   </div>
+   <a href="#defaults.indexed_client_metadata" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping"><ul>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">department</div>
+</li>
+</ul>
+</div>
+</li>
+
+<div class="item-comment">If this is set we do not actively check the status of inflight
+collections. This is a new feature to 0.73 and may need to be
+disabled in some large deployments due to additional overheads.</div>
+<li id="defaults.disable_active_inflight_checks">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1428">
+       disable_active_inflight_checks
+     </a>
+   </div>
+   <a href="#defaults.disable_active_inflight_checks" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
+<div class="item-comment">Normally internal event artifacts are not written to disk but
+passed internally. For debugging it is useful to have a written
+record though. Enabling this will also write them to
+disk. Probably only useful for debugging.</div>
+<li id="defaults.write_internal_events">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1434">
+       write_internal_events
+     </a>
+   </div>
+   <a href="#defaults.write_internal_events" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
+<div class="item-comment">Defaults for client communication limits. Decrease those if
+your clients are behind a proxy that only accepts very small
+POST messages. If not set we use client defaults.</div>
+<li id="defaults.max_rows">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1439">
+       max_rows
+     </a>
+   </div>
+   <a href="#defaults.max_rows" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">0</div>
+</li>
+
+<div class="item-comment"></div>
+<li id="defaults.max_row_buffer_size">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1440">
+       max_row_buffer_size
+     </a>
+   </div>
+   <a href="#defaults.max_row_buffer_size" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">0</div>
+</li>
+
+<div class="item-comment"></div>
+<li id="defaults.max_batch_wait">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1441">
+       max_batch_wait
+     </a>
+   </div>
+   <a href="#defaults.max_batch_wait" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">0</div>
+</li>
+
+<div class="item-comment">Maximum default value for log messages sent by the client for each
+flow. Once this is reached, the client stops sending log messages
+in the current collection.</div>
+<li id="defaults.max_logs">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1446">
+       max_logs
+     </a>
+   </div>
+   <a href="#defaults.max_logs" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">100000</div>
+</li>
+</ul>
+</div>
+</li>
+
+<div class="item-comment">The Velociraptor server may be placed into "lockdown" mode. While in
+lockdown mode certain permissions are denied - even for
+administrators. This additional protection mode helps to mitigate
+the case when a Velociraptor administrator's account is
+compromised. The server can be taken out of lockdown mode by setting
+lockdown to false and restarting the server.</div>
+<li id="lockdown">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1455">
+       lockdown
+     </a>
+   </div>
+   <a href="#lockdown" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
+<div class="item-comment">This will be set when Velociraptor is started with the --debug flag.</div>
+<li id="debug_mode">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1458">
+       debug_mode
+     </a>
+   </div>
+   <a href="#debug_mode" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
+<div class="item-comment">This configuration applies for minions. On minions this will
+override the settings elsewhere in the config file allowing an easy
+way to manage the difference between minions and master nodes.
+This override occurs at config load times so you can see the final configuration using
+velociraptor --minion --config server.config.yaml config show</div>
+<li id="Minion">
+   <i class="fa fa-angle-right fa-sm category-icon"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1467">
+       Minion
+     </a>
+   </div>
+   <a href="#Minion" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping"><ul>
+
+<div class="item-comment">Used to override Defaults.notebook_number_of_local_workers</div>
+<li id="Minion.notebook_number_of_local_workers">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1467">
+       notebook_number_of_local_workers
+     </a>
+   </div>
+   <a href="#Minion.notebook_number_of_local_workers" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">4</div>
+</li>
+
+<div class="item-comment">Used to override Defaults.notebook_worker_priority. By default
+minion workers have higher priority than the master node allowing
+minions to take over notebook calculations most of he time.</div>
+<li id="Minion.notebook_worker_priority">
+   <i class="bullet-placeholder"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1472">
+       notebook_worker_priority
+     </a>
+   </div>
+   <a href="#Minion.notebook_worker_priority" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">10</div>
+</li>
+</ul>
+</div>
+</li>
+
+<div class="item-comment"></div>
+<li id="security">
+   <i class="fa fa-angle-right fa-sm category-icon"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1480">
+       security
+     </a>
+   </div>
+   <a href="#security" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping"><ul>
+
+<div class="item-comment">A list of path prefixes allowed for the 'file' accessor. If
+this is empty the file accessor will work on all
+directories. If you want to disable access to the server's
+filesystem you can set this to a non existent directory,
+e.g. /nonexistent/ .</div>
+<li id="security.allowed_file_accessor_prefix">
+   <i class="fa fa-angle-right fa-sm category-icon"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1481">
+       allowed_file_accessor_prefix
+     </a>
+   </div>
+   <a href="#security.allowed_file_accessor_prefix" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping"><ul>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">/tmp/</div>
+</li>
+</ul>
+</div>
+</li>
+
+<div class="item-comment">A list of prefixes allowed for the fs accessor. All other
+prefixes will be rejected.</div>
+<li id="security.allowed_fs_accessor_prefix">
+   <i class="fa fa-angle-right fa-sm category-icon"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1486">
+       allowed_fs_accessor_prefix
+     </a>
+   </div>
+   <a href="#security.allowed_fs_accessor_prefix" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping"><ul>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">artifact_definitions</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">clients</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">downloads</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">notebooks</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">public</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">temp</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">server_artifacts</div>
+</li>
+
+<div class="item-comment"></div>
+<li>
+   <i class="bullet-placeholder"></i>
+   <div class="reference-value-sequence">server_artifacts_logs</div>
+</li>
+</ul>
+</div>
+</li>
+
 <div class="item-comment">If these are set we enforce VQL to only have the specified allowed
 VQL plugins and functions. This is a way to harden the server by
 removing potentially sensitive functionality to allow only
 approved VQL plugins to run.</div>
-<li id="defaults.allowed_plugins">
+<li id="security.allowed_plugins">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1353">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1501">
        allowed_plugins
      </a>
    </div>
-   <a href="#defaults.allowed_plugins" class="anchorlink">
+   <a href="#security.allowed_plugins" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5325,14 +5834,14 @@ approved VQL plugins to run.</div>
 </li>
 
 <div class="item-comment"></div>
-<li id="defaults.allowed_functions">
+<li id="security.allowed_functions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1355">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1503">
        allowed_functions
      </a>
    </div>
-   <a href="#defaults.allowed_functions" class="anchorlink">
+   <a href="#security.allowed_functions" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5347,14 +5856,14 @@ approved VQL plugins to run.</div>
 </li>
 
 <div class="item-comment"></div>
-<li id="defaults.allowed_accessors">
+<li id="security.allowed_accessors">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1357">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1505">
        allowed_accessors
      </a>
    </div>
-   <a href="#defaults.allowed_accessors" class="anchorlink">
+   <a href="#security.allowed_accessors" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5370,14 +5879,14 @@ approved VQL plugins to run.</div>
 
 <div class="item-comment">Alternatively, it might be easier to deny specific plugins and
 functions and accessors.</div>
-<li id="defaults.denied_plugins">
+<li id="security.denied_plugins">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1362">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1510">
        denied_plugins
      </a>
    </div>
-   <a href="#defaults.denied_plugins" class="anchorlink">
+   <a href="#security.denied_plugins" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5392,14 +5901,14 @@ functions and accessors.</div>
 </li>
 
 <div class="item-comment"></div>
-<li id="defaults.denied_functions">
+<li id="security.denied_functions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1365">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1513">
        denied_functions
      </a>
    </div>
-   <a href="#defaults.denied_functions" class="anchorlink">
+   <a href="#security.denied_functions" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5414,14 +5923,14 @@ functions and accessors.</div>
 </li>
 
 <div class="item-comment"></div>
-<li id="defaults.denied_accessors">
+<li id="security.denied_accessors">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1368">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1516">
        denied_accessors
      </a>
    </div>
-   <a href="#defaults.denied_accessors" class="anchorlink">
+   <a href="#security.denied_accessors" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5435,75 +5944,16 @@ functions and accessors.</div>
 </div>
 </li>
 
-<div class="item-comment">How long to cache ACL policies (default 60 sec)</div>
-<li id="defaults.acl_lru_timeout_sec">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1371">
-       acl_lru_timeout_sec
-     </a>
-   </div>
-   <a href="#defaults.acl_lru_timeout_sec" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">60</div>
-</li>
-
-<div class="item-comment">Ignore messages from unauthenticated clients for this long - gives
-them a chance to enrol first (default 10 sec).</div>
-<li id="defaults.unauthenticated_lru_timeout_sec">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1375">
-       unauthenticated_lru_timeout_sec
-     </a>
-   </div>
-   <a href="#defaults.unauthenticated_lru_timeout_sec" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">10</div>
-</li>
-
-<div class="item-comment">Normally the inventory service attempts to download tools in
-its own but if this is set, we prevent any external access.</div>
-<li id="defaults.disable_inventory_service_external_access">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1379">
-       disable_inventory_service_external_access
-     </a>
-   </div>
-   <a href="#defaults.disable_inventory_service_external_access" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">false</div>
-</li>
-
-<div class="item-comment">Default expiry of certificate issuance (default 365 days). This
-will apply for e.g. rotating certificates or issuing an api cert.</div>
-<li id="defaults.certificate_validity_days">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1383">
-       certificate_validity_days
-     </a>
-   </div>
-   <a href="#defaults.certificate_validity_days" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">365</div>
-</li>
-
 <div class="item-comment">When the server is in lockdown mode the following permissions
 will be denied (Even for administrators).</div>
-<li id="defaults.lockdown_denied_permissions">
+<li id="security.lockdown_denied_permissions">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1388">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1521">
        lockdown_denied_permissions
      </a>
    </div>
-   <a href="#defaults.lockdown_denied_permissions" class="anchorlink">
+   <a href="#security.lockdown_denied_permissions" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5553,190 +6003,85 @@ will be denied (Even for administrators).</div>
 </div>
 </li>
 
-<div class="item-comment">Controls how exports work (creating hunt or collection exports to a
-zip file). On slow filesystems, increase the number of worker
-threads to increase parallelism. You can also increase the timeout
-if the filesystem is too slow to build large hunt zip files within
-the default 10 minute timeout.</div>
-<li id="defaults.export_concurrency">
+<div class="item-comment">Default expiry of certificate issuance (default 365 days). This
+will apply for e.g. rotating certificates or issuing an api cert.</div>
+<li id="security.certificate_validity_days">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1401">
-       export_concurrency
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1531">
+       certificate_validity_days
      </a>
    </div>
-   <a href="#defaults.export_concurrency" class="anchorlink">
+   <a href="#security.certificate_validity_days" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
-   <div class="reference-value-mapping">10</div>
+   <div class="reference-value-mapping">365</div>
 </li>
 
-<div class="item-comment"></div>
-<li id="defaults.export_max_timeout_sec">
+<div class="item-comment">Normally the inventory service attempts to download tools in
+its own but if this is set, we prevent any external access.</div>
+<li id="security.disable_inventory_service_external_access">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1402">
-       export_max_timeout_sec
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1535">
+       disable_inventory_service_external_access
      </a>
    </div>
-   <a href="#defaults.export_max_timeout_sec" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">600</div>
-</li>
-
-<div class="item-comment">The server maintains an index of all hunts in order to quickly
-allow the GUI to filter/sort them. This setting controls how often
-to rebuild the hunt index (default 600 sec). You probably dont
-need to change it.</div>
-<li id="defaults.hunt_dispatcher_refresh_sec">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1408">
-       hunt_dispatcher_refresh_sec
-     </a>
-   </div>
-   <a href="#defaults.hunt_dispatcher_refresh_sec" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">600</div>
-</li>
-
-<div class="item-comment">Total number of cell versions we keep for undo/redo support.</div>
-<li id="defaults.notebook_versions">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1411">
-       notebook_versions
-     </a>
-   </div>
-   <a href="#defaults.notebook_versions" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">5</div>
-</li>
-
-<div class="item-comment">Watch plugin frequency sleep time in seconds: How often
-watch_syslog() will check for changes (default 3).</div>
-<li id="defaults.watch_plugin_frequency">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1415">
-       watch_plugin_frequency
-     </a>
-   </div>
-   <a href="#defaults.watch_plugin_frequency" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">3</div>
-</li>
-
-<div class="item-comment">Maximum length of the line that will be parsed (16kb)</div>
-<li id="defaults.watch_plugin_buffer_size">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1418">
-       watch_plugin_buffer_size
-     </a>
-   </div>
-   <a href="#defaults.watch_plugin_buffer_size" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">16384</div>
-</li>
-
-<div class="item-comment">Period in seconds when to produce a backup. Velociraptor will
-generate a backup of important metadata about the server. By
-default this happens daily but you can change it here (set to -1)
-to disable backups.</div>
-<li id="defaults.backup_period_seconds">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1424">
-       backup_period_seconds
-     </a>
-   </div>
-   <a href="#defaults.backup_period_seconds" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">86400</div>
-</li>
-
-<div class="item-comment">The server's client info manager runs housekeeping tasks
-periodically to determine if clients need to be notified. This
-setting controls how often to run the client info's house keeping
-thread in seconds (default 60 sec)</div>
-<li id="defaults.client_info_housekeeping_period">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1430">
-       client_info_housekeeping_period
-     </a>
-   </div>
-   <a href="#defaults.client_info_housekeeping_period" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">60</div>
-</li>
-
-<div class="item-comment">Disable unicode usernames. By default Velociraptor allows
-usernames to consist of any Unicode character for i8n support,
-however this opens the possibility for Homoglyph attacks. Setting
-the following to true will restrict usernames to the set a-z and
-0-9</div>
-<li id="defaults.disable_unicode_usernames">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1437">
-       disable_unicode_usernames
-     </a>
-   </div>
-   <a href="#defaults.disable_unicode_usernames" class="anchorlink">
+   <a href="#security.disable_inventory_service_external_access" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping">false</div>
 </li>
 
-<div class="item-comment">How often to refresh the search index (default 5 min). This
-rebuilds the search index periodically to avoid inconsistencies.</div>
-<li id="defaults.reindex_period_seconds">
+<div class="item-comment">The Data Encryptions Key to use for protecting the secrets in
+storage. This can take a number of forms:
+1. If it starts with "env://<VAR>" the secret will be taken from an
+Environment variable.
+2. If empty the secret is taken from obfuscation_nonce (which
+by default is the hash of the private key).
+In future further methods may be implemented (e.g. EKMS).</div>
+<li id="security.secrets_dek">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1441">
-       reindex_period_seconds
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1546">
+       secrets_dek
      </a>
    </div>
-   <a href="#defaults.reindex_period_seconds" class="anchorlink">
+   <a href="#security.secrets_dek" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
-   <div class="reference-value-mapping">300</div>
+   <div class="reference-value-mapping"></div>
 </li>
 
-<div class="item-comment">The client metadata is an arbitrary key/value store that holds
-user defined information per client. You can normally store
-anything in the client metadata but this information is not
-indexed, making searching on it slow (using VQL each client's
-metadata blob needs to be opened, read and matched).
-This setting allows you to define **some** fields in the client
-metadata that will be indexed. These fields should not be too
-large so as to keep the index size smallish so it is recommended
-to use only small strings. Once fields are defined here, the extra
-data can be searched in the GUI search bar using a verb such as
-<field_name>:match.
-For example, define here:
-indexed_client_metadata:
-- department
-Then a search for `department:accounting` will match all clients
-with the key department and value contains accounting in their
-client metadata.</div>
-<li id="defaults.indexed_client_metadata">
-   <i class="fa fa-angle-right fa-sm category-icon"></i>
+<div class="item-comment">This controls VQL plugins that may accept secrets as well full
+parameters. If this flag is set, those plugins will refuse to
+accept direct parameters, instead only accepting a secret
+name. This allows the admin to control exactly how these
+plugins work without disabling them completely.</div>
+<li id="security.vql_must_use_secrets">
+   <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1464">
-       indexed_client_metadata
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1553">
+       vql_must_use_secrets
      </a>
    </div>
-   <a href="#defaults.indexed_client_metadata" class="anchorlink">
+   <a href="#security.vql_must_use_secrets" class="anchorlink">
+      <i class="fa fa-copy fa-sm category-icon"></i>
+   </a>
+   <div class="reference-value-mapping">false</div>
+</li>
+
+<div class="item-comment">Prevent VQL from having access to these environment
+variables. Environment Vars sometimes may contain secrets and
+confidential information.</div>
+<li id="security.shadowed_env_vars">
+   <i class="fa fa-angle-right fa-sm category-icon"></i>
+   <div class="reference-key">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1559">
+       shadowed_env_vars
+     </a>
+   </div>
+   <a href="#security.shadowed_env_vars" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
    <div class="reference-value-mapping"><ul>
@@ -5744,186 +6089,10 @@ client metadata.</div>
 <div class="item-comment"></div>
 <li>
    <i class="bullet-placeholder"></i>
-   <div class="reference-value-sequence">department</div>
+   <div class="reference-value-sequence">VELOCIRAPTOR_CONFIG</div>
 </li>
 </ul>
 </div>
-</li>
-
-<div class="item-comment">If this is set we do not actively check the status of inflight
-collections. This is a new feature to 0.73 and may need to be
-disabled in some large deployments due to additional overheads.</div>
-<li id="defaults.disable_active_inflight_checks">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1469">
-       disable_active_inflight_checks
-     </a>
-   </div>
-   <a href="#defaults.disable_active_inflight_checks" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">false</div>
-</li>
-
-<div class="item-comment">Normally internal event artifacts are not written to disk but
-passed internally. For debugging it is useful to have a written
-record though. Enabling this will also write them to
-disk. Probably only useful for debugging.</div>
-<li id="defaults.write_internal_events">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1475">
-       write_internal_events
-     </a>
-   </div>
-   <a href="#defaults.write_internal_events" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">false</div>
-</li>
-
-<div class="item-comment">Defaults for client communication limits. Decrease those if
-your clients are behind a proxy that only accepts very small
-POST messages. If not set we use client defaults.</div>
-<li id="defaults.max_rows">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1480">
-       max_rows
-     </a>
-   </div>
-   <a href="#defaults.max_rows" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">0</div>
-</li>
-
-<div class="item-comment"></div>
-<li id="defaults.max_row_buffer_size">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1481">
-       max_row_buffer_size
-     </a>
-   </div>
-   <a href="#defaults.max_row_buffer_size" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">0</div>
-</li>
-
-<div class="item-comment"></div>
-<li id="defaults.max_batch_wait">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1482">
-       max_batch_wait
-     </a>
-   </div>
-   <a href="#defaults.max_batch_wait" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">0</div>
-</li>
-
-<div class="item-comment">Maximum default value for log messages sent by the client for each
-flow. Once this is reached, the client stops sending log messages
-in the current collection.</div>
-<li id="defaults.max_logs">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1487">
-       max_logs
-     </a>
-   </div>
-   <a href="#defaults.max_logs" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">100000</div>
-</li>
-</ul>
-</div>
-</li>
-
-<div class="item-comment">The Velociraptor server may be placed into "lockdown" mode. While in
-lockdown mode certain permissions are denied - even for
-administrators. This additional protection mode helps to mitigate
-the case when a Velociraptor administrator's account is
-compromised. The server can be taken out of lockdown mode by setting
-lockdown to false and restarting the server.</div>
-<li id="lockdown">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1496">
-       lockdown
-     </a>
-   </div>
-   <a href="#lockdown" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">false</div>
-</li>
-
-<div class="item-comment">This will be set when Velociraptor is started with the --debug flag.</div>
-<li id="debug_mode">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1499">
-       debug_mode
-     </a>
-   </div>
-   <a href="#debug_mode" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">false</div>
-</li>
-
-<div class="item-comment">This configuration applies for minions. On minions this will
-override the settings elsewhere in the config file allowing an easy
-way to manage the difference between minions and master nodes.
-This override occurs at config load times so you can see the final configuration using
-velociraptor --minion --config server.config.yaml config show</div>
-<li id="Minion">
-   <i class="fa fa-angle-right fa-sm category-icon"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1508">
-       Minion
-     </a>
-   </div>
-   <a href="#Minion" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping"><ul>
-
-<div class="item-comment">Used to override Defaults.notebook_number_of_local_workers</div>
-<li id="Minion.notebook_number_of_local_workers">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1508">
-       notebook_number_of_local_workers
-     </a>
-   </div>
-   <a href="#Minion.notebook_number_of_local_workers" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">4</div>
-</li>
-
-<div class="item-comment">Used to override Defaults.notebook_worker_priority. By default
-minion workers have higher priority than the master node allowing
-minions to take over notebook calculations most of he time.</div>
-<li id="Minion.notebook_worker_priority">
-   <i class="bullet-placeholder"></i>
-   <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1513">
-       notebook_worker_priority
-     </a>
-   </div>
-   <a href="#Minion.notebook_worker_priority" class="anchorlink">
-      <i class="fa fa-copy fa-sm category-icon"></i>
-   </a>
-   <div class="reference-value-mapping">10</div>
 </li>
 </ul>
 </div>

@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.74 Release"
 description: |
-   Velociraptor Release 0.74 is available for testing
+   Velociraptor Release 0.74 is available for download
 
 tags:
  - Release
