@@ -4,27 +4,23 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Attackers sometimes enable immutable files in Linux.
+Searches the filesystem for immutable files.
 
-This prevents files from being modified. However this is sometimes a
-strong signal.
+Attackers sometimes enable immutable files in Linux. This prevents files from
+being modified. However this is sometimes a strong signal.
 
-This artifact searches the filesystem for such files.
-
-NOTE: We use the ext4 accessor to parse the low level filessystem.
+NOTE: We use the ext4 accessor to parse the low level filesystem.
 
 
 <pre><code class="language-yaml">
 name: Linux.Forensics.ImmutableFiles
 description: |
-  Attackers sometimes enable immutable files in Linux.
+  Searches the filesystem for immutable files.
 
-  This prevents files from being modified. However this is sometimes a
-  strong signal.
+  Attackers sometimes enable immutable files in Linux. This prevents files from
+  being modified. However this is sometimes a strong signal.
 
-  This artifact searches the filesystem for such files.
-
-  NOTE: We use the ext4 accessor to parse the low level filessystem.
+  NOTE: We use the ext4 accessor to parse the low level filesystem.
 
 precondition: |
   SELECT * FROM info() where OS = 'linux'

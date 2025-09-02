@@ -34,7 +34,7 @@ root_ca|As a better alternative to disable_ssl_security, allows root ca certs to
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'|string
 headers|A dict of headers to send.|ordereddict.Dict
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

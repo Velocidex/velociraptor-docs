@@ -10,14 +10,16 @@ to run next time. By parsing this information we are able to
 determine when binaries are run in the past. On Windows10 we can see
 the last 8 execution times and creation time (9 potential executions).
 
-There are several parameter's available for this artifact.
+There are several parameters available for this artifact.
   - dateAfter enables search for prefetch evidence after this date.
   - dateBefore enables search for prefetch evidence before this date.
   - binaryRegex enables to filter on binary name, e.g evil.exe.
   - hashRegex enables to filter on prefetch hash.
 
 NOTE: The Prefetch file format is described extensively in libscca
-and painstakingly reversed by Joachim Metz (Shouts and Thank you!).
+and painstakingly reversed by Joachim Metz (Shouts and Thank
+you!). Thanks to https://github.com/secDre4mer for additional
+information.
 
 
 <pre><code class="language-yaml">
@@ -29,14 +31,16 @@ description: |
   determine when binaries are run in the past. On Windows10 we can see
   the last 8 execution times and creation time (9 potential executions).
 
-  There are several parameter's available for this artifact.
+  There are several parameters available for this artifact.
     - dateAfter enables search for prefetch evidence after this date.
     - dateBefore enables search for prefetch evidence before this date.
     - binaryRegex enables to filter on binary name, e.g evil.exe.
     - hashRegex enables to filter on prefetch hash.
 
   NOTE: The Prefetch file format is described extensively in libscca
-  and painstakingly reversed by Joachim Metz (Shouts and Thank you!).
+  and painstakingly reversed by Joachim Metz (Shouts and Thank
+  you!). Thanks to https://github.com/secDre4mer for additional
+  information.
 
 reference:
   - https://www.forensicswiki.org/wiki/Prefetch
@@ -120,7 +124,7 @@ export: |
          # This is realy just one time but we make it an
          # array to be compatible with the others.
          ["LastRunTimes", 36, "Array", {
-              "type": "Timestamp",
+              "type": "TimestampRecord",
               "count": 1
            }],
          ["RunCount", 60, "unsigned long"],
@@ -150,7 +154,7 @@ export: |
          # This is realy just one time but we make it an
          # array to be compatible with the others.
          ["LastRunTimes", 44, "Array", {
-              "type": "Timestamp",
+              "type": "TimestampRecord",
               "count": 1
            }],
          ["RunCount", 68, "unsigned long"],
@@ -181,7 +185,7 @@ export: |
          # This is realy just one time but we make it an
          # array to be compatible with the others.
          ["LastRunTimes", 44, "Array", {
-              "type": "Timestamp",
+              "type": "TimestampRecord",
               "count": 8,
            }],
          ["RunCount", 124, "unsigned long"],
@@ -209,7 +213,7 @@ export: |
          ["__VolumesInformationSize", 32, "unsigned long"],
          ["__TotalDirectoryCount", 36, "unsigned long"],
          ["LastRunTimes", 44, "Array", {
-              "type": "Timestamp",
+              "type": "TimestampRecord",
               "count": 8
            }],
          ["__RunCount1", 124, "unsigned long"],
@@ -218,6 +222,12 @@ export: |
          ["RunCount", 0, Value, {
             value: "x=&gt;if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)",
          }],
+         ["ExecutablePath", "x=&gt;x.__ExecutablePathOffset - x.OffsetOf", String, {
+            length: "x=&gt;x.__ExecutablePathSize * 2",
+            encoding: "utf16",
+         }],
+         ["__ExecutablePathOffset", 128, "unsigned long"],
+         ["__ExecutablePathSize", 132, "unsigned long"],
 
          # Metrics offset is absolute.
          ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
@@ -230,7 +240,7 @@ export: |
           }],
         ]],
 
-        ["Timestamp", 8, [
+        ["TimestampRecord", 8, [
           ["Date", 0, "WinFileTime"],
           ["Int", 0, "unsigned long long"]
         ]],
@@ -344,6 +354,7 @@ sources:
                   SCCAHeader.Version AS Version,
                   filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=&gt;x.Unix &gt; 0") AS LastRunTimes,
                   SCCAHeader.Info.RunCount AS RunCount,
+                  SCCAHeader.Info.ExecutablePath AS ExecutablePath,
                   OSPath,
                   Name AS PrefetchFileName,
                   Btime as CreationTime,

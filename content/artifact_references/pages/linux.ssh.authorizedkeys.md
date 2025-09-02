@@ -4,7 +4,7 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Find and parse ssh authorized keys files.
+Finds and parses SSH authorized keys files.
 
 From `man authorized_keys`:
 
@@ -18,7 +18,7 @@ field is optional.
 <pre><code class="language-yaml">
 name: Linux.Ssh.AuthorizedKeys
 description: |
-  Find and parse ssh authorized keys files.
+  Finds and parses SSH authorized keys files.
 
   From `man authorized_keys`:
 

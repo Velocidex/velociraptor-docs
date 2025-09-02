@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-url|The URL to fetch|list of string (required)
+url|The URL to fetch|list of string
 params|Parameters to encode as POST or GET query strings|ordereddict.Dict
 headers|A dict of headers to send.|ordereddict.Dict
 method|HTTP method to use (GET, POST, PUT, PATCH, DELETE)|string
@@ -35,7 +35,7 @@ user_agent|If specified, set a HTTP User-Agent.|string
 secret|If specified, use this managed secret. The secret should be of type 'HTTP Secrets'. Alternatively specify the Url as secret://name|string
 files|If specified, upload these files using multipart form upload. For example [dict(file="My filename.txt", path=OSPath, accessor="auto"),]|list of ordereddict.Dict
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

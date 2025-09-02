@@ -5,7 +5,7 @@ tags: [Client Artifact]
 ---
 
 
-This artifact parses the windows dhcp event log looking for evidence
+This artifact parses the Windows DHCP event log looking for evidence
 of IP address assignments.
 
 In some investigations it is important to be able to identify the
@@ -32,7 +32,7 @@ On windows, there are two types of logs:
 name: Windows.EventLogs.DHCP
 description: |
 
-  This artifact parses the windows dhcp event log looking for evidence
+  This artifact parses the Windows DHCP event log looking for evidence
   of IP address assignments.
 
   In some investigations it is important to be able to identify the

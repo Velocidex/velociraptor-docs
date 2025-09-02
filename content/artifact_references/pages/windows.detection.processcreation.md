@@ -65,7 +65,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      // Make sure sysmon is installed.
+      // Ensure that sysmon is installed.
       LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 

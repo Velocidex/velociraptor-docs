@@ -1,7 +1,7 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
 hidden: true
-tags: [Client Artifact]
+tags: [Server Artifact]
 ---
 
 Calculate a remapping configuration from a dead disk image.
@@ -13,7 +13,7 @@ The following cases are handled:
 
 * If ImagePath is a directory to a mounted partition then we
   generate directory remapping. This is suitable for handling images
-  with filesystems that Velociraptor can not yet directly handle.
+  with filesystems that Velociraptor cannot yet directly handle.
 
 * If the ImagePath points to a file which starts with the NTFS
   signature we assume this is a partition image and not a disk
@@ -21,7 +21,7 @@ The following cases are handled:
 
 * If the ImagePath is a full disk image we assume it has a partition
   table at the front, we then enumerate all the partitions and look
-  for an ntfs partition with a `Windows` directory at the top
+  for an NTFS partition with a `Windows` directory at the top
   level. We assume this is the windows drive and remap it to the C:
   drive.
 
@@ -38,7 +38,7 @@ description: |
 
   * If ImagePath is a directory to a mounted partition then we
     generate directory remapping. This is suitable for handling images
-    with filesystems that Velociraptor can not yet directly handle.
+    with filesystems that Velociraptor cannot yet directly handle.
 
   * If the ImagePath points to a file which starts with the NTFS
     signature we assume this is a partition image and not a disk
@@ -46,9 +46,11 @@ description: |
 
   * If the ImagePath is a full disk image we assume it has a partition
     table at the front, we then enumerate all the partitions and look
-    for an ntfs partition with a `Windows` directory at the top
+    for an NTFS partition with a `Windows` directory at the top
     level. We assume this is the windows drive and remap it to the C:
     drive.
+
+type: SERVER
 
 parameters:
   - name: ImagePath

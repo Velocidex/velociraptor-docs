@@ -4,15 +4,24 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Detect the external ip address of the end point.
+Identifies the external IP address of the endpoint using an external
+web service.
+
 
 <pre><code class="language-yaml">
 name: Network.ExternalIpAddress
-description: Detect the external ip address of the end point.
+description: |
+  Identifies the external IP address of the endpoint using an external
+  web service.
+
+required_permissions:
+- NETWORK
+
 parameters:
   - name: externalUrl
     default: http://www.myexternalip.com/raw
     description: The URL of the external IP detection site.
+
 sources:
   - precondition: SELECT * from info()
     query: |

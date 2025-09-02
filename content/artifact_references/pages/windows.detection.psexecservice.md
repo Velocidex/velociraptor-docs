@@ -4,27 +4,27 @@ hidden: true
 tags: [Client Event Artifact]
 ---
 
-PSExec works by installing a new service in the system. The service
-can be renamed using the -r flag and therefore it is not enough to
-just watch for a new service called psexecsvc.exe. This artifact
+PsExec works by installing a new service in the system. The service
+can be renamed by using the `-r` flag and therefore it is not enough to
+just watch for a new service called `psexecsvc.exe`. This artifact
 improves on this by scanning the service binary to detect the
-original psexec binary.
+original PsExec binary.
 
-NOTE that if the service is very quick we are unable to examine
-the service binary in time and will miss it.
+NOTE: If the service is very quick we are unable to examine the service binary
+in time then we will miss it.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.PsexecService
 description: |
-  PSExec works by installing a new service in the system. The service
-  can be renamed using the -r flag and therefore it is not enough to
-  just watch for a new service called psexecsvc.exe. This artifact
+  PsExec works by installing a new service in the system. The service
+  can be renamed by using the `-r` flag and therefore it is not enough to
+  just watch for a new service called `psexecsvc.exe`. This artifact
   improves on this by scanning the service binary to detect the
-  original psexec binary.
+  original PsExec binary.
 
-  NOTE that if the service is very quick we are unable to examine
-  the service binary in time and will miss it.
+  NOTE: If the service is very quick we are unable to examine the service binary
+  in time then we will miss it.
 
 type: CLIENT_EVENT
 

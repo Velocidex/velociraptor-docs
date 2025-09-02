@@ -4,8 +4,8 @@ hidden: true
 tags: [Server Event Artifact]
 ---
 
-It is possible to pass powershell an encoded script. This artifact
-decodes the scripts.
+It is possible to pass PowerShell an encoded script. This artifact
+decodes such scripts.
 
 NOTE: The client must be running the Windows.Events.ProcessCreation
 event artifact to retrieve process execution logs.
@@ -14,8 +14,8 @@ event artifact to retrieve process execution logs.
 <pre><code class="language-yaml">
 name: Server.Powershell.EncodedCommand
 description: |
-  It is possible to pass powershell an encoded script. This artifact
-  decodes the scripts.
+  It is possible to pass PowerShell an encoded script. This artifact
+  decodes such scripts.
 
   NOTE: The client must be running the Windows.Events.ProcessCreation
   event artifact to retrieve process execution logs.

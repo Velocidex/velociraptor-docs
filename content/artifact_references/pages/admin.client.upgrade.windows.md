@@ -6,13 +6,13 @@ tags: [Client Artifact]
 
 Remotely push new client updates.
 
-NOTE: This artifact requires that you supply a client MSI using the
+NOTE: This artifact requires that you supply a client MSI by using the
 tools interface. Simply click on the tool in the GUI and upload a
 pre-packaged MSI.
 
 While typically the MSI will contain the Velociraptor windows
 client, you can install any other MSI as well by customizing this
-artifact or uploading a different msi file.
+artifact or uploading a different MSI file.
 
 
 <pre><code class="language-yaml">
@@ -20,13 +20,13 @@ name: Admin.Client.Upgrade.Windows
 description: |
   Remotely push new client updates.
 
-  NOTE: This artifact requires that you supply a client MSI using the
+  NOTE: This artifact requires that you supply a client MSI by using the
   tools interface. Simply click on the tool in the GUI and upload a
   pre-packaged MSI.
 
   While typically the MSI will contain the Velociraptor windows
   client, you can install any other MSI as well by customizing this
-  artifact or uploading a different msi file.
+  artifact or uploading a different MSI file.
 
 tools:
   - name: WindowsMSI
@@ -62,7 +62,7 @@ sources:
       SELECT * FROM foreach(row=bin,
       query={
          SELECT * FROM execve(
-              argv=["msiexec.exe", "/i", Dest, "/q"],
+              argv=["msiexec.exe", "/i", Dest, "/q", "REINSTALL=ALL", "REINSTALLMODE=A"],
               length=10000000)
       })
 

@@ -4,9 +4,8 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact automates the rebuilding of remapping rules to be
-able to easily post process the results of the
-Windows.KapeFiles.Targets.
+This artifact automates the rebuilding of remapping rules to be able to
+easily post-process the results of the Windows.KapeFiles.Targets.
 
 Use as follows in the flow notebook cell of a collection:
 
@@ -26,9 +25,8 @@ See https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/
 <pre><code class="language-yaml">
 name: Windows.KapeFiles.Remapping
 description: |
-   This artifact automates the rebuilding of remapping rules to be
-   able to easily post process the results of the
-   Windows.KapeFiles.Targets.
+   This artifact automates the rebuilding of remapping rules to be able to
+   easily post-process the results of the Windows.KapeFiles.Targets.
 
    Use as follows in the flow notebook cell of a collection:
 

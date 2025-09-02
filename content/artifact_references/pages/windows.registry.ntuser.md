@@ -9,7 +9,7 @@ NTUser.dat registry hives.
 
 When a user logs into a windows machine the system creates their own
 "profile" which consists of a registry hive mapped into the
-HKEY_USERS hive. This hive file is locked as long as the user is
+HKEY_USERS hive. This hive file is locked while the user is
 logged in. If the user is not logged in, the file is not mapped at
 all.
 
@@ -25,8 +25,8 @@ to access user data.
   Any artifacts that look into the HKEY_USERS registry hive should
   be using the `Windows.Registry.NTUser` artifact instead of
   accessing the hive via the API. The API only makes the currently
-  logged in users available in that hive and so if we rely on the
-  windows API we will likely miss any settings for users not
+  logged in users available in that hive, so if we rely on the
+  windows API we will miss any settings for the users not
   currently logged on.
 
 {{% /notice %}}
@@ -40,7 +40,7 @@ description: |
 
   When a user logs into a windows machine the system creates their own
   "profile" which consists of a registry hive mapped into the
-  HKEY_USERS hive. This hive file is locked as long as the user is
+  HKEY_USERS hive. This hive file is locked while the user is
   logged in. If the user is not logged in, the file is not mapped at
   all.
 
@@ -56,8 +56,8 @@ description: |
     Any artifacts that look into the HKEY_USERS registry hive should
     be using the `Windows.Registry.NTUser` artifact instead of
     accessing the hive via the API. The API only makes the currently
-    logged in users available in that hive and so if we rely on the
-    windows API we will likely miss any settings for users not
+    logged in users available in that hive, so if we rely on the
+    windows API we will miss any settings for the users not
     currently logged on.
 
   {{% /notice %}}

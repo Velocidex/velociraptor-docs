@@ -4,24 +4,22 @@ hidden: true
 tags: [Server Artifact]
 ---
 
-This server artifact will list all currently configured orgs on the
-server.
+This server artifact will list all currently configured orgs on the server.
 
-NOTE: This artifact is only available to users with the ORG_ADMIN
-permission, normally only given to users with the administrator role
-while using the root org (You might need to switch to the root org
+NOTE: This artifact is only available to users with the `ORG_ADMIN`
+permission, which is normally only granted to users with the administrator
+role within the root org (that means you might need to switch to the root org
 in the GUI before collecting this artifact).
 
 
 <pre><code class="language-yaml">
 name: Server.Orgs.ListOrgs
 description: |
-  This server artifact will list all currently configured orgs on the
-  server.
+  This server artifact will list all currently configured orgs on the server.
 
-  NOTE: This artifact is only available to users with the ORG_ADMIN
-  permission, normally only given to users with the administrator role
-  while using the root org (You might need to switch to the root org
+  NOTE: This artifact is only available to users with the `ORG_ADMIN`
+  permission, which is normally only granted to users with the administrator
+  role within the root org (that means you might need to switch to the root org
   in the GUI before collecting this artifact).
 
 type: SERVER

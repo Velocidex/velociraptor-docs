@@ -7,7 +7,7 @@ tags: [Server Artifact]
 This artifact permanently deletes a flow including it's metadata and
 uploaded files.
 
-NOTE: This action can not be undone! The collection is deleted
+NOTE: This action cannot be undone! The collection is deleted
 permanently. Since this is a sensitive operation, typically only
 users with the administrator role can run it.
 
@@ -18,7 +18,7 @@ description: |
   This artifact permanently deletes a flow including it's metadata and
   uploaded files.
 
-  NOTE: This action can not be undone! The collection is deleted
+  NOTE: This action cannot be undone! The collection is deleted
   permanently. Since this is a sensitive operation, typically only
   users with the administrator role can run it.
 

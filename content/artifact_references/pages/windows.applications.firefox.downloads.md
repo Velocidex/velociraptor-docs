@@ -6,10 +6,10 @@ tags: [Client Artifact]
 
 Enumerate the users Firefox downloads.
 
-## NOTES:
+#### NOTES
 
-This artifact is deprecated in favor of
-Generic.Forensic.SQLiteHunter and will be removed in future
+This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
+will be removed in future
 
 
 <pre><code class="language-yaml">
@@ -17,10 +17,10 @@ name: Windows.Applications.Firefox.Downloads
 description: |
   Enumerate the users Firefox downloads.
 
-  ## NOTES:
+  #### NOTES
 
-  This artifact is deprecated in favor of
-  Generic.Forensic.SQLiteHunter and will be removed in future
+  This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
+  will be removed in future
 
 author: |
   Angry-Bender @angry-bender, based on

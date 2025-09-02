@@ -8,7 +8,7 @@ This artifact collects all the user's NTUser.dat registry hives.
 
 When a user logs into a windows machine the system creates their own
 "profile" which consists of a registry hive mapped into the
-HKEY_USERS hive. This hive file is locked as long as the user is
+HKEY_USERS hive. This hive file is locked while the user is
 logged in.
 
 This artifact bypasses the locking mechanism by extracting the
@@ -23,7 +23,7 @@ description: |
 
   When a user logs into a windows machine the system creates their own
   "profile" which consists of a registry hive mapped into the
-  HKEY_USERS hive. This hive file is locked as long as the user is
+  HKEY_USERS hive. This hive file is locked while the user is
   logged in.
 
   This artifact bypasses the locking mechanism by extracting the

@@ -7,15 +7,15 @@ tags: [Client Artifact]
 This artifact allows deployment of the BloodHound collection tool Sharphound.
 
 BloodHound is a popular Active Directory Assessment tool that uses graph
-theory to reveal the hidden and often unintended relationships. It can also be
-used to identify and eliminate potentially risky domain configuration.
+theory to reveal the hidden and often unintended relationships. It can also
+be used to identify and eliminate potentially risky domain configuration.
 
-The Sharphound collection is in json format and upload to the server for
+The Sharphound collection is in JSON format and upload to the server for
 additional processing.
 
-NOTE: Do not run this artifact as an unrestricted hunt. General recommendation
-is to run this artifact on only a handful of machines in a typical domain,
-then deduplicate output.
+NOTE: Do not run this artifact as an unrestricted hunt. The general
+recommendation is to run this artifact on only a handful of machines in a
+domain, and then deduplicate output.
 
 
 <pre><code class="language-yaml">
@@ -24,15 +24,15 @@ description: |
    This artifact allows deployment of the BloodHound collection tool Sharphound.
 
    BloodHound is a popular Active Directory Assessment tool that uses graph
-   theory to reveal the hidden and often unintended relationships. It can also be
-   used to identify and eliminate potentially risky domain configuration.
+   theory to reveal the hidden and often unintended relationships. It can also
+   be used to identify and eliminate potentially risky domain configuration.
 
-   The Sharphound collection is in json format and upload to the server for
+   The Sharphound collection is in JSON format and upload to the server for
    additional processing.
 
-   NOTE: Do not run this artifact as an unrestricted hunt. General recommendation
-   is to run this artifact on only a handful of machines in a typical domain,
-   then deduplicate output.
+   NOTE: Do not run this artifact as an unrestricted hunt. The general
+   recommendation is to run this artifact on only a handful of machines in a
+   domain, and then deduplicate output.
 
 
 author: Matt Green - @mgreen27
