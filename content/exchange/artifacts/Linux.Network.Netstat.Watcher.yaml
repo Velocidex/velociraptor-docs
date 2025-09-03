@@ -1,5 +1,5 @@
 name: Linux.Network.Netstat.Watcher
-type: CLIENT
+type: CLIENT_EVENT
 author: Antonio Blescia (TheThMando)
 description: >
     Collects a one-time snapshot of current non-LISTEN remote connections and a continuous diff stream of added/removed/changed connections. Loopback destinations are excluded by default (127.0.0.1 and ::1) via a configurable regex. 
