@@ -771,6 +771,40 @@
         ]
     },
     {
+        "name": "cat",
+        "description": "Read files in chunks.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "File to open.",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "An accessor to use."
+            },
+            {
+                "name": "chunk",
+                "type": "int",
+                "description": "length of each chunk to read from the file."
+            },
+            {
+                "name": "timeout",
+                "type": "int",
+                "description": "If specified we abort reading after this much time."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "certificates",
         "description": "Collect certificate from the system trust store.",
         "type": "Plugin",
