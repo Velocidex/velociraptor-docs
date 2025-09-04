@@ -20,6 +20,7 @@ not yet been categorized.
 |[batch](batch)|<span class='vql_type'>Plugin</span>|Batches query rows into multiple arrays|
 |[cache](cache)|<span class='vql_type'>Function</span>|Creates a cache object|
 |[cache_dns](cache_dns)|<span class='vql_type'>Function</span>|Add a DNS record to the cache|
+|[cat](cat)|<span class='vql_type'>Plugin</span>|Read files in chunks|
 |[cidr_contains](cidr_contains)|<span class='vql_type'>Function</span>|Calculates if an IP address falls within a range of CIDR specified|
 |[collect](collect)|<span class='vql_type'>Plugin</span>|Collect artifacts into a local file|
 |[combine](combine)|<span class='vql_type'>Plugin</span>|Combine the output of several queries into the same result set|

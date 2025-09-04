@@ -43,18 +43,27 @@ reports:
 
       # Welcome to Velociraptor!
 
-      ## Common tasks:
+      &lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;
 
-      * &lt;a href="#/dashboard"&gt;Inspect the server's state&lt;/a&gt;
-      * &lt;a href="#/collected/server"&gt;Build an Offline Collector&lt;/a&gt;
-      * &lt;a href="#/notebooks"&gt;Write VQL notebooks&lt;/a&gt;
+      * &lt;a href="#/dashboard"&gt;View server dashboard&lt;/a&gt;
+      * &lt;a href="#/collected/server/new/Server.Import.Extras"&gt;Import Extra artifacts&lt;/a&gt;
+      * &lt;a href="#/collected/server/new/Server.Utils.CreateLinuxPackages"&gt;Build Linux client packages&lt;/a&gt;
+      * &lt;a href="#/collected/server/new/Server.Utils.CreateMSI"&gt;Build Windows client MSI&lt;/a&gt;
+      * &lt;a href="#/collected/server/new/Server.Utils.CreateCollector"&gt;Build an Offline Collector&lt;/a&gt;
+      * &lt;a href="#/collected/server/new/Server.Orgs.NewOrg"&gt;Create a new Org&lt;/a&gt;
+
+      &lt;/td&gt;&lt;td&gt;
+
       * &lt;a href="#/host/server"&gt;View Server Configuration&lt;/a&gt;
       * &lt;a href="#/events/server/Server.Audit.Logs"&gt;Inspect Server Audit Log&lt;/a&gt;
       * &lt;a href="#/secrets"&gt;Manage Server Secrets&lt;/a&gt;
-      * &lt;a href="#/artifacts/Server.Internal.Welcome"&gt;Customize this welcome screen&lt;/a&gt;
+      * &lt;a href="#/users"&gt;Manage Velociraptor Users&lt;/a&gt;
+      * &lt;a href="#/artifacts/Server.Internal.Welcome/edit"&gt;Customize this welcome screen&lt;/a&gt;
       * &lt;a href="{{ Scope "DebugLink" }}"&gt;Debug the server&lt;/a&gt;
 
-      Or simply search for a client in the search bar above.
+      &lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+
+      Or search for a client in the search bar above.
 
       You can always get back to this welcome screen by clicking the
       little green reptile above!
