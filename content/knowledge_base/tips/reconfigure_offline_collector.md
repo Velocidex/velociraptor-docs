@@ -2,6 +2,7 @@
 
 The offline collector is a pre-configured version of Velociraptor that
 automatically collects certain artifacts when invoked with no command line args.
+
 The offline collector is a full Velociraptor binary that simply has a custom
 configuration embedded. So you can still use the collector binary to perform any
 operations that an unmodified Velociraptor binary is capable of.
@@ -16,7 +17,11 @@ is suitable for small changes in the embedded configuration. While it is
 recommended that you use the GUI to prepare a completely new collector, for
 small tweaks to an existing offline collector this method may be quicker.
 
-Also note that you can override
+Also note that you can override or append command line arguments to those
+embedded in and offline collector using
+[post-args]({{< ref "/docs/cli/#autoexec-mode-and-post-args" >}}),
+which may be sufficient when you want to change the collector behaviour on a
+once-off basis.
 
 ## General Method
 

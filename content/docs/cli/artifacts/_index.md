@@ -27,12 +27,12 @@ datastore. This means that these commands will need to be run with the
 
 If you do not specify `--config` then you will be working with the built-in
 artifact repository only - that is, the default artifacts compiled into the
-binary and possibly also custom artifacts if using a binary that has an
+binary and possibly also custom artifacts if you are using a binary that has an
 embedded config (such as an offline collector).
 
 ----
 
-## [ artifacts list ]
+### [ artifacts list ]
 
 ```text
 artifacts list [<flags>] [<regex>]
@@ -55,7 +55,7 @@ the `artifact_definitions` plugin.
 The regex expression argument is case-sensitive. To make it case-insensitive
 prefix your expression with the `(?i)` modifier.
 
-#### Examples
+##### Examples
 
 ```sh
 $ velociraptor artifacts list "(?i).+services"
@@ -86,7 +86,7 @@ form.
 
 ----
 
-## [ artifacts show ]
+### [ artifacts show ]
 
 ```text
 artifacts show <name>
@@ -104,7 +104,7 @@ line.
 Wildcards and regex are _not_ supported. The command expects an exact artifact
 name.
 
-#### Example
+##### Example
 
 ```sh
 $ velociraptor artifacts show Windows.System.Services
@@ -120,7 +120,7 @@ parameters:
 
 ----
 
-## [ artifacts collect ]
+### [ artifacts collect ]
 
 ```text
 artifacts collect [<flags>] <artifact_name>...
@@ -233,7 +233,7 @@ also available to the `artifacts collect` command.
 
 ---
 
-## [ artifacts reformat ]
+### [ artifacts reformat ]
 
 ```text
 artifacts reformat <paths>...
@@ -267,7 +267,7 @@ you're dissatisfied with the resultant formatting.
 {{% /notice %}}
 
 
-#### Example
+##### Example
 
 ```sh
 velociraptor --config server.config.yaml artifacts reformat *.yaml -v
@@ -278,7 +278,7 @@ matched artifact.
 
 ----
 
-## [ artifacts verify ]
+### [ artifacts verify ]
 
 ```text
 artifacts verify [<flags>] <paths>...
@@ -307,7 +307,7 @@ automation scripts.
 The same static analysis can be done via VQL using the
 [verify]({{< ref "/vql_reference/other/verify/" >}}) function.
 
-#### Example
+##### Example
 
 ```sh
 velociraptor artifacts verify ./**/*.yaml -v

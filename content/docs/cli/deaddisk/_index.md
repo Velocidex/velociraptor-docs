@@ -13,7 +13,7 @@ a virtual client with the `--remap` flag.
 
 ---
 
-## [ deaddisk ]
+### [ deaddisk ]
 
 ```text
 deaddisk [<flags>] <output>
@@ -33,7 +33,7 @@ Args:
 For this command, either `--add_windows_directory` or `--add_windows_disk` is
 required.
 
-#### Examples
+##### Examples
 
 1. Generate the remapping config:
 

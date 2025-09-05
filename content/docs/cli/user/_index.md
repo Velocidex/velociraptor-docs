@@ -27,7 +27,7 @@ To add or modify users during runtime you should instead use the `user`,
 
 ---
 
-## [ user add ]
+### [ user add ]
 
 ```text
 user add --role=ROLE <username> [<password>]
@@ -45,7 +45,7 @@ required or asked for.
 
 ---
 
-## [ user show ]
+### [ user show ]
 
 ```text
 user show [<flags>] <username>

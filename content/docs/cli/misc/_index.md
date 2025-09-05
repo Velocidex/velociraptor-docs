@@ -12,7 +12,7 @@ All other commands not previously covered.
 
 ---
 
-## [ client ]
+### [ client ]
 
 ```text
 client [<flags>]
@@ -24,7 +24,7 @@ client [<flags>]
 
 ---
 
-## [ csv ]
+### [ csv ]
 
 ```text
 csv [<flags>] <files>...
@@ -40,7 +40,7 @@ Args:
 ----
 
 
-## [ debian ]
+### [ debian ]
 
 ```text
 debian server [<flags>]
@@ -60,7 +60,7 @@ debian client [<flags>]
 
 ----
 
-## [ frontend ]
+### [ frontend ]
 
 ```text
 frontend [<flags>]
@@ -75,7 +75,7 @@ frontend [<flags>]
 
 ----
 
-## [ golden ]
+### [ golden ]
 
 ```text
 golden [<flags>] <directory>
@@ -93,7 +93,7 @@ Args:
 
 ----
 
-## [ gui ]
+### [ gui ]
 
 
 ```text
@@ -110,7 +110,7 @@ For more information, see
 
 ----
 
-## [ hunts reconstruct ]
+### [ hunts reconstruct ]
 
 ```text
 hunts reconstruct
@@ -122,16 +122,16 @@ like the disk filling up unexpectedly, although its effectiveness depends on the
 completeness of the audit logs. If the audit logs themselves were corrupted or
 truncated, full recovery might not be possible using this method alone.
 
-In newer releases (0.7.0+), the way hunt data is stored has been changed (e.g.,
+In recent releases (0.7.0+), the way hunt data is stored has been changed (e.g.
 using a single snapshot file instead of many individual files) and disk space
-checks are performed before writing, which should reduce the occurrence of
-corruption that necessitates this command. In version 0.7.0 and later, the
-command might rebuild hunts into a `/recovery/...` directory requiring manual
-movement of files after recovery.
+checks are performed before writing. This is intended to reduce the corruption
+occuring which would then necessitate use of this command. In version 0.7.0 and
+later, the command will rebuild corrupted hunts into a `/recovery/...` directory
+requiring manual movement of files after recovery.
 
 The command can be run while the server is running or stopped.
 
-#### Example
+##### Example
 
 ```sh
 # first change to the velociraptor user to avoid messing up the datastore's filesystem ACLs
@@ -141,7 +141,7 @@ velociraptor hunts reconstruct --config /path/to/server.config.yaml
 
 ----
 
-## [ pool_client ]
+### [ pool_client ]
 
 ```text
 pool_client [<flags>]
@@ -155,7 +155,7 @@ pool_client [<flags>]
 
 ----
 
-## [ rpm ]
+### [ rpm ]
 
 ```text
 rpm client [<flags>]
@@ -175,7 +175,7 @@ rpm server [<flags>]
 
 ----
 
-## [ unzip ]
+### [ unzip ]
 
 ```text
 unzip [<flags>] <file> [<members>]
@@ -206,7 +206,7 @@ Args:
 
 ----
 
-## [ version ]
+### [ version ]
 
 ```text
 version

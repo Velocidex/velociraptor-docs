@@ -11,11 +11,11 @@ summary: Mount collection archives on folders.
 Mount collection archives on folders using [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
 (Filesystem in Userspace).
 
-NOTE: This command is only available in the Linux binary.
+This command is only available in the Linux binary.
 
 ---
 
-## [ fuse container ]
+### [ fuse container ]
 
 ```text
 fuse container [<flags>] <directory> <files>...
@@ -50,7 +50,7 @@ Args:
   "GetPrivateKeyFromScope: No frontend configuration given" logged in the
   terminal.
 
-#### Example
+##### Example
 
 ```sh
 # create an empty mount directory

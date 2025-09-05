@@ -36,7 +36,7 @@ On Windows the `service` command group functions much like Microsoft's Service
 Control Manager (`sc.exe`), with the exception being that it can also install or
 remove the service.
 
-### [ service install ]
+#### [ service install ]
 
 ```text
 service install
@@ -45,7 +45,7 @@ service install
 
 ---
 
-### [ service remove ]
+#### [ service remove ]
 
 ```text
 service remove
@@ -54,7 +54,7 @@ service remove
 
 ---
 
-### [ service start ]
+#### [ service start ]
 
 ```text
 service start
@@ -63,7 +63,7 @@ service start
 
 ---
 
-### [ service stop ]
+#### [ service stop ]
 
 ```text
 service stop
@@ -72,7 +72,7 @@ service stop
 
 ---
 
-### [ service pause ]
+#### [ service pause ]
 
 ```text
 service pause
@@ -81,7 +81,7 @@ service pause
 
 ---
 
-### [ service continue ]
+#### [ service continue ]
 
 ```text
 service continue
@@ -90,7 +90,7 @@ service continue
 
 ---
 
-### [ service run ]
+#### [ service run ]
 
 ```text
 service run
@@ -109,7 +109,7 @@ Windows client the service configuration's command line will be:
 ## macOS platform
 
 
-### [ service install ]
+#### [ service install ]
 
 ```text
 service install
@@ -118,7 +118,7 @@ service install
 
 ---
 
-### [ service remove ]
+#### [ service remove ]
 
 ```text
 service remove

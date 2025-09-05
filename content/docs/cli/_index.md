@@ -60,7 +60,7 @@ environment variable `DEBUG=1` before running the help command:
 
 For those situations where you're working in a bunker without internet access.
 
-### [ vql list ]
+#### [ vql list ]
 
 Prints the reference documentation for all VQL plugins, functions and accessors
 in Markdown format.
@@ -75,7 +75,7 @@ velociraptor vql list | glow -p
 ```
 ![](glow.png)
 
-### [ vql export ]
+#### [ vql export ]
 
 Prints the reference documentation for all VQL plugins, functions and accessors
 in YAML format.

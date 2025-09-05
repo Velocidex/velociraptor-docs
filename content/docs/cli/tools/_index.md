@@ -30,7 +30,7 @@ the `--config` (or `-c`) flag.
 
 ---
 
-## [ tools show ]
+### [ tools show ]
 
 ```text
 tools show [<file>]
@@ -40,7 +40,7 @@ Args:
   [<file>]  Tool name to show
 ```
 
-#### Examples
+##### Examples
 
 ```text
 velociraptor --config server.config.yaml tools show
@@ -55,7 +55,7 @@ shows information about the tool registered under the name
 
 ---
 
-## [ tools rm ]
+### [ tools rm ]
 
 ```text
 tools rm <name>
@@ -67,7 +67,7 @@ Args:
 
 ---
 
-## [ tools upload ]
+### [ tools upload ]
 
 ```text
 tools upload --name=NAME [<flags>] [<path>]

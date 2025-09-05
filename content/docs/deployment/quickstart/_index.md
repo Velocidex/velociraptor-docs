@@ -143,12 +143,13 @@ client installer package for Windows:
 
 * [Step 4: Install the server component](#step-4-install-the-server-component)
 * [Step 5: Log in to the Admin GUI](#step-5-log-in-to-the-admin-gui)
-* [Step 6: Create an installation package for Windows clients](#step-6-create-an-installation-package-for-windows-clients)
+* [Step 6: Import artifacts from external projects](#step-6-import-artifacts-from-external-projects)
+* [Step 7: Create an installation package for Windows clients](#step-7-create-an-installation-package-for-windows-clients)
 
 Lastly, we will install the client and confirm that it is communicating with the
 server:
 
-* [Step 7: Install the client on endpoints](#step-7-install-the-client-on-endpoints)
+* [Step 8: Install the client on endpoints](#step-8-install-the-client-on-endpoints)
 
 The first 3 steps can actually be performed on any platform since we are only
 preparing for the installation and not actually installing anything yet, however
@@ -466,17 +467,79 @@ arrive at the Welcome screen.
 
 ![Welcome to Velociraptor!](welcome.png)
 
-You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}). Our
-next goal is to create an installation package for our Windows endpoints.
+You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
 
-## Step 6: Create an installation package for Windows clients
+## Step 6: Import artifacts from external projects
 
-Velociraptor clients are available for many operating systems and architectures,
-and the subject of packaging and installing clients is covered in more detail in
+{{% notice note %}}
+
+This step only applies if you are using version 0.75 or above. For older
+versions you can [skip to the next step](#step-7-create-an-installation-package-for-windows-clients).
+
+{{% /notice %}}
+
+Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex [artifacts]({{< ref "/docs/artifacts/" >}}).
+
+As some artifacts became more complex and powerful, we moved them into separate
+projects so that they could be developed and managed independently of the main
+Velociraptor project. Splitting these off allows for independent release cycles,
+thus facilitating more rapid development and innovation.
+
+Although Velociraptor ships with hundreds of built-in artifacts we recommend
+that you also try these more powerful artifacts, or visit their websites to
+learn more. Generally the built-in artifacts have very specific goals, for
+example extracting specific information from a specific file, while the complex
+artifacts encompass broader goals, for example searching the Windows registry
+for a broad set of indicators of suspicious activity.
+
+| **Project** | **Description** |
+|---|---|
+| [Velociraptor Sigma Project](https://sigma.velocidex.com/) | Artifacts that implement Sigma-based triage and monitoring rules. Includes curated Sigma Rules (Hayabusa/Hayabusa Live/ChopChopGo) |
+| [Velociraptor Triage Project](https://triage.velocidex.com/) | This project intends to develop a set of rules that are used for specifying the collection of files from the endpoint. |
+| [Rapid7Labs](https://github.com/rapid7/Rapid7-Labs/tree/main/Vql) | Artifacts developed and shared by [Rapid7 Labs](https://www.rapid7.com/blog/tag/research/). |
+| [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/) | Our project to develop sophisticated registry analysis modules. |
+| [Velociraptor SQLite Hunter Project](https://sqlitehunter.velocidex.com/) | This project aims to be a one-stop shop for `SQLite`, `ESE` and many other database-oriented forensic artifacts. |
+| [The Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) | Our repository of community-contributed artifacts. |
+
+To get these external artifacts into your Velociraptor server's artifact
+repository, we have a built-in server artifact which will download them from any
+or all of the external sources. Here's how to do that:
+
+1. On the Welcome screen, click the link **Import Extra Artifacts**. This will
+   start the artifact collection wizard for the server artifact
+   `Server.Import.Extras`.
+
+   ![](server_import_extras.png)
+
+   You don't need to change anything here and can click **Configure Parameters**
+   to navigate to that page of the wizard.
+
+2. By default, the artifacts from all sub-projects will be imported by the
+   `Server.Import.Extras` artifact. However you may not want all of them at this
+   time and you can repeat this process at any time to import different
+   artifacts or to update selected artifacts. To unselect any item, click it's
+   bin icon in the list.
+
+   ![](server_import_extras_params.png)
+
+   Once you're happy with your selection you can click **Launch** to begin the
+   import process.
+
+3. Once this artifact collection completes you can inspect the results in the
+   collection's **Results** tab. If, for some reason, the import fails then you can
+   review the log messages in the **Log** tab.
+
+Our next goal is to create an installation package for our Windows endpoints.
+
+## Step 7: Create an installation package for Windows clients
+
+Velociraptor clients are available for many operating systems and architectures.
+The subject of packaging and installing clients is covered in more detail in
 the section [Deploying Clients]({{< ref "/docs/deployment/clients/" >}}).
 
-The most important thing to know is that all Velociraptor clients need a client
-configuration, which is specific to the deployment. This configuration is a
+The most important thing to know is that all Velociraptor clients need a _client
+configuration_, which is specific to the deployment. This configuration is a
 subset of the full YAML-based configuration. Because the server has access to
 the full configuration it is able to provide the client configuration to us when
 needed
@@ -527,7 +590,7 @@ endpoints. In this simplified scenario we will only be installing the client
 manually. For full-scale deployments the MSI is typically rolled out through
 enterprise application management tools.
 
-## Step 7: Install the client on endpoints
+## Step 8: Install the client on endpoints
 
 On your Windows endpoints, installation is done by running the MSI that you
 created in the previous step.

@@ -2,22 +2,24 @@
 title: Keyboard Shortcuts
 menutitle: Keyboard Shortcuts
 date: 2025-05-16
-last_reviewed: 2025-05-16
+last_reviewed: 2025-09-04
 draft: false
 weight: 100
 summary: "Learn about keyboard shortcuts in the GUI"
 ---
 
 The Velociraptor GUI supports many keyboard shortcuts to navigate around
-quicker. You don't have to be slowed down by mouse clicks!
+quicker. So you don't have to be slowed down by mouse clicks!
 
 The key combination `<Ctrl>` + `/` will bring up the Keyboard Shortcuts help.
 
-![keyboard hotkeys help](shortcuts_help.png)
+![keyboard shortcuts help](shortcuts_help.png)
+
+The `Esc` key or clicking anywhere on the screen will close it.
 
 ### Global hotkeys
 
-These are available anywhere in the GUI.
+These are available on any screen in the GUI.
 
 |                                |   |                                                         |
 |--------------------------------|---|---------------------------------------------------------|
@@ -25,7 +27,7 @@ These are available anywhere in the GUI.
 | `<Alt>` + `n`                  | : | Goto notebooks                                          |
 | `<Alt>` + `c`                  | : | Collected artifacts (for the currently selected client) |
 | `<Ctrl>` + `/`                 | : | Show/Hide keyboard hotkeys help                         |
-| `<Ctrl>` + ( `<Shift>` ) + `?` | : | Move focus to client search box                         |
+| `<Ctrl>` + ( `<Shift>` ) + `?` | : | Move focus to the client search box                     |
 
 ### New Artifact Collection Wizard
 
@@ -42,21 +44,41 @@ These are available in the Collection Wizard.
 
 ### Collected Artifacts
 
-These are available when the collections list for a client has focus.
+These are available when a collection is selected.
 
 |     |   |                                         |
 |-----|---|-----------------------------------------|
-| `n` | : | Select next collection                  |
-| `p` | : | Select previous collection              |
 | `r` | : | View selected collection results        |
 | `o` | : | View selected collection overview       |
 | `l` | : | View selected collection logs           |
 | `u` | : | View selected collection uploaded files |
 
-### Editor shortcuts
+### Paged Tables
+
+These are available when any paged table has focus, for example in collection
+results.
+
+|        |   |                     |
+|--------|---|---------------------|
+| `n`    | : | Go to next page     |
+| `p`    | : | Go to previous page |
+| `j`    | : | Select next row     |
+| `k`    | : | Select previous row |
+| `Home` | : | Go to first page    |
+| `End`  | : | Go to last page     |
+
+### Artifact Editor
 
 These are available in the [artifact editor]({{< ref "/docs/gui/artifacts/" >}})
 and Sigma editor.
+
+The editor uses the ACE (Ajax.org Cloud9 Editor) under the hood. This means that
+all the ACE keyboard shortcuts listed
+[here](https://github.com/ajaxorg/ace/wiki/default-keyboard-shortcuts) are
+available in the editor, many of which are common shortcuts across many popular
+text editors.
+
+In addition, the following shortcuts are available in the editor.
 
 |                      |   |                                       |
 |----------------------|:-:|---------------------------------------|

@@ -20,7 +20,7 @@ remove the service.
 
 ---
 
-## [ server_service install ]
+### [ server_service install ]
 
 ```text
 server_service install
@@ -29,7 +29,7 @@ server_service install
 
 ---
 
-## [ server_service remove ]
+### [ server_service remove ]
 
 ```text
 server_service remove
@@ -38,7 +38,7 @@ server_service remove
 
 ---
 
-## [ server_service start ]
+### [ server_service start ]
 
 ```text
 server_service start
@@ -47,7 +47,7 @@ server_service start
 
 ---
 
-## [ server_service stop ]
+### [ server_service stop ]
 
 ```text
 server_service stop
@@ -56,7 +56,7 @@ server_service stop
 
 ---
 
-## [ server_service pause ]
+### [ server_service pause ]
 
 ```text
 server_service pause
@@ -65,7 +65,7 @@ server_service pause
 
 ---
 
-## [ server_service continue ]
+### [ server_service continue ]
 
 ```text
 server_service continue

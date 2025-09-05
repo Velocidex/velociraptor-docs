@@ -25,7 +25,7 @@ In order to create, modify or delete artifacts your user needs to have the
 `ARTIFACT_WRITER` permission.
 
 Users with this permission are generally considered to be "admin equivalent"
-since it is easy to escalate to full admin be designing artifacts to accomplish
+since it is easy to escalate to full admin by designing artifacts to accomplish
 that goal.
 
 This permission is not needed to _run_ artifacts, so it is common to have some
@@ -33,6 +33,7 @@ users who can only run artifacts and some other users who can create and manage
 artifacts.
 
 {{% /notice %}}
+
 
 ### Searching Artifacts
 
@@ -78,7 +79,31 @@ For example:
 - `tool:sysmonbinary` will show all artifacts that use the tool named
   "SysmonBinary".
 
+#### Searching artifacts by tag
 
+{{% notice note %}}
+
+This feature requires version 0.75 or above.
+
+{{% /notice %}}
+
+Artifact [Tags]({{< ref "/docs/vql/artifacts/managing/#artifact-metadata" >}})
+can be applied to selected artifacts to make finding and managing those
+artifacts easier in the GUI. These tags are stored as metadata in the server's
+internal artifact repository, and are therefore not part of the artifacts' YAML.
+
+Tags applied to a specific artifact are displayed in the Artifact preview in the
+Artifacts screen.
+
+All tags in the artifact repository are added to the end of the Search dropdown
+list on the Artifacts screen.
+
+![filtering artifacts by tag](search_tags.png)
+
+The `tag` term can also be used in filter expressions, for example
+`tag:exchange defender` will match all artifacts tagged with "exchange" and
+having the term "defender" in their
+[searchable fields]({{< ref "/docs/artifacts/basic_fields/#summary" >}}).
 
 ### Importing Artifact Packs
 
@@ -99,26 +124,59 @@ artifacts will be saved to the server's datastore using the file and folder
 structure described
 [here]({{< ref "/docs/artifacts/basic_fields/#basic-fields" >}}).
 
-### Importing Artifacts Using Server Artifacts
+### Importing Artifacts From Velociraptor's Specialized Artifact Projects
 
-Velociraptor includes several server artifacts which can import additional
-artifacts from related external projects.
+Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex artifacts. As some artifacts became more
+complex and powerful, we moved them into separate projects so that they could be
+developed and managed independently of the main Velociraptor project. Splitting
+these off allows for independent release cycles, thus facilitating more rapid
+development and innovation.
 
-| Project name                                                          | Project website                                                                         | Import artifact                                                     |
-|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| Velociraptor Artifact Exchange                                        | https://docs.velociraptor.app/exchange/                                                 | `Server.Import.ArtifactExchange`                                    |
-| Curated Sigma Rules <br>(Hayabusa/Hayabusa Live/ChopChopGo)           | https://sigma.velocidex.com/                                                            | `Server.Import.CuratedSigma`                                        |
-| RegistryHunter                                                        | https://registry-hunter.velocidex.com/                                                  | `Server.Import.RegistryHunter`                                      |
-| Rapid7Labs                                                            | https://github.com/rapid7/Rapid7-Labs/tree/main/Vql                                     | `Server.Import.Rapid7Labs`                                          |
-| DetectRaptor                                                          | https://github.com/mgreen27/DetectRaptor                                                | `Server.Import.ArtifactExchange`<br>-> `Server.Import.DetectRaptor` |
-| KapeFiles or SQLiteHunter                                             | https://github.com/EricZimmerman/KapeFiles<br>https://github.com/Velocidex/SQLiteHunter | `Server.Import.UpdatedBuiltin`                                      |
-| Artifacts from previous releases                                      | https://github.com/Velocidex/velociraptor/releases                                      | `Server.Import.PreviousReleases`                                    |
+Velociraptor includes several `SERVER` artifacts which can import additional
+artifacts from these external projects.
 
-The reason that the artifacts imported by the above are not included by default
-is that they are either rapidly developing and not synced to the Velociraptor
-release cycle, or are still considered experimental, or are community
-contributed. Some (probably RegistryHunter, SQLiteHunter and Curated Sigma
-Rules) may be included by default in future as these projects mature.
+| **Project name** | **Project website** | **Import artifact** |
+|---|---|---|
+| Curated Sigma Rules <br>(Hayabusa/Hayabusa Live/ChopChopGo) | https://sigma.velocidex.com/ | `Server.Import.CuratedSigma` |
+| KapeFiles | https://triage.velocidex.com/ | `Server.Import.UpdatedBuiltin` |
+| Rapid7Labs | https://github.com/rapid7/Rapid7-Labs/tree/main/Vql | `Server.Import.Rapid7Labs` |
+| RegistryHunter | https://registry-hunter.velocidex.com/ | `Server.Import.RegistryHunter` |
+| SQLiteHunter | https://sqlitehunter.velocidex.com/ | `Server.Import.UpdatedBuiltin` |
+| Velociraptor Artifact Exchange | https://docs.velociraptor.app/exchange/ | `Server.Import.ArtifactExchange` |
+| Artifacts from previous releases | https://github.com/Velocidex/velociraptor/releases | `Server.Import.PreviousReleases` |
+
+{{% notice info %}}
+
+In version 0.75 and above, most of the artifacts listed above are consolidated
+into a single import artifact named `Server.Import.Extras`, and some
+reorganization within the related projects has been done to make these more
+manageable.
+
+The following artifacts are no longer included in the binary, and therefore need
+to be imported using `Server.Import.Extras`:
+
+- The Windows Sigma-related artifacts (including Hayabusa rules)
+- The Linux Sigma-related artifacts
+- `Generic.Forensic.SQLiteHunter`
+- `Generic.Collectors.SQLECmd`
+- `Windows.Registry.Hunter`
+- `Windows.KapeFiles.Targets` (now named `Windows.Triage.Targets`)
+
+The following import artifacts were removed as they are superseded by the new
+import artifact:
+
+- `Server.Import.UpdatedBuiltin`
+- `Server.Import.ArtifactExchange`
+- `Server.Import.RegistryHunter`
+- `Server.Import.Rapid7Labs`
+- `Server.Import.CuratedSigma`
+
+For more information please see the
+[version 0.75 release notes]({{< ref "/blog/2025/2025-08-30-release-notes-0.75/#removing-some-large-artifacts" >}}).
+
+{{% /notice %}}
+
 
 ![Running server import artifacts](artifacts_server_import1.png)
 
@@ -129,6 +187,14 @@ their latest version, and another which imports all artifacts from a previous
 releases.
 
 #### Server.Import.UpdatedBuiltin
+
+{{% notice info %}}
+
+This artifact is no longer included in version 0.75 and above, since the updates
+can new be done using the new `Server.Import.Extras` server artifact (see note
+in the previous section).
+
+{{% /notice %}}
 
 The purpose of the `Server.Import.UpdatedBuiltin` artifact is to update either
 of the following 2 artifacts which may be updated between releases:
