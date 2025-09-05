@@ -399,7 +399,10 @@ The following parameter types are currently supported.
 
 - **VQL conversion function:** `LET x <= parse_json_array(data=x)`
 
-- **UI form component:** same as `string` type
+- **UI form component:** \
+  ![](ui_json_array_01.png)
+
+  ![](ui_json_array_02.png)
 
 ---
 

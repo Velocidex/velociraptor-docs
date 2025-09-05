@@ -2,6 +2,7 @@
 menutitle: "tools"
 title: 'The "tools" command group'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 90
 summary: "Commands for working with the tools inventory."
@@ -23,9 +24,9 @@ To add or modify tools during runtime you should instead use the `inventory`,
 {{% /notice %}}
 
 Because these commands work with the server's tools inventory, they need access
-to the server's datastore and therefore need the server.config.yaml in order to
-find the datastore. This means that these commands all need to be run with the
-`--config` (or `-c`) flag.
+to the server's datastore and therefore need the `server.config.yaml` in order
+to find the datastore. This means that these commands all need to be run with
+the `--config` (or `-c`) flag.
 
 ---
 
@@ -39,7 +40,7 @@ Args:
   [<file>]  Tool name to show
 ```
 
-**Examples:**
+##### Examples
 
 ```text
 velociraptor --config server.config.yaml tools show

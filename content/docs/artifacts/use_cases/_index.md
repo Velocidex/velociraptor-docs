@@ -204,7 +204,7 @@ We could, for example:
 
 - create users _and_ customize user profiles using the `user_create` and
   `user_options` functions.
-- create orgs.
+- create orgs using `org_create`.
 - create and start [hunts]({{< ref "/docs/hunting/" >}}) using the `hunt_add`
   function.
 - create [notebooks]({{< ref "/docs/notebooks/" >}}) using the `notebook_create`
@@ -216,6 +216,10 @@ We could, for example:
   to the server's tool inventory \
   (or we could add/update tools using VQL's `inventory_add` and `inventory_get`
   functions).
+- run server artifacts which create client installer packages or offline collectors:
+  - [`Server.Utils.CreateMSI`]({{< ref "/artifact_references/pages/server.utils.createmsi/" >}})
+  - [`Server.Utils.CreateLinuxPackages`]({{< ref "/artifact_references/pages/server.utils.createlinuxpackages" >}})
+  - [`Server.Utils.CreateCollector`]({{< ref "/artifact_references/pages/server.utils.createcollector/" >}})
 
 Because we can specify multiple server artifacts in the
 `initial_server_artifacts` setting, we might choose to have several artifacts

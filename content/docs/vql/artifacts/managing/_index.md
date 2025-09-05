@@ -8,6 +8,8 @@ summary: "How to manage artifacts from VQL"
 last_reviewed: 2025-06-04
 ---
 
+## Working with the internal artifact repository in VQL
+
 The Velociraptor server maintains an internal artifact repository that includes
 both built-in and custom artifacts.
 
@@ -18,8 +20,6 @@ Artifacts loaded from these locations are deemed "built-in" and cannot be
 modified or deleted during runtime. Only custom artifacts loaded from the
 datastore can be modified or deleted.
 
-## Working with the internal artifact repository in VQL
-
 Most often artifacts are viewed and managed in the GUI's
 ["View Artifact" screen]({{< ref "/docs/gui/artifacts/" >}}),
 however artifacts can also be managed from VQL using the plugins and functions
@@ -27,11 +27,13 @@ described in this section. Since the artifacts repository is maintained on the
 server, these VQL functions and plugins can only be used on the server - that
 is, in server artifacts or notebooks.
 
-{{% notice note "Accessing artifacts in other orgs"%}}
+### Accessing artifacts in other orgs
 
-The artifact-related VQL queries described in this section apply to the
+The artifact-related VQL queries described in this section apply only to the
 [org]({{< ref "/docs/deployment/orgs/" >}}) that your user is currently working
-in. As explained [here]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}),
+in.
+
+As explained [here]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}),
 artifacts from the root org are propagated to non-root orgs, while custom
 artifacts created in non-root orgs are only visible within that org, and can
 potentially "mask" custom artifacts that are inherited from the root org.
@@ -39,10 +41,10 @@ potentially "mask" custom artifacts that are inherited from the root org.
 If you wish to work with artifacts in a different org _without switching to that
 org_, then you can wrap your queries in the
 [query]({{< ref "/vql_reference/server/query/" >}}) plugin which allows you to
-target a different org using its `org_id` argument, and optionally also specify
-a different user using its `runas` argument.
+target a different org using its `org_id` argument and optionally specify a
+different user using its `runas` argument.
 
-Example:
+For example:
 
 ```vql
 LET OtherOrgId <= "OCDC0"
@@ -54,7 +56,6 @@ FROM query(query={ SELECT * FROM artifact_definitions()
            runas=OtherUser)
 ```
 
-{{% /notice %}}
 
 ### Viewing and Listing Artifacts
 
@@ -64,7 +65,7 @@ plugin. This plugin returns artifacts in their parsed form, which means you can
 easily filter the results using WHERE clauses against the many available
 artifact fields.
 
-For example, with this query we can see all SERVER type artifacts, and also see
+For example, with this query we can see all `SERVER` type artifacts and also see
 whether or not they are considered
 [built-in]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}):
 
@@ -129,13 +130,13 @@ custom artifacts via VQL.
 
 #### Artifact Metadata
 
-Artifacts in the repository have a `metadata` field, which currently supports 2
-special boolean attributes: `hidden` and `basic`. By default all artifacts,
-including those created during runtime, have these attributes set to `false`
-That is they are not hidden and not "basic", by default.
+Artifacts in the repository have a `metadata` field, which currently supports
+three special attributes that provide additional artifact management features
+for server administrators: `hidden`, `basic` and `tags`.
 
 The `hidden` attribute controls the artifact's visibility in the GUI. This is
-explained in detail [here]({{< ref "http://localhost:1313/docs/artifacts/security/#hidden-artifacts" >}}).
+explained in more detail
+[here]({{< ref "/docs/artifacts/security/#hidden-artifacts" >}}).
 
 The `basic` attribute is used to designate artifacts that can be collected by
 users who have only the `COLLECT_BASIC` (Collect Basic Client) permission. Such
@@ -143,7 +144,19 @@ low-privilege users can only collect these specially designated artifacts. This
 is explained in more detail
 [here]({{< ref "/docs/artifacts/security/#basic-artifacts" >}}).
 
-These attributes are set using the
+The `tags` attribute allows grouping artifacts into distinct groups,
+independent of their names. In previous versions we used an artifact name prefix
+to distinguish and group artifacts. This is useful for broad artifacts like
+Windows, Linux etc. but proved to be problematic for imported artifacts such as
+those from the community-contributed [Artifact Exchange]({{< ref "/exchange/" >}}),
+particularly when other artifacts need to refer to an artifact by it's original name.
+
+The artifacts screen supports
+[searching for tags]({{< ref "#searching-artifacts-by-tag" >}}).
+
+The metadata attributes are set for new artifacts using the
+[artifact_set]({{< ref "/vql_reference/server/artifact_set/" >}})
+function, or can be updated for existing artifacts using the
 [artifact_set_metadata]({{< ref "/vql_reference/server/artifact_set_metadata/" >}})
 function.
 
@@ -161,6 +174,18 @@ querying the metadata across all artifacts:
 ```vql
 SELECT name, metadata FROM artifact_definitions() WHERE metadata.hidden
 ```
+
+By default all artifacts, including those created during runtime, have the
+`hidden` and `basic` attributes set to `false` That is, they are not hidden and
+not "basic" by default. New artifacts have no `tags` set by default.
+
+Artifact tags can be cleared by using and empty list,
+for example `artifact_set_metadata(name=...,tags=[])`.
+
+Note that when applying a single tag to artifacts, you must ensure that you
+include a trailing comma so that VQL doesn't interpret the list as a string, for
+example to apply the single tag "Triage" you would specify:
+`artifact_set_metadata(name=...,tags=["Triage",])`.
 
 ### Deleting Artifacts
 

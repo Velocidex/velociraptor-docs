@@ -2,6 +2,7 @@
 menutitle: "Miscellaneous"
 title: "Miscellaneous commands"
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 120
 summary: All other commands not previously covered.
@@ -11,7 +12,7 @@ All other commands not previously covered.
 
 ---
 
-#### [ client ]
+### [ client ]
 
 ```text
 client [<flags>]
@@ -23,7 +24,7 @@ client [<flags>]
 
 ---
 
-#### [ csv ]
+### [ csv ]
 
 ```text
 csv [<flags>] <files>...
@@ -94,8 +95,6 @@ Args:
 
 ### [ gui ]
 
-For more information, see
-[Deployment > Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}}).
 
 ```text
 gui [<flags>]
@@ -106,32 +105,36 @@ gui [<flags>]
     --[no-]noclient        Do not bring up a client
 ```
 
+For more information, see
+[Deployment > Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}}).
+
 ----
 
 ### [ hunts reconstruct ]
-
-This command aims to recover lost hunts, which may occur in unusual situations
-like the disk filling up unexpectedly, although its effectiveness depends on the
-completeness of the audit logs. If the audit logs themselves were corrupted or
-truncated, full recovery might not be possible using this method alone.
-
-In newer releases (0.7.0+), the way hunt data is stored has been changed (e.g.,
-using a single snapshot file instead of many individual files) and disk space
-checks are performed before writing, which should reduce the occurrence of
-corruption that necessitates this command. In version 0.7.0 and later, the
-command might rebuild hunts into a `/recovery/...` directory requiring manual
-movement of files after recovery.
-
-The command can be run while the server is running or stopped.
 
 ```text
 hunts reconstruct
     Reconstruct all hunt objects from logs
 ```
 
-**Usage:**
+This command aims to recover lost hunts, which may occur in unusual situations
+like the disk filling up unexpectedly, although its effectiveness depends on the
+completeness of the audit logs. If the audit logs themselves were corrupted or
+truncated, full recovery might not be possible using this method alone.
+
+In recent releases (0.7.0+), the way hunt data is stored has been changed (e.g.
+using a single snapshot file instead of many individual files) and disk space
+checks are performed before writing. This is intended to reduce the corruption
+occurring which would then necessitate use of this command. In version 0.7.0 and
+later, the command will rebuild corrupted hunts into a `/recovery/...` directory
+requiring manual movement of files after recovery.
+
+The command can be run while the server is running or stopped.
+
+##### Example
 
 ```sh
+# first change to the velociraptor user to avoid messing up the datastore's filesystem ACLs
 sudo -u velociraptor bash
 velociraptor hunts reconstruct --config /path/to/server.config.yaml
 ```
@@ -148,33 +151,6 @@ pool_client [<flags>]
     --writeback_dir=.  The directory to store all writebacks.
     --concurrency=10   How many real queries to run.
     --start_rate=20    How many clients per second to start.
-```
-
-----
-
-### [ query ]
-
-For more information, see
-[Deployment > Command line investigation tool]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}).
-
-```text
-query [<flags>] <queries>...
-    Run a VQL query
-
-    -f, --[no-]from_files  Args are actually file names which will contain the VQL query
-        --timeout=0        Time collection out after this many seconds.
-        --org="root"       The Org ID to target with this query
-        --cpu_limit=0      A number between 0 to 100 representing maximum CPU utilization.
-        --format=json      Output format to use (text,json,csv,jsonl).
-        --dump_dir=""      Directory to dump output files.
-        --output=""        A file to store the output.
-        --env=ENV ...      Environment for the query.
-        --scope_file=""    Load scope from here. Creates a new file if file not found
-        --[no-]do_not_update_scope_file
-                           Do not update the scope file with the new scope
-
-Args:
-  <queries>  The VQL Query to run.
 ```
 
 ----
@@ -216,6 +192,8 @@ Args:
   <file>       Zip file to parse
   [<members>]  Members glob to extract
 ```
+
+#### Notes
 
 - If the zip files are secured with the server's X509 certificate then you need
   to provide the config to the command using the `--config` flag so that it can

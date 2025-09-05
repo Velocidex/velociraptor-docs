@@ -1,15 +1,21 @@
 ---
 menutitle: "fuse"
-title: 'The "fuse container" command'
+title: 'The "fuse" command'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 65
 summary: Mount collection archives on folders.
 ---
 
-### [ fuse container ]
+Mount collection archives on folders using [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
+(Filesystem in Userspace).
 
 This command is only available in the Linux binary.
+
+---
+
+### [ fuse container ]
 
 ```text
 fuse container [<flags>] <directory> <files>...
@@ -44,7 +50,7 @@ Args:
   "GetPrivateKeyFromScope: No frontend configuration given" logged in the
   terminal.
 
-**Example:**
+##### Example
 
 ```sh
 # create an empty mount directory

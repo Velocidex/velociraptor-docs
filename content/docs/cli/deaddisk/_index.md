@@ -2,6 +2,7 @@
 menutitle: "deaddisk"
 title: 'The "deaddisk" command'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 50
 summary: "Create a deaddisk configuration"
@@ -32,7 +33,7 @@ Args:
 For this command, either `--add_windows_directory` or `--add_windows_disk` is
 required.
 
-**Examples:**
+##### Examples
 
 1. Generate the remapping config:
 
@@ -48,7 +49,7 @@ or
 velociraptor deaddisk --add_windows_directory /media/mnt/windows_c_drive/ remapping.yaml
 ```
 
-2. run the client with the remapping config file:
+2. Then run the client with the remapping config file:
 
 ```sh
 velociraptor client -c ./client.config.yaml --remap ./remapping.yaml
@@ -61,10 +62,23 @@ and Windows partitions mounted to folders.
 
 From version 0.74.4 this CLI command uses the artifact
 `Generic.Utils.DeadDiskRemapping` internally to generate the remapping
-configuration file. So you can use this artifact in the GUI if you prefer - the
+configuration file. You can use this artifact in the GUI if you prefer - the
 resulting config will be identical since both methods use the same VQL.
 
-You can also define your own customized version of the
+It's therefore essentially equivalent to running the `query` command:
+
+```sh
+velociraptor query "SELECT * FROM Artifact.Generic.Utils.DeadDiskRemapping(ImagePath='/path/to/image.dd', Hostname='Some Host')" --dump_dir .
+```
+
+or the `artifacts collect` and `unzip` commands:
+
+```sh
+velociraptor artifacts collect Generic.Utils.DeadDiskRemapping --args ImagePath='/path/to/image.dd' --args Hostname='Some Host' --output remapping.zip
+velociraptor unzip remapping.zip /uploads/data/remapping.yaml
+```
+
+You can define your own customized version of the
 `Generic.Utils.DeadDiskRemapping` artifact if the default artifact does not suit
 your specific analysis requirements, for example simple (non-LVM) Linux systems
 or non-NTFS disk images. If you load your custom artifact definition from a

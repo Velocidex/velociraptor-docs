@@ -11,7 +11,7 @@ chapter: false
 summary: "How to create and manage artifacts"
 ---
 
-In this section we look at managing artifacts using the GUI, VQL and the CLI.
+In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
 
 {{% include-content "/docs/gui/artifacts/" %}}
 

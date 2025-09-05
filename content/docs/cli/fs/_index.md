@@ -15,16 +15,16 @@ The commands use Velociraptor's [accessors]({{< ref "/vql_reference/accessors/" 
 
 The supported accessors for the `fs` commands are:
 
-- file (default accessor)
-- ntfs
-- reg | registry
-- raw_reg
-- zip
-- lazy_ntfs
-- file_links
-- fs (a Velociraptor filestore)
+- `file` (the default accessor)
+- `ntfs`
+- `reg` | `registry`
+- `raw_reg`
+- `zip`
+- `lazy_ntfs`
+- `file_links`
+- `fs` (a Velociraptor filestore)
 
-Paths must be absolute paths. Glob patterns can be used.
+Paths must be specified as absolute paths. Glob patterns can be used.
 
 The default output format is jsonl.
 
@@ -55,7 +55,7 @@ Args:
   [<path>]  The path or glob to list
 ```
 
-**Examples:**
+##### Examples
 
 ```text
 velociraptor fs ls "C:\\Windows\\System32\\*.exe"
@@ -99,7 +99,7 @@ Args:
   <dumpdir>  The directory to store files at.
 ```
 
-**Example:**
+##### Example
 
 ```text
 velociraptor --config ./server.config.yaml fs cp -l --accessor=fs "/**/*.msi" ../MSI
@@ -127,13 +127,6 @@ Args:
 
 ### [ fs rm ]
 
-Equivalent VQL:
-
-```vql
-SELECT FullPath, Size, Mode.String AS Mode, Mtime, file_store_delete(path=FullPath) AS Deletion
-FROM glob(globs=path, accessor=accessor)
-```
-
 ```text
 fs rm <path>
     Remove file (only filestore supported)
@@ -143,4 +136,11 @@ fs rm <path>
 
 Args:
   <path>  The path or glob to remove
+```
+
+This command is equivalent to running the following VQL:
+
+```vql
+SELECT FullPath, Size, Mode.String AS Mode, Mtime, file_store_delete(path=FullPath) AS Deletion
+FROM glob(globs=path, accessor=accessor)
 ```

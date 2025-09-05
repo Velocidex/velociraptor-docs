@@ -42,7 +42,7 @@ SELECT *
 FROM glob(globs='C:\\Users\\**\\*.exe')
 ```
 
-{{% notice info "String escaping and VQL" %}}
+{{% notice info "String escaping in VQL" %}}
 
 Strings in VQL can include a backslash escape sequence. Since Windows
 paths use backslashes for the path separator you will need to escape
@@ -265,11 +265,24 @@ when you're using artifacts such as:
 - [`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}})
 - [`Generic.Utils.DeadDiskRemapping`]()
 
-which already have the necessary remapping logic included. If you're creating
-your own artifact that need to do this remapping then you can import the
-`export` section from
+which already have the necessary remapping logic included.
+
+{{% notice tip %}}
+
+Any artifacts that look into the `HKEY_USERS` registry hive should use the
+`Windows.Registry.NTUser` artifact instead of accessing the hive via the Windows
+registry API. The API only makes the currently logged in users available in that
+hive, so if we rely on the Windows API we will miss any settings for users who
+are not currently logged on.
+
+If you're creating your own artifact that need to do this remapping then you can
+[import]({{< ref "/docs/artifacts/export_imports/#imports" >}})
+the `export` section from
 [`Windows.Registry.NTUser`]({{< ref "/artifact_references/pages/windows.registry.ntuser/" >}})
-which contains the necessary VQL logic.
+which contains the necessary VQL remapping logic.
+
+{{% /notice %}}
+
 
 Here, for didactic purposes only, we're going to look at a simple example that
 combines the `ntuser.dat` files from multiple users and prefixes their paths

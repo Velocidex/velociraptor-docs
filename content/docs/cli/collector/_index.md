@@ -9,15 +9,15 @@ summary: "Build an offline collector"
 
 Builds an offline collector.
 
+Typically offline collectors are built using a
+[user-friendly "wizard"-style workflow]({{< ref "/docs/offline_triage/#offline-collections" >}})
+in the GUI. This command allows you to do the same thing on the command line,
+and is mainly intended to support automated build environments. For new users
+the GUI is the recommended way to accomplish the task.
+
 ---
 
 ### [ collector ]
-
-Typically offline collectors are built using a
-[user-friendly workflow]({{< ref "/docs/offline_triage/#offline-collections" >}})
-in the GUI. This command allows you to do the same thing on the command line,
-and is intended to support automated build environments. For new users the GUI
-is definitely the preferred way to accomplish the task.
 
 ```text
 collector [<flags>] [<spec_file>]
@@ -29,8 +29,8 @@ Args:
   [<spec_file>]  A Spec file to use.
 ```
 
-Run without any arguments to print an example spec file, which you can then
-customize and use to build a new offline collector.
+Run the command without any arguments to print an example spec file, which you
+can then customize and use to build a new offline collector.
 
 ```sh
 velociraptor collector > sample.spec.yaml

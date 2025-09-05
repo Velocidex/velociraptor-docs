@@ -25,18 +25,16 @@ This release improves a number of GUI features.
 
 Previously it was only possible to delete flows, clients, artifacts or
 hunts one at the time. However, in this release it is now possible to
-highlight a set of hunts by clicking the first in the range, then
-pressing shift, then clicking the last in the range.
+highlight a set of items by clicking the first item in the range, then
+pressing SHIFT, then clicking the last in the range.
 
-This allows deleting many hunts at once from the GUI.
+This allows deleting many items at once from the GUI. The same process works for
+deleting multiple clients, multiple artifacts in the artifacts viewer, multiple
+notebooks, and multiple collections from a client.
 
 ![Selecting multiple flows for deletion](multi-select.svg)
 
-The same process works on deleting multiple clients, multiple
-artifacts in the artifacts viewer, multiple notebooks, and multiple
-collections from a client.
-
-### Artifact tagging
+### Artifact Tagging
 
 As Velociraptor is used by more and more people, we are seeing many
 public artifact sources becoming widely available for users to add to
@@ -55,10 +53,13 @@ In this release, Velociraptor introduces the concept of a `Tag` on the
 artifact. Tags are kept separately from the artifact itself, and can
 be considered part of the artifact metadata.
 
-You can add tags using the [artifact_set_metadata()]({{< ref "/vql_reference/server/artifact_set_metadata/" >}}) VQL function, which is used in certain import artifacts. This allows grouping of similar artifacts together.
+You can add tags using the
+[artifact_set_metadata]({{< ref "/vql_reference/server/artifact_set_metadata/" >}})
+VQL function, which is used in certain import artifacts.
+This allows grouping of similar artifacts.
 
 The GUI will add a new search category for each tag to allow the user
-to easily see all artifacts from the same tag.
+to easily see all artifacts that have the same tag.
 
 ![Artifacts can be tagged based on their import source](artifact_tags.svg)
 
@@ -207,55 +208,58 @@ allowed to read on the server using [a configuration option]({{< ref
 
 ## Client improvements
 
-### Reworking Lnk parser
+### Reworked Lnk parser
 
 The `Lnk` parser is used in many artifacts like
 `Windows.Forensics.Shellbags`, `Windows.Forensics.Lnk`, and
 `Windows.Forensics.JumpLists`.
 
-The artifact is now more complete with support to many shell bag
+The artifact is now more complete with support for many shellbag
 types.
 
 ### Added Windows.Forensics.NotepadParser
 
-The new notepad available in Windows 11 provides a lot of valuable forensic information. This is now implemented in Velociraptor based on research by [ogmini](https://github.com/ogmini/Notepad-State-Library).
+The new notepad available in Windows 11 provides a lot of valuable forensic
+information. This is now implemented in Velociraptor based on research by
+[ogmini](https://github.com/ogmini/Notepad-State-Library).
 
-### Removing some large artifacts
+### Removal of some large artifacts
 
-Over time Velociraptor has developed many projects for curating and
-managing larger, more complex artifacts. As these artifacts become
-more complex and powerful, they are managed outside the Velociraptor
-project itself. This has the advantage of a separate release cycle to
-Velociraptor, allowed more rapid developments and innovations.
+Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex artifacts. As some artifacts became more
+complex and powerful, we moved them into separate projects so that they could be
+developed and managed independently of the main Velociraptor project. Splitting
+these off allows for independent release cycles, thus facilitating more rapid
+development and innovation.
 
-The following artifacts were removed from the built in set, and are
-now available to download using the `Server.Import.Extras` server
-artifact:
+The following artifacts were removed from the built-in set, and are now
+available to download using the `Server.Import.Extras` server artifact:
 
 1. The `Windows.KapeFiles.Targets` artifact is now managed as part of
-   the [Velociraptor Triage
-   Project](https://triage.velocidex.com/). This project intends to
-   develop a set of rules that are used for specifying uploading of
-   files.
+   the [Velociraptor Triage Project](https://triage.velocidex.com/).
+
+   This project intends to develop a set of rules that are used for specifying
+   the collection of files from the endpoint.
 
    Building on from the `KapeFiles` repository, this project now
    contains the `Windows.Triage.Targets` artifact based on the old
    `KapeFiles` project, and the `Linux.Triage.UAC` artifact based on
    the `UAC` project.
 
-2. The `Generic.Forensic.SQLiteHunter` artifact is now managed at
-   https://sqlitehunter.velocidex.com/ - aiming to be a one stop shop
-   for all `SQLite`, `ESE` and many other forensic artifacts.
+2. The `Generic.Forensic.SQLiteHunter` artifact is now managed under the
+   [Velociraptor SQLite Hunter Project](https://sqlitehunter.velocidex.com/)
 
-3. [The Velociraptor Sigma Project](https://sigma.velocidex.com/) is
-   now available to download extra artifacts allowing rapid Sigma
-   based triage and monitoring rules.
+   This aims to be a one-stop shop for all `SQLite`, `ESE` and many other
+   database-oriented forensic artifacts.
 
-4. [The Registry Hunter](https://registry-hunter.velocidex.com/) is a
+3. [Velociraptor Sigma Project](https://sigma.velocidex.com/) is the home of
+   our artifacts that implement rapid Sigma-based triage and monitoring rules.
+
+4. [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/) is our
    project to develop sophisticated registry analysis modules.
 
-5. [The Artifact Exchange]({{< ref "/exchange/" >}}) is a community
-   based repository of artifacts.
+5. [The Velociraptor Artifact Exchange]({{< ref "/exchange/" >}}) is our
+   repository of community-contributed artifacts.
 
 
 ## Conclusions

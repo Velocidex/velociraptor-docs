@@ -2,17 +2,17 @@
 menutitle: "server_service"
 title: 'The "server_service" command group'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
-weight: 70
+weight: 75
 summary: Manipulate the Velociraptor server service on Windows.
 ---
 
-Manipulate the Velociraptor **server service** on Windows (only).
+Manipulate the Velociraptor **server service** (on Windows only).
 
 This command is only available in the Windows binary. For production deployments
-installing the server on Windows is not recommended, however this command
-group does facilitate it for the purpose of very small or non-production
-deployments.
+installing the server on Windows is not recommended, however this command group
+does facilitate it for the purpose of very small or non-production deployments.
 
 The `server_service` command group functions much like Microsoft's Service
 Control Manager (`sc.exe`), with the exception being that it can also install or

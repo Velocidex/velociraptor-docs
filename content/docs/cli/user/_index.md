@@ -2,6 +2,7 @@
 menutitle: "user"
 title: 'The "user" command group'
 date: 2025-05-20
+last_reviewed: 2025-07-06
 draft: false
 weight: 100
 summary: "Commands for working with users"
