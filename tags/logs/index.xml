@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Logs on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/logs/</link><description>Recent content in Logs on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 29 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/logs/index.xml" rel="self" type="application/rss+xml"/><item><title>Disabled Event Log files</title><link>https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/</link><pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/</guid><description>&lt;h3 id="detecting-malicious-activity-with-velociraptor">Detecting malicious activity with Velociraptor&lt;/h3>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d339dd3ea080ed24410e6996ca79208b">
+ &lt;div data-featherlight="#d339dd3ea080ed24410e6996ca79208b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/https://cdn-images-1.medium.com/max/11520/0*8Z6QxIV2lCx4PYPT" alt="Photo by Jonny Caspari on Unsplash" />
+ &lt;/div>
+ &lt;figcaption>
+ Photo by Jonny Caspari on Unsplash
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;em>Photo by &lt;a href="https://unsplash.com/@jonnysplsh?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" >Jonny Caspari&lt;/a>
+ on &lt;a href="https://unsplash.com?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" >Unsplash&lt;/a>
+&lt;/em>&lt;/p>
+&lt;p>Windows information security techniques are heavily reliant on the availability and integrity of event logs. Many state of the art systems use event log forwarding to aggregate information from endpoints and detect malicious behavior across the enterprise.&lt;/p>
+&lt;p>But how reliable really are event logs? I was playing around with the Windows Event Viewer to understand how event logs can be interfered with in practice. We &lt;a href="https://medium.com/velociraptor-ir/windows-event-logs-d8d8e615c9ca" target="_blank" >previously covered&lt;/a>
+ the general structure of the Windows Event Log system, so you might want to have a quick read of &lt;a href="https://medium.com/velociraptor-ir/windows-event-logs-d8d8e615c9ca" target="_blank" >that post&lt;/a>
+ before you dive into this one.&lt;/p>
+&lt;h3 id="example-bits-transfer">Example: BITS transfer&lt;/h3>
+&lt;p>For this post I will use the example of a BITS transfer using bitsadmin.exe. BITS is a transfer service built into the Windows operating system, normally used to fetch windows (or application) updates. However, is it also commonly used by threat actors to deliver malicious payloads because BITS is typically trusted by endpoint tools (since it is a standard windows service). See &lt;a href="https://attack.mitre.org/techniques/T1197/" target="_blank" >Mitre Att&amp;amp;ck T1197&lt;/a>
+.&lt;/p>
+&lt;p>For this test I will use bitsadmin to download a page from the internet and store it on the filesystem. By default, the BITS service will generate several log messages in the log file &lt;code>%SystemRoot%\System32\Winevt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx&lt;/code> as shown in the screenshot below&lt;/p>
+&lt;p>The command I will run fetches a file from the internet and stores it locally&lt;/p>
+&lt;pre>&lt;code class="language-shell">bitsadmin.exe /transfer /download /priority foreground [https://www.google.com](https://www.google.com) c:\Users\test\test.ps1
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8a851091e6ae415d3b5162ad443fd9f7">
+ &lt;div data-featherlight="#8a851091e6ae415d3b5162ad443fd9f7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1o74NoHxr20avTkbAplRlHQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Many tools rely on the presence of these eventlog messages to escalate an alert for this malicious activity.&lt;/p>
+&lt;p>While I was playing with this technique I noticed an interesting option in the Windows Event Viewer: &lt;code>disabled Log&lt;/code> available by simply right clicking on the log file.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6e9874addba7850bd85c394a349a2920">
+ &lt;div data-featherlight="#6e9874addba7850bd85c394a349a2920" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1oOg5MAjs9uLe6SoqcRhBGg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Sure enough when the log file is disabled, no events are recorded in the event log at all! Any solutions that rely on detecting event logs will be completely blinded by this setting!&lt;/p>
+&lt;h3 id="what-does-this-setting-do">What does this setting do?&lt;/h3>
+&lt;p>I wanted to know if I can detect when a log file was disabled on an
+endpoint. My working hypothesis was that this UI would change some
+registry keys and I know how to collect those!&lt;/p>
+&lt;p>I started up procmon and clicked the button to disable the log. After
+some applications of filtering I was able to narrow it down to the
+following value
+&lt;code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Bits-Client/Operational\Enabled&lt;/code>
+which is set to 0 for disabling the log file.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9a2c368a9722b5fe625691c063e42156">
+ &lt;div data-featherlight="#9a2c368a9722b5fe625691c063e42156" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/12sb1bdsZuU3ghB9CTWVAZQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="detecting-this-setting">Detecting this setting&lt;/h3>
+&lt;p>Ok, great, I want to write a Velociraptor artifact to detect the state of log files. To develop the required VQL I will create a new notebook and simply write the VQL in it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8af09c85edc53d9182ce6e42e6c1effe">
+ &lt;div data-featherlight="#8af09c85edc53d9182ce6e42e6c1effe" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1qh7B-LH8fyaxXauzuqI0dw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In this query we glob for all keys within the registry query above and extract the channel name (as the name of the subkey) and the Enabled valued. For the sake of simplicity I filtered the above to only examine the bits channels we are currently interested in.&lt;/p>
+&lt;h3 id="other-avenues">Other avenues&lt;/h3>
+&lt;p>Running the above query shows all the channels (i.e. log files) that are disabled, but there are other ways to disable logging.&lt;/p>
+&lt;p>Lets look back at the procmon output above we see another interesting value is being set&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f0298302c593bd09d7848d3275e0ed00">
+ &lt;div data-featherlight="#f0298302c593bd09d7848d3275e0ed00" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1WJRSRw7s8d_gSVwaRZ8p8w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>What happens if we change this Enabled value to 0? Lets try this, and reboot…&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e2e3d9baa5e756e02f7026821ac4f801">
+ &lt;div data-featherlight="#e2e3d9baa5e756e02f7026821ac4f801" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1g-lvFbFw2yO_c8DqOvEvjQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This time logging is also disabled, but the log file is showing as enabled!&lt;/p>
+&lt;p>This second registry key disables the provider itself, while the previous method disables the channel (log file). The GUID in the registry key corresponds to the provider name. As described in our previous article the provider name can be derived from the registry key &lt;code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\&lt;/code> which can be used to resolve the GUI to a name&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="50bcfa85b0a56c425cc1c109b17a942e">
+ &lt;div data-featherlight="#50bcfa85b0a56c425cc1c109b17a942e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1bgC3WMCTWXcFxudRwqFxhQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s write some VQL to display the Enabled status of the BITS provider.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0ace34778c9650d969be62f60638b3dc">
+ &lt;div data-featherlight="#0ace34778c9650d969be62f60638b3dc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1WUWEOGrqJyO7sRYoYFrZtA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This VQL also resolves the GUID to a provider name via the &lt;code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\&lt;/code> key as well as showing the modification time of the registry key in question.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7826dbfbaec42ed847c3385353f16c89">
+ &lt;div data-featherlight="#7826dbfbaec42ed847c3385353f16c89" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1UMnEn1TwNkXMpFW0NZqNww.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="converting-to-an-artifact">Converting to an artifact&lt;/h3>
+&lt;p>Armed with the above VQL queries, we can now write an artifact that collects this information from the endpoint. I also added some potential filters to make my artifact more targeted for hunting. You can see the full source of the &lt;code>Windows.EventLogs.Modifications&lt;/code> artifact &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/EventLogs/Modifications.yaml" target="_blank" >here&lt;/a>
+.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="067c0c629763561f91be20a9589f18af">
+ &lt;div data-featherlight="#067c0c629763561f91be20a9589f18af" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1qjwC5Ct0Y9udkI0QwPRUUg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s see all the logs that were disabled or enabled in the past day&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="74b2b8f9aeafd4efb43a52c7e63af6de">
+ &lt;div data-featherlight="#74b2b8f9aeafd4efb43a52c7e63af6de" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1lfyqJjJym9MFUa0xDDfnsw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Within 2 seconds we see that the BITS admin channel was manipulated within the previous day&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="780547ff1be612331b02268a3b6852a8">
+ &lt;div data-featherlight="#780547ff1be612331b02268a3b6852a8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1Kk0EeHBU1e1AaofCPf6PQQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>And the provider was also disabled very recently.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="2f7110acfddcba94eff01fcc78b7d2ef">
+ &lt;div data-featherlight="#2f7110acfddcba94eff01fcc78b7d2ef" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/17IoSXoPVQYO0G3ZAKT5Ltg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Next stop is to perform a hunt across my enterprise and look for recently modified channel settings, as well as stacking across my endpoints to see which log channels are disabled on few machines but are generally supposed to be enabled.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="aeb76a20a54be1c3693645bd04c53b6c">
+ &lt;div data-featherlight="#aeb76a20a54be1c3693645bd04c53b6c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1tcJ3Y2gO3ILG1FtpMghThg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above screenshot I ran a hunt on about 100 endpoints which have the default enabled logs, and a single endpoint with that log disabled. The stacking operation (GROUP BY) immediately reveals the outliers.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>This was a fun little exercise in trying to understand event logging in Windows. Adversaries often just disable logs during the period of their activities, so solutions completely dependent on log files are very vulnerable to these techniques.&lt;/p>
+&lt;p>Velociraptor’s power is in being able to quickly and easily recover forensic evidence on activity on the endpoint. In most environments disabling log file or providers is not a legitimately common, so hunting for such activity produces high value signals and leads to a better understanding of how attackers are able to hide their tracks.&lt;/p>
+&lt;p>The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses on &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+ or join us on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+.&lt;/p>
+&lt;h3 id="ps">P.S.&lt;/h3>
+&lt;p>You can automate event log enable/disable using the following powershell&lt;/p>
+&lt;pre>&lt;code class="language-powershell">$logName = ‘Microsoft-Windows-DNS-Client/Operational’
+$log = New-Object System.Diagnostics.Eventing.Reader.EventLogConfiguration $logName
+$log.IsEnabled=$true
+$log.SaveChanges()
+&lt;/code>&lt;/pre></description></item></channel></rss>

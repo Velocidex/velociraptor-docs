@@ -1,0 +1,60 @@
+name: Windows.Applications.DefenderQuarantineExtract
+author: "Eduardo Mattos - @eduardfir"
+description: |
+   Extracts Quarantine Files from Windows Defender.
+
+   This artifact decrypts the RC4 encrypted Windows Defender Quarantined files
+   and returns information about it. If it is a PE, it also parses the PE.
+
+   You may also choose to upload the extracted binaries for deeper malware analysis.
+
+reference:
+  - https://reversingfun.com/posts/how-to-extract-quarantine-files-from-windows-defender
+
+type: CLIENT
+
+parameters:
+   - name: TargetGlob
+     description: Target Files
+     default: C:/ProgramData/Microsoft/Windows Defender/Quarantine/ResourceData/*/*
+   - name: UploadDecodedFiles
+     description: Select to upload decoded quarantined files.
+     type: bool
+   - name: DefenderRC4KeyHex
+     default: "1e87781b8dbaa844ce69702c0c78b786a3f623b738f5edf9af83530fb3fc54faa21eb9cf1331fd0f0da954f687cb9e18279697900e53fb317c9cbce48e23d05371ecc15951b8f3649d7ca33ed68dc9047e82c9baad9799d0d458cb847ca9ffbe3c8a775233557dde13a8b14087cc1bc8f10f6ecdd083a959cff84a9d1d50755e3e191818af23e2293558766d2c07e25712b2ca0b535ed8f6c56ce73d24bdd0291771861a54b4c285a9a3db7aca6d224aeacd621db9f2a22ed1e9e11d75bed7dc0ecb0a8e68a2ff1263408dc808dffd164b116774cd0b9b8d05411ed6262e429ba495676b8398db2f35d3c1b9ced52636f2765e1a95cb7ca4c3ddabddbff38253"
+
+sources:
+  - query: |
+        LET Targets <= SELECT Mtime, Name, OSPath FROM glob(globs=TargetGlob)
+
+        LET DefenderRC4Key <= unhex(string=DefenderRC4KeyHex)
+
+        LET DeQuarantine = SELECT read_file(filename=crypto_rc4(key=DefenderRC4Key, string=read_file(filename=OSPath, accessor="file")), accessor="data", offset=204) as DecodedFile,
+                            Name,
+                            OSPath,
+                            Mtime
+                           FROM Targets
+
+        LET TempQuery = SELECT magic(path=DecodedFile, accessor="data") as Magic,
+                            hash(path=DecodedFile, accessor="data") as Hash,
+                            DecodedFile,
+                            Name,
+                            OSPath,
+                            Mtime
+                        FROM DeQuarantine
+
+        SELECT
+            Mtime,
+            Magic,
+            parse_pe(file=DecodedFile, accessor="data") as ParsedPE,
+            Hash,
+            OSPath,
+            if(condition=UploadDecodedFiles,
+             then={
+                SELECT
+                upload(file=DecodedFile,
+                    accessor="data",
+                    name=Name + "_Defender_Quarantine_Extract.bin") as FileDetails
+                FROM TempQuery
+             }) as Upload
+        FROM TempQuery
