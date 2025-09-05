@@ -131,7 +131,7 @@ To really verify a signature, Windows must verify the trust chain by following t
 
 Velociraptor can inspect the certificate root store using the certificates() plugin. This plugin uses the Windows APIs to query the root store and report the trusted certificates. It is typically important to verify the trusted certificate root store since if a adversary adds a new certificate to the root store, their executables will be trusted by the OS.
 
-For example, I added the Velociraptor CA (a self signed CA cert) to the windows root store below. I can see now that Windows trusts this certificate
+For example, I added the Velociraptor CA (a self-signed CA cert) to the windows root store below. I can see now that Windows trusts this certificate
 
 ![](../../img/1wfJvLYsB8lD2iCMkHmMk2g.png)
 

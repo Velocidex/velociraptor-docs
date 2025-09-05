@@ -4,21 +4,23 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact will parse MEGASync logs and enables using regex to search for
+Parses MEGASync logs and allows using regular expressions to search for
 entries of interest.
 
-With UploadLogs selected a copy of the logs are uploaded to the server.
-SearchVSS enables search over VSS and dedup support.
+With `UploadLogs` selected a copy of the logs are uploaded to the server.
+
+`SearchVSS` enables searching over VSS with automatic deduplication.
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.MegaSync
 description: |
-  This artifact will parse MEGASync logs and enables using regex to search for
+  Parses MEGASync logs and allows using regular expressions to search for
   entries of interest.
 
-  With UploadLogs selected a copy of the logs are uploaded to the server.
-  SearchVSS enables search over VSS and dedup support.
+  With `UploadLogs` selected a copy of the logs are uploaded to the server.
+
+  `SearchVSS` enables searching over VSS with automatic deduplication.
 
 author: "Matt Green - @mgreen27"
 

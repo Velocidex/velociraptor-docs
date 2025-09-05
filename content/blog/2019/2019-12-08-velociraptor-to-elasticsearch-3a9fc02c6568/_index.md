@@ -95,7 +95,21 @@ While Velociraptor doesn’t directly support Logstash, integration can be achie
 
 A very simple Logstash Input configuration which uses that additional plugin, in conjunction with the Logstash HTTP Input plugin, will set up the desired Elastic emulation:
 
-<script src="https://gist.github.com/predictiple/a78dad17a459294d40a6d953df14f2a0.js"></script>
+```json
+input {
+
+  http {
+    port => 9200
+    additional_codecs => { "application/json" => "es_bulk" }
+    response_headers => {
+        "Access-Control-Allow-Origin" => "*"
+        "Content-Type" => "application/json"
+        "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept"
+    }
+  }
+
+}
+```
 
 With the above in place Velociraptor will think it’s talking to Elastic’s Bulk API so the configuration steps described in the previous sections all remain equally applicable and unchanged in this scenario. No special configurations are required on the Velociraptor side.
 

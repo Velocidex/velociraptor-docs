@@ -22,6 +22,7 @@ Arg | Description | Type
 service|The name of the driver service to install.|string
 image_path|If specified we write a physical memory image on this path.|string
 compression|When writing a memory image use this compression (default none) can be none, s2, snappy, gzip.|string
+driver_path|Specify where to extract the driver - by default we use the temp folder|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 
@@ -52,7 +53,7 @@ number of algorithms such as:
 ### Example
 
 ```vql
-SELECT winpmem(image_path='c:/test.dd', compression='s2') FROM scope()"
+SELECT winpmem(image_path='c:/test.dd', compression='s2') FROM scope()
 ```
 
 

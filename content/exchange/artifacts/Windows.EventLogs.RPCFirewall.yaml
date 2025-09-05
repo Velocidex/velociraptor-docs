@@ -1,19 +1,25 @@
 name: Windows.EventLogs.RPCFirewall
 description: |
    Collect RPC Firewall logs from Windows hosts
-   
+
 reference:
   - https://github.com/zeronetworks/rpcfirewall
-  
+
 author: Wes Lambert - @therealwlambert
 parameters:
    - name: TargetGlob
      default: '%SystemRoot%\System32\Winevt\Logs\RPCFW.evtx'
-   - name: TargetVSS
-     type: bool
    - name: IdRegex
      default: .
      type: regex
+   - name: VSSAnalysisAge
+     type: int
+     default: 0
+     description: |
+       If larger than zero we analyze VSS within this many days
+       ago. (e.g 7 will analyze all VSS within the last week).  Note
+       that when using VSS analysis we have to use the ntfs accessor
+       for everything which will be much slower.
 
 sources:
   - precondition:
@@ -33,7 +39,7 @@ sources:
             EventRecordID,
             { SELECT Description FROM EventDescriptionTable WHERE ID = EventID} AS Description,
             EventData,
-            if(condition=EventID=3, 
+            if(condition=EventID=3,
               then=dict(
                 Function=EventData.Data[0],
                 ProcessID=EventData.Data[1],
@@ -57,5 +63,5 @@ sources:
             Message
         FROM Artifact.Windows.EventLogs.EvtxHunter(
             EvtxGlob=TargetGlob,
-            SearchVSS=TargetVSS,
+            VSSAnalysisAge=VSSAnalysisAge,
             IdRegex=IdRegex)

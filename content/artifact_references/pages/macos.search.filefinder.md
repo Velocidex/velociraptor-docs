@@ -87,6 +87,10 @@ parameters:
     default:
     description: A yara rule to search for matching files.
 
+  - name: Fetch_Xattr
+    default: N
+    type: bool
+
   - name: Upload_File
     default: N
     type: bool
@@ -108,6 +112,11 @@ parameters:
     default: Y
     description: If specified we are allowed to follow symlinks while globbing
 
+  - name: UPLOAD_IS_RESUMABLE
+    type: bool
+    default: Y
+    description: If set the uploads can be resumed if the flow times out or errors.
+
 sources:
 - query: |
     LET file_search = SELECT OSPath,
@@ -116,6 +125,7 @@ sources:
                Mtime AS MTime,
                Atime AS ATime,
                Ctime AS CTime,
+               Btime AS BTime,
                IsDir, Mode
         FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
                   accessor="file", nosymlink=DoNotFollowSymlinks)
@@ -147,7 +157,7 @@ sources:
             },
             query={
                SELECT OSPath, Inode, Mode,
-                      Size, ATime, MTime, CTime,
+                      Size, ATime, MTime, CTime, BTime,
                       str(str=String.Data) As Keywords
 
                FROM yara(files=OSPath,
@@ -159,10 +169,13 @@ sources:
         else={SELECT * FROM modified_before})
 
     SELECT OSPath, Inode, Mode, Size, ATime,
-             MTime, CTime, get(field='Keywords') AS Keywords,
+             MTime, CTime, BTime, get(field='Keywords') AS Keywords,
                if(condition=Upload_File and Mode.IsRegular,
                   then=upload(file=OSPath,
                               accessor="file")) AS Upload,
+               if(condition=Fetch_Xattr,
+                  then=xattr(filename=OSPath,
+                              accessor="file")) AS XAttr,
                if(condition=Calculate_Hash and Mode.IsRegular,
                   then=hash(path=OSPath,
                             accessor="file")) AS Hash
@@ -174,6 +187,8 @@ column_types:
   - name: MTime
     type: timestamp
   - name: CTime
+    type: timestamp
+  - name: BTime
     type: timestamp
   - name: Upload
     type: preview_upload

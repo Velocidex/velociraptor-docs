@@ -12,7 +12,7 @@ https://www.nirsoft.net/utils/browsing_history_view.html
 
 NOTE: This binary is treated as malware by many detection engines
 since it is capable of dumping user passwords and search history!!!
-Running it on the endpoint may (hopefully) trigger endpoint defences.
+Running it on the endpoint may (hopefully) trigger endpoint defenses.
 
 BrowsingHistoryView v2.55 - View browsing history of your Web browsers
 Copyright (c) 2012 - 2023 Nir Sofer
@@ -29,7 +29,7 @@ description: |
 
   NOTE: This binary is treated as malware by many detection engines
   since it is capable of dumping user passwords and search history!!!
-  Running it on the endpoint may (hopefully) trigger endpoint defences.
+  Running it on the endpoint may (hopefully) trigger endpoint defenses.
 
   BrowsingHistoryView v2.55 - View browsing history of your Web browsers
   Copyright (c) 2012 - 2023 Nir Sofer
@@ -58,6 +58,10 @@ parameters:
    - name: PARSE_TZ
      default: LOCAL
      description: Default timezone for parsing timestamps
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
 
 sources:
   - precondition:

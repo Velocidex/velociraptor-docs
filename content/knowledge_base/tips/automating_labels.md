@@ -127,10 +127,12 @@ FROM clients()
 
 In the previous example we used data that was already being gathered by the
 `Generic.Client.Info` artifact. In addition, the `Platform` information doesn't
-ever change, so every time you run it you will get the same result. Boring!
+ever change, so every time you run it you will get the same result. That's a bit
+boring, so let's do something more interesting!
 
-Now let's look at applying a label based on data that *isn't* included in the
-default interrogation artifact, and that is dynamic (i.e. will change over time).
+Let's look at applying a label based on data that *isn't* included in the
+default interrogation artifact, and that is dynamic (i.e. where the outcome will
+change over time).
 Here we will use a Sigma rule from the
 [Hayabusa Rules](https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/)
 ruleset.
@@ -147,20 +149,21 @@ The Sigma rule we will be using in this example is
 
 When interrogation happens on the client we want it to also check whether
 Windows Defender has detected any threats in the past 24 hours. This may be a
-somewhat contrived example but it (or something similar) may also have
-realworld usefulness if you are rolling out Velociraptor clients in response to
-an incident. It may be useful to have endpoints flagged based on recent Defender
-detections to aid with triage.
+somewhat contrived example but it (or something similar) may also have realworld
+usefulness in some scenarios, like for example: if you are rolling out
+Velociraptor clients in response to an incident. It may be useful to have
+endpoints flagged based on recent Defender detections to aid with triage.
 
 As explained
-[here](https://docs.velociraptor.app/docs/clients/interrogation/#custom-artifact-override)
-in the documentation, the default interrogation artifact can be overridden with
-a custom version. If such a custom artifact is present on the Velociraptor
-server then all clients will use it.
+[here](https://docs.velociraptor.app/docs/clients/interrogation/#custom-artifact-override),
+the default interrogation artifact can be overridden with a custom version. If
+such a custom artifact is present on the Velociraptor server then all clients
+will use it.
 
-We want to modify the default artifact as little as possible, as advised in
-the artifact's description, so we are only going to add a new source to it: one
-which calls the `Windows.Hayabusa.Rules` artifact.
+When creating our custom version, we want to modify the default artifact as
+little as possible, as advised in the artifact's description, so we are only
+going to add a new source to it: one which calls the `Windows.Hayabusa.Rules`
+artifact.
 
 We do this by editing the default `Generic.Client.Info` artifact. By default the
 name of the edited artifact will be `Custom.Generic.Client.Info` which is

@@ -4,17 +4,17 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Windows maintains DNS lookups for a short time in the DNS cache.
+Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
 
-This artifact collects DNS cache entries using the WMI class MSFT_DNSClientCache.
+Windows maintains DNS lookups for a short time in the DNS cache.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.DNSCache
 description: |
-  Windows maintains DNS lookups for a short time in the DNS cache.
+  Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
 
-  This artifact collects DNS cache entries using the WMI class MSFT_DNSClientCache.
+  Windows maintains DNS lookups for a short time in the DNS cache.
 
 parameters:
   - name: kMapOfRecordType

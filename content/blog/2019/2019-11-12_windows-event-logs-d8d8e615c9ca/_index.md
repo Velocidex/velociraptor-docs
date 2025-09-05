@@ -22,7 +22,46 @@ Consider an incident occurred on one of your systems. You would like to investig
 
 The logs are stored in binary format so you will need to post process the files. Luckily there are a number of tools out there that will do that for you. Here is a typical output from the [`dumpevtx`](https://github.com/Velocidex/evtx) tool for a particular event from the Security.evtx log file:
 
-<script src="https://gist.github.com/scudette/0b88f27e258021eecf7de9b8c0861184.js"></script>
+```json
+C:> dumpevtx.exe parse c:\Windows\System32\winevt\Logs\Security.evtx
+{
+  "System": {
+   "Provider": {
+    "Name": "Microsoft-Windows-Security-Auditing",
+    "Guid": "54849625-5478-4994-A5BA-3E3B0328C30D"
+   },
+   "EventID": {
+    "Value": 4672
+   },
+   "Version": 0,
+   "Level": 0,
+   "Task": 12548,
+   "Opcode": 0,
+   "Keywords": 9232379236109516800,
+   "TimeCreated": {
+    "SystemTime": 1561729832.644008
+   },
+   "EventRecordID": 35,
+   "Correlation": {
+    "ActivityID": "6EF16E1E-2DB8-0001-DA6F-F16EB82DD501"
+   },
+   "Execution": {
+    "ProcessID": 612,
+    "ThreadID": 656
+   },
+   "Channel": "Security",
+   "Computer": "DESKTOP-6CBJ8MJ",
+   "Security": {}
+  },
+  "EventData": {
+   "SubjectUserSid": "S-1-5-90-0-1",
+   "SubjectUserName": "DWM-1",
+   "SubjectDomainName": "Window Manager",
+   "SubjectLogonId": 67602,
+   "PrivilegeList": "SeAssignPrimaryTokenPrivilege\r\n\t\t\tSeAuditPrivilege"
+  }
+ }
+```
 
 This event looks interesting but it is not quite clear what it is really talking about. We see some potentially useful items like **SubjectUserSid** and **PrivilegeList** but we are missing some critical context around this message.
 

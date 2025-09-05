@@ -19,15 +19,26 @@ carousel:
    image: hunt.png
    description: Don't wait until an event occurs. Actively search for suspicious activities using our library of forensic artifacts, then customize to your specific threat hunting needs.
 
+navs:
+ - name: Overview
+   description: Velociraptor overview
+   link: /docs/overview/
+ - name: Quickstart
+   description: Quick Start
+   link: /docs/deployment/quickstart/
+ - name: Security
+   description: Lean about Velociraptor Security
+   link: /docs/overview/security/
+ - name: Configure
+   description: Configuration File Reference
+   link: /docs/deployment/references/
+ - name: Troubleshooting
+   description: Troubleshooting deployments
+   link: /docs/troubleshooting/
+
 ---
 
-{{% notice warning "CVE-2024-10526 published on 2024-11-03" %}}
-
-Please upgrade your client to mitigate `CVE-2024-10526` to at least
-release `0.73.3`. Alternatively run a hunt to update file permissions.
-[More details](/announcements/advisories/cve-2024-10526)
-
-{{% /notice %}}
+{{% navs %}}
 
 ## Velociraptor - Digging Deeper!
 

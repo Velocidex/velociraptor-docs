@@ -7,11 +7,11 @@ tags: [Client Artifact]
 This Artifact will search and extract ScriptBlock events (Event ID 4104) from
 Powershell-Operational Event Logs.
 
-Powershell is commonly used by attackers across all stages of the attack
+PowerShell is commonly used by attackers across all stages of the attack
 lifecycle. A valuable hunt is to search Scriptblock logs for signs of
 malicious content.
 
-There are several parameter's available for search leveraging regex.
+There are several parameters available for search leveraging regex.
   - DateAfter enables search for events after this date.
   - DateBefore enables search for events before this date.
   - SearchStrings enables regex search over scriptblock text field.
@@ -19,7 +19,7 @@ There are several parameter's available for search leveraging regex.
   - PathWhitelist enables a regex whitelist for path of scriptblock.
   - LogLevel enables searching on type of log. Default is Warning level which
   is logged even if ScriptBlock logging is turned off when suspicious keywords
-  detected in Powershell interpreter. See second reference for list of keywords.
+  detected in PowerShell interpreter. See second reference for list of keywords.
   - SearchVSS enables VSS search.
 
 
@@ -31,11 +31,11 @@ description: |
   This Artifact will search and extract ScriptBlock events (Event ID 4104) from
   Powershell-Operational Event Logs.
 
-  Powershell is commonly used by attackers across all stages of the attack
+  PowerShell is commonly used by attackers across all stages of the attack
   lifecycle. A valuable hunt is to search Scriptblock logs for signs of
   malicious content.
 
-  There are several parameter's available for search leveraging regex.
+  There are several parameters available for search leveraging regex.
     - DateAfter enables search for events after this date.
     - DateBefore enables search for events before this date.
     - SearchStrings enables regex search over scriptblock text field.
@@ -43,7 +43,7 @@ description: |
     - PathWhitelist enables a regex whitelist for path of scriptblock.
     - LogLevel enables searching on type of log. Default is Warning level which
     is logged even if ScriptBlock logging is turned off when suspicious keywords
-    detected in Powershell interpreter. See second reference for list of keywords.
+    detected in PowerShell interpreter. See second reference for list of keywords.
     - SearchVSS enables VSS search.
 
 reference:
@@ -63,13 +63,13 @@ parameters:
     type: regex
     description: "regex search over scriptblock text field."
   - name: StringWhitelist
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
     type: regex
   - name: PathWhitelist
     description: "Regex of path to whitelist."
     type: regex
   - name: LogLevel
-    description: "Log level. Warning is Powershell default bad keyword list."
+    description: "Log level. Warning is PowerShell default bad keyword list."
     type: choices
     default: Warning
     choices:

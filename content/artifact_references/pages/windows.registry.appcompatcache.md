@@ -12,7 +12,7 @@ operating system to identify application compatibility issues. This helps
 developers troubleshoot legacy functions and contains data related to Windows
 features.
 
-Note: 
+Note:
 
 - Windows 10+ systems Execution flag of 1 indicates execution.
 - The appcompatcache artifact does not currently support execution flag in
@@ -31,12 +31,12 @@ description: |
   developers troubleshoot legacy functions and contains data related to Windows
   features.
 
-  Note: 
-  
+  Note:
+
   - Windows 10+ systems Execution flag of 1 indicates execution.
   - The appcompatcache artifact does not currently support execution flag in
   Windows 7 and 8 / 8.1 Systems.
- 
+
 
 reference:
   - https://www.mandiant.com/resources/caching-out-the-val
@@ -99,7 +99,7 @@ export: |
       ["Execution", "x=&gt;x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
     ]],
 
-    # This is the Win7 parser but we dont use it right now.
+    # This is the Win7 parser but we don't use it right now.
     ["HeaderWin7x64", 128, [
       ["Signature", 0, "uint32"],
       ["Entries", 128, "Array", {
@@ -185,7 +185,7 @@ sources:
                 })
 
       -- output results
-      SELECT 
+      SELECT
         Position,
         ModificationTime,
         Path,

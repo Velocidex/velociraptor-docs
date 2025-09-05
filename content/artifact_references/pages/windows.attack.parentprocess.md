@@ -4,7 +4,7 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Maps the Mitre Att&ck framework process executions into artifacts.
+Maps the MITRE Att&ck framework process executions into artifacts.
 
 NOTE: This artifact uses the process tracker. If you also enable the
 Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
@@ -15,7 +15,7 @@ processes.
 <pre><code class="language-yaml">
 name: Windows.Attack.ParentProcess
 description: |
-  Maps the Mitre Att&amp;ck framework process executions into artifacts.
+  Maps the MITRE Att&amp;ck framework process executions into artifacts.
 
   NOTE: This artifact uses the process tracker. If you also enable the
   Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
@@ -35,7 +35,7 @@ parameters:
       A table mapping a process name to its expected parents. Both
       columns are regular expressions. The ProcessName must appear
       only once - you can specify multiple possible parents using
-      regular expressions patterns.
+      regular expressions.
 
     default: |
        ProcessName,ParentRegex

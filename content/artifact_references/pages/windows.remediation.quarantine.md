@@ -4,16 +4,16 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-**Apply quarantine via Windows local IPSec policy**
+Applies quarantine via Windows local IPsec policy.
 
 - By default the current client configuration is applied as an
   exclusion using resolved IP address at time of application.
 
 - A configurable lookup table is also used to generate
-  additional entries using the same syntax as netsh ipsec
+  additional entries using the same syntax as `netsh ipsec`
   configuration.
 
-  - DNS and DHCP are entires here allowed by default.
+  - DNS and DHCP entries are allowed by default.
 
 - An optional MessageBox may also be configured to alert all
   logged in users.
@@ -33,11 +33,11 @@ NOTE:
 - Remember DNS resolution may change. It is highly recommended
   to plan policy accordingly and not rely on DNS lookups.
 
-- Local IPSec policy can not be applied when Domain IPSec policy
+- Local IPsec policy cannot be applied when Domain IPsec policy
   is already enforced. Please configure at GPO level in this case.
 
 - This artifact deliberately does not support connecting back on
-  plain http! We only support the https or wss protocols because
+  plain HTTP! We only support the HTTPS or WSS protocols because
   this is the recommended connectivity mechanism between server
   and client.
 
@@ -45,16 +45,16 @@ NOTE:
 <pre><code class="language-yaml">
 name: Windows.Remediation.Quarantine
 description: |
-      **Apply quarantine via Windows local IPSec policy**
+      Applies quarantine via Windows local IPsec policy.
 
       - By default the current client configuration is applied as an
         exclusion using resolved IP address at time of application.
 
       - A configurable lookup table is also used to generate
-        additional entries using the same syntax as netsh ipsec
+        additional entries using the same syntax as `netsh ipsec`
         configuration.
 
-        - DNS and DHCP are entires here allowed by default.
+        - DNS and DHCP entries are allowed by default.
 
       - An optional MessageBox may also be configured to alert all
         logged in users.
@@ -74,11 +74,11 @@ description: |
       - Remember DNS resolution may change. It is highly recommended
         to plan policy accordingly and not rely on DNS lookups.
 
-      - Local IPSec policy can not be applied when Domain IPSec policy
+      - Local IPsec policy cannot be applied when Domain IPsec policy
         is already enforced. Please configure at GPO level in this case.
 
       - This artifact deliberately does not support connecting back on
-        plain http! We only support the https or wss protocols because
+        plain HTTP! We only support the HTTPS or WSS protocols because
         this is the recommended connectivity mechanism between server
         and client.
 
@@ -89,6 +89,7 @@ reference:
 
 required_permissions:
   - EXECVE
+  - NETWORK
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -213,15 +214,15 @@ sources:
         // delete old or unwanted policy
         LET delete_policy = SELECT
               timestamp(epoch=now()) as Time,
-              PolicyName + ' IPSec policy removed.' AS Result
+              PolicyName + ' IPsec policy removed.' AS Result
           FROM execve(argv=delete_cmdline, length=10000)
 
-        // first step is creating IPSec policy
+        // first step is creating IPsec policy
         LET create_policy = SELECT
               timestamp(epoch=now()) as Time,
               combine_results(Stdout=Stdout, Stderr=Stderr,
                   ReturnCode=ReturnCode,
-                  Message=PolicyName + ' IPSec policy created.') AS Result
+                  Message=PolicyName + ' IPsec policy created.') AS Result
           FROM execve(argv=create_cmdline, length=10000)
 
         LET entry_cmdline(Action, SrcAddr, SrcPort, SrcMask,
@@ -293,12 +294,12 @@ sources:
                       FROM execve(argv=rule_cmdline(Action=Action), length=10000)
                   })
 
-        // fith step is to enable our IPSec policy
+        // fith step is to enable our IPsec policy
         LET enable_policy = SELECT
               timestamp(epoch=now()) as Time,
               combine_results(Stdout=Stdout, Stderr=Stderr,
                   ReturnCode=ReturnCode,
-                  Message=PolicyName + ' IPSec policy applied.') AS Result
+                  Message=PolicyName + ' IPsec policy applied.') AS Result
               FROM execve(argv=enable_cmdline, length=10000)
 
         // test connection to a frontend server
@@ -342,7 +343,7 @@ sources:
                   else={
                       SELECT
                           timestamp(epoch=now()) as Time,
-                          PolicyName + ' failed connection test. Removing IPSec policy.' AS Result
+                          PolicyName + ' failed connection test. Removing IPsec policy.' AS Result
                       FROM delete_policy
                   })
 

@@ -2,6 +2,10 @@
 menutitle: Security
 title: Velociraptor Security Configuration
 weight: 46
+summary: |
+  Velociraptor is a highly privileged service with elevated access to thousands
+  of endpoints across the enterprise. It is therefore crucial to secure the
+  deployment as much as possible.
 ---
 
 Velociraptor is a highly privileged service with elevated access to
@@ -32,33 +36,42 @@ Every Velociraptor deployment creates an internal PKI which underpins
 it. The configuration wizard create an internal CA with an X509
 certificate and a private key. This CA is used to
 
-1. Create [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}}) and any additional certificates
-   for key rotation.
+1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
+   and any additional certificates for key rotation.
 
-1. [CA public certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}}) is embedded in the client’s configuration and
-   is used to verify server communications.
+2. Verifying the server during client-server communications. [The CA public
+   certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
+   is embedded in the client’s configuration and is used to verify (and therefore trust) the server.
 
-1. The internal CA is used to create API keys for programmatic
-   access. The server is then able to verify API clients.
+3. Creating API keys for programmatic access. The server is then able to verify
+   API clients.
 
-The configuration file contains the CA's X509 certificate in the
-**Client.ca_certificate** parameter (it is therefore embedded in the
-client configuration). The private key is contained in the
-**CA.private_key** parameter.
+4. Creating client certificates for (optional) mTLS. This allows clients to be
+   authenticated using certificates.
+
+The configuration file contains the CA’s X509 certificate in the
+`Client.ca_certificate` key (and is therefore included in the client
+configuration). The private key is contained in the `CA.private_key` parameter.
+Since the client’s configuration contains the (trusted) CA's certificate, it is
+able to verify the server's certificate during communications.
+
+The internal CA will be used to verify the different Velociraptor components in
+all cases, regardless of whether other TLS certificates are used. While it is
+possible to reissue/rotate server certificates the CA certificate can not be
+reissued without re-deploying all the clients.
 
 {{% notice warning "Protecting the CA private key" %}}
 
-In a secure installation you should remove the **CA.private_key**
-section from the server config and keep it offline. You only need it
-to create new API keys using the *velociraptor config api_client*
-command, and the server does not need it in normal operations.
+In a secure installation you should remove the `CA.private_key` section from
+the server config and keep it offline. You only need it to
+[create new API keys]({{< ref "/docs/server_automation/server_api/#creating-an-api-client-configuration" >}})
+and when
+[rotating server certificates]({{< ref "/knowledge_base/tips/rolling_certificates/" >}})
+(typically after 1 year).
+The server does not need it during normal operations.
 
 {{% /notice %}}
 
-The internal CA will be used to verify the different Velociraptor
-components in all cases, regardless if other TLS certificates are
-used. While it is possible to roll server certificates the CA
-certificate can not be rolled without re-deploying all the clients.
 
 ### Messages
 
@@ -129,12 +142,12 @@ scenarios are covered by the configuration generation wizard, but for
 more complex scenarios you will need to tweak the configuration file
 after generating it.
 
-### Self signed deployment
+### Self-signed deployment
 
 This is the simplest deployment scenario handled by the configuration
 wizard.
 
-When deploying in self signed mode, Velociraptor will use its internal
+When deploying in self-signed mode, Velociraptor will use its internal
 CA to general TLS certificates as well. The TLS server certificate
 will be generated with the common name `VelociraptorServer` and be
 signed with the Velociraptor internal CA:
@@ -148,13 +161,13 @@ signed with the Velociraptor internal CA:
    if a MITM attacker was able to mint another certificate (even if it
    was trusted by the global roots!) it would not be valid since it
    was not issued by Velociraptor’s internal CA which is the only CA
-   we trust in this mode! In this way self signed mode is more secure
+   we trust in this mode! In this way self-signed mode is more secure
    than when using a public CA.
 
    This mode also has the server use the `VelociraptorServer` internal
    certificate for securing the HTTPS connection as well.
 
-2. The GUI is also served using self signed certificates which will
+2. The GUI is also served using self-signed certificates which will
    generally result in a browser SSL warning. To avoid a MITM attack
    on a browser the GUI is forced to only bind to the localhost in
    this configuration. For increased security we recommend using the
@@ -223,21 +236,13 @@ that the GUI is accessible from the world as it is sharing the same
 port as the frontend service and we can not use traditional port
 filtering to restrict access.
 
-#### Restricting access to the GUI from IP blocks
-
-If your administrators normally access the GUI from a predictable
-network IP block you can add a list of network addresses in the
-[GUI.allowed_cidr]({{% ref
-"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
-config file. This setting will automatically reject connections to the
-GUI applications from IP addresses outside the allowed range.
 
 ### Deployment with TLS certificates signed by external CA
 
 This is a common scenario where there is an SSL inspection proxy
 between the client and server communications. In this case the proxy
 will present a certificate for the server signed by another CA
-(usually an internal self signed CA associated with the inspection
+(usually an internal self-signed CA associated with the inspection
 software).
 
 Alternatively you may choose to buy TLS certificates from a commercial
@@ -245,7 +250,7 @@ CA (this use case is very similar).
 
 In this scenario, the client needs to verify the TLS connections using this custom CA certificate:
 
-1. From the client's point of view it is not in self signed mode,
+1. From the client's point of view it is not in self-signed mode,
    because Velociraptor itself did not issue this certificate,
    therefore `Client.use_self_signed_ssl` should be false.
 
@@ -283,50 +288,105 @@ In this scenario, the client needs to verify the TLS connections using this cust
    interception proxy. It will be unable to see any clear text since
    there are always two layers of encryption.
 
+### Restricting access to the GUI from IP blocks
+
+If your users normally access the GUI from a predictable
+network IP block you can add a list of network addresses in the
+[GUI.allowed_cidr]({{% ref
+"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
+config file. This setting will automatically reject connections to the
+GUI applications from IP addresses outside the allowed range.
+
 ### Deploying mTLS authentication
 
-An additional layer of security can be provided by use of Mutual TLS
-(mTLS) authentication between clients and server. This method requires
-the client to present a `valid client side certifacte` before the
-server even allows a connection to the frontend. The client
-certificate is included in the configuration file, therefore
-connections from the internet to the frontend require to have a valid
-configuration file first.
+An additional layer of security can be provided by enabling
+Mutual TLS (mTLS) authentication between clients and server.
+This mechanism requires the client to present a valid client certificate before
+the server even allows a connection to the frontend. The client certificate is
+included in the client configuration file.
+
+Although clients cannot enroll or communicate without a valid configuration
+file, it is possible to connect and fingerprint the server if the mTLS policy is
+not enabled. For servers exposed to the public internet this may be undesirable
+even though this doesn't present any substantial risk.
+
+mTLS provides an additional layer of security in that connections from the
+internet (from clients or non-clients) to the frontend are required to present a
+valid certificate in order to complete the TLS connection.
 
 To implement this strategy you need to:
 
-1. Generate client side certificates signed by the internal Velociraptor CA.
+1. Generate client-side certificates signed by the internal Velociraptor CA.
 2. Specify that the frontend requires the client to present a valid
    client side certificate signed by the internal Velociraptor CA.
 
 #### Generating client side certificates
 
-The client side certificate is just a certificate signed by the
-internal CA - since all clients present the same certificate we do not
-use it for identify, just to verify its signature!
+The client side certificate is just a certificate signed by the internal CA. The
+server will verify the validity of the client certificate but does not track
+issued certificates or provide a CRL mechanism. The client certificate is not
+used to individually identify clients, so we only need to issue one certificate
+that allows us to verify all clients. All clients will present the
+same certificate when connecting.
 
-Therefore this is the same as an API key certificate and we can use
-the same process to generate one.
+Since the certificate needed is the same as an API client certificate, we can
+use the same process to generate one for mTLS:
 
 ```
-velociraptor --config /etc/velociraptor/server.config.yaml config api_client --name "Client" /tmp/api.config.yaml
-Creating API client file on /tmp/api.config.yaml.
+$ velociraptor --config /etc/velociraptor/server.config.yaml config api_client --name "Client" /tmp/dummy.api.config.yaml
+Creating API client file on /tmp/dummy.api.config.yaml.
 No role added to user Client. You will need to do this later using the 'acl grant' command.
 ```
 
 {{% notice warning "API User permissions" %}}
-This will create an API key and an API user called `Client`. It
-is critical that the user has no roles or permissions on the server to
-prevent this key from being used to connect to the API ports.
+
+This will create an API configuration file for an API user called "Client",
+containing the key pair that we need. However the `config api_client` command
+shown above will not actually create a user on the Velociraptor server since we
+deliberately didn't specify the `--role` flag.
+
+It is critical that the user has no roles or permissions on the server to
+prevent this key from being used to connect to the API ports. Therefore the
+message concerning the use the `acl_grant` command shown above
+_should NOT be followed_.
+
 {{% /notice %}}
 
-Once the key is generated you can see it in the yaml file encoded in
-PEM format. Simply copy the two blocks (`client_private_key` and
-`client_cert`) into the client's config file [Client.Crypto.client_certificate]({{% ref "/docs/deployment/references/#Client.Crypto.client_certificate" %}}) and [Client.Crypto.client_certificate_private_key]({{% ref "/docs/deployment/references/#Client.Crypto.client_certificate_private_key" %}}).
+Once the key is generated you can see it in the resulting yaml file encoded in
+PEM format. Simply copy the two blocks - `client_private_key` and
+`client_cert` - into the client's config file
+[Client.Crypto.client_certificate]({{% ref "/docs/deployment/references/#Client.Crypto.client_certificate" %}})
+and [Client.Crypto.client_certificate_private_key]({{% ref "/docs/deployment/references/#Client.Crypto.client_certificate_private_key" %}}),
+or into the server config if you intend to use the GUI to repack the MSI or
+generate client configs for multiple orgs (service restart will be required to
+read these new config items).
 
-Note that this client certificate will only be used if the server
-requests it so it is ok to add the client certificates even if you do
-not intend to require it until later.
+```yaml
+Client:
+   Crypto:
+      client_certificate: |
+        -----BEGIN CERTIFICATE-----
+        <certificate>
+        -----END CERTIFICATE-----
+      client_certificate_private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        <key>
+        -----END RSA PRIVATE KEY-----
+```
+
+Note that this client certificate will only be used if the server requests it,
+so it is fine to add the client certificate to the client config even if you
+only intend to enable mTLS later.
+
+{{% notice info %}}
+
+Client certificates generated as described above will be valid for 1 year. It is
+highly likely that you will upgrade your clients before this 1-year period
+elapses and so we recommended that you issue a new client cert during the
+upgrade process by including an updated (i.e. with a new client cert) client
+config in your client package, for example MSI for Windows clients.
+
+{{% /notice %}}
 
 #### Requiring client side certificates
 
@@ -342,7 +402,7 @@ makes troubleshooting a bit more challenging.
 
 For example the following will fail:
 
-```
+```sh
 $ curl -k https://127.0.0.1:8000/server.pem
 curl: (56) OpenSSL SSL_read: error:0A000412:SSL routines::sslv3 alert bad certificate, errno 0
 ```
@@ -361,13 +421,14 @@ above):
 ```
 
 Now we can use curl to connect successfully
-```
+
+```sh
 curl -k https://127.0.0.1:8000/server.pem --cert /tmp/client.pem | openssl x509 -text
 ```
 
 ## Securing the server
 
-In the following section I will discuss how the GUI application can be
+In the following sections we discuss how the GUI application can be
 further secured. Since Velociraptor commands such privileged access to
 the network it is important to ensure this access can not be misused.
 
@@ -401,7 +462,7 @@ and salt will be initialized from the configuration file. For other
 authentication methods that do not use passwords, the password hashes
 are ignored.
 
-```
+```yaml
 GUI:
   initial_users:
   - name: mic
@@ -479,7 +540,7 @@ privilege escalation as the user can modify an existing server
 artifact to run VQL to grant them other roles, and trick an
 administrator in running that artifact.
 
-This is why we say that some roles are `Administrator Equivalent`
+This is why we say that some roles are "Administrator Equivalent"
 because it is easy to escalate from them to more powerful
 roles. Typically we try to limit access to trusted users anyway and
 not rely too much on the user roles.
@@ -574,7 +635,7 @@ collecting telemetry. While it is convenient to have Velociraptor
 already deployed and active in the environment, this may increase the
 risk for misuse when not used for response.
 
-For this purpose Velociraptor has a `lockdown mode`. This mode
+For this purpose Velociraptor has a "lockdown mode". This mode
 prevents Velociraptor from performing any active modification to the
 environment.
 
@@ -611,6 +672,29 @@ which can not write to the config file. This combination makes it
 difficult for a compromised Velociraptor administrator account to
 remove the lockdown and use Velociraptor as a lateral movement
 vehicle.
+
+### Preventing new client enrollments
+
+By default, new clients can enroll at any time if they have a valid client
+configuration file. Normally this is what you'd want because you may be using a
+client distribution method that provides ongoing deployment of new clients.
+
+In some circumstances you may wish to suspend client deployment. For example, if
+you have decided that all intended clients are deployed and that your deployment
+phase is over then you may choose to switch to a more strict deployment process
+to ensure that rogue clients cannot be enrolled. This is unusual but in
+high-security environments it may be a requirement. By "rogue client" we mean
+any client deployed outside of an approved process, regardless of whether the
+intention is benign or not - it could just be that you want to ensure that the
+IT department doesn't accidentally deploy new clients beyond a certain point.
+
+To ensure that no new clients can enroll, you can set the value of the
+[`Frontend.resources.enrollments_per_second`]({{< ref "/docs/deployment/references/#Frontend.resources.enrollments_per_second" >}})
+configuration key to `-1`.
+
+As with all server config changes, this will require a service restart. To
+reverse this policy you can either remove the config key or comment it out to
+resume accepting client enrollments.
 
 ### Removing plugins from a shared server
 

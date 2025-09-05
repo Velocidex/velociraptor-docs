@@ -20,7 +20,7 @@ SELECT * FROM foreach(
   })
 ```
 
-This query iterates over all the orgs, then runs the `SELECT * FROM hunts()` query within the org context. 
+This query iterates over all the orgs, then runs the `SELECT * FROM hunts()` query within the org context.
 
 You can simplify the query using LET stored queries:
 ```sql
@@ -37,3 +37,5 @@ Of course your user account must have access to the orgs. Each org has a separat
 
 Some plugins (e.g. [hunt()](https://docs.velociraptor.app/vql_reference/server/hunt/) ) support orgs directly for convenience but generally you should use the above approach. This will also remind you that each such query is running in a separate org context and therefore can not see other data at the same time.
 
+
+Tags: #vql #orgs #hunting

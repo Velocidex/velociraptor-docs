@@ -11,6 +11,10 @@ Parse packages installed from dnf or yum
 name: Linux.RHEL.Packages
 description: |
   Parse packages installed from dnf or yum
+
+implied_permissions:
+  - EXECVE
+
 sources:
   - precondition: |
       SELECT OS From info() where OS = 'linux'

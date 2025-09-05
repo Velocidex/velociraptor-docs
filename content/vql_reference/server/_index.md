@@ -39,6 +39,7 @@ available on clients!
 |[create_flow_download](create_flow_download)|<span class='vql_type'>Function</span>|Creates a download pack for the flow|
 |[create_hunt_download](create_hunt_download)|<span class='vql_type'>Function</span>|Creates a download pack for a hunt|
 |[create_notebook_download](create_notebook_download)|<span class='vql_type'>Function</span>|Creates a notebook export zip file|
+|[deb_create](deb_create)|<span class='vql_type'>Plugin</span>|Create a deployable Debian package for client or server|
 |[delete_events](delete_events)|<span class='vql_type'>Plugin</span>|Delete events from a flow|
 |[delete_flow](delete_flow)|<span class='vql_type'>Plugin</span>|Delete all the files that make up a flow|
 |[enumerate_flow](enumerate_flow)|<span class='vql_type'>Plugin</span>|Enumerate all the files that make up a flow|
@@ -89,6 +90,11 @@ available on clients!
 |[repack](repack)|<span class='vql_type'>Function</span>|Repack and upload a repacked binary or MSI to the server|
 |[rm_client_monitoring](rm_client_monitoring)|<span class='vql_type'>Function</span>|Remove an artifact from the client monitoring table|
 |[rm_server_monitoring](rm_server_monitoring)|<span class='vql_type'>Function</span>|Remove an artifact from the server monitoring table|
+|[rpm_create](rpm_create)|<span class='vql_type'>Plugin</span>|Create a deployable RPM package for client or server|
+|[secret_add](secret_add)|<span class='vql_type'>Function</span>|Add a new secret|
+|[secret_define](secret_define)|<span class='vql_type'>Function</span>|Define a new secret template|
+|[secret_modify](secret_modify)|<span class='vql_type'>Function</span>|Modify the secret|
+|[secrets](secrets)|<span class='vql_type'>Plugin</span>|Retrieve the list of secrets on the server|
 |[send_event](send_event)|<span class='vql_type'>Function</span>|Sends an event to a server event monitoring queue|
 |[server_frontend_cert](server_frontend_cert)|<span class='vql_type'>Function</span>|Get Server Frontend Certificate|
 |[server_metadata](server_metadata)|<span class='vql_type'>Function</span>|Returns server metadata from the datastore|

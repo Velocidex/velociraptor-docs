@@ -11,9 +11,9 @@ NOTE: The output is not exactly the same as the original binary:
 1. Relocations are not fixed
 2. Due to ASLR the base address of the binary will not be the same as the original.
 
-The result is usully much better than the binaries dumped from a
+The result is usually much better than the binaries dumped from a
 physical memory image (using e.g. Volatility) because reading
-process memory will page in any mmaped pages as we copy them
+process memory will page in any memory-mapped pages as we copy them
 out. Therefore we do not expect to have holes in the produced binary
 as is often the case in memory analysis.
 
@@ -28,9 +28,9 @@ description: |
   1. Relocations are not fixed
   2. Due to ASLR the base address of the binary will not be the same as the original.
 
-  The result is usully much better than the binaries dumped from a
+  The result is usually much better than the binaries dumped from a
   physical memory image (using e.g. Volatility) because reading
-  process memory will page in any mmaped pages as we copy them
+  process memory will page in any memory-mapped pages as we copy them
   out. Therefore we do not expect to have holes in the produced binary
   as is often the case in memory analysis.
 
@@ -62,7 +62,7 @@ sources:
               length=10) AS Header,
             upload(file=pe_dump(pid=Pid, base_offset=Address),
                    name=GetFilename(MappingName=MappingName, BaseOffset=Address)) AS Upload
-     FROM vad(pid=9604)
+     FROM vad(pid=Pid)
      WHERE Header =~ "^MZ" AND MappingName =~ FilenameRegex
 
 </code></pre>

@@ -1,9 +1,9 @@
 ---
 title: "NTFS Analysis"
 date: 2021-06-26T20:10:17Z
-description: |
-   NTFS is the standard Windows filesystem. Velociraptor contains powerful NTFS analysis capabilities.
-
+summary: |
+   NTFS is the standard Windows filesystem.
+   Velociraptor contains powerful NTFS analysis capabilities.
 draft: false
 weight: 50
 ---

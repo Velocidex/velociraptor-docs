@@ -4,15 +4,15 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-The automaticdestinatinons jumplist is an OLE2 container containing
-LNK files as individual streams
+The automaticdestinations jumplist is an OLE2 container containing LNK files
+as individual streams
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.JumpLists
 description: |
-  The automaticdestinatinons jumplist is an OLE2 container containing
-  LNK files as individual streams
+  The automaticdestinations jumplist is an OLE2 container containing LNK files
+  as individual streams
 
 imports:
   - Windows.Forensics.Lnk
@@ -706,7 +706,7 @@ sources:
             split(sep_string=".", string=AutomaticDestinationsPath.Basename)[0] AS ApplicationId,
             ShowHeader(Parsed=Parsed) as _ShellLinkHeader,
             Parsed.LinkInfo as _LinkInfo,
-            ShowLinkTarget(Parsed=Parsed) as _LinkTarget,
+            ShowLinkTarget(ShellBag=Parsed.LinkTargetIDList.IDList.ShellBag) as _LinkTarget,
             Parsed.StringData as _StringData,
             ShowExtraData(Parsed=Parsed) as _ExtraData,
             property_store(data=Parsed) as _PropertyStore

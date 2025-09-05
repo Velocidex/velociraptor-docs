@@ -123,7 +123,7 @@ sources:
                 `Computer Info`.DomainRole AS DomainRole
               FROM source(client_id=client_id,
                   flow_id=last_interrogate_flow_id,
-                  artifact="Generic.Client.Info/WindowsInfo")
+                  source="WindowsInfo")
           })
           -- WHERE DomainRole =~ "Controller"
 
@@ -150,7 +150,8 @@ reports:
        SELECT * FROM sample(
          n=4,
          query={
-           SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+           SELECT Timestamp,
+                  rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source(artifact="Generic.Client.Stats",
                        client_id=ClientId,
@@ -161,7 +162,7 @@ reports:
 
       {{ define "computerinfo" }}
       LET X &lt;= SELECT *
-        FROM source(artifact='Generic.Client.Info/LinuxInfo')
+        FROM source(source="LinuxInfo')
         LIMIT 1
 
       SELECT humanize(bytes=TotalPhysicalMemory) AS  TotalPhysicalMemory,
@@ -173,7 +174,7 @@ reports:
       {{ end }}
 
       &lt;div&gt;
-      {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+      {{ Query "resources" | TimeChart "RSS.yaxis" 2 }}
       &lt;/div&gt;
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
@@ -182,8 +183,8 @@ reports:
         {{ $windows_info | Table }}
       {{ end }}
 
-      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(artifact='Generic.Client.Info/LinuxInfo') LIMIT 1 SELECT * FROM X" }}
-      {{ if Query "SELECT * FROM source(artifact='Generic.Client.Info/LinuxInfo')" | Expand }}
+      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
+      {{ if Query "SELECT * FROM source(source='LinuxInfo')" | Expand }}
       # Linux agent information
 
       ### Network Info

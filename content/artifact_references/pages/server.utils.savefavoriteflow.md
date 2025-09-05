@@ -1,7 +1,7 @@
 ---
 title: Server.Utils.SaveFavoriteFlow
 hidden: true
-tags: [Client Artifact]
+tags: [Server Artifact]
 ---
 
 Users may collect various artifacts from hosts. Sometimes it might
@@ -10,6 +10,11 @@ combination of parameters and artifacts to collect.
 
 This artifact allows the user to save the collection into a
 Favorites section, which may be used in future.
+
+An example of a Spec is
+```json
+[{"artifact":"Windows.KapeFiles.Targets", "parameters":{"env":[{"key":"EventLogs", "value":"Y"}]}}]
+```
 
 
 <pre><code class="language-yaml">
@@ -21,6 +26,13 @@ description: |
 
   This artifact allows the user to save the collection into a
   Favorites section, which may be used in future.
+
+  An example of a Spec is
+  ```json
+  [{"artifact":"Windows.KapeFiles.Targets", "parameters":{"env":[{"key":"EventLogs", "value":"Y"}]}}]
+  ```
+
+type: SERVER
 
 parameters:
   - name: Specs
@@ -39,15 +51,41 @@ parameters:
       - SERVER
       - CLIENT_EVENT
       - SERVER_EVENT
+  - name: AllUsers
+    type: bool
+    description: If set, add the favorite to all users in all orgs.
 
 sources:
   - query: |
-      SELECT favorites_save(
+      LET AddToAllOrgs = SELECT * FROM foreach(
+      row={
+        SELECT name, org_id
+        FROM gui_users(all_orgs=TRUE)
+      }, query={
+        SELECT * FROM query(query={
+             SELECT favorites_save(type=Type,
+               description=Description,
+               name=Name,
+               specs=Specs)
+             FROM scope()
+           },
+           org_id=org_id,
+           runas=name,
+           env=dict(
+             Specs=Specs,
+             Name=Name, Type=Type,
+             Description=Description))
+      })
+
+      LET AddToOneUser = SELECT favorites_save(
          name=Name,
          description=Description,
          specs=Specs,
          type=Type)
       FROM scope()
+
+      SELECT * FROM if(condition=AllUsers,
+         then=AddToAllOrgs, else=AddToOneUser)
 
 </code></pre>
 

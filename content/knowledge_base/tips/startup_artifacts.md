@@ -1,15 +1,27 @@
-# What is the easiest way to have Velociraptor start with a custom server artifact automatically loaded?
+# How to initialize a Velociraptor server with custom artifacts?
 
-Velociraptor frontend process has a component called the `Artifact
-Repository`. This component knows about all the artifacts that are
-defined. When the server starts up, it loads artifacts into the
-repository from the following sources.
+Velociraptor frontend process has a component called the **Artifact
+Repository**. This component knows about all the artifacts that are
+defined.
 
-1. Built in artifacts are embedded into the binary itself.
-2. It is possible to provide custom artifacts inside the configuration
-   file itself.
-3. Providing a directory with the `--definitions` flag will cause
-   Velociraptor to scan the directory for artifact YAML files.
+When the server starts up, it loads artifacts into the repository from the
+following sources.
+
+1. Built-in artifacts that are embedded into the binary itself (compiled in).
+
+2. Custom artifacts that are defined inside the configuration file itself.
+
+3. Directories containing artifact YAML files that can be defined in one or more
+   of the following ways:
+   - specified by the `--definitions` CLI flag: a single directory
+   - specified by `Frontend.artifact_definitions_directory` in the config: a
+     single directory.
+   - specified by `defaults.artifact_definitions_directories` in the config: a
+     list of directories.
+
+   Velociraptor will search these directories recursively for artifact YAML
+   files.
+
 4. Finally, the server will load artifacts from the configured
    filestore path under `<filestore>/artifact_definitions`. These are
    usually the custom artifacts defined through the GUI.
@@ -71,9 +83,54 @@ In the above snippet, we see the following parameters:
 Currently it is not possible to specify parameters for initial
 artifacts so if you need to tweak the parameters it is best to create
 a custom artifact that in turn launches the needed artifacts with the
-correct parameters.
+correct parameters. You can find an example below.
 
 {{% /notice %}}
 
+## Initializing the server using a custom artifact.
+
+For more complex initialization tasks you can write a custom artifact
+that will be collected the first time the server is started. The
+artifact can import any custom artifacts and start monitoring
+queries. The custom artifact should take no arguments. It is most
+reliable to add the custom artifact to the configuration file itself
+to ensure it is loaded and ready when the server initializes.
+
+For example, the relevant part of the server configuration might be:
+
+```yaml
+autoexec:
+  artifact_definitions:
+    - name: InitializeServer
+      description: Setup the server on first run
+      sources:
+        - query: |
+            LET _ <= SELECT *
+                     FROM Artifact.Server.Import.CuratedSigma()
+
+            SELECT add_client_monitoring(
+                      label="Monitoring",
+                      artifact="Windows.Hayabusa.Monitoring",
+                      parameters=dict(RuleLevel="Critical, High, and Medium",
+                                      RuleStatus="Stable")) AS Monitoring,
+                  artifact_set_metadata(name="InitializeServer", hidden=TRUE)
+            FROM scope()
+
+Frontend:
+  initial_server_artifacts:
+    - InitializeServer
+```
+
+The above parts:
+1. An artifact is defined inline in the config file.
+
+2. The artifact imports the Sigma artifacts from the velociraptor
+   sigma projects (you can add your own URLs to import your own set of
+   custom artifacts).
+3. A client monitoring artifact is added using the `Hayabusa` Sigma
+   artifact targeting the "Monitoring" label. Parameters to the
+   artifact are passed here.
+4. Finally the server is configured to collect the `InitializeServer`
+   artifact when first run.
 
 Tags: #deployment #configuration

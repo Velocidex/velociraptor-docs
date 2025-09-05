@@ -1,5 +1,185 @@
 [
     {
+        "title": "Linux.Persistence.LdPreload",
+        "author": "mgreen27",
+        "description": "Parses the GNU\u202fglibc **LD_PRELOAD** mechanism. Any path listed in \n`/etc/ld.so.preload` or assigned to `LD_PRELOAD` is force\u2011loaded into every \ndynamically linked executable. A single \nrogue entry therefore grants system\u2011wide code execution and persistence at\nprocess start\u2011up.",
+        "link": "/exchange/artifacts/pages/ldpreload",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-07-23"
+    },
+    {
+        "title": "Windows.Applications.MouseWithoutBorders",
+        "author": "0xSultan",
+        "description": "This artifact parses Microsoft Mouse Without Borders (MWB) runtime logs, module interface logs and the settings file.",
+        "link": "/exchange/artifacts/pages/windows.applications.mousewithoutborders",
+        "tags": [],
+        "author_link": "https://github.com/0xSultan",
+        "author_avatar": "https://avatars.githubusercontent.com/u/78733828?v=4",
+        "date": "2025-07-23"
+    },
+    {
+        "title": "Linux.Sys.Modinfo",
+        "author": "mgreen27",
+        "description": "Collects detailed metadata about Linux kernel modules using\u00a0modinfo. Useful for \nmalicious kernel module hunting.",
+        "link": "/exchange/artifacts/pages/modinfo",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-07-17"
+    },
+    {
+        "title": "Server.PostProcess.FluentBit",
+        "author": "predictiple",
+        "description": "Post-process collection results using [Fluent Bit](https://fluentbit.io/).",
+        "link": "/exchange/artifacts/pages/fluentbit",
+        "tags": [
+            "post",
+            "Elasticsearch",
+            "OpenSearch",
+            "Splunk",
+            "Graylog",
+            "BigQuery",
+            "Chronicle",
+            "CloudWatch",
+            "Amazon",
+            "S3",
+            "Azure",
+            "Datadog",
+            "Dynatrace",
+            "InfluxDB",
+            "Kafka",
+            "LogDNA",
+            "Loki",
+            "Oracle",
+            "PostgreSQL"
+        ],
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2025-07-13"
+    },
+    {
+        "title": "Windows.Hunter.Yara.LOLDrivers",
+        "author": "klehri-r7",
+        "description": "This artifact scans system driver directories using two user-supplied YARA rules:",
+        "link": "/exchange/artifacts/pages/windows.hunter.yara.loldrivers",
+        "tags": [],
+        "author_link": "https://github.com/klehri-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/183785760?v=4",
+        "date": "2025-06-18"
+    },
+    {
+        "title": "Linux.Sys.Getcap",
+        "author": "mgreen27",
+        "description": "Inspects extended file capabilities with getcap.  \nSince Linux 2.6.24, setcap can attach fine-grained privilege bits to \nexecutables, letting them perform the specific privileged actions they \nrequire instead of running as root.   \nIf a binary that\u2019s writable or executable by non-privileged users is granted \nexcessive capabilities, attackers can exploit it for privilege escalation.\n",
+        "link": "/exchange/artifacts/pages/getcap",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-06-11"
+    },
+    {
+        "title": "CyberTriage.Collector",
+        "author": "bcarrier",
+        "description": "Runs the Cyber Triage (http://cybertriage.com) Collector to copy forensic artifacts for automated analysis. The Dynamic collection will include EXEs, DLLs, and other files referenced by artifacts.\nThe output of the collection can be saved to a Velociraptor server, a Cyber Triage server, or cloud storage (S3 or Azure).\nConfiguration information is available at - https://docs.cybertriage.com/en/latest/chapters/integrations/velociraptor_collect.html\nIt requires the Velociraptor server to have copies of the Cyber Triage Deployer script and optional configuration files.\nHistory. 1.0 - Initial artifact creation\nContact support@cybertriage.com with any questions.\nCopyright (c) 2025 Sleuth Kit Labs LLC. All rights reserved.",
+        "link": "/exchange/artifacts/pages/cybertriagecollector",
+        "tags": [],
+        "author_link": "https://github.com/bcarrier",
+        "author_avatar": "https://avatars.githubusercontent.com/u/856501?v=4",
+        "date": "2025-06-10"
+    },
+    {
+        "title": "Server.Enrichment.AI.Gemini",
+        "author": "mgreen27",
+        "description": "Query Gemini AI for analysis of data.",
+        "link": "/exchange/artifacts/pages/gemini",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-05-01"
+    },
+    {
+        "title": "Server.Enrichment.AI.Anthropic",
+        "author": "mgreen27",
+        "description": "Query Anthropic AI for analysis of data.",
+        "link": "/exchange/artifacts/pages/anthropic",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-04-30"
+    },
+    {
+        "title": "Server.Enrichment.AI.Ollama",
+        "author": "mgreen27",
+        "description": "This artifact allows enrichment using Ollama AI. ",
+        "link": "/exchange/artifacts/pages/ollama",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-04-14"
+    },
+    {
+        "title": "Server.Enrichment.SecureAnnex",
+        "author": "shortstack",
+        "description": "Submit an extension to the Secure Annex API.",
+        "link": "/exchange/artifacts/pages/server.enrichment.secureannex",
+        "tags": [],
+        "author_link": "https://github.com/shortstack",
+        "author_avatar": "https://avatars.githubusercontent.com/u/1244979?v=4",
+        "date": "2025-03-30"
+    },
+    {
+        "title": "Windows.Detection.Keylogger",
+        "author": "zaneGittins",
+        "description": "This artifact is my attempt at implementing keylogger detection based on research presented by [Asuka Nakajima at NULLCON](https://speakerdeck.com/asuna_jp/nullcon-goa-2025-windows-keylogger-detection-targeting-past-and-present-keylogging-techniques) using the Microsoft-Windows-Win32k ETW provider.",
+        "link": "/exchange/artifacts/pages/windows.detection.keylogger",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-25"
+    },
+    {
+        "title": "Windows.ETW.ScreenshotTaken",
+        "author": "zaneGittins",
+        "description": "This artifact detects screen captures by correlating events from the Microsoft-Windows-Win32k ETW provider which are triggered by common Windows API calls made when taking a screenshot. This can be useful for detecting remote access trojans, infostealers, and data exfiltration. Tested against Sliver, Meterpreter, and Empire. This will also trigger on legitimate tools such as ZoomIt, Greenshot, MsTeams, etc. which can be excluded on a case by case basis via the ProcessExceptionsRegex parameter.\n",
+        "link": "/exchange/artifacts/pages/windows.etw.screenshottaken",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-25"
+    },
+    {
+        "title": "Linux.Detection.Honeyfiles",
+        "author": "zaneGittins",
+        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor >= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.",
+        "link": "/exchange/artifacts/pages/linux.detection.honeyfiles",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-18"
+    },
+    {
+        "title": "Windows.Detection.Honeyfiles",
+        "author": "zaneGittins",
+        "description": "This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.",
+        "link": "/exchange/artifacts/pages/windows.detection.honeyfile",
+        "tags": [],
+        "author_link": "https://github.com/zaneGittins",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22203776?v=4",
+        "date": "2025-03-18"
+    },
+    {
+        "title": "MacOS.Forensics.ASL",
+        "author": "ydkhatri",
+        "description": "This artifact parses the ASL (Apple System Log) v2 files located at \n/private/var/log/asl/*.asl\n",
+        "link": "/exchange/artifacts/pages/macos.forensics.asl",
+        "tags": [],
+        "author_link": "https://github.com/ydkhatri",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13247440?v=4",
+        "date": "2025-02-19"
+    },
+    {
         "title": "Linux.Forensics.Targets",
         "author": "kidrek",
         "description": "This artifact collects all necessary artifacts files and directories from Linux operating system. \n",
@@ -40,16 +220,6 @@
         "author_link": "https://github.com/j91321",
         "author_avatar": "https://avatars.githubusercontent.com/u/10012872?v=4",
         "date": "2024-12-01"
-    },
-    {
-        "title": "Server.Enrichment.JsonLookup",
-        "author": "shortstack",
-        "description": "Allows pulling in JSON lists from an external URL to perform lookups against",
-        "link": "/exchange/artifacts/pages/server.enrichment.jsonlookup",
-        "tags": [],
-        "author_link": "https://github.com/shortstack",
-        "author_avatar": "https://avatars.githubusercontent.com/u/1244979?v=4",
-        "date": "2024-11-30"
     },
     {
         "title": "Linux.Forensics.ProcFD",
@@ -236,7 +406,7 @@
     {
         "title": "Windows.EventLogs.SysmonProcessEnriched.yaml",
         "author": "zaneGittins",
-        "description": "Gather sysmon process creation events from the sysmon operational event log. Enrich with authenticode signature of image and call chain.\nCaches authenticode signature by the hash of the image for ClearCacheSeconds (default, 1hr).\nPrerequisites: Sysmon, and the process tracker.\n",
+        "description": "Gather sysmon process creation events from the sysmon operational event log. Enrich with authenticode signature of image and call chain.\nCaches authenticode signature by the hash of the image for an hour to reduce number of times it fetches the authenticode signature.\nPrerequisites: Sysmon, and the process tracker artifact.\n",
         "link": "/exchange/artifacts/pages/windows.eventlogs.sysmonprocessenriched",
         "tags": [],
         "author_link": "https://github.com/zaneGittins",
@@ -689,7 +859,7 @@
     {
         "title": "Windows.EventLogs.RemoteAccessVPN",
         "author": "ekt0-syn",
-        "description": "This Artifact enables scoping EventLogs from Microsoft VPN, served by \nRemote Access Service server role. \nIt is designed to assist in identifying VPN connections on organizations that \nare using Microsoft VPN service. It targets both server and client side logs.",
+        "description": "This Artifact enables scoping EventLogs from Microsoft VPN, served by\nRemote Access Service server role.\nIt is designed to assist in identifying VPN connections on organizations that\nare using Microsoft VPN service. It targets both server and client side logs.",
         "link": "/exchange/artifacts/pages/windows.eventlogs.remoteaccessvpn",
         "tags": [],
         "author_link": "https://github.com/ekt0-syn",
@@ -715,16 +885,6 @@
         "author_link": "https://github.com/SBattaglia-R7",
         "author_avatar": "https://avatars.githubusercontent.com/u/40576678?v=4",
         "date": "2023-08-14"
-    },
-    {
-        "title": "Linux.PrivilegeEscalationDetection",
-        "author": "leogrossi",
-        "description": "This artifact searches for potential privilege escalation indicators on Linux systems. It identifies processes running as root that were spawned by processes not running as root, which could indicate unauthorized privilege escalation. Created by Leonardo Grossi.\n",
-        "link": "/exchange/artifacts/pages/linux.privilegeescalationdetection",
-        "tags": [],
-        "author_link": "https://github.com/leogrossi",
-        "author_avatar": "https://avatars.githubusercontent.com/u/69981202?v=4",
-        "date": "2023-08-01"
     },
     {
         "title": "Generic.Forensics.CyLR",
@@ -757,9 +917,9 @@
         "date": "2023-07-16"
     },
     {
-        "title": "Custom.Windows.Nirsoft.LastActivityView",
+        "title": "Windows.Nirsoft.LastActivityView",
         "author": "hasamba",
-        "description": "LastActivityView is a tool for Windows operating system that collects information from various sources on a running system, and displays a log of actions made by the user and events occurred on this computer. The activity displayed by LastActivityView includes: Running .exe file, Opening open/save dialog-box, Opening file/folder from Explorer or other software, software installation, system shutdown/start, application or system crash, network connection/disconnection and more...\n",
+        "description": "LastActivityView is a tool for Windows operating system that\ncollects information from various sources on a running system, and\ndisplays a log of actions made by the user and events occurred on\nthis computer. The activity displayed by LastActivityView includes:\nRunning .exe file, Opening open/save dialog-box, Opening file/folder\nfrom Explorer or other software, software installation, system\nshutdown/start, application or system crash, network\nconnection/disconnection and more...\n",
         "link": "/exchange/artifacts/pages/windows.nirsoft.lastactivityview",
         "tags": [],
         "author_link": "https://github.com/hasamba",
@@ -819,7 +979,7 @@
     {
         "title": "Windows.EventLogs.MoveIt",
         "author": "mgreen27",
-        "description": "This Artifact enables scoping EventLogs from Progress Software's MoveIT File \nTransfer. It is designed to assist in identifying exfiltration resulting from\nthe exploitation of CVE-2023-34362",
+        "description": "This Artifact enables scoping EventLogs from Progress Software's MoveIT File\nTransfer. It is designed to assist in identifying exfiltration resulting from\nthe exploitation of CVE-2023-34362",
         "link": "/exchange/artifacts/pages/moveitevtx",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -1019,7 +1179,7 @@
     {
         "title": "Windows.Detection.RemoteIconForcedAuth",
         "author": "acedef",
-        "description": "Attackers plant SCF, URL, and LNK files with malicious icon file paths\non file shares to escalate privileges or maintain persistence. This attack \nonly requires the user to browse to the location of the malicious file.\nThis artifact enumerates file shares and returns an event for each file with a\nremote icon. It can also scan a target root directory since attackers commonly\nuse other locations like desktops.\n",
+        "description": "Attackers plant SCF, URL, and LNK files with malicious icon file paths\non file shares to escalate privileges or maintain persistence. This attack\nonly requires the user to browse to the location of the malicious file.\nThis artifact enumerates file shares and returns an event for each file with a\nremote icon. It can also scan a target root directory since attackers commonly\nuse other locations like desktops.\n",
         "link": "/exchange/artifacts/pages/remoteiconforcedauth",
         "tags": [],
         "author_link": "https://github.com/acedef",
@@ -1155,7 +1315,7 @@
     {
         "title": "Windows.Detection.PublicIP",
         "author": "mgreen27",
-        "description": "This artifact queries for RDP and Authentication events with a Public IP \nsource. The artifact uses Windows.EventLogs.RDPAuth and has several built in \nnotebooks for analysis.\n",
+        "description": "This artifact queries for RDP and Authentication events with a Public IP\nsource. The artifact uses Windows.EventLogs.RDPAuth and has several built in\nnotebooks for analysis.\n",
         "link": "/exchange/artifacts/pages/publicip",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -1413,7 +1573,7 @@
         "date": "2022-12-06"
     },
     {
-        "title": "Server.Enrichment.OpenAI",
+        "title": "Server.Enrichment.AI.OpenAI",
         "author": "weslambert",
         "description": "Query OpenAI for analysis of data.",
         "link": "/exchange/artifacts/pages/server.enrichment.openai",
@@ -1725,7 +1885,7 @@
     {
         "title": "Windows.Detection.ISOMount",
         "author": "cquinn-r7",
-        "description": "Following Microsoft's decision to block macros by default on MS Office applications, threat actors are increasingly using container files such as ISO files to distribute malware. \nThis artifact will extract evidence of container files being mounted that may be malicious from the Microsoft-Windows-VHDMP-Operational EventLog. \nThe artifact targets the string \".(iso|vhd|vhdx|img)$\" in event IDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).\n",
+        "description": "Following Microsoft's decision to block macros by default on MS\nOffice applications, threat actors are increasingly using container\nfiles such as ISO files to distribute malware.  This artifact will\nextract evidence of container files being mounted that may be\nmalicious from the Microsoft-Windows-VHDMP-Operational EventLog.\nThe artifact targets the string \".(iso|vhd|vhdx|img)$\" in event\nIDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).\n",
         "link": "/exchange/artifacts/pages/windows.detection.isomount",
         "tags": [],
         "author_link": "https://github.com/cquinn-r7",
@@ -1875,22 +2035,12 @@
     {
         "title": "Windows.Detection.Ntdsutil",
         "author": "mgreen27",
-        "description": "This artifact will extract evidence of Ntdsutil abuse from the application \neventlog. The artifact targets the string \"ntds.dit\" in event IDs: 216, 325,\n326 and 327.\n",
+        "description": "This artifact will extract evidence of Ntdsutil abuse from the application\neventlog. The artifact targets the string \"ntds.dit\" in event IDs: 216, 325,\n326 and 327.\n",
         "link": "/exchange/artifacts/pages/ntdsutil",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
         "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2022-08-12"
-    },
-    {
-        "title": "Windows.KapeFiles.Remapping",
-        "author": "scudette",
-        "description": "This artifact automates the rebuilding of remapping rules to be able to easily\npost process the results of the Windows.KapeFiles.Targets.",
-        "link": "/exchange/artifacts/pages/windows.kapefiles.remapping",
-        "tags": [],
-        "author_link": "https://github.com/scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "date": "2022-08-04"
     },
     {
         "title": "Server.Enrichment.MalwareBazaar",
@@ -2400,16 +2550,6 @@
         "date": "2022-01-08"
     },
     {
-        "title": "Generic.Detection.Log4jVulnHunter",
-        "author": "mgreen27",
-        "description": "This artifact searches for Vulnerable log4j libraries.",
-        "link": "/exchange/artifacts/pages/log4jvulnhunter",
-        "tags": [],
-        "author_link": "https://github.com/mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
-        "date": "2021-12-21"
-    },
-    {
         "title": "Generic.Detection.log4jRCE",
         "author": "mgreen27",
         "description": "Detection for exploitation attempts against log4j RCE\nvulnerability CVE-2021-44228.",
@@ -2708,16 +2848,6 @@
         "author_link": "https://github.com/mgreen27",
         "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2021-07-06"
-    },
-    {
-        "title": "Linux.Memory.Acquisition",
-        "description": "Acquires a full memory image. We download LiME and use it to acquire\na full memory image.",
-        "link": "/exchange/artifacts/pages/linuxmemoryacquisition",
-        "tags": [],
-        "author": "makhno4n6",
-        "author_link": "https://github.com/makhno4n6",
-        "author_avatar": "https://avatars.githubusercontent.com/u/86801976?v=4",
-        "date": "2021-07-02"
     },
     {
         "title": "Linux.Volatility.Create.Profile",

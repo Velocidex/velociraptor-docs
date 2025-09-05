@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-pid|A pid to list. If this is provided we are able to operate much faster by only opening a single process.|int64
+pid|A process ID to list. If not provided list all processes.|int64
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
 

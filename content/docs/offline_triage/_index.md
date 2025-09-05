@@ -282,10 +282,10 @@ This works by writing settings into a `Spec File`. Velociraptor uses
 this file to prepare the offline collector automatically. To obtain
 the initial template for the file run the following command:
 
-```
+```sh
 $ mkdir /tmp/datastore/
-$ ./velociraptor-v0.72.4-linux-amd64 collector --datastore /tmp/datastore/ > /tmp/datastore/spec.yaml
-velociraptor-v0.72.4-linux-amd64: error: collector: No Spec file provided
+$ ./velociraptor-v0.74.1-linux-amd64 collector --datastore /tmp/datastore/ > /tmp/datastore/spec.yaml
+velociraptor-v0.74.1-linux-amd64: error: collector: No Spec file provided
 ```
 
 The first command prepares a temporary datastore location (this is
@@ -301,28 +301,28 @@ are similar to the ones presented in the GUI builder.
 To build the collector, run the command with the generated `spec
 file`.
 
-```text
-$ ./velociraptor-v0.72.4-linux-amd64 collector --datastore /tmp/datastore/ /tmp/datastore/spec.yaml
+```sh
+$ ./velociraptor-v0.74.1-linux-amd64 collector --datastore /tmp/datastore/ /tmp/datastore/spec.yaml
 ...
 Running query LET _ <= SELECT name FROM artifact_definitions()
 [INFO] 2024-07-10T09:12:28Z Compiled all artifacts.
 []Running query LET Spec <= parse_yaml(filename=SPECFILE)
 []Running query LET _K = SELECT _key FROM items(item=Spec.Artifacts)
 []Running query SELECT * FROM Artifact.Server.Utils.CreateCollector(OS=Spec.OS, artifacts=serialize(item=_K._key), parameters=serialize(item=Spec.Artifacts), target=Spec.Target, target_args=Spec.TargetArgs, encryption_scheme=Spec.EncryptionScheme, encryption_args=Spec.EncryptionArgs, opt_verbose=Spec.OptVerbose, opt_banner=Spec.OptBanner, opt_prompt=Spec.OptPrompt, opt_admin=Spec.OptAdmin, opt_tempdir=Spec.OptTempdir, opt_level=Spec.OptLevel, opt_filename_template=Spec.OptFilenameTemplate, opt_collector_filename=Spec.OptCollectorTemplate, opt_format=Spec.OptFormat, opt_output_directory=Spec.OptOutputDirectory, opt_cpu_limit=Spec.OptCpuLimit, opt_progress_timeout=Spec.OptProgressTimeout, opt_timeout=Spec.OptTimeout, opt_version=Spec.OptVersion)
-[INFO] 2024-07-10T09:12:28Z Downloading tool VelociraptorWindows FROM https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-windows-amd64.exe
+[INFO] 2024-07-10T09:12:28Z Downloading tool VelociraptorWindows FROM https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.74.1-windows-amd64.exe
 client_repack: Will Repack the Velociraptor binary with 5733 bytes of config
 Adding binary Autorun_386
 Adding binary Autorun_amd64
-Uploaded /tmp/datastore/Collector_velociraptor-v0.72.4-windows-amd64.exe (60829135 bytes)
+Uploaded /tmp/datastore/Collector_velociraptor-v0.74.1-windows-amd64.exe (60829135 bytes)
 [
  {
    "Repacked": {
-      "Path": "/tmp/datastore/Collector_velociraptor-v0.72.4-windows-amd64.exe",
+      "Path": "/tmp/datastore/Collector_velociraptor-v0.74.1-windows-amd64.exe",
       "Size": 60829135,
       "sha256": "968b8802c10faeaec2a86b9295f66aeee45b79e30a3028be2162a8718b4a98e9",
       "md5": "3c9375283665d68817008d7a8f232796",
       "Components": [
-         "Collector_velociraptor-v0.72.4-windows-amd64.exe"
+         "Collector_velociraptor-v0.74.1-windows-amd64.exe"
       ]
    },
    "_Source": "Server.Utils.CreateCollector"

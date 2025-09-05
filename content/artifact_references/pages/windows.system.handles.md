@@ -26,8 +26,12 @@ parameters:
     description: Search for File Handles
     type: bool
     default: Y
+
   - name: Key
     description: Search for Key Handles
+    type: bool
+
+  - name: IncludeAccessMasks
     type: bool
 
 sources:
@@ -45,7 +49,9 @@ sources:
       SELECT * FROM foreach(
           row=processes,
           query={
-            SELECT ProcPid, ProcName, Exe, Type, Name, Handle
+            SELECT ProcPid, ProcName, Exe, Type, Name, Handle,
+                   if(condition=IncludeAccessMasks,
+                      then=AccessMaskPerms) AS AccessMaskPerms
             FROM handles(pid=ProcPid, types=tokens.Type)
           })
 

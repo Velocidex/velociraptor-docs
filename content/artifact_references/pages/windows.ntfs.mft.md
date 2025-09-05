@@ -4,14 +4,15 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact parses $MFT files and returns rows of each in scope  MFT record.
+Parses $MFT files and returns rows of each in scope MFT record.
+
 This artifact can be used as the basis for other artifacts where the MFT needs
 to be queried or for deleted file recovery.
 
 For deleted file recovery: Take the MFT ID of a file of interest and provide
 it to the Windows.NTFS.Recover artifact.
 
-To query all attached ntfs drives: check the AllDrives switch.
+To query all attached NTFS drives: select the AllDrives option.
 
 I have added several filters to uplift search capabilities from the original
 MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
@@ -23,26 +24,29 @@ Available filters include:
 - Fileregex: `^filename.ext$` or partial `string1|string2`
 - Time bounds to select files with a timestamp within time ranges
 - FileSize bounds
-- MFTDrive: drive to target collection and show as source in results during offline pricessing.
+- MFTDrive: drive to target collection and show as source in results during offline processing.
 - MFTPath: optional filter for offline MFT processing.
 
-NOTE: Generally more efficient to filter on filename.
-Multiple filters are cumulative.
-OSPath output now uses expected Windows backslash "`\`".
+#### NOTES
+
+- It is generally more efficient to filter on filename.
+- Multiple filters are cumulative.
+- OSPath output now uses expected Windows backslash "`\`".
 
 
 <pre><code class="language-yaml">
 name: Windows.NTFS.MFT
 author: "Matt Green - @mgreen27"
 description: |
-  This artifact parses $MFT files and returns rows of each in scope  MFT record.
+  Parses $MFT files and returns rows of each in scope MFT record.
+
   This artifact can be used as the basis for other artifacts where the MFT needs
   to be queried or for deleted file recovery.
 
   For deleted file recovery: Take the MFT ID of a file of interest and provide
   it to the Windows.NTFS.Recover artifact.
 
-  To query all attached ntfs drives: check the AllDrives switch.
+  To query all attached NTFS drives: select the AllDrives option.
 
   I have added several filters to uplift search capabilities from the original
   MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
@@ -54,12 +58,14 @@ description: |
   - Fileregex: `^filename.ext$` or partial `string1|string2`
   - Time bounds to select files with a timestamp within time ranges
   - FileSize bounds
-  - MFTDrive: drive to target collection and show as source in results during offline pricessing.
+  - MFTDrive: drive to target collection and show as source in results during offline processing.
   - MFTPath: optional filter for offline MFT processing.
 
-  NOTE: Generally more efficient to filter on filename.
-  Multiple filters are cumulative.
-  OSPath output now uses expected Windows backslash "`\`".
+  #### NOTES
+
+  - It is generally more efficient to filter on filename.
+  - Multiple filters are cumulative.
+  - OSPath output now uses expected Windows backslash "`\`".
 
 parameters:
   - name: MFTDrive
@@ -156,7 +162,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
@@ -174,7 +180,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
@@ -197,7 +203,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
@@ -221,7 +227,7 @@ sources:
             LastModified0x10, LastModified0x30,
             LastRecordChange0x10, LastRecordChange0x30,
             LastAccess0x10,LastAccess0x30,
-            HasADS, SI_Lt_FN, uSecZeros, Copied,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
             FileNames, FileNameTypes
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)

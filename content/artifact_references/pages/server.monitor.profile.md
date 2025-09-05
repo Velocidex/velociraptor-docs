@@ -20,7 +20,7 @@ The following options are most useful:
 
 3. Profile: This takes a CPU profile of the running process for the
    number of seconds specified in the Duration parameter. You can
-   read profiles using:
+   read profiles by using:
 
 ```
 go tool pprof -callgrind -output=profile.grind profile.bin
@@ -51,7 +51,7 @@ description: |
 
   3. Profile: This takes a CPU profile of the running process for the
      number of seconds specified in the Duration parameter. You can
-     read profiles using:
+     read profiles by using:
 
   ```
   go tool pprof -callgrind -output=profile.grind profile.bin
@@ -162,9 +162,11 @@ sources:
 
   - name: Metrics
     query: |
-      SELECT Line.name AS Name, Line.value as value
+      SELECT *
       FROM profile(metrics=TRUE)
 
+  - name: Everything
+    query: SELECT * FROM profile(type='.+')
 
 column_types:
   - name: InUseBytes

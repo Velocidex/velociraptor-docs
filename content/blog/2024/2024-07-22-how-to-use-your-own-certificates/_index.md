@@ -388,7 +388,7 @@ causing the connection errors, try these solutions:
   problem.
 
 For full details on troubleshooting or for any other debugging issues,
-please see [Troubleshooting and Debugging](https://docs.velociraptor.app/docs/deployment/troubleshooting/)
+please see [Troubleshooting and Debugging](https://docs.velociraptor.app/docs/troubleshooting/)
 
 ## About the author
 

@@ -1,0 +1,23 @@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="navbar navbar-default">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <span class="sr-only">Quick links</span>
+      {{- range .Page.Params.navs -}}
+      <span class="icon-bar"></span>
+      {{- end -}}
+    </button>
+  </div>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        {{- range .Page.Params.navs -}}
+          <a class="nav navbar-brand" href="{{.link}}">
+            {{ .name }}
+            <span class="sr-only">{{.name}}</span>
+          </a>
+        {{- end -}}
+  </div>
+</div>

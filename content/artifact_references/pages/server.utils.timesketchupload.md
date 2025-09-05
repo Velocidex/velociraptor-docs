@@ -20,7 +20,7 @@ To configure the client library to access your Timesketch instance
 see instructions https://timesketch.org/guides/user/cli-client/ and
 https://timesketch.org/guides/user/upload-data/
 
-This artifact assumes that the timesketch CLI is preconfigured with
+This artifact assumes that the Timesketch CLI is preconfigured with
 the correct credentials in the `.timesketchrc` file.
 
 
@@ -43,7 +43,7 @@ description: |
   see instructions https://timesketch.org/guides/user/cli-client/ and
   https://timesketch.org/guides/user/upload-data/
 
-  This artifact assumes that the timesketch CLI is preconfigured with
+  This artifact assumes that the Timesketch CLI is preconfigured with
   the correct credentials in the `.timesketchrc` file.
 
 required_permissions:
@@ -52,14 +52,16 @@ required_permissions:
 parameters:
   - name: NotebookId
     description: The notebook ID that contains the super timeline
-  - name: SuperTimeline
+  - name: SuperTimelineName
     description: The name of the super timeline
-  - name: Timeline
+  - name: TimelineName
     description: The name of the timeline within the super timeline.
+  - name: SketchName
+    description: The name of the sketch to upload to
   - name: TimesketchCLICommand
     default: "timesketch"
     description: |
-      The path to the timesketch cli binary. If you installed in a
+      The path to the Timesketch CLI binary. If you installed in a
       virtual environment this will be inside that environment.
 
 type: SERVER
@@ -105,7 +107,7 @@ export: |
   LET tmp &lt;= tempfile(extension=".csv")
 
   -- We copy the timeline to a temp csv file then upload that. This
-  -- might seem inefficient but timesketch is written in python so it
+  -- might seem inefficient but Timesketch is written in python so it
   -- is already very slow. The extra tempfile does not make much
   -- difference in practice.
   LET WriteTmpFile(NotebookId, SuperTimelineName, TimelineName) =

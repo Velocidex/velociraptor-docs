@@ -14,6 +14,19 @@ no_edit: true
 <span class='vql_type label label-warning pull-right page-header'>Accessor</span>
 
 
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+secret|The name of a secret to use.|string
+username|The username to use to log into the remote system.|string
+password|The password to use to log into the remote system.|string
+private_key|A private key to use to log into the remote system instead of a password.|string
+hostname|The hostname to log into.|string
+
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+
 ### Description
 
 Access a remote system's filesystem via `SSH/SFTP`.

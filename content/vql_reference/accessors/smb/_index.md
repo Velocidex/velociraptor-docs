@@ -14,6 +14,15 @@ no_edit: true
 <span class='vql_type label label-warning pull-right page-header'>Accessor</span>
 
 
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+hosts|A dict mapping hostname to connection strings. The connection string consists of username and password joined by colon (e.g. fred:hunter2 ).|ordereddict.Dict (required)
+
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+
 ### Description
 
 Access smb shares (e.g. Windows shares).

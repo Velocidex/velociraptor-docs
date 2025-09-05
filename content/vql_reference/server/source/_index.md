@@ -31,8 +31,8 @@ notebook_cell_id|The notebook cell read from (should also include notebook id)|s
 notebook_cell_version|The notebook cell version to read from (should also include notebook id and notebook cell)|string
 notebook_cell_table|A notebook cell can have multiple tables.)|int64
 start_row|Start reading the result set from this row|int64
-count|Maximum number of clients to fetch (default unlimited)'|int64
-orgs|Run the query over these orgs. If empty use the current org.'|list of string
+count|Maximum number of rows to fetch (default unlimited)|int64
+orgs|Run the query over these orgs. If empty use the current org.|list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
@@ -40,13 +40,35 @@ orgs|Run the query over these orgs. If empty use the current org.'|list of strin
 
 Retrieve rows from an artifact's source.
 
-This plugin is mostly useful in reports. It attempts to do the
-right thing automatically by inferring most parameters from its
+This plugin is mostly useful in notebooks. It attempts to do the
+right thing automatically by inferring many parameters from its
 execution environment.
 
-For example when called within a CLIENT report context, it will
-automatically fill its flow id, client id etc. Typically this
-means that you only need to specify the source name (for
-multi-source artifacts).
+The goal with this plugin is to reduce the boiler plate code
+required by inferring many of the parameters from the notebook
+environment. The `source()` plugin serves as a proxy to other more
+specific plugins such as `hunt_results()` and `flow_results()`.
+
+For example, when running within a collection notebook, the GUI
+will automatically pass the `ClientId`, `FlowId` and `Artifact`
+parameters to the notebook environment. Therefore it is not
+necessary to specify those at all:
+
+```vql
+-- Artifact, ClientId and FlowId are populated from the notebook context.
+SELECT * FROM source()
+```
+
+On the other hand, when running the above query in a hunt
+notebook, the `HuntId` will be available in the notebook context,
+therefore the `source()` plugin will be equivalent to the
+`hunt_results()` plugin.
+
+When accessing another notebook cell, both the `notebook_id` and
+`notebook_cell` parameters must be explicitly specified:
+
+```vql
+SELECT * FROM source(notebook_id="N.123", notebook_cell="NC.1234")
+```
 
 

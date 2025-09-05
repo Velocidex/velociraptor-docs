@@ -5,16 +5,16 @@ tags: [Client Event Artifact]
 ---
 
 This artifact maintains a local (client side) database of file
-hashes. It is then possible to query this database using the
-Generic.Forensic.LocalHashes.Query artifact
+hashes. It is then possible to query this database by using the
+`Generic.Forensic.LocalHashes.Query` artifact
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.LocalHashes.Usn
 description: |
   This artifact maintains a local (client side) database of file
-  hashes. It is then possible to query this database using the
-  Generic.Forensic.LocalHashes.Query artifact
+  hashes. It is then possible to query this database by using the
+  `Generic.Forensic.LocalHashes.Query` artifact
 
 type: CLIENT_EVENT
 
@@ -57,7 +57,7 @@ sources:
       LET _ &lt;= log(message="Will use local hash database " + path)
 
       LET file_modifications = SELECT Device + OSPath AS OSPath
-      FROM watch_usn(device=Device, accessor="ntfs")
+      FROM watch_usn(device=Device)
       WHERE OSPath =~ PathRegex
 
       -- The USN journal may contain multiple entries for the same
@@ -89,7 +89,7 @@ sources:
       LET insertion = SELECT OSPath, Hash, Size, Time, {
          SELECT * FROM sqlite(file=path,
             query="INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)",
-            args=[OSPath, Hash, Time, Size])
+            args=[OSPath.String, Hash, Time, Size])
       } AS Insert
       FROM files
       WHERE Insert OR TRUE

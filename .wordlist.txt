@@ -1459,7 +1459,6 @@ MiB
 ibytes
 
 # content/blog/2024/2024-03-10-release-notes-0.72/_index.md
-CloudFlare
 EWF
 TCT
 Websocket
@@ -1670,3 +1669,191 @@ xmount
 
 forwading
 triages
+
+<url-free> content/docs/deployment/security/_index.md
+--------------------------------------------------------------------------------
+CRL
+FolderPath
+pst
+io
+prem
+
+<url-free> content/blog/2025/2025-02-23-release-notes-0.74/_index.md
+--------------------------------------------------------------------------------
+Fibratus
+Verifier
+presumbit
+UDP
+rsyslog
+sd
+Dedups
+recurses
+Datadog
+
+<url-free> content/knowledge_base/tips/setup_google_oauth.md
+--------------------------------------------------------------------------------
+CN
+
+<url-free> content/docs/deployment/_index.md
+--------------------------------------------------------------------------------
+Quickstart
+subfolder
+
+<url-free> content/docs/deployment/server/deployment_example/_index.md
+--------------------------------------------------------------------------------
+Cloudflare
+DDNS
+IDM
+IDPs
+NOIP
+distro
+
+<url-free> content/docs/deployment/server/key_concepts/_index.md
+--------------------------------------------------------------------------------
+abovementioned
+
+<url-free> content/docs/deployment/quickstart/_index.md
+prebuilt
+
+<url-free> content/knowledge_base/tips/cloudflare_tunnel.md
+CloudFlare
+
+utilised
+verifier
+
+<url-free> content/vql_reference/parsers/parse_lines/_index.md
+--------------------------------------------------------------------------------
+BOM
+
+<url-free> content/docs/vql/artifacts/calling/_index.md
+--------------------------------------------------------------------------------
+composable
+
+<url-free> content/docs/gui/keyboard_shortcuts/_index.md
+--------------------------------------------------------------------------------
+Goto
+
+<url-free> content/docs/gui/artifacts/_index.md
+--------------------------------------------------------------------------------
+Autocomplete
+Autosuggest
+ChopChopGo
+DetectRaptor
+PreviousReleases
+RegistryHunter
+SysmonBinary
+UpdatedBuiltin
+autosuggest
+config's
+
+<url-free> content/docs/cli/fuse/_index.md
+--------------------------------------------------------------------------------
+GetPrivateKeyFromScope
+
+<url-free> content/docs/cli/fs/_index.md
+--------------------------------------------------------------------------------
+cp
+
+<url-free> content/docs/cli/_index.md
+--------------------------------------------------------------------------------
+subcommands
+yq
+
+<url-free> content/docs/cli/deaddisk/_index.md
+--------------------------------------------------------------------------------
+deaddisk
+
+<url-free> content/docs/artifacts/tips/_index.md
+--------------------------------------------------------------------------------
+defang
+
+<url-free> content/docs/artifacts/use_cases/_index.md
+--------------------------------------------------------------------------------
+ClientDelete
+DefenderExclusion
+Sourceless
+sourceless
+
+<url-free> content/docs/artifacts/tools/_index.md
+--------------------------------------------------------------------------------
+cli
+
+<url-free> content/docs/artifacts/preconditions/_index.md
+--------------------------------------------------------------------------------
+thruthiness
+
+<url-free> content/docs/artifacts/event_queues/_index.md
+--------------------------------------------------------------------------------
+deduplicated
+
+<url-free> content/docs/artifacts/resources/_index.md
+--------------------------------------------------------------------------------
+hardcoded
+predefine
+subkeys
+
+<url-free> content/docs/artifacts/_index.md
+--------------------------------------------------------------------------------
+amongst
+org's
+
+<url-free> content/docs/artifacts/advanced_fields/_index.md
+--------------------------------------------------------------------------------
+WSS
+subfields
+
+<url-free> content/docs/artifacts/export_imports/_index.md
+--------------------------------------------------------------------------------
+RandomGreeting
+RandomNumberGenerator
+
+<url-free> content/docs/overview/related/_index.md
+--------------------------------------------------------------------------------
+Blauhaunt
+Socfortress
+
+<url-free> content/docs/artifacts/event_queues/_index.md
+--------------------------------------------------------------------------------
+QueueManager
+TimeSketch
+
+<url-free> content/knowledge_base/tips/cloudflare_checkip.md
+--------------------------------------------------------------------------------
+checkip
+cloudflare
+ddns
+
+<url-free> content/_index.md
+--------------------------------------------------------------------------------
+cve
+navs
+
+<url-free> content/vql_reference/server/rpm_create/_index.md
+--------------------------------------------------------------------------------
+deployable
+
+<url-free> content/docs/forensic/filesystem/_index.md
+--------------------------------------------------------------------------------
+SIDs
+prelog
+
+dropbox
+uplinks
+MinIO
+
+<url-free> content/knowledge_base/tips/setting_up_sftp.md
+--------------------------------------------------------------------------------
+misconfigure
+Nextron
+fred
+UploadTools
+
+content/blog/2025/2025-08-30-release-notes-0.75/_index.md
+--------------------------------------------------------------------------------
+NotepadParser
+Resumable
+ogmini
+resumable
+uncompressing
+shellbag
+unselect

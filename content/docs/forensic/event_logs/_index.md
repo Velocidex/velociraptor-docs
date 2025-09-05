@@ -1,5 +1,9 @@
 ---
 title: "Event Logs"
+summary: |
+    Windows event logs are a common source of evidence of malicious activity.
+    Velociraptor supports reading Windows evtx files and events from Event
+    Tracing for Windows (ETW) providers.
 date: 2021-06-27T04:34:03Z
 draft: false
 weight: 80
@@ -154,11 +158,16 @@ disabling the `Microsoft-Windows-Bits-Client/Operational` log.
 
 ![Disabling logs](image25.png)
 
-To read the full analysis of how to detect such a registry modification, read the [blog post]({{< ref "blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/" >}}), or simply check for modifications using the `Windows.EventLogs.Modifications` artifact.
+To read the full analysis of how to detect such a registry modification, read
+the [blog post]({{< ref "blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/" >}}),
+or simply check for modifications using the `Windows.EventLogs.Modifications`
+artifact.
 
 ## Event Tracing for Windows (ETW)
 
-ETW is the underlying system by which event logs are [generated and collected](https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw). The following diagram illustrates an overview of ETW.
+ETW is the underlying system by which event logs are
+[generated and collected](https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw).
+The following diagram illustrates an overview of ETW.
 
 ![ETW Architecture](image23.png)
 

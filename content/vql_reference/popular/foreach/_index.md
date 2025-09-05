@@ -21,7 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 row|A query or slice which generates rows.|LazyExpr (required)
 query|Run this query for each row.|StoredQuery
-async|If set we run all queries asynchronously (implies workers=1000).|bool
+async|If set we run all queries asynchronously (implies workers=100).|bool
 workers|Total number of asynchronous workers.|int64
 column|If set we only extract the column from row.|string
 

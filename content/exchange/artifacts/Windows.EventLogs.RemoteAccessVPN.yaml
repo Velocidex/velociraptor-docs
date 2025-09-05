@@ -1,25 +1,25 @@
 name: Windows.EventLogs.RemoteAccessVPN
-author: Théo Letailleur, Synacktiv 
+author: Théo Letailleur, Synacktiv
 description: |
-  This Artifact enables scoping EventLogs from Microsoft VPN, served by 
-  Remote Access Service server role. 
-  It is designed to assist in identifying VPN connections on organizations that 
+  This Artifact enables scoping EventLogs from Microsoft VPN, served by
+  Remote Access Service server role.
+  It is designed to assist in identifying VPN connections on organizations that
   are using Microsoft VPN service. It targets both server and client side logs.
-  
+
   This artifact parses EvtxHunter output and returns a set of fields in results.
   An unparsed data field is availible in the hidden _RawData field.
-  
-  There are several parameter's available for search leveraging regex.  
-  
-    - ClientEvtxGlob glob of VPN Client EventLogs to target. Default to Application.evtx.  
+
+  There are several parameter's available for search leveraging regex.
+
+    - ClientEvtxGlob glob of VPN Client EventLogs to target. Default to Application.evtx.
     - ServerEvtxGlob glob of VPN Server EventLogs to target. Default to System.evtx.
     - NPSLogsGlob glob of NPS Server Text Logs to target.
-    - dateAfter enables search for events after this date.  
+    - dateAfter enables search for events after this date.
     - dateBefore enables search for events before this date.
     - IocRegex enables regex search over the message field.
-    - IgnoreRegex enables a regex whitelist for the Message field.  
-    - SearchVSS enables searching over VSS.  
-    
+    - IgnoreRegex enables a regex whitelist for the Message field.
+    - VSSAnalysisAge enables searching over VSS.
+
 
 reference:
     - https://www.synacktiv.com/publications/forensic-aspects-of-microsoft-remote-access-vpn.html
@@ -42,9 +42,14 @@ parameters:
   - name: IgnoreRegex
     description: "Regex of string to whitelist"
     type: regex
-  - name: SearchVSS
-    description: "Add VSS into query."
-    type: bool
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+       If larger than zero we analyze VSS within this many days
+       ago. (e.g 7 will analyze all VSS within the last week).  Note
+       that when using VSS analysis we have to use the ntfs accessor
+       for everything which will be much slower.
   - name: DateAfter
     type: timestamp
     description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -63,18 +68,18 @@ sources:
                 if(condition=eventid=20271,then=format(format='''%v''', args=[eventdata[1]]), else=
                 if(condition=(eventid=20250 OR eventid=20253 OR eventid=20255 OR eventid=20272 OR eventid=20274),then=format(format='''%v''', args=[eventdata[2]]), else=
                 if(condition=eventid=20275,then="N/A")
-            ))      
-    
+            ))
+
       -- TunnelIP
       LET extract_tunnelip(eventid, eventdata) =
                 if(condition=eventid=20274,then=format(format='''%v''', args=[eventdata[4]]), else=
                 if(condition=eventid=20275,then=format(format='''%v''', args=[eventdata[2]])
-            ))  
+            ))
 
       -- ExternalIP
       LET extract_externalip(eventid, eventdata) =
                 if(condition=eventid=20271,then=format(format='''%v''', args=[eventdata[2]]))
-    
+
       SELECT EventTime,Computer,Channel,Provider,EventID,extract_user(eventid=EventID,eventdata=EventData.Data) as User, extract_tunnelip(eventid=EventID, eventdata=EventData.Data) as TunnelIP, extract_externalip(eventid=EventID, eventdata=EventData.Data) as ExternalIP, EventData.Data[1:] as ExtraInfo,Message,EventData.Data as _RawData
       FROM Artifact.Windows.EventLogs.EvtxHunter(
                         EvtxGlob=ServerEvtxGlob,
@@ -82,8 +87,8 @@ sources:
                         IdRegex=VPNServerIdRegex,
                         WhitelistRegex=IgnoreRegex,
                         DateAfter=DateAfter,
-                        DateBefore=DateBefore, 
-                        SearchVSS=SearchVSS )
+                        DateBefore=DateBefore,
+                        VSSAnalysisAge=VSSAnalysisAge )
 
   - name: VPN Clients
     description: VPN Client event logs
@@ -97,8 +102,8 @@ sources:
                         IdRegex=VPNClientIdRegex,
                         WhitelistRegex=IgnoreRegex,
                         DateAfter=DateAfter,
-                        DateBefore=DateBefore, 
-                        SearchVSS=SearchVSS )    
+                        DateBefore=DateBefore,
+                        VSSAnalysisAge=VSSAnalysisAge )
 
   - name: NPS Server
     description: Retrieve NPS Server logs (also available in the Microsoft VPN server)

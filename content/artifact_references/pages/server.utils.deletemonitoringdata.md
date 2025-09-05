@@ -14,7 +14,7 @@ optionally removes data older than the specified timestamp.
 
 **NOTE** This artifact will destroy all data irrevocably. Take
   care! You should always do a dry run first to see which flows
-  will match before using the ReallyDoIt option.
+  will match before using the `ReallyDoIt` option.
 
 
 <pre><code class="language-yaml">
@@ -30,7 +30,7 @@ description: |
 
    **NOTE** This artifact will destroy all data irrevocably. Take
      care! You should always do a dry run first to see which flows
-     will match before using the ReallyDoIt option.
+     will match before using the `ReallyDoIt` option.
 
 type: SERVER
 
@@ -44,30 +44,46 @@ parameters:
    - name: HostnameRegex
      description: If specified only target these hosts
      type: regex
+     default: .
+   - name: OnlyRegisteredClients
+     type: bool
+     description: |
+       If enabled only search registered clients. (Might be needed for
+       very large deployments).
    - name: ReallyDoIt
      type: bool
      description: Do not actually delete until this is set!
 
 sources:
   - query: |
-        SELECT * FROM foreach(row={
-            SELECT client_id,
-                   os_info.hostname AS hostname
-            FROM clients()
-            WHERE hostname =~ HostnameRegex
-        },
-        query={
-            SELECT OSPath,
-                OSPath.Dirname.Basename AS ArtifactName, Size,
-                timestamp(epoch=
-                 split(string=OSPath.Basename, sep="\\.")[0]) AS Timestamp,
-                 if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
-            FROM glob(
-               globs="/**.json*", accessor="fs",
-               root="/clients/"+ client_id + "/monitoring")
-            WHERE ArtifactName =~ ArtifactRegex
-              AND Timestamp &lt; DateBefore
-        }, workers=10)
+      LET SearchDeletedClientsQuery = SELECT Name AS ClientId,
+            client_info(client_id=Name).os_info.hostname AS Hostname
+      FROM glob(globs="/clients/*", accessor="fs")
+      WHERE IsDir
+        AND Hostname =~ HostnameRegex
+
+      LET SearchRegisteredClientsQuery = SELECT client_id,
+           os_info.hostname AS hostname
+      FROM clients()
+      WHERE hostname =~ HostnameRegex
+
+      LET SearchClients = SELECT * FROM if(
+           condition=OnlyRegisteredClients,
+           then=SearchRegisteredClientsQuery,
+           else=SearchDeletedClientsQuery)
+
+      SELECT * FROM foreach(row=SearchClients,
+      query={
+        SELECT OSPath,
+               OSPath.Dirname.Basename AS ArtifactName, Size,
+               timestamp(epoch=split(string=OSPath.Basename, sep="\\.")[0]) AS Timestamp,
+               if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
+        FROM glob(
+          globs="/**.json*", accessor="fs",
+          root="/clients/"+ ClientId + "/monitoring")
+        WHERE ArtifactName =~ ArtifactRegex
+          AND Timestamp &lt; DateBefore
+      }, workers=10)
 
 </code></pre>
 

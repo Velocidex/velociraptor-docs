@@ -4,7 +4,7 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Acquires a full memory image using the built in WinPmem driver.
+Acquires a full memory image by using the built-in WinPmem driver.
 
 NOTE: This artifact usually transfers a lot of data. You should
 increase the default timeout to allow it to complete.
@@ -14,11 +14,11 @@ minimize this we need to acquire memory as quickly as possible. This
 artifact offers a few compression methods for the output
 file. Reducing the size of the file will decrease time needed for IO
 but will increase CPU requirements so this is a
-tradeoff. Empirically we found that using S2 compression gives a
+trade-off. Empirically we found that using S2 compression gives a
 reasonable compression and very high speed reducing acquisition time
 from the no compression options significantly.
 
-To decompress the image you can use the [Go Winpmem binary](https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc1.exe)
+To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc1.exe)
 
 ```
 go-winpmem.exe expand image.compressed image.raw
@@ -28,7 +28,7 @@ go-winpmem.exe expand image.compressed image.raw
 <pre><code class="language-yaml">
 name: Windows.Memory.Acquisition
 description: |
-  Acquires a full memory image using the built in WinPmem driver.
+  Acquires a full memory image by using the built-in WinPmem driver.
 
   NOTE: This artifact usually transfers a lot of data. You should
   increase the default timeout to allow it to complete.
@@ -38,15 +38,18 @@ description: |
   artifact offers a few compression methods for the output
   file. Reducing the size of the file will decrease time needed for IO
   but will increase CPU requirements so this is a
-  tradeoff. Empirically we found that using S2 compression gives a
+  trade-off. Empirically we found that using S2 compression gives a
   reasonable compression and very high speed reducing acquisition time
   from the no compression options significantly.
 
-  To decompress the image you can use the [Go Winpmem binary](https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc1.exe)
+  To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc1.exe)
 
   ```
   go-winpmem.exe expand image.compressed image.raw
   ```
+
+implied_permissions:
+  - FILESYSTEM_WRITE
 
 precondition: |
   SELECT OS FROM info()
@@ -57,6 +60,9 @@ precondition: |
 parameters:
   - name: ServiceName
     description: Override the name of the driver service to install.
+  - name: DriverPath
+    description: Where to unpack the driver before loading it.
+    default: C:\Windows\Temp\winpmem.sys
   - name: Compression
     default: None
     type: choices
@@ -72,6 +78,7 @@ sources:
       LET Tempfile &lt;= tempfile(extension=".pmem")
 
       LET ImageInfo &lt;= winpmem(
+         driver_path=DriverPath,
          service=ServiceName,
          image_path=Tempfile,
          compression=Compression)

@@ -69,6 +69,10 @@ src: local(""),
 font-display: block;
 }
 
+#TableOfContents {
+    font-size: 15px !important;
+}
+
 html, body {
     color: var(--MAIN-TEXT-color) !important;
     background-color: var(--MAIN-TEXT-background-color) !important;
@@ -187,6 +191,15 @@ a:hover {
     border-color: var(--MENU-SECTION-HR-color);
 }
 
+.fa-chevron-right {
+    color: transparent !important;
+}
+
+hr {
+    background-color: #ccc;
+    height: 2px !important
+}
+
 div.section {
     opacity: 1;
 }
@@ -198,6 +211,11 @@ pre {
 pre code, pre.code {
     font-size: 0.9rem !important;
     font-family: "Iosevka Term" !important;
+}
+
+blockquote p {
+    font-size: 0.95rem;
+    font-style: italic;
 }
 
 div.progress  {
@@ -392,7 +410,37 @@ code.hljs {
 }
 
 .ThemeSelector {
-    float: right;
+    position: fixed;
+    left: 15px;
+    top: 20px;
+
+    padding: 2px 8px ;
+    margin-bottom: 0 ;
+    font-size: 14px ;
+    font-weight: normal ;
+    line-height: 1.42857143 ;
+    text-align: center ;
+    white-space: nowrap ;
+    vertical-align: middle ;
+    -ms-touch-action: manipulation ;
+    touch-action: manipulation ;
+    cursor: pointer ;
+    -webkit-user-select: none ;
+    -moz-user-select: none ;
+    -ms-user-select: none ;
+    user-select: none ;
+    background-image: none ;
+    border: 1px solid transparent ;
+    border-radius: 4px ;
+    border-color: var(--MENU-SECTION-HR-color);
+}
+
+body.light .ThemeSelector.lightmode {
+    display: none;
+}
+
+body.dark .ThemeSelector.darkmode {
+    display: none;
 }
 
 .pull-right {
@@ -707,6 +755,7 @@ table thead th {
 .vqlargs + table {
     margin-top: 0;
     margin-bottom: 1em;
+    width: 100% !important;
 }
 
 .vqlargs + table td {
@@ -830,6 +879,11 @@ details > summary:first-of-type {
 #body-inner table {
     border: none;
     margin-bottom: 1em;
+    width: fit-content;
+}
+
+.gsc-control-cse > table {
+    width: 100% !important;
 }
 
 #body-inner table tbody {
@@ -848,6 +902,7 @@ details > summary:first-of-type {
 
 #body-inner tbody td {
     border: none;
+    padding: 5px;
 }
 
 .search_results table {
@@ -1013,4 +1068,61 @@ figure div.figure img {
     background-repeat: no-repeat;
     padding-left: 2em;
     background-size: 1.3em 1.3em
+}
+
+
+#body .nav {
+    position: inherit;
+    top: inherit;
+    bottom: inherit;
+    width: inherit;
+    font-size: inherit;
+    height: inherit;
+    cursor: pointer;
+    display: inherit;
+    text-align: inherit;
+}
+#body .nav > i {
+    display: inherit;
+    vertical-align: inherit;
+    text-align: inherit;
+}
+
+@media only all and (max-width: 59.938em) {
+    #body .nav {
+        display: inherit;
+        position: inherit
+        top: inherit;
+        width: inherit;
+        text-align: inherit;
+        height: inherit;
+        line-height: inherit;
+        padding-top: inherit;
+    }
+    #body .nav > i {
+        display: inherit;
+    }
+}
+
+img.logo {
+    position: fixed;
+    top: 20px;
+    left: 25px;
+    height: 180px;
+}
+
+body.dark img.logo.light {
+    display: none;
+}
+
+body.light img.logo.light {
+    display: inherit;
+}
+
+body.light img.logo.dark {
+    display: none;
+}
+
+body.dark img.logo.dark {
+    display: inherit;
 }

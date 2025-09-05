@@ -175,19 +175,6 @@
         ]
     },
     {
-        "name": "appcompatcache",
-        "description": "Parses the appcompatcache.",
-        "type": "Plugin",
-        "category": "windows",
-        "platforms": [
-            "darwin_amd64_cgo",
-            "darwin_arm64_cgo",
-            "linux_amd64_cgo",
-            "windows_386_cgo",
-            "windows_amd64_cgo"
-        ]
-    },
-    {
         "name": "array",
         "description": "Create an array.",
         "type": "Function",
@@ -270,7 +257,13 @@
             {
                 "name": "prefix",
                 "type": "string",
-                "description": "Required name prefix"
+                "description": "Optional name prefix (deprecated ignored)"
+            },
+            {
+                "name": "tags",
+                "type": "string",
+                "description": "Optional tags to attach to the artifact.",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -305,6 +298,12 @@
                 "name": "basic",
                 "type": "bool",
                 "description": "Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it."
+            },
+            {
+                "name": "tags",
+                "type": "string",
+                "description": "Optional tags to attach to the artifact.",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -421,6 +420,9 @@
         "name": "auto",
         "description": "Access the file using the best accessor possible.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -428,6 +430,23 @@
             "windows_amd64_cgo"
         ],
         "category": "accessors"
+    },
+    {
+        "name": "background",
+        "description": "Run a query in the background.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query in the background."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
     },
     {
         "name": "backup",
@@ -595,6 +614,11 @@
                 "type": "StoredQuery",
                 "description": "Run this query over the item.",
                 "required": true
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "If specified we flush incomplete batches in this many seconds."
             }
         ],
         "platforms": [
@@ -650,6 +674,29 @@
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "cache_dns",
+        "description": "Add a DNS record to the cache..",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The domain name to cache ",
+                "required": true
+            },
+            {
+                "name": "ip",
+                "type": "string",
+                "description": "The ip of the domain",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -721,6 +768,40 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "cat",
+        "description": "Read files in chunks.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "File to open.",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "An accessor to use."
+            },
+            {
+                "name": "chunk",
+                "type": "int",
+                "description": "length of each chunk to read from the file."
+            },
+            {
+                "name": "timeout",
+                "type": "int",
+                "description": "If specified we abort reading after this much time."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -1169,7 +1250,7 @@
         ],
         "category": "server",
         "metadata": {
-            "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
+            "permissions": "COLLECT_CLIENT,COLLECT_SERVER,COLLECT_BASIC"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -1561,7 +1642,7 @@
     },
     {
         "name": "data",
-        "description": "Makes a string appears as an in memory file.",
+        "description": "Makes a string appears as an in-memory file.",
         "type": "Accessor",
         "platforms": [
             "darwin_amd64_cgo",
@@ -1570,6 +1651,110 @@
             "windows_amd64_cgo"
         ],
         "category": "accessors"
+    },
+    {
+        "name": "deb_create",
+        "description": "Create a deployable Debian package for client or server.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "target",
+                "type": "string",
+                "description": "The name of the target OS to repack (default VelociraptorLinux)"
+            },
+            {
+                "name": "version",
+                "type": "string",
+                "description": "Velociraptor Version to repack"
+            },
+            {
+                "name": "release",
+                "type": "string",
+                "description": "Rpm package release version (A)"
+            },
+            {
+                "name": "server",
+                "type": "bool",
+                "description": "Build a server rpm if true, otherwise we build a client rpm"
+            },
+            {
+                "name": "exe",
+                "type": "OSPath",
+                "description": "Alternative a path to the executable to repack"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use to read the file."
+            },
+            {
+                "name": "config",
+                "type": "string",
+                "description": "The config to be repacked in the form of a json or yaml string. If not provided we use the current config./"
+            },
+            {
+                "name": "show_spec",
+                "type": "bool",
+                "description": "If set we only show the spec that would have been used. You can use this to customize the input for package_spec"
+            },
+            {
+                "name": "directory_name",
+                "type": "string",
+                "description": "Package files will be created inside this directory. If not specified we use a temporary directory"
+            },
+            {
+                "name": "extra_args",
+                "type": "string",
+                "description": "Additional command line args to be provided to the service",
+                "repeated": true
+            },
+            {
+                "name": "package_spec",
+                "type": "ordereddict.Dict",
+                "description": "A Package spec to use instead of the default, for ultimate customization"
+            }
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER,FILESYSTEM_WRITE,SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "dedup",
+        "description": "Dedups the query based on a column. This will suppress rows with identical values for the key column",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "key",
+                "type": "string",
+                "description": "A column name to use as dedup key.",
+                "required": true
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Run this query to generate items.",
+                "required": true
+            },
+            {
+                "name": "timeout",
+                "type": "uint64",
+                "description": "LRU expires in this much time (default 60 sec)."
+            },
+            {
+                "name": "size",
+                "type": "int64",
+                "description": "Size of the LRU cache."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
     },
     {
         "name": "delay",
@@ -1665,6 +1850,11 @@
             {
                 "name": "really_do_it",
                 "type": "bool"
+            },
+            {
+                "name": "sync",
+                "type": "bool",
+                "description": "If specified we ensure data is available immediately"
             }
         ],
         "category": "server",
@@ -1895,7 +2085,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -2068,6 +2258,11 @@
                 "type": "Lambda",
                 "description": "Lambda function to evaluate e.g. x=>1+1 where x will be the current scope.",
                 "required": true
+            },
+            {
+                "name": "args",
+                "type": "Any",
+                "description": "An array of elements to use as args for the lambda function. If not provided we pass the scope"
             }
         ],
         "platforms": [
@@ -2114,13 +2309,18 @@
             },
             {
                 "name": "env",
-                "type": "LazyExpr",
+                "type": "ordereddict.Dict",
                 "description": "Environment variables to launch with."
             },
             {
                 "name": "cwd",
                 "type": "string",
                 "description": "If specified we change to this working directory first."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
             }
         ],
         "category": "popular",
@@ -2208,6 +2408,15 @@
         ]
     },
     {
+        "name": "favorites_list",
+        "description": "List all user's favorites.",
+        "type": "Plugin",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "favorites_save",
         "description": "Save a collection into the favorites.",
         "type": "Function",
@@ -2285,6 +2494,9 @@
         "name": "file",
         "description": "Access files using the operating system's API.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2307,6 +2519,9 @@
         "name": "file_nocase",
         "description": "Access files using the operating system's API.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2567,7 +2782,7 @@
             {
                 "name": "async",
                 "type": "bool",
-                "description": "If set we run all queries asynchronously (implies workers=1000)."
+                "description": "If set we run all queries asynchronously (implies workers=100)."
             },
             {
                 "name": "workers",
@@ -2619,6 +2834,9 @@
         "name": "fs",
         "description": "Provide access to the server's filestore and datastore.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2631,6 +2849,9 @@
         "name": "fs_sparse",
         "description": "Provide access to the server's filestore and datastore.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -2713,6 +2934,11 @@
                 "name": "fan_out",
                 "type": "int64",
                 "description": "Wait for this many listeners to connect before starting the query"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "A description to add to debug server"
             }
         ],
         "platforms": [
@@ -3058,6 +3284,15 @@
         ]
     },
     {
+        "name": "help",
+        "description": "Dump information about all VQL functions and plugins.",
+        "type": "Plugin",
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "host",
         "description": "Perform a DNS resolution.",
         "type": "Function",
@@ -3082,6 +3317,11 @@
                 "name": "prefer_go",
                 "type": "bool",
                 "description": "Prefer calling the native Go implementation rather than the system."
+            },
+            {
+                "name": "tracker_only",
+                "type": "bool",
+                "description": "Only use the dns tracker - if the IP is not known then do not attempt to resolve it."
             }
         ],
         "metadata": {
@@ -3099,13 +3339,13 @@
         "name": "http_client",
         "description": "Make a http request.",
         "type": "Plugin",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "url",
                 "type": "string",
                 "description": "The URL to fetch",
-                "required": true
+                "repeated": true
             },
             {
                 "name": "params",
@@ -3181,7 +3421,7 @@
         ],
         "category": "popular",
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -3375,6 +3615,16 @@
             {
                 "name": "really_do_it",
                 "type": "bool"
+            },
+            {
+                "name": "workers",
+                "type": "int64",
+                "description": "Delete with this many workers (default 2)"
+            },
+            {
+                "name": "archive",
+                "type": "bool",
+                "description": "Set this to only archive the hunt - it will still be accessible but will be hidden from the GUI"
             }
         ],
         "category": "server",
@@ -4291,12 +4541,17 @@
         "args": [
             {
                 "name": "component",
-                "type": "string"
+                "type": "string",
+                "repeated": true
+            },
+            {
+                "name": "prelog",
+                "type": "bool"
             }
         ],
         "category": "server",
         "metadata": {
-            "permissions": "READ_RESULTS"
+            "permissions": "SERVER_ADMIN"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -4382,7 +4637,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -4405,6 +4660,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "linux_amd64_cgo",
             "windows_386_cgo",
@@ -4579,10 +4837,20 @@
                 "name": "root_ca",
                 "type": "string",
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'"
+            },
+            {
+                "name": "headers",
+                "type": "ordereddict.Dict",
+                "description": "A dict of headers to send."
             }
         ],
         "metadata": {
-            "permissions": "SERVER_ADMIN"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -4660,6 +4928,16 @@
                 "name": "root_ca",
                 "type": "string",
                 "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'"
+            },
+            {
+                "name": "headers",
+                "type": "ordereddict.Dict",
+                "description": "A dict of headers to send."
             }
         ],
         "category": "server",
@@ -4912,7 +5190,7 @@
     },
     {
         "name": "monitoring",
-        "description": "Extract monitoring log from a client. If client_id is not specified we watch the global journal which contains event logs from all clients.",
+        "description": "Extract monitoring log from a client.\n",
         "type": "Plugin",
         "args": [
             {
@@ -4946,11 +5224,6 @@
                 "name": "start_row",
                 "type": "int64",
                 "description": "Start reading the result set from this row"
-            },
-            {
-                "name": "count",
-                "type": "int64",
-                "description": "Maximum number of clients to fetch (default unlimited)'"
             }
         ],
         "category": "server",
@@ -5060,7 +5333,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -5292,6 +5565,11 @@
                 "description": "The cell of the notebook to update. If this is empty we add a new cell to the notebook"
             },
             {
+                "name": "delete",
+                "type": "bool",
+                "description": "If set the notebook cell is removed from the notebook."
+            },
+            {
                 "name": "type",
                 "type": "string",
                 "description": "Set the type of the cell if needed (markdown or vql)."
@@ -5299,8 +5577,7 @@
             {
                 "name": "input",
                 "type": "string",
-                "description": "The new cell content.",
-                "required": true
+                "description": "The new cell content."
             },
             {
                 "name": "output",
@@ -5506,12 +5783,6 @@
         "type": "Plugin",
         "args": [
             {
-                "name": "query",
-                "type": "StoredQuery",
-                "description": "The query will be run in parallel over batches.",
-                "required": true
-            },
-            {
                 "name": "client_id",
                 "type": "string",
                 "description": "The client id to extract"
@@ -5560,6 +5831,12 @@
                 "name": "notebook_cell_table",
                 "type": "int64",
                 "description": "A notebook cell can have multiple tables.)"
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "The query will be run in parallel over batches.",
+                "required": true
             },
             {
                 "name": "workers",
@@ -6249,6 +6526,36 @@
         ]
     },
     {
+        "name": "parse_pst",
+        "description": "Parse a PST file and extract email data.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "filename",
+                "type": "OSPath",
+                "description": "The PST file to parse.",
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use"
+            },
+            {
+                "name": "raw",
+                "type": "bool",
+                "description": "If set we emit the raw message object for all objects"
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "parse_records_with_regex",
         "description": "Parses a file with a set of regexp and yields matches as records.  The\nfile is read into a large buffer. Then each regular expression is\napplied to the buffer, and all matches are emitted as rows.",
         "type": "Plugin",
@@ -6624,6 +6931,11 @@
                 "description": "A delegate to pass to the accessor."
             },
             {
+                "name": "Delegate",
+                "type": "LazyExpr",
+                "description": "A delegate to pass to the accessor (must be another pathspec)."
+            },
+            {
                 "name": "Path",
                 "type": "Any",
                 "description": "A path to open."
@@ -6972,6 +7284,9 @@
         "name": "process",
         "description": "Access process memory like a file.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -7294,7 +7609,7 @@
             {
                 "name": "pid",
                 "type": "int64",
-                "description": "A pid to list. If this is provided we are able to operate much faster by only opening a single process."
+                "description": "A process ID to list. If not provided list all processes."
             }
         ],
         "category": "popular",
@@ -7308,6 +7623,19 @@
             "windows_386_cgo",
             "windows_amd64_cgo"
         ]
+    },
+    {
+        "name": "pst",
+        "description": "An accessor to open attachments in PST files.",
+        "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ],
+        "category": "accessors"
     },
     {
         "name": "query",
@@ -7483,6 +7811,9 @@
         "name": "raw_file",
         "description": "Access the filesystem using the OS API.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -7655,8 +7986,11 @@
     },
     {
         "name": "reg",
-        "description": "Access the registry like a filesystem using the OS APIs.",
+        "description": "An alias for the `registry` accessor, which accesses the registry using the\nOS APIs.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7676,6 +8010,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7694,6 +8031,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7729,6 +8069,9 @@
             }
         ],
         "category": "windows",
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -7815,7 +8158,7 @@
     },
     {
         "name": "rekey",
-        "description": "Causes the client to rekey and regenerate a new client ID. DANGEROUS! This will change the client's identity and it will appear as a new client in the GUI.",
+        "description": "Causes the client to rekey and regenerate a new client ID. DANGEROUS! This\nwill change the client's identity and it will appear as a new client in the\nGUI.\n",
         "type": "Function",
         "args": [
             {
@@ -7938,13 +8281,17 @@
             {
                 "name": "upload_name",
                 "type": "string",
-                "description": "The name of the upload to create",
-                "required": true
+                "description": "The name of the upload to create"
+            },
+            {
+                "name": "dest_filename",
+                "type": "string",
+                "description": "If an upload name is not provided, the file will be written to this path"
             }
         ],
         "category": "server",
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "COLLECT_SERVER,FILESYSTEM_WRITE"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -8050,9 +8397,192 @@
         ]
     },
     {
+        "name": "rpm_create",
+        "description": "Create a deployable RPM package for client or server.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "target",
+                "type": "string",
+                "description": "The name of the target OS to repack (default VelociraptorLinux)"
+            },
+            {
+                "name": "version",
+                "type": "string",
+                "description": "Velociraptor Version to repack"
+            },
+            {
+                "name": "release",
+                "type": "string",
+                "description": "Rpm package release version (A)"
+            },
+            {
+                "name": "server",
+                "type": "bool",
+                "description": "Build a server rpm if true, otherwise we build a client rpm"
+            },
+            {
+                "name": "exe",
+                "type": "OSPath",
+                "description": "Alternative a path to the executable to repack"
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "The accessor to use to read the file."
+            },
+            {
+                "name": "config",
+                "type": "string",
+                "description": "The config to be repacked in the form of a json or yaml string. If not provided we use the current config./"
+            },
+            {
+                "name": "show_spec",
+                "type": "bool",
+                "description": "If set we only show the spec that would have been used. You can use this to customize the input for package_spec"
+            },
+            {
+                "name": "directory_name",
+                "type": "string",
+                "description": "Package files will be created inside this directory. If not specified we use a temporary directory"
+            },
+            {
+                "name": "extra_args",
+                "type": "string",
+                "description": "Additional command line args to be provided to the service",
+                "repeated": true
+            },
+            {
+                "name": "package_spec",
+                "type": "ordereddict.Dict",
+                "description": "A Package spec to use instead of the default, for ultimate customization"
+            }
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "COLLECT_SERVER,FILESYSTEM_WRITE,SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "rsyslog",
+        "description": "Send an RFC5424 compliant remote syslog message.",
+        "type": "Function",
+        "version": 2,
+        "args": [
+            {
+                "name": "port",
+                "type": "uint64",
+                "description": "Destination port to connect to. If not specified we use 514"
+            },
+            {
+                "name": "protocol",
+                "type": "string",
+                "description": "Protocol to use, default UDP but can be TCP or TLS"
+            },
+            {
+                "name": "message",
+                "type": "string",
+                "description": "Message to log.",
+                "required": true
+            },
+            {
+                "name": "facility",
+                "type": "int64",
+                "description": "Facility of this message"
+            },
+            {
+                "name": "severity",
+                "type": "int64",
+                "description": "Severity of this message"
+            },
+            {
+                "name": "timestamp",
+                "type": "time.Time",
+                "description": "Timestamp of this message, if omitted we use the current time."
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "Hostname associated with this message. If omitted we use the current hostname."
+            },
+            {
+                "name": "app_name",
+                "type": "string",
+                "description": "Application that generated the log"
+            },
+            {
+                "name": "proc_id",
+                "type": "string",
+                "description": "Process ID that generated this log"
+            },
+            {
+                "name": "sd_id",
+                "type": "string",
+                "description": "When sending structured data, this is the Structured Data ID"
+            },
+            {
+                "name": "args",
+                "type": "ordereddict.Dict",
+                "description": "A dict to be interpolated into the message as structured data, according to RFC5424."
+            },
+            {
+                "name": "root_ca",
+                "type": "string",
+                "description": "As a better alternative to disable_ssl_security, allows root ca certs to be added here."
+            }
+        ],
+        "metadata": {
+            "permissions": "NETWORK"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "s3",
         "description": "Allows access to S3 buckets.",
         "type": "Accessor",
+        "args": [
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
+            },
+            {
+                "name": "region",
+                "type": "string",
+                "description": "The region."
+            },
+            {
+                "name": "credentials_key",
+                "type": "string"
+            },
+            {
+                "name": "credentials_secret",
+                "type": "string"
+            },
+            {
+                "name": "credentials_token",
+                "type": "string"
+            },
+            {
+                "name": "endpoint",
+                "type": "string"
+            },
+            {
+                "name": "skip_verify",
+                "type": "bool"
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "S3_CREDENTIALS",
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -8122,6 +8652,130 @@
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secret_add",
+        "description": "Add a new secret",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the secret",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "secret",
+                "type": "ordereddict.Dict",
+                "description": "A Dict containing key/value pairs for the secret",
+                "required": true
+            }
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secret_define",
+        "description": "Define a new secret template",
+        "type": "Function",
+        "args": [
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "verifier",
+                "type": "string",
+                "description": "A VQL Lambda function to verify the secret"
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "description": "A description of the secret type"
+            },
+            {
+                "name": "template",
+                "type": "ordereddict.Dict",
+                "description": "A Set of key/value pairs",
+                "required": true
+            }
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secret_modify",
+        "description": "Modify the secret",
+        "type": "Function",
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "Name of the secret",
+                "required": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "description": "Type of the secret",
+                "required": true
+            },
+            {
+                "name": "delete",
+                "type": "bool",
+                "description": "Delete the secret completely"
+            },
+            {
+                "name": "add_users",
+                "type": "string",
+                "description": "A list of users to add to the secret",
+                "repeated": true
+            },
+            {
+                "name": "remove_users",
+                "type": "string",
+                "description": "A list of users to remove from the secret",
+                "repeated": true
+            }
+        ],
+        "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "secrets",
+        "description": "Retrieve the list of secrets on the server.",
+        "type": "Plugin",
+        "category": "server",
+        "platforms": [
+            "linux_amd64_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -8485,6 +9139,18 @@
         "name": "smb",
         "description": "Access smb shares (e.g. Windows shares).",
         "type": "Accessor",
+        "args": [
+            {
+                "name": "hosts",
+                "type": "ordereddict.Dict",
+                "description": "A dict mapping hostname to connection strings. The connection string consists of username and password joined by colon (e.g. fred:hunter2 ).",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "SMB_CREDENTIALS",
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -8561,12 +9227,12 @@
             {
                 "name": "count",
                 "type": "int64",
-                "description": "Maximum number of clients to fetch (default unlimited)'"
+                "description": "Maximum number of rows to fetch (default unlimited)"
             },
             {
                 "name": "orgs",
                 "type": "string",
-                "description": "Run the query over these orgs. If empty use the current org.'",
+                "description": "Run the query over these orgs. If empty use the current org.",
                 "repeated": true
             }
         ],
@@ -8608,7 +9274,7 @@
             {
                 "name": "sep",
                 "type": "string",
-                "description": "The separator that will be used to split"
+                "description": "The separator regex that will be used to split"
             },
             {
                 "name": "sep_string",
@@ -8771,7 +9437,7 @@
             }
         ],
         "metadata": {
-            "permissions": "COLLECT_SERVER"
+            "permissions": "NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -8896,6 +9562,37 @@
         "name": "ssh",
         "description": "Access a remote system's filesystem via `SSH/SFTP`.",
         "type": "Accessor",
+        "args": [
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
+            },
+            {
+                "name": "username",
+                "type": "string",
+                "description": "The username to use to log into the remote system."
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "description": "The password to use to log into the remote system."
+            },
+            {
+                "name": "private_key",
+                "type": "string",
+                "description": "A private key to use to log into the remote system instead of a password."
+            },
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "The hostname to log into."
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "SSH_CONFIG",
+            "permissions": "NETWORK"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -9179,6 +9876,29 @@
             "darwin_arm64_cgo",
             "linux_amd64_cgo",
             "windows_386_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "template",
+        "description": "Expand a Go style template .",
+        "type": "Function",
+        "args": [
+            {
+                "name": "template",
+                "type": "string",
+                "description": "A Go Template compatible string.",
+                "required": true
+            },
+            {
+                "name": "expansion",
+                "type": "ordereddict.Dict",
+                "description": "An object to be expanded into the template.",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo",
             "windows_amd64_cgo"
         ]
     },
@@ -9891,7 +10611,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "NETWORK,FILESYSTEM_READ"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -10012,6 +10732,29 @@
         ]
     },
     {
+        "name": "upload_transactions",
+        "description": "View the outstanding transactions for uploads.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "client_id",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string"
+            }
+        ],
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        },
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "upload_webdav",
         "description": "Upload files to a WebDAV server.",
         "type": "Function",
@@ -10065,7 +10808,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "FILESYSTEM_READ,NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -10427,6 +11170,23 @@
         ]
     },
     {
+        "name": "verify",
+        "description": "verify an artifact",
+        "type": "Function",
+        "args": [
+            {
+                "name": "artifact",
+                "type": "string",
+                "description": "The artifact to verify. This can be an artifact source in yaml or json or the name of an artifact",
+                "required": true
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "version",
         "description": "Gets the version of a VQL plugin or function.",
         "type": "Function",
@@ -10452,6 +11212,9 @@
         "name": "vfs",
         "description": "Access client's VFS filesystem on the server.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "READ_RESULTS"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -10684,6 +11447,18 @@
                 "name": "description",
                 "type": "string",
                 "description": "Description for this GUID provider"
+            },
+            {
+                "name": "kernel_tracer_type",
+                "type": "string",
+                "description": "A list of event types to fetch from the kernel tracer (can be registry, process, image_load, network, driver, file, thread, handle)",
+                "repeated": true
+            },
+            {
+                "name": "kernel_tracer_stacks",
+                "type": "string",
+                "description": "A list of kernel tracer event types to append stack traces to (can be any of the types accepted by kernel_tracer_type)",
+                "repeated": true
             }
         ],
         "category": "event",
@@ -10918,6 +11693,9 @@
         "name": "winpmem",
         "description": "Access physical memory like a file. Any filename will result in a sparse view of physical memory.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "windows_amd64_cgo"
         ],
@@ -10942,6 +11720,11 @@
                 "name": "compression",
                 "type": "string",
                 "description": "When writing a memory image use this compression (default none) can be none, s2, snappy, gzip."
+            },
+            {
+                "name": "driver_path",
+                "type": "string",
+                "description": "Specify where to extract the driver - by default we use the temp folder"
             }
         ],
         "category": "windows",
@@ -11097,7 +11880,7 @@
             {
                 "name": "filename",
                 "type": "OSPath",
-                "description": "CSV files to open",
+                "description": "JSONL files to open",
                 "required": true
             },
             {
@@ -11115,6 +11898,16 @@
                 "name": "buffer_size",
                 "type": "int",
                 "description": "Maximum size of buffer before flushing to file."
+            },
+            {
+                "name": "max_time",
+                "type": "int",
+                "description": "Maximum time before flushing the buffer (10 sec)."
+            },
+            {
+                "name": "append",
+                "type": "bool",
+                "description": "Append JSONL records to existing file."
             }
         ],
         "metadata": {
@@ -11248,6 +12041,11 @@
                 "name": "vars",
                 "type": "ordereddict.Dict",
                 "description": "The Yara variables to use."
+            },
+            {
+                "name": "force_buffers",
+                "type": "bool",
+                "description": "Force buffer scan in all cases."
             }
         ],
         "category": "parsers",

@@ -34,6 +34,7 @@ org_id|If set the collection will be started in the specified org.|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
 <span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+<span class="permission_list linkcolour label label-important">COLLECT_BASIC</span>
 
 ### Description
 

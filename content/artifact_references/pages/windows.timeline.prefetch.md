@@ -11,7 +11,7 @@ determine when binaries are run in the past. On Windows10 we can see
 the last 8 execution times and creation time (9 potential executions).
 
 This artifact is a timelined output version of the standard Prefetch
-artifact. There are several parameter's availible.
+artifact. There are several parameters available.
   - dateAfter enables search for prefetch evidence after this date.
   - dateBefore enables search for prefetch evidence before this date.
   - binaryRegex enables to filter on binary name, e.g evil.exe.
@@ -29,7 +29,7 @@ description: |
   the last 8 execution times and creation time (9 potential executions).
 
   This artifact is a timelined output version of the standard Prefetch
-  artifact. There are several parameter's availible.
+  artifact. There are several parameters available.
     - dateAfter enables search for prefetch evidence after this date.
     - dateBefore enables search for prefetch evidence before this date.
     - binaryRegex enables to filter on binary name, e.g evil.exe.

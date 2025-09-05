@@ -4,25 +4,25 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-The Windows Certutil binary is capable of downloading arbitrary
-files. Attackers typically use it to fetch tools undetected using
-Living off the Land (LOL) techniques.
+The Windows Certutil binary is capable of downloading arbitrary files.
+Attackers typically use it to fetch tools undetected when using "Living off
+the Land" (LOL) techniques.
 
-Certutil maintains a cache of the downloaded files and this contains
-valuable metadata. This artifact parses this metadata to establish
-what was downloaded and when.
+Certutil maintains a cache of the downloaded files and this contains valuable
+metadata. The artifact parses this metadata to establish what was downloaded
+and when.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.CertUtil
 description: |
-  The Windows Certutil binary is capable of downloading arbitrary
-  files. Attackers typically use it to fetch tools undetected using
-  Living off the Land (LOL) techniques.
+  The Windows Certutil binary is capable of downloading arbitrary files.
+  Attackers typically use it to fetch tools undetected when using "Living off
+  the Land" (LOL) techniques.
 
-  Certutil maintains a cache of the downloaded files and this contains
-  valuable metadata. This artifact parses this metadata to establish
-  what was downloaded and when.
+  Certutil maintains a cache of the downloaded files and this contains valuable
+  metadata. The artifact parses this metadata to establish what was downloaded
+  and when.
 
 reference:
   - https://u0041.co/blog/post/3
@@ -115,7 +115,7 @@ sources:
                if(condition=AlsoUpload, then=upload(file=OSPath, accessor=Accessor)) AS _MetdataUpload,
                if(condition=AlsoUpload, then=upload(file=_ContentPath, accessor=Accessor)) AS _Upload,
                Header.URL AS URL,
-               url(parse=URL).Host AS UrlTLD,
+               url(parse=Header.URL).Host AS UrlTLD,
                Header.FileSize AS FileSize,
                regex_replace(re='"', replace="", source=Header.Hash) AS Hash,
                timestamp(winfiletime=Header.DownloadTime) AS DownloadTime,

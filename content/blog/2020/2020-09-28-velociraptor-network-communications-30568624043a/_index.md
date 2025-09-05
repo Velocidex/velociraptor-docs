@@ -23,9 +23,86 @@ In the following discussion we will refer to a typical Velociraptor configuratio
 ```sh
 velociraptor config generate -i
 ```
-For this example we select a typical self signed deployment.
+For this example we select a typical self-signed deployment.
 
-<script src="https://gist.github.com/scudette/b0e80d3d039a74bfa2e41130f0c4955d.js" charset="utf-8"></script>
+```yaml
+version:
+  name: velociraptor
+  version: 0.5.0
+  commit: 6fc96b5f
+  build_time: "2020-09-22T18:21:45+10:00"
+Client:
+  server_urls:
+  - https://test.velocidex-training.com:8000/
+  ca_certificate: |
+    -----BEGIN CERTIFICATE-----
+    MIIDKzCCAhOgAwIBAgIRAJ6I1o7Yv+8BqsEF4oLIhV4wDQYJKoZIhvcNAQELBQAw
+    GjEYMBYGA1UEChMPVmVsb2NpcmFwdG9yIENBMB4XDTIwMDkyNzEyNTUzN1oXDTMw
+    GwbIKrNW8iIkxQT4iKMHgF4+vGn4YteNpysatCGZtSHWRcvUB+cnDYv+kbch70dx
+    zF54976UPzOCv+xN7blJFMugWnCHPBOnURaBvQ4cPOdtWv3BgtbF+3EPiaKf9EE=
+    -----END CERTIFICATE-----
+  nonce: Imxp3zf+GM4=
+  use_self_signed_ssl: true
+  pinned_server_name: VelociraptorServer
+API:
+GUI:
+  bind_address: 127.0.0.1
+  bind_port: 8889
+  base_path: /gui
+  gw_certificate: |
+    -----BEGIN CERTIFICATE-----
+    wpgSJX5UXEJUHhlRLWenVNTrRS8jmmjgw6ovnZKosahV/skItKEsVGQByi1x32zW
+    FwpP3uggQlfSpgIufr2n86Jxu9eGwdLUIrAq8crZXuZkBQPONOWz3yTF3fuhy9Zr
+    MBjRGfI5jEPkoIVkVv4UXWfmKuCSoNJ17HVa2GRwOojW8qZvEDTJSSRn2xJb0lkU
+    pvrd4AJ3gBePJtF/+oQOR08=
+    -----END CERTIFICATE-----
+  gw_private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEAptwLTXopCLWD483r9EWfn8YbxXiaxjvhSVc9MWxk7yBEvYYa
+    LTHjtwMhlh1I1YVNr1MH4GAoTXMASJsscLwEVol200tOGLVfb2I0uGVmunkjXXOh
+    eFCrGdIYJFAwhj4USZBsby5olORTHw8rBlvVvK+NieRptpg+bj+o23Xw8uryAotw
+    3InWtyaNQd+UEXqaaf6dnStYhX/CFJrudOobJHgiJ7cB33QG3nvZxg==
+    -----END RSA PRIVATE KEY-----
+CA:
+  private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpQIBAAKCAQEA3AGxHT80+B70+mtjj08njg9Se0c02K9qkcrTiy0knJEf7QpS
+    s4K5MQG22kxreW3sRXcJlVYa0MgrDCZRJjtGn8Fw1Zc3f28KGcyTqWAKO0xiQeVR
+    4+JQQ3INuNuGkCjWAxMj2p8wh23vsCWLWjUsZsD17uzqactTpr0gQQRGiI2sx/On
+    Q0hF/m5+o9f3j18kK3sQsOaZv/WRwYgzEZZVgeLH+Z1CFUaaAZZeR38=
+    -----END RSA PRIVATE KEY-----
+Frontend:
+  hostname: test.velocidex-training.com
+  bind_address: 0.0.0.0
+  bind_port: 8000
+  certificate: |
+    -----BEGIN CERTIFICATE-----
+    MIIDGDCCAgCgAwIBAgIRAOXGwSQ8EzUy74lzrRtZFjYwDQYJKoZIhvcNAQELBQAw
+    GjEYMBYGA1UEChMPVmVsb2NpcmFwdG9yIENBMB4XDTIwMDkyNzEyNTUzN1oXDTIx
+   yxHjv87Dvl9UmaaQljXfUxsxgjzWbCCvRD4ohNJoAcfS296CeUmvD31uVLR3Pbor
+    dcxFS4Nm/yOLARa9HVwawVFRoIQm/SG0oQwe2Bres2NnOGDu5xVQzHNGnqU1c7g3
+    GXTpLdDYULsHtfCh2PQZ9IKAFeCPxmu5hS+qmw==
+    -----END CERTIFICATE-----
+  private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAm289U7G6J0DIAmGqs9YN+NeF3odwcfFtp4YLASkud1r2p6t6
+    2DALF68hDqbSpR2FWsHRyFab5lSwI/kLsamGxBfLMVzeGkVQAXgGDzRxTRW/esa3
+    wpFwq5rJw8dDivYXK2PPY0xxBeznsxc//2/WgGp3gHmtfqRh0mP2uk/OZ323oiSK
+    rlJu+Ep6R4yBnxn+beeb+duXXuAGXS5CAdGXrMimrJYLgX4Wx7Ag
+    -----END RSA PRIVATE KEY-----
+  max_upload_size: 10485760
+  dyn_dns: {}
+  default_client_monitoring_artifacts:
+  - Generic.Client.Stats
+  run_as_user: velociraptor
+  expected_clients: 10000
+  GRPC_pool_max_size: 100
+  GRPC_pool_max_wait: 60
+Datastore:
+  implementation: FileBaseDataStore
+  location: /opt/velociraptor
+  filestore_directory: /opt/velociraptor
+```
 
 ### Communication overview
 
@@ -33,7 +110,7 @@ Clients (Velociraptor instances running on endpoints) connect to the server over
 
 ### Velociraptor’s internal PKI
 
-Every Velociraptor deployments creates an internal PKI which underpins it. The configuration wizard create an internal CA with an X509 certificate and a private key. This CA is used to
+Every Velociraptor deployments creates an internal PKI which underpins it. The configuration wizard creates an internal CA with an X509 certificate and a private key. This CA is used to:
 
 1. Create initial server certificates and any additional certificates for key rotation.
 
@@ -82,17 +159,17 @@ Note that this verification is essential in order to prevent the client from acc
 
 Velociraptor currently supports 2 modes for deployment via the config wizard:
 
-* Self signed mode uses internal CAs for the TLS certificates. The client knows it is in self signed mode if the **Client.use_self_signed_ssl** flag is true.
+* Self-signed mode uses internal CAs for the TLS certificates. The client knows it is in self-signed mode if the **Client.use_self_signed_ssl** flag is true.
 
 * Proper certificates minted by Let’s encrypt.
 
-Velociraptor verifies self signed TLS certificates using its built in CA. This essentially pins the server’s certificate inside the client — even if a MITM was able to mint another certificate (even if it was trusted by the global roots!) it would not be valid since it was not issued by Velociraptor’s internal CA which is the only CA we trust in this mode! In this way self signed mode is more secure than use a public CA.
+Velociraptor verifies self-signed TLS certificates using its built in CA. This essentially pins the server’s certificate inside the client — even if a MITM was able to mint another certificate (even if it was trusted by the global roots!) it would not be valid since it was not issued by Velociraptor’s internal CA which is the only CA we trust in this mode! In this way self-signed mode is more secure than use a public CA.
 
 The **Client.pinned_server_name** specifies the common name of the server (or DNS name in the Server Alternate Name (SAN) field). The client verifies that the certificate is correct **AND** that the name is the same as the pinned name. You typically do not need to change this setting.
 
-If the client is not in self signed mode (i.e. **Client.use_self_signed_ssl** is false or not present), it expects to verify TLS connections using the system’s root certificate store. In this configuration, Velociraptor is susceptible to a MITM SSL inspection proxy, and we must rely on the internal encryption mechanism as described in the previous section to protect communications.
+If the client is not in self-signed mode (i.e. **Client.use_self_signed_ssl** is false or not present), it expects to verify TLS connections using the system’s root certificate store. In this configuration, Velociraptor is susceptible to a MITM SSL inspection proxy, and we must rely on the internal encryption mechanism as described in the previous section to protect communications.
 
-**NOTE**: In practice we find that often customer networks do contain SSL inspection proxies and using self signed certificates breaks communications altogether. We typically prefer to deploy Let’s Encrypt certificates for reliability and better interoperability.
+**NOTE**: In practice we find that often customer networks do contain SSL inspection proxies and using self-signed certificates breaks communications altogether. We typically prefer to deploy Let’s Encrypt certificates for reliability and better interoperability.
 
 ### Debugging client communications
 
@@ -114,7 +191,7 @@ Once you enable connectivity, you might encounter another problem
 
 The **Unable to parse PEM** message indicates that the client is trying to fetch the **server.pem** file but it is not able to validate it. This often happens with captive portal type of proxies which interfere with the data transferred. It can also happen if your DNS setting point to a completely different server.
 
-We can verify the **server.pem** manually by using curl (note that when using self signed mode you might need to provide curl with the -k flag to ignore the certificate errors):
+We can verify the **server.pem** manually by using curl (note that when using self-signed mode you might need to provide curl with the -k flag to ignore the certificate errors):
 
 ![](../../img/1P9W4CnX9qNLGiRgnHGyLAw.png)
 
@@ -137,7 +214,39 @@ In this example, we will show how nginx can be used to terminate the TLS connect
 
 First I will install nginx according to any number of tutorials on the net (for [this](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04) or [this](https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/)). My config file is as follows:
 
-<script src="https://gist.github.com/scudette/03bf73f2430e4bb6e7923d69a232e77f.js" charset="utf-8"></script>
+```text
+server {
+     server_name test.velocidex-training.com;
+     location /gui {
+          proxy_pass http://127.0.0.1:8889/gui;
+          proxy_redirect     off;
+          proxy_set_header   Host $host;
+     }
+
+     location / {
+         proxy_pass http://127.0.0.1:8000;
+     }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/test.velocidex-training.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/test.velocidex-training.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = test.velocidex-training.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+    listen [::]:80;
+
+    server_name test.velocidex-training.com;
+    return 404; # managed by Certbot
+}
+```
 
 I am using certbot to manage the lets encrypt certificates and I have two main routes:
 
@@ -157,7 +266,7 @@ On the client’s side, the server appears to be a proper SSL server. The client
 
 We have seen that Velociraptor utilizes its own PKI to secure client/server communication. This PKI is used both to prevent interception of messages as well as preventing messages from being forged. The server verifies the client the message came from and the client verifies the server before it connects to it.
 
-In addition, Velociraptor uses standard TLS communications to deliver messages using POST requests. TLS connections can either be self signed (but pinned) or use public CA PKI. Using a standard network protocol allows Velociraptor to easily fit into any modern corporate network (which might include SSL interception proxies etc).
+In addition, Velociraptor uses standard TLS communications to deliver messages using POST requests. TLS connections can either be self-signed (but pinned) or use public CA PKI. Using a standard network protocol allows Velociraptor to easily fit into any modern corporate network (which might include SSL interception proxies etc).
 
 By understanding how the communication takes place, we saw how we can debug network problems and even configure a reverse proxy for TLS offloading — an important feature to be able to scale even higher.
 

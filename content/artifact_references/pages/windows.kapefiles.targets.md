@@ -16,14 +16,14 @@ This artifact is automatically generated from these YAML files,
 contributed and maintained by the community. This artifact only
 encapsulates the KAPE "Targets" - basically a bunch of glob
 expressions used for collecting files on the endpoint. We do not
-do any post processing these files - we just collect them.
+do any post processing of these files - we just collect them.
 
 We recommend that timeouts and upload limits be used
 conservatively with this artifact because we can upload really
 vast quantities of data very quickly.
 
 NOTE: This artifact was built from The KapeFile Repository
-commit ad2180c dated 2024-10-08T15:00:46-0400.
+commit 5aa0726 dated 2025-05-27T23:23:06-0400.
 
 
 <pre><code class="language-yaml">
@@ -41,14 +41,14 @@ description: |
     contributed and maintained by the community. This artifact only
     encapsulates the KAPE "Targets" - basically a bunch of glob
     expressions used for collecting files on the endpoint. We do not
-    do any post processing these files - we just collect them.
+    do any post processing of these files - we just collect them.
 
     We recommend that timeouts and upload limits be used
     conservatively with this artifact because we can upload really
     vast quantities of data very quickly.
 
     NOTE: This artifact was built from The KapeFile Repository
-    commit ad2180c dated 2024-10-08T15:00:46-0400.
+    commit 5aa0726 dated 2025-05-27T23:23:06-0400.
 
 reference:
   - https://www.kroll.com/en/insights/publications/cyber/kroll-artifact-parser-extractor-kape
@@ -79,19 +79,22 @@ parameters:
       for everything which will be much slower.
 
   - name: _BasicCollection
-    description: "Basic Collection (by Phill Moore): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T, Amcache, Amcache, Amcache transaction files, Amcache transaction files, AppCompat PCA Folder, Event logs Win7+, Event logs XP, Event logs Win7+, Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell Transcripts - Observed Location, Prefetch, Rclone Config, RecentFileCache, RECYCLER - WinXP, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Login Data, Edge Media History, Protections, Search, Signons, Storage Sync, Webappstore, Windows 10 Notification DB, Windows 10 Notification DB, User startup folders, System-wide startup folder, Steam Friend List and Username History file, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, Windows Defender Logs, Windows Defender Event Logs, Zoom plugin (Outlook), eMule Logs and Configuration Files, eMule part.met files, iTunes Backup Folder, iTunes Backup Folder, iTunes Backup Folder - iOS13"
+    description: "Basic Collection (by Phill Moore): $Boot, $J, $Max, $LogFile, $MFT, $SDS, $T, WindowsIndexSearch - User, GatherLogs - User, Amcache, Amcache transaction files, Syscache, Syscache transaction files, Thumbcache DB, AppCompat PCA Folder, Setupapi.log XP, Setupapi.log Win7+, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, Prefetch, RecentFileCache, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, WindowsIndexSearch, GatherLogs, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, Event logs XP, Event logs Win7+, PowerShell Scheduled_Jobs, PowerShell Scheduled_Jobs Output, PowerShell Scheduled_Jobs Systemprofile, PowerShell Scheduled_Jobs Output Systemprofile, PowerShell Scheduled_Jobs WOW64 Systemprofile, PowerShell Scheduled_Jobs Output WOW64 Systemprofile, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, SRUM, at .job, at SchedLgU.txt, XML, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData"
     type: bool
   - name: _KapeTriage
-    description: "Calls Kape Triage (by Phill Moore): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Action1 Client Application logs, Amcache, Amcache, Amcache transaction files, Amcache transaction files, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, AppCompat PCA Folder, Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, Box Drive Application Metadata, Box Sync Application Metadata, Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, DWAgent Log Files, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Windows Protect Folder, Dropbox Metadata, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, ESET NOD32 AV Logs, ESET Remote Administrator Logs, Local User Quarantine, SYSTEM user quarantine, Edge folder, Edge bookmarks, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Windows Protect Folder, Edge Chromium Extension Files, Event logs Win7+, Event logs XP, Event logs Win7+, Exchange TransportRoles log files, F-Secure Logs, F-Secure User Logs, FileZilla Log Files, Addons, Bookmarks, Bookmarks, Cookies, Cookies, Downloads, Extensions, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Password, Password, Preferences, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Password XP, Password XP, Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata, HexChat Chat Logs, HitmanPro Logs, HitmanPro Alert Logs, IIS log files, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, ITarian, ITarian, Comodo, ImgBurn - Application Log File, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, Kali WSL ext4.vhdx, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Setup Log, Kaseya Setup Log, Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData, Error logging, LogMeIn ProgramData Logs, Macrium Reflect, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, Mattermost - Chat Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, Small Memory Dump directory, MeshAgent .msh (configuration) file, Microsoft OneNote - RecentSearches, Nessus Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, One Commander - Other Configuration Files, OneDrive Metadata Logs, OpenVPN Client Config, Opera - Local Folder, PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell Transcripts - Observed Location, Prefetch, ProtonVPN - Connection Logs, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Qlik Sense Logs, RDP Cache Files, Windows.old RDP Cache Files, RDP Jumplist Files, RemoteConnectionManager Event Logs, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Rclone Config, RecentFileCache, RECYCLER - WinXP, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, Chrome Trust Tokens, Chrome Trust Tokens, Chrome SyncData Database, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Protections, Search, Signons, Storage Sync, Webappstore, Windows 10 Notification DB, Windows 10 Notification DB, ActivitiesCache.db, Update Store.db, Bitdefender SQLite DB Files, EventTranscript.db, EventTranscript.db, at SchedLgU.txt, at SchedLgU.txt, XML, ScreenConnect Session Database, ScreenConnect User Config, Slack Storage, Snagit - Captures, Snip &amp; Sketch, Sophos Logs (XP), Sophos Logs, Sophos Logs, Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings, SpeedCommander - .ini File, Splashtop Log Files, Splashtop Log Files in ProgramData, User startup folders, System-wide startup folder, Steam Login Metadata file, Steam Friend List and Username History file, Steam User Avatar files, Steam Game Tray Icon files, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Syscache transaction files, Tablacus Explorer - remember.xml, Tablacus Explorer - window.xml, Tablacus Explorer - window1.xml, TeamViewer Connection Logs, TotalAV Logs, Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal, Total Commander - Frequent Directory Listing, Total Commander - FTP Logs, TreeSize - ScanHistory.XML, Trend Micro Logs, Setupapi.log Win7+, Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab, VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), VLC Recently Opened Files, VLC Recorded Files, VMware - Virtual Machine Inventory, VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), RealVNC Log, RealVNC Log, TightVNC Application Logs, Viber Config Database, Viber Users Data Database, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, VirtualBox VM configs, VirtualBox VM backup configs, VirtualBox Logs, VirtualBox Backup Logs, VirtualBox Hardening Logs, VirtualBox, VHD, VHDX, VDI, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, SECURITY registry hive, SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), WindowsIndexSearch, GatherLogs, Network setting files, Windows 10 Notification DB, Windows 10 Notification DB, MigLog.xml, Setupact.log, HumanReadable.xml, FolderMoveLog.txt, Update Store.db, Windows Power Diagnostics, DNS Netlogon files, DNS files, DHCP files, Diagnostic Logs for WSA, App download artifacts (PNG), App download artifacts (ICO), Appcompatdb.json, userdata.vhdx, Legacy .rbs files relating to Windows Telemetry and Diagnostics, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State, Zoom plugin (Outlook), eMule Logs and Configuration Files, eMule part.met files, iTunes Backup Folder, iTunes Backup Folder, iTunes Backup Folder - iOS13"
+    description: "Calls Kape Triage (by Phill Moore): $Boot, $J, $Max, $LogFile, $MFT, $SDS, $T, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Action1 Client Application logs, Amcache, Amcache transaction files, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, Application Event Log XP, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, Box Drive Application Metadata, Box Sync Application Metadata, Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, DWAgent Log Files, Dropbox Metadata, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, Local User Quarantine, SYSTEM user quarantine, Edge folder, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Edge Snapshots Folder, Emsisoft Scan Logs, Event logs XP, Event logs Win7+, F-Secure Logs, F-Secure User Logs, F-Secure Scheduled Scan Reports, Addons, Downloads, Extensions, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Sessionstore XP, Google Drive Backup and Sync Metadata, Google Drive for Desktop Metadata, HitmanPro Logs, HitmanPro Alert Logs, HitmanPro Database, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, IE 11 Cookies, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Agent Edge Service Logs, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData, Level RMM Client Application logs, LogMeIn ProgramData Logs, LogMeIn Application Logs, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, MalwareBytes Anti-Malware Scan Results Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, McAfee ePO Logs, MegaSync Folder, MeshAgent .msh (configuration) file, MeshAgent log file, Windows Safety Scanner Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, Net Monitor Client Config, OneDrive Metadata Logs, OneDrive Metadata Settings, Opera - Local Folder, Opera - Roaming Folder, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, Prefetch, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Puffin - Image Cache, RDP Cache Files, Windows.old RDP Cache Files, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Rclone Config, RecentFileCache, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, RemoteUtilities Install Log, RogueKiller Reports, RustDesk logs, SRUM, SUPERAntiSpyware Logs, at .job, at SchedLgU.txt, XML, ScreenConnect Session Database, ScreenConnect User Config, SecureAge Antvirus Logs, SentinelOne EDR Log, Sophos Logs (XP), Sophos Logs, Splashtop Log Files, Splashtop Log Files in ProgramData, Supremo Connection Logs, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Symantec Endpoint Protection User Logs, Symantec Event Log Win7+, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml, Syscache, Syscache transaction files, TeamViewer Connection Logs, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, TotalAV Logs, Trend Micro Logs, Trend Micro Security Agent Report Logs, Trend Micro Security Agent Connection Logs, Unified endpoint management and security solutions from ManageEngine, UltraViewer User Logs, UltraViewer System Logs, UltraViewer Service Log, UltraViewer Connection Log, VIPRE Business Agent Logs, VIPRE Business User Logs (v7+), VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), RealVNC Log, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, Vivaldi Bookmarks, Vivaldi Visited Links, Vivaldi Web Data, Vivaldi User Tracking, Vivaldi Calendar, Vivaldi Contacts, Vivaldi Notes, Vivaldi Download Metadata, WBEM, WER Files, Crash Dumps, Webroot Program Data, Windows Defender Logs, Windows Defender Event Logs, DetectionHistory, Windows Defender Quarantine, Windows Defender Detections.log, ActivitiesCache.db, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State, Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts, Zoho Assist log files in AppData\Local, Zoho Assist .conf files in AppData\Local, Zoho Assist log files in ProgramData, Zoho Assist .conf files, Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, mRemoteNG Logs, mRemoteNG Connection Configuration and Backups, mRemoteNG Program Settings, PowerShell Scheduled_Jobs, PowerShell Scheduled_Jobs Output, PowerShell Scheduled_Jobs Systemprofile, PowerShell Scheduled_Jobs Output Systemprofile, PowerShell Scheduled_Jobs WOW64 Systemprofile, PowerShell Scheduled_Jobs Output WOW64 Systemprofile, 360 Secure Browser Bookmarks, 360 Secure Browser Cookies, 360 Secure Browser Current Session, 360 Secure Browser Current Tabs, 360 Secure Browser Download Metadata, 360 Secure Browser Extension Cookies, 360 Secure Browser Favicons, 360 Secure Browser History, 360 Secure Browser Last Session, 360 Secure Browser Last Tabs, 360 Secure Browser Sessions Folder, 360 Secure Browser Login Data, 360 Secure Browser Media History, 360 Secure Browser Network Action Predictor, 360 Secure Browser Network Persistent State, 360 Secure Browser Preferences, 360 Secure Browser Quota Manager, 360 Secure Browser Reporting and NEL, 360 Secure Browser Shortcuts, 360 Secure Browser Top Sites, 360 Secure Browser Trust Tokens, 360 Secure Browser SyncData Database, 360 Secure Browser Visited Links, 360 Secure Browser Web Data, 360 Secure Browser Snapshots Folder, AnyDesk File Transfer Logs - Running in portable mode, AnyDesk File Transfer Logs - Installed as a Service, Arc Cookies, Arc Favicons, Arc History, Arc Sessions Folder, Arc Login Data, Arc Network Action Predictor, Arc Preferences, Arc Shortcuts, Arc Top Sites, Arc SyncData Database, Arc Bookmarks, Arc Visited Links, Arc Web Data, Arc JSON Files, Arc PLIST Files, CocCoc Bookmarks, CocCoc Cookies, CocCoc Current Session, CocCoc Current Tabs, CocCoc Download Metadata, CocCoc Extension Cookies, CocCoc Favicons, CocCoc History, CocCoc Last Session, CocCoc Last Tabs, CocCoc Sessions Folder, CocCoc Login Data, CocCoc Media History, CocCoc Network Action Predictor, CocCoc Network Persistent State, CocCoc Preferences, CocCoc Quota Manager, CocCoc Reporting and NEL, CocCoc Shortcuts, CocCoc Top Sites, CocCoc Trust Tokens, CocCoc SyncData Database, CocCoc Visited Links, CocCoc Web Data, CocCoc Snapshots Folder, QQ Browser Bookmarks, QQ Browser Cookies, QQ Browser Current Session, QQ Browser Current Tabs, QQ Browser Download Metadata, QQ Browser Extension Cookies, QQ Browser Favicons, QQ Browser History, QQ Browser Last Session, QQ Browser Last Tabs, QQ Browser Sessions Folder, QQ Browser Login Data, QQ Browser Media History, QQ Browser Network Action Predictor, QQ Browser Network Persistent State, QQ Browser Preferences, QQ Browser Quota Manager, QQ Browser Reporting and NEL, QQ Browser Shortcuts, QQ Browser Top Sites, QQ Browser Trust Tokens, QQ Browser SyncData Database, QQ Browser Visited Links, QQ Browser Web Data, QQ Browser Snapshots Folder, Microsoft Quick Assist, Microsoft Remote Help, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, Remco RAT Default path, Remco RAT custom path - AppData screenshots folder, Remco RAT custom path - AppData notess folder, Remco RAT custom path - AppData micrecords folder, Remco RAT custom path - AppData hpsupport, Remco RAT custom path, Remco RAT custom path - AppData notess, Remco RAT custom path - AppData screenshots, Remco RAT custom path  - AppData micrecords, Remco RAT custom path  - AppData hpsupport, Supermium Bookmarks XP, Supermium Cookies XP, Supermium Current Session XP, Supermium Current Tabs XP, Supermium Favicons XP, Supermium History XP, Supermium Last Session XP, Supermium Last Tabs XP, Supermium Sessions Folder XP, Supermium Network Action Predictor XP, Supermium Network Persistent State XP, Supermium Login Data XP, Supermium Preferences XP, Supermium Reporting and NEL XP, Supermium Trust Tokens XP, Supermium SyncData Database XP, Supermium Shortcuts XP, Supermium Top Sites XP, Supermium Visited Links XP, Supermium Web Data XP, Supermium Bookmarks, Supermium Cookies, Supermium Current Session, Supermium Current Tabs, Supermium Download Metadata, Supermium Extension Cookies, Supermium Favicons, Supermium History, Supermium Last Session, Supermium Last Tabs, Supermium Sessions Folder, Supermium Login Data, Supermium Media History, Supermium Network Action Predictor, Supermium Network Persistent State, Supermium Preferences, Supermium Quota Manager, Supermium Reporting and NEL, Supermium Shortcuts, Supermium Top Sites, Supermium Trust Tokens, Supermium SyncData Database, Supermium Visited Links, Supermium Web Data, Supermium Snapshots Folder, SYSTEM Supermium History, UCBrowser Bookmarks, UCBrowser Cookies, UCBrowser Current Session, UCBrowser Current Tabs, UCBrowser Download Metadata, UCBrowser Extension Cookies, UCBrowser Favicons, UCBrowser History, UCBrowser Last Session, UCBrowser Last Tabs, UCBrowser Sessions Folder, UCBrowser Login Data, UCBrowser Media History, UCBrowser Network Action Predictor, UCBrowser Network Persistent State, UCBrowser Preferences, UCBrowser Quota Manager, UCBrowser Reporting and NEL, UCBrowser Shortcuts, UCBrowser Top Sites, UCBrowser Trust Tokens, UCBrowser SyncData Database, UCBrowser Visited Links, UCBrowser Web Data, UCBrowser Snapshots Folder, WaveBrowser bookmarks, WaveBrowser Cookies, WaveBrowser Current Session, WaveBrowser Current Tabs, WaveBrowser Download Metadata, WaveBrowser Extension Cookies, WaveBrowser Favicons, WaveBrowser History, WaveBrowser Last Session, WaveBrowser Last Tabs, WaveBrowser Sessions Folder, WaveBrowser Login Data, WaveBrowser Media History, WaveBrowser Network Action Predictor, WaveBrowser Network Persistent State, WaveBrowser Preferences, WaveBrowser Quota Manager, WaveBrowser Reporting and NEL, WaveBrowser Shortcuts, WaveBrowser Top Sites, WaveBrowser Trust Tokens, WaveBrowser SyncData Database, WaveBrowser Visited Links, WaveBrowser Web Data, WaveBrowser Snapshots Folder, SYSTEM WaveBrowser History, CrowdStrike Falcon Quarantined File, HitmanPro Quarantine, McAfee MSC Logs, McAfee Agent Events, McAfee Agent Logs, McAfee Data Reputation Logs, McAfee Managed VirusScan, McAfee Agent Events XP, McAfee MC Logs XP, McAfee Data Reputation Logs XP, McAfee Managed VirusScan Logs XP, McAfee WCF Service Logs, McAfee ePO Apache Logs, McAfee ePO DB Events, McAfee ePO DB Debug Events, McAfee ePO Server Logs, SUM Database (.mdb files), AppCompat PCA Folder, ESET Remote Administrator Logs, FreeFileSync, ITarian, Comodo, Supremo File Transfer Inbox, TightVNC Application Logs"
     type: bool
   - name: _SANS_Triage
-    description: "SANS Triage Collection (by Mark Hallman): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Action1 Client Application logs, Amcache, Amcache, Amcache transaction files, Amcache transaction files, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, AppCompat PCA Folder, Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, BITS files, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, Box Drive Application Metadata, Box Sync Application Metadata, Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, Cisco Jabber Database, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, DWAgent Log Files, Discord Cache Files, Discord Local Storage LevelDB Files, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Windows Protect Folder, Dropbox Metadata, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, ESET NOD32 AV Logs, ESET Remote Administrator Logs, Local User Quarantine, SYSTEM user quarantine, Edge folder, Edge bookmarks, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Windows Protect Folder, Edge Chromium Extension Files, Event logs Win7+, Event logs XP, Event logs Win7+, Event logs Win7+, WDI Trace Logs 1, WDI Trace Logs 1, WDI Trace Logs 2, WDI Trace Logs 2, WMI Trace Logs, WMI Trace Logs, SleepStudy Trace Logs, SleepStudy Trace Logs, Energy-NTKL Trace Logs, Exchange TransportRoles log files, F-Secure Logs, F-Secure User Logs, FileZilla Log Files, Addons, Bookmarks, Bookmarks, Cookies, Cookies, Downloads, Extensions, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Password, Password, Preferences, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Password XP, Password XP, Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata, Google Earth My Places Backup file (XP), Group Policy Files, Computer Group Policy files, User Group Policy files, Local Group Policy INI Files, Local Group Policy Files - Registry Policy Files, Local Group Policy Files - Registry Policy Files, Local Group Policy Files - Startup/Shutdown Scripts, HeidiSQL (tabs.ini), HexChat Chat Logs, HitmanPro Logs, HitmanPro Alert Logs, IIS log files, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, ITarian, ITarian, Comodo, ITarian, ImgBurn - Application Log File, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, Kali WSL ext4.vhdx, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Setup Log, Kaseya Setup Log, Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData, Error logging, LogMeIn ProgramData Logs, Macrium Reflect, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, ManageEngine ADSelfService Plus Log Files, Mattermost - Chat Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, Small Memory Dump directory, MeshAgent .msh (configuration) file, Microsoft OneNote - RecentSearches, Microsoft Sticky Notes - 1607 and later, Microsoft Teams IndexedDB Cache, Microsoft Teams Local Storage Cache, Microsoft Teams Cache, Microsoft Teams Config, Multi Commander - Log File, .NET CLR UsageLogs (user-scoped), Nessus Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, One Commander - Other Configuration Files, OneDrive Metadata Logs, OpenVPN Client Config, Opera - Local Folder, PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, Prefetch, ProtonVPN - Connection Logs, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Qlik Sense Logs, RDP Cache Files, Windows.old RDP Cache Files, RDP Jumplist Files, RemoteConnectionManager Event Logs, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Rclone Config, RecentFileCache, RECYCLER - WinXP, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, Chrome Trust Tokens, Chrome Trust Tokens, Chrome SyncData Database, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Protections, Search, Signons, Storage Sync, Webappstore, Windows 10 Notification DB, Windows 10 Notification DB, ActivitiesCache.db, Update Store.db, Bitdefender SQLite DB Files, EventTranscript.db, EventTranscript.db, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SUM Database (.mdb files), SUPERAntiSpyware Logs, SUSE Linux Enterprise Server WSL /etc/passwd, SUSE Linux Enterprise Server WSL /etc/group, SUSE Linux Enterprise Server WSL /etc/shadow, SUSE Linux Enterprise Server WSL /etc/timezone, SUSE Linux Enterprise Server WSL /etc/hostname, SUSE Linux Enterprise Server WSL /etc/hosts, SUSE Linux Enterprise Server WSL /etc/bash.bashrc, SUSE Linux Enterprise Server WSL /etc/profile, SUSE Linux Enterprise Server WSL .bash_history, SUSE Linux Enterprise Server WSL .bashrc, SUSE Linux Enterprise Server WSL .profile, SUSE Linux Enterprise Server WSL ext4.vhdx, at SchedLgU.txt, at SchedLgU.txt, XML, ScreenConnect Session Database, ScreenConnect User Config, Slack Storage, Snagit - Captures, Snip &amp; Sketch, Sophos Logs (XP), Sophos Logs, Sophos Logs, Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings, SpeedCommander - .ini File, Splashtop Log Files, Splashtop Log Files in ProgramData, User startup folders, System-wide startup folder, Steam Login Metadata file, Steam Friend List and Username History file, Steam User Avatar files, Steam Game Tray Icon files, Steam Startup Times Log file, Steam Game Image files, Steam Friend List and Username History file, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Syscache transaction files, Tablacus Explorer - remember.xml, Tablacus Explorer - window.xml, Tablacus Explorer - window1.xml, TeamViewer Connection Logs, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, TotalAV Logs, Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal, Total Commander - Frequent Directory Listing, Total Commander - FTP Logs, TreeSize - ScanHistory.XML, Trend Micro Logs, Setupapi.log Win7+, Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab, Ubuntu WSL /etc/passwd, Ubuntu WSL /etc/group, Ubuntu WSL /etc/shadow, Ubuntu WSL /etc/timezone, Ubuntu WSL /etc/hostname, VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), VLC Recently Opened Files, VLC Recorded Files, VMware - Virtual Machine Inventory, VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), RealVNC Log, RealVNC Log, TightVNC Application Logs, Viber Config Database, Viber Users Data Database, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, VirtualBox VM configs, VirtualBox VM backup configs, VirtualBox Logs, VirtualBox Backup Logs, VirtualBox Hardening Logs, VirtualBox, VHD, VHDX, VDI, VMDK, VSCode Opened Files, VSCode Workspaces, VSCode User extensions, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, Vivaldi Bookmarks, Vivaldi Visited Links, Windows Defender Logs, Windows Defender Event Logs, SECURITY registry hive, SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), WindowsIndexSearch, GatherLogs, Network setting files, Windows 10 Notification DB, Windows 10 Notification DB, MigLog.xml, Setupact.log, HumanReadable.xml, FolderMoveLog.txt, Update Store.db, Windows Power Diagnostics, DNS Netlogon files, DNS files, DHCP files, Diagnostic Logs for WSA, App download artifacts (PNG), App download artifacts (ICO), Appcompatdb.json, userdata.vhdx, Legacy .rbs files relating to Windows Telemetry and Diagnostics, XYplorer - AutoBackup folder, XYplorer - .dat files, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State, Zoom plugin (Outlook), eMule Logs and Configuration Files, eMule part.met files, iTunes Backup Folder, iTunes Backup Folder, iTunes Backup Folder - iOS13"
+    description: "SANS Triage Collection (by Mark Hallman): $Boot, $J, $Max, $LogFile, $MFT, $SDS, $T, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Action1 Client Application logs, Amcache, Amcache transaction files, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, Application Event Log XP, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, BITS files, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, Box Drive Application Metadata, Box Sync Application Metadata, Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, Cisco Jabber Database, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, DWAgent Log Files, Discord Cache Files, Discord Local Storage LevelDB Files, Dropbox Metadata, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, Local User Quarantine, SYSTEM user quarantine, Edge folder, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Edge Snapshots Folder, Emsisoft Scan Logs, Event logs XP, Event logs Win7+, WDI Trace Logs 1, WDI Trace Logs 2, WMI Trace Logs, SleepStudy Trace Logs, Energy-NTKL Trace Logs, Delivery Optimization Trace Logs, F-Secure Logs, F-Secure User Logs, F-Secure Scheduled Scan Reports, FileZilla XML Log Files, FileZilla SQLite3 Log Files, FileZilla Server XML Log Files, FileZilla Log Files, Addons, Downloads, Extensions, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Sessionstore XP, Google Drive Backup and Sync Metadata, Google Drive for Desktop Metadata, Group Policy Files, Computer Group Policy files, User Group Policy files, Local Group Policy INI Files, Local Group Policy Files - Registry Policy Files, Local Group Policy Files - Startup/Shutdown Scripts, HexChat Chat Logs, HitmanPro Logs, HitmanPro Alert Logs, HitmanPro Database, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, IceChat Chat Logs, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, IE 11 Cookies, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Agent Edge Service Logs, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData, Level RMM Client Application logs, LogMeIn ProgramData Logs, LogMeIn Application Logs, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, MalwareBytes Anti-Malware Scan Results Logs, Mattermost - Chat Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, McAfee ePO Logs, MegaSync Folder, MeshAgent .msh (configuration) file, MeshAgent log file, Windows Safety Scanner Logs, Microsoft Teams IndexedDB Cache, Microsoft Teams Local Storage Cache, Microsoft Teams Cache, Microsoft Teams Config, .NET CLR UsageLogs (user-scoped), .NET CLR UsageLogs (system-scoped), Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, Net Monitor Client Config, OneDrive Metadata Logs, OneDrive Metadata Settings, Opera - Local Folder, Opera - Roaming Folder, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, Prefetch, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Puffin - Image Cache, RDP Cache Files, Windows.old RDP Cache Files, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Rclone Config, RecentFileCache, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, RemoteUtilities Install Log, Robo-FTP User Scripts, Robo-FTP User Debug Logs, Robo-FTP User Script/Trace Logs, Robo-FTP User XML Config, Robo-FTP User SSH Keys, Robo-FTP User SSL Certificates, Robo-FTP User PGP Keys, Robo-FTP SSH Keys, Robo-FTP SSL Certificates, Robo-FTP PGP Keys, Robo-FTP Debug Logs, Robo-FTP Script/Trace Logs, Robo-FTP XML Config, Robo-FTP Jobs, RogueKiller Reports, RustDesk logs, SRUM, SUPERAntiSpyware Logs, at .job, at SchedLgU.txt, XML, ScreenConnect Session Database, ScreenConnect User Config, SecureAge Antvirus Logs, SentinelOne EDR Log, Signal Attachments cache, Signal Logs, Signal config.json, Signal Database, main.db (App &lt;v12), skype.db (App +v12), main.db XP, main.db Win7+, s4l-[username].db (App +v8), leveldb (Skype for Desktop +v8), Skype for Destkop v8+ Chromium Cache, Slack - Chat Logs, Slack LevelDB Files, Slack Electron Logs, Slack Cache, Slack Storage, Sophos Logs (XP), Sophos Logs, Splashtop Log Files, Splashtop Log Files in ProgramData, Supremo Connection Logs, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Symantec Endpoint Protection User Logs, Symantec Event Log Win7+, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml, Syscache, Syscache transaction files, TeamViewer Connection Logs, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, Telegram app folder, Telegram downloaded files, Thumbcache DB, TotalAV Logs, Trend Micro Logs, Trend Micro Security Agent Report Logs, Trend Micro Security Agent Connection Logs, Unified endpoint management and security solutions from ManageEngine, Setupapi.log XP, Setupapi.log Win7+, UltraViewer User Logs, UltraViewer System Logs, UltraViewer Service Log, UltraViewer Connection Log, VIPRE Business Agent Logs, VIPRE Business User Logs (v7+), VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), RealVNC Log, Viber Config Database, Viber Users Data Database, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, Vivaldi Bookmarks, Vivaldi Visited Links, Vivaldi Web Data, Vivaldi User Tracking, Vivaldi Calendar, Vivaldi Contacts, Vivaldi Notes, Vivaldi Download Metadata, WBEM, WER Files, Crash Dumps, Webroot Program Data, WinSCP (.ini file), Windows Defender Logs, Windows Defender Event Logs, DetectionHistory, Windows Defender Quarantine, Windows Defender Detections.log, Windows Firewall Logs, WindowsIndexSearch, GatherLogs, ActivitiesCache.db, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State, Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts, Zoho Assist log files in AppData\Local, Zoho Assist .conf files in AppData\Local, Zoho Assist log files in ProgramData, Zoho Assist .conf files, Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, mIRC Chat Logs (Vista+), mIRC Chat Logs (2000/XP), mRemoteNG Logs, mRemoteNG Connection Configuration and Backups, mRemoteNG Program Settings, PowerShell Scheduled_Jobs, PowerShell Scheduled_Jobs Output, PowerShell Scheduled_Jobs Systemprofile, PowerShell Scheduled_Jobs Output Systemprofile, PowerShell Scheduled_Jobs WOW64 Systemprofile, PowerShell Scheduled_Jobs Output WOW64 Systemprofile, 360 Secure Browser Bookmarks, 360 Secure Browser Cookies, 360 Secure Browser Current Session, 360 Secure Browser Current Tabs, 360 Secure Browser Download Metadata, 360 Secure Browser Extension Cookies, 360 Secure Browser Favicons, 360 Secure Browser History, 360 Secure Browser Last Session, 360 Secure Browser Last Tabs, 360 Secure Browser Sessions Folder, 360 Secure Browser Login Data, 360 Secure Browser Media History, 360 Secure Browser Network Action Predictor, 360 Secure Browser Network Persistent State, 360 Secure Browser Preferences, 360 Secure Browser Quota Manager, 360 Secure Browser Reporting and NEL, 360 Secure Browser Shortcuts, 360 Secure Browser Top Sites, 360 Secure Browser Trust Tokens, 360 Secure Browser SyncData Database, 360 Secure Browser Visited Links, 360 Secure Browser Web Data, 360 Secure Browser Snapshots Folder, Advanced IP Scanner Aliases, Advanced IP Scanner Comments, Advanced IP Scanner MAC, Advanced Port Scanner Aliases, Advanced Port Scanner Comments, Advanced Port Scanner MAC, AnyDesk File Transfer Logs - Running in portable mode, AnyDesk File Transfer Logs - Installed as a Service, Arc Cookies, Arc Favicons, Arc History, Arc Sessions Folder, Arc Login Data, Arc Network Action Predictor, Arc Preferences, Arc Shortcuts, Arc Top Sites, Arc SyncData Database, Arc Bookmarks, Arc Visited Links, Arc Web Data, Arc JSON Files, Arc PLIST Files, CocCoc Bookmarks, CocCoc Cookies, CocCoc Current Session, CocCoc Current Tabs, CocCoc Download Metadata, CocCoc Extension Cookies, CocCoc Favicons, CocCoc History, CocCoc Last Session, CocCoc Last Tabs, CocCoc Sessions Folder, CocCoc Login Data, CocCoc Media History, CocCoc Network Action Predictor, CocCoc Network Persistent State, CocCoc Preferences, CocCoc Quota Manager, CocCoc Reporting and NEL, CocCoc Shortcuts, CocCoc Top Sites, CocCoc Trust Tokens, CocCoc SyncData Database, CocCoc Visited Links, CocCoc Web Data, CocCoc Snapshots Folder, QQ Browser Bookmarks, QQ Browser Cookies, QQ Browser Current Session, QQ Browser Current Tabs, QQ Browser Download Metadata, QQ Browser Extension Cookies, QQ Browser Favicons, QQ Browser History, QQ Browser Last Session, QQ Browser Last Tabs, QQ Browser Sessions Folder, QQ Browser Login Data, QQ Browser Media History, QQ Browser Network Action Predictor, QQ Browser Network Persistent State, QQ Browser Preferences, QQ Browser Quota Manager, QQ Browser Reporting and NEL, QQ Browser Shortcuts, QQ Browser Top Sites, QQ Browser Trust Tokens, QQ Browser SyncData Database, QQ Browser Visited Links, QQ Browser Web Data, QQ Browser Snapshots Folder, Microsoft Quick Assist, Microsoft Remote Help, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, Remco RAT Default path, Remco RAT custom path - AppData screenshots folder, Remco RAT custom path - AppData notess folder, Remco RAT custom path - AppData micrecords folder, Remco RAT custom path - AppData hpsupport, Remco RAT custom path, Remco RAT custom path - AppData notess, Remco RAT custom path - AppData screenshots, Remco RAT custom path  - AppData micrecords, Remco RAT custom path  - AppData hpsupport, Netscan XML default output, Supermium Bookmarks XP, Supermium Cookies XP, Supermium Current Session XP, Supermium Current Tabs XP, Supermium Favicons XP, Supermium History XP, Supermium Last Session XP, Supermium Last Tabs XP, Supermium Sessions Folder XP, Supermium Network Action Predictor XP, Supermium Network Persistent State XP, Supermium Login Data XP, Supermium Preferences XP, Supermium Reporting and NEL XP, Supermium Trust Tokens XP, Supermium SyncData Database XP, Supermium Shortcuts XP, Supermium Top Sites XP, Supermium Visited Links XP, Supermium Web Data XP, Supermium Bookmarks, Supermium Cookies, Supermium Current Session, Supermium Current Tabs, Supermium Download Metadata, Supermium Extension Cookies, Supermium Favicons, Supermium History, Supermium Last Session, Supermium Last Tabs, Supermium Sessions Folder, Supermium Login Data, Supermium Media History, Supermium Network Action Predictor, Supermium Network Persistent State, Supermium Preferences, Supermium Quota Manager, Supermium Reporting and NEL, Supermium Shortcuts, Supermium Top Sites, Supermium Trust Tokens, Supermium SyncData Database, Supermium Visited Links, Supermium Web Data, Supermium Snapshots Folder, SYSTEM Supermium History, UCBrowser Bookmarks, UCBrowser Cookies, UCBrowser Current Session, UCBrowser Current Tabs, UCBrowser Download Metadata, UCBrowser Extension Cookies, UCBrowser Favicons, UCBrowser History, UCBrowser Last Session, UCBrowser Last Tabs, UCBrowser Sessions Folder, UCBrowser Login Data, UCBrowser Media History, UCBrowser Network Action Predictor, UCBrowser Network Persistent State, UCBrowser Preferences, UCBrowser Quota Manager, UCBrowser Reporting and NEL, UCBrowser Shortcuts, UCBrowser Top Sites, UCBrowser Trust Tokens, UCBrowser SyncData Database, UCBrowser Visited Links, UCBrowser Web Data, UCBrowser Snapshots Folder, WaveBrowser bookmarks, WaveBrowser Cookies, WaveBrowser Current Session, WaveBrowser Current Tabs, WaveBrowser Download Metadata, WaveBrowser Extension Cookies, WaveBrowser Favicons, WaveBrowser History, WaveBrowser Last Session, WaveBrowser Last Tabs, WaveBrowser Sessions Folder, WaveBrowser Login Data, WaveBrowser Media History, WaveBrowser Network Action Predictor, WaveBrowser Network Persistent State, WaveBrowser Preferences, WaveBrowser Quota Manager, WaveBrowser Reporting and NEL, WaveBrowser Shortcuts, WaveBrowser Top Sites, WaveBrowser Trust Tokens, WaveBrowser SyncData Database, WaveBrowser Visited Links, WaveBrowser Web Data, WaveBrowser Snapshots Folder, SYSTEM WaveBrowser History, WindowsIndexSearch - User, GatherLogs - User, CrowdStrike Falcon Quarantined File, HitmanPro Quarantine, McAfee MSC Logs, McAfee Agent Events, McAfee Agent Logs, McAfee Data Reputation Logs, McAfee Managed VirusScan, McAfee Agent Events XP, McAfee MC Logs XP, McAfee Data Reputation Logs XP, McAfee Managed VirusScan Logs XP, McAfee WCF Service Logs, McAfee ePO Apache Logs, McAfee ePO DB Events, McAfee ePO DB Debug Events, McAfee ePO Server Logs, SUM Database (.mdb files), AppCompat PCA Folder, ESET Remote Administrator Logs, FreeFileSync, ITarian, Comodo, Microsoft Teams Logs (Windows 11), Supremo File Transfer Inbox, TightVNC Application Logs, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, WhatsApp Cache, WhatsApp Local Storage, Microsoft Store WhatsApp Cache, Microsoft Store WhatsApp Local Storage"
+    type: bool
+  - name: _Bitmap
+    description: "$Bitmap (by Nisarg Suthar): $Bitmap"
     type: bool
   - name: _Boot
     description: "$Boot (by Eric Zimmerman): $Boot"
     type: bool
   - name: _J
-    description: "$J (by Eric Zimmerman and Andrew Rathbun): $J, $Max, $J, $Max"
+    description: "$J (by Eric Zimmerman and Andrew Rathbun): $J, $Max"
     type: bool
   - name: _LogFile
     description: "$LogFile (by Eric Zimmerman): $LogFile"
@@ -103,13 +106,16 @@ parameters:
     description: "$MFTMirr (by Teo Kia Meng): $MFTMirr"
     type: bool
   - name: _SDS
-    description: "$SDS (by Eric Zimmerman and Andrew Rathbun): $SDS, $SDS"
+    description: "$SDS (by Eric Zimmerman and Andrew Rathbun): $SDS"
     type: bool
   - name: _T
-    description: "$T (by Eric Zimmerman and Andrew Rathbun): $T, $T"
+    description: "$T (by Eric Zimmerman and Andrew Rathbun): $T"
     type: bool
   - name: 1Password
     description: "1Password Password Manager (by Matt Dawson): 1Password Database, 1Password Backup Databases, 1Password Logs"
+    type: bool
+  - name: 360SecureBrowser
+    description: "360 Secure Browser (by Reece394): 360 Secure Browser Bookmarks, 360 Secure Browser Cookies, 360 Secure Browser Current Session, 360 Secure Browser Current Tabs, 360 Secure Browser Download Metadata, 360 Secure Browser Extension Cookies, 360 Secure Browser Favicons, 360 Secure Browser History, 360 Secure Browser Last Session, 360 Secure Browser Last Tabs, 360 Secure Browser Sessions Folder, 360 Secure Browser Login Data, 360 Secure Browser Media History, 360 Secure Browser Network Action Predictor, 360 Secure Browser Network Persistent State, 360 Secure Browser Preferences, 360 Secure Browser Quota Manager, 360 Secure Browser Reporting and NEL, 360 Secure Browser Shortcuts, 360 Secure Browser Top Sites, 360 Secure Browser Trust Tokens, 360 Secure Browser SyncData Database, 360 Secure Browser Visited Links, 360 Secure Browser Web Data, Windows Protect Folder, 360 Secure Browser Snapshots Folder"
     type: bool
   - name: 4KVideoDownloader
     description: "4K Video Downloader (by Andrew Rathbun): 4K Video Downloader, 4K Video Downloader+"
@@ -132,20 +138,26 @@ parameters:
   - name: ActiveDirectorySysvol
     description: "Active Directory Sysvol (by Zawadi Done): SYSVOL"
     type: bool
+  - name: AdvancedIPScanner
+    description: "Advanced IP Scanner Artifacts (by Reece394): Advanced IP Scanner Aliases, Advanced IP Scanner Comments, Advanced IP Scanner MAC"
+    type: bool
+  - name: AdvancedPortScanner
+    description: "Advanced Port Scanner Artifacts (by Reece394): Advanced Port Scanner Aliases, Advanced Port Scanner Comments, Advanced Port Scanner MAC"
+    type: bool
   - name: AgentRansack
     description: "Agent Ransack - Free File Searching Utility (by Andrew Rathbun): Agent Ransack Config Logs, Agent Ransack CrashReports Logs, Agent Ransack IndexLog Logs, Agent Ransack Logs"
     type: bool
   - name: Amcache
-    description: "Amcache.hve (by Eric Zimmerman): Amcache, Amcache, Amcache transaction files, Amcache transaction files"
+    description: "Amcache.hve (by Eric Zimmerman): Amcache, Amcache transaction files"
     type: bool
   - name: Ammyy
     description: "Ammyy Data (by Drew Ervin): Ammyy Program Data"
     type: bool
   - name: Antivirus
-    description: "Antivirus (by Andrew Rathbun): AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, ESET NOD32 AV Logs, ESET Remote Administrator Logs, Local User Quarantine, SYSTEM user quarantine, Edge Chromium Extension Files, Exchange TransportRoles log files, F-Secure Logs, F-Secure User Logs, HexChat Chat Logs, HitmanPro Logs, HitmanPro Alert Logs, Macrium Reflect, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, Mattermost - Chat Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, Microsoft OneNote - RecentSearches, Chrome Trust Tokens, Edge Preferences, EventTranscript.db, EventTranscript.db, at SchedLgU.txt, at SchedLgU.txt, XML, Snip &amp; Sketch, Sophos Logs (XP), Sophos Logs, Sophos Logs, Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings, SpeedCommander - .ini File, Splashtop Log Files, Splashtop Log Files in ProgramData, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Syscache transaction files, Tablacus Explorer - remember.xml, Tablacus Explorer - window.xml, Total Commander - Frequent Directory Listing, Total Commander - FTP Logs, TreeSize - ScanHistory.XML, Trend Micro Logs, VDI, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites"
+    description: "Antivirus (by Andrew Rathbun): MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, MalwareBytes Anti-Malware Scan Logs, MalwareBytes Anti-Malware Scan Results Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, CrowdStrike Falcon Quarantined File, HitmanPro Quarantine, McAfee VirusScan Logs, McAfee MSC Logs, McAfee Agent Events, McAfee Agent Logs, McAfee Data Reputation Logs, McAfee Managed VirusScan, McAfee Agent Events XP, McAfee MC Logs XP, McAfee Data Reputation Logs XP, McAfee Managed VirusScan Logs XP, McAfee WCF Service Logs, McAfee ePO Apache Logs, McAfee ePO DB Events, McAfee ePO DB Debug Events, McAfee ePO Server Logs, Windows Safety Scanner Logs, Application Event Log XP, ESET Remote Administrator Logs, Application Event Log Win7+, TotalAV Logs, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, Trend Micro Logs, Trend Micro Security Agent Report Logs, Trend Micro Security Agent Connection Logs, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, VIPRE Business Agent Logs, VIPRE Business User Logs (v7+), VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), McAfee ePO Logs, Webroot Program Data, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, Symantec Endpoint Protection Logs, Symantec Endpoint Protection Logs (XP), Windows Defender Logs, Windows Defender Event Logs, Symantec Endpoint Protection User Logs, DetectionHistory, Symantec Event Log Win7+, Windows Defender Quarantine, Windows Defender Detections.log, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, Local User Quarantine, SYSTEM user quarantine, Emsisoft Scan Logs, F-Secure Logs, F-Secure User Logs, F-Secure Scheduled Scan Reports, RogueKiller Reports, HitmanPro Logs, HitmanPro Alert Logs, HitmanPro Database, SUPERAntiSpyware Logs, SecureAge Antvirus Logs, SentinelOne EDR Log, Sophos Logs (XP), Sophos Logs"
     type: bool
   - name: AnyDesk
-    description: "AnyDesk (by Andrew Rathbun, Scott Hanson, and Nicole Jao): AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile"
+    description: "AnyDesk (by Andrew Rathbun, Scott Hanson, and Nicole Jao): AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, AnyDesk File Transfer Logs - Running in portable mode, AnyDesk File Transfer Logs - Installed as a Service"
     type: bool
   - name: ApacheAccessLog
     description: "Apache Access Log (by Hadar Yudovich): Apache Access Log"
@@ -160,13 +172,16 @@ parameters:
     description: "AppXPackages (by Nisarg Suthar): WindowsApps for AppX, SystemApps for AppX, UserSpecificPackages for AppX, AppRepository for AppX, ProgramData Packages for AppX"
     type: bool
   - name: ApplicationEvents
-    description: "Windows Application Event Log (by Drew Ervin): Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+"
+    description: "Windows Application Event Log (by Drew Ervin): Application Event Log XP, Application Event Log Win7+"
+    type: bool
+  - name: Arc
+    description: "Arc Browser (by Reece394): Arc PLIST Files, Arc Cookies, Arc Favicons, Arc History, Arc Sessions Folder, Arc Login Data, Arc Network Action Predictor, Arc Preferences, Arc Shortcuts, Arc Top Sites, Arc SyncData Database, Arc Bookmarks, Arc Visited Links, Arc Web Data, Arc JSON Files"
     type: bool
   - name: AsperaConnect
     description: "Aspera Connect Log Files (by Dennis Reneau): Aspera Client Logs, Aspera Server Logs"
     type: bool
   - name: AteraAgent
-    description: "AteraAgent (by Andrew Rathbun): AteraAgent .ini files, AteraAgent Logs, AteraAgent Logs, AteraAgent Logs, AteraAgent Logs"
+    description: "AteraAgent (by Andrew Rathbun): AteraAgent .ini files, AteraAgent Logs"
     type: bool
   - name: Avast
     description: "Avast Antivirus Data (by Drew Ervin and Dhiral Panjwani): Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs"
@@ -190,7 +205,7 @@ parameters:
     description: "Box Cloud Storage Metadata (by Chad Tilbury): Box Drive Application Metadata, Box Sync Application Metadata"
     type: bool
   - name: BoxDrive_UserFiles
-    description: "Box Cloud Storage Files (by Chad Tilbury): Box Drive User Files, Box Sync User Files"
+    description: "Box Cloud Storage Files (by Chad Tilbury): Box Sync User Files, Box Drive User Files"
     type: bool
   - name: BraveBrowser
     description: "Brave Browser (by Cassie Doemel): Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences"
@@ -198,11 +213,17 @@ parameters:
   - name: BrowserCache
     description: "Browser Caches (by Bjorn Vanhaeren): Chrome Cache Folder, Chromium Edge Cache Folder, Firefox Cache Folder, IE 9/10 Cache, IE Index.dat temp internet files, IE 11 Cache, Edge WebcacheV01.dat, Brave Cache Folder"
     type: bool
+  - name: CapabilityAccessManager
+    description: "Capability Access Manager database (by qmadev): Capability Access Manager database"
+    type: bool
   - name: CertUtil
-    description: "Certutil (by NVISO (@NVISOsecurity), 2thewes): System CryptnetUrlCache, System WOW64 CryptnetUrlCache, User CryptnetUrlCache, INetCache"
+    description: "Certutil (by NVISO (@NVISOsecurity), 2thewes): INetCache, System CryptnetUrlCache, System WOW64 CryptnetUrlCache, User CryptnetUrlCache"
+    type: bool
+  - name: ChatGPT
+    description: "A Target to collect files related to ChatGPT Desktop (by ogmini): ChromeCache, LevelDB, IndexedDB, Helium Registry Hives, ChatGPT Settings File"
     type: bool
   - name: Chrome
-    description: "Chrome (by Eric Zimmerman and Andrew Rathbun): Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History"
+    description: "Chrome (by Eric Zimmerman and Andrew Rathbun): Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP"
     type: bool
   - name: ChromeExtensions
     description: "Chrome Extension Files (by piesecurity): Chrome Extension Files, Chrome Extension Files XP"
@@ -214,31 +235,37 @@ parameters:
     description: "Jabber (by Andrew Bannon): Cisco Jabber Database"
     type: bool
   - name: ClipboardMaster
-    description: "ClipboardMaster (by Andrew Rathbun): ClipboardMaster - Clipboard History - Text, ClipboardMaster - Clipboard History - Images, ClipboardMaster - Clipboard History - Backups"
+    description: "ClipboardMaster (by Andrew Rathbun): ClipboardMaster - Clipboard History - Backups, ClipboardMaster - Clipboard History - Text, ClipboardMaster - Clipboard History - Images"
     type: bool
   - name: CloudStorage_All
-    description: "Cloud Storage Contents and Metadata (by Chad Tilbury and Andrew Rathbun): Box Drive Application Metadata, Box Sync Application Metadata, Box Drive User Files, Box Sync User Files, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Windows Protect Folder, Dropbox Metadata, Dropbox User Files, Gigatribe Files Windows XP, Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata, Windows IconCache DB, Idrive Cleanup Operations, Idrive Backup Operations, Idrive Delete Operations, Idrive Restore Operations, Idrive Backup Summary, Idrive Tracefile, Idrive Mapped Drives, Idrive Backup Schedule, Idrive Schedule History, Idrive Configuration, Idrive Local Drives, Idrive Exclusion Configurations, Idrive User Details, One Commander - Other Configuration Files, OneDrive Metadata Logs, OneDrive Metadata Settings, Radmin Viewer Chats, Skype for Destkop v8+ Chromium Cache, Slack - Chat Logs, Slack LevelDB Files, Zoho Assist .conf files in AppData\Local, Zoho Assist log files in ProgramData, Zoho Assist .conf files"
+    description: "Cloud Storage Contents and Metadata (by Chad Tilbury and Andrew Rathbun): OneDrive Metadata Logs, SugarSync Log File, SugarSync - Shared Folders (Default Location), SugarSync - My SugarSync (Default Location), OneDrive Metadata Settings, MegaSync Folder, pCloud Database, pCloud Database WAL File, pCloud Database Shared Memory File, Rclone Config, FreeFileSync, Box Drive Application Metadata, Box Sync Application Metadata, Box Drive User Files, Box Sync User Files, Dropbox Metadata, Windows Protect Folder, Dropbox User Files, OneDrive User Files, IDrive Cleanup Operations, IDrive Backup Operations, IDrive Delete Operations, IDrive Restore Operations, IDrive Backup Summary, IDrive Tracefile, IDrive Mapped Drives, IDrive Backup Schedule, IDrive Schedule History, IDrive Configuration, IDrive Local Drives, IDrive Exclusion Configurations, IDrive User Details, IDrive SQL Databse, Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata, Google Drive for Desktop Metadata"
     type: bool
   - name: CloudStorage_Metadata
-    description: "Cloud Storage Metadata (by Chad Tilbury and Andrew Rathbun, Eric Capuano): Box Drive Application Metadata, Box Sync Application Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Windows Protect Folder, Dropbox Metadata, Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata, One Commander - Other Configuration Files, OneDrive Metadata Logs, Radmin Viewer Chats"
+    description: "Cloud Storage Metadata (by Chad Tilbury and Andrew Rathbun, Eric Capuano): Dropbox Metadata, Windows Protect Folder, OneDrive Metadata Logs, OneDrive Metadata Settings, Box Drive Application Metadata, Box Sync Application Metadata, Google Drive Backup and Sync Metadata, Google Drive for Desktop Metadata, Rclone Config, FreeFileSync, MegaSync Folder"
     type: bool
   - name: CloudStorage_OneDriveExplorer
-    description: "OneDrive and other files used with OneDriveExplorer (by Brian Maloney): One Commander - Other Configuration Files, OneDrive Metadata Logs, LNK Files from Microsoft Office Recent, Recycle Bin - Windows Vista+, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Recycle Bin - Windows Vista+, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive"
+    description: "OneDrive and other files used with OneDriveExplorer (by Brian Maloney): Recycle Bin - Windows Vista+, RECYCLER - WinXP, OneDrive Metadata Logs, OneDrive Metadata Settings, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive"
+    type: bool
+  - name: CocCoc
+    description: "CocCoc Browser (by Reece394): CocCoc Bookmarks, CocCoc Cookies, CocCoc Current Session, CocCoc Current Tabs, CocCoc Download Metadata, CocCoc Extension Cookies, CocCoc Favicons, CocCoc History, CocCoc Last Session, CocCoc Last Tabs, CocCoc Sessions Folder, CocCoc Login Data, CocCoc Media History, CocCoc Network Action Predictor, CocCoc Network Persistent State, CocCoc Preferences, CocCoc Quota Manager, CocCoc Reporting and NEL, CocCoc Shortcuts, CocCoc Top Sites, CocCoc Trust Tokens, CocCoc SyncData Database, CocCoc Visited Links, CocCoc Web Data, Windows Protect Folder, CocCoc Snapshots Folder"
     type: bool
   - name: CombinedLogs
-    description: "Collect Event logs, Trace logs, Windows Firewall, PowerShell console logs, and .NET CLR UsageLogs (by Mike Cary, Mark Hallman added the USBDevicelogs target, Thomas DIOT (Qazeer) added the .NET CLR UsageLogs and PowerShell Transcripts target): Event logs Win7+, Event logs XP, Event logs Win7+, Event logs Win7+, WDI Trace Logs 1, WDI Trace Logs 1, WDI Trace Logs 2, WDI Trace Logs 2, WMI Trace Logs, WMI Trace Logs, SleepStudy Trace Logs, SleepStudy Trace Logs, Energy-NTKL Trace Logs, Multi Commander - Log File, .NET CLR UsageLogs (user-scoped), PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, Vivaldi Bookmarks, Vivaldi Visited Links"
+    description: "Collect Event logs, Trace logs, Windows Firewall, PowerShell console logs, and .NET CLR UsageLogs (by Mike Cary, Mark Hallman added the USBDevicelogs target, Thomas DIOT (Qazeer) added the .NET CLR UsageLogs and PowerShell Transcripts target): PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, Event logs XP, Event logs Win7+, WDI Trace Logs 1, WDI Trace Logs 2, WMI Trace Logs, SleepStudy Trace Logs, Energy-NTKL Trace Logs, Delivery Optimization Trace Logs, Windows Firewall Logs, .NET CLR UsageLogs (user-scoped), .NET CLR UsageLogs (system-scoped), Setupapi.log XP, Setupapi.log Win7+"
     type: bool
   - name: Combofix
     description: "ComboFix Antivirus Data (by Drew Ervin): ComboFix"
     type: bool
   - name: ConfluenceLogs
-    description: "Confluence Log Files (by Eric Capuano): Confluence Wiki Log Files, Confluence Wiki Log Files"
+    description: "Confluence Log Files (by Eric Capuano): Confluence Wiki Log Files"
+    type: bool
+  - name: CrowdStrikeFalcon
+    description: "CrowdStrike Falcon (by Cardinsou): CrowdStrike Falcon Quarantined File"
     type: bool
   - name: Cybereason
     description: "Cybereason Sensor/Detection Logs (by piesecurity): Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs"
     type: bool
   - name: Cylance
-    description: "Cylance Antivirus Logs (by Ron Rader): Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs"
+    description: "Cylance Antivirus Logs (by Ron Rader): Cylance Optics Logs, Cylance Program Files Logs, Cylance ProgramData Logs"
     type: bool
   - name: DC__
     description: "DC++ (by Andrew Rathbun): DC++ Chat Logs"
@@ -247,10 +274,10 @@ parameters:
     description: "DWAgent Log Files (by Ron Rader): DWAgent Log Files"
     type: bool
   - name: Debian
-    description: "Debian on Windows Subsystem for Linux (by Matt Dawson): Debian WSL /etc/debian_version, Debian WSL /etc/fstab, Debian WSL /etc/os-release, Debian WSL /etc/passwd, Debian WSL /etc/group, Debian WSL /etc/shadow, Debian WSL /etc/timezone, Debian WSL /etc/hostname, Debian WSL /etc/hosts, Debian WSL /etc/crontab, Debian WSL /etc/bash.bashrc, Debian WSL /etc/profile, Debian WSL .bash_history, Debian WSL .bashrc, Debian WSL .profile, Debian WSL User Crontabs, Debian WSL Apt Logs, Debian WSL ext4.vhdx"
+    description: "Debian on Windows Subsystem for Linux (by Matt Dawson): Debian WSL .bash_history, Debian WSL .bashrc, Debian WSL .profile, Debian WSL User Crontabs, Debian WSL Apt Logs, Debian WSL ext4.vhdx, Debian WSL /etc/debian_version, Debian WSL /etc/fstab, Debian WSL /etc/os-release, Debian WSL /etc/passwd, Debian WSL /etc/group, Debian WSL /etc/shadow, Debian WSL /etc/timezone, Debian WSL /etc/hostname, Debian WSL /etc/hosts, Debian WSL /etc/crontab, Debian WSL /etc/bash.bashrc, Debian WSL /etc/profile"
     type: bool
   - name: DirectoryOpus
-    description: "Directory Opus (by Andrew Rathbun): Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus"
+    description: "Directory Opus (by Andrew Rathbun): Directory Opus"
     type: bool
   - name: DirectoryTraversal_AudioFiles
     description: "Find audio files covering a multitude of formats (by Andrew Rathbun): Audio files"
@@ -277,7 +304,7 @@ parameters:
     description: "Find Word and Word alternative documents (by Andrew Rathbun): Word and Word-like Documents"
     type: bool
   - name: Discord
-    description: "Discord Cache and LevelDB Files (by Christian Johansen and Matt Dawson): Discord Cache Files, Discord Local Storage LevelDB Files"
+    description: "Discord Cache and LevelDB Files (by Christian Johansen and Matt Dawson): Discord Local Storage LevelDB Files, Discord Cache Files"
     type: bool
   - name: DoubleCommander
     description: "Double Commander (by Andrew Rathbun): Double Commander - history.xml, Double Commander - doublecmd.xml, Double Commander - FTP Log, Double Commander - multiarc.ini, Double Commander - session.ini, Double Commander - pixmaps.txt, Double Commander - shortcuts.scf"
@@ -286,7 +313,7 @@ parameters:
     description: "Windows Drivers (by Zawadi Done): Drivers"
     type: bool
   - name: Dropbox_Metadata
-    description: "Dropbox Cloud Storage Metadata (by Chad Tilbury and Andrew Rathbun): Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Windows Protect Folder, Dropbox Metadata"
+    description: "Dropbox Cloud Storage Metadata (by Chad Tilbury and Andrew Rathbun): Dropbox Metadata, Windows Protect Folder"
     type: bool
   - name: Dropbox_UserFiles
     description: "Dropbox Cloud Storage Files (by Chad Tilbury): Dropbox User Files"
@@ -295,769 +322,817 @@ parameters:
     description: "EF Commander (by Andrew Rathbun): EF Commander - .ini File"
     type: bool
   - name: ESET
-    description: "ESET Antivirus Data (by Drew Ervin, Phill Moore): ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, ESET NOD32 AV Logs, ESET Remote Administrator Logs, Local User Quarantine, SYSTEM user quarantine"
+    description: "ESET Antivirus Data (by Drew Ervin, Phill Moore): ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, Local User Quarantine, SYSTEM user quarantine, ESET Remote Administrator Logs"
     type: bool
   - name: Edge
     description: "Edge (by Phill Moore): Edge folder"
     type: bool
   - name: EdgeChromium
-    description: "Microsoft Edge Chromium Artifacts (by Chad Tilbury and Andrew Rathbun): Edge bookmarks, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Windows Protect Folder"
+    description: "Microsoft Edge Chromium Artifacts (by Chad Tilbury and Andrew Rathbun): Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Windows Protect Folder, Edge Snapshots Folder, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites"
     type: bool
   - name: EdgeChromiumExtensions
-    description: "Edge Chromium Extension Files (by cardinsou): Edge Snapshots Folder"
+    description: "Edge Chromium Extension Files (by cardinsou): Edge Chromium Extension Files"
     type: bool
   - name: Emsisoft
-    description: "Emsisoft Antivirus Logs (by blueskycyber): Edge Chromium Extension Files"
+    description: "Emsisoft Antivirus Logs (by blueskycyber): Emsisoft Scan Logs"
     type: bool
   - name: EncapsulationLogging
-    description: "EncapsulationLogging (by Troy Larson): Emsisoft Scan Logs, EncapsulationLogging, EncapsulationLogging, EncapsulationLogging Logs"
+    description: "EncapsulationLogging (by Troy Larson): EncapsulationLogging, EncapsulationLogging Logs"
     type: bool
   - name: EventLogs_RDP
-    description: "Collect Win7+ RDP related Event logs (by Mark Hallman, esecrpm): EncapsulationLogging Logs, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+, Event logs Win7+"
+    description: "Collect Win7+ RDP related Event logs (by Mark Hallman, esecrpm): Event logs Win7+"
     type: bool
   - name: EventLogs
-    description: "Event logs (by Eric Zimmerman): Event logs Win7+, Event logs XP, Event logs Win7+"
+    description: "Event logs (by Eric Zimmerman): Event logs XP, Event logs Win7+"
     type: bool
   - name: EventTraceLogs
-    description: "Event Trace Logs (by Mark Hallman): Event logs Win7+, WDI Trace Logs 1, WDI Trace Logs 1, WDI Trace Logs 2, WDI Trace Logs 2, WMI Trace Logs, WMI Trace Logs, SleepStudy Trace Logs, SleepStudy Trace Logs, Energy-NTKL Trace Logs"
+    description: "Event Trace Logs (by Mark Hallman): WMI Trace Logs, SleepStudy Trace Logs, Energy-NTKL Trace Logs, Delivery Optimization Trace Logs, WDI Trace Logs 1, WDI Trace Logs 2"
     type: bool
   - name: EventTranscriptDB
-    description: "EventTranscript.db (and other files related to Telemetry and Diagnostic Data) (by Andrew Rathbun and Josh Mitchell): Delivery Optimization Trace Logs, EventTranscript.db, EventTranscript.db"
+    description: "EventTranscript.db (and other files related to Telemetry and Diagnostic Data) (by Andrew Rathbun and Josh Mitchell): EventTranscript.db, Microsoft Office Diagnostic Logs"
     type: bool
   - name: Evernote
-    description: "Evernote (by Matt Dawson): Microsoft Office Diagnostic Logs, Evernote Accounts, Evernote Notebooks"
+    description: "Evernote (by Matt Dawson): Evernote Accounts, Evernote Notebooks, Evernote Notebook Snippets"
     type: bool
   - name: Everything__VoidTools_
-    description: "Everything (VoidTools) (by Andrew Rathbun): Evernote Notebook Snippets, Everything (VoidTools), Everything (VoidTools) - Run History, Everything (VoidTools) - Search History"
+    description: "Everything (VoidTools) (by Andrew Rathbun): Everything (VoidTools), Everything (VoidTools) - Run History, Everything (VoidTools) - Search History, Everything (VoidTools) - .ini file"
     type: bool
   - name: EvidenceOfExecution
-    description: "Evidence of execution related files (by Eric Zimmerman): Amcache, Amcache, Amcache transaction files, Amcache transaction files, AppCompat PCA Folder, PowerShell Transcripts - Observed Location, Prefetch, Rclone Config, RecentFileCache, User startup folders, System-wide startup folder"
+    description: "Evidence of execution related files (by Eric Zimmerman): Amcache, Amcache transaction files, Syscache, Syscache transaction files, Prefetch, AppCompat PCA Folder, RecentFileCache"
     type: bool
   - name: Exchange
-    description: "Exchange Log Files (by Keith Twombley): Everything (VoidTools) - .ini file, Exchange Server Modified Compiled Files, Exchange Setup Log file"
+    description: "Exchange Log Files (by Keith Twombley): Exchange Setup Log file, Exchange TransportRoles log files, Exchange client access log files"
     type: bool
   - name: ExchangeClientAccess
-    description: "Exchange Client Access Log Files (by Keith Twombley): Everything (VoidTools) - .ini file"
+    description: "Exchange Client Access Log Files (by Keith Twombley): Exchange client access log files"
     type: bool
   - name: ExchangeCve_2021_26855
-    description: "Exchange Server Vulnerability *.Compiled Files (by Dennis Reneau): Exchange client access log files, Exchange Server Modified Compiled Files, Exchange Server Modified Compiled Files, Exchange Server Modified Compiled Files"
+    description: "Exchange Server Vulnerability *.Compiled Files (by Dennis Reneau): Exchange Server Modified Compiled Files"
     type: bool
   - name: ExchangeSetupLog
-    description: "Exchange Setup Log (by 2thewes): Exchange Server Modified Compiled Files"
+    description: "Exchange Setup Log (by 2thewes): Exchange Setup Log file"
     type: bool
   - name: ExchangeTransport
-    description: "Exchange Transport Log Files (by Keith Twombley): Exchange Setup Log file"
+    description: "Exchange Transport Log Files (by Keith Twombley): Exchange TransportRoles log files"
     type: bool
   - name: FSecure
-    description: "F-Secure Antivirus Data (by Drew Ervin): Exchange TransportRoles log files, F-Secure Logs, F-Secure User Logs"
+    description: "F-Secure Antivirus Data (by Drew Ervin): F-Secure Scheduled Scan Reports, F-Secure Logs, F-Secure User Logs"
     type: bool
   - name: FTPClients
-    description: "FTP Clients (by Andrew Rathbun): Fences - Desktop Screenshots, FileZilla XML Log Files, FileZilla SQLite3 Log Files, FileZilla Server XML Log Files, VSCode Network Persistent State"
+    description: "FTP Clients (by Andrew Rathbun): WinSCP (.ini file), FileZilla XML Log Files, FileZilla SQLite3 Log Files, FileZilla Server XML Log Files, FileZilla Log Files, Robo-FTP User Scripts, Robo-FTP User Debug Logs, Robo-FTP User Script/Trace Logs, Robo-FTP User XML Config, Robo-FTP User SSH Keys, Robo-FTP User SSL Certificates, Robo-FTP User PGP Keys, Robo-FTP SSH Keys, Robo-FTP SSL Certificates, Robo-FTP PGP Keys, Robo-FTP Debug Logs, Robo-FTP Script/Trace Logs, Robo-FTP XML Config, Robo-FTP Jobs"
+    type: bool
+  - name: FastStoneImageViewer
+    description: "FastStone Image Viewer (by DReneau): FastStone Image Viewer (FSIV)"
     type: bool
   - name: Fences
-    description: "Fences (by Andrew Rathbun): F-Secure Scheduled Scan Reports"
+    description: "Fences (by Andrew Rathbun): Fences - Desktop Screenshots"
     type: bool
   - name: FileExplorerReplacements
-    description: "File Explorer Replacements (by Andrew Rathbun): Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Directory Opus, Double Commander - history.xml, Double Commander - doublecmd.xml, Double Commander - FTP Log, Double Commander - multiarc.ini, Double Commander - session.ini, Double Commander - pixmaps.txt, Double Commander - shortcuts.scf, EF Commander - .ini File, Sessionstore XP, Free Commander - FreeCommander.ini, Free Commander - FreeCommander.ftp.ini, Free Commander - FreeCommander.hist.ini, Free Commander - FreeCommander.fav.xml, Free Commander - Backup Settings, Free Commander - FTP Log, Microsoft To Do - User Avatar, Midnight Commander -- All Configuation Files, Multi Commander - Application Folder, Multi Commander - Config Folder, Multi Commander - Log Folder, Multi Commander - UserData Folder, Office Document Cache, One Commander - All Configuration Files, WNS, Q-Dir - .ini File, ScreenConnect Session Database, StartupInfo XML Files, StartupInfo XML Files, Steam Game Image files, Symantec Endpoint Protection User Logs, Symantec Event Log Win7+, Symantec Event Log Win7+, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml, SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
+    description: "File Explorer Replacements (by Andrew Rathbun): SpeedCommander - .ini File, Q-Dir - .ini File, Q-Dir - .qdr file, Tablacus Explorer - remember.xml, Tablacus Explorer - window.xml, Tablacus Explorer - window1.xml, Midnight Commander -- All Configuation Files, Multi Commander - Application Folder, Multi Commander - Config Folder, Multi Commander - Log Folder, Multi Commander - UserData Folder, Multi Commander - Log File, Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal, Total Commander - FTP .ini File, Total Commander - File Tree, Total Commander - Frequent Directory Listing, Directory Opus, Total Commander - FTP Logs, Double Commander - history.xml, Double Commander - doublecmd.xml, Double Commander - FTP Log, Double Commander - multiarc.ini, Double Commander - session.ini, Double Commander - pixmaps.txt, Double Commander - shortcuts.scf, Free Commander - FreeCommander.ini, Free Commander - FreeCommander.ftp.ini, Free Commander - FreeCommander.hist.ini, Free Commander - FreeCommander.fav.xml, Free Commander - Backup Settings, Free Commander - FTP Log, Free Commander - FTP Related Information, EF Commander - .ini File, One Commander - All Configuration Files, One Commander - Other Configuration Files, XYplorer - .ini file, XYplorer - .ini file for each respective pane, XYplorer - AutoBackup folder, XYplorer - .dat files"
     type: bool
   - name: FileSystem
-    description: "File system metadata (by Eric Zimmerman): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T"
+    description: "File system metadata (by Eric Zimmerman): $Boot, $J, $Max, $LogFile, $MFT, $SDS, $T"
     type: bool
   - name: FileZillaClient
-    description: "FileZilla XML and SQLite Log Files (by Dennis Reneau): Fences - Desktop Screenshots, FileZilla XML Log Files"
+    description: "FileZilla XML and SQLite Log Files (by Dennis Reneau): FileZilla XML Log Files, FileZilla SQLite3 Log Files"
     type: bool
   - name: FileZillaServer
-    description: "FileZilla Server Logs (by Andrew Rathbun): FileZilla SQLite3 Log Files, FileZilla Server XML Log Files"
+    description: "FileZilla Server Logs (by Andrew Rathbun): FileZilla Server XML Log Files, FileZilla Log Files"
     type: bool
   - name: Firefox
-    description: "Firefox (by Eric Zimmerman and Andrew Rathbun): FileZilla Log Files, Addons, Bookmarks, Bookmarks, Cookies, Cookies, Downloads, Extensions, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Password, Password, Preferences, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Password XP, Password XP"
+    description: "Firefox (by Eric Zimmerman and Andrew Rathbun): Addons, Bookmarks, Cookies, Downloads, Extensions, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Preferences, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Sessionstore XP"
     type: bool
   - name: FreeCommander
-    description: "FreeCommander XE (by Andrew Rathbun): Sessionstore XP, Free Commander - FreeCommander.ini, Free Commander - FreeCommander.ftp.ini, Free Commander - FreeCommander.hist.ini, Free Commander - FreeCommander.fav.xml, Free Commander - Backup Settings, Free Commander - FTP Log"
+    description: "FreeCommander XE (by Andrew Rathbun): Free Commander - FreeCommander.ini, Free Commander - FreeCommander.ftp.ini, Free Commander - FreeCommander.hist.ini, Free Commander - FreeCommander.fav.xml, Free Commander - Backup Settings, Free Commander - FTP Log, Free Commander - FTP Related Information"
     type: bool
   - name: FreeDownloadManager
-    description: "Free Download Manager (by Matt Dawson): Free Commander - FTP Related Information, FDM Database, FDM Backup Info"
+    description: "Free Download Manager (by Matt Dawson): FDM Database, FDM Backup Info, FDM Database (userdata.zip)"
     type: bool
   - name: FreeFileSync
-    description: "FreeFileSync (by Andrew Rathbun): FDM Database (userdata.zip)"
+    description: "FreeFileSync (by Andrew Rathbun): FreeFileSync"
     type: bool
   - name: Freenet
-    description: "Freenet (by Charlie Rubisoff): FreeFileSync, Freenet, Freenet, Freenet, Freenet"
+    description: "Freenet (by Charlie Rubisoff): Freenet"
     type: bool
   - name: FrostWire
-    description: "FrostWire (by Andrew Rathbun): Freenet, FrostWire Downloads, FrostWire AppData"
+    description: "FrostWire (by Andrew Rathbun): FrostWire Downloads, FrostWire AppData"
     type: bool
   - name: Gigatribe
-    description: "Gigatribe Files (by Linus Nissi): FrostWire AppData, Gigatribe Files Windows Vista/7/8/10, Gigatribe Files Windows XP"
+    description: "Gigatribe Files (by Linus Nissi): Gigatribe Files Windows Vista/7/8/10, Gigatribe Files Windows XP"
     type: bool
   - name: GoogleDriveBackupSync_UserFiles
-    description: "Google Backup and Sync Storage Files (by Chad Tilbury): Gigatribe Files Windows XP"
+    description: "Google Backup and Sync Storage Files (by Chad Tilbury): Google Drive Backup and Sync User Files"
     type: bool
   - name: GoogleDrive_Metadata
-    description: "Google Drive Metadata (by Chad Tilbury): Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata"
+    description: "Google Drive Metadata (by Chad Tilbury): Google Drive Backup and Sync Metadata, Google Drive for Desktop Metadata"
     type: bool
   - name: GoogleEarth
-    description: "Google Earth (by Guus Beckers): Google Drive for Desktop Metadata, Google Earth My Places file, Google Earth My Places Backup file, Google Earth My Places file (XP)"
+    description: "Google Earth (by Guus Beckers): Google Earth My Places file, Google Earth My Places Backup file, Google Earth My Places file (XP), Google Earth My Places Backup file (XP)"
     type: bool
   - name: GroupPolicy
-    description: "Current Group Policy Enforcement (by piesecurity): Google Earth My Places Backup file (XP), Group Policy Files, Computer Group Policy files, User Group Policy files, Local Group Policy INI Files, Local Group Policy Files - Registry Policy Files, Local Group Policy Files - Registry Policy Files, Local Group Policy Files - Startup/Shutdown Scripts"
+    description: "Current Group Policy Enforcement (by piesecurity): User Group Policy files, Local Group Policy INI Files, Local Group Policy Files - Registry Policy Files, Local Group Policy Files - Startup/Shutdown Scripts, Group Policy Files, Computer Group Policy files"
     type: bool
   - name: HeidiSQL
-    description: "HeidiSQL (by Hyun Yi @hyuunnn): Local Group Policy Files - Startup/Shutdown Scripts, HeidiSQL Backup files (*.sql)"
+    description: "HeidiSQL (by Hyun Yi @hyuunnn): HeidiSQL Backup files (*.sql), HeidiSQL (tabs.ini)"
     type: bool
   - name: HexChat
-    description: "HexChat (by Andrew Rathbun): HeidiSQL (tabs.ini)"
+    description: "HexChat (by Andrew Rathbun): HexChat Chat Logs"
     type: bool
   - name: HitmanPro
-    description: "HitmanPro Antivirus Data (by Drew Ervin): HexChat Chat Logs, HitmanPro Logs, HitmanPro Alert Logs"
+    description: "HitmanPro Antivirus Data (by Drew Ervin): HitmanPro Logs, HitmanPro Alert Logs, HitmanPro Database, HitmanPro Quarantine"
     type: bool
   - name: HostsFile
-    description: "Hosts file (by Max Zabuty): HitmanPro Database"
+    description: "Hosts file (by Max Zabuty): HostsFile"
+    type: bool
+  - name: IDrive
+    description: "IDrive Backup Artifacts (by Thomas Burnette): IDrive Cleanup Operations, IDrive Backup Operations, IDrive Delete Operations, IDrive Restore Operations, IDrive Backup Summary, IDrive Tracefile, IDrive Mapped Drives, IDrive Backup Schedule, IDrive Schedule History, IDrive Configuration, IDrive Local Drives, IDrive Exclusion Configurations, IDrive User Details, IDrive SQL Databse"
     type: bool
   - name: IISConfiguration
-    description: "IIS (by NVISO (@NVISOsecurity)): HostsFile, IIS applicationHost.config, IIS administration.config, IIS redirection.config"
+    description: "IIS (by NVISO (@NVISOsecurity)): web.config, IIS applicationHost.config, IIS administration.config, IIS redirection.config"
     type: bool
   - name: IISLogFiles
-    description: "IIS Log Files (by Troy Larson): web.config, IIS log files, IIS log files, IIS log files, IIS log files, IIS log files"
+    description: "IIS Log Files (by Troy Larson): IIS log files"
     type: bool
   - name: IRCClients
-    description: "IRC Clients (by Andrew Rathbun): HeidiSQL (tabs.ini), ITarian, XYplorer - AutoBackup folder, XYplorer - .dat files"
+    description: "IRC Clients (by Andrew Rathbun): HexChat Chat Logs, IceChat Chat Logs, mIRC Chat Logs (Vista+), mIRC Chat Logs (2000/XP)"
     type: bool
   - name: ISLOnline
-    description: "ISLOnline Remote Access Tool (by Thomas Burnette): IIS log files, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration"
+    description: "ISLOnline Remote Access Tool (by Thomas Burnette): ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration"
     type: bool
   - name: ITarian
-    description: "ITarian RMM (by Phill Moore): ISL AlwaysOn - Configuration, ITarian, ITarian, Comodo"
+    description: "ITarian RMM (by Phill Moore): Comodo, ITarian"
     type: bool
   - name: IceChat
-    description: "IceChat (by Andrew Rathbun): ITarian"
+    description: "IceChat (by Andrew Rathbun): IceChat Chat Logs"
     type: bool
   - name: IconCacheDB
-    description: "IconCache.db files (by Herbert Bärschneider @SEC Consult): IceChat Chat Logs"
-    type: bool
-  - name: Idrive
-    description: "Idrive Backup Artifacts (by Thomas Burnette): Windows IconCache DB, Idrive Cleanup Operations, Idrive Backup Operations, Idrive Delete Operations, Idrive Restore Operations, Idrive Backup Summary, Idrive Tracefile, Idrive Mapped Drives, Idrive Backup Schedule, Idrive Schedule History, Idrive Configuration, Idrive Local Drives, Idrive Exclusion Configurations, Idrive User Details"
+    description: "IconCache.db files (by Herbert Bärschneider @SEC Consult): Windows IconCache DB"
     type: bool
   - name: ImgBurn
-    description: "ImgBurn (by Chuck Whitson): Idrive SQL Databse"
+    description: "ImgBurn (by Chuck Whitson): ImgBurn - Application Log File"
     type: bool
   - name: InternetExplorer
-    description: "Internet Explorer (by Eric Zimmerman): ImgBurn - Application Log File, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata"
+    description: "Internet Explorer (by Eric Zimmerman): IE 11 Cookies, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata"
     type: bool
   - name: IrfanView
-    description: "IrfanView (by Andrew Rathbun): IE 11 Cookies"
+    description: "IrfanView (by Andrew Rathbun): IrfanView Configuration File"
     type: bool
   - name: JDownloader2
-    description: "JDownloader 2 (by Matt Dawson): IrfanView Configuration File, JDownloader 2.0 Download Lists, JDownloader 2.0 Link Collector, JDownloader 2.0 General Settings, JDownloader 2.0 Link Grabber Settings"
+    description: "JDownloader 2 (by Matt Dawson): JDownloader 2.0 Download Lists, JDownloader 2.0 Link Collector, JDownloader 2.0 General Settings, JDownloader 2.0 Link Grabber Settings, JDownloader 2.0 Proxy Settings"
     type: bool
   - name: JavaWebCache
-    description: "Java WebStart Cache - (IDX Files) (by piesecurity): JDownloader 2.0 Proxy Settings, Java WebStart Cache User Level - Default, Java WebStart Cache User Level - IE Protected Mode, Java WebStart Cache System level, Java WebStart Cache System level, Java WebStart Cache System level - IE Protected Mode, Java WebStart Cache System level - IE Protected Mode, Java WebStart Cache System level (SysWow64), Java WebStart Cache System level (SysWow64), Java WebStart Cache System level (SysWow64) - IE Protected Mode, Java WebStart Cache System level (SysWow64) - IE Protected Mode"
+    description: "Java WebStart Cache - (IDX Files) (by piesecurity): Java WebStart Cache User Level - Default, Java WebStart Cache User Level - IE Protected Mode, Java WebStart Cache System level, Java WebStart Cache System level - IE Protected Mode, Java WebStart Cache System level (SysWow64), Java WebStart Cache System level (SysWow64) - IE Protected Mode, Java WebStart Cache User Level - XP"
     type: bool
   - name: JumpLists
-    description: "Jump lists (by Max Zabuty): Java WebStart Cache User Level - XP, JumpLists from CustomDestinations"
+    description: "Jump lists (by Max Zabuty): JumpLists from CustomDestinations"
     type: bool
   - name: Kali
-    description: "Kali on Windows Subsystem for Linux (by Matt Dawson): JumpLists from CustomDestinations, Kali WSL /etc/debian_version, Kali WSL /etc/fstab, Kali WSL /etc/os-release, Kali WSL /etc/passwd, Kali WSL /etc/group, Kali WSL /etc/shadow, Kali WSL /etc/timezone, Kali WSL /etc/hostname, Kali WSL /etc/hosts, Kali WSL /etc/crontab, Kali WSL /etc/bash.bashrc, Kali WSL /etc/profile, Kali WSL .bash_history, Kali WSL .bashrc, Kali WSL .profile, Kali WSL User Crontabs, Kali WSL Apt Logs"
+    description: "Kali on Windows Subsystem for Linux (by Matt Dawson): Kali WSL .bash_history, Kali WSL .bashrc, Kali WSL .profile, Kali WSL User Crontabs, Kali WSL Apt Logs, Kali WSL ext4.vhdx, Kali WSL /etc/debian_version, Kali WSL /etc/fstab, Kali WSL /etc/os-release, Kali WSL /etc/passwd, Kali WSL /etc/group, Kali WSL /etc/shadow, Kali WSL /etc/timezone, Kali WSL /etc/hostname, Kali WSL /etc/hosts, Kali WSL /etc/crontab, Kali WSL /etc/bash.bashrc, Kali WSL /etc/profile"
     type: bool
   - name: KapeTriage
-    description: "KapeTriage collects most of the files needed for a DFIR Investigation. This Target pulls evidence from File System files, Registry Hives, Event Logs, Scheduled Tasks, Evidence of Execution, SRUM data, SUM data, Cloud metadata, WER, WBEM, Web Browser data (IE/Edge, Chrome, Mozilla history), LNK Files, JumpLists, 3rd party remote access software logs, 3rd party antivirus software logs, Windows 10/11 Timeline database, and $I Recycle Bin files. (by Scott Downie): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Action1 Client Application logs, Amcache, Amcache, Amcache transaction files, Amcache transaction files, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, AppCompat PCA Folder, Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, Box Drive Application Metadata, Box Sync Application Metadata, Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, DWAgent Log Files, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Windows Protect Folder, Dropbox Metadata, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, ESET NOD32 AV Logs, ESET Remote Administrator Logs, Local User Quarantine, SYSTEM user quarantine, Edge folder, Edge bookmarks, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Windows Protect Folder, Edge Chromium Extension Files, Event logs Win7+, Event logs XP, Event logs Win7+, Exchange TransportRoles log files, F-Secure Logs, F-Secure User Logs, FileZilla Log Files, Addons, Bookmarks, Bookmarks, Cookies, Cookies, Downloads, Extensions, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Password, Password, Preferences, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Password XP, Password XP, Google Drive Backup and Sync User Files, Google Drive Backup and Sync Metadata, HexChat Chat Logs, HitmanPro Logs, HitmanPro Alert Logs, IIS log files, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, ITarian, ITarian, Comodo, ImgBurn - Application Log File, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, Kali WSL ext4.vhdx, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Setup Log, Kaseya Setup Log, Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData, Error logging, LogMeIn ProgramData Logs, Macrium Reflect, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, Mattermost - Chat Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, Small Memory Dump directory, MeshAgent .msh (configuration) file, Microsoft OneNote - RecentSearches, Nessus Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, One Commander - Other Configuration Files, OneDrive Metadata Logs, OpenVPN Client Config, Opera - Local Folder, PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell Transcripts - Observed Location, Prefetch, ProtonVPN - Connection Logs, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Qlik Sense Logs, RDP Cache Files, Windows.old RDP Cache Files, RDP Jumplist Files, RemoteConnectionManager Event Logs, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Rclone Config, RecentFileCache, RECYCLER - WinXP, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, Chrome Trust Tokens, Chrome Trust Tokens, Chrome SyncData Database, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Protections, Search, Signons, Storage Sync, Webappstore, Windows 10 Notification DB, Windows 10 Notification DB, ActivitiesCache.db, Update Store.db, Bitdefender SQLite DB Files, EventTranscript.db, EventTranscript.db, at SchedLgU.txt, at SchedLgU.txt, XML, ScreenConnect Session Database, ScreenConnect User Config, Slack Storage, Snagit - Captures, Snip &amp; Sketch, Sophos Logs (XP), Sophos Logs, Sophos Logs, Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings, SpeedCommander - .ini File, Splashtop Log Files, Splashtop Log Files in ProgramData, User startup folders, System-wide startup folder, Steam Login Metadata file, Steam Friend List and Username History file, Steam User Avatar files, Steam Game Tray Icon files, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Syscache transaction files, Tablacus Explorer - remember.xml, Tablacus Explorer - window.xml, Tablacus Explorer - window1.xml, TeamViewer Connection Logs, TotalAV Logs, Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal, Total Commander - Frequent Directory Listing, Total Commander - FTP Logs, TreeSize - ScanHistory.XML, Trend Micro Logs, Setupapi.log Win7+, Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab, VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), VLC Recently Opened Files, VLC Recorded Files, VMware - Virtual Machine Inventory, VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), RealVNC Log, RealVNC Log, TightVNC Application Logs, Viber Config Database, Viber Users Data Database, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, VirtualBox VM configs, VirtualBox VM backup configs, VirtualBox Logs, VirtualBox Backup Logs, VirtualBox Hardening Logs, VirtualBox, VHD, VHDX, VDI, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, SECURITY registry hive, SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), WindowsIndexSearch, GatherLogs, Network setting files, Windows 10 Notification DB, Windows 10 Notification DB, MigLog.xml, Setupact.log, HumanReadable.xml, FolderMoveLog.txt, Update Store.db, Windows Power Diagnostics, DNS Netlogon files, DNS files, DHCP files, Diagnostic Logs for WSA, App download artifacts (PNG), App download artifacts (ICO), Appcompatdb.json, userdata.vhdx, Legacy .rbs files relating to Windows Telemetry and Diagnostics, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State, Zoom plugin (Outlook), eMule Logs and Configuration Files, eMule part.met files, iTunes Backup Folder, iTunes Backup Folder, iTunes Backup Folder - iOS13"
+    description: "KapeTriage collects most of the files needed for a DFIR Investigation. This Target pulls evidence from File System files, Registry Hives, Event Logs, Scheduled Tasks, Evidence of Execution, SRUM data, SUM data, Cloud metadata, WER, WBEM, Web Browser data (IE/Edge, Chrome, Mozilla history), LNK Files, JumpLists, 3rd party remote access software logs, 3rd party antivirus software logs, Windows 10/11 Timeline database, and $I Recycle Bin files. (by Scott Downie): $Boot, $J, $Max, $LogFile, $MFT, $SDS, $T, AVG AV Logs (XP), AVG AV Report Logs (XP), AVG AV Logs, AVG Report Logs, AVG Persistent Logs, AVG FileInfo DB, AVG lsdbj2 JSON, Action1 Client Application logs, Amcache, Amcache transaction files, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, Application Event Log XP, Application Event Log Win7+, Avast AV Logs (XP), Avast AV Logs, Avast AV User Logs, Avast AV Index, Avast Persistent Data Logs, Avast Icarus Logs, Avira Activity Logs, Avira Security Logs, Avira VPN Logs, Bitdefender Endpoint Security Logs, Bitdefender Internet Security Logs, Bitdefender SQLite DB Files, Box Drive Application Metadata, Box Sync Application Metadata, Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, ComboFix, Cybereason Anti-Ransomware Logs, Cybereason Sensor Communications and Anti-Malware Logs, Cybereason Application Control and NGAV Logs, Cylance ProgramData Logs, Cylance Optics Logs, Cylance Program Files Logs, DWAgent Log Files, Dropbox Metadata, ESET NOD32 AV Logs (XP), ESET NOD32 AV Logs, Local User Quarantine, SYSTEM user quarantine, Edge folder, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Edge Snapshots Folder, Emsisoft Scan Logs, Event logs XP, Event logs Win7+, F-Secure Logs, F-Secure User Logs, F-Secure Scheduled Scan Reports, Addons, Downloads, Extensions, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Sessionstore XP, Google Drive Backup and Sync Metadata, Google Drive for Desktop Metadata, HitmanPro Logs, HitmanPro Alert Logs, HitmanPro Database, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, IE 11 Cookies, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Agent Edge Service Logs, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData, Level RMM Client Application logs, LogMeIn ProgramData Logs, LogMeIn Application Logs, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, MalwareBytes Anti-Malware Scan Results Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs, McAfee ePO Logs, MegaSync Folder, MeshAgent .msh (configuration) file, MeshAgent log file, Windows Safety Scanner Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, Net Monitor Client Config, OneDrive Metadata Logs, OneDrive Metadata Settings, Opera - Local Folder, Opera - Roaming Folder, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, Prefetch, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Puffin - Image Cache, RDP Cache Files, Windows.old RDP Cache Files, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Rclone Config, RecentFileCache, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, RemoteUtilities Install Log, RogueKiller Reports, RustDesk logs, SRUM, SUPERAntiSpyware Logs, at .job, at SchedLgU.txt, XML, ScreenConnect Session Database, ScreenConnect User Config, SecureAge Antvirus Logs, SentinelOne EDR Log, Sophos Logs (XP), Sophos Logs, Splashtop Log Files, Splashtop Log Files in ProgramData, Supremo Connection Logs, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Symantec Endpoint Protection User Logs, Symantec Event Log Win7+, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml, Syscache, Syscache transaction files, TeamViewer Connection Logs, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, TotalAV Logs, Trend Micro Logs, Trend Micro Security Agent Report Logs, Trend Micro Security Agent Connection Logs, Unified endpoint management and security solutions from ManageEngine, UltraViewer User Logs, UltraViewer System Logs, UltraViewer Service Log, UltraViewer Connection Log, VIPRE Business Agent Logs, VIPRE Business User Logs (v7+), VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), RealVNC Log, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, Vivaldi Bookmarks, Vivaldi Visited Links, Vivaldi Web Data, Vivaldi User Tracking, Vivaldi Calendar, Vivaldi Contacts, Vivaldi Notes, Vivaldi Download Metadata, WBEM, WER Files, Crash Dumps, Webroot Program Data, Windows Defender Logs, Windows Defender Event Logs, DetectionHistory, Windows Defender Quarantine, Windows Defender Detections.log, ActivitiesCache.db, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State, Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts, Zoho Assist log files in AppData\Local, Zoho Assist .conf files in AppData\Local, Zoho Assist log files in ProgramData, Zoho Assist .conf files, Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, mRemoteNG Logs, mRemoteNG Connection Configuration and Backups, mRemoteNG Program Settings, PowerShell Scheduled_Jobs, PowerShell Scheduled_Jobs Output, PowerShell Scheduled_Jobs Systemprofile, PowerShell Scheduled_Jobs Output Systemprofile, PowerShell Scheduled_Jobs WOW64 Systemprofile, PowerShell Scheduled_Jobs Output WOW64 Systemprofile, 360 Secure Browser Bookmarks, 360 Secure Browser Cookies, 360 Secure Browser Current Session, 360 Secure Browser Current Tabs, 360 Secure Browser Download Metadata, 360 Secure Browser Extension Cookies, 360 Secure Browser Favicons, 360 Secure Browser History, 360 Secure Browser Last Session, 360 Secure Browser Last Tabs, 360 Secure Browser Sessions Folder, 360 Secure Browser Login Data, 360 Secure Browser Media History, 360 Secure Browser Network Action Predictor, 360 Secure Browser Network Persistent State, 360 Secure Browser Preferences, 360 Secure Browser Quota Manager, 360 Secure Browser Reporting and NEL, 360 Secure Browser Shortcuts, 360 Secure Browser Top Sites, 360 Secure Browser Trust Tokens, 360 Secure Browser SyncData Database, 360 Secure Browser Visited Links, 360 Secure Browser Web Data, 360 Secure Browser Snapshots Folder, AnyDesk File Transfer Logs - Running in portable mode, AnyDesk File Transfer Logs - Installed as a Service, Arc Cookies, Arc Favicons, Arc History, Arc Sessions Folder, Arc Login Data, Arc Network Action Predictor, Arc Preferences, Arc Shortcuts, Arc Top Sites, Arc SyncData Database, Arc Bookmarks, Arc Visited Links, Arc Web Data, Arc JSON Files, Arc PLIST Files, CocCoc Bookmarks, CocCoc Cookies, CocCoc Current Session, CocCoc Current Tabs, CocCoc Download Metadata, CocCoc Extension Cookies, CocCoc Favicons, CocCoc History, CocCoc Last Session, CocCoc Last Tabs, CocCoc Sessions Folder, CocCoc Login Data, CocCoc Media History, CocCoc Network Action Predictor, CocCoc Network Persistent State, CocCoc Preferences, CocCoc Quota Manager, CocCoc Reporting and NEL, CocCoc Shortcuts, CocCoc Top Sites, CocCoc Trust Tokens, CocCoc SyncData Database, CocCoc Visited Links, CocCoc Web Data, CocCoc Snapshots Folder, QQ Browser Bookmarks, QQ Browser Cookies, QQ Browser Current Session, QQ Browser Current Tabs, QQ Browser Download Metadata, QQ Browser Extension Cookies, QQ Browser Favicons, QQ Browser History, QQ Browser Last Session, QQ Browser Last Tabs, QQ Browser Sessions Folder, QQ Browser Login Data, QQ Browser Media History, QQ Browser Network Action Predictor, QQ Browser Network Persistent State, QQ Browser Preferences, QQ Browser Quota Manager, QQ Browser Reporting and NEL, QQ Browser Shortcuts, QQ Browser Top Sites, QQ Browser Trust Tokens, QQ Browser SyncData Database, QQ Browser Visited Links, QQ Browser Web Data, QQ Browser Snapshots Folder, Microsoft Quick Assist, Microsoft Remote Help, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, Remco RAT Default path, Remco RAT custom path - AppData screenshots folder, Remco RAT custom path - AppData notess folder, Remco RAT custom path - AppData micrecords folder, Remco RAT custom path - AppData hpsupport, Remco RAT custom path, Remco RAT custom path - AppData notess, Remco RAT custom path - AppData screenshots, Remco RAT custom path  - AppData micrecords, Remco RAT custom path  - AppData hpsupport, Supermium Bookmarks XP, Supermium Cookies XP, Supermium Current Session XP, Supermium Current Tabs XP, Supermium Favicons XP, Supermium History XP, Supermium Last Session XP, Supermium Last Tabs XP, Supermium Sessions Folder XP, Supermium Network Action Predictor XP, Supermium Network Persistent State XP, Supermium Login Data XP, Supermium Preferences XP, Supermium Reporting and NEL XP, Supermium Trust Tokens XP, Supermium SyncData Database XP, Supermium Shortcuts XP, Supermium Top Sites XP, Supermium Visited Links XP, Supermium Web Data XP, Supermium Bookmarks, Supermium Cookies, Supermium Current Session, Supermium Current Tabs, Supermium Download Metadata, Supermium Extension Cookies, Supermium Favicons, Supermium History, Supermium Last Session, Supermium Last Tabs, Supermium Sessions Folder, Supermium Login Data, Supermium Media History, Supermium Network Action Predictor, Supermium Network Persistent State, Supermium Preferences, Supermium Quota Manager, Supermium Reporting and NEL, Supermium Shortcuts, Supermium Top Sites, Supermium Trust Tokens, Supermium SyncData Database, Supermium Visited Links, Supermium Web Data, Supermium Snapshots Folder, SYSTEM Supermium History, UCBrowser Bookmarks, UCBrowser Cookies, UCBrowser Current Session, UCBrowser Current Tabs, UCBrowser Download Metadata, UCBrowser Extension Cookies, UCBrowser Favicons, UCBrowser History, UCBrowser Last Session, UCBrowser Last Tabs, UCBrowser Sessions Folder, UCBrowser Login Data, UCBrowser Media History, UCBrowser Network Action Predictor, UCBrowser Network Persistent State, UCBrowser Preferences, UCBrowser Quota Manager, UCBrowser Reporting and NEL, UCBrowser Shortcuts, UCBrowser Top Sites, UCBrowser Trust Tokens, UCBrowser SyncData Database, UCBrowser Visited Links, UCBrowser Web Data, UCBrowser Snapshots Folder, WaveBrowser bookmarks, WaveBrowser Cookies, WaveBrowser Current Session, WaveBrowser Current Tabs, WaveBrowser Download Metadata, WaveBrowser Extension Cookies, WaveBrowser Favicons, WaveBrowser History, WaveBrowser Last Session, WaveBrowser Last Tabs, WaveBrowser Sessions Folder, WaveBrowser Login Data, WaveBrowser Media History, WaveBrowser Network Action Predictor, WaveBrowser Network Persistent State, WaveBrowser Preferences, WaveBrowser Quota Manager, WaveBrowser Reporting and NEL, WaveBrowser Shortcuts, WaveBrowser Top Sites, WaveBrowser Trust Tokens, WaveBrowser SyncData Database, WaveBrowser Visited Links, WaveBrowser Web Data, WaveBrowser Snapshots Folder, SYSTEM WaveBrowser History, CrowdStrike Falcon Quarantined File, HitmanPro Quarantine, McAfee MSC Logs, McAfee Agent Events, McAfee Agent Logs, McAfee Data Reputation Logs, McAfee Managed VirusScan, McAfee Agent Events XP, McAfee MC Logs XP, McAfee Data Reputation Logs XP, McAfee Managed VirusScan Logs XP, McAfee WCF Service Logs, McAfee ePO Apache Logs, McAfee ePO DB Events, McAfee ePO DB Debug Events, McAfee ePO Server Logs, SUM Database (.mdb files), AppCompat PCA Folder, ESET Remote Administrator Logs, FreeFileSync, ITarian, Comodo, Supremo File Transfer Inbox, TightVNC Application Logs"
     type: bool
   - name: Kaseya
-    description: "Kaseya Data (by Drew Ervin and Andrew Rathbun): Kali WSL ext4.vhdx, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Setup Log, Kaseya Setup Log"
+    description: "Kaseya Data (by Drew Ervin and Andrew Rathbun): Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Agent Edge Service Logs"
     type: bool
   - name: Keepass
-    description: "Keepass (by Vito Alfano): Kaseya Agent Edge Service Logs, Keepass User Config, Keepass Config Xml"
+    description: "Keepass (by Vito Alfano): Keepass Config Xml, Keepass Application Details, Keepass User Config"
     type: bool
   - name: KeepassXC
-    description: "KeepassXC (by Vito Alfano): Keepass Application Details, Keepass Local Ini"
+    description: "KeepassXC (by Vito Alfano): Keepass Local Ini, Keepass Roaming Ini"
     type: bool
   - name: LNKFilesAndJumpLists
-    description: "LNK Files and jump lists (by Eric Zimmerman, Andrew Rathbun, Yogesh Khatri): Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP"
+    description: "LNK Files and jump lists (by Eric Zimmerman, Andrew Rathbun, Yogesh Khatri): LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData"
     type: bool
   - name: Level
-    description: "Level.io Application Logs (by Andrew Skatoff @DFIR_TNT): LNK Files from C:\ProgramData"
+    description: "Level.io Application Logs (by Andrew Skatoff @DFIR_TNT): Level RMM Client Application logs"
     type: bool
   - name: LinuxOnWindowsProfileFiles
-    description: "Linux on Windows Profile Files (by Troy Larson): Level RMM Client Application logs, .bash_history, .bash_logout, .bashrc"
+    description: "Linux on Windows Profile Files (by Troy Larson): .profile, .bash_history, .bash_logout, .bashrc"
     type: bool
   - name: LiveUserFiles
-    description: "Live User Files (by Mark Hallman): .profile, User Files - Desktop, User Files - Documents, User Files - Downloads"
+    description: "Live User Files (by Mark Hallman): User Files - Desktop, User Files - Documents, User Files - Downloads, User Files - Dropbox"
     type: bool
   - name: LogFiles
-    description: "LogFiles (includes SUM) (by Fabian Murer): User Files - Dropbox, LogFiles, LogFiles"
+    description: "LogFiles (includes SUM) (by Fabian Murer): LogFiles, Error logging"
     type: bool
   - name: LogMeIn
-    description: "LogMeIn Data (by Drew Ervin): Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Error logging, LogMeIn ProgramData Logs"
+    description: "LogMeIn Data (by Drew Ervin): LogMeIn ProgramData Logs, LogMeIn Application Logs, Application Event Log XP, Application Event Log Win7+"
     type: bool
   - name: MOF
-    description: "MOF files (WMI) (by Eric Zimmerman): LogMeIn Application Logs"
+    description: "MOF files (WMI) (by Eric Zimmerman): MOF files"
     type: bool
   - name: MSSQLErrorLog
-    description: "MS SQL ErrorLogs (by Troy Larson): MOF files, MS SQL Errorlog"
+    description: "MS SQL ErrorLogs (by Troy Larson): MS SQL Errorlog, MS SQL Errorlogs"
     type: bool
   - name: MacriumReflect
-    description: "Macrium Reflect (by Andrew Rathbun): MS SQL Errorlogs, Macrium Reflect, Macrium Reflect"
+    description: "Macrium Reflect (by Andrew Rathbun): Macrium Reflect"
     type: bool
   - name: Malwarebytes
-    description: "Malwarebytes Data (by Drew Ervin &amp; Kirtan Shah): Macrium Reflect, MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs"
+    description: "Malwarebytes Data (by Drew Ervin &amp; Kirtan Shah): MalwareBytes Anti-Malware Logs, MalwareBytes Anti-Malware Service Logs, MalwareBytes Anti-Malware Scan Logs, MalwareBytes Anti-Malware Scan Results Logs"
     type: bool
   - name: ManageEngineLogs
-    description: "ManageEngine Log Files (by Whitney Champion, Phill Moore): MalwareBytes Anti-Malware Scan Results Logs, ManageEngine Desktop Central Log Files"
+    description: "ManageEngine Log Files (by Whitney Champion, Phill Moore): ManageEngine Desktop Central Log Files, ManageEngine ADSelfService Plus Log Files"
     type: bool
   - name: Mattermost
-    description: "Mattermost (by Andrew Rathbun): ManageEngine ADSelfService Plus Log Files"
+    description: "Mattermost (by Andrew Rathbun): Mattermost - Chat Logs"
     type: bool
   - name: McAfee
-    description: "McAfee Log Files (by Sam Smoker): Mattermost - Chat Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee Endpoint Security Logs"
+    description: "McAfee Log Files (by Sam Smoker): McAfee MSC Logs, McAfee Agent Events, McAfee Agent Logs, McAfee Data Reputation Logs, McAfee Managed VirusScan, McAfee Agent Events XP, McAfee MC Logs XP, McAfee Data Reputation Logs XP, McAfee Managed VirusScan Logs XP, McAfee WCF Service Logs, McAfee Desktop Protection Logs XP, McAfee Desktop Protection Logs, McAfee Endpoint Security Logs, McAfee VirusScan Logs"
     type: bool
   - name: McAfee_ePO
-    description: "McAfee ePO Log Files (by Doug Metz): McAfee VirusScan Logs"
+    description: "McAfee ePO Log Files (by Doug Metz): McAfee ePO Apache Logs, McAfee ePO DB Events, McAfee ePO DB Debug Events, McAfee ePO Server Logs, McAfee ePO Logs"
     type: bool
   - name: MediaMonkey
-    description: "MediaMonkey (by Andrew Rathbun): McAfee ePO Logs, MediaMonkey - Media SQLite Database"
+    description: "MediaMonkey (by Andrew Rathbun): MediaMonkey - Media SQLite Database, MediaMonkey - MediaMonkey.ini"
     type: bool
   - name: Megasync
-    description: "MegaSync Data Collection (by Vito Alfano): MediaMonkey - MediaMonkey.ini"
+    description: "MegaSync Data Collection (by Vito Alfano): MegaSync Folder"
     type: bool
   - name: MemoryFiles
-    description: "Memory Files (by Ahmed Elshaer, Teo Kia Meng): MegaSync Folder, hiberfil.sys, pagefile.sys, swapfile.sys, Small Memory Dump directory"
+    description: "Memory Files (by Ahmed Elshaer, Teo Kia Meng): hiberfil.sys, pagefile.sys, swapfile.sys, Small Memory Dump directory"
     type: bool
   - name: MeshAgent
-    description: "MeshAgent log and configuration files (by Geir Olav Skei, Atea IRT): Small Memory Dump directory, MeshAgent .msh (configuration) file"
+    description: "MeshAgent log and configuration files (by Geir Olav Skei, Atea IRT): MeshAgent .msh (configuration) file, MeshAgent log file"
     type: bool
   - name: MessagingClients
-    description: "Messaging and communication apps (by Gregor Wegberg): Cisco Jabber Database, Discord Cache Files, Discord Local Storage LevelDB Files, HeidiSQL (tabs.ini), ITarian, ManageEngine ADSelfService Plus Log Files, Microsoft Sticky Notes - 1607 and later, Microsoft Teams IndexedDB Cache, Microsoft Teams Local Storage Cache, Microsoft Teams Cache, Microsoft Teams Config, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SUM Database (.mdb files), SUPERAntiSpyware Logs, SUSE Linux Enterprise Server WSL /etc/passwd, SUSE Linux Enterprise Server WSL /etc/group, SUSE Linux Enterprise Server WSL /etc/shadow, SUSE Linux Enterprise Server WSL /etc/timezone, SUSE Linux Enterprise Server WSL /etc/hostname, SUSE Linux Enterprise Server WSL /etc/hosts, SUSE Linux Enterprise Server WSL /etc/bash.bashrc, SUSE Linux Enterprise Server WSL /etc/profile, SUSE Linux Enterprise Server WSL .bash_history, SUSE Linux Enterprise Server WSL .bashrc, SUSE Linux Enterprise Server WSL .profile, SUSE Linux Enterprise Server WSL ext4.vhdx, Steam Startup Times Log file, Steam Game Image files, Ubuntu WSL /etc/passwd, Ubuntu WSL /etc/group, Ubuntu WSL /etc/shadow, Ubuntu WSL /etc/timezone, Ubuntu WSL /etc/hostname, VMDK, VSCode Opened Files, VSCode Workspaces, VSCode User extensions, XYplorer - AutoBackup folder, XYplorer - .dat files"
+    description: "Messaging and communication apps (by Gregor Wegberg): HexChat Chat Logs, mIRC Chat Logs (Vista+), mIRC Chat Logs (2000/XP), Mattermost - Chat Logs, IceChat Chat Logs, Cisco Jabber Database, Telegram app folder, Telegram downloaded files, Microsoft Teams IndexedDB Cache, Microsoft Teams Local Storage Cache, Microsoft Teams Cache, Microsoft Teams Config, Microsoft Teams Logs (Windows 11), Discord Cache Files, Discord Local Storage LevelDB Files, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, WhatsApp Cache, WhatsApp Local Storage, Microsoft Store WhatsApp Cache, Microsoft Store WhatsApp Local Storage, Signal Attachments cache, Signal Logs, Signal config.json, Signal Database, main.db (App &lt;v12), skype.db (App +v12), main.db XP, main.db Win7+, s4l-[username].db (App +v8), leveldb (Skype for Desktop +v8), Skype for Destkop v8+ Chromium Cache, Slack - Chat Logs, Slack LevelDB Files, Slack Electron Logs, Slack Cache, Slack Storage, Viber Config Database, Viber Users Data Database"
+    type: bool
+  - name: MicrosoftAzureCopy
+    description: "Microsoft Azure Copy (by Chuck Whitson): Azure Copy - User Profile - *.log, Azure Copy - Plans - *.ste*"
     type: bool
   - name: MicrosoftOfficeBackstage
-    description: "Microsoft Office Backstage (by Brian Maloney): MeshAgent log file"
+    description: "Microsoft Office Backstage (by Brian Maloney): Microsoft Office Backstage"
     type: bool
   - name: MicrosoftOneNote
-    description: "Microsoft OneNote (by Andrew Rathbun): Microsoft Office Backstage, Microsoft OneNote - FullTextSearchIndex, Microsoft OneNote - RecentNotebooks_SeenURLs, Microsoft OneNote - AccessibilityCheckerIndex, Microsoft OneNote - User NoteTags"
+    description: "Microsoft OneNote (by Andrew Rathbun): Microsoft OneNote - FullTextSearchIndex, Microsoft OneNote - AccessibilityCheckerIndex, Microsoft OneNote - RecentNotebooks_SeenURLs, Microsoft OneNote - User NoteTags, Microsoft OneNote - RecentSearches"
     type: bool
   - name: MicrosoftSafetyScanner
-    description: "Microsoft Safety Scanner (by Geir Olav Skei): Microsoft OneNote - RecentSearches"
+    description: "Microsoft Safety Scanner (by Geir Olav Skei): Windows Safety Scanner Logs"
     type: bool
   - name: MicrosoftStickyNotes
-    description: "Microsoft Sticky Notes (by Andrew Rathbun): Windows Safety Scanner Logs, Microsoft Sticky Notes - Windows 7, 8, and 10 version 1511 and earlier"
+    description: "Microsoft Sticky Notes (by Andrew Rathbun): Microsoft Sticky Notes - Windows 7, 8, and 10 version 1511 and earlier, Microsoft Sticky Notes - 1607 and later"
     type: bool
   - name: MicrosoftTeams
-    description: "Microsoft Teams (by Matt Dawson and Andrew Rathbun): Microsoft Sticky Notes - 1607 and later, Microsoft Teams IndexedDB Cache, Microsoft Teams Local Storage Cache, Microsoft Teams Cache, Microsoft Teams Config"
+    description: "Microsoft Teams (by Matt Dawson and Andrew Rathbun): Microsoft Teams Logs (Windows 11), Microsoft Teams IndexedDB Cache, Microsoft Teams Local Storage Cache, Microsoft Teams Cache, Microsoft Teams Config"
     type: bool
   - name: MicrosoftToDo
-    description: "Microsoft To Do (by Andrew Rathbun): Microsoft Teams Logs (Windows 11), Microsoft To Do - SQLite Database of To Do tasks"
+    description: "Microsoft To Do (by Andrew Rathbun): Microsoft To Do - SQLite Database of To Do tasks, Microsoft To Do - User Avatar"
     type: bool
   - name: MidnightCommander
-    description: "Midnight Commander (by Andrew Rathbun): Microsoft To Do - User Avatar"
+    description: "Midnight Commander (by Andrew Rathbun): Midnight Commander -- All Configuation Files"
     type: bool
   - name: MiniTimelineCollection
-    description: "MFT, Registry and Event Logs to generate a mini timeline (by Mari DeGrazia): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T, Event logs Win7+, Event logs XP, Event logs Win7+, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive"
+    description: "MFT, Registry and Event Logs to generate a mini timeline (by Mari DeGrazia): System Profile registry hive, $Boot, $J, $Max, $LogFile, $MFT, System Profile registry transaction files, $SDS, $T, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, Event logs XP, Event logs Win7+, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
+    type: bool
+  - name: MstyDatabase
+    description: "Msty is a UI to interact with large language models (LLMs) (by DReneau): Msty Artificial Intelligence"
     type: bool
   - name: MultiCommander
-    description: "Multi Commander (by Andrew Rathbun): Midnight Commander -- All Configuation Files, Multi Commander - Application Folder, Multi Commander - Config Folder, Multi Commander - Log Folder, Multi Commander - UserData Folder"
+    description: "Multi Commander (by Andrew Rathbun): Multi Commander - Application Folder, Multi Commander - Config Folder, Multi Commander - Log Folder, Multi Commander - UserData Folder, Multi Commander - Log File"
     type: bool
   - name: NETCLRUsageLogs
-    description: ".NET CLR UsageLogs (by Matias Davaro, Thomas DIOT (Qazeer)): Multi Commander - Log File, .NET CLR UsageLogs (user-scoped)"
+    description: ".NET CLR UsageLogs (by Matias Davaro, Thomas DIOT (Qazeer)): .NET CLR UsageLogs (user-scoped), .NET CLR UsageLogs (system-scoped)"
     type: bool
   - name: NGINXLogs
-    description: "NGINX Log Files (by Eric Capuano): .NET CLR UsageLogs (system-scoped)"
+    description: "NGINX Log Files (by Eric Capuano): NGINX Log Files"
     type: bool
   - name: NZBGet
-    description: "NZBGet (by Andrew Rathbun): NGINX Log Files, Usenet Clients - NZBGet Log File"
+    description: "NZBGet (by Andrew Rathbun): Usenet Clients - NZBGet Log File, Usenet Clients - NZBGet NZBs"
     type: bool
   - name: Nessus
-    description: "Nessus (by Andrew Rathbun): Usenet Clients - NZBGet NZBs, Nessus Logs"
+    description: "Nessus (by Andrew Rathbun): Nessus Logs"
     type: bool
   - name: NetMonitorforEmployeesProfessional
-    description: "Net Monitor for Employees Pro (by Tristan PINCEAUX - CERT CWATCH - ALMOND): Nessus Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs"
+    description: "Net Monitor for Employees Pro (by Tristan PINCEAUX - CERT CWATCH - ALMOND): Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, Net Monitor Client Config"
+    type: bool
+  - name: NetworkScanner
+    description: "Network Scanner Tools (by Reece394): Advanced IP Scanner Aliases, Advanced IP Scanner Comments, Advanced IP Scanner MAC, Advanced Port Scanner Aliases, Advanced Port Scanner Comments, Advanced Port Scanner MAC, Netscan XML default output"
     type: bool
   - name: NewsbinPro
-    description: "Newsbin Pro (by Andrew Rathbun): Net Monitor Client Config"
+    description: "Newsbin Pro (by Andrew Rathbun): Usenet Clients - Newsbin Pro"
     type: bool
   - name: Newsleecher
-    description: "Newsleecher (by Andrew Rathbun): Usenet Clients - Newsbin Pro"
+    description: "Newsleecher (by Andrew Rathbun): Usenet Clients - Newsleecher"
     type: bool
   - name: Nicotine__
-    description: "Nicotine++ (by Andrew Rathbun): Usenet Clients - Newsleecher, Nicotine++ Logs, Nicotine++ Incomplete Downloads, Nicotine++ Buddyfiles.db, Nicotine++ Buddystreams.db, Nicotine++ Buddymtimes.db, Nicotine++ Buddyfileindex.db, Nicotine++ Buddywordindex.db, Nicotine++ Config Files, Nicotine++ User Shares, Nicotine++ Downloads.json"
+    description: "Nicotine++ (by Andrew Rathbun): Nicotine++ Logs, Nicotine++ Incomplete Downloads, Nicotine++ Config Files, Nicotine++ User Shares, Nicotine++ Downloads.json, Nicotine++ Buddyfiles.db, Nicotine++ Buddystreams.db, Nicotine++ Buddymtimes.db, Nicotine++ Buddyfileindex.db, Nicotine++ Buddywordindex.db, Nicotine++ Uploads.json"
     type: bool
   - name: Notepad__
-    description: "Notepad++ Backups, recently searched/replaced terms and recently opened documents (by Banaanhangwagen and Matt Dawson): Nicotine++ Uploads.json, Notepad++ Unsaved Edits, Notepad++ Config"
+    description: "Notepad++ Backups, recently searched/replaced terms and recently opened documents (by Banaanhangwagen and Matt Dawson): Notepad++ Config, Notepad++ Session, Notepad++ Unsaved Edits"
     type: bool
   - name: Notepad
-    description: "A Target to collect files that are currently open in Notepad (Windows 11+) (by Andrew Rathbun): Notepad++ Session"
+    description: "A Target to collect files that are currently open in Notepad (Windows 11+) (by Andrew Rathbun, ogmini): Notepad Session Files, Notepad Window State Files, Notepad Settings File"
     type: bool
   - name: Notion
-    description: "Notion Note-Taking App (by Thomas Burnette): Notepad Session Files, Notion Local Storage"
+    description: "Notion Note-Taking App (by Thomas Burnette): Notion Local Storage, Notion Custom Dictionary"
     type: bool
   - name: OfficeAutosave
-    description: "Office Autosave (by Russ Taylor): Notion Custom Dictionary, Word Autosave Location, Excel Autosave Location, Powerpoint Autosave Location"
+    description: "Office Autosave (by Russ Taylor): Publisher Autosave Location, Word Autosave Location, Excel Autosave Location, Powerpoint Autosave Location"
     type: bool
   - name: OfficeDiagnostics
-    description: "Office Diagnostics (by teddy-ROxPin): Publisher Autosave Location, Office Diagnostics"
+    description: "Office Diagnostics (by teddy-ROxPin): Office Diagnostics, Office Elevated Diagnostics"
     type: bool
   - name: OfficeDocumentCache
-    description: "Office Document Cache (by Banaanhangwagen): Office Elevated Diagnostics"
+    description: "Office Document Cache (by Banaanhangwagen): Office Document Cache"
     type: bool
   - name: OneCommander
-    description: "One Commander (by Andrew Rathbun): Office Document Cache, One Commander - All Configuration Files"
+    description: "One Commander (by Andrew Rathbun): One Commander - All Configuration Files, One Commander - Other Configuration Files"
     type: bool
   - name: OneDrive_Metadata
-    description: "Microsoft OneDrive Storage Metadata (by Chad Tilbury): One Commander - Other Configuration Files, OneDrive Metadata Logs"
+    description: "Microsoft OneDrive Storage Metadata (by Chad Tilbury): OneDrive Metadata Logs, OneDrive Metadata Settings"
     type: bool
   - name: OneDrive_UserFiles
-    description: "Microsoft OneDrive Storage Files (by Chad Tilbury): OneDrive Metadata Settings"
+    description: "Microsoft OneDrive Storage Files (by Chad Tilbury): OneDrive User Files"
     type: bool
   - name: OpenSSHClient
-    description: "OpenSSH Client config, known hosts and keys (by Matt Dawson): OneDrive User Files, OpenSSH Config File, OpenSSH Known Hosts, OpenSSH Public Keys, OpenSSH Default RSA Private Key, OpenSSH Default ECDSA Private Key, OpenSSH Default ECDSA-SK Private Key, OpenSSH Default ED25519 Private Key, OpenSSH Default ED25519-SK Private Key"
+    description: "OpenSSH Client config, known hosts and keys (by Matt Dawson): OpenSSH Config File, OpenSSH Known Hosts, OpenSSH Public Keys, OpenSSH Default RSA Private Key, OpenSSH Default ECDSA Private Key, OpenSSH Default ECDSA-SK Private Key, OpenSSH Default ED25519 Private Key, OpenSSH Default ED25519-SK Private Key, OpenSSH Default DSA Private Key"
     type: bool
   - name: OpenSSHServer
-    description: "OpenSSH Server Config and Logs (by Matt Dawson): OpenSSH Default DSA Private Key, OpenSSH Server Config File, OpenSSH Server Logs, OpenSSH Host ECDSA Key, OpenSSH Host ED25519 Key, OpenSSH Host DSA Key, OpenSSH Host RSA Key, OpenSSH User Authorized Keys, OpenSSH User Authorized Keys 2"
+    description: "OpenSSH Server Config and Logs (by Matt Dawson): OpenSSH Server Config File, OpenSSH Server Logs, OpenSSH Host ECDSA Key, OpenSSH Host ED25519 Key, OpenSSH Host DSA Key, OpenSSH Host RSA Key, OpenSSH User Authorized Keys, OpenSSH User Authorized Keys 2, OpenSSH Authorized Administrator Keys"
     type: bool
   - name: OpenVPNClient
-    description: "OpenVPN Client Config and Log (by Mathias Frank): OpenSSH Authorized Administrator Keys, OpenVPN Client Config, OpenVPN Client Config"
+    description: "OpenVPN Client Config and Log (by Mathias Frank): OpenVPN Client Config"
     type: bool
   - name: Opera
-    description: "Opera (by Andrew Rathbun): OpenVPN Client Config, Opera - Local Folder"
+    description: "Opera (by Andrew Rathbun): Opera - Local Folder, Opera - Roaming Folder"
     type: bool
   - name: OutlookPSTOST
-    description: "Outlook PST and OST files (by Eric Zimmerman and Chad Tilbury): Opera - Roaming Folder, PST XP, OST XP, PST (2013 or 2016), OST (2013 or 2016), PST, OST, NST"
+    description: "Outlook PST and OST files (by Eric Zimmerman and Chad Tilbury): PST XP, OST XP, PST (2013 or 2016), OST (2013 or 2016), PST, OST, NST, Outlook Attachment Temporary Storage"
     type: bool
   - name: P2PClients
-    description: "P2P Clients (by Andrew Rathbun): DC++ Chat Logs, Freenet, FrostWire Downloads, FrostWire AppData, FrostWire AppData, Gigatribe Files Windows Vista/7/8/10, Gigatribe Files Windows XP, SOFTWARE registry hive, XML, XML, Windows Component-Based Servicing logs, Windows Your Phone - All Databases"
+    description: "P2P Clients (by Andrew Rathbun): Shareaza Logs, eMule Logs and Configuration Files, eMule part.met files, FrostWire Downloads, DC++ Chat Logs, FrostWire AppData, Gigatribe Files Windows Vista/7/8/10, Gigatribe Files Windows XP, Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings"
     type: bool
   - name: PeaZip
-    description: "PeaZip (by Andrew Rathbun): Outlook Attachment Temporary Storage"
+    description: "PeaZip (by Andrew Rathbun): PeaZip Configuration Files"
     type: bool
   - name: PerfLogs
-    description: "Perflogs Folder Copy (by Vito Alfano): PeaZip Configuration Files"
+    description: "Perflogs Folder Copy (by Vito Alfano): Perflogs"
     type: bool
   - name: PowerShell7Config
-    description: "PowerShell 7 Runtime Config (by Andrew Rathbun): Perflogs"
+    description: "PowerShell 7 Runtime Config (by Andrew Rathbun): PowerShell 7 Config JSON"
     type: bool
   - name: PowerShellConsole
-    description: "PowerShell Console Log File (by Mike Cary, 2thewes, Vikas Singh): PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files"
+    description: "PowerShell Console Log File (by Mike Cary, 2thewes, Vikas Singh): PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config"
     type: bool
   - name: PowerShellTranscripts
-    description: "PowerShell Transcripts (by Andrew Rathbun and Chad Tilbury): PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location"
+    description: "PowerShell Transcripts (by Andrew Rathbun and Chad Tilbury): PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location"
     type: bool
   - name: Prefetch
-    description: "Prefetch files (by Eric Zimmerman): PowerShell Transcripts - Observed Location, Prefetch"
+    description: "Prefetch files (by Eric Zimmerman): Prefetch"
     type: bool
   - name: ProgramData
-    description: "ProgramData Folder Copy (by Vito Alfano): Prefetch"
+    description: "ProgramData Folder Copy (by Vito Alfano): ProgramData"
     type: bool
   - name: ProgramExecution
-    description: "Program Execution Triage Collection (by Max Zabuty): Amcache, Amcache, Amcache transaction files, Amcache transaction files, AppCompat PCA Folder, Java WebStart Cache User Level - XP, JumpLists from CustomDestinations, Multi Commander - Log File, .NET CLR UsageLogs (user-scoped), PowerShell 7 Config JSON, PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, PowerShell Transcripts - Observed Location, Prefetch, Rclone Config, RecentFileCache, User startup folders, System-wide startup folder, VirtualBox VM backup configs, VirtualBox Logs, VirtualBox Backup Logs, VirtualBox Hardening Logs, VirtualBox, VHD, VHDX, SECURITY registry hive"
+    description: "Program Execution Triage Collection (by Max Zabuty): PowerShell Console Log, PowerShell Console Log Systemprofile, PowerShell Console Log WOW64 Systemprofile, PowerShell ISE - AutoSave Files, PowerShell ISE - User Config, PowerShell Transcripts - Default Location, PowerShell Transcripts - Observed Location, Prefetch, WBEM, WER Files, Crash Dumps, Amcache, Amcache transaction files, Syscache, Syscache transaction files, AppCompat PCA Folder, RecentFileCache, .NET CLR UsageLogs (user-scoped), .NET CLR UsageLogs (system-scoped), JumpLists from CustomDestinations, ActivitiesCache.db"
     type: bool
   - name: ProtonVPN
-    description: "ProtonVPN (by Andrew Rathbun): ProgramData"
+    description: "ProtonVPN (by Andrew Rathbun): ProtonVPN - Connection Logs"
     type: bool
   - name: PuffinSecureBrowser
-    description: "Puffin Secure Browser (by Andrew Rathbun): ProtonVPN - Connection Logs, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies"
+    description: "Puffin Secure Browser (by Andrew Rathbun): Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Puffin - Image Cache"
     type: bool
   - name: PushNotification
-    description: "Windows Push Notification Service (by Zawadi Done): Puffin - Image Cache, WNS"
+    description: "Windows Push Notification Service (by Zawadi Done): WNS"
     type: bool
   - name: Q_Dir
-    description: "Q-Dir (by Andrew Rathbun): WNS, Q-Dir - .ini File"
+    description: "Q-Dir (by Andrew Rathbun): Q-Dir - .ini File, Q-Dir - .qdr file"
     type: bool
   - name: QFinderPro__QNAP_
-    description: "QFinderPro (QNAP) (by Andrew Rathbun): Q-Dir - .qdr file"
+    description: "QFinderPro (QNAP) (by Andrew Rathbun): QFinderPro"
+    type: bool
+  - name: QQBrowser
+    description: "QQ Browser (by Reece394): QQ Browser Cookies, QQ Browser Current Session, QQ Browser Current Tabs, QQ Browser Download Metadata, QQ Browser Extension Cookies, QQ Browser Favicons, QQ Browser History, QQ Browser Last Session, QQ Browser Last Tabs, QQ Browser Sessions Folder, QQ Browser Login Data, QQ Browser Media History, QQ Browser Network Action Predictor, QQ Browser Network Persistent State, QQ Browser Preferences, QQ Browser Quota Manager, QQ Browser Reporting and NEL, QQ Browser Shortcuts, QQ Browser Top Sites, QQ Browser Trust Tokens, QQ Browser SyncData Database, QQ Browser Visited Links, QQ Browser Web Data, Windows Protect Folder, QQ Browser Snapshots Folder, QQ Browser Bookmarks"
     type: bool
   - name: QlikSense
-    description: "Qlik Sense (by Abdelkarim CHORFI - CERT CWATCH - ALMOND): QFinderPro, Qlik Sense Logs, Qlik Sense Logs, Qlik Sense Logs"
+    description: "Qlik Sense (by Abdelkarim CHORFI - CERT CWATCH - ALMOND): Qlik Sense Logs"
+    type: bool
+  - name: QuickAssist
+    description: "Microsoft Quick Assist/Remote Help (by Andrew Rathbun): Microsoft Quick Assist, Microsoft Remote Help"
+    type: bool
+  - name: RDCMan
+    description: "A Target to collect files that are related to RDCMan (by ogmini): RDG Files, Old RDG Files, RDCMan Settings File, RDCMan Personal Certificate"
     type: bool
   - name: RDPCache
-    description: "RDP Cache Files (by Hadar Yudovich): Qlik Sense Logs, RDP Cache Files, Windows.old RDP Cache Files"
+    description: "RDP Cache Files (by Hadar Yudovich): RDP Cache Files, Windows.old RDP Cache Files"
     type: bool
   - name: RDPJumplist
-    description: "RDP Jumplist Files (by Vito Alfano): RDP Cache Files"
+    description: "RDP Jumplist Files (by Vito Alfano): RDP Jumplist Files"
     type: bool
   - name: RDPLogs
-    description: "RDP Logs (by Drew Ervin): RDP Jumplist Files, RemoteConnectionManager Event Logs, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs"
+    description: "RDP Logs (by Drew Ervin): RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs"
     type: bool
   - name: Radmin
-    description: "Radmin Server/Viewer Logs and Chats (by Mathias Frank): RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats"
+    description: "Radmin Server/Viewer Logs and Chats (by Mathias Frank): Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats"
     type: bool
   - name: RcloneConf
-    description: "Rclone config file (by Eric Capuano): Radmin Viewer Chats"
+    description: "Rclone config file (by Eric Capuano): Rclone Config"
     type: bool
   - name: RecentFileCache
-    description: "RecentFileCache (by Eric Zimmerman): Rclone Config, RecentFileCache"
+    description: "RecentFileCache (by Eric Zimmerman): RecentFileCache"
     type: bool
   - name: RecentFolders
-    description: "Recent Folders LNK files (by Max Zabuty): RecentFileCache, LNK Files from Recent"
+    description: "Recent Folders LNK files (by Max Zabuty): LNK Files from Recent, LNK Files from Microsoft Office Recent"
     type: bool
   - name: RecycleBin
-    description: "Recycle Bin DataAndInfo (by Mark Hallman / Joshua Hickman): LNK Files from Microsoft Office Recent, Recycle Bin - Windows Vista+, Recycle Bin - Windows Vista+, RECYCLER - WinXP, Recycle Bin - Windows Vista+"
+    description: "Recycle Bin DataAndInfo (by Mark Hallman / Joshua Hickman): Recycle Bin - Windows Vista+, RECYCLER - WinXP"
     type: bool
   - name: RecycleBin_DataFiles
-    description: "Recycle Bin Data Files (by Joshua Hickman, Andreas Hunkeler (@Karneades), Brian Maloney): LNK Files from Microsoft Office Recent, Recycle Bin - Windows Vista+, Recycle Bin - Windows Vista+"
+    description: "Recycle Bin Data Files (by Joshua Hickman, Andreas Hunkeler (@Karneades), Brian Maloney): Recycle Bin - Windows Vista+, RECYCLER - WinXP"
     type: bool
   - name: RecycleBin_InfoFiles
-    description: "Recycle Bin Info Files (by Joshua Hickman, Andreas Hunkeler (@Karneades)): RECYCLER - WinXP, Recycle Bin - Windows Vista+"
+    description: "Recycle Bin Info Files (by Joshua Hickman, Andreas Hunkeler (@Karneades)): Recycle Bin - Windows Vista+, RECYCLER - WinXP"
     type: bool
   - name: RegistryHives
-    description: "System and user related Registry hives (by Eric Zimmerman): RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive"
+    description: "System and user related Registry hives (by Eric Zimmerman): System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
     type: bool
   - name: RegistryHivesMSIXApps
-    description: "MSIX/APPX App Hives (by Zach Stanford / Mari DeGrazia): RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive"
+    description: "MSIX/APPX App Hives (by Zach Stanford / Mari DeGrazia): Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive"
     type: bool
   - name: RegistryHivesOther
-    description: "Other Registry Hives (by Andrew Rathbun): UserClasses.dat MSIX Hive, BBI registry hive, BBI registry hive, BBI registry transaction files, BBI registry transaction files, BCD-Template registry hive, BCD-Template registry hive, BCD-Template registry transaction files, BCD-Template registry transaction files, COMPONENTS registry hive, COMPONENTS registry hive, COMPONENTS registry transaction files, COMPONENTS registry transaction files, DRIVERS registry hive, DRIVERS registry hive, DRIVERS registry transaction files, DRIVERS registry transaction files, ELAM registry hive, ELAM registry hive, ELAM registry transaction files, ELAM registry transaction files, userdiff registry hive, userdiff registry hive, userdiff registry transaction files, userdiff registry transaction files, VSMIDK registry hive, VSMIDK registry hive, VSMIDK registry transaction files"
+    description: "Other Registry Hives (by Andrew Rathbun): BBI registry hive, BBI registry transaction files, BCD-Template registry hive, BCD-Template registry transaction files, COMPONENTS registry hive, COMPONENTS registry transaction files, DRIVERS registry hive, DRIVERS registry transaction files, ELAM registry hive, ELAM registry transaction files, userdiff registry hive, userdiff registry transaction files, VSMIDK registry hive, VSMIDK registry transaction files"
     type: bool
   - name: RegistryHivesSystem
-    description: "System level/related Registry hives (by Eric Zimmerman / Mark Hallman): VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files"
+    description: "System level/related Registry hives (by Eric Zimmerman / Mark Hallman): System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
     type: bool
   - name: RegistryHivesUser
-    description: "User Related Registry hives (by Eric Zimmerman / Mark Hallman): System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive"
+    description: "User Related Registry hives (by Eric Zimmerman / Mark Hallman): NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive"
+    type: bool
+  - name: Remcos
+    description: "Remcos RAT (by CERT CWATCH - ALMOND): Remco RAT custom path - AppData notess folder, Remco RAT custom path - AppData micrecords folder, Remco RAT custom path - AppData hpsupport, Remco RAT custom path, Remco RAT custom path - AppData notess, Remco RAT custom path - AppData screenshots, Remco RAT custom path  - AppData micrecords, Remco RAT custom path  - AppData hpsupport, Remco RAT Default path, Remco RAT custom path - AppData screenshots folder"
     type: bool
   - name: RemoteAdmin
-    description: "Composite target for files related to remote administration tools (by Drew Ervin, Mathias Frank, Andrew Rathbun, Phill Moore): Action1 Client Application logs, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, DWAgent Log Files, IIS log files, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, ITarian, ITarian, Comodo, Kali WSL ext4.vhdx, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Setup Log, Kaseya Setup Log, LNK Files from C:\ProgramData, Error logging, LogMeIn ProgramData Logs, Small Memory Dump directory, MeshAgent .msh (configuration) file, Nessus Logs, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, Qlik Sense Logs, RDP Cache Files, Windows.old RDP Cache Files, RDP Jumplist Files, RemoteConnectionManager Event Logs, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, RDPCoreTS Event Logs, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, UsrClass.dat registry transaction files, RemoteUtilities Connection Logs, Chrome Trust Tokens, Chrome SyncData Database, ActivitiesCache.db, Update Store.db, Bitdefender SQLite DB Files, ScreenConnect Session Database, ScreenConnect User Config, Slack Storage, Snagit - Captures, Steam Login Metadata file, Steam Friend List and Username History file, Steam User Avatar files, Steam Game Tray Icon files, Tablacus Explorer - window1.xml, TeamViewer Connection Logs, TotalAV Logs, Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal, Setupapi.log Win7+, Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab, SYSTEM registry hive (RegBack), DHCP files, Diagnostic Logs for WSA, App download artifacts (PNG), App download artifacts (ICO), Appcompatdb.json, userdata.vhdx, Legacy .rbs files relating to Windows Telemetry and Diagnostics, Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State"
+    description: "Composite target for files related to remote administration tools (by Drew Ervin, Mathias Frank, Andrew Rathbun, Phill Moore): Splashtop Log Files, Splashtop Log Files in ProgramData, LogMeIn ProgramData Logs, LogMeIn Application Logs, Supremo Connection Logs, Action1 Client Application logs, MeshAgent .msh (configuration) file, MeshAgent log file, Ammyy Program Data, AnyDesk Logs - User Profile - *.trace, AnyDesk Logs - ProgramData - *.trace, AnyDesk Logs - User Profile - *.conf, AnyDesk Logs - ProgramData - *.conf, AnyDesk Videos, AnyDesk Logs - User Profile - connection_trace.txt, AnyDesk Logs - ProgramData - connection_trace.txt, AnyDesk Logs - System User Account, AnyDesk Chat Logs - User Profile, TeamViewer Connection Logs, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files, Application Event Log XP, Application Event Log Win7+, ITarian, Comodo, Net Monitor Server Logs, Net Monitor Server Data, Net Monitor Server Config, Net Monitor Server Temp Folder, Net Monitor Client Logs, Net Monitor Client Config, Unified endpoint management and security solutions from ManageEngine, RustDesk logs, Supremo File Transfer Inbox, TightVNC Application Logs, UltraViewer User Logs, UltraViewer System Logs, UltraViewer Service Log, UltraViewer Connection Log, RealVNC Log, RDP Cache Files, Windows.old RDP Cache Files, RemoteConnectionManager Event Logs, LocalSessionManager Event Logs, RDPClient Event Logs, RDPCoreTS Event Logs, DWAgent Log Files, Radmin Server 32bit Log, Radmin Server 64bit Log, Radmin Server 32bit Chats, Radmin Server 64bit Chats, Radmin Viewer Chats, Xeox RMM Client Application logs, Zoho Assist log files in AppData\Local, Zoho Assist .conf files in AppData\Local, Zoho Assist log files in ProgramData, Zoho Assist .conf files, Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, mRemoteNG Logs, mRemoteNG Connection Configuration and Backups, mRemoteNG Program Settings, RemoteUtilities Connection Logs, RemoteUtilities Install Log, AnyDesk File Transfer Logs - Running in portable mode, AnyDesk File Transfer Logs - Installed as a Service, ISLOnline Logs - Sessions - *.out, ISLOnline Logs - Session Configurations, ISL AlwaysOn Logs - Sessions List, ISL AlwaysOn Logs - Sessions, ISL AlwaysOn - App Logs, ISL Light Logs - Sessions, ISL AlwaysOn - Email Configuration, ISL AlwaysOn - Configuration, Microsoft Quick Assist, Microsoft Remote Help, Remco RAT Default path, Remco RAT custom path - AppData screenshots folder, Remco RAT custom path - AppData notess folder, Remco RAT custom path - AppData micrecords folder, Remco RAT custom path - AppData hpsupport, Remco RAT custom path, Remco RAT custom path - AppData notess, Remco RAT custom path - AppData screenshots, Remco RAT custom path  - AppData micrecords, Remco RAT custom path  - AppData hpsupport, ScreenConnect Session Database, ScreenConnect User Config, Kaseya Live Connect Logs (XP), Kaseya Live Connect Logs, Kaseya Agent Endpoint Service Logs (XP), Kaseya Agent Endpoint Service Logs, Kaseya Agent Service Log, Kaseya Setup Log, Kaseya Agent Edge Service Logs, Level RMM Client Application logs"
+    type: bool
+  - name: RemoteDesktopManager
+    description: "A Target to collect files that are related to Remote Desktop Manager from Devolutions (by ogmini): SQLite Data Sources, XML Data Sources, Connections.log, RemoteDesktopManager.cfg, Most Recently Used XML, Favorites XML"
     type: bool
   - name: RemoteUtilities_app
-    description: "Remote Utilities (by Ryan McVicar): UsrClass.dat registry transaction files, RemoteUtilities Connection Logs"
+    description: "Remote Utilities (by Ryan McVicar): RemoteUtilities Connection Logs, RemoteUtilities Install Log"
     type: bool
   - name: RoamingProfile
-    description: "User Related Registry Hives, LNK files, etc (by Scott Downie): RemoteUtilities Install Log, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, UsrClass.dat registry transaction files, LNK Files, Desktop LNK Files, Word Autosave Location, Publisher Autosave Location, Excel Autosave Location, PowerPoint Autosave Location, Publisher Autosave Location, Office Document Cache, Office Document Cache, Chrome bookmarks, Chrome bookmarks, Chrome Cookies, Chrome Cookies, Chrome Current Session, Chrome Current Session, Chrome Current Tabs, Chrome Current Tabs, Chrome Download Metadata, Chrome Download Metadata, Chrome Extension Cookies, Chrome Extension Cookies, Chrome Favicons, Chrome Favicons, Chrome History, Chrome History, Chrome Last Session, Chrome Last Session, Chrome Last Tabs, Chrome Last Tabs, Chrome Sessions Folder, Chrome Sessions Folder, Chrome Login Data, Chrome Login Data, Chrome Media History, Chrome Media History"
+    description: "User Related Registry Hives, LNK files, etc (by Scott Downie): NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, UsrClass.dat registry transaction files, Desktop LNK Files, Publisher Autosave Location, Excel Autosave Location, PowerPoint Autosave Location, Office Document Cache, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Edge folder, Amcache, Amcache transaction files, LNK Files from Recent, LNK Files from Microsoft Office Recent"
     type: bool
   - name: Robo_FTP
-    description: "Robo-FTP (by Thomas Burnette): Chrome Network Action Predictor, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Network Persistent State, Chrome Preferences, Chrome Preferences, Chrome Quota Manager, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Shortcuts, Chrome Top Sites, Chrome Top Sites"
+    description: "Robo-FTP (by Thomas Burnette): Robo-FTP User Scripts, Robo-FTP User Debug Logs, Robo-FTP User Script/Trace Logs, Robo-FTP User XML Config, Robo-FTP User SSH Keys, Robo-FTP User SSL Certificates, Robo-FTP User PGP Keys, Robo-FTP SSH Keys, Robo-FTP SSL Certificates, Robo-FTP PGP Keys, Robo-FTP Debug Logs, Robo-FTP Script/Trace Logs, Robo-FTP XML Config, Robo-FTP Jobs"
     type: bool
   - name: RogueKiller
-    description: "RogueKiller Anti-Malware (by Adlice Software) (by Drew Ervin): Chrome Trust Tokens"
+    description: "RogueKiller Anti-Malware (by Adlice Software) (by Drew Ervin): RogueKiller Reports"
     type: bool
   - name: RustDesk
-    description: "RustDesk (by Andrew Rathbun): Chrome Trust Tokens, Chrome SyncData Database"
+    description: "RustDesk (by Andrew Rathbun): RustDesk logs"
     type: bool
   - name: SABnbzd
-    description: "SABnbzd (by Andrew Rathbun): Chrome SyncData Database, Chrome Visited Links"
+    description: "SABnbzd (by Andrew Rathbun): Usenet Clients - SABnzbd Download Logs, Usenet Clients - SABnzbd History.db"
     type: bool
   - name: SCCMClientLogs
-    description: "SCCM Client Log Files (by Andrew Rathbun): Chrome Visited Links"
+    description: "SCCM Client Log Files (by Andrew Rathbun): SCCM Client Log Files"
     type: bool
   - name: SDB
-    description: "Shim SDB FIles (by Troy Larson): Chrome Web Data, Chrome Web Data, Windows Protect Folder, Windows Protect Folder"
+    description: "Shim SDB FIles (by Troy Larson): SDB Files x64, SDB Files"
     type: bool
   - name: SOFELK
-    description: "SOF-ELK related files of interest (by Tony Knutson and Andrew Rathbun): $Boot, $J, $Max, $J, $Max, $LogFile, $MFT, $SDS, $SDS, $T, $T, Amcache, Amcache, Amcache transaction files, Amcache transaction files, AppCompat PCA Folder, Event logs Win7+, Event logs XP, Event logs Win7+, Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, PowerShell Transcripts - Observed Location, Prefetch, Rclone Config, RecentFileCache, User startup folders, System-wide startup folder"
+    description: "SOF-ELK related files of interest (by Tony Knutson and Andrew Rathbun): $Boot, $J, $Max, $LogFile, $MFT, $SDS, $T, Prefetch, Event logs XP, Event logs Win7+, Amcache, Amcache transaction files, Syscache, Syscache transaction files, AppCompat PCA Folder, RecentFileCache, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, LNK Files from C:\ProgramData"
     type: bool
   - name: SQLiteDatabases
-    description: "SQLDatabases Target for use with SQLECmd Module (by Andrew Rathbun): Edge folder, Edge folder, Amcache, Amcache transaction files, LNK Files from Recent, LNK Files from Recent, LNK Files from Microsoft Office Recent, LNK Files from Microsoft Office Recent, Robo-FTP User Scripts, Robo-FTP User Debug Logs, Robo-FTP User Script/Trace Logs, Robo-FTP User XML Config, Robo-FTP User SSH Keys, Robo-FTP User SSL Certificates, Robo-FTP User PGP Keys, Robo-FTP SSH Keys, Robo-FTP SSL Certificates, Robo-FTP PGP Keys, Robo-FTP Debug Logs, Robo-FTP Script/Trace Logs, Robo-FTP XML Config, Robo-FTP Jobs, RogueKiller Reports, RustDesk logs, RustDesk logs, Usenet Clients - SABnzbd Download Logs, Usenet Clients - SABnzbd History.db, SCCM Client Log Files, SDB Files, SDB Files, SDB Files x64, SDB Files x64, 4K Video Downloader, Microsoft OneNote - FullTextSearchIndex, Microsoft OneNote - RecentNotebooks_SeenURLs, Microsoft OneNote - AccessibilityCheckerIndex, Microsoft OneNote - User NoteTags, Microsoft OneNote - RecentSearches, Microsoft Sticky Notes - 1607 and later, Microsoft To Do - SQLite Database of To Do tasks, Robo-FTP Jobs, TeraCopy - History Databases, TeraCopy - Main Database, Notion Local Storage, IDrive Backed Up Files, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Dropbox Metadata, Google File Stream Metadata, Google File Stream Metadata, Google File Stream Metadata, Google File Stream Metadata, FileZilla SQLite3 Log Files, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Edge bookmarks, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs"
+    description: "SQLDatabases Target for use with SQLECmd Module (by Andrew Rathbun): Microsoft OneNote - FullTextSearchIndex, Microsoft OneNote - AccessibilityCheckerIndex, 4K Video Downloader, Microsoft OneNote - RecentNotebooks_SeenURLs, Microsoft OneNote - User NoteTags, Microsoft OneNote - RecentSearches, Microsoft Sticky Notes - 1607 and later, Microsoft To Do - SQLite Database of To Do tasks, Robo-FTP Jobs, TeraCopy - History Databases, TeraCopy - Main Database, Notion Local Storage, IDrive Backed Up Files, Dropbox Metadata, Google File Stream Metadata, FileZilla SQLite3 Log Files, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Addons, Bookmarks, Cookies, Downloads, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Windows 10 Notification DB, ActivitiesCache.db, Update Store.db, Bitdefender SQLite DB Files, EventTranscript.db"
     type: bool
   - name: SRUM
-    description: "System Resource Usage Monitor (SRUM) Data (by Mark Hallman): Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Login Data, Edge Media History"
+    description: "System Resource Usage Monitor (SRUM) Data (by Mark Hallman): SRUM, SOFTWARE registry hive, SOFTWARE registry transaction files"
     type: bool
   - name: SUM
-    description: "SUM Database (by Andrew Rathbun): Edge Network Action Predictor"
+    description: "SUM Database (by Andrew Rathbun, Yogesh Khatri): SUM Database (.mdb files)"
     type: bool
   - name: SUPERAntiSpyware
-    description: "SUPERAntiSpyware Data (by Drew Ervin): Edge Preferences"
+    description: "SUPERAntiSpyware Data (by Drew Ervin): SUPERAntiSpyware Logs"
     type: bool
   - name: SUSELinuxEnterpriseServer
-    description: "SUSE Linux Enterprise Server on Windows Subsystem for Linux (by Matt Dawson): Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Addons, Bookmarks, Cookies, Cookies, Downloads, Favicons, Form history, Permissions, Places"
+    description: "SUSE Linux Enterprise Server on Windows Subsystem for Linux (by Matt Dawson): SUSE Linux Enterprise Server WSL /etc/os-release, SUSE Linux Enterprise Server WSL /etc/fstab, SUSE Linux Enterprise Server WSL /etc/passwd, SUSE Linux Enterprise Server WSL /etc/group, SUSE Linux Enterprise Server WSL /etc/shadow, SUSE Linux Enterprise Server WSL /etc/timezone, SUSE Linux Enterprise Server WSL /etc/hostname, SUSE Linux Enterprise Server WSL /etc/hosts, SUSE Linux Enterprise Server WSL /etc/bash.bashrc, SUSE Linux Enterprise Server WSL /etc/profile, SUSE Linux Enterprise Server WSL .bash_history, SUSE Linux Enterprise Server WSL .bashrc, SUSE Linux Enterprise Server WSL .profile, SUSE Linux Enterprise Server WSL ext4.vhdx"
     type: bool
   - name: ScheduledTasks
-    description: "Scheduled tasks (*.job and XML) (by Eric Zimmerman, Reece394): Protections, Search, Signons, Storage Sync, Webappstore, Windows 10 Notification DB, Windows 10 Notification DB, Zoom plugin (Outlook), eMule Logs and Configuration Files, eMule part.met files, iTunes Backup Folder, iTunes Backup Folder, iTunes Backup Folder - iOS13"
+    description: "Scheduled tasks (*.job and XML) (by Eric Zimmerman, Reece394): PowerShell Scheduled_Jobs, PowerShell Scheduled_Jobs Output, PowerShell Scheduled_Jobs Systemprofile, PowerShell Scheduled_Jobs Output Systemprofile, PowerShell Scheduled_Jobs WOW64 Systemprofile, PowerShell Scheduled_Jobs Output WOW64 Systemprofile, at .job, at SchedLgU.txt, XML"
     type: bool
   - name: ScreenConnect
-    description: "ScreenConnect Data (now known as ConnectWise Control) (by Drew Ervin): Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, ActivitiesCache.db, Update Store.db, Bitdefender SQLite DB Files"
+    description: "ScreenConnect Data (now known as ConnectWise Control) (by Drew Ervin): ScreenConnect User Config, Application Event Log XP, Application Event Log Win7+, ScreenConnect Session Database"
     type: bool
   - name: SecureAge
-    description: "SecureAge Antivirus Logs (by Andrew Rathbun): EventTranscript.db"
+    description: "SecureAge Antivirus Logs (by Andrew Rathbun): SecureAge Antvirus Logs"
     type: bool
   - name: SentinelOne
-    description: "Sentinel One Logs (by Kirtan Shah): EventTranscript.db"
+    description: "Sentinel One Logs (by Kirtan Shah): SentinelOne EDR Log"
     type: bool
   - name: ServerTriage
-    description: "A compound target for gathering artifacts common to servers. (by Eric Capuano): Apache Access Log, Confluence Wiki Log Files, Confluence Wiki Log Files, Everything (VoidTools) - .ini file, Exchange Server Modified Compiled Files, Exchange Setup Log file, FileZilla SQLite3 Log Files, FileZilla Server XML Log Files, web.config, IIS log files, IIS log files, IIS log files, IIS log files, IIS log files, MOF files, MS SQL Errorlog, MalwareBytes Anti-Malware Scan Results Logs, ManageEngine Desktop Central Log Files, .NET CLR UsageLogs (system-scoped), OpenSSH Default DSA Private Key, OpenSSH Server Config File, OpenSSH Server Logs, OpenSSH Host ECDSA Key, OpenSSH Host ED25519 Key, OpenSSH Host DSA Key, OpenSSH Host RSA Key, OpenSSH User Authorized Keys, OpenSSH User Authorized Keys 2"
+    description: "A compound target for gathering artifacts common to servers. (by Eric Capuano): MS SQL Errorlog, MS SQL Errorlogs, IIS log files, ManageEngine Desktop Central Log Files, ManageEngine ADSelfService Plus Log Files, Confluence Wiki Log Files, Exchange client access log files, Apache Access Log, Exchange Setup Log file, Exchange TransportRoles log files, FileZilla Server XML Log Files, FileZilla Log Files, NGINX Log Files, OpenSSH Server Config File, OpenSSH Server Logs, OpenSSH Host ECDSA Key, OpenSSH Host ED25519 Key, OpenSSH Host DSA Key, OpenSSH Host RSA Key, OpenSSH User Authorized Keys, OpenSSH User Authorized Keys 2, OpenSSH Authorized Administrator Keys"
     type: bool
   - name: Session
-    description: "Session Desktop (by Vito Alfano): SRUM"
+    description: "Session Desktop (by Vito Alfano): Session App Folder"
     type: bool
   - name: ShareX
-    description: "ShareX (by Andrew Rathbun): SRUM"
+    description: "ShareX (by Andrew Rathbun): ShareX"
     type: bool
   - name: Shareaza
-    description: "Shareaza (by Andrew Rathbun): SOFTWARE registry hive"
+    description: "Shareaza (by Andrew Rathbun): Shareaza Logs"
     type: bool
   - name: SiemensTIA
-    description: "Copy Siemens TIA Settings (by Olaf Schwarz (@b00010111)): SOFTWARE registry hive"
+    description: "Copy Siemens TIA Settings (by Olaf Schwarz (@b00010111)): Siemens TIA Settings"
     type: bool
   - name: Signal
-    description: "Signal (Please view this tkape file for documentation on decryption!) (by Matt Dawson): SOFTWARE registry transaction files, SOFTWARE registry transaction files, SUM Database (.mdb files), SUPERAntiSpyware Logs"
+    description: "Signal (Please view this tkape file for documentation on decryption!) (by Matt Dawson): Signal Logs, Signal config.json, Signal Database, Signal Attachments cache"
     type: bool
   - name: SignatureCatalog
-    description: "Obtain detached signature catalog files (by Mike Pilkington): SUSE Linux Enterprise Server WSL /etc/os-release, SUSE Linux Enterprise Server WSL /etc/fstab"
+    description: "Obtain detached signature catalog files (by Mike Pilkington): SignatureCatalog"
+    type: bool
+  - name: SimpleHelp
+    description: "SimpleHelp Remote Access Client (by Chuck Whitson): SimpleHelp - ProgramData - JWrapper Logs, SimpleHelp - ProgramData - SimpleHelp Logs, SimpleHelp - User AppData - Technician Console Logs"
     type: bool
   - name: Skype
-    description: "Skype (by Eric Zimmerman, Matt Dawson): SUSE Linux Enterprise Server WSL /etc/passwd, SUSE Linux Enterprise Server WSL /etc/group, SUSE Linux Enterprise Server WSL /etc/shadow, SUSE Linux Enterprise Server WSL /etc/timezone, SUSE Linux Enterprise Server WSL /etc/hostname, SUSE Linux Enterprise Server WSL /etc/hosts, SUSE Linux Enterprise Server WSL /etc/bash.bashrc"
+    description: "Skype (by Eric Zimmerman, Matt Dawson): main.db (App &lt;v12), skype.db (App +v12), main.db XP, main.db Win7+, s4l-[username].db (App +v8), leveldb (Skype for Desktop +v8), Skype for Destkop v8+ Chromium Cache"
     type: bool
   - name: Slack
-    description: "Slack (by Andrew Rathbun and Chad Tilbury): SUSE Linux Enterprise Server WSL /etc/profile, SUSE Linux Enterprise Server WSL .bash_history, SUSE Linux Enterprise Server WSL .bashrc, SUSE Linux Enterprise Server WSL .profile, SUSE Linux Enterprise Server WSL ext4.vhdx"
+    description: "Slack (by Andrew Rathbun and Chad Tilbury): Slack - Chat Logs, Slack LevelDB Files, Slack Electron Logs, Slack Cache, Slack Storage"
     type: bool
   - name: Snagit
-    description: "Snagit (by Andrew Rathbun): at .job"
+    description: "Snagit (by Andrew Rathbun): Snagit - Captures"
     type: bool
   - name: SnipAndSketch
-    description: "Snip &amp; Sketch Cached Images (by Kevin Pagano): at .job"
+    description: "Snip &amp; Sketch Cached Images (by Kevin Pagano): Snip &amp; Sketch"
+    type: bool
+  - name: SoftPerfectNetscan
+    description: "Soft Perfect Network Scanner Output (by CERT CWATCH - ALMOND): Netscan XML default output"
     type: bool
   - name: Sophos
-    description: "Sophos Data (by Drew Ervin, Reece394): Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, at SchedLgU.txt, at SchedLgU.txt, XML"
+    description: "Sophos Data (by Drew Ervin, Reece394): Sophos Logs (XP), Application Event Log Win7+, Application Event Log XP, Sophos Logs"
     type: bool
   - name: Soulseek
-    description: "Soulseek (by Andrew Rathbun): XML, XML"
+    description: "Soulseek (by Andrew Rathbun): Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings"
     type: bool
   - name: SpeedCommander
-    description: "SpeedCommander (by Andrew Rathbun): ScreenConnect Session Database"
+    description: "SpeedCommander (by Andrew Rathbun): SpeedCommander - .ini File"
     type: bool
   - name: Splashtop
-    description: "Splashtop (by Andrew Rathbun, Yogesh Khatri): ScreenConnect Session Database, ScreenConnect User Config"
+    description: "Splashtop (by Andrew Rathbun, Yogesh Khatri): Splashtop Log Files, Splashtop Log Files in ProgramData"
     type: bool
   - name: StartupFolders
-    description: "Startup Folders (by Jason Ballard): SecureAge Antvirus Logs, SentinelOne EDR Log"
+    description: "Startup Folders (by Jason Ballard): System-wide startup folder, User startup folders"
     type: bool
   - name: StartupInfo
-    description: "StartupInfo XML Files (by Hadar Yudovich): Session App Folder, ShareX"
+    description: "StartupInfo XML Files (by Hadar Yudovich): StartupInfo XML Files"
     type: bool
   - name: Steam
-    description: "Steam (by Nisarg Suthar, SolitudePy): Shareaza Logs, Siemens TIA Settings, Signal Attachments cache, Signal Logs, Signal config.json, Signal Database, SignatureCatalog, SignatureCatalog, main.db (App &lt;v12), skype.db (App +v12), main.db XP, main.db Win7+"
+    description: "Steam (by Nisarg Suthar, SolitudePy): Steam Game Image files, Steam Login Metadata file, Steam Friend List and Username History file, Steam User Avatar files, Steam Game Tray Icon files, Steam Startup Times Log file"
     type: bool
   - name: SublimeText
-    description: "Sublime Text 2/3/4 Auto Save Session (by Mathias Frank and Nisarg Suthar): s4l-[username].db (App +v8), leveldb (Skype for Desktop +v8)"
+    description: "Sublime Text 2/3/4 Auto Save Session (by Mathias Frank and Nisarg Suthar): SublimeText 2/3 Auto Save Session, SublimeText 4 Auto Save Session"
     type: bool
   - name: SugarSync
-    description: "SugarSync (by Andrew Rathbun): Skype for Destkop v8+ Chromium Cache, Slack - Chat Logs, Slack LevelDB Files"
+    description: "SugarSync (by Andrew Rathbun): SugarSync Log File, SugarSync - Shared Folders (Default Location), SugarSync - My SugarSync (Default Location)"
     type: bool
   - name: SumatraPDF
-    description: "SumatraPDF (by Andrew Rathbun): Slack Electron Logs, Slack Cache"
+    description: "SumatraPDF (by Andrew Rathbun): SumatraPDF Settings - SessionData, SumatraPDF Cache"
+    type: bool
+  - name: Supermium
+    description: "Supermium (by Reece394): Supermium Bookmarks XP, Supermium Cookies XP, Supermium Current Session XP, Supermium Current Tabs XP, Supermium Favicons XP, Supermium History XP, Supermium Last Session XP, Supermium Last Tabs XP, Supermium Sessions Folder XP, Supermium Network Action Predictor XP, Supermium Network Persistent State XP, Supermium Login Data XP, Supermium Preferences XP, Supermium Reporting and NEL XP, Supermium Trust Tokens XP, Supermium SyncData Database XP, Supermium Shortcuts XP, Supermium Top Sites XP, Supermium Visited Links XP, Supermium Web Data XP, Supermium Bookmarks, Supermium Cookies, Supermium Current Session, Supermium Current Tabs, Supermium Download Metadata, Supermium Extension Cookies, Supermium Favicons, Supermium History, Supermium Last Session, Supermium Last Tabs, Supermium Sessions Folder, Supermium Login Data, Supermium Media History, Supermium Network Action Predictor, Supermium Network Persistent State, Supermium Preferences, Supermium Quota Manager, Supermium Reporting and NEL, Supermium Shortcuts, Supermium Top Sites, Supermium Trust Tokens, Supermium SyncData Database, Supermium Visited Links, Supermium Web Data, Windows Protect Folder, Supermium Snapshots Folder, SYSTEM Supermium History"
     type: bool
   - name: SupremoRemoteDesktop
-    description: "Supremo Remote Desktop Control Logs (by epoxigen): Slack Storage, Snagit - Captures"
+    description: "Supremo Remote Desktop Control Logs (by epoxigen): Supremo Connection Logs, Supremo File Transfer Inbox"
     type: bool
   - name: Symantec_AV_Logs
-    description: "Symantec AV Logs (by Brian Maloney): Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Snip &amp; Sketch, Sophos Logs (XP), Sophos Logs, Sophos Logs, Soulseek Chat Logs, Soulseek Search History/Shared Folders/Settings, SpeedCommander - .ini File, Splashtop Log Files, Splashtop Log Files in ProgramData"
+    description: "Symantec AV Logs (by Brian Maloney): Symantec Event Log Win7+, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml, Application Event Log Win7+, Application Event Log XP, Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs, Symantec Endpoint Protection User Logs"
+    type: bool
+  - name: Syncthing
+    description: "Syncthing Configuration and Logs (by Vito Alfano): Syncthing Configuration and Certificates, Syncthing Cache and Storage, Syncthing Logs"
     type: bool
   - name: Syscache
-    description: "syscache.hve (by Phill Moore): User startup folders, System-wide startup folder"
+    description: "syscache.hve (by Phill Moore): Syscache, Syscache transaction files"
     type: bool
   - name: TablacusExplorer
-    description: "Tablacus Explorer (by Andrew Rathbun): StartupInfo XML Files, StartupInfo XML Files, Steam Game Image files"
+    description: "Tablacus Explorer (by Andrew Rathbun): Tablacus Explorer - window.xml, Tablacus Explorer - window1.xml, Tablacus Explorer - remember.xml"
     type: bool
   - name: TeamViewerLogs
-    description: "TeamViewer Logs (by Hadar Yudovich, Sam Smoker): Steam Login Metadata file, Steam Friend List and Username History file, Steam User Avatar files, Steam Game Tray Icon files"
+    description: "TeamViewer Logs (by Hadar Yudovich, Sam Smoker): TeamViewer Connection Logs, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files"
     type: bool
   - name: Telegram
-    description: "Telegram Desktop (by Simone Marinari): Steam Startup Times Log file, Steam Game Image files"
+    description: "Telegram Desktop (by Simone Marinari): Telegram app folder, Telegram downloaded files"
     type: bool
   - name: TeraCopy
-    description: "TeraCopy log history (by Kevin Pagano): Steam Login Metadata file"
+    description: "TeraCopy log history (by Kevin Pagano): TeraCopy"
     type: bool
   - name: ThumbCache
-    description: "Thumbcache DB (by Eric Zimmerman): Steam Friend List and Username History file"
+    description: "Thumbcache DB (by Eric Zimmerman): Thumbcache DB"
     type: bool
   - name: Thunderbird
-    description: "Mozilla Thunderbird Email Client (by Matt Dawson): Steam User Avatar files, Steam Game Tray Icon files, Steam Startup Times Log file, SublimeText 2/3 Auto Save Session, SublimeText 4 Auto Save Session, SugarSync Log File, SugarSync - Shared Folders (Default Location), SugarSync - My SugarSync (Default Location), SumatraPDF Settings - SessionData, SumatraPDF Cache, Supremo Connection Logs"
+    description: "Mozilla Thunderbird Email Client (by Matt Dawson): Mozilla Thunderbird Install Date, Mozilla Thunderbird Profiles.ini, Mozilla Thunderbird prefs.js, Mozilla Thunderbird Global Messages Database, Mozilla Thunderbird logins.json, Mozilla Thunderbird places.sqlite, Mozilla Thunderbird ImapMail INBOX, Mozilla Thunderbird Mail INBOX, Mozilla Thunderbird Calendar Data, Mozilla Thunderbird Attachments, Mozilla Thunderbird Address Book"
     type: bool
   - name: TorrentClients
-    description: "Torrent Clients (by Andrew Rathbun): TorrentClients - BitTorrent, Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, Zoom client logs, Zoom client logs (Windows XP)"
+    description: "Torrent Clients (by Andrew Rathbun): TorrentClients - qBittorrent, TorrentClients - uTorrent, TorrentClients - BitTorrent"
     type: bool
   - name: Torrents
-    description: "Torrent Files (by Tony Knutson): Supremo File Transfer Inbox"
+    description: "Torrent Files (by Tony Knutson): Torrents"
     type: bool
   - name: TotalAV
-    description: "TotalAV Antivirus Data (by Kirtan Shah): Symantec Endpoint Protection Logs (XP), Symantec Endpoint Protection Logs"
+    description: "TotalAV Antivirus Data (by Kirtan Shah): TotalAV Logs"
     type: bool
   - name: TotalCommander
-    description: "Total Commander (by Andrew Rathbun, Jessica Venturo and Chuck Whitson): Symantec Endpoint Protection User Logs, Symantec Event Log Win7+, Symantec Event Log Win7+, Symantec Endpoint Protection Quarantine (XP), Symantec Endpoint Protection Quarantine, ccSubSDK Database, registrationInfo.xml"
+    description: "Total Commander (by Andrew Rathbun, Jessica Venturo and Chuck Whitson): Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal, Total Commander - FTP .ini File, Total Commander - File Tree, Total Commander - Frequent Directory Listing, Total Commander - FTP Logs"
     type: bool
   - name: TreeSize
-    description: "TreeSize - Scan History (by Andrew Rathbun): Syscache"
+    description: "TreeSize - Scan History (by Andrew Rathbun): TreeSize - ScanHistory.XML"
     type: bool
   - name: TrendMicro
-    description: "Trend Micro Data (by Drew Ervin): Syscache transaction files, Tablacus Explorer - remember.xml, Tablacus Explorer - window.xml"
+    description: "Trend Micro Data (by Drew Ervin): Trend Micro Logs, Trend Micro Security Agent Report Logs, Trend Micro Security Agent Connection Logs"
+    type: bool
+  - name: UCBrowser
+    description: "UCBrowser (by Reece394): UCBrowser Bookmarks, UCBrowser Cookies, UCBrowser Current Session, UCBrowser Current Tabs, UCBrowser Download Metadata, UCBrowser Extension Cookies, UCBrowser Favicons, UCBrowser History, UCBrowser Last Session, UCBrowser Last Tabs, UCBrowser Sessions Folder, UCBrowser Login Data, UCBrowser Media History, UCBrowser Network Action Predictor, UCBrowser Network Persistent State, UCBrowser Preferences, UCBrowser Quota Manager, UCBrowser Reporting and NEL, UCBrowser Shortcuts, UCBrowser Top Sites, UCBrowser Trust Tokens, UCBrowser SyncData Database, UCBrowser Visited Links, UCBrowser Web Data, Windows Protect Folder, UCBrowser Snapshots Folder"
     type: bool
   - name: UEMS
-    description: "UEMS Manage Engine Agent (by Abdelkarim CHORFI - CERT CWATCH - ALMOND): Tablacus Explorer - window1.xml, TeamViewer Connection Logs"
+    description: "UEMS Manage Engine Agent (by Abdelkarim CHORFI - CERT CWATCH - ALMOND): Unified endpoint management and security solutions from ManageEngine"
     type: bool
   - name: USBDetective
-    description: "Collects files that can be input into USB Detective for parsing (by Kevin Pagano): Amcache, Amcache, Amcache transaction files, Amcache transaction files, Event logs Win7+, Event logs XP, Event logs Win7+, Keepass Roaming Ini, LNK Files from Recent, LNK Files from Microsoft Office Recent, Start Menu LNK Files, LNK Files from Recent (XP), Desktop LNK Files XP, Desktop LNK Files, Restore point LNK Files XP, RECYCLER - WinXP, Registry.dat MSIX Hive, User.dat MSIX Hive, VSMIDK registry transaction files, SAM registry transaction files, SAM registry transaction files, SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SYSTEM registry transaction files, SAM registry hive, SAM registry hive, SECURITY registry hive, SECURITY registry hive, SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive, SYSTEM registry hive, RegBack registry transaction files, RegBack registry transaction files, SAM registry hive (RegBack), SAM registry hive (RegBack), SECURITY registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), System Profile registry hive, System Profile registry hive, System Profile registry transaction files, System Profile registry transaction files, Local Service registry hive, Local Service registry hive, Local Service registry transaction files, Local Service registry transaction files, Network Service registry hive, Network Service registry hive, Network Service registry transaction files, Network Service registry transaction files, System Restore Points Registry Hives (XP), NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry hive, TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files"
+    description: "Collects files that can be input into USB Detective for parsing (by Kevin Pagano): System Profile registry hive, System Profile registry transaction files, Local Service registry hive, Local Service registry transaction files, Network Service registry hive, Network Service registry transaction files, System Restore Points Registry Hives (XP), Desktop LNK Files XP, NTUSER.DAT registry transaction files, NTUSER.DAT DEFAULT registry hive, NTUSER.DAT DEFAULT transaction files, UsrClass.dat registry transaction files, Event logs XP, Event logs Win7+, NTUSER.DAT registry hive XP, NTUSER.DAT registry hive, UsrClass.dat registry hive, Desktop LNK Files, Amcache, Amcache transaction files, LNK Files from Recent (XP), Restore point LNK Files XP, Registry.dat MSIX Hive, User.dat MSIX Hive, UserClasses.dat MSIX Hive, Setupapi.log XP, Setupapi.log Win7+, LNK Files from Recent, LNK Files from C:\ProgramData, LNK Files from Microsoft Office Recent, Start Menu LNK Files, SAM registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SAM registry hive, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, RegBack registry transaction files, SAM registry hive (RegBack), SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
     type: bool
   - name: USBDevicesLogs
-    description: "USB devices log files (by Eric Zimmerman, esecrpm): TeamViewer Application Logs, TeamViewer Application User Logs, TeamViewer Configuration Files"
+    description: "USB devices log files (by Eric Zimmerman, esecrpm): Setupapi.log XP, Setupapi.log Win7+"
     type: bool
   - name: Ubuntu
-    description: "Ubuntu on Windows Subsystem for Linux (by Matt Dawson): Telegram app folder, Telegram downloaded files, TeraCopy, Thumbcache DB, Mozilla Thunderbird Install Date, Mozilla Thunderbird Profiles.ini, Mozilla Thunderbird prefs.js, Mozilla Thunderbird Global Messages Database, Mozilla Thunderbird logins.json, Mozilla Thunderbird places.sqlite, Mozilla Thunderbird ImapMail INBOX, Mozilla Thunderbird Mail INBOX, Mozilla Thunderbird Calendar Data, Mozilla Thunderbird Attachments, Mozilla Thunderbird Address Book, Torrents, TotalAV Logs"
+    description: "Ubuntu on Windows Subsystem for Linux (by Matt Dawson): Ubuntu WSL ext4.vhdx, Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab, Ubuntu WSL /etc/passwd, Ubuntu WSL /etc/group, Ubuntu WSL /etc/shadow, Ubuntu WSL /etc/timezone, Ubuntu WSL /etc/hostname, Ubuntu WSL /etc/hosts, Ubuntu WSL /etc/crontab, Ubuntu WSL /etc/bash.bashrc, Ubuntu WSL /etc/profile, Ubuntu WSL .bash_history, Ubuntu WSL .bashrc, Ubuntu WSL .profile, Ubuntu WSL User Crontabs, Ubuntu WSL Apt Logs"
     type: bool
   - name: Ultraviewer
-    description: "UltraViewer (by Ryan McVicar, Sam Smoker): TotalAV Logs, Total Commander - .ini File, Total Commander - Log File, Total Commander - Temp Files Created During Folder Traversal"
+    description: "UltraViewer (by Ryan McVicar, Sam Smoker): UltraViewer User Logs, UltraViewer System Logs, UltraViewer Service Log, UltraViewer Connection Log"
     type: bool
   - name: Usenet
-    description: "Usenet (NZB) Files (by Andrew Rathbun): Total Commander - FTP .ini File"
+    description: "Usenet (NZB) Files (by Andrew Rathbun): Usenet (NZB) Files"
     type: bool
   - name: UsenetClients
-    description: "Usenet Clients (by Andrew Rathbun): NGINX Log Files, Usenet Clients - NZBGet Log File, Net Monitor Client Config, Usenet Clients - Newsbin Pro, Chrome SyncData Database, Chrome Visited Links"
+    description: "Usenet Clients (by Andrew Rathbun): Usenet Clients - NZBGet Log File, Usenet Clients - NZBGet NZBs, Usenet Clients - Newsbin Pro, Usenet Clients - Newsleecher, Usenet Clients - SABnzbd Download Logs, Usenet Clients - SABnzbd History.db"
     type: bool
   - name: UsersFolders
-    description: "Users folders Dump (by Vito Alfano): Total Commander - File Tree"
+    description: "Users folders Dump (by Vito Alfano): Users"
     type: bool
   - name: VIPRE
-    description: "VIPRE Data (by Drew Ervin): Total Commander - Frequent Directory Listing, Total Commander - FTP Logs, TreeSize - ScanHistory.XML, Trend Micro Logs"
+    description: "VIPRE Data (by Drew Ervin): VIPRE Business User Logs (v7+), VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), VIPRE Business Agent Logs"
     type: bool
   - name: VLC_Media_Player
-    description: "VLC Media Player (by Matt Dawson): Trend Micro Security Agent Report Logs, Trend Micro Security Agent Connection Logs"
+    description: "VLC Media Player (by Matt Dawson): VLC Recently Opened Files, VLC Recorded Files"
     type: bool
   - name: VMware
-    description: "Runs all VMware modules to collect VMware VM config files, logs and Virtual Hard Disks (by Matt Dawson): Unified endpoint management and security solutions from ManageEngine, Unified endpoint management and security solutions from ManageEngine, Setupapi.log XP, Setupapi.log Win7+, Ubuntu WSL .profile, Ubuntu WSL User Crontabs, Ubuntu WSL Apt Logs, Ubuntu WSL ext4.vhdx"
+    description: "Runs all VMware modules to collect VMware VM config files, logs and Virtual Hard Disks (by Matt Dawson): VHDX, VDI, VMDK, VMware (Fusion/Workstation/Server/Player), VMware - Virtual Machine Inventory, VHD"
     type: bool
   - name: VMwareInventory
-    description: "VMware - Virtual Machine Inventory (by Andrew Rathbun): Unified endpoint management and security solutions from ManageEngine"
+    description: "VMware - Virtual Machine Inventory (by Andrew Rathbun): VMware - Virtual Machine Inventory"
     type: bool
   - name: VMwareMemory
-    description: "VMware - Virtual Machine Memory (by Andrew Rathbun): Unified endpoint management and security solutions from ManageEngine, Setupapi.log XP, Setupapi.log Win7+"
+    description: "VMware - Virtual Machine Memory (by Andrew Rathbun): VMware (Fusion/Workstation/Server/Player)"
     type: bool
   - name: VNCLogs
-    description: "VNC Logs (by Phill Moore): Application Event Log XP, Application Event Log XP, Application Event Log Win7+, Application Event Log Win7+, Setupapi.log Win7+, Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab"
+    description: "VNC Logs (by Phill Moore): Application Event Log Win7+, RealVNC Log, Application Event Log XP, TightVNC Application Logs"
     type: bool
   - name: Viber
-    description: "ViberPC Messaging App (by Matt Dawson): Ubuntu WSL /etc/passwd, Ubuntu WSL /etc/group, Ubuntu WSL /etc/shadow, Ubuntu WSL /etc/timezone, Ubuntu WSL /etc/hostname"
+    description: "ViberPC Messaging App (by Matt Dawson): Viber Config Database, Viber Users Data Database, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache"
     type: bool
   - name: VirtualBox
-    description: "Runs all VirtualBox modules to collect Virtualbox VM config files, logs and Virtual Hard Disks (by Matt Dawson): Ubuntu WSL /etc/hosts, Ubuntu WSL /etc/crontab, Ubuntu WSL /etc/bash.bashrc, Ubuntu WSL /etc/profile, Ubuntu WSL .bash_history, Ubuntu WSL .bashrc, Ubuntu WSL .profile, Ubuntu WSL User Crontabs, Ubuntu WSL Apt Logs, Ubuntu WSL ext4.vhdx"
+    description: "Runs all VirtualBox modules to collect Virtualbox VM config files, logs and Virtual Hard Disks (by Matt Dawson): VHDX, VDI, VMDK, VirtualBox VM configs, VirtualBox VM backup configs, VirtualBox Logs, VirtualBox Backup Logs, VirtualBox Hardening Logs, VirtualBox, VHD"
     type: bool
   - name: VirtualBoxConfig
-    description: "Collects VirtualBox configuration files (by Matt Dawson): Ubuntu WSL /etc/hosts, Ubuntu WSL /etc/crontab"
+    description: "Collects VirtualBox configuration files (by Matt Dawson): VirtualBox VM configs, VirtualBox VM backup configs"
     type: bool
   - name: VirtualBoxLogs
-    description: "Collects VirtualBox log files (by Matt Dawson): Ubuntu WSL /etc/bash.bashrc, Ubuntu WSL /etc/profile, Ubuntu WSL .bash_history"
+    description: "Collects VirtualBox log files (by Matt Dawson): VirtualBox Logs, VirtualBox Backup Logs, VirtualBox Hardening Logs"
     type: bool
   - name: VirtualBoxMemory
-    description: "VirtualBox - Memory (by Andrew Rathbun): Ubuntu WSL .bashrc"
+    description: "VirtualBox - Memory (by Andrew Rathbun): VirtualBox"
     type: bool
   - name: VirtualDisks
-    description: "Virtual Disks (by Phill Moore): Ubuntu WSL .profile, Ubuntu WSL User Crontabs, Ubuntu WSL Apt Logs, Ubuntu WSL ext4.vhdx"
+    description: "Virtual Disks (by Phill Moore): VHDX, VDI, VMDK, VHD"
     type: bool
   - name: VisualStudioCode
-    description: "Visual Studio Code artifacts (by Sebastian Søgaard): UltraViewer User Logs, UltraViewer System Logs, UltraViewer Service Log, UltraViewer Connection Log, Usenet (NZB) Files, Users, VIPRE Business Agent Logs, VIPRE Business User Logs (v7+)"
+    description: "Visual Studio Code artifacts (by Sebastian Søgaard, ogmini): VSCode Opened Files, VSCode Workspaces, VSCode User extensions, VSCode User settings, VSCode User Preferences, VSCode Network Cookies, VSCode Network Persistent State, VSCode Logs, VSCode File Backups"
     type: bool
   - name: Vivaldi
-    description: "Vivaldi Artifacts (by Sebastian Søgaard): VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), VLC Recently Opened Files, VLC Recorded Files, VMware - Virtual Machine Inventory, VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), RealVNC Log, RealVNC Log, TightVNC Application Logs, Viber Config Database, Viber Users Data Database, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, VirtualBox VM configs"
+    description: "Vivaldi Artifacts (by Sebastian Søgaard): Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, Vivaldi Bookmarks, Vivaldi Visited Links, Vivaldi Web Data, Vivaldi User Tracking, Vivaldi Calendar, Vivaldi Contacts, Vivaldi Notes, Vivaldi Download Metadata"
     type: bool
   - name: WBEM
-    description: "Web-Based Enterprise Management (WBEM) (by Mark Hallman): VirtualBox VM backup configs, VirtualBox Logs"
+    description: "Web-Based Enterprise Management (WBEM) (by Mark Hallman): WBEM"
     type: bool
   - name: WER
-    description: "Windows Error Reporting (by Troy Larson): VirtualBox Backup Logs, VirtualBox Hardening Logs, VirtualBox, VHD, VHDX"
+    description: "Windows Error Reporting (by Troy Larson): Crash Dumps, WER Files"
     type: bool
   - name: WSL
-    description: "All Windows Subsystem for Linux targets (by Matt Dawson): Debian WSL /etc/debian_version, Debian WSL /etc/fstab, Debian WSL /etc/os-release, Debian WSL /etc/passwd, Debian WSL /etc/group, Debian WSL /etc/shadow, Debian WSL /etc/timezone, Debian WSL /etc/hostname, Debian WSL /etc/hosts, Debian WSL /etc/crontab, Debian WSL /etc/bash.bashrc, Debian WSL /etc/profile, Debian WSL .bash_history, Debian WSL .bashrc, Debian WSL .profile, Debian WSL User Crontabs, Debian WSL Apt Logs, Debian WSL ext4.vhdx, JumpLists from CustomDestinations, Kali WSL /etc/debian_version, Kali WSL /etc/fstab, Kali WSL /etc/os-release, Kali WSL /etc/passwd, Kali WSL /etc/group, Kali WSL /etc/shadow, Kali WSL /etc/timezone, Kali WSL /etc/hostname, Kali WSL /etc/hosts, Kali WSL /etc/crontab, Kali WSL /etc/bash.bashrc, Kali WSL /etc/profile, Kali WSL .bash_history, Kali WSL .bashrc, Kali WSL .profile, Kali WSL User Crontabs, Kali WSL Apt Logs, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Addons, Bookmarks, Cookies, Cookies, Downloads, Favicons, Form history, Permissions, Places, Telegram app folder, Telegram downloaded files, TeraCopy, Thumbcache DB, Mozilla Thunderbird Install Date, Mozilla Thunderbird Profiles.ini, Mozilla Thunderbird prefs.js, Mozilla Thunderbird Global Messages Database, Mozilla Thunderbird logins.json, Mozilla Thunderbird places.sqlite, Mozilla Thunderbird ImapMail INBOX, Mozilla Thunderbird Mail INBOX, Mozilla Thunderbird Calendar Data, Mozilla Thunderbird Attachments, Mozilla Thunderbird Address Book, Torrents, TotalAV Logs, Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts, Zoho Assist log files in AppData\Local"
+    description: "All Windows Subsystem for Linux targets (by Matt Dawson): Ubuntu WSL /etc/os-release, Ubuntu WSL /etc/fstab, Ubuntu WSL /etc/passwd, Ubuntu WSL /etc/group, Ubuntu WSL /etc/shadow, Ubuntu WSL /etc/timezone, Ubuntu WSL /etc/hostname, Ubuntu WSL /etc/hosts, Ubuntu WSL /etc/crontab, Ubuntu WSL /etc/bash.bashrc, Ubuntu WSL /etc/profile, Ubuntu WSL .bash_history, Ubuntu WSL .bashrc, Ubuntu WSL .profile, Ubuntu WSL User Crontabs, Ubuntu WSL Apt Logs, Ubuntu WSL ext4.vhdx, Debian WSL /etc/debian_version, Debian WSL /etc/fstab, Debian WSL /etc/os-release, Debian WSL /etc/passwd, Debian WSL /etc/group, Debian WSL /etc/shadow, Debian WSL /etc/timezone, Debian WSL /etc/hostname, Debian WSL /etc/hosts, Debian WSL /etc/crontab, Debian WSL /etc/bash.bashrc, Debian WSL /etc/profile, Debian WSL .bash_history, Debian WSL .bashrc, Debian WSL .profile, Debian WSL User Crontabs, Debian WSL Apt Logs, Debian WSL ext4.vhdx, openSUSE WSL /etc/os-release, openSUSE WSL /etc/fstab, openSUSE WSL /etc/passwd, openSUSE WSL /etc/group, openSUSE WSL /etc/shadow, openSUSE WSL /etc/timezone, openSUSE WSL /etc/hostname, openSUSE WSL /etc/hosts, openSUSE WSL /etc/bash.bashrc, openSUSE WSL /etc/profile, openSUSE WSL .bash_history, openSUSE WSL .bashrc, openSUSE WSL .profile, openSUSE WSL ext4.vhdx, SUSE Linux Enterprise Server WSL .bashrc, SUSE Linux Enterprise Server WSL .profile, SUSE Linux Enterprise Server WSL ext4.vhdx, SUSE Linux Enterprise Server WSL /etc/os-release, SUSE Linux Enterprise Server WSL /etc/fstab, SUSE Linux Enterprise Server WSL /etc/passwd, SUSE Linux Enterprise Server WSL /etc/group, SUSE Linux Enterprise Server WSL /etc/shadow, SUSE Linux Enterprise Server WSL /etc/timezone, SUSE Linux Enterprise Server WSL /etc/hostname, SUSE Linux Enterprise Server WSL /etc/hosts, SUSE Linux Enterprise Server WSL /etc/bash.bashrc, SUSE Linux Enterprise Server WSL /etc/profile, SUSE Linux Enterprise Server WSL .bash_history, Kali WSL /etc/debian_version, Kali WSL /etc/fstab, Kali WSL /etc/os-release, Kali WSL /etc/passwd, Kali WSL /etc/group, Kali WSL /etc/shadow, Kali WSL /etc/timezone, Kali WSL /etc/hostname, Kali WSL /etc/hosts, Kali WSL /etc/crontab, Kali WSL /etc/bash.bashrc, Kali WSL /etc/profile, Kali WSL .bash_history, Kali WSL .bashrc, Kali WSL .profile, Kali WSL User Crontabs, Kali WSL Apt Logs, Kali WSL ext4.vhdx"
+    type: bool
+  - name: WaveBrowser
+    description: "WaveBrowser (by Kalil Olsen): WaveBrowser Favicons, WaveBrowser History, WaveBrowser Last Session, WaveBrowser Last Tabs, WaveBrowser Sessions Folder, WaveBrowser Login Data, WaveBrowser Media History, WaveBrowser Network Action Predictor, WaveBrowser Network Persistent State, WaveBrowser Preferences, WaveBrowser Quota Manager, WaveBrowser Reporting and NEL, WaveBrowser Shortcuts, WaveBrowser Top Sites, WaveBrowser Trust Tokens, WaveBrowser SyncData Database, WaveBrowser Visited Links, WaveBrowser Web Data, Windows Protect Folder, WaveBrowser Snapshots Folder, SYSTEM WaveBrowser History, WaveBrowser bookmarks, WaveBrowser Cookies, WaveBrowser Current Session, WaveBrowser Current Tabs, WaveBrowser Download Metadata, WaveBrowser Extension Cookies"
     type: bool
   - name: WebBrowsers
-    description: "Web browser history, bookmarks, etc. (by Eric Zimmerman): Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, Edge folder, Edge bookmarks, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Windows Protect Folder, FileZilla Log Files, Addons, Bookmarks, Bookmarks, Cookies, Cookies, Downloads, Extensions, Favicons, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Password, Password, Preferences, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Password XP, Password XP, ImgBurn - Application Log File, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, OpenVPN Client Config, Opera - Local Folder, ProtonVPN - Connection Logs, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, VIPRE Business User Logs (v5-v6), VIPRE Business User Logs (up to v4), VLC Recently Opened Files, VLC Recorded Files, VMware - Virtual Machine Inventory, VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), VMware (Fusion/Workstation/Server/Player), RealVNC Log, RealVNC Log, TightVNC Application Logs, Viber Config Database, Viber Users Data Database, Viber Users Avatars Cache, Viber Users Backgrounds Cache, Viber Users Thumbnails Cache, VirtualBox VM configs, SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), WindowsIndexSearch, GatherLogs, Network setting files, Windows 10 Notification DB, Windows 10 Notification DB, MigLog.xml, Setupact.log, HumanReadable.xml, FolderMoveLog.txt, Update Store.db, Windows Power Diagnostics, DNS Netlogon files, DNS files"
+    description: "Web browser history, bookmarks, etc. (by Eric Zimmerman): Bookmarks, Cookies, Current Session, Current Tabs, Download Metadata, Favicons, History, Sessions Folder, Login Data, Network Action Predictor, Network Persistent State, Preferences, Quota Manager, Reporting and NEL, Shortcuts, Publisher Info DB/Brave Rewards, Top Sites, Visited Links, Web Data, Secure Preferences, Chrome bookmarks XP, Chrome Cookies XP, Chrome Current Session XP, Chrome Current Tabs XP, Chrome Favicons XP, Chrome History XP, Chrome Last Session XP, Chrome Last Tabs XP, Chrome Login Data XP, Chrome Preferences XP, Chrome Shortcuts XP, Chrome Top Sites XP, Chrome Visited Links XP, Chrome Web Data XP, Chrome bookmarks, Chrome Cookies, Chrome Current Session, Chrome Current Tabs, Chrome Download Metadata, Chrome Extension Cookies, Chrome Favicons, Chrome History, Chrome Last Session, Chrome Last Tabs, Chrome Sessions Folder, Chrome Login Data, Chrome Media History, Chrome Network Action Predictor, Chrome Network Persistent State, Chrome Preferences, Chrome Quota Manager, Chrome Reporting and NEL, Chrome Shortcuts, Chrome Top Sites, Chrome Trust Tokens, Chrome SyncData Database, Chrome Visited Links, Chrome Web Data, Windows Protect Folder, Chrome Snapshots Folder, SYSTEM Chrome History, Edge folder, Edge Bookmarks, Edge Collections, Edge Cookies, Edge Current Session, Edge Current Tabs, Edge Favicons, Edge History, Edge Last Session, Edge Last Tabs, Edge Sessions Folder, Edge Login Data, Edge Media History, Edge Network Action Predictor, Edge Preferences, Edge Shortcuts, Edge Top Sites, Edge SyncData Database, Edge Visited Links, Edge Web Data, Edge WebAssistDatabase, Edge Snapshots Folder, Addons, Downloads, Extensions, Form history, Permissions, Places, Protections, Search, Signons, Storage Sync, Webappstore, Password, Sessionstore, Sessionstore Folder, Places XP, Downloads XP, Form history XP, Cookies XP, Signons XP, Webappstore XP, Favicons XP, Addons XP, Search XP, Password XP, Sessionstore XP, Index.dat History, Index.dat History subdirectory, Index.dat cookies, Index.dat UserData, Index.dat Office XP, Index.dat Office, Local Internet Explorer folder, Roaming Internet Explorer folder, IE 9/10 History, IE 9/10 Cookies, IE 9/10 Download History, IE 11 Metadata, IE 11 Cookies, Opera - Local Folder, Opera - Roaming Folder, Puffin - data.db, Puffin - Autocomplete Data, Puffin - Password Forms Data, Puffin - Password (Encrypted), Puffin - Subscription Data, Puffin - Cookies, Puffin - Image Cache, Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites, Vivaldi Bookmarks, Vivaldi Visited Links, Vivaldi Web Data, Vivaldi User Tracking, Vivaldi Calendar, Vivaldi Contacts, Vivaldi Notes, Vivaldi Download Metadata, Yandex Cookies, Yandex Network Persistent State, Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts, 360 Secure Browser Bookmarks, 360 Secure Browser Cookies, 360 Secure Browser Current Session, 360 Secure Browser Current Tabs, 360 Secure Browser Download Metadata, 360 Secure Browser Extension Cookies, 360 Secure Browser Favicons, 360 Secure Browser History, 360 Secure Browser Last Session, 360 Secure Browser Last Tabs, 360 Secure Browser Sessions Folder, 360 Secure Browser Login Data, 360 Secure Browser Media History, 360 Secure Browser Network Action Predictor, 360 Secure Browser Network Persistent State, 360 Secure Browser Preferences, 360 Secure Browser Quota Manager, 360 Secure Browser Reporting and NEL, 360 Secure Browser Shortcuts, 360 Secure Browser Top Sites, 360 Secure Browser Trust Tokens, 360 Secure Browser SyncData Database, 360 Secure Browser Visited Links, 360 Secure Browser Web Data, 360 Secure Browser Snapshots Folder, Arc Cookies, Arc Favicons, Arc History, Arc Sessions Folder, Arc Login Data, Arc Network Action Predictor, Arc Preferences, Arc Shortcuts, Arc Top Sites, Arc SyncData Database, Arc Bookmarks, Arc Visited Links, Arc Web Data, Arc JSON Files, Arc PLIST Files, CocCoc Bookmarks, CocCoc Cookies, CocCoc Current Session, CocCoc Current Tabs, CocCoc Download Metadata, CocCoc Extension Cookies, CocCoc Favicons, CocCoc History, CocCoc Last Session, CocCoc Last Tabs, CocCoc Sessions Folder, CocCoc Login Data, CocCoc Media History, CocCoc Network Action Predictor, CocCoc Network Persistent State, CocCoc Preferences, CocCoc Quota Manager, CocCoc Reporting and NEL, CocCoc Shortcuts, CocCoc Top Sites, CocCoc Trust Tokens, CocCoc SyncData Database, CocCoc Visited Links, CocCoc Web Data, CocCoc Snapshots Folder, QQ Browser Bookmarks, QQ Browser Cookies, QQ Browser Current Session, QQ Browser Current Tabs, QQ Browser Download Metadata, QQ Browser Extension Cookies, QQ Browser Favicons, QQ Browser History, QQ Browser Last Session, QQ Browser Last Tabs, QQ Browser Sessions Folder, QQ Browser Login Data, QQ Browser Media History, QQ Browser Network Action Predictor, QQ Browser Network Persistent State, QQ Browser Preferences, QQ Browser Quota Manager, QQ Browser Reporting and NEL, QQ Browser Shortcuts, QQ Browser Top Sites, QQ Browser Trust Tokens, QQ Browser SyncData Database, QQ Browser Visited Links, QQ Browser Web Data, QQ Browser Snapshots Folder, Supermium Bookmarks XP, Supermium Cookies XP, Supermium Current Session XP, Supermium Current Tabs XP, Supermium Favicons XP, Supermium History XP, Supermium Last Session XP, Supermium Last Tabs XP, Supermium Sessions Folder XP, Supermium Network Action Predictor XP, Supermium Network Persistent State XP, Supermium Login Data XP, Supermium Preferences XP, Supermium Reporting and NEL XP, Supermium Trust Tokens XP, Supermium SyncData Database XP, Supermium Shortcuts XP, Supermium Top Sites XP, Supermium Visited Links XP, Supermium Web Data XP, Supermium Bookmarks, Supermium Cookies, Supermium Current Session, Supermium Current Tabs, Supermium Download Metadata, Supermium Extension Cookies, Supermium Favicons, Supermium History, Supermium Last Session, Supermium Last Tabs, Supermium Sessions Folder, Supermium Login Data, Supermium Media History, Supermium Network Action Predictor, Supermium Network Persistent State, Supermium Preferences, Supermium Quota Manager, Supermium Reporting and NEL, Supermium Shortcuts, Supermium Top Sites, Supermium Trust Tokens, Supermium SyncData Database, Supermium Visited Links, Supermium Web Data, Supermium Snapshots Folder, SYSTEM Supermium History, UCBrowser Bookmarks, UCBrowser Cookies, UCBrowser Current Session, UCBrowser Current Tabs, UCBrowser Download Metadata, UCBrowser Extension Cookies, UCBrowser Favicons, UCBrowser History, UCBrowser Last Session, UCBrowser Last Tabs, UCBrowser Sessions Folder, UCBrowser Login Data, UCBrowser Media History, UCBrowser Network Action Predictor, UCBrowser Network Persistent State, UCBrowser Preferences, UCBrowser Quota Manager, UCBrowser Reporting and NEL, UCBrowser Shortcuts, UCBrowser Top Sites, UCBrowser Trust Tokens, UCBrowser SyncData Database, UCBrowser Visited Links, UCBrowser Web Data, UCBrowser Snapshots Folder, WaveBrowser bookmarks, WaveBrowser Cookies, WaveBrowser Current Session, WaveBrowser Current Tabs, WaveBrowser Download Metadata, WaveBrowser Extension Cookies, WaveBrowser Favicons, WaveBrowser History, WaveBrowser Last Session, WaveBrowser Last Tabs, WaveBrowser Sessions Folder, WaveBrowser Login Data, WaveBrowser Media History, WaveBrowser Network Action Predictor, WaveBrowser Network Persistent State, WaveBrowser Preferences, WaveBrowser Quota Manager, WaveBrowser Reporting and NEL, WaveBrowser Shortcuts, WaveBrowser Top Sites, WaveBrowser Trust Tokens, WaveBrowser SyncData Database, WaveBrowser Visited Links, WaveBrowser Web Data, WaveBrowser Snapshots Folder, SYSTEM WaveBrowser History"
     type: bool
   - name: WebServers
-    description: "Logs from all known web server applications and supporting services (by Eric Capuano): Apache Access Log, web.config, IIS log files, IIS log files, IIS log files, IIS log files, IIS log files, MOF files, MS SQL Errorlog, .NET CLR UsageLogs (system-scoped)"
+    description: "Logs from all known web server applications and supporting services (by Eric Capuano): MS SQL Errorlog, MS SQL Errorlogs, IIS log files, Apache Access Log, NGINX Log Files"
     type: bool
   - name: Webroot
-    description: "Webroot Antivirus (by Drew Ervin): VDI"
+    description: "Webroot Antivirus (by Drew Ervin): Webroot Program Data"
     type: bool
   - name: WhatsApp
-    description: "WhatsApp Local Files (by Matt Dawson, SolitudePy): VMDK, VSCode Opened Files, VSCode Workspaces, VSCode User extensions"
+    description: "WhatsApp Local Files (by Matt Dawson, SolitudePy): WhatsApp Cache, WhatsApp Local Storage, Microsoft Store WhatsApp Cache, Microsoft Store WhatsApp Local Storage"
     type: bool
   - name: WhatsApp_Media
-    description: "WhatsApp Shared Media Files (by SolitudePy): VSCode User settings, VSCode User Preferences"
+    description: "WhatsApp Shared Media Files (by SolitudePy): Microsoft Store WhatsApp Shared Media, Microsoft Store WhatsApp Desktop Profile Pictures"
     type: bool
   - name: WinDefendDetectionHist
-    description: "Windows Defender Threat DetectionHistory files (by Jordan Klepser): VSCode Network Cookies"
+    description: "Windows Defender Threat DetectionHistory files (by Jordan Klepser): DetectionHistory"
     type: bool
   - name: WinSCP
-    description: "WinSCP (by Andrew Rathbun): VSCode Network Persistent State"
+    description: "WinSCP (by Andrew Rathbun): WinSCP (.ini file)"
+    type: bool
+  - name: WindowsApp
+    description: "WindowsApp Logs (by Vito Alfano): WindowsApp"
     type: bool
   - name: WindowsCopilotRecall
-    description: "Windows Copilot+ Recall (by Zach Stanford/Phill Moore): VSCode Logs"
+    description: "Windows Copilot+ Recall (by Zach Stanford/Phill Moore): Recall folder"
     type: bool
   - name: WindowsDefender
-    description: "Windows Defender Data (by Drew Ervin): Vivaldi Cookies, Vivaldi Network Persistent State, Vivaldi Favicons, Vivaldi History, Vivaldi Sessions Folder, Vivaldi Login Data, Vivaldi Network Action Predictor, Vivaldi Preferences, Vivaldi Top Sites"
+    description: "Windows Defender Data (by Drew Ervin): Windows Defender Logs, Windows Defender Event Logs, DetectionHistory, Windows Defender Quarantine, Windows Defender Detections.log"
     type: bool
   - name: WindowsFirewall
-    description: "Windows Firewall Logs (by Mike Cary): Vivaldi Bookmarks, Vivaldi Visited Links"
+    description: "Windows Firewall Logs (by Mike Cary): Windows Firewall Logs"
     type: bool
   - name: WindowsHello
-    description: "Windows Hello (by Kevin Pagano): Vivaldi Web Data, Vivaldi User Tracking, Vivaldi Calendar, Vivaldi Contacts, Vivaldi Notes, Vivaldi Download Metadata, WBEM, WBEM, WER Files, WER Files, Crash Dumps, Crash Dumps, Crash Dumps, Webroot Program Data, WhatsApp Cache, WhatsApp Local Storage, Microsoft Store WhatsApp Cache, Microsoft Store WhatsApp Local Storage, Microsoft Store WhatsApp Desktop Profile Pictures, Microsoft Store WhatsApp Shared Media, DetectionHistory, WinSCP (.ini file), Recall folder"
+    description: "Windows Hello (by Kevin Pagano): Cryptokeys, Masterkey, NGC, SECURITY registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files, SECURITY registry hive, SOFTWARE registry hive, SYSTEM registry hive, SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
     type: bool
   - name: WindowsIndexSearch
-    description: "Windows Index Search (by Mark Hallman): Windows Defender Logs, Windows Defender Event Logs"
+    description: "Windows Index Search (by Mark Hallman, Reece394): GatherLogs, WindowsIndexSearch - User, GatherLogs - User, WindowsIndexSearch"
     type: bool
   - name: WindowsNetwork
-    description: "Windows Networks settings (by Zawadi Done): Windows Defender Event Logs"
+    description: "Windows Networks settings (by Zawadi Done): Network setting files"
     type: bool
   - name: WindowsNotificationsDB
-    description: "Windows 10 Notification DB (by Hadar Yudovich): Windows Defender Logs, Windows Defender Logs"
+    description: "Windows 10 Notification DB (by Hadar Yudovich): Windows 10 Notification DB"
     type: bool
   - name: WindowsOSUpgradeArtifacts
-    description: "Windows OS Upgrade Artifacts (by Andrew Rathbun): Windows Defender Logs, DetectionHistory, Windows Defender Quarantine, Windows Defender Detections.log, Windows Firewall Logs"
+    description: "Windows OS Upgrade Artifacts (by Andrew Rathbun): MigLog.xml, Setupact.log, HumanReadable.xml, FolderMoveLog.txt, Update Store.db"
     type: bool
   - name: WindowsPowerDiagnostics
-    description: "Windows Power Diagnostics (by Andrew Rathbun): Windows Firewall Logs"
+    description: "Windows Power Diagnostics (by Andrew Rathbun): Windows Power Diagnostics"
     type: bool
   - name: WindowsServerDNSAndDHCP
-    description: "Windows Server DNS and DHCP log files (by Zawadi Done): Cryptokeys, Masterkey, NGC"
+    description: "Windows Server DNS and DHCP log files (by Zawadi Done): DNS Netlogon files, DNS files, DHCP files"
     type: bool
   - name: WindowsSubsystemforAndroid
-    description: "Windows Subsystem for Android (WSA) (by Andrew Rathbun): SECURITY registry transaction files, SECURITY registry transaction files, SOFTWARE registry transaction files, SOFTWARE registry transaction files, SYSTEM registry transaction files"
+    description: "Windows Subsystem for Android (WSA) (by Andrew Rathbun): Appcompatdb.json, userdata.vhdx, Diagnostic Logs for WSA, App download artifacts (PNG), App download artifacts (ICO)"
     type: bool
   - name: WindowsTelemetryDiagnosticsLegacy
-    description: "Legacy Windows Telemetry and Diagnostics files (*.rbs) (by Andrew Rathbun and Josh Mitchell): SYSTEM registry transaction files, SECURITY registry hive"
+    description: "Legacy Windows Telemetry and Diagnostics files (*.rbs) (by Andrew Rathbun and Josh Mitchell): Legacy .rbs files relating to Windows Telemetry and Diagnostics"
     type: bool
   - name: WindowsTimeline
-    description: "ActivitiesCache.db collector (by Lee Whitfield, Thomas DIOT (Qazeer)): SECURITY registry hive"
+    description: "ActivitiesCache.db collector (by Lee Whitfield, Thomas DIOT (Qazeer)): ActivitiesCache.db"
     type: bool
   - name: WindowsUpdate
-    description: "Windows Update Logs (by Rick van Dreunen): SOFTWARE registry hive, SOFTWARE registry hive, SYSTEM registry hive"
+    description: "Windows Update Logs (by Rick van Dreunen): Windows Update History, Windows Update Session Orchestrator logs, Windows Update logs, Windows Component-Based Servicing logs"
     type: bool
   - name: WindowsYourPhone
-    description: "Windows Your Phone (by Andrew Rathbun): SYSTEM registry hive"
+    description: "Windows Your Phone (by Andrew Rathbun): Windows Your Phone - All Databases"
     type: bool
   - name: XPRestorePoints
-    description: "XP Restore Points - System Volume Information directory (by Phill Moore): SECURITY registry hive (RegBack)"
+    description: "XP Restore Points - System Volume Information directory (by Phill Moore): System Volume Information"
     type: bool
   - name: XYplorer
-    description: "XYplorer (by Andrew Rathbun): SECURITY registry hive (RegBack), SOFTWARE registry hive (RegBack), SOFTWARE registry hive (RegBack), SYSTEM registry hive (RegBack)"
+    description: "XYplorer (by Andrew Rathbun): XYplorer - .ini file, XYplorer - .ini file for each respective pane, XYplorer - AutoBackup folder, XYplorer - .dat files"
     type: bool
   - name: Xeox
-    description: "Xeox Application Logs (by Andrew Skatoff @DFIR_TNT): SYSTEM registry hive (RegBack)"
+    description: "Xeox Application Logs (by Andrew Skatoff @DFIR_TNT): Xeox RMM Client Application logs"
     type: bool
   - name: Yandex
-    description: "Yandex Artifacts (by Sebastian Søgaard): SYSTEM registry hive (RegBack), SYSTEM registry hive (RegBack), WindowsIndexSearch, GatherLogs, Network setting files, Windows 10 Notification DB, Windows 10 Notification DB, MigLog.xml, Setupact.log, HumanReadable.xml, FolderMoveLog.txt, Update Store.db, Windows Power Diagnostics, DNS Netlogon files, DNS files"
+    description: "Yandex Artifacts (by Sebastian Søgaard): Yandex Cookies, Yandex Network Persistent State, Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts"
     type: bool
   - name: ZohoAssist
-    description: "Zoho Assist artifacts (by Andrew Rathbun): DHCP files, Diagnostic Logs for WSA, App download artifacts (PNG), App download artifacts (ICO), Appcompatdb.json, userdata.vhdx, Legacy .rbs files relating to Windows Telemetry and Diagnostics"
+    description: "Zoho Assist artifacts (by Andrew Rathbun): Zoho Assist log files in ProgramData, Zoho Assist .conf files, Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, Zoho Assist log files in AppData\Local, Zoho Assist .conf files in AppData\Local"
     type: bool
   - name: Zoom
-    description: "Zoom client artifacts (by Ryan McVicar): Legacy .rbs files relating to Windows Telemetry and Diagnostics, ActivitiesCache.db, Windows Update Session Orchestrator logs, Windows Update logs"
+    description: "Zoom client artifacts (by Ryan McVicar): Zoom plugin (Outlook), Zoom client logs, Zoom client logs (Windows XP), Zoom client recordings"
     type: bool
   - name: eMule
-    description: "eMule (by Fábio Melo Pfeifer): Windows Component-Based Servicing logs, Windows Your Phone - All Databases"
+    description: "eMule (by Fábio Melo Pfeifer): eMule Logs and Configuration Files, eMule part.met files"
     type: bool
   - name: iTunesBackup
-    description: "iTunes Backups (by Tony Knutson): System Volume Information, XYplorer - .ini file, XYplorer - .ini file for each respective pane"
+    description: "iTunes Backups (by Tony Knutson): iTunes Backup Folder, iTunes Backup Folder - iOS13"
     type: bool
   - name: mIRC
-    description: "mIRC (by Andrew Rathbun): XYplorer - AutoBackup folder, XYplorer - .dat files"
+    description: "mIRC (by Andrew Rathbun): mIRC Chat Logs (Vista+), mIRC Chat Logs (2000/XP)"
     type: bool
   - name: mRemoteNG
-    description: "mRemoteNG (by Markus Einarsson (@einarssonm)): Xeox RMM Client Application logs, Yandex Cookies, Yandex Network Persistent State"
+    description: "mRemoteNG (by Markus Einarsson (@einarssonm)): mRemoteNG Logs, mRemoteNG Connection Configuration and Backups, mRemoteNG Program Settings"
     type: bool
   - name: openSUSE
-    description: "openSUSE on Windows Subsystem for Linux (by Matt Dawson): Yandex Favicons, Yandex History, Yandex Sessions Folder, Yandex Login Data, Yandex Network Action Predictor, Yandex Preferences, Yandex Top Sites, Yandex Bookmarks, Yandex Visited Links, Yandex Web Data, Yandex Autofill data, Yandex Passman logs, Yandex Shortcuts, Zoho Assist log files in AppData\Local"
+    description: "openSUSE on Windows Subsystem for Linux (by Matt Dawson): openSUSE WSL ext4.vhdx, openSUSE WSL /etc/os-release, openSUSE WSL /etc/fstab, openSUSE WSL /etc/passwd, openSUSE WSL /etc/group, openSUSE WSL /etc/shadow, openSUSE WSL /etc/timezone, openSUSE WSL /etc/hostname, openSUSE WSL /etc/hosts, openSUSE WSL /etc/bash.bashrc, openSUSE WSL /etc/profile, openSUSE WSL .bash_history, openSUSE WSL .bashrc, openSUSE WSL .profile"
     type: bool
   - name: pCloudDatabase
-    description: "pCloud Database (by Josh Hickman): Zoho Assist .conf files in AppData\Local, Zoho Assist log files in ProgramData, Zoho Assist .conf files"
+    description: "pCloud Database (by Josh Hickman): pCloud Database, pCloud Database WAL File, pCloud Database Shared Memory File"
     type: bool
   - name: qBittorrent
-    description: "qBittorrent (by Banaanhangwagen): Zoho Assist log files in Program Files*, Zoho Assist .conf files in  Program Files*, Zoho Assist .txt files in  Program Files*, Zoom client logs"
+    description: "qBittorrent (by Banaanhangwagen): TorrentClients - qBittorrent"
     type: bool
   - name: uTorrent
-    description: "uTorrent (by Banaanhangwagen): Zoom client logs (Windows XP)"
+    description: "uTorrent (by Banaanhangwagen): TorrentClients - uTorrent"
     type: bool
 
   - name: KapeRules
@@ -1115,7 +1190,6 @@ parameters:
       48,AnyDesk Logs - System User Account,Communications,Windows\SysWOW64\config\systemprofile\AppData\Roaming\AnyDesk\*,lazy_ntfs,Collects the logs associated with the System user account
       49,AnyDesk Chat Logs - User Profile,Communications,Users\*\AppData\Roaming\AnyDesk\chat\*.txt,lazy_ntfs,Collects chat logs associated with the user profile
       50,Apache Access Log,Webservers,**10\access.log,lazy_ntfs,
-      51,AppCompat PCA Folder,AppCompat,Windows\appcompat\pca,lazy_ntfs,
       52,AppData,UserData,Users\*\AppData\**10,lazy_ntfs,
       53,WindowsApps for AppX,Apps,Program Files\WindowsApps\Deleted*\**10,lazy_ntfs,Locates all the user AppX package directories which were installed through Microsoft Store and updated/uninstalled by the user.
       54,SystemApps for AppX,Apps,Windows\SystemApps\**10,lazy_ntfs,Locates all the system AppX package directories which were installed by the system.
@@ -1226,9 +1300,9 @@ parameters:
       159,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
       160,Chrome Snapshots Folder,Communications,Users\*\AppData\Local\Google\Chrome\User Data\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of Chrome SQLite DBs organized by version #.
       161,SYSTEM Chrome History,Communications,Windows\system32\config\systemprofile\AppData\Local\Google\Chrome\User Data\*\History*,lazy_ntfs,
-      162,Chrome Extension Files,Communication,Users\*\AppData\Local\Google\Chrome\User Data\*\Extensions\**10,lazy_ntfs,
+      162,Chrome Extension Files,Communications,Users\*\AppData\Local\Google\Chrome\User Data\*\Extensions\**10,lazy_ntfs,
       163,Chrome Extension Files XP,Communications,Documents and Settings\*\Local Settings\Application Data\Google\Chrome\User Data\*\Extensions\**10,lazy_ntfs,
-      164,Chrome HTML5 File System Folder,Communication,Users\*\AppData\Local\Google\Chrome\User Data\*\File System\**10,lazy_ntfs,
+      164,Chrome HTML5 File System Folder,Communications,Users\*\AppData\Local\Google\Chrome\User Data\*\File System\**10,lazy_ntfs,
       165,Cisco Jabber Database,Communications,Users\*\AppData\Local\Cisco\Unified Communications\Jabber\CSF\History\*.db,lazy_ntfs,The Cisco Jabber process needs to be killed before database can be copied.
       166,ClipboardMaster - Clipboard History - Text,Apps,Users\*\AppData\Roaming\Jumping Bytes\ClipboardMaster\Clipboard.clm4,lazy_ntfs,Locates the user’s clipboard history (text) for ClipboardMaster
       167,ClipboardMaster - Clipboard History - Images,Apps,Users\*\AppData\Roaming\Jumping Bytes\ClipboardMaster\pics\**10,lazy_ntfs,Locates the user’s clipboard history (images) for ClipboardMaster
@@ -1300,11 +1374,9 @@ parameters:
       233,ESET NOD32 AV Logs (XP),Antivirus,Documents and Settings\All Users\Application Data\ESET\ESET NOD32 Antivirus\Logs\**10,lazy_ntfs,
       234,ESET NOD32 AV Logs,Antivirus,ProgramData\ESET\ESET NOD32 Antivirus\Logs\**10,lazy_ntfs,Parser available at https://github.com/laciKE/EsetLogParser
       235,ESET NOD32 AV Logs,Antivirus,ProgramData\ESET\ESET Security\Logs\**10,lazy_ntfs,
-      236,ESET Remote Administrator Logs,Antivirus,ProgramData\ESET\RemoteAdministrator\Agent\EraAgentApplicationData\Logs,lazy_ntfs,Remote Administrator logs include information on tasks executed on the target.
       237,Local User Quarantine,Antivirus,Users\*\AppData\Local\ESET\ESET Security\Quarantine\**10,lazy_ntfs,
       238,SYSTEM user quarantine,Antivirus,Windows\System32\config\systemprofile\AppData\Local\ESET\ESET Security\Quarantine\**10,lazy_ntfs,
       239,Edge folder,Communications,Users\*\AppData\Local\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\**10,lazy_ntfs,
-      240,Edge bookmarks,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\*\Bookmarks*,lazy_ntfs,
       240,Edge Bookmarks,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\*\Bookmarks*,lazy_ntfs,
       241,Edge Collections,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\*\Collections\collectionsSQLite,lazy_ntfs,
       242,Edge Cookies,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\*\Network\Cookies*,lazy_ntfs,
@@ -1327,7 +1399,7 @@ parameters:
       259,Edge WebAssistDatabase,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\*\WebAssistDatabase*,lazy_ntfs,
       260,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline DPAPI decryption
       261,Edge Snapshots Folder,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\Snapshots\*\**10,lazy_ntfs,"Grabs folder that appears to have snapshots of Edge Chromium SQLite DBs organized by version #. In testing, there were 3 previous versions of Edge Chromium separated into different folders"
-      262,Edge Chromium Extension Files,Communication,Users\*\AppData\Local\Microsoft\Edge\User Data\*\Extensions\**10,lazy_ntfs,
+      262,Edge Chromium Extension Files,Communications,Users\*\AppData\Local\Microsoft\Edge\User Data\*\Extensions\**10,lazy_ntfs,
       263,Emsisoft Scan Logs,ApplicationLogs,ProgramData\Emsisoft\Reports\scan*.txt,lazy_ntfs,Can contain file detection and quarantine info
       264,EncapsulationLogging,Executables,Windows\Appcompat\Programs\EncapsulationLogging.hve,lazy_ntfs,
       265,EncapsulationLogging,Executables,Windows.old\Windows\Appcompat\Programs\EncapsulationLogging.hve,lazy_ntfs,
@@ -1348,22 +1420,22 @@ parameters:
       280,Event logs XP,EventLogs,Windows\System32\config\*.evt,lazy_ntfs,
       281,Event logs Win7+,EventLogs,Windows\System32\winevt\logs\*.evtx,lazy_ntfs,
       282,Event logs Win7+,EventLogs,Windows.old\Windows\System32\winevt\logs\*.evtx,lazy_ntfs,
-      283,WDI Trace Logs 1,Event Trace Logs,Windows\System32\WDI\LogFiles\*.etl*,lazy_ntfs,
-      284,WDI Trace Logs 1,Event Trace Logs,Windows.old\Windows\System32\WDI\LogFiles\*.etl*,lazy_ntfs,
-      285,WDI Trace Logs 2,Event Trace Logs,Windows\System32\WDI\{*\**10,lazy_ntfs,
-      286,WDI Trace Logs 2,Event Trace Logs,Windows.old\Windows\System32\WDI\{*\**10,lazy_ntfs,
-      287,WMI Trace Logs,Event Trace Logs,Windows\System32\LogFiles\WMI\**10,lazy_ntfs,
-      288,WMI Trace Logs,Event Trace Logs,Windows.old\Windows\System32\LogFiles\WMI\**10,lazy_ntfs,
-      289,SleepStudy Trace Logs,Event Trace Logs,Windows\System32\SleepStudy\**10,lazy_ntfs,
-      290,SleepStudy Trace Logs,Event Trace Logs,Windows.old\Windows\System32\SleepStudy\**10,lazy_ntfs,
-      291,Energy-NTKL Trace Logs,Event Trace Logs,ProgramData\Microsoft\Windows\PowerEfficiency Diagnostics\energy-ntkl.etl,lazy_ntfs,
-      292,Delivery Optimization Trace Logs,Event Trace Logs,Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*.etl*,lazy_ntfs,
+      283,WDI Trace Logs 1,EventTraceLogs,Windows\System32\WDI\LogFiles\*.etl*,lazy_ntfs,
+      284,WDI Trace Logs 1,EventTraceLogs,Windows.old\Windows\System32\WDI\LogFiles\*.etl*,lazy_ntfs,
+      285,WDI Trace Logs 2,EventTraceLogs,Windows\System32\WDI\{*\**10,lazy_ntfs,
+      286,WDI Trace Logs 2,EventTraceLogs,Windows.old\Windows\System32\WDI\{*\**10,lazy_ntfs,
+      287,WMI Trace Logs,EventTraceLogs,Windows\System32\LogFiles\WMI\**10,lazy_ntfs,
+      288,WMI Trace Logs,EventTraceLogs,Windows.old\Windows\System32\LogFiles\WMI\**10,lazy_ntfs,
+      289,SleepStudy Trace Logs,EventTraceLogs,Windows\System32\SleepStudy\**10,lazy_ntfs,
+      290,SleepStudy Trace Logs,EventTraceLogs,Windows.old\Windows\System32\SleepStudy\**10,lazy_ntfs,
+      291,Energy-NTKL Trace Logs,EventTraceLogs,ProgramData\Microsoft\Windows\PowerEfficiency Diagnostics\energy-ntkl.etl,lazy_ntfs,
+      292,Delivery Optimization Trace Logs,EventTraceLogs,Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*.etl*,lazy_ntfs,
       293,EventTranscript.db,SystemEvents,ProgramData\Microsoft\Diagnosis\EventTranscript\EventTranscript.db*,lazy_ntfs,
       294,EventTranscript.db,SystemEvents,Windows.old\ProgramData\Microsoft\Diagnosis\EventTranscript\EventTranscript.db*,lazy_ntfs,
       295,Microsoft Office Diagnostic Logs,SystemEvents,Users\*\AppData\Local\Temp\Diagnostics\**10,lazy_ntfs,
-      296,Evernote Accounts,App,Users\*\AppData\Local\Evernote\Evernote\Databases\**10\.accounts,lazy_ntfs,Holds username and email of accounts
-      297,Evernote Notebooks,App,Users\*\AppData\Local\Evernote\Evernote\Databases\**10\*.exb,lazy_ntfs,SQLite Database of the notes
-      298,Evernote Notebook Snippets,App,Users\*\AppData\Local\Evernote\Evernote\Databases\**10\*.exb.snippets,lazy_ntfs,Note 'Snippets'
+      296,Evernote Accounts,Apps,Users\*\AppData\Local\Evernote\Evernote\Databases\**10\.accounts,lazy_ntfs,Holds username and email of accounts
+      297,Evernote Notebooks,Apps,Users\*\AppData\Local\Evernote\Evernote\Databases\**10\*.exb,lazy_ntfs,SQLite Database of the notes
+      298,Evernote Notebook Snippets,Apps,Users\*\AppData\Local\Evernote\Evernote\Databases\**10\*.exb.snippets,lazy_ntfs,Note 'Snippets'
       299,Everything (VoidTools),FileSystem,Users\*\AppData\Local\Everything\Everything.db,lazy_ntfs,Copies out Everything.db
       300,Everything (VoidTools) - Run History,FileSystem,Users\*\AppData\Roaming\Everything\Run History.csv,lazy_ntfs,Copies out a CSV containing the history of items ran from Everything's search results window
       301,Everything (VoidTools) - Search History,FileSystem,Users\*\AppData\Roaming\Everything\Search History.csv,lazy_ntfs,Copies out a CSV containing the history of items searched for within Everything with timestamps
@@ -1378,7 +1450,6 @@ parameters:
       310,F-Secure Logs,Antivirus,ProgramData\F-Secure\Log\**10,lazy_ntfs,
       311,F-Secure User Logs,Antivirus,Users\*\AppData\Local\F-Secure\Log\**10,lazy_ntfs,
       312,F-Secure Scheduled Scan Reports,Antivirus,ProgramData\F-Secure\Antivirus\ScheduledScanReports\**10,lazy_ntfs,
-      313,Fences - Desktop Screenshots,Apps,Users\*\AppData\Roaming\Stardock\Fences\Backups,lazy_ntfs,Locates all screenshots taken automatically by the Fences application
       314,FileZilla XML Log Files,Logs,Users\*\AppData\Roaming\FileZilla\*.xml*,lazy_ntfs,
       315,FileZilla SQLite3 Log Files,Logs,Users\*\AppData\Roaming\FileZilla\*.sqlite3*,lazy_ntfs,
       316,FileZilla Server XML Log Files,Logs,Users\*\AppData\Roaming\FileZilla Server\*.xml*,lazy_ntfs,
@@ -1425,15 +1496,14 @@ parameters:
       357,Free Commander - Backup Settings,Apps,Users\*\AppData\Local\FreeCommanderXE\Settings\Bkp_Settings*\**10,lazy_ntfs,"Locates an exact copy of the above files which will have a timestamped folder name, i.e. Bkp_Settings-YYYY-MM-DD HH-MM-SS."
       358,Free Commander - FTP Log,Apps,Users\*\AppData\Local\Temp\fc*.log,lazy_ntfs,Locates log file(s) that have a default naming convention of fc_ftplog_20210403 but can be modified by the user.
       359,Free Commander - FTP Related Information,Apps,Users\*\AppData\Local\Temp\FreeCommander*\**10,lazy_ntfs,Locates a folder that may be named randomly that contains more FTP related information as well as .tmp files that are created while the user is traversing folders during an active FTP session. These files are deleted upon program exit.
-      360,FDM Database,App,Users\*\AppData\Local\Free Download Manager\**10\fdm.sqlite,lazy_ntfs,"fdm.sqlite shows Torrents, downloads, folder history, auth credentials and more. Will also pull fdm.sqlite in db_backup/"
-      361,FDM Backup Info,App,Users\*\AppData\Local\Free Download Manager\backup\backup.info,lazy_ntfs,"Backup info file - can change backup name from userdata.zip, so could give indication of file name"
-      362,FDM Database (userdata.zip),App,Users\*\AppData\Local\Free Download Manager\backup\userdata.zip,lazy_ntfs,fdm.sqlite can also appear in the backup folder in a compressed userdata.zip file
-      363,FreeFileSync,Apps,Users\*\AppData\Roaming\FreeFileSync\Logs,lazy_ntfs,Copies out all log files
-      364,Freenet,File Downloads,Users\*\AppData\Local\Freenet\node*,lazy_ntfs,
-      365,Freenet,File Downloads,Users\*\AppData\Local\Freenet\*completed.list.downloads,lazy_ntfs,
-      366,Freenet,File Downloads,Users\*\AppData\Local\Freenet\*completed.list.uploads,lazy_ntfs,
-      367,Freenet,File Downloads,Users\*\AppData\Local\Freenet\*.bak,lazy_ntfs,
-      368,Freenet,File Downloads,Users\*\AppData\Local\Freenet\downloads\**10,lazy_ntfs,
+      360,FDM Database,Apps,Users\*\AppData\Local\Free Download Manager\**10\fdm.sqlite,lazy_ntfs,"fdm.sqlite shows Torrents, downloads, folder history, auth credentials and more. Will also pull fdm.sqlite in db_backup/"
+      361,FDM Backup Info,Apps,Users\*\AppData\Local\Free Download Manager\backup\backup.info,lazy_ntfs,"Backup info file - can change backup name from userdata.zip, so could give indication of file name"
+      362,FDM Database (userdata.zip),Apps,Users\*\AppData\Local\Free Download Manager\backup\userdata.zip,lazy_ntfs,fdm.sqlite can also appear in the backup folder in a compressed userdata.zip file
+      364,Freenet,FileDownload,Users\*\AppData\Local\Freenet\node*,lazy_ntfs,
+      365,Freenet,FileDownload,Users\*\AppData\Local\Freenet\*completed.list.downloads,lazy_ntfs,
+      366,Freenet,FileDownload,Users\*\AppData\Local\Freenet\*completed.list.uploads,lazy_ntfs,
+      367,Freenet,FileDownload,Users\*\AppData\Local\Freenet\*.bak,lazy_ntfs,
+      368,Freenet,FileDownload,Users\*\AppData\Local\Freenet\downloads\**10,lazy_ntfs,
       369,FrostWire Downloads,FileDownload,Users\*\Documents\FrostWire\Torrent Data\**10,lazy_ntfs,Locates files downloaded that land in the default location as specified by FrostWire
       370,FrostWire AppData,FileDownload,Users\*\.frostwire5\frostwire.props,lazy_ntfs,Locates a file that contains important information about the instance of FrostWire on the user's system
       371,FrostWire AppData,FileDownload,Users\*\.frostwire5\itunes.props,lazy_ntfs,Locates a file that contains important information about the instance of FrostWire on the user's system
@@ -1447,14 +1517,14 @@ parameters:
       379,Google Earth My Places Backup file,Apps,Users\*\AppData\LocalLow\Google\GoogleEarth\myplaces.backup.kml,lazy_ntfs,Backup file which holds favorited locations
       380,Google Earth My Places file (XP),Apps,Documents and Settings\*\Application Data\Google\GoogleEarth\myplaces.kml,lazy_ntfs,File which holds favorited locations
       381,Google Earth My Places Backup file (XP),Apps,Documents and Settings\*\Application Data\Google\GoogleEarth\myplaces.backup.kml,lazy_ntfs,Backup file which holds favorited locations
-      382,Group Policy Files,Communication,Windows\System32\grouppolicy\**10,lazy_ntfs,
-      383,Computer Group Policy files,Communication,ProgramData\Microsoft\Group Policy\History\**10,lazy_ntfs,
-      384,User Group Policy files,Communication,Users\*\AppData\Local\Microsoft\Group Policy\History\**10,lazy_ntfs,
-      385,Local Group Policy INI Files,Communication,Windows.old\Windows\System32\grouppolicy\*.ini,lazy_ntfs,
-      386,Local Group Policy Files - Registry Policy Files,Communication,Windows\System32\grouppolicy\*.pol,lazy_ntfs,
-      387,Local Group Policy Files - Registry Policy Files,Communication,Windows.old\Windows\System32\grouppolicy\*.pol,lazy_ntfs,
-      388,Local Group Policy Files - Startup/Shutdown Scripts,Communication,Windows\System32\grouppolicy\*\Scripts\**10,lazy_ntfs,
-      389,Local Group Policy Files - Startup/Shutdown Scripts,Communication,Windows.old\Windows\System32\grouppolicy\*\Scripts\**10,lazy_ntfs,
+      382,Group Policy Files,Communications,Windows\System32\grouppolicy\**10,lazy_ntfs,
+      383,Computer Group Policy files,Communications,ProgramData\Microsoft\Group Policy\History\**10,lazy_ntfs,
+      384,User Group Policy files,Communications,Users\*\AppData\Local\Microsoft\Group Policy\History\**10,lazy_ntfs,
+      385,Local Group Policy INI Files,Communications,Windows.old\Windows\System32\grouppolicy\*.ini,lazy_ntfs,
+      386,Local Group Policy Files - Registry Policy Files,Communications,Windows\System32\grouppolicy\*.pol,lazy_ntfs,
+      387,Local Group Policy Files - Registry Policy Files,Communications,Windows.old\Windows\System32\grouppolicy\*.pol,lazy_ntfs,
+      388,Local Group Policy Files - Startup/Shutdown Scripts,Communications,Windows\System32\grouppolicy\*\Scripts\**10,lazy_ntfs,
+      389,Local Group Policy Files - Startup/Shutdown Scripts,Communications,Windows.old\Windows\System32\grouppolicy\*\Scripts\**10,lazy_ntfs,
       390,HeidiSQL Backup files (*.sql),Apps,Users\*\AppData\Roaming\HeidiSQL\Backups\*,lazy_ntfs,
       391,HeidiSQL (tabs.ini),Apps,Users\*\AppData\Roaming\HeidiSQL\tabs.ini,lazy_ntfs,
       392,HexChat Chat Logs,Communications,Users\*\AppData\Roaming\HexChat\logs\**10,lazy_ntfs,
@@ -1480,26 +1550,8 @@ parameters:
       412,ISL Light Logs - Sessions,Communications,Users\*\AppData\Local\ISL Online Cache\ISL Light\*\trace.out,lazy_ntfs,Collects client session logs for one or more sessions
       413,ISL AlwaysOn - Email Configuration,Communications,Program Files (x86)\ISL Online\ISL AlwaysOn\status\tray,lazy_ntfs,This file includes the email of the logged in user for ISL AlwaysOn (Unattended Access)
       414,ISL AlwaysOn - Configuration,Communications,Program Files (x86)\ISL Online\ISL AlwaysOn\StaticConfiguration.ini,lazy_ntfs,"Configuration information (port, http/htpps) for ISL AlwaysOn (Unattended Access)"
-      415,ITarian,Apps,Program Files\ITarian\Endpoint Manager\rmmlogs,lazy_ntfs,
-      416,ITarian,Apps,Program Files (x86)\ITarian\Endpoint Manager\rmmlogs,lazy_ntfs,
-      417,Comodo,Apps,Program Files\Comodo\Endpoint Manager\rmmlogs,lazy_ntfs,
-      418,ITarian,Apps,Program Files (x86)\Comodo\Endpoint Manager\rmmlogs,lazy_ntfs,
       419,IceChat Chat Logs,Communications,Users\*\AppData\Local\IceChat Networks\IceChat\Logs\**10,lazy_ntfs,
       420,Windows IconCache DB,IconCache,Users\*\AppData\Local\IconCache.db,lazy_ntfs,
-      421,Idrive Cleanup Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Archive Cleanup\**10\*,lazy_ntfs,Contains individual log files for each archive cleanup operation
-      422,Idrive Backup Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Backup\**10\*,lazy_ntfs,Contains individual log files for each backup operation
-      423,Idrive Delete Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Delete\**10\*,lazy_ntfs,Contains individual log files for each delete operation
-      424,Idrive Restore Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Restore\*,lazy_ntfs,Contains individual log files for each restore operation
-      425,Idrive Backup Summary,Apps,ProgramData\IDrive\IBCOMMON\*\Session\LOGXML\*xml,lazy_ntfs,Contains summary of each backup session
-      426,Idrive Tracefile,Apps,ProgramData\IDrive\IBCOMMON\*\Tracefile.txt\Tracefile.txt,lazy_ntfs,Application log which includes error logs for failed uploads
-      427,Idrive Mapped Drives,Apps,ProgramData\IDrive\IBCOMMON\IDMappedDrives.txt,lazy_ntfs,List of mapped drives for backup
-      428,Idrive Backup Schedule,Apps,ProgramData\IDrive\IBCOMMON\schedule.xml,lazy_ntfs,Backup schedule configurations
-      429,Idrive Schedule History,Apps,ProgramData\IDrive\IBCOMMON\Sch_Trace.txt,lazy_ntfs,History of schedule configurations
-      430,Idrive Configuration,Apps,ProgramData\IDrive\IBCOMMON\idrive.ini,lazy_ntfs,List of Idrive configuration options
-      431,Idrive Local Drives,Apps,ProgramData\IDrive\IBCOMMON\get_Alldrives.txt,lazy_ntfs,List of all local drives
-      432,Idrive Exclusion Configurations,Apps,ProgramData\IDrive\IBCOMMON\Exclude*,lazy_ntfs,Files pertaining to exclusion configurations
-      433,Idrive User Details,Apps,ProgramData\IDrive\IBCOMMON\AutoComp.ini,lazy_ntfs,"Idrive username, Scheduler notification emails, local username"
-      434,Idrive SQL Databse,Apps,ProgramData\IDrive\IBCOMMON\*\LDBNEW\*\*.ibds,lazy_ntfs,Sql database of local files that are backed up
       435,ImgBurn - Application Log File,Apps,Users\*\AppData\Roaming\ImgBurn\Log Files\ImgBurn.log,lazy_ntfs,Contains the ImgBurn application log file.
       436,Index.dat History,Communications,Documents and Settings\*\Local Settings\History\History.IE5\index.dat,lazy_ntfs,
       437,Index.dat History subdirectory,Communications,Documents and Settings\*\Local Settings\History\History.IE5\*\index.dat,lazy_ntfs,
@@ -1515,21 +1567,21 @@ parameters:
       447,IE 11 Metadata,Communications,Users\*\AppData\Local\Microsoft\Windows\WebCache\*,lazy_ntfs,
       448,IE 11 Cookies,Communications,Users\*\AppData\Local\Microsoft\Windows\INetCookies\**10,lazy_ntfs,
       449,IrfanView Configuration File,FileKnowledge,Users\*\AppData\Roaming\IrfanView\i_view32.ini,lazy_ntfs,
-      450,JDownloader 2.0 Download Lists,App,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\downloadList*.zip,lazy_ntfs,"Zip folder which contains several files (00,00_00 and extraInfo) which list the download folder, the time it was created, the name of the download, origin URL, referral URL and more"
-      451,JDownloader 2.0 Link Collector,App,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\linkcollector*.zip,lazy_ntfs,"Zip folder which contains several files (0X,0X_00 and extraInfo) which list the websites crawled for links, the referral URLs, timestamps and more"
-      452,JDownloader 2.0 General Settings,App,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\org.jdownloader.settings.GeneralSettings.json,lazy_ntfs,General user config for JDownloader 2.0. Holds default download folder.
-      453,JDownloader 2.0 Link Grabber Settings,App,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\org.jdownloader.gui.views.linkgrabber.addlinksdialog.LinkgrabberSettings.json,lazy_ntfs,Linkgrabber Settings for JDownloader 2.0. Holds latest download destination folder.
-      454,JDownloader 2.0 Proxy Settings,App,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\org.jdownloader.settings.InternetConnectionSettings.customproxylist.json,lazy_ntfs,Proxy configuration for JDownloader 2.0
-      455,Java WebStart Cache User Level - Default,Communication,Users\*\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      456,Java WebStart Cache User Level - IE Protected Mode,Communication,Users\*\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      457,Java WebStart Cache System level,Communication,Windows\System32\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      458,Java WebStart Cache System level,Communication,Windows.old\Windows\System32\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      459,Java WebStart Cache System level - IE Protected Mode,Communication,Windows\System32\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      460,Java WebStart Cache System level - IE Protected Mode,Communication,Windows.old\Windows\System32\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      461,Java WebStart Cache System level (SysWow64),Communication,Windows\SysWOW64\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      462,Java WebStart Cache System level (SysWow64),Communication,Windows.old\Windows\SysWOW64\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      463,Java WebStart Cache System level (SysWow64) - IE Protected Mode,Communication,Windows\SysWOW64\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
-      464,Java WebStart Cache System level (SysWow64) - IE Protected Mode,Communication,Windows.old\Windows\SysWOW64\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      450,JDownloader 2.0 Download Lists,Apps,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\downloadList*.zip,lazy_ntfs,"Zip folder which contains several files (00,00_00 and extraInfo) which list the download folder, the time it was created, the name of the download, origin URL, referral URL and more"
+      451,JDownloader 2.0 Link Collector,Apps,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\linkcollector*.zip,lazy_ntfs,"Zip folder which contains several files (0X,0X_00 and extraInfo) which list the websites crawled for links, the referral URLs, timestamps and more"
+      452,JDownloader 2.0 General Settings,Apps,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\org.jdownloader.settings.GeneralSettings.json,lazy_ntfs,General user config for JDownloader 2.0. Holds default download folder.
+      453,JDownloader 2.0 Link Grabber Settings,Apps,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\org.jdownloader.gui.views.linkgrabber.addlinksdialog.LinkgrabberSettings.json,lazy_ntfs,Linkgrabber Settings for JDownloader 2.0. Holds latest download destination folder.
+      454,JDownloader 2.0 Proxy Settings,Apps,Users\*\AppData\Local\JDownloader 2.0\cfg\**10\org.jdownloader.settings.InternetConnectionSettings.customproxylist.json,lazy_ntfs,Proxy configuration for JDownloader 2.0
+      455,Java WebStart Cache User Level - Default,Communications,Users\*\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      456,Java WebStart Cache User Level - IE Protected Mode,Communications,Users\*\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      457,Java WebStart Cache System level,Communications,Windows\System32\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      458,Java WebStart Cache System level,Communications,Windows.old\Windows\System32\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      459,Java WebStart Cache System level - IE Protected Mode,Communications,Windows\System32\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      460,Java WebStart Cache System level - IE Protected Mode,Communications,Windows.old\Windows\System32\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      461,Java WebStart Cache System level (SysWow64),Communications,Windows\SysWOW64\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      462,Java WebStart Cache System level (SysWow64),Communications,Windows.old\Windows\SysWOW64\config\systemprofile\AppData\Local\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      463,Java WebStart Cache System level (SysWow64) - IE Protected Mode,Communications,Windows\SysWOW64\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
+      464,Java WebStart Cache System level (SysWow64) - IE Protected Mode,Communications,Windows.old\Windows\SysWOW64\config\systemprofile\AppData\LocalLow\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
       465,Java WebStart Cache User Level - XP,Communications,Documents and Settings\*\Application Data\Sun\Java\Deployment\cache\*\*\*.idx,lazy_ntfs,
       466,JumpLists from CustomDestinations,JumpLists,Users\*\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\**10,lazy_ntfs,
       467,JumpLists from CustomDestinations,JumpLists,Users\*\AppData\Roaming\Microsoft\Windows\Recent\CustomDestinations\**10,lazy_ntfs,
@@ -1560,11 +1612,11 @@ parameters:
       492,Kaseya Setup Log,ApplicationLogs,Windows\Temp\KASetup.log,lazy_ntfs,https://helpdesk.kaseya.com/hc/en-gb/articles/229011448
       493,Kaseya Setup Log,ApplicationLogs,Windows.old\Windows\Temp\KASetup.log,lazy_ntfs,https://helpdesk.kaseya.com/hc/en-gb/articles/229011448
       494,Kaseya Agent Edge Service Logs,ApplicationLogs,ProgramData\Kaseya\Log\KaseyaEdgeServices\**10,lazy_ntfs,https://www.huntress.com/blog/rapid-response-kaseya-vsa-mass-msp-ransomware-incident
-      495,Keepass User Config,App,Users\*\AppData\Roaming\KeePass\*.xml,lazy_ntfs,Collecting Keepass User Configuration File
-      496,Keepass Config Xml,App,Program Files\KeePass Password Safe*\*.xml,lazy_ntfs,Collecting Keepass Configuration File
-      497,Keepass Application Details,App,Program Files\KeePass Password Safe*\*.config,lazy_ntfs,Collecting Keepass Application Details
-      498,Keepass Local Ini,App,Users\*\AppData\Local\KeePassXC\*.ini,lazy_ntfs,
-      499,Keepass Roaming Ini,App,Users\*\AppData\Roaming\KeePassXC\*.ini,lazy_ntfs,
+      495,Keepass User Config,Apps,Users\*\AppData\Roaming\KeePass\*.xml,lazy_ntfs,Collecting Keepass User Configuration File
+      496,Keepass Config Xml,Apps,Program Files\KeePass Password Safe*\*.xml,lazy_ntfs,Collecting Keepass Configuration File
+      497,Keepass Application Details,Apps,Program Files\KeePass Password Safe*\*.config,lazy_ntfs,Collecting Keepass Application Details
+      498,Keepass Local Ini,Apps,Users\*\AppData\Local\KeePassXC\*.ini,lazy_ntfs,
+      499,Keepass Roaming Ini,Apps,Users\*\AppData\Roaming\KeePassXC\*.ini,lazy_ntfs,
       500,LNK Files from Recent,LNKFiles,Users\*\AppData\Roaming\Microsoft\Windows\Recent\**10,lazy_ntfs,Also includes automatic and custom jumplist directories
       501,LNK Files from Microsoft Office Recent,LNKFiles,Users\*\AppData\Roaming\Microsoft\Office\Recent\**10,lazy_ntfs,
       502,Start Menu LNK Files,LNKFiles,Users\*\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\*.LNK,lazy_ntfs,
@@ -1592,7 +1644,6 @@ parameters:
       524,MS SQL Errorlogs,SQL Exploitation,Program Files\Microsoft SQL Server\*\MSSQL\LOG\ERRORLOG.*,lazy_ntfs,
       525,Macrium Reflect,Apps,ProgramData\Macrium\Macrium Service\*,lazy_ntfs,Copies out all log files
       526,Macrium Reflect,Apps,ProgramData\Macrium\Reflect\*,lazy_ntfs,Copies out the Reflect folder which contains many important logs
-      527,Macrium Reflect,Apps,ProgramData\Macrium\Reflect Launcher,lazy_ntfs,Copies out the Reflect folder which contains many important logs
       528,MalwareBytes Anti-Malware Logs,Antivirus,ProgramData\Malwarebytes\Malwarebytes Anti-Malware\Logs\mbam-log-*.xml,lazy_ntfs,
       529,MalwareBytes Anti-Malware Service Logs,Antivirus,ProgramData\Malwarebytes\MBAMService\logs\mbamservice.log*,lazy_ntfs,
       530,MalwareBytes Anti-Malware Scan Logs,Antivirus,Users\*\AppData\Roaming\Malwarebytes\Malwarebytes Anti-Malware\Logs\**10,lazy_ntfs,
@@ -1617,9 +1668,7 @@ parameters:
       549,MeshAgent .msh (configuration) file,Apps,Program Files\Mesh Agent\**10\*.msh,lazy_ntfs,Grabs all .msh (config) files present in this folder
       550,MeshAgent log file,Logs,Program Files\Mesh Agent\**10\*.log,lazy_ntfs,Grabs all .log files present in this folder
       551,Microsoft Office Backstage,FileKnowledge,Users\*\AppData\Local\Microsoft\Office\*\BackstageinAppNavCache\**10,lazy_ntfs,
-      552,Microsoft OneNote - FullTextSearchIndex,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\*\FullTextSearchIndex,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's text content
       553,Microsoft OneNote - RecentNotebooks_SeenURLs,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\Notifications\RecentNotebooks_SeenURLs,lazy_ntfs,Grabs a file that appears to record recently seen OneNote notebooks
-      554,Microsoft OneNote - AccessibilityCheckerIndex,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\AccessibilityCheckerIndex,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's version sync error history
       555,Microsoft OneNote - User NoteTags,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\NoteTags\*LiveId.db,lazy_ntfs,Grabs a database that stores the user specified tags within OneNote to be used application-wide
       556,Microsoft OneNote - RecentSearches,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\RecentSearches\RecentSearches.db,lazy_ntfs,Grabs a database that stores the user's recent searches within OneNote
       557,Windows Safety Scanner Logs,Antivirus,Windows\Debug\msert.log,lazy_ntfs,
@@ -1629,7 +1678,6 @@ parameters:
       561,Microsoft Teams Local Storage Cache,Apps,Users\*\AppData\Roaming\Microsoft\Teams\Local Storage\leveldb\**10,lazy_ntfs,"LevelDB database which can contain meeting history, file transfer logs and more"
       562,Microsoft Teams Cache,Apps,Users\*\AppData\Roaming\Microsoft\Teams\Cache\**10,lazy_ntfs,Chromium cache which can be viewed with Nirsoft's ChromeCacheView
       563,Microsoft Teams Config,Apps,Users\*\AppData\Roaming\Microsoft\Teams\desktop-config.json,lazy_ntfs,JSON config file for Teams
-      564,Microsoft Teams Logs (Windows 11),Apps,Users\*\AppData\Local\Packages\MicrosoftTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams\Logs,lazy_ntfs,Lots of log files for MS Teams
       565,Microsoft To Do - SQLite Database of To Do tasks,Apps,Users\*\AppData\Local\Packages\Microsoft.Todos_8wekyb3d8bbwe\LocalState\AccountsRoot\*\todosqlite.db*,lazy_ntfs,
       566,Microsoft To Do - User Avatar,Apps,Users\*\AppData\Local\Packages\Microsoft.Todos_8wekyb3d8bbwe\LocalState\AccountsRoot\4c444a17ebb042fb92df97d00d1c802a\avatars\UserAvatar.jpg,lazy_ntfs,
       567,Midnight Commander -- All Configuation Files,Apps,Users\*\Midnight Commander\*,lazy_ntfs,Locates folder where all configuration files reside
@@ -1646,7 +1694,7 @@ parameters:
       578,Nessus Logs,Nessus,ProgramData\Tenable\Nessus\conf\**10,lazy_ntfs,
       579,Nessus Logs,Nessus Logs,ProgramData\Tenable\Nessus\nessus\logs\**10,lazy_ntfs,
       580,Net Monitor Server Logs,ApplicationLogs,ProgramData\Net Monitor for Employees Pro\log\*\**10,lazy_ntfs,Contains Net Monitor server logs
-      581,Net Monitor Server Data,Communication,ProgramData\Net Monitor for Employees Pro\data\**10,lazy_ntfs,Contains Net Monitor server data - Indicates what have been seen as the attacker
+      581,Net Monitor Server Data,Communications,ProgramData\Net Monitor for Employees Pro\data\**10,lazy_ntfs,Contains Net Monitor server data - Indicates what have been seen as the attacker
       582,Net Monitor Server Config,Apps,ProgramData\Net Monitor for Employees Pro\config\**10,lazy_ntfs,Contains Net Monitor server config
       583,Net Monitor Server Temp Folder,Apps,ProgramData\Net Monitor for Employees Pro\tmp\**10,lazy_ntfs,
       584,Net Monitor Client Logs,ApplicationLogs,Program Files*\Net Monitor for Employees Pro\log\**10,lazy_ntfs,Contains Net Monitor client logs
@@ -1655,11 +1703,6 @@ parameters:
       587,Usenet Clients - Newsleecher,FileDownload,Users\*\AppData\Roaming\NewsLeecher\downloaded.dat,lazy_ntfs,Locates Newsleecher download .dat file
       588,Nicotine++ Logs,FileDownload,Users\*\AppData\Roaming\nicotine\logs\**10,lazy_ntfs,"Locates Nicotine++ chat logs, room logs, transfer logs, and debug logs (if enabled)"
       589,Nicotine++ Incomplete Downloads,FileDownload,Users\*\AppData\Roaming\nicotine\incomplete\**10,lazy_ntfs,Locates files that did not finish downloading
-      590,Nicotine++ Buddyfiles.db,FileDownload,Users\*\AppData\Roaming\nicotine\buddyfiles.db\**10,lazy_ntfs,Locates a DB that appears to include shared files from a user's buddy list
-      591,Nicotine++ Buddystreams.db,FileDownload,Users\*\AppData\Roaming\nicotine\buddystreams.db\**10,lazy_ntfs,Locates a DB that appears to include shared files from a user's buddy list
-      592,Nicotine++ Buddymtimes.db,FileDownload,Users\*\AppData\Roaming\nicotine\buddymtimes.db\**10,lazy_ntfs,"Locates a DB that appears to enumerate which files the user is sharing to their buddy list, from a folder level"
-      593,Nicotine++ Buddyfileindex.db,FileDownload,Users\*\AppData\Roaming\nicotine\buddyfileindex.db\**10,lazy_ntfs,"Locates a DB that appears to enumerate which files the user is sharing to their buddy list, from a file level"
-      594,Nicotine++ Buddywordindex.db,FileDownload,Users\*\AppData\Roaming\nicotine\buddywordindex.db\**10,lazy_ntfs,Unknown what this is for at this time
       595,Nicotine++ Config Files,FileDownload,Users\*\AppData\Roaming\nicotine\config\**10,lazy_ntfs,Locates config files
       596,Nicotine++ User Shares,FileDownload,Users\*\AppData\Roaming\nicotine\usershares\**10,lazy_ntfs,Locates a DB that appears to store a list of files per user that they are sharing within Nicotine++. Note: this requires the user to right-click -&gt; browse files shared by that user
       597,Nicotine++ Downloads.json,FileDownload,Users\*\AppData\Roaming\nicotine\downloads.json*,lazy_ntfs,Locates downloads.json
@@ -1668,8 +1711,8 @@ parameters:
       600,Notepad++ Config,Text Editor,Users\*\AppData\Roaming\Notepad++\config.xml,lazy_ntfs,"Retrieves config.xml which contains recently searched terms, replaced terms and recently opened documents"
       601,Notepad++ Session,Text Editor,Users\*\AppData\Roaming\Notepad++\session.xml,lazy_ntfs,Retrieves session.xml which contains session date
       602,Notepad Session Files,Windows Notepad,Users\*\AppData\Local\Packages\Microsoft.WindowsNotepad_8wekyb3d8bbwe\LocalState\TabState\*.bin,lazy_ntfs,Contains .bin files which consist of the files opened in each tab in Windows Notepad
-      603,Notion Local Storage,App,Users\*\AppData\Roaming\Notion\notion.db,lazy_ntfs,"Local storage file containing all pages, databases, users, etc."
-      604,Notion Custom Dictionary,App,Users\*\AppData\Roaming\Notion\Partitions\notion\Custom Dictionary.txt,lazy_ntfs,
+      603,Notion Local Storage,Apps,Users\*\AppData\Roaming\Notion\notion.db,lazy_ntfs,"Local storage file containing all pages, databases, users, etc."
+      604,Notion Custom Dictionary,Apps,Users\*\AppData\Roaming\Notion\Partitions\notion\Custom Dictionary.txt,lazy_ntfs,
       605,Word Autosave Location,FileKnowledge,Users\*\AppData\Roaming\Microsoft\Word\**10,lazy_ntfs,
       606,Excel Autosave Location,ApplicationCompatibility,Users\*\AppData\Roaming\Microsoft\Excel\**10,lazy_ntfs,
       607,Powerpoint Autosave Location,FileKnowledge,Users\*\AppData\Roaming\Microsoft\Powerpoint\**10,lazy_ntfs,
@@ -1728,8 +1771,7 @@ parameters:
       660,PowerShell Transcripts - Observed Location,PowerShellTranscripts,Windows\System32\*\PowerShell_transcript.*.txt,lazy_ntfs,
       661,Prefetch,Prefetch,Windows\prefetch\*.pf,lazy_ntfs,
       662,Prefetch,Prefetch,Windows.old\Windows\prefetch\*.pf,lazy_ntfs,
-      663,ProgramData,Application Data,ProgramData\**10,lazy_ntfs,
-      664,ProtonVPN - Connection Logs,ApplicationLogs,Users\*\AppData\Local\ProtonVPN\Logs,lazy_ntfs,Locates ProtonVPN connection logs.
+      663,ProgramData,ApplicationData,ProgramData\**10,lazy_ntfs,
       665,Puffin - data.db,Communications,Users\*\AppData\Local\PuffinSecureBrowser\data.db,lazy_ntfs,Grabs an important database file that contains browser history
       666,Puffin - Autocomplete Data,Communications,Users\*\AppData\Local\PuffinSecureBrowser\autocompletes.dat,lazy_ntfs,Grabs a file that stores autocomplete data
       667,Puffin - Password Forms Data,Communications,Users\*\AppData\Local\PuffinSecureBrowser\passwordForms.dat,lazy_ntfs,Grabs a file that stores some saved password data
@@ -1741,7 +1783,6 @@ parameters:
       673,WNS,WNS,Users\*\AppData\Local\Microsoft\Windows\Notifications\wpndatabase.db,lazy_ntfs,
       674,Q-Dir - .ini File,Apps,Users\*\AppData\Roaming\Q-Dir\Q-Dir.ini,lazy_ntfs,Locates .ini file associated with Q-Dir which stores useful user activity information.
       675,Q-Dir - .qdr file,Apps,Users\*\AppData\Roaming\Q-Dir\start.qdr,lazy_ntfs,"Locates .qdr file associated with Q-Dir which stores useful user activity information, including the last 4 folders opened (encoded, unfortunately)."
-      676,QFinderPro,Apps,Users\*\AppData\Local\QNAP\QfinderPro,lazy_ntfs,Locates a JSON file that provides network location information for any QNAP connected devices.
       677,Qlik Sense Logs,Software,ProgramData\Qlik\Sense\Log\Proxy\**10\*.txt,lazy_ntfs,Collects the proxy logs for Qlik Sense
       678,Qlik Sense Logs,Software,ProgramData\Qlik\Sense\Log\Proxy\**10\*.log,lazy_ntfs,Collects the proxy logs for Qlik Sense
       679,Qlik Sense Logs,Software,ProgramData\Qlik\Sense\Log\Scheduler\**10\*.txt,lazy_ntfs,Collects the scheduler logs for Qlik Sense
@@ -1764,8 +1805,8 @@ parameters:
       696,Radmin Server 64bit Chats,ApplicationLogs,Windows\System32\rserver30\CHATLOGS\*\*.htm,lazy_ntfs,Previous chat logs
       697,Radmin Viewer Chats,ApplicationLogs,Users\*\Documents\ChatLogs\*\*.htm,lazy_ntfs,Previous chat logs
       698,Rclone Config,Apps,**10\rclone.conf,lazy_ntfs,
-      699,RecentFileCache,ApplicationCompatability,Windows\AppCompat\Programs\RecentFileCache.bcf,lazy_ntfs,
-      700,RecentFileCache,ApplicationCompatability,Windows.old\Windows\AppCompat\Programs\RecentFileCache.bcf,lazy_ntfs,
+      699,RecentFileCache,ApplicationCompatibility,Windows\AppCompat\Programs\RecentFileCache.bcf,lazy_ntfs,
+      700,RecentFileCache,ApplicationCompatibility,Windows.old\Windows\AppCompat\Programs\RecentFileCache.bcf,lazy_ntfs,
       701,LNK Files from Recent,File and Folder Usage,Users\*\AppData\Roaming\Microsoft\Windows\Recent\**10,lazy_ntfs,
       702,LNK Files from Microsoft Office Recent,File and Folder Usage,Users\*\AppData\Roaming\Microsoft\Office\Recent\**10,lazy_ntfs,
       703,Recycle Bin - Windows Vista+,FileDeletion,$Recycle.Bin\**10\$R*,lazy_ntfs,
@@ -1845,14 +1886,11 @@ parameters:
       777,Network Service registry transaction files,Registry,Windows\ServiceProfiles\NetworkService\NTUSER.DAT.LOG*,lazy_ntfs,
       778,Network Service registry transaction files,Registry,Windows.old\Windows\ServiceProfiles\NetworkService\NTUSER.DAT.LOG*,lazy_ntfs,
       779,System Restore Points Registry Hives (XP),Registry,System Volume Information\_restore*\RP*\snapshot\_REGISTRY_*,lazy_ntfs,
-      780,NTUSER.DAT registry hive XP,Registry,Documents and Settings\*\NTUSER.DAT,lazy_ntfs,
-      781,NTUSER.DAT registry hive,Registry,Users\*\NTUSER.DAT,lazy_ntfs,
       782,NTUSER.DAT registry transaction files,Registry,Users\*\NTUSER.DAT.LOG*,lazy_ntfs,
       783,NTUSER.DAT DEFAULT registry hive,Registry,Windows\System32\config\DEFAULT,lazy_ntfs,
       784,NTUSER.DAT DEFAULT registry hive,Registry,Windows.old\Windows\System32\config\DEFAULT,lazy_ntfs,
       785,NTUSER.DAT DEFAULT transaction files,Registry,Windows\System32\config\DEFAULT.LOG*,lazy_ntfs,
       786,NTUSER.DAT DEFAULT transaction files,Registry,Windows.old\Windows\System32\config\DEFAULT.LOG*,lazy_ntfs,
-      787,UsrClass.dat registry hive,Registry,Users\*\AppData\Local\Microsoft\Windows\UsrClass.dat,lazy_ntfs,
       788,UsrClass.dat registry transaction files,Registry,Users\*\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG*,lazy_ntfs,
       789,RemoteUtilities Connection Logs,Remote Access,Program Files*\Remote Utilities - Host\Logs\rut_log_*.html,lazy_ntfs,Includes connection log files
       790,RemoteUtilities Install Log,Remote Access,ProgramData\Remote Utilities\install.log,lazy_ntfs,Includes Install log file
@@ -1945,18 +1983,14 @@ parameters:
       846,Robo-FTP Jobs,Apps,Program Files\Robo-FTP 3.12\ProgramData\SchedulerService.sqlite,lazy_ntfs,Contains details of scheduled jobs
       847,RogueKiller Reports,Antivirus,ProgramData\RogueKiller\logs\AdliceReport_*.json,lazy_ntfs,
       848,RustDesk logs,Communications,Users\*\AppData\Roaming\RustDesk\*,lazy_ntfs,Collects all log files related to RustDesk
-      849,RustDesk logs,Communications,Windows\ServiceProfiles\LocalService\AppData\Roaming\RustDesk\log\server,lazy_ntfs,Collects all log files related to RustDesk
       850,Usenet Clients - SABnzbd Download Logs,FileDownload,Users\*\AppData\Local\sabnzbd\logs\sabnzbd.log,lazy_ntfs,Locates SABnzbd download log
       851,Usenet Clients - SABnzbd History.db,FileDownload,Users\*\AppData\Local\sabnzbd\admin\history1.db,lazy_ntfs,Locates SABnzbd history log
-      852,SCCM Client Log Files,Logs,Windows\CCM\Logs,lazy_ntfs,
       853,SDB Files,Executables,Windows\apppatch\Custom\*.sdb,lazy_ntfs,
       854,SDB Files,Executables,Windows.old\Windows\apppatch\Custom\*.sdb,lazy_ntfs,
       855,SDB Files x64,Executables,Windows\apppatch\Custom\Custom64\*.sdb,lazy_ntfs,
       856,SDB Files x64,Executables,Windows.old\Windows\apppatch\Custom\Custom64\*.sdb,lazy_ntfs,
       857,4K Video Downloader,SQLDatabases,Users\*\AppData\Local\4kdownload.com\4K Video Downloader\4K Video Downloader\*.sqlite,lazy_ntfs,Grabs database(s) that stores user download history
-      858,Microsoft OneNote - FullTextSearchIndex,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\*\FullTextSearchIndex,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's text content
       859,Microsoft OneNote - RecentNotebooks_SeenURLs,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\Notifications\RecentNotebooks_SeenURLs,lazy_ntfs,Grabs a file that appears to record recently seen OneNote notebooks
-      860,Microsoft OneNote - AccessibilityCheckerIndex,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\AccessibilityCheckerIndex,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's version sync error history
       861,Microsoft OneNote - User NoteTags,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\NoteTags\*LiveId.db,lazy_ntfs,Grabs a database that stores the user specified tags within OneNote to be used application-wide
       862,Microsoft OneNote - RecentSearches,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\RecentSearches\RecentSearches.db,lazy_ntfs,Grabs a database that stores the user's recent searches within OneNote
       863,Microsoft Sticky Notes - 1607 and later,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes*\LocalState\plum.sqlite*,lazy_ntfs,
@@ -1964,8 +1998,8 @@ parameters:
       865,Robo-FTP Jobs,Apps,Program Files\Robo-FTP *\ProgramData\SchedulerService.sqlite,lazy_ntfs,
       866,TeraCopy - History Databases,SQLDatabases,Users\*\AppData\Roaming\TeraCopy\History\*.db,lazy_ntfs,
       867,TeraCopy - Main Database,SQLDatabases,Users\*\AppData\Roaming\TeraCopy\main.db,lazy_ntfs,
-      868,Notion Local Storage,App,Users\*\AppData\Roaming\Notion\notion.db,lazy_ntfs,
-      869,IDrive Backed Up Files,App,ProgramData\IDrive\IBCOMMON\*\LDBNEW\*\*.idbs,lazy_ntfs,
+      868,Notion Local Storage,Apps,Users\*\AppData\Roaming\Notion\notion.db,lazy_ntfs,
+      869,IDrive Backed Up Files,Apps,ProgramData\IDrive\IBCOMMON\*\LDBNEW\*\*.idbs,lazy_ntfs,
       870,Dropbox Metadata,SQLDatabases,Users\*\AppData\Local\Dropbox\*\filecache.db*,lazy_ntfs,Getting individual files because folder may contain very large extraneous files
       871,Dropbox Metadata,SQLDatabases,Users\*\AppData\Local\Dropbox\*\config.dbx,lazy_ntfs,Getting individual files because folder may contain very large extraneous files
       872,Dropbox Metadata,SQLDatabases,Users\*\AppData\Local\Dropbox\*\home.db,lazy_ntfs,SQlite database which appears to keep track of the user's recent Dropbox activity
@@ -2065,7 +2099,6 @@ parameters:
       964,SOFTWARE registry hive,Registry,Windows.old\Windows\System32\config\SOFTWARE,lazy_ntfs,
       965,SOFTWARE registry transaction files,Registry,Windows\System32\config\SOFTWARE.LOG*,lazy_ntfs,
       966,SOFTWARE registry transaction files,Registry,Windows.old\Windows\System32\config\SOFTWARE.LOG*,lazy_ntfs,
-      967,SUM Database (.mdb files),Logs,Windows\System32\LogFiles\SUM\*.mdb,lazy_ntfs,"Grabs Current.mdb, SystemIdentity.mdb, and [GUID].mdb"
       968,SUPERAntiSpyware Logs,Antivirus,Users\*\AppData\Roaming\SUPERAntiSpyware\Logs\**10,lazy_ntfs,
       969,SUSE Linux Enterprise Server WSL /etc/os-release,Windows Subsystem for Linux,Users\*\AppData\Local\Packages\46932SUSE.SUSELinuxEnterpriseServer*\LocalState\rootfs\etc\os-release,lazy_ntfs,
       970,SUSE Linux Enterprise Server WSL /etc/fstab,Windows Subsystem for Linux,Users\*\AppData\Local\Packages\46932SUSE.SUSELinuxEnterpriseServer*\LocalState\rootfs\etc\fstab,lazy_ntfs,
@@ -2115,7 +2148,6 @@ parameters:
       1014,Slack Electron Logs,Apps,Users\*\AppData\Roaming\Slack\logs\**10,lazy_ntfs,Current Slack application is based on Electron and additional logging can be found here.
       1015,Slack Cache,Apps,Users\*\AppData\Roaming\Slack\Cache\**10,lazy_ntfs,Collects Slack cache files. This folder can be parsed like a Chrome Browser cache using a tool like Nirsoft ChromeCacheView
       1016,Slack Storage,Apps,Users\*\AppData\Roaming\Slack\storage\**10,lazy_ntfs,User activity logs can be present including slack-downloads log
-      1017,Snagit - Captures,Apps,Users\*\AppData\Local\TechSmith\Snagit\DataStore,lazy_ntfs,Locates all Snagit captures
       1018,Snip &amp; Sketch,FileKnowledge,Users\*\AppData\Local\Packages\Microsoft.ScreenSketch_8wekyb3d8bbwe\TempState\*.png,lazy_ntfs,Pulls all temporary .png images generated by the Snip &amp; Sketch screen capture tool built into Windows
       1019,Sophos Logs (XP),Antivirus,Documents and Settings\All Users\Application Data\Sophos\Sophos *\Logs\**10,lazy_ntfs,"Includes Anti-Virus, Client Firewall, Data Control, Device Control, Endpoint Defense, Network Threat Detection, Management Communications System, Patch Control, Tamper Protection"
       1020,Sophos Logs,Antivirus,ProgramData\Sophos\*\Logs\**10,lazy_ntfs,"Includes Anti-Virus, Client Firewall, Data Control, Device Control, Endpoint Defense, Network Threat Detection, Management Communications System, Patch Control, Tamper Protection"
@@ -2125,8 +2157,6 @@ parameters:
       1024,SpeedCommander - .ini File,Apps,Users\*\AppData\Roaming\SpeedProject\SpeedCommander 19\*,lazy_ntfs,Locates folder where all configuration files reside
       1025,Splashtop Log Files,Software,Program Files*\Splashtop\Splashtop Remote\Server\log\**10,lazy_ntfs,Collects logs for Splashtop
       1026,Splashtop Log Files in ProgramData,Software,ProgramData\Splashtop\Temp\log\**10,lazy_ntfs,Collects logs for Splashtop
-      1027,User startup folders,Persistence,Users\*\AppData\Roaming\Microsoft\Windows\Start Menu\Programs,lazy_ntfs,
-      1028,System-wide startup folder,Persistence,ProgramData\Microsoft\Windows\Start Menu\Programs,lazy_ntfs,
       1029,StartupInfo XML Files,Persistence,Windows\System32\WDI\LogFiles\StartupInfo\*.xml,lazy_ntfs,
       1030,StartupInfo XML Files,Persistence,Windows.old\Windows\System32\WDI\LogFiles\StartupInfo\*.xml,lazy_ntfs,
       1031,Steam Game Image files,Apps,Program Files\Steam\appcache\librarycache\**10,lazy_ntfs,Locates the directory containing image resources of installed/uninstalled games.
@@ -2147,9 +2177,7 @@ parameters:
       1046,SugarSync - Shared Folders (Default Location),Apps,Users\*\Documents\SugarSync Shared Folders\**10,lazy_ntfs,
       1047,SugarSync - My SugarSync (Default Location),Apps,Users\*\Documents\My SugarSync\**10,lazy_ntfs,
       1048,SumatraPDF Settings - SessionData,FileKnowledge,Users\*\AppData\Local\SumatraPDF\SumatraPDF-settings.txt,lazy_ntfs,Settings file which contains information about previous user session
-      1049,SumatraPDF Cache,FileKnowledge,Users\*\AppData\Local\SumatraPDF\sumatrapdfcache,lazy_ntfs,Folder contains a PNG snapshot of each PDF file the user had open at the time of last application close
       1050,Supremo Connection Logs,Communications,ProgramData\SupremoRemoteDesktop\Log\*.log,lazy_ntfs,Includes Supremo.00.Client.log and Supremo.00.Incoming.log
-      1051,Supremo File Transfer Inbox,Communications,ProgramData\SupremoRemoteDesktop\Inbox,lazy_ntfs,Includes files transferred to the inbox folder during a remote session. See Supremo.00.FileTransfer.log
       1052,Symantec Endpoint Protection Logs (XP),Antivirus,Documents and Settings\All Users\Application Data\Symantec\Symantec Endpoint Protection\Logs\AV\**10,lazy_ntfs,
       1053,Symantec Endpoint Protection Logs,Antivirus,ProgramData\Symantec\Symantec Endpoint Protection\*\Data\Logs\**10,lazy_ntfs,
       1054,Symantec Endpoint Protection User Logs,Antivirus,Users\*\AppData\Local\Symantec\Symantec Endpoint Protection\Logs\**10,lazy_ntfs,
@@ -2231,18 +2259,13 @@ parameters:
       1130,VIPRE Business User Logs (up to v4),Antivirus,Users\*\AppData\Roaming\Sunbelt Software\AntiMalware\Logs\**10,lazy_ntfs,
       1131,VLC Recently Opened Files,Apps,Users\*\AppData\Roaming\vlc\vlc-qt-interface.ini,lazy_ntfs,Configuration file for VLC. Holds [RecentsMRL] key which lists recently opened files as well as sometimes retaining timestamps for file opening
       1132,VLC Recorded Files,Apps,Users\*\Videos\vlc-*.avi,lazy_ntfs,"Recorded files in VLC. Sometimes the Record button may be pressed instead of Play by suspects, which can record them watching content with VLC"
-      1133,VMware - Virtual Machine Inventory,Apps,Users\*\AppData\Roaming\VMware,lazy_ntfs,Locates an inventory of all Virtual Machines on disk.
       1134,VMware (Fusion/Workstation/Server/Player),Memory,**10\*.vmem,lazy_ntfs,Captures all raw memory from VMware virtual machines.
       1135,VMware (Fusion/Workstation/Server/Player),Memory,**10\*.vmss,lazy_ntfs,Captures all memory images from VMware virtual machines.
       1136,VMware (Fusion/Workstation/Server/Player),Memory,**10\*.vmsn,lazy_ntfs,Captures all memory images from VMware virtual machines.
       1137,RealVNC Log,ApplicationLogs,Users\*\AppData\Local\RealVNC\vncserver.log,lazy_ntfs,https://www.realvnc.com/en/connect/docs/logging.html#logging
       1138,RealVNC Log,ApplicationLogs,ProgramData\RealVNC-Service\vncserver.log,lazy_ntfs,https://help.realvnc.com/hc/en-us/articles/360002254238-All-About-Logging-
-      1139,TightVNC Application Logs,ApplicationLogs,ProgramData\TightVNC\Server\Logs,lazy_ntfs,https://ro.ecu.edu.au/cgi/viewcontent.cgi?article=1160&amp;context=adf
       1140,Viber Config Database,Apps,Users\*\AppData\Roaming\ViberPC\config.db,lazy_ntfs,Configuration file for Viber
       1141,Viber Users Data Database,Apps,Users\*\AppData\Roaming\ViberPC\*\viber.db,lazy_ntfs,"Viber data for that user, containing Calls, Chat Messages, Contacts and more"
-      1142,Viber Users Avatars Cache,Apps,Users\*\AppData\Roaming\ViberPC\*\Avatars,lazy_ntfs,Cache of the Avatars for other Viber users
-      1143,Viber Users Backgrounds Cache,Apps,Users\*\AppData\Roaming\ViberPC\*\Backgrounds,lazy_ntfs,Store of the backgrounds
-      1144,Viber Users Thumbnails Cache,Apps,Users\*\AppData\Roaming\ViberPC\*\Thumbnails,lazy_ntfs,Cache of the thumbnails for uploaded/downloaded images
       1145,VirtualBox VM configs,Apps,**10\*.vbox,lazy_ntfs,Locates all .vbox VM configuration files on disk
       1146,VirtualBox VM backup configs,Apps,**10\*.vbox-prev,lazy_ntfs,Locates all backup .vbox VM configuration files on disk
       1147,VirtualBox Logs,Apps,**10\VBox.log,lazy_ntfs,Locates all VBox.log files on disk
@@ -2254,8 +2277,8 @@ parameters:
       1153,VDI,Disk Images,**10\*.VDI,lazy_ntfs,
       1154,VMDK,Disk Images,**10\*.VMDK,lazy_ntfs,
       1155,VSCode Opened Files,Apps,Users\*\AppData\Roaming\Code\User\History\*\**10,lazy_ntfs,Grabs the files in the VSCode history. These are files the user has opened with VSCode
-      1156,VSCode Workspaces,Apps,Users\*\AppData\Roaming\Code\User\globalStorage\storage.json*,lazy_ntfs,Grabs the file containing information about the users workspaces
-      1157,VSCode User extensions,Apps,Users\*\AppData\Roaming\Code\CachedExtensions\user*,lazy_ntfs,Grabs the files relating to the users installed extensions
+      1156,VSCode Workspaces,Apps,Users\*\AppData\Roaming\Code\User\globalStorage\storage.json*,lazy_ntfs,Grabs the file containing information about the user's workspaces
+      1157,VSCode User extensions,Apps,Users\*\AppData\Roaming\Code\CachedExtensions\user*,lazy_ntfs,Grabs the files relating to the user's installed extensions
       1158,VSCode User settings,Apps,Users\*\AppData\Roaming\Code\User\settings.json*,lazy_ntfs,Grabs the file containing the settings the user has set.
       1159,VSCode User Preferences,Apps,Users\*\AppData\Roaming\Code\preferences*,lazy_ntfs,Grabs the file containing the preferences the user has set.
       1160,VSCode Network Cookies,Apps,Users\*\AppData\Roaming\Code\Network\Cookies*,lazy_ntfs,Grabs the cookie files. Same format as Chromium Cookies
@@ -2286,11 +2309,6 @@ parameters:
       1185,Crash Dumps,SQL Exploitation,Windows\*.dmp,lazy_ntfs,
       1186,Crash Dumps,SQL Exploitation,Windows.old\Windows\*.dmp,lazy_ntfs,
       1187,Webroot Program Data,Antivirus,ProgramData\WRData\WRLog.log,lazy_ntfs,
-      1188,WhatsApp Cache,Apps,Users\*\AppData\Roaming\WhatsApp\Cache,lazy_ntfs,"Copies the cache of WhatsApp. Can be opened with Chrome Cache Viewer for viewing embedded thumbnails and other image artefacts, as well as extracting .enc message files or other files"
-      1189,WhatsApp Local Storage,Apps,Users\*\AppData\Roaming\WhatsApp\Local Storage\leveldb,lazy_ntfs,"Copies the Local Storage leveldb of WhatsApp. Contains phone model and name of user, plus encrypted base64 strings which can be viewed with LevelDBDumper"
-      1190,Microsoft Store WhatsApp Cache,Apps,Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalCache\Roaming\WhatsApp\Cache,lazy_ntfs,"Copies the cache of WhatsApp. Can be opened with Chrome Cache Viewer for viewing embedded thumbnails and other image artefacts, as well as extracting .enc message files or other files"
-      1191,Microsoft Store WhatsApp Local Storage,Apps,Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalCache\Roaming\WhatsApp\Local Storage\leveldb,lazy_ntfs,"Copies the Local Storage leveldb of WhatsApp. Contains phone model and name of user, plus encrypted base64 strings which can be viewed with LevelDBDumper"
-      1192,Microsoft Store WhatsApp Desktop Profile Pictures,Apps,Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalState\profilePictures,lazy_ntfs,"Copies the local store of contacts profile pictures, simply open with a photos software"
       1193,Microsoft Store WhatsApp Shared Media,Apps,"Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalState\shared\transfers\**10\*.{jpg,mp4,pdf,webp}",lazy_ntfs,"Copies the shared media, can get very large."
       1194,DetectionHistory,Antivirus,ProgramData\Microsoft\Windows Defender\Scans\History\Service\DetectionHistory\*\**10,lazy_ntfs,
       1195,WinSCP (.ini file),Logs,**10\WinSCP.ini,lazy_ntfs,
@@ -2384,9 +2402,6 @@ parameters:
       1282,Zoho Assist log files in Program Files*,Apps,Program Files*\ZohoMeeting\UnAttended\ZohoMeeting\logs\**10,lazy_ntfs,Zoho Assist log files in Program Files*
       1283,Zoho Assist .conf files in  Program Files*,Apps,Program Files*\ZohoMeeting\UnAttended\ZohoMeeting\*.conf,lazy_ntfs,Grabs all .conf files present in this folder (Service/Settings)
       1284,Zoho Assist .txt files in  Program Files*,Apps,Program Files*\ZohoMeeting\UnAttended\ZohoMeeting\*.txt,lazy_ntfs,Grabs all .txt files present in this folder (Service/Settings)
-      1285,Zoom client logs,Apps,Users\*\AppData\Roaming\Zoom\logs\**10\*,lazy_ntfs,Zoom client artifacts
-      1286,Zoom client logs (Windows XP),Apps,Documents and Settings\*\Application Data\Zoom\**10\*,lazy_ntfs,Zoom client artifacts (Windows XP)
-      1287,Zoom client recordings,Apps,Users\*\Documents\Zoom\**10\*,lazy_ntfs,Zoom recording artifacts
       1288,Zoom plugin (Outlook),Apps,Users\*\AppData\Roaming\Zoom Plugin\*.json,lazy_ntfs,Zoom plugin artifacts
       1289,eMule Logs and Configuration Files,FileDownload,Users\*\AppData\Local\eMule\**10,lazy_ntfs,Locates eMule logs and configuration files and copies them.
       1290,eMule part.met files,FileDownload,**10\*.part.met,lazy_ntfs,Locates eMule *.part.met files and copies them.
@@ -2426,6 +2441,330 @@ parameters:
       1325,PowerShell Scheduled_Jobs Output Systemprofile,Persistence,Windows\System32\config\systemprofile\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs\*\Output\*\**10,lazy_ntfs,
       1326,PowerShell Scheduled_Jobs WOW64 Systemprofile,Persistence,Windows\SysWOW64\config\systemprofile\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs\**10,lazy_ntfs,
       1327,PowerShell Scheduled_Jobs Output WOW64 Systemprofile,Persistence,Windows\SysWOW64\config\systemprofile\AppData\Local\Microsoft\Windows\PowerShell\ScheduledJobs\*\Output\*\**10,lazy_ntfs,
+      1328,360 Secure Browser Bookmarks,Communications,Users\*\AppData\Roaming\360se6\User Data\*\360Bookmarks*,lazy_ntfs,
+      1329,360 Secure Browser Cookies,Communications,Users\*\AppData\Roaming\360se6\User Data\*\**10\Cookies*,lazy_ntfs,
+      1330,360 Secure Browser Current Session,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Current Session,lazy_ntfs,
+      1331,360 Secure Browser Current Tabs,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Current Tabs,lazy_ntfs,
+      1332,360 Secure Browser Download Metadata,Communications,Users\*\AppData\Roaming\360se6\User Data\*\DownloadMetadata,lazy_ntfs,
+      1333,360 Secure Browser Extension Cookies,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Extension Cookies,lazy_ntfs,
+      1334,360 Secure Browser Favicons,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Favicons*,lazy_ntfs,
+      1335,360 Secure Browser History,Communications,Users\*\AppData\Roaming\360se6\User Data\*\360History*,lazy_ntfs,
+      1336,360 Secure Browser Last Session,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Last Session,lazy_ntfs,
+      1337,360 Secure Browser Last Tabs,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Last Tabs,lazy_ntfs,
+      1338,360 Secure Browser Sessions Folder,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Sessions\*,lazy_ntfs,
+      1339,360 Secure Browser Login Data,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Login Data*,lazy_ntfs,
+      1340,360 Secure Browser Media History,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Media History*,lazy_ntfs,
+      1341,360 Secure Browser Network Action Predictor,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Network Action Predictor,lazy_ntfs,
+      1342,360 Secure Browser Network Persistent State,Communications,Users\*\AppData\Roaming\360se6\User Data\*\**10\Network Persistent State,lazy_ntfs,
+      1343,360 Secure Browser Preferences,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Preferences,lazy_ntfs,
+      1344,360 Secure Browser Quota Manager,Communications,Users\*\AppData\Roaming\360se6\User Data\*\QuotaManager,lazy_ntfs,
+      1345,360 Secure Browser Reporting and NEL,Communications,Users\*\AppData\Roaming\360se6\User Data\*\**10\Reporting and NEL,lazy_ntfs,
+      1346,360 Secure Browser Shortcuts,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Shortcuts*,lazy_ntfs,
+      1347,360 Secure Browser Top Sites,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Top Sites*,lazy_ntfs,
+      1348,360 Secure Browser Trust Tokens,Communications,Users\*\AppData\Roaming\360se6\User Data\*\**10\Trust Tokens*,lazy_ntfs,
+      1349,360 Secure Browser SyncData Database,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Sync Data\**10,lazy_ntfs,
+      1350,360 Secure Browser Visited Links,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Visited Links,lazy_ntfs,
+      1351,360 Secure Browser Web Data,Communications,Users\*\AppData\Roaming\360se6\User Data\*\Web Data*,lazy_ntfs,
+      1352,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
+      1353,360 Secure Browser Snapshots Folder,Communications,Users\*\AppData\Roaming\360se6\User Data\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of 360 Secure Browser SQLite DBs organized by version #.
+      1354,Advanced IP Scanner Aliases,Apps,**10\advanced_ip_scanner_Aliases.bin,lazy_ntfs,
+      1355,Advanced IP Scanner Comments,Apps,**10\advanced_ip_scanner_Comments.bin,lazy_ntfs,
+      1356,Advanced IP Scanner MAC,Apps,**10\advanced_ip_scanner_MAC.bin,lazy_ntfs,
+      1357,Advanced Port Scanner Aliases,Apps,**10\advanced_port_scanner_Aliases.bin,lazy_ntfs,
+      1358,Advanced Port Scanner Comments,Apps,**10\advanced_port_scanner_Comments.bin,lazy_ntfs,
+      1359,Advanced Port Scanner MAC,Apps,**10\advanced_port_scanner_MAC.bin,lazy_ntfs,
+      1360,AnyDesk File Transfer Logs - Running in portable mode,Communications,Users\*\AppData\Roaming\AnyDesk\file_transfer_trace.txt,lazy_ntfs,Collects file transfer logs that occur when running in portable mode
+      1361,AnyDesk File Transfer Logs - Installed as a Service,Communications,ProgramData\AnyDesk\file_transfer_trace.txt,lazy_ntfs,Collects file transfer logs that occur when running as an installed service
+      1362,Arc Cookies,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Network\Cookies*,lazy_ntfs,
+      1363,Arc Favicons,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Favicons*,lazy_ntfs,
+      1364,Arc History,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\History*,lazy_ntfs,
+      1365,Arc Sessions Folder,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Sessions\*,lazy_ntfs,
+      1366,Arc Login Data,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Login Data*,lazy_ntfs,
+      1367,Arc Network Action Predictor,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Network Action Predictor,lazy_ntfs,
+      1368,Arc Preferences,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Preferences,lazy_ntfs,
+      1369,Arc Shortcuts,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Shortcuts*,lazy_ntfs,
+      1370,Arc Top Sites,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Top Sites*,lazy_ntfs,
+      1371,Arc SyncData Database,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Sync Data\**10,lazy_ntfs,
+      1372,Arc Bookmarks,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Bookmarks*,lazy_ntfs,
+      1373,Arc Visited Links,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Visited Links,lazy_ntfs,
+      1374,Arc Web Data,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\User Data\*\Web Data*,lazy_ntfs,
+      1375,Arc JSON Files,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\Storable*.json,lazy_ntfs,
+      1376,Arc PLIST Files,Communications,Users\*\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\com*.plist,lazy_ntfs,
+      1377,CocCoc Bookmarks,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Bookmarks*,lazy_ntfs,
+      1378,CocCoc Cookies,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\**10\Cookies*,lazy_ntfs,
+      1379,CocCoc Current Session,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Current Session,lazy_ntfs,
+      1380,CocCoc Current Tabs,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Current Tabs,lazy_ntfs,
+      1381,CocCoc Download Metadata,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\DownloadMetadata,lazy_ntfs,
+      1382,CocCoc Extension Cookies,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Extension Cookies,lazy_ntfs,
+      1383,CocCoc Favicons,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Favicons*,lazy_ntfs,
+      1384,CocCoc History,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\History*,lazy_ntfs,
+      1385,CocCoc Last Session,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Last Session,lazy_ntfs,
+      1386,CocCoc Last Tabs,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Last Tabs,lazy_ntfs,
+      1387,CocCoc Sessions Folder,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Sessions\*,lazy_ntfs,
+      1388,CocCoc Login Data,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Login Data*,lazy_ntfs,
+      1389,CocCoc Media History,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Media History*,lazy_ntfs,
+      1390,CocCoc Network Action Predictor,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Network Action Predictor,lazy_ntfs,
+      1391,CocCoc Network Persistent State,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Network Persistent State,lazy_ntfs,
+      1392,CocCoc Preferences,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Preferences,lazy_ntfs,
+      1393,CocCoc Quota Manager,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\QuotaManager,lazy_ntfs,
+      1394,CocCoc Reporting and NEL,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Reporting and NEL,lazy_ntfs,
+      1395,CocCoc Shortcuts,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Shortcuts*,lazy_ntfs,
+      1396,CocCoc Top Sites,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Top Sites*,lazy_ntfs,
+      1397,CocCoc Trust Tokens,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Trust Tokens*,lazy_ntfs,
+      1398,CocCoc SyncData Database,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Sync Data\**10,lazy_ntfs,
+      1399,CocCoc Visited Links,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Visited Links,lazy_ntfs,
+      1400,CocCoc Web Data,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\*\Web Data*,lazy_ntfs,
+      1401,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
+      1402,CocCoc Snapshots Folder,Communications,Users\*\AppData\Local\CocCoc\Browser\User Data\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of CocCoc SQLite DBs organized by version #.
+      1403,FastStone Image Viewer (FSIV),FileKnowledge,Users\*\AppData\Local\FastStone\FSIV\FSIV.db,lazy_ntfs,"Image browser, converter, and editor that supports all major graphic formats."
+      1404,Azure Copy - User Profile - *.log,Apps,Users\*\.azcopy\*.log,lazy_ntfs,Collects session and transfer logs for Microsoft Azure Copy from a user profile
+      1405,Azure Copy - Plans - *.ste*,Apps,Users\*\.azcopy\plans\*.ste*,lazy_ntfs,Collects the plans for Microsoft Azure Copy from a user profile
+      1406,Msty Artificial Intelligence,FileKnowledge,Users\*\AppData\Roaming\Msty\*.db,lazy_ntfs,"Msty database includes API keys, chat messages, chat sessions, knowledge stack, etc."
+      1407,QQ Browser Bookmarks,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Bookmarks*,lazy_ntfs,
+      1408,QQ Browser Cookies,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\**10\Cookies*,lazy_ntfs,
+      1409,QQ Browser Current Session,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Current Session,lazy_ntfs,
+      1410,QQ Browser Current Tabs,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Current Tabs,lazy_ntfs,
+      1411,QQ Browser Download Metadata,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\DownloadMetadata,lazy_ntfs,
+      1412,QQ Browser Extension Cookies,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Extension Cookies,lazy_ntfs,
+      1413,QQ Browser Favicons,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Favicons*,lazy_ntfs,
+      1414,QQ Browser History,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\History*,lazy_ntfs,
+      1415,QQ Browser Last Session,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Last Session,lazy_ntfs,
+      1416,QQ Browser Last Tabs,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Last Tabs,lazy_ntfs,
+      1417,QQ Browser Sessions Folder,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Sessions\*,lazy_ntfs,
+      1418,QQ Browser Login Data,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Login Data*,lazy_ntfs,
+      1419,QQ Browser Media History,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Media History*,lazy_ntfs,
+      1420,QQ Browser Network Action Predictor,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Network Action Predictor,lazy_ntfs,
+      1421,QQ Browser Network Persistent State,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\**10\Network Persistent State,lazy_ntfs,
+      1422,QQ Browser Preferences,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Preferences,lazy_ntfs,
+      1423,QQ Browser Quota Manager,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\QuotaManager,lazy_ntfs,
+      1424,QQ Browser Reporting and NEL,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\**10\Reporting and NEL,lazy_ntfs,
+      1425,QQ Browser Shortcuts,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Shortcuts*,lazy_ntfs,
+      1426,QQ Browser Top Sites,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Top Sites*,lazy_ntfs,
+      1427,QQ Browser Trust Tokens,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\**10\Trust Tokens*,lazy_ntfs,
+      1428,QQ Browser SyncData Database,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Sync Data\**10,lazy_ntfs,
+      1429,QQ Browser Visited Links,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Visited Links,lazy_ntfs,
+      1430,QQ Browser Web Data,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\*\Web Data*,lazy_ntfs,
+      1431,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
+      1432,QQ Browser Snapshots Folder,Communications,Users\*\AppData\Local\Tencent\QQBrowser\User Data\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of QQ Browser SQLite DBs organized by version #.
+      1433,Microsoft Quick Assist,RemoteAdmin,Users\*\AppData\Local\Temp\QuickAssist\**10,lazy_ntfs,
+      1434,Microsoft Remote Help,RemoteAdmin,Users\*\AppData\Local\Temp\RemoteHelp\**10,lazy_ntfs,
+      1435,NTUSER.DAT registry hive XP,Registry,Documents and Settings\*\NTUSER.DAT*,lazy_ntfs,
+      1436,NTUSER.DAT registry hive,Registry,Users\*\NTUSER.DAT*,lazy_ntfs,
+      1437,UsrClass.dat registry hive,Registry,Users\*\AppData\Local\Microsoft\Windows\UsrClass.dat*,lazy_ntfs,
+      1438,Remco RAT Default path,ApplicationLogs,Users\*\AppData\Roaming\remcos\logs*.dat*,lazy_ntfs,Remco RAT logs.dat default file - contains debug data and logs relative to the keylogging module
+      1439,Remco RAT custom path - AppData screenshots folder,ApplicationLogs,Users\*\AppData\Roaming\screenshots\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1440,Remco RAT custom path - AppData notess folder,ApplicationLogs,Users\*\AppData\Roaming\notess\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1441,Remco RAT custom path - AppData micrecords folder,ApplicationLogs,Users\*\AppData\Roaming\micrecords\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1442,Remco RAT custom path - AppData hpsupport,ApplicationLogs,Users\*\AppData\Roaming\hpsupport\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1443,Remco RAT custom path,ApplicationLogs,ProgramData\remcos\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1444,Remco RAT custom path - AppData notess,ApplicationLogs,ProgramData\notess\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1445,Remco RAT custom path - AppData screenshots,ApplicationLogs,ProgramData\screenshots\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1446,Remco RAT custom path  - AppData micrecords,ApplicationLogs,ProgramData\micrecords\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1447,Remco RAT custom path  - AppData hpsupport,ApplicationLogs,ProgramData\hpsupport\logs*.dat*,lazy_ntfs,Remco RAT logs.dat custom path - contains debug data and logs relative to the keylogging module
+      1448,SimpleHelp - ProgramData - JWrapper Logs,Apps,ProgramData\JWrapper-Remote Access\logs\*,lazy_ntfs,Collects application and connectivity logs
+      1449,SimpleHelp - ProgramData - SimpleHelp Logs,Apps,ProgramData\SimpleHelp\logs\*,lazy_ntfs,Collects application and connectivity logs
+      1450,SimpleHelp - User AppData - Technician Console Logs,Apps,Users\*\AppData\Roaming\JWrapper-SimpleHelp Technician\logs\*,lazy_ntfs,Collects technician console logs
+      1451,Netscan XML default output,Apps,**10\netscan.xml,lazy_ntfs,
+      1454,Supermium Bookmarks XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Bookmarks*,lazy_ntfs,
+      1455,Supermium Cookies XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\**10\Cookies*,lazy_ntfs,
+      1456,Supermium Current Session XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Current Session,lazy_ntfs,
+      1457,Supermium Current Tabs XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Current Tabs,lazy_ntfs,
+      1458,Supermium Favicons XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Favicons*,lazy_ntfs,
+      1459,Supermium History XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\History*,lazy_ntfs,
+      1460,Supermium Last Session XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Last Session,lazy_ntfs,
+      1461,Supermium Last Tabs XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Last Tabs,lazy_ntfs,
+      1462,Supermium Sessions Folder XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Sessions\*,lazy_ntfs,
+      1463,Supermium Network Action Predictor XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Network Action Predictor,lazy_ntfs,
+      1464,Supermium Network Persistent State XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\**10\Network Persistent State,lazy_ntfs,
+      1465,Supermium Login Data XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Login Data*,lazy_ntfs,
+      1466,Supermium Preferences XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Preferences,lazy_ntfs,
+      1467,Supermium Reporting and NEL XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\**10\Reporting and NEL,lazy_ntfs,
+      1468,Supermium Trust Tokens XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\**10\Trust Tokens*,lazy_ntfs,
+      1469,Supermium SyncData Database XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Sync Data\**10,lazy_ntfs,
+      1470,Supermium Shortcuts XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Shortcuts*,lazy_ntfs,
+      1471,Supermium Top Sites XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Top Sites*,lazy_ntfs,
+      1472,Supermium Visited Links XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Visited Links,lazy_ntfs,
+      1473,Supermium Web Data XP,Communications,Documents and Settings\*\Application Data\Supermium\User Data\*\Web Data*,lazy_ntfs,
+      1474,Supermium Bookmarks,Communications,Users\*\AppData\Local\Supermium\User Data\*\Bookmarks*,lazy_ntfs,
+      1475,Supermium Cookies,Communications,Users\*\AppData\Local\Supermium\User Data\*\**10\Cookies*,lazy_ntfs,
+      1476,Supermium Current Session,Communications,Users\*\AppData\Local\Supermium\User Data\*\Current Session,lazy_ntfs,
+      1477,Supermium Current Tabs,Communications,Users\*\AppData\Local\Supermium\User Data\*\Current Tabs,lazy_ntfs,
+      1478,Supermium Download Metadata,Communications,Users\*\AppData\Local\Supermium\User Data\*\DownloadMetadata,lazy_ntfs,
+      1479,Supermium Extension Cookies,Communications,Users\*\AppData\Local\Supermium\User Data\*\Extension Cookies,lazy_ntfs,
+      1480,Supermium Favicons,Communications,Users\*\AppData\Local\Supermium\User Data\*\Favicons*,lazy_ntfs,
+      1481,Supermium History,Communications,Users\*\AppData\Local\Supermium\User Data\*\History*,lazy_ntfs,
+      1482,Supermium Last Session,Communications,Users\*\AppData\Local\Supermium\User Data\*\Last Session,lazy_ntfs,
+      1483,Supermium Last Tabs,Communications,Users\*\AppData\Local\Supermium\User Data\*\Last Tabs,lazy_ntfs,
+      1484,Supermium Sessions Folder,Communications,Users\*\AppData\Local\Supermium\User Data\*\Sessions\*,lazy_ntfs,
+      1485,Supermium Login Data,Communications,Users\*\AppData\Local\Supermium\User Data\*\Login Data*,lazy_ntfs,
+      1486,Supermium Media History,Communications,Users\*\AppData\Local\Supermium\User Data\*\Media History*,lazy_ntfs,
+      1487,Supermium Network Action Predictor,Communications,Users\*\AppData\Local\Supermium\User Data\*\Network Action Predictor,lazy_ntfs,
+      1488,Supermium Network Persistent State,Communications,Users\*\AppData\Local\Supermium\User Data\*\**10\Network Persistent State,lazy_ntfs,
+      1489,Supermium Preferences,Communications,Users\*\AppData\Local\Supermium\User Data\*\Preferences,lazy_ntfs,
+      1490,Supermium Quota Manager,Communications,Users\*\AppData\Local\Supermium\User Data\*\QuotaManager,lazy_ntfs,
+      1491,Supermium Reporting and NEL,Communications,Users\*\AppData\Local\Supermium\User Data\*\**10\Reporting and NEL,lazy_ntfs,
+      1492,Supermium Shortcuts,Communications,Users\*\AppData\Local\Supermium\User Data\*\Shortcuts*,lazy_ntfs,
+      1493,Supermium Top Sites,Communications,Users\*\AppData\Local\Supermium\User Data\*\Top Sites*,lazy_ntfs,
+      1494,Supermium Trust Tokens,Communications,Users\*\AppData\Local\Supermium\User Data\*\**10\Trust Tokens*,lazy_ntfs,
+      1495,Supermium SyncData Database,Communications,Users\*\AppData\Local\Supermium\User Data\*\Sync Data\**10,lazy_ntfs,
+      1496,Supermium Visited Links,Communications,Users\*\AppData\Local\Supermium\User Data\*\Visited Links,lazy_ntfs,
+      1497,Supermium Web Data,Communications,Users\*\AppData\Local\Supermium\User Data\*\Web Data*,lazy_ntfs,
+      1498,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
+      1499,Supermium Snapshots Folder,Communications,Users\*\AppData\Local\Supermium\User Data\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of Supermium SQLite DBs organized by version #.
+      1500,SYSTEM Supermium History,Communications,Windows\system32\config\systemprofile\AppData\Local\Supermium\User Data\*\History*,lazy_ntfs,
+      1501,Syncthing Configuration and Certificates,Apps,Users\*\AppData\Local\Syncthing\*,lazy_ntfs,Folder storing Syncthing configuration and certificates
+      1502,Syncthing Cache and Storage,Apps,Users\*\AppData\Local\SyncTrazor\*,lazy_ntfs,Folder storing session and storage cache
+      1503,Syncthing Logs,ApplicationLogs,Users\*\AppData\Roaming\SyncTrazor\*,lazy_ntfs,Folder storing Syncthing session logs
+      1504,UCBrowser Bookmarks,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Bookmarks*,lazy_ntfs,
+      1505,UCBrowser Cookies,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\**10\Cookies*,lazy_ntfs,
+      1506,UCBrowser Current Session,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Current Session,lazy_ntfs,
+      1507,UCBrowser Current Tabs,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Current Tabs,lazy_ntfs,
+      1508,UCBrowser Download Metadata,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\DownloadMetadata,lazy_ntfs,
+      1509,UCBrowser Extension Cookies,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Extension Cookies,lazy_ntfs,
+      1510,UCBrowser Favicons,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Favicons*,lazy_ntfs,
+      1511,UCBrowser History,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\History*,lazy_ntfs,
+      1512,UCBrowser Last Session,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Last Session,lazy_ntfs,
+      1513,UCBrowser Last Tabs,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Last Tabs,lazy_ntfs,
+      1514,UCBrowser Sessions Folder,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Sessions\*,lazy_ntfs,
+      1515,UCBrowser Login Data,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Login Data*,lazy_ntfs,
+      1516,UCBrowser Media History,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Media History*,lazy_ntfs,
+      1517,UCBrowser Network Action Predictor,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Network Action Predictor,lazy_ntfs,
+      1518,UCBrowser Network Persistent State,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Network Persistent State,lazy_ntfs,
+      1519,UCBrowser Preferences,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Preferences,lazy_ntfs,
+      1520,UCBrowser Quota Manager,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\QuotaManager,lazy_ntfs,
+      1521,UCBrowser Reporting and NEL,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Reporting and NEL,lazy_ntfs,
+      1522,UCBrowser Shortcuts,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Shortcuts*,lazy_ntfs,
+      1523,UCBrowser Top Sites,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Top Sites*,lazy_ntfs,
+      1524,UCBrowser Trust Tokens,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Trust Tokens*,lazy_ntfs,
+      1525,UCBrowser SyncData Database,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Sync Data\**10,lazy_ntfs,
+      1526,UCBrowser Visited Links,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Visited Links,lazy_ntfs,
+      1527,UCBrowser Web Data,Communications,Users\*\AppData\Local\UCBrowser\User Data*\*\Web Data*,lazy_ntfs,
+      1528,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
+      1529,UCBrowser Snapshots Folder,Communications,Users\*\AppData\Local\UCBrowser\User Data*\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of UCBrowser SQLite DBs organized by version #.
+      1530,WaveBrowser bookmarks,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Bookmarks*,lazy_ntfs,
+      1531,WaveBrowser Cookies,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\**10\Cookies*,lazy_ntfs,
+      1532,WaveBrowser Current Session,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Current Session,lazy_ntfs,
+      1533,WaveBrowser Current Tabs,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Current Tabs,lazy_ntfs,
+      1534,WaveBrowser Download Metadata,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\DownloadMetadata,lazy_ntfs,
+      1535,WaveBrowser Extension Cookies,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Extension Cookies,lazy_ntfs,
+      1536,WaveBrowser Favicons,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Favicons*,lazy_ntfs,
+      1537,WaveBrowser History,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\History*,lazy_ntfs,
+      1538,WaveBrowser Last Session,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Last Session,lazy_ntfs,
+      1539,WaveBrowser Last Tabs,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Last Tabs,lazy_ntfs,
+      1540,WaveBrowser Sessions Folder,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Sessions\*,lazy_ntfs,
+      1541,WaveBrowser Login Data,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Login Data,lazy_ntfs,
+      1542,WaveBrowser Media History,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Media History*,lazy_ntfs,
+      1543,WaveBrowser Network Action Predictor,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Network Action Predictor,lazy_ntfs,
+      1544,WaveBrowser Network Persistent State,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Network Persistent State,lazy_ntfs,
+      1545,WaveBrowser Preferences,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Preferences,lazy_ntfs,
+      1546,WaveBrowser Quota Manager,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\QuotaManager,lazy_ntfs,
+      1547,WaveBrowser Reporting and NEL,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Reporting and NEL,lazy_ntfs,
+      1548,WaveBrowser Shortcuts,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Shortcuts*,lazy_ntfs,
+      1549,WaveBrowser Top Sites,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Top Sites*,lazy_ntfs,
+      1550,WaveBrowser Trust Tokens,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Trust Tokens*,lazy_ntfs,
+      1551,WaveBrowser SyncData Database,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Sync Data\SyncData.sqlite3,lazy_ntfs,
+      1552,WaveBrowser Visited Links,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Visited Links,lazy_ntfs,
+      1553,WaveBrowser Web Data,Communications,Users\*\AppData\Local\WaveBrowser\User Data\*\Web Data*,lazy_ntfs,
+      1554,Windows Protect Folder,FileSystem,Users\*\AppData\Roaming\Microsoft\Protect\*\**10,lazy_ntfs,Required for offline decryption
+      1555,WaveBrowser Snapshots Folder,Communications,Users\*\AppData\Local\WaveBrowser\User Data\Snapshots\*\**10,lazy_ntfs,Grabs folder that appears to have snapshots of WaveBrowser SQLite DBs organized by version #.
+      1556,SYSTEM WaveBrowser History,Communications,Windows\system32\config\systemprofile\AppData\Local\WaveBrowser\User Data\*\History*,lazy_ntfs,
+      1557,WindowsIndexSearch - User,FileKnowledge,Users\*\AppData\Roaming\Microsoft\Search\Data\Applications\S-1*\*,lazy_ntfs,
+      1558,GatherLogs - User,FileKnowledge,Users\*\AppData\Roaming\Microsoft\Search\Data\Applications\S-1*\GatherLogs\**10,lazy_ntfs,
+      1559,$Bitmap,FileSystem,$Bitmap,ntfs,
+      1560,Capability Access Manager database,Apps,ProgramData\Microsoft\Windows\CapabilityAccessManager\CapabilityAccessManager.db,lazy_ntfs,
+      1561,LevelDB,Database,Users\*\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT\Local Storage\leveldb\*,lazy_ntfs,LevelDB Database
+      1562,IndexedDB,Database,Users\*\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT\IndexedDB\https_chatgpt.com_0.indexeddb.leveldb\*,lazy_ntfs,IndexedDB Database
+      1564,Helium Registry Hives,Application Registry,Users\*\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\SystemAppData\Helium\*.dat,lazy_ntfs,Retrieves User.dat and UserClasses.dat which are Application Registries
+      1565,ChatGPT Settings File,Application Registry,Users\*\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\Settings\settings.dat,lazy_ntfs,Retrieves settings.dat which is an Application Registry
+      1566,CrowdStrike Falcon Quarantined File,Antivirus,Windows\System32\Drivers\CrowdStrike\Quarantine\**10,lazy_ntfs,
+      1567,HitmanPro Quarantine,Antivirus,ProgramData\HitmanPro\Quarantine\**10,lazy_ntfs,
+      1568,McAfee MSC Logs,Antivirus,ProgramData\Mcafee\MSC\Logs\**10,lazy_ntfs,
+      1569,McAfee Agent Events,Antivirus,ProgramData\Mcafee\Agent\AgentEvents\**10,lazy_ntfs,
+      1570,McAfee Agent Logs,Antivirus,ProgramData\Mcafee\Agent\logs\**10,lazy_ntfs,
+      1571,McAfee Data Reputation Logs,Antivirus,ProgramData\Mcafee\datareputation\Logs\**10,lazy_ntfs,
+      1572,McAfee Managed VirusScan,Antivirus,ProgramData\Mcafee\Managed\VirusScan\Logs\**10,lazy_ntfs,
+      1573,McAfee Agent Events XP,Antivirus,Documents and Settings\All Users\Application Data\McAfee\Common Framework\AgentEvents\**10,lazy_ntfs,
+      1574,McAfee MC Logs XP,Antivirus,Documents and Settings\All Users\Application Data\McAfee\MCLOGS\SAE\**10,lazy_ntfs,
+      1575,McAfee Data Reputation Logs XP,Antivirus,Documents and Settings\All Users\Application Data\McAfee\datreputation\Logs\**10,lazy_ntfs,
+      1576,McAfee Managed VirusScan Logs XP,Antivirus,Documents and Settings\All Users\Application Data\McAfee\Managed\VirusScan\Logs\**10,lazy_ntfs,
+      1577,McAfee WCF Service Logs,Antivirus,Program Files (x86)\McAfee\DLP\WCF Service\Log\**10,lazy_ntfs,
+      1578,McAfee ePO Apache Logs,Antivirus,Program Files (x86)\McAfee\ePolicy Orchestrator\Apache2\Logs\**10,lazy_ntfs,
+      1579,McAfee ePO DB Events,Antivirus,Program Files (x86)\McAfee\ePolicy Orchestrator\DB\Events\**10,lazy_ntfs,
+      1580,McAfee ePO DB Debug Events,Antivirus,Program Files (x86)\McAfee\ePolicy Orchestrator\DB\Events\Debug\**10,lazy_ntfs,
+      1581,McAfee ePO Server Logs,Antivirus,Program Files (x86)\McAfee\ePolicy Orchestrator\Server\Logs\**10,lazy_ntfs,
+      1582,Notepad Window State Files,Text Editor,Users\*\AppData\Local\Packages\Microsoft.WindowsNotepad_8wekyb3d8bbwe\LocalState\WindowState\*.bin,lazy_ntfs,Contains .bin files tracking the state of the Notepad Window
+      1583,Notepad Settings File,Text Editor,Users\*\AppData\Local\Packages\Microsoft.WindowsNotepad_8wekyb3d8bbwe\Settings\settings.dat,lazy_ntfs,Retrieves settings.dat which is an Application Registry
+      1584,PowerShell Transcripts - Observed Location,PowerShellTranscripts,PSTranscript\20*\PowerShell_transcript.*.txt,lazy_ntfs,
+      1585,RDG Files,Configuration,**10\*.rdg,lazy_ntfs,These files store the information about Remote Desktop Groups.
+      1586,Old RDG Files,Configuration,**10\*.rdg.old,lazy_ntfs,These files store the information about Remote Desktop Groups. They are backups created when upgrading to a newer version of RDCMan.
+      1587,RDCMan Settings File,Configuration,Users\*\AppData\Local\Microsoft\Remote Desktop Connection Manager\**10\*.settings,lazy_ntfs,Stores settings information for RDCMan.
+      1589,SUM Database (.mdb files),Logs,Windows\System32\LogFiles\SUM\**10,lazy_ntfs,"Grabs Current.mdb, SystemIdentity.mdb, [GUID].mdb and associated ESE db log files"
+      1590,VSCode File Backups,Apps,Users\*\AppData\Roaming\Code\Backups\*\**10,lazy_ntfs,Grabs the Backups for unsaved changes.
+      1591,WindowsApp,EventLogs,Users\*\AppData\Local\Temp\DiagOutputDir\Windows365\**10,lazy_ntfs,
+      1592,Windows Update History,EventLogs,Windows\SoftwareDistribution\DataStore\**10,lazy_ntfs,
+      1593,AppCompat PCA Folder,ApplicationCompatibility,Windows\appcompat\pca\*,lazy_ntfs,
+      1594,ChromeCache,Cache,Users\*\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT\Cache\**10,lazy_ntfs,Chrome Cache
+      1595,ESET Remote Administrator Logs,Antivirus,ProgramData\ESET\RemoteAdministrator\Agent\EraAgentApplicationData\Logs\*,lazy_ntfs,Remote Administrator logs include information on tasks executed on the target.
+      1596,Fences - Desktop Screenshots,Apps,Users\*\AppData\Roaming\Stardock\Fences\Backups\*,lazy_ntfs,Locates all screenshots taken automatically by the Fences application
+      1597,FreeFileSync,Apps,Users\*\AppData\Roaming\FreeFileSync\Logs\*,lazy_ntfs,Copies out all log files
+      1598,ITarian,Apps,Program Files\ITarian\Endpoint Manager\rmmlogs\*,lazy_ntfs,
+      1599,ITarian,Apps,Program Files (x86)\ITarian\Endpoint Manager\rmmlogs\*,lazy_ntfs,
+      1600,Comodo,Apps,Program Files\Comodo\Endpoint Manager\rmmlogs\*,lazy_ntfs,
+      1601,ITarian,Apps,Program Files (x86)\Comodo\Endpoint Manager\rmmlogs\*,lazy_ntfs,
+      1605,Macrium Reflect,Apps,ProgramData\Macrium\Reflect Launcher\*,lazy_ntfs,Copies out the Reflect folder which contains many important logs
+      1606,Microsoft OneNote - FullTextSearchIndex,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\*\FullTextSearchIndex\*,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's text content
+      1607,Microsoft OneNote - AccessibilityCheckerIndex,Apps,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\AccessibilityCheckerIndex\*,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's version sync error history
+      1608,Microsoft Teams Logs (Windows 11),Apps,Users\*\AppData\Local\Packages\MicrosoftTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams\Logs\*,lazy_ntfs,Lots of log files for MS Teams
+      1609,ProtonVPN - Connection Logs,ApplicationLogs,Users\*\AppData\Local\ProtonVPN\Logs\*,lazy_ntfs,Locates ProtonVPN connection logs.
+      1610,QFinderPro,Apps,Users\*\AppData\Local\QNAP\QfinderPro\*,lazy_ntfs,Locates a JSON file that provides network location information for any QNAP connected devices.
+      1611,RDCMan Personal Certificate,Certificate,Users*\AppData\Roaming\Microsoft\SystemCertificates\My\Certificates\*,lazy_ntfs,Encryption Certificate for stored passwords
+      1612,SQLite Data Sources,Configuration,Users\*\AppData\Local\Devolutions\RemoteDesktopManager\*.db,lazy_ntfs,SQLite database of connections and settings. Connections.db is the default. There can be others in different locations. This will only pick up db files in the default location.
+      1613,XML Data Sources,Configuration,Users\*\AppData\Local\Devolutions\RemoteDesktopManager\*.xml,lazy_ntfs,"XML of connections and settings. Connections.xml is the default. There can be others in different locations. This will only pick up XML files in the default location."""
+      1614,Connections.log,Logs,Users\*\AppData\Local\Devolutions\RemoteDesktopManager\Connections.log,lazy_ntfs,Log file for connections.
+      1615,RemoteDesktopManager.cfg,Configuration,Users\*\AppData\Local\Devolutions\RemoteDesktopManager\RemoteDesktopManager.cfg,lazy_ntfs,Configuration settings.
+      1616,Most Recently Used XML,XML,Users\*\AppData\Local\Devolutions\RemoteDesktopManager\*\Mru.xml,lazy_ntfs,XML file of most recently used connections.
+      1617,Favorites XML,XML,Users\*\AppData\Local\Devolutions\RemoteDesktopManager\*\Favorites.xml,lazy_ntfs,XML file of Favorited connections.
+      1618,RustDesk logs,Communications,Windows\ServiceProfiles\LocalService\AppData\Roaming\RustDesk\log\server\*,lazy_ntfs,Collects all log files related to RustDesk
+      1619,SCCM Client Log Files,Logs,Windows\CCM\Logs\*,lazy_ntfs,
+      1620,Microsoft OneNote - FullTextSearchIndex,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\*\FullTextSearchIndex\*,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's text content
+      1621,Microsoft OneNote - AccessibilityCheckerIndex,SQLDatabases,Users\*\AppData\Local\Packages\Microsoft.Office.OneNote_8wekyb3d8bbwe\LocalState\AppData\Local\OneNote\16.0\AccessibilityCheckerIndex\*,lazy_ntfs,Grabs database(s) comprising of each OneNote notebook's version sync error history
+      1622,Snagit - Captures,Apps,Users\*\AppData\Local\TechSmith\Snagit\DataStore\*,lazy_ntfs,Locates all Snagit captures
+      1623,User startup folders,Persistence,Users\*\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\*,lazy_ntfs,
+      1624,System-wide startup folder,Persistence,ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\*,lazy_ntfs,
+      1625,SumatraPDF Cache,FileKnowledge,Users\*\AppData\Local\SumatraPDF\sumatrapdfcache\*,lazy_ntfs,Folder contains a PNG snapshot of each PDF file the user had open at the time of last application close
+      1626,Supremo File Transfer Inbox,Communications,ProgramData\SupremoRemoteDesktop\Inbox\*,lazy_ntfs,Includes files transferred to the inbox folder during a remote session. See Supremo.00.FileTransfer.log
+      1627,VMware - Virtual Machine Inventory,Apps,Users\*\AppData\Roaming\VMware\*,lazy_ntfs,Locates an inventory of all Virtual Machines on disk.
+      1628,TightVNC Application Logs,ApplicationLogs,ProgramData\TightVNC\Server\Logs\*,lazy_ntfs,https://ro.ecu.edu.au/cgi/viewcontent.cgi?article=1160&amp;context=adf
+      1629,Viber Users Avatars Cache,Apps,Users\*\AppData\Roaming\ViberPC\*\Avatars\*,lazy_ntfs,Cache of the Avatars for other Viber users
+      1630,Viber Users Backgrounds Cache,Apps,Users\*\AppData\Roaming\ViberPC\*\Backgrounds\*,lazy_ntfs,Store of the backgrounds
+      1631,Viber Users Thumbnails Cache,Apps,Users\*\AppData\Roaming\ViberPC\*\Thumbnails\*,lazy_ntfs,Cache of the thumbnails for uploaded/downloaded images
+      1632,WhatsApp Cache,Apps,Users\*\AppData\Roaming\WhatsApp\Cache\*,lazy_ntfs,"Copies the cache of WhatsApp. Can be opened with Chrome Cache Viewer for viewing embedded thumbnails and other image artefacts, as well as extracting .enc message files or other files"
+      1633,WhatsApp Local Storage,Apps,Users\*\AppData\Roaming\WhatsApp\Local Storage\leveldb\*,lazy_ntfs,"Copies the Local Storage leveldb of WhatsApp. Contains phone model and name of user, plus encrypted base64 strings which can be viewed with LevelDBDumper"
+      1634,Microsoft Store WhatsApp Cache,Apps,Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalCache\Roaming\WhatsApp\Cache\*,lazy_ntfs,"Copies the cache of WhatsApp. Can be opened with Chrome Cache Viewer for viewing embedded thumbnails and other image artefacts, as well as extracting .enc message files or other files"
+      1635,Microsoft Store WhatsApp Local Storage,Apps,Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalCache\Roaming\WhatsApp\Local Storage\leveldb\*,lazy_ntfs,"Copies the Local Storage leveldb of WhatsApp. Contains phone model and name of user, plus encrypted base64 strings which can be viewed with LevelDBDumper"
+      1636,Microsoft Store WhatsApp Desktop Profile Pictures,Apps,Users\*\AppData\Local\Packages\*WhatsAppDesktop*\LocalState\profilePictures\*,lazy_ntfs,"Copies the local store of contacts profile pictures, simply open with a photos software"
+      1637,Zoom client logs,Apps,Users\*\AppData\Roaming\Zoom\logs\**10,lazy_ntfs,Zoom client artifacts
+      1638,Zoom client logs (Windows XP),Apps,Documents and Settings\*\Application Data\Zoom\**10,lazy_ntfs,Zoom client artifacts (Windows XP)
+      1639,Zoom client recordings,Apps,Users\*\Documents\Zoom\**10,lazy_ntfs,Zoom recording artifacts
+      1640,IDrive Cleanup Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Archive Cleanup\**10,lazy_ntfs,Contains individual log files for each archive cleanup operation
+      1641,IDrive Backup Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Backup\**10,lazy_ntfs,Contains individual log files for each backup operation
+      1642,IDrive Delete Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Delete\**10,lazy_ntfs,Contains individual log files for each delete operation
+      1643,IDrive Restore Operations,Apps,ProgramData\IDrive\IBCOMMON\*\Session\Restore\*,lazy_ntfs,Contains individual log files for each restore operation
+      1644,IDrive Backup Summary,Apps,ProgramData\IDrive\IBCOMMON\*\Session\LOGXML\*xml,lazy_ntfs,Contains summary of each backup session
+      1645,IDrive Tracefile,Apps,ProgramData\IDrive\IBCOMMON\*\Tracefile.txt,lazy_ntfs,Application log which includes error logs for failed uploads
+      1646,IDrive Mapped Drives,Apps,ProgramData\IDrive\IBCOMMON\IDMappedDrives.txt,lazy_ntfs,List of mapped drives for backup
+      1647,IDrive Backup Schedule,Apps,ProgramData\IDrive\IBCOMMON\schedule.xml,lazy_ntfs,Backup schedule configurations
+      1648,IDrive Schedule History,Apps,ProgramData\IDrive\IBCOMMON\Sch_Trace.txt,lazy_ntfs,History of schedule configurations
+      1649,IDrive Configuration,Apps,ProgramData\IDrive\IBCOMMON\idrive.ini,lazy_ntfs,List of IDrive configuration options
+      1650,IDrive Local Drives,Apps,ProgramData\IDrive\IBCOMMON\get_Alldrives.txt,lazy_ntfs,List of all local drives
+      1651,IDrive Exclusion Configurations,Apps,ProgramData\IDrive\IBCOMMON\Exclude*,lazy_ntfs,Files pertaining to exclusion configurations
+      1652,IDrive User Details,Apps,ProgramData\IDrive\IBCOMMON\AutoComp.ini,lazy_ntfs,"IDrive username, Scheduler notification emails, local username"
+      1653,IDrive SQL Databse,Apps,ProgramData\IDrive\IBCOMMON\*\LDBNEW\*\*.ibds,lazy_ntfs,Sql database of local files that are backed up
+      1654,Nicotine++ Buddyfiles.db,FileDownload,Users\*\AppData\Roaming\nicotine\**10\buddyfiles.db,lazy_ntfs,Locates a DB that appears to include shared files from a user's buddy list
+      1655,Nicotine++ Buddystreams.db,FileDownload,Users\*\AppData\Roaming\nicotine\**10\buddystreams.db,lazy_ntfs,Locates a DB that appears to include shared files from a user's buddy list
+      1656,Nicotine++ Buddymtimes.db,FileDownload,Users\*\AppData\Roaming\nicotine\**10\buddymtimes.db,lazy_ntfs,"Locates a DB that appears to enumerate which files the user is sharing to their buddy list, from a folder level"
+      1657,Nicotine++ Buddyfileindex.db,FileDownload,Users\*\AppData\Roaming\nicotine\**10\buddyfileindex.db,lazy_ntfs,"Locates a DB that appears to enumerate which files the user is sharing to their buddy list, from a file level"
+      1658,Nicotine++ Buddywordindex.db,FileDownload,Users\*\AppData\Roaming\nicotine\**10\buddywordindex.db,lazy_ntfs,Unknown what this is for at this time
   - name: KapeTargets
     type: hidden
     description: |
@@ -2434,9 +2773,10 @@ parameters:
       when the parameter is checked.
     default: |
       Group,RuleIds
-      _BasicCollection,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 36, 37, 38, 39, 51, 280, 281, 282, 500, 501, 502, 503, 504, 505, 506, 507, 651, 652, 653, 654, 655, 661, 662, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 961, 962, 963, 964, 965, 966, 983, 984, 985, 986, 987, 988, 989, 1061, 1062, 1073, 1101, 1102, 1103, 1231, 1232, 1322, 1323, 1324, 1325, 1326, 1327]"
-      _KapeTriage,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 18, 19, 20, 21, 22, 23, 24, 29, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 169, 172, 173, 174, 175, 176, 177, 179, 225, 226, 227, 228, 229, 230, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 263, 280, 281, 282, 310, 311, 312, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 376, 377, 393, 394, 395, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 486, 487, 488, 489, 490, 491, 492, 493, 494, 500, 501, 502, 503, 504, 505, 506, 507, 508, 520, 521, 528, 529, 530, 531, 535, 536, 537, 538, 539, 540, 549, 550, 557, 580, 581, 582, 583, 584, 585, 614, 615, 638, 639, 651, 652, 653, 654, 655, 661, 662, 665, 666, 667, 668, 669, 670, 671, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 847, 848, 849, 961, 962, 963, 964, 965, 966, 967, 968, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 1019, 1020, 1021, 1025, 1026, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1066, 1067, 1068, 1069, 1086, 1087, 1096, 1097, 1098, 1099, 1100, 1121, 1122, 1123, 1124, 1127, 1128, 1129, 1130, 1137, 1138, 1139, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1252, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1296, 1297, 1298, 1322, 1323, 1324, 1325, 1326, 1327]"
-      _SANS_Triage,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 18, 19, 20, 21, 22, 23, 24, 29, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 80, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 165, 169, 172, 173, 174, 175, 176, 177, 179, 215, 216, 225, 226, 227, 228, 229, 230, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 263, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 310, 311, 312, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 376, 377, 382, 383, 384, 385, 386, 387, 388, 389, 392, 393, 394, 395, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 486, 487, 488, 489, 490, 491, 492, 493, 494, 500, 501, 502, 503, 504, 505, 506, 507, 508, 520, 521, 528, 529, 530, 531, 534, 535, 536, 537, 538, 539, 540, 549, 550, 557, 560, 561, 562, 563, 564, 573, 574, 580, 581, 582, 583, 584, 585, 614, 615, 638, 639, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 665, 666, 667, 668, 669, 670, 671, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 847, 848, 849, 961, 962, 963, 964, 965, 966, 967, 968, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 999, 1000, 1001, 1002, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1019, 1020, 1021, 1025, 1026, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1066, 1067, 1068, 1069, 1070, 1071, 1073, 1086, 1087, 1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103, 1121, 1122, 1123, 1124, 1127, 1128, 1129, 1130, 1137, 1138, 1139, 1140, 1141, 1142, 1143, 1144, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1231, 1232, 1252, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1294, 1295, 1296, 1297, 1298, 1322, 1323, 1324, 1325, 1326, 1327]"
+      _BasicCollection,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 36, 37, 38, 39, 280, 281, 282, 500, 501, 502, 503, 504, 505, 506, 507, 651, 652, 653, 654, 655, 661, 662, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 961, 962, 963, 964, 965, 966, 983, 984, 985, 986, 987, 988, 989, 1061, 1062, 1073, 1101, 1102, 1103, 1231, 1232, 1322, 1323, 1324, 1325, 1326, 1327, 1435, 1436, 1437, 1557, 1558, 1593]"
+      _KapeTriage,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 18, 19, 20, 21, 22, 23, 24, 29, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 169, 172, 173, 174, 175, 176, 177, 179, 225, 226, 227, 228, 229, 230, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 263, 280, 281, 282, 310, 311, 312, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 376, 377, 393, 394, 395, 407, 408, 409, 410, 411, 412, 413, 414, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 486, 487, 488, 489, 490, 491, 492, 493, 494, 500, 501, 502, 503, 504, 505, 506, 507, 508, 520, 521, 528, 529, 530, 531, 535, 536, 537, 538, 539, 540, 543, 549, 550, 557, 580, 581, 582, 583, 584, 585, 614, 615, 638, 639, 651, 652, 653, 654, 655, 661, 662, 665, 666, 667, 668, 669, 670, 671, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 789, 790, 847, 848, 961, 962, 963, 964, 965, 966, 968, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 1019, 1020, 1021, 1025, 1026, 1050, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1066, 1067, 1068, 1069, 1086, 1087, 1096, 1097, 1098, 1099, 1100, 1121, 1122, 1123, 1124, 1127, 1128, 1129, 1130, 1137, 1138, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1252, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1296, 1297, 1298, 1322, 1323, 1324, 1325, 1326, 1327, 1328, 1329, 1330, 1331, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344, 1345, 1346, 1347, 1348, 1349, 1350, 1351, 1352, 1353, 1360, 1361, 1362, 1363, 1364, 1365, 1366, 1367, 1368, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385, 1386, 1387, 1388, 1389, 1390, 1391, 1392, 1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400, 1401, 1402, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1432, 1433, 1434, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1469, 1470, 1471, 1472, 1473, 1474, 1475, 1476, 1477, 1478, 1479, 1480, 1481, 1482, 1483, 1484, 1485, 1486, 1487, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 1526, 1527, 1528, 1529, 1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555, 1556, 1566, 1567, 1568, 1569, 1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581, 1589, 1593, 1595, 1597, 1598, 1599, 1600, 1601, 1618, 1626, 1628]"
+      _SANS_Triage,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 18, 19, 20, 21, 22, 23, 24, 29, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 80, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 165, 169, 172, 173, 174, 175, 176, 177, 179, 215, 216, 225, 226, 227, 228, 229, 230, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 263, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 376, 377, 382, 383, 384, 385, 386, 387, 388, 389, 392, 393, 394, 395, 407, 408, 409, 410, 411, 412, 413, 414, 419, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 486, 487, 488, 489, 490, 491, 492, 493, 494, 500, 501, 502, 503, 504, 505, 506, 507, 508, 520, 521, 528, 529, 530, 531, 534, 535, 536, 537, 538, 539, 540, 543, 549, 550, 557, 560, 561, 562, 563, 573, 574, 580, 581, 582, 583, 584, 585, 614, 615, 638, 639, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 665, 666, 667, 668, 669, 670, 671, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 789, 790, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 961, 962, 963, 964, 965, 966, 968, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 999, 1000, 1001, 1002, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1019, 1020, 1021, 1025, 1026, 1050, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1066, 1067, 1068, 1069, 1070, 1071, 1073, 1086, 1087, 1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103, 1121, 1122, 1123, 1124, 1127, 1128, 1129, 1130, 1137, 1138, 1140, 1141, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1195, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1231, 1232, 1252, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1294, 1295, 1296, 1297, 1298, 1322, 1323, 1324, 1325, 1326, 1327, 1328, 1329, 1330, 1331, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344, 1345, 1346, 1347, 1348, 1349, 1350, 1351, 1352, 1353, 1354, 1355, 1356, 1357, 1358, 1359, 1360, 1361, 1362, 1363, 1364, 1365, 1366, 1367, 1368, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385, 1386, 1387, 1388, 1389, 1390, 1391, 1392, 1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400, 1401, 1402, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1432, 1433, 1434, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1451, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1469, 1470, 1471, 1472, 1473, 1474, 1475, 1476, 1477, 1478, 1479, 1480, 1481, 1482, 1483, 1484, 1485, 1486, 1487, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 1526, 1527, 1528, 1529, 1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555, 1556, 1557, 1558, 1566, 1567, 1568, 1569, 1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581, 1584, 1589, 1593, 1595, 1597, 1598, 1599, 1600, 1601, 1608, 1618, 1626, 1628, 1629, 1630, 1631, 1632, 1633, 1634, 1635]"
+      _Bitmap,[1559]
       _Boot,[1]
       _J,"[2, 3, 4, 5]"
       _LogFile,[6]
@@ -2445,6 +2785,7 @@ parameters:
       _SDS,"[9, 10]"
       _T,"[11, 12]"
       1Password,"[13, 14, 15]"
+      360SecureBrowser,"[1328, 1329, 1330, 1331, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344, 1345, 1346, 1347, 1348, 1349, 1350, 1351, 1352, 1353]"
       4KVideoDownloader,"[16, 17]"
       AVG,"[18, 19, 20, 21, 22, 23, 24]"
       AceText,[25]
@@ -2452,16 +2793,19 @@ parameters:
       Action1,[29]
       ActiveDirectoryNTDS,[30]
       ActiveDirectorySysvol,[31]
+      AdvancedIPScanner,"[1354, 1355, 1356]"
+      AdvancedPortScanner,"[1357, 1358, 1359]"
       AgentRansack,"[32, 33, 34, 35]"
       Amcache,"[36, 37, 38, 39]"
       Ammyy,[40]
-      Antivirus,"[18, 19, 20, 21, 22, 23, 24, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 82, 83, 84, 169, 172, 173, 174, 175, 176, 177, 233, 234, 235, 236, 237, 238, 263, 310, 311, 312, 393, 394, 395, 528, 529, 530, 531, 535, 536, 537, 538, 539, 540, 557, 847, 968, 993, 994, 1019, 1020, 1021, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1086, 1087, 1096, 1097, 1098, 1127, 1128, 1129, 1130, 1187, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205]"
-      AnyDesk,"[41, 42, 43, 44, 45, 46, 47, 48, 49]"
+      Antivirus,"[18, 19, 20, 21, 22, 23, 24, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 82, 83, 84, 169, 172, 173, 174, 175, 176, 177, 233, 234, 235, 237, 238, 263, 310, 311, 312, 393, 394, 395, 528, 529, 530, 531, 535, 536, 537, 538, 539, 540, 557, 847, 968, 993, 994, 1019, 1020, 1021, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1086, 1087, 1096, 1097, 1098, 1127, 1128, 1129, 1130, 1187, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1566, 1567, 1568, 1569, 1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581, 1595]"
+      AnyDesk,"[41, 42, 43, 44, 45, 46, 47, 48, 49, 1360, 1361]"
       ApacheAccessLog,[50]
-      AppCompatPCA,[51]
+      AppCompatPCA,[1593]
       AppData,[52]
       AppXPackages,"[53, 54, 55, 56, 57]"
       ApplicationEvents,"[58, 59, 60, 61]"
+      Arc,"[1362, 1363, 1364, 1365, 1366, 1367, 1368, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376]"
       AsperaConnect,"[62, 63]"
       AteraAgent,"[64, 65, 66, 67, 68]"
       Avast,"[69, 70, 71, 72, 73, 74]"
@@ -2474,18 +2818,22 @@ parameters:
       BoxDrive_UserFiles,"[87, 88]"
       BraveBrowser,"[89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108]"
       BrowserCache,"[109, 110, 111, 112, 113, 114, 115, 116]"
+      CapabilityAccessManager,[1560]
       CertUtil,"[117, 118, 119, 120]"
+      ChatGPT,"[1561, 1562, 1564, 1565, 1594]"
       Chrome,"[121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161]"
       ChromeExtensions,"[162, 163]"
       ChromeFileSystem,[164]
       CiscoJabber,[165]
       ClipboardMaster,"[166, 167, 168]"
-      CloudStorage_All,"[85, 86, 87, 88, 225, 226, 227, 228, 229, 230, 231, 375, 376, 377, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 614, 615, 616, 698, 1045, 1046, 1047, 1313, 1314, 1315]"
-      CloudStorage_Metadata,"[85, 86, 225, 226, 227, 228, 229, 230, 376, 377, 614, 615, 698]"
-      CloudStorage_OneDriveExplorer,"[614, 615, 703, 704, 705, 706, 707, 780, 781, 782, 783, 784, 785, 786, 787, 788]"
-      CombinedLogs,"[280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 573, 574, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 1101, 1102, 1103, 1206, 1207]"
+      CloudStorage_All,"[85, 86, 87, 88, 225, 226, 227, 228, 229, 230, 231, 375, 376, 377, 543, 614, 615, 616, 698, 1045, 1046, 1047, 1313, 1314, 1315, 1597, 1640, 1641, 1642, 1643, 1644, 1645, 1646, 1647, 1648, 1649, 1650, 1651, 1652, 1653]"
+      CloudStorage_Metadata,"[85, 86, 225, 226, 227, 228, 229, 230, 376, 377, 543, 614, 615, 698, 1597]"
+      CloudStorage_OneDriveExplorer,"[614, 615, 703, 704, 705, 706, 707, 782, 783, 784, 785, 786, 788, 1435, 1436, 1437]"
+      CocCoc,"[1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385, 1386, 1387, 1388, 1389, 1390, 1391, 1392, 1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400, 1401, 1402]"
+      CombinedLogs,"[280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 573, 574, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 1101, 1102, 1103, 1206, 1207, 1584]"
       Combofix,[169]
       ConfluenceLogs,"[170, 171]"
+      CrowdStrikeFalcon,[1566]
       Cybereason,"[172, 173, 174]"
       Cylance,"[175, 176, 177]"
       DC__,[178]
@@ -2506,7 +2854,7 @@ parameters:
       Dropbox_Metadata,"[225, 226, 227, 228, 229, 230]"
       Dropbox_UserFiles,[231]
       EFCommander,[232]
-      ESET,"[233, 234, 235, 236, 237, 238]"
+      ESET,"[233, 234, 235, 237, 238, 1595]"
       Edge,[239]
       EdgeChromium,"[240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261]"
       EdgeChromiumExtensions,[262]
@@ -2518,15 +2866,16 @@ parameters:
       EventTranscriptDB,"[293, 294, 295]"
       Evernote,"[296, 297, 298]"
       Everything__VoidTools_,"[299, 300, 301, 302]"
-      EvidenceOfExecution,"[36, 37, 38, 39, 51, 661, 662, 699, 700, 1061, 1062]"
+      EvidenceOfExecution,"[36, 37, 38, 39, 661, 662, 699, 700, 1061, 1062, 1593]"
       Exchange,"[303, 308, 309]"
       ExchangeClientAccess,[303]
       ExchangeCve_2021_26855,"[304, 305, 306, 307]"
       ExchangeSetupLog,[308]
       ExchangeTransport,[309]
       FSecure,"[310, 311, 312]"
-      FTPClients,"[314, 315, 316, 317, 1195]"
-      Fences,[313]
+      FTPClients,"[314, 315, 316, 317, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 1195]"
+      FastStoneImageViewer,[1403]
+      Fences,[1596]
       FileExplorerReplacements,"[198, 199, 200, 201, 202, 203, 204, 205, 206, 217, 218, 219, 220, 221, 222, 223, 232, 353, 354, 355, 356, 357, 358, 359, 567, 568, 569, 570, 571, 572, 612, 613, 674, 675, 1024, 1063, 1064, 1065, 1088, 1089, 1090, 1091, 1092, 1093, 1094, 1258, 1259, 1260, 1261]"
       FileSystem,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12]"
       FileZillaClient,"[314, 315]"
@@ -2534,7 +2883,7 @@ parameters:
       Firefox,"[318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352]"
       FreeCommander,"[353, 354, 355, 356, 357, 358, 359]"
       FreeDownloadManager,"[360, 361, 362]"
-      FreeFileSync,[363]
+      FreeFileSync,[1597]
       Freenet,"[364, 365, 366, 367, 368]"
       FrostWire,"[369, 370, 371]"
       Gigatribe,"[372, 373, 374]"
@@ -2544,16 +2893,16 @@ parameters:
       GroupPolicy,"[382, 383, 384, 385, 386, 387, 388, 389]"
       HeidiSQL,"[390, 391]"
       HexChat,[392]
-      HitmanPro,"[393, 394, 395]"
+      HitmanPro,"[393, 394, 395, 1567]"
       HostsFile,[396]
+      IDrive,"[1640, 1641, 1642, 1643, 1644, 1645, 1646, 1647, 1648, 1649, 1650, 1651, 1652, 1653]"
       IISConfiguration,"[397, 398, 399, 400]"
       IISLogFiles,"[401, 402, 403, 404, 405, 406]"
       IRCClients,"[392, 419, 1294, 1295]"
       ISLOnline,"[407, 408, 409, 410, 411, 412, 413, 414]"
-      ITarian,"[415, 416, 417, 418]"
+      ITarian,"[1598, 1599, 1600, 1601]"
       IceChat,[419]
       IconCacheDB,[420]
-      Idrive,"[421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434]"
       ImgBurn,[435]
       InternetExplorer,"[436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448]"
       IrfanView,[449]
@@ -2561,7 +2910,7 @@ parameters:
       JavaWebCache,"[455, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465]"
       JumpLists,"[466, 467]"
       Kali,"[468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485]"
-      KapeTriage,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 18, 19, 20, 21, 22, 23, 24, 29, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 169, 172, 173, 174, 175, 176, 177, 179, 225, 226, 227, 228, 229, 230, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 263, 280, 281, 282, 310, 311, 312, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 376, 377, 393, 394, 395, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 486, 487, 488, 489, 490, 491, 492, 493, 494, 500, 501, 502, 503, 504, 505, 506, 507, 508, 520, 521, 528, 529, 530, 531, 535, 536, 537, 538, 539, 540, 549, 550, 557, 580, 581, 582, 583, 584, 585, 614, 615, 638, 639, 651, 652, 653, 654, 655, 661, 662, 665, 666, 667, 668, 669, 670, 671, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 847, 848, 849, 961, 962, 963, 964, 965, 966, 967, 968, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 1019, 1020, 1021, 1025, 1026, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1066, 1067, 1068, 1069, 1086, 1087, 1096, 1097, 1098, 1099, 1100, 1121, 1122, 1123, 1124, 1127, 1128, 1129, 1130, 1137, 1138, 1139, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1252, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1296, 1297, 1298, 1322, 1323, 1324, 1325, 1326, 1327]"
+      KapeTriage,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 18, 19, 20, 21, 22, 23, 24, 29, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 58, 59, 60, 61, 69, 70, 71, 72, 73, 74, 75, 76, 77, 82, 83, 84, 85, 86, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 169, 172, 173, 174, 175, 176, 177, 179, 225, 226, 227, 228, 229, 230, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 263, 280, 281, 282, 310, 311, 312, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 376, 377, 393, 394, 395, 407, 408, 409, 410, 411, 412, 413, 414, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 486, 487, 488, 489, 490, 491, 492, 493, 494, 500, 501, 502, 503, 504, 505, 506, 507, 508, 520, 521, 528, 529, 530, 531, 535, 536, 537, 538, 539, 540, 543, 549, 550, 557, 580, 581, 582, 583, 584, 585, 614, 615, 638, 639, 651, 652, 653, 654, 655, 661, 662, 665, 666, 667, 668, 669, 670, 671, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 706, 707, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 789, 790, 847, 848, 961, 962, 963, 964, 965, 966, 968, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 1019, 1020, 1021, 1025, 1026, 1050, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1066, 1067, 1068, 1069, 1086, 1087, 1096, 1097, 1098, 1099, 1100, 1121, 1122, 1123, 1124, 1127, 1128, 1129, 1130, 1137, 1138, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1187, 1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1252, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1296, 1297, 1298, 1322, 1323, 1324, 1325, 1326, 1327, 1328, 1329, 1330, 1331, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344, 1345, 1346, 1347, 1348, 1349, 1350, 1351, 1352, 1353, 1360, 1361, 1362, 1363, 1364, 1365, 1366, 1367, 1368, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385, 1386, 1387, 1388, 1389, 1390, 1391, 1392, 1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400, 1401, 1402, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1432, 1433, 1434, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1469, 1470, 1471, 1472, 1473, 1474, 1475, 1476, 1477, 1478, 1479, 1480, 1481, 1482, 1483, 1484, 1485, 1486, 1487, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 1526, 1527, 1528, 1529, 1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555, 1556, 1566, 1567, 1568, 1569, 1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581, 1589, 1593, 1595, 1597, 1598, 1599, 1600, 1601, 1618, 1626, 1628]"
       Kaseya,"[486, 487, 488, 489, 490, 491, 492, 493, 494]"
       Keepass,"[495, 496, 497]"
       KeepassXC,"[498, 499]"
@@ -2573,36 +2922,39 @@ parameters:
       LogMeIn,"[58, 59, 60, 61, 520, 521]"
       MOF,[522]
       MSSQLErrorLog,"[523, 524]"
-      MacriumReflect,"[525, 526, 527]"
+      MacriumReflect,"[525, 526, 1605]"
       Malwarebytes,"[528, 529, 530, 531]"
       ManageEngineLogs,"[532, 533]"
       Mattermost,[534]
-      McAfee,"[535, 536, 537, 538, 539]"
-      McAfee_ePO,[540]
+      McAfee,"[535, 536, 537, 538, 539, 1568, 1569, 1570, 1571, 1572, 1573, 1574, 1575, 1576, 1577]"
+      McAfee_ePO,"[540, 1578, 1579, 1580, 1581]"
       MediaMonkey,"[541, 542]"
       Megasync,[543]
       MemoryFiles,"[544, 545, 546, 547, 548]"
       MeshAgent,"[549, 550]"
-      MessagingClients,"[165, 215, 216, 392, 419, 534, 560, 561, 562, 563, 564, 999, 1000, 1001, 1002, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1070, 1071, 1140, 1141, 1142, 1143, 1144, 1188, 1189, 1190, 1191, 1294, 1295]"
+      MessagingClients,"[165, 215, 216, 392, 419, 534, 560, 561, 562, 563, 999, 1000, 1001, 1002, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1070, 1071, 1140, 1141, 1294, 1295, 1608, 1629, 1630, 1631, 1632, 1633, 1634, 1635]"
+      MicrosoftAzureCopy,"[1404, 1405]"
       MicrosoftOfficeBackstage,[551]
-      MicrosoftOneNote,"[552, 553, 554, 555, 556]"
+      MicrosoftOneNote,"[553, 555, 556, 1606, 1607]"
       MicrosoftSafetyScanner,[557]
       MicrosoftStickyNotes,"[558, 559]"
-      MicrosoftTeams,"[560, 561, 562, 563, 564]"
+      MicrosoftTeams,"[560, 561, 562, 563, 1608]"
       MicrosoftToDo,"[565, 566]"
       MidnightCommander,[567]
-      MiniTimelineCollection,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 280, 281, 282, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788]"
+      MiniTimelineCollection,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 280, 281, 282, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 1435, 1436, 1437]"
+      MstyDatabase,[1406]
       MultiCommander,"[568, 569, 570, 571, 572]"
       NETCLRUsageLogs,"[573, 574]"
       NGINXLogs,[575]
       NZBGet,"[576, 577]"
       Nessus,"[578, 579]"
       NetMonitorforEmployeesProfessional,"[580, 581, 582, 583, 584, 585]"
+      NetworkScanner,"[1354, 1355, 1356, 1357, 1358, 1359, 1451]"
       NewsbinPro,[586]
       Newsleecher,[587]
-      Nicotine__,"[588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598]"
+      Nicotine__,"[588, 589, 595, 596, 597, 598, 1654, 1655, 1656, 1657, 1658]"
       Notepad__,"[599, 600, 601]"
-      Notepad,[602]
+      Notepad,"[602, 1582, 1583]"
       Notion,"[603, 604]"
       OfficeAutosave,"[605, 606, 607, 608]"
       OfficeDiagnostics,"[609, 610]"
@@ -2620,16 +2972,19 @@ parameters:
       PerfLogs,[649]
       PowerShell7Config,[650]
       PowerShellConsole,"[651, 652, 653, 654, 655]"
-      PowerShellTranscripts,"[656, 657, 658, 659, 660]"
+      PowerShellTranscripts,"[656, 657, 658, 659, 660, 1584]"
       Prefetch,"[661, 662]"
       ProgramData,[663]
-      ProgramExecution,"[36, 37, 38, 39, 51, 466, 467, 573, 574, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 699, 700, 1061, 1062, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1252]"
-      ProtonVPN,[664]
+      ProgramExecution,"[36, 37, 38, 39, 466, 467, 573, 574, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 699, 700, 1061, 1062, 1180, 1181, 1182, 1183, 1184, 1185, 1186, 1252, 1584, 1593]"
+      ProtonVPN,[1609]
       PuffinSecureBrowser,"[665, 666, 667, 668, 669, 670, 671]"
       PushNotification,"[672, 673]"
       Q_Dir,"[674, 675]"
-      QFinderPro__QNAP_,[676]
+      QFinderPro__QNAP_,[1610]
+      QQBrowser,"[1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1432]"
       QlikSense,"[677, 678, 679, 680]"
+      QuickAssist,"[1433, 1434]"
+      RDCMan,"[1585, 1586, 1587, 1611]"
       RDPCache,"[681, 682, 683]"
       RDPJumplist,[684]
       RDPLogs,"[685, 686, 687, 688, 689, 690, 691, 692]"
@@ -2640,24 +2995,26 @@ parameters:
       RecycleBin,"[703, 704, 705, 706, 707]"
       RecycleBin_DataFiles,"[703, 704, 705]"
       RecycleBin_InfoFiles,"[706, 707]"
-      RegistryHives,"[708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788]"
+      RegistryHives,"[708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 1435, 1436, 1437]"
       RegistryHivesMSIXApps,"[708, 709, 710]"
       RegistryHivesOther,"[711, 712, 713, 714, 715, 716, 717, 718, 719, 720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733, 734, 735, 736, 737, 738]"
       RegistryHivesSystem,"[739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779]"
-      RegistryHivesUser,"[780, 781, 782, 783, 784, 785, 786, 787, 788]"
-      RemoteAdmin,"[29, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 58, 59, 60, 61, 179, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 486, 487, 488, 489, 490, 491, 492, 493, 494, 508, 520, 521, 549, 550, 580, 581, 582, 583, 584, 585, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 789, 790, 848, 849, 990, 991, 992, 1025, 1026, 1050, 1051, 1066, 1067, 1068, 1069, 1099, 1100, 1121, 1122, 1123, 1124, 1137, 1138, 1139, 1262, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1296, 1297, 1298]"
+      RegistryHivesUser,"[782, 783, 784, 785, 786, 788, 1435, 1436, 1437]"
+      Remcos,"[1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447]"
+      RemoteAdmin,"[29, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 58, 59, 60, 61, 179, 407, 408, 409, 410, 411, 412, 413, 414, 486, 487, 488, 489, 490, 491, 492, 493, 494, 508, 520, 521, 549, 550, 580, 581, 582, 583, 584, 585, 681, 682, 683, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 789, 790, 848, 990, 991, 992, 1025, 1026, 1050, 1066, 1067, 1068, 1069, 1099, 1100, 1121, 1122, 1123, 1124, 1137, 1138, 1262, 1278, 1279, 1280, 1281, 1282, 1283, 1284, 1296, 1297, 1298, 1360, 1361, 1433, 1434, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1598, 1599, 1600, 1601, 1618, 1626, 1628]"
+      RemoteDesktopManager,"[1612, 1613, 1614, 1615, 1616, 1617]"
       RemoteUtilities_app,"[789, 790]"
       RoamingProfile,"[791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 817, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827, 828, 829, 830, 831, 832]"
       Robo_FTP,"[833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846]"
       RogueKiller,[847]
-      RustDesk,"[848, 849]"
+      RustDesk,"[848, 1618]"
       SABnbzd,"[850, 851]"
-      SCCMClientLogs,[852]
+      SCCMClientLogs,[1619]
       SDB,"[853, 854, 855, 856]"
-      SOFELK,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 36, 37, 38, 39, 51, 280, 281, 282, 500, 501, 502, 503, 504, 505, 506, 507, 661, 662, 699, 700, 1061, 1062]"
-      SQLiteDatabases,"[857, 858, 859, 860, 861, 862, 863, 864, 865, 866, 867, 868, 869, 870, 871, 872, 873, 874, 875, 876, 877, 878, 879, 880, 881, 882, 883, 884, 885, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 934, 935, 936, 937, 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 956, 957, 958, 959, 960]"
+      SOFELK,"[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 36, 37, 38, 39, 280, 281, 282, 500, 501, 502, 503, 504, 505, 506, 507, 661, 662, 699, 700, 1061, 1062, 1593]"
+      SQLiteDatabases,"[857, 859, 861, 862, 863, 864, 865, 866, 867, 868, 869, 870, 871, 872, 873, 874, 875, 876, 877, 878, 879, 880, 881, 882, 883, 884, 885, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 934, 935, 936, 937, 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 956, 957, 958, 959, 960, 1620, 1621]"
       SRUM,"[961, 962, 963, 964, 965, 966]"
-      SUM,[967]
+      SUM,[1589]
       SUPERAntiSpyware,[968]
       SUSELinuxEnterpriseServer,"[969, 970, 971, 972, 973, 974, 975, 976, 977, 978, 979, 980, 981, 982]"
       ScheduledTasks,"[983, 984, 985, 986, 987, 988, 989, 1322, 1323, 1324, 1325, 1326, 1327]"
@@ -2671,22 +3028,26 @@ parameters:
       SiemensTIA,[998]
       Signal,"[999, 1000, 1001, 1002]"
       SignatureCatalog,"[1003, 1004]"
+      SimpleHelp,"[1448, 1449, 1450]"
       Skype,"[1005, 1006, 1007, 1008, 1009, 1010, 1011]"
       Slack,"[1012, 1013, 1014, 1015, 1016]"
-      Snagit,[1017]
+      Snagit,[1622]
       SnipAndSketch,[1018]
+      SoftPerfectNetscan,[1451]
       Sophos,"[58, 59, 60, 61, 1019, 1020, 1021]"
       Soulseek,"[1022, 1023]"
       SpeedCommander,[1024]
       Splashtop,"[1025, 1026]"
-      StartupFolders,"[1027, 1028]"
+      StartupFolders,"[1623, 1624]"
       StartupInfo,"[1029, 1030]"
       Steam,"[1031, 1032, 1033, 1034, 1035, 1036, 1037, 1038, 1039, 1040, 1041, 1042]"
       SublimeText,"[1043, 1044]"
       SugarSync,"[1045, 1046, 1047]"
-      SumatraPDF,"[1048, 1049]"
-      SupremoRemoteDesktop,"[1050, 1051]"
+      SumatraPDF,"[1048, 1625]"
+      Supermium,"[1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1469, 1470, 1471, 1472, 1473, 1474, 1475, 1476, 1477, 1478, 1479, 1480, 1481, 1482, 1483, 1484, 1485, 1486, 1487, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500]"
+      SupremoRemoteDesktop,"[1050, 1626]"
       Symantec_AV_Logs,"[58, 59, 60, 61, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060]"
+      Syncthing,"[1501, 1502, 1503]"
       Syscache,"[1061, 1062]"
       TablacusExplorer,"[1063, 1064, 1065]"
       TeamViewerLogs,"[1066, 1067, 1068, 1069]"
@@ -2700,8 +3061,9 @@ parameters:
       TotalCommander,"[1088, 1089, 1090, 1091, 1092, 1093, 1094]"
       TreeSize,[1095]
       TrendMicro,"[1096, 1097, 1098]"
+      UCBrowser,"[1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 1526, 1527, 1528, 1529]"
       UEMS,"[1099, 1100]"
-      USBDetective,"[36, 37, 38, 39, 280, 281, 282, 500, 501, 502, 503, 504, 505, 506, 507, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 1101, 1102, 1103]"
+      USBDetective,"[36, 37, 38, 39, 280, 281, 282, 500, 501, 502, 503, 504, 505, 506, 507, 708, 709, 710, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 782, 783, 784, 785, 786, 788, 1101, 1102, 1103, 1435, 1436, 1437]"
       USBDevicesLogs,"[1101, 1102, 1103]"
       Ubuntu,"[1104, 1105, 1106, 1107, 1108, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120]"
       Ultraviewer,"[1121, 1122, 1123, 1124]"
@@ -2710,33 +3072,35 @@ parameters:
       UsersFolders,[1126]
       VIPRE,"[1127, 1128, 1129, 1130]"
       VLC_Media_Player,"[1131, 1132]"
-      VMware,"[1133, 1134, 1135, 1136, 1151, 1152, 1153, 1154]"
-      VMwareInventory,[1133]
+      VMware,"[1134, 1135, 1136, 1151, 1152, 1153, 1154, 1627]"
+      VMwareInventory,[1627]
       VMwareMemory,"[1134, 1135, 1136]"
-      VNCLogs,"[58, 59, 60, 61, 1137, 1138, 1139]"
-      Viber,"[1140, 1141, 1142, 1143, 1144]"
+      VNCLogs,"[58, 59, 60, 61, 1137, 1138, 1628]"
+      Viber,"[1140, 1141, 1629, 1630, 1631]"
       VirtualBox,"[1145, 1146, 1147, 1148, 1149, 1150, 1151, 1152, 1153, 1154]"
       VirtualBoxConfig,"[1145, 1146]"
       VirtualBoxLogs,"[1147, 1148, 1149]"
       VirtualBoxMemory,[1150]
       VirtualDisks,"[1151, 1152, 1153, 1154]"
-      VisualStudioCode,"[1155, 1156, 1157, 1158, 1159, 1160, 1161, 1162]"
+      VisualStudioCode,"[1155, 1156, 1157, 1158, 1159, 1160, 1161, 1162, 1590]"
       Vivaldi,"[1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179]"
       WBEM,"[1180, 1181]"
       WER,"[1182, 1183, 1184, 1185, 1186]"
       WSL,"[180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 969, 970, 971, 972, 973, 974, 975, 976, 977, 978, 979, 980, 981, 982, 1104, 1105, 1106, 1107, 1108, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1299, 1300, 1301, 1302, 1303, 1304, 1305, 1306, 1307, 1308, 1309, 1310, 1311, 1312]"
-      WebBrowsers,"[89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 638, 639, 665, 666, 667, 668, 669, 670, 671, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277]"
+      WaveBrowser,"[1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555, 1556]"
+      WebBrowsers,"[89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 638, 639, 665, 666, 667, 668, 669, 670, 671, 1163, 1164, 1165, 1166, 1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277, 1328, 1329, 1330, 1331, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344, 1345, 1346, 1347, 1348, 1349, 1350, 1351, 1352, 1353, 1362, 1363, 1364, 1365, 1366, 1367, 1368, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385, 1386, 1387, 1388, 1389, 1390, 1391, 1392, 1393, 1394, 1395, 1396, 1397, 1398, 1399, 1400, 1401, 1402, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1425, 1426, 1427, 1428, 1429, 1430, 1431, 1432, 1454, 1455, 1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1469, 1470, 1471, 1472, 1473, 1474, 1475, 1476, 1477, 1478, 1479, 1480, 1481, 1482, 1483, 1484, 1485, 1486, 1487, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 1526, 1527, 1528, 1529, 1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555, 1556]"
       WebServers,"[50, 401, 402, 403, 404, 405, 406, 523, 524, 575]"
       Webroot,[1187]
-      WhatsApp,"[1188, 1189, 1190, 1191]"
-      WhatsApp_Media,"[1192, 1193]"
+      WhatsApp,"[1632, 1633, 1634, 1635]"
+      WhatsApp_Media,"[1193, 1636]"
       WinDefendDetectionHist,[1194]
       WinSCP,[1195]
+      WindowsApp,[1591]
       WindowsCopilotRecall,[1196]
       WindowsDefender,"[1197, 1198, 1199, 1200, 1201, 1202, 1203, 1204, 1205]"
       WindowsFirewall,"[1206, 1207]"
       WindowsHello,"[1208, 1209, 1210, 1211, 1212, 1213, 1214, 1215, 1216, 1217, 1218, 1219, 1220, 1221, 1222, 1223, 1224, 1225, 1226, 1227, 1228, 1229, 1230]"
-      WindowsIndexSearch,"[1231, 1232]"
+      WindowsIndexSearch,"[1231, 1232, 1557, 1558]"
       WindowsNetwork,[1233]
       WindowsNotificationsDB,"[1234, 1235]"
       WindowsOSUpgradeArtifacts,"[1236, 1237, 1238, 1239, 1240]"
@@ -2745,14 +3109,14 @@ parameters:
       WindowsSubsystemforAndroid,"[1245, 1246, 1247, 1248, 1249]"
       WindowsTelemetryDiagnosticsLegacy,"[1250, 1251]"
       WindowsTimeline,[1252]
-      WindowsUpdate,"[1253, 1254, 1255]"
+      WindowsUpdate,"[1253, 1254, 1255, 1592]"
       WindowsYourPhone,[1256]
       XPRestorePoints,[1257]
       XYplorer,"[1258, 1259, 1260, 1261]"
       Xeox,[1262]
       Yandex,"[1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 1276, 1277]"
       ZohoAssist,"[1278, 1279, 1280, 1281, 1282, 1283, 1284]"
-      Zoom,"[1285, 1286, 1287, 1288]"
+      Zoom,"[1288, 1637, 1638, 1639]"
       eMule,"[1289, 1290]"
       iTunesBackup,"[1291, 1292, 1293]"
       mIRC,"[1294, 1295]"

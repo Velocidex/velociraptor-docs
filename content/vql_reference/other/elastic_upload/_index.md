@@ -38,7 +38,7 @@ max_memory_buffer|How large we allow the memory buffer to grow to while we are t
 action|Either index or create. For data streams this must be create.|string
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

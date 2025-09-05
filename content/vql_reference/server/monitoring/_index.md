@@ -25,11 +25,11 @@ source|An optional named source within the artifact|string
 start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
 start_row|Start reading the result set from this row|int64
-count|Maximum number of clients to fetch (default unlimited)'|int64
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
 ### Description
 
-Extract monitoring log from a client. If client_id is not specified we watch the global journal which contains event logs from all clients.
+Extract monitoring log from a client.
+
 

@@ -71,16 +71,12 @@ precondition:
   SELECT * FROM info() where OS = 'windows'
 
 parameters:
-  - name: SearchFilesGlob
-    default: C:\Users\*
-    description: Use a glob to define the files that will be searched.
-
   - name: SearchFilesGlobTable
     type: csv
     default: |
       Glob
       C:/Users/SomeUser/*
-    description: Alternative specify multiple globs in a table
+    description: Specify multiple globs to search for.
 
   - name: Accessor
     default: auto
@@ -120,6 +116,11 @@ parameters:
       If larger than 0 we restrict VSS age to this many days
       ago. Otherwise we find all VSS.
 
+  - name: UPLOAD_IS_RESUMABLE
+    type: bool
+    default: Y
+    description: If set, file uploads will be asynchronous and resumable.
+
 sources:
   - query: |
       LET file_search = SELECT OSPath,
@@ -130,7 +131,7 @@ sources:
                Btime AS BTime,
                Ctime AS CTime, "" AS Keywords,
                IsDir, Data
-        FROM glob(globs=SearchFilesGlobTable.Glob + SearchFilesGlob,
+        FROM glob(globs=SearchFilesGlobTable.Glob,
                   accessor=Accessor)
 
       LET more_recent = SELECT * FROM if(

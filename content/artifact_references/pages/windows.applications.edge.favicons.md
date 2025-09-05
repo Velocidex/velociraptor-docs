@@ -4,9 +4,10 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Enumerate the users Microsoft Edge favicons.
+Enumerate the user's Microsoft Edge favicons.
 
-Tested against Chrome as well, replace Microsoft Edge with Google Chrome in the faviconsGlob
+Also tested against Chrome: replace Microsoft Edge with Google Chrome in
+the `faviconsGlob` parameter.
 
 Chrome Favicons are stored in the 'Favicons' SQLite database, within
 the 'favicons', 'favicon_bitmaps' and 'icon_mapping' tables. Older
@@ -15,16 +16,17 @@ database, within the 'favicons' table.
 
 ## NOTES:
 
-This artifact is deprecated in favor of
-Generic.Forensic.SQLiteHunter and will be removed in future
+- This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
+  will be removed in future
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.Edge.Favicons
 description: |
-  Enumerate the users Microsoft Edge favicons.
+  Enumerate the user's Microsoft Edge favicons.
 
-  Tested against Chrome as well, replace Microsoft Edge with Google Chrome in the faviconsGlob
+  Also tested against Chrome: replace Microsoft Edge with Google Chrome in
+  the `faviconsGlob` parameter.
 
   Chrome Favicons are stored in the 'Favicons' SQLite database, within
   the 'favicons', 'favicon_bitmaps' and 'icon_mapping' tables. Older
@@ -33,8 +35,8 @@ description: |
 
   ## NOTES:
 
-  This artifact is deprecated in favor of
-  Generic.Forensic.SQLiteHunter and will be removed in future
+  - This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
+    will be removed in future
 
 references:
   - https://www.foxtonforensics.com/browser-history-examiner/chrome-history-location
