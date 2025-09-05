@@ -125,7 +125,7 @@ truncated, full recovery might not be possible using this method alone.
 In recent releases (0.7.0+), the way hunt data is stored has been changed (e.g.
 using a single snapshot file instead of many individual files) and disk space
 checks are performed before writing. This is intended to reduce the corruption
-occuring which would then necessitate use of this command. In version 0.7.0 and
+occurring which would then necessitate use of this command. In version 0.7.0 and
 later, the command will rebuild corrupted hunts into a `/recovery/...` directory
 requiring manual movement of files after recovery.
 
