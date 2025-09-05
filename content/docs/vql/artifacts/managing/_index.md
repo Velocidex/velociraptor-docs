@@ -179,6 +179,8 @@ By default all artifacts, including those created during runtime, have the
 `hidden` and `basic` attributes set to `false` That is, they are not hidden and
 not "basic" by default. New artifacts have no `tags` set by default.
 
+Artifact tags can be cleared by using `artifact_set_metadata(name=..., tags=[])`.
+
 ### Deleting Artifacts
 
 The
