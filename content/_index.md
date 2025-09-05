@@ -34,7 +34,7 @@ navs:
    link: /docs/deployment/references/
  - name: Troubleshooting
    description: Troubleshooting deployments
-   link: /docs/deployment/troubleshooting/
+   link: /docs/troubleshooting/
 
 ---
 

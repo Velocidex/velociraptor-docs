@@ -608,7 +608,7 @@ Returning to your Velociraptor server, you can find the newly enrolled client by
 clicking the <i class="fas fa-search"></i> button in the "Search clients" bar at
 the top of the page.
 
-![Your first client](your_first_client.png)
+![Your first client!](your_first_client.png)
 
 ## What's next?
 
@@ -621,3 +621,9 @@ consider:
 - [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
   distinct sets of clients.
 - [Plan for a more durable and secure installation]({{< ref "/docs/deployment/server/" >}})
+
+You can also click on the little dinosaur at the top left of the GUI to
+return to the Welcome page. On this page you'll find shortcuts for several
+commonly performed tasks associated setting up a new server.
+
+![The Welcome page](welcome.png)

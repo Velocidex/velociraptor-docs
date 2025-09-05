@@ -176,7 +176,7 @@ the `send_event` VQL function.
 
 You can view the current queues on your server by going to the
 [Debug Server](). Client event queues are shown under the section
-[Client -> Client Monitoring Manager]({{< ref "/docs/gui/debugging/client/client_monitoring/" >}})
+[Client -> Client Monitoring Manager]({{< ref "/docs/troubleshooting/debugging/client/client_monitoring/" >}})
 and server event queues under the section
 Org _<org_name>_ > Services -> QueueManager Org (event queues are created and run
 independently for each org).

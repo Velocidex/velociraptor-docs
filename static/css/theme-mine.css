@@ -91,6 +91,10 @@ textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[typ
     box-shadow: none;
 }
 
+.children p {
+    font-size: unset;
+}
+
 h2, h3, h4, h5 {
     color: var(--MAIN-TITLES-TEXT-color) !important;
 }
