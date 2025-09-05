@@ -179,7 +179,13 @@ By default all artifacts, including those created during runtime, have the
 `hidden` and `basic` attributes set to `false` That is, they are not hidden and
 not "basic" by default. New artifacts have no `tags` set by default.
 
-Artifact tags can be cleared by using `artifact_set_metadata(name=..., tags=[])`.
+Artifact tags can be cleared by using and empty list,
+for example `artifact_set_metadata(name=...,tags=[])`.
+
+Note that when applying a single tag to artifacts, you must ensure that you
+include a trailing comma so that VQL doesn't interpret the list as a string, for
+example to apply the single tag "Triage" you would specify:
+`artifact_set_metadata(name=...,tags=["Triage",])`.
 
 ### Deleting Artifacts
 
