@@ -1,0 +1,134 @@
+name: Generic.Applications.ClaudeCode.ManagedSettings
+author: Zane Gittins
+reference: 
+  - https://docs.anthropic.com/en/docs/claude-code/settings
+description: |
+   Deploy a claude-code managed-settings.json file that takes precedence over user and project settings. This ensures your secure enterprise settings for all users. Tested on v1.0.110. 
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT or NOTEBOOK
+type: CLIENT
+
+parameters:
+   - name: EnableAllProjectMcpServers
+     description: Automatically approve all MCP servers defined in project .mcp.json files. Recommend to false for security.
+     type: string
+     default: "false"
+   - name: DisableAllHooks
+     description: Recommend to true for security.
+     type: string
+     default: "true"
+   - name: CleanupPeriodDays
+     description: How long to locally retain plaintext chat transcripts based on last activity date.	
+     type: string
+     default: "5"
+   - name: AllowPermissions
+     description: Array of permission rules to allow tool use. Note, Bash rules use prefix matching, not regex.
+     type: csv
+     default: |
+        Allow
+   - name: AskPermissions
+     description: Array of permission rules to ask for confirmation upon tool use.	
+     type: csv
+     default: |
+        Ask
+   - name: DenyPermissions
+     description: Array of permission rules to deny tool use. Use this to also exclude sensitive files from Claude Code access.
+     type: csv
+     default: |
+        Deny
+        Bash
+        Read(**/.env)
+        Read(./.env.*)
+        Read(./.ssh)
+        Read(./.aws)
+        Read(./.azure)
+        Read(./.gcloud)
+        Read(./.cisco)
+        Read(./secrets/**)
+   - name: EnvVars
+     description: Environment variables as KEY VALUE pairs.
+     type: csv
+     default: |
+        Key,Value
+        DISABLE_TELEMETRY,1
+        DISABLE_ERROR_REPORTING,1
+        DISABLE_BUG_COMMAND,1       
+export: |
+   LET Template <= '''{
+      "permissions": {
+        "allow": %s,
+        "ask": %s,
+        "deny": %s,
+        "disableBypassPermissionsMode": "disable",
+        "defaultMode": "default"
+      },
+      "cleanupPeriodDays":%s,
+      "enableAllProjectMcpServers":%s,
+      "disableAllHooks":%s,
+      "env": %s
+    }'''
+   
+   LET formatted_allow_list <= SELECT
+       serialize(item=AllowPermissions.Allow, format="json") AS items
+     FROM scope()
+   
+   LET formatted_ask_list <= SELECT
+       serialize(item=AskPermissions.Ask, format="json") AS items
+     FROM scope()
+   
+   LET formatted_deny_list <= SELECT
+       serialize(item=DenyPermissions.Deny, format="json") AS items
+     FROM scope()
+   
+   LET env_json_parts <= SELECT
+       format(format='"%s": "%s"', args=[Key, str(str=Value)]) AS part
+     FROM EnvVars
+   
+   LET formatted_env <= SELECT format(format="{%s}",
+                                      args=[join(
+                                        array=env_json_parts.part,
+                                        sep=", ")]) AS env_json
+     FROM scope()
+   
+   LET CopySettings(Path) = SELECT
+       copy(filename=format(format=Template,
+                            args=[formatted_allow_list[0].items,
+                              formatted_ask_list[0].items,
+                              formatted_deny_list[0].items,
+                              CleanupPeriodDays, EnableAllProjectMcpServers,
+                              DisableAllHooks, formatted_env[0].env_json]),
+            accessor="data",
+            dest=Path,
+            create_directories=true) AS ManagedSettingsFile
+     FROM scope()
+   
+   LET CreateFile(Path) = SELECT *
+     FROM foreach(row=CopySettings(Path=Path),
+                  query={
+       SELECT ManagedSettingsFile,
+              parse_json(data=Data) AS Settings
+       FROM read_file(filenames=ManagedSettingsFile)
+     })
+
+sources:
+  - name: WindowsManagedSettings
+    precondition:
+      SELECT OS From info() where OS = 'windows'
+    query: |
+       SELECT *
+       FROM CreateFile(Path="C:/ProgramData/ClaudeCode/managed-settings.json")
+
+  - name: LinuxManagedSettings
+    precondition:
+      SELECT OS From info() where OS = 'linux'
+    query: |
+       SELECT *
+       FROM CreateFile(Path="/etc/claude-code/managed-settings.json")
+
+  - name: DarwinManagedSettings
+    precondition:
+      SELECT OS From info() where OS = 'darwin'
+    query: |
+       SELECT *
+       FROM CreateFile(
+         Path="/Library/Application Support/ClaudeCode/managed-settings.json")
