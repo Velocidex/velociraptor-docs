@@ -1,7 +1,7 @@
 ---
 title: "Velociraptor 0.75 Release"
 description: |
-   Velociraptor Release 0.75 is available for testing
+   Velociraptor Release 0.75 is now available
 
 tags:
  - Release
@@ -12,7 +12,7 @@ noindex: false
 ---
 
 I am very excited to announce that the latest Velociraptor release
-0.75 is now available for testing.
+0.75 is now available.
 
 In this post I will discuss some of the new features introduced by
 this release.

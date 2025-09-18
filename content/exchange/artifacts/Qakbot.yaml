@@ -1,37 +1,37 @@
 name: Windows.Carving.Qakbot
 author: Matt Green - @mgreen27
 description: |
-    This artifact enables Qakbot payload detection and configuration extraction 
-    from a byte stream, process or file on disk. The artifact runs a yara scan 
-    as a detection step, then attempts to process the payload to extract 
+    This artifact enables Qakbot payload detection and configuration extraction
+    from a byte stream, process or file on disk. The artifact runs a yara scan
+    as a detection step, then attempts to process the payload to extract
     configuration.
-    
-    QakBot or QBot, is a modular malware first observed in 2007 that has been 
-    historically known as a banking Trojan. Qbot is used to steal credentials, 
-    financial, or other data, and in recent years, regularly a loader for other 
-    malware leading to hands on keyboard ransomware. 
-    
-    Qakbot (Qbot) payloads have an RC4 encoded configuration, located inside two 
-    PE resources. Encoded strings and xor key can also be found inside the .data 
-    section starting at a specific offset. 
-    
-    Some of the options available cover changes observed in the last year in the 
+
+    QakBot or QBot, is a modular malware first observed in 2007 that has been
+    historically known as a banking Trojan. Qbot is used to steal credentials,
+    financial, or other data, and in recent years, regularly a loader for other
+    malware leading to hands on keyboard ransomware.
+
+    Qakbot (Qbot) payloads have an RC4 encoded configuration, located inside two
+    PE resources. Encoded strings and xor key can also be found inside the .data
+    section starting at a specific offset.
+
+    Some of the options available cover changes observed in the last year in the
     decryption process to allow simplified decoding workflow:
-    
+
     - StringOffset - the offset of the string xor key and encoded strings.
     - PE resource type - the configuration is typically inside 2 resources.
     - Unescaped key string - this field is typically reused over samples
     - Type of encoding: single or double, double being the more recent.
     - Worker threads for bulk analysis / research use cases.
 
-    The decryption used is fairly simple with the first pass RC4 found in 
-    encoded strings embedded in the malware and is often reused from previous 
-    samples. 
-    
-    Each decoded output includes the first 20 bytes in hex as the SHA1 of the 
-    data as verification. The second pass RC4 key is the next 20 bytes in hex, 
+    The decryption used is fairly simple with the first pass RC4 found in
+    encoded strings embedded in the malware and is often reused from previous
+    samples.
+
+    Each decoded output includes the first 20 bytes in hex as the SHA1 of the
+    data as verification. The second pass RC4 key is the next 20 bytes in hex,
     Second pass RC4 decoding has the same verification of decrypted data.
-    
+
     NOTE: Requires 0.6.8 for PE dump
 
 reference:
@@ -47,7 +47,7 @@ parameters:
     type: hidden
   - name: TargetGlob
     description: Glob to target payloads on disk
-    default: 
+    default:
   - name: PidRegex
     description: Regex of target Process ID to scan
     default: .
@@ -56,7 +56,7 @@ parameters:
     description: Regex of target Process Name to scan
     type: regex
   - name: StringOffset
-    description: Offset of beginning of encoded strings in .data section. 
+    description: Offset of beginning of encoded strings in .data section.
     default: 0x50
     type: int
   - name: ResourceRegex
@@ -128,11 +128,11 @@ parameters:
                 7 of them and filesize < 1168384
         }
 
-    
+
 sources:
   - query: |
       -- parses PE and extracts EncodedStrings from the.data section
-      LET encoded_strings(data) = SELECT 
+      LET encoded_strings(data) = SELECT
             strip(suffix='\x00\x00', string=_value) as Sections
         FROM foreach(row=split(sep='\x00\x00\x00\x00',string=data))
         WHERE Sections
@@ -141,23 +141,23 @@ sources:
         FROM foreach(row=parse_pe(file=data,accessor='data').Sections,
                 query={ SELECT * FROM _value })
         WHERE Name = '.data'
-        
+
       -- decodes strings only show printable
        LET decode_strings(data) = SELECT * FROM foreach(
-        row={ 
+        row={
             SELECT count() - 1 as Index
             FROM range(start=0, end=len(list=data))},
         query={
-            SELECT 
+            SELECT
                 filter(
                     list=split(sep='\x00',string=xor(key=data[Index],string=_value)),
                     regex="^[ -~]{2,}$" ) as String
             FROM foreach(row=data[Index:])
-            WHERE len(list=String) > 2 
+            WHERE len(list=String) > 2
                 AND NOT String =~ '^\\s+$'
         })
-            
-      -- parses PE and extracts resource sections        
+
+      -- parses PE and extracts resource sections
       LET find_resource(data) = SELECT Type, TypeId,
             FileOffset,
             DataSize,
@@ -165,18 +165,18 @@ sources:
         FROM foreach(row=parse_pe(file=data,accessor='data').Resources)
         WHERE Type =~ ResourceRegex
         ORDER BY DataSize
-      
+
       -- first round of RC4 encoding. Verification hash is hex of first 20 bytes
-      LET rc4_wth_hashed_key(data,key) = 
+      LET rc4_wth_hashed_key(data,key) =
             crypto_rc4(
                 key = unhex(string=hash(path=key,accessor='data',hashselect='SHA1').SHA1),
                 string = data )
       -- second round of RC4 encoding accounting for verification.
-      LET advanced_method(data,key)= 
+      LET advanced_method(data,key)=
             crypto_rc4(
                 key = rc4_wth_hashed_key(data=data,key=key)[20:40],
                 string = rc4_wth_hashed_key(data=data,key=key)[40:] )
-      
+
       -- this function finds key and verifies results.
       LET decode(data) = SELECT Key,Type,
             if(condition= Type='single',
@@ -185,19 +185,19 @@ sources:
         FROM Keys
         WHERE format(format='%x',args=Data[:20]) = hash(path=Data[20:],accessor='data',hashselect='SHA1').SHA1
         LIMIT 1
-        
+
       -- find netaddress method with the most expected standard ports.
-      LET find_c2(methods) = SELECT _value as C2, 
-            len(list=filter(list=_value,regex=':(443|80|([0-9])\1{4,})$')) as Total 
+      LET find_c2(methods) = SELECT _value as C2,
+            len(list=filter(list=_value,regex=':(443|80|([0-9])\1{4,})$')) as Total
         FROM foreach(row=methods) ORDER BY Total DESC
         LIMIT 1
-        
+
       -- bytestream: only works on a payload dll as bytestream
       LET bytestream = SELECT Rule as Detection,
             hash(path=TargetBytes, accessor='data') as DataBytes,
             len(list=TargetBytes) as Size,
-            find_resource(data=TargetBytes,accessor='data') as Resources,
-            find_data(data=TargetBytes,accessor='data')[0].EncodedStrings as DecodedStrings
+            find_resource(data=TargetBytes) as Resources,
+            find_data(data=TargetBytes)[0].EncodedStrings as DecodedStrings
         FROM yara(  files=TargetBytes,
                     accessor='data',
                     rules=YaraRule, key='X',
@@ -205,31 +205,31 @@ sources:
 
       -- find target files
       LET target_files = SELECT OSPath, Size,
-                Mtime, Btime, Ctime, Atime 
+                Mtime, Btime, Ctime, Atime
         FROM glob(globs=TargetGlob)
         WHERE NOT IsDir AND Size > 0
-        
+
       -- search for qakbot in scoped files
       LET file_payloads = SELECT * FROM foreach(row= target_files,
             query={
                 SELECT
                     Rule as Detection,
                     OSPath,Size,
-                    dict( 
-                        Mtime = Mtime, 
+                    dict(
+                        Mtime = Mtime,
                         Atime = Atime,
                         Ctime = Ctime,
                         Btime = Btime
                             ) as Timestamps,
-                    find_resource(data=read_file(filename=OSPath),accessor='data') as Resources,
-                    find_data(data=read_file(filename=OSPath),accessor='data')[0].EncodedStrings as DecodedStrings
+                    find_resource(data=read_file(filename=OSPath)) as Resources,
+                    find_data(data=read_file(filename=OSPath))[0].EncodedStrings as DecodedStrings
                 FROM yara(  files=OSPath,
                             rules=YaraRule,
                             end=Size,  key='X',
                             number=1 )
             })
             WHERE log(message="Scanning file : %v", args=OSPath)
-      
+
       -- find processes in scope of query
       LET processes = SELECT int(int=Pid) AS Pid,
               Name, Exe, CommandLine, CreateTime,Username
@@ -237,12 +237,12 @@ sources:
         WHERE Name =~ ProcessRegex
             AND format(format="%d", args=Pid) =~ PidRegex
             AND log(message="Scanning pid %v : %v", args=[Pid, Name])
-      
+
       -- find unbacked sections with xrw permission
       LET sections = SELECT * FROM foreach(
           row=processes,
           query={
-            SELECT CreateTime as ProcessCreateTime,Pid, 
+            SELECT CreateTime as ProcessCreateTime,Pid,
                 Name as ProcessName,
                 Exe,
                 CommandLine,
@@ -258,14 +258,14 @@ sources:
                 AND Protection='xrw'
                 AND NOT State =~ 'RESERVE'
           })
-      
+
       -- search for qakbot in suspicious sections
       LET process_hits = SELECT *
         FROM foreach(row= sections,
             query={
                 SELECT
                     Rule as Detection,
-                    dict( 
+                    dict(
                         ProcessCreateTime = ProcessCreateTime,
                         Pid = Pid,
                         ProcessName = ProcessName,
@@ -275,15 +275,15 @@ sources:
                         Offset = Offset,
                         PayloadSize = Size
                     ) as ProcessInfo,
-                    find_resource(data=pe_dump(in_memory=Size,pid=Pid,base_offset=Offset),accessor='data') as Resources,
-                    find_data(data=pe_dump(in_memory=Size,pid=Pid,base_offset=Offset),accessor='data')[0].EncodedStrings as DecodedStrings
+                    find_resource(data=pe_dump(in_memory=Size,pid=Pid,base_offset=Offset)) as Resources,
+                    find_data(data=pe_dump(in_memory=Size,pid=Pid,base_offset=Offset))[0].EncodedStrings as DecodedStrings
                 FROM yara(  accessor='offset',
                             files=_PathSpec,
                             rules=YaraRule,
                             end=Size,  key='X',
                             number=1 )
             })
-      
+
       -- decode campaign from larger resrouce
       LET decode_campaign = SELECT *,
         decode(data=Resources[0].Data)[0] as Campaign,
@@ -293,12 +293,12 @@ sources:
                                 b = if(condition=TargetGlob, then=file_payloads),
                                 c = process_hits )
                         }, workers = Workers)
-        
+
       -- decode raw C2 data from larger resource
       LET decode_c2 = SELECT *
             advanced_method(data=Resources[1].Data,key=Campaign.Key)[20:] as _C2Raw
           FROM decode_campaign
-    
+
       -- profile to parse Qakbot C2 data: LE netaddress with a seperator
       LET PROFILE = '''
            [
@@ -325,7 +325,7 @@ sources:
                ['C2',0,'Value',{'value':"x=>format(format='%s:%d', args=[ip(netaddr4_le=x.__IP),x.__PORT])"}],
              ]]
            ]'''
-           
+
       -- calculate C2 IPs using two observed methods
       LET results = SELECT *,
             Campaign.Key as Key,
@@ -337,7 +337,7 @@ sources:
             parse_binary(filename=_C2Raw,accessor='data', profile=PROFILE, struct="Qakbot1").Method1['C2'] as _C2method1,
             parse_binary(filename=_C2Raw,accessor='data', profile=PROFILE, struct="Qakbot2").Method2['C2'] as _C2method2
         FROM decode_c2
-      
+
       -- finally determine C2 encoding and pretty timestamp then output rows and remove unwanted fields
       SELECT * FROM column_filter(
         query={
