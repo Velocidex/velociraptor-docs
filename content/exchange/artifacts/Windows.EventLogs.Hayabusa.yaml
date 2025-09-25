@@ -106,6 +106,10 @@ parameters:
  - name: IncludeTag
    description: "Only load rules with specific tags (ex: attack.execution,attack.discovery)"
 
+required_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
 sources:
  - name: Upload
    query: |
