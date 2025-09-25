@@ -245,17 +245,17 @@ details needed to produce your config.
 
 {{< tabs >}}
 {{% tab name="Linux" %}}
-```shell
+```sh
 ./velociraptor config generate -i
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```shell
+```sh
 velociraptor.exe config generate -i
 ```
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```shell
+```sh
 ./velociraptor config generate -i
 ```
 {{% /tab %}}

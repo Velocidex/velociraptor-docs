@@ -48,7 +48,7 @@ In recent versions of Velociraptor a global CPU limit may apply if
 Velociraptor detects it is running on a particularly low resource
 endpoint (e.g. with only a single core).
 
-{{% notice note "CPU Throttling tradeoffs" %}}
+{{% notice note "CPU Throttling trade-offs" %}}
 
 While we always aim to have as little CPU impact as possible on the
 endpoint, it is not appropriate to collect artifacts with artificially

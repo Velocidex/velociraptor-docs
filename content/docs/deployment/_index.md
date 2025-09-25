@@ -153,17 +153,17 @@ platform from the [Downloads page](/downloads/) and run the `gui` CLI command.
 
 {{< tabs >}}
 {{% tab name="Linux" %}}
-```shell
+```sh
 ./velociraptor gui
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```shell
+```sh
 velociraptor.exe gui
 ```
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```shell
+```sh
 ./velociraptor gui
 ```
 {{% /tab %}}

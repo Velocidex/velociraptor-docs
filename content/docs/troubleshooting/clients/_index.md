@@ -6,7 +6,7 @@ draft: false
 weight: 30
 last_reviewed: 2024-12-30
 summary: |
-  * How to troubleshoot client issues when you don't have local access to a client.
+  * How to troubleshoot client issues when you don't have local access to the client.
 aliases:
   - "/docs/troubleshooting/clients/"
 ---
