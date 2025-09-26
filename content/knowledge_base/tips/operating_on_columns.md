@@ -50,7 +50,7 @@ SELECT Hostname FROM info()
 ```
 
 However, what if we wanted to automatically manipulate the columns in
-a more sophsticated way? This is often needed when we dont know the
+a more sophisticated way? This is often needed when we dont know the
 names of all the columns in advance.
 
 Some use cases are:
