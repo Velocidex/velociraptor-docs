@@ -112,9 +112,9 @@ sudo /usr/local/sbin/velociraptor client --config /usr/local/sbin/velociraptor.c
 {{< /tabs >}}
 
 When provided with the `--debug` flag, Velociraptor will start the Debug Console
-on port 6060 (use `--debug_port` to change it). By default the Debug Console
-will only bind to localhost so you will need to either tunnel the port or use a
-local browser to connect to it.
+on port 6060 (use `--debug_port` if you need to specify a different port). By
+default the Debug Console will only bind to localhost so you will need to either
+tunnel the port or use a local browser to connect to it.
 
 
 ### Debugging the offline collector
