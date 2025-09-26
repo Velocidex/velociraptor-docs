@@ -1,7 +1,7 @@
 ---
 title: "VQL"
 weight: 50
-description: Track state of various VQL plugins
+description: Track state of various VQL plugins and queries.
 aliases:
   - "/docs/gui/debugging/vql"
 ---

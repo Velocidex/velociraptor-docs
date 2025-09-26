@@ -1,5 +1,5 @@
 ---
-title: "notifier"
+title: "Notifier"
 weight: 40
 description: Information about directly connected clients.
 ---
