@@ -1,9 +1,7 @@
 ---
-title: "Plugins"
-description:  See currently running VQL plugins
-weight: 20
-aliases:
-  - "/docs/gui/debugging/vql/plugins/"
+title: "Plugin Monitor"
+description:  See currently running VQL plugins.
+weight: 10
 ---
 
 At their core VQL queries process rows emitted from VQL plugins. We
@@ -31,3 +29,4 @@ the plugins profile helps us understand what operations are currently
 running. For example, a common reason for slow down is when an
 artifact accesses files on a network share or fuse share because those
 types of access involve network transfers which may be very slow.
+

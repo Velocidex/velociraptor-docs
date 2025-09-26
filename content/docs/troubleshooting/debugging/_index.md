@@ -145,64 +145,12 @@ identify and resolve any issues.
 
 ### Profile types
 
-The following pages provide specific details on each profile type. It is
+The following pages provide additional details on each profile type. It is
 instructive to read about each profile item to understand how Velociraptor works
-internally, the trade-offs made, and how to get the best of Velociraptor in the
-real world.
+internally, understand the trade-offs made, and how to get the most out of
+Velociraptor in the real world.
 
 {{% children description=true %}}
-
-
-### Frequently useful profiles
-
-The Debug Console has a number of different profiles and new ones may be added
-in future, so below we will just cover some of the most useful profiles that you
-can view.
-
-
-#### Notebook workers
-
-Notebooks are very useful feature of the server allowing for complex
-postprocessing of collected data. Sometimes these queries are very
-large and take a long time to run. To limit the amount of resources
-the queries can take on the server, Velociraptor only creates a
-limited number of notebook workers (by default 5).
-
-The workers can be inspected by selecting the `worker` profile
-(`Global` -> `Services` -> `worker`).
-
-![Inspecting the notebook workers](notebook_workers.svg)
-
-The raw data can also be viewed in JSON format by switching to the `Raw JSON`
-view.
-
-![Inspecting the raw JSON data](notebook_workers_json.png)
-
-#### Currently Active queries
-
-This view shows the queries currently running in this process. For example
-queries will run as part of notebook evaluation, currently installed event
-queries, or currently collecting artifacts (in the case of the offline
-collector).
-
-This can be accessed via the link: `Global` -> `VQL` -> `ActiveQueries`.
-
-![Inspecting the currently running queries](currently_running_queries.png)
-
-In the `VQL` profile category there are also profiles to show all recent queries
-(even ones that have completed already). This helps us to understand what
-exactly the client was recently doing.
-
-
-#### ETW Subsystem
-
-This profile shows the current state of the ETW subsystem on Windows. We can see
-what providers Velociraptor is subscribed to, how many queries are currently
-watching that provider, and how many events were received from the provider.
-
-This can be accessed via the link: `Global` -> `VQL` -> `Plugins` -> `ETW`.
-
-![Inspecting the ETW subsystem](etw_profile.png)
 
 
 

@@ -5,11 +5,15 @@ aliases:
   - "/docs/gui/debugging/vql/plugins/etw/"
 ---
 
+This profile shows the current state of the ETW subsystem on Windows. We can see
+what providers Velociraptor is subscribed to, how many queries are currently
+watching that provider, and how many events were received from the provider.
+
 Event Tracing For Windows (ETW) is a powerful source of system
 information available on Windows. Velociraptor allows subscribing to
 the ETW streams using the `watch_etw()` plugin.
 
-![ETW profile](profile.png)
+![Inspecting the ETW subsystem](etw_profile.png)
 
 The ETW profile helps us understand what ETW streams Velociraptor is
 subscribed to. When a VQL query calls `watch_etw()`, it subscribes to

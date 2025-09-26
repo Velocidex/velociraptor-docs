@@ -6,14 +6,13 @@ aliases:
   - "/docs/gui/debugging/vql/client/client_monitoring/"
 ---
 
-
 The client monitoring profile shows current information on the client
 event monitoring subsystem.
 
-Clients receive a `Client Event Table` update from the server,
+Clients receive a **Client Event Table** update from the server,
 instructing them on a set of `CLIENT_EVENT` artifacts to run. The
-results from these artifacts are streamed back to the server over
-time.
+results from these artifacts are streamed back to the server in
+near-realtime.
 
 Client event queries are stored in the client's `writeback file` so
 they can start immediately as soon as the client boots, even if it is

@@ -1,6 +1,6 @@
 ---
 title: "Client"
-description: "Profiles present on the client"
+description: "Profiles present only on the client"
 weight: 20
 aliases:
   - "/docs/gui/debugging/vql/client/"

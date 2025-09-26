@@ -1,6 +1,6 @@
 ---
 title: "Evtx"
-weight: 40
+weight: 50
 aliases:
   - "/docs/gui/debugging/vql/plugins/windows_event/"
 ---
