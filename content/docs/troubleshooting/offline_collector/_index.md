@@ -5,6 +5,6 @@ date: 2025-02-17
 draft: false
 weight: 60
 summary: |
-  * Troubleshooting issues when running a Velociraptor offline collector.
+  * Troubleshooting issues when creating or running a Velociraptor offline collector.
 ---
 

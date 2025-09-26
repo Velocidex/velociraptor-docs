@@ -1,5 +1,5 @@
 ---
-title: Remote Client Issues
+title: Troubleshooting Remote Client Issues
 menutitle: Remote Clients
 date: 2021-06-30T12:31:08Z
 draft: false
@@ -14,18 +14,19 @@ aliases:
 {{% notice note %}}
 
 The steps in this section assume you are troubleshooting a client that has
-already enrolled and is actively communicating with the server. If the client is
-not communicating with the server or has never connected then please see the
-section
-[Debugging client communications]({{< ref "/docs/troubleshooting/deployment/#debugging-client-communications" >}})
-in the Deployment Troubleshooting section.
+already enrolled and is actively communicating with the server.
+
+If you are having problems with a client that is not communicating with the
+server or that has never connected then please see the section
+[Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/#client-communications-issues" >}})
+within the Deployment Troubleshooting section.
 
 {{% /notice %}}
 
 ### Debugging a remote client
 
 In the
-[Deployment troubleshooting section]({{< ref "/docs/troubleshooting/deployment/#debugging-velociraptor" >}})
+[Deployment troubleshooting section]({{< ref "/docs/troubleshooting/deployment/server" >}})
 we explain how to bring up the debug server by providing the `--debug` flag on
 the command line. However clients are often remote and it's therefore not always
 possible to debug the client by starting it with this flag. Often we are also
