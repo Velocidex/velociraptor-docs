@@ -119,30 +119,29 @@ tunnel the port or use a local browser to connect to it.
 
 ### Debugging the offline collector
 
-The offline collector is a one shot collector which simply runs,
-collects several preconfigured artifacts into a zip file and
-terminates.
+The offline collector is a "one shot" collector which simply runs, collects
+several preconfigured artifacts into a zip file and terminates.
 
-Sometimes the collector may take a long time or use too much
-memory. In this case you might want to gain visibility into what its
-doing.
+Sometimes the collector may, for example, take a long time or use too much
+memory. In this case you might want to gain visibility into what it's doing.
 
-You can start the offline collector by adding the `--debug` flags to
-its execution in a similar way to above.
+You can start the offline collector by adding the `--debug` flag to its
+command line.
 
 ```sh
-Collector_velociraptor-v0.74.1-windows-amd64.exe -- --debug --debug_port 6061
+Collector_velociraptor-v0.75.2-windows-amd64.exe -- --debug --debug_port 6061
 ```
 
-![Inspecting the ETW subsystem](debugging_offline_collector.png)
+Note that the additional `--` is required to indicate that the additional
+parameters are not considered part of the command line (the offline collector
+requires running with no parameters).
 
-Note that the additional `--` is required to indicate that the
-additional parameters are not considered part of the command line (the
-offline collector requires running with no parameters).
+![Debugging the offline collector](debugging_offline_collector.png)
 
-The above will start the Debug Console on port 6061. You can then
-download goroutine, heap allocation and other profiles from the debug
-server and forward these to the Velociraptor team to resolve any issues.
+The above will start the Debug Console on port 6061 which you can access with a
+web browser. You can then download goroutine, heap allocation and other profiles
+from the debug server and forward these to the Velociraptor development team to
+identify and resolve any issues.
 
 ### Profile types
 

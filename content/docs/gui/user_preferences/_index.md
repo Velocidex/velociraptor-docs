@@ -1,11 +1,11 @@
 ---
 title: User Preferences
 menutitle: User Preferences
-date: 2025-05-16
-last_reviewed: 2025-05-16
-draft: true
-weight: 100
-summary: "Customize your GUI experience."
+date: 2025-09-26
+last_reviewed: 2025-09-26
+draft: false
+weight: 90
+summary: "Personalize your GUI experience."
 ---
 
 <!-- Move content from section article and expand upon it to include information
