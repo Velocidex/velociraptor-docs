@@ -1,6 +1,7 @@
 ---
 title: "ETW"
 weight: 10
+description: Shows the current state of the ETW subsystem on Windows
 aliases:
   - "/docs/gui/debugging/vql/plugins/etw/"
 ---

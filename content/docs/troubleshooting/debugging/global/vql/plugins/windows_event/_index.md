@@ -1,6 +1,7 @@
 ---
-title: "Evtx"
+title: Windows Event Log Watcher
 weight: 50
+description: Records Statistics about the Windows Event Log Watcher Subsystem.
 aliases:
   - "/docs/gui/debugging/vql/plugins/windows_event/"
 ---

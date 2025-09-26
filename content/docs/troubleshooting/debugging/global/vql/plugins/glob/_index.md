@@ -1,5 +1,6 @@
 ---
-title: "Glob"
+title: Glob
+description: Track current Glob operations
 weight: 20
 aliases:
   - "/docs/gui/debugging/vql/plugins/glob/"

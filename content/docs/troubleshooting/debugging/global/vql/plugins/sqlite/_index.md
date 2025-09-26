@@ -1,5 +1,6 @@
 ---
-title: "Sqlite"
+title: Sqlite
+description: Track SQLite handles used by the process.
 weight: 70
 aliases:
   - "/docs/gui/debugging/vql/plugins/sqlite/"

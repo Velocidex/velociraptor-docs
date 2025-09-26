@@ -9,7 +9,7 @@ queries will run as part of notebook evaluation, currently installed event
 queries, or currently collecting artifacts (in the case of the offline
 collector).
 
-![Active Queries profile](profile.png)
+![Active Queries profile](currently_running_queries.png)
 
 The above example shows a number of queries watching a variety of
 event logs on the endpoint. This is because this endpoint is running
