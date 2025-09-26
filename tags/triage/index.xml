@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Triage on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/triage/</link><description>Recent content in Triage on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 17 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/triage/index.xml" rel="self" type="application/rss+xml"/><item><title>How can I analyse a raw disk image?</title><link>https://docs.velociraptor.app/knowledge_base/tips/image_analysis/</link><pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/image_analysis/</guid><description>&lt;h1 id="how-can-i-analyse-a-raw-disk-image">How can I analyse a raw disk image?&lt;/h1>
+&lt;p>Velociraptor is primarily a live analysis tool. However traditional
+forensics calls for the acquisition of raw disk images to preserve
+evidence.&lt;/p>
+&lt;p>In most incident response use cases it is very rare to acquire a raw
+disk image - modern disks are simply too large for this to be
+useful. Also physical storage devices, such as SSD implement TRIM
+protocols making it very unlikely to recover deleted data.&lt;/p>
+&lt;p>However sometimes (more commonly in cloud VM analysis), it is possible
+to encounter a raw disk image in one of the popular image formats:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>EWF&lt;/code> images will have the &lt;code>.e01&lt;/code>, &lt;code>.e02&lt;/code> etc extension.&lt;/li>
+&lt;li>&lt;code>VMDK&lt;/code> (VMware Disk) images will have the &lt;code>.vmdk&lt;/code> extension&lt;/li>
+&lt;li>&lt;code>VHDX&lt;/code> (Usually Microsoft images) will have the &lt;code>.vhdx&lt;/code> extension&lt;/li>
+&lt;li>&lt;code>Raw&lt;/code> images (sometimes called the &lt;code>dd&lt;/code> images)&lt;/li>
+&lt;/ul>
+&lt;p>Velociraptor can read all the above image types and supports parsing
+data from images as opposed to the live system by using a mechanism
+called &lt;a href="https://docs.velociraptor.app/docs/forensic/filesystem/remapping/" >Accessor Remapping&lt;/a>
+.&lt;/p>
+&lt;p>You can read the details in the link above but put simply, remapping
+is a way to specify how Velociraptor should open specific files. The
+&lt;code>Remapping Configuration&lt;/code> tells Velociraptor how to map IO requests
+from VQL queries into the disk image instead of calling the OS APIs on
+the analysis system itself.&lt;/p>
+&lt;p>Once a remapping file is created, you just need to start a client
+using this remapping file. The new &lt;code>virtual client&lt;/code> appears like a
+regular client, except that all IO requests come from the disk image.&lt;/p>
+&lt;h2 id="tldr-how-to-analyse-disk-images-just-tell-me">TLDR: How to analyse disk images, just tell me&lt;/h2>
+&lt;p>The following will work in most simple cases - namely a disk or
+partition image of a Windows system, stored at the &lt;code>C:&lt;/code> drive.&lt;/p>
+&lt;ol>
+&lt;li>In the Velociraptor GUI, navigate to &lt;code>Server Artifacts&lt;/code> in the sidebar menu.&lt;/li>
+&lt;li>Create a new collection by clicking the &lt;code>New Collection&lt;/code> button.&lt;/li>
+&lt;li>Select the &lt;code>Server.Utils.DeadDiskClient&lt;/code> artifact and configure the
+path to the image in the artifact parameters.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1e4c407bc6e9c44333fe847eddb74f8d">
+ &lt;div data-featherlight="#1e4c407bc6e9c44333fe847eddb74f8d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/image_analysis/artifact_parameters.png" alt="Artifact Parameters">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="artifact_parameters.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Artifact Parameters
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The &lt;code>Hostname&lt;/code> parameter controls what the virtual client will
+identify as. The &lt;code>WritebackFile&lt;/code> parameter will store the writeback of
+the virtual client so you can reuse it next time to keep the same
+client id.&lt;/p>
+&lt;ol start="4">
+&lt;li>In the &lt;code>Resources&lt;/code> tab you can update the &lt;code>Max Execution time&lt;/code>
+which controls how long the virtual client will be alive. By default
+this is 1 hour.&lt;/li>
+&lt;/ol>
+&lt;p>After launching the artifact, you can inspect the query log to see how
+the artifact automatically inspects each partition to detect the
+remapping configuration.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1d7f2966c5c71c10cdecad2f6a764435">
+ &lt;div data-featherlight="#1d7f2966c5c71c10cdecad2f6a764435" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/image_analysis/artifact_logs.png" alt="Artifact Logs">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="artifact_logs.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Artifact Logs
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Although it appears the collection is not complete, it is actually
+starting a client with this remapping, and waits for the timeout
+before the client is torn down. During this time you can interact with
+the client, collect any artifacts, participate in any hunts etc.&lt;/p>
+&lt;ol start="5">
+&lt;li>Search for the hostname to find the new client id.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="2c1726bc7eec7f2c6bcca9ad7ae87675">
+ &lt;div data-featherlight="#2c1726bc7eec7f2c6bcca9ad7ae87675" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/image_analysis/deaddiskhost.png" alt="Search for the new virtual client">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="deaddiskhost.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Search for the new virtual client
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="6">
+&lt;li>You can now collect any artifacts that primarily read from the disk&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5a4719a96e625bd30e914bdeb3b3d661">
+ &lt;div data-featherlight="#5a4719a96e625bd30e914bdeb3b3d661" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/image_analysis/collecting_from_image.png" alt="Collecting artifacts from the virtual client">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="collecting_from_image.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collecting artifacts from the virtual client
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="7">
+&lt;li>The query log from every collection will indicate the data comes
+from the image file.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="562bf621f74f24e7abd2684740164855">
+ &lt;div data-featherlight="#562bf621f74f24e7abd2684740164855" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/image_analysis/collecting_from_image_logs.png" alt="Artifact collection logs">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="collecting_from_image_logs.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Artifact collection logs
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item><item><title>How to set up a local S3 dropbox server?</title><link>https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/</guid><description>&lt;h1 id="how-to-set-up-a-local-s3-dropbox-server">How to set up a local S3 dropbox server?&lt;/h1>
+&lt;p>When collecting evidence with the offline collector we often need to
+upload large quantities of data. While cloud based uploads are
+convenient they are usually slower than uploading to a local LAN and
+might result in network bottlenecks as many systems in the local
+network are saturating internet uplinks.&lt;/p>
+&lt;p>In these cases it is more convenient to set up a local &lt;code>dropbox&lt;/code>
+upload server which will collect collections from systems within local
+on-premises segments instead.&lt;/p>
+&lt;p>There are several options for that:&lt;/p>
+&lt;ol>
+&lt;li>A &lt;a href="https://docs.velociraptor.app/docs/offline_triage/remote_uploads/#smb-share" >Windows file share&lt;/a>
+ can be
+created on a Windows system.&lt;/li>
+&lt;li>An SFTP server can be &lt;a href="https://docs.velociraptor.app/knowledge_base/tips/setting_up_sftp/" >installed on a local Linux system&lt;/a>
+.&lt;/li>
+&lt;li>A local S3 server can be installed using
+&lt;a href="https://github.com/minio/minio" target="_blank" >MinIO&lt;/a>
+ - the subject of this
+article.&lt;/li>
+&lt;/ol>
+&lt;p>A common thread between these options is to ensure that credentials
+are only allowed to upload new files and not download these files
+again. Since the offline collector must include credentials within the
+configuration file, we need to ensure these credentials can not
+provide additional access to what is required.&lt;/p>
+&lt;p>You can view the offline collector&amp;rsquo;s configuration file using
+&lt;code>Collector.exe config show&lt;/code>.&lt;/p>
+&lt;h2 id="installing-a-local-minio-server">Installing a local MinIO server&lt;/h2>
+&lt;p>This option is very easy to do and works on all mainstream operating
+systems as MinIO is a single Go binary available under the AGPL.&lt;/p>
+&lt;p>For this example we assume the dropbox server has the IP &lt;code>192.168.1.1&lt;/code>&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>First download the MinIO binary from the &lt;a href="https://github.com/minio/minio?tab=readme-ov-file#binary-download" target="_blank" >MinIO GitHub
+page&lt;/a>
+. For
+example, on Linux the binary can be fetched from
+&lt;a href="https://dl.min.io/server/minio/release/linux-amd64/minio" target="_blank" >https://dl.min.io/server/minio/release/linux-amd64/minio&lt;/a>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Start the server using the following command:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio server /tmp/minio --console-address &amp;quot;:9001&amp;quot; --address &amp;quot;:4566&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>This will start a server with the admin password provided and store
+all files in the &lt;code>/tmp/minio&lt;/code> directory. The web console will be
+available on port &lt;code>9001&lt;/code> and the API port will be &lt;code>4566&lt;/code>. You can view the
+web console for MinIO by navigating the browser to
+&lt;code>http://192.168.1.1:9001&lt;/code>&lt;/p>
+&lt;p>Please use a more complex password in reality, for this demonstration
+we will use a weak password.&lt;/p>
+&lt;ol start="3">
+&lt;li>To administrate the MinIO server from the commandline we will use
+the &lt;code>mc&lt;/code> command available from
+&lt;a href="https://dl.min.io/client/mc/release/" target="_blank" >https://dl.min.io/client/mc/release/&lt;/a>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">wget https://dl.min.io/client/mc/release/linux-amd64/mc
+chmod +x ./mc
+
+# Save credentials for the mc tool
+./mc alias set 'myminio' 'http://192.168.1.11:4566' 'admin' 'password'
+
+# Create a new bucket called uploads
+./mc mv myminio/uploads
+&lt;/code>&lt;/pre>
+&lt;ol start="4">
+&lt;li>Next we need to create a new client key and secret - this a similar
+process to what we need to do on the &lt;a href="https://training.velociraptor.app//modules/offline_collection/cloud_upload.html#/8" target="_blank" >AWS S3
+console&lt;/a>
+,
+but using the command line it is quicker&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh"># Add a new uploader user with specific access key and secret key
+./mc admin user add uploader access_key_123 secret_key_123
+&lt;/code>&lt;/pre>
+&lt;ol start="5">
+&lt;li>Next we need to restrict the policy allowed for this user (the user
+is basically identified by the access key). We create a JSON policy
+with an editor and store it for example in
+&lt;code>/tmp/uploader.policy.json&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-json">{
+ &amp;quot;Version&amp;quot;: &amp;quot;2012-10-17&amp;quot;,
+ &amp;quot;Statement&amp;quot;: [
+ {
+ &amp;quot;Effect&amp;quot;: &amp;quot;Allow&amp;quot;,
+ &amp;quot;Action&amp;quot;: &amp;quot;s3:PutObject&amp;quot;,
+ &amp;quot;Resource&amp;quot;: &amp;quot;arn:aws:s3:::uploads/*&amp;quot;
+ }
+ ]
+}
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-sh"># Create the policy from the JSON file
+ ./mc admin policy create myminio uploader /tmp/uploader.policy.json
+
+# Attach the policy to the new user
+./mc admin policy attach myminio --user=access_key_123 uploader
+&lt;/code>&lt;/pre>
+&lt;ol start="6">
+&lt;li>Test the bucket and the permissions using the following VQL. Paste
+the following code into a file say &lt;code>/tmp/test.vql&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-vql">SELECT
+ upload_s3(accessor=&amp;quot;data&amp;quot;,
+ file=&amp;quot;Hello&amp;quot;,
+ name=&amp;quot;test.txt&amp;quot;,
+ endpoint=&amp;quot;http://192.168.1.11:4566&amp;quot;,
+ credentials_key=&amp;quot;access_key_123&amp;quot;,
+ credentials_secret=&amp;quot;secret_key_123&amp;quot;,
+ bucket=&amp;quot;uploads&amp;quot;)
+FROM scope()
+
+LET S3_CREDENTIALS &amp;lt;= dict(endpoint='http://192.168.1.11:4566/',
+ credentials_key='access_key_123',
+ credentials_secret='secret_key_123',
+ no_verify_cert=1)
+
+SELECT *, read_file(filename=OSPath, length=10, accessor='s3') AS Data
+FROM glob(globs='/uploads/*', accessor='s3')
+&lt;/code>&lt;/pre>
+&lt;p>Run this query with Velociraptor:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor-v0.74.4-linux-amd64 -v query -f /tmp/test.vql
+&lt;/code>&lt;/pre>
+&lt;p>The first query uploads a test file to the bucket, we then try to read
+it back out - this should be denied:&lt;/p>
+&lt;pre>&lt;code class="language-text">[INFO] 2025-07-05T02:26:32Z upload_S3: Uploading test.txt to uploads
+[
+ {
+ &amp;quot;upload_s3(accessor=\&amp;quot;data\&amp;quot;, file=\&amp;quot;Hello\&amp;quot;, name=\&amp;quot;test.txt\&amp;quot;, endpoint=\&amp;quot;http://192.168.1.11:4566\&amp;quot;, credentials_key=\&amp;quot;access_key_123\&amp;quot;, credentials_secret=\&amp;quot;secret_key_123\&amp;quot;, bucket=\&amp;quot;uploads\&amp;quot;)&amp;quot;: {
+ &amp;quot;Path&amp;quot;: &amp;quot;http://192.168.1.11:4566/uploads/test.txt&amp;quot;,
+ &amp;quot;Size&amp;quot;: 5
+ }
+ }
+][][INFO] 2025-07-05T02:26:32Z Globber: operation error S3: ListBuckets, https response error StatusCode: 403, RequestID: 184F39DAD67D435B, HostID: f2a388c21e253e519af7cec24c2e281b7821740cf65cb6ff168ac3a3ce38718c, api error AccessDenied: Access Denied. while processing /
+&lt;/code>&lt;/pre>
+&lt;p>You can verify the file is there using the MinIO Console.&lt;/p>
+&lt;ol start="7">
+&lt;li>Exporting the files. MinIO uses its internal data to store bucket
+data but you can use it to copy files in raw format into another
+directory. The &lt;code>--watch&lt;/code> flag will continuously watch the bucket to
+export files in real time (omit it for one shot export).&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">./mc mirror --watch myminio/uploads /tmp/backup/
+&lt;/code>&lt;/pre>
+&lt;h3 id="using-velociraptor-to-remotely-launch-the-offline-collector">Using Velociraptor to remotely launch the offline collector.&lt;/h3>
+&lt;p>While the offline collector is a stand alone collector, sometime you
+might want to use Velociraptor to distribute and run it. This might be
+because directly downloading the data that needs to be collected is
+not possible over a slow link. In this use case we want to push the
+offline collector to the endpoint and have it upload the bulk data to
+the local drop box server.&lt;/p>
+&lt;p>To do this it is best to use the &lt;a href="https://docs.velociraptor.app/docs/offline_triage/#the-generic-offline-collector" >Generic Collector&lt;/a>
+ because it
+is small and the Velociraptor binary is already present on the
+endpoint.&lt;/p>
+&lt;p>In the following artifact we define the &lt;code>OfflineCollector&lt;/code> tool and
+then fetch it from the endpoint and launch the Velociraptor binary
+with the correct command line for running a generic collector.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">name: RemoteOfflineCollector
+tools:
+- name: OfflineCollector
+
+required_permissions:
+- EXECVE
+
+sources:
+- query: |
+ LET _Exe &amp;lt;= SELECT Exe FROM info()
+ LET Exe &amp;lt;= _Exe[0].Exe
+
+ SELECT * FROM foreach(row={
+ SELECT OSPath
+ FROM Artifact.Generic.Utils.FetchBinary(
+ ToolName=&amp;quot;OfflineCollector&amp;quot;,
+ TemporaryOnly=TRUE, IsExecutable=FALSE)
+ }, query={
+ SELECT * FROM execve(sep=&amp;quot;\n&amp;quot;,
+ argv=[Exe, &amp;quot;--&amp;quot;, &amp;quot;--embedded_config&amp;quot;, OSPath])
+ })
+&lt;/code>&lt;/pre>
+&lt;p>When building the generic collector make sure to use the S3
+credentials as described above to have it automatically upload the
+collections to the local dropbox server.&lt;/p></description></item><item><title>Triaging Logs</title><link>https://docs.velociraptor.app/training/playbooks/triage-logs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/training/playbooks/triage-logs/</guid><description>&lt;h2 id="scenario">Scenario&lt;/h2>
+&lt;p>An endpoint is suspected of being compromised but you dont know
+exactly what happened. You want to get an initial idea by examining
+the logs on the actual endpoint.&lt;/p>
+&lt;h2 id="main-takeaways">Main takeaways&lt;/h2>
+&lt;ol>
+&lt;li>This technique is similar to forwarding logs to a SIEM and applying
+signatures.&lt;/li>
+&lt;li>However we can choose very noisy signatures here&lt;/li>
+&lt;li>We use stacking to quickly categorize the types of activity that
+happens on the endpoint.&lt;/li>
+&lt;/ol>
+&lt;h2 id="steps-to-take">Steps to take&lt;/h2>
+&lt;p>Some common artifacts that are used for &lt;code>Triaging Logs&lt;/code>&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>Windows.Hayabusa.Rules&lt;/code> should be imported using &lt;code>Server.Import.CuratedSigma&lt;/code>&lt;/li>
+&lt;li>&lt;code>Exchange.Windows.EventLogs.Hayabusa&lt;/code> should be imported from the
+artifact exchange.&lt;/li>
+&lt;/ol>
+&lt;h3 id="importing-windowshayabusarules">Importing Windows.Hayabusa.Rules&lt;/h3>
+&lt;ol>
+&lt;li>Select the &lt;code>Server Artifacts&lt;/code> from the sidebar.&lt;/li>
+&lt;li>Add a collection, search for &lt;code>Server.Import.CuratedSigma&lt;/code> and
+import the &lt;code>Windows.Hayabusa.Rules&lt;/code>. This will import the latest
+version of the artifact.&lt;/li>
+&lt;/ol>
+&lt;p>This artifact uses the built in &lt;code>Sigma Engine&lt;/code> in Velociraptor. The
+artifact packages the curated &lt;code>Hayabusa&lt;/code> rules in a convenient
+artifact. Rules are categorized by &lt;code>RuleLevel&lt;/code> and &lt;code>RuleStatus&lt;/code> which
+generally try to balance how noisy a rule against its detection
+efficacy.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+ 
+ 
+
+&lt;figure id="37ba9fbff74806f3e3e1b8a02e770a4d">
+ &lt;div data-featherlight="#37ba9fbff74806f3e3e1b8a02e770a4d" class="figure">
+ &lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1082.383226927995 525.4545454545455" width="1082.383226927995" height="525.4545454545455">
+ &lt;!-- svg-source:excalidraw -->
+ 
+&lt;defs>
+ 
+&lt;/defs>
+ &lt;rect x="0" y="0" width="1082.383226927995" height="525.4545454545455" fill="#ffffff">&lt;/rect>&lt;g stroke-linecap="round">&lt;g transform="translate(861.4234678229822 34.64104085446047) rotate(0 104.92446931183792 113.9532367308525)" fill-rule="evenodd">&lt;path d="M-0.48 0.76 C-0.78 35.08, -1.08 168.83, -1.19 206.7 C-1.31 244.58, -2.81 222.56, -1.18 228.01 C0.46 233.45, 0.17 235.96, 8.62 239.39 C17.07 242.81, 32.1 246.73, 49.53 248.55 C66.97 250.36, 93.02 250.94, 113.22 250.26 C133.42 249.58, 155.47 247.22, 170.73 244.47 C185.99 241.73, 198.29 236.76, 204.8 233.81 C211.31 230.87, 209.06 231.45, 209.79 226.82 C210.52 222.19, 209.5 241.19, 209.17 206.04 C208.85 170.88, 208.17 50.61, 207.82 15.88 C207.48 -18.85, 209.06 2.32, 207.09 -2.34 C205.13 -7, 203.18 -9.53, 196.06 -12.08 C188.94 -14.62, 180.39 -16.14, 164.36 -17.63 C148.33 -19.12, 118.94 -20.9, 99.88 -21.02 C80.83 -21.14, 64.8 -20.33, 50.03 -18.33 C35.25 -16.33, 19.81 -11.77, 11.25 -9.02 C2.68 -6.26, 0.31 -3.7, -1.34 -1.8 C-2.98 0.1, 1.02 2.2, 1.37 2.4" stroke="none" stroke-width="0" fill="#efeeef" fill-rule="evenodd">&lt;/path>&lt;path d="M0.05 0.75 C0.31 35.03, 1.68 166.88, 1.52 205 C1.37 243.11, -2.43 223.99, -0.89 229.44 C0.65 234.88, 2.42 234.81, 10.76 237.65 C19.1 240.49, 32.49 244.54, 49.15 246.48 C65.81 248.42, 90.29 249.65, 110.75 249.27 C131.2 248.89, 156.41 246.6, 171.89 244.18 C187.38 241.75, 197.3 237.67, 203.67 234.7 C210.03 231.73, 208.86 230.89, 210.07 226.35 C211.29 221.81, 210.88 242.17, 210.94 207.46 C211.01 172.74, 210.73 52.98, 210.47 18.07 C210.2 -16.84, 211.86 2.63, 209.36 -2 C206.86 -6.63, 202.74 -7.42, 195.48 -9.71 C188.23 -12.01, 181.5 -13.76, 165.85 -15.76 C150.2 -17.76, 120.77 -21.34, 101.59 -21.72 C82.42 -22.1, 66.07 -20.03, 50.81 -18.04 C35.56 -16.05, 18.42 -12.77, 10.07 -9.79 C1.71 -6.8, 2.52 -1.87, 0.68 -0.12 C-1.16 1.63, -0.96 0.85, -0.97 0.7 M-1.38 0.1 C-1.2 34.65, 0.53 168.64, 1.01 206.57 C1.5 244.51, -0.14 222.41, 1.52 227.72 C3.18 233.02, 3.22 235.24, 10.98 238.4 C18.74 241.55, 31.32 245.05, 48.08 246.67 C64.85 248.29, 90.88 248.22, 111.57 248.1 C132.25 247.97, 156.5 248.24, 172.19 245.91 C187.89 243.58, 199.61 237.64, 205.72 234.13 C211.82 230.62, 208.32 229.4, 208.8 224.85 C209.27 220.3, 208.76 241.65, 208.57 206.82 C208.38 171.99, 207.67 50.22, 207.65 15.86 C207.64 -18.51, 210.42 4.91, 208.49 0.62 C206.55 -3.68, 203.32 -7.24, 196.05 -9.92 C188.77 -12.6, 180.53 -13.38, 164.83 -15.45 C149.14 -17.52, 121.22 -21.56, 101.86 -22.34 C82.51 -23.11, 64.13 -22.24, 48.71 -20.11 C33.3 -17.98, 17.53 -12.96, 9.38 -9.57 C1.22 -6.18, 1.24 -1.57, -0.19 0.25 C-1.62 2.07, 0.52 1.31, 0.8 1.33" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(857.15644595025 15.205575089080867) rotate(0 104.36432411158569 21.10689938651899)">&lt;path d="M66.99 2.18 C79.74 0.74, 97.56 0.04, 112.41 0.3 C127.27 0.57, 142.98 2.39, 156.11 3.79 C169.25 5.18, 182.63 6.34, 191.25 8.68 C199.86 11.02, 205.76 14.68, 207.78 17.82 C209.8 20.97, 207.75 24.76, 203.35 27.56 C198.95 30.35, 191.52 32.37, 181.38 34.59 C171.24 36.8, 156.55 39.56, 142.5 40.85 C128.45 42.14, 112.28 42.51, 97.08 42.34 C81.87 42.16, 64.33 41.3, 51.25 39.78 C38.18 38.27, 26.84 35.8, 18.63 33.24 C10.42 30.69, 4.17 27.48, 1.99 24.47 C-0.19 21.45, 1.27 18.05, 5.55 15.16 C9.83 12.27, 15.07 9.4, 27.69 7.12 C40.31 4.84, 69.71 2.7, 81.25 1.5 C92.79 0.3, 96.6 -0.39, 96.92 -0.09 M54.06 2.32 C65.79 0.62, 82.86 1.05, 97.99 1.16 C113.12 1.27, 130.79 2.19, 144.85 3 C158.9 3.8, 172.56 3.92, 182.33 5.99 C192.09 8.07, 199.53 12.24, 203.43 15.45 C207.32 18.66, 207.96 22.42, 205.7 25.26 C203.44 28.11, 198.37 30.05, 189.86 32.51 C181.35 34.98, 168.15 38.62, 154.64 40.06 C141.13 41.5, 123.82 41.18, 108.81 41.16 C93.8 41.14, 78.62 40.84, 64.58 39.94 C50.55 39.04, 34.55 38.18, 24.59 35.74 C14.64 33.31, 8.78 28.47, 4.87 25.33 C0.95 22.2, -1.19 19.8, 1.08 16.92 C3.34 14.05, 9.56 10.46, 18.44 8.09 C27.32 5.71, 48.07 3.41, 54.36 2.66 C60.65 1.9, 55.34 3.5, 56.19 3.55" stroke="none" stroke-width="0" fill="#efeeef">&lt;/path>&lt;path d="M136.9 0.52 C150.91 1.13, 165.11 2.68, 175.95 5 C186.78 7.31, 196.54 11.26, 201.89 14.42 C207.25 17.57, 209.48 20.85, 208.07 23.92 C206.65 27, 201.05 30.24, 193.4 32.86 C185.74 35.48, 174.9 38.02, 162.15 39.64 C149.4 41.26, 131.79 42.4, 116.87 42.57 C101.94 42.74, 86.63 41.72, 72.59 40.66 C58.55 39.59, 43.69 38.09, 32.66 36.2 C21.62 34.3, 11.66 31.96, 6.38 29.26 C1.11 26.56, -0.29 23.07, 1.01 20 C2.31 16.94, 6.48 13.75, 14.2 10.85 C21.92 7.95, 34.44 4.31, 47.31 2.63 C60.19 0.94, 75.8 0.88, 91.46 0.72 C107.12 0.56, 132.11 1.45, 141.27 1.67 C150.44 1.89, 146.89 1.87, 146.45 2.03 M140.11 2.02 C154.31 2.96, 170.07 5.43, 180.81 7.62 C191.56 9.8, 200.28 12.47, 204.58 15.12 C208.88 17.78, 208.84 20.72, 206.61 23.54 C204.39 26.35, 199.37 29.35, 191.23 32 C183.09 34.65, 170.86 37.91, 157.79 39.42 C144.72 40.93, 128.04 40.95, 112.79 41.05 C97.53 41.16, 80.42 41.09, 66.27 40.03 C52.11 38.97, 37.95 36.9, 27.86 34.69 C17.77 32.49, 10.4 29.66, 5.72 26.81 C1.03 23.97, -2.05 20.46, -0.27 17.62 C1.51 14.78, 7.79 12.18, 16.4 9.77 C25 7.36, 37.95 4.81, 51.36 3.16 C64.76 1.52, 81.95 0.4, 96.84 -0.07 C111.73 -0.54, 133.25 -0.2, 140.71 0.35 C148.16 0.9, 141.97 2.81, 141.56 3.24" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(292.35370690966556 233.89007469696958) rotate(270 50 20)" fill-rule="evenodd">&lt;path d="M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0 M-0.26 6.4 C1.59 3.89, 3.92 2.37, 4.99 0.36 M-0.26 6.4 C1.68 4.3, 3.59 2.5, 4.99 0.36 M0.13 12.04 C2.72 5.97, 8.43 1.49, 10.63 -0.03 M0.13 12.04 C3.14 8.1, 6.68 4.46, 10.63 -0.03 M-0.13 18.44 C7.15 11.45, 11.68 6.8, 15.62 0.33 M-0.13 18.44 C3.24 13.16, 9.09 8.17, 15.62 0.33 M0.27 24.08 C8.44 16.97, 14.52 8.21, 21.26 -0.07 M0.27 24.08 C5.73 17.48, 10.21 11.89, 21.26 -0.07 M0 30.48 C6.72 19.59, 13.91 11.33, 26.25 0.29 M0 30.48 C10.61 18.43, 19.86 6.43, 26.25 0.29 M-0.26 36.88 C12.54 21.71, 26.75 7.78, 31.89 -0.1 M-0.26 36.88 C12.7 23.35, 26.31 8.38, 31.89 -0.1 M2.11 40.26 C10.88 30.09, 19.49 17.17, 36.88 0.26 M2.11 40.26 C14.03 27.03, 25.68 12.34, 36.88 0.26 M7.09 40.62 C17.96 28.88, 25.73 17.06, 42.52 -0.14 M7.09 40.62 C15.01 32.64, 22.1 23.66, 42.52 -0.14 M12.74 40.22 C21.45 28.66, 31.82 20.56, 47.51 0.22 M12.74 40.22 C26.33 24.52, 39.37 11.01, 47.51 0.22 M60.63 -14.87 C60.99 -15.26, 61.69 -16.01, 62.6 -17.14 M60.63 -14.87 C61.07 -15.43, 61.83 -16.05, 62.6 -17.14 M17.72 40.58 C30.87 27.1, 41.79 14.22, 53.15 -0.17 M17.72 40.58 C28.03 28.82, 36.95 19.38, 53.15 -0.17 M60.37 -8.47 C63.08 -11.53, 64.35 -13.64, 65.62 -14.51 M60.37 -8.47 C61.78 -10.09, 62.99 -10.84, 65.62 -14.51 M23.37 40.19 C32.64 28.73, 43.87 13.3, 58.14 0.19 M23.37 40.19 C30.03 32.7, 37.84 22.83, 58.14 0.19 M60.76 -2.83 C63.01 -6.53, 64.82 -8.37, 68.63 -11.89 M60.76 -2.83 C63.62 -5.76, 67.27 -10.26, 68.63 -11.89 M28.35 40.55 C42.38 25.2, 58.28 7.88, 71 -8.51 M28.35 40.55 C44.49 23.26, 59.8 5.57, 71 -8.51 M34 40.15 C41.86 31.27, 51.49 18.46, 74.02 -5.88 M34 40.15 C47.05 25.96, 58.67 11.23, 74.02 -5.88 M38.98 40.51 C48.71 26.95, 57.99 17.56, 77.03 -3.26 M38.98 40.51 C47.73 30.65, 57.58 18.98, 77.03 -3.26 M43.97 40.87 C58.24 25.05, 70.47 10.12, 80.05 -0.64 M43.97 40.87 C55.62 26.9, 68.36 12.34, 80.05 -0.64 M49.61 40.48 C58.86 27.55, 69.74 19, 82.42 2.74 M49.61 40.48 C60.52 26.85, 71.88 13.64, 82.42 2.74 M54.6 40.84 C65.21 28.67, 70.91 21.45, 85.44 5.37 M54.6 40.84 C65.05 29.96, 74.26 18.16, 85.44 5.37 M60.24 40.44 C71.42 27.49, 80.65 16.4, 88.45 7.99 M60.24 40.44 C71.31 28.04, 79.97 16.73, 88.45 7.99 M60.64 46.09 C65.91 37.43, 75.09 31.3, 90.82 11.37 M60.64 46.09 C71.08 34.11, 81.09 22.04, 90.82 11.37 M60.38 52.48 C69.24 40.68, 80.95 28.73, 93.84 13.99 M60.38 52.48 C71.72 38.63, 82.09 25.18, 93.84 13.99 M60.12 58.88 C73.94 44.94, 85.73 31.06, 96.85 16.62 M60.12 58.88 C70.66 46.72, 80.28 35.55, 96.85 16.62 M90.69 29.81 C92.75 26.75, 96.13 23.22, 99.87 19.24 M90.69 29.81 C93.28 26.66, 96.35 22.55, 99.87 19.24" stroke="#ced4da" stroke-width="0.5" fill="none">&lt;/path>&lt;path d="M0 0 C1.01 13.55, -1.43 27.3, 0 40 M0 0 C1.24 14.1, 0.41 27.66, 0 40 M0 40 C20.6 41.15, 44.63 42.3, 60 40 M0 40 C15.19 39.43, 27.57 39.07, 60 40 M60 40 C61.44 44.56, 61.2 51.08, 60 60 M60 40 C60.62 47.58, 60.65 53.31, 60 60 M60 60 C73.82 45.17, 89.41 30.13, 100 20 M60 60 C67.78 51.13, 76.29 43.43, 100 20 M100 20 C89.65 7.02, 75.71 -2.86, 60 -20 M100 20 C86.27 5.69, 71.49 -8.33, 60 -20 M60 -20 C58.09 -14.04, 58.06 -3.08, 60 0 M60 -20 C59.27 -16.06, 60.01 -10.63, 60 0 M60 0 C49.29 0.59, 34.56 0.56, 0 0 M60 0 C41.08 -0.44, 19.87 0.13, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(640.2490782747193 209.37327104211226) rotate(0 -2.8528116333375806 -77.35811924495596)" fill-rule="evenodd">&lt;path d="M0 0 C-1.49 1.46, -5.47 6.54, -8.93 8.78 C-12.39 11.03, -16.55 12.77, -20.77 13.47 C-24.99 14.16, -30.14 14.06, -34.24 12.96 C-38.34 11.86, -41.81 9.94, -45.35 6.86 C-48.88 3.77, -52.92 -1.07, -55.42 -5.54 C-57.93 -10, -59.21 -18.09, -60.38 -19.94 C-61.55 -21.8, -60.88 -17.97, -62.45 -16.65 C-64.01 -15.32, -67.18 -12.8, -69.76 -11.99 C-72.34 -11.19, -75.11 -11.09, -77.94 -11.8 C-80.76 -12.51, -84.48 -14.63, -86.71 -16.25 C-88.95 -17.87, -89.98 -19.33, -91.34 -21.52 C-92.71 -23.71, -94.19 -27.3, -94.9 -29.37 C-95.62 -31.43, -95.63 -32.41, -95.66 -33.91 C-95.69 -35.41, -94.76 -38.45, -95.11 -38.37 C-95.45 -38.29, -95.77 -34.21, -97.74 -33.45 C-99.71 -32.7, -103.67 -32.57, -106.92 -33.83 C-110.16 -35.09, -114.68 -38.09, -117.21 -41.02 C-119.73 -43.94, -121.05 -47.86, -122.08 -51.38 C-123.11 -54.9, -123.36 -58.89, -123.39 -62.15 C-123.42 -65.41, -123.14 -68.26, -122.28 -70.92 C-121.42 -73.59, -119.53 -76.04, -118.21 -78.13 C-116.9 -80.23, -116.06 -81.97, -114.39 -83.5 C-112.72 -85.04, -110.36 -86.59, -108.19 -87.34 C-106.03 -88.09, -103.16 -88.31, -101.41 -88 C-99.66 -87.69, -97.93 -85.02, -97.69 -85.48 C-97.45 -85.95, -99.81 -87.83, -99.97 -90.78 C-100.12 -93.72, -99.53 -99.02, -98.63 -103.16 C-97.73 -107.3, -96.3 -111.58, -94.56 -115.6 C-92.82 -119.62, -90.6 -124.18, -88.21 -127.25 C-85.81 -130.33, -82.92 -132.4, -80.2 -134.03 C-77.48 -135.66, -75.1 -136.5, -71.9 -137.04 C-68.69 -137.59, -64.12 -137.69, -60.96 -137.29 C-57.8 -136.9, -55.45 -136, -52.93 -134.67 C-50.4 -133.35, -47.5 -131.15, -45.81 -129.33 C-44.13 -127.51, -43.32 -123.76, -42.83 -123.74 C-42.33 -123.72, -43.38 -126.71, -42.82 -129.21 C-42.26 -131.7, -41.15 -135.35, -39.48 -138.73 C-37.81 -142.11, -35.01 -146.26, -32.78 -149.46 C-30.56 -152.67, -28.64 -155.28, -26.14 -157.94 C-23.64 -160.59, -20.7 -163.32, -17.79 -165.39 C-14.88 -167.46, -12.47 -168.98, -8.69 -170.36 C-4.91 -171.73, 0.44 -173.49, 4.89 -173.65 C9.34 -173.82, 13.71 -172.68, 18.03 -171.36 C22.36 -170.03, 26.82 -168.32, 30.83 -165.71 C34.83 -163.11, 39.25 -158.58, 42.05 -155.73 C44.84 -152.87, 45.84 -151.1, 47.58 -148.59 C49.32 -146.08, 51.48 -143.19, 52.5 -140.66 C53.53 -138.12, 53.09 -134.02, 53.74 -133.37 C54.39 -132.72, 54.65 -135.78, 56.41 -136.77 C58.17 -137.77, 61.41 -139.08, 64.32 -139.33 C67.23 -139.59, 70.9 -139.39, 73.86 -138.3 C76.83 -137.21, 79.46 -135.24, 82.11 -132.78 C84.77 -130.32, 87.93 -127.12, 89.81 -123.56 C91.69 -120, 92.6 -114.77, 93.4 -111.42 C94.19 -108.08, 94.57 -106.76, 94.58 -103.47 C94.6 -100.19, 93.34 -93.13, 93.49 -91.72 C93.64 -90.31, 94.28 -94.57, 95.49 -95.03 C96.7 -95.48, 98.55 -95.33, 100.75 -94.46 C102.95 -93.59, 106.37 -91.95, 108.68 -89.78 C111 -87.62, 113.15 -84.83, 114.65 -81.45 C116.15 -78.07, 117.3 -73.38, 117.68 -69.5 C118.06 -65.63, 117.61 -61.32, 116.93 -58.19 C116.25 -55.05, 114.65 -52.65, 113.61 -50.68 C112.57 -48.72, 111.71 -47.13, 110.69 -46.41 C109.67 -45.68, 107.23 -46.86, 107.48 -46.32 C107.72 -45.79, 110.84 -44.49, 112.15 -43.2 C113.46 -41.91, 114.76 -40.76, 115.32 -38.58 C115.88 -36.41, 115.97 -32.77, 115.5 -30.17 C115.02 -27.58, 113.64 -24.71, 112.49 -22.99 C111.34 -21.28, 109.99 -20.48, 108.58 -19.87 C107.16 -19.27, 105.43 -19.22, 104.02 -19.35 C102.6 -19.48, 101.57 -19.27, 100.1 -20.64 C98.62 -22.02, 95.76 -27.42, 95.17 -27.6 C94.58 -27.77, 96.69 -24.05, 96.57 -21.7 C96.44 -19.36, 95.01 -15.7, 94.42 -13.54 C93.82 -11.38, 94.06 -11.23, 93.01 -8.73 C91.96 -6.23, 89.7 -1.31, 88.1 1.46 C86.5 4.22, 86.03 5.33, 83.41 7.87 C80.79 10.42, 75.96 14.89, 72.39 16.74 C68.82 18.58, 65.61 18.92, 61.97 18.94 C58.33 18.96, 54.29 18.17, 50.54 16.88 C46.8 15.59, 42.34 13.71, 39.49 11.19 C36.64 8.66, 34.51 2.52, 33.45 1.7 C32.4 0.88, 34.33 4.58, 33.14 6.25 C31.96 7.93, 28.89 10.52, 26.36 11.76 C23.83 13.01, 20.68 13.7, 17.96 13.7 C15.24 13.69, 12.64 13.13, 10.03 11.73 C7.42 10.33, 3.98 7.24, 2.31 5.29 C0.64 3.33, 0.38 0.88, 0 0" stroke="none" stroke-width="0" fill="#e7f5ff" fill-rule="evenodd">&lt;/path>&lt;path d="M0 0 C-1.49 1.46, -5.47 6.54, -8.93 8.78 C-12.39 11.03, -16.55 12.77, -20.77 13.47 C-24.99 14.16, -30.14 14.06, -34.24 12.96 C-38.34 11.86, -41.81 9.94, -45.35 6.86 C-48.88 3.77, -52.92 -1.07, -55.42 -5.54 C-57.93 -10, -59.21 -18.09, -60.38 -19.94 C-61.55 -21.8, -60.88 -17.97, -62.45 -16.65 C-64.01 -15.32, -67.18 -12.8, -69.76 -11.99 C-72.34 -11.19, -75.11 -11.09, -77.94 -11.8 C-80.76 -12.51, -84.48 -14.63, -86.71 -16.25 C-88.95 -17.87, -89.98 -19.33, -91.34 -21.52 C-92.71 -23.71, -94.19 -27.3, -94.9 -29.37 C-95.62 -31.43, -95.63 -32.41, -95.66 -33.91 C-95.69 -35.41, -94.76 -38.45, -95.11 -38.37 C-95.45 -38.29, -95.77 -34.21, -97.74 -33.45 C-99.71 -32.7, -103.67 -32.57, -106.92 -33.83 C-110.16 -35.09, -114.68 -38.09, -117.21 -41.02 C-119.73 -43.94, -121.05 -47.86, -122.08 -51.38 C-123.11 -54.9, -123.36 -58.89, -123.39 -62.15 C-123.42 -65.41, -123.14 -68.26, -122.28 -70.92 C-121.42 -73.59, -119.53 -76.04, -118.21 -78.13 C-116.9 -80.23, -116.06 -81.97, -114.39 -83.5 C-112.72 -85.04, -110.36 -86.59, -108.19 -87.34 C-106.03 -88.09, -103.16 -88.31, -101.41 -88 C-99.66 -87.69, -97.93 -85.02, -97.69 -85.48 C-97.45 -85.95, -99.81 -87.83, -99.97 -90.78 C-100.12 -93.72, -99.53 -99.02, -98.63 -103.16 C-97.73 -107.3, -96.3 -111.58, -94.56 -115.6 C-92.82 -119.62, -90.6 -124.18, -88.21 -127.25 C-85.81 -130.33, -82.92 -132.4, -80.2 -134.03 C-77.48 -135.66, -75.1 -136.5, -71.9 -137.04 C-68.69 -137.59, -64.12 -137.69, -60.96 -137.29 C-57.8 -136.9, -55.45 -136, -52.93 -134.67 C-50.4 -133.35, -47.5 -131.15, -45.81 -129.33 C-44.13 -127.51, -43.32 -123.76, -42.83 -123.74 C-42.33 -123.72, -43.38 -126.71, -42.82 -129.21 C-42.26 -131.7, -41.15 -135.35, -39.48 -138.73 C-37.81 -142.11, -35.01 -146.26, -32.78 -149.46 C-30.56 -152.67, -28.64 -155.28, -26.14 -157.94 C-23.64 -160.59, -20.7 -163.32, -17.79 -165.39 C-14.88 -167.46, -12.47 -168.98, -8.69 -170.36 C-4.91 -171.73, 0.44 -173.49, 4.89 -173.65 C9.34 -173.82, 13.71 -172.68, 18.03 -171.36 C22.36 -170.03, 26.82 -168.32, 30.83 -165.71 C34.83 -163.11, 39.25 -158.58, 42.05 -155.73 C44.84 -152.87, 45.84 -151.1, 47.58 -148.59 C49.32 -146.08, 51.48 -143.19, 52.5 -140.66 C53.53 -138.12, 53.09 -134.02, 53.74 -133.37 C54.39 -132.72, 54.65 -135.78, 56.41 -136.77 C58.17 -137.77, 61.41 -139.08, 64.32 -139.33 C67.23 -139.59, 70.9 -139.39, 73.86 -138.3 C76.83 -137.21, 79.46 -135.24, 82.11 -132.78 C84.77 -130.32, 87.93 -127.12, 89.81 -123.56 C91.69 -120, 92.6 -114.77, 93.4 -111.42 C94.19 -108.08, 94.57 -106.76, 94.58 -103.47 C94.6 -100.19, 93.34 -93.13, 93.49 -91.72 C93.64 -90.31, 94.28 -94.57, 95.49 -95.03 C96.7 -95.48, 98.55 -95.33, 100.75 -94.46 C102.95 -93.59, 106.37 -91.95, 108.68 -89.78 C111 -87.62, 113.15 -84.83, 114.65 -81.45 C116.15 -78.07, 117.3 -73.38, 117.68 -69.5 C118.06 -65.63, 117.61 -61.32, 116.93 -58.19 C116.25 -55.05, 114.65 -52.65, 113.61 -50.68 C112.57 -48.72, 111.71 -47.13, 110.69 -46.41 C109.67 -45.68, 107.23 -46.86, 107.48 -46.32 C107.72 -45.79, 110.84 -44.49, 112.15 -43.2 C113.46 -41.91, 114.76 -40.76, 115.32 -38.58 C115.88 -36.41, 115.97 -32.77, 115.5 -30.17 C115.02 -27.58, 113.64 -24.71, 112.49 -22.99 C111.34 -21.28, 109.99 -20.48, 108.58 -19.87 C107.16 -19.27, 105.43 -19.22, 104.02 -19.35 C102.6 -19.48, 101.57 -19.27, 100.1 -20.64 C98.62 -22.02, 95.76 -27.42, 95.17 -27.6 C94.58 -27.77, 96.69 -24.05, 96.57 -21.7 C96.44 -19.36, 95.01 -15.7, 94.42 -13.54 C93.82 -11.38, 94.06 -11.23, 93.01 -8.73 C91.96 -6.23, 89.7 -1.31, 88.1 1.46 C86.5 4.22, 86.03 5.33, 83.41 7.87 C80.79 10.42, 75.96 14.89, 72.39 16.74 C68.82 18.58, 65.61 18.92, 61.97 18.94 C58.33 18.96, 54.29 18.17, 50.54 16.88 C46.8 15.59, 42.34 13.71, 39.49 11.19 C36.64 8.66, 34.51 2.52, 33.45 1.7 C32.4 0.88, 34.33 4.58, 33.14 6.25 C31.96 7.93, 28.89 10.52, 26.36 11.76 C23.83 13.01, 20.68 13.7, 17.96 13.7 C15.24 13.69, 12.64 13.13, 10.03 11.73 C7.42 10.33, 3.98 7.24, 2.31 5.29 C0.64 3.33, 0.38 0.88, 0 0 M0 0 C-1.49 1.46, -5.47 6.54, -8.93 8.78 C-12.39 11.03, -16.55 12.77, -20.77 13.47 C-24.99 14.16, -30.14 14.06, -34.24 12.96 C-38.34 11.86, -41.81 9.94, -45.35 6.86 C-48.88 3.77, -52.92 -1.07, -55.42 -5.54 C-57.93 -10, -59.21 -18.09, -60.38 -19.94 C-61.55 -21.8, -60.88 -17.97, -62.45 -16.65 C-64.01 -15.32, -67.18 -12.8, -69.76 -11.99 C-72.34 -11.19, -75.11 -11.09, -77.94 -11.8 C-80.76 -12.51, -84.48 -14.63, -86.71 -16.25 C-88.95 -17.87, -89.98 -19.33, -91.34 -21.52 C-92.71 -23.71, -94.19 -27.3, -94.9 -29.37 C-95.62 -31.43, -95.63 -32.41, -95.66 -33.91 C-95.69 -35.41, -94.76 -38.45, -95.11 -38.37 C-95.45 -38.29, -95.77 -34.21, -97.74 -33.45 C-99.71 -32.7, -103.67 -32.57, -106.92 -33.83 C-110.16 -35.09, -114.68 -38.09, -117.21 -41.02 C-119.73 -43.94, -121.05 -47.86, -122.08 -51.38 C-123.11 -54.9, -123.36 -58.89, -123.39 -62.15 C-123.42 -65.41, -123.14 -68.26, -122.28 -70.92 C-121.42 -73.59, -119.53 -76.04, -118.21 -78.13 C-116.9 -80.23, -116.06 -81.97, -114.39 -83.5 C-112.72 -85.04, -110.36 -86.59, -108.19 -87.34 C-106.03 -88.09, -103.16 -88.31, -101.41 -88 C-99.66 -87.69, -97.93 -85.02, -97.69 -85.48 C-97.45 -85.95, -99.81 -87.83, -99.97 -90.78 C-100.12 -93.72, -99.53 -99.02, -98.63 -103.16 C-97.73 -107.3, -96.3 -111.58, -94.56 -115.6 C-92.82 -119.62, -90.6 -124.18, -88.21 -127.25 C-85.81 -130.33, -82.92 -132.4, -80.2 -134.03 C-77.48 -135.66, -75.1 -136.5, -71.9 -137.04 C-68.69 -137.59, -64.12 -137.69, -60.96 -137.29 C-57.8 -136.9, -55.45 -136, -52.93 -134.67 C-50.4 -133.35, -47.5 -131.15, -45.81 -129.33 C-44.13 -127.51, -43.32 -123.76, -42.83 -123.74 C-42.33 -123.72, -43.38 -126.71, -42.82 -129.21 C-42.26 -131.7, -41.15 -135.35, -39.48 -138.73 C-37.81 -142.11, -35.01 -146.26, -32.78 -149.46 C-30.56 -152.67, -28.64 -155.28, -26.14 -157.94 C-23.64 -160.59, -20.7 -163.32, -17.79 -165.39 C-14.88 -167.46, -12.47 -168.98, -8.69 -170.36 C-4.91 -171.73, 0.44 -173.49, 4.89 -173.65 C9.34 -173.82, 13.71 -172.68, 18.03 -171.36 C22.36 -170.03, 26.82 -168.32, 30.83 -165.71 C34.83 -163.11, 39.25 -158.58, 42.05 -155.73 C44.84 -152.87, 45.84 -151.1, 47.58 -148.59 C49.32 -146.08, 51.48 -143.19, 52.5 -140.66 C53.53 -138.12, 53.09 -134.02, 53.74 -133.37 C54.39 -132.72, 54.65 -135.78, 56.41 -136.77 C58.17 -137.77, 61.41 -139.08, 64.32 -139.33 C67.23 -139.59, 70.9 -139.39, 73.86 -138.3 C76.83 -137.21, 79.46 -135.24, 82.11 -132.78 C84.77 -130.32, 87.93 -127.12, 89.81 -123.56 C91.69 -120, 92.6 -114.77, 93.4 -111.42 C94.19 -108.08, 94.57 -106.76, 94.58 -103.47 C94.6 -100.19, 93.34 -93.13, 93.49 -91.72 C93.64 -90.31, 94.28 -94.57, 95.49 -95.03 C96.7 -95.48, 98.55 -95.33, 100.75 -94.46 C102.95 -93.59, 106.37 -91.95, 108.68 -89.78 C111 -87.62, 113.15 -84.83, 114.65 -81.45 C116.15 -78.07, 117.3 -73.38, 117.68 -69.5 C118.06 -65.63, 117.61 -61.32, 116.93 -58.19 C116.25 -55.05, 114.65 -52.65, 113.61 -50.68 C112.57 -48.72, 111.71 -47.13, 110.69 -46.41 C109.67 -45.68, 107.23 -46.86, 107.48 -46.32 C107.72 -45.79, 110.84 -44.49, 112.15 -43.2 C113.46 -41.91, 114.76 -40.76, 115.32 -38.58 C115.88 -36.41, 115.97 -32.77, 115.5 -30.17 C115.02 -27.58, 113.64 -24.71, 112.49 -22.99 C111.34 -21.28, 109.99 -20.48, 108.58 -19.87 C107.16 -19.27, 105.43 -19.22, 104.02 -19.35 C102.6 -19.48, 101.57 -19.27, 100.1 -20.64 C98.62 -22.02, 95.76 -27.42, 95.17 -27.6 C94.58 -27.77, 96.69 -24.05, 96.57 -21.7 C96.44 -19.36, 95.01 -15.7, 94.42 -13.54 C93.82 -11.38, 94.06 -11.23, 93.01 -8.73 C91.96 -6.23, 89.7 -1.31, 88.1 1.46 C86.5 4.22, 86.03 5.33, 83.41 7.87 C80.79 10.42, 75.96 14.89, 72.39 16.74 C68.82 18.58, 65.61 18.92, 61.97 18.94 C58.33 18.96, 54.29 18.17, 50.54 16.88 C46.8 15.59, 42.34 13.71, 39.49 11.19 C36.64 8.66, 34.51 2.52, 33.45 1.7 C32.4 0.88, 34.33 4.58, 33.14 6.25 C31.96 7.93, 28.89 10.52, 26.36 11.76 C23.83 13.01, 20.68 13.7, 17.96 13.7 C15.24 13.69, 12.64 13.13, 10.03 11.73 C7.42 10.33, 3.98 7.24, 2.31 5.29 C0.64 3.33, 0.38 0.88, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(194.21388329373497 119.69696969696952) rotate(0 30.10053888166442 20)" fill-rule="evenodd">&lt;path d="M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0 M-0.26 6.4 C0.54 4.49, 3.24 2.78, 4.99 0.36 M-0.26 6.4 C1.75 4.54, 3.35 2.35, 4.99 0.36 M0.13 12.04 C3.27 8.34, 4.63 6.08, 10.63 -0.03 M0.13 12.04 C2.82 7.69, 5.69 4.38, 10.63 -0.03 M-0.13 18.44 C6.67 10.83, 10.91 3.23, 15.62 0.33 M-0.13 18.44 C6.14 11, 13.12 4.19, 15.62 0.33 M0.27 24.08 C8.61 16.48, 18.61 6.37, 21.26 -0.07 M0.27 24.08 C5.62 17.84, 10.9 10.25, 21.26 -0.07 M37.01 -18.18 C37.01 -18.18, 37.01 -18.18, 37.01 -18.18 M37.01 -18.18 C37.01 -18.18, 37.01 -18.18, 37.01 -18.18 M0 30.48 C6.69 25.07, 11.86 17.45, 26.25 0.29 M0 30.48 C6.77 22.08, 14.29 15.34, 26.25 0.29 M36.74 -11.78 C37.83 -13.28, 38.82 -13.82, 39.37 -14.8 M36.74 -11.78 C37.32 -12.45, 38.13 -13.33, 39.37 -14.8 M-0.26 36.88 C7.28 27.6, 19.08 17.46, 31.89 -0.1 M-0.26 36.88 C10.88 24.7, 21 12.9, 31.89 -0.1 M36.48 -5.39 C38.26 -7.71, 39.11 -8.03, 41.73 -11.42 M36.48 -5.39 C38.88 -8.09, 40.53 -10.32, 41.73 -11.42 M2.11 40.26 C12.77 28.19, 22.22 20.48, 44.09 -8.05 M2.11 40.26 C14.31 25.54, 27.62 8.98, 44.09 -8.05 M7.09 40.62 C13.97 33.11, 22.87 21.12, 45.8 -3.91 M7.09 40.62 C19.5 24.95, 31.85 10.93, 45.8 -3.91 M12.74 40.22 C25.76 26.49, 41.42 7.43, 48.16 -0.53 M12.74 40.22 C24.48 27.41, 37.01 13.48, 48.16 -0.53 M17.72 40.58 C30.72 27.61, 42.17 14.3, 50.53 2.85 M17.72 40.58 C24.51 32.95, 32.09 23.37, 50.53 2.85 M23.37 40.19 C33.25 30.73, 40.23 19.97, 52.23 6.98 M23.37 40.19 C30.89 30.28, 38.24 22.47, 52.23 6.98 M28.35 40.55 C33.32 34.58, 40.99 25.08, 54.6 10.36 M28.35 40.55 C38.32 29.33, 47.3 18.58, 54.6 10.36 M34 40.15 C41.3 31.43, 50.28 21.3, 56.96 13.74 M34 40.15 C40.61 31.4, 48.05 24.82, 56.96 13.74 M36.36 43.53 C43.09 33.12, 50.94 23.82, 59.32 17.12 M36.36 43.53 C43.92 34.87, 48.98 28.73, 59.32 17.12 M36.75 49.17 C44.35 42.43, 49.46 34.14, 57.75 25.02 M36.75 49.17 C44.99 39.75, 52.23 31.19, 57.75 25.02 M36.49 55.57 C41.03 50.86, 42.08 47.76, 45.68 45.01 M36.49 55.57 C38.03 52.9, 40.93 51.1, 45.68 45.01" stroke="#ced4da" stroke-width="0.5" fill="none">&lt;/path>&lt;path d="M0 0 C1.24 15.15, 1.3 26.61, 0 40 M0 0 C-0.38 14.86, -0.06 29.79, 0 40 M0 40 C6.62 39.58, 14.2 41.41, 36.12 40 M0 40 C11.68 39.46, 21.4 40.47, 36.12 40 M36.12 40 C36.65 46.23, 35.49 53.71, 36.12 60 M36.12 40 C35.19 46.83, 35.17 56.15, 36.12 60 M36.12 60 C40.15 49.5, 47.1 42.13, 60.2 20 M36.12 60 C41.96 52.17, 45.97 43.74, 60.2 20 M60.2 20 C54.11 6.66, 43.16 -5.32, 36.12 -20 M60.2 20 C52.75 7.45, 46.54 -3.77, 36.12 -20 M36.12 -20 C34.56 -15.93, 38.12 -10.6, 36.12 0 M36.12 -20 C36.78 -14.58, 35.45 -8.26, 36.12 0 M36.12 0 C29.06 -0.81, 21.56 1.08, 0 0 M36.12 0 C21.62 0.1, 7.57 0.42, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(428.5827788235049 119.69696969696952) rotate(0 30.10053888166442 20)" fill-rule="evenodd">&lt;path d="M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0 M-0.26 6.4 C0.97 5.4, 3.06 2.84, 4.99 0.36 M-0.26 6.4 C1.1 4.86, 3.18 2.79, 4.99 0.36 M0.13 12.04 C3.53 8.47, 6.96 4.15, 10.63 -0.03 M0.13 12.04 C3.91 6.79, 7.7 1.92, 10.63 -0.03 M-0.13 18.44 C5.91 11.81, 10.22 3.04, 15.62 0.33 M-0.13 18.44 C4.49 14.82, 7.22 10.17, 15.62 0.33 M0.27 24.08 C4.24 16.68, 11.32 11.56, 21.26 -0.07 M0.27 24.08 C4.18 19.32, 8.47 14.41, 21.26 -0.07 M37.01 -18.18 C37.01 -18.18, 37.01 -18.18, 37.01 -18.18 M37.01 -18.18 C37.01 -18.18, 37.01 -18.18, 37.01 -18.18 M0 30.48 C5.88 25.65, 10.12 18.1, 26.25 0.29 M0 30.48 C8.58 20.19, 18.88 8.84, 26.25 0.29 M36.74 -11.78 C37.44 -12.09, 37.42 -13.14, 39.37 -14.8 M36.74 -11.78 C37.78 -12.86, 38.51 -13.56, 39.37 -14.8 M-0.26 36.88 C7.23 26.17, 16.16 15.93, 31.89 -0.1 M-0.26 36.88 C8.31 27.5, 15.39 17.61, 31.89 -0.1 M36.48 -5.39 C37.42 -6.24, 38.58 -8.92, 41.73 -11.42 M36.48 -5.39 C37.71 -6.78, 38.97 -8.67, 41.73 -11.42 M2.11 40.26 C11.67 29.46, 24.52 16.94, 44.09 -8.05 M2.11 40.26 C11.86 27.42, 23.45 16.43, 44.09 -8.05 M7.09 40.62 C16.96 26.37, 30.19 15.48, 45.8 -3.91 M7.09 40.62 C17.22 27.86, 28.36 16.96, 45.8 -3.91 M12.74 40.22 C21.36 28.97, 33.74 14.46, 48.16 -0.53 M12.74 40.22 C22.93 27.44, 33.54 16.97, 48.16 -0.53 M17.72 40.58 C28.17 27.83, 40.28 14.73, 50.53 2.85 M17.72 40.58 C27.65 30.48, 36.09 18.03, 50.53 2.85 M23.37 40.19 C34.35 31.19, 41.34 19.34, 52.23 6.98 M23.37 40.19 C31.18 30.72, 38.95 22.57, 52.23 6.98 M28.35 40.55 C35.07 32.73, 41.05 24.95, 54.6 10.36 M28.35 40.55 C33.76 34.89, 38.95 28.59, 54.6 10.36 M34 40.15 C40.4 31.88, 46.85 25.64, 56.96 13.74 M34 40.15 C42.43 31.52, 49.44 23.14, 56.96 13.74 M36.36 43.53 C44.26 36.77, 49.53 29.56, 59.32 17.12 M36.36 43.53 C43.77 36.05, 50.56 26.9, 59.32 17.12 M36.75 49.17 C45.32 40.81, 51.7 30.69, 57.75 25.02 M36.75 49.17 C43.59 42.65, 48.59 35.15, 57.75 25.02 M36.49 55.57 C39.76 53.02, 42.05 47.89, 45.68 45.01 M36.49 55.57 C38.53 52.69, 41.89 49.32, 45.68 45.01" stroke="#ced4da" stroke-width="0.5" fill="none">&lt;/path>&lt;path d="M0 0 C0.5 15.59, -0.28 27.95, 0 40 M0 0 C0.1 8.54, -0.7 16.77, 0 40 M0 40 C9.62 42.01, 16.02 38.33, 36.12 40 M0 40 C9.67 39.44, 17.96 40.88, 36.12 40 M36.12 40 C36.3 46.55, 34.2 49.02, 36.12 60 M36.12 40 C35.48 44.63, 36.35 49.04, 36.12 60 M36.12 60 C42.34 47.67, 54.01 33.54, 60.2 20 M36.12 60 C41.86 49.81, 49.01 37.1, 60.2 20 M60.2 20 C53.11 6.45, 44.69 -6.88, 36.12 -20 M60.2 20 C53.3 8.11, 45.36 -4.39, 36.12 -20 M36.12 -20 C35.5 -15.02, 35.92 -8.18, 36.12 0 M36.12 -20 C36.1 -12.83, 35.62 -5.54, 36.12 0 M36.12 0 C24.7 -0.04, 11.51 2.11, 0 0 M36.12 0 C28.81 0.15, 20.75 0.36, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(787.3183895809956 119.69696969696952) rotate(0 30.10053888166442 20)" fill-rule="evenodd">&lt;path d="M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0 M-0.26 6.4 C1 3.58, 2.73 1.69, 4.99 0.36 M-0.26 6.4 C1.64 4.17, 3.55 1.67, 4.99 0.36 M0.13 12.04 C3.72 8.21, 4.71 6.01, 10.63 -0.03 M0.13 12.04 C4.02 7.64, 8.76 2.77, 10.63 -0.03 M-0.13 18.44 C5.16 13.77, 10.14 7.3, 15.62 0.33 M-0.13 18.44 C2.55 13.54, 6.12 9.47, 15.62 0.33 M0.27 24.08 C6.27 16.19, 16.69 5.98, 21.26 -0.07 M0.27 24.08 C6.11 17.43, 10.52 11.61, 21.26 -0.07 M37.01 -18.18 C37.01 -18.18, 37.01 -18.18, 37.01 -18.18 M37.01 -18.18 C37.01 -18.18, 37.01 -18.18, 37.01 -18.18 M0 30.48 C4.99 22.68, 9.73 18.37, 26.25 0.29 M0 30.48 C8.56 19.32, 17.78 9.71, 26.25 0.29 M36.74 -11.78 C37.36 -13.04, 38.48 -14.3, 39.37 -14.8 M36.74 -11.78 C37.26 -12.63, 37.92 -13.25, 39.37 -14.8 M-0.26 36.88 C13.03 24.28, 22.57 7.61, 31.89 -0.1 M-0.26 36.88 C10.32 25.72, 19.68 14.14, 31.89 -0.1 M36.48 -5.39 C38.84 -7.43, 39.96 -9.75, 41.73 -11.42 M36.48 -5.39 C38.55 -7.32, 40.37 -10.02, 41.73 -11.42 M2.11 40.26 C13.35 25.78, 23.87 15.26, 44.09 -8.05 M2.11 40.26 C19.27 21.8, 35.77 3.08, 44.09 -8.05 M7.09 40.62 C18.84 27.63, 31.58 12.01, 45.8 -3.91 M7.09 40.62 C15.83 28.46, 26.1 18.91, 45.8 -3.91 M12.74 40.22 C22.13 28.63, 31.96 15.48, 48.16 -0.53 M12.74 40.22 C20.46 31.56, 29.17 21.57, 48.16 -0.53 M17.72 40.58 C27.24 28.76, 34.61 19.78, 50.53 2.85 M17.72 40.58 C26.52 30.55, 35.93 19.25, 50.53 2.85 M23.37 40.19 C31.85 30.82, 40.33 21.4, 52.23 6.98 M23.37 40.19 C30.34 32.46, 36.72 23.48, 52.23 6.98 M28.35 40.55 C35.92 32.47, 45.06 22.28, 54.6 10.36 M28.35 40.55 C34.87 32.5, 42.73 24.12, 54.6 10.36 M34 40.15 C41.91 29.61, 48.76 21.57, 56.96 13.74 M34 40.15 C42.08 30.12, 51.06 19.42, 56.96 13.74 M36.36 43.53 C42.42 34.35, 48.31 27.64, 59.32 17.12 M36.36 43.53 C45.59 33.03, 53.7 24.96, 59.32 17.12 M36.75 49.17 C42.03 41.88, 47.65 32.47, 57.75 25.02 M36.75 49.17 C45.47 39.66, 53.69 29.64, 57.75 25.02 M36.49 55.57 C38.69 51.69, 41.33 48.42, 45.68 45.01 M36.49 55.57 C39.55 51.65, 42.16 48.45, 45.68 45.01" stroke="#ced4da" stroke-width="0.5" fill="none">&lt;/path>&lt;path d="M0 0 C-1.75 12.3, -1.37 26.91, 0 40 M0 0 C-0.18 11.66, 0.16 24, 0 40 M0 40 C8.78 40.77, 14.3 41.49, 36.12 40 M0 40 C8.27 38.78, 17.22 40.45, 36.12 40 M36.12 40 C38.09 48.14, 36.33 55.2, 36.12 60 M36.12 40 C36.27 46.94, 36.58 55.29, 36.12 60 M36.12 60 C42.43 47.93, 50.87 39.63, 60.2 20 M36.12 60 C42.46 47.88, 50.46 37.69, 60.2 20 M60.2 20 C51.87 7.06, 40.46 -8.91, 36.12 -20 M60.2 20 C51.68 6.07, 42.34 -7.59, 36.12 -20 M36.12 -20 C37.9 -17.04, 37.93 -11.16, 36.12 0 M36.12 -20 C36.79 -12.83, 35.83 -5.57, 36.12 0 M36.12 0 C25.07 0.77, 12.01 0.47, 0 0 M36.12 0 C22.92 0.25, 10 -0.11, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(341.52788147187175 125.66986974171095) rotate(0 11.814085096892654 11.814085096892654)">&lt;path d="M3.12 4.04 C3.12 4.04, 3.12 4.04, 3.12 4.04 M3.12 4.04 C3.12 4.04, 3.12 4.04, 3.12 4.04 M0.89 12.7 C3.82 9.06, 7.72 5.49, 11.39 0.62 M0.89 12.7 C3.2 9.48, 5.83 6.19, 11.39 0.62 M1.94 17.59 C6.18 12.37, 10.52 7.34, 15.72 1.74 M1.94 17.59 C6.32 11.99, 11.95 6.36, 15.72 1.74 M4.96 20.21 C10.86 13.39, 15.48 7.76, 19.39 3.61 M4.96 20.21 C10.69 14.21, 15.78 7.11, 19.39 3.61 M7.98 22.83 C13.24 16.78, 18.23 11.36, 21.75 6.99 M7.98 22.83 C11.79 18.24, 15.83 13.8, 21.75 6.99 M12.31 23.95 C16.2 19.75, 18.99 15.81, 23.46 11.12 M12.31 23.95 C15.07 20.85, 16.86 18.61, 23.46 11.12" stroke="#fa5252" stroke-width="0.5" fill="none">&lt;/path>&lt;path d="M10.13 0.12 C12.44 -0.27, 15.74 0.78, 17.96 2.23 C20.19 3.68, 22.69 6.4, 23.48 8.81 C24.28 11.21, 23.84 14.4, 22.74 16.66 C21.65 18.93, 19.21 21.27, 16.9 22.39 C14.59 23.51, 11.39 24.06, 8.88 23.38 C6.38 22.71, 3.3 20.45, 1.87 18.34 C0.44 16.23, 0.09 13.1, 0.3 10.71 C0.52 8.31, 1.39 5.74, 3.18 3.96 C4.98 2.19, 9.53 0.63, 11.07 0.08 C12.61 -0.46, 12.37 0.46, 12.41 0.7 M15.32 0.88 C17.63 1.31, 19.55 3.65, 20.96 5.56 C22.38 7.46, 24.07 9.98, 23.83 12.32 C23.6 14.65, 21.29 17.77, 19.56 19.59 C17.84 21.41, 15.87 22.79, 13.48 23.22 C11.1 23.65, 7.56 23.63, 5.27 22.16 C2.97 20.69, 0.43 16.99, -0.3 14.41 C-1.04 11.82, -0.35 8.97, 0.85 6.65 C2.05 4.33, 4.52 1.46, 6.92 0.48 C9.31 -0.5, 14.02 0.74, 15.22 0.77 C16.42 0.8, 14.29 0.46, 14.1 0.66" stroke="#fa5252" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(329.7137963749791 113.85578464481819) rotate(0 23.628170193785365 23.62817019378531)">&lt;path d="M24.59 0.26 C29.53 0.28, 36.41 3.27, 40.18 6.72 C43.95 10.18, 46.72 15.99, 47.23 20.97 C47.74 25.95, 46.07 32.37, 43.25 36.6 C40.43 40.84, 35.19 44.99, 30.29 46.37 C25.39 47.75, 18.43 46.96, 13.85 44.88 C9.26 42.8, 5 38.31, 2.78 33.91 C0.56 29.51, -0.56 23.36, 0.52 18.5 C1.6 13.63, 5.01 7.72, 9.27 4.73 C13.52 1.74, 23.22 1.18, 26.06 0.56 C28.91 -0.07, 26.36 0.66, 26.36 0.96 M28.91 1.34 C33.59 2.07, 40.06 5.45, 42.99 9.37 C45.92 13.28, 46.8 19.76, 46.49 24.82 C46.18 29.87, 44.49 35.89, 41.11 39.7 C37.73 43.52, 31.43 47.23, 26.19 47.72 C20.95 48.2, 13.91 45.59, 9.66 42.6 C5.41 39.62, 1.95 34.7, 0.71 29.82 C-0.52 24.94, 0.1 17.83, 2.27 13.32 C4.45 8.81, 9.35 4.88, 13.77 2.79 C18.19 0.7, 26.27 0.96, 28.78 0.77 C31.29 0.57, 28.8 1.34, 28.83 1.63" stroke="#fa5252" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(353.3419665687645 113.85578464481819) rotate(0 0 23.62817019378531)">&lt;path d="M0.13 -0.48 C0.18 7.33, 0.04 38.75, 0.05 46.77 M-0.47 0.47 C-0.47 8.33, -0.43 39.51, -0.35 47.22" stroke="#fa5252" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(329.7137963749791 137.4839548386035) rotate(0 23.628170193785365 0)">&lt;path d="M0.05 -0.49 C7.95 -0.35, 39.58 0.25, 47.5 0.35 M-0.58 0.45 C7.25 0.48, 39.2 -0.49, 47.19 -0.43" stroke="#fa5252" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(280.5429892514295 99.69696996164248) rotate(0 59.44128645291448 37.9624166352628)">&lt;path d="M18.98 0 C46.71 0.1, 74.51 -1.08, 99.9 0 M18.98 0 C47.47 1.15, 76.38 0.87, 99.9 0 M99.9 0 C112.86 0.43, 117.41 6.68, 118.88 18.98 M99.9 0 C113.63 2.14, 117.24 8.15, 118.88 18.98 M118.88 18.98 C120.35 31.03, 118.65 40.62, 118.88 56.94 M118.88 18.98 C118.14 27.7, 118.4 35.21, 118.88 56.94 M118.88 56.94 C120.36 70.63, 111.02 75.55, 99.9 75.92 M118.88 56.94 C118.06 70.44, 113.28 77.99, 99.9 75.92 M99.9 75.92 C77.33 76.31, 56.45 77, 18.98 75.92 M99.9 75.92 C70.58 75.92, 40.96 75.95, 18.98 75.92 M18.98 75.92 C6.74 74.33, -1.73 70.71, 0 56.94 M18.98 75.92 C4.95 75.36, 1.58 68.34, 0 56.94 M0 56.94 C-0.69 46.26, 1.78 32.84, 0 18.98 M0 56.94 C-0.89 42.69, 0.02 26.22, 0 18.98 M0 18.98 C-1.89 5.07, 7.65 -0.93, 18.98 0 M0 18.98 C0.33 8.13, 4.04 -1.86, 18.98 0" stroke="black" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(322.20278147985164 188.00239683032464) rotate(0 21.418940878151147 0.22628582147922316)">&lt;path d="M-0.04 -0.37 C7.07 -0.21, 35.42 0.67, 42.47 0.77 M-0.72 0.64 C6.57 0.65, 36.17 -0.05, 43.52 -0.04" stroke="black" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(358.4540972203097 137.59782196000765) rotate(0 24.65884849732788 23.65399223719419)">&lt;path d="M19.1 0.51 C23.98 -0.9, 31.04 0.28, 35.73 2.47 C40.43 4.67, 45.18 9.02, 47.3 13.67 C49.42 18.33, 49.85 25.54, 48.45 30.42 C47.05 35.29, 43.24 40.14, 38.91 42.91 C34.58 45.68, 27.86 47.45, 22.47 47.04 C17.08 46.63, 10.24 44.01, 6.58 40.46 C2.91 36.9, 0.8 30.8, 0.49 25.72 C0.18 20.65, 1.61 14.14, 4.72 9.99 C7.84 5.83, 16.55 2.4, 19.19 0.79 C21.82 -0.83, 20.35 0.04, 20.56 0.32 M24.15 -0.14 C29.04 -0.45, 36.12 2.45, 40.29 5.85 C44.47 9.25, 48.3 15.35, 49.19 20.28 C50.09 25.22, 48.32 31.3, 45.66 35.46 C43 39.62, 38.11 43.63, 33.21 45.25 C28.3 46.87, 21.17 46.75, 16.23 45.19 C11.3 43.64, 6.17 40.16, 3.6 35.9 C1.02 31.65, -0.11 24.77, 0.78 19.67 C1.68 14.58, 4.97 8.63, 8.95 5.33 C12.93 2.03, 22.02 0.77, 24.68 -0.13 C27.34 -1.04, 24.98 -0.61, 24.88 -0.12" stroke="black" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(361.3474737369909 140.45861366275312) rotate(0 21.86501277618987 20.388473040353347)">&lt;path d="M22.54 0.33 C27.03 0.13, 33.44 2.26, 37.02 5.2 C40.59 8.14, 43.39 13.68, 44.01 17.97 C44.63 22.26, 43.23 27.26, 40.73 30.92 C38.24 34.58, 33.58 38.63, 29.02 39.95 C24.46 41.26, 17.86 40.42, 13.39 38.81 C8.93 37.2, 4.42 34.04, 2.23 30.27 C0.04 26.5, -0.85 20.61, 0.25 16.2 C1.35 11.79, 5.04 6.52, 8.82 3.81 C12.6 1.1, 20.44 0.44, 22.94 -0.09 C25.43 -0.61, 23.81 0.24, 23.78 0.66 M24.39 0.65 C28.96 0.85, 34.94 3.11, 38.22 6.15 C41.49 9.18, 43.96 14.41, 44.06 18.88 C44.16 23.35, 41.76 29.45, 38.8 32.95 C35.84 36.45, 30.97 38.93, 26.33 39.87 C21.69 40.8, 15.18 40.6, 10.95 38.56 C6.72 36.52, 2.57 31.8, 0.97 27.65 C-0.63 23.5, -0.22 17.62, 1.33 13.65 C2.88 9.69, 6.48 6.15, 10.28 3.86 C14.09 1.57, 21.72 0.4, 24.14 -0.1 C26.57 -0.6, 24.72 0.55, 24.83 0.87" stroke="none" stroke-width="0" fill="white">&lt;/path>&lt;path d="M19.89 0.18 C24.24 -0.53, 30.39 0.67, 34.24 3.14 C38.09 5.62, 41.64 10.84, 42.98 15.05 C44.32 19.25, 44.15 24.44, 42.29 28.37 C40.42 32.29, 36.15 36.57, 31.8 38.59 C27.45 40.62, 20.73 41.51, 16.19 40.54 C11.65 39.57, 7.27 36.33, 4.58 32.76 C1.89 29.2, -0.13 23.54, 0.06 19.16 C0.26 14.78, 2.41 9.74, 5.74 6.48 C9.07 3.21, 17.52 0.65, 20.06 -0.42 C22.59 -1.48, 20.9 -0.39, 20.94 0.09 M24.41 0.44 C28.99 0.85, 35.03 4.1, 38.19 7.26 C41.36 10.41, 43.18 15.24, 43.39 19.38 C43.59 23.53, 42.19 28.74, 39.42 32.12 C36.64 35.49, 31.26 38.48, 26.71 39.62 C22.17 40.76, 16.24 40.84, 12.14 38.97 C8.03 37.1, 3.92 32.56, 2.08 28.42 C0.24 24.28, -0.24 18.36, 1.09 14.14 C2.41 9.91, 6.08 5.51, 10.03 3.08 C13.99 0.65, 22.51 -0.08, 24.83 -0.43 C27.16 -0.78, 24.12 0.58, 23.97 0.99" stroke="black" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(410.58537223114706 171.28258153356387) rotate(314.383138763751 3.0629877176782543 17.898959419015114)">&lt;path d="M1.53 0 C2.01 0.18, 2.67 -0.2, 4.59 0 C5.94 -0.66, 4.59 -2.08, 6.13 1.53 C6.77 10.02, 6.1 24.68, 6.13 34.27 C3.85 34.31, 5.95 36.79, 4.59 35.8 C3.63 35.46, 2.38 35.42, 1.53 35.8 C-1.86 35.94, 2.21 33.59, 0 34.27 C-1.42 25.31, -0.08 11.89, 0 1.53 C-2.01 -0.38, 3.02 -1.74, 1.53 0" stroke="none" stroke-width="0" fill="black">&lt;/path>&lt;path d="M1.53 0 C2.27 -0.05, 2.85 0.03, 4.59 0 M1.53 0 C2.55 0.07, 3.45 0.06, 4.59 0 M4.59 0 C5.34 -0.68, 6.88 1.37, 6.13 1.53 M4.59 0 C6.6 0.01, 6.68 -0.48, 6.13 1.53 M6.13 1.53 C6.71 12.52, 6.12 25.65, 6.13 34.27 M6.13 1.53 C5.82 13.22, 6.16 25, 6.13 34.27 M6.13 34.27 C5.7 35.19, 5.85 34.93, 4.59 35.8 M6.13 34.27 C6.24 34.27, 6.12 36.53, 4.59 35.8 M4.59 35.8 C3.48 35.79, 2.4 35.83, 1.53 35.8 M4.59 35.8 C3.87 35.79, 3.3 35.76, 1.53 35.8 M1.53 35.8 C0.66 36.36, 0.92 35.05, 0 34.27 M1.53 35.8 C1.23 36.95, -0.13 36.41, 0 34.27 M0 34.27 C0.74 22.19, -0.62 8.54, 0 1.53 M0 34.27 C-0.04 26.9, -0.6 18.35, 0 1.53 M0 1.53 C-0.26 0.1, 0.81 -0.91, 1.53 0 M0 1.53 C0.75 1.13, -0.38 0.09, 1.53 0" stroke="black" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(294.16197542577584 144.93885466625375) rotate(0 32.10539761189909 -2.1905495020746457)">&lt;path d="M-0.46 0.62 C2.31 0.34, 12.93 -2.44, 16.17 -0.68 C19.4 1.07, 17.44 12.63, 18.94 11.16 C20.44 9.68, 22.98 -10.54, 25.15 -9.53 C27.32 -8.53, 29.34 19.19, 31.96 17.2 C34.58 15.22, 37.98 -20.33, 40.88 -21.44 C43.77 -22.56, 47.25 6.78, 49.32 10.52 C51.38 14.25, 50.68 2.86, 53.26 0.97 C55.84 -0.93, 62.85 -0.7, 64.79 -0.86 M1.49 -0.1 C4.17 -0.84, 12 -4.78, 15.32 -2.67 C18.63 -0.56, 19.64 14.06, 21.37 12.58 C23.1 11.11, 23.64 -11.81, 25.69 -11.5 C27.74 -11.2, 30.96 15.72, 33.7 14.43 C36.43 13.14, 39.93 -18.46, 42.11 -19.25 C44.29 -20.04, 45 6.4, 46.77 9.72 C48.55 13.03, 50 2.11, 52.77 0.63 C55.55 -0.84, 61.22 1.06, 63.43 0.87" stroke="black" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(48.76244004370062 99.37870909836442) rotate(0 64.19074963653063 51.64052529930257)">&lt;path d="M-0.87 -1.53 L129.28 -1.21 L128.54 103.77 L-1.19 102.58" stroke="none" stroke-width="0" fill="#868e96">&lt;/path>&lt;path d="M0 0 C45.29 -0.2, 91.87 1.87, 128.38 0 M0 0 C32.22 0.16, 63.76 -0.21, 128.38 0 M128.38 0 C129.67 21.65, 129.42 42.23, 128.38 103.28 M128.38 0 C127.79 26, 129.27 51.92, 128.38 103.28 M128.38 103.28 C93.27 103.58, 61.22 100.72, 0 103.28 M128.38 103.28 C98.79 104.75, 70.09 104.4, 0 103.28 M0 103.28 C-0.05 64.59, 2.68 25.45, 0 0 M0 103.28 C-0.97 68.84, -0.14 32.39, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(40.38060946616588 92.62493843667085) rotate(0 64.19074963653063 51.64052529930257)">&lt;path d="M0.9 -1.21 L128.54 0.49 L127.19 102.58 L-0.28 104.75" stroke="none" stroke-width="0" fill="#ced4da">&lt;/path>&lt;path d="M0 0 C35.97 1.93, 72.35 -0.07, 128.38 0 M0 0 C34.99 -0.29, 67.81 0.41, 128.38 0 M128.38 0 C129.96 28.37, 127.97 60.42, 128.38 103.28 M128.38 0 C128.59 23.13, 127.43 44.82, 128.38 103.28 M128.38 103.28 C103.49 102.83, 73.35 106.13, 0 103.28 M128.38 103.28 C82.28 104.44, 35.82 103.43, 0 103.28 M0 103.28 C2.36 76.91, 1.23 54.5, 0 0 M0 103.28 C0.84 75.21, -0.04 47.05, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(31.06060639393985 85.07124591249908) rotate(0 64.19074963653063 51.64052529930257)">&lt;path d="M0.16 0.49 L127.19 -0.7 L128.1 104.75 L-0.26 102.1" stroke="none" stroke-width="0" fill="#eeeeee">&lt;/path>&lt;path d="M0 0 C34.98 -1.4, 71.47 0.24, 128.38 0 M0 0 C34.29 0.88, 70.25 1.41, 128.38 0 M128.38 0 C127.84 29.17, 127.22 56.94, 128.38 103.28 M128.38 0 C128.95 34.77, 128.35 69.44, 128.38 103.28 M128.38 103.28 C79.01 104.29, 33.74 102.03, 0 103.28 M128.38 103.28 C82.13 102.99, 33.89 103.3, 0 103.28 M0 103.28 C-0.18 75.9, -1.65 45.46, 0 0 M0 103.28 C-0.9 62.95, -0.01 23.54, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(42.48324406060658 119.69696936363607) rotate(0 52.76811218261719 20)">&lt;text x="0" y="14.096" font-family="Excalifont, Segoe UI Emoji" font-size="16px" fill="#000000" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Log sources&lt;/text>&lt;text x="0" y="34.096000000000004" font-family="Excalifont, Segoe UI Emoji" font-size="16px" fill="#000000" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">( event logs )&lt;/text>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(314.81559737452676 446.4360348829739) rotate(0 43.60059164256586 -43.600591642565746)" fill-rule="evenodd">&lt;path d="M-0.08 0.96 L-1.18 20.25 L88.12 20.53 L88.45 -107.11 L65.75 -110 L64.7 1.08 L-1.3 0.15" stroke="none" stroke-width="0" fill="#868e96" fill-rule="evenodd">&lt;/path>&lt;path d="M0 0 C-1.75 7.5, 1.81 15.96, 0 21.8 M0 0 C-0.23 4.61, 0.2 9.84, 0 21.8 M0 21.8 C25.71 20.37, 54.65 22.19, 87.2 21.8 M0 21.8 C34.84 22.03, 69.19 21.78, 87.2 21.8 M87.2 21.8 C90.1 -5.37, 89.28 -32.01, 87.2 -109 M87.2 21.8 C87.48 -6.21, 88.21 -33.83, 87.2 -109 M87.2 -109 C82.12 -107.31, 76.16 -109.06, 65.4 -109 M87.2 -109 C81.49 -109.33, 76.77 -108.64, 65.4 -109 M65.4 -109 C65.5 -86.22, 66.24 -63.36, 65.4 0 M65.4 -109 C66.09 -70.53, 66.11 -33.36, 65.4 0 M65.4 0 C43.77 0.7, 21.88 1.86, 0 0 M65.4 0 C52.5 -0.29, 37.73 0.61, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(306.9500794522046 437.5751756821544) rotate(0 43.60059164256586 -43.600591642565746)" fill-rule="evenodd">&lt;path d="M-0.25 0.14 L-0.08 22.76 L86.02 20.25 L88.12 -110.27 L66.65 -107.11 L65.75 -1 L-0.7 1.08" stroke="none" stroke-width="0" fill="#ced4da" fill-rule="evenodd">&lt;/path>&lt;path d="M0 0 C0.28 5.32, -2.02 13.95, 0 21.8 M0 0 C-0.7 7.93, 0.03 16.28, 0 21.8 M0 21.8 C29.73 21.34, 57.91 20.15, 87.2 21.8 M0 21.8 C33.08 20.81, 66.07 21.05, 87.2 21.8 M87.2 21.8 C85.94 -16.44, 89.34 -52.55, 87.2 -109 M87.2 21.8 C85.39 -25.08, 85.49 -71.47, 87.2 -109 M87.2 -109 C78.46 -107.26, 73.15 -107.65, 65.4 -109 M87.2 -109 C81.57 -108.67, 75.31 -109.55, 65.4 -109 M65.4 -109 C67.59 -72.72, 64.75 -38.17, 65.4 0 M65.4 -109 C64.58 -76.83, 64.98 -44.74, 65.4 0 M65.4 0 C43.5 1.56, 18.08 0.37, 0 0 M65.4 0 C51.47 -0.97, 37.39 -0.62, 0 0 M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(298.08922025138475 320.70817865341746) rotate(0 43.60059164256586 65.40088746384879)">&lt;path d="M-0.69 -0.86 L87.78 0.53 L85.55 132.7 L0.41 129.87" stroke="none" stroke-width="0" fill="#efeeef">&lt;/path>&lt;path d="M0 0 C32.07 0.77, 68.62 -1.89, 87.2 0 M0 0 C18.68 -1.36, 35.79 -1.29, 87.2 0 M87.2 0 C85.08 38.59, 86.73 76.58, 87.2 130.8 M87.2 0 C86.25 34.73, 86.28 67.37, 87.2 130.8 M87.2 130.8 C59.24 128.94, 30.39 129.96, 0 130.8 M87.2 130.8 C53.47 130.44, 17.27 131.09, 0 130.8 M0 130.8 C0.94 96.62, -1.75 66.82, 0 0 M0 130.8 C-1.11 90.44, -0.84 51.61, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(319.8895160726677 342.50847447470005) rotate(0 21.80029582128293 0)">&lt;path d="M0 0 C8.63 0.25, 18.88 -0.71, 43.6 0 M0 0 C16.53 -0.54, 33.45 0.25, 43.6 0" stroke="#868e96" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(319.8895160726677 386.1090661172659) rotate(0 21.80029582128293 0)">&lt;path d="M0 0 C13.65 -0.77, 26.54 0.82, 43.6 0 M0 0 C15.06 0.53, 30.17 0.54, 43.6 0" stroke="#868e96" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(319.8895160726677 364.3087702959833) rotate(0 21.80029582128293 0)">&lt;path d="M0 0 C14.95 1.03, 28.68 -0.02, 43.6 0 M0 0 C9.6 0.2, 18.33 -0.17, 43.6 0" stroke="#868e96" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(319.8895160726677 407.90936193854895) rotate(0 21.80029582128293 0)">&lt;path d="M0 0 C10.34 -0.37, 18.97 0.22, 43.6 0 M0 0 C16.04 -0.17, 31.83 -0.11, 43.6 0" stroke="#868e96" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(319.8895160726677 429.70965775983154) rotate(0 10.900147910641465 0)">&lt;path d="M0 0 C7.54 0.43, 17.56 0.92, 21.8 0 M0 0 C7.83 0.04, 16.44 0.45, 21.8 0" stroke="#868e96" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g transform="translate(221.4848484848494 362.2272727272725) rotate(0 30.819969177246094 25)">&lt;text x="0" y="17.619999999999997" font-family="Excalifont, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Sigma&lt;/text>&lt;text x="0" y="42.62" font-family="Excalifont, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">rules&lt;/text>&lt;/g>&lt;g transform="translate(605.0020075151522 124.74496551515153) rotate(0 38.06996154785156 12.5)">&lt;text x="0" y="17.619999999999997" font-family="Excalifont, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">internet&lt;/text>&lt;/g>&lt;g transform="translate(904.9298937438747 92.62493899999981) rotate(0 59.839942932128906 25)">&lt;text x="59.839942932128906" y="17.619999999999997" font-family="Excalifont, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Velociraptor&lt;/text>&lt;text x="59.839942932128906" y="42.62" font-family="Excalifont, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">server&lt;/text>&lt;/g>&lt;g stroke-linecap="round" transform="translate(10 10) rotate(0 245 252.72727272727275)">&lt;path d="M32 0 C126.87 1.91, 218.15 2.68, 458 0 M458 0 C480.17 1.5, 486.97 10.09, 490 32 M490 32 C491.66 138.85, 493.25 243.17, 490 473.45 M490 473.45 C489.82 495.02, 476.67 503.79, 458 505.45 M458 505.45 C365.82 502.86, 270.51 502.6, 32 505.45 M32 505.45 C8.51 503.37, 0.29 492.86, 0 473.45 M0 473.45 C-4.39 323.98, -2.7 171.84, 0 32 M0 32 C-1.37 6.99, 10.1 -0.81, 32 0" stroke="#1971c2" stroke-width="1.5" fill="none" stroke-dasharray="8 9">&lt;/path>&lt;/g>&lt;g transform="translate(40.38060931565161 468.33283618181827) rotate(0 44.88995361328125 11.5)">&lt;text x="44.88995361328125" y="18.08" font-family="Nunito, Segoe UI Emoji" font-size="20px" fill="#1971c2" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">endpoint&lt;/text>&lt;/g>&lt;g transform="translate(295.69161346399767 66.06060606060623) rotate(0 41.123046875 12.5)">&lt;text x="0" y="17.619999999999997" font-family="Excalifont, Segoe UI Emoji" font-size="20px" fill="#e03131" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">detections&lt;/text>&lt;/g>&lt;g transform="translate(880.1856537247396 182.65975972727279) rotate(0 84.58418273925781 20)">&lt;text x="84.58418273925781" y="14.096" font-family="Excalifont, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">( possibly forwarding&lt;/text>&lt;text x="84.58418273925781" y="34.096000000000004" font-family="Excalifont, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">to SIEM )&lt;/text>&lt;/g>&lt;/svg>
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="velociraptor_sigma_flow.svg">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Sigma workflow in Velociraptor
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+&lt;/p>
+&lt;p>Because we are trying to triage the endpoint, we actually want to see
+all the hits, even if they are noisy. We will apply stacking later to
+quickly triage the type of activity on the endpoint. So in this case
+we should select to apply all the rules.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="7bc5ae8a88cf945a241d390946828618">
+ &lt;div data-featherlight="#7bc5ae8a88cf945a241d390946828618" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/triage-logs/all_rules.png" alt="Applying all Sigma Rules">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="all_rules.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Applying all Sigma Rules
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Once the artifact is collected from the endpoint we can stack the hits
+in the GUI:&lt;/p>
+&lt;ol>
+&lt;li>Update the notebook to remove the &lt;code>LIMIT 50&lt;/code>. This will select all
+rows in one table. Typically there should be many thousands of
+rows because we added all the noisy rules.&lt;/li>
+&lt;li>Sort by the rule &lt;code>Title&lt;/code>. Hover the mouse on the column header and
+click the &lt;code>Sort&lt;/code> button.&lt;/li>
+&lt;li>Once the column is sorted, the stacking button should appear.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8fb25f599da6bf995baf63faf9410bc0">
+ &lt;div data-featherlight="#8fb25f599da6bf995baf63faf9410bc0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/triage-logs/stacking_a_column.png" alt="Stacking a column">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="stacking_a_column.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Stacking a column
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="4">
+&lt;li>Clicking the stacking button will show a summary of the different
+rules matching and a count of how many times each rule made a hit.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="dd1a1447abe94eb87573db833147c31a">
+ &lt;div data-featherlight="#dd1a1447abe94eb87573db833147c31a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/triage-logs/viewing_column_stack.png" alt="Viewing column summaries">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="viewing_column_stack.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Viewing column summaries
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="5">
+&lt;li>Clicking on any of the rules navigates the table to the list of
+rules that actually hit.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="760ed3dd93ceaa6cda0c2db336176660">
+ &lt;div data-featherlight="#760ed3dd93ceaa6cda0c2db336176660" class="figure">
+ &lt;img src="https://docs.velociraptor.app/training/playbooks/triage-logs/viewing_common_rows.png" alt="Viewing common rows">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="viewing_common_rows.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Viewing common rows
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Using this technique it is possible to quickly identify the types or
+categories of activity on the endpoint and see the most suspicious
+rules. Due to the stacking we dont need to review each individual hit,
+but only the different types of rules.&lt;/p>
+&lt;p>For example, say we see a rule description a &lt;code>PsExec&lt;/code> lateral
+movement, we can quickly identify if &lt;code>PsExec&lt;/code> is expected for this
+environment, or does it represent a potential threat. If I identify
+the rule as important, I can then review each instance to get more
+information about what commands were run.&lt;/p>
+&lt;h2 id="using-the-exchangewindowseventlogshayabusa">Using the Exchange.Windows.EventLogs.Hayabusa&lt;/h2>
+&lt;p>The &lt;code>Exchange.Windows.EventLogs.Hayabusa&lt;/code> artifact is available in the
+artifact exchange. This artifact uses an external binary &lt;code>Hayabusa&lt;/code> to
+evaluate the &lt;code>Sigma&lt;/code> rules from the &lt;code>Hayabusa&lt;/code> project.&lt;/p>
+&lt;p>Post processing and analysing the results from this artifact is
+similar to the procedure described above.&lt;/p>
+&lt;h2 id="discussion-and-limitations">Discussion and limitations&lt;/h2>
+&lt;p>This technique is similar to many SIEMs which forward event logs from
+the endpoint and apply matching rules. There are some fundamental
+differences though:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>SIEMs typically only forward a small subset of logs since the more
+logs are collected the more data the SIEM backend needs to
+handle. Typically SIEMs forward logs such as &lt;code>Sysmon Process Execution&lt;/code> but do not forward other logs for example &lt;code>BITS Client Operational Logs&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SIEM rules are also written to ensure they have a low false
+positive rate. This means that suspicious activity in one
+environment which is common in another setting, might not trigger a
+detection. By stacking on all noisy rules we get to decide for
+ourselves if a particular rule is acceptable for this environment.&lt;/p>
+&lt;p>For example an administrator RDP login may be perfectly normal in
+some environments but a red flag in others! SIEM detections are
+rarely tuned to the environment.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A SIEM may not be present or well tuned, in a particular
+environment. Running the &lt;code>Sigma&lt;/code> log triaging workflow can
+compensate for the lack of a SIEM.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Data retention is different from a SIEM. Typically SIEMs only
+maintain logs for limited time (sometimes as low as a month). On
+the other hand log files are typically rotated based on size. This
+means that sometimes logs will be present on the endpoint for
+longer than in the SIEM, while other times the SIEM will contain
+logs that were already rotate on the endpoint.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Because this technique relies on locally stored logs, it is
+susceptible to logs being cleared by attackers.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="real-time-monitoring">Real time monitoring&lt;/h2>
+&lt;p>As an additional step you can enable the &lt;code>Windows.Hayabusa.Monitoring&lt;/code>
+artifact for real time detection of the same &lt;code>Sigma&lt;/code> rules. This can
+provide coverage for any future compromises&lt;/p></description></item></channel></rss>
