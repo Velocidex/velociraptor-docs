@@ -31,7 +31,7 @@ Monitoring data is not exposed by the client.
 The data is provided in a standard way to interface to various
 scrapers, such as
 [Prometheus](https://github.com/prometheus/prometheus),
-[Grafana](https://grafana.com/) or
+[Grafana](https://grafana.com/), [Middleware](https://middleware.io/)or
 [Datadog](https://www.datadoghq.com/). We encourage deployments to use
 this data to build health dashboards and service alerts. Although
 inspecting this data manually can also provide valuable insight.
