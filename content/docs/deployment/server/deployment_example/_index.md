@@ -128,17 +128,17 @@ details needed to produce your config.
 
 {{< tabs >}}
 {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor config generate -i
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe config generate -i
 ```
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor config generate -i
 ```
 {{% /tab %}}
@@ -404,7 +404,7 @@ If you did not perform the previous steps on your server then you will need to
 copy the server installation file to your server. For example, you could push
 the debian package to the server using Secure Copy Protocol (SCP):
 
-```sh
+```shell
 scp velociraptor_server.deb user@123.45.67.89:/tmp/
 ```
 

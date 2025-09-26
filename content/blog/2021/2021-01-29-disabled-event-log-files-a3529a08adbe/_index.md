@@ -23,7 +23,7 @@ For this test I will use bitsadmin to download a page from the internet and stor
 
 The command I will run fetches a file from the internet and stores it locally
 
-```sh
+```shell
 bitsadmin.exe /transfer /download /priority foreground [https://www.google.com](https://www.google.com) c:\Users\test\test.ps1
 ```
 

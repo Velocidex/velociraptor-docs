@@ -58,7 +58,7 @@ binary to `runme.exe`. I can then create a service that launches
 directory will fail to show the file and analysis may conclude that
 the service target is missing from the filesystem.
 
-```sh
+```shell
 C:\Users\test>fsutil file setshortname velociraptor.exe runme.exe
 C:\Users\test>dir /x *.exe
  Volume in drive C has no label.

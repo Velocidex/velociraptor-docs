@@ -248,17 +248,17 @@ unmodified official binary by specifying the `--embedded_config` flag:
 
 {{< tabs >}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor-darwin-amd64 -- --embedded_config Collector_velociraptor-collector
 ```
 {{% /tab %}}
 {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor-linux-amd64 -- --embedded_config Collector_velociraptor-collector
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
 ```
 {{% /tab %}}

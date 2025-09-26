@@ -89,11 +89,11 @@ environments.
 
 {{< tabs >}}
 {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
 ```
 {{% /tab %}} {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe config client --org "root" --config server.config.yaml > client.root.config.yaml
 ```
 NOTE: it is recommended that this be
@@ -101,7 +101,7 @@ done using cmd.exe since PowerShell redirection operators by default create
 files encoded in UTF-16LE (Unicode).
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor config client --org "root" --config server.config.yaml > client.root.config.yaml
 ```
 {{% /tab %}}
@@ -126,17 +126,17 @@ providing it with the client configuration.
 
 {{< tabs >}}
 {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor --config client.config.yaml client -v
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe --config client.config.yaml client -v
 ```
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor --config client.config.yaml client -v
 ```
 {{% /tab %}}
@@ -273,17 +273,17 @@ it's the [official release MSI]({{< ref "/downloads/" >}}): either 64-bit or 32-
 the output file should be named.
 
 {{< tabs >}} {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor config repack --msi velociraptor-windows.msi client.config.yaml velociraptor-windows-repacked.msi
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe config repack --msi velociraptor-windows.msi client.config.yaml velociraptor-windows-repacked.msi
 ```
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor config repack --msi velociraptor-windows.msi client.config.yaml velociraptor-windows-repacked.msi
 ```
 {{% /tab %}}
@@ -379,7 +379,7 @@ To summarize the process, you will need to perform the following steps:
 To install the MSI from the command line (which requires elevated privileges) simply
 run:
 
-```sh
+```shell
 msiexec /i velociraptor_custom.msi
 ```
 
@@ -423,7 +423,7 @@ procedure [outlined below](#agentless-deployment).
 The following command, which requires elevated privileges, will install the
 client as a service:
 
-```sh
+```shell
 velociraptor.exe service install --config client.config.yaml -v
 ```
 
@@ -440,7 +440,7 @@ service is Automatic with a delayed start.
 
 After installation you can check the service status with the command
 
-```sh
+```shell
 sc query velociraptor
 ```
 
@@ -468,14 +468,14 @@ Persistence and service control is accomplished via launchd.
 
 First you need to mark the binary as executable.
 
-```sh
+```shell
 chmod +x velociraptor
 ```
 
 The following command, run with root privileges, will install the Velociraptor
 client as a service.
 
-```sh
+```shell
 sudo ./velociraptor service install --config client.config.yaml -v
 ```
 
@@ -495,7 +495,7 @@ If you downloaded the file from the internet or another network location then
 you may also need to remove the quarantine attribute from the file to suppress
 further warning prompts.
 
-```sh
+```shell
 xattr -d com.apple.quarantine velociraptor
 ```
 {{% /notice %}}
@@ -519,7 +519,7 @@ on the system.
 
 After installation you can check the service's status with:
 - `ps -eaf | grep velo` or
-- `sudo launchctl print system/com.velocidex.velociraptor` or
+- `sudo launchctl print system/com/velocidex.velociraptor` or
 - Navigate to **Applications > Utilities > Activity Monitor** and search for
   Process Name `velociraptor`.
 
@@ -699,12 +699,12 @@ know exactly what they are.
 1. **Create a deb installation package with an embedded client configuration file.**
 
 {{< tabs >}} {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor debian client --config client.config.yaml
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe debian client --config client.config.yaml --binary velociraptor-linux-musl
 ```
 
@@ -713,7 +713,7 @@ need to tell it where to find the Linux binary.
 
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor debian client --config client.config.yaml --binary velociraptor-linux-musl
 ```
 
@@ -733,7 +733,7 @@ specify the binary in the command.
 
 2. **Install the package.**
 
-```sh
+```shell
 sudo dpkg -i velociraptor_client_amd64.deb
 ```
 
@@ -748,12 +748,12 @@ After installation you can check the service status with the command:
 1. **Create a RPM installation package with an embedded client configuration file.**
 
 {{< tabs >}} {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor rpm client --config client.config.yaml
 ```
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe rpm client --config client.config.yaml --binary velociraptor-linux-musl
 ```
 
@@ -762,7 +762,7 @@ need to tell it where to find the Linux binary.
 
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor rpm client --config client.config.yaml --binary velociraptor-linux-musl
 ```
 
@@ -782,7 +782,7 @@ specify the binary in the command.
 
 2. **Install the package.**
 
-```sh
+```shell
 sudo rpm -Uvh velociraptor_client_amd64.rpm
 ```
 
@@ -932,7 +932,7 @@ Velociraptor client will be launched multiple times on the endpoint. It is
 highly recommended that you use the `--mutant` flag to specify a mutant
 preventing the client from starting multiple times.
 
-```sh
+```shell
 velociraptor.exe --config ... client -v --mutant ArandomString
 ```
 

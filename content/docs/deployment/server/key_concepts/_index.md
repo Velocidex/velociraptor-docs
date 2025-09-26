@@ -57,7 +57,7 @@ single step, which you may want to do in automated build environments.
 
 {{< tabs >}}
 {{% tab name="Linux" %}}
-```sh
+```shell
 ./velociraptor config generate --merge \
       '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}' \
       > server.config.yaml
@@ -65,7 +65,7 @@ single step, which you may want to do in automated build environments.
 _Example: Config generate with merge_
 {{% /tab %}}
 {{% tab name="Windows" %}}
-```sh
+```shell
 velociraptor.exe config generate ^
       --merge "{"""autocert_domain""": """domain.com""", """autocert_cert_cache""": """/foo/bar"""}" ^
       > server.config.yaml
@@ -79,7 +79,7 @@ PowerShell redirection operators by default create files encoded in UTF-16LE
 (Unicode).
 {{% /tab %}}
 {{% tab name="macOS" %}}
-```sh
+```shell
 ./velociraptor config generate --merge \
       '{"autocert_domain": "domain.com", "autocert_cert_cache": "/foo/bar"}' \
       > server.config.yaml
