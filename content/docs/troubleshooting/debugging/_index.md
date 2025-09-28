@@ -143,6 +143,15 @@ web browser. You can then download goroutine, heap allocation and other profiles
 from the debug server and forward these to the Velociraptor development team to
 identify and resolve any issues.
 
+If you have preconfigured the offline collector to close upon completion without
+prompting and it completes before you are finished in the Debug Console, then
+you can add `--prompt` to the command line to keep the application running. For
+example:
+
+```sh
+Collector_velociraptor-v0.75.2-windows-amd64.exe -- --debug --prompt
+```
+
 ### Profile types
 
 The following pages provide additional details on each profile type. It is

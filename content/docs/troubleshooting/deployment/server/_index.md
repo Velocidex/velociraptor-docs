@@ -104,3 +104,38 @@ $ sudo -u velociraptor bash
 $ /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend -v
 ```
 
+### GUI connectivity issues
+
+If the server starts but you can't connect to the GUI, here are some suggestions
+to troubleshoot the problem.
+
+#### Check your config settings
+
+To allow remote access to the GUI your server's config needs to have the setting
+`GUI.bind_address` set to `0.0.0.0`. A common mistake is to set this to a
+specific IP address which then doesn't work because `0.0.0.0` and
+`127.0.0.1` are the only valid values for this setting.
+
+#### Test that the GUI is listening on the expected port
+
+It's always best to first confirm that the GUI port is reachable locally on the
+server before testing from a remote host, since remote connectivity issues might
+be the result of network infrastructure such as firewalls and proxies, or
+network routing issues.
+
+Use netcat (nc) to check that the Frontend is listening:
+
+```sh
+$ nc -vz 127.0.0.1 8889
+Connection to 127.0.0.1 8889 port [tcp/*] succeeded!
+```
+
+You can then repeat the previous test using a non-loopback IP address.
+
+If your server has a desktop environment then you may also want to try
+connecting locally using a web browser.
+
+Once you have confirmed that the GUI is accessible from the server itself, then
+you can test from a remote host. If possible first test from another computer on
+the same local network as the server.
+

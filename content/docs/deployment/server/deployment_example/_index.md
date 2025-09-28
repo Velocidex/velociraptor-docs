@@ -490,13 +490,93 @@ You will then arrive at the Welcome screen.
 You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
 
 
+## Import artifacts from external projects
+
+{{% notice note %}}
+
+This step only applies if you are using version 0.75 or above. For older
+versions you can [skip to the next step](#step-7-create-an-installation-package-for-windows-clients).
+
+{{% /notice %}}
+
+Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex [artifacts]({{< ref "/docs/artifacts/" >}}).
+
+As some artifacts became more complex and powerful, we moved them into separate
+projects so that they could be developed and managed independently of the main
+Velociraptor project. Splitting these off allows for independent release cycles,
+thus facilitating more rapid development and innovation.
+
+Although Velociraptor ships with hundreds of built-in artifacts we recommend
+that you also try these more powerful artifacts, or visit their websites to
+learn more. Generally the built-in artifacts have very specific goals, for
+example extracting specific information from a specific file, while the complex
+artifacts encompass broader goals, for example searching the Windows registry
+for a broad set of indicators of suspicious activity.
+
+| **Project** | **Description** |
+|---|---|
+| [Velociraptor Sigma Project](https://sigma.velocidex.com/) | Artifacts that implement Sigma-based triage and monitoring rules. Includes curated Sigma Rules (Hayabusa/Hayabusa Live/ChopChopGo) |
+| [Velociraptor Triage Project](https://triage.velocidex.com/) | This project intends to develop a set of rules that are used for specifying the collection of files from the endpoint. |
+| [Rapid7Labs](https://github.com/rapid7/Rapid7-Labs/tree/main/Vql) | Artifacts developed and shared by [Rapid7 Labs](https://www.rapid7.com/blog/tag/research/). |
+| [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/) | Our project to develop sophisticated registry analysis modules. |
+| [Velociraptor SQLite Hunter Project](https://sqlitehunter.velocidex.com/) | This project aims to be a one-stop shop for `SQLite`, `ESE` and many other database-oriented forensic artifacts. |
+| [The Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) | Our repository of community-contributed artifacts. |
+
+To get these external artifacts into your Velociraptor server's artifact
+repository, we have a built-in server artifact which will download them from any
+or all of the external sources. Here's how to do that:
+
+1. On the Welcome screen, click the link **Import Extra Artifacts**. This will
+   start the artifact collection wizard for the server artifact
+   `Server.Import.Extras`.
+
+   ![](server_import_extras.png)
+
+   You don't need to change anything here and can click **Configure Parameters**
+   to navigate to that page of the wizard.
+
+2. By default, the artifacts from all sub-projects will be imported by the
+   `Server.Import.Extras` artifact. However you may not want all of them at this
+   time and you can repeat this process at any time to import different
+   artifacts or to update selected artifacts. To unselect any item, click it's
+   bin icon in the list.
+
+   ![](server_import_extras_params.png)
+
+   Once you're happy with your selection you can click **Launch** to begin the
+   import process.
+
+3. Once this artifact collection completes you can inspect the results in the
+   collection's **Results** tab. If, for some reason, the import fails then you can
+   review the log messages in the **Log** tab.
+
 ## What's next?
+
+Click on the little dinosaur at the top left of the GUI to return to the Welcome
+page. On this page you'll find shortcuts for several commonly performed tasks
+associated setting up a new server.
+
+![The Welcome page](welcome.png)
+
+Typically the next step after installing a new server is to create a new
+[org]({{< ref "/docs/deployment/orgs/" >}})
+(if you want to manage separate sets of clients) or create installer packages
+for Windows or Linux clients for the (default) `root` org. There are links on
+the Welcome page to help you with these tasks.
+If you create a new org using the `Server.Orgs.NewOrg` artifact it will, by
+default, also create Windows and Linux client installers for that org.
+
+Then see the [Deploying Clients]({{< ref "/docs/deployment/clients/" >}}) page
+for guidance on how to install the client packages.
 
 After installing your first client, here are the next steps you may want to
 consider:
 
 - [Learn about managing clients]({{< ref "/docs/clients/" >}})
-- [Create client installers]({{< ref "/docs/deployment/clients/" >}})
+- [Create non-Windows client installers]({{< ref "/docs/deployment/clients/" >}})
 - [Explore additional security configuration options]({{< ref "/docs/deployment/security/" >}})
 - [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
   distinct sets of clients.
+- [Plan for a more durable and secure installation]({{< ref "/docs/deployment/server/" >}})
+

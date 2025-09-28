@@ -4,7 +4,7 @@ menutitle: Remote Clients
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 30
-last_reviewed: 2024-12-30
+last_reviewed: 2025-09-25
 summary: |
   * How to troubleshoot client issues when you don't have local access to the client.
 aliases:
@@ -17,7 +17,8 @@ The steps in this section assume you are troubleshooting a client that has
 already enrolled and is actively communicating with the server.
 
 If you are having problems with a client that is not communicating with the
-server or that has never connected then please see the section
+server, or that has never connected to the server, or is failing to start then
+please see the section
 [Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/#client-communications-issues" >}})
 within the Deployment Troubleshooting section.
 
@@ -109,7 +110,35 @@ endpoint using the `Generic.Client.LocalLogsRetrieve` artifact.
 ![Retrieving the encrypted log file](encrypted_local_log_file.png)
 
 The notebook tab will automatically decrypt the logs and display them
-in a table.
+in a results table.
 
 ![Decrypting the local log file](reading_encrypted_file.png)
 
+
+### Debugging client crashes (Windows only)
+
+On Windows, the client usually runs as a service. If a crash occurs while
+Velociraptor is running as a Windows service the traceback of the error is
+printed to Stderr, however these messages are not visible nor stored anywhere.
+This means that if Velociraptor crashes we cannot see the panic backtrace which
+is extremely useful for debugging the reason for the crash. In addition the
+Windows service recovery settings will cause the client to restart automatically
+after a crash which might make it hard to detect that a crash has occurred.
+
+The Windows binary accepts the setting `Client.panic_file` in the client config
+file. By default this setting is not present but can be added to the config on
+selected clients where there is a reproducible issue resulting in the client
+crashing. Adding this setting to the config will require local or remote access
+to the client's filesystem.
+
+This setting allows us to specify a path to a log file on the client where
+Velociraptor will write stdout and stderr in the event of a crash. A value of
+`$Temp/panic.log` will cause the log to be written to the Velociraptor client's
+temp directory which by default should be `C:\Program Files\Velociraptor\Tools`.
+
+This feature is currently not implemented for non-Windows platforms where
+this setting will have no effect.
+
+Please submit this file, along with any additional information about what user
+actions might have caused the crash, to our developer team by
+[opening a new issue on GitHub](https://github.com/Velocidex/velociraptor/issues/).

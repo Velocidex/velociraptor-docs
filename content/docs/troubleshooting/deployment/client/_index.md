@@ -15,7 +15,7 @@ The steps in this section assume you are troubleshooting a client that _is not_
 already enrolled and actively communicating with the server.
 
 If you need to troubleshoot issues with a client that is communicating with the
-server, that is an online client, then please see the section
+server - that is an online client - then please see the section
 [Troubleshooting Remote Client Issues]({{< ref "/docs/troubleshooting/operations/remote_clients/" >}}).
 
 {{% /notice %}}
@@ -72,6 +72,19 @@ $ sudo /usr/local/bin/velociraptor_client --config /etc/velociraptor/client.conf
 
 
 ### Client communications issues
+
+#### Test that the server is reachable on the expected port
+
+
+curl
+
+```sh
+$ nc -vz 127.0.0.1 8000
+Connection to 127.0.0.1 8000 port [tcp/*] succeeded!
+```
+
+
+#### Test
 
 If the client does not appear to properly connect to the server, the
 first thing is to run it manually (using the `velociraptor --config
@@ -149,3 +162,4 @@ config file). When generating the config file initially, the CA
 certificate is created with a 10 year validity.
 
 {{% /notice %}}
+

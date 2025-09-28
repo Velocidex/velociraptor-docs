@@ -10,14 +10,17 @@ summary: |
 
 ## General advice
 
-1. We recommend that you develop your new queries in a [Velociraptor notebook]().
+1. We recommend that you develop your new queries in a
+   [Velociraptor notebook]({{< ref "/docs/notebooks/" >}}).
 
-2. If you're having problems or unexpected outcomes then try to reduce your VQL to
-it's simplest form.
+2. If you're having problems or unexpected outcomes then try to reduce your VQL
+   to it's simplest form. If possible, try to isolate the problematic part of
+   the VQL query and test it in a notebook cell.
 
-3. For issues concerning plugins and functions, always refer to the [VQL
-   Reference] and ensure that you're supplying all the required parameters in
-   that their data types are correct (see the section on
+3. For issues concerning plugins and functions, always refer to the
+   [VQL Reference]({{< ref "/vql_reference/" >}})
+   and ensure that you're supplying all the required parameters, and that their
+   data types are correct (see the section on
    [Inspecting Data types](#inspecting-data-types) below).
 
 ## EXPLAIN
