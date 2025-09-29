@@ -132,7 +132,7 @@ crashing. Adding this setting to the config will require local or remote access
 to the client's filesystem.
 
 This setting allows us to specify a path to a log file on the client where
-Velociraptor will write stdout and stderr in the event of a crash. A value of
+Velociraptor will write Stdout and Stderr in the event of a crash. A value of
 `$Temp/panic.log` will cause the log to be written to the Velociraptor client's
 temp directory which by default should be `C:\Program Files\Velociraptor\Tools`.
 

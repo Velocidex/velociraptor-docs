@@ -128,7 +128,7 @@ server before testing from a remote host, since remote connectivity issues might
 be the result of network infrastructure such as firewalls and proxies, or
 network routing issues.
 
-Use netcat (nc) to check that the Frontend is listening:
+Use netcat (`nc`) to check that the Frontend is listening:
 
 ```sh
 $ nc -vz 127.0.0.1 8889

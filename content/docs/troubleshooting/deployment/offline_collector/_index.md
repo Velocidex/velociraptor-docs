@@ -34,7 +34,7 @@ server and receive the error `import_collection: unable to load collection
 context...` or something similar, then it's likely that the offline collector is
 using an old binary. This is sometimes the case because offline collectors are
 rarely upgraded as often as the server is, which means that very old offline
-colllectors may persist in the responder's toolkit. However the collection
+collectors may persist in the responder's toolkit. However the collection
 archive format that the server supports may need to change over time to support
 new features.
 

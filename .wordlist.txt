@@ -1857,3 +1857,9 @@ resumable
 uncompressing
 shellbag
 unselect
+
+traceback
+stacktrace
+tempfiles
+responder's
+misconfiguration

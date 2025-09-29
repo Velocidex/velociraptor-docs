@@ -261,7 +261,7 @@ available to download using the `Server.Import.Extras` server artifact:
 5. [The Velociraptor Artifact Exchange]({{< ref "/exchange/" >}}) is our
    repository of community-contributed artifacts.
 
-The following artifacts were permanently removed due to obsolesence:
+The following artifacts were permanently removed:
 
 1. `Generic.Collectors.SQLECmd`: Superseded by `Generic.Forensic.SQLiteHunter`
 
@@ -270,7 +270,7 @@ The following artifacts were permanently removed due to obsolesence:
    [multi-select deletion]({{< relref "#multi-select-deletion" >}})
    as described above.
 
-3. `Server.Import.UpdatedBuiltin`: Superceded by `Server.Import.Extras`.
+3. `Server.Import.UpdatedBuiltin`: Superseded by `Server.Import.Extras`.
 
 4. `Windows.Analysis.EvidenceOfExecution`: A wrapper artifact that is largely
    superseded by `Windows.Registry.Hunter`, however the underlying artifacts are

@@ -21,7 +21,7 @@ within the Deployment Troubleshooting section.
 
 ### Server crashes
 
-Although we've do our best to prevent it, it's always a possiblity that bugs or
+Although we've do our best to prevent it, it's always a possibility that bugs or
 unusual VQL operations can cause the server to crash. Velociraptor has the
 ability to record the stacktrace to a log file if such conditions occur.
 This feature is enabled by default for the server.
@@ -43,7 +43,7 @@ page to better understand potential causes of performance issues in general.
 
 If your deployment has grown significantly in size since the initial deployment
 then it may simply be a case of inadequate server resources. You could consider
-upscaling your server resources or for very large deployments you may decide to
+scaling up your server resources or for very large deployments you may decide to
 scale your system horizontally by turning it into a
 [multi-frontend deployment]({{< ref "/docs/deployment/server/multifrontend/" >}}).
 
