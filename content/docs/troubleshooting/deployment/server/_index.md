@@ -88,7 +88,12 @@ file ownership back to the `velociraptor` user
 
 {{% /notice %}}
 
-Other errors might be "disk full" or various permission denied problems.
+The most common causes of the service not starting are:
+
+* Invalid configuration - either invalid YAML formatting or invalid settings.
+* Incorrect filesystem permissions on the server datastore directory.
+* Insufficient disk space (i.e. disk full)
+
 
 ### Server starts but other issues are encountered
 

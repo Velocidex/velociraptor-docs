@@ -44,6 +44,7 @@ compatibility with the server for the purpose of importing collections.
 
 ### Debugging
 
-For debugging more advanced issues the offline collector also provides the same
-Debug Console that the server and clients have. To access it please see
+For debugging more advanced issues, the offline collector also provides the same
+Debug Console that is available on the server and clients.
+To learn how to enable and access it please see
 [Debugging the offline collector]({{< ref "/docs/troubleshooting/debugging/#debugging-the-offline-collector" >}}).

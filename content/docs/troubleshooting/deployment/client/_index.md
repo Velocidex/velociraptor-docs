@@ -21,111 +21,99 @@ server - that is an online client - then please see the section
 {{% /notice %}}
 
 
-### Client fails to start
+### Client fails to connect to server
 
+Velociraptor clients will start even if there are issues with the configuration.
+This is by design since a new or updated configuration may be delivered via
+separate management tools _after_ the client is installed. For example, the
+official MSI does not contain a valid configuration but users may want to
+nevertheless use it to install the client and then supply the configuration as a
+second step.
 
-{{< tabs >}}
-{{% tab name="Windows" %}}
-```sh
-sc query velociraptor
-```
-{{% /tab %}}
-{{% tab name="macOS" %}}
-```sh
-```
-{{% /tab %}}
-{{% tab name="Linux" %}}
-```sh
-$ sudo systemctl status velociraptor_client.service
-[sudo] password for user:
-● velociraptor_client.service - Velociraptor client
-     Loaded: loaded (/etc/systemd/system/velociraptor_client.service; enabled; vendor preset: enabled)
-     Active: activating (auto-restart) (Result: exit-code) since Fri 2025-09-05 12:24:18 SAST; 1min 2s ago
-    Process: 767 ExecStart=/usr/local/bin/velociraptor_client --config /etc/velociraptor/client.config.yaml client --quiet (code=exited, status=1/FAILURE)
-   Main PID: 767 (code=exited, status=1/FAILURE)
-        CPU: 131ms
-```
-{{% /tab %}}
-{{< /tabs >}}
+If there are configuration problems then the client will log error messages to
+Stderr and will continue to re-read the config file periodically in case it
+changes. However when installed as a service these messages are not visible to
+the user, and service status commands (e.g. `sc query velociraptor`) will report
+the service as "running" even though the client is not fully started and not
+connecting to the server.
 
 #### Running the client in a terminal
 
-If the client fails to start, you can try to start it manually in a terminal
-with the `-v` (verbose) flag to see if it reports any errors or issues.
+You can try to start the client manually in a terminal with the `-v` (verbose)
+flag to see if it reports any errors or issues.
+
+If installed as a service you should stop the service before starting the client
+manually.
 
 {{< tabs >}}
 {{% tab name="Windows" %}}
 ```sh
+sc.exe stop velociraptor
 "C:\Program Files\Velociraptor\Velociraptor.exe"  --config "C:\Program Files\Velociraptor\client.config.yaml" service run -v
 ```
+(as administrator)
 {{% /tab %}}
 {{% tab name="macOS" %}}
 ```sh
+sudo launchctl unload /Library/LaunchDaemons/com.velocidex.velociraptor.plist
+sudo /usr/local/sbin/velociraptor client --config /usr/local/sbin/velociraptor.config.yaml -v
 ```
 {{% /tab %}}
 {{% tab name="Linux" %}}
 ```sh
-$ sudo /usr/local/bin/velociraptor_client --config /etc/velociraptor/client.config.yaml client -v
+sudo systemctl stop velociraptor_client.service
+/usr/local/bin/velociraptor_client --config /etc/velociraptor/client.config.yaml client -v
 ```
 {{% /tab %}}
 {{< /tabs >}}
 
+![Configuration error](error_config.png)
 
-### Client communications issues
+![Connection error](error_connect.png)
 
 #### Test that the server is reachable on the expected port
 
+If running the client in a terminal indicates a problem connecting to the server
+then you can test the connection using `curl`:
 
-curl
+![Testing connectivity with curl](test_curl.png)
 
-```sh
-$ nc -vz 127.0.0.1 8000
-Connection to 127.0.0.1 8000 port [tcp/*] succeeded!
-```
+Note that it is important that you specify the server's Frontend port, as this
+is the port that the client connects to.
 
+If you encounter client-server connectivity issues when deploying your first
+client then it's possible that there's a misconfiguration on the server. In that
+case it's best to confirm that the Frontend port is reachable locally on the
+server before testing from remote hosts. The testing steps would be similar to
+those described
+[here]({{< ref "/docs/troubleshooting/deployment/server/#gui-connectivity-issues" >}})
+for testing access to the server GUI.
 
-#### Test
+#### Certificate retrieval and validation issues
 
-If the client does not appear to properly connect to the server, the
-first thing is to run it manually (using the `velociraptor --config
-client.config.yaml client -v` command):
+If connectivity succeeds, you might still encounter other problems related to
+certificate retrieval or validation.
 
-![Running the client manually](1TOeyrCcX69mtUdO8E4ZK9g.png)
+![Captive portal interception](error_cert_validation.png)
 
-In the above example, I ran the client manually with the -v switch. I
-see the client starting up and immediately trying to connect to its
-URL (in this case `https://test.velocidex-training.com/`) However
-this fails and the client will wait for a short time before retrying
-to connect again.
-
-![Testing connectivity with curl](1IzCgKdN28sjntuxd9mUJew.png)
-
-A common problem here is network filtering making it impossible to
-reach the server. You can test this by simply running curl with the
-server’s URL.
-
-Once you enable connectivity, you might encounter another problem
-
-![Captive portal interception](1p3MPNfTbXBzNMs-X4yv4SA.png)
-
-The **Unable to parse PEM** message indicates that the client is
-trying to fetch the **server.pem** file but it is not able to validate
-it. This often happens with captive portal type of proxies which
-interfere with the data transferred. It can also happen if your DNS
-setting point to a completely different server.
+The error message above indicates that the client is able to fetch the
+**server.pem** file but that it is not able to validate it. This often happens
+with captive portal type of proxies which interfere with the data transferred.
+It can also happen if your DNS settings point to a completely different server.
 
 We can verify the **server.pem** manually by using curl (note that
 when using self-signed mode you might need to provide curl with the -k
 flag to ignore the certificate errors):
 
-![Fetching the server certificate](1P9W4CnX9qNLGiRgnHGyLAw.png)
+![Fetching the server certificate](test_curl_cert.png)
 
 Note that the **server.pem** is always signed by the velociraptor
-internal CA in all deployment modes (even with lets encrypt). You can
-view the certificate details by using openssl:
+internal CA in all deployment modes (even with Let's Encrypt).
+
+You can view the certificate details by using openssl, for example:
 
 ```bash
-curl https://test.velocidex-training.com/server.pem | openssl x509 -text
+curl -k https://velociraptor.test.com:8000/server.pem | openssl x509 -text
 ```
 
 If your server certificate has expired, the client will refuse to
@@ -163,3 +151,11 @@ certificate is created with a 10 year validity.
 
 {{% /notice %}}
 
+### Debugging
+
+For debugging more advanced issues the client provides a Debug Console, which is
+a local web-based UI that exposes many aspects of the clients internal
+operations. The Debug Console is not enabled by default on clients.
+
+To learn how to enable and access it please see
+[Starting the Debug Console on clients]({{< ref "/docs/troubleshooting/debugging/#starting-the-debug-console-on-clients" >}}).
