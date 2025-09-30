@@ -97,8 +97,9 @@ velociraptor query -f "D:/query.txt"
 ```
 where `query.txt` contains your query.
 
-Note that this can include multiple queries, as is also allowed on the command
-line, but the results will be combined which could be confusing.
+Note that this can include multiple queries (SELECT statements) as well as LET
+statements, as is also allowed on the command line, but the results will be
+combined which could be confusing.
 
 #### Event queries
 

@@ -24,5 +24,5 @@ The current version is available from our
 
 {{% /notice %}}
 
-{{% children style="h4" description=true %}}
+{{% children description=true depth=2 %}}
 

@@ -255,11 +255,27 @@ available to download using the `Server.Import.Extras` server artifact:
 3. [Velociraptor Sigma Project](https://sigma.velocidex.com/) is the home of
    our artifacts that implement rapid Sigma-based triage and monitoring rules.
 
-4. [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/) is our
-   project to develop sophisticated registry analysis modules.
+4. [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/)
+   is our project to develop sophisticated registry analysis modules.
 
 5. [The Velociraptor Artifact Exchange]({{< ref "/exchange/" >}}) is our
    repository of community-contributed artifacts.
+
+The following artifacts were permanently removed:
+
+1. `Generic.Collectors.SQLECmd`: Superseded by `Generic.Forensic.SQLiteHunter`
+
+2. `Server.Import.DeleteArtifacts`: Obsolete since custom artifacts can now be
+   filtered by tag and then bulk deleted using
+   [multi-select deletion]({{< relref "#multi-select-deletion" >}})
+   as described above.
+
+3. `Server.Import.UpdatedBuiltin`: Superseded by `Server.Import.Extras`.
+
+4. `Windows.Analysis.EvidenceOfExecution`: A wrapper artifact that is largely
+   superseded by `Windows.Registry.Hunter`, however the underlying artifacts are
+   still included.
+
 
 
 ## Conclusions

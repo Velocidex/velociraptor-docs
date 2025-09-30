@@ -32,7 +32,36 @@ target platform+architecture combination.
 
 {{% /notice %}}
 
+
 ## Generating the client configuration file
+
+{{% notice tip "There are new easier ways to do this!" %}}
+
+This section describes client packaging from a relatively low-level perspective.
+
+While it's important to understand client installer packaging, in recent
+versions of Velociraptor we have simplified this process by automating it via
+built-in server artifacts. You will find links to run these artifacts on the
+Welcome page.
+
+![](welcome_installers.png)
+
+Also when you create a new
+[org]({{< ref "/docs/deployment/orgs/" >}})
+using the `Server.Orgs.NewOrg` artifact it will, by default, also create Windows
+and Linux client installers for that org.
+
+We do recommend that you read this section so that you understand what the
+client config is, as this is a key aspect of all client installer packages.
+However you probably won't want to create client packages this way unless you
+need advanced customization or want to build the installer packages separately
+from your server environment.
+
+If you've created client installer packages by running the artifacts linked on
+the Welcome page then you can skip ahead to
+[Installing the client as a service]({{< relref "#installing-the-client-as-a-service" >}}).
+
+{{% /notice %}}
 
 There are several ways to run clients, depending on your needs. Ultimately
 however this amounts to running the Velociraptor binary and providing it with a
@@ -173,10 +202,11 @@ the section [Agentless deployment](#agentless-deployment).
 
 ### Windows
 
-The recommended way to install Velociraptor as a client on Windows is via the
-release MSI which you can find on our [Downloads]({{< ref "/downloads/" >}}) page. Previous
-releases can be found on the [Releases page](https://github.com/Velocidex/velociraptor/releases)
-at Github.
+The recommended way to install the Velociraptor client as a service on Windows
+is via a Microsoft Installer (MSI) package. The benefit of using this
+installer format is that most enterprise system administration tools are capable
+of deploying MSI packages. For example, you can use SCCM or Group Policy to
+deploy the MSI to a target organizational unit.
 
 An MSI is a standard Windows installer package. The benefit of using this
 installer format is that most enterprise system administration tools are capable
@@ -266,11 +296,15 @@ output file names so that you know exactly what they are.
 {{% /notice %}}
 
 To repack the MSI with a custom config on the command line we use the `config`
-command, and the `repack` subcommand, with the `--msi` flag.
+command with the `repack` subcommand, along with the `--msi` flag.
 
-In all cases we need to tell Velociraptor which MSI we want to repack (usually
-it's the [official release MSI]({{< ref "/downloads/" >}}): either 64-bit or 32-bit) and what
-the output file should be named.
+In all cases we need to tell Velociraptor:
+* which MSI we want to repack (usually
+  it's the [official release MSI]({{< ref "/downloads/" >}}) - either 64-bit or
+  32-bit - but previous releases can also be found on the
+  [Releases page](https://github.com/Velocidex/velociraptor/releases)
+  at Github if you need them), and
+* what the output file should be named.
 
 {{< tabs >}} {{% tab name="Linux" %}}
 ```shell
