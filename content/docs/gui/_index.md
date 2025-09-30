@@ -103,7 +103,7 @@ seen above:
 
 1. **Collapse/Expand All Columns** - Sometimes the content of some cells can take up
    a lot of vertical space. This option toggles between showing the full row
-   heights or shrinking the row display to a stand height.
+   heights or shrinking the row display to a standard height.
    ![](widget_collapse.png)
 
 2. **The Column Selector** - Allows users to show/hide columns. This is
