@@ -76,7 +76,7 @@ options to consider:
 
 3. The config allows for serving static files from a disk location using the
    [GUI.reverse_proxy.url]({{< ref "/docs/deployment/references/#GUI.reverse_proxy.url" >}})
-   setting. For example, to server the image located at `/opt/www/foo.png` so
+   setting. For example, to serve the image located at `/opt/www/foo.png` so
    that it's available using `<img src="/images/foo.png">` you can add the
    following to your server config:
 
