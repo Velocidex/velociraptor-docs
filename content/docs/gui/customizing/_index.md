@@ -56,30 +56,35 @@ These, and their corresponding artifacts, are:
 
 #### Including image content
 
-The GUI is not served from disk, which means that you cannot place images on
-disk and expect them to be picked up and served like a typical web server.
-Images that the GUI uses are compiled into the binary as static web assets and
-then served from memory.
+The GUI is not served from disk which means that, by default, you cannot place
+images on disk and expect them to be picked up and served like a typical web
+server. Images that the GUI uses are compiled into the binary as static web
+assets and then served from memory.
 
-So what do you do if you want to include custom images?
+So what do you do if you want to include custom images? Well there are a few
+options to consider:
 
-It is possible to include links to images from external locations using the
-`<img>` HTML tag, although this may be problematic if there is proxying or
-content filtering in your network environment, or if the external image hosting
-is unreliable or slow.
+1. It is possible to include links to images from external locations using the
+   `<img>` HTML tag, although this may be problematic if there is proxying or
+   content filtering in your network environment, or if the external image
+   hosting is unreliable or slow.
 
-If you are doing extensive customization or customization that requires
-compiling your own server binary then these images can be included in the source
-tree under `gui/velociraptor/src/public` which will then serve these as static
-assets.
+2. If you are doing extensive customization or customization that requires
+   compiling your own server binary then these images can be included in the
+   source tree under `gui/velociraptor/src/public` which will then serve these
+   as static assets.
 
-For inclusion of one or two small images it is probably best to add them to the
-artifact itself, which can be done by encoding them and embedding them as data
-URIs inside the template section of the artifact. The benefit of doing so is
-that the custom artifact is then self-contained and portable. The downside is
-that the embedded images may take up a quite a bit of space in the artifact and
-therefore might not be very visually pleasing. Here is an example of what that
-would look like:
+3. The config allows for serving static files from a disk location using the
+   [GUI.reverse_proxy.url]({{< ref "/docs/deployment/references/#GUI.reverse_proxy.url" >}})
+   setting.
+
+4. For inclusion of one or two small images it is possible to add them to
+   the artifact itself, which can be done by encoding them and embedding them as
+   data URIs inside the template section of the artifact. The benefit of doing
+   so is that the custom artifact is then self-contained and portable. The
+   downside is that the embedded images may take up a quite a bit of space in
+   the artifact and therefore might not be very visually pleasing. Here is an
+   example of what that would look like:
 
 ![An image embedded as a data URI](welcome2.png)
 
