@@ -76,7 +76,17 @@ options to consider:
 
 3. The config allows for serving static files from a disk location using the
    [GUI.reverse_proxy.url]({{< ref "/docs/deployment/references/#GUI.reverse_proxy.url" >}})
-   setting.
+   setting. For example, to server the image located at `/opt/www/foo.png` so
+   that it's available using `<img src="/images/foo.png">` you can add the
+   following to your server config:
+
+   ```yaml
+   GUI:
+   reverse_proxy:
+       - route: /images/
+         url: file:///opt/www/
+         require_auth: true
+   ```
 
 4. For inclusion of one or two small images it is possible to add them to
    the artifact itself, which can be done by encoding them and embedding them as
@@ -86,9 +96,12 @@ options to consider:
    the artifact and therefore might not be very visually pleasing. Here is an
    example of what that would look like:
 
-![An image embedded as a data URI](welcome2.png)
+   ![An image embedded as a data URI](welcome2.png)
 
-![Embedded image rendered](welcome3.png)
+Regardless of the method you choose, you will then see your image on the
+customized page.
+
+![Custom image added](welcome3.png)
 
 As mentioned, this approach is generally better for small images for example
 SVGs which are more compact than their equivalent raster format representations.
