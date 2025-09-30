@@ -11,7 +11,7 @@ summary: "Customize your GUI experience."
 Certain pages in the GUI allow for customization. The layout and content of
 these pages are defined in corresponding Velociraptor
 [artifacts]({{< ref "/docs/artifacts/" >}}).
-These artifacts contain templates witten in
+These artifacts contain templates written in
 [Go's templating language](https://pkg.go.dev/text/template)
 that then produce the HTML that the user ultimately sees and interacts with.
 
@@ -64,7 +64,7 @@ then served from memory.
 So what do you do if you want to include custom images?
 
 It is possible to include links to images from external locations using the
-`<img>` HTML tag, although this may be problematic if there is proxying of
+`<img>` HTML tag, although this may be problematic if there is proxying or
 content filtering in your network environment, or if the external image hosting
 is unreliable or slow.
 
@@ -194,11 +194,11 @@ SELECT serialize(format="yaml", item=icon[0]) AS icon_url_yaml FROM scope()
 ## Developing custom themes
 
 We try to provide enough themes so that at least one will satisfy your tastes,
-but if you have a very specific requirement we've built Veloiciraptor's GUI in
+but if you have a very specific requirement we've built Velociraptor's GUI in
 such a way that adding themes is not too difficult if you have experience with
 CSS development.
 
-Each theme is just a CSS stylesheet. The current'y included theme files can
+Each theme is just a CSS stylesheet. The currently included theme files can
 be viewed
 [here](https://github.com/Velocidex/velociraptor/tree/master/gui/velociraptor/src/themes.).
 
@@ -208,7 +208,7 @@ Velociraptor is designed so that additional languages can be added to the GUI
 relatively easily in a modular way.
 
 Each user is able to independently select
-their preferred langage in their
+their preferred language in their
 [user preferences]({{< ref "/docs/gui/user_preferences/" >}}),
 amongst other preferences such as theme and their local time zone.
 
