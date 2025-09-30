@@ -45,9 +45,14 @@ Currently there are 3 pages in the GUI that support full customization.
 These, and their corresponding artifacts, are:
 
 - `Server.Internal.Welcome` - The Welcome page
+  ![](welcome.png)
+
 - `Server.Monitor.Health` - The Server Dashboard page
+  ![](dashboard.png)
+
 - `Generic.Client.Info` - The VQL Drilldown page which shows data about any
   selected client.
+  ![](vql_drilldown.png)
 
 #### Including image content
 
