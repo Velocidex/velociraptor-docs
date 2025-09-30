@@ -98,16 +98,17 @@ options to consider:
 
    ![An image embedded as a data URI](welcome2.png)
 
+   As mentioned, this approach is generally better for small images for example
+   SVGs which are more compact than their equivalent raster format
+   representations. However all image formats that modern browsers support
+   should work as data URIs. There are online tools that will help you create a
+   data URI from an image and wrap it in an `<imag>` tag.
+
 Regardless of the method you choose, you will then see your image on the
 customized page.
 
 ![Custom image added](welcome3.png)
 
-As mentioned, this approach is generally better for small images for example
-SVGs which are more compact than their equivalent raster format representations.
-However all image formats that modern browsers support should work as data URIs.
-There are online tools that will help you create a data URI from an image and
-wrap it in an `<imag>` tag.
 
 {{% notice note "HTML security considerations" %}}
 
