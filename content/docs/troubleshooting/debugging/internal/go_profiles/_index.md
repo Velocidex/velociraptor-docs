@@ -7,9 +7,14 @@ aliases:
 ---
 
 These show the built in Golang profiles. These profiles provide
-detailed instrumentation of the running process. They are most useful
-for developers and are very important if you seek help from the
-Velociraptor developer team, who will often ask for these.
+detailed instrumentation of the running process.
+
+This type of information is critical for developers to understand what the code
+is doing, and is therefore often required in any bug reports or discussions of
+suspected bug with the Velociraptor developer team.
+
+These can be accessed via the link `Internal` -> `Show built in Go Profiles` in
+the Debug Console.
 
 ![Built in Golang profiles](built_in.png)
 
