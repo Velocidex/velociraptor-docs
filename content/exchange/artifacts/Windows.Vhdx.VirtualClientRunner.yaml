@@ -1,0 +1,88 @@
+name: Windows.Vhdx.VirtualClientRunner
+description: |
+   Run the Velociraptor agent using the remapping configuration created. This 
+   agent allow to virtually map the VHDX profiles into a virtual Velociraptor agent.
+   
+   The agent is executed using PowerShell `Start-Process` cmdlet allowing to run 
+   in the background.
+   
+   There is no persistence mechanism to keep the process running after reboot. 
+   The artifact need to be re-run to have the virtual agent back.
+   
+   This artifact is part of the Vhdx Suite. This suite requires to have 
+   the `Windows.Sys.Users` override on the server to work properly.
+
+   Read the dedicated blog post before using this artifact.
+
+author: Yann Malherbe - @mirwitch
+
+reference: 
+  - https://labs.infoguard.ch/posts/automation_of_vhdx_investigations/
+
+type: CLIENT
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
+parameters:
+   - name: customLabel
+     type: string
+     default: "remapped_profile"
+     description: "Label to assign to virtual clients (must match label used in Windows.Sys.Users)"
+     
+   - name: remappingFile
+     type: regex
+     default: "."
+     description: "One or more remapping YAML files to launch."
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+        // Retrieve the directory from the running Velociraptor executable
+        LET veloInfo = SELECT Exe FROM info()
+        LET veloExe = SELECT OSPath FROM glob(globs=veloInfo.Exe)
+        LET veloFolderPath = strip(string=veloExe.OSPath.Dirname, prefix=' ', suffix=' ')
+        
+        LET emptyDir = tempdir(remove_last=TRUE)
+        
+        LET emptyFile = SELECT tempfile(data="", remove_last=TRUE) AS Path FROM scope()
+        
+        LET copyFile <= SELECT copy(
+                filename=emptyFile.Path, 
+                dest=veloFolderPath + "\\Vhdx\\Writeback\\empty", 
+                create_directories=TRUE) 
+            FROM scope()
+        
+     
+        // Define the local buffer for the virtual client
+        LET localBufferPath = "C:\\Windows\\Temp\\velociraptor_Vhdx_Buffer_" + Username + ".bin"
+        
+        // Define the writeback file for the virtual client
+        LET writebackFilename = veloFolderPath + "\\Vhdx\\Writeback\\Vhdx_" + Username + ".yaml"
+    
+        // Get the remapping files to run 
+        LET remappingFiles = SELECT OSPath.String AS RemappingFile,
+            regex_replace(source=Name, re="\\.yaml", replace="") AS Username 
+            FROM glob(globs=veloFolderPath + "\\Vhdx\\Remapping\\*") 
+            WHERE Name =~ remappingFile
+            
+                
+        // Run the agent using PowerShell Start-Process cmdlet
+        LET agentRunner = SELECT RemappingFile, Complete, ReturnCode, Stdout, Stderr FROM execve(argv=[
+            "powershell", 
+            "-ExecutionPolicy", "Bypass", 
+            "-NoProfile", 
+            "-Command", 
+            "Start-Process -FilePath '"+ veloInfo[0].Exe +"' -ArgumentList '--config client.config.yaml --config.client-writeback-windows=\"" + writebackFilename + "\" --config.client-local-buffer-filename-windows=\"" + localBufferPath + "\" --remap \"" + RemappingFile + "\" --config.client-labels=" + customLabel + " client' -WorkingDirectory '" + veloFolderPath + "' -WindowStyle Hidden"
+            ])
+        
+        // Run the agent for each remapping file
+        SELECT * FROM foreach(
+            row=remappingFiles,
+            query=agentRunner
+        )
+        
+
