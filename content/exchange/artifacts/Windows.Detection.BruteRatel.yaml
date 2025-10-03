@@ -1,7 +1,7 @@
 name: Windows.Detection.BruteRatel
 author: Luke Fardell
 description: |
-  This hunt runts the Immersive Labs yara rule (https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings. 
+  This hunt runts the Immersive Labs yara rule (https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings.
 
 
 type: CLIENT
@@ -30,6 +30,19 @@ sources:
       LET yara = SELECT * FROM if(condition=YaraUrl,
             then= { SELECT Content FROM http_client( url=YaraUrl, method='GET') },
             else= { SELECT YaraRule as Content FROM scope() })
+
+      -- time testing
+      LET time_test(stamp) =
+            if(condition= DateBefore AND DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
+                else=
+            if(condition=DateBefore,
+                then= stamp < DateBefore,
+                else=
+            if(condition= DateAfter,
+                then= stamp > DateAfter,
+                else= True
+            )))
 
       -- first find all matching glob
       LET files = SELECT FullPath, Name, Size, Mtime, Atime, Ctime, Btime

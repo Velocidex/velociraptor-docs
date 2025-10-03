@@ -4,7 +4,7 @@ menutitle: Keyboard Shortcuts
 date: 2025-05-16
 last_reviewed: 2025-09-04
 draft: false
-weight: 100
+weight: 80
 summary: "Learn about keyboard shortcuts in the GUI"
 ---
 

@@ -1857,3 +1857,19 @@ resumable
 uncompressing
 shellbag
 unselect
+
+
+<url-free> content/docs/gui/customizing/_index.md
+--------------------------------------------------------------------------------
+SVGs
+proxying
+sanitization
+stylesheet
+templating
+
+traceback
+stacktrace
+tempfiles
+responder's
+misconfiguration
+
