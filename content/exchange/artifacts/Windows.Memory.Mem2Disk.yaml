@@ -1,0 +1,163 @@
+name: Windows.Memory.Mem2Disk
+author: Lautaro Lecumberry, Dr. Michael Denzel
+description: |
+    This artifact compares executables in memory (RAM) with those
+    on hard disk. This way, RAM injections are detected. This rarely
+    happens legitimately and is mostly used by malware.
+    This check is executed without dumping the memory and works live
+    on the target system(s).
+
+parameters:
+- name: IgnoreOneByteOffsets
+  description: Relative Virtual Adresses (RVA) cause an offset in the code in memory of a process.
+               This is the case when the field BaseOfData is set to 0x8000. It creates false
+               positives and is fairly safe to ignore (1-byte injections are really hard).
+  default: True
+  type: bool
+- name: UploadFindings
+  description: Upload all executables where code in memory does not match code on disk. This
+               can potentially generate a lot of traffic. Dry-run before enabling this option.
+  default: False
+  type: bool
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+- query: |
+    -- get all processes
+    LET GetPids =
+      SELECT Pid, Username
+      FROM pslist()
+
+    -- get all memory pages for a certain pid
+    LET InfoFromVad = 
+      SELECT 
+        atoi(string="0x"+split(string=AddressRange, sep="-")[0]) as Address,
+        filter(list=ProcessChain, regex=Pid)[0].Exe as Path
+      FROM Artifact.Windows.System.VAD(PidRegex=str(str=Pid))
+      WHERE MappingName
+        AND Protection =~ "xr-"
+        AND MappingName =~ "(exe)$"
+
+    -- parse the executable (PE) from memory (specifically, the text segment)
+    LET GetMetadata =
+      SELECT Path,
+        Address,
+        parse_pe(file=Path).Sections[0] AS TextSegmentData
+      FROM InfoFromVad
+      WHERE Address != 0
+
+    -- read the executable from memory and hard disk
+    LET GetContent =
+      SELECT *,
+        format(format="%#x", args=Address) AS MemAddress,
+        format(format="%x",
+          args=read_file(accessor="process",
+            offset=Address,
+            filename=format(format="/%d", args=Pid),
+            length=TextSegmentData.Size)
+          ) AS MemoryData,
+        hash(path=format(format="/%d", args=Pid),
+            accessor="process",
+            hashselect="SHA256"
+          ).SHA256 AS MemorySHA256,
+        format(format="%#x", args=TextSegmentData.FileOffset) AS DiskAddress,
+        format(format="%x",
+          args=read_file(accessor="file",
+            offset=TextSegmentData.FileOffset,
+            filename=Path,
+            length=TextSegmentData.Size)
+          ) AS DiskData,
+        hash(path=Path,
+          accessor="file",
+          hashselect="SHA256"
+        ).SHA256 AS DiskSHA256
+      FROM GetMetadata
+      WHERE len(list=MemoryData) != 0
+        AND len(list=DiskData) != 0
+
+    -- Filter out not needed comparisons early
+    LET FilterContent =
+      SELECT *, MemoryData = DiskData AS Comparison
+      FROM GetContent
+      WHERE NOT Comparison
+
+    -- PowerShell compare script as stored query, so it only gets created once
+    LET PowerShellScript <= tempfile(extension=".ps1", data='''
+        param([string]$file1, [string]$file2)
+        if($file1.Length -eq 0 -or $file2.Length -eq 0){
+            Exit $false
+        }
+        $str1 = Get-Content -Path $file1
+        $str2 = Get-Content -Path $file2
+        if($str1.Length -ne $str2.Length){
+            Exit $false
+        }
+        $tmp = 0
+        for($i = 0; $i -le $str1.Length; $i+=2){
+            if($str1[$i] -eq $str2[$i] -and $str1[$i+1] -eq $str2[$i+1]){
+                $tmp=0
+            }else{
+                $tmp++
+                if($tmp -ge 2){
+                    Exit $false
+                }
+            }
+        }
+        Exit $true''')
+    LET CheckOneByteChanges(file1, file2) =
+                SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy", "unrestricted", "-c", PowerShellScript, file1, file2])
+
+    -- compare the executable from memory and hard disk
+    -- only print the ones where they do not match
+    LET Compare =
+        if(condition=IgnoreOneByteOffsets, then={
+            SELECT Pid,
+                Path,
+                CheckOneByteChanges(file1=tempfile(extension=".mem", data=MemoryData),
+                    file2=tempfile(extension=".disk", data=DiskData))[0].ReturnCode != 0
+                    AS OneByteOffset, --$false = 0
+                Comparison,
+                MemorySHA256,
+                DiskSHA256,
+                MemAddress,
+                DiskAddress,
+                TextSegmentData.Size AS Size
+            FROM FilterContent
+            WHERE NOT OneByteOffset
+        }, else={
+            SELECT Pid, 
+                Path,
+                Comparison,
+                MemorySHA256,
+                DiskSHA256,
+                MemAddress,
+                DiskAddress,
+                TextSegmentData.Size AS Size
+            FROM FilterContent
+        })
+
+    -- compare with uploading the suspicious executables
+    LET CompareAndUpload =
+        SELECT Pid, Path, MemAddress, DiskAddress, Size,
+            upload(
+                file=format(format="/%d", args=Pid),
+                --offset=Address,
+                --length=TextSegmentData.Size,
+                name=Path+"."+format(format="%d", args=Pid)+".mem",
+                accessor="process"
+            ) AS UploadMem,
+            upload(
+                file=Path,
+                --offset=TextSegmentData.FileOffset,
+                --length=TextSegmentData.Size,
+                name=Path+"."+format(format="%d", args=Pid)+".disk",
+                accessor="file"
+            ) AS UploadDisk
+        FROM Compare
+
+    -- for every process, evaluate the memory-harddisk-comparison
+    SELECT * FROM foreach(
+      row=GetPids,
+      query=if(condition=UploadFindings, then=CompareAndUpload, else=Compare)
+    )
