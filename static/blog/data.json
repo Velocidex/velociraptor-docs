@@ -1,7 +1,18 @@
 [
  {
+  "title": "Adaptive Collections",
+  "description": "Velociraptor Adaptive Collections\n",
+  "link": "/blog/2025/2025-09-28-adaptive-collections/",
+  "tags": [
+   "DFIR",
+   "Registry",
+   "Triage"
+  ],
+  "date": "2025-08-30"
+ },
+ {
   "title": "Velociraptor 0.75 Release",
-  "description": "Velociraptor Release 0.75 is available for testing\n",
+  "description": "Velociraptor Release 0.75 is now available\n",
   "link": "/blog/2025/2025-08-30-release-notes-0.75/",
   "tags": [
    "Release"
@@ -217,9 +228,9 @@
   "date": "2022-04-21"
  },
  {
-  "title": "Dead disk Forensics",
-  "description": "Velociraptor features some advanced forensics capabilities, but traditionally\nonly works on live endpoints. In recent releases it is now also possible to\nuse Velociraptor on dead disk images.\n",
-  "link": "/blog/2022/2022-03-22-deaddisk/",
+  "title": "Paths and filesystem accessors",
+  "description": "Path handling seems like a simple task but it is surprisingly complex. This article discusses some of the nuances of thinking about paths and introduces Velociraptor's new OSPath feature that easier path manipulation from VQL queries.\n",
+  "link": "/blog/2022/2022-03-21-paths/",
   "tags": [
    "Forensics",
    "VQL"
@@ -227,9 +238,9 @@
   "date": "2022-03-20"
  },
  {
-  "title": "Paths and filesystem accessors",
-  "description": "Path handling seems like a simple task but it is surprisingly complex. This article discusses some of the nuances of thinking about paths and introduces Velociraptor's new OSPath feature that easier path manipulation from VQL queries.\n",
-  "link": "/blog/2022/2022-03-21-paths/",
+  "title": "Dead disk Forensics",
+  "description": "Velociraptor features some advanced forensics capabilities, but traditionally\nonly works on live endpoints. In recent releases it is now also possible to\nuse Velociraptor on dead disk images.\n",
+  "link": "/blog/2022/2022-03-22-deaddisk/",
   "tags": [
    "Forensics",
    "VQL"
@@ -251,15 +262,6 @@
   "date": "2022-01-12"
  },
  {
-  "title": "Velociraptor 0.6.3 Release",
-  "description": "Our latest Velociraptor release contains many new features and bug fixes. This post outlines some of the more interesting changes.\n",
-  "link": "/blog/2022/2022-01-05-release-notes-0.6.3/",
-  "tags": [
-   "Release"
-  ],
-  "date": "2022-01-05"
- },
- {
   "title": "Searching for files",
   "description": "A common technique in DFIR is simply searching the filesystem for files. While this seems like a simple task, there are some surprising traps. This article covers some of the issues and possible solutions.\n",
   "link": "/blog/2022/2022-01-05-searching-for-files-on-linux/",
@@ -267,6 +269,15 @@
    "VQL",
    "Linux",
    "Searching"
+  ],
+  "date": "2022-01-05"
+ },
+ {
+  "title": "Velociraptor 0.6.3 Release",
+  "description": "Our latest Velociraptor release contains many new features and bug fixes. This post outlines some of the more interesting changes.\n",
+  "link": "/blog/2022/2022-01-05-release-notes-0.6.3/",
+  "tags": [
+   "Release"
   ],
   "date": "2022-01-05"
  },
@@ -523,21 +534,21 @@
   "date": "2020-09-27"
  },
  {
+  "title": "Profiling the beast",
+  "description": "Velociraptors exposing their inner workings\u2026",
+  "link": "/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/",
+  "tags": [
+   "Internals"
+  ],
+  "date": "2020-08-16"
+ },
+ {
   "title": "Velociraptor SSO Authentication",
   "description": "Protect your Velociraptor with OAuth2",
   "link": "/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/",
   "tags": [
    "Integration",
    "Authentication"
-  ],
-  "date": "2020-08-16"
- },
- {
-  "title": "Profiling the beast",
-  "description": "Velociraptors exposing their inner workings\u2026",
-  "link": "/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/",
-  "tags": [
-   "Internals"
   ],
   "date": "2020-08-16"
  },
@@ -806,6 +817,13 @@
   "date": "2018-08-10"
  },
  {
+  "title": "Browsing around the filesystem.",
+  "description": "Browsing the client's filesystem is probably the first thing\nresponders do. Both GRR and Velociraptor have a nice VFS abstraction\nthat allows users to browse files interactively. However, in order to\nmake Velociraptor much faster we made some tradeoffs and improved the\nway that the VFS is stored in the datastore.\n",
+  "link": "/blog/html/2018/08/10/browsing_around_the_filesystem/",
+  "tags": [],
+  "date": "2018-08-10"
+ },
+ {
   "title": "Design differences between Velociraptor and GRR",
   "description": "One of the main motivators for developing Velociraptor is the\nopportunity to try different approaches than GRR. Velociraptor has a\nnumber of fundamental design differences in contrast with the GRR\ndesign which improve overall performance and scalability.  We tried to\nkeep it light weight cutting out the features we think we did not need\nand leaving behind a fast, lean and mean raptor!\n",
   "link": "/blog/html/2018/08/10/design_differences_between_velociraptor_and_grr/",
@@ -816,13 +834,6 @@
   "title": "Hunting - What Velociraptors do best!",
   "description": "A hunt is a feature where a single flow may be run on multiple clients\nat the same time. Typically a hunt looks for a particular indicator of\ncompromise across the entire deployment, or maybe collect the same\nfiles from every deployed agent. By their nature, hunts cause multiple\nflows to run simultaneously and so this creates a large contention of\nshared state.\n",
   "link": "/blog/html/2018/08/10/hunting_what_velociraptors_do_best/",
-  "tags": [],
-  "date": "2018-08-10"
- },
- {
-  "title": "Browsing around the filesystem.",
-  "description": "Browsing the client's filesystem is probably the first thing\nresponders do. Both GRR and Velociraptor have a nice VFS abstraction\nthat allows users to browse files interactively. However, in order to\nmake Velociraptor much faster we made some tradeoffs and improved the\nway that the VFS is stored in the datastore.\n",
-  "link": "/blog/html/2018/08/10/browsing_around_the_filesystem/",
   "tags": [],
   "date": "2018-08-10"
  },
