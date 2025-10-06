@@ -82,31 +82,19 @@ sources:
       FROM GetContent
       WHERE NOT Comparison
 
-    -- PowerShell compare script as stored query, so it only gets created once
-    LET PowerShellScript <= tempfile(extension=".ps1", data='''
-        param([string]$file1, [string]$file2)
-        if($file1.Length -eq 0 -or $file2.Length -eq 0){
-            Exit $false
-        }
-        $str1 = Get-Content -Path $file1
-        $str2 = Get-Content -Path $file2
-        if($str1.Length -ne $str2.Length){
-            Exit $false
-        }
-        $tmp = 0
-        for($i = 0; $i -le $str1.Length; $i+=2){
-            if($str1[$i] -eq $str2[$i] -and $str1[$i+1] -eq $str2[$i+1]){
-                $tmp=0
-            }else{
-                $tmp++
-                if($tmp -ge 2){
-                    Exit $false
-                }
-            }
-        }
-        Exit $true''')
-    LET CheckOneByteChanges(file1, file2) =
-                SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy", "unrestricted", "-c", PowerShellScript, file1, file2])
+    -- Dict stored as query, so it only gets executed once
+    LET Tmp <= dict(a=0)
+
+    LET Cmp(X, Y) = SELECT X[_value] = Y[_value]  AND X[1] = Y[1] AS Eq
+        FROM range(end=len(list=X), step=2)
+        WHERE set(item=Tmp,
+                field="a",
+                value=if(condition=Eq  AND Tmp.a < 2, then=0, else=Tmp.a + 1))
+        AND Tmp.a > 2
+        LIMIT 1
+
+    LET CheckOneByteChanges(X, Y) = set(item=Tmp, field="a", value=0)
+        AND Cmp(X=X, Y=Y)
 
     -- compare the executable from memory and hard disk
     -- only print the ones where they do not match
@@ -114,9 +102,8 @@ sources:
         if(condition=IgnoreOneByteOffsets, then={
             SELECT Pid,
                 Path,
-                CheckOneByteChanges(file1=tempfile(extension=".mem", data=MemoryData),
-                    file2=tempfile(extension=".disk", data=DiskData))[0].ReturnCode != 0
-                    AS OneByteOffset, --$false = 0
+                NOT CheckOneByteChanges(X=MemoryData, Y=DiskData)
+                    AS OneByteOffset,
                 Comparison,
                 MemorySHA256,
                 DiskSHA256,
