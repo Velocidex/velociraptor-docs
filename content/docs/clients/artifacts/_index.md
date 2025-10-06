@@ -38,7 +38,7 @@ A collection of artifacts can return rows or upload
 files. This is because an artifact is simply a VQL query and all
 queries return a sequence of rows.
 
-### Example: collect scheduled tasks from endpoint.
+## Example: collect scheduled tasks from endpoint.
 
 To illustrate how artifacts can be used, let's collect a common
 forensic artifact from our Windows endpoint. Windows allows commands
@@ -47,48 +47,92 @@ to be scheduled in the future. These tasks are typically stored in the
 
 While it is nice to know the details behind where the scheduled tasks
 are stored and how to parse them - this is completely unnecessary with
-Velociraptor, since we have a built-in artifact ready to collect these
-tasks!
+Velociraptor, since we have a built-in artifact ready to collect and
+parse these tasks!
+
+In the following I will walk through the steps for scheduling a new
+`Windows.System.TaskScheduler` collection.
+
+### Initiating a new collection
 
 Start a new collection by clicking the **New Collection** button <i
 class="fas fa-plus"></i>. This will open the new collection wizard as
 show below.
 
-
 ![New Collection Wizard](new_collection_wizard.png)
 
 The Wizard contains a number of steps but you can skip them if they
-are not needed.
+are not needed. For this exercise we will examine each step in turn
+
+### Searching for artifacts to collect
 
 In the first step, search for an artifact to collect the type of
 information you are after. In this case we will search for "task" to
 see our `Windows.System.TaskScheduler` artifact.
 
-{{% notice tip "Saving collections to a favorite list" %}}
-
-Many users find that they tend to collect some artifacts more commonly
-than others. In that case you can save your favorite collections by
-name and just recall them by clicking in the favorites list button.
-
-![New Collection Wizard](favorites.png)
-
-{{% /notice %}}
-
-
 The next step allows us to modify artifact parameters.
+
+### Setting artifact parameters
+
+Artifacts may accept parameters from the user which change the way the
+artifact works. The detail of how artifact parameters work is
+described in [Artifact Parameters]({{< ref
+"/docs/artifacts/parameters/" >}}) but for the moment we just update
+the parameters needed for the `Windows.System.TaskScheduler` artifact.
 
 ![Artifact Parameters](artifact_parameters.png)
 
-Each Artifact parameter has a default value.
+This artifact does not require much updating.  Artifacts have default
+values for their parameter such that they mostly do the right thing
+without needing to change them. In this case, the `TasksPath`
+parameter specifies where to find the task XML files and is already
+set to the default location.
 
-For the purposes of our example, we will upload some raw XML
-files. Click **Launch** to start the collection. After a short time, the
-collection will complete.
+For the purposes of our example, we will also upload the raw XML
+files, so set the `AlsoUpload` parameter.
+
+### Specify Resources
+
+Velociraptor often runs on performance sensitive endpoints, like
+servers and laptops, as well as low resource machines like cloud
+virtual machines. It is critical to ensure that Velociraptor does not
+generate undue load on the endpoint, leading to performance
+degradation.
+
+Velociraptor contains a number of mechanism to limit resource usage,
+as a "fail safe" and to prevent accidentally overloading the
+endpoint. You can read more details on [Resource Limits here]({{< ref
+"/docs/artifacts/resources/" >}}), but for now notice that
+Velociraptor's default resources are pretty reasonable
+
+![Artifact Resource usage](resource_use.png)
+
+
+Collections by default run for 600 seconds before being cancelled -
+odds are that collecting the scheduled tasks files should not take
+that long. It should also not transfer more than a Gigabyte (which is
+the default upload limit).
+
+### Inspecting the collection request
+
+Just prior to collecting, you can view the collection request in the
+GUI. This is probably mostly useful for automating the collection
+using `collect_client()` but gives a final view on what exactly will
+be collected.
+
+![The collection request](collection_request.png)
+
+### Launching the collection
+
+Finally, click **Launch** to start the collection. After a short time,
+the collection will complete.
 
 ![Collection Complete](viewing_complete_collection.png)
 
 We can see that this collection uploaded 195 files and added 195
 rows. The VQL query parses each XML file in turn and uploads it.
+
+## Inspecting collection results
 
 We can see more information about this collection in the tabs in the
 bottom pane:
@@ -138,6 +182,14 @@ prefix to the artifact name and will produce a new artifact. Therefore
 both the custom and built in artifact exist in Velociraptor at the
 same time. This allows you to collect either the original or the
 customized version as you please.
+
+## Saving collections to a favorite list
+
+Many users find that they tend to collect some artifacts more commonly
+than others. In that case you can save your favorite collections by
+name and just recall them by clicking in the favorites list button.
+
+![New Collection Wizard](favorites.png)
 
 ## Learn more
 
