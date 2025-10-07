@@ -99,7 +99,7 @@ parameters:
     description: A directory to write tempfiles in
 
   - name: opt_level
-    default: "4"
+    default: "5"
     type: int
     description: Compression level (0=no compression).
 
@@ -182,6 +182,7 @@ parameters:
             level=Level,
             concurrency=Concurrency,
             format=Format,
+            remapping=Remapping,
             metadata=ContainerMetadata)
 
   - name: S3Collection
@@ -256,6 +257,10 @@ parameters:
     type: hidden
     default: |
       LET S = scope()
+      LET Remapping &lt;= if(condition=Remapping,
+          then=log(message="Will load remapping rules from %v", args=Remapping) &amp;&amp;
+               read_file(filename=Remapping),
+          else="")
 
       // Add all the tools we are going to use to the inventory.
       LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
@@ -379,6 +384,7 @@ parameters:
           password=pass[0].Pass,
           level=Level,
           concurrency=Concurrency,
+          remapping=Remapping,
           metadata=ContainerMetadata)
 
       LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
@@ -504,6 +510,7 @@ sources:
                          type="json"
                          ),
                     dict(name="Level", default=opt_level, type="int"),
+                    dict(name="Remapping", default=""),
                     dict(name="Concurrency", default=opt_concurrency, type="int"),
                     dict(name="Format", default=opt_format),
                     dict(name="OutputPrefix", default=opt_output_directory),

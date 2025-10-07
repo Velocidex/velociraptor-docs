@@ -52,6 +52,7 @@ not yet been categorized.
 |[max](max)|<span class='vql_type'>Function</span>|Finds the largest item in the aggregate|
 |[min](min)|<span class='vql_type'>Function</span>|Finds the smallest item in the aggregate|
 |[netcat](netcat)|<span class='vql_type'>Plugin</span>|Make a tcp connection and read data from a socket|
+|[notebooks](notebooks)|<span class='vql_type'>Plugin</span>|List all notebooks|
 |[parse_pst](parse_pst)|<span class='vql_type'>Plugin</span>|Parse a PST file and extract email data|
 |[patch](patch)|<span class='vql_type'>Function</span>|Patch a JSON object with a json patch or merge|
 |[path_join](path_join)|<span class='vql_type'>Function</span>|Build a path by joining all components|
