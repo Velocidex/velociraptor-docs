@@ -1,4 +1,4 @@
-name: Windows.Sys.Users
+name: Windows.Vhdx.Sys.Users
 description: |
   List User accounts by inspecting registry keys. This method is a
   reliable indicator for users who have physically logged into the
@@ -8,8 +8,9 @@ description: |
   - you should collect the `Windows.Sys.AllUsers` artifact to get all
   possible users on the system.
   
-  Replace the official `Windows.Sys.Users` allowing to list the users for 
-  potential user profiles from virtual Velociraptor clients.
+  This artifact should be rename to replace the official 
+  `Windows.Sys.Users` allowing to list the users for potential user 
+  profiles from virtual Velociraptor clients.
 
   Read the dedicated blog post before using this artifact.
   
