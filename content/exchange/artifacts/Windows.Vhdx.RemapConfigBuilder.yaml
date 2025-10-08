@@ -231,7 +231,7 @@
               
               
           // Split the user list into batches
-          LET userBatch = SELECT * 
+          LET userBatch = SELECT rows AS user_batch 
               FROM batch(query={
                 SELECT *
                 FROM userProfilesList
@@ -240,7 +240,7 @@
 
           // Create the header of the remapping file
           LET HeaderRemapping = regex_replace(re="<VIRTUAL_HOSTNAME>", 
-                                              replace=virtualHostname + "_" + rows[0].userProfile.Username, 
+                                              replace=virtualHostname + "_" + user_batch[0].userProfile.Username, 
                                               source=RemappingHeader)
           
           // Create the user sections of the remapping file
@@ -260,17 +260,15 @@
               
           // Iterate on the users part of the bulk
           LET BulkUserRemapping = SELECT * FROM foreach(
-              row=rows,
+              row=user_batch,
               query=UserRemapping
               )
           
           // Write the remapping content in a temp file
-          LET tmpFile = SELECT 
-                  tempfile(
+          LET tmpFile = tempfile(
                       data=HeaderRemapping + BulkUserRemapping.Content, 
                       remove_last=TRUE
-                  ) AS Path 
-              FROM scope()
+                  )
               
           // Retrieve the directory from the running Velociraptor executable
           LET veloInfo = SELECT Exe FROM info()
@@ -278,8 +276,8 @@
           
           // Copy the file to the remapping YAML file
           LET copyFile = SELECT copy(
-                  filename=tmpFile.Path, 
-                  dest=strip(string=veloExe.OSPath.Dirname.String, suffix=" ") + '\\Vhdx\\Remapping\\'+strip(string=rows[0].userProfile.Username, suffix=" ")+'.yaml',
+                  filename=tmpFile, 
+                  dest=strip(string=veloExe.OSPath.Dirname.String, suffix=" ") + '\\Vhdx\\Remapping\\'+strip(string=user_batch[0].userProfile.Username, suffix=" ")+'.yaml',
                   create_directories=TRUE) AS CreatedConfig
               FROM scope()
 
