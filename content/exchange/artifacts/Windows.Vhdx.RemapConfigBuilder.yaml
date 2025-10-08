@@ -240,7 +240,7 @@
 
           // Create the header of the remapping file
           LET HeaderRemapping = regex_replace(re="<VIRTUAL_HOSTNAME>", 
-                                              replace=virtualHostname + "_" + user_batch[0].userProfile.Username, 
+                                              replace=virtualHostname + "_" + firstBatchUser, 
                                               source=RemappingHeader)
           
           // Create the user sections of the remapping file
@@ -272,14 +272,20 @@
               
           // Retrieve the directory from the running Velociraptor executable
           LET veloInfo = SELECT Exe FROM info()
-          LET veloExe = SELECT * FROM glob(globs=veloInfo.Exe)
+
+          // Get the first user of the batch
+          LET firstBatchUser = user_batch[0].userProfile.Username
+
+          // Get the remapping filename
+          LET remappingFilename = firstBatchUser + ".yaml"
           
           // Copy the file to the remapping YAML file
           LET copyFile = SELECT copy(
                   filename=tmpFile, 
-                  dest=strip(string=veloExe.OSPath.Dirname.String, suffix=" ") + '\\Vhdx\\Remapping\\'+strip(string=user_batch[0].userProfile.Username, suffix=" ")+'.yaml',
+                  dest=pathspec(parse=veloInfo[0].Exe).Dirname + "Vhdx" + "Remapping" + remappingFilename,
                   create_directories=TRUE) AS CreatedConfig
               FROM scope()
+
 
 
           // Create dedicated YAML file for each batch of users
