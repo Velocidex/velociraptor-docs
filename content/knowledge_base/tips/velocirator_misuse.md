@@ -22,6 +22,10 @@ actions, such as downloading additional files or executing commands on
 the compromised asset. While this is not a vulnerability in the tool
 itself, it can be used for malicious purposes.
 
+On October 8th 2025, `Cisco Talos` reported observations from a
+threat actor abusing Velociraptor version (version 0.73.4.0) to
+distribute ransomware.
+
 ## How can I detect Velociraptor misuse in my environment?
 
 In order to help organizations detect Velociraptor misuse,
@@ -69,6 +73,48 @@ rule velociraptor_strings {
   condition:
     3 of them
 }
+```
+
+5. The following experimental Sigma rule will detect the installation
+   or running of the Velociraptor binary. This could lead to false
+   positive alerts when you have installed Velociraptor by default or
+   running it for an investigation. However it will trigger an alert
+   when Velociraptor is not supposed to be installed into the network
+   and can be seen as a potential abuse of the tool.
+
+```
+itle: Suspicious Velociraptor Execution or Misuse
+id: 12345678-ABCD-1234-ABCD-1234567890AB
+description: |
+    Detect execution of Velociraptor binary with suspicious arguments or as unsigned binary,
+    potentially indicating misuse or attacker-controlled instance.
+status: experimental
+author: Rapid7 Labs
+references:
+  - https://docs.velociraptor.app/knowledge_base/tips/velocirator_misuse/
+tags:
+  - attack.execution
+  - attack.persistence
+  - tool.abuse
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_velociraptor:
+    Image|endswith: '\Velociraptor.exe'
+  selection_suspicious_args:
+    CommandLine|contains:
+      - "--config"
+      - "client.config.yaml"
+      - "service run"
+  selection_unsigned:
+    Signature|endswith:
+      - "Unsigned"
+  condition: selection_velociraptor and (selection_suspicious_args or selection_unsigned)
+falsepositives:
+  - Legitimate Velociraptor use by admins / security teams (especially if unsigned binary is used legitimately)
+  - Test or dev environments
+level: high
 ```
 
 For organizations that are concerned about unauthorized deployments
