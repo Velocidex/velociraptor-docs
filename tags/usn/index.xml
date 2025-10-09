@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>USN on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/usn/</link><description>Recent content in USN on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 16 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/usn/index.xml" rel="self" type="application/rss+xml"/><item><title>Carving $USN journal entries</title><link>https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/</link><pubDate>Wed, 16 Jun 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/</guid><description>&lt;h2 id="digging-even-deeper">Digging even deeper!&lt;/h2>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="ddd71c0bc3e71c8e4427140719b85c83">
+ &lt;div data-featherlight="#ddd71c0bc3e71c8e4427140719b85c83" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/01gTI29RZ6a6Lxaye.jpg" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>One of the most important tasks in DFIR is reconstructing past filesystem activity. This is useful for example, in determining when files were introduced into the system (e.g. in a phishing campaign or drive by downloads) or when binaries were executed by way of modifications of prefetch files.&lt;/p>
+&lt;p>I have previously written about the &lt;a href="https://velociraptor.velocidex.com/the-windows-usn-journal-f0c55c9010e" target="_blank" >Windows Update Sequence Number journal (USN)&lt;/a>
+. The USN journal is a file internal to the NTFS filesystem that maintains a log of interactions with the filesystem.&lt;/p>
+&lt;p>The USN journal is a unique source of evidence because it can provide a timeline for when files were deleted, even if the file itself is no longer found on the system. In the screenshot below I parse the USN journal using Velociraptor’s built in USN parser. I filter for all interactions with the &lt;strong>test.txt&lt;/strong> file and find that it has been removed (The &lt;strong>FILE_DELETE&lt;/strong> reason).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e58e158871522de04022d08c6b5c9304">
+ &lt;div data-featherlight="#e58e158871522de04022d08c6b5c9304" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1tcte8Ol0lLCO7KtpJ1Kbuw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>While the USN journal is very useful, it is short lived. The system keeps around 30mb worth of USN log, and older entries are removed by making the start of the file sparse. On a busy system this might result in less than a day’s worth of logs!&lt;/p>
+&lt;h3 id="carving-the-usn-journal">Carving the USN journal&lt;/h3>
+&lt;p>Carving is a very popular forensic technique that aims to uncover old items that might still be present in unstructured or unallocated data on the drive. One would resort to carving in order to uncover new leads.&lt;/p>
+&lt;p>Carving attempts to recover structured information from unstructured data by identifying data that follows a pattern typical for the information of interest.&lt;/p>
+&lt;p>In the case of the USN journal, we can examine the raw disk and extract data that looks like a USN journal record, without regard to parsing the record from the NTFS filesystem or using any structure on the disk.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Disclaimer: Depending on the underlying hardware carving may or may
+not be effective. For example, when running on an SSD, the hardware
+will aggressively reclaim unallocated space, making it less
+effective. We typically use carving techniques as a last resort or to
+try to gather new clues so its worth a shot anyway.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h3 id="the-structure-of-a-usn-journal-record">The structure of a USN journal record&lt;/h3>
+&lt;p>In order to carve the USN record from the disk, we need to understand what a USN record looks like. Our goal is to come up with a set of rules that identify a legitimate USN journal record with high probability.&lt;/p>
+&lt;p>Luckily the USN journal struct is well documented by Microsoft&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0d7b80bdb5770a118c70a6f0cc061b4d">
+ &lt;div data-featherlight="#0d7b80bdb5770a118c70a6f0cc061b4d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1byPQQuD1tjF5pwHXhexdtg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above we can see that a USN record contains a number of fields,
+and we can determine their offsets relative to the record. Let’s look
+at what a typical USN record looks like. I will use Velociraptor to
+fetch the USN journal from the endpoint and select the hex viewer to
+see some of the data.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="252cecd0f2c496756fa66d49727cea10">
+ &lt;div data-featherlight="#252cecd0f2c496756fa66d49727cea10" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1onswBmgD7ZPdxnVV8RxDuA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the screen shot above I can identify a number of fields which seem
+pretty reliable — I can develop a set of rules to determine if this is
+a legitimate structure or just random noise.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The RecordLength field starts at offset 0 and occupies 4 bytes. A
+real USN journal must have a length between 60 bytes (the minimum
+size of the struct) and 512 bytes (most file names are not that
+large).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The MajorVersion and MinorVersion is always going to be the same —
+for Windows 10 this is currently 2 and 0. These 4 bytes have to be
+02 00 00 00&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The next interesting field is the timestamp. This is a Windows
+FileTime format timestamp (so 64 bits). Timestamps make for a good
+rule because they typically need to be valid over a narrow range to
+make sense.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The filename is also stored in the record with the length and the
+offset both specified. For a reasonable file the length should be
+less than say 255 bytes. Since the filename itself follows the end
+of the struct, the filename offset should be exactly 60 bytes (0x36
+— the size of the struct).&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Let’s take a look at the timestamp above. I will use &lt;a href="https://gchq.github.io/CyberChef/#recipe=Windows_Filetime_to_UNIX_Timestamp%28%27Seconds%20%28s%29%27,%27Hex%20%28little%20endian%29%27%29From_UNIX_Timestamp%28%27Seconds%20%28s%29%27%29&amp;amp;input=MDRlY2VkZWE1ODYyZDcwMQ" target="_blank" >CyberChef &lt;/a>
+ to convert the hex to a readable timestamp.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6a1b94af2130efa4aac2afb0930de62e">
+ &lt;div data-featherlight="#6a1b94af2130efa4aac2afb0930de62e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1iCD7doMdvFls77vZdOdjKw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>What is the lowest time that is reasonable? The last byte (most
+significant byte) should probably be 01, the next byte in should be
+larger than &lt;code>0xd0&lt;/code>. I can quickly check the earliest time that ends with
+&lt;code>0xd0&lt;/code> &lt;code>0x01&lt;/code> using &lt;code>CyberChef&lt;/code> — it is after 2015 so this is probably good
+enough for any investigations run in 2021. Similar logic shows we are
+good until 2028 with the pattern “d? 01”&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="2817c472f6e60f1af7ce9ed6535a7319">
+ &lt;div data-featherlight="#2817c472f6e60f1af7ce9ed6535a7319" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1o16pA_mO0r5KNGsL4aMdug.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="developing-the-vql-query-for-the-carver">Developing the VQL query for the carver&lt;/h3>
+&lt;p>A good carver is fast and accurate. Since we need to scan a huge amount of data in a reasonable time (most hard disks are larger than 100Gb), we need to quickly eliminate obviously invalid data.&lt;/p>
+&lt;p>The usual approach is to use a fast but rough matcher for a first level sieve — this will eliminate most of the obviously wrong data but might have a high false positive rate (i.e. might match invalid data that is not really a USN record at all).&lt;/p>
+&lt;p>We can then apply a more thorough check on the match using a more accurate parser to eliminate these false positives. If the false positive rate remains reasonably low, we wont waste too many CPU cycles eliminating them and will maintain a high carving velocity while still having high accuracy.&lt;/p>
+&lt;p>When I need a binary pattern matching engine, I immediately think of Yara — the Swiss army knife of binary searching! Let’s come up with a good Yara rule to identify USN journal entries. You can read more about Yara rule syntax &lt;a href="https://yara.readthedocs.io/en/stable/" target="_blank" >here&lt;/a>
+, but I will use a binary match rule to detect the byte pattern I am after.&lt;/p>
+&lt;p>As usual in Velociraptor, I will create a notebook and type a query into the cell. As a first step I will stop after one hit (LIMIT 1) and view some context around the hit. Accessing the raw disk using its device notation (&lt;strong>\\.\C:&lt;/strong>) and the NTFS driver provides access to the raw logical disk from Velociraptor versions after 0.6.0.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9c4f42279134a5ee6597e76f229b9489">
+ &lt;div data-featherlight="#9c4f42279134a5ee6597e76f229b9489" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1KgW2M_VDzWABx2xP_9iMVA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The rule will match a &lt;strong>RecordLength&lt;/strong> smaller than 512 bytes,
+&lt;strong>Version&lt;/strong> must match 2. The timestamp field must end in D? 01
+(i.e. &lt;code>0xD0–0xDF&lt;/code> followed by &lt;code>0x01&lt;/code>). Finally the filename length
+must be smaller than 256 and the file offset must be exactly 60
+(0x36).&lt;/p>
+&lt;p>As you can see above I immediately identify a hit and it looks pretty similar to one of the USN entries I extracted before.&lt;/p>
+&lt;h3 id="parsing-the-usn-record">Parsing the USN record&lt;/h3>
+&lt;p>The Yara signature will retrieve reasonable candidates for our carver. Now we need to parse the record properly. In order to do that I will use Velociraptor’s binary parser. First I will write a profile to describe the USN struct and apply the parser to extract the MFT entry ID from the record. I can then use Velociraptor’s built in NTFS parser to resolve the MFT entry ID to a full path on disk.&lt;/p>
+&lt;p>You can see the full details of the artifact &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Carving/USN.yaml" target="_blank" >here&lt;/a>
+ but collecting this artifact from the endpoint is easy — simply create a new collection and select the Windows.Carving.USN artifact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="df63730a9cef5f96a598ee2cb1eda601">
+ &lt;div data-featherlight="#df63730a9cef5f96a598ee2cb1eda601" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1hw6F2M-_1EHgaRAjY2-S7A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since carving usually takes a long time, it is likely to exceed the default 10 minute collection timeout. For this artifact it is recommended to increase the timeout in the “Specify Resources” wizard pane (On my system, this artifact scans about 1Gb per minute so an hour will be enough for a 60Gb disk).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a84163bab5ab7163d76da2be6c890608">
+ &lt;div data-featherlight="#a84163bab5ab7163d76da2be6c890608" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1Wwe8cBWg01X4l9H3-AMwKQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>After a while the carver will produce a lot of interesting hits — some of which might be from a long time before what can normally be found in the USN journal (several months even!). If we are lucky we might see something from the timeframe of our incident.&lt;/p>
+&lt;p>We can post process the results to try to put a timeline on a compromise. For example, I will write a post processing query to find all prefetch files that were deleted (Deleting prefetch files is a common &lt;a href="https://attack.mitre.org/techniques/T1070/004/" target="_blank" >anti-forensic technique&lt;/a>
+).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f62a2eaf5b2516e774ab7f87298e995a">
+ &lt;div data-featherlight="#f62a2eaf5b2516e774ab7f87298e995a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/17oy3DzemUP4M60dfYQYNAw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I can see two occasions where prefetch files were removed. I can see the timestamp based on the USN record, as well as the offset into the disk where the hit is found (around 3Gb into the drive).&lt;/p>
+&lt;p>Note that in the case of deleted files, the filename stored in the USN record may be completely different than the FullPath shown by the artifact. The FullPath is derived by parsing the NTFS filesystem using the MFT entry id referenced by the USN record.&lt;/p>
+&lt;p>For deleted files, the MFT entry may be quickly reused for an unrelated file. The only evidence left on the disk of our deleted prefetch file is in the USN journal, or indeed in USN record fragments we recovered once the journal rolls over.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>Carving is a useful technique to recover new investigative links or clues. Because carving does not rely on filesystem parsing it might recover older deleted records from a long time ago, or from previously formatted filesystem.&lt;/p>
+&lt;p>The flip side is that carving is not very reliable. It is hard to predict if any useful data will be found. Additionally, if the adversary wants to really confuse us they might plant data that happens to look like a USN record — without context we really can not be sure if this data represents a real find or an anti-forensic decoy. A common issue is finding hits in what ends up being Virtual Machine disk images that just happen to have been stored on the system at one time — so the hits do not even relate to the system we are investigating.&lt;/p>
+&lt;p>Take all findings with a grain of salt and corroborate findings with other techniques.&lt;/p>
+&lt;p>This article demonstrated the general methodology of writing an effective carver — use a fast scanner to extract hits quickly, despite a potentially higher false positive rate (using an engine such as Yara). Then use more thorough parsing techniques to eliminate the false positives and display the results (such as Velociraptor’s built in binary parser). Finally apply VQL conditions to surgically target findings to only relevant records to our investigation.&lt;/p>
+&lt;p>To play with this new feature yourself, take Velociraptor for a spin! It is available on &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>The Windows USN Journal</title><link>https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/</link><pubDate>Thu, 12 Nov 2020 00:38:44 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="c5b2ccdc530284492c6ba176aab243f4">
+ &lt;div data-featherlight="#c5b2ccdc530284492c6ba176aab243f4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1Nv0e89B_XOhBSxpY2v9Z8g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>&lt;em>Thanks to &lt;a href="https://twitter.com/mgreen27" target="_blank" >Matt Green &lt;/a>
+for discussions, ideas and code….&lt;/em>&lt;/p>
+&lt;p>NTFS is the default filesystem on Windows systems, so it is important for DFIR tools to support extracting as much system state information as possible from it. Velociraptor already has a full featured &lt;a href="https://www.velocidex.com/blog/medium/2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/" target="_blank" >NTFS parser&lt;/a>
+, and in a recent release (0.5.2) also added a parser for the &lt;strong>USN Journal&lt;/strong> (Update Sequence Number Journal), or &lt;a href="https://en.wikipedia.org/wiki/USN_Journal" target="_blank" >Change Journal&lt;/a>
+.&lt;/p>
+&lt;h3 id="what-is-the-usn-journal">What is the USN Journal?&lt;/h3>
+&lt;p>By default Windows maintains a journal of filesystem activities in a file called &lt;strong>$Extend$UsnJrnl&lt;/strong> in a special data stream called &lt;strong>$J&lt;/strong>. This stream contains records of filesystem operations, primarily to allow backup applications visibility into the files that have been changed since the last time a backup was run.&lt;/p>
+&lt;p>The &lt;strong>$Extend$UsnJrnl:$J&lt;/strong> file begins life when the volume is created as an empty file. As files are modified on the volume, the $J file is extended with additional USN records.&lt;/p>
+&lt;p>In order to preserve space, the NTFS creators use an ingenious trick: The beginning of the file is erased and made into a sparse run. Since NTFS can handle sparse files (i.e. files with large runs containing no data) efficiently, the file effectively does not consume any more disk space than needed but does not need to be rotated or truncated and can just seem to grow infinitely.&lt;/p>
+&lt;p>This means that in practice we find the &lt;strong>$J&lt;/strong> file on a live system reporting a huge size (sometimes many hundreds of gigabytes!), however usually the start of the file is sparse and takes no disk space, so the $J file typically only consumes around 30–40mb of actual disk space. This is illustrated in the diagram below.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b5e1faf59032c54d2c45e0107b6e1542">
+ &lt;div data-featherlight="#b5e1faf59032c54d2c45e0107b6e1542" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1oh4ARro_MayRRUZAJHqhaw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>USN Records are written back to back within the file. The USN records contain&lt;a href="https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-usn_record_v2" target="_blank" > valuable information&lt;/a>
+:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>The USN ID is actually the offset of the record within the file. This is a unique ID of the USN record (since the file is never truncated).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A Timestamp — This is a timestamp for the file modification&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Reason — is the reason of this modification for example DATA_TRUNCATION, DATA_EXTEND, FILE_CREATE, FILE_DELETE etc.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Filename is the name of the file that is being affected.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Parent MFT ID points to the parent record within the MFT (the changed file’s containing directory).&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Using the Filename and Parent MFT ID allows Velociraptor to resolve the full path of the file from the root of the filesystem.&lt;/p>
+&lt;h3 id="velociraptors-usn-parser">Velociraptor’s USN Parser&lt;/h3>
+&lt;p>Velociraptor provides access to the USN parser via the &lt;strong>parse_usn()&lt;/strong> plugin. Let’s see what kind of data this plugin provides by running a simple query in the notebook&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="ca92a008e0626221edfe207be975532b">
+ &lt;div data-featherlight="#ca92a008e0626221edfe207be975532b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1JkUkNsAJWFjP9uzwf56Jig.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above I hid some of the less interesting fields, but we can immediately see the USN records are shown with their USN ID (which is the offset in the $J file), the timestamp, the full path to the modified file and the reasons for modifications.&lt;/p>
+&lt;p>When a program interacts with a file, we typically see a bunch of related filesystem events. For example, I can create a new file called &lt;strong>test.txt&lt;/strong> using notepad and write some data into it. I can then query the USN journal for modifications to that file (The &lt;strong>=~&lt;/strong> operator is VQL’s regex match)…&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bf842261ac78f94d18949d684654a978">
+ &lt;div data-featherlight="#bf842261ac78f94d18949d684654a978" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1gB2SCYCpK5xLceNH_OhhZg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Notepad seems to interact with the file using a number of separate operations and this adds several events into the USN journal file for the same interaction.&lt;/p>
+&lt;p>Previously, Velociraptor was able to only collect the USN journal file and users had to rely on other third party tools to parse it (e.g. &lt;a href="https://tzworks.net/prototype_page.php?proto_id=5" target="_blank" >this&lt;/a>
+ or &lt;a href="https://github.com/PoorBillionaire/USN-Journal-Parser" target="_blank" >this&lt;/a>
+). The problem with that approach is that external tools usually have no access to the original $MFT and therefore were unable to resolve the parent MFT id in the USN record to a full path. Parsing the USN records directly on the endpoint allows Velociraptor to immediately resolve the files into a full path making analysis much easier later.&lt;/p>
+&lt;h3 id="when-to-use-the-usn-journal">When to use the USN Journal?&lt;/h3>
+&lt;p>The USN journal can provide visibility into filesystem activity going back quite a long time. It seems that Windows aims to keep the maximum actual size of the log file around 30–40mb (remember, the file is sparse) so if the machine is not used too heavily, we sometimes find the log goes back a week or two. This gives us visibility on past system activity.&lt;/p>
+&lt;p>Practically this can be useful:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>When a program is run, typically we can see the prefetch files modified which gives us a timestamp on execution (in the case where the prefetch files themselves were deleted).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>One can see file modification or creation of a particular file extension (e.g. executables) or within specific directories (e.g. Windows\System32) which might indicate system compromise took place.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Many compromises occur after an initial file based malware was run (e.g. office macros, or PDF). The USN journal can provide a time of initial infection.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The USN journal can provide evidence of deleted files. With Velociraptor it is possible to efficiently hunt for all machines that had the particular file in the recent past — even if the file was subsequently deleted. This is useful to find evidence of attacker toolkit installation, or initial vectors of compromise.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="watching-the-usn-journal">Watching the USN journal&lt;/h3>
+&lt;p>In the previous section we saw how Velociraptor can parse the USN journal on a running system, enabling hunting and analysis of past filesystem activity.&lt;/p>
+&lt;p>However, Velociraptor is built around VQL — a unique query language allowing for asynchronous and event driven queries. Therefore, Velociraptor also has the unique ability to create event queries — queries that never terminate, but process data as it occurs.&lt;/p>
+&lt;p>As such, Velociraptor offers many event driven versions of the standard plugins. For USN Journals, Velociraptor offers the &lt;strong>watch_usn()&lt;/strong> plugin as an event driven alternative to the &lt;strong>parse_usn()&lt;/strong> plugin. When a query uses &lt;strong>watch_usn()&lt;/strong>, Velociraptor will watch the USN log for new entries, and as they appear, the plugin will release the event into the rest of the query.&lt;/p>
+&lt;p>This allows Velociraptor to watch for file changes in near real time on the running system. You can easily see this effect by running an event query from the command line:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7aa3337d722ba556bef8500327e0258f">
+ &lt;div data-featherlight="#7aa3337d722ba556bef8500327e0258f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1kVFXU7krriNv2m1srYsTWg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As filesystem changes occur they are picked up by the &lt;strong>watch_usn()&lt;/strong> plugin and reported a short time later. This allows us to write queries that respond to filesystem events in near real time.&lt;/p>
+&lt;h3 id="event-monitoring-example-hash-database">Event monitoring example: Hash database&lt;/h3>
+&lt;p>Having the ability for Velociraptor to actively watch for filesystem events in near real time opens the door for many potential applications. One very useful application is maintaining a local hash database on endpoints.&lt;/p>
+&lt;p>Hunting for a file hash on endpoints can be a very useful technique. While attackers can and do change their tools trivially to make hunting for file hash ineffective, once a specific compromise is detected, being able to rapidly hunt for the same hash across the entire fleet can reveal other compromised hosts.&lt;/p>
+&lt;p>Up until now, hunting for hashes on a machine was difficult and resource intensive. This is because trying to determine if any files exist on an endpoint having a given hash requires hashing all the files and comparing their hash to the required hash — so essentially hashing every file on the system!&lt;/p>
+&lt;p>Even after reasonable optimizations around file size, modification time ranges, file extensions etc, a hunt for hashes is quite resource intensive, and therefore used sparingly.&lt;/p>
+&lt;p>The ability to follow the USN journal changes all that. We can simply watch the filesystem for changes, and when a file is modified, we can hash it immediately and store the hash locally in a database on the endpoint itself. Then later we can simply query that database rapidly for the presence of the hash.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8208c6ca47977aa3b07882c529eda5df">
+ &lt;div data-featherlight="#8208c6ca47977aa3b07882c529eda5df" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1v8WrntHsWl3XbrDZ1yFuDw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As mentioned in the previous section, a single change typically involves several USN log entries. We therefore need to deduplicate these changes. We simply need to know that a particular file may have changed recently (say in the last few minutes) and we can then rehash it and update the database accordingly.&lt;/p>
+&lt;p>All this can easily be implemented using a VQL query, which we can store in a VQL artifact. You can see the &lt;strong>Windows.Forensics.LocalHashes.Usn&lt;/strong> &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/LocalHashes/Usn.yaml" target="_blank" >full artifact source here&lt;/a>
+.&lt;/p>
+&lt;p>In order to get this query to run on the endpoints, we assign the artifact as a client event detection artifact, by clicking the “Client Events” screen and then the “Update Client monitoring table” button. After selecting the label group to apply to (All will apply this to all machines in your deployment), simply add the &lt;strong>Windows.Forensics.LocalHashes.Usn&lt;/strong> artifact by searching for it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="956101679c915816f8f54f55385d58ee">
+ &lt;div data-featherlight="#956101679c915816f8f54f55385d58ee" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1ebbAwSff_9QqhbQqfMThnA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most important configuration parameter is the PathRegex specifying which files we should be watching. For example, you might only be interested in hashes of executables or word documents. Leaving the setting at “.” will match any file, including very frequently used files like event logs and databases — this setting can potentially affect performance. Finally you can suppress the artifact output if you like — this just means that hashes will not be additionally reported to the Velociraptor server. They will just be updating the local database instead.&lt;/p>
+&lt;p>Once the query is deployed it will run on all endpoints and start feeding hash information to the server (if required). You can see this information in the client monitoring screen by simply selecting the artifact and choosing a day of interest&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="115ad9f38f82849e9d381ff82ba6dc00">
+ &lt;div data-featherlight="#115ad9f38f82849e9d381ff82ba6dc00" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1CIoyTKKFshUGoHFlS4zx5A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can now easily page through the data viewing the hashes and files that were added since the query started. You can also download the entire SQLite database file from the endpoint, or watch the events on the server for specific file types or hashes found across the entire deployment.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="61f3d9a6d5e7d4865771049d38fef19d">
+ &lt;div data-featherlight="#61f3d9a6d5e7d4865771049d38fef19d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/17fRC-jlP_4VxarLtqfhtMQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s test querying this local database. I will just pick a random
+hash and see if my endpoint has this hash. I will simply collect the
+Windows.Forensics.LocalHashes.Query artifact on my endpoint and
+configure it to search for the hash
+&lt;code>f4065c7516d47e6cb5b5f58e1ddd1312&lt;/code>. This hash can be entered as a
+table in the GUI or simply as a comma delimited text field.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="dbb843a59d4813d768558036ff733a33">
+ &lt;div data-featherlight="#dbb843a59d4813d768558036ff733a33" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/17SU9muB1xlvOuwZ-AGxkPQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The artifact returns almost instantly with the file that this hash belongs to&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="79e765fd6d5799fbe4bea968c096fcd8">
+ &lt;div data-featherlight="#79e765fd6d5799fbe4bea968c096fcd8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1Wprj9Wic03bIg-86ClDBtg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The local hash database is simply a SQLite file maintained by the VQL query. As such I can easily collect this file with a hunt if I wanted to archive the hash database periodically from all my endpoints.&lt;/p>
+&lt;p>Collecting the &lt;strong>Windows.Forensics.LocalHashes.Glob&lt;/strong> artifact will populate the local hash database by simply crawling a directory, hashing all files inside it and populated the database — this is useful to pre-populate the database with hashes of files created before Velociraptor was installed.&lt;/p>
+&lt;h3 id="conclusion">Conclusion&lt;/h3>
+&lt;p>Velociraptor brings unprecedented visibility to endpoint machine states using state of the art forensic capabilities. In this post we saw how parsing the USN Journal allows Velociraptor to gather information about past filesystem activity. We also saw how detection and monitoring queries can be used to respond to file modification or creation in near real time.&lt;/p>
+&lt;p>Finally we saw this capability put into practice by maintaining a local hash database which can be queried on demand to quickly answer questions like &lt;em>which machine in my fleet contain this hash?&lt;/em>&lt;/p>
+&lt;p>To play with this new feature yourself, take Velociraptor for a spin! It is a available on &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item></channel></rss>
