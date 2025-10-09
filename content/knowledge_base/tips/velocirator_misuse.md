@@ -22,7 +22,7 @@ actions, such as downloading additional files or executing commands on
 the compromised asset. While this is not a vulnerability in the tool
 itself, it can be used for malicious purposes.
 
-On October 8th 2025, Cisco Talos reported observations from a 
+On October 8th 2025, `Cisco Talos` reported observations from a
 threat actor abusing Velociraptor version (version 0.73.4.0) to
 distribute ransomware.
 
@@ -78,14 +78,16 @@ rule velociraptor_strings {
 5. The following experimental Sigma rule will detect the installation
    or running of the Velociraptor binary. This could lead to false
    positive alerts when you have installed Velociraptor by default or
-   running it for na investigation. However it will trigger an alert
-   when Velocirpator is not instelled into the network and can be
-   seen as a potential abuse of the tool.
+   running it for an investigation. However it will trigger an alert
+   when Velociraptor is not supposed to be installed into the network
+   and can be seen as a potential abuse of the tool.
 
 ```
 itle: Suspicious Velociraptor Execution or Misuse
 id: 12345678-ABCD-1234-ABCD-1234567890AB
-description: Detect execution of Velociraptor binary with suspicious arguments or as unsigned binary, potentially indicating misuse or attacker-controlled instance.
+description: |
+    Detect execution of Velociraptor binary with suspicious arguments or as unsigned binary,
+    potentially indicating misuse or attacker-controlled instance.
 status: experimental
 author: Rapid7 Labs
 references:
