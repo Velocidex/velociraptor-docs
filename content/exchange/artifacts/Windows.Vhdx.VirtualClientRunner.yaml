@@ -1,13 +1,16 @@
 name: Windows.Vhdx.VirtualClientRunner
 description: |
    Run the Velociraptor agent using the remapping configuration created. This 
-   agent allow to virtually map the VHDX profiles into a virtual Velociraptor agent.
+   agent allow to virtually map the VHDX profiles into virtual Velociraptor agents.
    
-   The agent is executed using PowerShell `Start-Process` cmdlet allowing to run 
-   in the background.
+   Two ways to execute agents exist:
+   - Using native VQL using workers that will be kill once the max execution 
+   time is reached.
+   - Leveraging PowerShell `Start-Process` cmdlet allowing to run the agents
+   in the background and independant from the running artifact.
    
    There is no persistence mechanism to keep the process running after reboot. 
-   The artifact need to be re-run to have the virtual agent back.
+   The artifact need to be re-run to have the virtual Velociraptor agents back.
    
    This artifact is part of the Vhdx Suite. This suite requires to have 
    the `Windows.Sys.Users` override on the server to work properly.
@@ -35,6 +38,16 @@ parameters:
      type: regex
      default: "."
      description: "One or more remapping YAML files to launch."
+     
+   - name: workers
+     type: int
+     default: 100
+     description: "Number of workers for the native VQL runner."
+     
+   - name: PowerShellRunner
+     type: bool
+     default: FALSE
+     description: "Choose to run the agent using PowerShell Start-Process cmdlet."
 
 sources:
   - precondition:
@@ -43,46 +56,64 @@ sources:
     query: |
         // Retrieve the directory from the running Velociraptor executable
         LET veloInfo = SELECT Exe FROM info()
-        LET veloExe = SELECT OSPath FROM glob(globs=veloInfo.Exe)
-        LET veloFolderPath = strip(string=veloExe.OSPath.Dirname, prefix=' ', suffix=' ')
+        LET veloFolderPath = pathspec(parse=veloInfo[0].Exe).Dirname
         
-        LET emptyDir = tempdir(remove_last=TRUE)
-        
-        LET emptyFile = SELECT tempfile(data="", remove_last=TRUE) AS Path FROM scope()
-        
+        // Create Writeback directory
         LET copyFile <= SELECT copy(
-                filename=emptyFile.Path, 
+                filename="",
+                accessor="data",
                 dest=veloFolderPath + "\\Vhdx\\Writeback\\empty", 
                 create_directories=TRUE) 
             FROM scope()
-        
-     
-        // Define the local buffer for the virtual client
-        LET localBufferPath = "C:\\Windows\\Temp\\velociraptor_Vhdx_Buffer_" + Username + ".bin"
-        
-        // Define the writeback file for the virtual client
-        LET writebackFilename = veloFolderPath + "\\Vhdx\\Writeback\\Vhdx_" + Username + ".yaml"
-    
-        // Get the remapping files to run 
-        LET remappingFiles = SELECT OSPath.String AS RemappingFile,
-            regex_replace(source=Name, re="\\.yaml", replace="") AS Username 
+
+        // Extract username from filename
+        LET GetUsername(Filename) = regex_replace(source=Filename, re="\\.yaml", replace="")
+            
+        // Get the config file paths 
+        LET configFiles = SELECT OSPath.String AS RemappingFile,
+             "C:\\Windows\\Temp\\velociraptor_Vhdx_Buffer_" + GetUsername(Filename=Name) + ".bin" AS LocalBufferPath,
+             veloFolderPath.Path + "\\Vhdx\\Writeback\\Vhdx_" + GetUsername(Filename=Name) + ".yaml" AS WritebackFilename
             FROM glob(globs=veloFolderPath + "\\Vhdx\\Remapping\\*") 
             WHERE Name =~ remappingFile
-            
-                
+
+
         // Run the agent using PowerShell Start-Process cmdlet
-        LET agentRunner = SELECT RemappingFile, Complete, ReturnCode, Stdout, Stderr FROM execve(argv=[
+        LET powerShellAgentRunner = SELECT RemappingFile, Complete, ReturnCode, Stdout, Stderr FROM execve(argv=[
             "powershell", 
             "-ExecutionPolicy", "Bypass", 
             "-NoProfile", 
             "-Command", 
-            "Start-Process -FilePath '"+ veloInfo[0].Exe +"' -ArgumentList '--config client.config.yaml --config.client-writeback-windows=\"" + writebackFilename + "\" --config.client-local-buffer-filename-windows=\"" + localBufferPath + "\" --remap \"" + RemappingFile + "\" --config.client-labels=" + customLabel + " client' -WorkingDirectory '" + veloFolderPath + "' -WindowStyle Hidden"
+            "Start-Process -FilePath '"+ veloInfo[0].Exe +"' -ArgumentList '--config client.config.yaml --config.client-writeback-windows=\"" + WritebackFilename + "\" --config.client-local-buffer-filename-windows=\"" + LocalBufferPath + "\" --remap \"" + RemappingFile + "\" --config.client-labels=" + customLabel + " client' -WorkingDirectory '" + veloFolderPath.Path + "' -WindowStyle Hidden"
             ])
+
+        // Run the agent using the native VQL
+        LET agentRunner = SELECT *
+         FROM execve(argv=[veloInfo[0].Exe, 
+            "--remap", RemappingFile, 
+            "--config", "client.config.yaml", 
+            "--config.client-writeback-linux", WritebackFilename,
+            "--config.client-writeback-windows", WritebackFilename,
+            "--config.client-writeback-darwin", WritebackFilename,
+            "--config.client-local-buffer-filename-windows", LocalBufferPath,
+            "--config.client-labels", customLabel, 
+            "-v", "client"],
+              cwd=veloFolderPath,
+                     sep="\n") 
+         
         
-        // Run the agent for each remapping file
-        SELECT * FROM foreach(
-            row=remappingFiles,
-            query=agentRunner
+        // Run the agent for each remapping file using PowerShell Start-Process cmdlet
+        LET powerShellAgentRunners = SELECT * FROM foreach(
+            row=configFiles,
+            query=powerShellAgentRunner
+        ) WHERE log(message="Running agent using PowerShell Start-Process cmdlet for " + RemappingFile)
+
+        // Run the agent using the native Velociraptor binary
+        LET agentRunners = SELECT * FROM foreach(
+            row=configFiles,
+            query=agentRunner,
+            async=TRUE,
+            workers=workers
         )
         
-
+        // Run the virtual Velociraptor agent via PowerShell or native VQL 
+        SELECT * FROM if(condition=PowerShellRunner, then=powerShellAgentRunners, else=agentRunners)
