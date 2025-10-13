@@ -2268,6 +2268,15 @@
         ]
     },
     {
+        "title": "Windows.Collectors.Remapping",
+        "description": "Calculate a remapping file for a collection zip.",
+        "link": "/artifact_references/pages/windows.collectors.remapping",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Windows.Detection.Amcache",
         "description": "This artifact collects AMCache entries with a SHA1 hash to enable threat\ndetection.",
         "link": "/artifact_references/pages/windows.detection.amcache",

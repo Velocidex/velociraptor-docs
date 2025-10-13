@@ -1,5 +1,5 @@
 name: Windows.Applications.DefenderQuarantineExtract
-author: "Eduardo Mattos - @eduardfir"
+author: "Eduardo Mattos - @eduardfir, @niicolaa"
 description: |
    Extracts Quarantine Files from Windows Defender.
 
@@ -10,6 +10,8 @@ description: |
 
 reference:
   - https://reversingfun.com/posts/how-to-extract-quarantine-files-from-windows-defender
+  - https://blog.fox-it.com/2023/12/14/reverse-reveal-recover-windows-defender-quarantine-forensics/
+  - https://artefacts.help/windows_defender_quarantine.html
 
 type: CLIENT
 
@@ -25,36 +27,69 @@ parameters:
 
 sources:
   - query: |
-        LET Targets <= SELECT Mtime, Name, OSPath FROM glob(globs=TargetGlob)
-
-        LET DefenderRC4Key <= unhex(string=DefenderRC4KeyHex)
-
-        LET DeQuarantine = SELECT read_file(filename=crypto_rc4(key=DefenderRC4Key, string=read_file(filename=OSPath, accessor="file")), accessor="data", offset=204) as DecodedFile,
+       LET Targets = SELECT Mtime,
                             Name,
-                            OSPath,
-                            Mtime
-                           FROM Targets
-
-        LET TempQuery = SELECT magic(path=DecodedFile, accessor="data") as Magic,
-                            hash(path=DecodedFile, accessor="data") as Hash,
-                            DecodedFile,
-                            Name,
-                            OSPath,
-                            Mtime
-                        FROM DeQuarantine
-
-        SELECT
-            Mtime,
-            Magic,
-            parse_pe(file=DecodedFile, accessor="data") as ParsedPE,
-            Hash,
-            OSPath,
-            if(condition=UploadDecodedFiles,
-             then={
-                SELECT
-                upload(file=DecodedFile,
-                    accessor="data",
-                    name=Name + "_Defender_Quarantine_Extract.bin") as FileDetails
-                FROM TempQuery
-             }) as Upload
-        FROM TempQuery
+                            OSPath
+         FROM glob(globs=TargetGlob)
+       LET DefenderRC4Key = unhex(string=DefenderRC4KeyHex)
+       LET Decrypted = SELECT Name,
+                              OSPath,
+                              Mtime,
+                              read_file(
+                                filename=crypto_rc4(
+                                  key=DefenderRC4Key,
+                                  string=read_file(filename=OSPath, accessor="file")),
+                                accessor="data") AS Plain
+         FROM Targets
+       LET Profile <= '''
+        [
+          ["Root", 0, [
+            ["SDLen", 8, "uint32"],
+            ["HeaderLen", 0, "Value", {"value": "x=>0x28 + x.SDLen"}],
+            ["MalLen", "x=>x.SDLen + 0x1C", "uint64"],
+            ["DecodedFile", 0, "Value", {
+              "value": "x=>read_file(filename=Plain, accessor='data', offset=x.HeaderLen, length=x.MalLen)"
+            }],
+            ["UnparsedFooter", 0, "Value", {
+              "value": "x=>read_file(filename=Plain, accessor='data', offset=x.HeaderLen + x.MalLen)"
+            }]
+          ]]
+        ]'''
+       LET Trimmed <= SELECT 
+                             Name,
+                             OSPath,
+                             Mtime,
+                             Plain,
+                             parse_binary(
+                               filename=Plain,
+                               accessor="data",
+                               profile=Profile,
+                               struct="Root") AS Parsed
+         FROM Decrypted
+         
+       SELECT 
+              magic(
+                path=Parsed.DecodedFile,
+                accessor="data") AS Magic,
+              hash(
+                path=Parsed.DecodedFile,
+                accessor="data") AS Hash,
+              Name,
+              OSPath,
+              Mtime,
+              Parsed.MalLen AS MalfileLen,
+              Parsed.UnparsedFooter AS UnparsedFooter,
+              parse_pe(
+                file=Parsed.DecodedFile,
+                accessor="data") AS ParsedPE,
+              if(
+                condition=UploadDecodedFiles,
+                then={
+                  SELECT 
+                         upload(
+                           file=Parsed.DecodedFile,
+                           accessor="data",
+                           name=Name + "_Defender_Quarantine_Extract.bin") AS FileDetails
+                  FROM Trimmed
+                }) AS Upload
+       FROM Trimmed

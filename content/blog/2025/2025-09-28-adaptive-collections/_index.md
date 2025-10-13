@@ -1,5 +1,5 @@
 ---
-title: "Adaptive Collections in Velociraptor"
+title: "Adaptive Collections with Velociraptor"
 description: |
    Velociraptor Adaptive Collections
 

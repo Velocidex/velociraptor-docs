@@ -107,9 +107,7 @@ export: |
       expansion=dict(
         boundary=Boundary,
         sections=Sections,
-        header=get(
-          field='Header',
-          default='')))
+        header=Header))
 
   -- Add content type ("plain" or "html") and newlines to text. If Encode is set,
   -- encode the text in Base64 and add a suitable transfer header:
@@ -178,7 +176,7 @@ sources:
     LET Headers &lt;= dict(`Content-Type`='multipart/mixed; boundary=' + Boundary)
 
     -- Build the email parts - first the text message, then the attachments.
-    LET Message &lt;= WrapInBoundary(
+    LET Message &lt;= WrapInBoundary(Header="",
         Boundary=Boundary,
         Sections=Texts + AttachFiles(Files=FilesToUpload).Part)
 

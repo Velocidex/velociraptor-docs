@@ -62,7 +62,7 @@ sources:
       WHERE IsDir
         AND Hostname =~ HostnameRegex
 
-      LET SearchRegisteredClientsQuery = SELECT client_id,
+      LET SearchRegisteredClientsQuery = SELECT client_id AS ClientId,
            os_info.hostname AS hostname
       FROM clients()
       WHERE hostname =~ HostnameRegex

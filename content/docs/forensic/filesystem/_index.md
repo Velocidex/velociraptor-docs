@@ -261,7 +261,7 @@ feature.
 
 It's a bit more complicated to do this, but generally this is automatically done
 when you're using artifacts such as:
-- [`Generic.Forensic.SQLiteHunter`]({{< ref "/artifact_references/pages/generic.forensic.sqlitehunter/" >}})
+- [`Generic.Forensic.SQLiteHunter`](https://sqlitehunter.velocidex.com/docs/)
 - [`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}})
 - [`Generic.Utils.DeadDiskRemapping`]()
 
@@ -323,4 +323,3 @@ handled by the relevant accessors "under the hood".
 Note that the remapping uses the username extracted from the registry file path
 to reconstruct the registry paths. This is not exactly how the API presents it
 (it uses SIDs which are less human-friendly) but for our purposes that's OK.
-

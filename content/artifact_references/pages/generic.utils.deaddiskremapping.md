@@ -280,7 +280,7 @@ export: |
 sources:
 - query: |
     LET WindowsPartition &lt;=
-      _FindWindowsPartition(ImagePath=ImagePath, accessor=Accessor)[0]
+      _FindWindowsPartition(ImagePath=ImagePath, Accessor=Accessor)[0]
 
     LET Remappings &lt;= parse_yaml(
       filename=template(template=CommonRemapping,

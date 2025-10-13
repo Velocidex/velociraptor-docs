@@ -57,7 +57,7 @@ sources:
         ORDER BY _key DESC
 
       // Join them on a . and parse as an IP address
-      LET ParseIP4(X) = ip(parse=join(array=_ParseIP4(X=X).I, sep="."))
+      LET ParseIP4(addr) = ip(parse=join(array=_ParseIP4(X=addr).I, sep="."))
 
       -- https://elixir.bootlin.com/linux/latest/source/include/net/tcp_states.h#L14
       LET StateLookup &lt;= dict(`01`="Established",
@@ -88,7 +88,7 @@ sources:
         FROM X
         WHERE Type =~ "socket"
 
-      LET GetProcByInode(indoe) = SELECT *
+      LET GetProcByInode(inode) = SELECT *
         FROM AllSockets
         WHERE Inode = inode
         LIMIT 1

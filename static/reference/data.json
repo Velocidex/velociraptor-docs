@@ -3269,6 +3269,11 @@
                 "type": "string",
                 "description": "The hash function to use (MD5,SHA1,SHA256)",
                 "repeated": true
+            },
+            {
+                "name": "max_size",
+                "type": "uint64",
+                "description": "The maximum size of the file that will be hashed (default 100mb)"
             }
         ],
         "category": "encode",
@@ -5598,6 +5603,24 @@
         ]
     },
     {
+        "name": "notebooks",
+        "description": "List all notebooks",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "all",
+                "type": "bool",
+                "description": "List all notebooks, not just the ones shared with the user"
+            }
+        ],
+        "metadata": {
+            "permissions": "SERVER_ADMIN,READ_RESULTS"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "now",
         "description": "Returns the current time in seconds since epoch.",
         "type": "Function",
@@ -7356,6 +7379,11 @@
                 "type": "string",
                 "description": "Process ID.",
                 "required": true
+            },
+            {
+                "name": "max_items",
+                "type": "int64",
+                "description": "The maximum number of process entries to return (default 10)"
             }
         ],
         "platforms": [
@@ -7376,6 +7404,11 @@
                 "type": "string",
                 "description": "Process ID.",
                 "required": true
+            },
+            {
+                "name": "max_items",
+                "type": "int64",
+                "description": "The maximum number of process entries to return (default 10)"
             }
         ],
         "platforms": [
@@ -7396,6 +7429,11 @@
                 "type": "string",
                 "description": "Process ID.",
                 "required": true
+            },
+            {
+                "name": "max_items",
+                "type": "int64",
+                "description": "The maximum number of process entries to return (default 10)"
             }
         ],
         "category": "popular",
@@ -7434,6 +7472,11 @@
                 "name": "data_callback",
                 "type": "Lambda",
                 "description": "A VQL Lambda function to that receives a ProcessEntry and returns the data node for each process."
+            },
+            {
+                "name": "max_items",
+                "type": "int64",
+                "description": "The maximum number of process entries to return (default 1000)"
             }
         ],
         "platforms": [
@@ -10331,6 +10374,7 @@
         "name": "upload",
         "description": "Upload a file to the upload service. For a Velociraptor client this\nwill upload the file into the flow and store it in the server's file store.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "file",
@@ -11603,15 +11647,14 @@
     },
     {
         "name": "watch_syslog",
-        "description": "Watch a syslog file and stream events from it. ",
+        "description": "Watch a syslog file and stream events from it.",
         "type": "Plugin",
         "args": [
             {
                 "name": "filename",
                 "type": "OSPath",
                 "description": "A list of log files to parse.",
-                "repeated": true,
-                "required": true
+                "repeated": true
             },
             {
                 "name": "accessor",
@@ -11622,6 +11665,11 @@
                 "name": "buffer_size",
                 "type": "int",
                 "description": "Maximum size of line buffer."
+            },
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "If specified we run this query periodically to watch for new files. Rows must have an OSPath column."
             }
         ],
         "category": "event",

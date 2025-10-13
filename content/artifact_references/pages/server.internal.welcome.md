@@ -32,6 +32,9 @@ description: |
 
 type: SERVER
 
+sources:
+- query: SELET * FROM info()
+
 reports:
   - type: CLIENT
     template: |

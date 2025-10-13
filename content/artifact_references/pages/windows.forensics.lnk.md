@@ -169,6 +169,9 @@ parameters:
   - name: UploadLnk
     description: Also upload the link files themselves.
     type: bool
+  - name: UploadTarget
+    description: Also upload the link file's targets.
+    type: bool
   - name: SuspiciousOnly
     description: Only returns LNK files reporting a suspicious attribute
     type: bool
@@ -1836,7 +1839,7 @@ sources:
                 profile=Profile, struct="ShellLinkHeader")  AS Parsed
         FROM targets
 
-      LET parsed = SELECT
+      LET parsed_lnk_files = SELECT
         dict(OSPath=OSPath, Size=Size,
             Mtime=Mtime,Btime=Btime) as SourceFile,
         ShowHeader(Parsed=Parsed) as ShellLinkHeader,
@@ -1844,7 +1847,7 @@ sources:
         ShowLinkTarget(ShellBag=Parsed.LinkTargetIDList.IDList.ShellBag) as LinkTarget,
         Parsed.StringData as StringData,
         ShowExtraData(Parsed=Parsed) as ExtraData,
-        property_store(data=Parsed) as PropertyStore,
+        property_store(Parsed=Parsed) as PropertyStore,
         Parsed.Overlay as Overlay,
         Parsed
       FROM lnk_files
@@ -1855,7 +1858,7 @@ sources:
       LET find_oldpath(propertystore) = SELECT Value FROM propertystore WHERE Description = 'ParsingPath'
       LET find_oldsize(propertystore) = SELECT Value FROM propertystore WHERE Description = 'System.Size'
 
-      LET results = SELECT parsed,
+      LET results = SELECT Parsed,
          SourceFile,
          ShellLinkHeader,
          LinkInfo,
@@ -1879,7 +1882,7 @@ sources:
           find_uid(propertystore=PropertyStore)[0].Value as UID,
           find_oldpath(propertystore=PropertyStore)[0].Value as OldPath,
           find_oldsize(propertystore=PropertyStore)[0].Value as OldSize
-      FROM parsed
+      FROM parsed_lnk_files
       WHERE if(condition= IocRegex,
                 then= format(format='%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\s%s',
                 args=[
@@ -1970,7 +1973,8 @@ sources:
         FROM add_suspicious
 
       LET upload_results = SELECT *,
-            upload(file=SourceFile.OSPath) as UploadedLnk
+            upload(file=SourceFile.OSPath) as UploadedLnk,
+            UploadTarget &amp;&amp; upload(file=LinkTarget.LinkTarget) as UploadedTarget
         FROM add_suspiciousb64
 
       -- finally return rows and remove suspicious attributes that are not true
