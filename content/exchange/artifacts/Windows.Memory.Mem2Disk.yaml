@@ -6,6 +6,7 @@ description: |
     happens legitimately and is mostly used by malware.
     This check is executed without dumping the memory and works live
     on the target system(s).
+    See also https://github.com/lautarolecumberry/DetectingFilelessMalware
 
 parameters:
 - name: IgnoreOneByteOffsets
@@ -19,132 +20,224 @@ parameters:
                can potentially generate a lot of traffic. Dry-run before enabling this option.
   default: False
   type: bool
+- name: ProcessNameFilter
+  type: regex
+  default: .*
+- name: AddressLength
+  type: int
+  default: 8
+  description: Length of the address/architecture (e.g. 8 for x64, 4 for x86)
 
 precondition: SELECT OS From info() where OS = 'windows'
+
+export: |
+  -- These functions help to resolve the Kernel Device Filenames
+  -- into a regular filename with drive letter.
+  LET DriveReplaceLookup <= SELECT
+      split(sep_string="\\", string=Name)[-1] AS Drive,
+      upcase(string=SymlinkTarget) AS Target,
+      len(list=SymlinkTarget) AS Len
+    FROM winobj()
+    WHERE Name =~ "^\\\\GLOBAL\\?\\?\\\\.:"
+  
+  LET _DriveReplace(Path) = SELECT Drive + Path[Len:] AS ResolvedPath
+    FROM DriveReplaceLookup
+    WHERE upcase(string=Path[:Len]) = Target
+  
+  LET DriveReplace(Path) = _DriveReplace(Path=Path)[0].ResolvedPath ||
+      Path
 
 sources:
 - query: |
     -- get all processes
-    LET GetPids =
-      SELECT Pid, Username
+    LET GetPids = SELECT Pid,
+                         Name,
+                         Username
       FROM pslist()
-
+      WHERE Name =~ ProcessNameFilter
+    
     -- get all memory pages for a certain pid
-    LET InfoFromVad = 
-      SELECT 
-        atoi(string="0x"+split(string=AddressRange, sep="-")[0]) as Address,
-        filter(list=ProcessChain, regex=Pid)[0].Exe as Path
-      FROM Artifact.Windows.System.VAD(PidRegex=str(str=Pid))
+    LET InfoFromVad(Pid) = SELECT Address,
+                                  Size,
+                                  DriveReplace(Path=MappingName) AS Path
+      FROM vad(pid=Pid)
       WHERE MappingName
-        AND Protection =~ "xr-"
-        AND MappingName =~ "(exe)$"
-
+       AND Protection =~ "xr-"
+            AND MappingName =~ "(exe)$"
+      LIMIT 1
+    
+    LET GetTextSegment(Path) = filter(condition="x=>x.Name = '.text'",
+                                      list=parse_pe(file=Path).Sections)[0]
+    
     -- parse the executable (PE) from memory (specifically, the text segment)
-    LET GetMetadata =
-      SELECT Path,
+    LET GetMetadata(Pid, Name) = SELECT
+        Path,
+        str(str=Pid) AS PidFilename,
         Address,
-        parse_pe(file=Path).Sections[0] AS TextSegmentData
-      FROM InfoFromVad
+        GetTextSegment(Path=Path) AS TextSegmentData
+      FROM InfoFromVad(Pid=Pid)
       WHERE Address != 0
-
+       AND TextSegmentData.FileOffset
+    
+    LET Hex(X) = format(format="%#x", args=X)
+    
     -- read the executable from memory and hard disk
-    LET GetContent =
-      SELECT *,
-        format(format="%#x", args=Address) AS MemAddress,
-        format(format="%x",
-          args=read_file(accessor="process",
-            offset=Address,
-            filename=format(format="/%d", args=Pid),
-            length=TextSegmentData.Size)
-          ) AS MemoryData,
-        hash(path=format(format="/%d", args=Pid),
-            accessor="process",
-            hashselect="SHA256"
-          ).SHA256 AS MemorySHA256,
-        format(format="%#x", args=TextSegmentData.FileOffset) AS DiskAddress,
-        format(format="%x",
-          args=read_file(accessor="file",
-            offset=TextSegmentData.FileOffset,
-            filename=Path,
-            length=TextSegmentData.Size)
-          ) AS DiskData,
-        hash(path=Path,
-          accessor="file",
-          hashselect="SHA256"
-        ).SHA256 AS DiskSHA256
-      FROM GetMetadata
-      WHERE len(list=MemoryData) != 0
-        AND len(list=DiskData) != 0
-
+    LET GetContent(Pid, Name) = SELECT *, Address AS MemAddress,
+                                       read_file(
+                                         accessor="process",
+                                         offset=Address,
+                                         filename=PidFilename,
+                                         length=TextSegmentData.Size) AS MemoryData,
+                                       hash(
+                                         path=PidFilename,
+                                         accessor="process",
+                                         hashselect="SHA256").SHA256 AS MemorySHA256,
+                                       TextSegmentData.FileOffset AS DiskAddress,
+                                       TextSegmentData.Size AS SegmentSize,
+                                       read_file(
+                                         accessor="file",
+                                         offset=TextSegmentData.FileOffset,
+                                         filename=Path,
+                                         length=TextSegmentData.Size) AS DiskData,
+                                       hash(
+                                         path=Path,
+                                         accessor="file",
+                                         hashselect="SHA256").SHA256 AS DiskSHA256
+      FROM GetMetadata(
+        Name=Name,
+        Pid=Pid)
+      WHERE MemoryData
+       AND log(
+             dedup=-1,
+             message="Inspecting Pid %v (%v): %#x-%#x vs %#x-%#x",
+             args=[Pid, Name, Address, Address + SegmentSize,
+               DiskAddress, DiskAddress + SegmentSize])
+    
     -- Filter out not needed comparisons early
-    LET FilterContent =
-      SELECT *, MemoryData = DiskData AS Comparison
-      FROM GetContent
+    LET FilterContent(Pid, Name) = SELECT *, MemoryData = DiskData AS Comparison
+      FROM GetContent(Pid=Pid, Name=Name)
       WHERE NOT Comparison
+    
+    -- Checks the offsets
+    LET OffsetsTmp <= dict()
 
+    LET CheckOffsetsHelper(X, Y) = SELECT 
+        atoi(string=format(format="0x%x", args=substr(str=X, start=_value, end=AddressLength+_value)))
+          - atoi(string=format(format="0x%x", args=substr(str=Y, start=_value, end=AddressLength+_value))) AS Difference
+      FROM range(end=len(list=X), step=AddressLength)
+      WHERE if(condition=Difference!=0,
+        then=set(
+          item=OffsetsTmp, 
+          field=Difference, 
+          value=if(
+            condition=OffsetsTmp[format(format="%d", args=Difference)], 
+            then=1+OffsetsTmp[format(format="%d", args=Difference)], 
+            else=1
+          )
+        )
+      )
+    
+    LET CheckOffsets(X, Y) = CheckOffsetsHelper(X=X, Y=Y)
+ 
+    -- If enabled, checks the offsets
+    LET FilteredContentWithMetadata(Pid, Name) = SELECT Pid,
+               PidFilename,
+               Path,
+               CheckOffsets(X=MemoryData, Y=DiskData) AS OffsetComparison,
+               Comparison,
+               MemorySHA256,
+               DiskSHA256,
+               MemAddress,
+               DiskAddress,
+               SegmentSize
+        FROM FilterContent(Pid=Pid, Name=Name)
+    
     -- Dict stored as query, so it only gets executed once
     LET Tmp <= dict(a=0)
-
+    
     LET Cmp(X, Y) = SELECT X[_value] = Y[_value]  AND X[1] = Y[1] AS Eq
-        FROM range(end=len(list=X), step=2)
-        WHERE set(item=Tmp,
+      FROM range(end=len(list=X), step=2)
+      WHERE set(item=Tmp,
                 field="a",
                 value=if(condition=Eq  AND Tmp.a < 2, then=0, else=Tmp.a + 1))
-        AND Tmp.a > 2
-        LIMIT 1
-
-    LET CheckOneByteChanges(X, Y) = set(item=Tmp, field="a", value=0)
-        AND Cmp(X=X, Y=Y)
-
+       AND Tmp.a > 2
+      LIMIT 1
+    
+    LET CheckOneByteChanges(X, Y) = (X = Y
+         AND log(message="Comparing %v quickly", dedup=-1, args=len(list=X))) OR (
+          set(item=Tmp, field="a", value=0)
+         && Cmp(X=X, Y=Y))
+    
     -- compare the executable from memory and hard disk
     -- only print the ones where they do not match
-    LET Compare =
-        if(condition=IgnoreOneByteOffsets, then={
-            SELECT Pid,
-                Path,
-                NOT CheckOneByteChanges(X=MemoryData, Y=DiskData)
-                    AS OneByteOffset,
-                Comparison,
-                MemorySHA256,
-                DiskSHA256,
-                MemAddress,
-                DiskAddress,
-                TextSegmentData.Size AS Size
-            FROM FilterContent
-            WHERE NOT OneByteOffset
-        }, else={
-            SELECT Pid, 
-                Path,
-                Comparison,
-                MemorySHA256,
-                DiskSHA256,
-                MemAddress,
-                DiskAddress,
-                TextSegmentData.Size AS Size
-            FROM FilterContent
-        })
-
+    LET Compare(Pid, Name) = if(
+        condition=log(message="Comparing process %v", args=Pid)
+         AND IgnoreOneByteOffsets,
+        then={
+        SELECT Pid,
+               PidFilename,
+               Path,
+               NOT CheckOneByteChanges(X=MemoryData, Y=DiskData) AS OneByteOffset,
+               Comparison,
+               OffsetComparison,
+               MemorySHA256,
+               DiskSHA256,
+               MemAddress,
+               DiskAddress,
+               SegmentSize
+        FROM FilteredContentWithMetadata(Pid=Pid, Name=Name)
+        WHERE NOT OneByteOffset
+      },
+        else={
+        SELECT Pid,
+               PidFilename,
+               Path,
+               Comparison,
+               OffsetComparison,
+               MemorySHA256,
+               DiskSHA256,
+               MemAddress,
+               DiskAddress,
+               SegmentSize
+        FROM FilteredContentWithMetadata(Pid=Pid, Name=Name)
+      })
+    
     -- compare with uploading the suspicious executables
-    LET CompareAndUpload =
-        SELECT Pid, Path, MemAddress, DiskAddress, Size,
-            upload(
-                file=format(format="/%d", args=Pid),
-                --offset=Address,
-                --length=TextSegmentData.Size,
-                name=Path+"."+format(format="%d", args=Pid)+".mem",
-                accessor="process"
-            ) AS UploadMem,
-            upload(
-                file=Path,
-                --offset=TextSegmentData.FileOffset,
-                --length=TextSegmentData.Size,
-                name=Path+"."+format(format="%d", args=Pid)+".disk",
-                accessor="file"
-            ) AS UploadDisk
-        FROM Compare
-
+    LET CompareAndUpload(Pid, Name) = SELECT
+        Pid,
+        Path,
+        Hex(X=MemAddress) AS MemAddress,
+        Hex(X=DiskAddress) AS DiskAddress,
+        Hex(X=SegmentSize) AS SegmentSize,
+        upload(
+          file=pathspec(DelegateAccessor="process",
+                        DelegatePath=PidFilename,
+                        Path=[dict(Offset=MemAddress, Length=SegmentSize), ]),
+          name=pathspec(parse=format(format="%s.%d.mem", args=[Path, Pid]),
+                        path_type="windows"),
+          accessor="sparse") AS UploadMem,
+        upload(
+          file=pathspec(DelegateAccessor="file",
+                        DelegatePath=Path,
+                        Path=[dict(Offset=DiskAddress, Length=SegmentSize), ]),
+          name=pathspec(parse=format(format="%s.%d.disk", args=[Path, Pid]),
+                        path_type="windows"),
+          accessor="sparse") AS UploadDisk
+      FROM Compare(Pid=Pid, Name=Name)
+    
     -- for every process, evaluate the memory-harddisk-comparison
-    SELECT * FROM foreach(
-      row=GetPids,
-      query=if(condition=UploadFindings, then=CompareAndUpload, else=Compare)
-    )
+    SELECT *
+    FROM foreach(row=GetPids,
+                 workers=20,
+                 query={
+        SELECT *
+        FROM if(condition=UploadFindings,
+                then={
+        SELECT *
+        FROM CompareAndUpload(Pid=Pid, Name=Name)
+      },
+                else={
+        SELECT *
+        FROM Compare(Pid=Pid, Name=Name)
+      })
+      })
