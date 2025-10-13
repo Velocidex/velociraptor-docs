@@ -51,17 +51,6 @@ them to non-administrator users on the server.
 
 ![Manage Server Secrets](server_secrets.png)
 
-## User Preferences
-
-The User can customize their interface by clicking on the user tile at the top
-right of the screen. There are a number of aspects of the GUI application that
-can be adjusted.
-
-![Adjusting user preferences](preferences_light.svg)
-
-You can read more about the individual options
-[here]({{< ref "/docs/gui/user_preferences/" >}}).
-
 
 ## The Server Dashboard
 
@@ -133,3 +122,12 @@ seen above:
    where you will find all the options to navigate through the table data. You
    can choose how many rows to display per page and navigate forward/back, or
    skip to the first, last, or a specific page number.
+
+## User Preferences
+
+Users can
+[configure their GUI preferences]({{< ref "/docs/gui/user_preferences/" >}})
+by clicking on the user tile at the top right of the screen. There are a number
+of aspects of the GUI application that can be adjusted.
+
+![Adjusting user preferences](preferences_light.svg)
