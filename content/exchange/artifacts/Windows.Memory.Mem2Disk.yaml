@@ -121,6 +121,7 @@ sources:
     -- Checks the offsets
     LET OffsetsTmp <= dict()
 
+    -- TODO: integrate the OneByteOffset comparison into here
     LET CheckOffsetsHelper(X, Y) = SELECT 
         atoi(string=format(format="0x%x", args=substr(str=X, start=_value, end=AddressLength+_value)))
           - atoi(string=format(format="0x%x", args=substr(str=Y, start=_value, end=AddressLength+_value))) AS Difference
@@ -159,7 +160,7 @@ sources:
       FROM range(end=len(list=X), step=2)
       WHERE set(item=Tmp,
                 field="a",
-                value=if(condition=Eq  AND Tmp.a < 2, then=0, else=Tmp.a + 1))
+                value=if(condition=Eq AND Tmp.a < 2, then=0, else=Tmp.a + 1))
        AND Tmp.a > 2
       LIMIT 1
     
