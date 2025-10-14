@@ -21,7 +21,7 @@ Clients, Flows, Hunts and notebooks.
 Conceptually you can think of these as just storage hierarchies which
 can be easily recreated:
 
-1. A `Flow` is a single collection that occured as a particular
+1. A `Flow` is a single collection that occurred as a particular
    time. Flows **Contain** artifact results, and uploaded files.
 
 2. A `Client` represents an endpoint. The Velociraptor server stores
@@ -120,7 +120,7 @@ The above query:
 ## Post process the collections
 
 Depending on the scenarios you want to demonstrate, you can create
-different clients (perhaps a "Compromized" set) and import different
+different clients (perhaps a "Compromised" set) and import different
 collections into them.
 
 This method allows running any post processing steps in notebooks as

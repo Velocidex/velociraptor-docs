@@ -533,7 +533,10 @@
     {
         "title": "Pre-populating a server with clients, hunts and flows",
         "link": "/knowledge_base/tips/prepopulate_server",
-        "tags": [],
+        "tags": [
+            "automation",
+            "vql"
+        ],
         "author": "",
         "author_link": "",
         "author_avatar": "",
