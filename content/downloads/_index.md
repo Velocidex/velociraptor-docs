@@ -5,52 +5,52 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.75.2
+release: 0.75.3
 base_release: 0.75
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: 32c5cfa556dd0e001824487358f9cb3443cc14b5639dcb3a76969675047085f0
+    hash: e4c27657fd8e40fb4bec5497600e6bf1d94c723ffb715c32e68558377e7f0ee0
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: 08b7ed8a0593f829cebc92752cfd6320f9838dd3b35196f1f2b81f3e38fab107
+    hash: 02a7e298140dc5fdfd59fcd25f57136febc816ce6b041d064c80a60977d6567b
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: 06cdbe168674edf7159ee812c3b953ab902f7da7bc8b1da49973b4da17a7dc4d
+    hash: e8fa72d037b866466fba77082a1dff895f4255a432123c00cef5f253f0d71976
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: 08b7ed8a0593f829cebc92752cfd6320f9838dd3b35196f1f2b81f3e38fab107
+    hash: 06818579db84625a7ae46236a9734ab58fc2b49f65d503a9f77578129009da94
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: 359db48381d6f1418aa8eca12ed23bc791ec73e60b7e151023f8b493efc54771
+    hash: 90d93ce6fd43ee622141c190ac381f4b5b6d5be71f50d1ed1e3e33dc65151f49
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: c7b6ac7832c2cdb5f0601f8d3e13dba6b1e43b94df2e0102ed5b1edc5ea34292
+    hash: 65bf37890dc3e0196657d700961a3dda75eee395ea2adf378142dd5ab051427f
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: 0ac95dec7189bb3afe7002eb2e8787e5aa06ea5fd36e1f4964d13b7ad7099e26
+    hash: 1a0403eba6f4bbf65e167204704c6919ded0fc49c049cf80885b33152477b45e
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash: 73305ad06fb6f8b4706e53fdb60617545942be4ad7e7674bcd3302489fee4e20
+    hash: 4b7aeeaffd063a8adbe3bb2f5fd09536b27eef285563e1910c66521363a048c6
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash: fafd103d1eb120350cb3feb4fa097f588df306e6cc240dc1776a874e74520cba
+    hash: 1fefd728d427763d6f3777cc15d0a6eb72f6509b06e5013986aefa4ba7570d2e
     platform: apple
 
   - desc: FreeBSD AMD64
@@ -61,12 +61,12 @@ arches:
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
-    hash: a2a36041ac6632e0ae3893a1bab7a9c50ef8da0f68f670ab1cbaa1d60e63c885
+    hash: 3f44af40cb10ff5ee98087f284943e28eaacb84321fee1d3a66724a197cc82ff
     platform: windows
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
-    hash: eeacdcbe48c89faeb495455fbfe97abc049e1e39acf7cf2472baab8988882f7b
+    hash: 94ffb782fdb9bdf14aa6a961f5ab9ff7da13a9a2686eaf336c5864395e77bd10
     platform: windows
 
 
