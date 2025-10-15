@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Password on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/password/</link><description>Recent content in Password on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 18 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/password/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I enable password protected VFS downloads?</title><link>https://docs.velociraptor.app/knowledge_base/tips/download_password/</link><pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/download_password/</guid><description>&lt;h1 id="how-do-i-enable-password-protected-vfs-downloads">How do I enable password protected VFS downloads?&lt;/h1>
+&lt;p>You can just export them from the GUI!&lt;/p>
+&lt;p>Set the password in your user preferences you can enable password
+protected exports.&lt;/p>
+&lt;p>Highlight the directory you want to export.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="fe07eee1f0268775c646e844b05bff2d">
+ &lt;div data-featherlight="#fe07eee1f0268775c646e844b05bff2d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/01.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="01.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Hit the export button - this will start a server collection to take a
+snapshot of the vfs - you can set any filtering globs (so for example
+don&amp;rsquo;t export all the files - maybe only &lt;code>*.exe&lt;/code>).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d9b6f4554ead74cebd62effb6a671a52">
+ &lt;div data-featherlight="#d9b6f4554ead74cebd62effb6a671a52" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/02.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="02.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>By default it just does &lt;code>**&lt;/code> which is everything under the directory.
+This makes a collection and adds a link to it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9a11768d2c2eea7c331011b06a7d4eb2">
+ &lt;div data-featherlight="#9a11768d2c2eea7c331011b06a7d4eb2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/03.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="03.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Then click that and export like any other collection.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9675c1ff34145d7b1a68d3ddb6c0e555">
+ &lt;div data-featherlight="#9675c1ff34145d7b1a68d3ddb6c0e555" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/04.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="04.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Password can be set in the user preferences (the top right tile
+with the username). This will enable the lock feature of the zip
+export - make sure to click close button to save the password (instead
+of just clicking outside the modal dialog).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="79d59b191996ede84d98442fd4613cb0">
+ &lt;div data-featherlight="#79d59b191996ede84d98442fd4613cb0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/05.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item></channel></rss>

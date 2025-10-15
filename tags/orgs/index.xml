@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Orgs on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/orgs/</link><description>Recent content in Orgs on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 06 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/orgs/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I get a list of hunts across multiple organizations?</title><link>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</link><pubDate>Fri, 06 Dec 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</guid><description>&lt;h1 id="how-do-i-get-a-list-of-hunts-across-multiple-organizations">How do I get a list of hunts across multiple organizations?&lt;/h1>
+&lt;p>Are you looking for a way to generate user metrics across the entire server (like Hunts run per user)?&lt;/p>
+&lt;p>Orgs are separated out so when you run a query you are running that query within the context of the org. Normally the hunts scheduled in an organization can be accessed using the &lt;a href="https://docs.velociraptor.app/vql_reference/server/hunts/" target="_blank" >hunts()&lt;/a>
+ plugin, but that normally acts within a single Org.&lt;/p>
+&lt;p>To run a query in another org, you can switch org contexts using the &lt;a href="https://docs.velociraptor.app/vql_reference/misc/query/" target="_blank" >query()&lt;/a>
+ plugin.&lt;/p>
+&lt;p>So for example to see all hunts in all orgs:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM foreach(
+ row={
+ SELECT OrgId FROM orgs()
+ },
+ query={
+ SELECT * FROM query(query={
+ SELECT * FROM hunts()
+ }, org_id=OrgId)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>This query iterates over all the orgs, then runs the &lt;code>SELECT * FROM hunts()&lt;/code> query within the org context.&lt;/p>
+&lt;p>You can simplify the query using LET stored queries:&lt;/p>
+&lt;pre>&lt;code class="language-sql">LET MyQuery = SELECT * FROM hunts()
+LET AllOrgs = SELECT OrgId FROM orgs()
+
+SELECT * FROM foreach(row=AllOrgs,
+ query={
+ SELECT * FROM query(query=MyQuery, org_id=OrgId)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>Of course your user account must have access to the orgs. Each org has a separate ACL for each user, so your user needs to have at least the &lt;code>READ_RESULTS&lt;/code> permission to be able to see the org.&lt;/p>
+&lt;p>Some plugins (e.g. &lt;a href="https://docs.velociraptor.app/vql_reference/server/hunt/" target="_blank" >hunt()&lt;/a>
+ ) support orgs directly for convenience but generally you should use the above approach. This will also remind you that each such query is running in a separate org context and therefore can not see other data at the same time.&lt;/p></description></item></channel></rss>

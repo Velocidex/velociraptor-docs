@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Labels on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/labels/</link><description>Recent content in Labels on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 10 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/labels/index.xml" rel="self" type="application/rss+xml"/><item><title>How to control hunting by label groups?</title><link>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</link><pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</guid><description>&lt;h1 id="how-to-control-hunting-by-label-groups">How to control hunting by label groups?&lt;/h1>
+&lt;p>In Velociraptor, &lt;code>Hunts&lt;/code> are sets of the same collections across
+clients. For example, a hunt for &lt;code>Scheduled Tasks&lt;/code> will automatically
+collect the scheduled tasks from each client.&lt;/p>
+&lt;p>When creating the hunt it is possible to target the hunt to a
+&lt;code>Label&lt;/code>. This only schedules the hunt on clients that have that same
+label. This is useful when collecting a lot of data which does not
+make sense to collect from every machine in the fleet. For example in
+the following screenshot I am limiting the heavy triaging collection
+to machines with the label &lt;code>Triage&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1912e2fbc6ef8afb41e2a31045e48e4f">
+ &lt;div data-featherlight="#1912e2fbc6ef8afb41e2a31045e48e4f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/limiting_hunts.png" alt="Limiting a hunt to a label">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="limiting_hunts.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Limiting a hunt to a label
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="assigning-clients-to-the-hunt">Assigning clients to the hunt.&lt;/h2>
+&lt;p>Normally when we limit a hunt for a label we immediately schedule the
+hunt on all machines with that label.&lt;/p>
+&lt;p>However it also works the other way around - When a label is added on
+a client, if the hunt targets this label, the client will be
+automatically added to the hunt!&lt;/p>
+&lt;p>This means it is possible to create heavy hunts targeting specific
+labels, and then as the investigation progresses, simply assign the
+label to the client to automatically cause the hunt to collect on that
+client.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ea294614153c0d0ea666c75a2d1b6b1f">
+ &lt;div data-featherlight="#ea294614153c0d0ea666c75a2d1b6b1f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/apply_label.png" alt="Apply a label to a client to trigger hunt participation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="apply_label.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Apply a label to a client to trigger hunt participation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item><item><title>Applying labels to hunt results</title><link>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</link><pubDate>Fri, 20 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</guid><description>&lt;h1 id="applying-labels-to-hunt-results">Applying labels to hunt results&lt;/h1>
+&lt;p>Sometimes it is useful to label clients from a hunt.&lt;/p>
+&lt;p>For the following example, I will label all machines with rows from the Windows.Carving.CobaltStrike artifact with a label &amp;ldquo;CobaltStrike&amp;rdquo;.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT ClientId,Fqdn,Rule,
+ label(client_id=ClientId,labels=['CobaltStrike'],op='set') as SetLabel
+FROM source(artifact=&amp;quot;Windows.Carving.CobaltStrike&amp;quot;)
+GROUP BY ClientId
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="37d46915203878b19ceb1f55ac1a77c4">
+ &lt;div data-featherlight="#37d46915203878b19ceb1f55ac1a77c4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/huntlabel/https://user-images.githubusercontent.com/13081800/169450498-39d31902-81ec-4b7c-8c6c-72abe0419c7e.png" alt="Label clients from hunt" />
+ &lt;/div>
+ &lt;figcaption>
+ Label clients from hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item><item><title>Exchange.Label.User</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.label.user/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.label.user/</guid><description>&lt;p>This artifact watches for new client enrollments and automatically
+label the client with the required label if the user exists.&lt;/p>
+&lt;p>This artifact can be the starting point for automatically labeling
+a machine based on any other property - just change the artifact to
+watch and the result filter.&lt;/p>
+&lt;p>#server #event #labels&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Exchange.Label.User
+description: |
+ This artifact watches for new client enrollments and automatically
+ label the client with the required label if the user exists.
+
+ This artifact can be the starting point for automatically labeling
+ a machine based on any other property - just change the artifact to
+ watch and the result filter.
+
+ #server #event #labels
+
+type: SERVER_EVENT
+
+parameters:
+ - name: Label
+ default: MikesBox
+ - name: NameRegex
+ default: mike
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ LET user_flows = SELECT *
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ "Generic.Client.Info/Users"
+
+ LET results = SELECT *,
+ label(client_id=ClientId, labels=Label, op="set")
+ FROM source(artifact="Generic.Client.Info/Users" ,
+ client_id=ClientId, flow_id=FlowId)
+ WHERE Name =~ NameRegex
+
+ SELECT * FROM foreach(row=user_flows, query=results)
+
+&lt;/code>&lt;/pre></description></item></channel></rss>

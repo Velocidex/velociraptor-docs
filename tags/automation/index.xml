@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Automation on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/automation/</link><description>Recent content in Automation on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Tue, 14 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/automation/index.xml" rel="self" type="application/rss+xml"/><item><title>Pre-populating a server with clients, hunts and flows</title><link>https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/</link><pubDate>Tue, 14 Oct 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/</guid><description>&lt;h1 id="pre-populating-a-server-with-clients-hunts-and-flows">Pre-populating a server with clients, hunts and flows&lt;/h1>
+&lt;p>When setting up a Velociraptor server for training or demonstration,
+it is sometimes desirable to have some data already populated.&lt;/p>
+&lt;p>For a realistic training exercise, some people use a &lt;a href="https://github.com/iknowjason/BlueCloud" target="_blank" >Cyber
+Range&lt;/a>
+ to fully emulate a
+real environment. However, managing a large Cyber Range is complex and
+expensive.&lt;/p>
+&lt;p>Sometimes, we just want a simple Velociraptor server with
+pre-populated data, so users can learn how to analyze hunt results,
+and improve their VQL skills!&lt;/p>
+&lt;h2 id="in-velociraptor---everything-is-a-file">In Velociraptor - Everything is a file!&lt;/h2>
+&lt;p>The Velociraptor server simply keeps all the data as simple files on
+disk. These files are organized into higher level concepts like
+Clients, Flows, Hunts and notebooks.&lt;/p>
+&lt;p>Conceptually you can think of these as just storage hierarchies which
+can be easily recreated:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>A &lt;code>Flow&lt;/code> is a single collection that occurred as a particular
+time. Flows &lt;strong>Contain&lt;/strong> artifact results, and uploaded files.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A &lt;code>Client&lt;/code> represents an endpoint. The Velociraptor server stores
+all flows under the client&amp;rsquo;s directory in the file store. Clients
+have a unique client id which is how we can identify them.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A &lt;code>Hunt&lt;/code> is a logical set of clients and flows which can be
+processed together using plugins like &lt;code>hunt_results()&lt;/code> or
+&lt;code>source()&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="creating-clients">Creating clients.&lt;/h2>
+&lt;p>Normally a client will be created on the server when a physical client
+first connects to it. However, it is possible to create new &amp;ldquo;client&amp;rdquo;
+objects using the VQL &lt;a href="https://docs.velociraptor.app/vql_reference/server/client_create/" target="_blank" >client_create()&lt;/a>
+ function.&lt;/p>
+&lt;p>Let&amp;rsquo;s create 100 clients:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT client_create(os=&amp;quot;windows&amp;quot;,
+ hostname=format(format=&amp;quot;Host%d&amp;quot;, args=_value)) AS ClientId
+FROM range(end=100)
+&lt;/code>&lt;/pre>
+&lt;h2 id="adding-flows-to-the-clients">Adding flows to the clients.&lt;/h2>
+&lt;p>Normally, we would schedule a collection on clients to gather real
+data from the endpoint. But this is not essential, we can also
+&lt;code>import&lt;/code> an existing collection into the client&amp;rsquo;s storage space.&lt;/p>
+&lt;p>The existing collection can be taken on any Velociraptor instance - it
+is just a zip file export of a collection.&lt;/p>
+&lt;p>For this article, I will collect the &lt;code>Generic.Client.Info&lt;/code> artifact
+and export the collection into a ZIP file in the collection overview
+page.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="14bf4fe024292545bb0a1ed547046c38">
+ &lt;div data-featherlight="#14bf4fe024292545bb0a1ed547046c38" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/exporting_collections.png" alt="Exporting a collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="exporting_collections.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Exporting a collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Next we import the collection into each client on the server:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT import_collection(client_id=client_id,
+ filename=&amp;quot;/tmp/Generic.Info.zip&amp;quot;)
+FROM clients()
+&lt;/code>&lt;/pre>
+&lt;h2 id="assign-collections-to-a-hunt">Assign collections to a hunt&lt;/h2>
+&lt;p>A Hunt is a managed container of collections. Normally we schedule a
+hunt so the Velociraptor server can automatically schedule flows on
+clients that match the hunt criteria, and keep track of these in a
+central location.&lt;/p>
+&lt;p>However, we can also just add arbitrary flows to a hunt using VQL. In
+this example I will add all the &lt;code>Generic.Client.Info&lt;/code> collections we
+imported previously into a new hunt so I can analyze them together.&lt;/p>
+&lt;p>First I create a hunt using the GUI to collect the
+&lt;code>Generic.Cl ient.Info&lt;/code> artifact, but I will leave the hunt in the
+&lt;code>STOPPED&lt;/code> state.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8c11b79c8531835e11de0b8c0637b1c6">
+ &lt;div data-featherlight="#8c11b79c8531835e11de0b8c0637b1c6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/example_hunt.png" alt="Creating an empty hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="example_hunt.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating an empty hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The hunt currently has no clients or flows associated with it.&lt;/p>
+&lt;p>I can now assign the latest &lt;code>Generic.Client.Info&lt;/code> collection from each
+client:&lt;/p>
+&lt;pre>&lt;code>LET HuntId &amp;lt;= &amp;quot;H.D35CUR4S00IHC&amp;quot;
+
+SELECT client_id,
+ session_id,
+ HuntId,
+ hunt_add(client_id=client_id, hunt_id=HuntId, flow_id=session_id)
+FROM foreach(row={
+ SELECT * FROM clients()
+}, query={
+ SELECT *
+ FROM flows(client_id=client_id)
+ WHERE artifacts_with_results =~ &amp;quot;Generic.Client.Info&amp;quot;
+ LIMIT 1
+})
+&lt;/code>&lt;/pre>
+&lt;p>The above query:&lt;/p>
+&lt;ol>
+&lt;li>Iterates over all clients&lt;/li>
+&lt;li>For each client, iterates over all flows in that client&lt;/li>
+&lt;li>Select the first flow with artifact results of &lt;code>Generic.Client.Info&lt;/code>&lt;/li>
+&lt;li>After one flow matches for each client, go to the next client (this is the &lt;code>LIMIT&lt;/code> clause).&lt;/li>
+&lt;li>Add the flow to the hunt we created earlier.&lt;/li>
+&lt;/ol>
+&lt;h2 id="post-process-the-collections">Post process the collections&lt;/h2>
+&lt;p>Depending on the scenarios you want to demonstrate, you can create
+different clients (perhaps a &amp;ldquo;Compromised&amp;rdquo; set) and import different
+collections into them.&lt;/p>
+&lt;p>This method allows running any post processing steps in notebooks as
+if these client are real endpoints.&lt;/p></description></item></channel></rss>

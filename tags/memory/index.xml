@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memory on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/memory/</link><description>Recent content in Memory on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 16 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/memory/index.xml" rel="self" type="application/rss+xml"/><item><title>Digging into process memory</title><link>https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/</link><pubDate>Fri, 16 Apr 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/</guid><description>&lt;p>Unlike traditional dead disk forensic tools, Velociraptor’s main advantage is that it is capable of directly looking at volatile system state, such as running processes, open files and currently connected sockets. This class of forensic artifacts are called Volatile Artifacts since they change rapidly as the system operates — processes can start and stop quickly, files can be closed etc.&lt;/p>
+&lt;p>Traditionally, acquiring volatile artifacts meant taking a raw physical memory image, and then analyzing this with a memory analysis framework such as &lt;a href="https://github.com/volatilityfoundation/volatility" target="_blank" >Volatility&lt;/a>
+ or &lt;a href="https://github.com/google/rekall" target="_blank" >Rekall&lt;/a>
+. These frameworks reassemble the contents of physical memory into higher level abstractions, like processes, threads, registry content etc.&lt;/p>
+&lt;p>While at first it might appear that a physical memory image contains a perfect snapshot of the running state of a system, this is not typically the case. The physical memory image only contains those pages currently locked into physical memory — however, modern operating systems use virtual memory to represent process and kernel memory address spaces. Each virtual memory address may refer to either paged out memory (i.e. only present in the page file) or memory mapped files (i.e. only present on the file system in e.g. dll or executable files), neither of which are typically included in a physical memory image.&lt;/p>
+&lt;p>Additionally, most physical memory images obtained in a DFIR setting, contains acquisition smear (i.e. the memory is changing during the acquisition process). This smear leads to inconsistencies, making memory analysis from physical memory samples generally a hit or miss affair.&lt;/p>
+&lt;p>For DFIR purposes it is preferable to extract data directly from the running system, rather than rely on fragile memory analysis. For example, to obtain a list of processes, it is always more reliable to use the system APIs than to take a full memory image, ship it off the endpoint, and then use a framework like Volatility to extract the same data from the raw image.&lt;/p>
+&lt;p>Many of the same techniques implemented in Volatility for physical memory analysis can also be implemented directly on the endpoint using OS APIs. Velociraptor already contains plugins such as “vad”, “pslist”, “modules”, “handles”, “objtree” etc.&lt;/p>
+&lt;p>Consider the identification of malicious processes running in memory. Many modern tools use memory only injection, where malicious code is added to processes but is never written to disk. Detecting this type of malware requires inspection of process memory using for example a Yara signature.&lt;/p>
+&lt;p>For example, &lt;a href="https://malpedia.caad.fkie.fraunhofer.de/" target="_blank" >Malpedia&lt;/a>
+ contains Yara signatures for common malware families derived from automated identification of common code blocks. We can apply these signatures to detect memory injected &lt;a href="https://malpedia.caad.fkie.fraunhofer.de/details/win.cobalt_strike" target="_blank" >Cobalt Strike beacon&lt;/a>
+ by simply scanning each process address space and reporting any hits.&lt;/p>
+&lt;p>Velociraptor included bindings to libyara’s process scanning capabilities for a while now, exposed through the VQL plugin proc_yara() and usable through artifacts such as &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Detection/ProcessMemory/CobaltStrike.yaml" target="_blank" >Windows.Detection.ProcessMemory.CobaltStrike&lt;/a>
+.&lt;/p>
+&lt;h3 id="direct-access-to-process-memory">Direct access to process memory&lt;/h3>
+&lt;p>Since release 0.5.8, Velociraptor provides direct access to process memory via the “process” &lt;a href="https://www.velocidex.com/docs/user-interface/investigating_clients/virtual_filesystem/#filesystem-accessors" target="_blank" >accessor&lt;/a>
+. This allows any plugins and functions that normally operate on files to also operate on process memory, as if the process memory was just another file.&lt;/p>
+&lt;p>To demonstrate this new accessor, I will write “this is a test” in notepad without saving the file on disk (so the string exists only in memory). I will then write some VQL to detect this string in the process memory of notepad&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bea7e787d40441c999f6c9a710d9150d">
+ &lt;div data-featherlight="#bea7e787d40441c999f6c9a710d9150d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1jhU1ZpOf3ArKtHQsES5UpA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above example, I am iterating over all processes with a name matching “notepad” and then applying a yara signature over their process address space. The “process” accessor allows me to open the process represented by the filename “/&lt;pid>” as if it was a file. The &lt;code>yara()&lt;/code> plugin (which normally operates on files) will just see process memory as another file to scan.&lt;/p>
+&lt;p>I can then also extract some context around the hits to see if the hit is a false positive.&lt;/p>
+&lt;h3 id="determining-process-environment-variables">Determining process environment variables&lt;/h3>
+&lt;p>When a process is launched it receives environment variables that often affect the way the launched program behaves. I was curious to see if it is possible to determine the environment variables that a process is launched with?&lt;/p>
+&lt;p>On windows, each process is started with a &lt;a href="https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb" target="_blank" >Process Environment Block&lt;/a>
+. This data structure is populated by the OS before the process is created and contains important information about the process. Processes can extract this information at runtime. The process environment variables are stored in the PEB too and therefore we can parse these out from each process’s memory.&lt;/p>
+&lt;p>Velociraptor has a powerful binary parser built in, as was described previously in the post “&lt;a href="https://velociraptor.velocidex.com/parsing-binary-files-d31114a41f14" target="_blank" >Parsing binary files&lt;/a>
+”. Having the process memory exposed via an accessor allows us to apply this parser to process memory via a VQL query.&lt;/p>
+&lt;p>If you are interested in the details, check out the VQL for the &lt;code>Windows.Forensics.ProcessInfo&lt;/code> artifact &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/ProcessInfo.yaml" target="_blank" >here&lt;/a>
+, but here is the result of collecting the process information (including each process’s environment variables) from my system&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="4d556d979821ce10cef6037b5fe8b609">
+ &lt;div data-featherlight="#4d556d979821ce10cef6037b5fe8b609" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1uuWWzOGWgSnIg_4Or8JLrQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="detecting-etw-subversion">Detecting ETW subversion.&lt;/h3>
+&lt;p>Recently I read Adam Chester’s &lt;a href="https://blog.xpnsec.com/hiding-your-dotnet-complus-etwenabled/" target="_blank" >blog post&lt;/a>
+ where he described his finding that the .NET ETW provider can simply be disabled by setting the &lt;code>COMPlus_ETWEnabled&lt;/code> environment variable to 0. This is dramatically demonstrated by using process hacker to inspect the .NET assemblies of a powershell process.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="24cfde5c4ce87c9c53d92b7a9d4b5fa3">
+ &lt;div data-featherlight="#24cfde5c4ce87c9c53d92b7a9d4b5fa3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1GCGVJTqyGR9Hc66F6cFiJg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>When the &lt;code>COMPlus_ETWEnabled&lt;/code> environment variable is set to “0”, process hacker will be unable to inspect the loaded assemblies, since it relies on ETW support to do so and this is disabled within the running powershell process.&lt;/p>
+&lt;p>While this anti-detection technique is very simple for attackers to implement — they simply set an environment variable before launching the target binary, it should be very easy for us to detect it, using the following heuristics:&lt;/p>
+&lt;ul>
+&lt;li>Iterate over all processes, and&lt;/li>
+&lt;li>if any process has an environment variable starting with “COMPlus_” then it is suspicious.&lt;/li>
+&lt;/ul>
+&lt;p>Our VQL can take advantage of the existing &lt;code>Windows.Forensics.ProcessInfo&lt;/code> artifact and simply inspect each process’s environment dictionary&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d5ae8f509db052fea85ead5bb5e64bc7">
+ &lt;div data-featherlight="#d5ae8f509db052fea85ead5bb5e64bc7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1QgWxuYVpwR0yVpqq8LnPkA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above query we extract each process and its environment dictionary from the &lt;code>Windows.Forensics.ProcessInfo&lt;/code> artifact, then iterate over each key and value using the &lt;em>items()&lt;/em> plugin, filtering any keys beginning with “COMPlus”.&lt;/p>
+&lt;p>To convert this VQL into a detection, we now encapsulate the query in an artifact and hunt all our endpoints for processes that have the environment variable set. In practice, there should not be any legitimate reason to switch off the .NET ETW provider, so if we see this variable set in the environment, it is a very strong signal and requires further investigation.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>This post introduced the “process” accessor, which exposes process memory to all VQL plugins that can usually access files. The process accessor allows us to implement memory analysis techniques on running processes in real time, safely, quickly and reliably, without needing to resort to acquiring and analysing full physical memory images. This provides unprecedented visibility into the state of the endpoint and forms the basis for novel detection and hunting possibilities.&lt;/p>
+&lt;p>To use this feature yourself, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item></channel></rss>

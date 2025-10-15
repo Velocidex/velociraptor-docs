@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Checkip on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/checkip/</link><description>Recent content in Checkip on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 18 Jun 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/checkip/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I configure check ip for Cloudflare Dynamic DNS?</title><link>https://docs.velociraptor.app/knowledge_base/tips/cloudflare_checkip/</link><pubDate>Wed, 18 Jun 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/cloudflare_checkip/</guid><description>&lt;h1 id="how-do-i-configure-check-ip-for-cloudflare-dynamic-dns">How do I configure check ip for Cloudflare Dynamic DNS?&lt;/h1>
+&lt;h2 id="problem">Problem&lt;/h2>
+&lt;p>When deploying Dynamic DNS using Cloudflare in v0.74.3 I noticed an error and on
+investigation found that the default lookup IP Velociraptor used has moved.&lt;/p>
+&lt;p>Running frontend in verbose mode:
+&lt;code>[ERROR] 2025-06-18T00:13:23Z DynDns: Unable to set dns: Content for A record must be a valid IPv4 address.&lt;/code>&lt;/p>
+&lt;p>Manually testing the old lookup URL:&lt;/p>
+&lt;pre>&lt;code class="language-text">curl https://domains.google.com/checkip
+&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
+&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
+&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
+The document has moved
+&amp;lt;A HREF=&amp;quot;https://domains.google/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
+&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h2 id="solution">Solution&lt;/h2>
+&lt;p>We can configure the lookup URL manually by adding The
+&lt;code>checkip_url: https://wtfismyip.com/text&lt;/code> entry into the server configuration.&lt;/p>
+&lt;p>Cloudflare configuration instructions:
+&lt;a href="https://docs.velociraptor.app/blog/2024/2024-03-10-release-notes-0.72/#dynamic-dns-providers" target="_blank" >https://docs.velociraptor.app/blog/2024/2024-03-10-release-notes-0.72/#dynamic-dns-providers&lt;/a>
+&lt;/p>
+&lt;p>In the example below I am configuring a host name: &lt;code>hostname.example.com&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-yaml">dyn_dns:
+ type: cloudflare
+ api_token: &amp;lt;API_KEY&amp;gt;
+ zone_name: example.com
+ checkip_url: https://wtfismyip.com/text
+&lt;/code>&lt;/pre></description></item></channel></rss>
