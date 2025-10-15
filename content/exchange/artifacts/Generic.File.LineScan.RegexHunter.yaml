@@ -12,7 +12,7 @@ description: |
   files can be uploaded for further analysis.
 
   Includes:
-  - **WhitelistPathRegex** → exclude specific file paths from scanning.
+  - **SkipPathRegex** → exclude specific files from scanning in the paths.
   - **WhitelistLineRegex** → ignore specific line matches even if they match the main detection regex.
 
 type: CLIENT
@@ -37,19 +37,18 @@ parameters:
     description: "Regex pattern to detect potentially suspicious commands or payloads."
     default: "(curl|wget|bash|/tmp/|/var/tmp/|/dev/shm|base64|eval|python|perl|crontab -e|@reboot)"
 
-  - name: WhitelistPathRegex
+  - name: SkipPathRegex
     type: regex
     description: |
-      Regex pattern to exclude entire files based on path.
-      Files whose OSPath matches this regex will not be scanned.
+      Exclude specific files in the paths or just the paths from Scanning.
     default: "/etc/cron.daily/apt-compat"
 
   - name: WhitelistLineRegex
     type: regex
     description: |
-      Optional regex pattern to exclude specific lines (known benign content).
-      If empty, line-level whitelisting is skipped.
-    default: ""
+      Regex pattern to exclude specific lines (known benign content).
+      Matching lines will be ignored even if they match SuspiciousRegex.
+    default: "^$"
 
   - name: UploadMatches
     type: bool
@@ -63,13 +62,12 @@ sources:
       FROM glob(globs=PathGlobs.Glob, nosymlink=true)
       WHERE NOT IsDir AND NOT IsLink
 
-      -- Step 2: Skip files whose paths match WhitelistPathRegex
+      -- Step 2: Skip files whose paths match SkipPathRegex
       LET filtered_files = SELECT OSPath, Name, Size
       FROM found_files
-      WHERE NOT OSPath =~ WhitelistPathRegex
+      WHERE NOT OSPath =~ SkipPathRegex
 
-      -- Step 3: Scan each remaining file line-by-line for suspicious matches,
-      -- applying optional line-level whitelist in a single pass
+      -- Step 3: Scan each remaining file line-by-line for suspicious regex matches
       LET regex_hits = SELECT *
       FROM foreach(
         row={ SELECT OSPath FROM filtered_files },
@@ -79,25 +77,25 @@ sources:
             Line AS LineMatch
           FROM parse_lines(filename=OSPath)
           WHERE Line =~ SuspiciousRegex
-            AND if(
-              condition=WhitelistLineRegex,
-              then=NOT (Line =~ WhitelistLineRegex),
-              else=true
-            )
         }
       )
 
-      -- Step 4: Optionally upload matching files
+      -- Step 4: Remove benign line matches
+      LET filtered_hits = SELECT *
+      FROM regex_hits
+      WHERE NOT LineMatch =~ WhitelistLineRegex
+
+      -- Step 5: Optionally upload matching files
       LET upload_hits = SELECT
         FileName,
         LineMatch,
         upload(file=FileName, name=FileName) AS UploadedFile
-      FROM regex_hits
+      FROM filtered_hits
 
-      -- Step 5: Return results with or without upload
+      -- Step 6: Return results with or without upload
       SELECT *
       FROM if(
         condition=UploadMatches,
         then=upload_hits,
-        else=regex_hits
+        else=filtered_hits
       )
