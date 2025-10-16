@@ -529,5 +529,17 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "Pre-populating a server with clients, hunts and flows",
+        "link": "/knowledge_base/tips/prepopulate_server",
+        "tags": [
+            "automation",
+            "vql"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

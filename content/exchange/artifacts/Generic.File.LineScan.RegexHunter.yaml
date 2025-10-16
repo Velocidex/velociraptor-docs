@@ -1,19 +1,20 @@
 name: Generic.File.LineScan.RegexHunter
-author: Kaizar
+author: Kaizar Lehri
 description: |
   A versatile artifact that scans the contents of text files line by line and reports 
   any line that matches a user-supplied regular expression.
   This artifact is designed for flexible content inspection across any operating system—
   Linux, Windows. It can be used to detect indicators of compromise, identify 
   suspicious commands in configuration files, or validate specific text patterns.
+
   The user can supply one or more glob paths and a custom regex pattern. 
   Matching lines are returned with their file names, and—if enabled—the corresponding 
   files can be uploaded for further analysis.
-  The idea for this artifact originated while hunting for **suspicious cron jobs** on 
-  Linux systems—such as entries that download payloads, execute scripts from temporary 
-  directories, or use encoded commands. As a result, several common cron-related paths 
-  and a default suspicious regex pattern are provided for convenience.
-  
+
+  Includes:
+  - **SkipPathRegex** → exclude specific files from scanning in the paths.
+  - **WhitelistLineRegex** → ignore specific line matches even if they match the main detection regex.
+
 type: CLIENT
 
 parameters:
@@ -36,6 +37,19 @@ parameters:
     description: "Regex pattern to detect potentially suspicious commands or payloads."
     default: "(curl|wget|bash|/tmp/|/var/tmp/|/dev/shm|base64|eval|python|perl|crontab -e|@reboot)"
 
+  - name: SkipPathRegex
+    type: regex
+    description: |
+      Exclude specific files in the paths or just the paths from Scanning.
+    default: "/etc/cron.daily/apt-compat"
+
+  - name: WhitelistLineRegex
+    type: regex
+    description: |
+      Regex pattern to exclude specific lines (known benign content).
+      Matching lines will be ignored even if they match SuspiciousRegex.
+    default: "^$"
+
   - name: UploadMatches
     type: bool
     description: "If true, upload files that contain regex matches."
@@ -43,18 +57,20 @@ parameters:
 
 sources:
   - query: |
-      -- Step 1: Gather files from all provided globs (no symlinks)
+      -- Step 1: Gather all candidate files
       LET found_files = SELECT OSPath, Name, Size
-      FROM glob(
-        globs=PathGlobs.Glob,
-        nosymlink=true
-      )
+      FROM glob(globs=PathGlobs.Glob, nosymlink=true)
       WHERE NOT IsDir AND NOT IsLink
 
-      -- Step 2: Scan each file line by line for regex matches
+      -- Step 2: Skip files whose paths match SkipPathRegex
+      LET filtered_files = SELECT OSPath, Name, Size
+      FROM found_files
+      WHERE NOT OSPath =~ SkipPathRegex
+
+      -- Step 3: Scan each remaining file line-by-line for suspicious regex matches
       LET regex_hits = SELECT *
       FROM foreach(
-        row={ SELECT OSPath FROM found_files },
+        row={ SELECT OSPath FROM filtered_files },
         query={
           SELECT
             OSPath AS FileName,
@@ -64,17 +80,22 @@ sources:
         }
       )
 
-      -- Step 3: Upload files with matches if enabled
+      -- Step 4: Remove benign line matches
+      LET filtered_hits = SELECT *
+      FROM regex_hits
+      WHERE NOT LineMatch =~ WhitelistLineRegex
+
+      -- Step 5: Optionally upload matching files
       LET upload_hits = SELECT
         FileName,
         LineMatch,
         upload(file=FileName, name=FileName) AS UploadedFile
-      FROM regex_hits
+      FROM filtered_hits
 
-      -- Step 4: Return results with or without upload
+      -- Step 6: Return results with or without upload
       SELECT *
       FROM if(
         condition=UploadMatches,
         then=upload_hits,
-        else=regex_hits
+        else=filtered_hits
       )
