@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Low Level on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/low-level/</link><description>Recent content in Low Level on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 19 Jun 2020 00:38:44 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/low-level/index.xml" rel="self" type="application/rss+xml"/><item><title>The Velociraptor Query Language Pt 2</title><link>https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/</link><pubDate>Fri, 19 Jun 2020 00:38:44 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="29078a514957f5f75e16ecdb1458333e">
+ &lt;div data-featherlight="#29078a514957f5f75e16ecdb1458333e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/0rLy01O0JHT3Kp57q.jpg" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In our previous article I introduced the basics of the Velociraptor Query Language (VQL). We have learned the basic structure of VQL is similar to the SQL SELECT statement&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="faee8e3b8a86974f9178205889faad35">
+ &lt;div data-featherlight="#faee8e3b8a86974f9178205889faad35" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/06-m6txTbGOzeIqrJ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>However, one of the main differences between SQL and VQL is that VQL’s data sources are not simple data tables, but are instead executable code termed “plugins”. VQL plugins are simply generators of rows, and may take a number of named arguments.&lt;/p>
+&lt;h3 id="the-scope">The scope&lt;/h3>
+&lt;p>Just like most other programming languages, VQL has a concept of a scope. You can think of the scope as a bag of names referring to values. When VQL encounters a symbol reference within in the query, the VQL engine will consult the scope at that point and try to resolve the symbol’s name for an actual object.&lt;/p>
+&lt;p>For example consider the following simple query&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * FROM info()
+&lt;/code>&lt;/pre>
+&lt;p>When VQL encounters the symbol “&lt;strong>info&lt;/strong>” it looks at the scope object used to evaluate the query, for a plugin with that name. If there is such a plugin, VQL will call it and extract rows from it.&lt;/p>
+&lt;p>Scopes can also be nested — a scope is not one simple dictionary, instead it is a stack of dictionaries. Looking up a name in the scope walks the scope stack in reverse order (from inner scope to outer scope) looking for a match.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bac3645f6cf4280cb818b8eec549f43f">
+ &lt;div data-featherlight="#bac3645f6cf4280cb818b8eec549f43f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/1IXt3ZEGZDVlbk1nUGQYQVw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Consider the above query SELECT OS FROM info(). The query begins with a parent scope and then VQL will run the info() plugin. The plugin will emits a row containing information about the platform. VQL will then create a nested subscope appending the row to the parent scope, and propagate the row further in the query.&lt;/p>
+&lt;p>The column selector in this query refers to the symbol &lt;strong>OS&lt;/strong>. In order to resolve this symbol, VQL will walk the nested scope in reverse and will find a column called OS in the row. This will resolve the name and end the search, causing the OS to be emitted into the result set.&lt;/p>
+&lt;p>Lets crank it up a bit — what if we refer to an unknown symbol?&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="3f10e31ec07e971472486290e69fe737">
+ &lt;div data-featherlight="#3f10e31ec07e971472486290e69fe737" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/14NKhmecY8Wu2GTxDcfVn1g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above query SELECT OS, Foo FROM info() we refer to an unknown symbol called &lt;strong>Foo&lt;/strong>. VQL will attempt to resolve this symbol by walking the scope stack as before, but since the symbol is not known this will fail.&lt;/p>
+&lt;p>VQL emits a warning that Symbol Foo is not found and helpfully prints the current scope at the point of resolution. As you can see from the warning message, the scope consists of a list of layers, each layer has a set of columns. This is why we refer to the scope as a scope stack.&lt;/p>
+&lt;p>The last element in the scope stack is the row produced by the info() plugin. (As can be seen by the usual columns emitted by info() including an OS column).&lt;/p>
+&lt;p>Note that VQL emits a warning but the query keeps going — most errors in VQL are “soft” errors that do not terminate the query from running. VQL does its best to continue with query execution as much as possible.&lt;/p>
+&lt;h3 id="the-foreach-plugin-and-looping">The foreach plugin and looping&lt;/h3>
+&lt;p>The previous section covered the query scope in what seems like a rather theoretical and very computer science manner — why should you care about it? The concept of scope is central to VQL and it is critical to understanding how data moves throughout the query.&lt;/p>
+&lt;p>Consider the example of the foreach() plugin. Unlike SQL, VQL does not support joins. Instead, VQL provides a plugin to enable data from two different data sources to be combined.&lt;/p>
+&lt;p>In VQL plugins accept named arguments, but the arguments do not have to be simple types like integers or strings. It is also possible to provide a subquery as an argument to a plugin. The foreach() plugin takes advantage of this property by accepting a &lt;strong>row&lt;/strong> query and a &lt;strong>query&lt;/strong> query. For each row emitted by the &lt;strong>row&lt;/strong> query, the foreach() plugin executes the query provided in the &lt;strong>query&lt;/strong> argument. This is illustrated in the diagram below.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="590913cf284c93140b387699c2ac3a44">
+ &lt;div data-featherlight="#590913cf284c93140b387699c2ac3a44" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/1EMA7RdO2bH0ZBoS3EPTP9A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>How can we use this in practice? Consider the following example…&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d1a87373ee59ef612afcec7ff2b7a690">
+ &lt;div data-featherlight="#d1a87373ee59ef612afcec7ff2b7a690" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/1XgdBwQdDL4VHhJAWJGsFEw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In this example, we select all columns from the foreach() plugin, providing the &lt;strong>row&lt;/strong> argument a query which lists all the running processes and extract their binary path. For each binary path, we run the stat() plugin returning filesystem information (like timestamps, size etc).&lt;/p>
+&lt;p>While this query is obviously useful from a DFIR perspective (it tells us when the binary of each process was modified), it also shows how scope is used within VQL.&lt;/p>
+&lt;p>You might notice that we refer to a symbol Exe within the &lt;strong>query&lt;/strong> query — where does this get resolved from? The foreach plugin creates a sub-scope in which to run the &lt;strong>query&lt;/strong> query, and appends the row to it. In this way, it is possible to access symbols from the iterated row from the inner loop, and therefore stat a new file each time. Information flows from the &lt;strong>row&lt;/strong> query into the &lt;strong>query&lt;/strong> query by way of the nested scope that is shared between them.&lt;/p>
+&lt;h3 id="more-foreach-examples">More foreach examples&lt;/h3>
+&lt;p>The foreach plugin is one of the most often used plugins in VQL. It is very common to apply one plugin over the result set of another plugin. Here we give several examples:&lt;/p>
+&lt;h4 id="yara-scan-files-matching-a-glob-expression">Yara scan files matching a glob expression:&lt;/h4>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a67001e72a0a16be896d882d73ce8c7c">
+ &lt;div data-featherlight="#a67001e72a0a16be896d882d73ce8c7c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/1bGb_CYsiRQko7ai0mcWaVw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h4 id="list-all-open-file-handles-from-all-chrome-processes">List all open file handles from all chrome processes:&lt;/h4>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="600b052cad1b4bb8f9721ae61f44fddc">
+ &lt;div data-featherlight="#600b052cad1b4bb8f9721ae61f44fddc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/../../img/1h8EgsM6ji2Vv1ewQLx5ikQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>This second installment in our series of articles about VQL internals I introduced the idea of scope in VQL. We saw how scope lookups are central to controlling data flow within the query, with some plugins creating nested sub scope in which to evaluate subqueries.&lt;/p>
+&lt;p>We saw how this principle is applied in the &lt;strong>foreach()&lt;/strong> plugin to implement a looping control flow — apply a query over each row produced by another query. This construct allows us to iterate over rows and act on each one with a second dedicated query. Although functionally equivalent to an SQL join operation, it is arguably easier to read and understand VQL queries.&lt;/p>
+&lt;p>In the next part we see how VQL queries themselves may be stored in the scope and reused. We go back to the concept of lazy evaluation we encountered in the first part and see how this applies to sub queries. We then introduce event queries as a way to run fully asynchronous and event driven VQL.&lt;/p>
+&lt;p>If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+.&lt;/p></description></item><item><title>The Velociraptor Query Language Pt 1</title><link>https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/</link><pubDate>Sun, 14 Jun 2020 00:38:44 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="ef9ca393a49e2dc1dc60d770104ab1b1">
+ &lt;div data-featherlight="#ef9ca393a49e2dc1dc60d770104ab1b1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/14hy_vlttNoFFf-sr_Ei0tw.jpeg" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Velociraptor’s query language is central to the operation of Velociraptor. We find it being used in querying endpoints, collecting forensic artifacts and endpoint state and even in post processing data on the server.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Velociraptor is ultimately just a VQL query evaluation engine!&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>Why should you know more about VQL? Users do not actually need to know VQL to simply collect DFIR artifacts from endpoints, hunt for malware or remediate an infection. The Velociraptor GUI is powerful and provides expert DFIR knowledge at the tip of your fingerprints through built in and community contributed artifact definitions.&lt;/p>
+&lt;p>However being proficient in VQL will allow you to be able to write custom artifacts, post process data and adapt quickly to changing requirements during a fluid incident response exercise. You will also be able to understand, modify or adapt existing artifacts to your changing needs or to handle new evidence sources.&lt;/p>
+&lt;p>This is the first of a series of articles about the VQL query language. I hope this series will inspire you to develop and contribute new artifacts to this open source project — to the benefit of all members of the community.&lt;/p>
+&lt;h3 id="why-a-query-language">Why a query language?&lt;/h3>
+&lt;p>Before we start, let&amp;rsquo;s discuss why would we want a query language in an endpoint visibility and monitoring tool, such as Velociraptor.&lt;/p>
+&lt;p>In practice, the DFIR process is very fluid — sometimes we don&amp;rsquo;t know in advance what we would encounter. We need a way to rapidly and flexibly deploy new hunting techniques and algorithms in order to responds to the dynamic nature of IR.&lt;/p>
+&lt;p>There are a number of other DFIR tools that do not feature a rich query language — but they all provide some method of dynamically adding code to the endpoint. For example &lt;a href="https://github.com/google/grr" target="_blank" >GRR&lt;/a>
+ supports “Python Hacks” to run arbitrary code at the endpoint, &lt;a href="https://www.tanium.com/" target="_blank" >Tanium&lt;/a>
+ supports running scripts and&lt;a href="https://www.carbonblack.com/" target="_blank" > Carbon Black &lt;/a>
+allows running arbitrary commands using an API. All these methods cater for dynamic and flexible response.&lt;/p>
+&lt;p>&lt;a href="https://osquery.io/" target="_blank" >OSQuery&lt;/a>
+ was the first tool to offer SQL as a query language for accessing endpoint state. This is really powerful and is probably the most similar tool to Velociraptor’s VQL. So in this article we will often highlight similarities and differences between Velociraptor’s VQL and OSQuery’s SQL.&lt;/p>
+&lt;h3 id="velociraptor-notebooks">Velociraptor Notebooks&lt;/h3>
+&lt;p>In the articles in this series, we will be working with the Velociraptor notebook. The notebook is a way to collaborate with many investigators in the course of a DFIR investigation using a shared document consisting of cells (think of it like a Google docs for DFIR!).&lt;/p>
+&lt;p>If you want to follow along this article, you should install the Velociraptor frontend locally (simply generate a simple local config using velociraptor config generate -i and start the frontend using velociraptor.exe &amp;ndash;config server.config.yaml frontend -v.&lt;/p>
+&lt;p>Start a new notebook by selecting the notebook in the sidebar then add a new notebook. Provide a title and description and then add a new VQL cell.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="90dace20c60d2700b9807f8956c3a8d9">
+ &lt;div data-featherlight="#90dace20c60d2700b9807f8956c3a8d9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1IaE_YYFXGqDIOXuxZa8dWQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Notebooks consists of a series of &lt;strong>Cells&lt;/strong>. There are a number of types of cells but the most common are &lt;strong>Markdown&lt;/strong> Cells and &lt;strong>VQL&lt;/strong> cells. VQL cells allow one to run arbitrary VQL directly within the notebook, and view the results in a table.&lt;/p>
+&lt;p>When you create a new notebook, the first cell will be of type markdown. You can add a VQL cell below that by simply selecting Add VQL cell from the toolbar.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="dcbd0115f4065350843bd5484a5aa2c9">
+ &lt;div data-featherlight="#dcbd0115f4065350843bd5484a5aa2c9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1bqFDmsEFrvkpE8BGmMi2Tg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>A VQL cell allows one to simply write VQL queries into the notebook. Note that VQL queries in the notebook are actually running on the server itself. It is therefore possible to control and automate the server using VQL (we will see this in a later article).&lt;/p>
+&lt;p>For now simply write the following query and click the save icon.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * FROM info()
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="04bb5b213e7bca046ecb6ecb6e0069f4">
+ &lt;div data-featherlight="#04bb5b213e7bca046ecb6ecb6e0069f4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1VIwIVaEUGr16yQlEUy-K9A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>When you finish writing your VQL query, click the “Save” button to update the notebook cell and recalculate the table.&lt;/p>
+&lt;p>You have just written your first VQL query!&lt;/p>
+&lt;p>One important thing to note is that the output of a query is always a table. The GUI will render the table in the VQL cell. The table will always return a sequence of rows, each row being a simple collection of columns. You can think of a row as simply a python dictionary with keys being the column names and values being arbitrary objects.&lt;/p>
+&lt;h3 id="vql-basics">VQL Basics&lt;/h3>
+&lt;p>VQL was designed to be easy to use and simple to understand. It is also based on SQL but does not support more complex SQL constructs like joins. The basic statement in VQL looks like this:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="faa7e9e6191f01a35ad37216c7889354">
+ &lt;div data-featherlight="#faa7e9e6191f01a35ad37216c7889354" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1lkLMfTJJDPVUtw1fsBPUEQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>VQL queries start with the SELECT keyword, and are then followed by a list of “Column Selectors” which specify the columns that will be emitted. A VQL query can also have a WHERE clause — representing a filter which the row must pass before it is emitted.&lt;/p>
+&lt;p>One of the biggest differences between VQL and SQL is the use of parameters given to plugins. SQL was designed to operate on static data tables, however, in VQL, data sources are not static — they are actually plugins which generate rows when called (for example &lt;em>pslist()&lt;/em> is a plugin which returns one process per row).&lt;/p>
+&lt;p>Since plugins run code, it makes sense that they would accept arguments just like functions. Therefore in VQL plugins receive keyword arguments. VQL does not support positional arguments — all arguments are named. In the GUI pressing “?” inside a plugin will suggest all the keywords the plugin accepts so it is really easy to find the names for a plugin’s arguments.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6eb3a43a0449c124638dd7c993fa2a5f">
+ &lt;div data-featherlight="#6eb3a43a0449c124638dd7c993fa2a5f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1LhnuM1rFwDIhJelj4wN2AA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>VQL Plugins generate rows, but what exactly is a row? Unlike SQL which deals with simple data types, a VQL row can be thought of as a mapping (i.e. python dictionary or a JSON object) where keys are the column names, and values can take on simple types like integers, strings, as well as complex types like other objects, timestamps etc.&lt;/p>
+&lt;p>You can see the raw data for each row in the table by clicking the “Show Raw JSON” button (Looks like binoculars) in the table GUI. For example, for the above query we can see the raw data as below.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="74a102ff8e04dfb6aa9489c50747c20e">
+ &lt;div data-featherlight="#74a102ff8e04dfb6aa9489c50747c20e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1qCKk06PkMDt79-X9Vu8K8Q.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In our case the &lt;strong>info()&lt;/strong> plugin generated a single row with information about the running platform. The raw data consists of a list of JSON objects — each object represents a single row. Rows have column names and each column may contain different data.&lt;/p>
+&lt;h3 id="lazy-vql">Lazy VQL&lt;/h3>
+&lt;p>One interesting aspect of VQL is lazy evaluation. Since VQL functions can be expensive or have side effects it is important to understand how they are evaluated. In the following discussion we will illustrate this by use of the &lt;strong>log()&lt;/strong> VQL function — this function simply emits a logging message (you can think of it as the VQL equivalent of &lt;strong>print&lt;/strong>).&lt;/p>
+&lt;p>Let us modify the above query to simply log a simple message “I ran!”&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="185c838da2985c1b0b58d2b1f59dc0fa">
+ &lt;div data-featherlight="#185c838da2985c1b0b58d2b1f59dc0fa" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1-k1KllnlrUkKBgiLO3FvvQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The GUI renders query logs in red under the table. As we can see the log() function evaluated to &lt;strong>true&lt;/strong> and a side effect was logging a message.&lt;/p>
+&lt;p>It is best to understand how lazy evaluation works by looking at examples. Consider the following example:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9c64079de333b2fbe8d4605288902bb2">
+ &lt;div data-featherlight="#9c64079de333b2fbe8d4605288902bb2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/10XsMrQaOdDrFlzUH-LPjqw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In this query we add another column to the output of the info() plugin called “Log” which contains the **log() **function. We then use this column in the WHERE clause. Since the log() function always returns true, the row will pass the filter and be emitted, as well as a log message printed.&lt;/p>
+&lt;p>What happens however, if the row is filtered out? Let us change this query to be filtered only if the OS is windows (this query is running on Linux).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="1b3ec9429f977447ae2081d192240397">
+ &lt;div data-featherlight="#1b3ec9429f977447ae2081d192240397" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1-k3j8cbSXKjB-RLQcBgYew.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since no rows are emitted, the log() function is never evaluated! Therefore we got no logging message. Notice how the log() function is evaluated lazily — since the output is not needed since the row is filtered out.&lt;/p>
+&lt;p>Let’s now change the query to consider the Log column in the WHERE clause&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9a12e2d670b07bbbfc9c66cae4c66de5">
+ &lt;div data-featherlight="#9a12e2d670b07bbbfc9c66cae4c66de5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1d0mjp1CUCjGbwuj8NB25Lw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Because the WHERE clause needs to evaluate the column “Log” the log() function will be evaluated first — even though the row is ultimately eliminated, we still receive a log message!&lt;/p>
+&lt;p>VQL evaluates a logical expression in a lazy manner — the left hand side of the AND clause is evaluated, and if true the right hand side is evaluated.&lt;/p>
+&lt;p>Let’s swap the order of the AND clause&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9c3598d532d89b2a3cdd7ae7492a2648">
+ &lt;div data-featherlight="#9c3598d532d89b2a3cdd7ae7492a2648" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/12NQXdVa7w_OaecjNXpzm2Q.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This time the row is eliminated by the left hand condition (OS = “Windows”) and VQL does not need to evaluate the Log column at all! Hence we get no logging message.&lt;/p>
+&lt;h3 id="using-laziness-in-practice">Using laziness in practice&lt;/h3>
+&lt;p>The previous discussion was rather theoretical but how would you use this behavior in reality? When we write VQL it is important to bear in mind how expensive we believe each operation would be.&lt;/p>
+&lt;p>For example consider the &lt;strong>hash()&lt;/strong> function which calculates a hash of a file when evaluated. Suppose we were looking for a particular file with a known hash in the &lt;strong>/usr/bin&lt;/strong> directory.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="1bedb7e5a3419adee78d250e8e20390d">
+ &lt;div data-featherlight="#1bedb7e5a3419adee78d250e8e20390d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/1V-alj2p3P3hr5HPYYxM1wg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This query is rather expensive — we have to hash every single file in the directory and compare that to our malicious hash (In VQL &lt;strong>=~&lt;/strong> is the regex match operator). If the directory is large, or we search through many directories, this can take many minutes!&lt;/p>
+&lt;p>Instead we can leverage the lazy evaluation property to make the query far more efficient by considering other attributes of the file which are quicker to calculate&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8c3d0ac359b0c44834dda8bd70e449ae">
+ &lt;div data-featherlight="#8c3d0ac359b0c44834dda8bd70e449ae" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/../../img/13_nBDC6EonDZuLmZZXvzgg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This revised query is almost instant! We only really hash those files whose size is exactly 499 bytes and never hash any of the other files which are not the ones we are looking for!&lt;/p>
+&lt;p>We can now encode this VQL query in an artifact, and launch it as a hunt on our entire deployment. This low cost, almost instant hunt is well suited for very wide deployment without fear of adverse effects on endpoint performance.&lt;/p>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>VQL is a very powerful way of searching for specific indicators on the end point. A good working knowledge of VQL pays dividends to the DFIR hunter. This first part in our series of articles about VQL internals hopes to provide you with the tools and confidence to forge your own VQL queries. In the next article we explore VQL’s control structures such as &lt;strong>if()&lt;/strong>, &lt;strong>foreach()&lt;/strong> and &lt;strong>switch()&lt;/strong>.&lt;/p>
+&lt;p>If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+.&lt;/p></description></item></channel></rss>

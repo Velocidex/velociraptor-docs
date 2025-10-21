@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Collector on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/collector/</link><description>Recent content in Collector on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 06 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/collector/index.xml" rel="self" type="application/rss+xml"/><item><title>How can I quickly reconfigure an offline collector?</title><link>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</link><pubDate>Fri, 06 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</guid><description>&lt;h1 id="how-can-i-quickly-reconfigure-an-offline-collector">How can I quickly reconfigure an offline collector?&lt;/h1>
+&lt;p>The offline collector is a pre-configured version of Velociraptor that
+automatically collects certain artifacts when invoked with no command line args.&lt;/p>
+&lt;p>The offline collector is a full Velociraptor binary that simply has a custom
+configuration embedded. So you can still use the collector binary to perform any
+operations that an unmodified Velociraptor binary is capable of.&lt;/p>
+&lt;p>Usually the collector is built using the GUI by selecting the correct artifacts
+and injecting parameters into the embedded configuration file. But sometimes we
+might want to slightly modify the embedded configuration, and firing up a GUI to
+rebuild a new collector from scratch is a bit too much work.&lt;/p>
+&lt;p>Here we describe an easy way to quickly modify the embedded configuration, which
+is suitable for small changes in the embedded configuration. While it is
+recommended that you use the GUI to prepare a completely new collector, for
+small tweaks to an existing offline collector this method may be quicker.&lt;/p>
+&lt;p>Also note that you can override or append command line arguments to those
+embedded in and offline collector using
+&lt;a href="https://docs.velociraptor.app/docs/cli/#autoexec-mode-and-post-args" >post-args&lt;/a>
+,
+which may be sufficient when you want to change the collector behaviour on a
+once-off basis.&lt;/p>
+&lt;h2 id="general-method">General Method&lt;/h2>
+&lt;p>Assuming you have an existing offline collector named
+&lt;code>Collector_velociraptor-v0.74.3-windows-amd64.exe&lt;/code>:&lt;/p>
+&lt;ol>
+&lt;li>First extract the existing embedded config from the collector into a local
+file:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">Collector_velociraptor-v0.74.3-windows-amd64.exe config show &amp;gt; config.yaml
+&lt;/code>&lt;/pre>
+&lt;ol start="2">
+&lt;li>
+&lt;p>Next, edit the config file - for example, you might want to tweak one or two
+parameters.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Finally, repack the new configuration file into a new collector:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">Collector_velociraptor-v0.74.3-windows-amd64.exe config repack config.yaml new_collector.exe
+&lt;/code>&lt;/pre>
+&lt;p>You can verify that the new collector has the modified configuration using
+&lt;code>new_collector.exe config show&lt;/code>.&lt;/p>
+&lt;p>In the example above the &lt;code>config repack&lt;/code> command repacked the collector config
+into a copy of the binary which invoked the command. This is the default
+behaviour. If you wish to repack into a different binary then please see the
+next section.&lt;/p>
+&lt;p>Also note that the commands above are invoked using the offline collector binary
+itself, since this is just a normal Velociraptor binary which happens to have an
+embedded config. This is just for convenience - you could use any Velociraptor
+binary on any platform to do the config extraction or repacking, provided you
+also supply it with the target binary that it will use in generating the output
+file (see next section).&lt;/p>
+&lt;h3 id="repacking-to-a-different-binary">Repacking to a different binary&lt;/h3>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Limitations ">&lt;p>Repacking the config into a different binary will not transfer any bundled tools
+to the new binary! This will cause the collection to fail if the offline
+collector can&amp;rsquo;t access these tools from an alternative location, such as from a
+URL defined in the embedded artifacts&amp;rsquo; tool definitions. And even if it can
+download the tool from an external location, you may not want it to.&lt;/p>
+&lt;p>If your collector uses artifacts which use tools then you should NOT use the
+method described here. You should instead rebuild your offline collector using
+the GUI or the CLI &lt;code>collector&lt;/code> command.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>You can use the &lt;code>--exe&lt;/code> flag to specify a different target binary. This allows
+you to transfer an existing collector config to a different architecture, and/or
+to a newer binary version. For example:&lt;/p>
+&lt;pre>&lt;code class="language-sh"># from Windows amd64 to i386
+velociraptor-v0.74.3-windows-amd64.exe config repack --exe velociraptor-v0.74.3-windows-386.exe config.yaml new_collector.exe
+&lt;/code>&lt;/pre>
+&lt;p>or&lt;/p>
+&lt;pre>&lt;code class="language-sh"># using Linux to repack a Windows collector
+./velociraptor-v0.74.3-linux-amd64 config repack --exe velociraptor-v0.74.3-windows-amd64.exe config.yaml new_collector.exe
+&lt;/code>&lt;/pre>
+&lt;h2 id="repacking-a-generic-collector">Repacking a Generic Collector&lt;/h2>
+&lt;p>The &lt;a href="https://docs.velociraptor.app/docs/offline_triage/#the-generic-offline-collector" target="_blank" >Generic Collector&lt;/a>
+
+is independent of any binary. It&amp;rsquo;s essentially a standalone collector config
+with compression applied. This allows it to be used with any Velociraptor binary
+since it is external to the binary.&lt;/p>
+&lt;p>You can unpack the Generic Collector into uncompressed YAML as follows:&lt;/p>
+&lt;ol>
+&lt;li>First extract the existing embedded config from the collector into a local
+file:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">velociraptor config show --embedded_config Collector_velociraptor-collector &amp;gt; Collector_velociraptor-collector.yaml
+&lt;/code>&lt;/pre>
+&lt;ol start="2">
+&lt;li>
+&lt;p>Then make minor tweaks if needed, as mentioned above.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>And then repack it back into the Generic Collector format using the &lt;code>--exe&lt;/code>
+flag. In this case the &amp;ldquo;exe&amp;rdquo; can be any generic collector file including the
+default &amp;ldquo;blank&amp;rdquo; one available on our
+&lt;a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >Github Releases page&lt;/a>
+
+(named &lt;code>velociraptor-collector&lt;/code>).&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">velociraptor config repack --exe velociraptor-collector Collector_velociraptor-collector.yaml new_generic-collector
+&lt;/code>&lt;/pre>
+&lt;p>Even though the &lt;code>velociraptor-collector&lt;/code> file is not actually an exe, this works
+because the generic collector file contains the same embedding section as any
+Velociraptor binary, so the &lt;code>config repack&lt;/code> command recognizes it as a valid
+binary and therefore allows it as an alternative repacking target.&lt;/p></description></item></channel></rss>
