@@ -1,8 +1,9 @@
 ---
 title: "Remote Uploads"
 date: 2023-04-02T04:31:24Z
+last_reviewed: 2025-10-22
 draft: false
-weight: 45
+weight: 10
 ---
 
 By default, Velociraptor's offline collector will create a ZIP file

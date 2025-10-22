@@ -1357,7 +1357,7 @@
     },
     {
         "name": "compress",
-        "description": "Compress a file.",
+        "description": "Compress a file using GZip.",
         "type": "Function",
         "args": [
             {
@@ -1369,7 +1369,8 @@
             {
                 "name": "output",
                 "type": "string",
-                "description": "A path to write the output - default is the path with a .gz extension"
+                "description": "A path to write the output - default is the path with a .gz extension",
+                "required": true
             }
         ],
         "category": "encode",
@@ -3251,7 +3252,7 @@
         "name": "hash",
         "description": "Calculate the hash of a file.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "path",
@@ -12132,6 +12133,87 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "yarax",
+        "description": "Scan files using yara rules (Using the new yarax engine).",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "rules",
+                "type": "string",
+                "description": "Yara rules in the yara DSL or after being compiled by the yarac compiler."
+            },
+            {
+                "name": "files",
+                "type": "Any",
+                "description": "The list of files to scan.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "Accessor (e.g. ntfs,file)"
+            },
+            {
+                "name": "context",
+                "type": "int",
+                "description": "How many bytes to include around each hit"
+            },
+            {
+                "name": "start",
+                "type": "uint64",
+                "description": "The start offset to scan"
+            },
+            {
+                "name": "end",
+                "type": "uint64",
+                "description": "End scanning at this offset (100mb)"
+            },
+            {
+                "name": "number",
+                "type": "int64",
+                "description": "Stop after this many hits (1)."
+            },
+            {
+                "name": "blocksize",
+                "type": "uint64",
+                "description": "Blocksize for scanning (10mb)."
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "description": "If set use this key to cache the  yara rules."
+            },
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "The Yara namespece to use."
+            },
+            {
+                "name": "vars",
+                "type": "ordereddict.Dict",
+                "description": "The Yara variables to use."
+            },
+            {
+                "name": "dll_path",
+                "type": "Lambda",
+                "description": "Function to resolve path to the yarax DLL",
+                "required": true
+            },
+            {
+                "name": "force_buffers",
+                "type": "bool",
+                "description": "Force buffer scan in all cases."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ,EXECVE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

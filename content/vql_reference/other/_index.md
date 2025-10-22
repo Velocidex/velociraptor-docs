@@ -101,3 +101,4 @@ not yet been categorized.
 |[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_csv](write_csv)|<span class='vql_type'>Plugin</span>|Write a query into a CSV file|
 |[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
+|[yarax](yarax)|<span class='vql_type'>Plugin</span>|Scan files using yara rules (Using the new yarax engine)|
