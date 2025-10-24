@@ -8,13 +8,16 @@ description: |
     on the target system(s).
     See also https://github.com/lautarolecumberry/DetectingFilelessMalware
 
+    (Ignored) False Positives
+    - `ASLR`:       If jumps or comparisons are not relative and Address Space Layout Randomization
+                    (ASLR) is enabled, then addresses within these jumps are adjusted in RAM
+                    with a constant offset. This offset can be computed and ignored.
+    - `BaseOfData`: Relative Virtual Adresses (RVA) cause an offset in the code in memory of a
+                    32-bit process. This is the case when the field BaseOfData is set.
+                    Like ASLR it is a constant offset that is added to addresses.
+
+
 parameters:
-- name: IgnoreOneByteOffsets
-  description: Relative Virtual Adresses (RVA) cause an offset in the code in memory of a process.
-               This is the case when the field BaseOfData is set to 0x8000. It creates false
-               positives and is fairly safe to ignore (1-byte injections are really hard).
-  default: True
-  type: bool
 - name: UploadFindings
   description: Upload all executables where code in memory does not match code on disk. This
                can potentially generate a lot of traffic. Dry-run before enabling this option.
@@ -25,8 +28,11 @@ parameters:
   default: .
 - name: ModuleRegEx
   type: regex
-  description: Filter for modules to check.
-  default: "(KERNELBASE|ntdll).dll|.exe"
+  description: Filter for modules to check. If you want to scan all modules (i.e. libraries) within
+               a binary, replace with `.*`. The default parameter checks the original binary itself (.exe)
+               as well as kernelbase.dll, ntdll.dll, user32.dll, kernel32.dll, shell32.dll, msvcrt.dll,
+               advapi32.dll, and comdlg32.dll (i.e. commonly injected libraries).
+  default: ".*\\.exe|(KERNELBASE|ntdll|user32|kenrel32|shell32|msvcrt|advapi32|comdlg32)\\.dll"
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -63,8 +69,8 @@ sources:
                                   DriveReplace(Path=MappingName) AS Path
       FROM vad(pid=Pid)
       WHERE MappingName
-       AND Protection =~ "xr-"
-            AND MappingName =~ ModuleRegEx
+      AND Protection =~ "xr-"
+      AND MappingName =~ ModuleRegEx
       LIMIT 1
     
     LET GetTextSegment(Path) = filter(condition="x=>x.Name = '.text'",
@@ -78,7 +84,8 @@ sources:
       FROM InfoFromVad(Pid=Pid)
       WHERE Address != 0
       AND TextSegmentData.FileOffset
-    
+
+    -- helper function for formating
     LET Hex(X) = format(format="%#x", args=X)
 
     LET Int64(X) = parse_binary(profile="",
@@ -90,7 +97,7 @@ sources:
     LET GetContent(Pid, Name) = SELECT
         *, Name,
         Address AS MemAddress,
-        Hex(X=Address - TextSegmentData.VMA) AS ASLR, 
+        Hex(X=Address - TextSegmentData.VMA) AS ASLR, --calculate ASLR offset to later filter it out
         read_file(accessor="process",
                   offset=Address,
                   filename=PidFilename,
@@ -113,8 +120,10 @@ sources:
       FROM GetContent(Pid=Pid, Name=Name)
       WHERE NOT Comparison
 
+    -- parameter for start PAGESIZE; compare 1 MB pages first
     LET PAGESIZE <= 1024 * 1024
 
+    -- helper function for comparisons of PAGESIZE
     LET _CompareRegions(Base, X, Y, PAGESIZE) = SELECT
         _value + Base AS Offset,
         X[_value:(_value + PAGESIZE)] AS XInt,
@@ -122,71 +131,75 @@ sources:
       FROM range(end=len(list=X), step=PAGESIZE)
       WHERE XInt != YInt
 
+    -- compare full pages (to speed up comparison)
+    -- for each 1 MB page which does not match
+    -- compare 4096 B page
+    -- for each 4096 B page which does not match
+    -- compare single integers
     LET CompareRegions(X, Y, IntSize) = SELECT
         Offset,
         Hex(X=XInt) AS X,
         Hex(X=YInt) AS Y,
         Hex(X=Int64(X=XInt) - Int64(X=YInt)) AS Difference
       FROM foreach(row={
+        -- 1 MB pages
         SELECT *
         FROM _CompareRegions(Base=0, X=X, Y=Y, PAGESIZE=PAGESIZE)
       },
-                  query={
+      query={
         SELECT *
         FROM foreach(row={
-        SELECT *
-        FROM _CompareRegions(Base=Offset, X=XInt, Y=YInt, PAGESIZE=4096)
-      },
-                    query={
-        SELECT *
-        FROM _CompareRegions(Base=Offset, X=XInt, Y=YInt, PAGESIZE=IntSize)
-      })
+          -- 4096 B pages
+          SELECT *
+          FROM _CompareRegions(Base=Offset, X=XInt, Y=YInt, PAGESIZE=4096)
+        },
+        query={
+          -- single integers
+          SELECT *
+          FROM _CompareRegions(Base=Offset, X=XInt, Y=YInt, PAGESIZE=IntSize)
+        })
       })
       LIMIT 500
 
+    -- check if offsets between X and Y (i.e. RAM and disk) are
+    -- always the same offset. Then it is ASLR or BaseOfData.
     LET CompareUniqueRegions(X, Y, IntSize, ASLR) = SELECT *
       FROM CompareRegions(X=X, Y=Y, IntSize=IntSize)
-      WHERE Difference != ASLR
+      WHERE Difference != ASLR --filter out ASLR
       GROUP BY Difference
 
     -- compare the executable from memory and hard disk
     -- only print the ones where they do not match
-    LET Compare(Pid, Name, IntSize) = if(
-        condition=log(message="Comparing process %v", args=Pid)
-        AND IgnoreOneByteOffsets,
-        then={
-        SELECT Pid,
-              Name,
-              ASLR,
-              IntSize,
-              PidFilename,
-              Path,
-              {
-        SELECT Offset,
-              X AS MemoryValue,
-              Y AS DiskValue,
-              Difference,
-              Hex(X=ASLR) AS ASLR
-        FROM CompareUniqueRegions(X=MemoryData, Y=DiskData, IntSize=IntSize, ASLR=ASLR)
-        } AS Differences,
-              MemAddress,
-              DiskAddress,
-              SegmentSize
-        FROM FilterContent(Pid=Pid, Name=Name)
-        WHERE NOT OneByteOffset
-      },
-        else={
-        SELECT Pid,
-              Name,
-              ASLR,
-              IntSize,
-              PidFilename,
-              Path,
-              MemAddress,
-              DiskAddress,
-              SegmentSize
-        FROM FilterContent(Pid=Pid, Name=Name)
-      })
+    LET Compare(Pid, Name, IntSize) = 
+      SELECT Pid,
+             Name,
+             ASLR,
+             IntSize,
+             PidFilename,
+             Path,
+             {
+               SELECT Offset,
+                      X AS MemoryValue,
+                      Y AS DiskValue,
+                      Difference,
+                      ASLR
+               FROM CompareUniqueRegions(X=MemoryData, Y=DiskData, IntSize=IntSize, ASLR=ASLR)
+               -- filter out BaseOfData by shifting the binary value
+               -- to the correct position (256 = shift by 1 byte)
+               WHERE int(int=Difference) / 256 != int(int=ASLR)
+               AND int(int=Difference) / 256 / 256 != int(int=ASLR)
+               AND int(int=Difference) / 256 / 256 / 256 != int(int=ASLR)
+               AND int(int=Difference) * 256 != int(int=ASLR)
+               AND int(int=Difference) * 256 * 256 != int(int=ASLR)
+               AND int(int=Difference) * 256 * 256 * 256 != int(int=ASLR)
+             } AS Differences,
+             MemAddress,
+             DiskAddress,
+             SegmentSize
+      FROM FilterContent(Pid=Pid, Name=Name)
+      WHERE log(message="Comparing process %v - %v", args=[Pid, Name])
+            AND Differences -- filter processes with no differences other than ASLR offsets
+            --FIXME: AND (len(list=Differences) != 1 AND IntSize=4) -- filter out BaseOfData and ignore one constant offset
 
     -- compare with uploading the suspicious executables
     LET CompareAndUpload(Pid, Name, IntSize) = SELECT
@@ -215,15 +228,15 @@ sources:
     SELECT *
     FROM foreach(row=GetPids,
                 workers=20,
-                query={
+      query={
         SELECT *
         FROM if(condition=UploadFindings,
-                then={
+      then={
         SELECT *
         FROM CompareAndUpload(Pid=Pid, Name=Name, IntSize=IntSize)
       },
-                else={
+      else={
         SELECT *
         FROM Compare(Pid=Pid, Name=Name, IntSize=IntSize)
       })
-      })
+    })
