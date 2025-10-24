@@ -1,0 +1,149 @@
+name: Windows.Detection.QuickAssist.Investigation
+description: |
+  Investigates Quick Assist activity by:
+  1. Searching prefetch for Quick Assist executables
+  2. Parsing identified prefetch files
+  3. Checking for and parsing EdgeWebView history from Quick Assist
+  4. Searching Application and Security event logs for Quick Assist activity
+
+author: Eric Y Gonzalez - @EricBori
+
+type: CLIENT
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: PrefetchGlob
+    default: C:\Windows\Prefetch\*QUICKASSIST*.pf
+    description: Glob pattern for Quick Assist prefetch files
+  - name: HistoryPath
+    default: C:\Users\*\AppData\Local\Temp\RemoteHelp\EBWebView\Default\History
+    description: Path to Quick Assist EdgeWebView history database
+  - name: ApplicationLog
+    default: C:\Windows\System32\winevt\logs\Application.evtx
+  - name: SecurityLog
+    default: C:\Windows\System32\winevt\logs\Security.evtx
+
+sources:
+  - name: PrefetchDiscovery
+    query: |
+      -- Step 1: Find Quick Assist prefetch files
+      SELECT OSPath, Name, Size, Mtime
+      FROM glob(globs=PrefetchGlob)
+      
+  - name: PrefetchParsing
+    query: |
+      -- Step 2: Parse identified prefetch files
+      LET prefetch_files = SELECT OSPath 
+        FROM glob(globs=PrefetchGlob)
+      
+      SELECT 
+        OSPath as PrefetchFile,
+        Executable,
+        FileSize,
+        Hash,
+        Version,
+        LastRunTimes,
+        RunCount,
+        FilesAccessed
+      FROM foreach(row=prefetch_files,
+        query={
+          SELECT 
+            OSPath,
+            Executable,
+            FileSize,
+            Hash,
+            Version,
+            LastRunTimes,
+            RunCount,
+            FilesAccessed
+          FROM prefetch(filename=OSPath)
+        })
+  
+  - name: EdgeWebViewHistory
+    query: |
+      -- Step 3: Check for and parse EdgeWebView history
+      LET history_files = SELECT OSPath
+        FROM glob(globs=HistoryPath)
+        WHERE OSPath
+      
+      LET history_exists = SELECT count() as Count
+        FROM history_files
+      
+      -- Only parse if file exists
+      SELECT * FROM if(
+        condition=history_exists[0].Count > 0,
+        then={
+          SELECT 
+            _OSPath as HistoryFile,
+            id,
+            url,
+            title,
+            visit_count,
+            typed_count,
+            timestamp(winfiletime=last_visit_time) as LastVisitTime,
+            hidden
+          FROM foreach(row=history_files,
+            query={
+              SELECT 
+                OSPath as _OSPath,
+                id,
+                url,
+                title,
+                visit_count,
+                typed_count,
+                last_visit_time,
+                hidden
+              FROM sqlite(
+                file=OSPath,
+                query="SELECT * FROM urls ORDER BY last_visit_time DESC"
+              )
+            })
+        },
+        else={
+          SELECT 
+            "No EdgeWebView history file found" as Message,
+            HistoryPath as SearchedPath
+          FROM scope()
+        })
+  
+  - name: ApplicationEventLogs
+    query: |
+      -- Step 4a: Search Application.evtx for Quick Assist
+      LET app_log = SELECT *
+        FROM parse_evtx(filename=ApplicationLog)
+        WHERE EventData =~ "(?i)(quickassist|quick assist)"
+           OR Message =~ "(?i)(quickassist|quick assist)"
+           OR Provider =~ "(?i)(Quick Assist)"
+      
+      SELECT 
+        "Application" as LogSource,
+        timestamp(epoch=System.TimeCreated.SystemTime) as EventTime,
+        System.EventID.Value as EventID,
+        System.Channel as Channel,
+        System.Computer as Computer,
+        System.Provider.Name as Provider,
+        Message,
+        EventData
+      FROM app_log
+      ORDER BY EventTime DESC
+  
+  - name: SecurityEventLogs
+    query: |
+      -- Step 4b: Search Security.evtx for Quick Assist
+      LET sec_log = SELECT *
+        FROM parse_evtx(filename=SecurityLog)
+        WHERE EventData =~ "(?i)(quickassist|quick assist)"
+           OR Message =~ "(?i)(quickassist|quick assist)"
+      
+      SELECT 
+        "Security" as LogSource,
+        timestamp(epoch=System.TimeCreated.SystemTime) as EventTime,
+        System.EventID.Value as EventID,
+        System.Channel as Channel,
+        System.Computer as Computer,
+        System.Provider.Name as Provider,
+        Message,
+        EventData
+      FROM sec_log
+      ORDER BY EventTime DESC
