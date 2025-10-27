@@ -1,0 +1,76 @@
+name: Windows.Forensics.QuickAssist
+description: |
+  Investigates Quick Assist activity by:
+  1. Searching prefetch for Quick Assist executables
+  2. Parsing identified prefetch files
+  3. Checking for and parsing EdgeWebView history from Quick Assist
+  4. Searching Application and Security event logs for Quick Assist activity
+
+author: Eric Y Gonzalez - @EricBori
+
+type: CLIENT
+
+parameters:
+  - name: HistoryPath
+    default: C:\Users\*\AppData\Local\Temp\RemoteHelp\EBWebView\Default\History
+    description: Path to Quick Assist EdgeWebView history database
+  - name: ApplicationLog
+    default: C:\Windows\System32\winevt\logs\Application.evtx
+  - name: SecurityLog
+    default: C:\Windows\System32\winevt\logs\Security.evtx
+
+sources:
+  - name: PrefetchParsing
+    query: |
+      -- Step 1: Parse all prefetch files using Windows.Forensics.Prefetch
+      -- and filter for Quick Assist executables and related files
+      SELECT *
+      FROM Artifact.Windows.Forensics.Prefetch()
+      WHERE Executable =~ "(?i)(quick assist|quickassist)"
+         OR OSPath =~ "(?i)(quick assist|quickassist)"
+  
+  - name: EdgeWebViewHistory
+    query: |
+      -- Step 2: Check for and parse EdgeWebView history using Windows.Applications.Chrome.History
+      SELECT *
+      FROM Artifact.Generic.Forensic.SQLiteHunter(CustomGlob=HistoryPath)
+  
+  - name: ApplicationEventLogs
+    query: |
+      -- Step 3a: Search Application.evtx for Quick Assist
+      LET app_log = SELECT *
+        FROM parse_evtx(filename=ApplicationLog)
+        WHERE EventData =~ "(?i)(quickassist|quick assist)"
+           OR Message =~ "(?i)(quickassist|quick assist)"
+      
+      SELECT 
+        "Application" as LogSource,
+        timestamp(epoch=System.TimeCreated.SystemTime) as EventTime,
+        System.EventID.Value as EventID,
+        System.Channel as Channel,
+        System.Computer as Computer,
+        System.Provider.Name as Provider,
+        Message,
+        EventData
+      FROM app_log
+      ORDER BY EventTime DESC
+  
+  - name: SecurityEventLogs
+    query: |
+      -- Step 3b: Search Security.evtx for Quick Assist
+      LET sec_log = SELECT *
+        FROM parse_evtx(filename=SecurityLog)
+        WHERE EventData =~ "(?i)(quickassist|quick assist)"
+           OR Message =~ "(?i)(quickassist|quick assist)"
+      
+      SELECT 
+        "Security" as LogSource,
+        timestamp(epoch=System.TimeCreated.SystemTime) as EventTime,
+        System.EventID.Value as EventID,
+        System.Channel as Channel,
+        System.Computer as Computer,
+        System.Provider.Name as Provider,
+        Message,
+        EventData
+      FROM sec_log
+      ORDER BY EventTime DESC
