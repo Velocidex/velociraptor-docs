@@ -23,11 +23,11 @@
       "index": "b09",
       "roundness": null,
       "seed": 2114315202,
-      "version": 201,
-      "versionNonce": 1327030210,
+      "version": 203,
+      "versionNonce": 705553572,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1759066289304,
+      "boundElements": [],
+      "updated": 1761482290750,
       "link": null,
       "locked": false,
       "status": "saved",
@@ -41,12 +41,12 @@
     {
       "id": "1v_ftjW19jXVKNrJBiCC8",
       "type": "text",
-      "x": 631.9998779296875,
-      "y": 322.28568267822266,
+      "x": 633.9998779296875,
+      "y": 325.28568267822266,
       "width": 245.19482421875,
-      "height": 105,
+      "height": 75,
       "angle": 0,
-      "strokeColor": "#a5d8ff",
+      "strokeColor": "#228be6",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
       "strokeWidth": 4,
@@ -58,8 +58,8 @@
       "index": "b0A",
       "roundness": null,
       "seed": 1656410078,
-      "version": 74,
-      "versionNonce": 222190850,
+      "version": 102,
+      "versionNonce": 1181728164,
       "isDeleted": false,
       "boundElements": [
         {
@@ -67,11 +67,11 @@
           "type": "arrow"
         }
       ],
-      "updated": 1759066321006,
+      "updated": 1761482366291,
       "link": null,
       "locked": false,
-      "text": "Details about the\ntarget of the\nprefetch file.",
-      "fontSize": 28,
+      "text": "Details about the\ntarget of the prefetch\nfile.",
+      "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
@@ -86,9 +86,9 @@
       "x": 250.07778930664062,
       "y": 295.5519790649414,
       "width": 245.19482421875,
-      "height": 140,
+      "height": 75,
       "angle": 0,
-      "strokeColor": "#a5d8ff",
+      "strokeColor": "#228be6",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
       "strokeWidth": 4,
@@ -100,8 +100,8 @@
       "index": "b0B",
       "roundness": null,
       "seed": 540920350,
-      "version": 179,
-      "versionNonce": 853910878,
+      "version": 182,
+      "versionNonce": 911019804,
       "isDeleted": false,
       "boundElements": [
         {
@@ -109,11 +109,11 @@
           "type": "arrow"
         }
       ],
-      "updated": 1759066332875,
+      "updated": 1761482301057,
       "link": null,
       "locked": false,
-      "text": "All fields from\nthe prefetch\nartifact are also\navailable.",
-      "fontSize": 28,
+      "text": "All fields from the\nprefetch artifact are\nalso available.",
+      "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
@@ -125,17 +125,17 @@
     {
       "id": "aoCiRCWt2smPuZllm7A51",
       "type": "arrow",
-      "x": 752.5194091796875,
-      "y": 312.31168365478516,
-      "width": 158.75323486328125,
-      "height": 44.88311767578125,
+      "x": 717.548138334073,
+      "y": 314.31168365478516,
+      "width": 193.72450570889578,
+      "height": 46.88311767578125,
       "angle": 0,
-      "strokeColor": "#a5d8ff",
+      "strokeColor": "#228be6",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
       "strokeWidth": 4,
       "strokeStyle": "solid",
-      "roughness": 2,
+      "roughness": 1,
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
@@ -143,12 +143,12 @@
       "roundness": {
         "type": 2
       },
-      "seed": 1003971870,
-      "version": 68,
-      "versionNonce": 995928258,
+      "seed": 10121116,
+      "version": 145,
+      "versionNonce": 1950669348,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1759066324288,
+      "boundElements": [],
+      "updated": 1761482369558,
       "link": null,
       "locked": false,
       "points": [
@@ -157,19 +157,19 @@
           0
         ],
         [
-          66.49346923828125,
-          -42.389617919921875
+          36.46474008389578,
+          -44.389617919921875
         ],
         [
-          158.75323486328125,
-          -44.88311767578125
+          193.72450570889578,
+          -46.88311767578125
         ]
       ],
       "lastCommittedPoint": null,
       "startBinding": {
         "elementId": "1v_ftjW19jXVKNrJBiCC8",
-        "focus": -0.7235050699456982,
-        "gap": 9.9739990234375
+        "focus": -0.514131575639005,
+        "gap": 10.9739990234375
       },
       "endBinding": null,
       "startArrowhead": null,
@@ -179,17 +179,17 @@
     {
       "id": "3sECYTgd2wAcxelyRtP3L",
       "type": "arrow",
-      "x": 344.4154968261719,
+      "x": 321.9691303169267,
       "y": 282.38956451416016,
-      "width": 113.8701171875,
+      "width": 136.3164836967452,
       "height": 68.98699951171875,
       "angle": 0,
-      "strokeColor": "#a5d8ff",
+      "strokeColor": "#228be6",
       "backgroundColor": "transparent",
       "fillStyle": "solid",
       "strokeWidth": 4,
       "strokeStyle": "solid",
-      "roughness": 2,
+      "roughness": 1,
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
@@ -197,12 +197,12 @@
       "roundness": {
         "type": 2
       },
-      "seed": 660061406,
-      "version": 81,
-      "versionNonce": 242175390,
+      "seed": 1133745308,
+      "version": 104,
+      "versionNonce": 1412128292,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1759066335187,
+      "boundElements": [],
+      "updated": 1761482349009,
       "link": null,
       "locked": false,
       "points": [
@@ -211,11 +211,11 @@
           0
         ],
         [
-          24.93505859375,
-          -47.3765869140625
+          28.381425102995195,
+          -51.3765869140625
         ],
         [
-          113.8701171875,
+          136.3164836967452,
           -68.98699951171875
         ]
       ],

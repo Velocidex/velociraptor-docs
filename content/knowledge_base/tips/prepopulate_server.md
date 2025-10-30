@@ -81,7 +81,7 @@ this example I will add all the `Generic.Client.Info` collections we
 imported previously into a new hunt so I can analyze them together.
 
 First I create a hunt using the GUI to collect the
-`Generic.Cl ient.Info` artifact, but I will leave the hunt in the
+`Generic.Client.Info` artifact, but I will leave the hunt in the
 `STOPPED` state.
 
 ![Creating an empty hunt](example_hunt.png)

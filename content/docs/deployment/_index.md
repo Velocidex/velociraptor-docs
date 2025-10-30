@@ -335,7 +335,7 @@ folder, to which you can add the remapping config, if needed.
 
 ### Standalone offline collectors
 
-[Offline collectors]({{< ref "/docs/offline_triage/#offline-collections" >}})
+[Offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
 are usually created with the expectation that the data will be imported into a
 Velociraptor server, but this doesn't have to be the case. You may just be
 interested in extracting the data and working with it elsewhere using other

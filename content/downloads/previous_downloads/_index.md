@@ -102,7 +102,7 @@ However, note the following caveats:
   updated. These builds may miss some specific functionality.
 
 * If you need to use these builds for an offline collector we
-  recommend using [the generic collector]({{< ref "/docs/offline_triage/#the-generic-offline-collector" >}}).
+  recommend using [the generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-offline-collector" >}}).
 
 
 **Do not use this build in a general deployment!** Only use it for

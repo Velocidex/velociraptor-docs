@@ -1,7 +1,7 @@
 # How to setup an SFTP server
 
 There are many options for receiving uploaded files from the
-[offline collector]({{< ref "http://localhost:1313/docs/offline_triage/#offline-collections" >}}),
+[offline collector]({{< ref "/docs/deployment/offline_collections" >}}),
 for example
 [using S3 buckets]({{< ref "/knowledge_base/tips/dropbox_server/">}}),
 Azure storage services and even the

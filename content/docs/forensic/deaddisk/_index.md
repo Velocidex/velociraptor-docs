@@ -1,8 +1,8 @@
 ---
-menutitle: "Dead disk Forensics"
-title: "Dead disk Forensics"
+menutitle: "Dead Disk Analysis"
+title: "Dead Disk Analysis"
 date: 2025-06-28
-draft: true
+draft: false
 weight: 50
 summary: "Working with disk images"
 ---
@@ -10,10 +10,3 @@ summary: "Working with disk images"
 ## Tricky images
 
 Using `guestmount`
-
-Using `vmware-mount`
-
-Using `losetup`
-
-Using `kpartx`
-

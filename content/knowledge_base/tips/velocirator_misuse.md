@@ -23,7 +23,7 @@ the compromised asset. While this is not a vulnerability in the tool
 itself, it can be used for malicious purposes.
 
 On October 8th 2025, `Cisco Talos` reported observations from a
-threat actor abusing Velociraptor version (version 0.73.4.0) to
+threat actor abusing Velociraptor version (version 0.73.4) to
 distribute ransomware.
 
 ## How can I detect Velociraptor misuse in my environment?

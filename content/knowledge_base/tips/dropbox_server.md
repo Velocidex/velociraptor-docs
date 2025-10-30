@@ -1,4 +1,4 @@
-# How to set up a local S3 dropbox server?
+# How to set up a self-hosted S3-compatible dropbox server
 
 When collecting evidence with the offline collector we often need to
 upload large quantities of data. While cloud based uploads are
@@ -12,7 +12,7 @@ on-premises segments instead.
 
 There are several options for that:
 1. A [Windows file share]({{< ref
-   "/docs/offline_triage/remote_uploads/#smb-share" >}}) can be
+   "/knowledge_base/tips/setup_smb_share/" >}}) can be
    created on a Windows system.
 2. An SFTP server can be [installed on a local Linux system]({{< ref
    "/knowledge_base/tips/setting_up_sftp/" >}}).
@@ -29,7 +29,7 @@ provide additional access to what is required.
 You can view the offline collector's configuration file using
 `Collector.exe config show`.
 
-## Installing a local MinIO server
+## Installing a MinIO server
 
 This option is very easy to do and works on all mainstream operating
 systems as MinIO is a single Go binary available under the AGPL.
@@ -173,7 +173,7 @@ offline collector to the endpoint and have it upload the bulk data to
 the local drop box server.
 
 To do this it is best to use the [Generic Collector]({{< ref
-"/docs/offline_triage/#the-generic-offline-collector" >}}) because it
+"/docs/deployment/offline_collections/#the-generic-offline-collector" >}}) because it
 is small and the Velociraptor binary is already present on the
 endpoint.
 

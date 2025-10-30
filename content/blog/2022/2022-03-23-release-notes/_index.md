@@ -112,7 +112,7 @@ for a discussion of these limits.
 ### The offline collector resource controls
 
 Many people use the [Velociraptor offline collector]({{< ref
-"/docs/offline_triage/#offline-collections" >}}) to collect artifacts
+"/docs/deployment/offline_collections/" >}}) to collect artifacts
 from endpoints which they are unable to install a proper client/server
 architecture on. In previous versions there was no resource control or
 time limits imposed on the offline collector because it was assumed

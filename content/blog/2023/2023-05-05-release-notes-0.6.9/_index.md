@@ -131,7 +131,7 @@ parameter within the tool configuration screen.
 
 You can configure the remote share with read only permissions (read
 [these instructions]({{% ref
-"/docs/offline_triage/remote_uploads/#smb-share" %}}) for more details
+"/knowledge_base/tips/setup_smb_share/#smb-share" %}}) for more details
 on configuring SMB).
 
 ## The offline collector
@@ -163,7 +163,7 @@ credentials in the offline collector - which can only upload data but
 not read or delete other data.
 
 See the full instructions of how to [configure the offline collector for SMB upload]({{% ref
-"/docs/offline_triage/remote_uploads/#smb-share" %}}).
+"/knowledge_base/tips/setup_smb_share/" %}}).
 
 ### Azure Blob storage service.
 
@@ -174,7 +174,7 @@ storage, which is now in 0.6.9.
 
 See this for all [The details about how to configure Azure for safe
 uploads]({{% ref
-"/docs/offline_triage/remote_uploads/#azure-blob-storage" %}}), but
+"/knowledge_base/tips/setup_smb_share/" %}}), but
 similar to the other methods, credentials embedded in the offline
 collector can only be used to upload data and not read or delete data
 in the storage account.
@@ -340,7 +340,7 @@ the tool hash was legitimately updated.
 ## Conclusions
 
 There are many more new features and bug fixes in the latest
-release. 
+release.
 
 If you like the new features, take [Velociraptor for a
 spin](https://github.com/Velocidex/velociraptor)!  It is available

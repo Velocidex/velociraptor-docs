@@ -98,7 +98,7 @@ When the binary is run without any CLI commands it first checks whether it has
 an embedded config and if it does then it loads it. A special section in the
 config, named `autoexec.argv`, tells the binary what command line (including
 flags) to execute. This config section can also store custom artifacts.
-This is how [offline collectors]({{< ref "/docs/offline_triage/#offline-collections" >}})
+This is how [offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
 work.
 
 - When the binary is run ***with*** CLI commands it executes them, and ignores any

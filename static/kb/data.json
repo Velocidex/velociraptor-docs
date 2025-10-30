@@ -7,8 +7,8 @@
             "vql"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2025-10-14"
     },
     {
@@ -47,7 +47,7 @@
         "date": "2025-07-17"
     },
     {
-        "title": "How to set up a local S3 dropbox server?",
+        "title": "How to set up a self-hosted S3-compatible dropbox server",
         "link": "/knowledge_base/tips/dropbox_server",
         "tags": [
             "deployment",
@@ -541,5 +541,16 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "How to setup a SMB share for remote uploads",
+        "link": "/knowledge_base/tips/setup_smb_share",
+        "tags": [
+            "deployment"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

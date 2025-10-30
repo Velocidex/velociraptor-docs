@@ -1,89 +1,199 @@
 ---
-title: "Triage and acquisition"
-date: 2021-06-27T04:31:24Z
+title: "Offline Collections"
+date: 2025-10-21
+last_reviewed: 2025-10-29
 draft: false
-weight: 50
+weight: 30
 ---
 
-In DFIR Triaging means to quickly collect information about the system
-in order to establish its potential relevance to a forensic
-investigation.
+Under ideal circumstances we'd have our Velociraptor clients deployed and
+communicating with their Velociraptor server, and we'd be having an easy time
+hunting down the cyber threats. But sometimes some of us are thrown into
+difficult situations where we don't have clients deployed and where a
+conventional client-server deployment is just not possible. This may even be
+your everyday "normal" if, for example, you provide IR services to other
+organizations.
 
-While many think of triage as collecting files (perhaps as an
-alternative to full disk acquisition), in Velociraptor, there is no
-real difference between collecting files or other non-volatile
-artifacts: Everything that Velociraptor collects is just a VQL
-Artifact.
 
-We like to think of triage as simply capturing machine state - where
-the state may be bulk files (like the `$MFT` or registry hives) or any
-other volatile data, such as process information, network connections
-etc.
+### What is an offline collector?
 
-### Collecting files
+The offline collector is a pre-configured version of Velociraptor that
+automatically collects certain artifacts when invoked with no command line args.
 
-Being able to efficiently and quickly collect and preserve evidence is
-important for being able to capture machine state at a point in
-time. It is also useful to be able to use these collected files with
-other forensic tools that might be able to handle the file formats
-involved.
+The offline collector is a full Velociraptor binary that simply has a custom
+configuration embedded. So you can still use the collector binary to perform any
+operations that an unmodified Velociraptor binary is capable of.
 
-One of the most commonly used artifact is the
-`Windows.KapeFiles.Targets` artifact. This artifact is automatically
-built from the open source
-[KapeFiles](https://github.com/EricZimmerman/KapeFiles) repository.
+The offline collector is a full Velociraptor binary that simply has a custom
+configuration embedded. So you can still use the collector binary to perform any
+operations that an unmodified Velociraptor binary is capable of.
 
-While originally developed to support the non-opensource Kape tool,
-this repository contains many types of files which might be relevant
-to collect in a triage scenario. Each Kape "Target" is essentially a
-glob expression with a name.
+* Preconfigured to collect the required artifacts
+* No user interaction needed - just run with no command line args
+* Prepare armoured Zip file with all the results in them
 
-In Velociraptor `Windows.KapeFiles.Targets` is the most popular
-artifact for mass file collection.  It does no analysis but simply
-collects a bunch of files based on the targets specified.
+### Why Offline collection?
 
-Start by selecting the artifact from the "New Collection" wizard
+* We previously saw how Velociraptor can be used to triage, collect
+  indicators and remotely analyze a system.
+* Sometimes we can not deploy the Velociraptor client/server model but
+  we still want to be able to collect artifacts.
+* Sometimes we need to rely on another agent to actually do the
+  collection (either a human agent or another software).
+* Capture machine state at a point in time.
+* Collect files for further analysis by forensic tools.
+* More "Traditional" DFIR - preservation of evidence.
+* But Velociraptor is not installed on the endpoint!
+* Or the endpoint is inaccessible to the Velociraptor server (no
+  egress, firewalls etc).
 
-![The Windows.KapeFiles.Targets artifact](image2.png)
+## Offline collection considerations
 
-Next we need to select the "Targets" in the "Configure Parameters"
-step. Many targets are simply collections of other targets. For
-example the `_BasicCollection` target automatically includes a number
-of other useful targets.
+* A disadvantage is that we do not get feedback of how the collection
+  is going and how many resources are consumed.
+* Your really need to plan ahead what we want to collect and it is more
+  difficult to pivot and dig deeper in response to findings.
 
-![Selecting recursive targets](image7.png)
+### Overriding the default binaries
 
-The `Windows.KapeFiles.Targets` artifact can transfer a large quantity
-of data from the endpoints, and take a long time to run. We therefore
-often need to update the resource control of the collection.
+The Velociraptor binaries that will be used for creating offline collectors are
+defined as [tools]({{< ref "/docs/artifacts/tools/" >}}) in the
+`Server.Internal.ToolDependencies` artifact, and the selected
+pltform/architecture will be downloaded from GitHub if it is not already present
+in your server's tools inventory. `Server.Internal.ToolDependencies` is a
+built-in artifact which is updated with each Velociraptor release. This ensures that
+when you create a new offline collector it will be created using the
+corresponding release version for the selected platform.
 
-![Specifying a maximum upload limit](image6.png)
+You can override a specific binary by manually uploading a different binary in
+the tool management screen. We call this an "admin override". This is rarely
+done but might be necessary in some circumstances, for example:
+- you need to create a collector for an unusual architecture that isn't provided
+  by default - perhaps one that you've compiled yourself,
+- you need to create a collector using an older binary version,
+- you need to create a collector using an bugfixed pre-release version.
 
-Once the collection is launched, we can monitor progress in the "Artifact Collection" tab.
+Although in all the abovementioned cases you could alternatively create a
+Generic Collector and use it with any Velociraptor binary.
 
-![Monitoring collection progress](image4.png)
+If you have performed an admin override can revert to the version defined in the
+tool definition by clicking the **Re-Download File** button on the tool's
+management screen.
 
-{{% notice note "Note about large file collections" %}}
 
-Velociraptor is very careful about the performance and resource impact
-on endpoints. When collecting many files if it is often hard to
-determine in advance how much data will be collected or how long it
-will take. For safety, Velociraptor allows limits to be set after
-which the collection is cancelled. You can also interactively cancel
-the collection by clicking the "Stop" button.
 
-Be aware that a lot of data can be collected which might fill up the
-VM disk.
 
-> Math is a harsh mistress:
-> Collecting 100Mb  from 10,000 endpoints = 1Tb
->
-> Note that typically $MFT is around 300-400Mb so collecting the $MFT
-> from many endpoints is going to be huge!
+### Generic Collector
 
-![Collections are automatically cancelled when they reach the limit](image5.png)
+The **Generic Collector** is independent of any binary. It's essentially a
+standalone collector config with compression applied. This allows it to be used
+with any Velociraptor binary since it is external to the binary.
 
-{{% /notice %}}
+There are two reasons to use a Generic Collector instead of one that's created
+from a specific binary:
+
+1. The macOS binary that we create is code-signed. Embedding a collector config
+   into the binary would invalidate this signature and recent versions of macOS
+   will prevent execution of binaries with invalid signatures. So on macOS the
+   Generic Collector approach is absolutely necessary.
+
+2.
+
+## Including third party binaries
+
+* Sometimes we want to collect the output from other third party
+  executables.
+* Velociraptor can package dependent binaries together with the
+  offline collector.
+* Velociraptor can append a zip file to the end of the binary and
+  adjust PE headers to ensure it can be properly signed.
+
+### Recreating offline collectors
+
+Because offline collector binaries are usually stored separately from the server
+they often get overlooked when it comes time to do server and client upgrades.
+This can lead to the collector binaries inadvertently becoming seriously out of
+date, and which might produce offline collections that are inconsistent with the
+equivalent collections from online clients. In the worst case scenario it can
+result in offline collections that are incompatible with the server's
+`import_collection` function.
+
+We recommend that you keep your offline collectors in-sync with your server
+version to benefit from improvements to the built-in artifacts and to ensure
+that you have all the latest VQL features (and potentially also bugfixes!)
+included in your offline collector binaries. You can do this by recreating your
+collectors after each server upgrade.
+
+#### Using the GUI
+
+The easiest way to achieve this is by re-running the
+`Server.Utils.CreateCollector` flows that created the previous offline
+collectors. The GUI provides a "Copy Collection" button which will re-launch the
+collection wizard with the same settings that were previously used.
+
+![](copy_collection.png)
+
+The server will detect if there's a newer binary available (corresponding to the
+server's version), download it from GitHub, and rebuild the offline collector
+using the updated binary.
+
+#### Using the Command Line
+
+From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create a
+corresponding spec file and store it in the collection's Uploads section, in
+addition to the repacked collector binary. This spec file can be used with the
+[collector CLI command]({{< ref "/docs/cli/collector/" >}}).
+
+![](spec_file.png)
+
+This allows you to create an initial collector using the GUI and then recreate
+the same collector configuration using the CLI (for example, when planning to
+build standardized collectors in a separate environment and rebuild them
+whenever newer Velociraptor versions are released).
+
+## Collection security
+
+All Velociraptor collections can potentially contain sensitive data.
+
+With online client-server collections the
+
+Because an offline collector creates a zip archive that , and which is outside the control of , it is important to properly secure this data.
+
+### Acquired file is encrypted
+
+* Due to limitations in the Zip format, file names can not be encrypted.
+* Therefore, Velociraptor creates a second protected Zip file inside
+  the outer container.
+* Several encryption schemes supported:
+    1. Regular password
+    2. X509 - random password generated and encrypted with the server's certificate.
+    3. GPG - random password generated and encrypted with the GPG public key.
+
+## Protecting the collection file: Encryption
+* For added protection, add a password to the zip file
+* If we used a simple password it would be embedded in the collector
+* Use an X509 scheme to generate a random password.
+
+* Zip files do not password protect the directory listing - So
+  Velociraptor creates a second zip file inside the password protected
+  zip.
+
+### Importing into Velociraptor
+
+* Velociraptor can automatically decrypted offline containers when
+  importing.
+* Use the Server.Utils.ImportCollection artifact to import collections
+* The server uses its private key to unlock the container automatically.
+* This preserves PII and confidential information in transit!
+
+* You can import an offline collection into the GUI using the
+  `import_collection()` [VQL function](https://docs.velociraptor.app/vql_reference/server/import_collection/).
+* Requires the collection ZIP to already be present on the server.
+* Decrypts X509 encrypted collections automatically.
+
+### Accessing collection archives without importing
+
+fuse container command
 
 ## Offline collections
 

@@ -1,12 +1,12 @@
 # Manipulating VQL columns and rows
 
 VQL has a very simple syntax inspired by SQL. At the heart of the
-language is a `SELECT` query which returns a set of `Rows`. A VQL Row
-consists of `Columns` and `Cell Values`.
+language is a `SELECT` query which returns a set of **Rows**. A VQL Row
+consists of **Columns** and **Cell Values**.
 
-You can think of the result of a query is simply a list of Dicts -
+You can think of the result of a query is simply a list of Dicts,
 where a dict contains key/value pairs. This is easiest to see in the
-GUI's `Raw JSON` view:
+GUI's **Raw JSON** view:
 
 ```vql
 SELECT * FROM info()
@@ -42,7 +42,7 @@ representing a single row (in this case only one row is returned):
 ]
 ```
 
-We can select specific columns in this using the `Column Specifiers`
+We can select specific columns in this using the **Column Specifiers**
 following the `SELECT` clause:
 
 ```sql
@@ -50,25 +50,24 @@ SELECT Hostname FROM info()
 ```
 
 However, what if we wanted to automatically manipulate the columns in
-a more sophisticated way? This is often needed when we dont know the
+a more sophisticated way? This is often needed when we don't know the
 names of all the columns in advance.
 
 Some use cases are:
 
-1. If we do not know the names of the columns in advance but wanted
-   to select only some columns by e.g. a Regular Expression?
+1. If we do not know the names of the columns in advance but want
+   to select only some columns by e.g. a Regular Expression.
 
-2. We want to generate a hash based on a selection of columns?
+2. We want to generate a hash based on a selection of columns.
 
 This post shows how to convert any VQL query into a list of dicts,
 thereby providing access to the Columns in a more convenient way. We
-then show how to `deconstruct the dict` back into a row.
+then show how to **deconstruct the dict** back into a row.
 
-For the following examples, we use the query `SELECT * FROM info()` as
-a substitute for any other query. Typically these techniques are more
-useful for generic queries for which we dont know the types of columns
-returned. For example `SELECT * FROM source()`, `SELECT * FROM
-parse_csv()` etc.
+For the following examples, we use the query `SELECT * FROM info()` as a simple
+example of a query, but any query could be used. Typically these techniques are
+more useful for generic queries for which we don't know the types of columns
+returned. For example `SELECT * FROM source()`, `SELECT * FROM parse_csv()` etc.
 
 ## Step 1: Convert rows into dicts
 
@@ -104,22 +103,20 @@ number of dict manipulation tools.
 Now that we have the row as a dict we can perform any operations on
 it. In the following we see two methods for manipulating dicts:
 
-1. `Set operations`: allow us to add, remove and merge dicts based on
-   their keys. See [Set operations]({{< ref
-   "/knowledge_base/tips/set_operations/" >}}).
+1. **Set operations**: allow us to add, remove or merge dicts based on
+   their keys. See [Set operations]({{< ref "/knowledge_base/tips/set_operations/" >}}).
 
-2. `Dict reconstruction`: is a more powerful technique for tearing the
+2. **Dict reconstruction**: is a more powerful technique for tearing the
    dict apart and reconstructing it again.
 
 ### Example: Select only columns that match a regular expression.
 
-For this example, assume we dont know all the exact columns in advance
-but want to match columns based on some regular expression.
+For this example, let's assume we don't know all the exact columns in advance
+but want to match certain columns based on some regular expression.
 
-The key for this is to transform a dict's columns based on a regular
-expression: We need to iterate over all the keys in the dict , only
-including some keys based on their name, and then put it back together
-into a dict:
+The key for this technique is to transform a dict's columns based on a regular
+expression: We need to iterate over all the keys in the dict , only including
+some keys based on their name, and then put it back together into a dict:
 
 ```vql
 LET FilterKeys(Dict) = to_dict(item={
@@ -164,13 +161,13 @@ representative ID.
 
 For our example we want to create another dict with the columns
 `Hostname`, `Exe` and `Architecture`. We consider those columns to be
-fully representative of the row. I.e. we accept that other columns may
+fully representative of the row, that is we accept that other columns may
 vary but as long as those fields are the same, we consider the rows to
 be duplicates.
 
-We can quickly extract only those fields by use of [Set
-intersection]({{< ref "/knowledge_base/tips/set_operations/" >}}) (In
-VQL this is implemented by dict multiplication):
+We can quickly extract only those fields by using
+[Set intersection]({{< ref "/knowledge_base/tips/set_operations/" >}})
+(In VQL this is implemented by dict multiplication):
 
 ```vql
 LET FingerPrint <= dict(Hostname=TRUE, Exe=TRUE, Architecture=TRUE)
@@ -223,8 +220,8 @@ FROM items(item={
 })
 ```
 
-This works using `dict addition`. I create a new dict with a single
-key of `_HashID` containing the hash I got earlier. By adding this new
+This works using **dict addition**. I create a new dict with a single
+key of `_HashID` containing the hash that I got earlier. By adding this new
 dict to the original row dict, I get a new dict with an additional key.
 
 ```json
@@ -243,13 +240,12 @@ dict to the original row dict, I get a new dict with an additional key.
 
 ## Step 3: Turn a dict back into a row
 
-The final step is to turn our dict back into a regular VQL `Row`. This
+The final step is to turn our dict back into a regular VQL **Row**. This
 will allow it to be viewed nicely in the GUI as a regular table. The
 dict keys will turn back into column headers, and the values will be
 table cells.
 
-This operation is done using the `foreach()` plugin with the parameter
-`column`:
+This operation is done using the `foreach()` plugin using it `column` argument:
 
 ```vql
 LET MyFilteredRow = SELECT
