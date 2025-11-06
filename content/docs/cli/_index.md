@@ -200,4 +200,4 @@ or overridden. You can only add flags that have not already been used.
 
 ## Learn about the commands available in the CLI
 
-{{% children description="true" %}}
+{{% children description=true %}}

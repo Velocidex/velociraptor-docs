@@ -47,7 +47,7 @@ unless there's a good reason to do so, like for preservation purposes _after_
 detecting potential evidence in the file.
 
 
-##### Cloud-storage-in-the-middle architecture
+#### Cloud-storage-in-the-middle architecture
 
 I've also observed that some users will use offline collectors to upload
 collection data to a cloud storage service and then have their server import the
@@ -183,7 +183,7 @@ Here's how to create and run such a client binary:
 
     _The client will be sent the kill signal and the terminal will close._
 
-## So... Online collector vs. Offline collector?
+#### So... Online collector vs. Offline collector?
 
 By using a non-persistent client we are able to do exactly the same collections
 as could be done with an offline collector, but with all the benefits of an

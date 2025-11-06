@@ -10,7 +10,7 @@ In this section we look at a less conventional method of collecting data from
 endpoints. One of Velocraptor's many strengths is its ability to deal with the
 variety of challenging environments that realworld DFIR throws our way.
 
-### How do offline collections work?
+## How do offline collections work?
 
 At it's core, the Velociraptor is just a VQL engine! We give it VQL to run, in
 the form of [artifacts]({{< ref "/docs/artifacts/" >}}), and it gives us back
@@ -67,7 +67,7 @@ over a network-based client-server communication channel.
 {{% /notice %}}
 
 
-### Why do we need offline collections?
+## Why do we need offline collections?
 
 Under ideal circumstances we'd have our Velociraptor clients deployed and
 communicating with their Velociraptor server, and we'd be having an easy time
@@ -87,6 +87,7 @@ example:
   environment that you are tasked with investigating. During a security incident
   there may be strong resistance to deploying any new software or
   infrastructure.
+
 - Internet access may be shut down during an incident so that clients, if
   deployed, could not connect to your cloud-based server. And in that case you
   may need to rely on external assistance (such as a local admin) to perform the
@@ -96,12 +97,12 @@ example:
   with minimal technical knowledge.
 
 
-### What is an offline collector?
+## What is an offline collector?
 
-The offline collector is a full-featured Velociraptor binary that has a custom
-configuration and selected artifacts embedded in it. If the embedded artifacts
-require any 3rd-party [tools]({{< ref "/docs/artifacts/tools/" >}}) then these
-will also be repackaged into the offline collector binary.
+The **offline collector** is a full-featured Velociraptor binary that has a
+custom configuration and selected artifacts embedded in it. If the embedded
+artifacts require any 3rd-party [tools]({{< ref "/docs/artifacts/tools/" >}})
+then these will also be repackaged into the offline collector binary.
 
 The process of embedding the config - and optionally bundling other tools - does
 not require compiling a new binary from source. It uses the standard
@@ -137,7 +138,7 @@ the collection process so that if there's a person running it locally then they
 can observe whether or not it has completed successfully.
 
 
-### Offline collection considerations
+## Offline collection considerations
 
 Although offline collectors provide a powerful capability to address difficult
 situations, they are not without some drawbacks. Here are a few that you should
@@ -147,18 +148,24 @@ think about.
   collection is often a one-shot opportunity to collect what you need. Iteration
   would require creating a new collector each time. By contrast a
   network-connected "online" client makes it easy to quickly pivot and dig
-  deeper in response to findings.
+  deeper in response to findings. For this reason offline collections tend to
+  err on the side of collecting more data than is really necessary rather than
+  being more targeted and focused on answering specific investigative questions.
+
 - Offline collectors need to be packaged with the artifacts and tools that they
   need. This means that you can't quickly create a new artifact and add it to
   your offline collector without rebuilding and redistributing a new binary. If
   your artifacts need tools then bundling them into a collector binary can
   significantly increase the file size.
+
 - The release versions of the Velociraptor binaries for Windows and macOS are
   digitally signed. Repacking the binary invalidates those digital signatures.
   For Windows this is rarely an issue, but macOS will refuse to execute binaries
   with invalid signatures. So on macOS we use the
-  [Generic collector]() option, which is the offline collector config plus tools
-  packaged into a separate file.
+  [Generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
+  option, which is the offline collector config plus tools packaged into a
+  separate file.
+
 - Because offline collectors do not provide progress updates and resource
   telemetry to the server, we cannot get feedback on how the collection is going
   or on the resource usage. However, since offline collectors are typically used
@@ -197,32 +204,48 @@ In general, don't use offline collectors:
 - **To avoid using clients**: If the endpoint can communicate with the server
   then there really is no reason to use an offline collector rather than an
   interactive online client.
+
   - Velociraptor clients can operate
     [without being installed]({{< ref "/docs/deployment/clients/#running-clients-interactively" >}}).
+
   - Clients can immediately join hunts upon enrollment, which allows them to
     immediately begin collecting exactly the same pre-defined set of artifacts
     that an offline collector would have.
+
   - Clients allow you to iterate and pivot as you investigate. Having the
     results returned directly and almost immediately to the server allows you to
     get answers without delays.
+
   - The client config can be
     [repacked]({{< ref "/docs/cli/config/#-config-repack-" >}})
     into the binary, and made to
     [auto execute]({{< ref "/docs/cli/#autoexec-mode-and-post-args">}})
     in `client` mode. That is, the convenience of a single autoexec binary can
     be replicated for non-installable clients using the same embedding
-    mechanisms that offline collectors use.
+    mechanism that offline collectors use. In certain scenarios this may be
+    preferable to offline collectors, as is explained
+    [here]({{< ref "/knowledge_base/tips/online_collector/" >}}).
 
 
 {{% /notice %}}
 
-### The Generic Collector
+## The Generic Collector
 
-The **Generic Collector** is functionally the same as the offline collectors
-that use an embedded config, however it is separate from and independent of the
-binary. It's essentially a standalone collector config, optionally combined with
-a tools bundle, written into a single file. This allows it to be used on the
-command line with any Velociraptor binary.
+Normally the Velociraptor offline collector builder creates a preset
+configuration file and embeds it inside the regular Velociraptor binary for ease
+of use. Because it is uses a binary for a specific platform and architecture,
+you would need a separate collector for each target platform/architecture in
+your environment.
+
+![Selecting the Generic Collector option in the collector builder](generic_collector.png)
+
+In recent versions of Velociraptor we now offer a new type of collector called
+the **Generic collector**. The Generic collector is functionally the same as the
+offline collectors that use an embedded config, however it is a file that is
+separate from, and therefore independent of the binary. It's essentially a
+standalone collector config, optionally combined with a tools bundle, written
+into a single file. This allows it to be used on the command line with any
+Velociraptor binary.
 
 ![Generic collectors support cross-platform use](generic-collector1.svg)
 
@@ -242,190 +265,122 @@ in a platform-specific binary:
    config into the binary invalidates this digital signature. Recent versions of
    macOS will prevent execution of binaries with invalid signatures. So on macOS
    the Generic Collector approach is absolutely necessary and the only supported
-   option.
+   option. Microsoft is increasingly starting to care about signed binaries
+   too but currently less so than Apple, so in some Windows environments the
+   generic collector might be the best option.
 
+While the Generic collector is required for macOS, it can also be used for
+Windows, Linux, etc. to accommodate very large artifacts or combinations of
+large artifacts that exceed the embedding size limit. An additional benefit is
+that you then only need to create one collector which can be used
+cross-platform, although your selection of artifacts would need to take that
+into account.
+
+{{% notice note %}}
 
 Note that tools are not embedded in the binary and therefore do not need to be
 factored into the ~80KB limit. With both the generic collector and the offline
-collectors based on Velociraptor binaries, the tools are bundled and appended to
-the file.
-
-
-
-Normally the Velociraptor offline collector builder computes a preset
-configuration file and embeds it inside the regular Velociraptor
-binary for ease of use. However this can cause some problems in some
-cases:
-
-1. By modifying the official Velociraptor binary, the Authenticode
-   signature is invalidated. Therefore the offline collector will need
-   to be re-signed to pass many integrity checks.
-2. The amount of space within the binary reserved for the offline
-   collector is limited. This means that very large artifacts will
-   cause the space to be exceeded.
-3. We have also seen recent MacOS systems refuse to run a binary that
-   has been modified. Therefore regular offline collector packing does
-   not work on recent MacOS versions.
-
-In recent versions of Velociraptor we now offer a new type of
-collector called the "Generic collector".
-
-![](generic_collector.png)
-
-This will embed the configuration into a shell script instead of the
-Velociraptor binary. You can then launch the offline collector using the
-unmodified official binary by specifying the `--embedded_config` flag:
-
-{{< tabs >}}
-{{% tab name="macOS" %}}
-```shell
-./velociraptor-darwin-amd64 -- --embedded_config Collector_velociraptor-collector
-```
-{{% /tab %}}
-{{% tab name="Linux" %}}
-```shell
-./velociraptor-linux-amd64 -- --embedded_config Collector_velociraptor-collector
-```
-{{% /tab %}}
-{{% tab name="Windows" %}}
-```shell
-velociraptor-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
-```
-{{% /tab %}}
-{{< /tabs >}}
-
-
-![](generic_collector_running.png)
-
-While the method is required for MacOS, it can also be used for
-Windows in order to preserve the binary signature or accommodate
-larger artifacts.
-
-
-## Collection security
-
-All Velociraptor collections can potentially contain sensitive data.
-
-With online client-server collections the
-
-Because an offline collector creates a zip archive that , and which is outside the control of , it is important to properly secure this data.
-
-### Acquired file is encrypted
-
-* Due to limitations in the Zip format, file names can not be encrypted.
-* Therefore, Velociraptor creates a second protected Zip file inside
-  the outer container.
-* Several encryption schemes supported:
-    1. Regular password
-    2. X509 - random password generated and encrypted with the server's certificate.
-    3. GPG - random password generated and encrypted with the GPG public key.
-
-## Protecting the collection file: Encryption
-* For added protection, add a password to the zip file
-* If we used a simple password it would be embedded in the collector
-* Use an X509 scheme to generate a random password.
-
-* Zip files do not password protect the directory listing - So
-  Velociraptor creates a second zip file inside the password protected
-  zip.
-
-
-## Importing collections into the GUI
-
-We can use the offline collector to fetch multiple artifacts from the
-endpoint. The results consist of bulk data as well as JSON file
-containing the result of any artifacts collected.
-
-You can re-import these collection into the GUI so you can use the
-same notebook port processing techniques on the data. It also allows
-you to keep the results from several offline collections within the
-same host record in the Velociraptor GUI.
-
-{{% notice tip "Offline Collectors are Out-Of-Band Clients!" %}}
-
-An offline collector is essentially an out-of-band client. Instead of the client
-connecting over the internet, the data is delivered via sneakernet! The data is
-then imported into the server which creates a normal client record and
-associated collections. The data can then be queried as with any other client.
+collectors based on Velociraptor binaries that use config embedding, the tools
+are bundled and appended to the file.
 
 {{% /notice %}}
 
-Importing an offline collection can be done via the
-`Server.Utils.ImportCollection` artifact. This artifact will inspect
-the zip file from a path specified on the server and import it as a
-new collection (with new collection id) into either a specified client
-or a new randomly generated client.
+## Collection archives
 
-![Importing Offline Collector collections](image48.png)
+An offline collector is essentially a preprogrammed out-of-band client. Instead
+of connecting to the server and delivering data over a client-server
+communication channel, the data is delivered via sneakernet or a cloud storage
+provider or some other means.
 
-{{% notice tip "Copying the collections to the server" %}}
+To make the data portable and thus enable delivery via arbitrary means, the
+offline collector writes the collection results and other data to a local zip
+file. Inside the zip we used a well-defined file structure that allows these
+collection archives to be imported into a Velociraptor server while also
+conveying the necessary collection context that lets the server treat the data
+as if it was collected by a normal (online) client.
 
-Offline collections are typically very large, this is why we do not
-have a GUI facility to upload the collection zip file into the
-server. You will need to use an appropriate transfer mechanism (such
-as SFTP or SCP) to upload to the server itself.
+As explained below, we provide several ways to secure the collection data in
+transit.
 
-{{% /notice %}}
+Typically the collection data is then imported into the server which creates a
+normal client record and associated collections. The data can then be queried on
+the server as with any other client collections.
 
-# Local collection considerations
+See the section
+[Working With Offline Collection Data]({{< ref "/docs/deployment/offline_collections/collection_data/" >}})
+for more information about importing collection archives, as well as other ways
+to work with the data without importing it.
 
-Local collection can be done well without a server and permanent agent
-installed. A disadvantage is that we do not get feedback of how the
-collection is going and how many resources are consumed.
 
-Offline collections are typically planned in advance and it is a bit
-more difficult to pivot and dig deeper based on analysis results to
-search for more results. For this reason offline collections tend to
-err on the side of collecting more data rather than being more
-targeted and focused on answering the investigative questions.
+### Collection security
 
-### Using Velociraptor to remotely launch the offline collector
+All Velociraptor collections - whether online of offline - can potentially
+contain sensitive data. With client-server (online) collections the data
+transfer is secured with TLS. However an offline collector creates a portable
+collection archive, which is assumed to then be transported via insecure
+networks/systems outside the control of Velociraptor,. So it is essential to
+properly secure this data.
 
-While the offline collector is a stand alone collector, sometimes you might want
-to use Velociraptor to distribute and run it. This might be because uploading
-the data that needs to be collected is not feasible over a slow link back to the
-Velociraptor server. In this use case we cab to push the offline collector to
-the endpoint and have it upload the bulk data to the local drop box server.
+Offline collector archives can be encrypted. We provide the following schemes
+for encrypting the data:
 
-To do this it is best to use the [Generic Collector]({{< ref
-"/docs/deployment/offline_collections/#the-generic-offline-collector" >}}) because it
-is small and the Velociraptor binary is already present on the
-endpoint.
+1. **Password-secured**: specifies a password in the embedded configuration
+   file. This password is passed directly to the ZIP library to encrypt the
+   file.
 
-In the following artifact we define the `OfflineCollector` tool, then fetch it
-from the endpoint, and then launch the Velociraptor binary with the correct
-command line for running a generic collector.
+   While simple to use, this scheme is not recommended as the password is stored
+   in clear text inside the offline collector and can be easily extracted.
 
-```yaml
-name: RemoteOfflineCollector
-tools:
-- name: OfflineCollector
+2. **X509-secured**: a random password generated and encrypted with the server's
+   certificate, or your own certificate.
 
-required_permissions:
-- EXECVE
+   _This is the recommended method._
 
-sources:
-- query: |
-    LET _Exe <= SELECT Exe FROM info()
-    LET Exe <= _Exe[0].Exe
+   This scheme embeds the Velociraptor server's public certificate in the
+   offline collector. During collection, a random password is generated which is
+   then encrypted using the embedded Velociraptor certificate and stored in the
+   container inside a metadata file.
 
-    SELECT * FROM foreach(row={
-       SELECT OSPath
-       FROM Artifact.Generic.Utils.FetchBinary(
-           ToolName="OfflineCollector",
-           TemporaryOnly=TRUE, IsExecutable=FALSE)
-    }, query={
-       SELECT * FROM execve(sep="\n",
-          argv=[Exe, "--", "--embedded_config", OSPath])
-    })
-```
+   After the password is used to encrypt the container, it is discarded. The
+   only way to recover the password is to decrypt it using the server's private
+   key. This way if the collector binary or the collection are compromised it is
+   impossible to recover the password without the server's configuration file
+   (that contains the private key).
 
-The first time you schedule this artifact for collection you will need to ensure
-that you manually upload the `OfflineCollector` tool, which you can do by
-clicking on the tool name to access the tool management screen.
+   If the X509 method is used with the server's certificate, then the collection
+   archives will be decrypted automatically and transparently when they are
+   imported into the same server that produced the offline collector.
 
-When building the generic collector make sure to use the correct credentials and
-connection details so that it will automatically upload the collections to your
-uploads server.
+3. **PGP-secured**: a random password generated and encrypted with the PGP
+   public key. Not recommended but available for certain uses cases.
+
+In all the above options, the archive is protected by a password. However for
+the certificate-based options that password is further secured by encrypting it
+using either the server's X509 certificate or a cert that you provide.
+
+The zip password is essentially a strong symmetric key, which is secured by
+asymmetric crypto if you use either of the certificate-based options. This
+allows Velociraptor to create and extract collection archives with high speed
+and efficiency, which is important as collection archives can sometimes be very
+large.
+
+Even though the ZIP format uses AES to encrypt the contents of files, the file
+names and metadata are not encrypted and can be seen without providing a
+password. This is an unfortunate limitation of the ZIP file format, especially
+since the file names alone can reveal much information about the collection, and
+we definitely want to prevent that. To overcome this limitation in zip security,
+Velociraptor first zips the collection data into a zip named `data.zip` and then
+places that into a second zip container. It then applies the protection to the
+outer zip container, which means that anyone without access to the password can
+only see `data.zip` in a zip file listing, and nothing more.
+
+Additionally we do allow the option of "none" (no encryption), but you should
+avoid using this except perhaps in special circumstances such as for convenience
+while testing in a lab or training environment.
+
+
+## More info
+
+{{% children description=false %}}
 
 

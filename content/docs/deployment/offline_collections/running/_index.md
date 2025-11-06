@@ -13,7 +13,31 @@ weight: 20
 
 ### Linux
 
+## Running the Generic Collector
 
+You launch the Generic collector using the
+unmodified official binary by specifying the `--embedded_config` flag:
+
+{{< tabs >}}
+{{% tab name="macOS" %}}
+```shell
+./velociraptor-darwin-amd64 -- --embedded_config Collector_velociraptor-collector
+```
+{{% /tab %}}
+{{% tab name="Linux" %}}
+```shell
+./velociraptor-linux-amd64 -- --embedded_config Collector_velociraptor-collector
+```
+{{% /tab %}}
+{{% tab name="Windows" %}}
+```shell
+velociraptor-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
+```
+{{% /tab %}}
+{{< /tabs >}}
+
+
+![](generic_collector_running.png)
 
 
 ### Collecting across the network

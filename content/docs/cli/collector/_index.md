@@ -24,7 +24,7 @@ Args:
 ---
 
 Typically offline collectors are built using a
-[user-friendly wizard-style workflow]({{< ref "/docs/deployment/offline_collections/creating/" >}})
+[user-friendly wizard-style workflow]({{< ref "/docs/deployment/offline_collections/building/" >}})
 in the GUI.
 
 The `collector` command allows you to do the same thing on the command line.
@@ -248,6 +248,11 @@ will be created in that temporary datastore.
    [INFO] 2025-11-05T12:12:40Z Exiting notification service for Org <root> (root)!
    ```
 
+As you can see in the above output, the `collector` command is really just a
+wrapper for the `Server.Utils.CreateCollector` artifact. Therefore it's
+functionality could be replicated using the same VQL
+[query against the API]({{< ref "/docs/server_automation/server_api/#using-the-shell-for-automation" >}}),
+but that would be far less convenient.
 
 ### Reproducing configurations from previously-created collectors
 
@@ -299,8 +304,4 @@ custom artifacts.
 For all of the above reasons, it a good idea to store copies of your offline
 collector spec files somewhere safe for future use. As with your server config,
 these files may contain sensitive information (e.g. passwords) so ensure that
-you apply appropriate security controls to the stored copies too.
-
-See
-[Building an offline collector on the command line]({{< ref "/docs/deployment/offline_collections/#building-an-offline-collector-on-the-command-line" >}})
-for more information.
+you also apply appropriate security controls to the stored copies.

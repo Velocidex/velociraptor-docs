@@ -21,7 +21,7 @@ In that case the offline collector creation process will fail and log the error:
 > `client_repack: config file is too large to embed.`
 
 To cater for configs of unlimited size we provide the
-[Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-offline-collector" >}}).
+[Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}}).
 
 ![Generic collector option](too_large_to_embed.png)
 

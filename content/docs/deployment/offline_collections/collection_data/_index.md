@@ -8,6 +8,61 @@ weight: 30
 ---
 
 
+## Importing collections into the GUI
+
+We can use the offline collector to fetch multiple artifacts from the
+endpoint. The results consist of bulk data as well as JSON file
+containing the result of any artifacts collected.
+
+Here is an example of the internal structure of a typical collection archive:
+
+```text
+.
+├── client_info.json
+├── collection_context.json
+├── log.json
+├── requests.json
+├── results
+│   ├── Windows.Triage.Targets%2FAll Matches Metadata.json
+│   ├── Windows.Triage.Targets%2FSearchGlobs.json
+│   └── Windows.Triage.Targets%2FUploads.json
+├── uploads
+│   └── auto
+│       └── C%3A
+│           └── Users
+│               ├── Default
+│               └── User
+├── uploads.json
+└── uploads.json.index
+```
+
+
+You can re-import these collection into the GUI so you can use the
+same notebook port processing techniques on the data. It also allows
+you to keep the results from several offline collections within the
+same host record in the Velociraptor GUI.
+
+
+
+
+Importing an offline collection can be done via the
+`Server.Utils.ImportCollection` artifact. This artifact will inspect
+the zip file from a path specified on the server and import it as a
+new collection (with new collection id) into either a specified client
+or a new randomly generated client.
+
+![Importing Offline Collector collections](image48.png)
+
+{{% notice tip "Copying the collections to the server" %}}
+
+Offline collections are typically very large, this is why we do not
+have a GUI facility to upload the collection zip file into the
+server. You will need to use an appropriate transfer mechanism (such
+as SFTP or SCP) to upload to the server itself.
+
+{{% /notice %}}
+
+
 ### Importing into Velociraptor
 
 * Velociraptor can automatically decrypted offline containers when
