@@ -102,7 +102,7 @@ decrypt the collections.
 
 {{% /notice %}}
 
-## Zip Archive
+## Local Zip Archive
 
 By default Velociraptor's collector will simply create a ZIP file and
 leave it in the current directory.
@@ -116,66 +116,54 @@ practice of securing them.
 
 ## Remote Upload Destinations
 
+When collecting evidence with the offline collector we often need to
+upload large quantities of data. While cloud based uploads are
+convenient they are usually slower than uploading to a local LAN and
+might result in network bottlenecks as many systems in the local
+network are saturating internet uplinks.
+
+In these cases it is more convenient to set up a local `dropbox`
+upload server which will collect collections from systems within local
+on-premises segments instead.
+
+There are several options for that:
+
+1. A [Windows file share]({{< ref "/knowledge_base/tips/setup_smb_share/" >}})
+   can be created on a Windows system.
+2. An SFTP server can be [installed on a local Linux system]({{< ref
+   "/knowledge_base/tips/setting_up_sftp/" >}}).
+3. A local S3 server can be installed using
+   [MinIO](https://github.com/minio/minio) - the subject of this
+   article.
+
+A common thread between these options is to ensure that credentials
+are only allowed to upload new files and not download these files
+again. Since the offline collector must include credentials within the
+configuration file, we need to ensure these credentials can not
+provide additional access to what is required.
+
+
+### Google Cloud Storage
+
+[How to set up a GCS Bucket for file uploads]({{< ref "/knowledge_base/tips/setup_gcs_storage/" >}})
+
 ### AWS S3 or MinIO
 
 MinIO is a self-hosted S3-compatible server.
 
-[How to set up a self-hosted S3-compatible dropbox server]({{< ref "/knowledge_base/tips/dropbox_server/" >}})
-
-### SFTP server
-
-[How to setup an SFTP server]({{< ref "/knowledge_base/tips/setting_up_sftp/" >}})
-
-### SMB Share
+[How to set up a MinIO (S3-compatible) dropbox server for file uploads]({{< ref "/knowledge_base/tips/dropbox_server/" >}})
 
 ### Azure Blob Storage
 
-Velociraptor supports uploading to Azure since version 0.6.9.
-
-Azure is a popular cloud provider by Microsoft, and this is a popular
-choice for uploading collection archives from remote systems. This
-choice is suitable when the system is internet connected and you do
-not want to make other changes to the network (e.g. standing up an SMB
-server as above).
-
-Azure supports an authentication policy called [Shared Access
-Signature
-(SAS)](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview)
-making it convenient and secure to provide limited access to the
-a storage container. Using this method, we can embed a simple SAS URL
-that provides access to upload data to the storage container without
-granting the ability to download or remove any data. This is ideal for
-embedding in the offline collector.
-
-The steps required to set up Azure access are:
-
-1. Create a storage account.
-2. Create a new data storage container to receive the uploads
-
-![Creating a new Azure Blob storage container](creating_azure_container.png)
-
-3. Add a role assignment to allow the storage account to manage the storage
-
-![Adding a role assignment to the storage account](azure_role_assignment.png)
-
-3. Generate a SAS Policy URL.
-
-![Right click on the container to generate a SAS policy](generating_sas_policy.png)
-
-4. Create a SAS policy with only write and create access. You can
-specify an appropriate expiry time for the SAS URL. After this time
-the uploader will no longer work.
-
-![SAS Policy should have only Write and Create Access](sas_policy_details.png)
-
-5. Test the SAS URL works properly
-
-![Test the SAS Policy by uploading a small file in the notebook](testing_sas_url.png)
-
-6. Embed the SAS URL in the offline collector.
-
-![Simply paste the SAS URL in the collector GUI](sas_collector.png)
+[How to set up Azure Blob Storage for file uploads]({{< ref "/knowledge_base/tips/setup_azure_storage/" >}})
 
 
-### Google Cloud Storage
+### SMB Share
+
+[How to set up a SMB share for file uploads]({{< ref "/knowledge_base/tips/setup_smb_share/" >}})
+
+### SFTP server
+
+[How to set up a SFTP server for file uploads]({{< ref "/knowledge_base/tips/setting_up_sftp/" >}})
+
 

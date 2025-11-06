@@ -1,10 +1,23 @@
-# How to setup a SMB share for remote uploads
+# How to set up a SMB share for file uploads
 
-SMB is the Microsoft file sharing protocol which is a convenient
-option for Windows based systems. Velociraptor supports uploading to
-SMB shares since release 0.6.9.
+SMB is the Microsoft file-sharing protocol which is a convenient option for
+Windows systems. A SMB share can be a useful upload destination for receiving
+files from Velociraptor clients or collection archives from
+[offline collectors]({{< ref "/docs/deployment/offline_collections" >}})
+in scenarios where you want the files to be sent to a central storage location
+on the local network rather than to the Velociraptor server or to a cloud
+storage service.
 
-To configure this option we need to:
+This is made possible by the
+[upload_smb]({{< ref "/vql_reference/other/upload_smb/" >}}) VQL function.
+
+This article explains how to set up a SMB share with appropriate security for
+file uploads.
+
+---
+
+### Setup steps
+
 1. Create a new local uploader user on one of the windows systems
    accessible to the host the collection is running on.
 
@@ -58,4 +71,4 @@ than the name for improved reliability.
 ![Creating the SMB offline collector](creating_smb_collector.png)
 
 
-Tags: #deployment
+Tags: #deployment #uploads #triage
