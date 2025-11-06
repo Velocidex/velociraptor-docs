@@ -1,5 +1,5 @@
 name: Linux.Forensics.BodyFile
-authors:  Chris DiSalle - @chrisdfir, David Roman - @countz3r0
+author:  Chris DiSalle - @chrisdfir, David Roman - @countz3r0
 description: |
   This artifact collects detailed file metadata from all Linux directories. 
   It gathers information such as file size, modification time, access time, creation time, and whether the file is a directory or a symbolic link. 
