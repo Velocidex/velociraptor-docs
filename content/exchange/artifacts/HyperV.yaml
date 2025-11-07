@@ -60,7 +60,7 @@ sources:
       
       SELECT *,
         {   SELECT OSPath, Size, Mtime,Atime,Ctime, Btime,
-                magic(path=OSPath) as HandleMagic
+                magic(path=OSPath) as FileMagic
             FROM stat(filename=__OSPath)
         } as FileInfo,
         if(condition= __OSPath=~DefaultLocationRegex,
