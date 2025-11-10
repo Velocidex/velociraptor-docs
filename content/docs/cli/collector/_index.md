@@ -140,7 +140,7 @@ Certain offline collector options imply integration with an existing server:
    (necessary when your selected artifacts require these tools _and_ when those
    tools can't be downloaded directly from the internet on the computer that you
    are creating the collector on).
-1. you want the collector to create X509-secured collection archives (which is
+1. you want the collector to create X509-secured collection containers (which is
    a recommended option).
 1. you want the collector to include custom artifacts that are in the server's
    artifact repository.
@@ -159,12 +159,12 @@ build environment:
   with access to a server datastore. This gives it access to the tools
   inventory and artifact repository contained in that datastore.
 
-- Offline collectors can create X509-secured collection archives using the
+- Offline collectors can create X509-secured collection containers using the
   server's certificate, which can then be transparently imported to your
   Velociraptor server. To enable that you'll need to provide the `collector`
   command with access to your server's config (the server into which the
   archives will be imported). The server config contains the server certificate
-  which can be used to encrypt the collection archives. To point the `collector`
+  which can be used to encrypt the collection containers. To point the `collector`
   command to the server config you can use the `--config` (or `-c`) flag.
 
 - You can use the `--definitions` flag with the `collector` command to point it
@@ -214,7 +214,7 @@ will be created in that temporary datastore.
 
 2. Next, edit the spec file (which is heavily self-documented via YAML
   comments). You will see that most options are similar to the ones presented in
-  the GUI's collection builder wizard, although in the spec file the YAML keys
+  the GUI's collector builder wizard, although in the spec file the YAML keys
   are `snake_case` rather than `CamelCase`.
 
 3. To build the collector, run the `collector` command with your edited spec

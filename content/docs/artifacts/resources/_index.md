@@ -63,6 +63,8 @@ resources:
   cpu_limit: 50
 ```
 
+![An example of a 50% CPU limit being applied](collection_CPU50.png)
+
 ## Time Limits
 
 There are two timeouts. The first is for the overall collection and
@@ -73,13 +75,6 @@ making progress in a reasonable time.
 `Timeout / Max Execution Time`: This sets a maximum duration for an
 artifact collection. The default timeout is 600 seconds. If the
 timeout is reached, the collection is timed out and cancelled.
-
-<!--
-We extract the default resource limits from each artifact definition
-and calculate a collection wide default. For example if a collection
-specifies artifact A (with max_rows = 10) and artifact B (with
-max_rows = 20), then the collection will have max_rows = 20.
--->
 
   - `timeout` (Query Timeout): A general timeout parameter can be set
     for a query. This timeout applies to the entire query and cancels
@@ -98,9 +93,12 @@ max_rows = 20), then the collection will have max_rows = 20.
     control. This limit cannot currently be specified in an artifact's
     `resources` section.
 
-  - Notebook Query Timeout: The timeout for notebook queries is
-    hardcoded to 10 minutes.
-
+  - Notebook Query Timeout: The timeout for notebook queries is 10 minutes, by
+    default. Normally this should be more than sufficient for any reasonable
+    notebook query, but in rare cases if you need to set this to a longer
+    interval you can do so via
+    [a config setting]({{< ref "/docs/deployment/references/#defaults.notebook_cell_timeout_min" >}})
+    (which requires a server restart).
 
 ## Resource Limits
 
@@ -110,21 +108,21 @@ actually does. In particular CPU and IO limits are not enforceable
 when running external applications via execve().
 
 - **CPU Limit**: This limits how much CPU the Velociraptor agent can
-  use on average.  Setting a CPU limit pauses the query when the
-  average CPU usage exceeds the limit, and it resumes when the average
-  drops below the threshold.
+  use on average.
 
-  CPU limiting works in all queries, but the underlying plugin needs
-  to support pausing.
+  - Setting a CPU limit pauses the query when the average CPU usage exceeds the
+  limit, and it resumes when the average drops below the threshold.
 
-  CPU limiting can cause queries to take longer or even not complete
-  if the limit is set too low, since a limited query will stop until
-  the CPU load for the entire process drops below the threshold, other
-  queries which are not limited may preempt it.
+  - CPU limiting works in all queries, but the underlying plugin needs to
+  support pausing.
 
-  Setting a global CPU limit is generally not recommended; Only
-  artifacts which are known to impose a high CPU load should have
-  throttling enabled.
+  - CPU limiting can cause queries to take longer or even not complete if the
+  limit is set too low, since a limited query will stop until the CPU load for
+  the entire process drops below the threshold, other queries which are not
+  limited may preempt it.
+
+  - Setting a global CPU limit is generally not recommended; Only artifacts
+  which are known to impose a high CPU load should have throttling enabled.
 
 - **IOPS Limit**: The iops_limit parameter limits the I/O per
   second. The mechanism works by throttling the client based on an IO
@@ -132,9 +130,9 @@ when running external applications via execve().
   most useful for large Yara scans. It can also be set on the
   `query()` plugin.
 
-CPU and IOPS limits do not apply to external tools invoked by an
+**<i class="fas fa-warning"></i> CPU and IOPS limits do not apply to external tools invoked by an
 artifact since Velociraptor has no control over the resources they
-consume.
+consume.**
 
 ## Data Limits
 

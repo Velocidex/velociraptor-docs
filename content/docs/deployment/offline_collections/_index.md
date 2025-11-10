@@ -41,8 +41,8 @@ artifacts. We call these binaries **offline collectors**.
   the Velociraptor server.
 
 - Instead of sending their data back to the server they write it to a local
-  collection archive file, which they can optionally upload to a cloud storage
-  service or network location. Because the collection archive may contain
+  collection container file, which they can optionally upload to a cloud storage
+  service or network location. Because the collection container may contain
   sensitive data, offline collectors can encrypt or password-protect this file
   so that it's secure while in transit.
 
@@ -126,11 +126,11 @@ config defines the offline collector's behaviour which is:
    archive, which is typically encrypted or password-protected (but doesn't have
    to be).
 
-3. **upload** the collection archive to a cloud storage service or other network
+3. **upload** the collection container to a cloud storage service or other network
    destination, if configured to do so.
 
-4. **delete** the collection archive from disk (optional and only used when the
-   collection archive is uploaded to a network destination).
+4. **delete** the collection container from disk (optional and only used when the
+   collection container is uploaded to a network destination).
 
 During the collection the offline collector displays progress in a terminal. No
 user interaction is needed, but you can choose the option to pause at the end of
@@ -188,7 +188,7 @@ In general, don't use offline collectors:
   is very fast and can therefore be done on the endpoint at the same time that
   the files themselves are collected. This approach makes use of the combined
   computing resources of all endpoints rather than centralizing the workload on
-  the server. When you import a collection archive on the server it's far better
+  the server. When you import a collection container on the server it's far better
   to have data that you can immediately begin working with, and not just a dump
   of files.
 
@@ -276,6 +276,9 @@ that you then only need to create one collector which can be used
 cross-platform, although your selection of artifacts would need to take that
 into account.
 
+Learn how to run generic offline collectors
+[here]({{< ref "/docs/deployment/offline_collections/running/#running-the-generic-collector" >}}).
+
 {{% notice note %}}
 
 Note that tools are not embedded in the binary and therefore do not need to be
@@ -285,7 +288,7 @@ are bundled and appended to the file.
 
 {{% /notice %}}
 
-## Collection archives
+## Collection containers
 
 An offline collector is essentially a preprogrammed out-of-band client. Instead
 of connecting to the server and delivering data over a client-server
@@ -295,7 +298,7 @@ provider or some other means.
 To make the data portable and thus enable delivery via arbitrary means, the
 offline collector writes the collection results and other data to a local zip
 file. Inside the zip we used a well-defined file structure that allows these
-collection archives to be imported into a Velociraptor server while also
+collection containers to be imported into a Velociraptor server while also
 conveying the necessary collection context that lets the server treat the data
 as if it was collected by a normal (online) client.
 
@@ -308,16 +311,16 @@ the server as with any other client collections.
 
 See the section
 [Working With Offline Collection Data]({{< ref "/docs/deployment/offline_collections/collection_data/" >}})
-for more information about importing collection archives, as well as other ways
+for more information about importing collection containers, as well as other ways
 to work with the data without importing it.
 
 
-### Collection security
+## Collection security
 
 All Velociraptor collections - whether online of offline - can potentially
 contain sensitive data. With client-server (online) collections the data
 transfer is secured with TLS. However an offline collector creates a portable
-collection archive, which is assumed to then be transported via insecure
+collection container, which is assumed to then be transported via insecure
 networks/systems outside the control of Velociraptor,. So it is essential to
 properly secure this data.
 
@@ -360,8 +363,8 @@ using either the server's X509 certificate or a cert that you provide.
 
 The zip password is essentially a strong symmetric key, which is secured by
 asymmetric crypto if you use either of the certificate-based options. This
-allows Velociraptor to create and extract collection archives with high speed
-and efficiency, which is important as collection archives can sometimes be very
+allows Velociraptor to create and extract collection containers with high speed
+and efficiency, which is important as collection containers can sometimes be very
 large.
 
 Even though the ZIP format uses AES to encrypt the contents of files, the file
@@ -377,6 +380,26 @@ only see `data.zip` in a zip file listing, and nothing more.
 Additionally we do allow the option of "none" (no encryption), but you should
 avoid using this except perhaps in special circumstances such as for convenience
 while testing in a lab or training environment.
+
+## Concurrency and order of artifact collection
+
+The offline collector collects the selected artifacts in an effectively random
+order. You cannot change the order of artifact collection.
+
+By default the offline collector will collect 2 artifacts at the same time
+(concurrency = 2). This can be overridden in the GUI collector builder or by
+specifying the `OptConcurrency` setting in the spec file if building the
+collector
+[on the command line]({{< ref "/docs/cli/collector/" >}}).
+
+Because offline collectors run without resource limits (by default), increasing
+the collection concurrency will not necessarily lead to faster collections, and
+may even achieve the opposite due to resource contention. If you are considering
+performance tuning your offline collectors then testing will help you establish
+an optimal concurrency setting. Different artifacts use different resources, and
+can shift their demands at different times during a collection. So the default
+setting provides a good balance since there's a reasonable chance that 2
+artifacts will be demanding different resources at any moment in time.
 
 
 ## More info

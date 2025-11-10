@@ -349,7 +349,7 @@ file acquisition!_ You can run any Velociraptor artifact, including custom ones,
 and the results are written to jsonl formatted files (and/or CSV format, if
 you prefer) which can be read by most data processing tools.
 
-As a variation on this idea, you can import the offline collection archives back
+As a variation on this idea, you can import the offline collection containers back
 into the standalone (i.e. non-networked) Instant Velociraptor, and work with
 them the same as you would with data collected from network-connected clients.
 That is, an Instant Velociraptor deployment using only offline collectors

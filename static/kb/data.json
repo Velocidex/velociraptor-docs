@@ -1,5 +1,49 @@
 [
     {
+        "title": "How to create an autoexec client binary",
+        "link": "/knowledge_base/tips/online_collector",
+        "tags": [
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2019-10-08"
+    },
+    {
+        "title": "How to set up a GCS Bucket for remote uploads",
+        "link": "/knowledge_base/tips/setup_gcs_storage",
+        "tags": [
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2019-10-08"
+    },
+    {
+        "title": "How to set up Azure Blob Storage for remote uploads",
+        "link": "/knowledge_base/tips/setup_azure_storage",
+        "tags": [
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-10-30"
+    },
+    {
+        "title": "How to set up a SMB share for remote uploads",
+        "link": "/knowledge_base/tips/setup_smb_share",
+        "tags": [
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-10-30"
+    },
+    {
         "title": "Pre-populating a server with clients, hunts and flows",
         "link": "/knowledge_base/tips/prepopulate_server",
         "tags": [

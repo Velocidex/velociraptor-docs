@@ -1,7 +1,7 @@
 # How to set up Azure Blob Storage for file uploads
 
 Microsoft Azure's Blob Storage service can be a useful upload destination for
-receiving files from Velociraptor clients or collection archives from
+receiving files from Velociraptor clients or collection containers from
 [offline collectors]({{< ref "/docs/deployment/offline_collections" >}})
 in scenarios where the source system is internet connected and you do not want
 to stand up storage services on the local network.

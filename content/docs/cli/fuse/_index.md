@@ -5,10 +5,10 @@ date: 2025-05-20
 last_reviewed: 2025-07-06
 draft: false
 weight: 65
-summary: Mount collection archives on folders.
+summary: Mount collection containers on folders.
 ---
 
-Mount collection archives on folders using [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
+Mount collection containers on folders using [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
 (Filesystem in Userspace).
 
 This command is only available in the Linux binary.

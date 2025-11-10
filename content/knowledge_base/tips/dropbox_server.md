@@ -1,7 +1,7 @@
 # How to set up a MinIO (S3-compatible) dropbox server for file uploads
 
 AWS S3 buckets can be a useful upload destination for receiving files from
-Velociraptor clients or collection archives from
+Velociraptor clients or collection containers from
 [offline collectors]({{< ref "/docs/deployment/offline_collections" >}})
 in scenarios where the source system is internet connected and you do not want
 to stand up storage services on the local network.

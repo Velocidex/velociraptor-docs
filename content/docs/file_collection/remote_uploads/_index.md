@@ -59,7 +59,7 @@ Velociraptor offers an X509 scheme. In this scheme the Velociraptor
 server embeds its public certificate in the collector binary.
 
 The offline collector then generates a random password to encrypt the
-collection archive with, and in turn encrypts this password with the
+collection container with, and in turn encrypts this password with the
 embedded public key certificate. This means **only** the server with
 the corresponding private key is able to decrypt the zip file.
 

@@ -4,7 +4,7 @@ menutitle: Troubleshooting
 date: 2025-11-03
 last_reviewed: 2025-11-03
 draft: false
-weight: 100
+weight: 60
 summary: "Troubleshooting offline collectors"
 ---
 

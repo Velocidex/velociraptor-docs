@@ -2,19 +2,37 @@
 title: "Working With Offline Collection Data"
 menutitle: "Collection Data"
 date: 2025-11-03
-last_reviewed: 2025-11-03
+last_reviewed: 2025-11-07
 draft: false
 weight: 30
 ---
 
 
-## Importing collections into the GUI
+## Importing collections into the Velociraptor server
+
+Velociraptor generates a unique Host ID on every machine and stores this in the
+offline collector output. When offline collections are imported into the server,
+this ID is used to construct the unique `client_id` if none is specified during
+the import. This means that separate collections from the same endpoint will be
+automatically associated with the same "virtual client" in the server's
+datastore, unless you manually specify a different `client_id` for each import.
+
+* Velociraptor can automatically decrypted offline containers when
+  importing.
+* Use the `Server.Utils.ImportCollection` artifact to import collections
+* The server uses its private key to unlock the container automatically.
+* This preserves PII and confidential information in transit!
+
+* You can import an offline collection into the GUI using the
+  `import_collection()` [VQL function](https://docs.velociraptor.app/vql_reference/server/import_collection/).
+* Requires the collection ZIP to already be present on the server.
+* Decrypts X509 encrypted collections automatically.
 
 We can use the offline collector to fetch multiple artifacts from the
 endpoint. The results consist of bulk data as well as JSON file
 containing the result of any artifacts collected.
 
-Here is an example of the internal structure of a typical collection archive:
+Here is an example of the internal structure of a typical collection container:
 
 ```text
 .
@@ -53,30 +71,19 @@ or a new randomly generated client.
 
 ![Importing Offline Collector collections](image48.png)
 
-{{% notice tip "Copying the collections to the server" %}}
+{{% notice note "Copying the collections to the server" %}}
 
-Offline collections are typically very large, this is why we do not
-have a GUI facility to upload the collection zip file into the
-server. You will need to use an appropriate transfer mechanism (such
-as SFTP or SCP) to upload to the server itself.
+Offline collections are typically much larger than web browser uploads will
+allow, which is why we do not have a GUI facility to upload the collection zip
+file into the server. You will need to use an appropriate transfer mechanism
+(such as SFTP or SCP) to upload to the server itself.
 
 {{% /notice %}}
 
 
-### Importing into Velociraptor
 
-* Velociraptor can automatically decrypted offline containers when
-  importing.
-* Use the Server.Utils.ImportCollection artifact to import collections
-* The server uses its private key to unlock the container automatically.
-* This preserves PII and confidential information in transit!
 
-* You can import an offline collection into the GUI using the
-  `import_collection()` [VQL function](https://docs.velociraptor.app/vql_reference/server/import_collection/).
-* Requires the collection ZIP to already be present on the server.
-* Decrypts X509 encrypted collections automatically.
-
-### Accessing collection archives without importing
+## Accessing collection containers without importing
 
 
 If you want to give other people the ability to decrypt the collection
@@ -88,9 +95,9 @@ velociraptor --config server.config.yaml unzip collection.zip --dump_dir /output
 ```
 
 
-#### fuse container command
+### fuse container command
 
-#### Dead disk analysis of a collection archive
+## Dead disk analysis of a collection container
 
 May be from an offline collector or exported from the server.
 

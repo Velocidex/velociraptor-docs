@@ -2,7 +2,7 @@
 
 SMB is the Microsoft file-sharing protocol which is a convenient option for
 Windows systems. A SMB share can be a useful upload destination for receiving
-files from Velociraptor clients or collection archives from
+files from Velociraptor clients or collection containers from
 [offline collectors]({{< ref "/docs/deployment/offline_collections" >}})
 in scenarios where you want the files to be sent to a central storage location
 on the local network rather than to the Velociraptor server or to a cloud

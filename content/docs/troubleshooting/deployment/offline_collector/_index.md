@@ -38,7 +38,7 @@ server and receive the error:
 or something similar, then it's likely that the offline collector is using a
 very old binary. Offline collectors are rarely upgraded as often as the server
 is, which means that the same offline collectors may inadvertently persist in a
-responder's toolkit for years. However the collection archive format that the
+responder's toolkit for years. However the collection container format that the
 server supports may need to change over time to support new features, which can
 cause import incompatibility with archives created by very old collectors.
 

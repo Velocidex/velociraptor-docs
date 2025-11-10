@@ -67,6 +67,17 @@ And in that case the investigation is incurring delays and wasting resources by
 routing the data via cloud storage - even if you manage to automate the
 transfers.
 
+So the question to ask yourself is: _Should I really be using an offline
+collector?_
+
+If your offline collector can connect to a storage service on the internet then
+it might be worth having it just connect to your Velociraptor server via the
+internet. In terms of the data collected, the exact same data can be collected
+by a client (including files).
+
+The Velociraptor client can be repacked to replicate the offline collector's
+single-file, no-installation, "just run it" simplicity. Here's how:
+
 #### Creating an online (client) collector
 
 Assuming that client-server connectivity _is_ possible, you can repack a client
@@ -98,10 +109,6 @@ Here's how to create and run such a client binary:
    The `--require_admin` is added since an installed client normally runs with
    elevated privileges. Offline collectors usually also enforce this
    requirement.
-
-   _NOTE:  it appears the client command ignores this flag in the current
-   version, which is a pity but ok - we'll just tell them to "run it as
-   administrator"._
 
 4. Also add a label section to the Client section of the config - i.e.
    `Client.labels`. This label will be used to kick off an initial hunt when the
@@ -141,8 +148,12 @@ Here's how to create and run such a client binary:
    ```
 
 6. On your Velociraptor server set up a new hunt targeting the `autocollect`
-   label. The hunt should include the artifacts that you'd normally have chosen
-   for an offline collector. Don't forget to start the hunt.
+   label.
+
+   ***The hunt should include the same artifacts that you would have chosen for
+   an offline collector***.
+
+   Don't forget to start the hunt!
 
    ![target the hunt by label (and yes, I know you still want to KAPE everything!)](hunt.png)
 
