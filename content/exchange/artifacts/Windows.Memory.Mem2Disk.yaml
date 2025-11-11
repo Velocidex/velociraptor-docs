@@ -32,7 +32,7 @@ parameters:
                a binary, replace with `.*`. The default parameter checks the original binary itself (.exe)
                as well as kernelbase.dll, ntdll.dll, user32.dll, kernel32.dll, shell32.dll, msvcrt.dll,
                advapi32.dll, and comdlg32.dll (i.e. commonly injected libraries).
-  default: "\\.exe$|(KERNELBASE|ntdll|user32|kenrel32|shell32|msvcrt|advapi32|comdlg32)\\.dll$"
+  default: "\\.exe$|(KERNELBASE|ntdll|user32|kernel32|shell32|msvcrt|advapi32|comdlg32)\\.dll$"
 - name: Workers
   type: int
   default: "5"
