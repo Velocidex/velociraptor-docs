@@ -205,12 +205,13 @@ will be created in that temporary datastore.
    velociraptor-v0.75.4-linux-amd64: error: collector: No Spec file provided
    ```
 
-- The first command prepares a temporary datastore location that we will use in
-  subsequent steps.
-- The second command outputs an example spec and writes it to a file in the
-  newly created directory. Because we have not provided the required
-  `[<spec_file>]` parameter, Velociraptor prints a template to the Stdout which
-  we redirect to a file.
+   - The first command prepares a temporary datastore location that we will use
+     in subsequent steps.
+
+   - The second command outputs an example spec and writes it to a file in the
+     newly created directory. Because we have not provided the required
+     `[<spec_file>]` parameter, Velociraptor prints a template to the Stdout
+     which we redirect to a file.
 
 2. Next, edit the spec file (which is heavily self-documented via YAML
   comments). You will see that most options are similar to the ones presented in
@@ -256,32 +257,37 @@ but that would be far less convenient.
 
 ### Reproducing configurations from previously-created collectors
 
-<!-- Revise when 0.75.5 becomes available -->
+From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create the
+corresponding spec file and store it in the collection's **Uploaded Files** tab,
+in addition to the repacked collector binary.
 
-It is currently not possible to produce a spec file from a previously created
-offline collector or from a previously run `Server.Utils.CreateCollector` flow
-in the GUI.
-
-For a previously run `Server.Utils.CreateCollector` flow you can inspect the
-**Requests** tab to see what settings were used and then manually transcribe
-them if needed. Generally it is easier to use the **Copy Collection** button in
-the GUI to rebuild an offline collector, possibly tweaking some settings in
-the process. However you might want to switch from using the GUI collector builder
-to using the CLI `collector` command and would therefore need to transcribe the
-settings into a spec file.
-
-For a previously created collector you can inspect the embedded config using the
-`config show` CLI command and then manually transcribe the settings into a new
-spec file. While this is not the most pleasant way to do things, sometimes it is
-the only option. For example, you might only have access to a collector that
-someone else created and you need to rebuild it on the latest version or modify
-some of it's settings.
+You can preview the spec in the GUI or download it and possibly edit it before
+using it with the CLI `collector` command.
 
 {{% notice note %}}
 
-From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create the
-corresponding spec file and store it in the collection's Uploads section, in
-addition to the repacked collector binary.
+In versions prior to 0.75.5 a spec file was not generated when running a
+`Server.Utils.CreateCollector`. However if you upgrade to v0.75.5 or above you
+can select an old collection and use the "Copy Collection" button to re-run the
+same collector builder process. The new collection will then contain the updated
+build of the collector plus the corresponding spec file.
+
+If you haven't upgraded yet then the process is very manual:
+
+- For a previously run `Server.Utils.CreateCollector` flow you can inspect the
+  **Requests** tab to see what settings were used and then manually transcribe
+  them if needed. Generally it is easier to use the **Copy Collection** button
+  in the GUI to rebuild an offline collector, possibly tweaking some settings in
+  the process. However you might want to switch from using the GUI collector
+  builder to using the CLI `collector` command and would therefore need to
+  transcribe the settings into a spec file.
+
+- For a previously created collector you can inspect the embedded config using
+  the `config show` CLI command and then manually transcribe the settings into a
+  new spec file. While this is not the most pleasant way to do things, sometimes
+  it is the only option. For example, you might only have access to a collector
+  that someone else created and you need to rebuild it on the latest version or
+  modify some of it's settings.
 
 {{% /notice %}}
 

@@ -2,7 +2,7 @@
 title: "Bulk File Collection"
 date: 2021-06-27T04:31:24Z
 last_reviewed: 2025-10-28
-draft: false
+draft: true
 weight: 50
 aliases:
   - "/docs/offline_triage/"
