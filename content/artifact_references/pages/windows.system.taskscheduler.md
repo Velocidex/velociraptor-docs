@@ -47,7 +47,7 @@ parameters:
 sources:
   - name: Analysis
     query: |
-      LET Uploads = SELECT Name, OSPath, if(
+      LET Uploads(TasksPath) = SELECT Name, OSPath, if(
            condition=AlsoUpload='Y',
            then=upload(file=OSPath)) AS Upload, Mtime
         FROM glob(globs=TasksPath)
@@ -55,7 +55,7 @@ sources:
 
       // Job files contain invalid XML which confuses the parser - we
       // use regex to remove the invalid tags.
-      LET parse_task = select OSPath, Mtime, parse_xml(
+      LET parse_task(OSPath, Mtime) = select OSPath, Mtime, parse_xml(
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
@@ -63,9 +63,23 @@ sources:
                     replace='')) AS XML
         FROM read_file(filenames=OSPath)
 
+      // Extract the binary from the command line. Fix up some common
+      // problems with the command specification.
+      LET _ExpandedTransforms &lt;= dict(
+         `^\\\\SystemRoot\\\\`="%SystemRoot%\\",
+         `^system32\\\\`="%SystemRoot%\\System32\\",
+         `^{.+}.+`="\\$0",
+         `^.:\\\\Program Files[^\\\\]*\\\\[^ ]+`='"$0"',
+         `^%[^ ]+%[^ ]+`='"$0"'
+      )
+
+      LET ExpandPath(Path) = lowcase(string=commandline_split(
+        command=expand(path=regex_transform(source=Path,
+         map=_ExpandedTransforms)))[0])
+
       LET Results = SELECT XML.Task.RegistrationInfo.URI AS TaskName,
             Mtime,
-            expand(path=XML.Task.Actions.Exec.Command)  AS Command,
+            ExpandPath(Path=XML.Task.Actions.Exec.Command)  AS Command,
             XML.Task.Actions.Exec.Arguments AS Arguments,
             XML.Task.Principals.Principal.UserId AS UserId,
             XML.Task.Principals.Principal.RunLevel AS RunLevel,
@@ -74,16 +88,21 @@ sources:
             XML.Task.Actions.ComHandler.ClassId AS ComHandler,
             timestamp(epoch=XML.Task.RegistrationInfo.Date) AS RegistrationTime,
             timestamp(epoch=XML.Task.Triggers.CalendarTrigger.StartBoundary) AS StartBoundary,
-            XML as _XML
-        FROM foreach(row=Uploads, query=parse_task)
+            XML as _XML,
+            OSPath
+        FROM foreach(row={
+          SELECT * FROM Uploads(TasksPath= TasksPath)
+        } , query={
+          SELECT * FROM parse_task(OSPath=OSPath, Mtime=Mtime)
+        })
 
       SELECT *,
          authenticode(filename=Command) AS Authenticode,
-         if(condition=UploadCommands and ExpandedCommand,
+         if(condition=UploadCommands AND Command,
             then=upload(file=Command)) AS Upload
       FROM Results
       WHERE UserId =~ Username
-      
+
 column_types:
 - name: Upload
   type: upload_preview

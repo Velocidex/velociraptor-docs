@@ -1,5 +1,95 @@
 [
     {
+        "title": "Windows.Detection.HyperV",
+        "author": "mgreen27",
+        "description": "Scope suspicious Hyper-V worker process and activity on Windows workstations. ",
+        "link": "/exchange/artifacts/pages/hyperv",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2025-11-07"
+    },
+    {
+        "title": "Windows.Vhdx.RemapConfigBuilder",
+        "author": "mirwitch",
+        "description": "Create remapping configuration YAML file(s) to virtually mount  \nVHDX profiles into virtual Velociraptor clients.",
+        "link": "/exchange/artifacts/pages/windows.vhdx.remapconfigbuilder",
+        "tags": [],
+        "author_link": "https://github.com/mirwitch",
+        "author_avatar": "https://avatars.githubusercontent.com/u/76847610?v=4",
+        "date": "2025-11-03"
+    },
+    {
+        "title": "Windows.Vhdx.Sys.Users",
+        "author": "mirwitch",
+        "description": "List User accounts by inspecting registry keys. This method is a\nreliable indicator for users who have physically logged into the\nsystem and thereby created local profiles.",
+        "link": "/exchange/artifacts/pages/windows.vhdx.sys.users",
+        "tags": [],
+        "author_link": "https://github.com/mirwitch",
+        "author_avatar": "https://avatars.githubusercontent.com/u/76847610?v=4",
+        "date": "2025-11-03"
+    },
+    {
+        "title": "Windows.Vhdx.VirtualClientRemover",
+        "author": "mirwitch",
+        "description": "Kill the Velociraptor agent used for the VHDX profiles virtual host.   ",
+        "link": "/exchange/artifacts/pages/windows.vhdx.virtualclientremover",
+        "tags": [],
+        "author_link": "https://github.com/mirwitch",
+        "author_avatar": "https://avatars.githubusercontent.com/u/76847610?v=4",
+        "date": "2025-11-03"
+    },
+    {
+        "title": "Windows.Vhdx.VirtualClientRunner",
+        "author": "mirwitch",
+        "description": "Run the Velociraptor agent using the remapping configuration created. This \nagent allow to virtually map the VHDX profiles into virtual Velociraptor agents.",
+        "link": "/exchange/artifacts/pages/windows.vhdx.virtualclientrunner",
+        "tags": [],
+        "author_link": "https://github.com/mirwitch",
+        "author_avatar": "https://avatars.githubusercontent.com/u/76847610?v=4",
+        "date": "2025-11-03"
+    },
+    {
+        "title": "Generic.File.LineScan.RegexHunter",
+        "author": "klehri-r7",
+        "description": "A versatile artifact that scans the contents of text files line by line and reports \nany line that matches a user-supplied regular expression.\nThis artifact is designed for flexible content inspection across any operating system\u2014\nLinux, Windows. It can be used to detect indicators of compromise, identify \nsuspicious commands in configuration files, or validate specific text patterns.",
+        "link": "/exchange/artifacts/pages/generic.file.linescan.regexhunter",
+        "tags": [],
+        "author_link": "https://github.com/klehri-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/183785760?v=4",
+        "date": "2025-10-08"
+    },
+    {
+        "title": "Linux.Network.Netstat.Watcher",
+        "author": "ablescia",
+        "description": "Collects a one-time snapshot of current non-LISTEN remote connections and a continuous diff stream of added/removed/changed connections. Loopback destinations are excluded by default (127.0.0.1 and ::1) via a configurable regex.  The sampling interval (SampleIntervalSec) and the overall monitoring window (MonitorDurationSec) are fully parameterized. Each record includes process metadata via process_tracker_get\n",
+        "link": "/exchange/artifacts/pages/linux.network.netstat.watcher",
+        "tags": [],
+        "author_link": "https://github.com/ablescia",
+        "author_avatar": "https://avatars.githubusercontent.com/u/90195154?v=4",
+        "date": "2025-09-03"
+    },
+    {
+        "title": "Windows.Forensics.WindowsNotepadParser",
+        "author": "ogmini",
+        "description": "Runs the WindowsNotepadParser (https://github.com/ogmini/Notepad-State-Library) tool to collect and parse \nforensic artifacts related to Windows Notepad on Windows 11. ",
+        "link": "/exchange/artifacts/pages/windows.forensics.windowsnotepadparser",
+        "tags": [],
+        "author_link": "https://github.com/ogmini",
+        "author_avatar": "https://avatars.githubusercontent.com/u/112595633?v=4",
+        "date": "2025-08-01"
+    },
+    {
+        "title": "Generic.CommonLogFormat.AccessLogs",
+        "author": "ablescia",
+        "description": "Parses Apache access logs to extract detailed request information.\n",
+        "link": "/exchange/artifacts/pages/generic.commonlogformat.accesslogs",
+        "tags": [],
+        "author_link": "https://github.com/ablescia",
+        "author_avatar": "https://avatars.githubusercontent.com/u/90195154?v=4",
+        "date": "2025-07-30"
+    },
+    {
         "title": "Linux.Persistence.LdPreload",
         "author": "mgreen27",
         "description": "Parses the GNU\u202fglibc **LD_PRELOAD** mechanism. Any path listed in \n`/etc/ld.so.preload` or assigned to `LD_PRELOAD` is force\u2011loaded into every \ndynamically linked executable. A single \nrogue entry therefore grants system\u2011wide code execution and persistence at\nprocess start\u2011up.",
@@ -304,7 +394,7 @@
     {
         "title": "Windows.Utils.DefenderExclusion",
         "author": "predictiple",
-        "description": "Adds a Microsoft Defender real-time scanning process exclusion for Velociraptor.",
+        "description": "**Adds a Microsoft Defender real-time scanning process exclusion for\nVelociraptor.**",
         "link": "/exchange/artifacts/pages/defenderexclusion",
         "tags": [
             "microsoft"
@@ -352,16 +442,6 @@
         "author_link": "https://github.com/misje",
         "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
         "date": "2024-07-15"
-    },
-    {
-        "title": "Generic.Apache.AccessLogs",
-        "author": "Krishna-23",
-        "description": "Parses Apache access logs to extract detailed request information.\n",
-        "link": "/exchange/artifacts/pages/apache.accesslogs",
-        "tags": [],
-        "author_link": "https://github.com/Krishna-23",
-        "author_avatar": "https://avatars.githubusercontent.com/u/56428658?v=4",
-        "date": "2024-07-10"
     },
     {
         "title": "Generic.Events.TrackNetworkConnections",
@@ -546,7 +626,7 @@
     {
         "title": "Windows.Audit.CISCat_Lite",
         "author": "ablescia",
-        "description": "This artifact runs the CISCat-Lite tool on the target machine and uploads the html output on the velociraptor server.",
+        "description": "This artifact runs the CISCat-Lite tool on the target machine and\nuploads the html output on the velociraptor server.",
         "link": "/exchange/artifacts/pages/windows.audit.ciscat_lite",
         "tags": [],
         "author_link": "https://github.com/ablescia",
@@ -1139,7 +1219,7 @@
     {
         "title": "Windows.Carving.Qakbot",
         "author": "mgreen27",
-        "description": "This artifact enables Qakbot payload detection and configuration extraction \nfrom a byte stream, process or file on disk. The artifact runs a yara scan \nas a detection step, then attempts to process the payload to extract \nconfiguration.",
+        "description": "This artifact enables Qakbot payload detection and configuration extraction\nfrom a byte stream, process or file on disk. The artifact runs a yara scan\nas a detection step, then attempts to process the payload to extract\nconfiguration.",
         "link": "/exchange/artifacts/pages/qakbot",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -2115,7 +2195,7 @@
     {
         "title": "Windows.Detection.BruteRatel",
         "author": "flukes86",
-        "description": "This hunt runts the Immersive Labs yara rule (https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings. \n",
+        "description": "This hunt runts the Immersive Labs yara rule (https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings.\n",
         "link": "/exchange/artifacts/pages/windows.detection.bruteratel",
         "tags": [],
         "author_link": "https://github.com/flukes86",

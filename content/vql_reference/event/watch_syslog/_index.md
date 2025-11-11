@@ -49,13 +49,22 @@ files to watch periodically. If a new file appears, this plugin
 will dump all its existing lines then seek to the end of the file
 and continue dumping any new lines (So no lines should be missed).
 
-## Example:
+## Example (Dynamic watcher):
 
 ```vql
 SELECT OSPath, Line
 FROM watch_syslog(query={
     SELECT OSPath FROM glob(globs='/var/log/logfile*.log')
 })
+```
+
+## Example:
+
+The following will watch a static file (this can not be a glob).
+
+```vql
+SELECT OSPath, Line
+FROM watch_syslog(filename='/var/log/logfile.log')
 ```
 
 

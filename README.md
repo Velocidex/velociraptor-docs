@@ -9,10 +9,8 @@ The site uses the static website generator [Hugo](https://gohugo.io).
 To develop on the site:
 1. clone this repository by running the following git clone command
    ```
-   git clone --recurse-submodules https://github.com/Velocidex/velociraptor-docs.git
+   git clone https://github.com/Velocidex/velociraptor-docs.git
    ```
-    **Note** normal cloning will not work. You must recurse the submodules or hugo will not understand shortcodes and you will see errors such as:
-  `failed to extract shortcode: template for shortcode "children" not found`
 
 2. Run Hugo:
    1. Run Hugo with a natively installed version
