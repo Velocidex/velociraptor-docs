@@ -32,6 +32,7 @@ file-like interface.
 |[ntfs](ntfs)|<span class='vql_type'>Accessor</span>|Access the NTFS filesystem by parsing NTFS structures|
 |[ntfs_vss](ntfs_vss)|<span class='vql_type'>Accessor</span>|Access the NTFS filesystem by considering all VSS|
 |[offset](offset)|<span class='vql_type'>Accessor</span>|Allow reading another file from a specific offset|
+|[overlay](overlay)|<span class='vql_type'>Accessor</span>|Merges several paths into a single path|
 |[pipe](pipe)|<span class='vql_type'>Accessor</span>|Read from a VQL pipe|
 |[process](process)|<span class='vql_type'>Accessor</span>|Access process memory like a file|
 |[pst](pst)|<span class='vql_type'>Accessor</span>|An accessor to open attachments in PST files|

@@ -3889,7 +3889,7 @@
     },
     {
         "name": "import",
-        "description": "Imports an artifact into the current scope. This only works in notebooks!",
+        "description": "Imports an artifact into the current scope.",
         "type": "Function",
         "args": [
             {
@@ -3910,7 +3910,7 @@
     },
     {
         "name": "import_collection",
-        "description": "Imports an offline collection zip file (experimental).",
+        "description": "Imports a collection zip file .",
         "type": "Function",
         "args": [
             {
@@ -5786,6 +5786,32 @@
         ]
     },
     {
+        "name": "overlay",
+        "description": "Merges several paths into a single path.",
+        "type": "Accessor",
+        "args": [
+            {
+                "name": "paths",
+                "type": "OSPath",
+                "description": "A list of paths to try to resolve each path.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "File accessor"
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "OVERLAY_ACCESSOR_DELEGATES"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "panic",
         "description": "Crash the program with a panic!",
         "type": "Plugin",
@@ -6181,12 +6207,19 @@
         "name": "parse_json",
         "description": "Parse a JSON string into an object.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "data",
                 "type": "string",
                 "description": "Json encoded string.",
                 "required": true
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -6208,6 +6241,12 @@
                 "type": "string",
                 "description": "Json encoded string.",
                 "required": true
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -6229,6 +6268,12 @@
                 "type": "string",
                 "description": "Json encoded string.",
                 "required": true
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -6798,6 +6843,12 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "File accessor"
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -8720,43 +8771,6 @@
                 "name": "secret",
                 "type": "ordereddict.Dict",
                 "description": "A Dict containing key/value pairs for the secret",
-                "required": true
-            }
-        ],
-        "category": "server",
-        "metadata": {
-            "permissions": "SERVER_ADMIN"
-        },
-        "platforms": [
-            "linux_amd64_cgo",
-            "windows_amd64_cgo"
-        ]
-    },
-    {
-        "name": "secret_define",
-        "description": "Define a new secret template",
-        "type": "Function",
-        "args": [
-            {
-                "name": "type",
-                "type": "string",
-                "description": "Type of the secret",
-                "required": true
-            },
-            {
-                "name": "verifier",
-                "type": "string",
-                "description": "A VQL Lambda function to verify the secret"
-            },
-            {
-                "name": "description",
-                "type": "string",
-                "description": "A description of the secret type"
-            },
-            {
-                "name": "template",
-                "type": "ordereddict.Dict",
-                "description": "A Set of key/value pairs",
                 "required": true
             }
         ],

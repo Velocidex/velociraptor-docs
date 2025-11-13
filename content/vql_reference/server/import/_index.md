@@ -23,5 +23,13 @@ artifact|The Artifact to import|string (required)
 
 ### Description
 
-Imports an artifact into the current scope. This only works in notebooks!
+Imports an artifact into the current scope.
+
+Importing an artifact loads the artifact's `export` section into
+the current scope.
+
+This only works in notebooks! In an artifact definition this
+statement is not needed, since you can always add the dependent
+artifact to the `imports` section.
+
 

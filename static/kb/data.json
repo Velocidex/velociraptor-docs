@@ -591,6 +591,11 @@
             "deployment",
             "uploads",
             "triage"
+        "title": "Backing up and restoring a server.",
+        "link": "/knowledge_base/tips/backing_up",
+        "tags": [
+            "automation",
+            "deployment"
         ],
         "author": "",
         "author_link": "",

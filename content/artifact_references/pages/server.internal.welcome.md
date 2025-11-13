@@ -33,7 +33,7 @@ description: |
 type: SERVER
 
 sources:
-- query: SELET * FROM info()
+- query: SELECT * FROM info()
 
 reports:
   - type: CLIENT

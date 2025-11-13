@@ -27,3 +27,7 @@ providers|If provided only restore providers matching this regex.|string
 
 Restore state from a backup file.
 
+Note that the backups file can only reside in the file store under
+the `<filestor>/backups` directory.
+
+

@@ -32,15 +32,15 @@ Parse a PE file.
 This function parses a PE file from disk or memory to extract the
 different aspects of the PE file. The fields include:
 
-- FileHeader: The basic PE file header information.
-- Directories: The different directories in the PE file (For
-  example Export_Directory, IAT_Directory etc).
-- VersionInformation: The VersionInformation field contains
-  metadata about the binary.
-- Imports: Parses the Import table of the PE file.
-- Exports: Parses the export table of the PE file.
-- Forward: Any linker forward to other DLLs.
-- Authenticode: Calculates the Authenticode hash of the PE file
+- `FileHeader`: The basic PE file header information.
+- `Directories`: The different directories in the PE file (For
+  example `Export_Directory`, `IAT_Directory` etc).
+- `VersionInformation`: This field contains
+  metadata about the binary (Such as the Author, Company etc).
+- `Imports`: Parses the Import table of the PE file.
+- `Exports`: Parses the export table of the PE file.
+- `Forward`: Any linker forward to other DLLs.
+- `Authenticode`: Calculates the Authenticode hash of the PE file
   and also check if it is trusted.
 
 The result of `parse_pe()` is a lazily evaluated dict. This means
@@ -73,7 +73,7 @@ the PE file from memory itself using the "process" accessor (in a
 similar way to the `pedump` plugin from Volatility)
 
 To do this you need to know the memory address where the PE file
-is loaded at. This is usually called the BaseAddress and plugins
+is loaded at. This is usually called the `BaseAddress` and plugins
 like `vad()` can provide it for a running process.
 
 ```vql

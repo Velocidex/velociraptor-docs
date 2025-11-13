@@ -1917,3 +1917,7 @@ preprogrammed
 <url-free> content/knowledge_base/tips/online_collector.md
 --------------------------------------------------------------------------------
 exfiltrate
+yarax
+YaraX
+GZip
+gopsutil

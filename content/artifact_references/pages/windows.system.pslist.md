@@ -46,14 +46,14 @@ sources:
     query: |
         LET ProcList = SELECT * FROM if(condition=UseTracker,
         then={
-          SELECT Pid, Ppid, NULL AS TokenIsElevated,
+          SELECT CreateTime, Pid, Ppid, NULL AS TokenIsElevated,
                  Username, Name, CommandLine, Exe, NULL AS Memory
           FROM process_tracker_pslist()
         }, else={
           SELECT * FROM pslist()
         })
 
-        SELECT Pid, Ppid, TokenIsElevated, Name, CommandLine, Exe,
+        SELECT CreateTime, Pid, Ppid, TokenIsElevated, Name, CommandLine, Exe,
             token(pid=int(int=Pid)) as TokenInfo,
             hash(path=Exe) as Hash,
             authenticode(filename=Exe) AS Authenticode,
@@ -67,6 +67,5 @@ sources:
             AND NOT if(condition= UntrustedAuthenticode,
                         then= Authenticode.Trusted = 'trusted' OR NOT Exe,
                         else= False )
-
 </code></pre>
 
