@@ -194,7 +194,7 @@ collector use case. So this method of tweaking the command line allows you to
 use any of the global or command-specific
 [CLI flags]({{< ref "/docs/cli/flags/" >}})
 
-Note that it if a flag is specified in `autoexec.argv` then it can't be negated
+Note that if a flag is specified in `autoexec.argv` then it can't be negated
 or overridden. You can only add flags that have not already been used.
 
 

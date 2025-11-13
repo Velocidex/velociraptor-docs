@@ -311,7 +311,7 @@ This artifact is designed to be used as follows:
 
 3. You move the folder containing the binaries to your Velociraptor server (the
    one that doesn't have internet access), and there you run the same artifact a
-   seconds time, but this time pointing it to the folder using the artifact's
+   second time, but this time pointing it to the folder using the artifact's
    `BasePath` parameter. This step loads all the binaries into the tools
    inventory.
 
