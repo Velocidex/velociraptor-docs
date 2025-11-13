@@ -1877,3 +1877,8 @@ CyberTriage
 LnkTargets
 TaskCache
 adaptively
+
+yarax
+YaraX
+GZip
+gopsutil

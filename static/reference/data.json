@@ -1357,7 +1357,7 @@
     },
     {
         "name": "compress",
-        "description": "Compress a file.",
+        "description": "Compress a file using GZip.",
         "type": "Function",
         "args": [
             {
@@ -1369,7 +1369,8 @@
             {
                 "name": "output",
                 "type": "string",
-                "description": "A path to write the output - default is the path with a .gz extension"
+                "description": "A path to write the output - default is the path with a .gz extension",
+                "required": true
             }
         ],
         "category": "encode",
@@ -3251,7 +3252,7 @@
         "name": "hash",
         "description": "Calculate the hash of a file.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "path",
@@ -3888,7 +3889,7 @@
     },
     {
         "name": "import",
-        "description": "Imports an artifact into the current scope. This only works in notebooks!",
+        "description": "Imports an artifact into the current scope.",
         "type": "Function",
         "args": [
             {
@@ -3909,7 +3910,7 @@
     },
     {
         "name": "import_collection",
-        "description": "Imports an offline collection zip file (experimental).",
+        "description": "Imports a collection zip file .",
         "type": "Function",
         "args": [
             {
@@ -5785,6 +5786,32 @@
         ]
     },
     {
+        "name": "overlay",
+        "description": "Merges several paths into a single path.",
+        "type": "Accessor",
+        "args": [
+            {
+                "name": "paths",
+                "type": "OSPath",
+                "description": "A list of paths to try to resolve each path.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "File accessor"
+            }
+        ],
+        "metadata": {
+            "ScopeVar": "OVERLAY_ACCESSOR_DELEGATES"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "category": "accessors"
+    },
+    {
         "name": "panic",
         "description": "Crash the program with a panic!",
         "type": "Plugin",
@@ -6180,12 +6207,19 @@
         "name": "parse_json",
         "description": "Parse a JSON string into an object.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "data",
                 "type": "string",
                 "description": "Json encoded string.",
                 "required": true
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -6207,6 +6241,12 @@
                 "type": "string",
                 "description": "Json encoded string.",
                 "required": true
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -6228,6 +6268,12 @@
                 "type": "string",
                 "description": "Json encoded string.",
                 "required": true
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -6797,6 +6843,12 @@
                 "name": "accessor",
                 "type": "string",
                 "description": "File accessor"
+            },
+            {
+                "name": "schema",
+                "type": "string",
+                "description": "Json schema to use for validation.",
+                "repeated": true
             }
         ],
         "category": "parsers",
@@ -8719,43 +8771,6 @@
                 "name": "secret",
                 "type": "ordereddict.Dict",
                 "description": "A Dict containing key/value pairs for the secret",
-                "required": true
-            }
-        ],
-        "category": "server",
-        "metadata": {
-            "permissions": "SERVER_ADMIN"
-        },
-        "platforms": [
-            "linux_amd64_cgo",
-            "windows_amd64_cgo"
-        ]
-    },
-    {
-        "name": "secret_define",
-        "description": "Define a new secret template",
-        "type": "Function",
-        "args": [
-            {
-                "name": "type",
-                "type": "string",
-                "description": "Type of the secret",
-                "required": true
-            },
-            {
-                "name": "verifier",
-                "type": "string",
-                "description": "A VQL Lambda function to verify the secret"
-            },
-            {
-                "name": "description",
-                "type": "string",
-                "description": "A description of the secret type"
-            },
-            {
-                "name": "template",
-                "type": "ordereddict.Dict",
-                "description": "A Set of key/value pairs",
                 "required": true
             }
         ],
@@ -12132,6 +12147,87 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "yarax",
+        "description": "Scan files using yara rules (Using the new yarax engine).",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "rules",
+                "type": "string",
+                "description": "Yara rules in the yara DSL or after being compiled by the yarac compiler."
+            },
+            {
+                "name": "files",
+                "type": "Any",
+                "description": "The list of files to scan.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "accessor",
+                "type": "string",
+                "description": "Accessor (e.g. ntfs,file)"
+            },
+            {
+                "name": "context",
+                "type": "int",
+                "description": "How many bytes to include around each hit"
+            },
+            {
+                "name": "start",
+                "type": "uint64",
+                "description": "The start offset to scan"
+            },
+            {
+                "name": "end",
+                "type": "uint64",
+                "description": "End scanning at this offset (100mb)"
+            },
+            {
+                "name": "number",
+                "type": "int64",
+                "description": "Stop after this many hits (1)."
+            },
+            {
+                "name": "blocksize",
+                "type": "uint64",
+                "description": "Blocksize for scanning (10mb)."
+            },
+            {
+                "name": "key",
+                "type": "string",
+                "description": "If set use this key to cache the  yara rules."
+            },
+            {
+                "name": "namespace",
+                "type": "string",
+                "description": "The Yara namespece to use."
+            },
+            {
+                "name": "vars",
+                "type": "ordereddict.Dict",
+                "description": "The Yara variables to use."
+            },
+            {
+                "name": "dll_path",
+                "type": "Lambda",
+                "description": "Function to resolve path to the yarax DLL",
+                "required": true
+            },
+            {
+                "name": "force_buffers",
+                "type": "bool",
+                "description": "Force buffer scan in all cases."
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ,EXECVE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

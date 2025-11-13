@@ -132,18 +132,10 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
+      LET YARA_LOG_LEVEL &lt;= 10
+
       -- check which Yara to use
       LET yara_rules &lt;= YaraUrl || YaraRule
-
-      LET SparsePath = pathspec(
-           DelegateAccessor='raw_file',
-           DelegatePath='''\\.\pmem''',
-           Path={
-              SELECT atoi(string=Start) AS Offset,
-                   atoi(string=Length) AS Length
-              FROM Artifact.Windows.Sys.PhysicalMemoryRanges()
-              WHERE Type = 3
-           })
 
       -- Load the WinPmem binary
       LET _ &lt;= winpmem(service=ServiceName, driver_path=DriverPath)
@@ -154,7 +146,7 @@ sources:
          String.Offset as HitOffset,
          String.Name as HitName,
          String.HexData as HitHexData
-      FROM yara(files=SparsePath, accessor='winpmem',
+      FROM yara(files="pmem", accessor='winpmem',
                 rules=yara_rules, context=ContextBytes, number=NumberOfHits)
 
 </code></pre>

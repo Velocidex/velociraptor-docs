@@ -63,7 +63,7 @@ available on clients!
 |[hunt_update](hunt_update)|<span class='vql_type'>Function</span>|Update a hunt|
 |[hunts](hunts)|<span class='vql_type'>Plugin</span>|Retrieve the list of hunts|
 |[import](import)|<span class='vql_type'>Function</span>|Imports an artifact into the current scope|
-|[import_collection](import_collection)|<span class='vql_type'>Function</span>|Imports an offline collection zip file (experimental)|
+|[import_collection](import_collection)|<span class='vql_type'>Function</span>|Imports a collection zip file |
 |[inventory](inventory)|<span class='vql_type'>Plugin</span>|Retrieve the tools inventory|
 |[inventory_add](inventory_add)|<span class='vql_type'>Function</span>|Add or reconfigure a tool into the inventory|
 |[inventory_get](inventory_get)|<span class='vql_type'>Function</span>|Get tool info from inventory service|
@@ -92,7 +92,6 @@ available on clients!
 |[rm_server_monitoring](rm_server_monitoring)|<span class='vql_type'>Function</span>|Remove an artifact from the server monitoring table|
 |[rpm_create](rpm_create)|<span class='vql_type'>Plugin</span>|Create a deployable RPM package for client or server|
 |[secret_add](secret_add)|<span class='vql_type'>Function</span>|Add a new secret|
-|[secret_define](secret_define)|<span class='vql_type'>Function</span>|Define a new secret template|
 |[secret_modify](secret_modify)|<span class='vql_type'>Function</span>|Modify the secret|
 |[secrets](secrets)|<span class='vql_type'>Plugin</span>|Retrieve the list of secrets on the server|
 |[send_event](send_event)|<span class='vql_type'>Function</span>|Sends an event to a server event monitoring queue|

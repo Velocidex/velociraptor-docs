@@ -21,6 +21,7 @@ Arg | Description | Type
 ----|-------------|-----
 filename|Yaml Filename|OSPath (required)
 accessor|File accessor|string
+schema|Json schema to use for validation.|list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 

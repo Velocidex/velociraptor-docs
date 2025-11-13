@@ -2070,9 +2070,9 @@
         ]
     },
     {
-        "title": "Windows.ActiveDirectory.BloodHound",
+        "title": "Windows.ActiveDirectory.SharpHound",
         "description": "This artifact allows deployment of the BloodHound collection tool Sharphound.",
-        "link": "/artifact_references/pages/windows.activedirectory.bloodhound",
+        "link": "/artifact_references/pages/windows.activedirectory.sharphound",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2487,6 +2487,15 @@
         "title": "Windows.Detection.Yara.UEFI",
         "description": "This artifact enables running YARA over files in an EFI System Partition (ESP).\n",
         "link": "/artifact_references/pages/windows.detection.yara.uefi",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.YaraX.Glob",
+        "description": "This artifact returns a list of target files then runs YARA over the target\nlist.",
+        "link": "/artifact_references/pages/windows.detection.yarax.glob",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -3783,6 +3792,15 @@
         "title": "Windows.System.TaskScheduler",
         "description": "The Windows task scheduler is a common mechanism that malware uses\nfor persistence. It can be used to run arbitrary programs at a later\ntime. Commonly malware installs a scheduled task to run itself\nperiodically to achieve persistence.",
         "link": "/artifact_references/pages/windows.system.taskscheduler",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Threads",
+        "description": "Enumerates all threads in selected processes.\n",
+        "link": "/artifact_references/pages/windows.system.threads",
         "type": "client",
         "tags": [
             "Client Artifact"
