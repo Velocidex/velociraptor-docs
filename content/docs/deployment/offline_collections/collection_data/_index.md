@@ -62,6 +62,15 @@ of any files in the collection itself.
 
 ![](zip_cert_secured.png)
 
+## Verifying the integrity of collection containers
+
+The offline collector creates a log file on the endpoint alongside the
+collection container zip. In the final few lines of this log it records the
+SHA-256 hash for the file with the message `Container hash`.
+
+After transporting the container, you can verify this hash using `sha256sum` (on
+Linux) or many other tools depending on your platform.
+
 
 ## Importing collections into the Velociraptor server
 
