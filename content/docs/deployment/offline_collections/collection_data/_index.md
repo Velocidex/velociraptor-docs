@@ -258,7 +258,7 @@ For this example the notebook provides the decrypted password like this:
 ![](decrypted_pass.png)
 
 Now that we have the decrypted password we can provide it to the
-`import_collection` function the same way we did for the fixed non-encrypted
+`import_collection` function the same way we did for the non-encrypted
 password case:
 
 ```vql
@@ -310,6 +310,9 @@ collector to apply a certificate-based encryption scheme to the collection zip,
 but we remind you that the certificate-based schemes are strongly recommended in
 all cases.
 
+If no encryption scheme was used then the container is just an ordinary
+unprotected zip.
+
 If the fixed password scheme was used then the collection container is simply a
 standard password-protected zip.
 
@@ -319,8 +322,8 @@ standard password-protected zip.
 #### Certificate-based schemes
 
 For the X509 and PGP encryption schemes, the collection container is still just
-a password-protected zip, but the password is encrypted and must be recovered
-first by decrypting it.
+a password-protected zip, but the password is encrypted and must therefore be
+recovered first by decrypting it.
 
 The collection container will contain a file at the top level named
 `metadata.json`.
@@ -338,9 +341,9 @@ one was used.
 You can manually copy the encrypted password from that file and decrypt it using
 external tools such a `openssl` or `gpg` with the relevant private keys.
 
-If decrypting the password with external tools then you'll probably also need to
+If decrypting the password with external tools then you'll likely also need to
 first decode the encrypted password since the JSON format of `metadata.json`
-requires that we store is in Base64-encoded form.
+requires that we store it in Base64-encoded form.
 
 While working in a separate environment from your Velociraptor deployment, it is
 still possible to make use of a Velociraptor notebook, as described
