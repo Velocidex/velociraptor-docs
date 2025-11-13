@@ -212,7 +212,7 @@ SELECT import_collection(filename="/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025
 FROM scope()
 ```
 
-#### PGP, X509 (non-server cert) encryption schemes
+##### PGP, X509 (non-server cert) encryption schemes
 
 If you chose to encrypt the collection container with a PGP certificate or an
 X509 cert _other than the server's cert_, then you need to first decrypt the
