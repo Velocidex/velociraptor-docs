@@ -40,14 +40,14 @@ force_buffers|Force buffer scan in all cases.|bool
 
 Scan files using yara rules (Using the new yarax engine).
 
-This is an experiemental new functionality to use the
+This is an experimental new functionality to use the
 [YaraX](https://github.com/VirusTotal/yara-x) project instead of
 the more traditional C based Yara engine.
 
 One of the biggest issues for Velociraptor integration is the very
 large size of the `YaraX` library (which is written in
 Rust). Including `YaraX` in Velociraptor will increase our binary
-size by a third (about 25Mb) for a single experiemental plugin.
+size by a third (about 25Mb) for a single experimental plugin.
 
 Therefore, we have decided to distribute `YaraX` as a [third party
 tool](https://docs.velociraptor.app/docs/artifacts/tools/) and

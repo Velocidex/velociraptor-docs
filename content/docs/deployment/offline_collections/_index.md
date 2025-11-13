@@ -7,7 +7,7 @@ weight: 30
 ---
 
 In this section we look at a less conventional method of collecting data from
-endpoints. One of Velocraptor's many strengths is its ability to deal with the
+endpoints. One of Velociraptor's many strengths is its ability to deal with the
 variety of challenging environments that realworld DFIR throws our way.
 
 ## How do offline collections work?
@@ -57,7 +57,7 @@ to have a running operating system, just as it would if an
 or
 [non-installed]({{< ref "/docs/deployment/clients/#running-clients-interactively" >}})
 client was used. Do not confuse the term with
-[deadisk analysis]({{< ref "/docs/forensic/deaddisk/" >}}), which deals with
+[deaddisk analysis]({{< ref "/docs/forensic/deaddisk/" >}}), which deals with
 data from computers that don't have a running operating system.
 
 It may be better to think of offline collections as _out-of-band collections_,
@@ -115,7 +115,7 @@ binary is launched without any
 ![Standard binary vs. offline collector binary](offline-collector-repacking.svg)
 
 Because offline collectors are based on standard Velociraptor binaries they can
-be created for any platform or achitecture that Velociraptor supports.
+be created for any platform or architecture that Velociraptor supports.
 
 When run without any command line arguments the embedded config is loaded. The
 config defines the offline collector's behaviour which is:
@@ -387,7 +387,7 @@ If you use either of the certificate-based options, the zip password is
 essentially a strong symmetric key, which is secured in transit using asymmetric
 cryptography. This allows Velociraptor to create and extract collection
 containers with high speed and efficiency - which is very important as
-collection containers can sometimes be extremely large - while also benefitting
+collection containers can sometimes be extremely large - while also benefiting
 from the strength of asymmetric encryption.
 
 Even though the ZIP format uses AES to encrypt the contents of files, the file

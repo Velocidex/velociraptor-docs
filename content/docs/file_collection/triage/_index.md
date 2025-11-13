@@ -107,13 +107,13 @@ In summary, it's important to recognize that there are distinct reasons for file
 acquisition. In Velociraptor file acquisition is done primarily for the purpose
 of preserving evidence, since Velociraptor is not designed to be a centralized
 file processing solution. Centralized processing can be done but it's
-significantly more complicated than just parsing and quering the data directly
+significantly more complicated than just parsing and querying the data directly
 on the endpoint.
 
 Key takeaways:
 
 - If you want to preserve evidence by copying a file from an endpoint then do it
-  _in addition to quering the data_ on the endpoint. As a concrete example, if
+  _in addition to querying the data_ on the endpoint. As a concrete example, if
   you parse evtx files on the endpoint this barely takes longer than copying the
   files from the endpoint, and you then have the parsed data which you can work
   with. If you also want the evtx files then you can copy them too, but since

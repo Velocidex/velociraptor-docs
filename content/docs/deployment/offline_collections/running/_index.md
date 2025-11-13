@@ -134,7 +134,7 @@ generic collector file.
 The Generic collector uses any unmodified standard Velociraptor binary, so in
 the following example the same `Collector_velociraptor-collector` could be used
 on all platforms. However, the artifacts that you selected to pack in the
-generic collector may be targetted to a specific platform, and therefore might
+generic collector may be targeted to a specific platform, and therefore might
 not be equally applicable to all. You could build a generic collector that
 includes artifacts for all your target platforms with the artifacts themselves
 being conditionally run based on

@@ -170,7 +170,7 @@ initial parsing and analysis phase and then decides based on it's results which
 additional files to collect. That is, relevant files should be collected
 automatically even when not explicitly specified as collection targets.
 
-Applying an adaptive collection strategy to the prevoius example, the user would
+Applying an adaptive collection strategy to the previous example, the user would
 specify collection of the prefetch files, but the collector would parse each
 prefetch file automatically and check whether the target file exists in the
 target location. For each target, if it is present, the collector will also

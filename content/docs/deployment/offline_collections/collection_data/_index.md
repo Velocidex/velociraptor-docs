@@ -195,7 +195,7 @@ For the fixed password scheme that's easy because you set the password when
 you created the collector. If you can't remember it, you can go find it in the
 `Server.Utils.CreateCollector` collection that created the collector, or if you
 have access to the collector binary you can use the `config show` command since
-the embeddec config contains the password in clear text.
+the embedded config contains the password in clear text.
 
 When the `import_collection` function is run it checks for a variable in the
 scope named `ZIP_PASSWORDS` which it expects to contain the password as a
@@ -343,7 +343,7 @@ first decode the encrypted password since the JSON format of `metadata.json`
 requires that we store is in Base64-encoded form.
 
 While working in a separate environment from your Velociraptor deployment, it is
-stil possible to make use of a Velociraptor notebook, as described
+still possible to make use of a Velociraptor notebook, as described
 [here]({{< relref "/docs/deployment/offline_collections/collection_data/#pgp-x509-non-server-cert-encryption-schemes" >}}),
 to do the password decryption. Since the notebook only needs the encrypted
 password and the relevant cert, it can be done on an

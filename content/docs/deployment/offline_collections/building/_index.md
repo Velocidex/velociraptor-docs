@@ -164,7 +164,7 @@ You can start the offline collector builder using either:
 - **Output Directory**
 
   The location to write the collection container zip to. Since these can be
-  quite large you might not want the file writting to the same current working
+  quite large you might not want the file writing to the same current working
   directory (where the collector was run from). You might want to specify a
   secondary hard drive or a mapped drive to write over the network.
 
