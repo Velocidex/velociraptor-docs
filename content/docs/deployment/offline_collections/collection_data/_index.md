@@ -325,16 +325,17 @@ For the X509 and PGP encryption schemes, the collection container is still just
 a password-protected zip, but the password is encrypted and must therefore be
 recovered first by decrypting it.
 
+![](zip_cert_secured.png)
+
 The collection container will contain a file at the top level named
 `metadata.json`.
 
-![](zip_cert_secured.png)
-
 This file contains the encrypted version of the zip password in the field named
-`EncryptedPass`. To decrypt this string we also need the private key that
-corresponds to the `PublicKey` which was used to encrypt it. The public key is
-also provided in the `metadata.json` file, in case you need to be reminded which
-one was used.
+`EncryptedPass`. To decrypt this string we need the private key that corresponds
+to the `PublicKey` which was used to encrypt it.
+
+The public key is also provided in the `metadata.json` file, in case you need to
+be reminded which one was used.
 
 ![example: metadata.json](encrypted_file_metadata.png)
 
@@ -345,8 +346,8 @@ If decrypting the password with external tools then you'll likely also need to
 first decode the encrypted password since the JSON format of `metadata.json`
 requires that we store it in Base64-encoded form.
 
-While working in a separate environment from your Velociraptor deployment, it is
-still possible to make use of a Velociraptor notebook, as described
+If you are working in a separate environment from your Velociraptor deployment,
+it is still possible to make use of a Velociraptor notebook, as described
 [here]({{< relref "/docs/deployment/offline_collections/collection_data/#pgp-x509-non-server-cert-encryption-schemes" >}}),
 to do the password decryption. Since the notebook only needs the encrypted
 password and the relevant cert, it can be done on an
@@ -491,11 +492,11 @@ specified).
   Note that when 2 or more containers are merged they are layered over each
   other in the order that they were specified on the command line. So if there
   are 2 different files (or 2 different versions of the same file) using the
-  same path then in the mount directory you will see the last one in stack. It's
-  important to keep this in mind since the container format uses several
-  standard paths for certain JSON files that describe the collection. Merging is
-  primarily intended for files in the collection's "uploads", i.e. files copied
-  from the endpoint.
+  same path then in the mount directory you will see the last one in the stack.
+  It's important to keep this in mind since the container format uses several
+  standard paths for certain common collection files. Merging is primarily
+  intended for files in the collection's "uploads", i.e. files copied from the
+  endpoint, so that you can work with them all together in one tree structure.
 
 Once the containers are mounted you can then apply other tools to the collection
 data and/or files in the mount directory.
