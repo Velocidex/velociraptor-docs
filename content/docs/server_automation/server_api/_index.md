@@ -108,7 +108,8 @@ will verify that the certificate is signed by the Velociraptor CA prior to
 accepting connections. The produced YAML file contains private keys, public
 certificates, the CA's certificate, and connection parameters.
 
-Example:
+###### Example
+
 ```
 $ velociraptor --config server.config.yaml config api_client --name Mike --role administrator api.config.yaml
 ```

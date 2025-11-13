@@ -227,7 +227,7 @@ The CLI provides the following commands which support this mode of operation:
 The `query` command accepts any VQL query and runs it against the local system.
 The results can optionally be written to file in a variety of formats.
 
-Example:
+###### Example
 
 ```
 velociraptor.exe query "SELECT * FROM pslist()" --format jsonl --output pslist.json
@@ -257,7 +257,7 @@ these artifacts using the `--definitions` flag.
 As with the `query` command, the results can optionally be written to file in a
 variety of formats.
 
-Examples:
+###### Examples
 
 ```txt
 velociraptor.exe artifacts list ".*Audit.*"

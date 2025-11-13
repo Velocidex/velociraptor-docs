@@ -88,7 +88,7 @@ means that items such as artifact parameters which expect compound data types
 need to be specified as serialized JSON and _not_ as the equivalent YAML data
 types.
 
-For example the following spec is invalid and will _not_ be parsed correctly:
+For example, the following spec is invalid and will _not_ be parsed correctly:
 
 ```yaml
 # The list of artifacts and their args.

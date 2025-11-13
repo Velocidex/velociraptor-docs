@@ -1,21 +1,24 @@
 ---
-title: "Bulk File Collection"
+title: "Triage and acquisition"
 date: 2021-06-27T04:31:24Z
-last_reviewed: 2025-10-28
-draft: true
+draft: false
 weight: 50
 ---
 
-In this section we look at some features that Velociraptor offers which support
-bulk file collection.
+In DFIR Triaging means to quickly collect information about the system
+in order to establish its potential relevance to a forensic
+investigation.
 
+While many think of triage as collecting files (perhaps as an
+alternative to full disk acquisition), in Velociraptor, there is no
+real difference between collecting files or other non-volatile
+artifacts: Everything that Velociraptor collects is just a VQL
+Artifact.
 
-* Capture the machine state at a point in time.
-* Collect files for further analysis by other forensic tools.
-* More "Traditional" DFIR - preservation of evidence.
-
-
-
+We like to think of triage as simply capturing machine state - where
+the state may be bulk files (like the `$MFT` or registry hives) or any
+other volatile data, such as process information, network connections
+etc.
 
 ### Collecting files
 
@@ -81,4 +84,29 @@ VM disk.
 ![Collections are automatically cancelled when they reach the limit](image5.png)
 
 {{% /notice %}}
+
+## Offline collections
+
+We have seen previously how to collect many files using the
+`Windows.KapeFiles.Targets` artifact in the usual client/server
+mode. But what if we are unable to deploy Velociraptor on a new
+network in client/server mode? With Velociraptor not installed on the
+endpoint, how shall we collect and triage artifacts?
+
+Velociraptor is just a VQL engine!  All we need is Velociraptor to be
+able to collect the VQL artifacts into a file, and then we can
+transport the file ourselves for analysis.  Velociraptor does not
+really need a server...
+
+Often we rely of an external helper (such as a local admin) to
+actually perform the collection for us. However, these helpers are
+often not DFIR experts. We would like to provide them with a solution
+that performs the required collection with minimal intervention - even
+to the point where they do not need to type any command line
+arguments.
+
+The [Offline collector]({{< ref "/docs/deployment/offline_collections/" >}})
+aims to solve this problem. Velociraptor allows you to build a specially
+configured binary (which is actually just a preconfigured Velociraptor binary
+itself) that will automatically collect the artifacts we need.
 

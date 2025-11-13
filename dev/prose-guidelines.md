@@ -43,12 +43,10 @@ Use `inline code` only for:
 
 Do not use it for:
 
-- error messages
 - brand names
 - terms that the user will type (use quotes instead)
-
-- defining new terms
-- names of GUI controls, controls and menu options
+- defining new terms (use bold text instead)
+- names of GUI controls, controls and menu options (use bold text instead)
 
 For the last 2 cases above it is recommended to use bold text for emphasis the
 first time a term is used. When doing so it is not necessary to use quotes
@@ -116,3 +114,27 @@ Top level section headings should be level-3.
   - notes or cautions about common considerations or pitfalls
 - See also
   - links to other functions that are likely to be related or of interest.
+
+### Examples
+
+Examples should _always_ use Level-6 headings, regardless of their position in
+the heading hierarchy. This ensures a consistent style for all examples and
+allows Hugo to create a hyperlink for each example, which is important for
+community support on forums like Discord.
+
+For example:
+
+```md
+###### Example
+```
+
+L6 headings also won't appear in TOCs, so this prevents that from accidentally
+happening.
+
+Don't use a colon after the word Example, but use one if it's a lead-in phrase
+such as "For example...:"
+
+
+
+
+

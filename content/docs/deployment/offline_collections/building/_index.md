@@ -78,11 +78,18 @@ You can start the offline collector builder using either:
 
 - **Collection Type**
 
+  By default, Velociraptor's offline collector will create a ZIP file containing
+  all the collected files and artifacts. However, this zip file is normally
+  large and we may not want to rely on the person collecting the data to handle
+  sending us the archive file. Instead, Velociraptor's offline collector can
+  upload the collected archive to a remote location automatically when the
+  collection is done.
+
   This option determines the destination of the collection container. Additional
   fields will be displayed relevant to the option that you select.
 
-  - `Zip Archive`: The collection will be stored in a zip file in the same
-    directory the collector is launched from.
+  - `Zip Archive`: This is the default option. The collection zip will be stored
+    in the same directory that the collector is run from.
 
   - `Google Cloud Bucket`: The zip file will be uploaded to a Google Cloud
     Storage bucket.
@@ -232,7 +239,7 @@ to create the collector and can be used to
 ![Retrieving the Offline Collector binary](collector_download.svg)
 
 
-## Including third party binaries (tools)
+### Including third party binaries (tools)
 
 Sometimes we want to collect the output from other third-party executables.
 Velociraptor can package them into with offline collector and the artifacts that
@@ -258,7 +265,7 @@ Tools are bundled the same way into the
 [Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
 if you decide to use that option.
 
-## Overriding the default Velociraptor binaries
+### Overriding the default Velociraptor binaries
 
 The Velociraptor binaries that will be used for creating offline collectors are
 themselves defined as [tools]({{< ref "/docs/artifacts/tools/" >}}) in the
@@ -314,7 +321,7 @@ Artifact Viewer page:
 
 ![](tool_dependencies.png)
 
-#### Downloading the binaries in air-gapped environments
+### Downloading the binaries in air-gapped environments
 
 For the scenario where your server doesn't have internet access (to GitHub), it
 is possible to pre-populate the server's tools inventory with all the tools
@@ -350,6 +357,32 @@ This artifact is designed to be used as follows:
 You can then run the collector builder and it won't try to download the
 binaries since they are now in the server's tools inventory.
 
+### Remote Upload Destinations
+
+When collecting evidence with the offline collector we often need to upload
+large quantities of data. While cloud based uploads are convenient they are
+usually slower than uploading to a local LAN and might result in network
+bottlenecks as many systems in the local network are saturating internet
+uplinks.
+
+In these cases it is more practical to set up a local "dropbox" upload server
+which will collect collections from systems within local on-premises network
+segments instead.
+
+There are several options for that:
+
+1. A [Windows file share]({{< ref "/knowledge_base/tips/setup_smb_share/" >}})
+   can be created on a Windows system.
+2. An [SFTP server]({{< ref "/knowledge_base/tips/setting_up_sftp/" >}})
+   can be installed on a local Linux system.
+3. A [local S3 server]({{< ref "/knowledge_base/tips/dropbox_server/" >}})
+   can be installed using [MinIO](https://github.com/minio/minio)
+
+A common thread between these options is to ensure that credentials are only
+allowed to upload new files and not download these files again. Since the
+offline collector must include credentials within the configuration file, we
+need to ensure these credentials can not provide additional access to what is
+required.
 
 
 
