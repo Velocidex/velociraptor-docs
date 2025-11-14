@@ -2,7 +2,7 @@
 title: "Remote Uploads"
 date: 2023-04-02T04:31:24Z
 last_reviewed: 2025-10-22
-draft: false
+draft: true
 weight: 10
 ---
 
@@ -28,7 +28,3 @@ MinIO is a self-hosted S3-compatible server.
 ### SFTP server
 
 [How to set up a SFTP server for file uploads]({{< ref "/knowledge_base/tips/setting_up_sftp/" >}})
-
-
-
-

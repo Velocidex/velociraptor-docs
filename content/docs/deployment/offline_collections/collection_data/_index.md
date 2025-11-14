@@ -118,25 +118,25 @@ option.
 
 To summarize, the import process performs the following actions:
 
-1. Inspects the zip file from a path specified on the server. Reads the
-   metadata.json file, if present, to determine the encryption scheme and
-   extract the encrypted password.
+1. Inspects the zip file from a path specified on the server. Reads
+   the `metadata.json` file, if present, to determine the encryption
+   scheme and extract the encrypted password.
 
-2. Decrypts the password if possible and then uses the password to unlock the
-   `data.zip` inner container.
+2. Decrypts the password if possible and then uses the password to
+   unlock the `data.zip` inner container.
 
-3. Creates a "virtual client" (that is, a Velociraptor client record) if one
-   matching the hostname in the collection data does not exist.
+3. Creates a "virtual client" (that is, a Velociraptor client record)
+   if one matching the hostname in the collection data does not exist.
 
-4. Imports the collection data into the server datastore and associates it with
-   the client.
+4. Imports the collection data into the server datastore and
+   associates it with the client.
 
-In the client's **Collected Artifacts** view, the imported collections are
-indistinguishable from those that were collected run on a normal "online"
-client. The collections and their data will be available to any VQL queries run
-from [notebooks]({{< ref "/docs/notebooks/" >}}),
-[server_artifacts]({{< ref "/docs/artifacts/basic_fields/#-type-" >}}) or
-[API queries]({{< ref "/docs/server_automation/server_api/" >}}).
+In the client's **Collected Artifacts** view, the imported collections
+are indistinguishable from those that were collected from a regular
+"online" client. The collections and their data will be available to
+any VQL queries run from [notebooks]({{< ref "/docs/notebooks/" >}}),
+[server_artifacts]({{< ref "/docs/artifacts/basic_fields/#-type-" >}})
+or [API queries]({{< ref "/docs/server_automation/server_api/" >}}).
 
 
 ### Importing using Server.Utils.ImportCollection
@@ -595,4 +595,3 @@ alternatively be used with a dedicated client that is connected to the server.
    live host, so certain artifacts may not work or produce unexpected results,
    but most artifacts that rely purely on file access should reliably produce
    meaningful analysis data. -->
-

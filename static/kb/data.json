@@ -1,5 +1,17 @@
 [
     {
+        "title": "Backing up and restoring a server.",
+        "link": "/knowledge_base/tips/backing_up",
+        "tags": [
+            "automation",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2025-11-13"
+    },
+    {
         "title": "Pre-populating a server with clients, hunts and flows",
         "link": "/knowledge_base/tips/prepopulate_server",
         "tags": [
@@ -591,11 +603,6 @@
             "deployment",
             "uploads",
             "triage"
-        "title": "Backing up and restoring a server.",
-        "link": "/knowledge_base/tips/backing_up",
-        "tags": [
-            "automation",
-            "deployment"
         ],
         "author": "",
         "author_link": "",

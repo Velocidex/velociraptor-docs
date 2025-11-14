@@ -250,16 +250,17 @@ which can be executables or any other type of file that you want to use on the
 endpoint during the collection.
 
 Offline collectors fully support external tools, in the same way that
-Velociraptor clients do. However since the offline collector can't expect to
-receive the tools from the server during runtime, when creating the offline
-collector Velociraptor will automatically bundle any tools that are specified in
-the selected the artifacts into the offline collector.
+Velociraptor clients do. However since the offline collector can't
+expect to receive the tools from the server during runtime, when
+creating the offline collector Velociraptor will automatically bundle
+any tools that are specified in the selected artifacts into the
+offline collector.
 
-When building an offline collector Velociraptor will automatically download any
-required files for inclusion in the collector. This download uses the `url`
-value specified in the tool's definition. Tool files are cached in the server's
-datastore so the next time the command is run it will reuse them without
-downloading.
+When building an offline collector Velociraptor will automatically
+download any required files for inclusion in the collector. This
+download uses the `url` value specified in the tool's definition. Tool
+files are cached in the server's datastore so the next time the
+command is run it will reuse them without downloading.
 
 Tools are bundled the same way into the
 [Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
@@ -383,12 +384,3 @@ allowed to upload new files and not download these files again. Since the
 offline collector must include credentials within the configuration file, we
 need to ensure these credentials can not provide additional access to what is
 required.
-
-
-
-
-
-
-
-
-

@@ -232,10 +232,10 @@ In general, don't use offline collectors:
 ## The Generic Collector
 
 Normally the Velociraptor offline collector builder creates a preset
-configuration file and embeds it inside the regular Velociraptor binary for ease
-of use. Because it is uses a binary for a specific platform and architecture,
-you would need a separate collector for each target platform/architecture in
-your environment.
+configuration file and embeds it inside the regular Velociraptor
+binary for ease of use. Because it uses a binary for a specific
+platform and architecture, you would need a separate collector for
+each target platform/architecture in your environment.
 
 ![Selecting the Generic Collector option in the collector builder](generic_collector.png)
 
@@ -434,5 +434,3 @@ artifacts will be demanding different resources at any moment in time.
 ## More info
 
 {{% children description=false %}}
-
-
