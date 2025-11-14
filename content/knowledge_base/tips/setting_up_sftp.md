@@ -1,29 +1,34 @@
-# How to setup an SFTP server
+# How to set up a SFTP server for file uploads
 
-There are many options for receiving uploaded files from the
-[offline collector]({{< ref "http://localhost:1313/docs/offline_triage/#offline-collections" >}}),
+There are many options for receiving file uploads from clients or collection
+archives from
+[offline collectors]({{< ref "/docs/deployment/offline_collections" >}}),
 for example
 [using S3 buckets]({{< ref "/knowledge_base/tips/dropbox_server/">}}),
-Azure storage services and even the
-[AWS SFTP transfer service]({{% ref "blog/2021/2021-12-11-sftp-in-aws/" %}}).
+[Azure storage services]({{< ref "/knowledge_base/tips/setup_azure_storage/" >}}),
+and even the
+[AWS SFTP transfer service]({{< ref "/blog/2021/2021-12-11-sftp-in-aws/" >}}).
 
-However sometimes it is simpler to set up your own SFTP server to
-receive incoming uploads (it is certainly cheaper than the AWS managed
-service).
+However you might prefer to set up your own SFTP server to receive incoming
+uploads instead of using a cloud storage service.
+
+This article explains how to set up a SFTP server with appropriate security for
+automated remote file uploads.
 
 {{% notice warning %}}
 
 Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
 misconfigure things in ways that can leave a server open to exploitation.
 
-Unless you have a strong reason to prefer using SFTP we recommend you consider
-less arcane alternative options such as the one described in
-[How to set up a local S3 dropbox server]({{< ref "/knowledge_base/tips/dropbox_server/">}})
-using MinIO.
+Unless you have a strong reason to prefer using SFTP we recommend that you
+consider more self-contained alternative options such as the one described in
+[How to set up a self-hosted S3-compatible dropbox server]({{< ref "/knowledge_base/tips/dropbox_server/">}}).
 
 {{% /notice %}}
 
-This tip explains how to set up a server securely.
+---
+
+### Setup steps
 
 1. Create a new Linux based VM and open port 22 for incoming
    requests. This can be in the cloud or on prem.
@@ -119,6 +124,7 @@ In the offline collector configuration you should use the private key
 -----END OPENSSH PRIVATE KEY-----
 ```
 
-and for the Endpoint value, specify it in the form `<hostname or IP>:<ssh port>`.
+and for the `Endpoint` field, specify the value in the form
+`<hostname or IP>:<ssh port>`.
 
-Tags: #deployment
+Tags: #deployment #uploads #triage

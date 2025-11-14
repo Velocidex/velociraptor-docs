@@ -475,4 +475,4 @@ artifact.
 
 Learn more about the key concepts for creating, managing and using artifacts.
 
-{{% children description="true" %}}
+{{% children description=true %}}

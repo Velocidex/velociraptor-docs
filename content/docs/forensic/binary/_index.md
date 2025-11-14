@@ -469,7 +469,7 @@ strings. That is why there is a `map` parameter that has names mapped
 to ints because it looks a bit more natural with JSON.
 
 
-Example:
+###### Example
 
 ```json
   ["NetworkProviderType", 16, "Enumeration", {
@@ -521,7 +521,7 @@ string value, while Flag may set multiple values at the same time.
 | type    | The type of the underlying object (usually an integer)                                                                      |
 |bitmap | A mapping between bit number and the name of the flag |
 
-Example:
+###### Example
 
 ```json
 ["FlagsField", 12, "Flags", {

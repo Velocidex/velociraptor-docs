@@ -18,6 +18,22 @@ described [here]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}
 [here]({{< ref "/docs/cli/artifacts/#-artifacts-collect-" >}}) and
 [here]({{< ref "/docs/cli/query/" >}}).
 
+{{% notice info "Be aware of filesystem permissions when working on the command line" %}}
+
+When installed as a service, Velociraptor's datastore directory is owned by the
+service account named `velociraptor` and accessible to the `velociraptor` user
+group. New users often aren't aware of this fact and run CLI commands on the
+server which accidentally create files in the datastore using their own user
+account or the `root` account. These files are subsequently inaccessible to the
+Velociraptor service which may then fail to start.
+
+Some CLI commands work directly with files in the datastore, which can result in
+them being inadvertently owned by your user account. You can avoid creating
+permissions problems by switching to the `velociraptor` user. On most Linux
+systems this can be done with the command `sudo -u velociraptor bash`.
+
+{{% /notice %}}
+
 ## General command syntax
 
 Velociraptor's CLI commands generally consist of a command and optionally a
@@ -97,22 +113,22 @@ Velociraptor has the ability to embed config and files in its binary when using
 When the binary is run without any CLI commands it first checks whether it has
 an embedded config and if it does then it loads it. A special section in the
 config, named `autoexec.argv`, tells the binary what command line (including
-flags) to execute. This config section can also store custom artifacts.
-This is how [offline collectors]({{< ref "/docs/offline_triage/#offline-collections" >}})
+flags) to execute. The embedded config can also store custom artifacts.
+This is how [offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
 work.
 
-- When the binary is run ***with*** CLI commands it executes them, and ignores any
-  commands potentially contained in the embedded config.
+- When the binary is run ***with*** CLI commands it executes them, and ignores
+  the `autoexec.argv` spec (if the embedded config contains one).
 
-- When the binary is run ***without*** any CLI commands and it has an
-`autoexec.argv` spec which it can execute, then it does so.
+- When the binary is run ***without*** any CLI commands, and it has an
+  `autoexec.argv` spec which it can execute, then it does so.
 
 But what if you want it to load the autoexec section but change it's behavior
 with additional CLI flags?
 
-For that special case we have a special CLI argument: `--`
+For that special case we have a special CLI pseudo-flag: `--`
 
-This special argument separates the CLI arguments into pre and post args. Post
+This special flag separates the CLI arguments into pre and post args. Post
 args will be appended to any that are in the embedded autoexec command line,
 while still allowing the autoexec spec to load and execute it's commands (if it
 has any).
@@ -120,37 +136,68 @@ has any).
 As a concrete example, suppose we have created an offline collector named
 `velociraptor_collector.exe`. If we just run it without any args it does it's
 offline collector business and we can't change how it runs. If we run it with
-CLI arguments then it's just a normal binary - without any offline collector
-functionality.
+any CLI arguments then it's just a normal binary, since the offline collector
+behaviour is skipped due to the presence of a command.
 
-But what if we want it to add `--nobanner` to the autoexec command line to hide
-the Velociraptor banner? We can do this by adding `-- --nobanner` to the command
-line. This causes the embedded config to be loaded and the `autoexec.argv`
-command line to be executed, but it now appends our new flag to the command
-line.
+If we run it with the `config show` command we can inspect the embedded config
+and see that it contains the following `autoexec.argv` section:
 
-```text
-velociraptor_collector.exe -- --nobanner
+```yaml
+autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
 ```
 
-This causes the banner to be hidden while the offline collector behaviour
-otherwise continues according to the embedded spec.
+But what if we want it to slightly modify the autoexec behaviour by adding
+`--nobanner` and `--prompt` to the autoexec command line because we decided (for
+arbitrary reasons) that we want to hide the Velociraptor banner and also have it
+pause for user acknowledgement at the end of the collection?
 
-{{% notice info "Be aware of filesystem permissions" %}}
+We can do this by adding `-- --nobanner --prompt` to the command line.
 
-When installed as a service, Velociraptor's datastore directory is owned by the
-service account named `velociraptor` and accessible to the `velociraptor` user
-group. New users often overlook this fact and create files in the datastore
-using their own user account or the `root` account, which means that the
-Velociraptor service cannot read them.
+```sh
+velociraptor_collector.exe -- --nobanner --prompt
+```
 
-Some CLI commands work directly with files in the datastore, which can result in
-them being inadvertently owned by your user account. You can avoid creating
-permissions problems by switching to the `velociraptor` user. On most Linux
-systems this can be done with the command `sudo -u velociraptor bash`.
+Because the command line doesn't include any commands, the embedded config will
+still be loaded and the `autoexec.argv` command line will be executed. However
+it now appends our new flags to the command line, which is equivalent to having
+this in the autoexec section:
 
-{{% /notice %}}
+```yaml
+autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+  - --nobanner
+  - --prompt
+```
+
+The above would look like this on the command line:
+
+```sh
+velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
+```
+
+This modifies the offline collector behaviour slightly but it otherwise
+continues according to the embedded spec.
+
+Autoexec mode can be used in a lot of novel ways besides the usual offline
+collector use case. So this method of tweaking the command line allows you to
+use any of the global or command-specific
+[CLI flags]({{< ref "/docs/cli/flags/" >}})
+
+Note that if a flag is specified in `autoexec.argv` then it can't be negated
+or overridden. You can only add flags that have not already been used.
+
 
 ## Learn about the commands available in the CLI
 
-{{% children description="true" %}}
+{{% children description=true %}}

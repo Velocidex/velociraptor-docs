@@ -84,3 +84,14 @@ In addition, the following shortcuts are available in the editor.
 |----------------------|:-:|---------------------------------------|
 | `<Ctrl>` + `,`       | : | Popup the editor configuration dialog |
 | `<Ctrl>` + `<Enter>` | : | Save editor contents                  |
+
+### Multi-select deletion
+
+Multiple items can be selected for deletion by clicking the first item in the
+range, then pressing `SHIFT`, and then clicking the last in the range.
+
+This allows deleting many items at once from the GUI. The same process works for
+deleting multiple clients, multiple artifacts in the artifacts viewer, multiple
+notebooks, and multiple collections from a client.
+
+![Selecting multiple flows for deletion](multi-select.svg)

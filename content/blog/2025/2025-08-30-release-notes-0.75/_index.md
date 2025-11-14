@@ -261,6 +261,8 @@ available to download using the `Server.Import.Extras` server artifact:
 5. [The Velociraptor Artifact Exchange]({{< ref "/exchange/" >}}) is our
    repository of community-contributed artifacts.
 
+![New links on the welcome screen include one to run Server.Import.Extras](import_extras.png)
+
 The following artifacts were permanently removed:
 
 1. `Generic.Collectors.SQLECmd`: Superseded by `Generic.Forensic.SQLiteHunter`

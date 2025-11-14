@@ -79,4 +79,4 @@ security incidents.
 
 Learn more about the key concepts for creating, managing and using Sigma rules.
 
-{{% children description="true" %}}
+{{% children description=true %}}

@@ -227,7 +227,7 @@ The CLI provides the following commands which support this mode of operation:
 The `query` command accepts any VQL query and runs it against the local system.
 The results can optionally be written to file in a variety of formats.
 
-Example:
+###### Example
 
 ```
 velociraptor.exe query "SELECT * FROM pslist()" --format jsonl --output pslist.json
@@ -257,7 +257,7 @@ these artifacts using the `--definitions` flag.
 As with the `query` command, the results can optionally be written to file in a
 variety of formats.
 
-Examples:
+###### Examples
 
 ```txt
 velociraptor.exe artifacts list ".*Audit.*"
@@ -335,7 +335,7 @@ folder, to which you can add the remapping config, if needed.
 
 ### Standalone offline collectors
 
-[Offline collectors]({{< ref "/docs/offline_triage/#offline-collections" >}})
+[Offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
 are usually created with the expectation that the data will be imported into a
 Velociraptor server, but this doesn't have to be the case. You may just be
 interested in extracting the data and working with it elsewhere using other
@@ -349,7 +349,7 @@ file acquisition!_ You can run any Velociraptor artifact, including custom ones,
 and the results are written to jsonl formatted files (and/or CSV format, if
 you prefer) which can be read by most data processing tools.
 
-As a variation on this idea, you can import the offline collection archives back
+As a variation on this idea, you can import the offline collection containers back
 into the standalone (i.e. non-networked) Instant Velociraptor, and work with
 them the same as you would with data collected from network-connected clients.
 That is, an Instant Velociraptor deployment using only offline collectors

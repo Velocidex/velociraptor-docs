@@ -9,17 +9,19 @@ summary: |
   * Troubleshooting issues when creating or running a Velociraptor offline collector.
 ---
 
-### Config file is too large to embed
+### Common Issues
+
+#### Config file is too large to embed
 
 Embedded configs use approximately 80KB of pre-allocated space in the binary.
 Although we do compress the config it may be too large to fit in this space,
 especially if you attempt to include some combination of the larger artifacts.
 
-In that case the offline collector creation process will fail and log the error
-`client_repack: config file is too large to embed.`
+In that case the offline collector creation process will fail and log the error:
+> `client_repack: config file is too large to embed.`
 
 To cater for configs of unlimited size we provide the
-[Generic Collector]({{< ref "/docs/offline_triage/#the-generic-offline-collector" >}}).
+[Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}}).
 
 ![Generic collector option](too_large_to_embed.png)
 
@@ -27,20 +29,41 @@ Note that bundled tools are not stored in the embedded space. Bundled tools are
 appended to the binary or the generic collector file, and therefore do not need
 to be factored into the ~80KB limit.
 
-### Unable to import an offline collector zip
+#### Unable to import an offline collector zip
 
 If you are attempting to import the zip from an offline collector into the
-server and receive the error `import_collection: unable to load collection
-context...` or something similar, then it's likely that the offline collector is
-using an old binary. This is sometimes the case because offline collectors are
-rarely upgraded as often as the server is, which means that very old offline
-collectors may persist in the responder's toolkit. However the collection
-archive format that the server supports may need to change over time to support
-new features.
+server and receive the error:
+> `import_collection: unable to load collection context...`
 
-Ideally all offline collectors should be rebuilt whenever the server is upgraded
-to benefit from new features and bugfixes, but also to maintain full
-compatibility with the server for the purpose of importing collections.
+or something similar, then there are a few possibilities:
+
+- The offline collector which created the zip might be based on a very old
+  binary. Offline collectors are rarely upgraded/updated as often as the server
+  is, which means that the same offline collectors may inadvertently persist in
+  a responder's toolkit for years. However the collection container format that
+  the server supports may need to change over time to support new features,
+  which can cause import incompatibility with archives created by very old
+  collectors.
+
+  Ideally all offline collectors should be rebuilt whenever the server is
+  upgraded to benefit from new features, improvements and bugfixes, but also to
+  maintain full compatibility with the server for the purpose of importing
+  collections. See
+  [here]({{< ref "/docs/deployment/offline_collections/updating/" >}})
+  for more info.
+
+- `import_collection: unable to load collection_context: Unable to extract zip password: crypto/rsa: decryption error`
+
+  The collector created the zip and encrypted it using a cert from a different
+  server instance than the one you are trying to import the zip into.
+
+- `import_collection: unable to load collection_context: open /... .zip: permission denied`
+
+  The filesystem permissions of the zip are set to `root` or a specific user
+  _only_. Since the server is usually running as the `velociraptor` user, the
+  zip that you are trying to import needs to be accessible to that user account.
+
+
 
 ### Debugging
 

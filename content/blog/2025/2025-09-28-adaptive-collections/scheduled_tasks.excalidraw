@@ -81,12 +81,12 @@
     {
       "id": "Tzk3f64Fqf4EJzibO0HKI",
       "type": "text",
-      "x": 546.8260869565213,
-      "y": -468.3333333333335,
+      "x": 566.7293360613392,
+      "y": -479.9999999999999,
       "width": 481.86016845703125,
       "height": 135,
       "angle": 0,
-      "strokeColor": "#1971c2",
+      "strokeColor": "#228be6",
       "backgroundColor": "#e9ecef",
       "fillStyle": "solid",
       "strokeWidth": 4,
@@ -98,8 +98,8 @@
       "index": "b2O",
       "roundness": null,
       "seed": 71338436,
-      "version": 826,
-      "versionNonce": 684709307,
+      "version": 830,
+      "versionNonce": 525130268,
       "isDeleted": false,
       "boundElements": [
         {
@@ -107,13 +107,13 @@
           "type": "arrow"
         }
       ],
-      "updated": 1759718263163,
+      "updated": 1761482834424,
       "link": null,
       "locked": false,
       "text": "When the scheduled task\nlaunches an external binary,\nwe calculate its hash ",
       "fontSize": 36,
       "fontFamily": 5,
-      "textAlign": "left",
+      "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
       "originalText": "When the scheduled task\nlaunches an external binary,\nwe calculate its hash ",
@@ -123,17 +123,17 @@
     {
       "id": "bJjNqE-mBThoGeU_1C5JF",
       "type": "arrow",
-      "x": 778.1596306158737,
-      "y": -485.0000000000001,
-      "width": 481.9997896739809,
-      "height": 63.333333333333144,
+      "x": 874.9463045255533,
+      "y": -496.66666666666646,
+      "width": 385.2131157643013,
+      "height": 51.6666666666668,
       "angle": 0,
-      "strokeColor": "#1971c2",
+      "strokeColor": "#228be6",
       "backgroundColor": "#ffffff",
       "fillStyle": "solid",
       "strokeWidth": 4,
       "strokeStyle": "solid",
-      "roughness": 2,
+      "roughness": 1,
       "opacity": 80,
       "groupIds": [],
       "frameId": null,
@@ -141,12 +141,12 @@
       "roundness": {
         "type": 2
       },
-      "seed": 1094024069,
-      "version": 1292,
-      "versionNonce": 1384019067,
+      "seed": 918419620,
+      "version": 1296,
+      "versionNonce": 1164129948,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1759718281550,
+      "boundElements": [],
+      "updated": 1761482834425,
       "link": null,
       "locked": false,
       "points": [
@@ -155,12 +155,12 @@
           0
         ],
         [
-          245.3331230073146,
-          -63.333333333333144
+          148.546449097635,
+          -51.6666666666668
         ],
         [
-          481.9997896739809,
-          -29.999999999999886
+          385.2131157643013,
+          -18.33333333333354
         ]
       ],
       "lastCommittedPoint": null,

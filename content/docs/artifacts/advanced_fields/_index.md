@@ -71,7 +71,7 @@ developing your artifact.
 - `type`: one of the allowed formatting types (see below).
 - `description` (optional): freeform text description.
 
-**Example:**
+###### Example
 
 ```yaml
 column_types:
@@ -233,7 +233,7 @@ These are the subfields available for defining each tool:
   pin the dependency into the artifact definition to protect against supply side
   attacks.
 
-**Examples:**
+###### Examples
 
 ```yaml
 tools:

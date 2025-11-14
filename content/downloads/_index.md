@@ -63,14 +63,11 @@ arches:
     name: windows-amd64-legacy.exe
     hash: b89d7d9e22ca548a934759c07b45402bebdf7db147237d797df277585790450e
     platform: windows
-    release: 0.75.3
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
     hash: c234860d42c19d368843f96eb2ed2adfa0e866a9b2aee4ca25accbb28aa90a2c
     platform: windows
-    release: 0.75.3
-
 
 ---
 
@@ -107,7 +104,7 @@ However, note the following caveats:
   updated. These builds may miss some specific functionality.
 
 * If you need to use these builds for an offline collector we
-  recommend using [the generic collector]({{< ref "/docs/offline_triage/#the-generic-offline-collector" >}}).
+  recommend using [the generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-offline-collector" >}}).
 
 
 **Do not use this build in a general deployment!** Only use it for

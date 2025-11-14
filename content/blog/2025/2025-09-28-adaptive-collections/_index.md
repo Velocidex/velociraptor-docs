@@ -25,52 +25,59 @@ One of the interesting features they presented was the concept of
 Collection](https://www.cybertriage.com/cyber-triage-dfir-collector/)
 which I thought was quite neat.
 
-In this blog post I will describe what `Adaptive Collection` means and
+In this blog post I will describe what "Adaptive Collection" means and
 how this really improves the state of the art in DFIR triage. I will
 also show how this is now implemented in Velociraptor and how you can
 use it today to improve your triage and investigation.
 
 ## What is Triage collection anyway?
 
-DFIR is all about trying to quickly determine what happened. In the
-distant past we used to acquire full disk images of systems so we can
-perform digital forensics on them. However, these days this is not possible:
+DFIR is all about trying to quickly determine what happened. In the distant past
+we used to acquire full disk images of systems so we could perform digital
+forensics on them. However, these days this is usually highly impractical:
 
-* Storage sizes are very large - disks are just too large.
-* In modern network intrusions we need to examine a large number of
-  endpoints.
+* Hard disks have become so large that imaging them, copying the images
+  elsewhere, storing and working with them is often impractical, especially
+  since speed is a critical aspect of every investigation.
+* In modern network intrusions we usually need to examine a large number of
+  endpoints. Aside from storage constraints, the time required to make full disk
+  images of potentially thousands of machines puts this option in the realm of
+  the impossible.
 
 Today's best practice is to actively hunt the network with a tool like
-Velociraptor to quickly gather specific, well targeted artifacts
+Velociraptor to quickly gather specific, well-targeted artifacts
 across a large number of endpoints.
 
-Once the number of systems of interest is reduced, we may then perform
-`Triage Acquisition` for [Preservation Purposes]({{< ref
-"/training/playbooks/preservation/" >}}). We often need to delegate
-the `Triage Acquisition` step itself to others who have access to the
-system (for example Help Desk employees or system administrators).
+Through efficient distributed hunts the number of systems of interest is
+reduced. We may then perform _Triage Acquisition_ for the purpose of
+[preservation of evidence]({{< ref "/training/playbooks/preservation/" >}}).
+We often need to delegate the Triage Acquisition step to others who have
+access to the affected systems (for example Help Desk employees or system
+administrators).
 
 Triage Acquisition has a number of goals:
 
-1. To acquire as much relevant information to be able to determine
+1. To acquire as much relevant information as possible to be able to determine
    what happened on the system. In many cases we only get one chance
-   to perform triage acquisition, before the system is rebuilt and
+   to perform triage acquisition, before the system is rebuilt and evidence is
    destroyed.
 
-2. To perform this collection as quickly as possible. Some critical
-   servers can not tolerate prolonged outages or heavy activity.
+2. To perform this collection as quickly as possible. Some critical servers can
+   not tolerate prolonged outages or resource-intensive investigative activity.
 
-3. Triage collection should be as automated as possible. Ideally the
-   person initiating the collection should not need to provide any
-   input to the collection process. They may not be skilled in DFIR or
-   have to make critical decisions under pressure.
+3. Triage collection should be as automated as possible. Ideally the person
+   initiating the collection should not need to provide any input to the
+   collection process. They may not be skilled in DFIR techniques nor be
+   accustomed to making critical decisions under pressure.
 
-These goals call for a high level of automation. Velociraptor's
-[offline collector]({{< ref
-"/docs/offline_triage/#offline-collections" >}}) is specifically
-designed to be fully automated - the operator simply needs to run it
-and a triage collection is made. The collection can be uploaded to the
-cloud or returned to the investigation some other way.
+These goals call for a high level of automation.
+
+Velociraptor's
+[offline collector]({{< ref "/docs/deployment/offline_collections/" >}})
+is specifically designed to be fully automated - the operator simply needs to
+run it and a triage collection is made. The collection can be uploaded to the
+cloud or returned to the investigation team some other (potentially out-of-band)
+way.
 
 
 ![The offline triage process](offline_process.svg)
@@ -86,13 +93,15 @@ place to minimize the need to go back and re-collect more data.
 While it would be nice to collect as much as possible, we need to be
 speedy in our collection. Therefore we need to make some tradeoffs:
 
-* The more files we collect the longer it takes and larger the
+* The more files we collect the longer it takes and the larger the
   collection gets. This makes it harder to handle more systems and
   transfer more data across the network.
 
 * However, once the collection is done it is not always possible to go
-  back and get more files. Sometimes systems are re-imaged and
-  destroyed after the preservation step.
+  back and get more files. Sometimes systems are rebuilt the preservation step,
+  which puts pressure on responders to collect all relevant data in a single
+  acquisition step. This pressure can also lead to over-collection of data,
+  including irrelevant items.
 
 ## Current state of the art
 
@@ -118,15 +127,16 @@ products and applications, however they are all essentially static
 globs. The `Windows.KapeFiles.Targets` artifact looks for files on disk
 from this static list of pre-determined globs.
 
-{{% notice "note" "The Windows.Triage.Targets artifact" %}}
+{{% notice "note" "The new Windows.Triage.Targets artifact" %}}
 
 Since the Velociraptor 0.75 release, the `Windows.KapeFiles.Targets`
 artifact is no longer built into Velociraptor. Instead it is managed
-in its [own
-project](https://triage.velocidex.com/docs/windows.triage.targets/rules/).
+in its
+[own project](https://triage.velocidex.com/docs/windows.triage.targets/rules/).
 
 The new artifact goes beyond the using simple globs expressions, and
-so had been renamed to `Windows.Triage.Targets`
+has therefore been renamed to `Windows.Triage.Targets` to distinguish it from
+it's predecessor artifact.
 
 {{% /notice %}}
 
@@ -141,49 +151,49 @@ For example, consider the [prefetch artifact]({{< ref
 Windows stores paths to previously run executables. While the location
 of the prefetch files themselves is well known
 (i.e. `C:\Windows\Prefetch\*.pf`), when an analyst examines these
-files, they may discover that they point at an executable potentially
-located anywhere on the disk.
+files, they may discover that they point at a suspicious executable
+located somewhere else on the disk from which file were not acquired.
 
-During the analysis stage there is no way to know if the executable
-they point to is malicious or not. With the standard `KapeFiles`
-collections, the investigator needs to go back to the original system
-to get those files.
+During the initial triage acquisition phase there is no way to know if the
+executables they point to are malicious or not. With the standard `KapeFiles`
+collections, the investigator needs to go back to the original system to get
+those files.
 
-Another example is the `Scheduled tasks` XML files, normally located
-in `C:\Windows\System32\Tasks\**`. These files may launch executables
-periodically anywhere on the disk.
+Another example is the XML files that define Windows Scheduled tasks, which are
+normally located in `C:\Windows\System32\Tasks\**`. These files point to
+periodically launched executables that could be located anywhere on the disk.
 
 ### What is Adaptive Collection?
 
-The idea of adaptive collection is that the collector itself performs
-the initial parsing phase and then decides itself to collect relevant
-files automatically.
+The idea of "adaptive collection" is that the collector itself performs an
+initial parsing and analysis phase and then decides based on it's results which
+additional files to collect. That is, relevant files should be collected
+automatically even when not explicitly specified as collection targets.
 
-In the example above, the user would collect the prefetch files, but
-the collector would parse each prefetch file automatically and check
-if the target file exists in the target location. For each target, if
-it is present, the collector will also collect it.
+Applying an adaptive collection strategy to the previous example, the user would
+specify collection of the prefetch files, but the collector would parse each
+prefetch file automatically and check whether the target file exists in the
+target location. For each target, if it is present, the collector will also
+collect it.
 
 This way, when the analyst later examines the prefetch files, they can
-immediately determine what the binary executed was, without needing to
+immediately also inspect the related binary, without needing to
 go back to the original system.
 
-Of course in the case of prefetch, it is possible that the target
-executable was deleted before the acquisition. In this case the
-adaptive collector can not find it. But this is also an important
-piece of information as the analyst knows that the executable is
-actually missing and there is no point trying to fetch it again.
+Of course in the case of prefetch, it is possible that the target executable was
+deleted before the acquisition. In this case the adaptive collector cannot
+acquire it. But this is also an important piece of information as the analyst
+then knows that the executable is actually missing and that there is no point in
+trying to fetch it in a subsequent collection phase.
 
-The point of adaptive collection is to include files which may be
-relevant once the basic artifacts are parsed. This avoids needing to
-go back and re-collect additional files once the analysis is
-performed.
+The point of adaptive collection is to include files which may be relevant once
+the basic (primary) artifacts are parsed. This avoids needing to go back and
+re-collect additional files after the analysis is performed.
 
-A useful side effect of this approach is that forensic artifacts are
-already parsed and analyzed, so there is no need for further post
-processing of bulk collected files. This simplifies the
-post-processing pipeline and speeds up analysis from a large number of
-systems.
+A useful side-effect of this approach is that forensic artifacts are already
+parsed and analyzed, so there is no need for further post-processing of bulk
+collected files. This simplifies the post-processing pipeline and speeds up
+analysis when dealing with a large number of systems.
 
 ## The Windows.Triage.Targets artifact
 
@@ -200,22 +210,21 @@ automatically download and import the latest version.
 The artifact contains many adaptive rules, for example some of these
 are:
 
-1. `AdaptiveScheduledTasks`: enumerates all scheduled tasks and
-   attempts to acquire the commands run by them.
-2. `LnkTargets`: Search for `lnk` files and attempt to download their
+1. `AdaptiveScheduledTasks`: Enumerates all scheduled tasks and
+   attempts to acquire the associated binaries run by them.
+2. `LnkTargets`: Searches for `lnk` files and attempts to acquire their file
    targets. `lnk` files are common infection vectors.
-3. `PrefetchBinaries`: enumerates all prefetch files and captures the
+3. `PrefetchBinaries`: enumerates all prefetch files and captures the associated
    executables.
-4. `PsList`: enumerates all running processes and captures their
-   respective binaries.
-5. `Services`: enumerates all installed services and captures their
+4. `PsList`: enumerates all running processes and captures their respective
    binaries.
+5. `Services`: enumerates all installed services and captures their binaries.
 
 All of the adaptive rules are triggered by the meta-target
-[_Live](https://triage.velocidex.com/docs/windows.triage.targets/rules/#_Live). So
-all a user needs to do is to select the `_Live` target and collect the
-artifact (Usually the `_Live` target is selected **in addition** to
-more traditional targets like `_SansTriage` or `_BasicCollection`).
+[_Live](https://triage.velocidex.com/docs/windows.triage.targets/rules/#_Live).
+So all a user needs to do is to select the `_Live` target and collect the
+artifact (Usually the `_Live` target is selected _in addition_ to more
+traditional/non-adaptive target sets like `_SansTriage` or `_BasicCollection`).
 
 ![Launching the triage collection](launching_triage.svg)
 
@@ -235,14 +244,14 @@ There are a few choices:
 2. `HashOnly` is used to simply take the hash of the file but not to
    collect the file itself. This setting is useful when the client is
    connected and available so interesting files may be fetched at a
-   later stage. The hashes and file stats are enough to indicate if
-   the target files are still present on the system.
+   later stage. The hashes and file stats are enough to indicate whether
+   the target files are still present on the system or not.
 
 3. `AllFiles` Just collect all files. This is not recommended for
    adaptive collections as it will also collect system files and
    signed/trusted binaries.
 
-{{% notice "note" "Collection optimizations" %}}
+{{% notice note "Collection optimizations" %}}
 
 Adaptive rules will sometimes attempt to collect the same file. For
 example, if there are several `notepad` processes running, the `PsList`
@@ -250,7 +259,7 @@ rule will attempt to collect `notepad.exe` multiple times.
 
 The triage artifact automatically caches and deduplicates these
 collections so that collecting the same file multiple times is safe
-and fast - only one copy will be acquired and it will hashed only
+and fast - only one copy will be acquired and it will be hashed only
 once.
 
 {{% /notice %}}
@@ -260,34 +269,33 @@ Let's look at the result of collecting the `PrefetchBinaries` target:
 ![Viewing the Prefetch target](prefetch_target.svg)
 
 Collecting the `PrefetchBinaries` target will execute the standard
-Velociraptor `Windows.Forensics.Prefetch` and capture all the usual
-fields that artifact returns (such as run times and other prefetch
-related fields). Additionally, Velociraptor will attempt to acquire
+Velociraptor `Windows.Forensics.Prefetch` artifact and capture all the usual
+fields that the artifact returns, such as run times and other prefetch
+related fields. Additionally, Velociraptor will attempt to acquire
 each target if possible (if the file still exists on disk at that
 location).
 
 The `Windows.Triage.Targets` artifact automatically captures metadata
-such as modified timestamps, hashes and authenticode status for
+such as last modified timestamps, hashes and authenticode status for
 executables.
 
 In addition to collecting the prefetch binary targets, we also receive
 all the usual output from collecting the `Windows.Forensics.Prefetch`
-artifact, saving us from re-collecting it later.
+artifact, saving us from having to re-collecting it later.
 
 Another example is collecting the
 [LnkTargets](https://triage.velocidex.com/docs/windows.triage.targets/rules/#LnkTargets)
-rule. This rule analyzes `Lnk` files (shortcuts) to extract their
-targets.
+rule. This rule analyzes `Lnk` files (shortcuts) to extract their targets.
 
 ![Extracting the link targets from Lnk files](lnk_targets.svg)
 
 Lnk files are often created when the user edits them on the desktop,
 so capturing the targets of `Lnk shortcuts` can capture strong
 evidence of user activity. In this case we see a number of files that
-were edited with `Notepad` and were captured (if they are still
+were edited with `Notepad` and were captured (assuming they were still
 present).
 
-## The Registry hunter
+## The Registry Hunter
 
 Registry analysis is a powerful and critical tool in the Digital
 Forensics arsenal. The Windows registry contains a wealth of
@@ -295,7 +303,7 @@ information about system state, while many persistence techniques
 leave traces in the registry.
 
 Traditionally, registry analysis is performed on the raw registry
-hives (collected using for example the `KapeFiles` artifact). These
+hives (collected using, for example, the `KapeFiles` artifact). These
 files are analysed using tools such as [Reg
 Ripper](https://github.com/keydet89/RegRipper4.0) or [Registry
 Explorer](https://www.sans.org/tools/registry-explorer). These tools
@@ -304,16 +312,16 @@ extract specific pieces of information from various registry keys.
 
 Recently, The Velociraptor team has started the [Registry
 Hunter](https://registry-hunter.velocidex.com/) project. This project
-aims to develop a fully featured rule based registry parser, and
+aims to develop a fully featured rule-based registry parser, and
 contains a large (and growing) number of
 [rules](https://registry-hunter.velocidex.com/docs/rules/). Many of
-the rules in the registry hunter also attempt to uncover evidence of
+the rules in the Registry Hunter also attempt to uncover evidence of
 persistence through various registry artifacts.
 
-While the registry hunter can operate on collected hive files, it can
+While the Registry Hunter can operate on collected hive files, it can
 also operate on the live system using a mixture of API based registry
-access and raw hive parsing. Therefore, the registry hunter running on
-a live system is ideally positioned to perform `Adaptive Collection`
+access and raw hive parsing. Therefore, the Registry Hunter running on
+a live system is ideally positioned to perform Adaptive Collection
 as described above.
 
 ![The Registry Hunter Collection options](registry_hunter.png)
@@ -324,7 +332,7 @@ binaries uncovered in the registry, but they can collect them as well.
 
 For example, consider the [Scheduled Tasks (TaskCache)
 rule](https://registry-hunter.velocidex.com/docs/rules/#Scheduled%20Tasks%20(TaskCache))
-from the Registry hunter. This rule analyses the registry to extract
+from the Registry Hunter. This rule analyses the registry to extract
 the scheduled tasks (as opposed to analysing the XML files in the
 `Windows/System32/Tasks` directory).
 

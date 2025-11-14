@@ -1,5 +1,17 @@
 [
     {
+        "title": "Backing up and restoring a server.",
+        "link": "/knowledge_base/tips/backing_up",
+        "tags": [
+            "automation",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_link": "https://github.com/scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "date": "2025-11-13"
+    },
+    {
         "title": "Pre-populating a server with clients, hunts and flows",
         "link": "/knowledge_base/tips/prepopulate_server",
         "tags": [
@@ -47,11 +59,11 @@
         "date": "2025-07-17"
     },
     {
-        "title": "How to set up a local S3 dropbox server?",
+        "title": "How to set up a MinIO (S3-compatible) dropbox server for file uploads",
         "link": "/knowledge_base/tips/dropbox_server",
         "tags": [
             "deployment",
-            "forensics",
+            "uploads",
             "triage"
         ],
         "author": "scudette",
@@ -110,10 +122,12 @@
         "date": "2025-04-28"
     },
     {
-        "title": "How to setup an SFTP server",
+        "title": "How to set up a SFTP server for file uploads",
         "link": "/knowledge_base/tips/setting_up_sftp",
         "tags": [
-            "deployment"
+            "deployment",
+            "uploads",
+            "triage"
         ],
         "author": "scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
@@ -543,11 +557,52 @@
         "date": "2022-03-21"
     },
     {
-        "title": "Backing up and restoring a server.",
-        "link": "/knowledge_base/tips/backing_up",
+        "title": "How to create an \"online collector\" binary",
+        "link": "/knowledge_base/tips/online_collector",
         "tags": [
             "automation",
-            "deployment"
+            "deployment",
+            "acquisition",
+            "collector"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How to set up Azure Blob Storage for file uploads",
+        "link": "/knowledge_base/tips/setup_azure_storage",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How to set up a GCS Bucket for file uploads",
+        "link": "/knowledge_base/tips/setup_gcs_storage",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
+    },
+    {
+        "title": "How to set up a SMB share for file uploads",
+        "link": "/knowledge_base/tips/setup_smb_share",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
         ],
         "author": "",
         "author_link": "",

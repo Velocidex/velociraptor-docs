@@ -1878,6 +1878,45 @@ LnkTargets
 TaskCache
 adaptively
 
+<url-free> content/vql_reference/other/yarax/_index.md
+--------------------------------------------------------------------------------
+YaraX
+yarax
+
+<url-free> content/vql_reference/parsers/parse_pe/_index.md
+--------------------------------------------------------------------------------
+BaseAddress
+FileHeader
+IAT
+VersionInformation
+
+<url-free> content/vql_reference/encode/compress/_index.md
+--------------------------------------------------------------------------------
+GZip
+
+<url-free> content/docs/file_collection/post_processing/_index.md
+--------------------------------------------------------------------------------
+Uncomment
+remappings
+uncommenting
+
+<url-free> content/docs/deployment/offline_collections/building/_index.md
+--------------------------------------------------------------------------------
+bugfixed
+downloader
+
+<url-free> content/docs/deployment/offline_collections/running/_index.md
+--------------------------------------------------------------------------------
+zsh
+
+<url-free> content/docs/deployment/offline_collections/_index.md
+--------------------------------------------------------------------------------
+installable
+preprogrammed
+
+<url-free> content/knowledge_base/tips/online_collector.md
+--------------------------------------------------------------------------------
+exfiltrate
 yarax
 YaraX
 GZip

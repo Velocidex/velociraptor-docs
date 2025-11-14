@@ -24,7 +24,7 @@ that come with Velociraptor as well as a vibrant community and an
 
 Previously Velociraptor was most useful as a live analysis
 platform. Either deployed as an agent on the live endpoint, or via the
-[Offline Collector]({{< ref "/docs/offline_triage/#offline-collections" >}})
+[Offline Collector]({{< ref "/docs/deployment/offline_collections/" >}})
 collecting artifacts from the running system. However, many users are sometimes
 faced with analyzing a dead disk image - for example, when handed a clone of a
 cloud VM disk after a compromise.
