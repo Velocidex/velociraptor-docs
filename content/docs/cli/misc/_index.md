@@ -60,6 +60,48 @@ debian client [<flags>]
 
 ----
 
+### [ decrypt ]
+
+```text
+decrypt [<flags>] <collection> [<output>]
+    Decrypts an armoured collection file
+
+    -p, --[no-]show_password  Show the password
+        --format=json         Output format for csv output
+
+Args:
+  <collection>  A collection zip file to decrypt
+  [<output>]    The filename to write the decrypted collection on
+```
+
+##### Notes
+
+- This command does not support collection containers secured by the PGP or
+  fixed password schemes.
+
+- The zip file to decrypt needs to be specified with a full path, however use of
+  the wildcard character (`*`) in the filename and path components for the
+  collection argument is supported.
+
+- The output filename can include a path component but non-existent folders will
+  not be automatically created.
+
+- If the zip files are secured with the server's X509 certificate then you need
+  to provide the config to the command using the `--config` flag so that it can
+  access the server's private key. Otherwise you will see the error
+  "GetPrivateKeyFromScope: No frontend configuration given" logged in the
+  terminal.
+
+##### See also
+
+- [[ fuse container ]]({{< ref "/docs/cli/fuse/" >}}),
+  which allows you to mount collection containers instead of extracting them.
+
+- [[ unzip ]]({{< relref "#-unzip-" >}}), which works similarly to `decrypt`
+  but lists filenames or extracts the files from a collection container.
+
+----
+
 ### [ frontend ]
 
 ```text
@@ -193,16 +235,29 @@ Args:
   [<members>]  Members glob to extract
 ```
 
-#### Notes
+##### Notes
+
+- Use of the wildcard character (`*`) in the filename and path components for
+  the input file argument is supported.
 
 - If the zip files are secured with the server's X509 certificate then you need
   to provide the config to the command using the `--config` flag so that it can
-  access the secured archive. Otherwise you will see the error
+  access the server's private key. Otherwise you will see the error
   "GetPrivateKeyFromScope: No frontend configuration given" logged in the
   terminal.
 
-- See also [[ fuse container ]]({{< ref "/docs/cli/fuse/" >}}), which
-  allows you to mount collection zips instead of extracting them.
+- If `--list` or `--print` are specified then files will not be dumped.
+
+- If `--dump_dir` is NOT specified then files will be extracted to the current
+  directory.
+
+##### See also
+
+- [[ decrypt ]]({{< relref "#-decrypt-" >}}), which removes the encryption from collection containers without
+  extracting the collection's files.
+
+- [[ fuse container ]]({{< ref "/docs/cli/fuse/" >}}),
+  which allows you to mount collection containers instead of extracting them.
 
 ----
 

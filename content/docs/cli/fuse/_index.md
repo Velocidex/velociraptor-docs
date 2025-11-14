@@ -36,6 +36,8 @@ Args:
   <files>      list of zip files to mount
 ```
 
+##### Notes
+
 - The zip files need to be specified with full paths, however wildcards in the
   filename and path components are supported.
 
@@ -46,7 +48,7 @@ Args:
 
 - If the zip files are secured with the server's X509 certificate then you need
   to provide the config to the command using the `--config` flag so that it can
-  access the secured archive. Otherwise you will see the error
+  access the server's private key. Otherwise you will see the error
   "GetPrivateKeyFromScope: No frontend configuration given" logged in the
   terminal.
 
@@ -93,3 +95,12 @@ $ tree ~/fuse_mount/
 $ umount -v ~/fuse_mount
 umount: /home/user/fuse_mount (rawBridge) unmounted
 ```
+
+##### See also
+
+- [[ decrypt ]]({{< ref "/docs/cli/misc/#-decrypt-" >}}), which removes the encryption from collection containers without
+  extracting the collection's files.
+
+- [[ unzip ]]({{< ref "/docs/cli/misc/#-unzip-" >}}), which works similarly to
+  `decrypt` but lists filenames or extracts the files from a collection
+  container.

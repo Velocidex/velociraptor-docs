@@ -259,7 +259,7 @@ LET EncryptedPass <= base64decode(string="HmvxVDBNdjlC8dn ... pqBvigeqpG5o3Kew==
 SELECT str(str=pk_decrypt(data=EncryptedPass, private_key=PrivKey, scheme="rsa")) AS Password
 FROM scope()
 ```
-Note that in the above we used `scheme="RSA"` for the X509 scheme, but to
+Note that in the above we used `scheme="rsa"` for the X509 scheme, but to
 decrypt PGP you would use `scheme="pgp"` instead.
 
 For this example the notebook provides the decrypted password like this:

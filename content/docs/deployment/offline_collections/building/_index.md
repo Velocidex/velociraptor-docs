@@ -294,13 +294,13 @@ some circumstances, for example:
 
 - you need to create a collector using an older binary version.
 
-- you need to create a collector using an bugfixed pre-release version.
+- you need to create a collector using a bugfixed pre-release version.
 
-- your server does not have internet access.
+- your server does not have internet access to download the required binary.
 
 Although in all the abovementioned cases you could alternatively create a
 [Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
-which is binary-independent and can be used with any standard Velociraptor
+which is binary-agnostic and can be used with any standard Velociraptor
 binary.
 
 #### Reverting admin overrides for collector binaries

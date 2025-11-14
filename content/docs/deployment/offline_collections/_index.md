@@ -223,7 +223,7 @@ In general, don't use offline collectors:
     in `client` mode. That is, the convenience of a single autoexec binary can
     be replicated for non-installable clients using the same embedding
     mechanism that offline collectors use. In certain scenarios this may be
-    preferable to offline collectors, as is explained
+    preferable to offline collectors, as explained
     [here]({{< ref "/knowledge_base/tips/online_collector/" >}}).
 
 
@@ -239,18 +239,18 @@ each target platform/architecture in your environment.
 
 ![Selecting the Generic Collector option in the collector builder](generic_collector.png)
 
-In recent versions of Velociraptor we now offer a new type of collector called
-the **Generic collector**. The Generic collector is functionally the same as the
-offline collectors that use an embedded config, however it is a file that is
-separate from, and therefore independent of the binary. It's essentially a
-standalone collector config, optionally combined with a tools bundle, written
-into a single file. This allows it to be used on the command line with any
-Velociraptor binary.
+Velociraptor also offer a binary-agnostic type of collector called the **Generic
+collector**. The Generic collector is functionally the same as the offline
+collectors that use a specific platform binary with an embedded config, however
+it is a file that is separate from the Velociraptor binary, and therefore
+platform-independent. It's essentially a standalone collector config, optionally
+combined with a tools bundle, written into a single file. This allows it to be
+used on the command line with any Velociraptor binary.
 
 ![Generic collectors support cross-platform use](generic-collector1.svg)
 
-There are two reasons to use a Generic Collector instead of one that's embedded
-in a platform-specific binary:
+There are two main reasons to use a Generic Collector instead of one that's
+embedded in a platform-specific binary:
 
 1. Embedded configs are limited to approximately 80KB, regardless of which
    platform the binary is compiled for. This is usually sufficient for a large
