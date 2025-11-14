@@ -30,6 +30,9 @@ parameters:
 - name: ProcessNameFilter
   type: regex
   default: .
+- name: PidFilter
+  default: .
+  type: regex
 - name: ModuleRegEx
   type: regex
   description: Filter for modules to check. If you want to scan all modules (i.e. libraries) within
@@ -70,6 +73,7 @@ sources:
                          if(condition=IsWow64, then=4, else=8) AS IntSize
       FROM pslist()
       WHERE Name =~ ProcessNameFilter
+          AND format(format="%d", args=Pid) =~ PidFilter
 
     -- get all memory pages for a certain pid
     LET InfoFromVad(Pid) = SELECT Address,
