@@ -16,6 +16,10 @@ description: |
                     32-bit process. This is the case when the field BaseOfData is set.
                     Like ASLR it is a constant offset that is added to addresses.
 
+    Test this artifact using `AMSIBypassPatch.ps1`
+
+references:
+  - https://github.com/okankurtuluss/AMSIBypassPatch/blob/090b54a518fecf1ccf8f54f8691805ef0f9a30f1/AMSIBypassPatch.ps1
 
 parameters:
 - name: UploadFindings
@@ -32,7 +36,7 @@ parameters:
                a binary, replace with `.*`. The default parameter checks the original binary itself (.exe)
                as well as kernelbase.dll, ntdll.dll, user32.dll, kernel32.dll, shell32.dll, msvcrt.dll,
                advapi32.dll, and comdlg32.dll (i.e. commonly injected libraries).
-  default: "\\.exe$|(KERNELBASE|ntdll|user32|kernel32|shell32|msvcrt|advapi32|comdlg32)\\.dll$"
+  default: "\\.exe$|(KERNELBASE|ntdll|amsi|user32|kenrel32|shell32|msvcrt|advapi32|comdlg32)\\.dll$"
 - name: Workers
   type: int
   default: "5"
@@ -114,7 +118,7 @@ sources:
         Name,
         Path,
         Address AS MemAddress,
-
+        TextSegmentData.RVA AS BaseRVA,
         --calculate ASLR offset to later filter it out
         Address - TextSegmentData.VMA AS ASLR,
 
@@ -193,6 +197,9 @@ sources:
       WHERE ValueX AND NOT Difference IN AllowedASLR
       GROUP BY Difference
 
+    LET DescribeAddress(rva, module) = version(function="describe_address") != NULL &&
+       describe_address(rva=rva, module=module).func
+
     -- compare the executable from memory and hard disk
     -- only print the ones where they do not match
     LET Compare(Pid, Name, IntSize) =
@@ -200,10 +207,10 @@ sources:
              Name,
              Path,
              ASLR,
-             IntSize,
-             PidFilename,
              {
-               SELECT Offset,
+               SELECT Offset + BaseRVA AS RVA,
+                      Offset AS TextOffset,
+                      DescribeAddress(rva= Offset + BaseRVA, module=Path) AS Func,
                       X AS MemoryValue,
                       Y AS DiskValue,
                       Hex(X=Difference) AS Difference,
@@ -243,7 +250,8 @@ sources:
                         Path=[dict(Offset=DiskAddress, Length=SegmentSize), ]),
           name=pathspec(parse=format(format="%s.%d.disk", args=[Path, Pid]),
                         path_type="windows"),
-          accessor="sparse") AS UploadDisk
+          accessor="sparse") AS UploadDisk,
+        Differences
       FROM Compare(Pid=Pid, Name=Name, IntSize=IntSize)
 
     -- for every process, evaluate the memory-harddisk-comparison
