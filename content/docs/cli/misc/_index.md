@@ -86,7 +86,7 @@ Args:
 - The output filename can include a path component but non-existent folders will
   not be automatically created.
 
-- If the zip files are secured with the server's X509 certificate then you need
+- If the zip files are secured with the server's X.509 certificate then you need
   to provide the config to the command using the `--config` flag so that it can
   access the server's private key. Otherwise you will see the error
   "GetPrivateKeyFromScope: No frontend configuration given" logged in the

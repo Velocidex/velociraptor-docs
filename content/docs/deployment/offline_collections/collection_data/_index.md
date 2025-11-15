@@ -27,30 +27,6 @@ or
 
 {{% /notice %}}
 
-
-Here is an example of the internal structure of a typical (unsecured) collection
-container:
-
-```text
-data.zip
-  ├── client_info.json
-  ├── collection_context.json
-  ├── log.json
-  ├── requests.json
-  ├── results
-  │   ├── Windows.Triage.Targets%2FAll Matches Metadata.json
-  │   ├── Windows.Triage.Targets%2FSearchGlobs.json
-  │   └── Windows.Triage.Targets%2FUploads.json
-  ├── uploads
-  │   └── auto
-  │       └── C%3A
-  │           └── Users
-  │               ├── ...
-  │               └── ...
-  ├── uploads.json
-  └── uploads.json.index
-```
-
 As explained in
 [Collection Security]({{< ref "/docs/deployment/offline_collections/#collection-security" >}}),
 when collections are secured they are double-zipped. This is done to prevent
@@ -71,6 +47,109 @@ SHA-256 hash for the file with the message `Container hash`.
 After transporting the container, you can verify this hash using `sha256sum` (on
 Linux) or many other tools depending on your platform.
 
+
+## Collection container internal structure
+
+Here is an example of the internal structure of a typical (unsecured) collection
+container:
+
+```text
+$ unzip -l Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip
+Archive:  Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip
+Length      Date    Time    Name
+---------  ---------- -----   ----
+       32  2024-10-15 16:16   uploads/ntfs/%5C%5C.%5CC%3A/$Extend/$UsnJrnl%3A$Max
+     8192  2024-10-15 17:12   uploads/ntfs/%5C%5C.%5CC%3A/$Boot
+  1048576  2024-10-15 17:12   uploads/ntfs/%5C%5C.%5CC%3A/$Extend/$RmMetadata/$TxfLog/$Tops%3A$T
+     1152  2021-05-08 18:15   uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Server Manager.lnk
+     1190  2024-10-15 00:06   uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Azure Arc Setup.lnk
+     2349  2021-05-08 18:15   uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Immersive Control Panel.lnk
+...
+     3256  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FAll File Metadata.json.index
+   137590  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FAll File Metadata.json
+     3256  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FUploads.json.index
+   222960  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FUploads.json
+     6192  1980-00-00 00:00   log.json.index
+   175374  1980-00-00 00:00   log.json
+      910  2024-11-06 03:46   collection_context.json
+   280433  2024-11-06 03:46   requests.json
+      813  2024-11-06 03:46   client_info.json
+     3448  1980-00-00 00:00   uploads.json.index
+   154136  1980-00-00 00:00   uploads.json
+---------                     -------
+776656838                     442 files
+```
+
+We can observe the following:
+
+1. The files collected using the `ntfs` accessor are stored in the prefix
+   `uploads/ntfs/`.
+2. Since those NTFS paths contain device names (with backslashes) that can not
+   appear in a Windows filename, Velociraptor will escape the backslashes (So
+   `\\.C:` becomes `%5C%5C.%5CC%3A`). If you also collect files from `VSS` they
+   will be shown with the VSS device name escaped.
+3. Files acquired using the `auto` accessor are stored with a prefix is
+   `uploads/auto/`. Those filenames usually start with the drive name e.g. `C:`
+   which has a `:` character. This is not usually allowed in a windows filename,
+   so the character is escaped into `C%3A`.
+4. You can see that some of the files do retain the ZIP timestamp - this is done
+   on a best effort basis as ZIP can only represent one timestamp with a second
+   resolution.
+5. The preserved file metadata is stored in the `results` folder.
+
+Let's examine the metadata from the above example:
+
+```sh
+$ unzip -p Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip 'results/Windows.KapeFiles.Targets%2FUploads.json' | head -50 | tail -2
+```
+```json
+{
+    "CopiedOnTimestamp": 1730828739,
+    "SourceFile": "C:\\Users\\Default\\NTUSER.DAT",
+    "DestinationFile": "C:\\Users\\Default\\NTUSER.DAT",
+    "FileSize": 262144,
+    "SourceFileSha256": "e05793b7ad9bb379514dcb59e778daeb76660cd19a009ee1d8d0dbcd4ed25de0",
+    "Created": "2021-05-08T08:06:51.7462883Z",
+    "Changed": "2024-10-14T15:32:30.3560316Z",
+    "Modified": "2024-10-14T15:32:30.3560316Z",
+    "LastAccessed": "2024-10-14T15:32:30.3560316Z",
+    "_Source": "Generic.Collectors.File/Uploads"
+}
+{
+    "CopiedOnTimestamp": 1730828739,
+    "SourceFile": "C:\\Windows\\System32\\winevt\\Logs\\HardwareEvents.evtx",
+    "DestinationFile": "C:\\Windows\\System32\\winevt\\Logs\\HardwareEvents.evtx",
+    "FileSize": 69632,
+    "SourceFileSha256": "f5f9e97a6b1ec8d46a9bd5b9d4ccae96521b85517b0337b248814d2e974a968b",
+    "Created": "2024-10-15T06:16:46.6761566Z",
+    "Changed": "2024-10-15T06:17:06.4886135Z",
+    "Modified": "2024-10-15T06:17:06.4886135Z",
+    "LastAccessed": "2024-10-15T06:17:06.4886135Z",
+    "_Source": "Generic.Collectors.File/Uploads"
+}
+```
+
+As you can see, the metadata contains the exact filenames as seen on the
+originating system, all the filesystem timestamps and the hashes of the files.
+
+Because the container format is a ZIP file there are some caveats about the way
+files are stored within it:
+
+1. To enhance compatibility certain characters are escaped from a filename. For
+   example, Velociraptor supports any form of paths but windows paths such as
+   `\\.\C:` representing a device are not supported in a zip file (because they
+   can not be extracted properly on windows).
+
+   Therefore Velociraptor will escape these paths inside the ZIP file.
+
+2. Some other programs try to preserve the timestamps of the acquired files
+   inside the ZIP file. This is problematic because the ZIP format only supports
+   storing one timestamp at a resolution of 1 second.
+
+   Velociraptor instead relies on timestamps being stored in JSON metadata
+   files written to the collection container, and does not attempt to use
+   timestamps in the ZIP file itself to replicate the timestamps on the
+   originating filesystem.
 
 ## Importing collections into the Velociraptor server
 
@@ -143,16 +222,16 @@ or [API queries]({{< ref "/docs/server_automation/server_api/" >}}).
 
 The `Server.Utils.ImportCollection` artifact is the most common way to import
 collections. It only caters for collection containers that are either protected
-using the server's X509 certificate or that are unprotected. Currently this
+using the server's X.509 certificate or that are unprotected. Currently this
 artifact does not support importing collection containers that are secured by
-PGP, X509 certs other than the server's cert, or fixed passwords. However import
+PGP, X.509 certs other than the server's cert, or fixed passwords. However import
 of collections secured by these other security schemes are supported using
 alternative methods described
 [below]({{< relref "/#importing-via-a-notebook" >}}).
 
 Alternatively, if you want to use the `Server.Utils.ImportCollection` server
 artifact to import a collection container that's been secured using a fixed
-password, a PGP certificate, or an X509 _other than your server's certificate_
+password, a PGP certificate, or an X.509 _other than your server's certificate_
 then you'll need to first
 [manually extract]({{< relref "#manual-decryption" >}})
 the inner zip (`data.zip`) from the protected outer zip, and then import that.
@@ -176,9 +255,9 @@ custom server custom server artifact similar to `Server.Utils.ImportCollection`
 since notebooks and server artifacts are just different ways of running VQL on
 the server.
 
-#### X509 encryption using the server's certificate
+#### X.509 encryption using the server's certificate
 
-For collection containers that are secured with the server's X509 certificate or
+For collection containers that are secured with the server's X.509 certificate or
 that are unprotected, the import can be done in a notebook without any
 additional steps. This is a straightforward use of the `import_collection()` VQL
 function.
@@ -191,7 +270,7 @@ FROM scope()
 ```
 
 
-#### PGP, non-server X509 cert, or fixed password
+#### PGP, non-server X.509 cert, or fixed password
 
 For collection containers that use these protection schemes there is an
 additional step required. We can only import these if we also provide the
@@ -221,10 +300,10 @@ SELECT import_collection(filename="/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025
 FROM scope()
 ```
 
-##### PGP, X509 (non-server cert) encryption schemes
+##### PGP, X.509 (non-server cert) encryption schemes
 
 If you chose to encrypt the collection container with a PGP certificate or an
-X509 cert _other than the server's cert_, then you need to first decrypt the
+X.509 cert _other than the server's cert_, then you need to first decrypt the
 encrypted zip password as an additional step. This can be done in a Velociraptor
 notebook (which we describe here) or
 [using external tools]({{< relref "#extraction-with-external-tools" >}}).
@@ -309,8 +388,45 @@ example you may want to process the collected data with external tools.
 
 ### Extraction with external tools
 
+{{% notice warning "Preserving file names and timestamps" %}}
+
+Some external tools use the acquired file timestamps in the analysis and parsing
+of the file itself (e.g. prefetch parsing). This is based on the assumption that
+the files being parsed are on the originating system, not taking into account
+that they may have been copied or moved first. By copying or manipulating files
+in any way those timestamps will change increasing the chances of incorrect
+analysis.
+
+Some triage tools attempt to preserve these timestamps at the filesystem level -
+for example by creating a NTFS-based "virtual disk" container instead of a ZIP
+file. While this helps to preserve some timestamps by essentially timestomping
+the collected files into the correct timestamp, it is a workaround at best.
+
+Velociraptor instead relies on timestamps being stored in the JSON metadata
+files written to the collection container, and does not attempt to use
+timestamps in the ZIP file itself to replicate the timestamps on the originating
+filesystem.
+
 If you want to extract the collection containers without using Velociraptor at
-all, this is entirely possible.
+all, this is entirely possible. Note however that while you can extract the
+files using an external ZIP program, the program will not take into account the
+various transformations made by the offline collector. If you need to have those
+preserved in the extracted data you can use the
+[Windows.KapeFiles.Extract](https://docs.velociraptor.app/artifact_references/pages/windows.kapefiles.extract/)
+artifact to extract the files to a local directory.
+
+```sh
+velociraptor -v artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-WIN-SJE0CKQO83P_lan-2025-11-05T17_45_36Z.zip --args OutputDirectory=/tmp/MyOutput/
+```
+
+This will extract the files from the container to the directory `/tmp/MyOutput/`
+preserving their timestamps.
+
+Alternatively, you can use Velociraptor's `unzip` CLI command as
+[described below]({{< ref "/docs/deployment/offline_collections/collection_data/#extracting-or-listing-with-the-unzip-command" >}}).
+
+{{% /notice %}}
+
 
 #### No encryption or password encryption
 
@@ -370,7 +486,7 @@ extract the contents of the collection container.
 
 To extract the collection container on the command line you can use
 Velociraptor's [`unzip` command]({{< ref "/docs/cli/misc/#-unzip-" >}}).
-This command only supports collections secured with the server's X509
+This command only supports collections secured with the server's X.509
 certificate and unprotected zips.
 
 To decrypt an X509-secured container automatically, you will need to provide
@@ -452,7 +568,7 @@ folder structure so that it best suits the requirements of your external tool.
 
 The `fuse container` command only works with collection containers that can be
 automatically decrypted or accessed without encryption. This means containers
-that are secured with the server's X509 cert, or non-encrypted containers.
+that are secured with the server's X.509 cert, or non-encrypted containers.
 
 ###### Example: Mounting an X509-protected container
 

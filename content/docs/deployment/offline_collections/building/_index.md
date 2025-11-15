@@ -298,10 +298,12 @@ some circumstances, for example:
 
 - your server does not have internet access to download the required binary.
 
-Although in all the abovementioned cases you could alternatively create a
+Although in all the abovementioned cases except the last one, you could
+alternatively create a
 [Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
-which is binary-agnostic and can be used with any standard Velociraptor
-binary.
+which is binary-agnostic and can be used with any standard Velociraptor binary.
+The generic collector allows you to quickly switch between binaries which is
+very useful if you encounter an issue which you think might be version-related.
 
 #### Reverting admin overrides for collector binaries
 

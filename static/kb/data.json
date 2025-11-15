@@ -185,17 +185,6 @@
         "date": "2024-12-06"
     },
     {
-        "title": "How do I use the files inside the offline collector ZIP?",
-        "link": "/knowledge_base/tips/fuse_mount",
-        "tags": [
-            "forensics"
-        ],
-        "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "author_link": "https://github.com/scudette",
-        "date": "2024-11-06"
-    },
-    {
         "title": "Error \"Parameter refers to an unknown artifact\" when collecting a CLIENT artifact",
         "link": "/knowledge_base/tips/collect_artifact_unknown",
         "tags": [
