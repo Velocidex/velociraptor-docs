@@ -27,6 +27,7 @@ not yet been categorized.
 |[copy](copy)|<span class='vql_type'>Function</span>|Copy a file|
 |[dedup](dedup)|<span class='vql_type'>Plugin</span>|Dedups the query based on a column|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
+|[describe_address](describe_address)|<span class='vql_type'>Function</span>|Describe an address in the PE text section|
 |[dirname](dirname)|<span class='vql_type'>Function</span>|Return the directory path|
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[elastic_upload](elastic_upload)|<span class='vql_type'>Plugin</span>|Upload rows to elastic|

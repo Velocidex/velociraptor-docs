@@ -432,7 +432,7 @@ export: |
     "properties": {
         "OS": {
            "description": "OS Target to use",
-           "enum": ["Generic", "Windows", "Linux", "Windows_x86"],
+           "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
            "default": "Generic"
         },
         "Artifacts": {
@@ -454,8 +454,21 @@ export: |
            "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP"]
         },
         "EncryptionScheme": {
-           "enum": ["None", "X509"],
+           "enum": ["None", "X509", "Password", "PGP"],
            "default": "None"
+        },
+        "EncryptionArgs": {
+           "type": "object",
+           "description": "Args for encryption",
+           "properties": {
+             "public_key": {
+               "type": "string"
+             },
+             "password": {
+               "type": "string"
+             }
+           },
+           "additionalProperties": false
         },
         "OptVerbose": {
            "type": "boolean",
@@ -534,9 +547,9 @@ export: |
                  "credentialsToken": {"type": "string"},
                  "region": {"type": "string"},
                  "endpoint": {"type": "string"},
+                 "s3UploadRoot": {"type": "string"},
                  "serverSideEncryption": {"type": "string"},
                  "kmsEncryptionKey": {"type": "string"},
-                 "s3UploadRoot": {"type": "string"},
                  "noverifycert": {"type": "boolean"}
                },
                "additionalProperties": false,
@@ -562,9 +575,9 @@ export: |
            }
         }
       },
-      { "description": "Target Args for SMBCollection",
+      { "description": "Target Args for SMBShare",
         "if": {
-           "properties": { "Target": { "const": "SMBCollection" } }
+           "properties": { "Target": { "const": "SMBShare" } }
         },
         "then": {
            "properties": {
@@ -590,9 +603,9 @@ export: |
               "TargetArgs": {
                  "type": "object",
                   "properties": {
-                     "user": {"type": "string"},
                      "path": {"type": "string"},
                      "privatekey": {"type": "string"},
+                     "user": {"type": "string"},
                      "endpoint": {"type": "string"},
                      "hostkey": {"type": "string"}
                   },

@@ -24,6 +24,9 @@ type|Type of the secret|string (required)
 delete|Delete the secret completely|bool
 add_users|A list of users to add to the secret|list of string
 remove_users|A list of users to remove from the secret|list of string
+visible_to_all_orgs|If set we make the secret visible to all orgs|bool
+add_orgs|A list of orgs to add to the secret|list of string
+remove_orgs|A list of orgs to remove from the secret|list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
