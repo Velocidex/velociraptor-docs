@@ -33,13 +33,23 @@ This function parses a PE file from disk or memory to extract the
 different aspects of the PE file. The fields include:
 
 - `FileHeader`: The basic PE file header information.
+
 - `Directories`: The different directories in the PE file (For
   example `Export_Directory`, `IAT_Directory` etc).
-- `VersionInformation`: This field contains
-  metadata about the binary (Such as the Author, Company etc).
+
+- `VersionInformation`: This field contains metadata about the
+  binary (Such as the Author, Company etc).
+
 - `Imports`: Parses the Import table of the PE file.
+
 - `Exports`: Parses the export table of the PE file.
+
+- `ExportRVAs`: A more complete dump of the exported functions,
+     including their name, types and Relative Virtual Addresses
+     (RVA)
+
 - `Forward`: Any linker forward to other DLLs.
+
 - `Authenticode`: Calculates the Authenticode hash of the PE file
   and also check if it is trusted.
 
@@ -54,7 +64,8 @@ file and compare signatures etc).
 
 If you dont need that field you can remove it or select only some
 fields using [set
-operations](https://docs.velociraptor.app/knowledge_base/tips/set_operations/). This will make the operations a lot faster.
+operations](https://docs.velociraptor.app/knowledge_base/tips/set_operations/). This
+will make the operations a lot faster.
 
 ```vql
 LET FieldMask <= dict(VersionInformation=TRUE, Imports=TRUE)

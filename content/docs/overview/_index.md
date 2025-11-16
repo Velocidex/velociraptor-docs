@@ -1,14 +1,19 @@
 +++
-title = "Velociraptor Overview"
+title = ""
+menutitle = "Velociraptor Overview"
 date = 2021-06-09T02:33:37Z
 weight = 5
 chapter = false
 +++
 
-Velociraptor is a unique, advanced open-source endpoint monitoring,
-digital forensic and cyber response platform. Velociraptor covers the
-entirety of the attack life cycle, providing responders a powerful
-capability to address past, present and future events.
+{{% notice "note" "" %}}
+
+Velociraptor is a unique, enterprise grade, open-source platform for
+endpoint monitoring, digital forensic and cyber response. Velociraptor
+covers the entirety of the attack life cycle, providing responders a
+powerful capability to address past, present and future events.
+
+{{% /notice %}}
 
 ## The incident response timeline
 
@@ -197,6 +202,85 @@ the following:
 
 3. Think about why you want to collect a certain artifact, not what
    the artifact is and how to parse it.
+
+## Velociraptor is a mature enterprise grade DFIR framework
+
+The DFIR world moves quickly! There are many threats, vulnerabilities,
+forensic artifacts and detection techniques discovered and reported on
+daily. Many researches release small tools or scripts to showcase
+their work.
+
+However, it is difficult to scale these ad hoc, small scale tools to an
+enterprise network. Most ad hoc tools are missing enterprise features,
+such as strong auditing, two factor authentication, machine readable
+output, a powerful API that facilitates automation and easy
+integration with other systems, and many other features critical to a
+successful enterprise deployment.
+
+Velociraptor's goal is to provide the enterprise level platform which
+enables leveraging novel techniques. Velociraptor's mature enterprise
+features are suitable for high security installations. At the same
+time, Velociraptor's VQL language provides the building blocks to
+develop powerful detection, hunting and analysis techniques easily -
+all built in a solid foundation. It is usually trivial to implement
+novel one shot detection tools in VQL leveraging the safety and
+security that comes with Velociraptor.
+
+For example, imagine new threat is discovered which requires a scan of
+all assets. A researcher publishes a python script to perform this
+scan which works on their systems.
+
+However, deploying this ad hoc python script widely, perhaps using
+standard system management software, we find excessive CPU use, false
+positives, and potential security vulnerabilities introduced by the
+script itself or additional dependencies. Python or other dependencies
+may not be installed on all assets causing many systems to fail to run
+this tool. The output from the tool may also not be machine readable
+leading to time consuming manual analysis.
+
+Re-implementing the same functionality in VQL allows the same scan to
+proceed safely with CPU limits, resource controls, tracking which
+endpoints are clean, proper auditing and a secure
+deployment. Additionally we have machine readable output which can be
+easily fed to other systems like SIEM.
+
+If you do no have the time to reimplement in VQL - no problem! You can
+also deploy the same ah hoc tool with Velociraptor to leverage some of
+the above benefits quickly.
+
+## Who are these documentation pages for?
+
+The documentation on this site is therefore split into several types
+of audience:
+
+1. Enterprise deployment documentation discusses the many features
+   that make Velociraptor a powerful enterprise platform:
+   - Security, Auditing and Deployment documentation
+   - How to integrate Velociraptor with other platforms. Build
+     pipelines and automation.
+   - Maintaining the deployment in the long term - backup,
+     provisioning etc.
+   - Managing Multi-tenancies and user permissions, ACLs etc
+
+2. Developing new artifacts and forensic capability. This audience is
+   more interested in VQL syntax, how to develop novel parsers,
+   detection rules and generally enhance the capability of
+   Velociraptor.
+
+3. Those practitioners on the front-line of incident response are more
+   interested in what kind of artifacts they should be hunting for, in
+   which situation and what information can these provide to the
+   ongoing response process.
+
+   These are covered by the [playbooks]({{% ref "/training/playbooks/"
+   %}}), and artifact references.
+
+These aspects are complimentary - without a secure and well
+maintained enterprise deployment is it difficult to widely deploy
+Velociraptor in an enterprise. Similarly without solid technical
+capabilities to hunt and detect new threats there is no point in
+Velociraptor at all! This is our core mission.
+
 
 ## How to get started with Velociraptor
 
