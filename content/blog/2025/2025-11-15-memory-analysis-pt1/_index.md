@@ -7,30 +7,38 @@ tags:
  - DFIR
  - Memory
 
-author: "Mike Cohen, Lautaro Lecumberry, Dr. Michael Denzel"
+author: "Mike Cohen"
 date: 2025-11-14
 noindex: false
 ---
 
+This post was spurred by the recent release of the
+[Windows.Memory.Mem2Disk]({{< ref
+"/exchange/artifacts/pages/windows.memory.mem2disk/" >}}) artifact,
+written by Lautaro Lecumberry and Dr. Michael Denzel. The artifact was
+a culmination of their excellent thesis, [Detecting Fileless Malware
+using Endpoint Detection and Response
+Tools](https://github.com/lautarolecumberry/DetectingFilelessMalware). You
+should check it out!
+
 Memory analysis is a powerful technique used in DFIR to detect malware
-and persistance mechanisms which are sometimes not detectable using
-more convensional disk based methods.
+and persistence mechanisms which are sometimes not detectable using
+more conventional disk based methods.
 
 Over the years, frameworks like
 [Volatility](https://github.com/volatilityfoundation/volatility3) or
 [MemprocFS](https://github.com/ufrisk/MemProcFS) have become the
 standard go-to tools when analysts think of memory analysis.  Those
-frameworks usually operate on a memory image of the physical
-memory.
+frameworks usually operate on a static image of physical memory.
 
-However, this has a number of shortcoming in modern environments when
-performing active response:
+However, this has a number of shortcoming when performing active
+response in modern environments:
 
 1. In order to obtain the physical memory image (for example, using a
    tool like [WinPmem](https://github.com/Velocidex/WinPmem)) one
    usually needs to load a kernel driver. On hardened endpoints this
-   is not allowed, presenting challenges in actually obtaining memory
-   images.
+   is not always possible, presenting challenges in actually obtaining
+   memory images.
 
 2. The size of physical memory is very large in modern systems. Most
    consumer laptops now regularly ship with 16Gb of physical RAM and
@@ -68,7 +76,7 @@ information about the system (including process memory).
 Many of Velociraptor's memory analysis plugins have equivalent or
 similar plugins in Volatility. Using these plugins allows Velociraptor
 to perform similar analysis to many of Volatility's native physical
-memory analysis code.
+memory analysis modules.
 
 However, Velociraptor's approach is faster and more scalable since it
 does not need to acquire an image first, and can get perfect
@@ -79,14 +87,13 @@ perfect and far better than we could do from a physical memory image.
 
 This blog post is the first in a series of posts describing
 Velociraptor's approach to memory analysis. In each post I will
-compare and constract Velociraptor's approach to other memory
-techniques which are commonly implemented. In particular I will dive
-into the VQL queries that are used to develop such artifacts in order
-to share my development process and point out some of the lesser known
-capabilities.
+compare and contrast Velociraptor's approach to other memory analysis
+frameworks. In particular I will dive into the VQL queries that are
+used to develop such artifacts in order to share my development
+process and point out some of the lesser known capabilities.
 
 My goal is to convince you to think of Velociraptor's memory analysis
-capability as the first port of call when developing new memory based
+capability as the **first** port of call when developing new memory based
 detections! It is far more practical than writing a single use python
 script and can be deployed quickly and at scale.
 
@@ -96,13 +103,13 @@ example [Hollows
 Hunter](https://github.com/hasherezade/hollows_hunter) which you can
 use in Velociraptor's using the [Windows.Memory.HollowsHunter]({{< ref
 "/exchange/artifacts/pages/hollowshunter/" >}}) artifact). In this
-post I will describe how this can be implemented in VQL.
+post I will describe how this can be implemented purely in VQL.
 
 # Inline hooking of binaries
 
 Inline hooking is a popular technique for subverting a binary by
 patching the function header as it is loaded into memory. For example,
-patching ETW tracing functionaly can disable user space ETW reporting,
+patching ETW tracing functionality can disable user space ETW reporting,
 such as PowerShell script block logging.
 
 It is also possible to patch functions in [other different
@@ -114,12 +121,11 @@ injections.
 
 The process is illustrated above. When a DLL is loaded into memory,
 the OS maps its text section (i.e. the actual code of the functions it
-exports) into the process's virtual memory. Normally code will call
-these functions causing the execution to jump into the function
-body. However, the attacker may want to avoid calling some
-functions. Therefore, they can simply overwrite the front of the
-function with a return instruction causing the function to be
-bypassed.
+exports) into the process's virtual memory. Normally calling these
+functions causes execution to jump into the function body. However,
+the attacker may want to prevent calling some functions. Therefore,
+they can simply overwrite the front of the function with a return
+instruction causing the function to be bypassed.
 
 To illustrate this technique, let's examine the following short
 powershell snippet
@@ -162,10 +168,13 @@ public class P {
 Disable-Protection
 ```
 
-This code:
-1. Gets a handle to the amsi.dll library.
-2. Finds the AmsiScanBuffer function - used to scan powershell code for malicious constructs.
-3. Changes the page protections on the function to allow writing on the memory.
+This code prevents calling `AmsiScanBuffer` used to scan PowerShell
+code for suspicious constructs:
+
+1. It gets a handle to the amsi.dll library.
+2. It then finds the AmsiScanBuffer function.
+3. Changes the page protections on the function to allow writing on
+   the memory.
 4. Overwrites the memory with a return op code
 5. Changes memory protections back.
 
@@ -245,9 +254,9 @@ memory with the bytes on disk.
 
 However, as you can see, the Windows kernel reports the mapping
 filename in kernel path conventions:
-`\Device\HarddiskVolume3\Windows\System32\amsi.dll` refering to the
-kernel's internal device manager path. We can not use this type of
-address to open the file on disk - we need to convert it first.
+`\Device\HarddiskVolume3\Windows\System32\amsi.dll` referring to the
+kernel's internal device manager path. We can not use this path to
+directly open the file on disk.
 
 Somehow, we need to convert `\Device\HarddiskVolume3\` to `C:\`. The
 conversion is actually done by the Kernel's object manager depending
@@ -260,8 +269,10 @@ the [winobj()]({{< ref "/vql_reference/windows/winobj/" >}})
 plugin. This is the VQL equivalent of Volatility's `winobj` plugin. It
 shows the kernel's object manager namespace.
 
-Not to get into the details too much, but we can translate from kernel
-addresses into file addresses using some VQL functions:
+I wont get into too much details, but the following VQL code
+translates from kernel paths into file paths using the object manager
+namespace. I just paste this code in my notebook and call it as
+`DriveReplace(Path)`:
 
 ```vql
 -- These functions help to resolve the Kernel Device Filenames
@@ -293,11 +304,11 @@ FROM foreach(row={
 ## Step 5: parsing the DLL from disk
 
 In our artifact we would rather just import those utility functions
-from a common artifact (these functions are actuall provided by the
+from a common artifact (these functions are actually provided by the
 `Windows.System.VAD` artifact). In this way VQL allows us to
-modularise artifacts and reuse code.
+modularize artifacts and reuse code.
 
-I also want to format the address in hexidecimal and parse the dll
+I also want to format the address in hexadecimal and parse the dll
 from disk using the [parse_pe()]({{< ref
 "/vql_reference/parsers/parse_pe/" >}}) plugin.
 
@@ -328,7 +339,7 @@ In the above we see some important information:
 1. The code of `amsi.dll` is mapped into the process at virtual
    address `0x7ff945181000`.
 
-2. By parsging the sections from the dll on disk we can tell the code section  named `.text` :
+2. By parsing the sections from the dll on disk we can tell the code section  named `.text` :
 
    * Has a file offset of 4096 bytes inside the PE file.
    * The Virtual Memory address preferred by the DLL is 6442455040
@@ -460,7 +471,7 @@ between the memory and disk at offset 46080.
 
 While it is interesting to see the address of where the memory has
 been modified, we dont know much about this address. It would be nice
-to be able to see what function exaclty was patched since it will give
+to be able to see what function exactly was patched since it will give
 us more indication of the intent of the patch.
 
 Since `amsi.dll` exports a number of functions, we know their relative
@@ -475,9 +486,10 @@ address to the base address at which the DLL is loaded).
 Therefore we need to calculate the relative address of the hit, and
 then look up the export table quickly to resolve the nearest function.
 
-![Calculating the Relative Virtual Address of the memory hit](calculating_hit_rva.svg)
+![Calculating the Relative Virtual Address of the memory
+hit](calculating_hit_rva.svg)
 
-This is shown diagrammaticaly above. The different offset (within the
+This is shown diagrammatically above. The different offset (within the
 mapped segment) is converted to an RVA by adding the `.text` section's
 RVA offset, then we can look up the name of the function from the
 export table using the [describe_address()]({{< ref
@@ -523,31 +535,27 @@ due to relocations.
 
 We will not describe this more complex code in this blog post, and
 simply refer the reader to the full [Windows.Memory.Mem2Disk]({{< ref
-"/exchange/artifacts/pages/windows.memory.mem2disk/" >}}) artifact.
+"/exchange/artifacts/pages/windows.memory.mem2disk/" >}}) artifact,
+written by Lautaro Lecumberry and Dr. Michael Denzel.
 
 This artifact is also optimized for performance and has many useful
 filters to restrict scanning to those dlls commonly targeted by
 malware. The artifact is also multi-threaded which makes scanning
-multiple processes in parallel.
+multiple processes in parallel possible.
 
 ![Output from the Windows.Memory.Mem2Disk artifact](Windows.Memory.Mem2Disk.png)
 
-The artifact also allows uploading of the different memory regions for
+The artifact also allows uploading the different memory regions for
 further inspection.
 
 On my system the `Windows.Memory.Mem2Disk` artifact completes a full
 scan of all running processes in under 2 seconds.
 
-# Conclusions
+# Discussion
 
 In this post we saw how some of the memory analysis tools available in
 Velociraptor can be combined to write some very sophisticated
 detections for memory patching attacks.
-
-When some analysts think to develop a new memory analysis technique,
-they often immediately go to a physical memory image with a framework
-like Volatility. I hope you have seen that this is not necessary and
-Velociraptor's VQL actually makes things much easier to develop.
 
 Lets compare those memory analysis primitives we explored in this
 article, with Volatility's plugins:
@@ -583,7 +591,7 @@ article, with Volatility's plugins:
    binary.
 
    To be fair, if the binary is patched in memory, then the page will
-   be allocated (using copy on write sematics) and it is likely to be
+   be allocated (using copy on write semantics) and it is likely to be
    resident. So Volatility is likely to still find all the patched
    pages in physical memory.
 
@@ -623,3 +631,22 @@ processes that Velociraptor can not access.
 But then again, if the malware has such privilege it can easily stop a
 driver from loading to prevent physical memory acquisition as well -
 it becomes an arms race.
+
+# Conclusions
+
+When analysts think of developing a new memory analysis technique,
+they often immediately go to a physical memory image with a framework
+like Volatility. I hope you have seen that this is not necessary and
+Velociraptor's VQL actually makes things much easier to develop and
+can produce more reliable results.
+
+Velociraptor's binary parser is also very powerful (it was inspired
+from Volatility's internal parser) so you have similar tools for
+parsing complex binary structures as Volatility provides.
+
+If you like to try the new `Windows.Memory.Mem2Disk` artifact, take
+Velociraptor for a spin !  It is available on GitHub under an open
+source license. As always please file issues on the bug tracker or ask
+questions on our mailing list `velociraptor-discuss@googlegroups.com`
+. You can also chat with us directly on discord
+https://www.velocidex.com/discord .

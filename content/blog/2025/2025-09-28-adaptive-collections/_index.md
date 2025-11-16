@@ -412,7 +412,7 @@ much as possible, and make collection decisions based on this
 automated initial analysis pass. We need to weigh up how likely it is
 that the discovered files be useful for further analysis.
 
-It not 100% reliable - sometimes there will be interesting binaries
+It is not 100% reliable - sometimes there will be interesting binaries
 present inside the Windows directory which the artifact will
 skip. This might necessitate the investigator to go back and retrieve
 it.

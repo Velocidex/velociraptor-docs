@@ -1921,3 +1921,26 @@ yarax
 YaraX
 GZip
 gopsutil
+rva
+RVA
+
+<url-free> content/blog/2025/2025-11-15-memory-analysis-pt1/_index.md
+--------------------------------------------------------------------------------
+AMSIBypassPatch
+ASLR
+AmsiScanBuffer
+DLL's
+Denzel
+HollowsHunter
+Lautaro
+Lecumberry
+Mem
+MemprocFS
+OpenProcess
+PPL
+RVA
+WinPmem
+csrss
+dll's
+relocations
+modularize
