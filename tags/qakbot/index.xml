@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Qakbot on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/qakbot/</link><description>Recent content in Qakbot on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 05 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/qakbot/index.xml" rel="self" type="application/rss+xml"/><item><title>Automating Qakbot decode at scale</title><link>https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/</link><pubDate>Wed, 05 Apr 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/</guid><description>&lt;p>This is a technical post covering practical methodology to extract
+configuration data from recent Qakbot samples. In this blog, I will
+provide some background on Qakbot, then walk through decode themes in
+an easy to visualize manner. I will then share a Velociraptor artifact
+to detect and automate the decode process at scale.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="19b5e662b523764a9efa83b756edfeab">
+ &lt;div data-featherlight="#19b5e662b523764a9efa83b756edfeab" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/01qak.png" alt="Qak!">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/01qak.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Qak!
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Qakbot or QBot, is a modular malware first observed in 2007 that has
+been historically known as a banking Trojan. Qbot is used to steal
+credentials, financial, or other endpoint data, and in recent years,
+regularly a loader for other malware leading to hands on keyboard
+ransomware.&lt;/p>
+&lt;p>Typical delivery includes malicious emails as a zipped attachment, LNK,
+Javascript, Documents, or an embedded executable. The example shown in
+this post was delivered by an email with an attached pdf file:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c750555d04ca996437e64ecd2f23b7fc">
+ &lt;div data-featherlight="#c750555d04ca996437e64ecd2f23b7fc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/02icons.png" alt="An example Qakbot infection chain">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/02icons.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ An example Qakbot infection chain
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Qakbot has some notable defense evasion capabilities including:&lt;/p>
+&lt;ol>
+&lt;li>Checking for Windows Defender sandbox and terminating on discovery.&lt;/li>
+&lt;li>Checking for the presence of running anti-virus or analysis tools,
+then modifying its later stage behavior for evasion.&lt;/li>
+&lt;li>Dynamic corruption of payload on startup and rewrite on system shutdown.&lt;/li>
+&lt;/ol>
+&lt;p>Due to the commodity nature of delivery, capabilities and end game,
+it is worth extracting configuration from observed samples to scope
+impact from a given campaign. Hunting enterprise wide and finding a
+previously missed machine or discovering an ineffective control can be
+the difference in preventing a domain wide ransomware event, or a
+similar really bad day.&lt;/p>
+&lt;h3 id="configuration">Configuration&lt;/h3>
+&lt;p>Qakbot has an RC4 encoded configuration, located inside two resources
+of the unpacked payload binary. The decryption process has not changed
+significantly in recent times, but for some minor key changes. It uses
+a SHA1 of a hard coded key that can typically be extracted as an
+encoded string in the .data section of the payload binary. This key
+often remains static across campaigns, which can speed up analysis with
+the maintainance of a recent key list.&lt;/p>
+&lt;p>Current samples undergo two rounds of RC4 decryption with validation
+built in. The validation bytes dropped from the data for the second
+round.&lt;/p>
+&lt;p>After the first round:&lt;/p>
+&lt;ul>
+&lt;li>The first 20 bytes in hex is for validation and is compared with the
+SHA1 of the remaining decoded data&lt;/li>
+&lt;li>Bytes &lt;code>[20:40]&lt;/code> is the key used for the second round of decoding&lt;/li>
+&lt;li>The Data to decode is byte &lt;code>[40:]&lt;/code> onwards&lt;/li>
+&lt;li>The same validation process occurs for the second round decoded data
+&lt;ul>
+&lt;li>&lt;code>Verification = data[:20]&lt;/code>&lt;/li>
+&lt;li>&lt;code>DecodedData = data[20:]&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4692c75c40daaf5ae6359d30184831ec">
+ &lt;div data-featherlight="#4692c75c40daaf5ae6359d30184831ec" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/03decodehex.png" alt="First round of Qakbot decode and verification">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/03decodehex.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ First round of Qakbot decode and verification
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Campaign information is located inside the smaller resource where,
+after this decoding and verification process, data is clear text.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;img class="inline" src="images/04campaign.png" />
+
+
+
+
+&lt;/p>
+&lt;p>The larger resource stores Command and Control configuration. This is
+typically stored in &lt;code>netaddress format&lt;/code> with varying separators. A
+common technique for finding the correct method is searching for common
+ports and separator patterns in the decoded data.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c6ba47c4b9ff8ad5c5f9a1d1d0a8c454">
+ &lt;div data-featherlight="#c6ba47c4b9ff8ad5c5f9a1d1d0a8c454" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/05networkhex.png" alt="Easy to spot C2 patterns: port 443">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/05networkhex.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Easy to spot C2 patterns: port 443
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="encoded-strings">Encoded strings&lt;/h3>
+&lt;p>Qakbot stores blobs of xor encoded strings inside the .data section of
+its payload binary. The current methodology is to extract blobs of key
+and data from the referenced key offset which similarly is reused
+across samples.&lt;/p>
+&lt;p>Current samples start at offset 0x50, with an xor key, followed by a
+separator of 0x0000 before encoded data. In recent samples I have
+observed more than one string blob and these have occurred in the same
+format after the separator.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a5d764680596d5ae955f7f75aff62f9f">
+ &lt;div data-featherlight="#a5d764680596d5ae955f7f75aff62f9f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/06hexstrings.png" alt="Encoded strings .data">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/06hexstrings.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Encoded strings .data
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Next steps are splitting on separators, decode expected blob pairs and
+drop any non printable. Results are fairly obvious when decoding is
+successful as Qakbot produces clean strings. I typically have seen two
+well defined groups with strings aligning to Qakbot capabilities.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="388bdea6cacdeb96604c4fb1aaa9f5d6">
+ &lt;div data-featherlight="#388bdea6cacdeb96604c4fb1aaa9f5d6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/07strings.png" alt="Decoded strings: RC4 key highlighted">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/07strings.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Decoded strings: RC4 key highlighted
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="payload">Payload&lt;/h3>
+&lt;p>Qakbot samples are typically packed and need execution or manual
+unpacking to retrieve the payload for analysis. Its very difficult to
+obtain this payload remotely at scale, in practice the easiest way is
+to execute the sample in a VM or sandbox that enables extracting the
+payload with correct PE offsets.&lt;/p>
+&lt;p>When executing locally Qakbot typically injects its payload into a
+Windows process, and can be detected with yara targeting the process
+for an unbacked section with &lt;code>PAGE_EXECUTE_READWRITE&lt;/code> protections.&lt;/p>
+&lt;p>Below is an example of running PE-Sieve / Hollows Hunter tool
+from Hasherezade. This helpful tool enables detection of several types
+of process injection, and the dumping of injected sections with
+appropriately aligned headers. In this case, the injected process is
+&lt;code>wermgr.exe&lt;/code> but it&amp;rsquo;s worth to note, depending on variant and process
+footprint, your injected process may vary.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="dab8fe331b950863890a350dc1a71f18">
+ &lt;div data-featherlight="#dab8fe331b950863890a350dc1a71f18" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/08pe-sieve.png" alt="Dumping Qakbot payload using pe-sieve">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/08pe-sieve.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Dumping Qakbot payload using pe-sieve
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="doing-it-at-scale">Doing it at scale&lt;/h3>
+&lt;p>Now I have explained the decode process, time to enable both detection
+and decode automation in Velociraptor.&lt;/p>
+&lt;p>I have recently released
+&lt;a href="https://docs.velociraptor.app/exchange/artifacts/pages/qakbot/" target="_blank" >Windows.Carving.Qakbot&lt;/a>
+
+which leverages a PE dump capability in Velociraptor 0.6.8 to enable
+live memory analysis. The goal of the artifact was to automate my
+decoding workflow for a generic Qakbot parser and save time for a
+common analysis. I also wanted an easy to update parser to add
+additional keys or decode nuances when changes are discovered.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d31439145292e9d06abfc926e7ecfba3">
+ &lt;div data-featherlight="#d31439145292e9d06abfc926e7ecfba3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/09parameters.png" alt="Windows.Carving.Qakbot: parameters">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/09parameters.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Carving.Qakbot: parameters
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>This artifact uses Yara to detect an injected Qakbot payload, then
+attempts to parse the payload configuration and strings. Some of the
+features in the artifact cover changes observed in the past in the
+decryption process to allow a simplified extraction workflow:&lt;/p>
+&lt;ul>
+&lt;li>Automatic PE extraction and offset alignment for memory detections.&lt;/li>
+&lt;li>&lt;code>StringOffset&lt;/code> - the offset of the string xor key and encoded strings
+is reused regularly.&lt;/li>
+&lt;li>PE resource type: the RC4 encoded configuration is typically inside
+2 resources, I’ve observed &lt;code>BITMAP&lt;/code> and &lt;code>RCDATA&lt;/code>&lt;/li>
+&lt;li>Unescaped key string: this field is typically reused over samples.&lt;/li>
+&lt;li>Type of encoding: single or double, double being the more recent.&lt;/li>
+&lt;li>Hidden &lt;code>TargetBytes&lt;/code> parameter to enable piping payload in for
+analysis.&lt;/li>
+&lt;li>Worker threads: for bulk analysis / research use cases.&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="54ffac753a723b8e5ba31c263d6c6c50">
+ &lt;div data-featherlight="#54ffac753a723b8e5ba31c263d6c6c50" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/10decode.png" alt="Windows.Carving.Qakbot: live decode">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/10decode.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Carving.Qakbot: live decode
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="research">Research&lt;/h3>
+&lt;p>The Qakbot parser can also be leveraged for research and run bulk
+analysis. One caveat is the content requires payload files that have
+been dumped with offsets intact. This typically requires some post
+collection filtering or PE offset realignment but enables Velociraptor
+notebook to manipulate post processed data.&lt;/p>
+&lt;p>Some techniques I have used to bulk collect samples:&lt;/p>
+&lt;ul>
+&lt;li>Sandbox with PE dumping features: api based collection&lt;/li>
+&lt;li>Virustotal search: &lt;code>crowdsourced_yara_rule:0083a00b09|win_qakbot_auto&lt;/code>
+AND &lt;code>tag:pedll&lt;/code> AND NOT &lt;code>tag:corrupt&lt;/code>
+(note: this will collect some broken
+payloads)&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="78d5d22314fd55a71fa9823bb758e996">
+ &lt;div data-featherlight="#78d5d22314fd55a71fa9823bb758e996" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/11research_ip.png" alt="Bulk collection: IPs seen across multiple campaign names and ports">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/11research_ip.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Bulk collection: IPs seen across multiple campaign names and ports
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Some findings from a small data set ~60 samples:&lt;/p>
+&lt;ul>
+&lt;li>Named campaigns are typically short and not longer than a few
+samples over a few days.&lt;/li>
+&lt;li>IP addresses are regularly reused and shared across campaigns&lt;/li>
+&lt;li>Most prevalent campaigns are &lt;code>BB&lt;/code> and &lt;code>obama&lt;/code> prefixed&lt;/li>
+&lt;li>Minor campaigns observed: &lt;code>azd&lt;/code>, &lt;code>tok&lt;/code> and &lt;code>rds&lt;/code> with only one or
+two observed payload samples each.&lt;/li>
+&lt;/ul>
+&lt;p>Strings analysis can also provide insights to sample behavior over
+time to assist analysis. A great example is the adding to process name
+list for anti-analysis checks.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="2469e7bb10dbd300e88cc16ab7ddcce7">
+ &lt;div data-featherlight="#2469e7bb10dbd300e88cc16ab7ddcce7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/images/11research_strings.png" alt="Bulk collection: Strings highlighting anti-analysis check additions over time">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="images/11research_strings.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Bulk collection: Strings highlighting anti-analysis check additions over time
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="conclusion">Conclusion&lt;/h3>
+&lt;p>During this post I have explained the Qakbot decoding process and
+introduced an exciting new feature in Velociraptor. PE dumping is a
+useful capability and enables advanced capability at enterprise scale,
+not even available in expensive paid tools. For widespread threats
+like Qakbot, this kind of content can significantly improve response
+for the blue team, or even provide insights into threats when analyzed
+in bulk. In the coming months the Velociraptor team will be publishing
+a series of similar blog posts, offering a sneak peek at some of the
+types of memory analysis enabled by Velociraptor and incorporated into
+our training courses.&lt;/p>
+&lt;p>I also would like to thank some of Rapid7’s great analysts - &lt;code>Jakob Denlinger&lt;/code>
+and &lt;code>James Dunne&lt;/code> for bouncing some ideas when writing this
+post.&lt;/p>
+&lt;h3 id="references">References&lt;/h3>
+&lt;ol>
+&lt;li>&lt;a href="https://malpedia.caad.fkie.fraunhofer.de/details/win.qakbot" target="_blank" >Malpedia, Qakbot&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.elastic.co/security-labs/qbot-malware-analysis" target="_blank" >Elastic, QBOT Malware Analysis&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/hasherezade/hollows_hunter" target="_blank" >Hasherezade, Hollows Hunter&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://docs.velociraptor.app/exchange/artifacts/pages/qakbot/" target="_blank" >Windows.Carving.Qakbot&lt;/a>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,0 +1,448 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Working With Offline Collection Data :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1763270114 rel=stylesheet><link href=/css/font-awesome-all.min.css?1763270114 rel=stylesheet><link href=/css/featherlight.min.css?1763270114 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1763270114 rel=stylesheet><link href=/css/auto-complete.css?1763270114 rel=stylesheet><link href=/css/theme.css?1763270114 rel=stylesheet><link href=/css/tabs.css?1763270114 rel=stylesheet><link href=/css/hugo-theme.css?1763270114 rel=stylesheet><link href=/css/theme-mine.css?1763270114 rel=stylesheet><link href=/css/dark.css?1763270114 rel=stylesheet><link href=/css/syntax.css?1763270114 rel=stylesheet><link href=/css/light.css?1763270114 rel=stylesheet><link href=/css/hljs.css?1763270114 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1763270114 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1763270114></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/deployment/offline_collections/collection_data/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class="dd-item active"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/ntfs/>NTFS Analysis</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/offline_triage/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/offline_triage/>Triage and acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>Github</a></li><li><a class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/offline_collections/collection_data/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Working With Offline Collection Data</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#verifying-the-integrity-of-collection-containers>Verifying the integrity of collection containers</a></li><li><a href=#importing-collections-into-the-velociraptor-server>Importing collections into the Velociraptor server</a><ul><li><a href=#importing-using-serverutilsimportcollection>Importing using Server.Utils.ImportCollection</a></li><li><a href=#importing-via-a-notebook>Importing via a notebook</a></li><li><a href=#bulk-collection-imports>Bulk collection imports</a></li></ul></li><li><a href=#accessing-collection-containers-without-importing>Accessing collection containers without importing</a><ul><li><a href=#extraction-with-external-tools>Extraction with external tools</a></li><li><a href=#extracting-or-listing-with-the-unzip-command>Extracting or listing with the unzip command</a></li><li><a href=#mounting-with-the-fuse-container-command>Mounting with the fuse container command</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Working With Offline Collection Data</h1><p>As described previously, the offline collector writes it&rsquo;s results into a zip
+archive and optionally applies encryption to it. We technically refer to this as
+a <strong>collection container</strong> because the data contained in the zip is structured
+in a particular way that Velociraptor expects, and which includes metadata about
+the collection that Velociraptor understands. This standardized data structure
+allows Velociraptor to import the data from it, while making use of the
+associated metadata when importing.</p><div class="mynotices tip"><div heading=tip><p>Collection containers are also used when exporting collections or hunts from the
+server. So the same data format that the offline collector uses can also be used
+to transfer data from one server to another, for example
+<a href=/knowledge_base/tips/prepopulate_server/>to copy/replicate data in testing or training environment</a>
+,
+or
+<a href=/artifact_references/pages/server.utils.backupdirectory/>as a storage format for data backups</a>
+.</p></div></div><p>Here is an example of the internal structure of a typical (unsecured) collection
+container:</p><pre><code class=language-text>data.zip
+  ├── client_info.json
+  ├── collection_context.json
+  ├── log.json
+  ├── requests.json
+  ├── results
+  │   ├── Windows.Triage.Targets%2FAll Matches Metadata.json
+  │   ├── Windows.Triage.Targets%2FSearchGlobs.json
+  │   └── Windows.Triage.Targets%2FUploads.json
+  ├── uploads
+  │   └── auto
+  │       └── C%3A
+  │           └── Users
+  │               ├── ...
+  │               └── ...
+  ├── uploads.json
+  └── uploads.json.index
+</code></pre><p>As explained in
+<a href=/docs/deployment/offline_collections/#collection-security>Collection Security</a>
+,
+when collections are secured they are double-zipped. This is done to prevent
+snooping on the collection filenames because the ZIP standard has the
+shortcoming of allowing file listing even for protected zips. So we add an outer
+zip on which we apply the encryption, which means that a file listing only
+allows potential attackers to see the file name of the inner zip - not the names
+of any files in the collection itself.</p><p><img class=inline src=zip_cert_secured.png></p><h2 id=verifying-the-integrity-of-collection-containers>Verifying the integrity of collection containers</h2><p>The offline collector creates a log file on the endpoint alongside the
+collection container zip. In the final few lines of this log it records the
+SHA-256 hash for the file with the message <code>Container hash</code>.</p><p>After transporting the container, you can verify this hash using <code>sha256sum</code> (on
+Linux) or many other tools depending on your platform.</p><h2 id=importing-collections-into-the-velociraptor-server>Importing collections into the Velociraptor server</h2><div class="mynotices note"><div heading=" Copying the collections to the server "><p>Offline collections are typically much larger than web browser uploads will
+allow, which is why we do not have a GUI facility to upload the collection zip
+file into the server. So you will need to use an appropriate transfer mechanism
+(such as SFTP or SCP) to upload the files to the server before importing them.</p></div></div><p>Most often we use the <code>Server.Utils.ImportCollection</code> artifact to import a
+collection container, but this is essentially just a wrapper around the
+<a href=/vql_reference/server/import_collection/>import_collection</a>
+VQL function. If you need to perform a bulk import of many collections then it&rsquo;s
+easy to automate that using VQL in either a notebook or a server artifact.</p><p>The Velociraptor server can automatically decrypt offline collection containers
+when importing <em>if</em> they were encrypted with the server&rsquo;s certificate. This
+applies when importing via the GUI using the abovementioned artifact or using
+your own VQL, since the <code>import_collection()</code> function always tries to do this
+first. This auto-decryption is possible because the server has access to the
+corresponding private key which it uses to decrypt the randomly-generated
+encrypted password.</p><p>Offline collectors extract a unique <code>HostID</code> from the operating system and
+stores this in the offline collection data. This ID is expected to not change
+over the lifetime of the operating system. When offline collections are imported
+into the server, this ID is used to construct the unique Velociraptor
+<code>client_id</code> if you don&rsquo;t specified one during the import. This means that
+separate collections from the same endpoint will be automatically associated
+with the same &ldquo;virtual client&rdquo; in the server&rsquo;s datastore, unless you manually
+specify a different <code>client_id</code> for each import.</p><p>If the collection you&rsquo;re importing comes from an existing client (real or
+&ldquo;virtual&rdquo;), and you <em>didn&rsquo;t</em> specify a <code>client_id</code> for the import, then the
+server tries to match the <code>hostname</code> contained in the collection zip with an
+existing client record. Again this attempts to match imports to existing client
+records. It&rsquo;s not perfect under all scenarios - for example it&rsquo;s possible for
+separate endpoints to have the same hostname in the real world - but most of the
+time it should work. If you need to be absolutely sure about import matching the
+right <code>client_id</code> then you should specify it instead of relying on the &ldquo;auto&rdquo;
+option.</p><p>To summarize, the import process performs the following actions:</p><ol><li><p>Inspects the zip file from a path specified on the server. Reads
+the <code>metadata.json</code> file, if present, to determine the encryption
+scheme and extract the encrypted password.</p></li><li><p>Decrypts the password if possible and then uses the password to
+unlock the <code>data.zip</code> inner container.</p></li><li><p>Creates a &ldquo;virtual client&rdquo; (that is, a Velociraptor client record)
+if one matching the hostname in the collection data does not exist.</p></li><li><p>Imports the collection data into the server datastore and
+associates it with the client.</p></li></ol><p>In the client&rsquo;s <strong>Collected Artifacts</strong> view, the imported collections
+are indistinguishable from those that were collected from a regular
+&ldquo;online&rdquo; client. The collections and their data will be available to
+any VQL queries run from <a href=/docs/notebooks/>notebooks</a>
+,
+<a href=/docs/artifacts/basic_fields/#-type->server_artifacts</a>
+or <a href=/docs/server_automation/server_api/>API queries</a>
+.</p><h3 id=importing-using-serverutilsimportcollection>Importing using Server.Utils.ImportCollection</h3><p>The <code>Server.Utils.ImportCollection</code> artifact is the most common way to import
+collections. It only caters for collection containers that are either protected
+using the server&rsquo;s X509 certificate or that are unprotected. Currently this
+artifact does not support importing collection containers that are secured by
+PGP, X509 certs other than the server&rsquo;s cert, or fixed passwords. However import
+of collections secured by these other security schemes are supported using
+alternative methods described
+<a href=/#importing-via-a-notebook>below</a>
+.</p><p>Alternatively, if you want to use the <code>Server.Utils.ImportCollection</code> server
+artifact to import a collection container that&rsquo;s been secured using a fixed
+password, a PGP certificate, or an X509 <em>other than your server&rsquo;s certificate</em>
+then you&rsquo;ll need to first
+<a href=#manual-decryption>manually extract</a>
+the inner zip (<code>data.zip</code>) from the protected outer zip, and then import that.</p><p><figure id=8d9b9c8e0f7957b48c240005b382159b><div data-featherlight=#8d9b9c8e0f7957b48c240005b382159b class=figure><img src=import01.png alt="Importing a collection container zip"></div><figcaption><a class=image-link href=import01.png><i class="fa fa-download"></i></a>
+Importing a collection container zip</figcaption></figure></p><p><figure id=85044f55cf420d6baa5a5ce0ce458bab><div data-featherlight=#85044f55cf420d6baa5a5ce0ce458bab class=figure><img src=import02.png alt="Matching to an existing client is attempted"></div><figcaption><a class=image-link href=import02.png><i class="fa fa-download"></i></a>
+Matching to an existing client is attempted</figcaption></figure></p><p><figure id=afc1f1cdae300a81748f462d28e28830><div data-featherlight=#afc1f1cdae300a81748f462d28e28830 class=figure><img src=import03.png alt="New virtual client is created"></div><figcaption><a class=image-link href=import03.png><i class="fa fa-download"></i></a>
+New virtual client is created</figcaption></figure></p><p>You can then click on the Client ID to go to that client&rsquo;s Collected Artifacts
+screen and there you will find the collections presented exactly as they would
+be for any &ldquo;online&rdquo; client.</p><h3 id=importing-via-a-notebook>Importing via a notebook</h3><p>The easiest way to run the
+<a href=/vql_reference/server/import_collection/>import_collection</a>
+VQL function is in a global notebook. However you may prefer to create your own
+custom server custom server artifact similar to <code>Server.Utils.ImportCollection</code>
+since notebooks and server artifacts are just different ways of running VQL on
+the server.</p><h4 id=x509-encryption-using-the-servers-certificate>X509 encryption using the server&rsquo;s certificate</h4><p>For collection containers that are secured with the server&rsquo;s X509 certificate or
+that are unprotected, the import can be done in a notebook without any
+additional steps. This is a straightforward use of the <code>import_collection()</code> VQL
+function.</p><h6 id=example>Example</h6><pre><code class=language-vql>SELECT import_collection(filename=&quot;/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025-11-10T20_11_40Z.zip&quot;)
+FROM scope()
+</code></pre><h4 id=pgp-non-server-x509-cert-or-fixed-password>PGP, non-server X509 cert, or fixed password</h4><p>For collection containers that use these protection schemes there is an
+additional step required. We can only import these if we also provide the
+<code>import_collection</code> function with the password. So the extra step is obtaining
+that password.</p><h5 id=fixed-password-scheme>Fixed password scheme</h5><p>For the fixed password scheme that&rsquo;s easy because you set the password when
+you created the collector. If you can&rsquo;t remember it, you can go find it in the
+<code>Server.Utils.CreateCollector</code> collection that created the collector, or if you
+have access to the collector binary you can use the <code>config show</code> command since
+the embedded config contains the password in clear text.</p><p>When the <code>import_collection</code> function is run it checks for a variable in the
+scope named <code>ZIP_PASSWORDS</code> which it expects to contain the password as a
+string.</p><h6 id=example-1>Example</h6><p>In this example we set the password to &ldquo;infected&rdquo; when we created the
+collector. Before importing we set the variable in the local scope.</p><pre><code class=language-vql>LET ZIP_PASSWORDS &lt;= &quot;infected&quot;
+SELECT import_collection(filename=&quot;/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip&quot;)
+FROM scope()
+</code></pre><h5 id=pgp-x509-non-server-cert-encryption-schemes>PGP, X509 (non-server cert) encryption schemes</h5><p>If you chose to encrypt the collection container with a PGP certificate or an
+X509 cert <em>other than the server&rsquo;s cert</em>, then you need to first decrypt the
+encrypted zip password as an additional step. This can be done in a Velociraptor
+notebook (which we describe here) or
+<a href=#extraction-with-external-tools>using external tools</a>
+.</p><p>The collection container will contain a file at the top level named
+<code>metadata.json</code>. This file contains the encrypted version of the zip password in
+the field named <code>EncryptedPass</code>. To decrypt this string we also need the private
+key that corresponds to the <code>PublicKey</code> which was used to encrypt it. The public
+key is also provided in the <code>metadata.json</code> file, in case you need to be
+reminded which one was used.</p><p><figure id=962923b97deda1120b3db9f98b91ad79><div data-featherlight=#962923b97deda1120b3db9f98b91ad79 class=figure><img src=encrypted_file_metadata.png alt="example: metadata.json"></div><figcaption><a class=image-link href=encrypted_file_metadata.png><i class="fa fa-download"></i></a>
+example: metadata.json</figcaption></figure></p><p>In a notebook we can use the
+<a href=/vql_reference/encode/pk_decrypt/>pk_decrypt</a>
+VQL function to decrypt the encrypted zip password.
+Note that Velociraptor does not support passphrase-protected keys.</p><h6 id=example-2>Example</h6><pre><code class=language-vql>LET PrivKey &lt;= '''
+-----BEGIN RSA PRIVATE KEY-----
+
+...
+
+-----END RSA PRIVATE KEY-----
+'''
+
+LET EncryptedPass &lt;= base64decode(string=&quot;HmvxVDBNdjlC8dn ... pqBvigeqpG5o3Kew==&quot;)
+
+SELECT str(str=pk_decrypt(data=EncryptedPass, private_key=PrivKey, scheme=&quot;rsa&quot;)) AS Password
+FROM scope()
+</code></pre><p>Note that in the above we used <code>scheme="RSA"</code> for the X509 scheme, but to
+decrypt PGP you would use <code>scheme="pgp"</code> instead.</p><p>For this example the notebook provides the decrypted password like this:</p><p><img class=inline src=decrypted_pass.png></p><p>Now that we have the decrypted password we can provide it to the
+<code>import_collection</code> function the same way we did for the non-encrypted
+password case:</p><pre><code class=language-vql>LET ZIP_PASSWORDS &lt;= &quot;c7889f8d2292f284c1f703b9fd367c86d618d9b4170af26f65&quot;
+SELECT import_collection(filename=&quot;/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_50Z.zip&quot;)
+FROM scope()
+</code></pre><h3 id=bulk-collection-imports>Bulk collection imports</h3><p>If you have many collection containers to import, you will probably want to
+automate the process by iterating over the zips and importing them one by one.</p><p>This can be done using VQL in a
+<a href=/docs/notebooks/>notebook</a>
+, a
+<a href=/docs/artifacts/basic_fields/#-type->server artifact</a>
+, or
+<a href=/docs/server_automation/server_api/>via an API query</a>
+.</p><p>Automating this process assumes that the collection containers can be
+automatically decrypted (i.e. X509 using the server&rsquo;s cert), or are unprotected.
+If you used the fixed password scheme, such that all your collection zips are
+secured by the same password, then you can add <code>LET ZIP_PASSWORDS &lt;= ...</code> to
+your VQL so that <code>import_collection</code> has access to it.</p><h6 id=example-3>Example</h6><pre><code class=language-vql>LET ZipsDir &lt;= &quot;/tmp/imports/&quot;
+
+SELECT OSPath, import_collection(filename=OSPath)
+FROM glob(globs=&quot;*.zip&quot;, root=ZipsDir)
+</code></pre><h2 id=accessing-collection-containers-without-importing>Accessing collection containers without importing</h2><p>Sometimes you may want to work with the data external to Velociraptor. For
+example you may want to process the collected data with external tools.</p><h3 id=extraction-with-external-tools>Extraction with external tools</h3><p>If you want to extract the collection containers without using Velociraptor at
+all, this is entirely possible.</p><h4 id=no-encryption-or-password-encryption>No encryption or password encryption</h4><p>Unzipping using external tools is straightforward if you didn&rsquo;t configure the
+collector to apply a certificate-based encryption scheme to the collection zip,
+but we remind you that the certificate-based schemes are strongly recommended in
+all cases.</p><p>If no encryption scheme was used then the container is just an ordinary
+unprotected zip.</p><p>If the fixed password scheme was used then the collection container is simply a
+standard password-protected zip.</p><p><img class=inline src=zip_pass_secured.png></p><h4 id=certificate-based-schemes>Certificate-based schemes</h4><p>For the X509 and PGP encryption schemes, the collection container is still just
+a password-protected zip, but the password is encrypted and must therefore be
+recovered first by decrypting it.</p><p><img class=inline src=zip_cert_secured.png></p><p>The collection container will contain a file at the top level named
+<code>metadata.json</code>.</p><p>This file contains the encrypted version of the zip password in the field named
+<code>EncryptedPass</code>. To decrypt this string we need the private key that corresponds
+to the <code>PublicKey</code> which was used to encrypt it.</p><p>The public key is also provided in the <code>metadata.json</code> file, in case you need to
+be reminded which one was used.</p><p><figure id=962923b97deda1120b3db9f98b91ad79><div data-featherlight=#962923b97deda1120b3db9f98b91ad79 class=figure><img src=encrypted_file_metadata.png alt="example: metadata.json"></div><figcaption><a class=image-link href=encrypted_file_metadata.png><i class="fa fa-download"></i></a>
+example: metadata.json</figcaption></figure></p><p>You can manually copy the encrypted password from that file and decrypt it using
+external tools such a <code>openssl</code> or <code>gpg</code> with the relevant private keys.</p><p>If decrypting the password with external tools then you&rsquo;ll likely also need to
+first decode the encrypted password since the JSON format of <code>metadata.json</code>
+requires that we store it in Base64-encoded form.</p><p>If you are working in a separate environment from your Velociraptor deployment,
+it is still possible to make use of a Velociraptor notebook, as described
+<a href=/docs/deployment/offline_collections/collection_data/#pgp-x509-non-server-cert-encryption-schemes>here</a>
+,
+to do the password decryption. Since the notebook only needs the encrypted
+password and the relevant cert, it can be done on an
+<a href=/docs/deployment/#instant-velociraptor>Instant Velociraptor</a>
+instance that is completely separate from your Velociraptor deployment.</p><p>Once you have decrypted the password you can use it with any unzip tool to
+extract the contents of the collection container.</p><h3 id=extracting-or-listing-with-the-unzip-command>Extracting or listing with the unzip command</h3><p>To extract the collection container on the command line you can use
+Velociraptor&rsquo;s <a href=/docs/cli/misc/#-unzip-><code>unzip</code> command</a>
+.
+This command only supports collections secured with the server&rsquo;s X509
+certificate and unprotected zips.</p><p>To decrypt an X509-secured container automatically, you will need to provide
+Velociraptor with access to the config file of the server that created the
+collector. Velociraptor will then use the server&rsquo;s private key to decrypt the
+container transparently.</p><p>If you want to extract or list X509-secured collection containers on a machine
+other than your Velociraptor server, you use a copy of the <code>server.config.yaml</code>.
+<em>Just remember that the config should be carefully guarded precisely because it
+contains the server&rsquo;s private key and possibly also the private key of the
+internal CA!</em></p><h6 id=example-listing>Example: Listing</h6><pre><code class=language-sh>velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --list
+</code></pre><p><figure id=4b6dcc73766cc14577c75321cd8abece><div data-featherlight=#4b6dcc73766cc14577c75321cd8abece class=figure><img src=listing_encrypted_files.png alt="Listing contents of an X509 encrypted container"></div><figcaption><a class=image-link href=listing_encrypted_files.png><i class="fa fa-download"></i></a>
+Listing contents of an X509 encrypted container</figcaption></figure></p><p>The <code>unzip</code> command used with the <code>-v</code> and <code>--report_password</code> flags will also
+display the decrypted password.</p><pre><code class=language-sh>velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --list --report_password -v
+</code></pre><p><figure id=5b34a790a6f26849387a338812660a16><div data-featherlight=#5b34a790a6f26849387a338812660a16 class=figure><img src=report_password.png alt="Listing and displaying the password"></div><figcaption><a class=image-link href=report_password.png><i class="fa fa-download"></i></a>
+Listing and displaying the password</figcaption></figure></p><p>If the <code>--list</code> (or <code>-l</code>) flag is not provided then the <code>unzip</code> command will
+extract the contents of the container into the current directory. If you want to
+specify a different directory then the <code>--dump_dir</code> flag should be used (it will
+create the specified directory if it doesn&rsquo;t exist).</p><h6 id=example-extracting>Example: Extracting</h6><pre><code class=language-sh>velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --dump_dir ./output/
+</code></pre><p><figure id=fb3a0640cc43147f3423f3aea1e504f3><div data-featherlight=#fb3a0640cc43147f3423f3aea1e504f3 class=figure><img src=extracting_encrypted_files.png alt="Extracting an encrypted container"></div><figcaption><a class=image-link href=extracting_encrypted_files.png><i class="fa fa-download"></i></a>
+Extracting an encrypted container</figcaption></figure></p><h3 id=mounting-with-the-fuse-container-command>Mounting with the fuse container command</h3><p>It&rsquo;s possible to work with the contents of collection containers by mounting
+them with FUSE instead of extracting them. The Velociraptor Linux binary
+provides the <a href=/docs/cli/fuse/><code>fuse container</code> command</a>
+which
+allows us to mount collection containers on a directory.</p><p>Using FUSE allows efficient and rapid access because the container does not need
+to be extracted. Non-sequential access is provided by the FUSE driver. This is a
+significant benefit if you&rsquo;re working with a large number of huge collection
+containers. This also means that you don&rsquo;t need to consume disk space by
+extracting the data.</p><p>The <code>fuse container</code> command has many advantages (some enabled by command line
+flags) over simply extracting the contents of the zip container, especially when
+the collection contains files collected from the endpoint that you want to
+inspect with external tools. It can:</p><ul><li>merge file collections from multiple (non-encrypted) containers</li><li>convert raw device names to drive letters, e.g. <code>\\.\C:</code> -> <code>C:</code></li><li>strip the <code>:</code> from drive letters in paths, e.g. <code>C:</code> -> <code>C</code></li><li>escape <code>/</code> characters in Windows path components, e.g. <code>abc/xyz</code> -> <code>abc\/xyz</code>
+because on Linux the <code>/</code> is a path separator and not valid within a path
+component.</li><li>emulate the original timestamps for bulk file collection artifacts such as
+<code>Windows.Triage.Targets</code></li></ul><p>If you want to use a specific external tool to analyze the files, then the above
+options give you the flexibility to adjust the presentation of the file and
+folder structure so that it best suits the requirements of your external tool.</p><h5 id=auto-decryption>Auto-decryption</h5><p>The <code>fuse container</code> command only works with collection containers that can be
+automatically decrypted or accessed without encryption. This means containers
+that are secured with the server&rsquo;s X509 cert, or non-encrypted containers.</p><h6 id=example-mounting-an-x509-protected-container>Example: Mounting an X509-protected container</h6><pre><code class=language-sh>velociraptor fuse container -c server.config.yaml \
+--map_device_names_to_letters --strip_colons_on_drive_letters \
+--unix_path_escaping --emulate_timestamps /tmp/exports/fuse_mount \
+/tmp/exports/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z.zip -v
+</code></pre><h5 id=manual-decryption>Manual decryption</h5><p>If you have collection containers secured with other schemes then you can
+decrypt the password manually, extract the inner zip, and then FUSE mount it.</p><p>This applies also to the situation where you want to mount multiple zips. This
+is necessary even if they are protected with the server&rsquo;s cert because
+auto-decryption currently only supports one zip (the first one if multiple are
+specified).</p><ol><li><p>Obtain the decrypted password</p><pre><code class=language-sh>velociraptor --config server.config.yaml unzip eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z.zip --list --report_password -v
+</code></pre></li><li><p>Use the decrypted password to extract the collection container.</p></li><li><p>Repeat the above 2 steps for any additional containers.</p></li><li><p>Mount the inner zip (<code>data.zip</code>) using the <code>fuse container</code> command.</p></li></ol><h6 id=example-merge-mounting-two-manually-extracted-inner-zips>Example: Merge-mounting two manually extracted inner zips</h6><pre><code class=language-sh>velociraptor fuse container \
+--map_device_names_to_letters --strip_colons_on_drive_letters --unix_path_escaping --emulate_timestamps \
+/tmp/exports/fuse_mount \
+/tmp/exports/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z/data.zip \
+/tmp/exports/prefetch-WIN-KMODJ1W0CYG-2025-11-12T10_25_06Z/data.zip -v
+</code></pre><p><figure id=ac68383e5fe4dc58b6b1439eec970a97><div data-featherlight=#ac68383e5fe4dc58b6b1439eec970a97 class=figure><img src=merge_mount.png alt="Merge mount of 2 collection zips"></div><figcaption><a class=image-link href=merge_mount.png><i class="fa fa-download"></i></a>
+Merge mount of 2 collection zips</figcaption></figure></p><p><figure id=7cc8352d204fdf95adcc4ce4e82fa77f><div data-featherlight=#7cc8352d204fdf95adcc4ce4e82fa77f class=figure><img src=fuse_mount_merged.png alt="Merged collection data in mount directory"></div><figcaption><a class=image-link href=fuse_mount_merged.png><i class="fa fa-download"></i></a>
+Merged collection data in mount directory</figcaption></figure></p><p>Note that when 2 or more containers are merged they are layered over each
+other in the order that they were specified on the command line. So if there
+are 2 different files (or 2 different versions of the same file) using the
+same path then in the mount directory you will see the last one in the stack.
+It&rsquo;s important to keep this in mind since the container format uses several
+standard paths for certain common collection files. Merging is primarily
+intended for files in the collection&rsquo;s &ldquo;uploads&rdquo;, i.e. files copied from the
+endpoint, so that you can work with them all together in one tree structure.</p><p>Once the containers are mounted you can then apply other tools to the collection
+data and/or files in the mount directory.</p><p>Reminder: Don&rsquo;t forget to <code>Ctrl+C</code> and <code>umount</code> when you&rsquo;re done!</p><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1763270114></script><script src=/js/perfect-scrollbar.min.js?1763270114></script><script src=/js/perfect-scrollbar.jquery.min.js?1763270114></script><script src=/js/jquery.sticky.js?1763270114></script><script src=/js/featherlight.min.js?1763270114></script><script src=/js/highlight.min.js?1763270114></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1763270114></script><script src=/js/learn.js?1763270114></script><script src=/js/hugo-learn.js?1763270114></script></body></html>

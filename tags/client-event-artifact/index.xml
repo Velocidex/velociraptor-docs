@@ -1,0 +1,2876 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Client Event Artifact on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/client-event-artifact/</link><description>Recent content in Client Event Artifact on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://docs.velociraptor.app/tags/client-event-artifact/index.xml" rel="self" type="application/rss+xml"/><item><title>Demo.Plugins.Fifo</title><link>https://docs.velociraptor.app/artifact_references/pages/demo.plugins.fifo/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/demo.plugins.fifo/</guid><description>&lt;p>This is a demo of the fifo() plugin. The Fifo plugin collects and
+caches rows from its inner query. Every subsequent execution of the
+query then reads from the cache. The plugin will expire old rows
+depending on its expiration policy - so we always see recent rows.&lt;/p>
+&lt;p>You can use this to build queries which consider historical events
+together with current events at the same time. In this example, we
+check for a successful logon preceded by several failed logon
+attempts.&lt;/p>
+&lt;p>In this example, we use the clock() plugin to simulate events. We
+simulate failed logon attempts by using the clock() plugin every
+second. By feeding the failed logon events to the fifo() plugin we
+ensure the fifo() plugin cache contains the last 5 failed logon
+events.&lt;/p>
+&lt;p>We simulate a successful logon event every 3 seconds, again by using
+the clock plugin. Once a successful logon event is detected, we go
+back over the last 5 login events, count them and collect the last
+failed logon times (using the GROUP BY operator we group the
+FailedTime for every unique SuccessTime).&lt;/p>
+&lt;p>If we receive more than 3 events, we emit the row.&lt;/p>
+&lt;p>This now represents a high value signal! It will only occur when a
+successful logon event is preceded by at least 3 failed logon
+events in the last hour. It is now possible to escalate this on the
+server via email or other alerts.&lt;/p>
+&lt;p>Here is sample output:&lt;/p>
+&lt;p>.. code-block:: json&lt;/p>
+&lt;pre>&lt;code>{
+ &amp;quot;Count&amp;quot;: 5,
+ &amp;quot;FailedTime&amp;quot;: [
+ 1549527272,
+ 1549527273,
+ 1549527274,
+ 1549527275,
+ 1549527276
+ ],
+ &amp;quot;SuccessTime&amp;quot;: 1549527277
+}
+&lt;/code>&lt;/pre>
+&lt;p>Of course in the real artifact we would want to include more
+information than just times (i.e. who logged on to where etc).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Demo.Plugins.Fifo
+description: |
+ This is a demo of the fifo() plugin. The Fifo plugin collects and
+ caches rows from its inner query. Every subsequent execution of the
+ query then reads from the cache. The plugin will expire old rows
+ depending on its expiration policy - so we always see recent rows.
+
+ You can use this to build queries which consider historical events
+ together with current events at the same time. In this example, we
+ check for a successful logon preceded by several failed logon
+ attempts.
+
+ In this example, we use the clock() plugin to simulate events. We
+ simulate failed logon attempts by using the clock() plugin every
+ second. By feeding the failed logon events to the fifo() plugin we
+ ensure the fifo() plugin cache contains the last 5 failed logon
+ events.
+
+ We simulate a successful logon event every 3 seconds, again by using
+ the clock plugin. Once a successful logon event is detected, we go
+ back over the last 5 login events, count them and collect the last
+ failed logon times (using the GROUP BY operator we group the
+ FailedTime for every unique SuccessTime).
+
+ If we receive more than 3 events, we emit the row.
+
+ This now represents a high value signal! It will only occur when a
+ successful logon event is preceded by at least 3 failed logon
+ events in the last hour. It is now possible to escalate this on the
+ server via email or other alerts.
+
+ Here is sample output:
+
+ .. code-block:: json
+
+ {
+ "Count": 5,
+ "FailedTime": [
+ 1549527272,
+ 1549527273,
+ 1549527274,
+ 1549527275,
+ 1549527276
+ ],
+ "SuccessTime": 1549527277
+ }
+
+ Of course in the real artifact we would want to include more
+ information than just times (i.e. who logged on to where etc).
+type: CLIENT_EVENT
+
+sources:
+ - query: |
+ // This query simulates failed logon attempts.
+ LET failed_logon = SELECT Unix as FailedTime from clock(period=1)
+
+ // This is the fifo which holds the last 5 failed logon attempts
+ // within the last hour.
+ LET last_5_events = SELECT FailedTime
+ FROM fifo(query=failed_logon, max_rows=5, max_age=3600)
+
+ // We need to get it started collecting data immediately by
+ // materializing the cache contents. Otherwise the fifo wont
+ // start until it is first called (i.e. the first successful
+ // login and we will miss the failed events before hand).
+ LET foo &amp;lt;= SELECT * FROM last_5_events
+
+ // This simulates successful logon - we assume every 3 seonds.
+ LET success_logon = SELECT Unix as SuccessTime from clock(period=3)
+
+ // For each successful logon, query the last failed logon
+ // attempts from the fifo(). We also count the total number of
+ // failed logons. We only actually emit results if there are more
+ // than 3 failed logon attempts before each successful one.
+ SELECT * FROM foreach(
+ row=success_logon,
+ query={
+ SELECT SuccessTime,
+ enumerate(items=FailedTime) as FailedTime,
+ count(items=FailedTime) as Count
+ FROM last_5_events GROUP BY SuccessTime
+ }) WHERE Count &amp;gt; 3
+
+&lt;/code>&lt;/pre></description></item><item><title>Generic.Client.LocalLogs</title><link>https://docs.velociraptor.app/artifact_references/pages/generic.client.locallogs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/generic.client.locallogs/</guid><description>&lt;p>Write client logs locally in an encrypted container. This helps when
+we need to access what the client was doing in the past.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Generic.Client.LocalLogs
+description: |
+ Write client logs locally in an encrypted container. This helps when
+ we need to access what the client was doing in the past.
+
+type: CLIENT_EVENT
+
+parameters:
+- name: LocalFilename
+ default: "%TEMP%/locallogs.log"
+ description: The local filename that will be written (Env variables will be expanded).
+- name: MaxRows
+ type: int
+ default: "100"
+ description: Flush the file when we cache this many rows.
+- name: MaxWait
+ default: "60"
+ type: int
+ description: Flush the file at least every this many seconds.
+- name: MaxSize
+ default: "100000000"
+ type: int
+ description: Truncate the file once it reaches this length.
+- name: AlsoForward
+ type: bool
+ description: |
+ By default we do not forward any of the logs to the server but
+ this allows logs to be forwarded as well as written locally.
+- name: Component
+ default: generic
+ description: The log component to forward (default "generic")
+ type: choices
+ choices:
+ - generic
+ - client
+ - frontend
+ - gui
+ - api
+
+sources:
+- query: |
+ LET _ &amp;lt;= log(message="Writing local log to " + expand(path=LocalFilename))
+
+ SELECT * FROM write_crypto_file(
+ max_rows=MaxRows, max_wait=MaxWait, max_size=MaxSize,
+ filename=expand(path=LocalFilename),
+ query={
+ SELECT timestamp(epoch=now()) AS Timestamp, *
+ FROM logging(component=Component)
+ })
+ WHERE AlsoForward
+
+&lt;/code>&lt;/pre></description></item><item><title>Generic.Client.Stats</title><link>https://docs.velociraptor.app/artifact_references/pages/generic.client.stats/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/generic.client.stats/</guid><description>&lt;p>An Event artifact which generates client&amp;rsquo;s CPU and memory statistics.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Generic.Client.Stats
+description: An Event artifact which generates client's CPU and memory statistics.
+parameters:
+ - name: Frequency
+ description: Return stats every this many seconds.
+ type: int
+ default: "10"
+type: CLIENT_EVENT
+
+sources:
+ - precondition: SELECT OS From info() where OS = 'windows'
+ query: |
+ SELECT *, rate(x=CPU, y=Timestamp) AS CPUPercent
+ FROM foreach(
+ row={
+ SELECT UnixNano
+ FROM clock(period=Frequency)
+ },
+ query={
+ SELECT UnixNano / 1000000000 as Timestamp,
+ User + System as CPU,
+ Memory.WorkingSetSize as RSS
+ FROM pslist(pid=getpid())
+ })
+
+ notebook:
+ - type: vql_suggestion
+ name: Graph CPU usage
+ template: |
+ /*
+ # Events from Generic.Client.Stats
+ */
+ LET resources = SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+ RSS / 1000000 AS MemoryUse
+ FROM source(start_time=StartTime, end_time=EndTime)
+ WHERE CPUPercent &amp;gt;= 0
+ /*
+ {{ Query "SELECT * FROM resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+ */
+ SELECT * FROM resources
+ LIMIT 50
+
+ - precondition: SELECT OS From info() where OS != 'windows'
+ query: |
+ SELECT *, rate(x=CPU, y=Timestamp) AS CPUPercent
+ FROM foreach(
+ row={
+ SELECT UnixNano
+ FROM clock(period=Frequency)
+ },
+ query={
+ SELECT UnixNano / 1000000000 as Timestamp,
+ Times.system + Times.user as CPU,
+ MemoryInfo.RSS as RSS
+ FROM pslist(pid=getpid())
+ })
+
+
+reports:
+ - type: SERVER_EVENT
+ template: |
+ {{ define "resources" }}
+ SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+ RSS / 1000000 AS MemoryUse
+ FROM source()
+ WHERE CPUPercent &amp;gt;= 0
+ {{ end }}
+
+ {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+
+ - type: MONITORING_DAILY
+ template: |
+ {{ define "resources" }}
+ SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
+ RSS / 1000000 AS MemoryUse
+ FROM source()
+ WHERE CPUPercent &amp;gt;= 0
+ {{ end }}
+
+ {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
+
+ # Client Footprint for {{ Get $client_info "0.os_info.fqdn" }}
+
+ The client has a client ID of {{ Get $client_info "0.client_id" }}.
+ Clients report the Velociraptor process footprint to the
+ server every 10 seconds. The data includes the total CPU
+ utilization, and the resident memory size used by the client.
+
+ The following graph shows the total utilization. Memory
+ utilization is meausred in `Mb` while CPU Utilization is
+ measured by `Percent of one core`.
+
+ We would expect the client to use around 1-5% of one core when
+ idle, but if a heavy hunt is running this might climb
+ substantially.
+
+ &amp;lt;div&amp;gt;
+ {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
+ &amp;lt;/div&amp;gt;
+
+ ## VQL Query
+
+ The following VQL query was used to plot the graph above.
+
+ ```sql
+ {{ template "resources" }}
+ ```
+
+ &amp;gt; To learn about managing end point performance with Velociraptor see
+ the [blog post](https://docs.velociraptor.velocidex.com/blog/html/2019/02/10/velociraptor_performance.html).
+
+column_types:
+ - name: Timestamp
+ type: timestamp
+
+ - name: ClientId
+ type: client_id
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.DNS</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.dns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.dns/</guid><description>&lt;p>This artifact uses eBPF to track DNS requests from various processes.&lt;/p>
+&lt;p>NOTE: This event is generated from network traffic - it is unable to
+view DoH traffic.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.DNS
+description: |
+ This artifact uses eBPF to track DNS requests from various processes.
+
+ NOTE: This event is generated from network traffic - it is unable to
+ view DoH traffic.
+
+type: CLIENT_EVENT
+
+precondition: |
+ SELECT OS From info() where OS = 'linux'
+
+parameters:
+ - name: ExcludeDestIP
+ description: Only show events with a different DestIP
+ type: regex
+ default: "Change this to your default DNS Server IP"
+ - name: Records
+ description: Only show events matching these DNS records
+ type: regex
+ default: .
+ - name: ProcessNameFilter
+ description: Filter Events by Process Name
+ type: regex
+ default: .
+ - name: IncludeDNSDetails
+ type: bool
+ description: If set we include more details like HTTP Headers
+ - name: IncludeProcessInfo
+ type: bool
+ description: If set we include more process information.
+
+sources:
+ - query: |
+ SELECT System.Timestamp AS Timestamp,
+ System.ProcessName AS ProcessName,
+ System.ProcessID AS Pid,
+ if(condition=IncludeProcessInfo,
+ then=process_tracker_get(id=System.ProcessID).Data) AS ProcessInfo,
+ EventData.src AS src_ip,
+ EventData.src_port AS src_port,
+ EventData.dst AS dest_ip,
+ EventData.dst_port AS dest_port,
+ EventData.proto_dns.questions.name AS name,
+ EventData.proto_dns.questions.type AS type,
+ EventData.proto_dns.answers.IP AS IP,
+ if(condition=IncludeDNSDetails,
+ then=EventData) AS _DNSData
+ FROM delay(delay=2, query={
+ SELECT * FROM watch_ebpf(events="net_packet_dns")
+ })
+ WHERE NOT dest_ip =~ ExcludeDestIP
+ AND if(condition=Records, then=EventData.proto_dns =~ Records, else=TRUE)
+ AND ProcessName =~ ProcessNameFilter
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.EBPF</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.ebpf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.ebpf/</guid><description>&lt;p>This artifact forwards EBPF events generated on the endpoint.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.EBPF
+description: |
+ This artifact forwards EBPF events generated on the endpoint.
+
+precondition: |
+ SELECT OS From info() where OS = 'linux'
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: Events
+ description: Events to forward
+ type: csv
+ default: |
+ Event,Desc,Enabled
+ bpf_attach,A bpf program is attached,Y
+ chdir,Process changes directory,N
+ fchownat,File ownership is changed,Y
+ file_modification,A process changes the ctime of a file,N
+ kill,Kill another process,Y
+ magic_write,Intercepts file writes to capture the header magic,N
+ mkdir,Process makes new directory,N
+ module_free,A module is unloaded from the kernel,Y
+ mount,A filesystem is mounted,Y
+ openat,A process is opening a file (noisy),N
+ openat2,A process is opening a file (noisy),N
+ sched_process_exec,A process starts,Y
+ sched_process_exit,A process ends,Y
+ security_file_open,Files are opened,Y
+ security_inode_mknod,A new node is created with mknod (e.g. fifo or device file),Y
+ security_inode_rename,File is being renamed,N
+ security_inode_symlink,Create a symlink,Y
+ security_kernel_post_read_file,Fires when the kernel reads a file (e.g. module),Y
+ security_socket_accept,A process accepted a connection,Y
+ security_socket_bind,A process bind to a local port,Y
+ security_socket_connect,A process is making a connection,Y
+ setxattr,Setting and extended attribute to a file,Y
+ umount2,A filesystem is being unmounted,Y
+ unlink,A file is deleted,Y
+
+sources:
+ - query: |
+ LET SelectedEvents &amp;lt;= SELECT * FROM Events WHERE Enabled =~ "Y"
+
+ SELECT * FROM watch_ebpf(events=SelectedEvents.Event)
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.HTTPConnections</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.httpconnections/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.httpconnections/</guid><description>&lt;p>This artifact uses eBPF to track HTTP and parse connections from
+various processes.&lt;/p>
+&lt;p>NOTE: This event is generated from network traffic - it is unable to
+view TLS encrypted data.&lt;/p>
+&lt;p>If the process tracker is enabled we also show more information
+about the process.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.HTTPConnections
+description: |
+ This artifact uses eBPF to track HTTP and parse connections from
+ various processes.
+
+ NOTE: This event is generated from network traffic - it is unable to
+ view TLS encrypted data.
+
+ If the process tracker is enabled we also show more information
+ about the process.
+
+type: CLIENT_EVENT
+
+precondition: |
+ SELECT OS From info() where OS = 'linux'
+
+parameters:
+ - name: HostFilter
+ description: Filter Events by Host header
+ type: regex
+ default: .
+ - name: URLFilter
+ description: Filter Events by URL
+ type: regex
+ default: .
+ - name: ProcessNameFilter
+ description: Filter Events by Process Name
+ type: regex
+ default: .
+ - name: IncludeHeaders
+ type: bool
+ description: If set we include more details like HTTP Headers
+ - name: IncludeProcessInfo
+ type: bool
+ description: If set we include more process information.
+
+sources:
+ - query: |
+ SELECT System.Timestamp AS Timestamp,
+ System.ProcessName AS ProcessName,
+ System.ProcessID AS Pid,
+ if(condition=IncludeProcessInfo,
+ then=process_tracker_get(id=System.ProcessID).Data) AS ProcessInfo,
+ EventData.metadata.src_ip AS src_ip,
+ EventData.metadata.src_port AS src_port,
+ EventData.metadata.dst_ip AS dest_ip,
+ EventData.metadata.dst_port AS dest_port,
+ EventData.http_request.host AS host,
+ EventData.http_request.uri_path AS uri_path,
+ if(condition=IncludeHeaders,
+ then=EventData.http_request) AS _HTTPRequest
+ FROM watch_ebpf(events="net_packet_http_request")
+ WHERE host =~ HostFilter
+ AND uri_path =~ URLFilter
+ AND ProcessName =~ ProcessNameFilter
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.Journal</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.journal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.journal/</guid><description>&lt;p>Watches the binary journal logs. Systemd uses a binary log format to
+store logs.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.Journal
+description: |
+ Watches the binary journal logs. Systemd uses a binary log format to
+ store logs.
+
+type: CLIENT_EVENT
+
+parameters:
+- name: JournalGlob
+ type: glob
+ description: A Glob expression for finding journal files.
+ default: /{run,var}/log/journal/*/*.journal
+
+sources:
+- query: |
+ SELECT * FROM foreach(row={
+ SELECT OSPath FROM glob(globs=JournalGlob)
+ }, query={
+ SELECT *
+ FROM watch_journald(filename=OSPath)
+ }, workers=100)
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.ProcessExecutions</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.processexecutions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.processexecutions/</guid><description>&lt;p>This artifact collects process execution logs from the Linux kernel.&lt;/p>
+&lt;p>This artifact relies on the presence of &lt;code>auditctl&lt;/code> usually included
+in the auditd package. On Ubuntu you can install it by using:&lt;/p>
+&lt;pre>&lt;code>apt-get install auditd
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.ProcessExecutions
+description: |
+ This artifact collects process execution logs from the Linux kernel.
+
+ This artifact relies on the presence of `auditctl` usually included
+ in the auditd package. On Ubuntu you can install it by using:
+
+ ```
+ apt-get install auditd
+ ```
+
+precondition: SELECT OS From info() where OS = 'linux'
+
+type: CLIENT_EVENT
+
+required_permissions:
+ - EXECVE
+
+parameters:
+ - name: pathToAuditctl
+ default: /sbin/auditctl
+ description: We depend on auditctl to install the correct process execution rules.
+
+sources:
+ - query: |
+ // Install the auditd rule if possible.
+ LET _ &amp;lt;= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
+ "exit,always", "-F", "arch=b64", "-S", "execve", "-k", "procmon"])
+
+ LET exec_log = SELECT timestamp(string=Timestamp) AS Time, Sequence,
+ atoi(string=Process.PID) AS Pid,
+ atoi(string=Process.PPID) AS Ppid,
+ Process.PPID AS PPID,
+ atoi(string=Summary.Actor.Primary) AS UserId,
+ Process.Title AS CmdLine,
+ Process.Exe AS Exe,
+ Process.CWD AS CWD
+ FROM audit()
+ WHERE "procmon" in Tags AND Result = 'success'
+
+ // Cache Uid -&amp;gt; Username mapping.
+ LET users &amp;lt;= SELECT User, atoi(string=Uid) AS Uid
+ FROM Artifact.Linux.Sys.Users()
+
+ // Enrich the original artifact with more data.
+ SELECT Time, Pid, Ppid, UserId,
+ { SELECT User from users WHERE Uid = UserId} AS User,
+ regex_replace(source=read_file(filename= "/proc/" + PPID + "/cmdline"),
+ replace=" ", re="[\\0]") AS Parent,
+ CmdLine,
+ Exe, CWD
+ FROM exec_log
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.SSHBruteforce</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.sshbruteforce/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.sshbruteforce/</guid><description>&lt;p>A monitoring artifact which detects a successful SSH login preceded by some
+failed attempts within the last hour.&lt;/p>
+&lt;p>This is particularly important in the case of SSH brute force attacks. If one
+of the brute force password attempts succeeded, the password guessing program
+will likely report the success and move on. This alert might provide
+sufficient time for admins to lock down the account before attackers can
+exploit the weak password.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.SSHBruteforce
+description: |
+ A monitoring artifact which detects a successful SSH login preceded by some
+ failed attempts within the last hour.
+
+ This is particularly important in the case of SSH brute force attacks. If one
+ of the brute force password attempts succeeded, the password guessing program
+ will likely report the success and move on. This alert might provide
+ sufficient time for admins to lock down the account before attackers can
+ exploit the weak password.
+
+reference:
+ - https://www.elastic.co/blog/grokking-the-linux-authorization-logs
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: syslogAuthLogPath
+ default: /var/log/auth.log
+
+ - name: SSHGrok
+ description: A Grok expression for parsing SSH auth lines.
+ default: &amp;gt;-
+ %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
+
+ - name: MinimumFailedLogins
+ description: Minimum number of failed logins before a successful login.
+ default: 2
+
+sources:
+ - query: |
+ -- Basic syslog parsing via GROK expressions.
+ LET failed_login = SELECT grok(grok=SSHGrok, data=Line) AS FailedEvent,
+ Line as FailedLine
+ FROM watch_syslog(filename=syslogAuthLogPath)
+ WHERE FailedEvent.program = "sshd" AND FailedEvent.event = "Failed"
+ AND FailedEvent.method = "password"
+
+ LET last_failed_events = SELECT * FROM fifo(
+ query=failed_login, max_rows=50, max_age=3600)
+
+ LET _ &amp;lt;= SELECT * FROM last_failed_events
+
+ LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
+ FROM watch_syslog(filename=syslogAuthLogPath)
+ WHERE Event.program = "sshd" AND Event.event = "Accepted"
+ AND Event.method = "password"
+
+ SELECT Event, Line, {
+ SELECT FailedLine FROM last_failed_events
+ WHERE Event.user = FailedEvent.user
+ } AS Failures
+ FROM success_login
+ WHERE len(list=Failures) &amp;gt; int(int=MinimumFailedLogins)
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.SSHLogin</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.sshlogin/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.sshlogin/</guid><description>&lt;p>This monitoring artifact watches the auth.log file for new
+successful SSH login events and relays them back to the server.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.SSHLogin
+description: |
+ This monitoring artifact watches the auth.log file for new
+ successful SSH login events and relays them back to the server.
+
+reference:
+ - https://www.elastic.co/blog/grokking-the-linux-authorization-logs
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: syslogAuthLogPath
+ default: /var/log/auth.log
+
+ - name: SSHGrok
+ description: A Grok expression for parsing SSH auth lines.
+ default: &amp;gt;-
+ %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
+
+sources:
+ - query: |
+ -- Basic syslog parsing via GROK expressions.
+ LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
+ FROM watch_syslog(filename=syslogAuthLogPath)
+ WHERE Event.program = "sshd" AND Event.event = "Accepted"
+
+ SELECT timestamp(string=Event.timestamp) AS Time,
+ Event.user AS User,
+ Event.method AS Method,
+ Event.IP AS SourceIP,
+ Event.pid AS Pid
+ FROM success_login
+
+&lt;/code>&lt;/pre></description></item><item><title>Linux.Events.TrackProcesses</title><link>https://docs.velociraptor.app/artifact_references/pages/linux.events.trackprocesses/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/linux.events.trackprocesses/</guid><description>&lt;p>This artifact uses eBPF and pslist to keep track of running
+processes by using the Velociraptor process tracker.&lt;/p>
+&lt;p>The process tracker keeps track of exited processes, and resolves
+process call chains from it in memory cache.&lt;/p>
+&lt;p>This event artifact enables the global process tracker and makes it
+possible to run many other artifacts that depend on the process
+tracker.&lt;/p>
+&lt;p>NOTE: Unlike &lt;code>Windows.Events.TrackProcesses&lt;/code>, the eBPF program is
+already built into Velociraptor so this artifact does not depend on
+external tools.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Linux.Events.TrackProcesses
+description: |
+ This artifact uses eBPF and pslist to keep track of running
+ processes by using the Velociraptor process tracker.
+
+ The process tracker keeps track of exited processes, and resolves
+ process call chains from it in memory cache.
+
+ This event artifact enables the global process tracker and makes it
+ possible to run many other artifacts that depend on the process
+ tracker.
+
+ NOTE: Unlike `Windows.Events.TrackProcesses`, the eBPF program is
+ already built into Velociraptor so this artifact does not depend on
+ external tools.
+
+precondition: |
+ SELECT OS From info() where OS = 'linux'
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: AlsoForwardUpdates
+ type: bool
+ description: Upload all tracker state updates to the server
+ - name: MaxSize
+ type: int64
+ description: Maximum size of the in-memory process cache (default 10k)
+
+sources:
+ - query: |
+ LET SyncQuery = SELECT
+ Pid AS id,
+ Ppid AS parent_id,
+ CreateTime AS start_time,
+ dict(Name=Name,
+ Username=Username,
+ Exe=Exe,
+ CreateTime=CreateTime,
+ CommandLine=CommandLine) AS data
+ FROM pslist()
+
+ LET UpdateQuery = SELECT * FROM foreach(
+ row={
+ SELECT * FROM watch_ebpf(events=["sched_process_exit", "sched_process_exec"])
+ }, query={
+ SELECT * FROM switch(a={
+ SELECT System.ProcessID AS id,
+ System.ParentProcessID AS parent_id,
+ "start" AS update_type,
+ dict(Pid=System.ProcessID,
+ Ppid=System.ParentProcessID,
+ Name=System.ProcessName,
+ Username=System.UserID,
+ Exe=EventData.cmdpath,
+ CommandLine=join(array=EventData.argv, sep=" ")) AS data,
+
+ System.Timestamp AS start_time,
+ NULL AS end_time
+ FROM scope()
+ WHERE System.EventName =~ "exec"
+ }, end={
+ SELECT System.ProcessID AS id,
+ NULL AS parent_id,
+ "exit" AS update_type,
+ dict() AS data,
+ NULL AS start_time,
+ System.Timestamp AS end_time
+ FROM scope()
+ WHERE System.EventName =~ "exit"
+ })
+ })
+
+ LET Tracker &amp;lt;= process_tracker(max_size=MaxSize,
+ sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
+
+ SELECT * FROM process_tracker_updates()
+ WHERE update_type = "stats" OR AlsoForwardUpdates
+
+&lt;/code>&lt;/pre></description></item><item><title>System.Flow.Archive</title><link>https://docs.velociraptor.app/artifact_references/pages/system.flow.archive/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/system.flow.archive/</guid><description>&lt;p>An internal artifact that produces events for every flow completion
+in the system.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: System.Flow.Archive
+description: |
+ An internal artifact that produces events for every flow completion
+ in the system.
+
+type: CLIENT_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>System.Flow.Completion</title><link>https://docs.velociraptor.app/artifact_references/pages/system.flow.completion/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/system.flow.completion/</guid><description>&lt;p>An internal artifact that produces events for every flow completion
+in the system.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: System.Flow.Completion
+description: |
+ An internal artifact that produces events for every flow completion
+ in the system.
+
+type: CLIENT_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>System.Hunt.Archive</title><link>https://docs.velociraptor.app/artifact_references/pages/system.hunt.archive/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/system.hunt.archive/</guid><description>&lt;p>An internal artifact that receives events when a hunt is archived.&lt;/p>
+&lt;p>You can write a server event artifact to do something about the
+hunts (like remove flows, generate zip file etc).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: System.Hunt.Archive
+description: |
+ An internal artifact that receives events when a hunt is archived.
+
+ You can write a server event artifact to do something about the
+ hunts (like remove flows, generate zip file etc).
+
+type: CLIENT_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>System.Upload.Completion</title><link>https://docs.velociraptor.app/artifact_references/pages/system.upload.completion/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/system.upload.completion/</guid><description>&lt;p>An internal artifact that produces events for every file that is
+uploaded to the system.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: System.Upload.Completion
+description: |
+ An internal artifact that produces events for every file that is
+ uploaded to the system.
+
+type: CLIENT_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.ProcessCreation</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.processcreation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.processcreation/</guid><description>&lt;p>This artifact logs specific process creation events to
+Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
+provider for new events.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.ProcessCreation
+description: |
+ This artifact logs specific process creation events to
+ Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
+ provider for new events.
+
+author: Jos Clephas - @DfirJos
+
+type: CLIENT_EVENT
+
+tools:
+ - name: SysmonBinary
+ url: https://live.sysinternals.com/tools/sysmon64.exe
+ serve_locally: true
+
+ - name: SysmonConfig
+ url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
+ serve_locally: true
+
+parameters:
+ - name: ImageRegex
+ default: .
+ - name: CommandLineRegex
+ default: .
+ - name: ParentImageRegex
+ default: .
+ - name: OriginalFileNameRegex
+ default: .
+ - name: ParentUserRegex
+ default: .
+ - name: UserRegex
+ default: .
+ - name: HashesRegex
+ default: .
+ - name: ParentCommandLineRegex
+ default: .
+ - name: IntegrityLevelRegex
+ default: .
+ - name: ProductRegex
+ default: .
+ - name: CompanyRegex
+ default: .
+ - name: DescriptionRegex
+ default: .
+ - name: FileVersionRegex
+ default: .
+ - name: SysmonFileLocation
+ description: If set, we check this location first for sysmon installed.
+ default: C:/Windows/sysmon64.exe
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ // Ensure that sysmon is installed.
+ LET _ &amp;lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+ SysmonFileLocation=SysmonFileLocation)
+
+ SELECT *, { SELECT Hostname FROM info() } as Hostname FROM Artifact.Windows.Sysinternals.SysmonLogForward()
+ WHERE ID = 1 AND
+ EventData.Image =~ ImageRegex AND
+ EventData.CommandLine =~ CommandLineRegex AND
+ EventData.ParentImage =~ ParentImageRegex AND
+ EventData.OriginalFileName =~ OriginalFileNameRegex AND
+ EventData.ParentUser =~ ParentUserRegex AND
+ EventData.User =~ UserRegex AND
+ EventData.Hashes =~ HashesRegex AND
+ EventData.ParentCommandLine =~ ParentCommandLineRegex AND
+ EventData.IntegrityLevel =~ IntegrityLevelRegex AND
+ EventData.Product =~ ProductRegex AND
+ EventData.Company =~ CompanyRegex AND
+ EventData.Description =~ DescriptionRegex AND
+ EventData.FileVersion =~ FileVersionRegex
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.PsexecService</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.psexecservice/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.psexecservice/</guid><description>&lt;p>PsExec works by installing a new service in the system. The service
+can be renamed by using the &lt;code>-r&lt;/code> flag and therefore it is not enough to
+just watch for a new service called &lt;code>psexecsvc.exe&lt;/code>. This artifact
+improves on this by scanning the service binary to detect the
+original PsExec binary.&lt;/p>
+&lt;p>NOTE: If the service is very quick we are unable to examine the service binary
+in time then we will miss it.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.PsexecService
+description: |
+ PsExec works by installing a new service in the system. The service
+ can be renamed by using the `-r` flag and therefore it is not enough to
+ just watch for a new service called `psexecsvc.exe`. This artifact
+ improves on this by scanning the service binary to detect the
+ original PsExec binary.
+
+ NOTE: If the service is very quick we are unable to examine the service binary
+ in time then we will miss it.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: yaraRule
+ type: yara
+ default: |
+ rule Hit {
+ strings:
+ $a = "psexec" nocase wide ascii
+ condition:
+ any of them
+ }
+
+sources:
+ - query: |
+ LET file_scan = SELECT Name AS ServiceName,
+ PathName, File.ModTime AS Modified,
+ File.Size AS FileSize,
+ String.Offset AS StringOffset,
+ String.HexData AS StringContext,
+ now() AS Timestamp,
+ ServiceType, PID,
+ {
+ SELECT Name, Exe, CommandLine
+ FROM pslist() WHERE Ppid = PID
+ LIMIT 2
+ } AS ChildProcess
+ FROM yara(rules=yaraRule, files=PathName)
+ WHERE Rule
+
+ LET service_creation = SELECT Parse,
+ Parse.TargetInstance.Name AS Name,
+ Parse.TargetInstance.PathName As PathName,
+ Parse.TargetInstance.ServiceType As ServiceType,
+ Parse.TargetInstance.ProcessId AS PID
+ FROM wmi_events(
+ query="SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'",
+ wait=5000000,
+ namespace="ROOT/CIMV2")
+
+ SELECT * FROM foreach(
+ row=service_creation,
+ query=file_scan)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.PsexecService.Kill</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.psexecservice.kill/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.psexecservice.kill/</guid><description>&lt;p>Psexec can launch a service remotely. This artifact implements a
+client side response plan whereby all the child processes of the
+service are killed.&lt;/p>
+&lt;p>NOTE: There is an inherent race between detection and response. If
+the PsExec is very quick we will miss it.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.PsexecService.Kill
+description: |
+ Psexec can launch a service remotely. This artifact implements a
+ client side response plan whereby all the child processes of the
+ service are killed.
+
+ NOTE: There is an inherent race between detection and response. If
+ the PsExec is very quick we will miss it.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: yaraRule
+ type: yara
+ default: |
+ rule Hit {
+ strings:
+ $a = "psexec" nocase wide ascii
+ condition:
+ any of them
+ }
+
+sources:
+ - query: |
+ SELECT * FROM foreach(
+ row={ SELECT * FROM Artifact.Windows.Detection.PsexecService() },
+ query={
+ SELECT ServiceName, PathName, Modified, FileSize, Timestamp,
+ ServiceType, ChildProcess, Stdout, Stderr FROM execve(
+ argv=["taskkill", "/PID", PID, "/T", "/F"])
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.Registry</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.registry/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.registry/</guid><description>&lt;p>This artifact detects registry changes and triggers an alert.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.Registry
+description: |
+ This artifact detects registry changes and triggers an alert.
+
+author: Jos Clephas - @DfirJos
+
+type: CLIENT_EVENT
+
+precondition:
+ SELECT * FROM info() WHERE OS =~ "windows"
+
+parameters:
+ - name: Period
+ type: int
+ default: 120
+ - name: RegistryPath
+ default: HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\*
+ - name: RegistryData
+ type: regex
+ default: .
+ - name: AlertName
+ default: "T1112 - Suspicious registry key modification"
+ - name: diff
+ default: added
+ - name: CertificateInfo
+ default: N
+ type: bool
+ - name: regex_IssuerName
+ default: .
+ - name: UntrustedAuthenticode
+ description: Show only Executables that are not trusted by Authenticode.
+ type: bool
+ default: N
+ - name: Calculate_hashes
+ default: N
+ type: bool
+ - name: regex_sha256
+ default: .
+ - name: DISABLE_DANGEROUS_API_CALLS
+ type: bool
+ description: |
+ Enable this to disable potentially flakey APIs which may cause
+ crashes.
+
+sources:
+ - query: |
+
+ LET query_registry = SELECT *, OSPath.String + Data.value AS FullPath,
+ expand(path=Data.value) AS Datavalue
+ FROM glob(globs=RegistryPath, accessor="registry") WHERE Data.value =~ RegistryData
+
+ LET query_diff = SELECT *, commandline_split(command=Datavalue) as AbsolutePath
+ FROM diff(query=query_registry, period=Period, key="FullPath")
+ WHERE Diff = diff
+
+ SELECT *,
+ alert(name=AlertName, Key=OSPath, Value=Datavalue, RegistryValue=Diff) as AlertSent,
+ if(condition=Calculate_hashes,
+ then=hash(path=AbsolutePath[0], accessor="auto")) AS Hash,
+ if(condition=CertificateInfo,
+ then=authenticode(filename=AbsolutePath[0])) AS Certinfo
+ FROM query_diff
+ WHERE Diff = diff
+ AND Hash.SHA256 =~ regex_sha256
+ AND Certinfo.IssuerName=~regex_IssuerName
+ AND NOT if(condition= UntrustedAuthenticode,
+ then= Certinfo.Trusted = 'trusted',
+ else= False )
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.Service.Upload</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.service.upload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.service.upload/</guid><description>&lt;p>When a new service is installed, upload the service binary to the server&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.Service.Upload
+description: |
+ When a new service is installed, upload the service binary to the server
+
+type: CLIENT_EVENT
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+ - query: |
+ // Sometimes the image path contains the full command line - we
+ // try to extract the first parameter as the binary itself. Deal
+ // with two options - either quoted or not.
+ SELECT ServiceName, upload(file=regex_replace(
+ source=ImagePath,
+ replace="$2",
+ re='^("([^"]+)" .+|([^ ]+) .+)')) AS Upload,
+ Timestamp, _EventData, _System
+ FROM Artifact.Windows.Events.ServiceCreation()
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.Thumbdrives.List</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.thumbdrives.list/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.thumbdrives.list/</guid><description>&lt;p>Users inserting Thumb drives or other Removable drive pose a
+constant security risk. The external drive may contain malware or
+other undesirable content. Additionally thumb drives are an easy way
+for users to exfiltrate documents.&lt;/p>
+&lt;p>This artifact watches for any removable drives and provides a
+complete file listing to the server for any new drive inserted. It
+also provides information about any addition to the thumb drive
+(e.g. a new file copied onto the drive).&lt;/p>
+&lt;p>We exclude very large removable drives since they might have too
+many files.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.Thumbdrives.List
+description: |
+ Users inserting Thumb drives or other Removable drive pose a
+ constant security risk. The external drive may contain malware or
+ other undesirable content. Additionally thumb drives are an easy way
+ for users to exfiltrate documents.
+
+ This artifact watches for any removable drives and provides a
+ complete file listing to the server for any new drive inserted. It
+ also provides information about any addition to the thumb drive
+ (e.g. a new file copied onto the drive).
+
+ We exclude very large removable drives since they might have too
+ many files.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: maxDriveSize
+ type: int
+ description: We ignore removable drives larger than this size in bytes.
+ default: "32000000000"
+
+
+sources:
+ - query: |
+ LET removable_disks = SELECT Name AS Drive,
+ atoi(string=Data.Size) AS Size
+ FROM glob(globs="/*", accessor="file")
+ WHERE Data.Description =~ "Removable" AND Size &amp;lt; atoi(string=maxDriveSize)
+
+ LET file_listing = SELECT OSPath,
+ Mtime As Modified,
+ Size
+ FROM glob(globs=Drive+"\\**", accessor="file")
+ LIMIT 1000
+
+ SELECT * FROM diff(
+ query={
+ SELECT * FROM foreach(
+ row=removable_disks,
+ query=file_listing)
+ },
+ key="OSPath",
+ period=10)
+ WHERE Diff = "added"
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.Thumbdrives.OfficeKeywords</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.thumbdrives.officekeywords/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.thumbdrives.officekeywords/</guid><description>&lt;p>Users inserting Thumb drives or other Removable drive pose a
+constant security risk. The external drive may contain malware or
+other undesirable content. Additionally thumb drives are an easy way
+for users to exfiltrate documents.&lt;/p>
+&lt;p>This artifact automatically scans any office files copied to a
+removable drive for keywords. This could be useful to detect
+exfiltration attempts of restricted documents.&lt;/p>
+&lt;p>We exclude very large removable drives since they might have too
+many files.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.Thumbdrives.OfficeKeywords
+description: |
+ Users inserting Thumb drives or other Removable drive pose a
+ constant security risk. The external drive may contain malware or
+ other undesirable content. Additionally thumb drives are an easy way
+ for users to exfiltrate documents.
+
+ This artifact automatically scans any office files copied to a
+ removable drive for keywords. This could be useful to detect
+ exfiltration attempts of restricted documents.
+
+ We exclude very large removable drives since they might have too
+ many files.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: officeExtensions
+ default: "\\.(xls|xlsm|doc|docx|ppt|pptm)$"
+ type: regex
+
+ - name: yaraRule
+ description: This yara rule will be run on document contents.
+ type: yara
+ default: |
+ rule Hit {
+ strings:
+ $a = "this is my secret" wide nocase
+ $b = "this is my secret" nocase
+
+ condition:
+ any of them
+ }
+
+sources:
+ - query: |
+ SELECT * FROM foreach(
+ row = {
+ SELECT * FROM Artifact.Windows.Detection.Thumbdrives.List()
+ WHERE OSPath =~ officeExtensions
+ },
+ query = {
+ SELECT * FROM Artifact.Generic.Applications.Office.Keywords(
+ yaraRule=yaraRule, searchGlob=OSPath, documentGlobs="")
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.Thumbdrives.OfficeMacros</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.thumbdrives.officemacros/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.thumbdrives.officemacros/</guid><description>&lt;p>Users inserting Thumb drives or other Removable drive pose a
+constant security risk. The external drive may contain malware or
+other undesirable content. Additionally thumb drives are an easy way
+for users to exfiltrate documents.&lt;/p>
+&lt;p>This artifact watches for any removable drives and scans any added
+office documents for VBA macros.&lt;/p>
+&lt;p>We exclude very large removable drives since they might have too
+many files.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.Thumbdrives.OfficeMacros
+description: |
+ Users inserting Thumb drives or other Removable drive pose a
+ constant security risk. The external drive may contain malware or
+ other undesirable content. Additionally thumb drives are an easy way
+ for users to exfiltrate documents.
+
+ This artifact watches for any removable drives and scans any added
+ office documents for VBA macros.
+
+ We exclude very large removable drives since they might have too
+ many files.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: officeExtensions
+ default: "\\.(xls|xlsm|doc|docx|ppt|pptm)$"
+ type: regex
+
+sources:
+ - query: |
+ SELECT * FROM foreach(
+ row = {
+ SELECT * FROM Artifact.Windows.Detection.Thumbdrives.List()
+ WHERE OSPath =~ officeExtensions
+ },
+ query = {
+ SELECT * from olevba(file=OSPath)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.Usn</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.usn/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.usn/</guid><description>&lt;p>NTFS is a journal filesystem. This means that it maintains a journal
+file where intended filesystem changes are written first, then the
+filesystem is changed. This journal is called the USN journal in NTFS.&lt;/p>
+&lt;p>Velociraptor can watch the USN journal for new filesystem
+events. This allows Velociraptor to detect when new files are
+created or modified.&lt;/p>
+&lt;p>A common use case is to determine when a new prefetch file is
+modified (this indicates a binary was executed). Note: It seems
+prefetch files are not updated immediately - there could be a small
+delay between the execution and the prefetch being modified.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.Usn
+description: |
+ NTFS is a journal filesystem. This means that it maintains a journal
+ file where intended filesystem changes are written first, then the
+ filesystem is changed. This journal is called the USN journal in NTFS.
+
+ Velociraptor can watch the USN journal for new filesystem
+ events. This allows Velociraptor to detect when new files are
+ created or modified.
+
+ A common use case is to determine when a new prefetch file is
+ modified (this indicates a binary was executed). Note: It seems
+ prefetch files are not updated immediately - there could be a small
+ delay between the execution and the prefetch being modified.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: PathRegex
+ description: A regex to match the entire path (you can watch a directory or a file type).
+ default: \.pf$
+ type: regex
+ - name: Device
+ description: The NTFS drive to watch
+ default: C:\\
+ - name: USN_FREQUENCY
+ type: int
+ description: How many seconds before rechecking the USN journal.
+ default: "30"
+ - name: NTFS_CACHE_TIME
+ type: int
+ description: How often to flush the NTFS cache.
+ default: "30"
+
+precondition: SELECT OS from info() where OS = "windows"
+
+sources:
+ - query: |
+ SELECT * FROM watch_usn(device=Device)
+ WHERE OSPath =~ PathRegex
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Detection.WMIProcessCreation</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.detection.wmiprocesscreation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.detection.wmiprocesscreation/</guid><description>&lt;p>WMI Process creation is a common lateral movement technique. The
+attacker simply uses WMI to call the Create() method on the
+Win32_Process WMI object.&lt;/p>
+&lt;p>This can be easily done via the &lt;code>wmic.exe&lt;/code> command or via PowerShell:&lt;/p>
+&lt;pre>&lt;code class="language-bash">wmic process call create cmd.exe
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Detection.WMIProcessCreation
+description: |
+ WMI Process creation is a common lateral movement technique. The
+ attacker simply uses WMI to call the Create() method on the
+ Win32_Process WMI object.
+
+ This can be easily done via the `wmic.exe` command or via PowerShell:
+
+ ```bash
+ wmic process call create cmd.exe
+ ```
+
+type: CLIENT_EVENT
+
+sources:
+ - query: |
+ SELECT Parse from wmi_events(
+ query="SELECT * FROM MSFT_WmiProvider_ExecMethodAsyncEvent_Pre WHERE ObjectPath=\"Win32_Process\" AND MethodName=\"Create\"",
+ namespace="ROOT/CIMV2",
+ wait=50000000)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.DNS</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.dns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.dns/</guid><description>&lt;p>Monitors DNS queries using ETW.&lt;/p>
+&lt;p>There are several filters available to filter out and/or target using regular
+expressions. By default duplicate DNSCache requests are filtered out.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.DNS
+author: Matt Green - @mgreen27
+description: |
+ Monitors DNS queries using ETW.
+
+ There are several filters available to filter out and/or target using regular
+ expressions. By default duplicate DNSCache requests are filtered out.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: ImageRegex
+ description: "ImagePath regex filter for"
+ default: .
+ type: regex
+ - name: CommandLineRegex
+ description: "Commandline to filter for."
+ default: .
+ type: regex
+ - name: QueryRegex
+ description: "DNS query request (domain) to filter for."
+ default: .
+ type: regex
+ - name: AnswerRegex
+ description: "DNS answer to filter for."
+ default: .
+ type: regex
+ - name: CommandLineExclusion
+ description: "Commandline to filter out. Typically we do not want Dnscache events."
+ default: 'svchost.exe -k NetworkService -p -s Dnscache$'
+ type: regex
+
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ LET TypeLookup &amp;lt;= dict(
+ `1` = 'A',
+ `2` = 'NS',
+ `5` = 'CNAME',
+ `6` = 'SOA',
+ `12` = 'PTR',
+ `13` = 'HINFO',
+ `15` = 'MX',
+ `16` = 'TXT',
+ `17` = 'RP',
+ `18` = 'AFSDB',
+ `24` = 'SIG',
+ `25` = 'KEY',
+ `28` = 'AAAA',
+ `29` = 'LOC',
+ `33` = 'SRV',
+ `35` = 'NAPTR',
+ `36` = 'KX',
+ `37` = 'CERT',
+ `39` = 'DNAME',
+ `42` = 'APL',
+ `43` = 'DS',
+ `44` = 'SSHFP',
+ `45` = 'IPSECKEY',
+ `46` = 'RRSIG',
+ `47` = 'NSEC',
+ `48` = 'DNSKEY',
+ `49` = 'DHCID',
+ `50` = 'NSEC3',
+ `51` = 'NSEC3PARAM',
+ `52` = 'TLSA',
+ `53` = 'SMIMEA',
+ `55` = 'HIP',
+ `59` = 'CDS',
+ `60` = 'CDNSKEY',
+ `61` = 'OPENPGPKEY',
+ `62` = 'CSYNC',
+ `63` = 'ZONEMD',
+ `64` = 'SVCB',
+ `65` = 'HTTPS',
+ `108` = 'EUI48',
+ `109` = 'EUI64',
+ `249` = 'TKEY',
+ `250` = 'TSIG',
+ `256` = 'URI',
+ `257` = 'CAA',
+ `32768` = 'TA',
+ `32769` = 'DLV')
+
+ SELECT System.TimeStamp AS EventTime,
+ EventData.QueryName AS Query,
+ get(item=TypeLookup,
+ member=str(str=EventData.QueryType)) AS Type,
+ EventData.QueryResults AS Answer,
+ process_tracker_get(id=System.ProcessID).Data as Process
+ FROM watch_etw(
+ description="Microsoft-Windows-DNS-Client",
+ guid="{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}")
+ WHERE System.ID = 3008
+ AND Query
+ AND NOT Process.CommandLine =~ CommandLineExclusion
+ AND Process.Exe =~ ImageRegex
+ AND Query =~ QueryRegex
+ AND Answer =~ AnswerRegex
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.DNSQueriesServer</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.dnsqueriesserver/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.dnsqueriesserver/</guid><description>&lt;p>Logs DNS queries on DNS servers.&lt;/p>
+&lt;p>This is useful for identifying the true source system that is initiating
+malicious DNS requests that you may have observed.&lt;/p>
+&lt;p>Note that this can be resource intensive for the CPU on busy DNS servers -
+from 5% to 70% CPU load of one core, but memory consumption is very low. This
+is still a lot less than enabling DNS debug logging.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.DNSQueriesServer
+type: CLIENT_EVENT
+
+description: |
+ Logs DNS queries on DNS servers.
+
+ This is useful for identifying the true source system that is initiating
+ malicious DNS requests that you may have observed.
+
+ Note that this can be resource intensive for the CPU on busy DNS servers -
+ from 5% to 70% CPU load of one core, but memory consumption is very low. This
+ is still a lot less than enabling DNS debug logging.
+
+author: "Jos Clephas - jos-ir"
+
+parameters:
+ - name: QueryNameRegex
+ default: .
+ type: regex
+ - name: SourceIPRegex
+ default: .
+ type: regex
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ SELECT System.TimeStamp as TimeStamp,
+ System.ID as ID,
+ EventData.BufferSize as BufferSize,
+ EventData.Flags as Flags,
+ EventData.InterfaceIP as InterfaceIP,
+ EventData.Port as Port,
+ EventData.QNAME as QNAME,
+ EventData.QTYPE as QTYPE,
+ EventData.RD as RD,
+ EventData.Source as Source,
+ EventData.TCP as TCP,
+ EventData.XID as XID
+ FROM watch_etw(
+ description="EventLog-Microsoft-Windows-DNSServer-Analytical",
+ guid="{EB79061A-A566-4698-9119-3ED2807060E7}")
+ WHERE EventData AND
+ QNAME =~ QueryNameRegex AND
+ Source =~ SourceIPRegex
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.EdgeURLs</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.edgeurls/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.edgeurls/</guid><description>&lt;p>Collects all URLs accessed by the Edge browser using ETW.&lt;/p>
+&lt;p>It also serves as an example of an ETW artifact, in this case using the
+provider:&lt;/p>
+&lt;p>&lt;code>Microsoft-Windows-URLMon {245F975D-909D-49ED-B8F9-9A75691D6B6B}&lt;/code>&lt;/p>
+&lt;p>NOTE: This artifact can generate a lot of data - you probably want
+to filter the URLs a bit and/or target collection to a narrow label
+group.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.EdgeURLs
+description: |
+ Collects all URLs accessed by the Edge browser using ETW.
+
+ It also serves as an example of an ETW artifact, in this case using the
+ provider:
+
+ `Microsoft-Windows-URLMon {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
+
+ NOTE: This artifact can generate a lot of data - you probably want
+ to filter the URLs a bit and/or target collection to a narrow label
+ group.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: URLFilter
+ default: .
+ description: A regex that can be used to filter uninteresting URLs
+ type: regex
+
+sources:
+ - query: |
+ LET m &amp;lt;= memoize(key="Pid", period=30, query={
+ SELECT Pid, Exe, Username FROM pslist()
+ })
+
+ SELECT System.ID AS ID,
+ System.TimeStamp AS Timestamp,
+ get(item=m, field=System.ProcessID) AS ProcInfo,
+ get(member="EventData.URL") AS URL
+ FROM watch_etw(
+ description="Microsoft-Windows-URLMon",
+ guid="{245F975D-909D-49ED-B8F9-9A75691D6B6B}")
+ WHERE ID = 805 AND URL =~ URLFilter
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.ETWSessions</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.etwsessions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.etwsessions/</guid><description>&lt;p>Windows Event Tracing exposes a lot of low level system information
+and events. It is normally employed by security tools to gather
+telemetry, however may also be used maliciously.&lt;/p>
+&lt;p>This artifact monitors for all new ETW sessions and reports the
+tracing process as well as the provider that is being traced.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.ETWSessions
+description: |
+ Windows Event Tracing exposes a lot of low level system information
+ and events. It is normally employed by security tools to gather
+ telemetry, however may also be used maliciously.
+
+ This artifact monitors for all new ETW sessions and reports the
+ tracing process as well as the provider that is being traced.
+
+type: CLIENT_EVENT
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+ - query: |
+ LET PublisherGlob = pathspec(
+ Path='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers''',
+ path_type="registry")
+
+ LET GUIDLookup(GUID) = SELECT Data.value AS Provider
+ FROM stat(accessor="registry", filename=PublisherGlob + ("/" + GUID + "/@"))
+
+ SELECT System.TimeStamp AS Timestamp,
+ if(condition=System.ID = 14, then="Installed", else="Removed") AS Action, {
+ SELECT Name, CommandLine from pslist(pid=System.ProcessID)
+ } AS ProcessInfo ,
+ GUIDLookup(GUID=EventData.ProviderName)[0].Provider AS Provider,
+ EventData.SessionName AS SessionName,
+ System AS _System, EventData AS _EventData
+ FROM watch_etw(
+ description='Microsoft-Windows-Kernel-EventTracing',
+ guid="{B675EC37-BDB6-4648-BC92-F3FDC74D3CA2}", all=0x400)
+ WHERE System.ID IN (14, 15)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.FileCreation</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.filecreation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.filecreation/</guid><description>&lt;p>This artifact follows the Microsoft-Windows-Kernel-File provider.&lt;/p>
+&lt;p>NOTE: We can only attach to this provider when running as
+NT_USER/SYSTEM.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.KernelFile
+description: |
+ This artifact follows the Microsoft-Windows-Kernel-File provider.
+
+ NOTE: We can only attach to this provider when running as
+ NT_USER/SYSTEM.
+
+aliases:
+ - Windows.ETW.FileCreation
+
+type: CLIENT_EVENT
+
+references:
+ - https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-File.xml
+
+parameters:
+ - name: ProcessRegex
+ type: regex
+ description: View Processes with Executables matching this regex
+ default: .
+
+ - name: IgnoreProcessRegex
+ type: regex
+ description: Ignore Processes with Executables matching this regex
+
+ - name: Events
+ type: multichoice
+ description: Events to view
+ default: '["NameCreate", "NameDelete", "FileOpen", "Rename", "RenamePath", "CreateNewFile"]'
+ choices:
+ - NameCreate
+ - NameDelete
+ - FileOpen
+ - Rename
+ - RenamePath
+ - CreateNewFile
+
+sources:
+ - query: |
+ -- KERNEL_FILE_KEYWORD_FILENAME | KERNEL_FILE_KEYWORD_CREATE | KERNEL_FILE_KEYWORD_DELETE_PATH
+ LET Keyword &amp;lt;= 0x1490
+ LET EIDLookup &amp;lt;= dict(
+ `10`="NameCreate", `11`="NameDelete", `12`="FileOpen",
+ `19`="Rename", `27`="RenamePath",`30`="CreateNewFile")
+
+ LET ETW = SELECT *
+ FROM watch_etw(guid='{edd08927-9cc4-4e65-b970-c2560fb5c289}',
+ description="Microsoft-Windows-Kernel-File", any=Keyword)
+
+ SELECT System.ID AS EID,
+ System AS _System,
+ get(item=EIDLookup, field=str(str=System.ID)) AS EventType,
+ process_tracker_get(id=System.ProcessID).Data AS ProcInfo,
+ process_tracker_callchain(id=System.ProcessID).Data.Exe AS CallChain,
+ EventData
+ FROM delay(query=ETW, delay=3)
+ WHERE EventType IN Events
+ AND ProcInfo.Exe =~ ProcessRegex
+ AND if(condition=IgnoreProcessRegex,
+ then=NOT ProcInfo.Exe =~ IgnoreProcessRegex,
+ else=TRUE)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.KernelFile</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.kernelfile/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.kernelfile/</guid><description>&lt;p>This artifact follows the Microsoft-Windows-Kernel-File provider.&lt;/p>
+&lt;p>NOTE: We can only attach to this provider when running as
+NT_USER/SYSTEM.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.KernelFile
+description: |
+ This artifact follows the Microsoft-Windows-Kernel-File provider.
+
+ NOTE: We can only attach to this provider when running as
+ NT_USER/SYSTEM.
+
+aliases:
+ - Windows.ETW.FileCreation
+
+type: CLIENT_EVENT
+
+references:
+ - https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-File.xml
+
+parameters:
+ - name: ProcessRegex
+ type: regex
+ description: View Processes with Executables matching this regex
+ default: .
+
+ - name: IgnoreProcessRegex
+ type: regex
+ description: Ignore Processes with Executables matching this regex
+
+ - name: Events
+ type: multichoice
+ description: Events to view
+ default: '["NameCreate", "NameDelete", "FileOpen", "Rename", "RenamePath", "CreateNewFile"]'
+ choices:
+ - NameCreate
+ - NameDelete
+ - FileOpen
+ - Rename
+ - RenamePath
+ - CreateNewFile
+
+sources:
+ - query: |
+ -- KERNEL_FILE_KEYWORD_FILENAME | KERNEL_FILE_KEYWORD_CREATE | KERNEL_FILE_KEYWORD_DELETE_PATH
+ LET Keyword &amp;lt;= 0x1490
+ LET EIDLookup &amp;lt;= dict(
+ `10`="NameCreate", `11`="NameDelete", `12`="FileOpen",
+ `19`="Rename", `27`="RenamePath",`30`="CreateNewFile")
+
+ LET ETW = SELECT *
+ FROM watch_etw(guid='{edd08927-9cc4-4e65-b970-c2560fb5c289}',
+ description="Microsoft-Windows-Kernel-File", any=Keyword)
+
+ SELECT System.ID AS EID,
+ System AS _System,
+ get(item=EIDLookup, field=str(str=System.ID)) AS EventType,
+ process_tracker_get(id=System.ProcessID).Data AS ProcInfo,
+ process_tracker_callchain(id=System.ProcessID).Data.Exe AS CallChain,
+ EventData
+ FROM delay(query=ETW, delay=3)
+ WHERE EventType IN Events
+ AND ProcInfo.Exe =~ ProcessRegex
+ AND if(condition=IgnoreProcessRegex,
+ then=NOT ProcInfo.Exe =~ IgnoreProcessRegex,
+ else=TRUE)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.KernelNetwork</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.kernelnetwork/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.kernelnetwork/</guid><description>&lt;p>This artifact follows the Microsoft-Windows-Kernel-Network provider.&lt;/p>
+&lt;p>NOTE: We can only attach to this provider when running as
+NT_USER/SYSTEM.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.KernelNetwork
+description: |
+ This artifact follows the Microsoft-Windows-Kernel-Network provider.
+
+ NOTE: We can only attach to this provider when running as
+ NT_USER/SYSTEM.
+
+references:
+- "https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-Network.xml"
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: ProcessRegex
+ type: regex
+ description: View Processes with Executables matching this regex
+ default: .
+
+ - name: IgnoreProcessRegex
+ type: regex
+ description: Ignore Processes with Executables matching this regex
+
+ - name: Events
+ type: multichoice
+ description: Events to view
+ default: '["ConnectionAttempted", "ConnectionAccepted"]'
+ choices:
+ - DataSent
+ - DataReceived
+ - ConnectionAttempted
+ - ConnectionAccepted
+ - DataSentOverUDPProtocol
+ - DataReceivedOverUDPProtocol
+
+sources:
+ - query: |
+ LET EIDLookup &amp;lt;= dict(
+ `10`="DataSent", `11`="DataReceived", `12`="ConnectionAttempted", `15`="ConnectionAccepted",
+ `42`="DataSentOverUDPProtocol",`43`="DataReceivedOverUDPProtocol")
+
+ LET ETW = SELECT *
+ FROM watch_etw(guid='{7dd42a49-5329-4832-8dfd-43d979153a88}',
+ description="Microsoft-Windows-Kernel-Network")
+
+ SELECT System.ID AS EID,
+ System AS _System,
+ get(item=EIDLookup, field=str(str=System.ID)) AS EventType,
+ process_tracker_get(id=EventData.PID).Data AS ProcInfo,
+ process_tracker_callchain(id=EventData.PID).Data.Exe AS CallChain,
+ EventData
+ FROM delay(query=ETW, delay=3)
+ WHERE EventType IN Events
+ AND EventData.ImageName =~ ProcessRegex
+ AND if(condition=IgnoreProcessRegex,
+ then=NOT EventData.ImageName =~ IgnoreProcessRegex,
+ else=TRUE)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.KernelProcess</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.kernelprocess/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.kernelprocess/</guid><description>&lt;p>This artifact follows the Microsoft-Windows-Kernel-Process provider.&lt;/p>
+&lt;p>NOTE: We can only attach to this provider when running as
+NT_USER/SYSTEM.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.KernelProcess
+description: |
+ This artifact follows the Microsoft-Windows-Kernel-Process provider.
+
+ NOTE: We can only attach to this provider when running as
+ NT_USER/SYSTEM.
+
+references:
+- "https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-Process.xml"
+
+parameters:
+ - name: ProcessRegex
+ type: regex
+ description: View Processes with Executables matching this regex
+ default: .
+
+ - name: IgnoreProcessRegex
+ type: regex
+ description: Ignore Processes with Executables matching this regex
+
+ - name: Events
+ type: multichoice
+ description: Events to view
+ default: '["ProcessStart", "ImageLoad"]'
+ choices:
+ - ProcessStart
+ - ProcessStop
+ - ImageLoad
+ - ImageUnload
+
+type: CLIENT_EVENT
+
+sources:
+ - query: |
+ LET EIDLookup &amp;lt;= dict(
+ `1`="ProcessStart", `2`="ProcessStop",
+ `5`="ImageLoad", `6`="ImageUnload")
+
+ LET ETW = SELECT *
+ FROM watch_etw(guid='{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}',
+ description="Microsoft-Windows-Kernel-Process", any=0x50)
+
+ SELECT System.ID AS EID,
+ get(item=EIDLookup, field=str(str=System.ID)) AS EventType,
+ process_tracker_get(id=System.ProcessID).Data AS ParentProcInfo,
+ process_tracker_callchain(id=System.ProcessID).Data.Exe AS ParentCallChain,
+ EventData
+ FROM delay(query=ETW, delay=3)
+ WHERE EventType IN Events
+ AND EventData.ImageName =~ ProcessRegex
+ AND if(condition=IgnoreProcessRegex,
+ then=NOT EventData.ImageName =~ IgnoreProcessRegex,
+ else=TRUE)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.Registry</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.registry/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.registry/</guid><description>&lt;p>Windows Registry access is a great source of visibility into system
+activity.&lt;/p>
+&lt;p>There are many ways of gaining visibility into this, the most
+reliable being Sysmon. However it is also possible to gain some
+visibility using ETW. The Microsoft-Windows-Kernel-Registry provides
+ETW events for registry modifications.&lt;/p>
+&lt;p>This artifact parses these events and ties them back to the
+accessing process. We recommend running this artifact with the
+process tracker.&lt;/p>
+&lt;p>NOTE: Experience shows this ETW provider is not very reliable and seems to
+miss a lot of registry events. This artifact should therefore be considered
+experimental.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.Registry
+description: |
+ Windows Registry access is a great source of visibility into system
+ activity.
+
+ There are many ways of gaining visibility into this, the most
+ reliable being Sysmon. However it is also possible to gain some
+ visibility using ETW. The Microsoft-Windows-Kernel-Registry provides
+ ETW events for registry modifications.
+
+ This artifact parses these events and ties them back to the
+ accessing process. We recommend running this artifact with the
+ process tracker.
+
+ NOTE: Experience shows this ETW provider is not very reliable and seems to
+ miss a lot of registry events. This artifact should therefore be considered
+ experimental.
+
+type: CLIENT_EVENT
+
+precondition: SELECT * FROM info() WHERE OS = "windows"
+
+parameters:
+- name: KeyNameRegex
+ type: regex
+ default: .
+- name: ProcessRegex
+ type: regex
+ default: .
+
+sources:
+- query: |
+ LET Cache &amp;lt;= lru(size=1000)
+ LET EventLookup &amp;lt;= dict(
+ `1`="CreateKey",
+ `2`="OpenKey",
+ `3`="DeleteKey",
+ `4`="QueryKey",
+ `5`="SetValueKey",
+ `6`="DeleteValueKey",
+ `7`="QueryValue",
+ `8`="EnumerateKey",
+ `9`="EnumerateValueKey"
+ )
+
+ LET registry_access = SELECT System, EventData,
+ get(item=EventLookup, field=str(str=System.ID)) AS EventType,
+ get(item=Cache, field=EventData.KeyObject) || EventData.KeyName AS KeyName
+ FROM watch_etw(
+ description="Microsoft-Windows-Kernel-Registry",
+ guid="{70EB4F03-C1DE-4F73-A051-33D13D5413BD}", any=0x7720)
+ WHERE System.ProcessID != getpid() -- exclude ourselves
+ AND EventType -- we only care about these events
+ AND if(condition=System.ID in (1, 2, 4),
+ then=set(item=Cache, field=EventData.KeyObject,
+ value=EventData.RelativeName),
+ else=TRUE) -- set KeyName in the lru
+
+ LET hits = SELECT System.TimeStamp AS Timestamp,
+ process_tracker_get(id=System.ProcessID).Data AS Process,
+ EventType, KeyName, EventData
+ FROM registry_access
+ WHERE KeyName =~ KeyNameRegex
+
+ SELECT Timestamp, EventType,
+ System AS _System, EventData AS _EventData,
+ Process.Name AS ProcessName, Process.Username AS Owner,
+ Process.CommandLine AS CommandLine,
+ KeyName, EventData.ValueName AS ValueName
+ FROM hits
+ WHERE ProcessName =~ ProcessRegex
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.ETW.WMIProcessCreate</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.etw.wmiprocesscreate/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.etw.wmiprocesscreate/</guid><description>&lt;p>This artifact the endpoints for process creation through WMI
+events. This is a common attacker lateral movement technique.&lt;/p>
+&lt;p>The technique works by calling the Create() method on the
+win32_process WMI object.&lt;/p>
+&lt;p>You can test this with PowerShell:
+Invoke-WmiMethod -Path win32_process -Name create -ArgumentList notepad.exe&lt;/p>
+&lt;p>This artifact uses the EWT provider:
+Microsoft-Windows-WMI-Activity {1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.ETW.WMIProcessCreate
+description: |
+ This artifact the endpoints for process creation through WMI
+ events. This is a common attacker lateral movement technique.
+
+ The technique works by calling the Create() method on the
+ win32_process WMI object.
+
+ You can test this with PowerShell:
+ Invoke-WmiMethod -Path win32_process -Name create -ArgumentList notepad.exe
+
+ This artifact uses the EWT provider:
+ Microsoft-Windows-WMI-Activity {1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}
+
+type: CLIENT_EVENT
+
+sources:
+ - query: |
+ LET hits = SELECT
+ System.ID AS ID,
+ System.TimeStamp AS Timestamp,
+ get(member="EventData") AS EventData
+ FROM watch_etw(
+ description="Microsoft-Windows-WMI-Activity",
+ guid="{1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}")
+ WHERE ID = 23
+
+ SELECT ID, Timestamp, EventData.ClientMachine AS Hostname,
+ {
+ SELECT Pid, Name, Exe from pslist(pid=int(int=EventData.ClientProcessId))
+ } AS ClientProcessInfo,
+ {
+ SELECT Pid, Name, Exe from pslist(pid=int(int=EventData.CreatedProcessId))
+ } AS CreatedProcessInfo,
+ timestamp(winfiletime=int(int=EventData.ClientProcessCreationTime)) AS ClientProcessCreationTime,
+ timestamp(winfiletime=int(int=EventData.CreatedProcessCreationTime)) AS CreatedProcessCreationTime,
+ EventData.Commandline AS Commandline,
+ EventData.User AS User
+ FROM hits
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.EventLogModifications</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.eventlogmodifications/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.eventlogmodifications/</guid><description>&lt;p>It is possible to disable windows event logs on a per channel or per
+provider basis. Attackers may disable critical log sources to
+prevent detections.&lt;/p>
+&lt;p>This artifact monitors the state of the event log system from the
+registry and attempts to detect when event logs were disabled.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.EventLogModifications
+description: |
+ It is possible to disable windows event logs on a per channel or per
+ provider basis. Attackers may disable critical log sources to
+ prevent detections.
+
+ This artifact monitors the state of the event log system from the
+ registry and attempts to detect when event logs were disabled.
+
+type: CLIENT_EVENT
+
+precondition:
+ SELECT * FROM info() WHERE OS =~ "windows"
+
+parameters:
+ - name: Period
+ type: int
+ default: 60
+
+sources:
+ - query: |
+ LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
+
+ LET ProviderNames &amp;lt;= memoize(key="GUID", query={
+ SELECT OSPath.Components[-2] AS GUID,
+ Data.value AS Name
+ FROM glob(globs=Publishers, accessor="registry")
+ })
+
+ LET Key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*"
+
+ LET Query = SELECT Key.Mtime AS Mtime,
+ Key.OSPath[-1] AS ChannelName,
+ format(format="%s/%v", args=[Key.OSPath[-1], Enabled]) AS QueryKey ,
+ Key.OSPath AS _Key,
+ get(item=ProviderNames, field=OwningPublisher).Name AS Publisher, Enabled
+ FROM read_reg_key(globs=Key)
+
+ SELECT * FROM diff(query=Query, period=Period, key="QueryKey")
+ WHERE Diff =~ "added"
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.FailedLogBeforeSuccess</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.failedlogbeforesuccess/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.failedlogbeforesuccess/</guid><description>&lt;p>Sometimes attackers will brute force an local user&amp;rsquo;s account&amp;rsquo;s
+password. If the account password is strong, brute force attacks are
+not effective and might not represent a high value event in
+themselves.&lt;/p>
+&lt;p>However, if the brute force attempt succeeds, then it is a very high
+value event (since brute forcing a password is typically a
+suspicious activity).&lt;/p>
+&lt;p>On the endpoint this looks like a bunch of failed logon attempts in
+quick succession followed by a successful login.&lt;/p>
+&lt;p>NOTE: In order for this artifact to work we need Windows to be
+logging failed account login. This is not on by default and should
+be enabled via group policy.&lt;/p>
+&lt;p>&lt;a href="https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events" target="_blank" >https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events&lt;/a>
+&lt;/p>
+&lt;p>You can set the policy in Group Policy Management Console (GPMC):
+&lt;code>Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy&lt;/code>.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.FailedLogBeforeSuccess
+description: |
+ Sometimes attackers will brute force an local user's account's
+ password. If the account password is strong, brute force attacks are
+ not effective and might not represent a high value event in
+ themselves.
+
+ However, if the brute force attempt succeeds, then it is a very high
+ value event (since brute forcing a password is typically a
+ suspicious activity).
+
+ On the endpoint this looks like a bunch of failed logon attempts in
+ quick succession followed by a successful login.
+
+ NOTE: In order for this artifact to work we need Windows to be
+ logging failed account login. This is not on by default and should
+ be enabled via group policy.
+
+ https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events
+
+ You can set the policy in Group Policy Management Console (GPMC):
+ `Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy`.
+type: CLIENT_EVENT
+
+parameters:
+ - name: securityLogFile
+ default: &amp;gt;-
+ C:/Windows/System32/Winevt/Logs/Security.evtx
+
+ - name: failureCount
+ description: Alert if there are this many failures before the successful logon.
+ default: 3
+
+ - name: failedLogonTimeWindow
+ default: 3600
+
+sources:
+ - precondition:
+ SELECT OS FROM info() where OS = 'windows'
+ query: |
+ LET failed_logon = SELECT EventData as FailedEventData,
+ System as FailedSystem
+ FROM watch_evtx(filename=securityLogFile)
+ WHERE System.EventID.Value = 4625
+
+
+ LET last_5_events = SELECT FailedEventData, FailedSystem
+ FROM fifo(query=failed_logon,
+ max_rows=500,
+ max_age=atoi(string=failedLogonTimeWindow))
+
+ // Force the fifo to materialize.
+ LET foo &amp;lt;= SELECT * FROM last_5_events
+
+ LET success_logon = SELECT EventData as SuccessEventData,
+ System as SuccessSystem
+ FROM watch_evtx(filename=securityLogFile)
+ WHERE System.EventID.Value = 4624
+
+ SELECT * FROM foreach(
+ row=success_logon,
+ query={
+ SELECT SuccessSystem.TimeCreated.SystemTime AS LogonTime,
+ SuccessSystem, SuccessEventData,
+ enumerate(items=FailedEventData) as FailedEventData,
+ FailedSystem, count(items=SuccessSystem) as Count
+ FROM last_5_events
+ WHERE FailedEventData.SubjectUserName = SuccessEventData.SubjectUserName
+ GROUP BY LogonTime
+ }) WHERE Count &amp;gt; atoi(string=failureCount)
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.Kerberoasting</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.kerberoasting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.kerberoasting/</guid><description>&lt;p>&lt;strong>Description&lt;/strong>:
+This Artifact will monitor all successful Kerberos TGS Ticket events for
+Service Accounts (SPN attribute) implemented with weak encryption. These
+tickets are vulnerable to brute force attack and this event is an indicator
+of a Kerberoasting attack.&lt;/p>
+&lt;p>&lt;strong>ATT&amp;amp;CK&lt;/strong>: &lt;a href="https://attack.mitre.org/techniques/T1208/" target="_blank" >T1208 - Kerberoasting&lt;/a>
+
+Typical attacker methodology is to firstly request accounts in the domain
+with SPN attributes, then request an insecure TGS ticket for brute forcing.
+This attack is particularly effective as any domain credentials can be used
+to implement the attack and service accounts often have elevated privileges.
+Kerberoasting can be used for privilege escalation or persistence by adding a
+SPN attribute to an unexpected account.&lt;/p>
+&lt;p>&lt;strong>Reference&lt;/strong>: &lt;a href="https://www.trustedsec.com/2018/05/art_of_kerberoast/" target="_blank" >The Art of Detecting Kerberoast Attacks&lt;/a>
+
+&lt;strong>Log Source&lt;/strong>: Windows Security Event Log (Domain Controllers)
+&lt;strong>Event ID&lt;/strong>: 4769
+&lt;strong>Status&lt;/strong>: 0x0 (Audit Success)
+&lt;strong>Ticket Encryption&lt;/strong>: 0x17 (RC4)
+&lt;strong>Service Name&lt;/strong>: NOT krbtgt or NOT a system account (account name ends in $)
+&lt;strong>TargetUserName&lt;/strong>: NOT a system account (&lt;em>$@&lt;/em>)&lt;/p>
+&lt;p>Monitor and alert on unusual events from an unexpected IP.
+Note: There are potential false positives so whitelist normal source IPs and
+manage risk of insecure ticket generation.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.Kerberoasting
+description: |
+ **Description**:
+ This Artifact will monitor all successful Kerberos TGS Ticket events for
+ Service Accounts (SPN attribute) implemented with weak encryption. These
+ tickets are vulnerable to brute force attack and this event is an indicator
+ of a Kerberoasting attack.
+
+ **ATT&amp;amp;CK**: [T1208 - Kerberoasting](https://attack.mitre.org/techniques/T1208/)
+ Typical attacker methodology is to firstly request accounts in the domain
+ with SPN attributes, then request an insecure TGS ticket for brute forcing.
+ This attack is particularly effective as any domain credentials can be used
+ to implement the attack and service accounts often have elevated privileges.
+ Kerberoasting can be used for privilege escalation or persistence by adding a
+ SPN attribute to an unexpected account.
+
+ **Reference**: [The Art of Detecting Kerberoast Attacks](https://www.trustedsec.com/2018/05/art_of_kerberoast/)
+ **Log Source**: Windows Security Event Log (Domain Controllers)
+ **Event ID**: 4769
+ **Status**: 0x0 (Audit Success)
+ **Ticket Encryption**: 0x17 (RC4)
+ **Service Name**: NOT krbtgt or NOT a system account (account name ends in $)
+ **TargetUserName**: NOT a system account (*$@*)
+
+
+ Monitor and alert on unusual events from an unexpected IP.
+ Note: There are potential false positives so whitelist normal source IPs and
+ manage risk of insecure ticket generation.
+
+
+author: Matt Green - @mgreen27
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: eventLog
+ default: C:\Windows\system32\winevt\logs\Security.evtx
+
+sources:
+ - name: Kerberoasting
+ query: |
+ LET files = SELECT * FROM glob(globs=eventLog)
+
+ SELECT timestamp(epoch=System.TimeCreated.SystemTime) As EventTime,
+ System.EventID.Value as EventID,
+ System.Computer as Computer,
+ EventData.ServiceName as ServiceName,
+ EventData.ServiceSid as ServiceSid,
+ EventData.TargetUserName as TargetUserName,
+ "0x" + format(format="%x", args=EventData.Status) as Status,
+ EventData.TargetDomainName as TargetDomainName,
+ "0x" + format(format="%x", args=EventData.TicketEncryptionType) as TicketEncryptionType,
+ "0x" + format(format="%x", args=EventData.TicketOptions) as TicketOptions,
+ EventData.TransmittedServices as TransmittedServices,
+ EventData.IpAddress as IpAddress,
+ EventData.IpPort as IpPort
+ FROM foreach(
+ row=files,
+ async=TRUE,
+ query={
+ SELECT *
+ FROM watch_evtx(filename=OSPath)
+ WHERE System.EventID.Value = 4769
+ AND EventData.TicketEncryptionType = 23
+ AND EventData.Status = 0
+ AND NOT EventData.ServiceName =~ "krbtgt|\\$$"
+ AND NOT EventData.TargetUserName =~ "\\$@"
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.Mutants</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.mutants/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.mutants/</guid><description>&lt;p>This artifact detects creation of Mutants and triggers an alert.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.Mutants
+description: |
+ This artifact detects creation of Mutants and triggers an alert. 
+
+author: Jos Clephas - @DfirJos
+
+type: CLIENT_EVENT
+
+precondition:
+ SELECT * FROM info() WHERE OS =~ "windows"
+
+parameters:
+ - name: processRegex
+ description: A regex applied to process names.
+ default: .
+ type: regex
+ - name: Period
+ type: int
+ default: 120
+ - name: MutantNameRegex
+ default: EvilMutant
+ type: regex
+ - name: AlertName
+ default: "Suspicious mutex created"
+ - name: diff
+ default: added
+ - name: enrich
+ description: Enrich mutex with process information. Closely monitor the performance impact if you enable this.
+ type: bool
+ default: N
+
+sources:
+ - query: |
+ 
+ LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe FROM process_tracker_pslist() WHERE ProcName =~ processRegex AND int(int=ProcPid) &amp;gt; 0
+
+ LET query_mutant = SELECT * FROM winobj() WHERE Type = "Mutant" AND Name =~ MutantNameRegex 
+
+ LET query_enriched = SELECT * FROM foreach(
+ row=processes,
+ query={
+ SELECT ProcPid, ProcName, Exe, Type, Name, Handle
+ FROM handles(pid=int(int=ProcPid), types="Mutant")
+ })
+ WHERE Type = "Mutant" AND Name =~ MutantNameRegex
+ 
+ LET query_diff = if(condition=enrich, then=query_enriched, else=query_mutant) 
+ 
+ SELECT *, alert(name=AlertName, Name=Name, Type=Type, Exe=Exe) as AlertSent FROM diff(query=query_diff, period=Period, key="Name") WHERE Diff = diff
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.ProcessCreation</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.processcreation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.processcreation/</guid><description>&lt;p>Collect all process creation events.&lt;/p>
+&lt;p>This artifact relies on WMI to receive process start events. This
+method is not as good as kernel mechanism used by Sysmon. It is more
+reliable to use Sysmon instead via the
+Windows.Sysinternals.SysmonLogForward artifact instead.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.ProcessCreation
+description: |
+ Collect all process creation events.
+
+ This artifact relies on WMI to receive process start events. This
+ method is not as good as kernel mechanism used by Sysmon. It is more
+ reliable to use Sysmon instead via the
+ Windows.Sysinternals.SysmonLogForward artifact instead.
+
+type: CLIENT_EVENT
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+ query: |
+ -- Add a small delay to allow the process tracker to catch up
+ -- for enrichments.
+ LET Delayed = SELECT * FROM delay(query={
+ SELECT * FROM wmi_events(
+ query="SELECT * FROM Win32_ProcessStartTrace",
+ wait=5000000, // Do not time out.
+ namespace="ROOT/CIMV2")
+ }, delay=2)
+
+ // Convert the timestamp from WinFileTime to Epoch.
+ SELECT timestamp(winfiletime=atoi(string=Parse.TIME_CREATED)) as Timestamp,
+ Parse.ParentProcessID as PPID,
+ Parse.ProcessID as PID,
+ Parse.ProcessName as Name,
+ process_tracker_get(id=Parse.ProcessID).Data.CommandLine AS CommandLine,
+ process_tracker_get(id=Parse.ParentProcessID).Data.CommandLine AS ParentCommandLine,
+ join(array=process_tracker_callchain(id=Parse.ProcessID).Data.Name,
+ sep=" &amp;lt;- ") AS CallChain
+ FROM Delayed
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.ServiceCreation</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.servicecreation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.servicecreation/</guid><description>&lt;p>Monitor for creation of new services.&lt;/p>
+&lt;p>New services are typically created by installing new software or
+kernel drivers. Attackers will sometimes install a new service to
+either insert a malicious kernel driver or as a persistence
+mechanism.&lt;/p>
+&lt;p>This event monitor extracts the service creation events from the
+event log and records them on the server.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.ServiceCreation
+description: |
+ Monitor for creation of new services.
+
+ New services are typically created by installing new software or
+ kernel drivers. Attackers will sometimes install a new service to
+ either insert a malicious kernel driver or as a persistence
+ mechanism.
+
+ This event monitor extracts the service creation events from the
+ event log and records them on the server.
+type: CLIENT_EVENT
+
+parameters:
+ - name: systemLogFile
+ default: &amp;gt;-
+ C:/Windows/System32/Winevt/Logs/System.evtx
+
+sources:
+ - precondition:
+ SELECT OS from info() where OS = "windows"
+
+ query: |
+ SELECT System.TimeCreated.SystemTime as Timestamp,
+ System.EventID.Value as EventID,
+ EventData.ImagePath as ImagePath,
+ EventData.ServiceName as ServiceName,
+ EventData.ServiceType as Type,
+ System.Security.UserID as UserSID,
+ EventData as _EventData,
+ System as _System
+ FROM watch_evtx(filename=systemLogFile) WHERE EventID = 7045
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.Trackaccount</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackaccount/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackaccount/</guid><description>&lt;p>Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named &amp;lsquo;Server.Alerts.Trackaccount&amp;rsquo;&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.Trackaccount
+description: |
+ Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'
+
+author: Jos Clephas - @DfirJos
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: eventLog
+ default: C:\Windows\system32\winevt\logs\Security.evtx
+ - name: UserRegex
+ default: 'admin|user'
+ type: regex
+ - name: LogonTypeRegex
+ type: json_array
+ default: '[2,3,4,5,7,8,9,10,11]'
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+ query: |
+ LET files = SELECT * FROM glob(globs=eventLog)
+
+ SELECT timestamp(epoch=System.TimeCreated.SystemTime) As EventTime,
+ System.EventRecordID as EventRecordID,
+ System.EventID.Value as EventID,
+ System.Computer as SourceComputer,
+ EventData.TargetUserName as TargetUserName,
+ EventData.LogonType as LogonType,
+ EventData.IpAddress as IpAddress,
+ EventData.WorkstationName as TargetWorkstationName,
+ System,
+ EventData,
+ Message
+
+ FROM foreach(
+ row=files,
+ async=TRUE,
+ query={
+ SELECT *
+ FROM watch_evtx(filename=OSPath)
+ WHERE System.EventID.Value = 4624
+ AND EventData.TargetUserName =~ UserRegex
+ AND EventData.LogonType in LogonTypeRegex
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.TrackProcesses</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackprocesses/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackprocesses/</guid><description>&lt;p>Uses Sysmon and pslist to keep track of running processes by using the
+Velociraptor Process Tracker.&lt;/p>
+&lt;p>The Process Tracker keeps track of exited processes, and resolves
+process call chains from it in memory cache.&lt;/p>
+&lt;p>This event artifact enables the global process tracker and makes it
+possible to run many other artifacts that depend on the process
+tracker.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.TrackProcesses
+description: |
+ Uses Sysmon and pslist to keep track of running processes by using the
+ Velociraptor Process Tracker.
+
+ The Process Tracker keeps track of exited processes, and resolves
+ process call chains from it in memory cache.
+
+ This event artifact enables the global process tracker and makes it
+ possible to run many other artifacts that depend on the process
+ tracker.
+
+type: CLIENT_EVENT
+
+tools:
+ - name: SysmonBinary
+ url: https://live.sysinternals.com/tools/sysmon64.exe
+ serve_locally: true
+
+ - name: SysmonConfig
+ url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
+ serve_locally: true
+
+parameters:
+ - name: AlsoForwardUpdates
+ type: bool
+ description: |
+ If set we also send process tracker state updates to
+ the server.
+ - name: MaxSize
+ type: int64
+ description: Maximum size of the in memory process cache (default 10k)
+
+ - name: SysmonFileLocation
+ description: If set, we check this location first for sysmon installed.
+ default: C:/Windows/sysmon64.exe
+
+ - name: AddEnrichments
+ type: bool
+ description: Add process information enrichments (can use more resources)
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ // Ensure that sysmon is installed.
+ LET _ &amp;lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+ SysmonFileLocation=SysmonFileLocation)
+
+ LET UpdateQuery =
+ SELECT * FROM foreach(row={
+ SELECT *,
+ get(member='EventData') AS EventData
+ FROM watch_etw(
+ guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}',
+ description='Microsoft-Windows-Sysmon/Operational')
+ }, query={
+ SELECT * FROM switch(
+ start={
+ SELECT EventData.ProcessId AS id,
+ EventData.ParentProcessId AS parent_id,
+ "start" AS update_type,
+
+ -- We need to manually build the dict here so
+ -- we can maintain column ordering.
+ dict(
+ Pid=EventData.ProcessId,
+ Ppid=EventData.ParentProcessId,
+ Name=split(sep_string="\\", string=EventData.Image)[-1],
+ StartTime=EventData.UtcTime,
+ EndTime=NULL,
+ Username=EventData.User,
+ Exe=EventData.Image,
+ CommandLine= EventData.CommandLine,
+ CurrentDirectory= EventData.CurrentDirectory,
+ FileVersion=EventData.FileVersion,
+ Description= EventData.Description,
+ Company= EventData.Company,
+ Product= EventData.Product,
+ ParentImage= EventData.ParentImage,
+ ParentCommandLine= EventData.ParentCommandLine,
+ TerminalSessionId= EventData.TerminalSessionId,
+ IntegrityLevel= EventData.IntegrityLevel,
+ Hashes=parse_string_with_regex(regex=[
+ "SHA256=(?P&amp;lt;SHA256&amp;gt;[^,]+)",
+ "MD5=(?P&amp;lt;MD5&amp;gt;[^,]+)",
+ "IMPHASH=(?P&amp;lt;IMPHASH&amp;gt;[^,]+)"],
+ string=EventData.Hashes)
+ ) AS data,
+ EventData.UtcTime AS start_time,
+ NULL AS end_time
+ FROM scope()
+ WHERE System.ID = 1
+ },
+ end={
+ SELECT EventData.ProcessId AS id,
+ NULL AS parent_id,
+ "exit" AS update_type,
+ dict() AS data,
+ NULL AS start_time,
+ EventData.UtcTime AS end_time
+ FROM scope()
+ WHERE System.ID = 5
+ })
+ })
+
+ LET SyncQuery =
+ SELECT Pid AS id,
+ Ppid AS parent_id,
+ CreateTime AS start_time,
+ dict(
+ Name=Name,
+ Username=Username,
+ Exe=Exe,
+ CommandLine=CommandLine) AS data
+ FROM pslist()
+
+ LET Tracker &amp;lt;= process_tracker(
+ max_size=MaxSize,
+ enrichments=if(condition=AddEnrichments, then=[
+ '''x=&amp;gt;if(
+ condition=NOT x.Data.VersionInformation AND x.Data.Image,
+ then=dict(VersionInformation=parse_pe(file=x.Data.Image).VersionInformation))
+ ''',
+ '''x=&amp;gt;if(
+ condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = '-',
+ then=dict(OriginalFilename=x.Data.VersionInformation.OriginalFilename))
+ '''], else=[]),
+ sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
+
+ SELECT * FROM process_tracker_updates()
+ WHERE update_type = "stats" OR AlsoForwardUpdates
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.TrackProcessesBasic</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackprocessesbasic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackprocessesbasic/</guid><description>&lt;p>A basic process tracker which uses a simple polled pslist().&lt;/p>
+&lt;p>The Process Tracker keeps track of exited processes, and resolves process call
+chains from it in memory cache.&lt;/p>
+&lt;p>This event artifact enables the global process tracker and makes it possible
+to run many other artifacts that depend on the process tracker.&lt;/p>
+&lt;p>This tracker DOES NOT require Sysmon and is &lt;strong>incompatible&lt;/strong> with
+&lt;code>Windows.Events.TrackProcesses&lt;/code> and
+&lt;code>Windows.Events.TrackProcessesETW&lt;/code> (only one should be running).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.TrackProcessesBasic
+description: |
+ A basic process tracker which uses a simple polled pslist().
+
+ The Process Tracker keeps track of exited processes, and resolves process call
+ chains from it in memory cache.
+
+ This event artifact enables the global process tracker and makes it possible
+ to run many other artifacts that depend on the process tracker.
+
+ This tracker DOES NOT require Sysmon and is **incompatible** with
+ `Windows.Events.TrackProcesses` and
+ `Windows.Events.TrackProcessesETW` (only one should be running).
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: MaxSize
+ type: int64
+ description: Maximum size of the in memory process cache (default 10k)
+ - name: PollPeriod
+ type: int64
+ description: How often to run pslist to track processes (in Seconds)
+ default: 60
+
+sources:
+ - query: |
+ LET SyncQuery =
+ SELECT Pid AS id,
+ Ppid AS parent_id,
+ CreateTime AS start_time,
+ dict(
+ Name=Name,
+ Username=Username,
+ Exe=Exe,
+ CommandLine=CommandLine) AS data
+ FROM pslist()
+
+ LET Tracker &amp;lt;= process_tracker(
+ sync_query=SyncQuery, sync_period=1000 * PollPeriod)
+
+ SELECT * FROM process_tracker_updates()
+ WHERE update_type = "stats"
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Events.TrackProcessesETW</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackprocessesetw/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.events.trackprocessesetw/</guid><description>&lt;p>This artifact uses ETW to track process execution using the
+Velociraptor Process Tracker.&lt;/p>
+&lt;p>The Process Tracker keeps track of exited processes, and resolves
+process call chains from it in memory cache.&lt;/p>
+&lt;p>This event artifact enables the global process tracker and makes it
+possible to run many other artifacts that depend on the process
+tracker.&lt;/p>
+&lt;p>This tracker DOES NOT require Sysmon and is &lt;strong>incompatible&lt;/strong> with
+&lt;code>Windows.Events.TrackProcesses&lt;/code> and
+&lt;code>Windows.Events.TrackProcessesBasic&lt;/code> (only one should be running).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Events.TrackProcessesETW
+description: |
+ This artifact uses ETW to track process execution using the
+ Velociraptor Process Tracker.
+
+ The Process Tracker keeps track of exited processes, and resolves
+ process call chains from it in memory cache.
+
+ This event artifact enables the global process tracker and makes it
+ possible to run many other artifacts that depend on the process
+ tracker.
+
+ This tracker DOES NOT require Sysmon and is **incompatible** with
+ `Windows.Events.TrackProcesses` and
+ `Windows.Events.TrackProcessesBasic` (only one should be running).
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: MaxSize
+ type: int64
+ description: Maximum size of the in memory process cache (default 10k)
+ - name: PollPeriod
+ type: int64
+ description: How often to run pslist to track processes (in Seconds)
+ default: 60
+ - name: AlsoForwardUpdates
+ type: bool
+ description: |
+ If set we also send process tracker state updates to
+ the server.
+
+export: |
+ LET EventSource = SELECT *
+ FROM watch_etw(kernel_tracer_type=["process", "image_load"],
+ guid="kernel")
+
+ LET LRU &amp;lt;= lru(size=1000)
+
+ -- only used to see what is goinng on.
+ LET BuildDebugEvent(System, EventData) = dict(
+ id=str(str=System.ProcessID),
+ parent_id="0",
+ update_type="debug",
+ start_time=NULL,
+ end_time=NULL,
+ System=System,
+ EventData=EventData,
+ data=dict(foo=NULL)
+ )
+
+ LET BuildTerminateEvent(System, EventData) = dict(
+ id=str(str=EventData.ProcessId),
+ parent_id=str(str=EventData.ParentId),
+ update_type="exit",
+ start_time=NULL,
+ end_time=System.TimeStamp,
+ System=System,
+ EventData=EventData,
+ data=get(item=LRU, field=str(str=EventData.ProcessId)).data
+ )
+
+ LET BuildStartEvent(System, EventData) = dict(
+ id=str(str=EventData.ProcessId),
+ parent_id=str(str=EventData.ParentId),
+ update_type="start",
+ start_time=System.TimeStamp,
+ end_time=NULL,
+ System=System,
+ EventData=EventData,
+ data=dict(
+ ProcessId=EventData.ProcessId,
+ Created=System.TimeStamp,
+ ParentId=EventData.ParentId,
+ Username=EventData.UserSID,
+ Name=EventData.ImageFileName,
+ CommandLine=EventData.CommandLine,
+ Exe=EventData.CommandLine
+ ))
+
+ -- Insert the event into the local LRU cache and return it.
+ LET Cache(Pid, Event) = set(item=LRU, field=str(str=Pid), value=Event) &amp;amp;&amp;amp; Event
+
+ -- Enrich the event with the new key value and return it.
+ LET Enrich(Pid, Key, Value) = set(item=get(item=LRU,
+ field=str(str=Pid)).data, field=Key, value=Value) &amp;amp;&amp;amp;
+ get(item=LRU, field=str(str=Pid))
+
+ -- Analyze the event and emit the relevant row if needed.
+ LET EmitEvent(System, EventData) = if(
+
+ -- Enrich process data with full executable path from
+ -- LoadImage. This event usually comes after the CreateProcess
+ -- so we have to re-emit the same event with the updated data.
+ condition=System.KernelEventType = "LoadImage" &amp;amp;&amp;amp; EventData.FileName =~ ".exe$",
+ then=Enrich(Pid=EventData.ProcessId, Key="Exe", Value=EventData.FileName),
+ else=if(
+
+ -- Cache the process record so we can re-emit it with extra details later.
+ condition=System.KernelEventType = "CreateProcess",
+ then=Cache(Pid=EventData.ProcessId, Event=
+ BuildStartEvent(System=System, EventData=EventData)),
+ else=if(
+ condition=System.KernelEventType = "TerminateProcess",
+ then=BuildTerminateEvent(System=System, EventData=EventData))))
+
+ LET UpdateQuery = SELECT * FROM foreach(row=EventSource,
+ query={
+ SELECT id, parent_id, update_type, start_time, end_time, data
+ FROM foreach(row=EmitEvent(System=System, EventData=EventData))
+ })
+
+ LET SyncQuery = SELECT Pid AS id,
+ Ppid AS parent_id,
+ CreateTime AS start_time,
+ dict(
+ Name=Name,
+ Username=Username,
+ Exe=Exe,
+ CommandLine=CommandLine) AS data
+ FROM pslist()
+
+precondition: |
+ SELECT OS From info() where OS = 'windows'
+
+sources:
+- query: |
+ LET Tracker &amp;lt;= process_tracker(
+ max_size=MaxSize, sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
+
+ SELECT * FROM process_tracker_updates()
+ WHERE update_type = "stats" OR AlsoForwardUpdates
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Forensics.LocalHashes.Usn</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.forensics.localhashes.usn/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.forensics.localhashes.usn/</guid><description>&lt;p>This artifact maintains a local (client side) database of file
+hashes. It is then possible to query this database by using the
+&lt;code>Generic.Forensic.LocalHashes.Query&lt;/code> artifact&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Forensics.LocalHashes.Usn
+description: |
+ This artifact maintains a local (client side) database of file
+ hashes. It is then possible to query this database by using the
+ `Generic.Forensic.LocalHashes.Query` artifact
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: PathRegex
+ description: A regex to match the entire path (you can watch a directory or a file type).
+ default: .
+ type: regex
+
+ - name: Device
+ description: The NTFS drive to watch
+ default: C:\\
+
+ - name: HashDb
+ description: Name of the local hash database
+ default: hashdb.sqlite
+
+ - name: SuppressOutput
+ description: If this is set, the artifact does not return any rows to the server but will still update the local database.
+ type: bool
+
+ - name: UsnCheckPeriod
+ type: int
+ description: Dedup all file operations that occur within this period
+ default: "10"
+
+precondition: SELECT OS from info() where OS = "windows"
+
+sources:
+ - query: |
+ -- Dont be too aggressive on the USN watching to conserve CPU usage
+ LET NTFS_CACHE_TIME = 30
+ LET USN_FREQUENCY = 60
+
+ LET hash_db &amp;lt;= SELECT OSPath
+ FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
+
+ LET path &amp;lt;= hash_db[0].OSPath
+
+ LET _ &amp;lt;= log(message="Will use local hash database " + path)
+
+ LET file_modifications = SELECT Device + OSPath AS OSPath
+ FROM watch_usn(device=Device)
+ WHERE OSPath =~ PathRegex
+
+ -- The USN journal may contain multiple entries for the same
+ -- file modification (e.g. TRUNCATE followed by APPEND and
+ -- CLOSE). We therefore dedup all entries that happen within the
+ -- period as a single modification.
+ LET deduped = SELECT * FROM foreach(row={
+ SELECT * FROM clock(period=UsnCheckPeriod, start=0)
+ },
+ query={
+ -- Each time the fifo is accessed we pull all the rows and
+ -- dedup the path, then clear the cache.
+ SELECT * FROM fifo(
+ query=file_modifications,
+ max_rows=5000,
+ max_age=6000, flush=TRUE)
+ GROUP BY OSPath
+ })
+
+ -- Stat each file that was changed to get its size and hash
+ LET files = SELECT * FROM foreach(row=deduped,
+ query={
+ SELECT OSPath, Size, hash(path=OSPath).MD5 AS Hash, now() AS Time
+ FROM stat(filename=OSPath)
+ WHERE Mode.IsRegular
+ })
+
+ -- For each file hashed, insert to the local database
+ LET insertion = SELECT OSPath, Hash, Size, Time, {
+ SELECT * FROM sqlite(file=path,
+ query="INSERT into hashes (path, md5, timestamp, size) values (?,?,?,?)",
+ args=[OSPath.String, Hash, Time, Size])
+ } AS Insert
+ FROM files
+ WHERE Insert OR TRUE
+
+ // If output is suppressed do not emit a row, but still update the local database.
+ SELECT OSPath, Hash, Size, Time
+ FROM insertion
+ WHERE NOT SuppressOutput
+
+column_types:
+ - name: Time
+ type: timestamp
+
+ - name: Hash
+ type: hash
+
+ - name: ClientId
+ type: client_id
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Remediation.QuarantineMonitor</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.remediation.quarantinemonitor/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.remediation.quarantinemonitor/</guid><description>&lt;p>An event query that will ensure the client is quarantined.&lt;/p>
+&lt;p>We re-calculate the quarantine every 10 minutes by default to
+account for changes in DNS/connectivity details. When the query is
+terminated, we undo the quarantine.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Remediation.QuarantineMonitor
+description: |
+ An event query that will ensure the client is quarantined.
+
+ We re-calculate the quarantine every 10 minutes by default to
+ account for changes in DNS/connectivity details. When the query is
+ terminated, we undo the quarantine.
+
+type: CLIENT_EVENT
+
+required_permissions:
+ - EXECVE
+
+parameters:
+ - name: PolicyName
+ default: "VelociraptorQuarantine"
+ - name: RuleLookupTable
+ type: csv
+ default: |
+ Action,SrcAddr,SrcMask,SrcPort,DstAddr,DstMask,DstPort,Protocol,Mirrored,Description
+ Permit,me,,0,any,,53,udp,yes,DNS
+ Permit,me,,0,any,,53,tcp,yes,DNS TCP
+ Permit,me,,68,any,,67,udp,yes,DHCP
+ Block,any,,,any,,,,yes,All other traffic
+ - name: MessageBox
+ description: |
+ Optional message box notification to send to logged in users. 256
+ character limit.
+ - name: ReloadPeriod
+ description: Reload the ipsec policy every this many seconds on the endpoint.
+ default: "600"
+ type: int
+
+precondition:
+ SELECT OS FROM info() WHERE OS = "windows"
+ AND version(function="atexit") &amp;gt;= 0
+
+sources:
+ - query: |
+ -- When the query is done we unset the policy.
+ LET _ &amp;lt;= atexit(query={
+ SELECT * FROM Artifact.Windows.Remediation.Quarantine(
+ PolicyName=PolicyName, RemovePolicy=TRUE)
+ })
+
+ SELECT * FROM foreach(
+ row={
+ SELECT * FROM clock(period=ReloadPeriod, start=now())
+ WHERE log(message="Setting quarantine policy")
+ },
+ query={
+ SELECT * FROM Artifact.Windows.Remediation.Quarantine(
+ PolicyName=PolicyName, RuleLookupTable=RuleLookupTable,
+ MessageBox=MessageBox)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Sysinternals.SysmonLogForward</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.sysinternals.sysmonlogforward/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.sysinternals.sysmonlogforward/</guid><description>&lt;p>A client-side event forwarder to forward Sysmon events to the server.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Sysinternals.SysmonLogForward
+description: |
+ A client-side event forwarder to forward Sysmon events to the server.
+
+type: CLIENT_EVENT
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+tools:
+ - name: SysmonBinary
+ url: https://live.sysinternals.com/tools/sysmon64.exe
+ serve_locally: true
+
+ - name: SysmonConfig
+ url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
+ serve_locally: true
+
+parameters:
+ - name: SysmonFileLocation
+ description: If set, we check this location first for sysmon installed.
+ default: C:/Windows/sysmon64.exe
+
+sources:
+- query: |
+ // First ensure that sysmon is actually installed.
+ LET _ &amp;lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+ SysmonFileLocation=SysmonFileLocation)
+
+ // Just parse and forward events. Use ETW rather than watch_evtx()
+ // because it is a little bit faster.
+ SELECT System.ID AS ID,
+ System.TimeStamp AS Timestamp,
+ get(member='EventData') AS EventData
+ FROM watch_etw(
+ description='Microsoft-Windows-Sysmon/Operational',
+ guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
+
+&lt;/code>&lt;/pre></description></item></channel></rss>
