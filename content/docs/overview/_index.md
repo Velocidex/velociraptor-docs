@@ -203,7 +203,7 @@ the following:
 3. Think about why you want to collect a certain artifact, not what
    the artifact is and how to parse it.
 
-## Velociraptor for a mature enterprise grade DFIR capability
+## Velociraptor is a mature enterprise grade DFIR framework
 
 The DFIR world moves quickly! There are many threats, vulnerabilities,
 forensic artifacts and detection techniques discovered and reported on
@@ -219,19 +219,18 @@ successful enterprise deployment.
 
 Velociraptor's goal is to provide the enterprise level platform which
 enables leveraging novel techniques. Velociraptor's mature enterprise
-features are suitable for high security installations.
-
-At the same time, Velociraptor's VQL language provides the building
-blocks to develop powerful detection, hunting and analysis techniques
-easily - all built in a solid foundation. It is usually trivial to
-implement novel one shot detection tools in VQL leveraging the safety
-and security that comes with Velociraptor.
+features are suitable for high security installations. At the same
+time, Velociraptor's VQL language provides the building blocks to
+develop powerful detection, hunting and analysis techniques easily -
+all built in a solid foundation. It is usually trivial to implement
+novel one shot detection tools in VQL leveraging the safety and
+security that comes with Velociraptor.
 
 For example, imagine new threat is discovered which requires a scan of
-all assets for a certain signature. A researcher publishes a python
-script to perform this scan which works on their systems.
+all assets. A researcher publishes a python script to perform this
+scan which works on their systems.
 
-However, deploying this adhoc python script widely, perhaps using
+However, deploying this ad hoc python script widely, perhaps using
 standard system management software, we find excessive CPU use, false
 positives, and potential security vulnerabilities introduced by the
 script itself or additional dependencies. Python or other dependencies
@@ -239,13 +238,15 @@ may not be installed on all assets causing many systems to fail to run
 this tool. The output from the tool may also not be machine readable
 leading to time consuming manual analysis.
 
-Reimplementing the same functionaly in VQL allows the same scan to
+Re-implementing the same functionality in VQL allows the same scan to
 proceed safely with CPU limits, resource controls, tracking which
-endpoints are clean, proper auditing and a secure deployment.
+endpoints are clean, proper auditing and a secure
+deployment. Additionally we have machine readable output which can be
+easily fed to other systems like SIEM.
 
-If you do no have time to reimplement in VQL - no problem you can
-deploy the ah-hoc tool with Velociraptor for a centralized management
-and collection capability.
+If you do no have the time to reimplement in VQL - no problem! You can
+also deploy the same ah hoc tool with Velociraptor to leverage some of
+the above benefits quickly.
 
 ## Who are these documentation pages for?
 
@@ -254,7 +255,6 @@ of audience:
 
 1. Enterprise deployment documentation discusses the many features
    that make Velociraptor a powerful enterprise platform:
-
    - Security, Auditing and Deployment documentation
    - How to integrate Velociraptor with other platforms. Build
      pipelines and automation.
@@ -267,21 +267,19 @@ of audience:
    detection rules and generally enhance the capability of
    Velociraptor.
 
-3. Those practioners on the frontline of incident response are more
-   interested in what kind of artifacts they should be hunting for
-   right now, in which situation and what information can these
-   provide to the ongoing response process.
+3. Those practitioners on the front-line of incident response are more
+   interested in what kind of artifacts they should be hunting for, in
+   which situation and what information can these provide to the
+   ongoing response process.
 
    These are covered by the [playbooks]({{% ref "/training/playbooks/"
    %}}), and artifact references.
 
-These aspects are complimentary - withought a secure and well
+These aspects are complimentary - without a secure and well
 maintained enterprise deployment is it difficult to widely deploy
-Velociraptor in an enterprise.
-
-Similarly withought solid technical capabilities to hunt and detect
-new threats there is no point in Velociraptor at all! This is our core
-mission.
+Velociraptor in an enterprise. Similarly without solid technical
+capabilities to hunt and detect new threats there is no point in
+Velociraptor at all! This is our core mission.
 
 
 ## How to get started with Velociraptor
