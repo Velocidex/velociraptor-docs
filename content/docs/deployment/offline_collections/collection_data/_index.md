@@ -2,7 +2,7 @@
 title: "Working With Offline Collection Data"
 menutitle: "Collection Data"
 date: 2025-11-03
-last_reviewed: 2025-11-13
+last_reviewed: 2025-11-15
 draft: false
 weight: 30
 ---
@@ -603,9 +603,7 @@ specified).
 ###### Example: Merge-mounting two manually extracted inner zips
 
   ```sh
-  velociraptor fuse container \
-  --map_device_names_to_letters --strip_colons_on_drive_letters --unix_path_escaping --emulate_timestamps \
-  /tmp/exports/fuse_mount \
+  velociraptor fuse container /tmp/exports/fuse_mount \
   /tmp/exports/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z/data.zip \
   /tmp/exports/prefetch-WIN-KMODJ1W0CYG-2025-11-12T10_25_06Z/data.zip -v
   ```
