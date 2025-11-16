@@ -7,14 +7,12 @@ draft: false
 weight: 65
 summary: Mount collection containers on folders.
 aliases:
-  - "/knowledge_base/tips/fuse_mount/#using-fuse-to-mount-the-collection"
+  - "/knowledge_base/tips/fuse_mount/"
 ---
 
 Mount collection containers on folders using FUSE.
 
 This command is only available in the Linux binary.
-
----
 
 ### [ fuse container ]
 
@@ -37,47 +35,61 @@ Args:
   <files>      list of zip files to mount
 ```
 
+---
+
 On Linux, a mechanism called
 [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace) (Filesystem in
 Userspace) allows an application to mount a filesystem as a directory on the
-global filesystem.
+global filesystem. As the name suggests, this does not require root privileges,
+unlike conventional mounts.
 
-While extracting collection containers is possible, it results in rewriting the
-same files again on the system, therefore using more disk space and time.
-Instead we can use Velociraptor to mount the offline collection onto a local
-directory - transparently decompressing data and applying the file metadata as
-various timestamps.
+While extracting collection containers is possible, it results in duplicating
+the same data on the analysis system, therefore consuming more disk space and
+taking up valuable investigative time for the extraction. Instead we can use
+Velociraptor to mount the offline collection onto a local directory -
+transparently decompressing the data and restoring timestamps from file metadata
+that's stored separately in the collection container. FUSE provides
+non-sequential access to the data which is important, especially when dealing
+with very large collections.
 
 Mounting containers via FUSE also has the advantage of being able to represent
 certain filenames and paths more accurately, for example
 `C/$Extend/$UsnJrnl:$J`, which if extracted would not be allowed on certain
 filesystems and would be represented with their URL-encoded equivalent.
 
-The following options are supported to change the default (sensible) behavior:
+##### Mount options
 
-- `--prefix` exports all files below this directory in the zip file, for example
-  `--prefix="/uploads/auto/C%3A/"` will move the mount point to that directory
-  within the zip.
+By default the command applies several transformations to the paths in the
+container to make them easier to post-process with external tools, which is the
+most common use case. However the following options are available to modify the
+default behavior:
 
-- `--emulate_timestamps` (enabled by default) will recreate all timestamps from the metadata file.
+- `prefix`: exports all files below this directory in the zip file, for example
+  `"/uploads/auto/C%3A/"` will move the mount point to that directory within the
+  zip.
 
-- `--unix_path_escaping` (disabled by default) will allow some characters (e.g. `:`) which are not allowed on
-  windows but are allowed on Unix. If set, all path
-  characters will be allowed except `/` which will be escaped (This is correct on Linux). If false, escape Windows
-	// illegal characters in paths.
+- `emulate_timestamps` (enabled by default): will recreate all timestamps from
+  the metadata files stored in the container.
 
-- `--map_device_names_to_letters` (enabled by default) will replace NTFS-style devices like `\\.\C:`
-  with drive letters `C:`.
+- `unix_path_escaping` (disabled by default): will allow some characters (e.g.
+  `:`) which are not allowed on windows but are allowed on Unix. If set, all
+  path characters will be allowed except `/` which will be escaped (This is
+	correct on Linux). If false, escape Windows // illegal characters in paths.
 
-- `--strip_colons_on_drive_letters` (enabled by default) will remove `:` characters completely so
-  `C:` will become a directory in the output named `C`.
+- `map_device_names_to_letters` (enabled by default): will replace NTFS-style
+  devices like `\\.\C:` with drive letters `C:`.
 
-- `--merge_accessors`. If set we merge all
+- `strip_colons_on_drive_letters` (enabled by default): will remove `:`
+  characters completely so `C:` will become a directory in the output named `C`.
+
+- `merge_accessors` (not enabled by default): if set we merge all
   [accessors]({{< ref "/vql_reference/accessors/" >}})
-  into the same directory. By default Velociraptor stores file uploads under the name of
-  the accessor, which allows you to keep track of which accessor was used to
+  into the same directory (which will be named `files`). By default Velociraptor
+  stores file uploads under the name of the accessor that was used to collect
+  them. This allows you to keep track of which accessor was originally used to
   read the file. However for processing these files with external tools it is
-  often necessary to merge them into a single root directory named `files`.
+  sometimes convenient or even necessary to merge them into a single root
+  directory.
 
 
 ##### Notes

@@ -6,6 +6,8 @@ summary: |
    Velociraptor contains powerful NTFS analysis capabilities.
 draft: false
 weight: 50
+aliases:
+  - "/docs/forensic/ntfs/"
 ---
 
 NTFS is the standard Windows filesystem.  Velociraptor contains
