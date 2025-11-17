@@ -1,7 +1,9 @@
 ---
-title: "Detecting Fileless Malware Live in RAM"
+title: "Memory Analysis with Velociraptor - Part 2""
 description: |
-    The blog describes how to detect fileless malware with Velociraptor without dumping the RAM.
+    This blog is the second part of the memory analysis series.
+    We will dive into how to detect fileless malware with Velociraptor 
+    live in RAM (i.e. without dumping the RAM).
 
 tags:
  - DFIR
@@ -11,6 +13,12 @@ author: "Dr. Michael Denzel, Lautaro Lecumberry"
 date: 2025-11-16
 noindex: false
 ---
+
+In [Memory Analysis with Velociraptor - Part 1]({{< ref
+"/blog/2025/2025-11-15-memory-analysis-pt1/" >}}) we looked at how to access
+the RAM with velociraptor. In this post, we look at how to find fileless
+malware.
+
 
 # 0. Abstract
 
@@ -27,8 +35,7 @@ Our custom Velociraptor Query Language (VQL) artifact
 "/exchange/artifacts/pages/windows.memory.mem2disk/" >}}) compares the code in
 the .text segment of every process to the code of the executable on
 disk. Leveraging Velociraptor, we can execute this artifact on >10.000 systems
-simultaneously. With (built-in) [WinPmem](https://github.com/Velocidex/WinPmem]
-we analyze the RAM live without actually dumping it.
+simultaneously and we can analyze the RAM live without actually dumping it.
 
 
 # 1. Introduction
@@ -51,14 +58,15 @@ computers.
 
 One of the main existing tools to analyze the RAM is
 [volatility](https://github.com/volatilityfoundation/volatility3). It requires
-creating an offline RAM dump first with other tools which takes considerable
+creating an offline RAM dump first with other tools like
+[WinPmem](https://github.com/Velocidex/WinPmem] which takes considerable
 time. Afterwards, this dump can be analyzed with volatility.
 
 Most commands of volatility require in-depth knowledge of the RAM and the
-operating system. An exception is `malfind`, which searches for memory
-pages that are writable and executable. The hypothesis is that memory pages
-are either writable or executable. If executable pages are writable again,
-it means an injection took place and the page is flagged.
+operating system. An exception is `malfind`, which searches for memory pages
+that are writable and executable. The hypothesis is that memory pages are
+either writable or executable. If executable pages are writable again, it means
+an injection took place and the page is flagged.
 
 ## 2.2. Hollowshunter
 
@@ -67,6 +75,11 @@ one machine for various malware injection techniques. It uses
 [PE-sieve](https://github.com/hasherezade/pe-sieve), a tool to scan a single
 process.
 
+## 2.3. MemProcFS
+
+[MemProcFS](https://github.com/ufrisk/MemProcFS) provides a filesystem-like
+view of the RAM. This way, files can easily be accessed. However, detection of
+malware is mostly left to the analyst.
 
 # 3. Methodology
 
@@ -122,102 +135,39 @@ would start a beacon or backdoor.
 
 # 4. Technique
 
-## 4.1. Velociraptor & WinPmem
+## 4.1. Velociraptor
 
-We use Velociraptor in combination with WinPmem, a pre-installed plugin of
-Velociraptor, to access the live RAM across multiple computers. Velociraptor
-scales up to thousands of computers, therefore, we can detect C2 frameworks in
-entire networks without previously knowing which machines are infected.
+[Memory Analysis with Velociraptor - Part 1]({{< ref
+"/blog/2025/2025-11-15-memory-analysis-pt1/" >}}) already described in depth
+how to access the RAM with Velociraptor. This works live with the accessors of
+Velociraptor, so we do not need to dump the entire RAM. It scales up to
+thousands of computers, therefore, we can detect C2 frameworks in entire
+networks without previously knowing which machines are infected.
 
-Our detection technique, `Windows.Memory.Mem2Disk`, compares the .text
-segment of running processes to the executable on disk. Any deviation
-indicates suspicious behaviour, i.e. mostly RAM injections.
-
-The following VQL code segment shows how to get the .text segment metadata
-of a process with process id `Pid`. We first filter the executable from the
-Virtual Address Descriptor (VAD) via the Velociraptor artifact
-`Windows.System.VAD` and then parse the metadata of the .text segment from
-the Portable Executable (PE) header.
-
-``` VQL
-    -- get all memory pages for a certain pid
-    LET InfoFromVad(Pid) = SELECT Address,
-                                  Size,
-                                  DriveReplace(Path=MappingName) AS Path
-      FROM vad(pid=Pid)
-      WHERE MappingName
-      AND Protection =~ "xr-"
-      AND MappingName =~ ModuleRegEx
-
-    LET GetTextSegment(Path) = filter(condition="x=>x.Name = '.text'",
-                                      list=parse_pe(file=Path).Sections)[0]
-
-    -- parse the executable (PE) from memory (specifically, the text segment)
-    LET GetMetadata(Pid) = SELECT
-         Path,
-         str(str=Pid) AS PidFilename,
-         Address,
-         GetTextSegment(Path=Path) AS TextSegmentData
-      FROM InfoFromVad(Pid=Pid)
-      WHERE Address != 0
-      AND TextSegmentData.FileOffset
-```
-
-With the .text segment metadata, we can parse the executable from memory using
-the Velociraptor accessor `process`. This could be reused for other RAM-based
-detections.
-
-``` VQL
-    -- read the executable from memory and hard disk
-    LET GetContent(Pid, Name) = SELECT
-        *,
-        Name,
-        Path,
-        Address AS MemAddress,
-        TextSegmentData.RVA AS BaseRVA,
-        -- ...
-        read_file(accessor="process",
-                  offset=Address,
-                  filename=PidFilename,
-                  length=TextSegmentData.Size) AS MemoryData,
-        -- ...
-      FROM GetMetadata(Pid=Pid)
-      WHERE MemoryData
-```
-
-To complete our query, we also get the same executable from disk using the
-Velociraptor accessor `process`:
-
-```
-    LET GetContent =
-        -- ...
-        TextSegmentData.FileOffset AS DiskAddress,
-        TextSegmentData.Size AS SegmentSize,
-        read_file(accessor="file",
-                  offset=TextSegmentData.FileOffset,
-                  filename=Path,
-                  length=TextSegmentData.Size) AS DiskData
-      FROM GetMetadata(Pid=Pid)
-```
-
-We also added an option to upload the suspicious process as well as the
-executable on disk (including their hashes) to the Velociraptor server.
+Our detection technique, `Windows.Memory.Mem2Disk`, compares the .text segment
+of running processes to the executable on disk. Any deviation indicates
+suspicious behaviour, i.e. mostly RAM injections.
 
 ## 4.2. BaseOfData and ASLR
 
-`BaseOfData` (see
+While this detection sounds trivial, code in RAM and code on disk should not
+match. Address Space Layout Randomization (ASLR) and Relative Virtual Address
+(RVA) introduce offsets to the RAM.
+
+Interestingly, in our experiments, most of the time code in RAM perfectly
+matched the code on disk. As it turns out, modern compilers and linkers nearly
+exclusively use relative jumps instead of absolute ones.
+
+The only common exception we found in our experiments was the RVA `BaseOfDate`
+of 32-bit executables (see
 [Microsoft](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#optional-header-image-only)
-and [0xrick](https://0xrick.github.io/win-internals/pe4/)) is a Relative
-Virtual Address (RVA) introduced when the program is loaded into RAM.
+and [0xrick](https://0xrick.github.io/win-internals/pe4/) for details).
 
 In the first stage of our experiments, `BaseOfData` introduces changes to the
-.text segment of one byte. These changes lead to false positives (see
-[DetectingFilelessMalware.pdf](https://github.com/lautarolecumberry/DetectingFilelessMalware/blob/main/DetectingFilelessMalware.pdf)).
-
-Since this is a relative address, the offset between code and memory content is
-always the same and actually represents the Address Space Layout Randomization
-(ASLR) offset. For example, in our analysis of `firefox.exe` process, we
-observed the following differences (see Table 1).
+.text segment of one byte. Since this is a relative address, the offset between
+code and memory content is always the same and actually represents the Address
+Space Layout Randomization (ASLR) offset. For example, in our analysis of
+`firefox.exe` process, we observed the following differences (see Table 1).
 
 | Memory  | Disk  | Times | Difference |
 |---------|-------|-------|------------|
@@ -227,22 +177,17 @@ observed the following differences (see Table 1).
 |    0x40 |  0x02 |    27 |  62 (0x3e) |
 |    0x43 |  0x05 |    12 |  62 (0x3e) |
 |    0x41 |  0x03 |     1 |  62 (0x3e) |
-: Table 1: Firefox `BaseOfData` offsets
 
-Thanks to Mike Cohen we were able to improve our code, calculate the ASLR
-offset and ignore these false positives.
+Table 1: Firefox `BaseOfData` offsets
 
-Interestingly, all of the ASLR offsets we have observed were only active in
-32-bit binaries with `BaseOfData` activated - with one exception: the
-Velociraptor binary itself. As it turns out, modern compilers and linkers
-nearly exclusively use relative jumps. So, there seem to be only hard-coded
-virtual addresses with `BaseOfData` and in very few exceptions like the
-Velociraptor binary.
+Thanks to Mike Cohen we were able to improve our VQL code, calculate the ASLR
+offset and ignore these false positives. Thus, eleminating false positives from
+ASLR as well as `BaseOfData` in one go.
 
-When ignoring `BaseOfData` and `ASLR` none of the legitimate processes we
-analyzed were detected (see Table 2).
+Afterwards, none of the legitimate processes we analyzed were detected (see
+Table 2).
 
-| Name                   | BaseOfData | Detected | Detected ignoring offsets |
+| Name                   | BaseOfData | Detected | Detected ignoring ASLR    |
 |------------------------|------------|----------|---------------------------|
 | Adobe Acrobat Reader   | yes        | yes      | no                        |
 | Command Prompt         | no         | no       | no                        |
@@ -262,7 +207,8 @@ analyzed were detected (see Table 2).
 | Windows Calculator     | no         | no       | no                        |
 | WordPad                | no         | no       | no                        |
 | Zoom                   | yes        | yes      | no                        |
-: Table 2: `BaseOfData` improvement
+
+Table 2: Legitimate binaries with and without ignoring ASLR
 
 # 5. Results
 
@@ -305,11 +251,12 @@ shown in Table 3.
 | 32  | ursnif            | yes      |
 | 33  | WarzoneRAT        | yes      |
 | 34  | WhisperGate       | yes      |
-: Table 3: Tested malware samples and their detection
 
-Injecting code into legitimate programs with all three C2 frameworks (Sliver,
-Havoc, and Mythic) is detected by `Mem2Disk`. Additionally, 21 further malware
-samples were successfully detected.
+Table 3: Tested malware samples and their detection
+
+Injecting code into legitimate programs with all three tested C2 frameworks
+(Sliver, Havoc, and Mythic) is detected by `Mem2Disk`. Additionally, 21 further
+malware samples were successfully detected.
 
 We usually injected into a running `Calculator` app. Figure 1 and 2 show
 screenshots of the detections for Havoc C2 and Mythic C2 respectively. The left
@@ -319,20 +266,23 @@ also displayed to show the PID of the `Calculator` app. As shown in the two
 screenshots, both times Velociraptor detects `Calculator` as compromised.
 
 ![Figure 1: Havoc C2 Detection](2025-05-05_HavocC2_Calculator_Injection.png)
-: Figure 1: Havoc C2 Detection
+
+Figure 1: Havoc C2 Detection
 
 ![Figure 2: Mythic C2 Detection](2025-05-05_MythicC2_Calculator_Injection.png)
-: Figure 2: Mythic C2 Detection
 
-Table 4 shows our evaluation. Numbers in brackets are the amount of samples in
-this category.
+Figure 2: Mythic C2 Detection
+
+Table 4 shows our full evaluation. Numbers in brackets are the amount
+of samples in this category.
 
 |                 | Not-detected | Detected | Total     |
 |-----------------|--------------|----------|-----------|
 | **Non-malware** |  35% (18)    |  0%  (0) |  35% (18) |
 | **Malware**     |  19% (10)    | 46% (24) |  65% (34) |
 | **Total**       |  54% (28)    | 46% (24) | 100% (52) |
-: Table 4: Detection rates (numbers in brackets are amount of samples)
+
+Table 4: Detection rates (numbers in brackets are amount of samples)
 
 With these results, the true negatives (TN) are 35%, while the false positives
 (FP) are 0%. Also, the false negatives (FN) are 19%, and the true positives
@@ -360,13 +310,13 @@ The results are quite promising and we were able to detect state-of- the-art
 open source C2 frameworks. This is the first approach we know that scales to
 thousands of systems in parallel.
 
-When ignoring one-byte offsets and the Velociraptor binary itself, `Mem2Disk`
+When ignoring relocation offsets and the Velociraptor binary itself, `Mem2Disk`
 does not detect many false positives. Occasionally, some Windows system
 processes would pop up in the detections, however on a second run of `Mem2Disk`
 they usually disappear.
 
 If malware removes itself from RAM temporarily or hooks the functions used by
-`WinPmem`, it could still hide itself from `Mem2Disk`. We also observed that
+Velociraptor, it could still hide itself from `Mem2Disk`. We also observed that
 some of the false negatives ran pretty quickly, so we suspect that they were
 already finished when Velociraptor ran.
 
