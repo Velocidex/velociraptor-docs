@@ -59,7 +59,7 @@ computers.
 One of the main existing tools to analyze the RAM is
 [volatility](https://github.com/volatilityfoundation/volatility3). It requires
 creating an offline RAM dump first with other tools like
-[WinPmem](https://github.com/Velocidex/WinPmem] which takes considerable
+[WinPmem](https://github.com/Velocidex/WinPmem) which takes considerable
 time. Afterwards, this dump can be analyzed with volatility.
 
 Most commands of volatility require in-depth knowledge of the RAM and the
