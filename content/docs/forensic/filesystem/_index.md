@@ -5,6 +5,7 @@ summary: |
     efficiently. When searching for a file, we may search by filename, path,
     file content, size or other properties.
 date: 2021-06-12
+last_reviewed: 2025-11-16
 draft: false
 weight: 20
 ---
@@ -12,6 +13,8 @@ weight: 20
 One of the most common operations in DFIR is searching for files
 efficiently. When searching for a file, we may search by filename,
 file content, size or other properties.
+
+### Glob basics
 
 Velociraptor has the [glob]({{< ref "/vql_reference/popular/glob/" >}})
 plugin to search for files using a glob expression. Glob expressions use
@@ -44,9 +47,10 @@ FROM glob(globs='C:\\Users\\**\\*.exe')
 
 {{% notice info "String escaping in VQL" %}}
 
-Strings in VQL can include a backslash escape sequence. Since Windows
-paths use backslashes for the path separator you will need to escape
-these backslashes with backslashes, which can be confusing.
+Strings in VQL can include a
+[backslash escape sequence]({{< ref "/docs/vql/fundamentals/#string-constants" >}}).
+Since Windows paths use backslashes for the path separator you will need to
+escape these backslashes with backslashes, which can be confusing.
 
 Paths can alternatively be written with a forward
 slash so that they don't need to be escaped:
@@ -86,7 +90,7 @@ quoted in the path.
 For a more in-depth discussion of paths in Velociraptor see
 [Velociraptor Paths]({{< ref "/docs/forensic/filesystem/paths/" >}})
 
-### The Glob Root
+### The glob root
 
 Glob expressions are meant to be simple to write and to
 understand. They are not as powerful as a regular expression, with
@@ -119,8 +123,8 @@ under that root directory.
 ### Glob results
 
 The `glob()` plugin returns rows with several columns. As usual, the
-best way to see what a plugin returns is to click the `Raw Response JSON`
-button on the results table.
+best way to see what a plugin returns is to click the **Raw Response JSON**
+button (<i class="fas fa-binoculars"></i>) on the results table.
 
 ![Glob output](glob_results.png)
 
@@ -150,8 +154,8 @@ expression to search the registry?
 
 Velociraptor supports direct access to many different data sources
 with such hierarchical trees via
-[accessors]({{< ref "/vql_reference/accessors/" >}})
-(Accessors are essentially filesystem access drivers).
+[accessors]({{< ref "/vql_reference/accessors/" >}}),
+which are essentially filesystem access drivers.
 
 Some common accessors are:
 
@@ -226,7 +230,7 @@ through its `raw_reg` accessor. Similar to the `registry` accessor described
 above, this accessor allows Velociraptor's filesystem-oriented VQL functions and
 plugins to work on registry files rather than relying on the API.
 
-##### Example: Find autorun files from ntuser.dat
+###### Example: Find autorun files from ntuser.dat
 
 We specify to the `glob()` plugin that we want to open the raw registry file at
 `C:/Users/User/ntuser.dat` and glob for the pattern `/**/Run/*` within it.
@@ -247,7 +251,7 @@ to any other VQL plugin that uses filenames where they can be accessed with the
 
 ![Raw Registry](raw_reg.png)
 
-##### Example: Multiple registry files with remapping
+###### Example: Multiple registry files with remapping
 
 While the previous example is fine for reading a single registry file, for the
 `HKEY_USERS` situation mentioned above we'd like to read from multiple

@@ -39,7 +39,7 @@ Args:
 
 On Linux, a mechanism called
 [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace) (Filesystem in
-Userspace) allows an application to mount a filesystem as a directory on the
+UserSpacE) allows an application to mount a filesystem as a directory on the
 global filesystem. As the name suggests, this does not require root privileges,
 unlike conventional mounts.
 
@@ -82,17 +82,17 @@ default behavior:
 - `strip_colons_on_drive_letters` (enabled by default): will remove `:`
   characters completely so `C:` will become a directory in the output named `C`.
 
-- `merge_accessors` (not enabled by default): if set we merge all
+- `merge_accessors` (enabled by default): merges all separate
   [accessors]({{< ref "/vql_reference/accessors/" >}})
   into the same directory (which will be named `files`). By default Velociraptor
   stores file uploads under the name of the accessor that was used to collect
   them. This allows you to keep track of which accessor was originally used to
-  read the file. However for processing these files with external tools it is
+  read the file. However when processing these files with external tools it is
   sometimes convenient or even necessary to merge them into a single root
   directory.
 
 
-##### Notes
+##### Usage Notes
 
 - The zip files need to be specified with full paths, however wildcards in the
   filename and path components are supported.
@@ -108,12 +108,12 @@ default behavior:
   several standard paths for certain common collection files. Merging is
   primarily intended for files in the collection's "uploads", i.e. files copied
   from the endpoint, so that you can work with them all together in one tree
-  structure. Note that this is also distinct from the `--merge_accessors` option
+  structure. Note that this is also distinct from the `merge_accessors` option
   which merges accessors, not containers.
 
 - If the zip files are secured with the server's X.509 certificate then you need
-  to provide the config to the command using the `--config` flag so that it can
-  access the server's private key. Otherwise you will see the error
+  to provide the config to the command using the `--config` (or `-c`) flag so
+  that it can access the server's private key. Otherwise you will see the error
   `"GetPrivateKeyFromScope: No frontend configuration given"` logged in the
   terminal.
 
@@ -169,10 +169,10 @@ default behavior:
    $ umount -v ~/fuse_mount
    umount: /home/user/fuse_mount (rawBridge) unmounted
    ```
-   <i class="fas fa-triangle-exclamation" style="color:gray"></i>
-   If you try to reuse a mount directory without first unmounting it, you will see
-   an error like:
-   `/usr/bin/fusermount3: failed to access mountpoint /home/user/fuse_mount: Permission denied`.
+   > <i class="fas fa-triangle-exclamation" style="color:gray"></i>
+   > If you try to reuse a mount directory without first unmounting it, you will see
+   > an error like:
+   > `/usr/bin/fusermount3: failed to access mountpoint /home/user/fuse_mount: Permission denied`.
 
 
 ##### See also
