@@ -27,7 +27,7 @@ network but does not know which systems are compromised. Networks can be quite
 large and include >10.000 systems. Additionally, attackers nowadays use Command
 and Control (C2) frameworks running in Random Access Memory (RAM).
 
-Our approach finds the C2 framworks without knowing where the attacker is,
+Our approach finds the C2 frameworks without knowing where the attacker is,
 without dumping the RAM and scaling to >10.000 systems.
 
 Our custom Velociraptor Query Language (VQL) artifact
@@ -181,7 +181,7 @@ Space Layout Randomization (ASLR) offset. For example, in our analysis of
 Table 1: Firefox `BaseOfData` offsets
 
 Thanks to Mike Cohen we were able to improve our VQL code, calculate the ASLR
-offset and ignore these false positives. Thus, eleminating false positives from
+offset and ignore these false positives. Thus, eliminating false positives from
 ASLR as well as `BaseOfData` in one go.
 
 Afterwards, none of the legitimate processes we analyzed were detected (see
@@ -231,20 +231,20 @@ shown in Table 3.
 | 12  | Havoc C2          | yes      |
 | 13  | HopLight          | no       |
 | 14  | HyperBro          | yes      |
-| 15  | InjectionPoC      | no       |
+| 15  | Injection PoC     | no       |
 | 16  | ISMAgent          | yes      |
 | 17  | lokibot           | yes      |
 | 18  | Mythic C2         | yes      |
 | 19  | netwire           | yes      |
 | 20  | Pandora           | yes      |
-| 21  | PlatinumGroup     | no       |
+| 21  | Platinum Group    | no       |
 | 22  | qakbot            | no       |
 | 23  | remcos            | yes      |
 | 24  | REvil             | yes      |
 | 25  | RokRAT            | yes      |
 | 26  | Ryuk              | yes      |
 | 27  | sliver C2         | yes      |
-| 28  | SlothfulMedia     | yes      |
+| 28  | Slothful Media    | yes      |
 | 29  | smokeloader       | yes      |
 | 30  | synack            | no       |
 | 31  | TsCookie          | no       |
@@ -333,7 +333,7 @@ machines in nearly real-time.
 
 Happy detecting!
 
-# 8. Acknowledgements
+# 8. Acknowledgement
 
 We would like to express our gratitude to Prof. Nicolas Wolovick for supporting
 this publication with advice and guidance and to Mike Cohen for improving our
