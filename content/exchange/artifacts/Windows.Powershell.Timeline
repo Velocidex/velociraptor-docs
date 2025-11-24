@@ -1,0 +1,92 @@
+name: Windows.Powershell.Timeline
+description: |
+   This artifact extracts commands executed from each user's ConsoleHost_History.txt and correlates the timestamps of Data_Added events in the USNJRNL with those commands to construct a timeline of PowerShell command execution.
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT or NOTEBOOK
+type: CLIENT
+
+parameters:
+   - name: user
+     default: .
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET USN_EVENTS <= SELECT
+          Timestamp,
+          count() AS EventNum,
+          split(string=OSPath, sep_string="\\")[-8] AS username,
+          Reason
+        FROM Artifact.Windows.Forensics.Usn(FileNameRegex="ConsoleHost_History.txt")
+        WHERE username =~ user
+         and len(list=Reason) = 2
+              and (Reason[0] = "DATA_EXTEND" or Reason[1] = "DATA_EXTEND")
+        ORDER BY Timestamp DESC
+      
+      LET PSReadline <= SELECT LineNum,
+                               Line,
+                               Username
+        FROM Artifact.Windows.System.Powershell.PSReadline()
+        WHERE Username =~ user
+        ORDER BY LineNum DESC
+      
+      LET results_with_timestamp <= SELECT *
+        FROM foreach(row={
+          SELECT *, EventNum AS USN_EVENTS_EventNum
+          FROM USN_EVENTS
+        },
+                     query={
+          SELECT Timestamp,
+                 Line,
+                 Username
+          FROM PSReadline
+          WHERE LineNum = USN_EVENTS_EventNum
+        })
+        ORDER BY Timestamp
+      
+      LET PSReadline_length <= array(_={ SELECT LineNum FROM PSReadline }).LineNum
+      
+      LET usn_results_without_command <= SELECT *
+        FROM foreach(row={
+          SELECT PSReadline_length[0] AS PSReadline_LineNumbers
+          FROM scope()
+        },
+                     query={
+          SELECT Timestamp,
+                 "N/A",
+                 Username
+          FROM USN_EVENTS
+          WHERE EventNum > PSReadline_LineNumbers
+        })
+      
+      LET USN_EVENTS_length <= array(_={ SELECT EventNum FROM USN_EVENTS }).EventNum
+      
+      LET psreadline_results_without_timestamp <= SELECT *
+        FROM foreach(row={
+          SELECT USN_EVENTS_length[0] AS USN_EVENTS_EventNumbers
+          FROM scope()
+        },
+                     query={
+          SELECT "N/A" AS Timestamp,
+                 Line,
+                 Username
+          FROM PSReadline
+          WHERE LineNum > USN_EVENTS_EventNumbers
+        })
+      
+      SELECT *
+      FROM chain(a={
+          SELECT *
+          FROM results_with_timestamp
+        },
+                 b={
+          SELECT *
+          FROM usn_results_without_command
+        },
+                 c={
+          SELECT *
+          FROM psreadline_results_without_timestamp
+        })
+      ORDER BY Timestamp
