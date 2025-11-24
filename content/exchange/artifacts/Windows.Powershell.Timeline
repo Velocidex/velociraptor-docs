@@ -16,7 +16,6 @@ sources:
     query: |
       LET USN_EVENTS <= SELECT
           Timestamp,
-          count() AS EventNum,
           split(string=OSPath, sep_string="\\")[-8] AS username,
           Reason
         FROM Artifact.Windows.Forensics.Usn(FileNameRegex="ConsoleHost_History.txt")
@@ -32,48 +31,51 @@ sources:
         WHERE Username =~ user
         ORDER BY LineNum DESC
       
+      LET USN_EVENTS_Indexed <= SELECT count() AS EventID, * FROM USN_EVENTS
+      
+      LET PSReadline_Indexed <= SELECT count() AS CommandID, * FROM PSReadline
+      
       LET results_with_timestamp <= SELECT *
         FROM foreach(row={
-          SELECT *, EventNum AS USN_EVENTS_EventNum
-          FROM USN_EVENTS
+          SELECT *
+          FROM USN_EVENTS_Indexed
         },
                      query={
           SELECT Timestamp,
                  Line,
                  Username
-          FROM PSReadline
-          WHERE LineNum = USN_EVENTS_EventNum
+          FROM PSReadline_Indexed
+          WHERE CommandID = EventID
         })
-        ORDER BY Timestamp
       
-      LET PSReadline_length <= array(_={ SELECT LineNum FROM PSReadline }).LineNum
+      LET PSReadline_length <= array(_={ SELECT CommandID FROM PSReadline_Indexed }).CommandID
       
       LET usn_results_without_command <= SELECT *
         FROM foreach(row={
-          SELECT PSReadline_length[0] AS PSReadline_LineNumbers
+          SELECT PSReadline_length[-1] AS PSReadline_LineNumbers
           FROM scope()
         },
                      query={
           SELECT Timestamp,
-                 "N/A",
-                 Username
-          FROM USN_EVENTS
-          WHERE EventNum > PSReadline_LineNumbers
+                 "N/A" AS Line,
+                 username
+          FROM USN_EVENTS_Indexed
+          WHERE EventID > PSReadline_LineNumbers
         })
       
-      LET USN_EVENTS_length <= array(_={ SELECT EventNum FROM USN_EVENTS }).EventNum
+      LET USN_EVENTS_length <= array(_={ SELECT EventID FROM USN_EVENTS_Indexed }).EventID
       
       LET psreadline_results_without_timestamp <= SELECT *
         FROM foreach(row={
-          SELECT USN_EVENTS_length[0] AS USN_EVENTS_EventNumbers
+          SELECT USN_EVENTS_length[-1] AS USN_EVENTS_EventNumbers
           FROM scope()
         },
                      query={
           SELECT "N/A" AS Timestamp,
                  Line,
                  Username
-          FROM PSReadline
-          WHERE LineNum > USN_EVENTS_EventNumbers
+          FROM PSReadline_Indexed
+          WHERE CommandID > USN_EVENTS_EventNumbers
         })
       
       SELECT *
@@ -81,11 +83,11 @@ sources:
           SELECT *
           FROM results_with_timestamp
         },
-                 b={
+                b={
           SELECT *
           FROM usn_results_without_command
         },
-                 c={
+                c={
           SELECT *
           FROM psreadline_results_without_timestamp
         })
