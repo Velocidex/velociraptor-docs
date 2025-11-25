@@ -35,9 +35,13 @@ sources:
         WHERE Username =~ user
         ORDER BY LineNum DESC
       
-      LET USN_EVENTS_Indexed <= SELECT count() AS EventID, * FROM USN_EVENTS
+      LET USN_EVENTS_Indexed <= SELECT count() AS EventID,
+                                       *
+        FROM USN_EVENTS
       
-      LET PSReadline_Indexed <= SELECT count() AS CommandID, * FROM PSReadline
+      LET PSReadline_Indexed <= SELECT count() AS CommandID,
+                                       *
+        FROM PSReadline
       
       LET results_with_timestamp <= SELECT *
         FROM foreach(row={
@@ -46,7 +50,7 @@ sources:
         },
                      query={
           SELECT Timestamp,
-                 Line,
+                 Line AS Command,
                  Username
           FROM PSReadline_Indexed
           WHERE CommandID = EventID
@@ -61,7 +65,7 @@ sources:
         },
                      query={
           SELECT Timestamp,
-                 "N/A" AS Line,
+                 "N/A" AS Command,
                  username
           FROM USN_EVENTS_Indexed
           WHERE EventID > PSReadline_LineNumbers
@@ -76,7 +80,7 @@ sources:
         },
                      query={
           SELECT "N/A" AS Timestamp,
-                 Line,
+                 Line AS Command,
                  Username
           FROM PSReadline_Indexed
           WHERE CommandID > USN_EVENTS_EventNumbers
@@ -87,11 +91,11 @@ sources:
           SELECT *
           FROM results_with_timestamp
         },
-                b={
+                 b={
           SELECT *
           FROM usn_results_without_command
         },
-                c={
+                 c={
           SELECT *
           FROM psreadline_results_without_timestamp
         })
