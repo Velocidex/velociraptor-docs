@@ -1,4 +1,5 @@
 name: Windows.Powershell.Timeline
+author: Mohammed Hasan, 0xHasanm
 description: |
    This artifact extracts commands executed from each user's ConsoleHost_History.txt and correlates the timestamps of Data_Added events in the USNJRNL with those commands to construct a timeline of PowerShell command execution.
 
