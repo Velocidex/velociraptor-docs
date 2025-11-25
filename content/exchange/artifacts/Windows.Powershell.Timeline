@@ -10,6 +10,9 @@ parameters:
    - name: user
      default: .
 
+references:
+  - https://www.linkedin.com/posts/0xhasanm_sundfirday-dfir-powershell-activity-7395908066409484288-eNSo
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
