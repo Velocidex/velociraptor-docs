@@ -270,7 +270,7 @@ collection container, but this is essentially just a convenience wrapper around
 the [import_collection]({{< ref "/vql_reference/server/import_collection/" >}})
 VQL function. If you need to perform a bulk import of many collections then it's
 easy to
-[automate that process]({{< relref "#bulk-collection-imports" >}}).
+[automate that process]({{< relref "#bulk-collection-imports" >}})
 using VQL in either a notebook or a server artifact.
 
 #### Auto-decryption of containers
