@@ -16,9 +16,12 @@ aliases:
 The steps in this section assume you are troubleshooting a client that has
 already enrolled and is actively communicating with the server.
 
-If you are having problems with a client that is not communicating with the
-server, or that has never connected to the server, or is failing to start then
-please see the section
+If you are having problems with a client that is:
+- not communicating with the server, or
+- that has never connected to the server, or
+- is failing to start
+
+then please see the section
 [Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/#client-communications-issues" >}})
 within the Deployment Troubleshooting section.
 

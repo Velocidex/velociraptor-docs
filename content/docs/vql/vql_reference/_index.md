@@ -11,4 +11,4 @@ chapter: false
 pre: <i class="fas fa-book"></i>
 ---
 
-{{% include-content "/vql_reference/" %}}
+{{% include-page "/vql_reference/" %}}

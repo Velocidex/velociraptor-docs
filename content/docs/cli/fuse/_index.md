@@ -2,7 +2,7 @@
 menutitle: "fuse"
 title: 'The "fuse" command'
 date: 2025-05-20
-last_reviewed: 2025-011-15
+last_reviewed: 2025-11-16
 draft: false
 weight: 65
 summary: Mount collection containers on folders.
