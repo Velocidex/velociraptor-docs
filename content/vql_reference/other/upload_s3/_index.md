@@ -32,6 +32,7 @@ serverside_encryption|The server side encryption method to use|string
 kms_encryption_key|The server side KMS key to use|string
 s3upload_root|Prefix for the S3 object|string
 skip_verify|Skip TLS Verification|bool
+path_style|Use path style URLs if set|bool
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>

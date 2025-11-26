@@ -1,5 +1,15 @@
 [
     {
+        "title": "Windows.Memory.Mem2Disk",
+        "author": "lautarolecumberry",
+        "description": "This artifact compares executables in memory (RAM) with those\non hard disk. This way, RAM injections are detected. This rarely\nhappens legitimately and is mostly used by malware.\nThis check is executed without dumping the memory and works live\non the target system(s).\nSee also https://github.com/lautarolecumberry/DetectingFilelessMalware",
+        "link": "/exchange/artifacts/pages/windows.memory.mem2disk",
+        "tags": [],
+        "author_link": "https://github.com/lautarolecumberry",
+        "author_avatar": "https://avatars.githubusercontent.com/u/22533437?v=4",
+        "date": "2025-11-14"
+    },
+    {
         "title": "Windows.Detection.HyperV",
         "author": "mgreen27",
         "description": "Scope suspicious Hyper-V worker process and activity on Windows workstations. ",

@@ -1,5 +1,11 @@
 [
     {
+        "name": "Artifact",
+        "description": "This is the special plugin which automatically runs other\nartifacts inline.",
+        "type": "Plugin",
+        "category": "basic"
+    },
+    {
         "name": "add_client_monitoring",
         "description": "Adds a new artifact to the client monitoring table.",
         "type": "Function",
@@ -461,6 +467,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -492,6 +501,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -801,7 +813,8 @@
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -1871,6 +1884,31 @@
         ]
     },
     {
+        "name": "describe_address",
+        "description": "Describe an address in the PE text section.",
+        "type": "Function",
+        "args": [
+            {
+                "name": "rva",
+                "type": "int64",
+                "description": "The Relative Virtual Address to describe.",
+                "required": true
+            },
+            {
+                "name": "module",
+                "type": "string",
+                "description": "The path of the PE file to inspect.",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "windows_amd64_cgo"
+        ]
+    },
+    {
         "name": "dict",
         "description": "Construct a dict from arbitrary keyword args.",
         "type": "Function",
@@ -2510,6 +2548,9 @@
         "name": "file_links",
         "description": "Access the filesystem using the OS APIs.",
         "type": "Accessor",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "windows_386_cgo",
             "windows_amd64_cgo"
@@ -5618,7 +5659,8 @@
             "permissions": "SERVER_ADMIN,READ_RESULTS"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
@@ -5807,7 +5849,8 @@
             "ScopeVar": "OVERLAY_ACCESSOR_DELEGATES"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ],
         "category": "accessors"
     },
@@ -8816,6 +8859,23 @@
                 "type": "string",
                 "description": "A list of users to remove from the secret",
                 "repeated": true
+            },
+            {
+                "name": "visible_to_all_orgs",
+                "type": "bool",
+                "description": "If set we make the secret visible to all orgs"
+            },
+            {
+                "name": "add_orgs",
+                "type": "string",
+                "description": "A list of orgs to add to the secret",
+                "repeated": true
+            },
+            {
+                "name": "remove_orgs",
+                "type": "string",
+                "description": "A list of orgs to remove from the secret",
+                "repeated": true
             }
         ],
         "category": "server",
@@ -9429,8 +9489,7 @@
             {
                 "name": "url",
                 "type": "string",
-                "description": "The Splunk Event Collector URL.",
-                "required": true
+                "description": "The Splunk Event Collector URL."
             },
             {
                 "name": "token",
@@ -9440,8 +9499,7 @@
             {
                 "name": "index",
                 "type": "string",
-                "description": "The name of the index to upload to. If not specified, ensure a column is named _splunk_index.",
-                "required": true
+                "description": "The name of the index to upload to. If not specified, ensure a column is named _splunk_index."
             },
             {
                 "name": "source",
@@ -9491,7 +9549,7 @@
             {
                 "name": "secret",
                 "type": "string",
-                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'"
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'Splunk'"
             }
         ],
         "metadata": {
@@ -10594,7 +10652,7 @@
         "name": "upload_s3",
         "description": "Upload files to S3.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "file",
@@ -10662,6 +10720,11 @@
                 "name": "skip_verify",
                 "type": "bool",
                 "description": "Skip TLS Verification"
+            },
+            {
+                "name": "path_style",
+                "type": "bool",
+                "description": "Use path style URLs if set"
             },
             {
                 "name": "secret",
@@ -12227,7 +12290,8 @@
             "permissions": "FILESYSTEM_READ,EXECVE"
         },
         "platforms": [
-            "linux_amd64_cgo"
+            "linux_amd64_cgo",
+            "windows_amd64_cgo"
         ]
     },
     {
