@@ -2,7 +2,7 @@
 title: "Working With Offline Collection Data"
 menutitle: "Collection Data"
 date: 2025-11-03
-last_reviewed: 2025-11-17
+last_reviewed: 2025-11-26
 draft: false
 weight: 30
 ---
@@ -845,7 +845,7 @@ artifacts will fail if they depend on data sources other than the filesystem,
 but at least they should fail gracefully and not provide incorrect data.
 
 Also, because the virtual client is impersonating the original host and
-(partially) emulating the original filsesystem, it does not have to run on the
+(partially) emulating the original filesystem, it does not have to run on the
 same platform as the original host. You can run it on your Velociraptor server,
 which is probably running on Linux, or you can run the virtual client on a
 separate host which could be running Windows or Linux.

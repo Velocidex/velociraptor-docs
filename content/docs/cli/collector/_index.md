@@ -2,6 +2,7 @@
 menutitle: "collector"
 title: 'The "collector" command'
 date: 2025-05-20
+last_reviewed: 2025-11-26
 draft: false
 weight: 30
 summary: "Build an offline collector"
