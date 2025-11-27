@@ -910,7 +910,9 @@ to import the collection first.
 Obviously this is not a complete client, since the original OS is not present
 and only the copied files will be available to any VQL queries. Many standard
 artifacts will fail if they depend on data sources other than the filesystem,
-but at least they should fail gracefully and not provide incorrect data.
+but at least they should fail gracefully and not produce incorrect data.
+Artifacts that rely purely on files in well-known locations should reliably
+produce meaningful results.
 
 Also, because the virtual client is impersonating the original host and
 (partially) emulating the original filesystem, it does not have to run on the
@@ -1011,9 +1013,6 @@ look and behave like a normal client.
    runs collections against the offline collection container rather than the
    host it's running on.
 
-There are limitations because it's not a full live host, so certain artifacts
-may not work or produce unexpected results, but most artifacts that rely purely
-on file access should reliably produce meaningful results.
 
 If you are running the virtual client on your server, you may choose to not
 decrypt the collection container because you can instead pass it the server
