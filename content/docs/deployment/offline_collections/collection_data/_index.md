@@ -327,14 +327,13 @@ the same "virtual client" in the server's datastore (unless you manually specify
 a different `client_id` for each import for some odd reason).
 
 If the collection you're importing comes from an existing client (real or
-"virtual"), and you _didn't_ specify a `client_id` for the import, then the
-server tries to match the `hostname` contained in the collection zip with an
-existing client record. Again this attempts to match imports to existing client
-records. It's not perfect under all scenarios - for example it's possible for
-separate endpoints to have the same hostname in the real world - but most of the
-time it should work. If you need to be absolutely sure about import matching the
-right `client_id` then you should specify it instead of relying on the "auto"
-option.
+"virtual"), then the server tries to match the `hostname` contained in the
+collection zip with an existing client record. This attempts to match imports to
+existing client records. It's not perfect under all scenarios - for example it's
+possible for separate endpoints to have the same hostname in the real world -
+but most of the time it should work. If you need to be absolutely sure about
+import matching the right `client_id` then you should specify it instead of
+relying on the "auto" option.
 
 To summarize, the import process performs the following actions:
 
@@ -511,7 +510,7 @@ If you used the fixed password scheme, such that all your collection zips are
 secured by the same password, then you can add `LET ZIP_PASSWORDS <= ...` to
 your VQL so that `import_collection` has access to it.
 
-###### Example
+###### Example: Bulk import of collections
 
 ```vql
 LET ZipsDir <= "/tmp/imports/"
@@ -520,21 +519,66 @@ SELECT OSPath, import_collection(filename=OSPath)
 FROM glob(globs="*.zip", root=ZipsDir)
 ```
 
+### Adding imported collections to a hunt
+
+Offline collectors obviously can't participate directly in hunts, but you can
+add the collection to a hunt after importing it. This will make the virtual
+client and collection data part of the hunt, and you can then run queries across
+the hunt data which will include your offline collections.
+
+###### Example: Importing a collection and adding it to a hunt
+
+```vql
+LET Container <= "/tmp/imports/scheduledtasks-WIN-KMODJ1W0CYG-2025-11-27T17_07_55Z.zip"
+LET HuntId <= "H.D4K897V4QBNLU"
+LET Imported = import_collection(filename=Container)
+
+SELECT hunt_add(client_id=client_id, hunt_id=HuntId, flow_id=session_id)
+FROM Imported
+```
+
+###### Example: Bulk import and add to a hunt
+
+```vql
+LET ZipsDir <= "/tmp/imports/"
+LET HuntId <= "H.D4K897V4QBNLU"
+
+SELECT *
+FROM foreach(row={
+    SELECT import_collection(filename=OSPath) AS Imported
+    FROM glob(globs="Collection*.zip", root=ZipsDir)
+  },
+             query={
+    SELECT
+    hunt_add(client_id=Imported.client_id,
+             hunt_id=HuntId,
+             flow_id=Imported.session_id)
+    FROM scope()
+  })
+```
+
+
+
 ### Working with imported files
 
-After importing a collection container the associated collection (flows) will be
+After importing a collection container the associated collection (flow) will be
 available on the client's **Collected** screen - exactly as it would be if the
-collection was done using a network-connected client. The collection data can be
-queried and analyzed in collection notebooks, as is possible for any normal
-collection. The collection can also be manually linked to an existing hunt, if
-required.
+collection was done using a network-connected client. The collection results can
+be queried and analyzed in the collection notebook, just as you can do with any
+other collection.
+
+Any files included in the collection will be available in the **Uploaded Files**
+tab when viewing the collection.
 
 If you want to perform further analysis on the files collected (for example if
 you forgot to run artifacts to extract the right data from those files), then it
 is possible to perform post-processing on the collection's files. However this
 is not recommended under normal circumstances - it's always far easier to work
 with data that was extracted on the endpoint rather than trying to extract the
-data from files on the server.
+data from files on the server. Please see the section
+[To import or not to import?]({{< relref "#to-import-or-not-to-import" >}})
+for a more detailed discussion of the considerations and options when dealing
+with imported files.
 
 If your offline collections used the `Windows.Triage.Targets` or
 `Windows.KapeFiles.Targets` artifacts then these have a notebook cell suggestion
@@ -558,13 +602,7 @@ LET _ <=
 SELECT * FROM Artifact.Windows.System.TaskScheduler()
 ```
 
-{{% notice  note "Artifacts that use tools cannot be used" %}}
 
-External tools cannot be used on files stored in the server's datastore, since
-the remapping only applies to VQL queries. Tools will be unaware of the
-remapping and will be unable to find the files.
-
-{{% /notice %}}
 
 ## Accessing collection containers without importing
 
