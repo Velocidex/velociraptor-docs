@@ -166,92 +166,122 @@ a network connection to the server.
 [Importing]({{< relref "#importing-collections-into-the-velociraptor-server" >}})
 a collection is the normal process to use when the collection contains the
 results from all the artifacts that you needed to collect on the endpoint.
-Importing will create and populate a "virtual client" in the datastore with the
-collection results. It will also copy all the files included in your collection
-container into the server's datastore, but as mentioned those files are
-generally only included for preservation purposes. Once they are copied into the
-datastore, those files are not usually used as the basis for further analysis.
-If you wanted to parse those files then you should ideally have done it on the
-endpoint - file parsing is usually done on the endpoint. Then after importing
-you would have the parsed data imported to your server, which is what we
-normally work with in subsequent server-based VQL queries, plus files that you
-wanted to preserve. So for offline collections it's likely that the collection
-container consists mainly of artifact results (in JSON format), and that it may
-also include some files for preservation purposes. In that case importing the
-collection makes perfect sense, since you can then work with the imported data
-as if it had come from a network-connected client.
 
-However sometimes you might not have run all the artifacts that you needed to
-run on the endpoint. With offline collectors you often don't get the chance to
-run any further collections - and even if you could, this would require building
-more offline collectors. Sometimes you will need to iteratively query file-based
-data sources, which is an inherent limitation of offline collectors. In those
-circumstances the files copied by the offline collector could be all you have to
-work with, so there are a few alternatives to consider for "post-processing"
-those files, which we'll explain below.
+#### What happens during import?
+
+1. Velociraptor creates a "virtual" client (i.e. a new client in the datastore).
+2. It copies the collection results from the container to this new client. This
+   collection is identical to how it would appear if it was collected by a live
+   client.
+3. File included in the collection are copied into the server’s datastore. These
+   files are assumed to be included for preservation purposes – _they are
+   usually not used as the basis for further analysis_.
+
+File parsing is usually done on the endpoint, so that after importing you would
+have the parsed data imported to your server, which is what we normally work
+with in subsequent server-based VQL queries.
+
+If the offline collection is planned well then the collection container will
+consist mainly of artifact results (in JSON format), and it may also include
+some files for preservation purposes. In that case importing the collection
+makes perfect sense, since you can then work with the imported data as if it had
+come from a network-connected client.
+
+#### What if I collected files instead of parsing them on the endpoint?
+
+Sometimes you might not have run all the artifacts that you needed to run on the
+endpoint. With offline collectors you often don't get the chance to run any
+further collections - and even if you could, this would require building more
+offline collectors and going through a potentially arduous process to run them.
+
+Iteratively querying file-based data sources if often necessary during an
+investigation, while offline collectors usually represent a one-shot approach
+to collection. In those circumstances the files copied by the offline collector
+could be all you have to work with, so there are a few alternatives to consider
+for "post-processing" those files, which we'll explain below.
+
+##### Emulating the source filesystem using remapping
 
 If you want to run additional artifacts on files included in an offline
-collection, we can try to make the best of the situation by emulating the
+collection, you can try to make the best of the situation by emulating the
 filesystem of the endpoint using only the files stored in the collection
 container. This allows us to run additional artifacts against the copied files.
-However this has inherent limitations: in particular it is not ideal because you
-only have access to files, whereas on an endpoint you have access to the
-operating system _plus_ the filesystem. Many Velociraptor artifacts rely on data
-other than files, so you also need to take that into account when selecting
-which artifacts to run. Also keep in mind that your collection container very
-likely only contains a subset of the files from the original filesystem, so it's
-possible that some artifacts may not find the files that they expect to be
-present.
 
 Using Velociraptor's [remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
 feature, we can emulate the original filesystem after importing the collection
 data, or we could do it without even importing the data.
 
-- **To run artifacts on the collected files without importing the collection**
-  you can use the method described in
-  [Dead disk analysis on a collection container]({{< relref "#dead-disk-analysis-on-a-collection-container" >}}).
-  This gives you a full client against which you can interactively run further
-  collections. There is a bit of setup required so it's not quite as easy as
-  importing and then running collections against the imported files, although it
-  has the advantage of being more intuitive and familiar because you'll be able
-  to run collections interactively against a live client which is impersonating
-  the original endpoint.
+However this has inherent limitations. In particular it is not ideal because:
 
-- **To run artifacts on the collected files after importing the collection**
-  you can use the method described in
-  [Working with imported files]({{< relref "#working-with-imported-files" >}}).
-  Unlike the previously described option, this doesn't have any setup steps
-  other than importing the collection. The remapping is generated and applied to
-  a notebook cell's scope using VQL, along with running the chosen artifacts.
-  While this is still easy to do, it requires a solid understanding of VQL and
-  uses a workflow that's very different from using an interactive client in the
-  GUI. So it's generally less intuitive than the previous method, especially for
-  novice users. For expert users this method may be preferred because it's
-  simpler to automate and doesn't require spinning up any separate clients.
+- you only have access to files, whereas on an endpoint you have access to the
+  operating system _plus_ the filesystem.
+- many Velociraptor artifacts rely on data other than files, so you also need to
+  take that into account when selecting which artifacts to run.
+- the collection container very likely only contains a subset of the files from
+  the original filesystem, so it's possible that some artifacts may not find the
+  files that they expect to be present.
+- artifacts that use external tools cannot be used on files stored in the
+  server's datastore, since the remapping only applies to VQL queries. Tools
+  will be unaware of the remapping and will be unable to find the files.
+
+There are two ways to run artifacts on files copied by an offline collector:
+
+- ###### Run artifacts on the collected files without importing the collection
+
+   You can use the method described in
+   [Dead disk analysis on a collection container]({{< relref "#dead-disk-analysis-on-a-collection-container" >}}).
+   This gives you a full client against which you can interactively run further
+   collections. There is a bit of setup required so it's not quite as easy as
+   importing and then running collections against the imported files, although
+   it has the advantage of being more intuitive and familiar because you'll be
+   able to run collections interactively against a live client which is
+   impersonating the original endpoint.
+
+- ###### Run artifacts on the collected files _after_ importing the collection
+
+   You can use the method described in
+   [Working with imported files]({{< relref "#working-with-imported-files" >}}).
+   Unlike the previously described option, this doesn't have any setup steps
+   other than importing the collection. The remapping is generated and applied
+   to a notebook cell's scope using VQL, along with running the chosen
+   artifacts. While this is still easy to do, it requires a solid understanding
+   of VQL and uses a workflow that's very different from using an interactive
+   client in the GUI. So it's generally less intuitive than the previous method,
+   especially for novice users. For expert users this method may be preferred
+   because it's simpler to automate and doesn't require spinning up any separate
+   clients.
+
+###### Why not both?
 
 You could of course use a combination of these methods. Your choice will depend
-on what's contained in your offline collection container (copied files and
-parsed JSON results), what additional analysis you need to run on the copied
-files, your level of VQL experience and preferred process (for example, if you
-need to post-process files in thousands of collection containers then running a
-separate client might not be as practical as repeating the same VQL in a
-notebook), and possibly other factors.
+on:
 
-Note that external tools cannot be used on files stored in the server's
-datastore, since the remapping only applies to VQL queries. Tools will be
-unaware of the remapping and will be unable to find the files. If you need to
-run external tools against the collected files then you can either extract the
-container's contents or mount it using
-[Velociraptor's built-in FUSE utility]({{< relref "#mounting-with-the-fuse-container-command" >}})
-(on Linux only).
+- what's contained in your offline collection container (copied files and parsed
+  JSON results),
+- the type of analysis you need to run on the copied files,
+- your level of VQL experience and preferred process (for example, if you need
+  to post-process files in thousands of collection containers then running a
+  separate client might not be as practical as repeating the same VQL in a
+  notebook),
+- and possibly other factors.
 
-For extracting the container you can use either
-[the Velociraptor unzip command]({{< relref "#extracting-or-listing-with-the-velociraptor-unzip-command" >}})
-or [external unzip tools]({{< relref "#extraction-with-external-tools" >}}).
+#### Working with External Tools
 
-If you want to work with the collection's JSON results in external programs,
-then you can either extract the container contents or use the FUSE command to
-provide access to the JSON files.
+External tools cannot directly access files stored in the server’s datastore or
+the collection container when using remapping.
+
+If you need to run external tools against the collected files then you can
+either:
+
+- [Extract the container]({{< relref "#accessing-collection-containers-without-importing" >}}):
+  Use the `velociraptor unzip` command or external unzip tools to extract the
+  files.
+
+- [Mount the container with FUSE]({{< relref "#mounting-with-the-fuse-container-command" >}}):
+  Use Velociraptor's built-in FUSE utility (on Linux only) to mount the
+  container and provide access to it's file contents.
+
+These options are also applicable if you want to work with the collection's JSON results in external programs
 
 
 ## Importing collections into the Velociraptor server
