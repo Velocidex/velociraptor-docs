@@ -1,8 +1,8 @@
 ---
-title: "Memory Analysis with Velociraptor - Part 2""
+title: "Memory Analysis with Velociraptor - Part 2"
 description: |
     This blog is the second part of the memory analysis series.
-    We will dive into how to detect fileless malware with Velociraptor 
+    We will dive into how to detect fileless malware with Velociraptor
     live in RAM (i.e. without dumping the RAM).
 
 tags:
@@ -291,15 +291,16 @@ With these results, the true negatives (TN) are 35%, while the false positives
 As shown in the equations below, the detection rate is 100.0%, while the
 sensitivity is 70.6%, and the accuracy is 80.8%.
 
-$Detection rate = \frac{TP}{TP + FP} \times 100 = \frac{24}{24 + 0} \times 100 = 100.0%$
+{{% math "Detection\ rate = \frac{TP}{TP + FP} \times 100 = \frac{24}{24 + 0} \times 100 = 100.0\%" %}}
 
-$Sensitivity = \frac{TP}{TP + FN} \times 100 = \frac{24}{24 + 10} \times 100 = 70.6%$
+{{% math "Sensitivity = \frac{TP}{TP + FN} \times 100 = \frac{24}{24 + 10} \times 100 = 70.6\%" %}}
 
-$Accuracy = \frac{TN + TP}{TN + TP + FN + FP} \times 100 = \frac{18 + 24}{18 + 24 + 10 + 0} \times 100 = 80.8%$
+{{% math "Accuracy = \frac{TN + TP}{TN + TP + FN + FP} \times 100 = \frac{18 + 24}{18 + 24 + 10 + 0} \times 100 = 80.8\%" %}}
 
-Lastly, detections usually ran within 1-5 minutes, sometimes in under a minute
-depending on the system hardware. It scales to the maximum number of systems
-Velociraptor can handle in parallel (i.e. >10.000 machines).
+Lastly, detections usually ran within 1-5 minutes, sometimes in under
+a minute depending on the system hardware. It scales to the maximum
+number of systems Velociraptor can handle in parallel (i.e. >10.000
+machines).
 
 # 6. Discussion
 
@@ -339,4 +340,3 @@ We would like to express our gratitude to Prof. Nicolas Wolovick for supporting
 this publication with advice and guidance and to Mike Cohen for improving our
 VQL code as well as helping us understand the connection between `RVA`,
 `BaseOfData` and `ASLR`.
-
