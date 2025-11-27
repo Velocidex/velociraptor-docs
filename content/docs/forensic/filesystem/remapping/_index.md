@@ -136,10 +136,8 @@ path: {
 
 ### Dead disk analysis
 
-This remapping is useful to virtualize a query and allow it to run in
+Remapping is useful to virtualize a query and allow it to run in
 a different environment than it was initially designed for. This
 allows us to reuse artifacts in different contexts. For example, a
-live artifact can be reused with a dead disk image.
-
-Click this link to learn more about how to create remapping files for
-[dead disk analysis]({{< ref "/blog/2022/2022-03-22-deaddisk/" >}})
+live artifact can be reused with a
+[dead disk image]({{< ref "/docs/forensic/deaddisk/" >}}).
