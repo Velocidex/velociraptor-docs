@@ -194,8 +194,8 @@ endpoint. With offline collectors you often don't get the chance to run any
 further collections - and even if you could, this would require building more
 offline collectors and going through a potentially arduous process to run them.
 
-Iteratively querying file-based data sources if often necessary during an
-investigation, while offline collectors usually represent a one-shot approach
+However, iteratively querying file-based data sources is often necessary during
+an investigation, while offline collectors usually represent a one-shot approach
 to collection. In those circumstances the files copied by the offline collector
 could be all you have to work with, so there are a few alternatives to consider
 for "post-processing" those files, which we'll explain below.
