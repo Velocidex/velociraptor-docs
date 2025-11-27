@@ -256,9 +256,11 @@ There are two ways to run artifacts on files copied by an offline collector:
 You could of course use a combination of these methods. Your choice will depend
 on:
 
-- what's contained in your offline collection container (copied files and parsed
-  JSON results),
-- the type of analysis you need to run on the copied files,
+- what's contained in your offline collection container (mainly copied files or
+  mainly parsed JSON results?),
+- the type of analysis you need to run on the copied files (for example, an
+  additional query against a single registry hive may not justify running a
+  separate client),
 - your level of VQL experience and preferred process (for example, if you need
   to post-process files in thousands of collection containers then running a
   separate client might not be as practical as repeating the same VQL in a
