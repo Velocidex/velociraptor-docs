@@ -8,4 +8,4 @@ weight: 100
 summary: "Customize your GUI preferences"
 ---
 
-{{% include-content "/docs/gui/user_preferences/" %}}
+{{% include-page "/docs/gui/user_preferences/" %}}

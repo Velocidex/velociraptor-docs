@@ -5,6 +5,7 @@ summary: |
     This page describes how remapping can be used to virtualize VQL queries
     within Velociraptor using remapping rules.
 date: 2024-04-11T23:25:17Z
+last_reviewed: 2025-11-16
 draft: false
 weight: 40
 ---
@@ -13,7 +14,7 @@ In the previous section we learned how the Velociraptor's path
 handling allows for precise and correct path manipulations. The OSPath
 abstraction allows VQL plugins and functions to open files in a
 consistent way using different accessors. For example we have seen how
-files can be read inside a `zip` file easily, while still using the
+files can be read inside a zip file easily, while still using the
 familiar `glob()` plugin.
 
 
@@ -54,12 +55,12 @@ SELECT * FROM foreach(row={
 ```
 
 If we created an artifact with this query in it, then how can we use
-the same existing artifact within a zip file instead of on the
+the same existing artifact to search within a zip file instead of on the
 filesystem?
 
 Comparing the two queries above we can see they are very similar. The
 only thing that is really different between them is the path and the
-accessor used, the general VQL query is exactly the same.
+accessor used. The basic VQL query is exactly the same.
 
 ## Remapping and VQL
 
@@ -69,25 +70,26 @@ the VQL engine as a sandbox interpreting the VQL queries. However,
 there are really only two ways for VQL queries to interact with the
 system:
 
-1. Using accessors and OSPath objects allows VQL queries to access
-   various filesystem like constructs (e.g. registry, zip files etc).
+1. Using [accessors]({{< ref "/vql_reference/accessors/" >}})
+   and OSPath objects allows VQL queries to access various filesystem-like
+   constructs (e.g. registry, zip files, etc).
 2. Using specific plugins and VQL functions allows queries to call
    APIs on the host.
 
 ![VQL queries run in a sandbox](vql_interactions.png)
 
-The idea behind `remapping rules` is to provide a system for mapping
+The idea behind **remapping rules** is to provide a system for mapping
 certain accessors into other accessor names so as to turn the generic
 query above from using the `auto` accessor into automatically using the
-`zip` accessor. This allows us to `virtualize` the VQL query to run in
-a different context - for example a query designed to run on the live
-filesystem can simply run on a dead disk image.
+`zip` accessor. This allows us to _virtualize_ the VQL query to run in
+a different context - for example a query designed to run on a live
+filesystem can then simply be run on a dead disk image.
 
 ![Path Remapping in Velociraptor](remapping_paths.png)
 
 Consider the remapping configuration illustrated above. In this
-configuration, when a plugin uses the "auto" accessor with a path like
-"/Dir1", the "zip" accessor is used instead with an OSPath of
+configuration, when a plugin uses the `auto` accessor with a path like
+`/Dir1`, the `zip` accessor is used instead with an OSPath of
 `{DelegatePath="F:/hello.zip"}`. This happens transparently once the
 mapping rule is set up!
 

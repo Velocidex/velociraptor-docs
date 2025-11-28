@@ -757,9 +757,6 @@ need to tell it where to find the Linux binary.
 {{% /tab %}}
 {{< /tabs >}}
 
-If the output file name is not specified (using the `--output` flag) then it
-will be auto-generated and include the version number and architecture.
-
 By default, if the `--binary` flag is not specified, then the installer package
 will be created using the binary that invoked the `debian client` command. To
 package a binary for a different architecture, for example arm64, you must
@@ -805,9 +802,6 @@ need to tell it where to find the Linux binary.
 
 {{% /tab %}}
 {{< /tabs >}}
-
-If the output file name is not specified (using the `--output` flag) then it
-will be auto-generated and include the version number and architecture.
 
 By default, if the `--binary` flag is not specified, then the installer package
 will be created using the binary that invoked the `rpm client` command. To
