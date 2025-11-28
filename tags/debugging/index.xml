@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debugging on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/debugging/</link><description>Recent content in Debugging on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 21 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/debugging/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I debug the client while it is running?</title><link>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</guid><description>&lt;h1 id="how-do-i-debug-the-client-while-it-is-running">How do I debug the client while it is running?&lt;/h1>
+&lt;p>Sometimes we collect artifacts from clients but for some reason things seem to take longer than expected. Velociraptor has mechanisms to gain visibility into how clients behave and what queries are running.&lt;/p>
+&lt;h2 id="query-logs">Query logs&lt;/h2>
+&lt;p>The first port of call is viewing the query logs in the logs tab of the relevant collection.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7c86ff2b12e4fdf25f00b8e09d60698f">
+ &lt;div data-featherlight="#7c86ff2b12e4fdf25f00b8e09d60698f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/https://user-images.githubusercontent.com/3856546/159195874-ec6c8322-cb70-4254-861a-95888db94201.png" alt="Viewing the query logs" />
+ &lt;/div>
+ &lt;figcaption>
+ Viewing the query logs
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As the query is running, it will emit a message to let us know that it is waiting for rows. We use this to determine that the query is still running on the client.&lt;/p>
+&lt;h2 id="collecting-profiles">Collecting profiles&lt;/h2>
+&lt;p>The &lt;code>Generic.Client.Profile&lt;/code> artifact allows us to collect internal state of the client. Simply collect this from the client, while other queries are running&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a0871aaf4dcd4891fffd377e8a831ecf">
+ &lt;div data-featherlight="#a0871aaf4dcd4891fffd377e8a831ecf" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/https://user-images.githubusercontent.com/3856546/159196011-28808471-4111-42ba-bfd3-819381bdf596.png" alt="Client Profile" />
+ &lt;/div>
+ &lt;figcaption>
+ Client Profile
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most common thing to collect include:&lt;/p>
+&lt;ol>
+&lt;li>The Goroutine dump shows a stack trace of all currently running goroutines (similar to threads). This helps us understand if there is a deadlock or another bug.&lt;/li>
+&lt;li>The logs delivers a recent dump of client logs. Normally the client does &lt;strong>not&lt;/strong> write it&amp;rsquo;s logs to file to avoid information leakage issues. You can see the logs on the console by running the client with the &lt;code>-v&lt;/code> flag, but each client also keeps the last 1000 messages in a memory buffer so they can be available if needed. This option sends the recent logs to the server.&lt;/li>
+&lt;li>Query logs are a recent log of VQL queries running on the endpoint. This gives us an idea of exactly what the client is doing.&lt;/li>
+&lt;li>Metrics are internal program counters that provide visibility of performance related items.&lt;/li>
+&lt;/ol>
+&lt;p>When asking for help on Discord or our mailing list, we will often ask for the profiles collected from the client (or server). At a minimum we will need the above items to diagnose any issues.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>The nice thing about collecting profiles is that the client does &lt;strong>not&lt;/strong> need to be restarted and we do not need to run a special debug build - all clients are capable of collecting profile information at any time.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h3 id="references">References&lt;/h3>
+&lt;p>You can read more about &lt;a href="https://docs.velociraptor.app/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/" target="_blank" >profiling Velociraptor here&lt;/a>
+.&lt;/p></description></item></channel></rss>
