@@ -6,6 +6,8 @@ summary: |
    Velociraptor contains powerful NTFS analysis capabilities.
 draft: false
 weight: 50
+aliases:
+  - "/docs/forensic/ntfs/"
 ---
 
 NTFS is the standard Windows filesystem.  Velociraptor contains
@@ -17,8 +19,9 @@ number of DFIR contexts.
 
 ## The Master File Table
 
-In NTFS, all files are represented in a [Master File Table (MFT)](https://docs.microsoft.com/en-us/windows/win32/fileio/master-file-table). The
-MFT is also a file within the filesystem with the special filename of
+In NTFS, all files are represented in a
+[Master File Table (MFT)](https://docs.microsoft.com/en-us/windows/win32/fileio/master-file-table).
+The MFT is also a file within the filesystem with the special filename of
 `$MFT`. While this special file is normally hidden by the API,
 Velociraptor's NTFS parser makes it available to view, read or upload.
 
@@ -58,7 +61,7 @@ binary to `runme.exe`. I can then create a service that launches
 directory will fail to show the file and analysis may conclude that
 the service target is missing from the filesystem.
 
-```shell
+```sh
 C:\Users\test>fsutil file setshortname velociraptor.exe runme.exe
 C:\Users\test>dir /x *.exe
  Volume in drive C has no label.
@@ -75,12 +78,13 @@ usage: velociraptor [<flags>] <command> [<args> ...]
 
 {{% /notice %}}
 
-## The `ntfs` accessor
+## The ntfs accessor
 
 Velociraptor has a complete NTFS parser able to access files and
 directories by parsing the raw NTFS filesystem from the raw device. To
 make it easy to utilize this parser with VQL, Velociraptor implements
-the `ntfs` accessor (For a description of accessors, see [here]({{< ref "/docs/forensic/filesystem/#filesystem-accessors" >}}) ).
+the `ntfs` accessor (For a description of accessors, see
+[here]({{< ref "/docs/forensic/filesystem/#filesystem-accessors" >}}) ).
 
 The `ntfs` accessor makes it possible to see and access the normally
 hidden NTFS files such as `$MFT`. It also makes it possible to see
@@ -153,7 +157,7 @@ You can use it to analyze older versions of the drive!
 
 ## Parsing the MFT
 
-Since the `ntfs` accessor allows accessing the `$MFT` file as a
+Since the `ntfs` accessor allows accessing the $MFT file as a
 regular file, you can download the entire $MFT file from the endpoint
 using the ntfs accessor, then process it offline. For example using
 the `Windows.Search.FileFinder` artifact with the `ntfs` accessor - or
@@ -301,9 +305,9 @@ of slack space to potentially hold residual data.
 ![I30 slack](image54.png)
 
 Velociraptor can report on the $I30 streams and carve out headers from
-slack using the `parse_ntfs_i30()` function as discussed in [this
-article](https://www.fireeye.com/blog/threat-research/2012/10/incident-response-ntfs-indx-buffers-part-4-br-internal.html). An
-example query:
+slack using the `parse_ntfs_i30()` function as discussed in
+[this article](https://www.fireeye.com/blog/threat-research/2012/10/incident-response-ntfs-indx-buffers-part-4-br-internal.html).
+An example query:
 
 ```sql
 SELECT * FROM foreach(
@@ -379,6 +383,10 @@ artifact.
 
 {{% notice tip %}}
 
-The USN journal contains so much valuable evidence that it might be worth carving for USN records from the raw disk. Although this is a slow process it can yield very good results if your are lucky - see [this blog post]({{< ref "/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/" >}}) for more information.
+The USN journal contains so much valuable evidence that it might be worth
+carving for USN records from the raw disk. Although this is a slow process it
+can yield very good results if your are lucky - see
+[this blog post]({{< ref "/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/" >}})
+for more information.
 
 {{% /notice %}}

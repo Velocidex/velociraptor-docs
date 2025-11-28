@@ -188,7 +188,8 @@ This field categorizes the artifact into one of the six available types:
   - pruning old clients and cleaning up associated data that's taking up space
     on disk.
 
-- The `SERVER_EVENT` type establishes server [event queues]({{< ref "/docs/artifacts/event_queues/" >}})
+- The `SERVER_EVENT` type establishes server
+  [event queues]({{< ref "/docs/artifacts/event_queues/" >}})
   Typically artifacts of this type also contain VQL to process and act upon
   events arriving in the associated event queue.
 
@@ -202,18 +203,19 @@ This field categorizes the artifact into one of the six available types:
   artifacts have the word
   "Internal" [in their name]({{< ref "/tags/internal-artifact/" >}}).
 
-- The `NOTEBOOK` type is a relatively recent development. Artifacts of this type
-  are also called [Notebook Templates]({{< ref "/docs/artifacts/notebook_templates/" >}}),
-  and are used when creating new global notebooks. As with the other artifact
-  types these also support parameter, imports, exports, tools, etc.
+- The `NOTEBOOK` type is used when creating new global notebooks. Artifacts of
+  this type are also called
+  [Notebook Templates]({{< ref "/docs/artifacts/notebook_templates/" >}}),
+  As with the other artifact types, these also support parameters, imports,
+  exports, tools, etc.
 
 Although the value of the `type` field is not case-sensitive, for historical
 reasons most artifacts use uppercase for the field's value, but this is not
 a requirement.
 
 All artifact types (with the exception of the `INTERNAL` type) are available as
-[search filters]({{< ref "/docs/gui/artifacts/#searching-artifacts" >}})
-on the Artifacts screen.
+[search filter]({{< ref "/docs/gui/artifacts/#searching-artifacts" >}})
+presets on the Artifacts screen.
 
 Artifacts are hidden from the artifact selection lists in the GUI if they have
 [no `sources`]({{< ref "/docs/artifacts/use_cases/#sourceless-artifacts" >}}).

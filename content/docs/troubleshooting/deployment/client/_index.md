@@ -11,8 +11,8 @@ summary: |
 
 {{% notice note %}}
 
-The steps in this section assume you are troubleshooting a client that _is not_
-already enrolled and actively communicating with the server.
+The steps in this section assume you are troubleshooting a client that
+_is not already enrolled and actively communicating with the server_.
 
 If you need to troubleshoot issues with a client that is communicating with the
 server - that is an online client - then please see the section
@@ -21,7 +21,7 @@ server - that is an online client - then please see the section
 {{% /notice %}}
 
 
-### Client fails to connect to server
+### Client fails to connect to or stops communicating with server
 
 Velociraptor clients will start even if there are issues with the configuration.
 This is by design since a new or updated configuration may be delivered via
