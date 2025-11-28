@@ -1,5 +1,58 @@
 [
     {
+        "title": "How to create an \"online collector\" binary",
+        "link": "/knowledge_base/tips/online_collector",
+        "tags": [
+            "automation",
+            "deployment",
+            "acquisition",
+            "collector"
+        ],
+        "author": "predictiple",
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "How to set up Azure Blob Storage for file uploads",
+        "link": "/knowledge_base/tips/setup_azure_storage",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "predictiple",
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "How to set up a GCS Bucket for file uploads",
+        "link": "/knowledge_base/tips/setup_gcs_storage",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "predictiple",
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "How to set up a SMB share for file uploads",
+        "link": "/knowledge_base/tips/setup_smb_share",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "predictiple",
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2025-11-14"
+    },
+    {
         "title": "Backing up and restoring a server.",
         "link": "/knowledge_base/tips/backing_up",
         "tags": [
@@ -7,8 +60,8 @@
             "deployment"
         ],
         "author": "scudette",
-        "author_link": "https://github.com/scudette",
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
         "date": "2025-11-13"
     },
     {
@@ -183,17 +236,6 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2024-12-06"
-    },
-    {
-        "title": "How do I use the files inside the offline collector ZIP?",
-        "link": "/knowledge_base/tips/fuse_mount",
-        "tags": [
-            "forensics"
-        ],
-        "author": "scudette",
-        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
-        "author_link": "https://github.com/scudette",
-        "date": "2024-11-06"
     },
     {
         "title": "Error \"Parameter refers to an unknown artifact\" when collecting a CLIENT artifact",
@@ -555,58 +597,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "How to create an \"online collector\" binary",
-        "link": "/knowledge_base/tips/online_collector",
-        "tags": [
-            "automation",
-            "deployment",
-            "acquisition",
-            "collector"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
-    },
-    {
-        "title": "How to set up Azure Blob Storage for file uploads",
-        "link": "/knowledge_base/tips/setup_azure_storage",
-        "tags": [
-            "deployment",
-            "uploads",
-            "triage"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
-    },
-    {
-        "title": "How to set up a GCS Bucket for file uploads",
-        "link": "/knowledge_base/tips/setup_gcs_storage",
-        "tags": [
-            "deployment",
-            "uploads",
-            "triage"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
-    },
-    {
-        "title": "How to set up a SMB share for file uploads",
-        "link": "/knowledge_base/tips/setup_smb_share",
-        "tags": [
-            "deployment",
-            "uploads",
-            "triage"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

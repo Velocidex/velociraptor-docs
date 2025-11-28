@@ -320,4 +320,4 @@ This artifact is designed to be used as follows:
 
 ## Working with the tools inventory via the CLI
 
-{{% include-content "/docs/cli/tools/" %}}
+{{% include-page "/docs/cli/tools/" %}}

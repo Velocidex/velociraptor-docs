@@ -28,8 +28,8 @@ from an elevated command shell.
 On Windows they can also be launched by right-clicking and choosing "Run as
 administrator", although the collector is a console application so it will still
 run in the default terminal. In certain circumstances it is possible to use the
-`runas` command on Windows, or `sudo` in very recent versions of Windows, to
-launch the collector from an unprivileged command shell.
+`runas` command on Windows, or even `sudo` (in very recent versions of Windows),
+to launch the collector from an unprivileged command shell.
 
 On macOS and Linux you can launch the collector in an elevated terminal, but
 it's more often done in a non-elevated terminal using the `sudo` command. On

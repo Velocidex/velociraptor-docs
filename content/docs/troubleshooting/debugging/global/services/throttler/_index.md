@@ -44,7 +44,7 @@ it, as the average CPU utilization drops below 50%. If those queries
 use CPU resources, they will push the CPU usage up and it may never
 get to 20%.
 
-In recent versions of Velociraptor a global CPU limit may apply if
+A global CPU limit may automatically be applied if
 Velociraptor detects it is running on a particularly low resource
 endpoint (e.g. with only a single core).
 
