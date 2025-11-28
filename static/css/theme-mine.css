@@ -1126,3 +1126,7 @@ body.light img.logo.dark {
 body.dark img.logo.dark {
     display: inherit;
 }
+
+table tr th {
+    padding-right: 20px;
+}
