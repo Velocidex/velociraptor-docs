@@ -163,11 +163,14 @@ of 32-bit executables (see
 [Microsoft](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#optional-header-image-only)
 and [0xrick](https://0xrick.github.io/win-internals/pe4/) for details).
 
-In the first stage of our experiments, `BaseOfData` introduces changes to the
-.text segment of one byte. Since this is a relative address, the offset between
-code and memory content is always the same and actually represents the Address
-Space Layout Randomization (ASLR) offset. For example, in our analysis of
-`firefox.exe` process, we observed the following differences (see Table 1).
+In the first stage of our experiments, `BaseOfData` introduced changes
+to the .text segment of one byte. For example, in our analysis of
+`firefox.exe` process, we observed the differences shown in
+Table 1. Since `BaseOfData` is a relative address, the offset between
+code and memory content is always the same (as shown in the table). It
+actually represents Address Space Layout Randomization (ASLR) and,
+thus, while we only observed one byte offsets, it is actually a 32-bit
+or 64-bit offset depending on the system.
 
 | Memory  | Disk  | Times | Difference |
 |---------|-------|-------|------------|
@@ -302,6 +305,14 @@ depending on the system hardware. It scales to the maximum number of systems
 Velociraptor can handle in parallel (i.e. >10.000 machines).
 
 # 6. Discussion
+
+TODO: hooking techniques: inline hooking, process hollowing, create remote thread injection, hooking api calls (security tools)
+TODO: compare with other techniques
+TODO: hollows hunter https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ
+TODO: pe-sieve https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ#pe-sieve-gives-me-a-lot-of-false-positives-why
+TODO: speed: VQL parallelisation, no uploading binary (thus no regulation of CPU load of velo)
+TODO: when to use which tool
+
 
 We tested the technique against available malware, own malware created using
 three well-known C2 frameworks, and benign software.
