@@ -1,8 +1,8 @@
 ---
-title: "Memory Analysis with Velociraptor - Part 2""
+title: "Memory Analysis with Velociraptor - Part 2"
 description: |
     This blog is the second part of the memory analysis series.
-    We will dive into how to detect fileless malware with Velociraptor 
+    We will dive into how to detect fileless malware with Velociraptor
     live in RAM (i.e. without dumping the RAM).
 
 tags:
@@ -10,7 +10,7 @@ tags:
  - Memory
 
 author: "Dr. Michael Denzel, Lautaro Lecumberry"
-date: 2025-11-17
+date: 2025-11-30
 noindex: false
 ---
 
@@ -54,7 +54,13 @@ computers.
 
 # 2. Background and Existing Techniques
 
-## 2.1. Volatility & Malfind
+## 2.1. Hooking Techniques
+
+TODO: hooking techniques: inline hooking, process hollowing, create remote thread injection, hooking api calls (security tools)
+https://www.infosecinstitute.com/resources/penetration-testing/red-team-tutorial-a-walkthrough-on-memory-injection-techniques/
+https://attack.mitre.org/techniques/T1055/
+
+## 2.2. Volatility & Malfind
 
 One of the main existing tools to analyze the RAM is
 [volatility](https://github.com/volatilityfoundation/volatility3). It requires
@@ -68,14 +74,14 @@ that are writable and executable. The hypothesis is that memory pages are
 either writable or executable. If executable pages are writable again, it means
 an injection took place and the page is flagged.
 
-## 2.2. Hollowshunter
+## 2.3. Hollowshunter
 
 [Hollowshunter](https://github.com/hasherezade/hollows_hunter) scans the RAM of
 one machine for various malware injection techniques. It uses
 [PE-sieve](https://github.com/hasherezade/pe-sieve), a tool to scan a single
 process.
 
-## 2.3. MemProcFS
+## 2.4. MemProcFS
 
 [MemProcFS](https://github.com/ufrisk/MemProcFS) provides a filesystem-like
 view of the RAM. This way, files can easily be accessed. However, detection of
@@ -294,23 +300,32 @@ With these results, the true negatives (TN) are 35%, while the false positives
 As shown in the equations below, the detection rate is 100.0%, while the
 sensitivity is 70.6%, and the accuracy is 80.8%.
 
-$Detection rate = \frac{TP}{TP + FP} \times 100 = \frac{24}{24 + 0} \times 100 = 100.0%$
+{{% math "Detection\ rate = \frac{TP}{TP + FP} \times 100 = \frac{24}{24 + 0} \times 100 = 100.0\%" %}}
 
-$Sensitivity = \frac{TP}{TP + FN} \times 100 = \frac{24}{24 + 10} \times 100 = 70.6%$
+{{% math "Sensitivity = \frac{TP}{TP + FN} \times 100 = \frac{24}{24 + 10} \times 100 = 70.6\%" %}}
 
-$Accuracy = \frac{TN + TP}{TN + TP + FN + FP} \times 100 = \frac{18 + 24}{18 + 24 + 10 + 0} \times 100 = 80.8%$
+{{% math "Accuracy = \frac{TN + TP}{TN + TP + FN + FP} \times 100 = \frac{18 + 24}{18 + 24 + 10 + 0} \times 100 = 80.8\%" %}}
 
-Lastly, detections usually ran within 1-5 minutes, sometimes in under a minute
-depending on the system hardware. It scales to the maximum number of systems
-Velociraptor can handle in parallel (i.e. >10.000 machines).
+Lastly, detections usually ran within 1-5 minutes, sometimes in under
+a minute depending on the system hardware. It scales to the maximum
+number of systems Velociraptor can handle in parallel (i.e. >10.000
+machines).
 
 # 6. Discussion
 
-TODO: hooking techniques: inline hooking, process hollowing, create remote thread injection, hooking api calls (security tools)
-TODO: compare with other techniques
+## 6.1. Comparison to Other Tools
+
+TODO: volatility & malfind
+
 TODO: hollows hunter https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ
 TODO: pe-sieve https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ#pe-sieve-gives-me-a-lot-of-false-positives-why
-TODO: speed: VQL parallelisation, no uploading binary (thus no regulation of CPU load of velo)
+
+TODO: MemProcFS
+
+TODO: summary: speed: VQL parallelisation, no uploading binary (thus no regulation of CPU load of velo)
+
+## 6.2. Evaluation
+
 TODO: when to use which tool
 
 
