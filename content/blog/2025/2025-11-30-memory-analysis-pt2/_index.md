@@ -40,10 +40,11 @@ simultaneously and we can analyze the RAM live without actually dumping it.
 
 # 1. Introduction
 
-The most difficult to detect cyber attacks nowadays are RAM-only attacks or
-file-less attacks. As most security tools focus on detections in persistent
-storage (hard disks), attackers avoid them by leveraging the RAM. Commonly,
-malicious code is injected into legitimate processes live in RAM.
+The most difficult to detect cyber attacks nowadays are RAM-only
+attacks or fileless attacks. As most security tools focus on
+detections in persistent storage (hard disks), attackers avoid them by
+leveraging the RAM. Commonly, malicious code is injected into
+legitimate processes live in RAM.
 
 We already detected fileless malware in a [proof-of-concept
 implementation](https://github.com/lautarolecumberry/DetectingFilelessMalware/blob/main/DetectingFilelessMalware.pdf). Our
@@ -57,7 +58,6 @@ computers.
 ## 2.1. Hooking Techniques
 
 TODO: hooking techniques: inline hooking, process hollowing, create remote thread injection, hooking api calls (security tools)
-https://www.infosecinstitute.com/resources/penetration-testing/red-team-tutorial-a-walkthrough-on-memory-injection-techniques/
 https://attack.mitre.org/techniques/T1055/
 
 ## 2.2. Volatility & Malfind
@@ -313,49 +313,112 @@ machines).
 
 # 6. Discussion
 
-## 6.1. Comparison to Other Tools
+## 6.1. Evaluation
 
-TODO: volatility & malfind
+We tested `Mem2Disk` against available malware, own malware created
+using three well-known C2 frameworks, and benign software.
 
-TODO: hollows hunter https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ
-TODO: pe-sieve https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ#pe-sieve-gives-me-a-lot-of-false-positives-why
+The results are quite promising and we were able to detect
+state-of-the-art open source C2 frameworks. When filtering out ASLR,
+`Mem2Disk` did not detect many false positives in our tests.
 
-TODO: MemProcFS
+Our approach shows that it is possible to scale RAM analysis up to
+multiple systems without prior knowledge which systems might be
+affected.
 
-TODO: summary: speed: VQL parallelisation, no uploading binary (thus no regulation of CPU load of velo)
+`Mem2Disk` only detects RAM injections that are visible within the
+.text segment of a process or its libraries. Adding a new library
+(e.g. through the Import Address Table (IAT)) or a new memory page is
+not detected. The same applies for manipulations in other memory
+locations of a process.
 
-## 6.2. Evaluation
+Thus, Portable Executable (PE) injections
+([T1055.002](https://attack.mitre.org/techniques/T1055/002/)), threat
+execution hijacking
+([T1055.003](https://attack.mitre.org/techniques/T1055/003/)), threat
+local storage
+([T1055.005](https://attack.mitre.org/techniques/T1055/005/)), ptrace
+system calls
+([T1055.008](https://attack.mitre.org/techniques/T1055/008/)), process
+hollowing
+([T1055.012](https://attack.mitre.org/techniques/T1055/012/)), process
+doppelgänging
+([T1055.013](https://attack.mitre.org/techniques/T1055/013/)), and
+ListPlanting
+([T1055.015](https://attack.mitre.org/techniques/T1055/015/)) could be
+detected.
 
-TODO: when to use which tool
+While Asynchronous Procedure Call (APC) injection
+([T1055.004](https://attack.mitre.org/techniques/T1055/004/)), proc
+memory injections
+([T1055.009](https://attack.mitre.org/techniques/T1055/009/)), extra
+windows memory injection
+([T1055.011](https://attack.mitre.org/techniques/T1055/011/)), and
+Virtual Dynamic Shared Object (VDSO) hijacking
+([T1055.014](https://attack.mitre.org/techniques/T1055/014/)) are
+currently not detected.
 
+DLL injection
+([T1055.001](https://attack.mitre.org/techniques/T1055/001/)) might be
+detected if program code or DLL code is changed (e.g. DLL hollowing)
+but is not detected if a DLL is loaded additionally (e.g. via IAT).
 
-We tested the technique against available malware, own malware created using
-three well-known C2 frameworks, and benign software.
+If malware removes itself from RAM temporarily or hooks the functions
+used by Velociraptor, it could still hide itself from `Mem2Disk`. We
+also observed that some of the false negatives ran pretty quickly, so
+we suspect that they were already finished when Velociraptor ran.
 
-The results are quite promising and we were able to detect state-of- the-art
-open source C2 frameworks. This is the first approach we know that scales to
-thousands of systems in parallel.
+Lastly, there are legitimate tools - likely security tools - using
+similar functionalities, which would create false positives. We have
+not encountered them, since we do not have licenses for most of these
+tools, but analysts should be aware of them.
 
-When ignoring relocation offsets and the Velociraptor binary itself, `Mem2Disk`
-does not detect many false positives. Occasionally, some Windows system
-processes would pop up in the detections, however on a second run of `Mem2Disk`
-they usually disappear.
+## 6.2. Comparison to Other Tools
 
-If malware removes itself from RAM temporarily or hooks the functions used by
-Velociraptor, it could still hide itself from `Mem2Disk`. We also observed that
-some of the false negatives ran pretty quickly, so we suspect that they were
-already finished when Velociraptor ran.
+Volatility as the state-of-the-art memory forensics tool has a
+different focus to our implementation. Volatility aims to enable a
+forensic expert to deeply analyze one RAM dump. It does not scale to
+multiple RAMs and it relies mostly on the knowledge of the
+analyst. The most comparable plugin `malfind` searches for executable
+(and writable) memory pages like `Mem2Disk` however then analyzes
+those pages more thoroughly than `Mem2Disk`. So, Volatility is more
+capable than `Mem2Disk` but does not scale well.
 
-However, our approach shows that it is possible to scale RAM analysis up to
-multiple systems without prior knowledge which systems might be affected. We
-challenge blue teamers around the world to experiment with scalable RAM
-detections like with Velociraptor.
+MemProcFS per se is more of a RAM access tool than a RAM analysis
+tool. It enables the analyst to access the RAM through a browser but
+ultimately relies on the analyst to find malware with the exception of
+the `findevil` plugin. It is work in progress and currently only
+detects user-mode malware. It is comparable to Volatility, provides
+more options than `Mem2Disk` but cannot be executed on multiple
+machines easily.
+
+Hollows Hunter and PE-sieve are the most comparable tools to
+`Mem2Disk`. They employ a variety of techniques to detect malware on
+one system and are more capable and in-depth than `Mem2Disk`. Hollows
+Hunter can also be executed via Velociraptor with the
+`Windows.Memory.HollowsHunter` plugin and scales to multiple machines.
+
+In contrast to `Windows.Memory.HollowsHunter`, `Mem2Disk` is a
+Velociraptor-native plugin fully written in VQL and benefits from
+Velociraptors parallelisation. No additional binary has to be uploaded
+to the client machines (unlike `Windows.Memory.HollowsHunter`), which
+also means Velociraptor can regulate the CPU load of `Mem2Disk`.
+
+In summary, `Mem2Disk` is useful for breadth search. For example when
+not knowing if or where fileless malware hides within a full network
+of more than a few machines. When analyzing known-compromised machines
+or only a few suspicious machines, the other mentioned tools give more
+details than `Mem2Disk` and should be preferred.
 
 # 7. Conclusion
 
 All in all, the blue team just stepped up. We are able to detect injected
 implants of common C2 frameworks live in RAM and scalable to thousands of
 machines in nearly real-time.
+
+We also recommend memory forensics experts to think about scalability
+of their tools. Velociraptor enables memory forensics on multiple
+machines without dumping the RAM.
 
 Happy detecting!
 
