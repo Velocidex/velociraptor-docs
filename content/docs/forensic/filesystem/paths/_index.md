@@ -6,7 +6,7 @@ summary: |
 date: 2024-04-11T23:25:17Z
 draft: false
 weight: 30
-last_reviewed: 2025-06-30
+last_reviewed: 2025-11-15
 ---
 
 In DFIR we often talk about paths and filesystems. However, these are
@@ -118,7 +118,7 @@ string to VQL functions that require an OSPath. The relevant accessor
 is used to parse that string into an OSPath object appropriate for
 that accessor.
 
-## The glob() plugin
+## The glob plugin
 
 One of the most commonly used plugins in Velociraptor is the `glob()`
 plugin. This plugin allows searching of filesystems using a glob

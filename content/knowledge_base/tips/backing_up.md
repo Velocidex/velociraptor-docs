@@ -22,7 +22,7 @@ Luckily the client ID is actually a property of the clients
 themselves. The Velociraptor Client ID is derived from the client's
 cryptographic key and so it is not managed by the server at all -
 instead it is stored on the client's in their writeback
-file. Additionally, client registration (or `enrollement` in
+file. Additionally, client registration (or `enrollment` in
 Velociraptor terminology), is done automatically the first time the
 client is seen by the server.
 
@@ -68,11 +68,16 @@ not enough:
 6. Multi-tenanted orgs are lost
 
 To address some of these issues, Velociraptor creates a backup package
-daily. You can also force Velociraptor to create a backup package
-using the VQL [backup()]({{< ref "/vql_reference/server/backup/" >}})
-function, but if you do not you can find the daily packages in the
-backup directory `<filestore>/backups/`. Note that the backup package
-in the root org will contain all other orgs' backups as well.
+daily by default. If you need more frequent backups, you can configure the
+backup interval in your server config using the
+[defaults.backup_period_seconds]({{< ref
+"/docs/deployment/references/#defaults.backup_period_seconds" >}}) setting.
+
+You can also force Velociraptor to create a backup package using the VQL
+[backup()]({{< ref "/vql_reference/server/backup/" >}}) function, but if you do
+not you can still find the scheduled (daily by default) packages in the backup
+directory `<filestore>/backups/`. Note that the backup package in the root org
+will contain all other orgs' backups as well.
 
 ```vql
 SELECT * FROM backup(name="MyBackup")
@@ -87,7 +92,7 @@ save bulky items like collected data, rather only metadata is stored
 about the server.
 
 For example, the hunts are saved, but not the list of clients that
-have already provided results to the hunt (since actual collected data
+have already provided results to the hunt (since the associated collection data
 is not backed up). This means that when restoring the backup on a new
 server, clients will participate in existing hunts again.
 
@@ -100,12 +105,46 @@ SELECT * FROM backup_restore(name="MyBackup")
 
 ![Restoring a backup package](restoring_backup.png)
 
-You can restore all the data or just a subset using the provider
-parameter to [backup_restore()]({{< ref
-"/vql_reference/server/backup_restore" >}}).
+Backups always include the data from all Providers, but when restoring you can
+choose a subset that you want to restore the using the
+[backup_restore()]({{< ref "/vql_reference/server/backup_restore" >}})
+`providers` parameter.
 
-Note that ACL records are not automatically restored for security
-reasons.
+The current backup providers are:
+
+- `ACLBackupProvider`
+- `ClientInfoBackupProvider`
+- `HuntBackupProvider`
+- `NotebookBackupProvider`
+- `RepositoryBackupProvider`
+
+
+Note that ACL records are not automatically restored for security reasons.
+However you can restore them from the backup data in a Velociraptor notebook,
+after carefully reviewing the data. For example, this VQL would restore the
+users and ACLs for a specific org:
+
+```vql
+SELECT *
+FROM foreach(
+  row={
+    SELECT *
+    FROM parse_jsonl(
+      filename="/tmp/extracted_backups/orgs/O123/acls.json")
+  },
+  query={
+    SELECT
+    user_create(
+      user=Principal.name,
+      orgs=Principal.orgs[0].id,
+      roles=Policy.roles),
+    user_grant(
+      user=Principal.name,
+      orgs=Principal.orgs[0].id,
+      policy=Policy)
+    FROM scope()
+  })
+```
 
 ## Backing up collected data
 
@@ -217,7 +256,7 @@ from the shared directory.
 ```vql
 LET DestDir <= "/tmp/imports/"
 
-SELECT SELECT OSPath, import_collection(filename=OSPath)
+SELECT OSPath, import_collection(filename=OSPath)
 FROM glob(globs="*.zip", root=DestDir)
 ```
 

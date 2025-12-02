@@ -8,6 +8,6 @@ summary: "How to call artifacts from VQL"
 last_reviewed: 2025-05-28
 ---
 
-{{% include-content "/docs/vql/artifacts/calling/" %}}
+{{% include-page "/docs/vql/artifacts/calling/" %}}
 
 

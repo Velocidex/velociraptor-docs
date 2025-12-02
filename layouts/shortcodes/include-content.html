@@ -1,6 +1,3 @@
-{{/* https://discourse.gohugo.io/t/readfile-does-not-parse-shortcodes/16667/8 */}}
+{{/* https://roneo.org/en/hugo-include-another-file-with-a-shortcode/ */}}
 {{ $file := .Get 0 }}
-{{ $page := .Site.GetPage $file }}
-{{ with $page }}
-  {{ .RenderShortcodes }}
-{{ end }}
+{{ (printf "%s%s" .Page.File.Dir $file) | readFile | replaceRE "^---[\\s\\S]+?---" "" | safeHTML }}

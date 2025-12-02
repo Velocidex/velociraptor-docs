@@ -2,6 +2,7 @@
 menutitle: "collector"
 title: 'The "collector" command'
 date: 2025-05-20
+last_reviewed: 2025-11-26
 draft: false
 weight: 30
 summary: "Build an offline collector"
@@ -30,6 +31,7 @@ in the GUI.
 The `collector` command allows you to do the same thing on the command line.
 This is mainly intended to support automated build environments.
 
+<i class="fas fa-triangle-exclamation" style="color:gray"></i>
 _The GUI is the recommended way to create offline collectors, particularly for
 new users._
 
@@ -140,7 +142,7 @@ Certain offline collector options imply integration with an existing server:
    (necessary when your selected artifacts require these tools _and_ when those
    tools can't be downloaded directly from the internet on the computer that you
    are creating the collector on).
-1. you want the collector to create X509-secured collection containers (which is
+1. you want the collector to create X.509-secured collection containers (which is
    a recommended option).
 1. you want the collector to include custom artifacts that are in the server's
    artifact repository.
@@ -159,7 +161,7 @@ build environment:
   with access to a server datastore. This gives it access to the tools
   inventory and artifact repository contained in that datastore.
 
-- Offline collectors can create X509-secured collection containers using the
+- Offline collectors can create X.509-secured collection containers using the
   server's certificate, which can then be transparently imported to your
   Velociraptor server. To enable that you'll need to provide the `collector`
   command with access to your server's config (the server into which the

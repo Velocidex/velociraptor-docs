@@ -33,7 +33,7 @@ post]({{< ref
 ### Velociraptor’s internal PKI
 
 Every Velociraptor deployment creates an internal PKI which underpins
-it. The configuration wizard create an internal CA with an X509
+it. The configuration wizard create an internal CA with an X.509
 certificate and a private key. This CA is used to
 
 1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
@@ -49,7 +49,7 @@ certificate and a private key. This CA is used to
 4. Creating client certificates for (optional) mTLS. This allows clients to be
    authenticated using certificates.
 
-The configuration file contains the CA’s X509 certificate in the
+The configuration file contains the CA’s X.509 certificate in the
 `Client.ca_certificate` key (and is therefore included in the client
 configuration). The private key is contained in the `CA.private_key` parameter.
 Since the client’s configuration contains the (trusted) CA's certificate, it is
