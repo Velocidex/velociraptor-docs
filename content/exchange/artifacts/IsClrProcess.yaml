@@ -13,7 +13,7 @@ description: |
   - Collects CLR.dll VersionInformation
   - CommandLine visibility
 
-  NOTE: for Mem2Disk capability, the artifact expects the imported name: Exchange.Windows.Memory.Mem2Disk
+  NOTE: for Mem2Disk capability, the artifact expects the imported name: Windows.Memory.Mem2Disk
   
 parameters:
 - name: ProcessRegex
@@ -90,14 +90,14 @@ sources:
                         ) as Functions
             FROM flatten(query={ 
                 SELECT Differences.Func As Functions 
-                FROM Artifact.Exchange.Windows.Memory.Mem2Disk(
+                FROM Artifact.Windows.Memory.Mem2Disk(
                                 PidFilter="^" + pid + "$",
                                 ModuleRegEx=ModuleRegEx 
                             )
             })
             GROUP BY Functions
         LET find_modules(pid) = SELECT Path 
-            FROM Artifact.Exchange.Windows.Memory.Mem2Disk(
+            FROM Artifact.Windows.Memory.Mem2Disk(
                                 PidFilter="^" + pid + "$",
                                 ModuleRegEx=ModuleRegEx 
                             )
