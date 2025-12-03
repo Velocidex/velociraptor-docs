@@ -1,0 +1,3 @@
+{{ $opts := dict "output" "htmlAndMathml" }}
+{{ $arg := .Get 0 }}
+{{ transform.ToMath $arg $opts }}
