@@ -55,9 +55,15 @@ computers.
 
 # 2. Background and Existing Techniques
 
-## 2.1. Hooking Techniques
+## 2.1. Process injection
 
-TODO: hooking techniques: inline hooking, process hollowing, create remote thread injection, hooking api calls (security tools)
+[Process injection](https://attack.mitre.org/techniques/T1055/) is a code injection technique used to execute arbitrary code within the address space of another process, posibly legitimate. This is done to evade process-based defenses, and scalating privileges. There are many ways of doing so, some of them are:
+
+- [Process hollowing](https://attack.mitre.org/techniques/T1055/012/) is a subtechnique of process injection. It works by creating a process in a suspended state, unmapping its memory, and then replacing it with custom code. The custom code is executed in under the identity of the previously created process, hollowing it.
+- [Thread Execution Hijacking](https://attack.mitre.org/techniques/T1055/003/) is comparable to process hollowing but instead of creating a new process, it controls a live thread in an existing process. To accomplish this, it is necessary to pause the running thread.
+- [Inline hooking](https://unprotect.it/technique/inline-hooking/) is a method used to intercept calls to functions. To do so, the first few bytes of the target function's code in memory are overwritten with a jump instruction, redirecting the execution flow to a custom function.
+
+TODO: hooking techniques: hooking api calls (security tools)?
 https://attack.mitre.org/techniques/T1055/
 
 ## 2.2. Volatility & Malfind
