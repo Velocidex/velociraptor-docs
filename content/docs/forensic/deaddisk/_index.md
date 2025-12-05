@@ -153,7 +153,7 @@ SOFTWARE registry hive inside an EWF-format disk image:
     path_type: registry
 ```
 
-While this may sound complicated - and to be fair complex pathspecs and nest
+While this may sound complicated - and to be fair complex pathspecs and nested
 accessors are quite an advanced topic - Velociraptor includes artifacts that can
 inspect the disk image and automatically generate an appropriate mapping for the
 most common disk layouts (primarily Windows), or at least provide you with much
