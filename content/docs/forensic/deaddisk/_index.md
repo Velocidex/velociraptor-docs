@@ -2,7 +2,7 @@
 menutitle: "Dead Disk Analysis"
 title: "Dead Disk Analysis"
 date: 2025-06-28
-last_reviewed: 2025-11-28
+last_reviewed: 2025-12-04
 draft: false
 weight: 50
 summary: "Working with disk images"
@@ -240,7 +240,7 @@ This impersonation rule implements the following changes:
    depend _only_ on disk-based data. Using the
    **disabled functions and plugins** sections in the impersonation rule, we can
    disable such plugins and functions so that they return no data rather than
-   failing or returing incorrect information. This allows queries that use them
+   failing or returning incorrect information. This allows queries that use them
    to complete without failing.
 
 To allow for this, the remapping lets us define the OS and hostname.  When evaluating VQL and communicating

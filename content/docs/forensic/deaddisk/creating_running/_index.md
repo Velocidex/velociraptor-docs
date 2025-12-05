@@ -91,9 +91,9 @@ Velociraptor with transparent access to the underlying image/filesystem.
 There are several general paths you can take to create a remapping config. Most
 often we have to deal with images of Windows systems, so there is a slight bias
 towards Windows disk images being easier to deal with because they tend to
-conform to a more standardized layout pattern. Linux is tricker to work with due
-to the much larger variety of filesystems, partition management systems (often
-LVM, which we don't currently support), and complex partitioning.
+conform to a more standardized layout pattern. Linux is trickier to work with
+due to the much larger variety of filesystems, partition management schemes
+(often LVM, which we don't currently support), and complex partitioning.
 
 In the examples below we've illustrated the remapping generation using the
 `deaddisk` CLI command, but since it uses the `Generic.Utils.DeadDiskRemapping`
@@ -177,7 +177,7 @@ folder named `Windows` is the `C:` drive.
 
    ![View Artifact Logs](dead_disk_remapping_logs.png)
 
-6. If successsful, the collection's File Uploads tab will now contain the YAML
+6. If successful, the collection's File Uploads tab will now contain the YAML
    remapping config.
 
    You can inspect it in the GUI:
