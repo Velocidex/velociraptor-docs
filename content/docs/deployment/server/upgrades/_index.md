@@ -163,7 +163,7 @@ an old server to a new server by using a remote client upgrade.
 
    The "upgrade" will replace the old client config with the new one. These
    clients will then connect to the new server. If you've use the same writeback
-   file location in both the old and new configs then the clients will renroll
+   file location in both the old and new configs then the clients will re-enroll
    using their existing client ID (which is stored in the writeback file).
 
 As always, you should test the process on a limited scale before applying it to
