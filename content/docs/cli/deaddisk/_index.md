@@ -33,7 +33,7 @@ Args:
 For this command, either `--add_windows_directory` or `--add_windows_disk` is
 required.
 
-##### Examples
+##### Example
 
 1. Generate the remapping config:
 
@@ -78,18 +78,23 @@ velociraptor artifacts collect Generic.Utils.DeadDiskRemapping --args ImagePath=
 velociraptor unzip remapping.zip /uploads/data/remapping.yaml
 ```
 
+###### Non-Windows disk images
+
 You can define your own customized version of the
 `Generic.Utils.DeadDiskRemapping` artifact if the default artifact does not suit
 your specific analysis requirements, for example simple (non-LVM) Linux systems
-or non-NTFS disk images. If you load your custom artifact definition from a
-folder using the `--definitions` flag then this will be used by the `deaddisk`
-command. Note that this approach would only be necessary if you have a strong
-reason to use the CLI (for example in an automated analysis pipeline) rather
-than the GUI, since it's much easier to create and use a custom version of the
-artifact in the GUI.
+or non-NTFS disk images.
+
+If you load your custom artifact definition from a folder using the
+`--definitions` flag then this will be used by the `deaddisk` command. Note that
+this approach would only be necessary if you have a strong reason to use the CLI
+(for example in an automated analysis pipeline) rather than the GUI, since it's
+much easier to create and use a custom version of the artifact in the GUI
+without overriding the built-in artifact.
 
 {{% /notice %}}
 
 See
-[Dead disk Forensics]({{< ref "/blog/2022/2022-03-22-deaddisk/" >}})
+[Dead Disk Analysis]({{< ref "/docs/forensic/deaddisk/" >}})
 for more information.
+

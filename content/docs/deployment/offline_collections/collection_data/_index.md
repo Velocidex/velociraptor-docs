@@ -283,7 +283,8 @@ either:
   Use Velociraptor's built-in FUSE utility (on Linux only) to mount the
   container and provide access to it's file contents.
 
-These options are also applicable if you want to work with the collection's JSON results in external programs
+These options are also applicable if you want to work with the collection's JSON
+results in external programs
 
 
 ## Importing collections into the Velociraptor server
@@ -756,7 +757,9 @@ velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-1
 ![Listing contents of an X509 encrypted container](listing_encrypted_files.png)
 
 The `unzip` command used with the `-v` and  `--report_password` flags will also
-display the decrypted password.
+display the decrypted password. This is useful if you want to provide the
+protected zip and the password to someone else so that they can extract it,
+without needing to give them access to the server's private key.
 
 ```sh
 velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --list --report_password -v
@@ -814,8 +817,9 @@ folder structure so that it best suits the requirements of your external tool.
 ##### Auto-decryption
 
 The `fuse container` command only works with collection containers that can be
-automatically decrypted or accessed without encryption. This means containers
-that are secured with the server's X.509 cert, or non-encrypted containers.
+automatically decrypted or accessed without encryption. This means either
+containers that are secured with the server's X.509 cert, or non-encrypted
+containers (see Manual decryption below).
 
 ###### Example: Mounting an X509-protected container
 
@@ -828,24 +832,25 @@ velociraptor fuse container -c server.config.yaml \
 ##### Manual decryption
 
 If you have collection containers secured with other schemes then you can
-decrypt the password manually, extract the inner zip, and then FUSE mount it.
+[decrypt the password manually]({{< relref "#extraction-with-external-tools" >}}),
+extract the inner zip, and then FUSE mount it.
 
-This applies also to the situation where you want to mount multiple zips. This
-is necessary even if they are protected with the server's cert because
-auto-decryption currently only supports one zip (the first one if multiple are
-specified).
+If you want to FUSE mount multiple zips, you'll also need to decrypt them first
+because the auto-decryption currently only supports one zip (the first one if
+multiple are specified).
 
-1. Obtain the decrypted password
+Method:
+
+1. Obtain the decrypted password using the `decrypt` CLI command.
 
    ```sh
-   velociraptor --config server.config.yaml unzip eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z.zip --list --report_password -v
+   velociraptor --config server.config.yaml decrypt --show_password -v /tmp/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z.zip data.zip
    ```
 
-2. Use the decrypted password to extract the collection container.
+2. Repeat the above step for any additional containers.
 
-3. Repeat the above 2 steps for any additional containers.
-
-4. Mount the inner zip (`data.zip`) using the `fuse container` command.
+3. Mount the decrypted zip (`data.zip`) - and any additional ones - using the
+   `fuse container` command.
 
 ###### Example: Merge-mounting two manually extracted inner zips
 
@@ -879,7 +884,7 @@ Reminder: Don't forget to `Ctrl+C` and `umount` when you're done!
 [Remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
 is one of Velociraptor's most versatile and powerful features. It was originally
 designed to allow Velociraptor to support
-[dead disk analysis]({{< ref "/blog/2022/2022-03-22-deaddisk/" >}}),
+[dead disk analysis]({{< ref "/docs/forensic/deaddisk/" >}}),
 but it turned out to be an incredibly useful capability that can be applied to a
 broad range of problems.
 
@@ -902,19 +907,19 @@ The
 artifact calculates remapping rules to support this disk-like access to a
 collection container, basically treating it the same as a dead disk. This allows
 running further artifacts on the output of the offline collector without needing
-to import the collection first.
+to import the collection.
 
-![Working with a collection container from an offline collector](offline-client-deadisk.svg)
+![Working with a collection container from an offline collector](offline-client-deaddisk.svg)
 
 
 #### Limitations
 
-Obviously this is not a complete client, since the original OS is not present
-and only the copied files will be available to any VQL queries. Many standard
-artifacts will fail if they depend on data sources other than the filesystem,
-but at least they should fail gracefully and not produce incorrect data.
-Artifacts that rely purely on files in well-known locations should reliably
-produce meaningful results.
+The virtual client is more limited than a client running on a live endpoint,
+since the original OS is not present and only the copied files will be available
+to any VQL queries. Many standard artifacts will fail if they depend on data
+sources other than the filesystem, but at least they should fail gracefully and
+not produce incorrect data. Artifacts that rely purely on files in well-known
+locations should reliably produce meaningful results.
 
 Also, because the virtual client is impersonating the original host and
 (partially) emulating the original filesystem, it does not have to run on the

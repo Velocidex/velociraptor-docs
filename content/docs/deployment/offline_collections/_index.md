@@ -431,6 +431,6 @@ setting provides a good balance since there's a reasonable chance that 2
 artifacts will be demanding different resources at any moment in time.
 
 
-## More info
+## Next...
 
 {{% children description=false %}}
