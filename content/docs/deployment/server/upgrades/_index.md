@@ -167,7 +167,7 @@ an old server to a new server by using a remote client upgrade.
    using their existing client ID (which is stored in the writeback file).
 
 As always, you should test the process on a limited scale before applying it to
-all you clients.
+all your clients.
 
 
 
