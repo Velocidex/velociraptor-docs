@@ -260,7 +260,7 @@ the `--remap` flag.
    ![Artifact collection logs](collecting_from_image_logs.png)
 
 
-## Automating the process in a single VQL artifact
+## Automating the process in a single server artifact
 
 If your disk image is located on the server, you can generate the remapping
 config and launch the virtual client in a one step, using the
