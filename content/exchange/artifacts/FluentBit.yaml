@@ -6,6 +6,19 @@ author: |
 description: |
     Post-process collection results using [Fluent Bit](https://fluentbit.io/).
 
+    {{% notice warning %}}
+
+    Since v0.75 this artifact will no longer work since it reads files directly
+    from the datastore, which are now
+    [compressed using zlib by default](https://docs.velociraptor.app/blog/2025/2025-08-30-release-notes-0.75/#storing-compressed-data).
+
+    It is possible to disable compresion globally using the
+    `Datastore.compression` config setting, but then you will lose the
+    space-saving benefits of the new compression feature, which are likely to be
+    significant in most deployments.
+
+    {{% /notice %}}
+
     Fluent Bit will read the JSONL-formattted results file for each completed
     client collection, which can then be modified, filtered, and forwarded to
     any of it's large number of supported
@@ -193,7 +206,7 @@ parameters:
                     action: insert
                     key: artifact_name
                     value: ${ARTIFACTNAME}
-          
+
           outputs:
             # we generate this is for the Velociraptor monitoring GUI
             - name: counter
@@ -211,7 +224,7 @@ parameters:
             #   file: ${FLOWID}_${INDEX}.json
             #   format: plain
             #   mkdir: true
-              
+
             # send the data to Opensearch
             - name: opensearch
               match: velociraptor

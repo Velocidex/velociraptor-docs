@@ -62,16 +62,16 @@ response in modern environments:
 
    Therefore capturing physical memory, even if done perfectly and
    without smear, will miss many parts of those things we actually
-   need to extract in our analysis - such as binaries, user data
-   (which may be in the page file) etc.
+   need to extract in our analysis - such as binaries, or user data
+   (which may be in the page file), etc.
 
-Velociraptor's memory capabilities do not rely on physical
-memory. Although Velociraptor does have the ability to capture a
-physical memory image (e.g. using the [Windows.Memory.Acquisition]({{<
-ref "/artifact_references/pages/windows.memory.acquisition/" >}})
-artifact), much of Velociraptor's memory capabilities are implemented
-using plugins which directly query the operating system for
-information about the system (including process memory).
+**Velociraptor's memory analysis capabilities do not rely on physical memory.**
+Although Velociraptor does have the ability to capture a physical memory image
+(e.g. using the
+[Windows.Memory.Acquisition]({{< ref "/artifact_references/pages/windows.memory.acquisition/" >}})
+artifact), we don't recommend this approach. Much of Velociraptor's memory
+capabilities are implemented using plugins which directly query the operating
+system for information about the system (including process memory).
 
 Many of Velociraptor's memory analysis plugins have equivalent or
 similar plugins in Volatility. Using these plugins allows Velociraptor
@@ -83,7 +83,7 @@ does not need to acquire an image first, and can get perfect
 information as needed. For example, when dumping a binary from memory,
 we automatically cause the OS to page in non-resident pages (simply by
 virtue of reading the page through the API), so the end binary dump is
-perfect and far better than we could do from a physical memory image.
+perfect and far better than we could get from a physical memory image.
 
 This blog post is the first in a series of posts describing
 Velociraptor's approach to memory analysis. In each post I will
@@ -93,15 +93,15 @@ used to develop such artifacts in order to share my development
 process and point out some of the lesser known capabilities.
 
 My goal is to convince you to think of Velociraptor's memory analysis
-capability as the **first** port of call when developing new memory based
+capability as the **first** port of call when developing new memory-based
 detections! It is far more practical than writing a single use python
-script and can be deployed quickly and at scale.
+script, and it can be deployed quickly and at scale.
 
 In this post I will discuss how to detect inline hooking. There are
-many opensource tools which implement this kind of detection (for
+many open source tools which implement this kind of detection (for
 example [Hollows
 Hunter](https://github.com/hasherezade/hollows_hunter) which you can
-use in Velociraptor's using the [Windows.Memory.HollowsHunter]({{< ref
+use with Velociraptor via the [Windows.Memory.HollowsHunter]({{< ref
 "/exchange/artifacts/pages/hollowshunter/" >}}) artifact). In this
 post I will describe how this can be implemented purely in VQL.
 
@@ -112,9 +112,9 @@ patching the function header as it is loaded into memory. For example,
 patching ETW tracing functionality can disable user space ETW reporting,
 such as PowerShell script block logging.
 
-It is also possible to patch functions in [other different
+It is also possible to patch functions in [other
 processes](https://attack.mitre.org/techniques/T1056/004/), thereby
-subverting them by diverting execution to an attacker controlled code
+subverting them by diverting execution to attacker-controlled code
 injections.
 
 ![Patching a function preamble](patching_memory.svg)
@@ -128,8 +128,8 @@ they can simply overwrite the front of the function with a return
 instruction causing the function to be bypassed.
 
 To illustrate this technique, let's examine the following short
-powershell snippet
-[AMSIBypassPatch.ps1](https://github.com/okankurtuluss/AMSIBypassPatch/blob/090b54a518fecf1ccf8f54f8691805ef0f9a30f1/AMSIBypassPatch.ps1):
+powershell snippet:
+[AMSIBypassPatch.ps1](https://github.com/okankurtuluss/AMSIBypassPatch/blob/090b54a518fecf1ccf8f54f8691805ef0f9a30f1/AMSIBypassPatch.ps1)
 
 ```
 function Disable-Protection {
@@ -171,8 +171,8 @@ Disable-Protection
 This code prevents calling `AmsiScanBuffer` used to scan PowerShell
 code for suspicious constructs:
 
-1. It gets a handle to the amsi.dll library.
-2. It then finds the AmsiScanBuffer function.
+1. It gets a handle to the `amsi.dll` library.
+2. It then finds the `AmsiScanBuffer` function.
 3. Changes the page protections on the function to allow writing on
    the memory.
 4. Overwrites the memory with a return op code
@@ -269,7 +269,7 @@ the [winobj()]({{< ref "/vql_reference/windows/winobj/" >}})
 plugin. This is the VQL equivalent of Volatility's `winobj` plugin. It
 shows the kernel's object manager namespace.
 
-I wont get into too much details, but the following VQL code
+I won't get into too much detail, but the following VQL code
 translates from kernel paths into file paths using the object manager
 namespace. I just paste this code in my notebook and call it as
 `DriveReplace(Path)`:
@@ -301,7 +301,7 @@ FROM foreach(row={
 })
 ```
 
-## Step 5: parsing the DLL from disk
+## Step 4: parsing the DLL from disk
 
 In our artifact we would rather just import those utility functions
 from a common artifact (these functions are actually provided by the
@@ -393,17 +393,17 @@ FROM Sections
 The above query calculates the ASLR offset, and gets the essential
 information for the `.text` section.
 
-## Step 6: Comparing the memory regions with the disk
+## Step 5: Comparing the memory regions with the disk
 
 Now I will read the `.text` section from disk and memory. Velociraptor
-allows to read process memory using the [proces accessor]({{< ref
+allows to read process memory using the [process accessor]({{< ref
 "/vql_reference/accessors/process/" >}}). The accessor makes the
 process memory appear as a huge file, so we can apply any VQL function
 or plugin which expects a file directly on process memory.
 
-This is useful for example in applying the `yara()` plugin to scan
+This is useful, for example, in applying the `yara()` plugin to scan
 memory for patterns. However, in this case I just want to read the
-`.text` section and compare it with the disk, I can use the
+`.text` section and compare it with the file on disk. I can use the
 [read_file()]({{< ref "/vql_reference/popular/read_file/" >}}) VQL
 function to just read the file into a single buffer string (Note that
 when using the process accessor the filename must be of the form
@@ -427,7 +427,7 @@ FROM Sections
 
 ![Reading process memory and code from disk](reading_process_memory.png)
 
-## Step 7: Comparing memory to disk
+## Step 6: Comparing memory to disk
 
 Next I need to compare the `MemoryData` and `DiskData`. I can start
 with a naive implementation which compares 8 bytes at the time (This
@@ -467,10 +467,10 @@ the rows where the memory is different.
 We can see that in this case, a single 8 byte address is different
 between the memory and disk at offset 46080.
 
-## Step 8: Resolving the function that was patched
+## Step 7: Resolving the function that was patched
 
 While it is interesting to see the address of where the memory has
-been modified, we dont know much about this address. It would be nice
+been modified, we don't know much about this address. It would be nice
 to be able to see what function exactly was patched since it will give
 us more indication of the intent of the patch.
 
@@ -513,7 +513,7 @@ LET Compare(MemoryData, DiskData, TextSegment, Dll) = SELECT
 
 Now it is very obvious what this patch aims to achieve!
 
-## Step 9: Handling relocations
+## Step 8: Handling relocations
 
 The above example was very simplified. If we tested this over more
 binaries we would discover that there are many memory locations which
@@ -557,7 +557,7 @@ In this post we saw how some of the memory analysis tools available in
 Velociraptor can be combined to write some very sophisticated
 detections for memory patching attacks.
 
-Lets compare those memory analysis primitives we explored in this
+Let's compare those memory analysis primitives we explored in this
 article, with Volatility's plugins:
 
 1. The `pslist` plugin is similar - Velociraptor's plugin returns
@@ -591,12 +591,12 @@ article, with Volatility's plugins:
    binary.
 
    To be fair, if the binary is patched in memory, then the page will
-   be allocated (using copy on write semantics) and it is likely to be
+   be allocated (using copy-on-write semantics) and it is likely to be
    resident. So Volatility is likely to still find all the patched
    pages in physical memory.
 
 6. Resolving function names we used the `describe_address()` plugin,
-   which caches much of data so it is very fast to resolve many
+   which caches much of the data, so it is very fast to resolve many
    addresses.
 
 Velociraptor's memory analysis does not require a memory image, and
@@ -623,10 +623,10 @@ or because the target process is protected by the operating system
 this case we will see messages such as `vad: OpenProcess for pid 1004
 (csrss.exe) : Access is denied.` limiting our access to some processes.
 
-Does it matter? It depends. If the malware has higher level of access
+Does it matter? It depends. If the malware has a higher level of access
 than Velociraptor (e.g. if it is running in kernel mode, or is signed
 as a PPL process) then it might be able to hide in those protected
-processes that Velociraptor can not access.
+processes that Velociraptor cannot access.
 
 But then again, if the malware has such privilege it can easily stop a
 driver from loading to prevent physical memory acquisition as well -
@@ -636,13 +636,13 @@ it becomes an arms race.
 
 When analysts think of developing a new memory analysis technique,
 they often immediately go to a physical memory image with a framework
-like Volatility. I hope you have seen that this is not necessary and
+like Volatility. I hope you have seen that this is not necessary and that
 Velociraptor's VQL actually makes things much easier to develop and
 can produce more reliable results.
 
 Velociraptor's binary parser is also very powerful (it was inspired
 from Volatility's internal parser) so you have similar tools for
-parsing complex binary structures as Volatility provides.
+parsing complex binary structures as those that Volatility provides.
 
 If you like to try the new `Windows.Memory.Mem2Disk` artifact, take
 Velociraptor for a spin !  It is available on GitHub under an open

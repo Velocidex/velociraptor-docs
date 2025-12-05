@@ -1945,3 +1945,9 @@ dll's
 relocations
 modularize
 hoc
+
+CLI's
+BitLocker
+LVM
+guestmount
+libguestfs
