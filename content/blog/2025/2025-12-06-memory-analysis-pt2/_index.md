@@ -16,7 +16,7 @@ noindex: false
 
 In [Memory Analysis with Velociraptor - Part 1]({{< ref
 "/blog/2025/2025-11-15-memory-analysis-pt1/" >}}) we looked at how to access
-the RAM with velociraptor. In this post, we look at how to find fileless
+the RAM with Velociraptor. In this post, we look at how to find fileless
 malware.
 
 
@@ -59,12 +59,12 @@ computers.
 
 [Process injection](https://attack.mitre.org/techniques/T1055/) is a
 code injection technique used to execute arbitrary code within the
-address space of another process, possibly legitimate. This is done to
-evade process-based defenses, and scalating privileges. There are many
-ways of doing so, some of them are:
+address space of another, possibly legitimate process. The purpose is
+to evade process-based defenses and escalate privileges. There are
+many ways of achieving this, e.g.:
 
 - [Process hollowing](https://attack.mitre.org/techniques/T1055/012/)
-  is a subtechnique of process injection. It works by creating a
+  is a sub-technique of process injection. It works by creating a
   process in a suspended state, unmapping its memory, and then
   replacing it with custom (malicious) code. The custom code is
   executed under the identity of the previously created process,
@@ -77,16 +77,16 @@ ways of doing so, some of them are:
   accomplish this, it is necessary to pause the running thread.
 
 - [Inline hooking](https://unprotect.it/technique/inline-hooking/) is
-  a method used to intercept calls to functions. To do so, the first
-  few bytes of the target function's code in memory are overwritten
-  with a jump instruction, redirecting the execution flow to a custom
-  function.
+  a method used to intercept calls to functions. The first few bytes
+  of the target function in memory are overwritten with a jump
+  instruction, redirecting the execution flow to a custom function.
   
 - With [DLL injection](https://attack.mitre.org/techniques/T1055/001/)
   an adversary modifies an existing Dynamic-Link Library (DLL)
-  - e.g. DLL hollowing analogous to Process hollowing - or adds a new
-  DLL to an existing process. Adding a new library can be achieved by
-  manipulating the Import Address Table (IAT) of the executable.
+  - e.g. DLL hollowing analogous to process hollowing - or adds a new
+  DLL to an existing process. Adding a new library can e.g. be
+  achieved by manipulating the Import Address Table (IAT) of the
+  executable.
   
 A full list of process injection techniques can be found at [Mitre:
 Process injection](https://attack.mitre.org/techniques/T1055/).
@@ -431,10 +431,11 @@ Hunter can also be executed via Velociraptor with the
 `Windows.Memory.HollowsHunter` plugin and scales to multiple machines.
 
 In contrast to `Windows.Memory.HollowsHunter`, `Mem2Disk` is a
-Velociraptor-native plugin fully written in VQL and benefits from
-Velociraptors parallelisation. No additional binary has to be uploaded
-to the client machines (unlike `Windows.Memory.HollowsHunter`), which
-also means Velociraptor can regulate the CPU load of `Mem2Disk`.
+Velociraptor-native plugin fully written in VQL and benefits from the
+parallelisation of Velociraptor. No additional binary has to be
+uploaded to the client machines (unlike
+`Windows.Memory.HollowsHunter`), which also means Velociraptor can
+regulate the CPU load of `Mem2Disk`.
 
 In summary, `Mem2Disk` is useful for breadth search. For example when
 not knowing if or where fileless malware hides within a full network
