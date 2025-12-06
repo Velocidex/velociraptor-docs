@@ -82,11 +82,11 @@ many ways of achieving this, e.g.:
   instruction, redirecting the execution flow to a custom function.
   
 - With [DLL injection](https://attack.mitre.org/techniques/T1055/001/)
-  an adversary modifies an existing Dynamic-Link Library (DLL)
-  - e.g. DLL hollowing analogous to process hollowing - or adds a new
-  DLL to an existing process. Adding a new library can e.g. be
-  achieved by manipulating the Import Address Table (IAT) of the
-  executable.
+  an adversary modifies an existing Dynamic-Link Library (DLL) or adds
+  a new DLL to an existing process. An example for a DLL modification
+  is DLL hollowing analogous to process hollowing while new libraries
+  can e.g. be added by manipulating the Import Address Table (IAT)
+  of the executable.
   
 A full list of process injection techniques can be found at [Mitre:
 Process injection](https://attack.mitre.org/techniques/T1055/).
