@@ -1,5 +1,15 @@
 [
  {
+  "title": "Memory Analysis with Velociraptor - Part 2",
+  "description": "This blog is the second part of the memory analysis series.\nWe will dive into how to detect fileless malware with Velociraptor\nlive in RAM (i.e. without dumping the RAM).\n",
+  "link": "/blog/2025/2025-11-17-memory-analysis-pt2/",
+  "tags": [
+   "DFIR",
+   "Memory"
+  ],
+  "date": "2025-11-16"
+ },
+ {
   "title": "Memory Analysis with Velociraptor - Part 1",
   "description": "This Blog post explores Velociraptor's memory analysis capabilities.\n",
   "link": "/blog/2025/2025-11-15-memory-analysis-pt1/",
