@@ -83,22 +83,41 @@ column_types:
 
 These are the types currently supported:
 
-- string
-- number
-- mb
-- timestamp
-- nobreak
-- tree
-- url
-- url_internal
-- safe_url
-- flow
-- preview_upload
-- download
-- client
-- hex
-- base64
-- collapsed
+- `string`
+- `bool`
+- `number`
+- `mb`
+- `timestamp`
+- `nobreak`
+- `tree`
+- `url`
+- `url_internal`
+- `safe_url`
+- `flow`
+- `preview_upload`
+- `download`
+- `client`
+- `hex`
+- `base64`
+- `collapsed`
+- `hidden`
+- `log`
+- `log_level`
+- `translated`
+
+For displaying cells that contain JSON objects we can choose how many levels to
+display by default. The UI will allow the user to expand the hidden levels by
+clicking on them.
+
+- `json/0` - will collapse a JSON object at the top level.
+- `json/1` - will collapse a JSON object at the first level. This is very useful
+  as it only shows the first level of items in the JSON object and hides deeper
+  levels initially.
+- `json/2` - Displays the JSON object collapsed except for the first and second
+  levels.
+- `json/3` - Displays the JSON object collapsed except for the first, second and
+  third levels.
+
 
 
 ---
@@ -174,6 +193,9 @@ definitions:
 - `max_batch_wait`
 - `max_batch_rows`
 - `max_batch_rows_buffer`
+
+See [Limiting resource usage]({{< ref "/docs/artifacts/resources/" >}}) for more
+information.
 
 ---
 
