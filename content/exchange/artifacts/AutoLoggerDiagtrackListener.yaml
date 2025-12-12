@@ -7,6 +7,11 @@ description: |
    If AutoLogger-Diagtrack-Listener.etl exists, we use the built in `tracerpt`
    to parse and extract each XML record as a row.
 
+   NOTE: other interesting targets may include
+   
+   - `C:\Windows\System32\WDI\LogFiles\**\*.etl`
+   - `C:\Windows\System32\LogFiles\**\*.etl`
+
 reference:
     - https://www.fortinet.com/blog/threat-research/uncovering-hidden-forensic-evidence-in-windows-mystery-of-autologger
     
