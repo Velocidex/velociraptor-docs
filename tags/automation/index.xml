@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Automation on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/automation/</link><description>Recent content in Automation on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 14 Nov 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/automation/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create an "online collector" binary</title><link>https://docs.velociraptor.app/knowledge_base/tips/online_collector/</link><pubDate>Fri, 14 Nov 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/online_collector/</guid><description>&lt;h1 id="how-to-create-an-online-collector-binary">How to create an &amp;ldquo;online collector&amp;rdquo; binary&lt;/h1>
+&lt;p>Velociraptor &lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" >offline collectors&lt;/a>
+
+are immensely popular with our users. They are an appealing option because of
+the simplicity and convenience of having a single executable file that any
+desktop-support-level person in a remote environment can run. The collector can
+then exfiltrate&amp;hellip; oops, I mean &amp;ldquo;upload&amp;rdquo;&amp;hellip; the collected data from the
+environment to a cloud storage service such as S3, GCS, Azure, etc.&lt;/p>
+&lt;p>Another reason why they are so popular is that many DFIR practitioners need to
+investigate systems in environments where there is strong resistance to
+installing any new software. Offline collectors do their work without
+installation, which overcomes that obstacle to a large degree.&lt;/p>
+&lt;p>So offline collectors are a great option because &lt;em>&amp;ldquo;it&amp;rsquo;s just an exe&amp;rdquo;&lt;/em> and it
+doesn&amp;rsquo;t require any user interaction besides clicking it. It&amp;rsquo;s hard not to love
+that level of simplicity!&lt;/p>
+&lt;p>However there are downsides to offline collectors:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>You really need to plan ahead about what you want to collect. An offline
+collection is often a one-shot opportunity to collect what you need. Iteration
+would require creating a new collector each time. By contrast a
+network-connected &amp;ldquo;online&amp;rdquo; client makes it easy to quickly pivot and dig
+deeper in response to findings.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Offline collectors need to be packaged with the artifacts and tools that they
+need. This means that you can&amp;rsquo;t quickly create a new artifact and add it to
+your offline collector without rebuilding and redistributing a new binary. If
+your artifacts need tools then bundling them into a collector binary can
+significantly increase the file size.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Because offline collectors do not provide progress updates and resource
+telemetry to the server, we cannot get feedback on how the collection is going
+or on the resource utilization.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="collections-vs-file-acquisitions">Collections vs. File acquisitions&lt;/h4>
+&lt;p>Many users see the word &amp;ldquo;collector&amp;rdquo; in the term offline collector and take that
+to mean that it&amp;rsquo;s intended to be a bulk file collector (like KAPE and many other
+file acquisition / triage tools). This is not the case: in Velociraptor a
+&amp;ldquo;collection&amp;rdquo; is the execution of any VQL on the endpoint. Velociraptor
+collections typically return JSON-structured &lt;strong>data&lt;/strong>, and can &lt;em>optionally&lt;/em>
+include file copies. But most often Velociraptor collections don&amp;rsquo;t copy files
+unless there&amp;rsquo;s a good reason to do so, like for preservation purposes &lt;em>after&lt;/em>
+detecting potential evidence in the file.&lt;/p>
+&lt;h4 id="cloud-storage-in-the-middle-architecture">Cloud-storage-in-the-middle architecture&lt;/h4>
+&lt;p>I&amp;rsquo;ve also observed that some users will use offline collectors to upload
+collection data to a cloud storage service and then have their server import the
+collections from that storage service. If the offline collector on the endpoint
+can access the internet (to upload files to a cloud storage provider, for
+example) and your Velociraptor server is likely also accessible - or can be
+made accessible - from the internet then a Velociraptor client on the endpoint
+can probably connect the server. I suspect that sometimes this &amp;ldquo;cloud dropbox&amp;rdquo;
+approach might be driven more by the alluring convenience of offline collectors
+rather than being a sensible system architecture choice. Even if it&amp;rsquo;s somehow
+technically justifiable, it&amp;rsquo;s still an awfully inefficient way to do things.&lt;/p>
+&lt;p>Of course there may be some unusual technical constraints that force one to use
+cloud storage as an intermediary, but there&amp;rsquo;s also a good chance that this is
+being done purely because of the simplicity that the offline collector offers.
+And in that case the investigation is incurring delays and wasting resources by
+routing the data via cloud storage - even if you manage to automate the
+transfers.&lt;/p>
+&lt;p>So the question to ask yourself is: &lt;em>Should I really be using an offline
+collector?&lt;/em>&lt;/p>
+&lt;p>If your offline collector can connect to a storage service on the internet then
+it might be worth having it just connect to your Velociraptor server via the
+internet. In terms of the data collected, the exact same data can be collected
+by a client (including files).&lt;/p>
+&lt;p>The Velociraptor client can be repacked to replicate the offline collector&amp;rsquo;s
+single-file, no-installation, &amp;ldquo;just run it&amp;rdquo; simplicity. Here&amp;rsquo;s how:&lt;/p>
+&lt;h4 id="creating-an-online-client-collector">Creating an online (client) collector&lt;/h4>
+&lt;p>Assuming that client-server connectivity &lt;em>is&lt;/em> possible, you can repack a client
+using the same config embedding and autoexec mechanisms that offline collectors
+use. You can create a binary that starts in client mode and that doesn&amp;rsquo;t require
+installation. It can do all the same collections that an offline collector would
+do, with none of the disadvantages mentioned above. And all it needs is to be
+run locally by some suitably privileged person such as a desktop admin.&lt;/p>
+&lt;p>Here&amp;rsquo;s how to create and run such a client binary:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Download the latest Velociraptor binary for the target platform. In this case
+I am going to use the Windows binary for the target platform and I am going
+to repack it on Linux (where my binary is aliased as &lt;code>velociraptor&lt;/code>).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Download the client config from the
+&lt;a href="https://docs.velociraptor.app/docs/gui/#the-server-dashboard" >server Dashboard&lt;/a>
+ page.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Edit the client config and add an autoexec section above the existing config:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">autoexec:
+ argv: [&amp;quot;client&amp;quot;, &amp;quot;-v&amp;quot;, &amp;quot;--require_admin&amp;quot;]
+&lt;/code>&lt;/pre>
+&lt;p>The &lt;code>-v&lt;/code> is added so that the terminal gives some visual
+feedback to let the local helper who started it know that &amp;ldquo;it&amp;rsquo;s busy&amp;rdquo;.&lt;/p>
+&lt;p>The &lt;code>--require_admin&lt;/code> is added since an installed client normally runs with
+elevated privileges. Offline collectors usually also enforce this
+requirement.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Also add a label section to the Client section of the config - i.e.
+&lt;code>Client.labels&lt;/code>. This label will be used to kick off an initial hunt when the
+client enrolls.&lt;/p>
+&lt;pre>&lt;code class="language-yaml"> labels:
+ - autocollect
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3b02f52cd64edb3fd9a7545a11bae91e">
+ &lt;div data-featherlight="#3b02f52cd64edb3fd9a7545a11bae91e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/autoconfig.png" alt="The config file should look something like this">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="autoconfig.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ The config file should look something like this
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Now we do the repacking step:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor config repack --exe=velociraptor-v0.75.4-windows-amd64.exe client.root.config.yaml autocollector.exe
+&lt;/code>&lt;/pre>
+&lt;p>and the results should look something like this:&lt;/p>
+&lt;pre>&lt;code class="language-text">...
+[
+ {
+ &amp;quot;RepackInfo&amp;quot;: {
+ &amp;quot;Path&amp;quot;: &amp;quot;/tmp/autoclient/autocollector.exe&amp;quot;,
+ &amp;quot;Size&amp;quot;: 69291504,
+ &amp;quot;UploadId&amp;quot;: 0,
+ &amp;quot;sha256&amp;quot;: &amp;quot;398e0b37bd279f46c03508edd50649b2655516409d682fd1cd4be866b7b03bc1&amp;quot;,
+ &amp;quot;md5&amp;quot;: &amp;quot;24a4cd934d91a95c72853985d2766db0&amp;quot;,
+ &amp;quot;Components&amp;quot;: [
+ &amp;quot;autocollector.exe&amp;quot;
+ ]
+ }
+ }
+]
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>On your Velociraptor server set up a new hunt targeting the &lt;code>autocollect&lt;/code>
+label.&lt;/p>
+&lt;p>&lt;em>&lt;strong>The hunt should include the same artifacts that you would have chosen for
+an offline collector&lt;/strong>&lt;/em>.&lt;/p>
+&lt;p>Don&amp;rsquo;t forget to start the hunt!&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a36715e5227211dc4d070a0473f4b1b6">
+ &lt;div data-featherlight="#a36715e5227211dc4d070a0473f4b1b6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/hunt.png" alt="target the hunt by label (and yes, I know you still want to KAPE everything!)">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="hunt.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ target the hunt by label (and yes, I know you still want to KAPE everything!)
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Send the &lt;code>autocollector.exe&lt;/code> file to a helpful administrator or other support
+staff who will run it on the machines in their environment. Tell them to &amp;lsquo;Run
+As Administrator&amp;rsquo; and to consider the machines &amp;ldquo;busy&amp;rdquo; as long as the terminal
+window stays open.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>When the exe is run (as administrator) it will open a terminal window and
+show activity as it connects to the server, enrolls, joins the hunt, and
+collects the data.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cc38af5cdb321b595739756b824daa58">
+ &lt;div data-featherlight="#cc38af5cdb321b595739756b824daa58" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/busy_collecting.png" alt="busy collecting">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="busy_collecting.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ busy collecting
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>On the server the client is a normal client. You will be able to see it join
+the hunt and be able to view the collection results when it&amp;rsquo;s completed the
+hunt.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="441e9068bd336046e9a26ed10d6b4e37">
+ &lt;div data-featherlight="#441e9068bd336046e9a26ed10d6b4e37" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/client_connected.png" alt="collection completed successfully">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="client_connected.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ collection completed successfully
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Now the same collection as an offline collector is completed, except that
+the results having been sent back directly to the server. The terminal
+window is still be open on the endpoint, so you are now free to do more
+collections as you would do with any live client, but which would not be
+possible with an offline collector.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Finally, you&amp;rsquo;ve instructed the local admins to leave the machines alone as
+long as the terminal windows are open. But now you&amp;rsquo;re done with a specific
+computer. So now you want to close the terminal on that machine to signal to
+the admins that it&amp;rsquo;s done.&lt;/p>
+&lt;p>Copy the client_id for that machine and in a global notebook and run this VQL,
+substituting your target client&amp;rsquo;s ID:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT killkillkill(client_id=&amp;quot;C.c6ec9a50598f590b&amp;quot;) FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>&lt;em>The client will be sent the kill signal and the terminal will close.&lt;/em>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="so-online-collector-vs-offline-collector">So&amp;hellip; Online collector vs. Offline collector?&lt;/h4>
+&lt;p>By using a non-persistent client we are able to do exactly the same collections
+as could be done with an offline collector, but with all the benefits of an
+online client and none of the disadvantages of an offline collector!&lt;/p>
+&lt;p>From the perspective of the helpful person running the client locally on the
+endpoints, there is no difference between running this or running an offline
+collector (with an offline collector you also should advise them to leave it
+alone until the terminal closes).&lt;/p>
+&lt;p>If your goal is to do bulk file acquisition then with this method you have all
+the files in your server&amp;rsquo;s datastore without the cost, hassles and delays of
+sending the data via a cloud storage service and then importing collection
+archives into the server.&lt;/p></description></item><item><title>Pre-populating a server with clients, hunts and flows</title><link>https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/</link><pubDate>Tue, 14 Oct 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/</guid><description>&lt;h1 id="pre-populating-a-server-with-clients-hunts-and-flows">Pre-populating a server with clients, hunts and flows&lt;/h1>
+&lt;p>When setting up a Velociraptor server for training or demonstration,
+it is sometimes desirable to have some data already populated.&lt;/p>
+&lt;p>For a realistic training exercise, some people use a &lt;a href="https://github.com/iknowjason/BlueCloud" target="_blank" >Cyber
+Range&lt;/a>
+ to fully emulate a
+real environment. However, managing a large Cyber Range is complex and
+expensive.&lt;/p>
+&lt;p>Sometimes, we just want a simple Velociraptor server with
+pre-populated data, so users can learn how to analyze hunt results,
+and improve their VQL skills!&lt;/p>
+&lt;h2 id="in-velociraptor---everything-is-a-file">In Velociraptor - Everything is a file!&lt;/h2>
+&lt;p>The Velociraptor server simply keeps all the data as simple files on
+disk. These files are organized into higher level concepts like
+Clients, Flows, Hunts and notebooks.&lt;/p>
+&lt;p>Conceptually you can think of these as just storage hierarchies which
+can be easily recreated:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>A &lt;code>Flow&lt;/code> is a single collection that occurred as a particular
+time. Flows &lt;strong>Contain&lt;/strong> artifact results, and uploaded files.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A &lt;code>Client&lt;/code> represents an endpoint. The Velociraptor server stores
+all flows under the client&amp;rsquo;s directory in the file store. Clients
+have a unique client id which is how we can identify them.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A &lt;code>Hunt&lt;/code> is a logical set of clients and flows which can be
+processed together using plugins like &lt;code>hunt_results()&lt;/code> or
+&lt;code>source()&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="creating-clients">Creating clients.&lt;/h2>
+&lt;p>Normally a client will be created on the server when a physical client
+first connects to it. However, it is possible to create new &amp;ldquo;client&amp;rdquo;
+objects using the VQL &lt;a href="https://docs.velociraptor.app/vql_reference/server/client_create/" target="_blank" >client_create()&lt;/a>
+ function.&lt;/p>
+&lt;p>Let&amp;rsquo;s create 100 clients:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT client_create(os=&amp;quot;windows&amp;quot;,
+ hostname=format(format=&amp;quot;Host%d&amp;quot;, args=_value)) AS ClientId
+FROM range(end=100)
+&lt;/code>&lt;/pre>
+&lt;h2 id="adding-flows-to-the-clients">Adding flows to the clients.&lt;/h2>
+&lt;p>Normally, we would schedule a collection on clients to gather real
+data from the endpoint. But this is not essential, we can also
+&lt;code>import&lt;/code> an existing collection into the client&amp;rsquo;s storage space.&lt;/p>
+&lt;p>The existing collection can be taken on any Velociraptor instance - it
+is just a zip file export of a collection.&lt;/p>
+&lt;p>For this article, I will collect the &lt;code>Generic.Client.Info&lt;/code> artifact
+and export the collection into a ZIP file in the collection overview
+page.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="14bf4fe024292545bb0a1ed547046c38">
+ &lt;div data-featherlight="#14bf4fe024292545bb0a1ed547046c38" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/exporting_collections.png" alt="Exporting a collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="exporting_collections.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Exporting a collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Next we import the collection into each client on the server:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT import_collection(client_id=client_id,
+ filename=&amp;quot;/tmp/Generic.Info.zip&amp;quot;)
+FROM clients()
+&lt;/code>&lt;/pre>
+&lt;h2 id="assign-collections-to-a-hunt">Assign collections to a hunt&lt;/h2>
+&lt;p>A Hunt is a managed container of collections. Normally we schedule a
+hunt so the Velociraptor server can automatically schedule flows on
+clients that match the hunt criteria, and keep track of these in a
+central location.&lt;/p>
+&lt;p>However, we can also just add arbitrary flows to a hunt using VQL. In
+this example I will add all the &lt;code>Generic.Client.Info&lt;/code> collections we
+imported previously into a new hunt so I can analyze them together.&lt;/p>
+&lt;p>First I create a hunt using the GUI to collect the
+&lt;code>Generic.Client.Info&lt;/code> artifact, but I will leave the hunt in the
+&lt;code>STOPPED&lt;/code> state.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8c11b79c8531835e11de0b8c0637b1c6">
+ &lt;div data-featherlight="#8c11b79c8531835e11de0b8c0637b1c6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/example_hunt.png" alt="Creating an empty hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="example_hunt.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating an empty hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The hunt currently has no clients or flows associated with it.&lt;/p>
+&lt;p>I can now assign the latest &lt;code>Generic.Client.Info&lt;/code> collection from each
+client:&lt;/p>
+&lt;pre>&lt;code>LET HuntId &amp;lt;= &amp;quot;H.D35CUR4S00IHC&amp;quot;
+
+SELECT client_id,
+ session_id,
+ HuntId,
+ hunt_add(client_id=client_id, hunt_id=HuntId, flow_id=session_id)
+FROM foreach(row={
+ SELECT * FROM clients()
+}, query={
+ SELECT *
+ FROM flows(client_id=client_id)
+ WHERE artifacts_with_results =~ &amp;quot;Generic.Client.Info&amp;quot;
+ LIMIT 1
+})
+&lt;/code>&lt;/pre>
+&lt;p>The above query:&lt;/p>
+&lt;ol>
+&lt;li>Iterates over all clients&lt;/li>
+&lt;li>For each client, iterates over all flows in that client&lt;/li>
+&lt;li>Select the first flow with artifact results of &lt;code>Generic.Client.Info&lt;/code>&lt;/li>
+&lt;li>After one flow matches for each client, go to the next client (this is the &lt;code>LIMIT&lt;/code> clause).&lt;/li>
+&lt;li>Add the flow to the hunt we created earlier.&lt;/li>
+&lt;/ol>
+&lt;h2 id="post-process-the-collections">Post process the collections&lt;/h2>
+&lt;p>Depending on the scenarios you want to demonstrate, you can create
+different clients (perhaps a &amp;ldquo;Compromised&amp;rdquo; set) and import different
+collections into them.&lt;/p>
+&lt;p>This method allows running any post processing steps in notebooks as
+if these client are real endpoints.&lt;/p></description></item></channel></rss>

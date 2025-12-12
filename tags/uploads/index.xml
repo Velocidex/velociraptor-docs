@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Uploads on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/uploads/</link><description>Recent content in Uploads on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 14 Nov 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/uploads/index.xml" rel="self" type="application/rss+xml"/><item><title>How to set up a GCS Bucket for file uploads</title><link>https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/</link><pubDate>Fri, 14 Nov 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/</guid><description>&lt;h1 id="how-to-set-up-a-gcs-bucket-for-file-uploads">How to set up a GCS Bucket for file uploads&lt;/h1>
+&lt;p>Google Cloud Storage buckets can be a useful upload destination for receiving
+files from Velociraptor clients or collection containers from
+&lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" >offline collectors&lt;/a>
+
+in scenarios where the source system is internet connected and you do not want
+to stand up storage services on the local network.&lt;/p>
+&lt;p>This is made possible by the
+&lt;a href="https://docs.velociraptor.app/vql_reference/other/upload_gcs/" >upload_gcs&lt;/a>
+ VQL function.&lt;/p>
+&lt;p>This article explains how to set up a GCS bucket with appropriate security for
+file uploads.&lt;/p>
+&lt;hr>
+&lt;h3 id="setup-steps">Setup steps&lt;/h3>
+&lt;ol>
+&lt;li>Before we can upload files to a bucket we need to have a project in place.
+For this example I will created a new project called &lt;code>velociraptor-demo&lt;/code>:&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="377bfd82a202e084e036201f9fb9e05a">
+ &lt;div data-featherlight="#377bfd82a202e084e036201f9fb9e05a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__1DXiwQ4__gqzaYMZKSMxAfg.png" alt="Create a new project">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__1DXiwQ4__gqzaYMZKSMxAfg.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Create a new project
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Our plan is to distribute to our accomplices the packed binary as before, but
+this time we want Velociraptor to automatically upload results for us into our
+bucket.&lt;/p>
+&lt;ol start="2">
+&lt;li>In order to do this we need a service account with credentials allowing it to
+upload to our bucket. Go to &lt;strong>IAM &amp;amp; Admin&lt;/strong> / &lt;strong>Service Accounts&lt;/strong> / &lt;strong>Create
+Service Account:&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="65f4c776d2a5f4153fbff7d2cfecac2a">
+ &lt;div data-featherlight="#65f4c776d2a5f4153fbff7d2cfecac2a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__ZG9riz0ViCT8PgILXHuU7Q.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__ZG9riz0ViCT8PgILXHuU7Q.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="3">
+&lt;li>Since the service account will be able to upload by itself (i.e. the user
+does not authenticate on its behalf), we need to identify it with a JSON key.
+The key allows Velociraptor to act as the service account on this cloud
+project. Clicking the Create button will download a JSON file to your system
+with the private key in it.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="23f75e81dccdfa383e867e8bd78b89ea">
+ &lt;div data-featherlight="#23f75e81dccdfa383e867e8bd78b89ea" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__rsKWeCDPrO9AffAuG2k__rA.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__rsKWeCDPrO9AffAuG2k__rA.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="6ccba48c092e01a867c1232328105edb">
+ &lt;div data-featherlight="#6ccba48c092e01a867c1232328105edb" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__qGr13ir9qftvzxJUoM5D6A.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__qGr13ir9qftvzxJUoM5D6A.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Note the service account’s email address. Currently this account has no
+permissions at all, but we will allow it to write objects into our upload bucket
+later.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="392e27f1d76d07b8f1fb4140eab604b8">
+ &lt;div data-featherlight="#392e27f1d76d07b8f1fb4140eab604b8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__EhghHAfmjbZFU2vhiPvhYA.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__EhghHAfmjbZFU2vhiPvhYA.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="4">
+&lt;li>Next we create a bucket to store our collected zip files I will call it
+&lt;code>velociraptor-uploads-121&lt;/code>:&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="83f2624dc2261b0898c7ef91f0751612">
+ &lt;div data-featherlight="#83f2624dc2261b0898c7ef91f0751612" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__ehJ3qfAiaUMNPXoy4mUhEg.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__ehJ3qfAiaUMNPXoy4mUhEg.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="5">
+&lt;li>Selecting the &lt;strong>Permissions&lt;/strong> tab, we are able to add the service account as
+a member — we will only give it the ability to write on a bucket and create
+new objects. This is important since is means that the service account is
+unable to read or list objects in this bucket. Since we will embed the
+service account key in our config file we need to make sure it can not be
+misused to compromise collections from other machines.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3b78e46f6959bb76ff74a6bcdc66e6a5">
+ &lt;div data-featherlight="#3b78e46f6959bb76ff74a6bcdc66e6a5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/1__vzszs0OjRzdqMRlXbesuNw.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="1__vzszs0OjRzdqMRlXbesuNw.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item><item><title>How to set up a SMB share for file uploads</title><link>https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/</link><pubDate>Fri, 14 Nov 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/</guid><description>&lt;h1 id="how-to-set-up-a-smb-share-for-file-uploads">How to set up a SMB share for file uploads&lt;/h1>
+&lt;p>SMB is the Microsoft file-sharing protocol which is a convenient option for
+Windows systems. A SMB share can be a useful upload destination for receiving
+files from Velociraptor clients or collection containers from
+&lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" >offline collectors&lt;/a>
+
+in scenarios where you want the files to be sent to a central storage location
+on the local network rather than to the Velociraptor server or to a cloud
+storage service.&lt;/p>
+&lt;p>This is made possible by the
+&lt;a href="https://docs.velociraptor.app/vql_reference/other/upload_smb/" >upload_smb&lt;/a>
+ VQL function.&lt;/p>
+&lt;p>This article explains how to set up a SMB share with appropriate security for
+file uploads.&lt;/p>
+&lt;hr>
+&lt;h3 id="setup-steps">Setup steps&lt;/h3>
+&lt;ol>
+&lt;li>Create a new local uploader user on one of the windows systems
+accessible to the host the collection is running on.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4735b1767f1cb14402e231e000110ca3">
+ &lt;div data-featherlight="#4735b1767f1cb14402e231e000110ca3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/local_user.png" alt="Creating a local user for uploads">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="local_user.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating a local user for uploads
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="2">
+&lt;li>Create a directory to receive the files.&lt;/li>
+&lt;li>Share the directory out to the local uploader user.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="debe7405f95b0f3b0a3f3806d5fe70b2">
+ &lt;div data-featherlight="#debe7405f95b0f3b0a3f3806d5fe70b2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/sharing_directory.png" alt="Right click on directory and select properties/sharing tab then click the share button">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sharing_directory.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Right click on directory and select properties/sharing tab then click the share button
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="4">
+&lt;li>Adjust directory ACLs to only permit the user to write files
+without being able to list the directory or read the files. This is
+required because the uploader user credentials must be embedded in
+the offline collector so we do not want these misused to alter any
+of the other uploads.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="6a4f4a01090a772626cb9e5dd438ba42">
+ &lt;div data-featherlight="#6a4f4a01090a772626cb9e5dd438ba42" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/directory_permissions.png" alt="Adjusting directory permissions to only provide write access">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="directory_permissions.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adjusting directory permissions to only provide write access
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>It is best to test the SMB configuration works as desired using the
+simple VQL query in a notebook.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET SMB_CREDENTIALS &amp;lt;= dict(`192.168.1.112`=&amp;quot;uploader:test!password&amp;quot;)
+
+SELECT upload_smb(accessor=&amp;quot;data&amp;quot;,
+ file=&amp;quot;Hello world&amp;quot;,
+ name=&amp;quot;hello.txt&amp;quot;,
+ server_address=&amp;quot;//192.168.1.112/uploads&amp;quot;)
+FROM scope()
+
+SELECT *
+FROM glob(globs=&amp;quot;*&amp;quot;,
+ root=&amp;quot;//192.168.1.112/uploads&amp;quot;,
+ accessor=&amp;quot;smb&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>The above query:&lt;/p>
+&lt;ol>
+&lt;li>Sets the global credential cache for use of SMB&lt;/li>
+&lt;li>Uploads a test file called &amp;ldquo;hello.txt&amp;rdquo; to the uploader directory&lt;/li>
+&lt;li>Attempts to list the uploads directory using the &lt;code>glob&lt;/code> plugin.&lt;/li>
+&lt;/ol>
+&lt;p>The upload file should succeed but the &lt;code>uploader&lt;/code> user should not be
+able to list the directory.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="509c05cedfa21d546ed8c3278436e88c">
+ &lt;div data-featherlight="#509c05cedfa21d546ed8c3278436e88c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/testing_smb.png" alt="Testing the SMB permissions with a VQL query">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="testing_smb.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Testing the SMB permissions with a VQL query
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>We are now ready to specify the details to the offline collection
+GUI. NOTE: Usually it is better to use the IP of the server rather
+than the name for improved reliability.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c13f78129bebac1bbd42dd6665ca1048">
+ &lt;div data-featherlight="#c13f78129bebac1bbd42dd6665ca1048" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/creating_smb_collector.png" alt="Creating the SMB offline collector">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="creating_smb_collector.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating the SMB offline collector
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item><item><title>How to set up Azure Blob Storage for file uploads</title><link>https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/</link><pubDate>Fri, 14 Nov 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/</guid><description>&lt;h1 id="how-to-set-up-azure-blob-storage-for-file-uploads">How to set up Azure Blob Storage for file uploads&lt;/h1>
+&lt;p>Microsoft Azure&amp;rsquo;s Blob Storage service can be a useful upload destination for
+receiving files from Velociraptor clients or collection containers from
+&lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" >offline collectors&lt;/a>
+
+in scenarios where the source system is internet connected and you do not want
+to stand up storage services on the local network.&lt;/p>
+&lt;p>This is made possible by the
+&lt;a href="https://docs.velociraptor.app/vql_reference/other/upload_azure/" >upload_azure&lt;/a>
+ VQL function.&lt;/p>
+&lt;p>Azure supports an authentication policy called
+&lt;a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview" target="_blank" >Shared Access Signature (SAS)&lt;/a>
+
+making it convenient and secure to provide limited access to the a storage
+container. Using this method, we can embed a simple SAS URL that provides access
+to upload data to the storage container without granting the ability to download
+or remove any data.&lt;/p>
+&lt;p>This article explains how to set up an Azure storage container with appropriate
+security for file uploads.&lt;/p>
+&lt;hr>
+&lt;h3 id="setup-steps">Setup steps&lt;/h3>
+&lt;ol>
+&lt;li>
+&lt;p>Create a storage account.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Create a new data storage container to receive the uploads&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="377e342b6dbda3eb28d47de6b6fcfb48">
+ &lt;div data-featherlight="#377e342b6dbda3eb28d47de6b6fcfb48" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/creating_azure_container.png" alt="Creating a new Azure Blob storage container">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="creating_azure_container.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating a new Azure Blob storage container
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="3">
+&lt;li>Add a role assignment to allow the storage account to manage the storage&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f43655730b68940d6337dc673e2ed576">
+ &lt;div data-featherlight="#f43655730b68940d6337dc673e2ed576" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/azure_role_assignment.png" alt="Adding a role assignment to the storage account">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="azure_role_assignment.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adding a role assignment to the storage account
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="4">
+&lt;li>Generate a SAS Policy URL.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="489bca0c8c05a34b908b3f2a6947f913">
+ &lt;div data-featherlight="#489bca0c8c05a34b908b3f2a6947f913" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/generating_sas_policy.png" alt="Right click on the container to generate a SAS policy">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="generating_sas_policy.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Right click on the container to generate a SAS policy
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="5">
+&lt;li>Create a SAS policy with only write and create access. You can
+specify an appropriate expiry time for the SAS URL. After this time
+the uploader will no longer work.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="bf0d8a9a1f9e7a8a2adaf699d2a23f40">
+ &lt;div data-featherlight="#bf0d8a9a1f9e7a8a2adaf699d2a23f40" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/sas_policy_details.png" alt="SAS Policy should have only Write and Create Access">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sas_policy_details.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ SAS Policy should have only Write and Create Access
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="6">
+&lt;li>Test the SAS URL works properly&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="08e9c52adfdae61b436abe10a7c40113">
+ &lt;div data-featherlight="#08e9c52adfdae61b436abe10a7c40113" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/testing_sas_url.png" alt="Test the SAS Policy by uploading a small file in the notebook">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="testing_sas_url.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Test the SAS Policy by uploading a small file in the notebook
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="7">
+&lt;li>Embed the SAS URL in the offline collector.&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="52b9912466a495aba594ee90b69c625d">
+ &lt;div data-featherlight="#52b9912466a495aba594ee90b69c625d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/sas_collector.png" alt="Simply paste the SAS URL in the collector GUI">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sas_collector.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Simply paste the SAS URL in the collector GUI
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item><item><title>How to set up a MinIO (S3-compatible) dropbox server for file uploads</title><link>https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/</guid><description>&lt;h1 id="how-to-set-up-a-minio-s3-compatible-dropbox-server-for-file-uploads">How to set up a MinIO (S3-compatible) dropbox server for file uploads&lt;/h1>
+&lt;p>AWS S3 buckets can be a useful upload destination for receiving files from
+Velociraptor clients or collection containers from
+&lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" >offline collectors&lt;/a>
+
+in scenarios where the source system is internet connected and you do not want
+to stand up storage services on the local network.&lt;/p>
+&lt;p>This is made possible by the
+&lt;a href="https://docs.velociraptor.app/vql_reference/other/upload_s3/" >upload_s3&lt;/a>
+ VQL function.&lt;/p>
+&lt;p>However, if you want similar functionality to AWS S3 and prefer to keep things
+local, or at least fully under your own control, then
+&lt;a href="https://www.min.io/" target="_blank" >MinIO&lt;/a>
+ is a great open source, self-hosted, S3-compatible
+dropbox server. It&amp;rsquo;s easy to install and works on all mainstream operating
+systems. A MinIO server is a single Go binary licensed under the AGPL.&lt;/p>
+&lt;p>Here we describe the steps to quickly set up a MinIO server.&lt;/p>
+&lt;hr>
+&lt;h3 id="setup-steps">Setup steps&lt;/h3>
+&lt;p>For this example we assume the dropbox server has the IP &lt;code>192.168.1.1&lt;/code>&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>First download the MinIO binary from the &lt;a href="https://github.com/minio/minio?tab=readme-ov-file#binary-download" target="_blank" >MinIO GitHub
+page&lt;/a>
+. For
+example, on Linux the binary can be fetched from
+&lt;a href="https://dl.min.io/server/minio/release/linux-amd64/minio" target="_blank" >https://dl.min.io/server/minio/release/linux-amd64/minio&lt;/a>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Start the server using the following command:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio server /tmp/minio --console-address &amp;quot;:9001&amp;quot; --address &amp;quot;:4566&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>This will start a server with the admin password provided and store
+all files in the &lt;code>/tmp/minio&lt;/code> directory. The web console will be
+available on port &lt;code>9001&lt;/code> and the API port will be &lt;code>4566&lt;/code>. You can view the
+web console for MinIO by navigating the browser to
+&lt;code>http://192.168.1.1:9001&lt;/code>&lt;/p>
+&lt;p>Please use a more complex password in reality, for this demonstration
+we will use a weak password.&lt;/p>
+&lt;ol start="3">
+&lt;li>To administrate the MinIO server from the commandline we will use
+the &lt;code>mc&lt;/code> command available from
+&lt;a href="https://dl.min.io/client/mc/release/" target="_blank" >https://dl.min.io/client/mc/release/&lt;/a>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">wget https://dl.min.io/client/mc/release/linux-amd64/mc
+chmod +x ./mc
+
+# Save credentials for the mc tool
+./mc alias set 'myminio' 'http://192.168.1.11:4566' 'admin' 'password'
+
+# Create a new bucket called uploads
+./mc mv myminio/uploads
+&lt;/code>&lt;/pre>
+&lt;ol start="4">
+&lt;li>Next we need to create a new client key and secret - this a similar
+process to what we need to do on the &lt;a href="https://training.velociraptor.app//modules/offline_collection/cloud_upload.html#/8" target="_blank" >AWS S3
+console&lt;/a>
+,
+but using the command line it is quicker&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh"># Add a new uploader user with specific access key and secret key
+./mc admin user add uploader access_key_123 secret_key_123
+&lt;/code>&lt;/pre>
+&lt;ol start="5">
+&lt;li>Next we need to restrict the policy allowed for this user (the user
+is basically identified by the access key). We create a JSON policy
+with an editor and store it for example in
+&lt;code>/tmp/uploader.policy.json&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-json">{
+ &amp;quot;Version&amp;quot;: &amp;quot;2012-10-17&amp;quot;,
+ &amp;quot;Statement&amp;quot;: [
+ {
+ &amp;quot;Effect&amp;quot;: &amp;quot;Allow&amp;quot;,
+ &amp;quot;Action&amp;quot;: &amp;quot;s3:PutObject&amp;quot;,
+ &amp;quot;Resource&amp;quot;: &amp;quot;arn:aws:s3:::uploads/*&amp;quot;
+ }
+ ]
+}
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-sh"># Create the policy from the JSON file
+ ./mc admin policy create myminio uploader /tmp/uploader.policy.json
+
+# Attach the policy to the new user
+./mc admin policy attach myminio --user=access_key_123 uploader
+&lt;/code>&lt;/pre>
+&lt;ol start="6">
+&lt;li>Test the bucket and the permissions using the following VQL. Paste
+the following code into a file say &lt;code>/tmp/test.vql&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-vql">SELECT
+ upload_s3(accessor=&amp;quot;data&amp;quot;,
+ file=&amp;quot;Hello&amp;quot;,
+ name=&amp;quot;test.txt&amp;quot;,
+ endpoint=&amp;quot;http://192.168.1.11:4566&amp;quot;,
+ credentials_key=&amp;quot;access_key_123&amp;quot;,
+ credentials_secret=&amp;quot;secret_key_123&amp;quot;,
+ bucket=&amp;quot;uploads&amp;quot;)
+FROM scope()
+
+LET S3_CREDENTIALS &amp;lt;= dict(endpoint='http://192.168.1.11:4566/',
+ credentials_key='access_key_123',
+ credentials_secret='secret_key_123',
+ no_verify_cert=1)
+
+SELECT *, read_file(filename=OSPath, length=10, accessor='s3') AS Data
+FROM glob(globs='/uploads/*', accessor='s3')
+&lt;/code>&lt;/pre>
+&lt;p>Run this query with Velociraptor:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor-v0.74.4-linux-amd64 -v query -f /tmp/test.vql
+&lt;/code>&lt;/pre>
+&lt;p>The first query uploads a test file to the bucket, we then try to read
+it back out - this should be denied:&lt;/p>
+&lt;pre>&lt;code class="language-text">[INFO] 2025-07-05T02:26:32Z upload_S3: Uploading test.txt to uploads
+[
+ {
+ &amp;quot;upload_s3(accessor=\&amp;quot;data\&amp;quot;, file=\&amp;quot;Hello\&amp;quot;, name=\&amp;quot;test.txt\&amp;quot;, endpoint=\&amp;quot;http://192.168.1.11:4566\&amp;quot;, credentials_key=\&amp;quot;access_key_123\&amp;quot;, credentials_secret=\&amp;quot;secret_key_123\&amp;quot;, bucket=\&amp;quot;uploads\&amp;quot;)&amp;quot;: {
+ &amp;quot;Path&amp;quot;: &amp;quot;http://192.168.1.11:4566/uploads/test.txt&amp;quot;,
+ &amp;quot;Size&amp;quot;: 5
+ }
+ }
+][][INFO] 2025-07-05T02:26:32Z Globber: operation error S3: ListBuckets, https response error StatusCode: 403, RequestID: 184F39DAD67D435B, HostID: f2a388c21e253e519af7cec24c2e281b7821740cf65cb6ff168ac3a3ce38718c, api error AccessDenied: Access Denied. while processing /
+&lt;/code>&lt;/pre>
+&lt;p>You can verify the file is there using the MinIO Console.&lt;/p>
+&lt;ol start="7">
+&lt;li>Exporting the files. MinIO uses its internal data to store bucket
+data but you can use it to copy files in raw format into another
+directory. The &lt;code>--watch&lt;/code> flag will continuously watch the bucket to
+export files in real time (omit it for one shot export).&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">./mc mirror --watch myminio/uploads /tmp/backup/
+&lt;/code>&lt;/pre></description></item><item><title>How to set up a SFTP server for file uploads</title><link>https://docs.velociraptor.app/knowledge_base/tips/setting_up_sftp/</link><pubDate>Tue, 25 Feb 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setting_up_sftp/</guid><description>&lt;h1 id="how-to-set-up-a-sftp-server-for-file-uploads">How to set up a SFTP server for file uploads&lt;/h1>
+&lt;p>There are many options for receiving file uploads from clients or collection
+archives from
+&lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" >offline collectors&lt;/a>
+,
+for example
+&lt;a href="https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/" >using S3 buckets&lt;/a>
+,
+&lt;a href="https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/" >Azure storage services&lt;/a>
+,
+and even the
+&lt;a href="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/" >AWS SFTP transfer service&lt;/a>
+.&lt;/p>
+&lt;p>However you might prefer to set up your own SFTP server to receive incoming
+uploads instead of using a cloud storage service.&lt;/p>
+&lt;p>This article explains how to set up a SFTP server with appropriate security for
+automated remote file uploads.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
+misconfigure things in ways that can leave a server open to exploitation.&lt;/p>
+&lt;p>Unless you have a strong reason to prefer using SFTP we recommend that you
+consider more self-contained alternative options such as the one described in
+&lt;a href="https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/" >How to set up a self-hosted S3-compatible dropbox server&lt;/a>
+.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;hr>
+&lt;h3 id="setup-steps">Setup steps&lt;/h3>
+&lt;ol>
+&lt;li>
+&lt;p>Create a new Linux based VM and open port 22 for incoming
+requests. This can be in the cloud or on prem.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Create an &lt;code>sftpupload&lt;/code> user&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>sudo adduser sftpupload
+&lt;/code>&lt;/pre>
+&lt;ol start="3">
+&lt;li>Create a directory for files to be uploaded and set the directory
+to be writable by the user.&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>mkdir -p /var/sftp/files
+chown root:root /var/sftp/files
+
+# Allow anyone to write there
+chmod o+wx /var/sftp/files
+
+# No directory listing possible
+chmod o-r /var/sftp/files
+&lt;/code>&lt;/pre>
+&lt;ol start="4">
+&lt;li>Add the following in the file &lt;code>/etc/ssh/sshd_config&lt;/code>:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-text">PasswordAuthentication no
+
+Match User sftpupload
+ ForceCommand internal-sftp
+ PasswordAuthentication no
+ ChrootDirectory /var/sftp
+ PermitTunnel no
+ AllowAgentForwarding no
+ AllowTcpForwarding no
+ X11Forwarding no
+&lt;/code>&lt;/pre>
+&lt;p>and then restart the &lt;code>sshd&lt;/code> service:&lt;/p>
+&lt;pre>&lt;code class="language-sh">$ sudo systemctl restarts sshd
+&lt;/code>&lt;/pre>
+&lt;ol start="5">
+&lt;li>Create keys for the &lt;code>sftpupload&lt;/code> user&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">sudo -u sftpupload bash
+$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/sftpuser/.ssh/id_rsa)
+
+# Authorize the user's public key for access
+$ cat ~/.ssh/id_rsa.pub &amp;gt;&amp;gt; ~/.ssh/authorized_keys
+
+# Make sure that secure permissions are applied for the directory
+$ chmod -v 600 /home/sftpupload/.ssh/
+&lt;/code>&lt;/pre>
+&lt;ol start="6">
+&lt;li>Verify you can connect to the server and upload files. Listing files will be
+denied.&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-sh">$ sftp localhost
+
+sftp&amp;gt; put /etc/passwd /files/passwd.txt
+Uploading /etc/passwd to /files/passwd.txt
+
+sftp&amp;gt; ls -l files
+remote readdir(&amp;quot;/files/&amp;quot;): Permission denied
+&lt;/code>&lt;/pre>
+&lt;p>As you can see the &lt;code>sftpupload&lt;/code> user does not have permission to read
+the directory but can upload files to it.&lt;/p>
+&lt;p>If we try shell access via SSH it will correctly be denied:&lt;/p>
+&lt;pre>&lt;code class="language-sh">$ ssh localhost
+This service allows sftp connections only.
+Connection to localhost closed.
+&lt;/code>&lt;/pre>
+&lt;h3 id="offline-collector-configuration">Offline Collector configuration&lt;/h3>
+&lt;p>In the offline collector configuration you should use the private key
+(&lt;code>/home/sftpupload/.ssh/id_rsa&lt;/code>) of the form:&lt;/p>
+&lt;pre>&lt;code class="language-text">-----BEGIN OPENSSH PRIVATE KEY-----
+.....
+-----END OPENSSH PRIVATE KEY-----
+&lt;/code>&lt;/pre>
+&lt;p>and for the &lt;code>Endpoint&lt;/code> field, specify the value in the form
+&lt;code>&amp;lt;hostname or IP&amp;gt;:&amp;lt;ssh port&amp;gt;&lt;/code>.&lt;/p></description></item></channel></rss>
