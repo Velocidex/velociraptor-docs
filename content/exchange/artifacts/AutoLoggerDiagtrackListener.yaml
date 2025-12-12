@@ -1,16 +1,20 @@
 name: Windows.System.AutoLoggerDiagtrackListener
 author: Matt Green - @mgreen27
 description: |
-   AutoLogger-Diagtrack-Listener.etl is a potential source of evidence of execution
-   and other system diagnostic data.
+   AutoLogger-Diagtrack-Listener.etl is a potential source of evidence of 
+   execution and other system diagnostic data.
    
-   If AutoLogger-Diagtrack-Listener.etl exists, we use the built in `tracerpt`
-   to parse and extract each XML record as a row.
-
-   NOTE: other interesting targets may include
+   If AutoLogger-Diagtrack-Listener.etl exists, we use the built-in tracerpt to 
+   parse and extract each XML record as a row.
    
-   - `C:\Windows\System32\WDI\LogFiles\**\*.etl`
-   - `C:\Windows\System32\LogFiles\**\*.etl`
+   NOTE: A good workflow is running Windows.Search.FileFinder or Yara.Glob 
+   targeting strings of interest, then running AutoLoggerDiagtrackListener to 
+   parse hits.
+   
+   ETL Globs:    
+      `C:/ProgramData/Microsoft/Diagnosis/ETLLogs/**/*.etl`   
+      `C:/Windows/System32/LogFiles/**/*.etl`   
+      `C:/Windows/System32/WDI/**/*.etl`   
 
 reference:
     - https://www.fortinet.com/blog/threat-research/uncovering-hidden-forensic-evidence-in-windows-mystery-of-autologger
