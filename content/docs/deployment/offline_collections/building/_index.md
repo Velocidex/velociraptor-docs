@@ -172,14 +172,14 @@ You can start the offline collector builder using either:
 
   The filename to use for the collection zip, optionally including template
   variables. Environment variables will be expanded as well as the following:
-  %Hostname%, %FQDN% and %TIMESTAMP%.
+  `%Hostname%`, `%FQDN%` and `%TIMESTAMP%`.
 
 - **Collector Name**
 
   The filename to use for the collector itself. This does not support
   environment variables. The default name for collectors is `Collector_` + the
   inventory tool name of the selected binary, e.g.
-  `Collector_velociraptor-v0.75.4-linux-amd64-musl`.
+  `Collector_velociraptor-v0.75.5-linux-amd64-musl`.
 
 - **Delete Collection at Exit**
 

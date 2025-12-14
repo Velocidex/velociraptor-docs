@@ -90,3 +90,10 @@ artifact repository is available to be imported by any other artifact.
 When importing from multiple artifacts, the VQL preserves the order of the
 `imports` list, and this is added _after_ the VQL from `export` (if defined in
 the importing artifact), but _before_ the VQL from each source.
+
+You can also perform imports in VQL using the
+[import]({{< ref "/vql_reference/server/import/" >}}) function. For example:
+
+```vql
+LET _ <= import(artifact="Windows.System.VAD")
+```
