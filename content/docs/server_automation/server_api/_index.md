@@ -64,6 +64,36 @@ Since VQL allows for many tasks, from server administration, post
 processing of collection results and scheduling of new collections,
 the API is extremely flexible and powerful.
 
+{{% notice info "Why not a REST API?" %}}
+
+Many users ask us about a REST API for Velociraptor. Why do we choose
+gRPC rather than REST?
+
+Actually Velociraptor does have a REST API as well, which is used
+internally by the GUI. However, that API is not considered public or
+stable, and we discourage users from using it.
+
+The gRPC API is geared towards usage by an external program which is
+not a browser and needs to operate without human interaction.
+
+1. The REST API requires an `Oauth2` authentication flow. This is
+   inherently a user based flow (which requires a browser) making it
+   complicated to implement for automated scripts. In contrast the
+   gRPC API only requires a certificate to connect, making it ideal
+   for automated scripts.
+
+2. The gRPC API is streaming! This means that a query on the server
+   can start to feed data immediately and remain connected until the
+   query is complete. In fact, the gRPC API supports event queries
+   which never terminate. This is not possible to do with the REST API
+   since there is no state in the API itself.
+
+For further comparison between the gRPC API and HTTP API see [Compare
+gRPC services with HTTP
+APIs](https://learn.microsoft.com/en-us/aspnet/core/grpc/comparison?view=aspnetcore-10.0).
+
+{{% /notice %}}
+
 ### Protecting the API
 
 The API is extremely powerful so it must be protected! The whole point
@@ -262,6 +292,64 @@ forwarding the resulting query logs and result set to print them on
 the console.
 
 The example is just a [sample python program](https://github.com/Velocidex/pyvelociraptor/blob/master/pyvelociraptor/client_example.py) which you can modify as required.
+
+### Passing data to API calls
+
+The API supports sending a VQL query to the server for
+execution. While it is possible to embed hard coded strings and values
+in the VQL query itself, this is often not convenient or safe to do.
+
+For example, consider the following query (line breaks added for
+readability):
+
+```sh
+$ velociraptor --api_config api_client.yaml  query "SELECT hunt(
+  artifacts='Generic.Detection.Yara.Glob',
+  spec=dict(`Generic.Detection.Yara.Glob`=dict(YaraRule='''rule x { ... }''')))
+FROM scope()"
+```
+
+This query embeds the Yara Rule inside the VQL query itself. However,
+this is fragile and error prone. The rule may include quotes and
+special characters which will be misinterpreted by the VQL engine.
+
+This is the classic `SQL Injection` problem, where data embedded
+inside the query can change the meaning of the query. Just like in
+SQL, VQL injection can pose a security risk for API calls. Therefore
+data should never be interpolated directly into a VQL API query.
+
+The safest and most robust option is to pass the data in an external
+variable and simply refer to the variable in the VQL query
+itself. When the API call is made, we can send `VQL Environment
+Variables` to the query. These strings are added to the VQL scope
+prior to executing the query.
+
+```sh
+$ velociraptor --api_config api_client.yaml  query "SELECT hunt(
+  artifacts='Generic.Detection.Yara.Glob',
+  spec=dict(`Generic.Detection.Yara.Glob`=dict(YaraRule=MyYaraRule)))
+FROM scope()" --env MyYaraRule="rule x {....}"
+```
+
+The above passes the yara rule into the `MyYaraRule` variable which
+will be populated in the VQL scope prior to execution. The query then
+can refer to the variable by name.
+
+By removing variable data from the query it is possible to have a
+constant query (e.g. in a file). We can also expand the contents of an
+external rule file into the env command (e.g. using bash file
+expansions), avoiding the need to type the rule on the command line:
+
+```sh
+$ velociraptor --api_config api_client.yaml query
+  -f "/path/to/start_query.vql" --env MyYaraRule="$(</path/to/rules.yara)"
+```
+
+In the above example, the query is stored as a file (because it does
+not change from call to call). The content of the rules file is also
+expanded into the `YaraRule` env variable which can be accessed in the
+query.
+
 
 
 ## Schedule an artifact collection
