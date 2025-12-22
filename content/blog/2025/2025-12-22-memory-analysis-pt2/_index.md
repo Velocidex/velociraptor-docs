@@ -435,7 +435,7 @@ plugin and scales to multiple machines.
 
 In contrast to `Windows.Memory.HollowsHunter`, `Mem2Disk` is a
 Velociraptor-native plugin fully written in VQL and benefits from the
-parallelisation of Velociraptor. No additional binary has to be
+parallelization of Velociraptor. No additional binary has to be
 uploaded to the client machines (unlike
 `Windows.Memory.HollowsHunter`), which also means Velociraptor can
 regulate the CPU load of `Mem2Disk`. As already mentioned, detections
