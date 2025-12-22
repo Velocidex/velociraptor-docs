@@ -13,7 +13,7 @@ description: |
   - Collects CLR.dll VersionInformation
   - CommandLine visibility
 
-  NOTE: for Mem2Disk capability, the artifact expects the imported name: Windows.Memory.Mem2Disk
+  NOTE: for Mem2Disk capability, the artifact expects the imported name: Windows.Memory.Mem2Disk.
   
 parameters:
 - name: ProcessRegex
@@ -34,7 +34,7 @@ parameters:
 - name: CheckForPatches
   type: bool
 - name: ModuleRegEx
-  default: \\(amsi|ntdll|kernel32|Mp0av.dll|wldap32)\.dll$
+  default: \\(clr|amsi|ntdll|kernel32|Mp0av.dll|wldap32)\.dll$
   type: regex
 
 sources:

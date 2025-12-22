@@ -136,6 +136,7 @@ sources:
         FROM watch_ebpf(events=["security_file_open"])
         WHERE System.EventName = "security_file_open"
          AND System.ProcessID != CurrentPid
+              AND System.HostProcessID = System.ProcessID
       
       LET AuditEvents = SELECT
           *, timestamp(string=System.Timestamp) AS Timestamp,
