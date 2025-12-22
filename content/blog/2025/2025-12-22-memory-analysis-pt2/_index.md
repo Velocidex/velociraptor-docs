@@ -10,7 +10,7 @@ tags:
  - Memory
 
 author: "Dr. Michael Denzel, Lautaro Lecumberry"
-date: 2025-12-06
+date: 2025-12-22
 noindex: false
 ---
 
@@ -207,7 +207,8 @@ Table 1. Since `BaseOfData` is a relative address, the offset between
 code and memory content is always the same (as shown in the table). It
 actually represents Address Space Layout Randomization (ASLR) and,
 thus, while we only observed one byte offsets, it is actually a 32-bit
-or 64-bit offset depending on the system.
+offset. `BaseOfData` only exists for 32-bit programs, which is why we
+only observed these offsets for 32-bit binaries.
 
 | Memory  | Disk  | Times | Difference |
 |---------|-------|-------|------------|
@@ -218,7 +219,7 @@ or 64-bit offset depending on the system.
 |    0x43 |  0x05 |    12 |  62 (0x3e) |
 |    0x41 |  0x03 |     1 |  62 (0x3e) |
 
-Table 1: Firefox `BaseOfData` offsets
+Table 1: 32-bit Firefox `BaseOfData` offsets
 
 Thanks to Mike Cohen we were able to improve our VQL code, calculate the ASLR
 offset and ignore these false positives. Thus, eliminating false positives from
@@ -358,10 +359,9 @@ multiple systems without prior knowledge which systems might be
 affected.
 
 `Mem2Disk` only detects RAM injections that are visible within the
-.text segment of a process or its libraries. Adding a new library
-(e.g. through the Import Address Table (IAT)) or a new memory page is
-not detected. The same applies for manipulations in other memory
-locations of a process.
+.text segment of a process or its libraries. Adding a new memory page
+or manipulating memory locations outside of the .text segment are not
+detected.
 
 Thus, Portable Executable (PE) injections
 ([T1055.002](https://attack.mitre.org/techniques/T1055/002/)), threat
@@ -392,7 +392,9 @@ currently not detected.
 DLL injection
 ([T1055.001](https://attack.mitre.org/techniques/T1055/001/)) might be
 detected if program code or DLL code is changed (e.g. DLL hollowing)
-but is not detected if a DLL is loaded additionally (e.g. via IAT).
+but is not detected if a DLL is loaded additionally (e.g. via Import
+Address Table (IAT)). IAT could be detected though, if the new code is
+added in memory to an existing library.
 
 If malware removes itself from RAM temporarily or hooks the functions
 used by Velociraptor, it could still hide itself from `Mem2Disk`. We
@@ -428,14 +430,20 @@ Hollows Hunter and PE-sieve are the most comparable tools to
 `Mem2Disk`. They employ a variety of techniques to detect malware on
 one system and are more capable and in-depth than `Mem2Disk`. Hollows
 Hunter can also be executed via Velociraptor with the
-`Windows.Memory.HollowsHunter` plugin and scales to multiple machines.
+[Windows.Memory.HollowsHunter](https://docs.velociraptor.app/exchange/artifacts/pages/hollowshunter/)
+plugin and scales to multiple machines.
 
 In contrast to `Windows.Memory.HollowsHunter`, `Mem2Disk` is a
 Velociraptor-native plugin fully written in VQL and benefits from the
 parallelisation of Velociraptor. No additional binary has to be
 uploaded to the client machines (unlike
 `Windows.Memory.HollowsHunter`), which also means Velociraptor can
-regulate the CPU load of `Mem2Disk`.
+regulate the CPU load of `Mem2Disk`. As already mentioned, detections
+usually ran within 1-5 minutes, mostly in under a minute depending on
+the system hardware. Therefore, the performance overhead of `Mem2Disk`
+seems acceptable in a normal company network. Anti-virus scans in
+comparison would take considerable more time and are generally
+accepted.
 
 In summary, `Mem2Disk` is useful for breadth search. For example when
 not knowing if or where fileless malware hides within a full network
@@ -457,8 +465,9 @@ Happy detecting!
 
 # 8. Acknowledgement
 
-We would like to express our gratitude to Prof. Nicolas Wolovick for supporting
-this publication with advice and guidance and to Mike Cohen for improving our
-VQL code as well as helping us understand the connection between `RVA`,
-`BaseOfData` and `ASLR`.
+We would like to express our gratitude to Prof. Nicolas Wolovick for
+supporting this publication with advice and guidance and to Mike Cohen
+for improving our VQL code, giving feedback on the blog post as well
+as helping us understand the connection between `RVA`, `BaseOfData`
+and `ASLR`.
 
