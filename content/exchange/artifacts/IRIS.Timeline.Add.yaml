@@ -151,7 +151,7 @@ sources:
       LET metadata_preparation = SELECT client_metadata(client_id=clientId) as metadata
        FROM scope() WHERE metadata.IRIS_AssetId
 
-      LET syncAsset = SELECT * FROM Artifact.IRIS.Sync.Asset(
+      LET syncAsset = SELECT * FROM Artifact.Exchange.IRIS.Sync.Asset(
          clientId=clientId,
          IrisURL=IrisURL,
          IrisCaseId=IrisCaseId,
