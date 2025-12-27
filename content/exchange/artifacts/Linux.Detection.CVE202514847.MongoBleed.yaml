@@ -198,25 +198,27 @@ sources:
 
   - name: DockerMongoDBLogs
     description: Parse MongoDB logs from Docker containers matching pattern
-    precondition: |
-      SELECT * FROM scope()
-      WHERE DockerContainerPattern != ""
-        AND stat(filename="/var/run/docker.sock")
     query: |
+      -- Check if Docker is available and pattern is configured
+      LET docker_available = DockerContainerPattern != "" AND stat(filename="/var/run/docker.sock")
+
       -- Calculate time range
       LET since_duration = format(format="%dm", args=[TimeRangeMinutes])
 
-      -- Find all containers matching the pattern
-      LET matching_containers = SELECT
-        parse_string_with_regex(
-          string=Stdout,
-          regex="^(?P<ContainerName>.+)$"
-        ).ContainerName AS ContainerName
-      FROM execve(
-        argv=["docker", "ps", "--filter", "name=" + DockerContainerPattern, "--format", "{{.Names}}"],
-        sep="\n"
-      )
-      WHERE Stdout != ""
+      -- Find all containers matching the pattern (only if Docker available)
+      LET matching_containers = SELECT * FROM if(condition=docker_available,
+        then={
+          SELECT
+            parse_string_with_regex(
+              string=Stdout,
+              regex="^(?P<ContainerName>.+)$"
+            ).ContainerName AS ContainerName
+          FROM execve(
+            argv=["docker", "ps", "--filter", "name=" + DockerContainerPattern, "--format", "{{.Names}}"],
+            sep="\n"
+          )
+          WHERE Stdout != ""
+        })
 
       -- Get docker logs from each matching container (use --since for efficiency)
       LET docker_logs = SELECT * FROM foreach(
