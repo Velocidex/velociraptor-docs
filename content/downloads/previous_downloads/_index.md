@@ -30,18 +30,21 @@ arches:
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: 710be6656b5668ff2bac551b80acee4958383aa5cfd8c9f7b895aa32046d9e35
+    hash: c84541d5caa297411c94daefcfc873162fe37a7fe1732f8a808658fc76e0f75e
     platform: linux
+    release: 0.74.6
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: bd18b915b16f3db7778065208aecde522438c00970620c3bf5fb45860a506798
+    hash: ab84ed9446f7d2f8da6836579be2df0b5970b94080fde9832f633f3c66e3f0da
     platform: linux
+    release: 0.74.6
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: f2416a0dface7cbbd7194b50639141e185961b9c4199d81d66e4cda4151691de
+    hash: fd359cd1a3634847e10bd13d3ec969b78d42f50caca74914bb0f85b092da96fd
     platform: linux
+    release: 0.74.6
 
   - desc: MacOS AMD64
     name: darwin-amd64
