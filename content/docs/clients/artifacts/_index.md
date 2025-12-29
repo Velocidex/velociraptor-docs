@@ -15,7 +15,7 @@ behind the scenes.
 Click on the **Collected Artifacts** sidebar screen to view the
 artifacts that have been collected so far.
 
-![Collected Artifacts](collected_artifacts.png)
+![Collected Artifacts](collected_artifacts.svg)
 
 This screen consists of two panes - the top pane shows a list of all
 the **Artifacts** collected so far from this endpoint, while the bottom
