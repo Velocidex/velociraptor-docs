@@ -78,7 +78,7 @@ back and the clients complete.
 
 ![Monitoring hunt progress](hunt_scheduled.svg)
 
-## Post-process a hunt
+## Post-processing hunt results
 
 After collecting an artifact from many hosts in a hunt, we often need
 to post-process the results to identify the results that are
