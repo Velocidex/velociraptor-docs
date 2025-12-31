@@ -195,7 +195,7 @@ than others. In that case you can save your favorite collections by
 name and just recall them by clicking in the favorites list button.
 
 To save a new favorite you select an existing (previously run) collection and
-click the **Save Collection** button in the collection list's toobar.
+click the **Save Collection** button in the collection list's toolbar.
 
 ![Saving a collection to your favorites](favorites.svg)
 
