@@ -40,6 +40,17 @@ navs:
 
 {{% navs %}}
 
+{{% notice warning "CVE-2025-14728 published on 2025-12-29" %}}
+
+Velociraptor versions before 0.75.6 contain a directory traversal
+issue on Linux servers that allows a rogue client to upload a file
+which is written outside the datastore directory.
+
+Read the [Full announcement]({{< ref "/announcements/advisories/cve-2025-14728/" >}}) and upgrade immediately.
+
+{{% /notice %}}
+
+
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response
