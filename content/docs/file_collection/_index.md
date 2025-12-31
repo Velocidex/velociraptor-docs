@@ -1,18 +1,18 @@
 ---
-title: "Bulk File Collection"
+title: "File Collection"
 date: 2021-06-27T04:31:24Z
-last_reviewed: 2025-10-28
-draft: true
+last_reviewed: 2025-12-31
+draft: false
 weight: 50
 ---
 
 In this section we look at some features that Velociraptor offers which support
-bulk file collection.
+file collection.
 
 
 * Capture the machine state at a point in time.
 * Collect files for further analysis by other forensic tools.
-* More "Traditional" DFIR - preservation of evidence.
+* Bulk file collection for more "Traditional" DFIR - preservation of evidence.
 
 
 

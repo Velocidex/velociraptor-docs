@@ -3,7 +3,7 @@ title: "Triage file collections"
 menutitle: "Triage collections"
 date: 2025-11-01
 last_reviewed: 2025-11-01
-draft: true
+draft: false
 weight: 5
 ---
 
