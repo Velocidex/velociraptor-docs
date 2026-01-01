@@ -1,0 +1,2383 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Windows on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/windows/</link><description>Recent content in Windows on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 11 Apr 2024 23:25:17 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/windows/index.xml" rel="self" type="application/rss+xml"/><item><title>The Registry Hunter</title><link>https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/</link><pubDate>Thu, 11 Apr 2024 23:25:17 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/</guid><description>&lt;p>As DFIR practitioners, the Windows registry is a treasure trove of
+information. The Windows registry stores information about system
+configuration and therefore we can use it to understand what software
+was installed, how it was configured and hunt for mis-configuration or
+deliberate compromises to achieve attacker persistence.&lt;/p>
+&lt;p>There are many tools out there to extract forensically relevant
+information from the registry. However, the problem is challenging:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The registry contains thousands of keys and values. While it is
+possible to manually examine relevant keys and values this is
+extremely time consuming and error prone.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Some of the values are encoded in non-obvious ways. For example, it
+is common for registry values to store times encoded as Unix epoch
+integers, Windows File Time integers or even encoded into binary
+encoded blobs. Since the registry is really intended for machine
+consumption it is not always easy to parse human readable
+information out of the values.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Often relevant information is spread across a number of keys and
+values. For a human examiner to make sense of the information, the
+information needs to be collected into a single entity.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Registry information does not have contextually significant
+explanation about what the values actually mean, and how
+significant they are in an investigation. Although this is left to
+the experience of the examiner, it is useful to attach some
+comments or description to the analysis.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="velociraptor-artifacts">Velociraptor Artifacts&lt;/h2>
+&lt;p>Velociraptor has been used to extract values from the windows registry
+for a long time. In Velociraptor the registry is accessible via the
+&lt;code>registry&lt;/code> accessor (to access the registry via the APIs) and the
+&lt;code>raw_reg&lt;/code> accessor to parse raw registry hives. See &lt;a href="https://docs.velociraptor.app/docs/forensic/filesystem/#the-registry-accessor" >The Registry
+Accessor&lt;/a>
+ to read more about how Velociraptor accesses the registry.&lt;/p>
+&lt;p>This allows Velociraptor to use simple &lt;code>glob()&lt;/code> expressions to find
+keys and values in the registry. For example in the
+&lt;a href="https://docs.velociraptor.app/artifact_references/pages/windows.registry.sysinternals.eulacheck/" >Windows.Registry.Sysinternals.EulaCheck&lt;/a>
+ artifact we can search for evidence of running &lt;code>Sysinternal tools&lt;/code>. The following is a simplified query:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT OSPath[-2] as ProgramName,
+ lookupSID(sid=OSPath[1]) AS Username,
+ OSPath.Dirname as Key,
+ Mtime AS TimeAccepted,
+ Data.value AS EulaAccepted
+FROM glob(globs='''HKEY_USERS\*\Software\Sysinternals\*\EulaAccepted''',
+ accessor='registry')
+&lt;/code>&lt;/pre>
+&lt;p>This artifact works pretty well:&lt;/p>
+&lt;ol>
+&lt;li>The artifact zeros in on the relevant values in the registry
+without user intervention - the investigator does not have to know
+or care where the relevant &lt;code>Sysinternal Eula&lt;/code> values are.&lt;/li>
+&lt;li>The artifact decodes the values to interpret the user action (did
+the user accept the EULA?) and also maps the SID back to a
+username.&lt;/li>
+&lt;li>The artifact contains sufficient human description to elicit
+action - what does it mean if a user accepted the EULA? Is this
+fact relevant to the investigation?&lt;/li>
+&lt;/ol>
+&lt;p>While very effective, over time the number of registry artifacts in
+Velociraptor has grown. From the point of view of the investigator it
+is becoming more difficult to use:&lt;/p>
+&lt;ul>
+&lt;li>We need to remember many smaller artifacts that target the registry
+to collect.&lt;/li>
+&lt;li>We need to consider the output separately for each artifact.&lt;/li>
+&lt;/ul>
+&lt;h2 id="some-problems-with-the-above-approach">Some problems with the above approach&lt;/h2>
+&lt;p>You will notice that the above artifact searches the &lt;code>NTUSERS&lt;/code>
+hive. This hive contains each user&amp;rsquo;s &lt;code>ntuser.dat&lt;/code> file which is
+mounted when the user logs in.&lt;/p>
+&lt;p>While the artifact works very well for currently logged users, it will
+be unable to see any users who are currently not logged into the
+system! This can cause a lot of evidence to be missed.&lt;/p>
+&lt;p>The problem here is that the registry is composed of different hives
+and some hives may be mounted at different times. However, when we
+analyze the registry we often want to access all hives!&lt;/p>
+&lt;p>When we use the API to access the registry, we could be missing hives
+that are not currently mounted. Conversely when we use raw registry
+parsing to only look at hive files we will be missing volatile keys
+that are not always written to the hives.&lt;/p>
+&lt;p>In the specific case of &lt;code>Windows.Registry.Sysinternals.EulaCheck&lt;/code> the
+artifact also offers an alternate analysis method which looks at the
+&lt;code>ntuser.dat&lt;/code> files themselves. However this has to be added
+specifically for each artifact.&lt;/p>
+&lt;h2 id="what-do-other-tools-do">What do other tools do?&lt;/h2>
+&lt;p>Investigator focused tools typically attempt to analyze the whole
+registry. For example, &lt;code>regripper&lt;/code> or &lt;code>RECmd/Registry Explorer&lt;/code> present a
+GUI to the registry and simply tag keys and values based on their
+significance. This is very convenient for the investigator, as they
+only need to run the analysis once then examine the output manually.&lt;/p>
+&lt;p>While this is effective for analyzing a small number of machines, it
+can not be easily scaled to large hunts on thousands of machines where
+we need a more machine readable output.&lt;/p>
+&lt;p>The &lt;code>RECmd Batch&lt;/code> project is an interesting idea forward. It started
+off as an automated Batch File to drive &lt;code>RECmd/Registry Explorer&lt;/code>
+analysis by only collecting relevant keys/value and tagging these with
+category and description labels.&lt;/p>
+&lt;p>Here is an example &lt;code>RECmd Batch&lt;/code> rule corresponding to the above artifact:&lt;/p>
+&lt;pre>&lt;code> -
+ Description: Sysinternals
+ HiveType: NTUSER
+ Category: Installed Software
+ KeyPath: SOFTWARE\Sysinternals\*
+ ValueName: EulaAccepted
+ Recursive: false
+ Comment: |
+ Displays all SysInternals Tools that had the EULA accepted,
+ indicating either execution of the tool or the Registry values
+ were added intentionally prior to execution
+&lt;/code>&lt;/pre>
+&lt;p>This rule attaches a description and category to the &lt;code>EulaAccepted&lt;/code>
+value and also includes how to find it. There is also a useful comment
+to drive the investigator towards assessing the importance of these
+findings.&lt;/p>
+&lt;p>The &lt;code>RECmd Batch&lt;/code> format also has some basic registry interpretation
+built in (such as &lt;code>FILETIME&lt;/code> to interpret timestamps), but more
+complex interpretation is deferred to &lt;code>Registry Plugins&lt;/code> which are &lt;code>C# programs&lt;/code> specifically designed to interpret more complex keys or
+values. The use of &lt;code>C#&lt;/code> makes writing registry plugins less accessible
+and more complex.&lt;/p>
+&lt;h2 id="so-what-do-we-actually-want">So what do we actually want?&lt;/h2>
+&lt;p>We wanted to have a single artifact that hunts the entire registry
+quickly and efficiently:&lt;/p>
+&lt;ol>
+&lt;li>Combining all the specific registry based artifacts into a single
+one so investigators don&amp;rsquo;t have to remember all the different
+artifacts - a single shot collection should be all that is needed
+to cover all registry based evidence.&lt;/li>
+&lt;li>All relevant information should be grouped by &lt;code>Category&lt;/code> and
+&lt;code>Description&lt;/code>. The artifact should make it easy to zero in on
+specific categories depending on the investigator&amp;rsquo;s needs.&lt;/li>
+&lt;li>Ideally group together related key/values for quick analysis - this
+is needed to remove the cognitive load on the investigator in
+reviewing thousands of related values.&lt;/li>
+&lt;li>The artifact should be collected in different contexts:
+&lt;ul>
+&lt;li>On a live system using the registry API.&lt;/li>
+&lt;li>Offline on a collection of Registry Hive Files&lt;/li>
+&lt;li>Automatically take care of subtleties such as &lt;code>NTUser.dat&lt;/code> mounts
+(as described about).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>This is what the registry hunter is all about!&lt;/p>
+&lt;h2 id="the-registry-hunter">The Registry Hunter&lt;/h2>
+&lt;p>The Registry Hunter project is maintained at
+&lt;a href="https://github.com/Velocidex/registry_hunter/" target="_blank" >https://github.com/Velocidex/registry_hunter/&lt;/a>
+ and contains a compiler
+that combines a set of &lt;code>Rules&lt;/code> into a final artifact. This allows
+users to contribute specific rules targeting specific keys and value
+in the registry.&lt;/p>
+&lt;h3 id="remapping-the-registry-hives">Remapping the registry hives&lt;/h3>
+&lt;p>To make it easier to write Registry Hunter rules and also to make it
+easier to apply those rules in different situations, we want to
+present a unified view of the registry to rule authors. The rule
+authors should not need to care about if a registry hive is mounted or
+available.&lt;/p>
+&lt;p>In recent versions, Velociraptor implements a powerful mechanism to
+&lt;code>remap&lt;/code> accessors within the name space. You can read about &lt;a href="https://docs.velociraptor.app/docs/forensic/filesystem/remapping/" >Remapping
+Accessors&lt;/a>
+ to
+understand how this is done.&lt;/p>
+&lt;p>The Registry Hunter artifact will map the relevant hives into the
+&lt;code>registry&lt;/code> accessor namespace using a number of different strategies.&lt;/p>
+&lt;p>The below diagram illustrates how the remapping works with the &lt;code>Raw Hives&lt;/code> strategy. In this configuration, the &lt;code>registry&lt;/code> accessor is
+remapped to using all the raw registry hives and does not use the API
+at all.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5c56ae3b4e9a5a42c2780334b6a8c68c">
+ &lt;div data-featherlight="#5c56ae3b4e9a5a42c2780334b6a8c68c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/registry_hunter_remapping.png" alt="Remapping the registry accessor">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="registry_hunter_remapping.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Remapping the registry accessor
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The rules, however, don&amp;rsquo;t really need to know about this - they just
+assume they can access the whole registry using the &lt;code>registry&lt;/code>
+accessor. For example, when a rule accesses the key
+&lt;code>HKEY_USERS\Administrator\Software&lt;/code>, the key will be automatically
+parsed from the &lt;code>Software&lt;/code> hive at &lt;code>C:\Users\Administrator\NTUSER.dat&lt;/code>&lt;/p>
+&lt;p>Depending on the remapping strategy some hives will be directly
+accessible with the API, or remapped from raw registry hives:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>API&lt;/code>: This strategy uses the API for most hives, except the
+&lt;code>HKEY_LOCAL_MACHINE\Security&lt;/code> hive which is normally blocked with
+the API. Additionally, the &lt;code>SAM&lt;/code> is mounted under &lt;code>/SAM&lt;/code> and
+&lt;code>Amcache&lt;/code> under &lt;code>/Amcache&lt;/code> since these are not usually accessible
+via the API.
+&lt;ul>
+&lt;li>This strategy will not be able to see users who are not logged
+in, as it does not map the &lt;code>ntuser.dat&lt;/code>.&lt;/li>
+&lt;li>Using the API is a bit faster than parsing the raw reg hives so
+this is recommended for frequent parsing or where performance is
+important.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>API And NTUser.dat&lt;/code>: This strategy uses the API as above, except it
+also maps all the user&amp;rsquo;s &lt;code>ntuser.dat&lt;/code> files under the &lt;code>/HKEY_USERS&lt;/code>
+key.&lt;/li>
+&lt;li>&lt;code>Raw Hives&lt;/code>: This strategy does not use the API, and instead maps
+all raw hives into the same &lt;code>registry&lt;/code> accessor namespace.&lt;/li>
+&lt;/ul>
+&lt;p>The default remapping strategy is &lt;code>API And NTUser.dat&lt;/code> which is
+suitable for direct remote collections. If you are collecting this
+artifact on a dead-disk mount you will need to use the &lt;code>Raw Hives&lt;/code>
+strategy to direct all registry API calls to raw registry parsing.&lt;/p>
+&lt;h3 id="importing-the-latest-version-of-the-registry-hunter-artifact">Importing the latest version of the Registry Hunter artifact&lt;/h3>
+&lt;p>To use the artifact you will need to import it into the server by
+collecting the &lt;code>Server.Import.RegistryHunter&lt;/code> server artifact. This
+ensures you have the latest version.&lt;/p>
+&lt;h3 id="collecting-the-artifact">Collecting the artifact&lt;/h3>
+&lt;p>When collecting the artifact from a remote system, you will be able to
+select which rule categories to collect - by default all rules are
+collected. The default remapping strategy is also selected here.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="758cb6a791e24709a2114ee8b49ffcf5">
+ &lt;div data-featherlight="#758cb6a791e24709a2114ee8b49ffcf5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/hunting_the_registry.png" alt="Hunting the registry">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="hunting_the_registry.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Hunting the registry
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="the-rule-format">The Rule format&lt;/h3>
+&lt;p>Rules are specified as simple YAML clauses in a rule file. Here is the
+rule that specifies the &lt;code>SysInternals EULA&lt;/code> detection.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">- Author: Andrew Rathbun
+ Description: Sysinternals
+ Category: Installed Software
+ Comment: Displays all SysInternals Tools that had the EULA accepted, indicating
+ either execution of the tool or the Registry values were added intentionally prior
+ to execution
+ Glob: '*\SOFTWARE\Sysinternals\*\EulaAccepted'
+ Root: HKEY_USERS
+ Filter: NOT IsDir
+ Details: |
+ x=&amp;gt;dict(Program=x.OSPath[-2], FirstRunTimestamp=x.Mtime)
+&lt;/code>&lt;/pre>
+&lt;p>The search glob is split into a glob part and a &lt;code>Root&lt;/code> part. The
+&lt;code>Root&lt;/code> refers to the place within the registry namespace where the
+hive is mapped (more on this below).&lt;/p>
+&lt;p>The registry hunter will compile this rule into a similar query to&lt;/p>
+&lt;pre>&lt;code class="language-vql"> SELECT Rule.Description AS Description,
+ Rule.Category AS Category,
+ OSPath, Mtime,
+ eval(func=Metadata.Details) AS Details
+ FROM glob(globs=Rule.Glob, root=Rule.Root, accessor=&amp;quot;registry&amp;quot;)
+ WHERE eval(func=Rule.Filter)
+&lt;/code>&lt;/pre>
+&lt;p>This rule will search the provided glob expression on the provided
+root directory looking for values (the filter &lt;code>x=&amp;gt;NOT IsDir&lt;/code> captures
+values and rejects keys).&lt;/p>
+&lt;p>Matching values will cause the &lt;code>Details&lt;/code> function to be evaluated. The
+&lt;code>Details&lt;/code> field contains a VQL &lt;a href="https://docs.velociraptor.app/docs/vql/#vql-lambda-functions" >lambda function&lt;/a>
+ that will be evaluated on the
+found keys or values. The following values will be available:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>x.OSPath&lt;/code> contains the OSPath of the matching registry key or value&lt;/li>
+&lt;li>&lt;code>x.Mtime&lt;/code> contains the Modification time of the key&lt;/li>
+&lt;/ul>
+&lt;p>The above example returns a dictionary documenting the program and
+the modification time.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="82012644468a533850bb7447d8adfd1e">
+ &lt;div data-featherlight="#82012644468a533850bb7447d8adfd1e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/sysinternals_reg.png" alt="Sysinternal hunt output">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sysinternals_reg.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Sysinternal hunt output
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>A more complex rule is the following which assembles the &lt;code>Most Recently Used&lt;/code> values in the &lt;code>Run Box&lt;/code>:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">- Author: Andrew Rathbun
+ Description: &amp;quot;RunMRU: Tracks commands from the Run box in the Start menu&amp;quot;
+ Category: Program Execution
+ Root: HKEY_USERS
+ Glob: '*\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU'
+ Filter: x=&amp;gt;IsDir
+ Preamble:
+ - |
+ LET CalculateMRU(OSPath) = SELECT GetValue(OSPath=OSPath + g1) AS value
+ FROM parse_records_with_regex(accessor=&amp;quot;data&amp;quot;,
+ file=GetValue(OSPath=OSPath + &amp;quot;MRUList&amp;quot;), regex=&amp;quot;(.)&amp;quot;)
+
+ - |
+ LET FetchKeyValues(OSPath) = to_dict(item={
+ SELECT Name AS _key, Data.value AS _value
+ FROM glob(globs=&amp;quot;*&amp;quot;, accessor=&amp;quot;registry&amp;quot;, root=OSPath)
+ })
+
+ Details: |
+ x=&amp;gt;dict(MRU=CalculateMRU(OSPath=x.OSPath).value,
+ All=FetchKeyValues(OSPath=x.OSPath))
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="931572f1fbd6834bbf0b3d738aac4921">
+ &lt;div data-featherlight="#931572f1fbd6834bbf0b3d738aac4921" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/mru.png" alt="Calculating the MRU order">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="mru.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Calculating the MRU order
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The similar &lt;code>RECmd Batch&lt;/code> rule actually relies on custom &lt;code>C#&lt;/code> code to
+reassemble the MRU lists. This is problematic in practice because we
+would need to rebuild and redeploy compiled code to the
+endpoint. Instead it is much more efficient to implement the
+reassembly algorithm in VQL and include it directly in this rule.&lt;/p>
+&lt;p>The Registry Hunter does rely on specialized processing or specific
+registry plugins and simply implements all the complex parsing
+directly in VQL - allowing us to upgrade the parsers on demand without
+needing to recompile any code.&lt;/p>
+&lt;p>Notice how the &lt;code>Details&lt;/code> lambda rule is able to reference helper
+functions defined in the &lt;code>Preamble&lt;/code> section. This allows us to create
+reusable VQL functions that can be used from many rules.&lt;/p>
+&lt;p>You can see many helpful VQL functions defined in the preamble of the
+common rule sets.&lt;/p>
+&lt;h2 id="presenting-the-results-of-the-analysis">Presenting the results of the analysis&lt;/h2>
+&lt;p>The Registry Hunter is designed to be a one shot, collect everything
+type of artifact. This allows investigators to simply use it in all
+cases and just view relevant results depending on their needs.&lt;/p>
+&lt;p>To facilitate this use, the artifact creates a custom notebook
+breaking the results by category. The user can then begin examining
+the hits for each category that is relevant to the case.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="688e43f91aba6df86d0b45e1f9ebd103">
+ &lt;div data-featherlight="#688e43f91aba6df86d0b45e1f9ebd103" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/initial_notebook.png" alt="Initial notebook">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="initial_notebook.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Initial notebook
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>For example, suppose I was interested in anything that was related to
+&lt;code>PsExec&lt;/code>, I would write a notebook query of the form:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT Description, Category, OSPath AS Key, Mtime, Details FROM source()
+WHERE Details =~ &amp;quot;psexec&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d6440405035ccfdaf99ff87f66a22b85">
+ &lt;div data-featherlight="#d6440405035ccfdaf99ff87f66a22b85" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/hunting_for_psexec.png" alt="Isolating all psexec information">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="hunting_for_psexec.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Isolating all psexec information
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>This query will show all information that is vaguely related to
+&lt;code>PsExec&lt;/code>, we see a number of corroborating evidence from the different
+Rules:&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>Userassist&lt;/code>, &lt;code>AppCompatCache&lt;/code> and &lt;code>Sysinternals&lt;/code> rule all match&lt;/li>
+&lt;li>We can see when the program was initially installed, last used and
+other interesting information.&lt;/li>
+&lt;li>Note that here we collect multiple related results from multiple
+categories.&lt;/li>
+&lt;/ol>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>The Registry Hunter is an unified artifact that compiles separate
+rules hunting in the registry into a single, easy to collect and very
+fast artifact. Long term we aim to consolidate all the discrete
+registry based artifacts into this one artifact.&lt;/p>
+&lt;p>We would really love to hear feedback or see contributions to the
+Registry Hunter through our GitHub repository
+&lt;a href="https://github.com/Velocidex/registry_hunter/" target="_blank" >https://github.com/Velocidex/registry_hunter/&lt;/a>
+ and issue board. But you
+can start using it right now if you would love to test it.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>The Registry Hunter uses newer VQL features available since release
+0.72 and so will only work on clients newer than that version.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>Carving $USN journal entries</title><link>https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/</link><pubDate>Wed, 16 Jun 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/</guid><description>&lt;h2 id="digging-even-deeper">Digging even deeper!&lt;/h2>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="ddd71c0bc3e71c8e4427140719b85c83">
+ &lt;div data-featherlight="#ddd71c0bc3e71c8e4427140719b85c83" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/01gTI29RZ6a6Lxaye.jpg" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>One of the most important tasks in DFIR is reconstructing past filesystem activity. This is useful for example, in determining when files were introduced into the system (e.g. in a phishing campaign or drive by downloads) or when binaries were executed by way of modifications of prefetch files.&lt;/p>
+&lt;p>I have previously written about the &lt;a href="https://velociraptor.velocidex.com/the-windows-usn-journal-f0c55c9010e" target="_blank" >Windows Update Sequence Number journal (USN)&lt;/a>
+. The USN journal is a file internal to the NTFS filesystem that maintains a log of interactions with the filesystem.&lt;/p>
+&lt;p>The USN journal is a unique source of evidence because it can provide a timeline for when files were deleted, even if the file itself is no longer found on the system. In the screenshot below I parse the USN journal using Velociraptor’s built in USN parser. I filter for all interactions with the &lt;strong>test.txt&lt;/strong> file and find that it has been removed (The &lt;strong>FILE_DELETE&lt;/strong> reason).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e58e158871522de04022d08c6b5c9304">
+ &lt;div data-featherlight="#e58e158871522de04022d08c6b5c9304" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1tcte8Ol0lLCO7KtpJ1Kbuw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>While the USN journal is very useful, it is short lived. The system keeps around 30mb worth of USN log, and older entries are removed by making the start of the file sparse. On a busy system this might result in less than a day’s worth of logs!&lt;/p>
+&lt;h3 id="carving-the-usn-journal">Carving the USN journal&lt;/h3>
+&lt;p>Carving is a very popular forensic technique that aims to uncover old items that might still be present in unstructured or unallocated data on the drive. One would resort to carving in order to uncover new leads.&lt;/p>
+&lt;p>Carving attempts to recover structured information from unstructured data by identifying data that follows a pattern typical for the information of interest.&lt;/p>
+&lt;p>In the case of the USN journal, we can examine the raw disk and extract data that looks like a USN journal record, without regard to parsing the record from the NTFS filesystem or using any structure on the disk.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Disclaimer: Depending on the underlying hardware carving may or may
+not be effective. For example, when running on an SSD, the hardware
+will aggressively reclaim unallocated space, making it less
+effective. We typically use carving techniques as a last resort or to
+try to gather new clues so its worth a shot anyway.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h3 id="the-structure-of-a-usn-journal-record">The structure of a USN journal record&lt;/h3>
+&lt;p>In order to carve the USN record from the disk, we need to understand what a USN record looks like. Our goal is to come up with a set of rules that identify a legitimate USN journal record with high probability.&lt;/p>
+&lt;p>Luckily the USN journal struct is well documented by Microsoft&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0d7b80bdb5770a118c70a6f0cc061b4d">
+ &lt;div data-featherlight="#0d7b80bdb5770a118c70a6f0cc061b4d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1byPQQuD1tjF5pwHXhexdtg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above we can see that a USN record contains a number of fields,
+and we can determine their offsets relative to the record. Let’s look
+at what a typical USN record looks like. I will use Velociraptor to
+fetch the USN journal from the endpoint and select the hex viewer to
+see some of the data.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="252cecd0f2c496756fa66d49727cea10">
+ &lt;div data-featherlight="#252cecd0f2c496756fa66d49727cea10" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1onswBmgD7ZPdxnVV8RxDuA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the screen shot above I can identify a number of fields which seem
+pretty reliable — I can develop a set of rules to determine if this is
+a legitimate structure or just random noise.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The RecordLength field starts at offset 0 and occupies 4 bytes. A
+real USN journal must have a length between 60 bytes (the minimum
+size of the struct) and 512 bytes (most file names are not that
+large).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The MajorVersion and MinorVersion is always going to be the same —
+for Windows 10 this is currently 2 and 0. These 4 bytes have to be
+02 00 00 00&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The next interesting field is the timestamp. This is a Windows
+FileTime format timestamp (so 64 bits). Timestamps make for a good
+rule because they typically need to be valid over a narrow range to
+make sense.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The filename is also stored in the record with the length and the
+offset both specified. For a reasonable file the length should be
+less than say 255 bytes. Since the filename itself follows the end
+of the struct, the filename offset should be exactly 60 bytes (0x36
+— the size of the struct).&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Let’s take a look at the timestamp above. I will use &lt;a href="https://gchq.github.io/CyberChef/#recipe=Windows_Filetime_to_UNIX_Timestamp%28%27Seconds%20%28s%29%27,%27Hex%20%28little%20endian%29%27%29From_UNIX_Timestamp%28%27Seconds%20%28s%29%27%29&amp;amp;input=MDRlY2VkZWE1ODYyZDcwMQ" target="_blank" >CyberChef &lt;/a>
+ to convert the hex to a readable timestamp.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6a1b94af2130efa4aac2afb0930de62e">
+ &lt;div data-featherlight="#6a1b94af2130efa4aac2afb0930de62e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1iCD7doMdvFls77vZdOdjKw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>What is the lowest time that is reasonable? The last byte (most
+significant byte) should probably be 01, the next byte in should be
+larger than &lt;code>0xd0&lt;/code>. I can quickly check the earliest time that ends with
+&lt;code>0xd0&lt;/code> &lt;code>0x01&lt;/code> using &lt;code>CyberChef&lt;/code> — it is after 2015 so this is probably good
+enough for any investigations run in 2021. Similar logic shows we are
+good until 2028 with the pattern “d? 01”&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="2817c472f6e60f1af7ce9ed6535a7319">
+ &lt;div data-featherlight="#2817c472f6e60f1af7ce9ed6535a7319" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1o16pA_mO0r5KNGsL4aMdug.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="developing-the-vql-query-for-the-carver">Developing the VQL query for the carver&lt;/h3>
+&lt;p>A good carver is fast and accurate. Since we need to scan a huge amount of data in a reasonable time (most hard disks are larger than 100Gb), we need to quickly eliminate obviously invalid data.&lt;/p>
+&lt;p>The usual approach is to use a fast but rough matcher for a first level sieve — this will eliminate most of the obviously wrong data but might have a high false positive rate (i.e. might match invalid data that is not really a USN record at all).&lt;/p>
+&lt;p>We can then apply a more thorough check on the match using a more accurate parser to eliminate these false positives. If the false positive rate remains reasonably low, we wont waste too many CPU cycles eliminating them and will maintain a high carving velocity while still having high accuracy.&lt;/p>
+&lt;p>When I need a binary pattern matching engine, I immediately think of Yara — the Swiss army knife of binary searching! Let’s come up with a good Yara rule to identify USN journal entries. You can read more about Yara rule syntax &lt;a href="https://yara.readthedocs.io/en/stable/" target="_blank" >here&lt;/a>
+, but I will use a binary match rule to detect the byte pattern I am after.&lt;/p>
+&lt;p>As usual in Velociraptor, I will create a notebook and type a query into the cell. As a first step I will stop after one hit (LIMIT 1) and view some context around the hit. Accessing the raw disk using its device notation (&lt;strong>\\.\C:&lt;/strong>) and the NTFS driver provides access to the raw logical disk from Velociraptor versions after 0.6.0.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9c4f42279134a5ee6597e76f229b9489">
+ &lt;div data-featherlight="#9c4f42279134a5ee6597e76f229b9489" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1KgW2M_VDzWABx2xP_9iMVA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The rule will match a &lt;strong>RecordLength&lt;/strong> smaller than 512 bytes,
+&lt;strong>Version&lt;/strong> must match 2. The timestamp field must end in D? 01
+(i.e. &lt;code>0xD0–0xDF&lt;/code> followed by &lt;code>0x01&lt;/code>). Finally the filename length
+must be smaller than 256 and the file offset must be exactly 60
+(0x36).&lt;/p>
+&lt;p>As you can see above I immediately identify a hit and it looks pretty similar to one of the USN entries I extracted before.&lt;/p>
+&lt;h3 id="parsing-the-usn-record">Parsing the USN record&lt;/h3>
+&lt;p>The Yara signature will retrieve reasonable candidates for our carver. Now we need to parse the record properly. In order to do that I will use Velociraptor’s binary parser. First I will write a profile to describe the USN struct and apply the parser to extract the MFT entry ID from the record. I can then use Velociraptor’s built in NTFS parser to resolve the MFT entry ID to a full path on disk.&lt;/p>
+&lt;p>You can see the full details of the artifact &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Carving/USN.yaml" target="_blank" >here&lt;/a>
+ but collecting this artifact from the endpoint is easy — simply create a new collection and select the Windows.Carving.USN artifact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="df63730a9cef5f96a598ee2cb1eda601">
+ &lt;div data-featherlight="#df63730a9cef5f96a598ee2cb1eda601" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1hw6F2M-_1EHgaRAjY2-S7A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since carving usually takes a long time, it is likely to exceed the default 10 minute collection timeout. For this artifact it is recommended to increase the timeout in the “Specify Resources” wizard pane (On my system, this artifact scans about 1Gb per minute so an hour will be enough for a 60Gb disk).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a84163bab5ab7163d76da2be6c890608">
+ &lt;div data-featherlight="#a84163bab5ab7163d76da2be6c890608" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/1Wwe8cBWg01X4l9H3-AMwKQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>After a while the carver will produce a lot of interesting hits — some of which might be from a long time before what can normally be found in the USN journal (several months even!). If we are lucky we might see something from the timeframe of our incident.&lt;/p>
+&lt;p>We can post process the results to try to put a timeline on a compromise. For example, I will write a post processing query to find all prefetch files that were deleted (Deleting prefetch files is a common &lt;a href="https://attack.mitre.org/techniques/T1070/004/" target="_blank" >anti-forensic technique&lt;/a>
+).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f62a2eaf5b2516e774ab7f87298e995a">
+ &lt;div data-featherlight="#f62a2eaf5b2516e774ab7f87298e995a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/../../img/17oy3DzemUP4M60dfYQYNAw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I can see two occasions where prefetch files were removed. I can see the timestamp based on the USN record, as well as the offset into the disk where the hit is found (around 3Gb into the drive).&lt;/p>
+&lt;p>Note that in the case of deleted files, the filename stored in the USN record may be completely different than the FullPath shown by the artifact. The FullPath is derived by parsing the NTFS filesystem using the MFT entry id referenced by the USN record.&lt;/p>
+&lt;p>For deleted files, the MFT entry may be quickly reused for an unrelated file. The only evidence left on the disk of our deleted prefetch file is in the USN journal, or indeed in USN record fragments we recovered once the journal rolls over.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>Carving is a useful technique to recover new investigative links or clues. Because carving does not rely on filesystem parsing it might recover older deleted records from a long time ago, or from previously formatted filesystem.&lt;/p>
+&lt;p>The flip side is that carving is not very reliable. It is hard to predict if any useful data will be found. Additionally, if the adversary wants to really confuse us they might plant data that happens to look like a USN record — without context we really can not be sure if this data represents a real find or an anti-forensic decoy. A common issue is finding hits in what ends up being Virtual Machine disk images that just happen to have been stored on the system at one time — so the hits do not even relate to the system we are investigating.&lt;/p>
+&lt;p>Take all findings with a grain of salt and corroborate findings with other techniques.&lt;/p>
+&lt;p>This article demonstrated the general methodology of writing an effective carver — use a fast scanner to extract hits quickly, despite a potentially higher false positive rate (using an engine such as Yara). Then use more thorough parsing techniques to eliminate the false positives and display the results (such as Velociraptor’s built in binary parser). Finally apply VQL conditions to surgically target findings to only relevant records to our investigation.&lt;/p>
+&lt;p>To play with this new feature yourself, take Velociraptor for a spin! It is available on &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>Verifying executables on Windows</title><link>https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/</link><pubDate>Wed, 09 Jun 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/</guid><description>&lt;p>How do we know if a windows executable is a legitimate program written
+by the purported developer and not malware? Users may run malicious
+binaries with increasingly devastating consequences, including
+compromise or ransomware.&lt;/p>
+&lt;p>To address this concern, Microsoft has introduced a standard called
+Authenticode, designed to sign trusted binaries, so they can be
+identified by the operating system. Additionally, recent versions of
+Windows will refuse load unsigned device drivers, therefore
+maintaining kernel integrity.&lt;/p>
+&lt;p>While the Authenticode standard itself is well documented, as DFIR
+practitioners we need to understand how Authenticode works, and how we
+can determine if an executable is trusted during our analysis.&lt;/p>
+&lt;p>This post explains the basics of Authenticode, and how Velociraptor can be used to extract Authenticode related information from remote systems. Since release 0.6.0, Velociraptor features an Authenticode parser allowing much deeper inspection of signed executables.&lt;/p>
+&lt;h3 id="is-a-binary-signed">Is a binary signed?&lt;/h3>
+&lt;p>Windows users can easily determine if a binary is signed by simply looking at the Explorer GUI: Right click on the binary and select “Properties” and the “Digital Signatures” tab. This offers a “Details” options where users can view if the signature is ok, who the developer was that signed the executable and other details.&lt;/p>
+&lt;p>For example, let’s inspect the Velociraptor binary itself which is signed.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="1cb2ba95106166696d23722fd956685e">
+ &lt;div data-featherlight="#1cb2ba95106166696d23722fd956685e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1o7geaGdWcYYrycpZq6fwRQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Obviously we can not use this method to verify thousands of binaries found on remote systems, so we need to understand how Authenticode is implemented under the covers.&lt;/p>
+&lt;p>Authenticode uses a number of file format standards to actually embed the signature information into the binary file itself, as illustrated in the &lt;a href="http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/Authenticode_PE.docx" target="_blank" >diagram below&lt;/a>
+:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c7779ef320b4c03db1aadbc273f212e4">
+ &lt;div data-featherlight="#c7779ef320b4c03db1aadbc273f212e4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/0aJlEkIX3M0d8aKnI.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The above diagram shows that signing information is embedded in the PE
+file itself, and consists of a PKCS#7 structure, itself an &lt;code>ASN.1&lt;/code>
+encoded binary blob. The information contains a hash of the PE file,
+and a list of certificates of verifying authorities.&lt;/p>
+&lt;p>Velociraptor can parse the authenticode information from the PE file
+using the parse_pe() VQL function. This allows a VQL query to extract
+signing information from any executable binary (Since this is just a
+file parser and does not use native APIs, you can use this function on
+all supported OSs).&lt;/p>
+&lt;p>Let’s parse Velociraptor’s own PE file in a Velociraptor notebook
+using the following simple query:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT parse_pe(file=’’’C:\Program Files\velociraptor\velociraptor.exe’’’)
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b651dd8ffdcfd00499b5252aefce90e3">
+ &lt;div data-featherlight="#b651dd8ffdcfd00499b5252aefce90e3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/16bcC41eUaZxiHUieQpd9Nw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Among all the usual PE file properties, we can now also spot an Authenticode section, providing information about the subject who signed the binary, the signing time and an expected hash of the file.&lt;/p>
+&lt;h3 id="authenticode-hashes">Authenticode hashes&lt;/h3>
+&lt;p>As we can see in the above screenshot, the authenticode standard provides an expected hash within the signature. However this is not the same as a file hash. We can verify this by simply calculating the hash using the VQL hash() function.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="733fa80b330de2d74bb18617361ce7d7">
+ &lt;div data-featherlight="#733fa80b330de2d74bb18617361ce7d7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1tqLP9HIDA8glYRg0ULZScA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>None of the calculated hashes is the same as the “ExpectedHash” provided in the Authenticode signature! This is because Authenticode hashes do not cover the entire PE file, as regular hashes do. Authenticode hashes only cover specific PE sections, in a specific order. They specifically allow PE sections to be reordered, and some regions in the file to be modified.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading="warning">&lt;p>Many people find it surprising that signed PE files can be modified without invalidating the signature.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>This means that hash database detection commonly used in DFIR do not work to identify malicious signed binaries. I have demonstrated this recently in a &lt;a href="https://www.youtube.com/watch?v=dmmliSh91uQ" target="_blank" >video&lt;/a>
+ where I modified a vulnerable driver to change its file hash, maintaining it’s authenticode hash. This allowed the driver to be loaded, even through its file hash was completely different and not found on Virus Total.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bcaf341b357f7d11ec18f76489c085b3">
+ &lt;div data-featherlight="#bcaf341b357f7d11ec18f76489c085b3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/0unSBclcWJdSgJwhe" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Typically Authenticode hashes are not maintained by malware classifiers such as Virus Total so it is hard to verify if a file has been modified in this way.&lt;/p>
+&lt;h3 id="catalog-files">Catalog files&lt;/h3>
+&lt;p>Armed with our new understanding of Authenticode, we may run VQL queries to collect all authenticode information from windows executables. One might be surprised then to discover that many native windows binaries do not contain any authenticode information at all.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="08e9144d8f4b6999e6879ce58fe2624f">
+ &lt;div data-featherlight="#08e9144d8f4b6999e6879ce58fe2624f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/156Eq-sGsBkzTnREg7ymsFA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The example above shows that notepad.exe, does not typically contain embedded signing information. Similarly, if one clicks on the the notepad.exe binary in the GUI no digital signature information is shown&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d4064bf476a7477676ef1e9db7088a33">
+ &lt;div data-featherlight="#d4064bf476a7477676ef1e9db7088a33" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1nVs1beihcqM5MefgsK3d9g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Could Microsoft simply have forgotten to sign such an integral part of the OS as notepad.exe?&lt;/p>
+&lt;p>The answer turns out to be more interesting. When distributing a large
+number of binaries, a developer has the option of signing a “catalog
+file” instead of each individual binary. The catalog file is
+essentially a list of authenticode hashes that are all
+trusted. Catalog files are stored in
+&lt;code>C:\Windows\system32\CatRoot\{F750E6C3–38EE-11D1–85E5–00C04FC295EE}&lt;/code>&lt;/p>
+&lt;p>While .cat files are simply encoded in PKCS#7 format, they do contain a few Microsoft specific objects. Velociraptor can parse the PKCS#7 files directly and supports the extra extensions using the parse_pkcs7() VQL function.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="5d83e0749bb053c0c5a961646491c4a1">
+ &lt;div data-featherlight="#5d83e0749bb053c0c5a961646491c4a1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1WZ7Zezy8CRueD28qxklK7g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As can be seen in the above query, the cat file consists of a signer, and a list of hashes. Typically no filenames will be given for the hash (although sometimes there will be a filename hint). It is only the hashes that are important in cat files — this allows files to be renamed, but still verified.&lt;/p>
+&lt;p>Again these hashes are authenticode hashes as before, so you can not compare them against our usual hash databases like Virus Total. You can calculate the authenticode hash of a PE File using the VQL: &lt;em>parse_pe(file=FileName).AuthenticodeHash&lt;/em>&lt;/p>
+&lt;p>To verify that a PE file on disk is signed, one must:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Calculate the Authenticode PE hash of the file.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Enumerate all cat files on the system&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Parse each cat file to extract the list of hashes&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Check if any of these hashes match the one calculated in step 1.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>This process is obviously too slow for the OS itself to use. To speed things up, Windows uses a shortcut: A database file exists on the system which simply contains all the trusted hashes directly. The database uses the Microsoft ESE format and is located in C:\Windows\System32\catroot2*\catdb&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="205632703b035d312f9fb931e5300557">
+ &lt;div data-featherlight="#205632703b035d312f9fb931e5300557" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1LRhZH248S7dbHAW9vPOgbw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The file is typically locked so you would need to use Velociraptor to collect it (Velociraptor will automatically parse the file out of the NTFS volume). The database contains tables mapping the hash to a cat file name and may contain hashes of old cat files that have been uninstalled from the system.&lt;/p>
+&lt;h3 id="verifying-signed-files">Verifying Signed files&lt;/h3>
+&lt;p>So far we have learned how authenticode stores hashes in the PE file and we can verify if the hash of the current file matches the hash within the signature information, but how can we trust that this hash is correct?&lt;/p>
+&lt;p>To really verify a signature, Windows must verify the trust chain by following the certificates to a trusted root certificate. Windows maintains a list of trusted certificates in a “Certificate Root Store” within the registry. There are several stores, a main one for the OS and each user also has a certificate store in their NTUSER.dat hive.&lt;/p>
+&lt;p>Velociraptor can inspect the certificate root store using the certificates() plugin. This plugin uses the Windows APIs to query the root store and report the trusted certificates. It is typically important to verify the trusted certificate root store since if a adversary adds a new certificate to the root store, their executables will be trusted by the OS.&lt;/p>
+&lt;p>For example, I added the Velociraptor CA (a self-signed CA cert) to the windows root store below. I can see now that Windows trusts this certificate&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="58d9f968e158b5bd69763ae4af469016">
+ &lt;div data-featherlight="#58d9f968e158b5bd69763ae4af469016" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1wfJvLYsB8lD2iCMkHmMk2g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Where are the trusted certificates stored on the system? A quick registry search will show a set of keys and values for the trusted certificates within the windows registry&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8299e52df774aa18bf89d9425e117525">
+ &lt;div data-featherlight="#8299e52df774aa18bf89d9425e117525" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1ixxSaOLeJm2KtbEzMQu06A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The values are undocumented binary data. Luckily, Didier Stevens has previously written about the format of these registry keys &lt;a href="https://blog.nviso.eu/2019/08/28/extracting-certificates-from-the-windows-registry/" target="_blank" >here&lt;/a>
+ explaining these are simple length encoded items.&lt;/p>
+&lt;p>We can use Velociraptor’s built in binary parser to automatically parse these keys. The details are in the &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/System/RootCAStore.yaml" target="_blank" >Windows.System.RootCAStore artifact&lt;/a>
+ but collecting it from the endpoint is easy&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f520e111e541c632f6fcf9f35a5b4411">
+ &lt;div data-featherlight="#f520e111e541c632f6fcf9f35a5b4411" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1woqK6rwmqIgZRoFqH6rj_w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>An added bonus of parsing the certificate directly from the registry keys is that now we have a registry key modification time to indicate when the certificate was installed into the root store. A quick VQL search to narrow down recently installed certificates can quickly zero in on malicious alterations and provide a timeline of compromise. Adding new certificates to a root store is not commonly done and even then they are likely to be done by a software update (so they should apply to most systems in the fleet). A hunt collecting this artifact and stacking by frequency can reveal compromises in minutes.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7b06f3f519d49ca3cc0f27199d7f2633">
+ &lt;div data-featherlight="#7b06f3f519d49ca3cc0f27199d7f2633" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1AtlKRrylrUZn6voUArJb6A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="putting-it-all-together">Putting it all together&lt;/h3>
+&lt;p>In this blog post we looked at how authenticode signing works on Windows. We found that authenticode signatures can be embedded within the PE file, but that is not the whole story. Sometimes signatures are applied to a catalog file which contains the hash of the PE file instead.&lt;/p>
+&lt;p>Ultimately we simply need to know if a particular binary file is trusted or not. Velociraptor’s authenticode() function was upgraded in the 0.6.0 release to support both methods of trust automatically. Simply apply it to the PE file and it will include the method of trust as well.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="2d9f489ab0a4d5416145b7465323060a">
+ &lt;div data-featherlight="#2d9f489ab0a4d5416145b7465323060a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/../../img/1VjBA5LZYvkpJaIBc-AtEAA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The above screenshot shows both our examples — The velociraptor binary was signed via embedded signature on the right and Notepad.exe was signed via catalog. In both cases Velociraptor is showing the signer and their issuers and if the file is trusted. We additionally get the catalog file that is used to verify the file if applicable.&lt;/p>
+&lt;p>If you would like to quickly verify your windows executables at scale, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>Digging into process memory</title><link>https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/</link><pubDate>Fri, 16 Apr 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/</guid><description>&lt;p>Unlike traditional dead disk forensic tools, Velociraptor’s main advantage is that it is capable of directly looking at volatile system state, such as running processes, open files and currently connected sockets. This class of forensic artifacts are called Volatile Artifacts since they change rapidly as the system operates — processes can start and stop quickly, files can be closed etc.&lt;/p>
+&lt;p>Traditionally, acquiring volatile artifacts meant taking a raw physical memory image, and then analyzing this with a memory analysis framework such as &lt;a href="https://github.com/volatilityfoundation/volatility" target="_blank" >Volatility&lt;/a>
+ or &lt;a href="https://github.com/google/rekall" target="_blank" >Rekall&lt;/a>
+. These frameworks reassemble the contents of physical memory into higher level abstractions, like processes, threads, registry content etc.&lt;/p>
+&lt;p>While at first it might appear that a physical memory image contains a perfect snapshot of the running state of a system, this is not typically the case. The physical memory image only contains those pages currently locked into physical memory — however, modern operating systems use virtual memory to represent process and kernel memory address spaces. Each virtual memory address may refer to either paged out memory (i.e. only present in the page file) or memory mapped files (i.e. only present on the file system in e.g. dll or executable files), neither of which are typically included in a physical memory image.&lt;/p>
+&lt;p>Additionally, most physical memory images obtained in a DFIR setting, contains acquisition smear (i.e. the memory is changing during the acquisition process). This smear leads to inconsistencies, making memory analysis from physical memory samples generally a hit or miss affair.&lt;/p>
+&lt;p>For DFIR purposes it is preferable to extract data directly from the running system, rather than rely on fragile memory analysis. For example, to obtain a list of processes, it is always more reliable to use the system APIs than to take a full memory image, ship it off the endpoint, and then use a framework like Volatility to extract the same data from the raw image.&lt;/p>
+&lt;p>Many of the same techniques implemented in Volatility for physical memory analysis can also be implemented directly on the endpoint using OS APIs. Velociraptor already contains plugins such as “vad”, “pslist”, “modules”, “handles”, “objtree” etc.&lt;/p>
+&lt;p>Consider the identification of malicious processes running in memory. Many modern tools use memory only injection, where malicious code is added to processes but is never written to disk. Detecting this type of malware requires inspection of process memory using for example a Yara signature.&lt;/p>
+&lt;p>For example, &lt;a href="https://malpedia.caad.fkie.fraunhofer.de/" target="_blank" >Malpedia&lt;/a>
+ contains Yara signatures for common malware families derived from automated identification of common code blocks. We can apply these signatures to detect memory injected &lt;a href="https://malpedia.caad.fkie.fraunhofer.de/details/win.cobalt_strike" target="_blank" >Cobalt Strike beacon&lt;/a>
+ by simply scanning each process address space and reporting any hits.&lt;/p>
+&lt;p>Velociraptor included bindings to libyara’s process scanning capabilities for a while now, exposed through the VQL plugin proc_yara() and usable through artifacts such as &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Detection/ProcessMemory/CobaltStrike.yaml" target="_blank" >Windows.Detection.ProcessMemory.CobaltStrike&lt;/a>
+.&lt;/p>
+&lt;h3 id="direct-access-to-process-memory">Direct access to process memory&lt;/h3>
+&lt;p>Since release 0.5.8, Velociraptor provides direct access to process memory via the “process” &lt;a href="https://www.velocidex.com/docs/user-interface/investigating_clients/virtual_filesystem/#filesystem-accessors" target="_blank" >accessor&lt;/a>
+. This allows any plugins and functions that normally operate on files to also operate on process memory, as if the process memory was just another file.&lt;/p>
+&lt;p>To demonstrate this new accessor, I will write “this is a test” in notepad without saving the file on disk (so the string exists only in memory). I will then write some VQL to detect this string in the process memory of notepad&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bea7e787d40441c999f6c9a710d9150d">
+ &lt;div data-featherlight="#bea7e787d40441c999f6c9a710d9150d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1jhU1ZpOf3ArKtHQsES5UpA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above example, I am iterating over all processes with a name matching “notepad” and then applying a yara signature over their process address space. The “process” accessor allows me to open the process represented by the filename “/&lt;pid>” as if it was a file. The &lt;code>yara()&lt;/code> plugin (which normally operates on files) will just see process memory as another file to scan.&lt;/p>
+&lt;p>I can then also extract some context around the hits to see if the hit is a false positive.&lt;/p>
+&lt;h3 id="determining-process-environment-variables">Determining process environment variables&lt;/h3>
+&lt;p>When a process is launched it receives environment variables that often affect the way the launched program behaves. I was curious to see if it is possible to determine the environment variables that a process is launched with?&lt;/p>
+&lt;p>On windows, each process is started with a &lt;a href="https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb" target="_blank" >Process Environment Block&lt;/a>
+. This data structure is populated by the OS before the process is created and contains important information about the process. Processes can extract this information at runtime. The process environment variables are stored in the PEB too and therefore we can parse these out from each process’s memory.&lt;/p>
+&lt;p>Velociraptor has a powerful binary parser built in, as was described previously in the post “&lt;a href="https://velociraptor.velocidex.com/parsing-binary-files-d31114a41f14" target="_blank" >Parsing binary files&lt;/a>
+”. Having the process memory exposed via an accessor allows us to apply this parser to process memory via a VQL query.&lt;/p>
+&lt;p>If you are interested in the details, check out the VQL for the &lt;code>Windows.Forensics.ProcessInfo&lt;/code> artifact &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/ProcessInfo.yaml" target="_blank" >here&lt;/a>
+, but here is the result of collecting the process information (including each process’s environment variables) from my system&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="4d556d979821ce10cef6037b5fe8b609">
+ &lt;div data-featherlight="#4d556d979821ce10cef6037b5fe8b609" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1uuWWzOGWgSnIg_4Or8JLrQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="detecting-etw-subversion">Detecting ETW subversion.&lt;/h3>
+&lt;p>Recently I read Adam Chester’s &lt;a href="https://blog.xpnsec.com/hiding-your-dotnet-complus-etwenabled/" target="_blank" >blog post&lt;/a>
+ where he described his finding that the .NET ETW provider can simply be disabled by setting the &lt;code>COMPlus_ETWEnabled&lt;/code> environment variable to 0. This is dramatically demonstrated by using process hacker to inspect the .NET assemblies of a powershell process.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="24cfde5c4ce87c9c53d92b7a9d4b5fa3">
+ &lt;div data-featherlight="#24cfde5c4ce87c9c53d92b7a9d4b5fa3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1GCGVJTqyGR9Hc66F6cFiJg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>When the &lt;code>COMPlus_ETWEnabled&lt;/code> environment variable is set to “0”, process hacker will be unable to inspect the loaded assemblies, since it relies on ETW support to do so and this is disabled within the running powershell process.&lt;/p>
+&lt;p>While this anti-detection technique is very simple for attackers to implement — they simply set an environment variable before launching the target binary, it should be very easy for us to detect it, using the following heuristics:&lt;/p>
+&lt;ul>
+&lt;li>Iterate over all processes, and&lt;/li>
+&lt;li>if any process has an environment variable starting with “COMPlus_” then it is suspicious.&lt;/li>
+&lt;/ul>
+&lt;p>Our VQL can take advantage of the existing &lt;code>Windows.Forensics.ProcessInfo&lt;/code> artifact and simply inspect each process’s environment dictionary&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d5ae8f509db052fea85ead5bb5e64bc7">
+ &lt;div data-featherlight="#d5ae8f509db052fea85ead5bb5e64bc7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/../../img/1QgWxuYVpwR0yVpqq8LnPkA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above query we extract each process and its environment dictionary from the &lt;code>Windows.Forensics.ProcessInfo&lt;/code> artifact, then iterate over each key and value using the &lt;em>items()&lt;/em> plugin, filtering any keys beginning with “COMPlus”.&lt;/p>
+&lt;p>To convert this VQL into a detection, we now encapsulate the query in an artifact and hunt all our endpoints for processes that have the environment variable set. In practice, there should not be any legitimate reason to switch off the .NET ETW provider, so if we see this variable set in the environment, it is a very strong signal and requires further investigation.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>This post introduced the “process” accessor, which exposes process memory to all VQL plugins that can usually access files. The process accessor allows us to implement memory analysis techniques on running processes in real time, safely, quickly and reliably, without needing to resort to acquiring and analysing full physical memory images. This provides unprecedented visibility into the state of the endpoint and forms the basis for novel detection and hunting possibilities.&lt;/p>
+&lt;p>To use this feature yourself, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>Digging for files with Velociraptor</title><link>https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/</link><pubDate>Sat, 13 Feb 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/</guid><description>&lt;p>One of the most common questions in digital forensics is:&lt;/p>
+&lt;pre>&lt;code class="language-text">Is a file with a specific filename currently present on this system or was it in the past?
+&lt;/code>&lt;/pre>
+&lt;p>There are many scenarios that lead to this question, from theft of IP by rogue employees, to drive by downloads from malicious websites or even victims of phishing emails. Often we need to scope this question to the entire network (Which machines had this file?) or potentially 10s of thousands endpoints.&lt;/p>
+&lt;p>This post recounts some of the techniques we can use within Velociraptor to answer this question. Most of these techniques should be very familiar to DFIR practitioners, but we will discuss how they are implemented in Velociraptor specifically.&lt;/p>
+&lt;p>For this post I will create a text file with a unique name Abagnale.txt and I will attempt to find it on my test system.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6c949c7d7155d8ce1bf47a0a08670ac1">
+ &lt;div data-featherlight="#6c949c7d7155d8ce1bf47a0a08670ac1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1u0_dhIcf9zdcRdO0x1rAdw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="searching-for-files-using-windowssearchfilefinder">Searching for files using Windows.Search.FileFinder&lt;/h3>
+&lt;p>The first artifact we can use to search for files is the aptly named FileFinder artifact (There are variants for Linux/MacOS and Windows). I will simply add a new collection, search for the file finder and select the &lt;code>Windows.Search.FileFinder&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="73ec8a0489f91a020fd780117a1aa9c5">
+ &lt;div data-featherlight="#73ec8a0489f91a020fd780117a1aa9c5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1YD4Zee8PdP8nw3b-mcFDeQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Next I will configure the artifact parameters.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="25ad36bd7bd518ecd66bf0d0a9a54257">
+ &lt;div data-featherlight="#25ad36bd7bd518ecd66bf0d0a9a54257" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/13ebC-8_xkdROGTsmuCoreg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The FileFinder artifact uses a glob expression to find files through the filesystem. A glob expression uses simple wildcards to match files by filename. In Velociraptor a &lt;code>**&lt;/code> glob expression means recursively descend into subdirectories, so in our case the glob expression &lt;code>C:\**\Abagnale*&lt;/code> will enumerate all files in the C: drive to locate the file of interest.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e8e0ee36dd3495a83236632bc14af835">
+ &lt;div data-featherlight="#e8e0ee36dd3495a83236632bc14af835" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1xW9fQn8L_pKG5SgTvencrA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Globbing through all files took 109 seconds on my test VM and returned two hits (my original text file and a lnk file created by notepad itself):&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8231c1d3f71572b6910e4b88c69e7235">
+ &lt;div data-featherlight="#8231c1d3f71572b6910e4b88c69e7235" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1Udz5uUX3NEzT4mY-757ajw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="scanning-the-master-file-table">Scanning the Master File Table&lt;/h3>
+&lt;p>On Windows, the NTFS filesystem is almost ubiquitous. NTFS uses a special hidden file called the $MFT to store all metadata on all files (such as their filenames, size, dates etc). Metadata is stored in the $MFT within MFT entries — fixed size data structures stored back to back in the $MFT file.&lt;/p>
+&lt;p>Therefore, by scanning the $MFT file and parsing all MFT entries, we are able to enumerate all files’ metadata on the disk.&lt;/p>
+&lt;p>Velociraptor offers an artifact called &lt;code>Windows.NTFS.MFT&lt;/code> that will enumerate all entries within the $MFT filtering out only the relevant ones.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d47aa1473cf0061f0109b56b4dd31f0c">
+ &lt;div data-featherlight="#d47aa1473cf0061f0109b56b4dd31f0c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1l-xgDXReDeWyKK_A7wAm9w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I will again proceed to configure the artifact parameters. This time I am able to filter the filename by a regular expression. I will just search for all files with filenames containing the word &lt;strong>Abagnale&lt;/strong> .&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d3244ca09e5b7a2d2cedae996dafe0db">
+ &lt;div data-featherlight="#d3244ca09e5b7a2d2cedae996dafe0db" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1zoTSgpXbFFktbI-b14k9fg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Again this artifact found the same 2 files as the previous one&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="21ec62e841a40367b2b2ebed1c84fdc8">
+ &lt;div data-featherlight="#21ec62e841a40367b2b2ebed1c84fdc8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1EB6S8u1baKQ2h7Qv4bTpww.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>So how is the MFT search method different from the Glob method?&lt;/p>
+&lt;p>Parsing the MFT tends to be faster than using the APIs in a glob when searching over the entire disk (87 sec vs 109 sec), although if you know that the files can only be in a more confined part of the disk (e.g. inside the C:\Users directory) then the glob method is faster since it is looking at fewer files.&lt;/p>
+&lt;p>However, the MFT search may be able to detect deleted files. When a file is deleted in NTFS the MFT entry is marked as unallocated and can be reused at any time, but until it does, the old data structures are still present and will be parsed by the MFT parser.&lt;/p>
+&lt;p>Additionally the MFT parser has access to the &lt;strong>$FILENAME&lt;/strong> stream’s timestamps and so can report those as well. Timestamps in the &lt;strong>$FILENAME&lt;/strong> streams (Shown in the above results as Created0x30, LastModified0x30 etc) can not be altered by timestomping tools and so are more reliable indicators of when the file was created or modified.&lt;/p>
+&lt;h3 id="searching-the-usn-journal">Searching the USN journal&lt;/h3>
+&lt;p>While the previous two methods were great for detecting files that are currently present on the endpoint, what if the file was since deleted? I mentioned that the MFT parser may still find evidence of a deleted file in unallocated MFT entries, but this will only happen if the entry is not reused by the system for something else.&lt;/p>
+&lt;p>Luckily, Windows keeps another record of file operations in the NTFS USN journal. I wrote in details previously about &lt;a href="https://medium.com/velociraptor-ir/the-windows-usn-journal-f0c55c9010e" target="_blank" >the USN journal&lt;/a>
+ but for our purposes it is sufficient to know that file operations are continuously written by the system into a journal file internal to the NTFS filesystem (so it is not generally altered by adversaries).&lt;/p>
+&lt;p>Velociraptor contains a built-in parser for the USN journal which is made available via the &lt;code>Windows.Forensics.Usn&lt;/code> artifact. I will select this artifact for collection as before&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="254a274f4ea3c0620a49fe953543da29">
+ &lt;div data-featherlight="#254a274f4ea3c0620a49fe953543da29" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1-hox0Mi6qUTpbkIsrGjKMQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I now select “Configure Parameters” where I can specify a path regular expression.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b6c11d1dcc5c0d98a176eb2d7cabb924">
+ &lt;div data-featherlight="#b6c11d1dcc5c0d98a176eb2d7cabb924" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1E4JaMVWTzWPB7ghefsKOZQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This time the artifact returns 7 rows in 29 seconds&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8b8658c7875c7f45f5646f95cb75b124">
+ &lt;div data-featherlight="#8b8658c7875c7f45f5646f95cb75b124" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1nvuwmAxUDjDOC1V2Abwopg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s take a look at the rows returned from this query&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="cf1655297272308e8fa213afd1780c1d">
+ &lt;div data-featherlight="#cf1655297272308e8fa213afd1780c1d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1qkHHGevfBzluJPeTcHBlSw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since the USN journal stores metadata about file operations, we see each time the file was interacted with by a program. This is not exactly the same as the previous results which just show the final state of the file.&lt;/p>
+&lt;p>For example, if the file was edited at one point in time and then edited again at a later time, the USN journal will show 2 separate interactions with the file, but the previous artifacts will only show the last modified time. This can be significant for some investigations, in particular if the file is deleted.&lt;/p>
+&lt;p>Typically we find the USN journal is kept for around 2–3 weeks by the system, providing excellent visibility of past activities.&lt;/p>
+&lt;h3 id="hunting-the-entire-network">Hunting the entire network&lt;/h3>
+&lt;p>Previously we collected the artifacts on a single host. However, in some investigations we need to determine if any machine in our network contains the file in question.&lt;/p>
+&lt;p>Velociraptor hunts are specifically designed to coordinate collections of the same artifact across the entire fleet. I will create a new hunt and give it a description, then proceed to select the &lt;code>Windows.Forensics.Usn&lt;/code> artifact configuring its parameters as before.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0482e35a6fe436df1706827946c827b6">
+ &lt;div data-featherlight="#0482e35a6fe436df1706827946c827b6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1pV6gUITH1IO1rCM2ok28ug.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Running the hunt over a small network returns results within minutes&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f5b88b153893250365cfd0432f4135bd">
+ &lt;div data-featherlight="#f5b88b153893250365cfd0432f4135bd" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1ivnEtqt-UnZG2kUldMdScA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>While it may seem that a USN journal scan of an entire network is an expensive operation, in reality it places very little load on the server.&lt;/p>
+&lt;p>The server simply collects the result sets from running the VQL query across each endpoint in the deployment. Since these artifacts are highly targeted in returning only positive hits for the files in question the total number of rows returned is pretty small. In this hunt, most of the heavy lifting is done by the endpoints themselves — this is the secret for Velociraptor’s scalability!&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>In this post we looked at some of the common ways to determine if a file was present on a system. Each method has advantages and disadvantages and this article explored when you should use one method over another. You can of course, just use all methods at the same time, and interpret their results accordingly.&lt;/p>
+&lt;p>All the described methods are very quick ranging from under 30 seconds for a USN journal scan, to a couple of minutes for a large glob operation. Using Velociraptor we can perform an exhaustive search of a large 10–20k endpoint deployment in minutes. This unprecedented agility and scalability is rather unique in an open source DFIR tool.&lt;/p>
+&lt;p>To play with these artifacts yourself, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p>
+&lt;p>If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+.&lt;/p></description></item><item><title>Detecting DLL Hijacking With VQL</title><link>https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/</link><pubDate>Tue, 02 Feb 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/</guid><description>&lt;p>One of my favorite pastime is reading Twitter and following other security researchers. I love being able to see a new tool or technique and develop an understanding and detections for it. A while back, I was reading my feed and saw an excellent article titled &lt;a href="https://www.mdsec.co.uk/2020/10/i-live-to-move-it-windows-lateral-movement-part-3-dll-hijacking/" target="_blank" >I Like to Move It: Windows Lateral Movement Part 3: DLL Hijacking&lt;/a>
+.&lt;/p>
+&lt;p>The article describes an interesting form of lateral movement — DLL Hijacking. DLL Hijacking is an abuse of the Windows DLL search order resolution process. Typically, when an executable is started, the executable will declare dependent DLLs in its import table. Windows will search for these DLLs in a number of paths, until a suitable DLL is found, and its exported symbols will be resolved into the new image. DLL Hijacking works by placing a malicious DLL, with the same name as a legitimate DLL, in a directory that is searched earlier, thereby tricking the loader into loading the malicious DLL instead of the legitimate one.&lt;/p>
+&lt;p>DLL Hijacking is often used for persistence — simply place a malicious DLL earlier in the search path, and programs that are started (potentially with higher privileges) will load the malicious DLL, thereby granting execution.&lt;/p>
+&lt;p>In the above article an interesting approach is described to escalate privileges or laterally move to a remote system — simply write a malicious DLL using e.g. SMB on the target machine, and wait until a user or process on the remote machine runs the vulnerable program.&lt;/p>
+&lt;p>Actually getting DLL hijacking to work successfully is &lt;a href="https://silentbreaksecurity.com/adaptive-dll-hijacking/" target="_blank" >quite tricky&lt;/a>
+. The details are described well by Nick Landers in &lt;a href="https://silentbreaksecurity.com/adaptive-dll-hijacking/" target="_blank" >Adaptive DLL Hijacking&lt;/a>
+ which presents a number of approaches.&lt;/p>
+&lt;p>One of the simplest technique, is to simply create a DLL with a bunch of forwarded functions. Normally a DLL contains an &lt;em>Export Table&lt;/em>, listing all the functions it exports. However sometimes, the need arises to legitimately forward an export that would normally be found in one DLL to another DLL (e.g. in the case where a DLL was refactored this allows replacing the dll without rebuilding programs that depend on it).&lt;/p>
+&lt;p>In this case, the export table contains a forward entry — i.e. it forwards the loader into another DLL. Nick Landers published a tool to help build such a dll &lt;a href="https://github.com/monoxgas/Koppeling" target="_blank" >https://github.com/monoxgas/Koppeling&lt;/a>
+&lt;/p>
+&lt;h3 id="example-injection">Example Injection&lt;/h3>
+&lt;p>I will use the Koppeling tool above to build a simple DLL forwarder as per the example in the repository.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="aa6644a3f561fd06bb4de92176853f6d">
+ &lt;div data-featherlight="#aa6644a3f561fd06bb4de92176853f6d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/../../img/1MDCiispLQZwNTqreGTQ_CQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="900eead7a020a745fa78d61d5719b9ff">
+ &lt;div data-featherlight="#900eead7a020a745fa78d61d5719b9ff" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/../../img/1w0xeBExcn4m06ja_HLFGIg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="parsing-the-dll">Parsing the DLL&lt;/h3>
+&lt;p>Velociraptor has a function that allows parsing a PE file, lets see what information is available — Simply use parse_pe() on the injection file.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6046c71629864e834932fd613caed822">
+ &lt;div data-featherlight="#6046c71629864e834932fd613caed822" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/../../img/1jogu19VYVVVeL98TDKZHNQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>We see that although the file is called &lt;strong>wkscli.dll&lt;/strong> it really is &lt;strong>kernel32.dll&lt;/strong> (since we have modified its exports to forward to the original wkscli.dll residing in C:\Windows\System32).&lt;/p>
+&lt;p>While it is normal for a dll to forward to another dll, it is very unusual for a dll to forward to &lt;strong>another dll of the same name&lt;/strong>. So I think a strong signal for a potentially hijack dll is one that contains forwards to another dll with the same base name.&lt;/p>
+&lt;p>As usual I created a Velociraptor notebook and developed the VQL within it. The full query I entered in the notebook cell is shown below:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET Glob = '''C:\windows\**\*.dll'''
+
+-- Apply the glob to search for matching DLLs.
+LET DLLs = SELECT FullPath, Name, parse_pe(file=FullPath).Forwards AS Forwards,
+ lowcase(string=parse_string_with_regex(regex=&amp;quot;^(?P&amp;lt;BareName&amp;gt;[^.]+)&amp;quot;, string=Name).BareName) AS DLLBareName
+FROM glob(globs=Glob)
+WHERE NOT FullPath =~ &amp;quot;(WinSXS|Servicing)&amp;quot;
+
+-- For each DLL, extract the forward strings.
+SELECT * FROM foreach(row=DLLs, workers=20,
+query={
+ -- For each forwarded export, split the string into
+ -- a DLL path and export name
+ SELECT FullPath AS DllPath, ForwardedImport,
+ Parse.DllPath AS DllImportPath,
+ Parse.Export AS DLLExportFunc,
+ DLLBareName,
+ basename(path=lowcase(string=Parse.DllPath)) AS ExportDLLName
+ FROM foreach(row=Forwards,
+ query={
+ SELECT parse_string_with_regex(
+ regex=&amp;quot;(?P&amp;lt;DllPath&amp;gt;.+)\\.(?P&amp;lt;Export&amp;gt;[^.]+$)&amp;quot;, string=_value) AS Parse,
+ _value AS ForwardedImport
+ FROM scope()
+ })
+ -- Only select forwarded functions that forward to the same dll name.
+ WHERE ExportDLLName = DLLBareName
+})
+&lt;/code>&lt;/pre>
+&lt;ol>
+&lt;li>
+&lt;p>First I search for all DLL files in the provided glob (excluding &lt;strong>winsxs&lt;/strong> and &lt;strong>servicing&lt;/strong> directory). I also lowercase the name of the dll and strip the extension.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>For each DLL I parse out the forwarded functions and use a regular expression to split the string into a target DLL and an exported function.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>I then filter all rows to show only those with the target DLL the same as the name of the dll itself.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="testing-the-vql">Testing the VQL&lt;/h3>
+&lt;p>I copied the hijack DLL I created with &lt;a href="https://github.com/monoxgas/Koppeling" target="_blank" >Koppeling&lt;/a>
+ into the Windows directory. I then created an artifact and collected it on my VM. I chose to recursively scan all dlls in the windows directory to get an idea of the performance impact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9a611772afedca36fd9d5b0eaf84ceb4">
+ &lt;div data-featherlight="#9a611772afedca36fd9d5b0eaf84ceb4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/../../img/1Fcsrla6Y1rQFyBThJ-APsg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Velociraptor reports all forwarded functions that target a DLL with the same name as the one it is currently parsing. Velociraptor parsed about 9000 Dlls and took 62 seconds to find the one injection dll and one false positive (C:\Windows\SysWOW64\rpcrt4.dll).&lt;/p>
+&lt;h3 id="conclusions">Conclusions.&lt;/h3>
+&lt;p>This quick VQL is only suitable to detect one type of DLL hijack — one using forwarded functions. There are many other types of hijacking which might be more difficult to detect (more are discussed in the paper above). It is also possible to detect dll injection after the fact (by looking at loaded DLLs in process memory images), but this query is looking for “time bombs” — simply files that stay on the endpoint until a time in the future where they allow reinfection or escalation.&lt;/p>
+&lt;p>In this exercise we went from a blog post and a POC tool to a detection artifact in a short time, and were able to easily deploy and subsequently hunt for these.&lt;/p>
+&lt;p>The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses on &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+ or check out the code on &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+. To chat, please join us on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+.&lt;/p></description></item><item><title>Disabled Event Log files</title><link>https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/</link><pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/</guid><description>&lt;h3 id="detecting-malicious-activity-with-velociraptor">Detecting malicious activity with Velociraptor&lt;/h3>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d339dd3ea080ed24410e6996ca79208b">
+ &lt;div data-featherlight="#d339dd3ea080ed24410e6996ca79208b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/https://cdn-images-1.medium.com/max/11520/0*8Z6QxIV2lCx4PYPT" alt="Photo by Jonny Caspari on Unsplash" />
+ &lt;/div>
+ &lt;figcaption>
+ Photo by Jonny Caspari on Unsplash
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;em>Photo by &lt;a href="https://unsplash.com/@jonnysplsh?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" >Jonny Caspari&lt;/a>
+ on &lt;a href="https://unsplash.com?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" >Unsplash&lt;/a>
+&lt;/em>&lt;/p>
+&lt;p>Windows information security techniques are heavily reliant on the availability and integrity of event logs. Many state of the art systems use event log forwarding to aggregate information from endpoints and detect malicious behavior across the enterprise.&lt;/p>
+&lt;p>But how reliable really are event logs? I was playing around with the Windows Event Viewer to understand how event logs can be interfered with in practice. We &lt;a href="https://medium.com/velociraptor-ir/windows-event-logs-d8d8e615c9ca" target="_blank" >previously covered&lt;/a>
+ the general structure of the Windows Event Log system, so you might want to have a quick read of &lt;a href="https://medium.com/velociraptor-ir/windows-event-logs-d8d8e615c9ca" target="_blank" >that post&lt;/a>
+ before you dive into this one.&lt;/p>
+&lt;h3 id="example-bits-transfer">Example: BITS transfer&lt;/h3>
+&lt;p>For this post I will use the example of a BITS transfer using bitsadmin.exe. BITS is a transfer service built into the Windows operating system, normally used to fetch windows (or application) updates. However, is it also commonly used by threat actors to deliver malicious payloads because BITS is typically trusted by endpoint tools (since it is a standard windows service). See &lt;a href="https://attack.mitre.org/techniques/T1197/" target="_blank" >Mitre Att&amp;amp;ck T1197&lt;/a>
+.&lt;/p>
+&lt;p>For this test I will use bitsadmin to download a page from the internet and store it on the filesystem. By default, the BITS service will generate several log messages in the log file &lt;code>%SystemRoot%\System32\Winevt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx&lt;/code> as shown in the screenshot below&lt;/p>
+&lt;p>The command I will run fetches a file from the internet and stores it locally&lt;/p>
+&lt;pre>&lt;code class="language-shell">bitsadmin.exe /transfer /download /priority foreground [https://www.google.com](https://www.google.com) c:\Users\test\test.ps1
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8a851091e6ae415d3b5162ad443fd9f7">
+ &lt;div data-featherlight="#8a851091e6ae415d3b5162ad443fd9f7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1o74NoHxr20avTkbAplRlHQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Many tools rely on the presence of these eventlog messages to escalate an alert for this malicious activity.&lt;/p>
+&lt;p>While I was playing with this technique I noticed an interesting option in the Windows Event Viewer: &lt;code>disabled Log&lt;/code> available by simply right clicking on the log file.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6e9874addba7850bd85c394a349a2920">
+ &lt;div data-featherlight="#6e9874addba7850bd85c394a349a2920" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1oOg5MAjs9uLe6SoqcRhBGg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Sure enough when the log file is disabled, no events are recorded in the event log at all! Any solutions that rely on detecting event logs will be completely blinded by this setting!&lt;/p>
+&lt;h3 id="what-does-this-setting-do">What does this setting do?&lt;/h3>
+&lt;p>I wanted to know if I can detect when a log file was disabled on an
+endpoint. My working hypothesis was that this UI would change some
+registry keys and I know how to collect those!&lt;/p>
+&lt;p>I started up procmon and clicked the button to disable the log. After
+some applications of filtering I was able to narrow it down to the
+following value
+&lt;code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Bits-Client/Operational\Enabled&lt;/code>
+which is set to 0 for disabling the log file.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9a2c368a9722b5fe625691c063e42156">
+ &lt;div data-featherlight="#9a2c368a9722b5fe625691c063e42156" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/12sb1bdsZuU3ghB9CTWVAZQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="detecting-this-setting">Detecting this setting&lt;/h3>
+&lt;p>Ok, great, I want to write a Velociraptor artifact to detect the state of log files. To develop the required VQL I will create a new notebook and simply write the VQL in it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8af09c85edc53d9182ce6e42e6c1effe">
+ &lt;div data-featherlight="#8af09c85edc53d9182ce6e42e6c1effe" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1qh7B-LH8fyaxXauzuqI0dw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In this query we glob for all keys within the registry query above and extract the channel name (as the name of the subkey) and the Enabled valued. For the sake of simplicity I filtered the above to only examine the bits channels we are currently interested in.&lt;/p>
+&lt;h3 id="other-avenues">Other avenues&lt;/h3>
+&lt;p>Running the above query shows all the channels (i.e. log files) that are disabled, but there are other ways to disable logging.&lt;/p>
+&lt;p>Lets look back at the procmon output above we see another interesting value is being set&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f0298302c593bd09d7848d3275e0ed00">
+ &lt;div data-featherlight="#f0298302c593bd09d7848d3275e0ed00" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1WJRSRw7s8d_gSVwaRZ8p8w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>What happens if we change this Enabled value to 0? Lets try this, and reboot…&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e2e3d9baa5e756e02f7026821ac4f801">
+ &lt;div data-featherlight="#e2e3d9baa5e756e02f7026821ac4f801" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1g-lvFbFw2yO_c8DqOvEvjQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This time logging is also disabled, but the log file is showing as enabled!&lt;/p>
+&lt;p>This second registry key disables the provider itself, while the previous method disables the channel (log file). The GUID in the registry key corresponds to the provider name. As described in our previous article the provider name can be derived from the registry key &lt;code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\&lt;/code> which can be used to resolve the GUI to a name&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="50bcfa85b0a56c425cc1c109b17a942e">
+ &lt;div data-featherlight="#50bcfa85b0a56c425cc1c109b17a942e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1bgC3WMCTWXcFxudRwqFxhQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s write some VQL to display the Enabled status of the BITS provider.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0ace34778c9650d969be62f60638b3dc">
+ &lt;div data-featherlight="#0ace34778c9650d969be62f60638b3dc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1WUWEOGrqJyO7sRYoYFrZtA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This VQL also resolves the GUID to a provider name via the &lt;code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers\&lt;/code> key as well as showing the modification time of the registry key in question.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7826dbfbaec42ed847c3385353f16c89">
+ &lt;div data-featherlight="#7826dbfbaec42ed847c3385353f16c89" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1UMnEn1TwNkXMpFW0NZqNww.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="converting-to-an-artifact">Converting to an artifact&lt;/h3>
+&lt;p>Armed with the above VQL queries, we can now write an artifact that collects this information from the endpoint. I also added some potential filters to make my artifact more targeted for hunting. You can see the full source of the &lt;code>Windows.EventLogs.Modifications&lt;/code> artifact &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/EventLogs/Modifications.yaml" target="_blank" >here&lt;/a>
+.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="067c0c629763561f91be20a9589f18af">
+ &lt;div data-featherlight="#067c0c629763561f91be20a9589f18af" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1qjwC5Ct0Y9udkI0QwPRUUg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s see all the logs that were disabled or enabled in the past day&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="74b2b8f9aeafd4efb43a52c7e63af6de">
+ &lt;div data-featherlight="#74b2b8f9aeafd4efb43a52c7e63af6de" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1lfyqJjJym9MFUa0xDDfnsw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Within 2 seconds we see that the BITS admin channel was manipulated within the previous day&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="780547ff1be612331b02268a3b6852a8">
+ &lt;div data-featherlight="#780547ff1be612331b02268a3b6852a8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1Kk0EeHBU1e1AaofCPf6PQQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>And the provider was also disabled very recently.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="2f7110acfddcba94eff01fcc78b7d2ef">
+ &lt;div data-featherlight="#2f7110acfddcba94eff01fcc78b7d2ef" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/17IoSXoPVQYO0G3ZAKT5Ltg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Next stop is to perform a hunt across my enterprise and look for recently modified channel settings, as well as stacking across my endpoints to see which log channels are disabled on few machines but are generally supposed to be enabled.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="aeb76a20a54be1c3693645bd04c53b6c">
+ &lt;div data-featherlight="#aeb76a20a54be1c3693645bd04c53b6c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/../../img/1tcJ3Y2gO3ILG1FtpMghThg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above screenshot I ran a hunt on about 100 endpoints which have the default enabled logs, and a single endpoint with that log disabled. The stacking operation (GROUP BY) immediately reveals the outliers.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>This was a fun little exercise in trying to understand event logging in Windows. Adversaries often just disable logs during the period of their activities, so solutions completely dependent on log files are very vulnerable to these techniques.&lt;/p>
+&lt;p>Velociraptor’s power is in being able to quickly and easily recover forensic evidence on activity on the endpoint. In most environments disabling log file or providers is not a legitimately common, so hunting for such activity produces high value signals and leads to a better understanding of how attackers are able to hide their tracks.&lt;/p>
+&lt;p>The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses on &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+ or join us on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+.&lt;/p>
+&lt;h3 id="ps">P.S.&lt;/h3>
+&lt;p>You can automate event log enable/disable using the following powershell&lt;/p>
+&lt;pre>&lt;code class="language-powershell">$logName = ‘Microsoft-Windows-DNS-Client/Operational’
+$log = New-Object System.Diagnostics.Eventing.Reader.EventLogConfiguration $logName
+$log.IsEnabled=$true
+$log.SaveChanges()
+&lt;/code>&lt;/pre></description></item><item><title>The Windows USN Journal</title><link>https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/</link><pubDate>Thu, 12 Nov 2020 00:38:44 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="c5b2ccdc530284492c6ba176aab243f4">
+ &lt;div data-featherlight="#c5b2ccdc530284492c6ba176aab243f4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1Nv0e89B_XOhBSxpY2v9Z8g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>&lt;em>Thanks to &lt;a href="https://twitter.com/mgreen27" target="_blank" >Matt Green &lt;/a>
+for discussions, ideas and code….&lt;/em>&lt;/p>
+&lt;p>NTFS is the default filesystem on Windows systems, so it is important for DFIR tools to support extracting as much system state information as possible from it. Velociraptor already has a full featured &lt;a href="https://www.velocidex.com/blog/medium/2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/" target="_blank" >NTFS parser&lt;/a>
+, and in a recent release (0.5.2) also added a parser for the &lt;strong>USN Journal&lt;/strong> (Update Sequence Number Journal), or &lt;a href="https://en.wikipedia.org/wiki/USN_Journal" target="_blank" >Change Journal&lt;/a>
+.&lt;/p>
+&lt;h3 id="what-is-the-usn-journal">What is the USN Journal?&lt;/h3>
+&lt;p>By default Windows maintains a journal of filesystem activities in a file called &lt;strong>$Extend$UsnJrnl&lt;/strong> in a special data stream called &lt;strong>$J&lt;/strong>. This stream contains records of filesystem operations, primarily to allow backup applications visibility into the files that have been changed since the last time a backup was run.&lt;/p>
+&lt;p>The &lt;strong>$Extend$UsnJrnl:$J&lt;/strong> file begins life when the volume is created as an empty file. As files are modified on the volume, the $J file is extended with additional USN records.&lt;/p>
+&lt;p>In order to preserve space, the NTFS creators use an ingenious trick: The beginning of the file is erased and made into a sparse run. Since NTFS can handle sparse files (i.e. files with large runs containing no data) efficiently, the file effectively does not consume any more disk space than needed but does not need to be rotated or truncated and can just seem to grow infinitely.&lt;/p>
+&lt;p>This means that in practice we find the &lt;strong>$J&lt;/strong> file on a live system reporting a huge size (sometimes many hundreds of gigabytes!), however usually the start of the file is sparse and takes no disk space, so the $J file typically only consumes around 30–40mb of actual disk space. This is illustrated in the diagram below.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b5e1faf59032c54d2c45e0107b6e1542">
+ &lt;div data-featherlight="#b5e1faf59032c54d2c45e0107b6e1542" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1oh4ARro_MayRRUZAJHqhaw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>USN Records are written back to back within the file. The USN records contain&lt;a href="https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-usn_record_v2" target="_blank" > valuable information&lt;/a>
+:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>The USN ID is actually the offset of the record within the file. This is a unique ID of the USN record (since the file is never truncated).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A Timestamp — This is a timestamp for the file modification&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Reason — is the reason of this modification for example DATA_TRUNCATION, DATA_EXTEND, FILE_CREATE, FILE_DELETE etc.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Filename is the name of the file that is being affected.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Parent MFT ID points to the parent record within the MFT (the changed file’s containing directory).&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Using the Filename and Parent MFT ID allows Velociraptor to resolve the full path of the file from the root of the filesystem.&lt;/p>
+&lt;h3 id="velociraptors-usn-parser">Velociraptor’s USN Parser&lt;/h3>
+&lt;p>Velociraptor provides access to the USN parser via the &lt;strong>parse_usn()&lt;/strong> plugin. Let’s see what kind of data this plugin provides by running a simple query in the notebook&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="ca92a008e0626221edfe207be975532b">
+ &lt;div data-featherlight="#ca92a008e0626221edfe207be975532b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1JkUkNsAJWFjP9uzwf56Jig.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>In the above I hid some of the less interesting fields, but we can immediately see the USN records are shown with their USN ID (which is the offset in the $J file), the timestamp, the full path to the modified file and the reasons for modifications.&lt;/p>
+&lt;p>When a program interacts with a file, we typically see a bunch of related filesystem events. For example, I can create a new file called &lt;strong>test.txt&lt;/strong> using notepad and write some data into it. I can then query the USN journal for modifications to that file (The &lt;strong>=~&lt;/strong> operator is VQL’s regex match)…&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bf842261ac78f94d18949d684654a978">
+ &lt;div data-featherlight="#bf842261ac78f94d18949d684654a978" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1gB2SCYCpK5xLceNH_OhhZg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Notepad seems to interact with the file using a number of separate operations and this adds several events into the USN journal file for the same interaction.&lt;/p>
+&lt;p>Previously, Velociraptor was able to only collect the USN journal file and users had to rely on other third party tools to parse it (e.g. &lt;a href="https://tzworks.net/prototype_page.php?proto_id=5" target="_blank" >this&lt;/a>
+ or &lt;a href="https://github.com/PoorBillionaire/USN-Journal-Parser" target="_blank" >this&lt;/a>
+). The problem with that approach is that external tools usually have no access to the original $MFT and therefore were unable to resolve the parent MFT id in the USN record to a full path. Parsing the USN records directly on the endpoint allows Velociraptor to immediately resolve the files into a full path making analysis much easier later.&lt;/p>
+&lt;h3 id="when-to-use-the-usn-journal">When to use the USN Journal?&lt;/h3>
+&lt;p>The USN journal can provide visibility into filesystem activity going back quite a long time. It seems that Windows aims to keep the maximum actual size of the log file around 30–40mb (remember, the file is sparse) so if the machine is not used too heavily, we sometimes find the log goes back a week or two. This gives us visibility on past system activity.&lt;/p>
+&lt;p>Practically this can be useful:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>When a program is run, typically we can see the prefetch files modified which gives us a timestamp on execution (in the case where the prefetch files themselves were deleted).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>One can see file modification or creation of a particular file extension (e.g. executables) or within specific directories (e.g. Windows\System32) which might indicate system compromise took place.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Many compromises occur after an initial file based malware was run (e.g. office macros, or PDF). The USN journal can provide a time of initial infection.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The USN journal can provide evidence of deleted files. With Velociraptor it is possible to efficiently hunt for all machines that had the particular file in the recent past — even if the file was subsequently deleted. This is useful to find evidence of attacker toolkit installation, or initial vectors of compromise.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="watching-the-usn-journal">Watching the USN journal&lt;/h3>
+&lt;p>In the previous section we saw how Velociraptor can parse the USN journal on a running system, enabling hunting and analysis of past filesystem activity.&lt;/p>
+&lt;p>However, Velociraptor is built around VQL — a unique query language allowing for asynchronous and event driven queries. Therefore, Velociraptor also has the unique ability to create event queries — queries that never terminate, but process data as it occurs.&lt;/p>
+&lt;p>As such, Velociraptor offers many event driven versions of the standard plugins. For USN Journals, Velociraptor offers the &lt;strong>watch_usn()&lt;/strong> plugin as an event driven alternative to the &lt;strong>parse_usn()&lt;/strong> plugin. When a query uses &lt;strong>watch_usn()&lt;/strong>, Velociraptor will watch the USN log for new entries, and as they appear, the plugin will release the event into the rest of the query.&lt;/p>
+&lt;p>This allows Velociraptor to watch for file changes in near real time on the running system. You can easily see this effect by running an event query from the command line:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7aa3337d722ba556bef8500327e0258f">
+ &lt;div data-featherlight="#7aa3337d722ba556bef8500327e0258f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1kVFXU7krriNv2m1srYsTWg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As filesystem changes occur they are picked up by the &lt;strong>watch_usn()&lt;/strong> plugin and reported a short time later. This allows us to write queries that respond to filesystem events in near real time.&lt;/p>
+&lt;h3 id="event-monitoring-example-hash-database">Event monitoring example: Hash database&lt;/h3>
+&lt;p>Having the ability for Velociraptor to actively watch for filesystem events in near real time opens the door for many potential applications. One very useful application is maintaining a local hash database on endpoints.&lt;/p>
+&lt;p>Hunting for a file hash on endpoints can be a very useful technique. While attackers can and do change their tools trivially to make hunting for file hash ineffective, once a specific compromise is detected, being able to rapidly hunt for the same hash across the entire fleet can reveal other compromised hosts.&lt;/p>
+&lt;p>Up until now, hunting for hashes on a machine was difficult and resource intensive. This is because trying to determine if any files exist on an endpoint having a given hash requires hashing all the files and comparing their hash to the required hash — so essentially hashing every file on the system!&lt;/p>
+&lt;p>Even after reasonable optimizations around file size, modification time ranges, file extensions etc, a hunt for hashes is quite resource intensive, and therefore used sparingly.&lt;/p>
+&lt;p>The ability to follow the USN journal changes all that. We can simply watch the filesystem for changes, and when a file is modified, we can hash it immediately and store the hash locally in a database on the endpoint itself. Then later we can simply query that database rapidly for the presence of the hash.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8208c6ca47977aa3b07882c529eda5df">
+ &lt;div data-featherlight="#8208c6ca47977aa3b07882c529eda5df" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1v8WrntHsWl3XbrDZ1yFuDw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As mentioned in the previous section, a single change typically involves several USN log entries. We therefore need to deduplicate these changes. We simply need to know that a particular file may have changed recently (say in the last few minutes) and we can then rehash it and update the database accordingly.&lt;/p>
+&lt;p>All this can easily be implemented using a VQL query, which we can store in a VQL artifact. You can see the &lt;strong>Windows.Forensics.LocalHashes.Usn&lt;/strong> &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/LocalHashes/Usn.yaml" target="_blank" >full artifact source here&lt;/a>
+.&lt;/p>
+&lt;p>In order to get this query to run on the endpoints, we assign the artifact as a client event detection artifact, by clicking the “Client Events” screen and then the “Update Client monitoring table” button. After selecting the label group to apply to (All will apply this to all machines in your deployment), simply add the &lt;strong>Windows.Forensics.LocalHashes.Usn&lt;/strong> artifact by searching for it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="956101679c915816f8f54f55385d58ee">
+ &lt;div data-featherlight="#956101679c915816f8f54f55385d58ee" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1ebbAwSff_9QqhbQqfMThnA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most important configuration parameter is the PathRegex specifying which files we should be watching. For example, you might only be interested in hashes of executables or word documents. Leaving the setting at “.” will match any file, including very frequently used files like event logs and databases — this setting can potentially affect performance. Finally you can suppress the artifact output if you like — this just means that hashes will not be additionally reported to the Velociraptor server. They will just be updating the local database instead.&lt;/p>
+&lt;p>Once the query is deployed it will run on all endpoints and start feeding hash information to the server (if required). You can see this information in the client monitoring screen by simply selecting the artifact and choosing a day of interest&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="115ad9f38f82849e9d381ff82ba6dc00">
+ &lt;div data-featherlight="#115ad9f38f82849e9d381ff82ba6dc00" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1CIoyTKKFshUGoHFlS4zx5A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can now easily page through the data viewing the hashes and files that were added since the query started. You can also download the entire SQLite database file from the endpoint, or watch the events on the server for specific file types or hashes found across the entire deployment.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="61f3d9a6d5e7d4865771049d38fef19d">
+ &lt;div data-featherlight="#61f3d9a6d5e7d4865771049d38fef19d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/17fRC-jlP_4VxarLtqfhtMQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s test querying this local database. I will just pick a random
+hash and see if my endpoint has this hash. I will simply collect the
+Windows.Forensics.LocalHashes.Query artifact on my endpoint and
+configure it to search for the hash
+&lt;code>f4065c7516d47e6cb5b5f58e1ddd1312&lt;/code>. This hash can be entered as a
+table in the GUI or simply as a comma delimited text field.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="dbb843a59d4813d768558036ff733a33">
+ &lt;div data-featherlight="#dbb843a59d4813d768558036ff733a33" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/17SU9muB1xlvOuwZ-AGxkPQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The artifact returns almost instantly with the file that this hash belongs to&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="79e765fd6d5799fbe4bea968c096fcd8">
+ &lt;div data-featherlight="#79e765fd6d5799fbe4bea968c096fcd8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/../../img/1Wprj9Wic03bIg-86ClDBtg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The local hash database is simply a SQLite file maintained by the VQL query. As such I can easily collect this file with a hunt if I wanted to archive the hash database periodically from all my endpoints.&lt;/p>
+&lt;p>Collecting the &lt;strong>Windows.Forensics.LocalHashes.Glob&lt;/strong> artifact will populate the local hash database by simply crawling a directory, hashing all files inside it and populated the database — this is useful to pre-populate the database with hashes of files created before Velociraptor was installed.&lt;/p>
+&lt;h3 id="conclusion">Conclusion&lt;/h3>
+&lt;p>Velociraptor brings unprecedented visibility to endpoint machine states using state of the art forensic capabilities. In this post we saw how parsing the USN Journal allows Velociraptor to gather information about past filesystem activity. We also saw how detection and monitoring queries can be used to respond to file modification or creation in near real time.&lt;/p>
+&lt;p>Finally we saw this capability put into practice by maintaining a local hash database which can be queried on demand to quickly answer questions like &lt;em>which machine in my fleet contain this hash?&lt;/em>&lt;/p>
+&lt;p>To play with this new feature yourself, take Velociraptor for a spin! It is a available on &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>HashRunKeys</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/hash_run_keys/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/hash_run_keys/</guid><description>&lt;p>Iterate over all the run keys and locate their binary then hash it.&lt;/p>
+&lt;p>Tags: #windows #registry #detection&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: HashRunKeys
+description: |
+ Iterate over all the run keys and locate their binary then hash it.
+
+ Tags: #windows #registry #detection
+
+parameters:
+ - name: runKeys
+ default: |
+ HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Run\*
+
+ - name: pathRegex
+ type: hidden
+
+ # Pick the first part - either quoted or not.
+ default: &amp;gt;-
+ (^"(?P&amp;lt;quoted_path&amp;gt;[^"]+)"|(?P&amp;lt;unquoted_path&amp;gt;^[^ ]+))
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+ query: |
+ LET paths = SELECT FullPath,Name, Data.value AS Value,
+ parse_string_with_regex(string=Data.value,
+ regex=pathRegex) as regData
+ FROM glob(globs=split(string=runKeys, sep="[, \\n]+"),
+ accessor="reg")
+ WHERE Data.value
+
+ -- Handle some variations we see in the value:
+ -- system32\drivers\XXX.sys -&amp;gt; %systemRoot%\System32\
+ -- \SystemRoot\ -&amp;gt; %SystemRoot%\
+ LET normalized = SELECT *,
+ expand(path=
+ regex_replace(re='(?i)^system32\\\\',
+ replace="%SystemRoot%\\system32\\",
+ source=regex_replace(
+ source=regData.quoted_path + regData.unquoted_path,
+ re="^\\\\SystemRoot\\\\",
+ replace="%SystemRoot%\\"))) AS RealPath
+ FROM paths
+
+ SELECT FullPath, Name, Value, RealPath,
+ hash(path=expand(path=RealPath)).SHA256 AS Hash
+ FROM normalized
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Registry.CapabilityAccessManager</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.capabilityaccessmanager/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.capabilityaccessmanager/</guid><description>&lt;p>The ConsentStore in CapabilityAccessManager can provide insight to
+what resources binaries have had access to, such as the microphone
+and webcam. This artefact returns non-Microsoft executables (ie:
+entries listed in the &lt;code>NonPackaged&lt;/code> path).&lt;/p>
+&lt;p>Additional Resources:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072" target="_blank" >https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/" target="_blank" >https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;p>Tags: #windows #registry&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Registry.CapabilityAccessManager
+description: |
+ The ConsentStore in CapabilityAccessManager can provide insight to
+ what resources binaries have had access to, such as the microphone
+ and webcam. This artefact returns non-Microsoft executables (ie:
+ entries listed in the `NonPackaged` path).
+
+ Additional Resources:
+
+ * https://svch0st.medium.com/can-you-track-processes-accessing-the-camera-and-microphone-7e6885b37072
+ * https://thinkdfir.com/2022/01/04/i-can-see-and-hear-you-seeing-and-hearing-me/
+
+ Tags: #windows #registry
+
+author: Zach Stanford - @svch0st, Phill Moore - @phillmoore
+type: CLIENT
+
+parameters:
+ - name: KeyList
+ description: List of reg locations and descriptions
+ type: csv
+ default: |
+ Glob,Description
+ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\*\NonPackaged\*, SoftwareHive
+ HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\*\NonPackaged\*, UserHive
+sources:
+ - queries:
+ - |
+
+ SELECT * FROM foreach(
+ row=KeyList,
+ query={
+ SELECT Description as SourceLocation,
+ path_split(path=FullPath)[-3] as Accessed,
+ regex_replace(source=basename(path=FullPath), re="#", replace="/") as Program,
+ {SELECT timestamp(winfiletime=atoi(string=Data.value)) FROM glob(globs=FullPath+'\\LastUsedTimeStart', accessor="reg")} as LastUsedTimeStart,
+ {SELECT timestamp(winfiletime=atoi(string=Data.value)) FROM glob(globs=FullPath+'\\LastUsedTimeStop', accessor="reg")} as LastUsedTimeStop,
+ dirname(path=FullPath) as KeyPath
+ FROM glob(globs=Glob, accessor="reg")
+ Where NOT Program = "Value"
+ }
+ )
+
+&lt;/code>&lt;/pre></description></item></channel></rss>
