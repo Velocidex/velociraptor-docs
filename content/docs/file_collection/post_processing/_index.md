@@ -77,3 +77,25 @@ client.
 ![](post-process-collection-05.svg)
 
 ![](post-process-collection-06.svg)
+
+
+{{% notice "Timeouts" %}}
+
+collection timeout
+
+notebook timeout
+
+The
+[notebook timeout]({{< ref "" >}})
+can be extended via the server config, but 10 minutes is reasonable for most
+notebook cell operations and the timeout is intended to protect against
+poorly-constructed queries. In general if a cell needs longer than 10 minutes to
+complete then you should probably consider approaching your task a different
+way.
+
+
+
+
+Running post-processing in a server artifact
+
+{{% /notice %}}

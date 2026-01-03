@@ -5,6 +5,8 @@ date: 2025-11-01
 last_reviewed: 2025-11-01
 draft: false
 weight: 5
+aliases:
+  - "/docs/offline_triage/"
 ---
 
 In the DFIR world **"triage"** refers to the process of collecting _information_
