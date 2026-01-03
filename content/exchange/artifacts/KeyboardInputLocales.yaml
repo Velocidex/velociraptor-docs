@@ -2,7 +2,7 @@ name: Windows.Registry.KeyboardInputLocales
 author: Guzzy (blog.guzzy.dk)
 
 description: |
-  Enumerates enabled input locales from the SOFTWARE registry hive.
+  Enumerates enabled input locales from the SOFTWARE and USERS registry hive.
   Useful for RDP session attribution.
   Specifically, it helps identify which keyboard layouts were enabled during RDP sessions, as during an RDP session, the client's active language and keyboard layout are automatically transferred and applied to the remote system.
 
@@ -13,7 +13,7 @@ description: |
 reference:
   - Hunting Keyboard locales with Velociraptor (https://blog.guzzy.dk/posts/hunting_keyboard_velociraptor/)
   - RDP Forensics Part 1 Fingerprinting Attacks with Keyboard Layout Data (https://medium.com/@thedigitaldetective/remote-desktop-protocol-using-client-keyboard-input-in-attack-attribution-and-profiling-94a76f0f4ff4)
-  - An inside look at NSA (Equation Group) TTPs from Chinas lense (https://www.inversecos.com/2025/02/an-inside-look-at-nsa-equation-group.html)
+  - An inside look at NSA (Equation Group) TTPs from China's lense (https://www.inversecos.com/2025/02/an-inside-look-at-nsa-equation-group.html)
 
 type: CLIENT
 
