@@ -1,6 +1,7 @@
 ---
 title: "Extending VQL"
 date: 2021-06-27T04:29:26Z
+last_reviewed: 2025-12-30
 draft: false
 weight: 60
 ---
@@ -263,7 +264,10 @@ the tool to be downloaded from a certain URL (e.g. an S3 bucket).
 As an artifact writer you can specify your artifact will use a certain
 tool and provide a hint of where to download it from.
 
-### The Autoruns artifact
+See [Managing External Tools]({{< ref "/docs/artifacts/tools/" >}}) for more
+information.
+
+##### Example: The Autoruns artifact
 
 We will go through an example to understand this process. Let's
 consider the `Windows.Sysinternals.Autoruns` artifact. This is a
@@ -312,14 +316,14 @@ sources:
 Let's collect the artifact. Simply click "New collection" then search
 for the autoruns artifact.
 
-![Collecting the Autoruns artifact](autoruns.png)
+![Collecting the Autoruns artifact](autoruns.svg)
 
 We immediately see the tools in the artifact description. These links
 allow us to configure the tool. We can see the hash and the URL the
 tool will be fetched from. The server keeps track of the binary hash
 and requires it to match what was downloaded.
 
-![The Autoruns tools setup screen](tools.png)
+![The Autoruns tools configuration screen](tools.png)
 
 As an administrator we have the option to override the binary with our
 own copy by uploading into the GUI. We can also provide an alternative
