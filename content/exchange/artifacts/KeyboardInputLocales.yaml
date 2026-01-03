@@ -1,0 +1,54 @@
+name: Windows.Registry.KeyboardInputLocales
+author: Guzzy (blog.guzzy.dk)
+
+description: |
+  Enumerates enabled input locales from the SOFTWARE registry hive.
+  Useful for RDP session attribution.
+  Specifically, it helps identify which keyboard layouts were enabled during RDP sessions, as during an RDP session, the client's active language and keyboard layout are automatically transferred and applied to the remote system.
+
+  As the reference article explains, this artifact can be particularly useful in investigations to help attribute RDP sessions to specific clients based on their keyboard input locales.
+
+  NOTE: This artifact only collects input locales that are enabled.
+
+reference:
+  - Hunting Keyboard locales with Velociraptor (https://blog.guzzy.dk/posts/hunting_keyboard_velociraptor/)
+  - RDP Forensics Part 1 Fingerprinting Attacks with Keyboard Layout Data (https://medium.com/@thedigitaldetective/remote-desktop-protocol-using-client-keyboard-input-in-attack-attribution-and-profiling-94a76f0f4ff4)
+  - An inside look at NSA (Equation Group) TTPs from Chinas lense (https://www.inversecos.com/2025/02/an-inside-look-at-nsa-equation-group.html)
+
+type: CLIENT
+
+sources:
+  - name: SystemLocales
+    precondition:
+      SELECT OS FROM info() WHERE OS = "windows"
+
+    query: |
+      LET EnabledInputMethods = SELECT
+        OSPath.Dirname AS KeyPath
+      FROM glob(globs="HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Input\\Locales\\loc_*\\InputMethods\\*\\Enabled", accessor="registry")
+      WHERE Name = "Enabled" AND Data.value = 1
+
+      SELECT * FROM foreach(
+        row=EnabledInputMethods,
+        query={
+          SELECT
+            Name,
+            Data.value,
+            KeyPath
+          FROM glob(globs=KeyPath + "\\{StackId}", accessor="registry")
+        }
+      )
+
+  - name: UserLocales
+    precondition:
+      SELECT OS FROM info() WHERE OS = "windows"
+
+    query: |
+      SELECT
+        OSPath.Basename AS Locale,
+        OSPath.Dirname.Dirname.Dirname.Dirname.Basename AS UserSid
+      FROM glob(
+        globs="HKEY_USERS\\*\\Control Panel\\International\\User Profile\\*",
+        accessor="registry"
+      )
+      WHERE OSPath.Basename =~ "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
