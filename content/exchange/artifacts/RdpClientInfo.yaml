@@ -30,6 +30,7 @@ description: |
 reference:
   - https://medium.com/@thedigitaldetective/rdp-forensics-part-2-fingerprinting-attacks-with-timezone-and-monitor-display-resolution-3ebe668d52ad
   - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/41dc6845-07dc-4af6-bc14-d8281acd4877
+  - https://blog.guzzy.dk/posts/hunting_rdpinfo/
 
 type: CLIENT
 
