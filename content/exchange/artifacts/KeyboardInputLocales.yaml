@@ -1,5 +1,5 @@
 name: Windows.Registry.KeyboardInputLocales
-author: Guzzy (blog.guzzy.dk)
+author: Guzzy (blog.guzzy.dk) | SagaLabs
 
 description: |
   Enumerates enabled input locales from the SOFTWARE and USERS registry hive.
