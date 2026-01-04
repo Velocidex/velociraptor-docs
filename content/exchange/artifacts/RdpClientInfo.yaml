@@ -1,0 +1,70 @@
+name: Windows.EventLogs.RdpClientInfo
+author: Guzzy (blog.guzzy.dk) | SagaLabs
+
+description: |
+  The artifact extracts client-side characteristics recorded during RDP session connection, including timezone configuration (Event ID 104) and operating system type information (Event ID 169) from the source system.
+  The artifact is based on research by @thedigitaldetective, and article is referenced below.
+
+  The artifact uses EvtxHunter artifact to query Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational.evtx.
+
+  Event ID 104 records the client timezone bias, which is a UTC offset and used to infer likely geographic regions
+  of the RDP client. For example if it says [1] it means the client is set to UTC+1 timezone.
+
+  Event ID 169 records client OS details, including osMajorType and osMinorType values, which can assist in identifying the RDP client platform.
+  To look up the OS type values, refer to the Microsoft RDP documentation linked below.
+
+  MajorType values:
+
+  - 0: Unspecified platform
+  - 1: Windows platform
+  - 2: OS/2 platform
+  - 3: Macintosh platform
+  - 4: UNIX platform
+  - 5: iOS platform
+  - 6: OS X (macOS) platform
+  - 7: Android platform
+  - 8: Chrome OS platform
+
+  For example if MajorType=1 and MinorType=3, this indicates that the RDP client is a Windows NT–based operating system.
+
+reference:
+  - https://medium.com/@thedigitaldetective/rdp-forensics-part-2-fingerprinting-attacks-with-timezone-and-monitor-display-resolution-3ebe668d52ad
+  - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/41dc6845-07dc-4af6-bc14-d8281acd4877
+
+type: CLIENT
+
+parameters:
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+      If larger than zero we analyze VSS within this many days
+      ago. (e.g 7 will analyze all VSS within the last week).  Note
+      that when using VSS analysis we have to use the ntfs accessor
+      for everything which will be much slower.
+
+sources:
+  - name: TimezoneOffset
+    query: |
+      SELECT
+        EventTime,
+        EventData.Data.Value AS TimezoneBiasHour,
+        Message
+      FROM Artifact.Windows.EventLogs.EvtxHunter(
+        EvtxGlob='C:\\Windows\\System32\\Winevt\\Logs\\Microsoft-Windows-RemoteDesktopServices-RdpCoreTS%4Operational.evtx',
+        ChannelRegex='^Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational$',
+        IdRegex='^104$',
+        VSSAnalysisAge=VSSAnalysisAge
+      )
+  - name: ClientOsType
+    query: |
+      SELECT
+        EventTime,
+        EventData,
+        Message
+      FROM Artifact.Windows.EventLogs.EvtxHunter(
+        EvtxGlob='C:\\Windows\\System32\\Winevt\\Logs\\Microsoft-Windows-RemoteDesktopServices-RdpCoreTS%4Operational.evtx',
+        ChannelRegex='^Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational$',
+        IdRegex='^169$',
+        VSSAnalysisAge=VSSAnalysisAge
+      )
