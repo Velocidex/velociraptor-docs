@@ -96,5 +96,5 @@ hugo
 Un dossier `public` a été généré. Il contient tout le contenu statique et les ressources nécessaires pour votre site. Votre site peut maintenant être déployé en utilisant n'importe quel serveur !
 
 {{% notice note %}}
-Ce site peut être automatiquement publié et hébergé avec [Netlify](https://www.netlify.com/) ([Plus d'infos](https://www.netlify.com/blog/2015/07/30/hosting-hugo-on-netlifyinsanely-fast-deploys/)). Sinon, vous pouvez utiliser les [Github pages](https://gohugo.io/hosting-and-deployment/hosting-on-github/)
+Ce site peut être automatiquement publié et hébergé avec [Netlify](https://www.netlify.com/) ([Plus d'infos](https://www.netlify.com/blog/2015/07/30/hosting-hugo-on-netlifyinsanely-fast-deploys/)). Sinon, vous pouvez utiliser les [GitHub pages](https://gohugo.io/hosting-and-deployment/hosting-on-github/)
 {{% /notice %}}

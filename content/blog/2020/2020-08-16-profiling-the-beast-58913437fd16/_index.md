@@ -115,4 +115,4 @@ We find this extremely valuable in the Velociraptor project, but the same approa
 By exposing profiling and debugging information to our users, in running production binaries we are able to easily get high value visibility into hard to reproduce error conditions and therefore be more effective in isolating and fixing bugs.
 {{% /notice %}}
 
-If you are interested in looking inside Velociraptor’s inner workings, check out the[ Github](https://github.com/Velocidex/velociraptor) page and join us on Discord and our mailing list.
+If you are interested in looking inside Velociraptor’s inner workings, check out the[ GitHub](https://github.com/Velocidex/velociraptor) page and join us on Discord and our mailing list.

@@ -25,7 +25,7 @@ GUI:
      - type: Google
        oauth_client_id: 12345.apps.googleusercontent.com
        oauth_client_secret: XYZ1234
-     - type: Github
+     - type: GitHub
        oauth_client_id: 123456
        oauth_client_secret: 76521376523
      - type: oidc
@@ -58,7 +58,7 @@ FROM scope()
 
 Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.
 
-In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a Github account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
+In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a GitHub account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
 
 {{% /notice %}}
 

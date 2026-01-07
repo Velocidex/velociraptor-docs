@@ -162,7 +162,7 @@ internet access from the server is OK.
 Before we start configuring or running anything you'll need to download the
 latest binary. Binaries for the latest version are listed on our
 [Downloads]({{< ref "/downloads/" >}}) page, with the binaries themselves being
-hosted on Github.
+hosted on GitHub.
 
 At this point you only need to download one binary (the one that matches your
 server's platform and architecture) because after installation we will use the

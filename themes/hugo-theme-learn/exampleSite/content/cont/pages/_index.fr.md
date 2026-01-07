@@ -113,11 +113,11 @@ LastModifierEmail = ""
 
 ### Ajouter une icône à une entrée du menu
 
-Dans le Front Matter, ajouter un paramètre `pre` pour insérer du code HTML qui s'affichera avant le label du menu. L'exemple ci-dessous utilise l'icône de Github.
+Dans le Front Matter, ajouter un paramètre `pre` pour insérer du code HTML qui s'affichera avant le label du menu. L'exemple ci-dessous utilise l'icône de GitHub.
 
 ```toml
 +++
-title = "Repo Github"
+title = "Repo GitHub"
 pre = "<i class='fab fa-github'></i> "
 +++
 ```

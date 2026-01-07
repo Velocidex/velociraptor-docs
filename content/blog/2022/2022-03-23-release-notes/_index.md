@@ -155,7 +155,7 @@ and shows the ones with errors, running and completed.
 Velociraptor has always had SSO support to allow strong 2 factor
 authentication for access to the GUI. However, previously Velociraptor
 only supported one OAuth2 provider at a time. Users had to choose
-between Google, Github, Azure or OIDC (e.g. Okta) for the
+between Google, GitHub, Azure or OIDC (e.g. Okta) for the
 authentication provider.
 
 This limitation is problematic for some organizations who need to
