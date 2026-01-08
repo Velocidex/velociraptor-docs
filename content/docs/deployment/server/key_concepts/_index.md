@@ -178,7 +178,7 @@ server on Linux.
 
 Binaries for the latest version are listed on our
 [Downloads]({{< ref "/downloads/" >}}) page, with the binaries themselves being
-hosted on Github.
+hosted on GitHub.
 
 We provide binaries for the most common client platform and architecture
 combinations, but if you have a need for an unusual platform/architecture it is

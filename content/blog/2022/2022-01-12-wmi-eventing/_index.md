@@ -154,7 +154,7 @@ network in minutes using Velociraptor's "hunt" capability. Similarly
 Velociraptor notebook workflow assists excluding known good entries quickly as part of analysis.
 
 The Velociraptor platform aims to provide visibility and access
-to endpoint data. If you would like to try Velociraptor it is available on Github under an open source license.
+to endpoint data. If you would like to try Velociraptor it is available on GitHub under an open source license.
 As always, please file issues on the bug tracker or ask questions on our
 mailing list velociraptor-discuss@googlegroups.com. You can also chat with
 us directly on discord at https://www.velocidex.com/discord

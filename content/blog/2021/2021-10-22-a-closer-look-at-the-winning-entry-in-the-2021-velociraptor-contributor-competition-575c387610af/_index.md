@@ -224,7 +224,7 @@ The key things to notice about these artifacts are:
 
 1. The tool definitions (“tools” section of the artifact) are as simple as possible because we’ve already defined and initialised (incl. downloading) the tools during the setup process. The tool definitions here are just to ensure that these tools are available to this artifact.
 
-1. We don’t mess around with fancy-pants unzipping of tools in our artifact. Several of the Velociraptor-bundled artifacts download zipped tools from Github and then unzip them on the client. This is done for user-convenience but it creates unnecessary complexity in the artifact, plus we really shouldn’t be using tools in zips that have been pulled straight from Github. It’s better to download the tools, unzip the tools, test/validate the tools, and then store them in your Velociraptor’s inventory. This approach also means that your endpoints don’t need access to Github because all the tools will be pulled from the Velociraptor server.
+1. We don’t mess around with fancy-pants unzipping of tools in our artifact. Several of the Velociraptor-bundled artifacts download zipped tools from GitHub and then unzip them on the client. This is done for user-convenience but it creates unnecessary complexity in the artifact, plus we really shouldn’t be using tools in zips that have been pulled straight from GitHub. It’s better to download the tools, unzip the tools, test/validate the tools, and then store them in your Velociraptor’s inventory. This approach also means that your endpoints don’t need access to GitHub because all the tools will be pulled from the Velociraptor server.
 
 1. We set the artifact parameters to “hidden” because we don’t intend these artifacts to be used standalone.
 

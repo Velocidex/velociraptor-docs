@@ -69,7 +69,7 @@ We will simply select the **BasicCollection** which includes things like the reg
 
 ![](../../img/1UP2MAPGNch_5ezdrWKUL9g.png)
 
-Velociraptor will repack the Velociraptor binary with the required artifacts, so here we need to select the target operating system. Let’s leave the **Collection Type** as *Zip Archive* for now — this simply creates a large Zip file containing all the collected data. Clicking Next now begins the build process. The first time we run this after install, Velociraptor will contact Github to download all the binaries it might require so it might take a few minutes to get started.
+Velociraptor will repack the Velociraptor binary with the required artifacts, so here we need to select the target operating system. Let’s leave the **Collection Type** as *Zip Archive* for now — this simply creates a large Zip file containing all the collected data. Clicking Next now begins the build process. The first time we run this after install, Velociraptor will contact GitHub to download all the binaries it might require so it might take a few minutes to get started.
 
 ![](../../img/1URkBb2Wl0uQZszjygM7Baw.png)
 

@@ -268,7 +268,7 @@ The following parts of the GUI are:
 
 8. The `Served Locally` button can be used to toggle the tool from
    being fetched from the Velociraptor server, or from the upstream
-   URL. Most upstream publishers (e.g. Github) have DDoS protection so
+   URL. Most upstream publishers (e.g. GitHub) have DDoS protection so
    using the tool in a hunt may trigger rate limiting when thousands
    of endpoints fetch the same file. You should consider delegating
    serving to a cloud provider as described earlier.

@@ -27,7 +27,7 @@ This traditional authentication flow is simple to use and implement but has a nu
 
 ### OAuth2 flow
 
-Velociraptor supports delegating the authentication to an identity provider (Currently Github, Microsoft or Google and potentially many others in future). This means that Velociraptor never gets to see a user’s password or actually logs them in at all — Velociraptor relies on the OAuth2 provider to assert that the user authenticated correctly (and potentially used the required 2FA method). There are many resources about OAuth2 for example t[his](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2) or the [RFC6749](https://tools.ietf.org/html/rfc6749) also has a lot of details.
+Velociraptor supports delegating the authentication to an identity provider (Currently GitHub, Microsoft or Google and potentially many others in future). This means that Velociraptor never gets to see a user’s password or actually logs them in at all — Velociraptor relies on the OAuth2 provider to assert that the user authenticated correctly (and potentially used the required 2FA method). There are many resources about OAuth2 for example t[his](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2) or the [RFC6749](https://tools.ietf.org/html/rfc6749) also has a lot of details.
 
 While the OAuth2 protocol allows an application to request access to different resources owned by the user, Velociraptor only requests basic access to their email address — Velociraptor associates ACL policies with the user’s email address.
 
@@ -53,7 +53,7 @@ This post outlines the process of setting up OAuth2 authentication for both GitH
 
 ### GitHub OAuth2 flow
 
-Setting up a Github OAuth2 application is detailed in [their extensive developer docs](https://docs.github.com/en/developers/apps/creating-an-oauth-app), so I will not repeat it here. I will just include a screenshot of the final screen. For this example I will set up one of our training VMs:
+Setting up a GitHub OAuth2 application is detailed in [their extensive developer docs](https://docs.github.com/en/developers/apps/creating-an-oauth-app), so I will not repeat it here. I will just include a screenshot of the final screen. For this example I will set up one of our training VMs:
 
 ![](../../img/1V0SFCRyBB3EgaTnRGEvbvg.png)
 
@@ -63,7 +63,7 @@ The most important item in this form is the Authorization callback URL, which mu
 https://public DNS name/auth/github/callback
 ```
 
-Once I click Register Application, Github will provide me with a client id and a client secret — Those are used by Velociraptor to send authorization requests to Github for authentication.
+Once I click Register Application, GitHub will provide me with a client id and a client secret — Those are used by Velociraptor to send authorization requests to GitHub for authentication.
 
 ![](../../img/1ZU-eolQPeo8inmTfq4VkVA.png)
 
@@ -74,13 +74,13 @@ velociraptor.exe config generate -i
 
 ![](../../img/1yJ7sIPl_qnL9UUrJvNZJLA.png)
 
-Be sure to enter the proper external DNS name of your Velociraptor server, select **Authenticate users with SSO** and choose **Github** as the provider. Velociraptor will show once again, the correct redirect URL that needs to be entered into the GitHub form as we have seen above.
+Be sure to enter the proper external DNS name of your Velociraptor server, select **Authenticate users with SSO** and choose **GitHub** as the provider. Velociraptor will show once again, the correct redirect URL that needs to be entered into the GitHub form as we have seen above.
 
-Finally enter the Github client ID and secret and create the server config files. To deploy on a typical Debian based VM, simply build the debian package ready to deploy to your server.
+Finally enter the GitHub client ID and secret and create the server config files. To deploy on a typical Debian based VM, simply build the debian package ready to deploy to your server.
 
 ![](../../img/19WneTKLF_985TEXYJKcAbQ.png)
 
-I will now push the Debian package to the server and install it using SCP and SSH. When I navigate to the public URL at [https://vm1.training.velocidex.com](https://vm1.training.velocidex.com) I am redirected to Github to authenticate and upon authorizing the app I can log into my Velociraptor server.
+I will now push the Debian package to the server and install it using SCP and SSH. When I navigate to the public URL at [https://vm1.training.velocidex.com](https://vm1.training.velocidex.com) I am redirected to GitHub to authenticate and upon authorizing the app I can log into my Velociraptor server.
 
 ![](../../img/1U5rYGAoEkXr1TeQFJ8UDiw.png)
 
