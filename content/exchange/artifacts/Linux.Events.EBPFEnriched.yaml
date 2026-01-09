@@ -5,6 +5,8 @@ description: |
  
     * Process details (CommandLine, CallChain, ParentImage, etc.)
     * Docker container details (ContainerName, ContainerImage, Usernames, etc.)
+ 
+ Requires Linux.Events.TrackProcesses (process tracker)
 
 type: CLIENT_EVENT
 
@@ -29,7 +31,7 @@ parameters:
       sched_process_exit,A process ends,N
       security_file_open,Files are opened,N
       security_inode_mknod,A new node is created with mknod (e.g. fifo or device file),Y
-      security_inode_rename,File is being renamed,Y
+      security_inode_rename,File is being renamed,N
       security_inode_symlink,Create a symlink,Y
       security_kernel_post_read_file,Fires when the kernel reads a file (e.g. module),Y
       security_socket_accept,A process accepted a connection,Y
@@ -46,6 +48,9 @@ parameters:
     default: |
         Event,Reason,FieldName,ExclusionRegex
         magic_write,Noisy,pathname,.(txt|cmrk2|cmrk4|pid|json|procs|bin|dblwr)$
+        magic_write,Noisy,pathname,^/sys/fs/cgroup/
+        security_socket_connect,Noisy,remote_addr.sa_family,AF_UNIX
+        net_packet_dns,Internal docker DNS lookups,proto_dns.questions.name,^[^.]*$
   - name: DockerEnrich
     description: |
       If enabled, we attempt to enrich events from docker containers.
@@ -61,6 +66,11 @@ parameters:
       Calculate hashes on process execution (sched_process_exec).
     type: bool
     default: True
+  - name: BufferSize
+    description: |
+      Size of buffer used to delay events for enrichment. Larger buffer size increases enrichment chance, but also memory usage.
+    default: 3000
+    type: int64
 sources:
   - precondition:
         SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 0
@@ -78,12 +88,13 @@ sources:
         FROM glob(
           globs=["/var/lib/docker/rootfs/overlayfs/*/etc/passwd", "/etc/passwd"])
       
-      // Get 12 character container id or computer name
-      LET GetName(Path) = if(condition=(Path =~ "docker"),
-                             then=parse_string_with_regex(
-                               regex="\\/(?<ContainerID>[a-z0-9]{12})",
-                               string=Path).ContainerID,
-                             else=ComputerName)
+      // Get 12 character container id or computer name. We truncate ComputerName at 15 chars for matching on System.HostName (UtsName(16 chars) - null byte)
+      LET GetName(Path) = if(
+          condition=(Path =~ "docker"),
+          then=parse_string_with_regex(
+            regex="\\/(?<ContainerID>[a-z0-9]{12})",
+            string=Path).ContainerID,
+          else=ComputerName[:15])
       
       // Enrich usernames from /etc/passwd
       LET UsernameLookup <= memoize(key="CombinedID",
@@ -157,17 +168,14 @@ sources:
               id=System.HostProcessID).Data.Name,
             sep="->"))
       
-      // Primary event loop, we exclude our own pid and AF_UNIX connections
+      // Primary event loop, we exclude our own pid and process exclusion rules.
       LET Logs = SELECT timestamp(epoch=now()) AS Timestamp,
                         *,
                         System.HostProcessID != System.ProcessID AS IsContainer
         FROM watch_ebpf(events=SelectedEvents.Event)
         WHERE System.HostProcessID != getpid()
          AND System.HostParentProcessID != getpid()
-              AND NOT (System.EventName = "security_socket_connect"
-                     AND EventData.remote_addr.sa_family = "AF_UNIX")
-                   AND NOT ShouldExclude(EventName=System.EventName,
-                                         EventData=EventData)
+              AND NOT ShouldExclude(EventName=System.EventName, EventData=EventData)
       
       SELECT
           ComputerName,
@@ -209,4 +217,4 @@ sources:
           FROM Logs
         },
         delay=10,
-        buffer_size=2500)
+        buffer_size=BufferSize)
