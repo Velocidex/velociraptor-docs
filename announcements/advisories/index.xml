@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Security Advisories on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/announcements/advisories/</link><description>Recent content in Security Advisories on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 20 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/announcements/advisories/index.xml" rel="self" type="application/rss+xml"/><item><title>CVE-2025-14728 Velociraptor directory traversal vulnerability</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/</link><pubDate>Sat, 20 Dec 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/</guid><description>
+&lt;div class="cve">
+ &lt;p>
+ &lt;span>Published
+ &lt;/span>on 2025-12-29
+ &lt;/p>
+ &lt;p>
+ &lt;/p>
+ &lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS MEDIUM">CVSS · MEDIUM · 6.8
+ &lt;sub>⁄10
+ &lt;/sub>
+ &lt;span style="font-size:0px;opacity:0"> · CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N
+ &lt;/span>
+ &lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">
+ &lt;span>Scoring scenario:
+ &lt;/span>GENERAL
+ &lt;div>attackVector:
+ &lt;b>NETWORK
+ &lt;/b>
+ &lt;/div>
+ &lt;div>attackComplexity:
+ &lt;b>HIGH
+ &lt;/b>
+ &lt;/div>
+ &lt;div>privilegesRequired:
+ &lt;b>NONE
+ &lt;/b>
+ &lt;/div>
+ &lt;div>userInteraction:
+ &lt;b>NONE
+ &lt;/b>
+ &lt;/div>
+ &lt;div>scope:
+ &lt;b>CHANGED
+ &lt;/b>
+ &lt;/div>
+ &lt;div>confidentialityImpact:
+ &lt;b>NONE
+ &lt;/b>
+ &lt;/div>
+ &lt;div>integrityImpact:
+ &lt;b>HIGH
+ &lt;/b>
+ &lt;/div>
+ &lt;div>availabilityImpact:
+ &lt;b>NONE
+ &lt;/b>
+ &lt;/div>
+ &lt;div>
+ &lt;a class="vgi-dial" href="https://cvss.js.org/#CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N" target="_blank">Open CVSS Calc
+ &lt;/a>
+ &lt;/div>
+ &lt;/div>
+ &lt;/details>
+ &lt;p>
+ &lt;/p>
+ &lt;div id="description">
+ &lt;p>Rapid7 Velociraptor versions before 0.75.6 contain a directory
+ traversal issue on Linux servers that allows a rogue client to
+ upload a file which is written outside the datastore
+ directory. Velociraptor is normally only allowed to write in the
+ datastore directory. The issue occurs due to insufficient
+ sanitization of directory names which end with a ".", only
+ encoding the final "." as "%2E".
+ &lt;br>
+ &lt;br>Although files can be written to incorrect locations, the
+ containing directory must end with "%2E". This limits the impact
+ of this vulnerability, and prevents it from overwriting critical
+ files.
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="configs">
+ &lt;h2>Required configuration for exposure:
+ &lt;/h2>
+ &lt;p>This vulnerability only occurs on Velociraptor servers running
+ on Linux (which is the common and recommended
+ configuration). Velociraptor servers running on Windows are not
+ affected.
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="problem">
+ &lt;h2>Problem:
+ &lt;/h2>
+ &lt;p>CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+ &lt;a href="https://cwe.mitre.org/data/definitions/22.html" target="_blank">
+ &lt;small>CWE-22
+ &lt;/small>
+ &lt;/a>
+ &lt;br>
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="impact">
+ &lt;h2>Impact:
+ &lt;/h2>
+ &lt;p>CAPEC-23 File Content Injection
+ &lt;a href="https://capec.mitre.org/data/definitions/23" target="_blank">
+ &lt;small>CAPEC-23
+ &lt;/small>
+ &lt;/a>
+ &lt;br>
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="status">
+ &lt;h2>Product Status:
+ &lt;/h2>
+ &lt;table class="striped">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">
+ &lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product
+ &lt;/th>
+ &lt;th>Affected
+ &lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">
+ &lt;b class="vgi-package">Rapid7 Velociraptor
+ &lt;/b>
+ &lt;i> on
+ &lt;/i>
+ &lt;span class="vgi-stack">Linux
+ &lt;/span>
+ &lt;br>
+ &lt;a class="vgi-ext" href="https://github.com/Velocidex/velociraptor">source repo
+ &lt;/a>
+ &lt;br>
+ &lt;span class="vgi-impact">Default status is unaffected
+ &lt;/span>
+ &lt;/td>
+ &lt;td> before 0.75.6
+ &lt;br>
+ &lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+ &lt;br style="font-size:0;">
+ &lt;/div>
+ &lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h2>Credits:
+ &lt;/h2>
+ &lt;p>We thank &lt;a href="https://x.com/_chebuya">@_chebuya&lt;/a> for
+ identifying and reporting this issue
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="references">
+ &lt;h2>References
+ &lt;/h2>
+ &lt;p>
+ &lt;/p>
+ &lt;div>
+ &lt;a href="https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/">docs.velociraptor.app/announcements/advisories/cve-2025-14728/
+ &lt;/a>
+ &lt;/div>
+ &lt;p>
+ &lt;/p>
+ &lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="further-details">Further details&lt;/h2>
+&lt;p>When Velociraptor receives an uploaded file from the client, the
+server writes the file into the client&amp;rsquo;s part of the datastore
+directory. The path under which the file is written is made to
+resemble the original path on the client as much as possible, except
+that certain characters are escaped.&lt;/p>
+&lt;p>For example, if the path contains a &amp;ldquo;:&amp;rdquo; character (e.g. &lt;code>C:\Windows&lt;/code>)
+this is escaped since this character is not representable on a Windows
+filesystem. Additionally, velociraptor escapes directory traversal
+sequences like &lt;code>..&lt;/code>.&lt;/p>
+&lt;p>On Windows, filenames that end with a &amp;ldquo;.&amp;rdquo; are not representable, with
+windows silently dropping the final &amp;ldquo;.&amp;rdquo; from the filename. This causes
+&lt;a href="https://github.com/Velocidex/velociraptor/pull/1348" target="_blank" >corruption when the server runs on
+Windows&lt;/a>
+.&lt;/p>
+&lt;p>In the specific case of a path component that ends with a &amp;ldquo;.&amp;rdquo;,
+Velociraptor escapes the final &amp;ldquo;.&amp;rdquo; to &amp;ldquo;%2E&amp;rdquo;, but neglects to escape
+other directory traversal characters in that path component. This
+results in some directory traversal characters being propagated into
+the path itself.&lt;/p>
+&lt;p>The vulnerability allows a rogue client to upload files to unintended
+directories on the server, as long as the containing directory name
+ends with a &amp;ldquo;%2E&amp;rdquo;.&lt;/p>
+&lt;p>On Windows, Velociraptor uses raw device paths which do not support
+directory traversal at all. Therefore, this vulnerability is not
+exploitable on
+Windows. (e.g. &lt;code>\\?\C:\datastore\clients\C.1234\..\test.txt&lt;/code> is not a
+valid path)&lt;/p>
+&lt;h2 id="recommendation">Recommendation&lt;/h2>
+&lt;p>This vulnerability requires upgrading the server as described in
+&lt;a href="https://docs.velociraptor.app/docs/deployment/server/upgrades/" >Server Upgrades&lt;/a>
+.&lt;/p>
+&lt;ul>
+&lt;li>On Windows the vulnerability is not exploitable.&lt;/li>
+&lt;li>If running the 0.75 release on a Linux server, please use the
+&lt;a href="https://docs.velociraptor.app/downloads/" >velociraptor-v0.75.6-linux-amd64&lt;/a>
+
+release.&lt;/li>
+&lt;li>If running the 0.74 release on a Linux server, please use the
+&lt;a href="https://docs.velociraptor.app/downloads/previous_downloads/" >velociraptor-v0.74.6-linux-amd64&lt;/a>
+
+release.&lt;/li>
+&lt;/ul>
+&lt;p>Older versions are vulnerable and should be upgraded immediately.&lt;/p></description></item><item><title>CVE-2025-6264 Velociraptor priviledge escalation via UpdateConfig artifact</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/</link><pubDate>Wed, 18 Jun 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/</guid><description>
+&lt;div class="cve">
+ &lt;p>
+ &lt;span>Published
+ &lt;/span>on 2025-06-19
+ &lt;/p>
+ &lt;p>
+ &lt;/p>
+ &lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS MEDIUM">CVSS · MEDIUM · 5.5
+ &lt;sub>⁄10
+ &lt;/sub>
+ &lt;span style="font-size:0px;opacity:0"> · CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:C/C:L/I:L/A:L
+ &lt;/span>
+ &lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">
+ &lt;span>Scoring scenario:
+ &lt;/span>GENERAL
+ &lt;div>attackVector:
+ &lt;b>NETWORK
+ &lt;/b>
+ &lt;/div>
+ &lt;div>attackComplexity:
+ &lt;b>HIGH
+ &lt;/b>
+ &lt;/div>
+ &lt;div>privilegesRequired:
+ &lt;b>HIGH
+ &lt;/b>
+ &lt;/div>
+ &lt;div>userInteraction:
+ &lt;b>NONE
+ &lt;/b>
+ &lt;/div>
+ &lt;div>scope:
+ &lt;b>CHANGED
+ &lt;/b>
+ &lt;/div>
+ &lt;div>confidentialityImpact:
+ &lt;b>LOW
+ &lt;/b>
+ &lt;/div>
+ &lt;div>integrityImpact:
+ &lt;b>LOW
+ &lt;/b>
+ &lt;/div>
+ &lt;div>availabilityImpact:
+ &lt;b>LOW
+ &lt;/b>
+ &lt;/div>
+ &lt;div>
+ &lt;a class="vgi-dial" href="https://cvss.js.org/#CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:C/C:L/I:L/A:L" target="_blank">Open CVSS Calc
+ &lt;/a>
+ &lt;/div>
+ &lt;/div>
+ &lt;/details>
+ &lt;p>
+ &lt;/p>
+ &lt;div id="description">
+ &lt;p>Velociraptor allows collection of VQL queries packaged into Artifacts from endpoints. These artifacts can be used to do anything and usually run with elevated permissions.&amp;nbsp; To limit access to some dangerous artifact, Velociraptor allows for those to require high permissions like EXECVE to launch.
+ &lt;br>
+ &lt;br>The Admin.Client.UpdateClientConfig is an artifact used to update the client's configuration. This artifact did not enforce an additional required permission, allowing users with COLLECT_CLIENT permissions (normally given by the "Investigator" role) to collect it from endpoints and update the configuration.
+ &lt;br>
+ &lt;br>This can lead to arbitrary command execution and endpoint takeover.
+ &lt;br>
+ &lt;br>To successfully exploit this vulnerability the user must already have access to collect artifacts from the endpoint (i.e. have the COLLECT_CLIENT given typically by the "Investigator' role).&amp;nbsp;
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="configs">
+ &lt;h2>Required configuration for exposure:
+ &lt;/h2>
+ &lt;p>Users who rely on artifacts to prevent dangerous actions from already privileged users.
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="problem">
+ &lt;h2>Problem:
+ &lt;/h2>
+ &lt;p>CWE-276 Incorrect Default Permissions
+ &lt;a href="https://cwe.mitre.org/data/definitions/276" target="_blank">
+ &lt;small>CWE-276
+ &lt;/small>
+ &lt;/a>
+ &lt;br>
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="impact">
+ &lt;h2>Impact:
+ &lt;/h2>
+ &lt;p>CAPEC-23 File Content Injection
+ &lt;a href="https://capec.mitre.org/data/definitions/23" target="_blank">
+ &lt;small>CAPEC-23
+ &lt;/small>
+ &lt;/a>
+ &lt;br>
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="status">
+ &lt;h2>Product Status:
+ &lt;/h2>
+ &lt;table class="striped">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">
+ &lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product
+ &lt;/th>
+ &lt;th>Affected
+ &lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">
+ &lt;b class="vgi-package">Rapid7 Velociraptor
+ &lt;/b>
+ &lt;i> on
+ &lt;/i>
+ &lt;span class="vgi-stack">Windows, MacOS, Linux
+ &lt;/span>
+ &lt;br>
+ &lt;a class="vgi-ext" href="https://github.com/Velocidex/velociraptor">source repo
+ &lt;/a>
+ &lt;br>
+ &lt;span class="vgi-impact">Default status is unaffected
+ &lt;/span>
+ &lt;/td>
+ &lt;td> before 0.74.3
+ &lt;br>
+ &lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+ &lt;br style="font-size:0;">
+ &lt;/div>
+ &lt;div id="workaround">
+ &lt;h2>Workaround:
+ &lt;/h2>
+ &lt;p>To better restrict the types of artifacts users can run, the `basic artifacts` mechanism should be used as described&amp;nbsp;
+ &lt;a target="_blank" rel="nofollow" href="https://docs.velociraptor.app/docs/artifacts/security/#basic-artifacts">https://docs.velociraptor.app/docs/artifacts/security/#basic-artifacts
+ &lt;/a>
+ &lt;br>
+ &lt;br>To detect unintended privilege escalations in custom artifacts, users should run the artifact verifier as described here&amp;nbsp;
+ &lt;a target="_blank" rel="nofollow" href="https://docs.velociraptor.app/docs/artifacts/security/#restricting-dangerous-client-artifacts">https://docs.velociraptor.app/docs/artifacts/security/#restricting-dangerous-client-artifacts
+ &lt;/a>
+ &lt;/p>
+ &lt;/div>
+ &lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h2>Credits:
+ &lt;/h2>
+ &lt;p>We thank Christian Fünfhaus from Deutsche Bahn CSIRT for identifying and reporting this issue
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="references">
+ &lt;h2>References
+ &lt;/h2>
+ &lt;p>
+ &lt;/p>
+ &lt;div>
+ &lt;a href="https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/">docs.velociraptor.app/announcements/advisories/cve-2025-6264/
+ &lt;/a>
+ &lt;/div>
+ &lt;p>
+ &lt;/p>
+ &lt;/div>
+&lt;/div>
+
+</description></item><item><title>CVE-2025-0914 Velociraptor Shell Plugin prevent_execve bypass</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/</link><pubDate>Tue, 25 Feb 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/</guid><description>
+&lt;div class="cve">
+ &lt;span>Published&lt;/span>on 2025-02-25
+
+ &lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS LOW">CVSS · LOW ·
+ 3.8&lt;sub>⁄10&lt;/sub> &lt;span style="font-size:0px;opacity:0">·
+ CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:L/I:L/A:N&lt;/span>&lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">&lt;span>Scoring scenario:&lt;/span>
+ GENERAL
+ &lt;div>attackVector: &lt;b>NETWORK&lt;/b>&lt;/div>
+ &lt;div>attackComplexity: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>privilegesRequired: &lt;b>HIGH&lt;/b>&lt;/div>
+ &lt;div>userInteraction: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>scope: &lt;b>UNCHANGED&lt;/b>&lt;/div>
+ &lt;div>confidentialityImpact: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>integrityImpact: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>availabilityImpact: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>&lt;a class="vgi-dial" href=
+ "https://cvss.js.org/#CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:L/I:L/A:N"
+ target="_blank">Open CVSS Calc&lt;/a>&lt;/div>
+ &lt;/div>
+ &lt;/details>
+ &lt;div id="description">
+ &lt;p>
+ An improper access control issue in the VQL shell feature in
+ Velociraptor Versions &amp;lt; 0.73.4 allowed authenticated users to
+ execute the execve() plugin in deployments where this was
+ explicitly forbidden by configuring the prevent_execve flag in the
+ configuration file.
+ &lt;/p>
+
+ &lt;p>
+ This setting is not usually recommended and is uncommonly used,
+ so this issue will only affect users who do set it.
+ &lt;/p>
+
+ &lt;p>
+ This issue is fixed in release 0.73.4
+ &lt;/p>
+ &lt;/div>
+ &lt;div id="configs">
+ &lt;h2>Required configuration for exposure:&lt;/h2>
+ &lt;p>Requires the prevent_execve option to be enabled.&lt;/p>
+ &lt;/div>
+ &lt;div id="problem">
+ &lt;h2>Problem:&lt;/h2>
+ &lt;p>CWE-281 Improper Preservation of Permissions &lt;a href=
+ "https://cwe.mitre.org/data/definitions/281" target=
+ "_blank">&lt;small>CWE-281&lt;/small>&lt;/a>&lt;br>&lt;/p>
+ &lt;/div>
+ &lt;div id="impact">
+ &lt;h2>Impact:&lt;/h2>
+ &lt;p>CAPEC-176 Configuration/Environment Manipulation &lt;a href=
+ "https://capec.mitre.org/data/definitions/176" target=
+ "_blank">&lt;small>CAPEC-176&lt;/small>&lt;/a>&lt;br>&lt;/p>
+ &lt;/div>
+ &lt;div id="exploits">
+ &lt;h2>Exploits:&lt;/h2>
+ &lt;p>Using the query() plugin it is possible to run the execve()
+ plugin on systems where the prevent_execve configuration parameter
+ is set.&lt;/p>
+ &lt;/div>
+ &lt;div id="status">
+ &lt;h2>Product Status:&lt;/h2>
+ &lt;table class="striped">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">&lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product&lt;/th>
+ &lt;th>Affected&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">&lt;b class="vgi-package">Rapid7 Velociraptor&lt;/b>
+ &lt;i>on&lt;/i> &lt;span class="vgi-stack">Windows, MacOS, Linux, x86, ARM,
+ 64 bit, 32 bit&lt;/span>&lt;br>
+ &lt;br>
+ &lt;span class="vgi-impact">Default status is unaffected&lt;/span>&lt;/td>
+ &lt;td>before 0.73.4&lt;br>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+ &lt;br style="font-size:0;">&lt;/div>
+ &lt;div id="solution">
+ &lt;h2>Solution:&lt;/h2>
+ &lt;p>Upgrade endpoint agent to release 0.73.4&lt;/p>
+ &lt;/div>
+ &lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h2>Credits:&lt;/h2>
+ &lt;p>Darragh O'Reilly, SUSE&lt;/p>
+ &lt;/div>
+ &lt;div id="references">
+ &lt;h2>References&lt;/h2>
+ &lt;div>&lt;a href="https://docs.velociraptor.app/announcements/advisories/CVE-2025-0914/">
+ docs.velociraptor.app/announcements/advisories/CVE-2025-0914/
+ &lt;/a>&lt;/div>
+ &lt;/div>
+&lt;/div>
+
+</description></item><item><title>CVE-2024-10526 Local Privilege Escalation In Windows Velociraptor Service</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/</link><pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/</guid><description>
+&lt;div class="cve">
+
+ &lt;span>Published&lt;/span> on 2024-11-03&lt;/p>&lt;p>&lt;/p>&lt;div id="description">&lt;b class="tag rnd CVSS MEDIUM">x_open-source&lt;/b> &lt;p>The Velociraptor Windows MSI installer creates the installation directory with WRITE_DACL permission to the BUILTIN\Users group. This allows local users who are not administrators to grant themselves the Full Control permission on Velociraptor's files. By modifying Velociraptor's files, local users can subvert the binary and cause the Velociraptor service to execute arbitrary code as the SYSTEM user, or to replace the Velociraptor binary completely.&lt;br>&lt;/p>&lt;/div>&lt;div id="problem">&lt;h2>Problem: &lt;/h2>&lt;p>CWE-552 Files or Directories Accessible to External Parties &lt;a href="https://cwe.mitre.org/data/definitions/552" target="_blank">&lt;small>CWE-552&lt;/small>&lt;/a>&lt;br>CWE-732 Incorrect Permission Assignment for Critical Resource &lt;a href="https://cwe.mitre.org/data/definitions/732" target="_blank">&lt;small>CWE-732&lt;/small>&lt;/a>&lt;br>&lt;/p>&lt;/div>&lt;div id="impact">&lt;h2>Impact: &lt;/h2>&lt;p>CAPEC-165 File Manipulation &lt;a href="https://capec.mitre.org/data/definitions/165" target="_blank">&lt;small>CAPEC-165&lt;/small>&lt;/a>&lt;br>CAPEC-233 Privilege Escalation &lt;a href="https://capec.mitre.org/data/definitions/233" target="_blank">&lt;small>CAPEC-233&lt;/small>&lt;/a>&lt;br>&lt;/p>&lt;/div>&lt;div id="status">&lt;h2>Product Status:&lt;/h2>&lt;table class="striped">&lt;colgroup>&lt;col>&lt;col class="affectedCol">&lt;/colgroup>&lt;thead>&lt;tr>&lt;th>Product&lt;/th>&lt;th>Affected&lt;/th>&lt;/tr>&lt;/thead>&lt;tbody>&lt;tr>&lt;td rowspan="1">&lt;b class="vgi-package">Rapid7 Velociraptor&lt;/b>&lt;span> » MSI Installer&lt;/span>&lt;i> on &lt;/i> &lt;span class="vgi-stack">Windows&lt;/span>&lt;br>&lt;a class="vgi-ext" href="https://github.com/Velocidex/velociraptor">source repo&lt;/a>&lt;span class="vgi-text">
+ &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/docs/wix/velociraptor_amd64.xml">
+ https://github.com/Velocidex/velociraptor/blob/master/docs/wix/velociraptor_amd64.xml
+ &lt;/a>
+
+ &lt;/span>&lt;br>&lt;span class="vgi-impact">Default status is unaffected&lt;/span>&lt;/td>&lt;td> before 0.73.3 (unaffected from 0.73.3)&lt;br>&lt;/td>&lt;/tr>&lt;/tbody>&lt;/table>&lt;br style="font-size:0;">&lt;/div>&lt;div id="solution">&lt;h2>Solution:&lt;/h2>&lt;p>For new installs use the updated MSI. If you do not wish to upgrade the endpoint client at this time, please arrange to run the icacls.exe command sequence described below at the earliest time.&lt;/p>&lt;/div>&lt;div id="workaround">&lt;h2>Workaround:&lt;/h2>&lt;p>In the Velociraptor start a hunt over all your Windows Assets, select the&amp;nbsp;Windows.System.PowerShell artifact and paste the following in the&amp;nbsp;Command parameter:&lt;br>&lt;br>
+
+&lt;pre>&lt;code class="language-bash">
+ icacls.exe "c:\Program Files\Velociraptor" /inheritance:d /t /c
+ icacls.exe "c:\Program Files\Velociraptor" /remove builtin\users /t /c
+&lt;/code>&lt;/pre>
+
+&lt;br>&lt;br>&lt;br>This hunt will update the ACLs on the Velociraptor directory to remove all BUILTIN\Users permissions.&lt;/p>
+
+&lt;p>To verify the correct permissions after a new MSI install, use the following command&lt;/p>
+&lt;pre>&lt;code class="language-bash">
+ C:> icacls "c:\Program Files\Velociraptor"
+ c:\Program Files\Velociraptor BUILTIN\Users:(OI)(CI)(DENY)(S)
+ BUILTIN\Administrators:(OI)(CI)(F)
+ NT AUTHORITY\SYSTEM:(OI)(CI)(F)
+
+ Successfully processed 1 files; Failed processing 0 files
+&lt;/code>&lt;/pre>
+
+ &lt;p>This should show a DENY rule for BUILTIN\Users&lt;/p>
+ &lt;p>If applying the commands above, all permissions will be removed for the builtin\users group&lt;/p>
+&lt;pre>&lt;code class="language-bash">
+ C:> icacls "c:\Program Files\Velociraptor
+ c:\Program Files\Velociraptor BUILTIN\Administrators:(OI)(CI)(F)
+ NT AUTHORITY\SYSTEM:(OI)(CI)(F)
+
+ Successfully processed 1 files; Failed processing 0 files
+&lt;/code>&lt;/pre>
+
+&lt;/div>
+&lt;div class="rnd pad sec vgap" id="credits">&lt;h2>Credits:&lt;/h2>&lt;p>We thank Jean-Baptiste Mesnard-Sense from SYNACKTIV for identifying and reporting this issue&lt;/p>&lt;/div>&lt;div id="timeline">&lt;h2>Timeline:&lt;/h2>&lt;p>&lt;/p>&lt;ul>&lt;li>2024-10-28 - Initial Notification by SYNACKTIV&lt;/li>&lt;li>2024-11-03 - 0.73.3 was released to address this issue and an advisory published on Velociraptor's website.&lt;/li>&lt;/ul>&lt;p>&lt;/p>&lt;/div>&lt;div id="references">&lt;h2>References&lt;/h2>&lt;p>&lt;/p>&lt;div>&lt;a href="https://docs.velociraptor.app/announcements/advisories/">docs.velociraptor.app/announcements/advisories/&lt;/a>&lt;/div>&lt;p>&lt;/p>&lt;/div>&lt;/div>
+
+&lt;/div>
+
+</description></item><item><title>CVE-2023-5950 Rapid7 Velociraptor Reflected XSS</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/</link><pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/</guid><description>
+&lt;!DOCTYPE html>
+&lt;html>
+ &lt;head>
+ &lt;meta name="generator" content=
+ "HTML Tidy for HTML5 for Linux version 5.6.0">
+ &lt;title>&lt;/title>
+ &lt;/head>
+ &lt;body>
+ &lt;p>&lt;span>Published&lt;/span> on 2023-11-06&lt;/p>
+ &lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS HIGH">CVSS · HIGH ·
+ 8.6&lt;sub>⁄10&lt;/sub> &lt;span style="font-size:0px;opacity:0">·
+ CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L&lt;/span>&lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">&lt;span>Scoring scenario:&lt;/span>
+ GENERAL
+ &lt;div>attackVector: &lt;b>NETWORK&lt;/b>&lt;/div>
+ &lt;div>attackComplexity: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>privilegesRequired: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>userInteraction: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>scope: &lt;b>UNCHANGED&lt;/b>&lt;/div>
+ &lt;div>confidentialityImpact: &lt;b>HIGH&lt;/b>&lt;/div>
+ &lt;div>integrityImpact: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>availabilityImpact: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>&lt;a class="vgi-dial" href=
+ "https://cvss.js.org/#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L"
+ target="_blank">Open CVSS Calc&lt;/a>&lt;/div>
+ &lt;/div>
+ &lt;/details>
+ &lt;div id="description">
+ &lt;p>Rapid7 Velociraptor versions prior to 0.7.0-4 suffer from a
+ reflected cross site scripting vulnerability. This vulnerability
+ allows attackers to inject JS into the error path, potentially
+ leading to unauthorized execution of scripts within a user's web
+ browser.&amp;nbsp;This vulnerability is fixed in version 0.7.0-4 and
+ a patch is available to download. Patches are also
+ available for version 0.6.9 (0.6.9-1)&lt;br>
+
+ This issue affects the server only.
+ &lt;br>&lt;/p>
+ &lt;/div>
+ &lt;div id="problem">
+ &lt;h2>Problem:&lt;/h2>
+ &lt;p>CWE-79 Improper Neutralization of Input During Web Page
+ Generation ('Cross-site Scripting') &lt;a href=
+ "https://cwe.mitre.org/data/definitions/CWE-79" target=
+ "_blank">&lt;small>CWE-79&lt;/small>&lt;/a>&lt;br>&lt;/p>
+ &lt;/div>
+ &lt;div id="status">
+ &lt;h2>Product Status:&lt;/h2>
+ &lt;table class="striped">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">&lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product&lt;/th>
+ &lt;th>Affected&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">&lt;b class="vgi-package">Rapid7 Velociraptor&lt;/b>&lt;/td>
+ &lt;td>before 0.7.0-4&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+ &lt;br style="font-size:0;">&lt;/div>
+ &lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h2>Credits:&lt;/h2>
+ &lt;p>Mathias Kujala&lt;/p>
+ &lt;/div>
+ &lt;div id="references">
+ &lt;h2>References&lt;/h2>
+ &lt;div>&lt;a href=
+ "https://docs.velociraptor.app/blog/2023/2023-07-27-release-notes-0.7.0/">
+ docs.velociraptor.app/blog/2023/2023-07-27-release-notes-0.7.0/&lt;/a>&lt;/div>
+ &lt;/div>
+ &lt;div id="timeline">
+ &lt;h2>Timeline:&lt;/h2>
+ &lt;ul>
+ &lt;li>2023-11-02 - Notification of the issue&lt;/li>
+ &lt;li>2023-11-06 - Release 0.7.0-4 made available on GitHub&lt;/li>
+ &lt;/ul>
+ &lt;/div>
+ &lt;/body>
+ &lt;/html>
+
+</description></item><item><title>CVE-2023-2226 Velociraptor crashes while parsing some malformed PE or OLE files</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/</link><pubDate>Fri, 21 Apr 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/</guid><description>
+&lt;p>&lt;span>Published&lt;/span> on 2023-04-21&lt;/p>
+&lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS LOW">CVSS · LOW ·
+ 3.3&lt;sub>⁄10&lt;/sub> &lt;span style="font-size:0px;opacity:0">·
+ CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L&lt;/span>&lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">&lt;span>Scoring scenario:&lt;/span>
+ GENERAL
+ &lt;div>attackVector: &lt;b>LOCAL&lt;/b>&lt;/div>
+ &lt;div>attackComplexity: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>privilegesRequired: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>userInteraction: &lt;b>REQUIRED&lt;/b>&lt;/div>
+ &lt;div>scope: &lt;b>UNCHANGED&lt;/b>&lt;/div>
+ &lt;div>confidentialityImpact: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>integrityImpact: &lt;b>NONE&lt;/b>&lt;/div>
+ &lt;div>availabilityImpact: &lt;b>LOW&lt;/b>&lt;/div>
+ &lt;div>&lt;a class="vgi-dial" href=
+ "https://cvss.js.org/#CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L"
+ target="_blank">Open CVSS Calc&lt;/a>&lt;/div>
+ &lt;/div>
+&lt;/details>
+&lt;div id="description">
+ &lt;p>Due to insufficient validation in the PE and OLE parsers in
+ Rapid7's Velociraptor versions earlier than 0.6.8 allows attacker
+ to crash Velociraptor during parsing of maliciously malformed
+ files.&amp;nbsp;&lt;br>
+ &lt;br>
+ For this attack to succeed, the attacker needs to be able to
+ introduce malicious files to the system at the same time that
+ Velociraptor attempts to collect any artifacts that attempt to
+ parse PE files, Authenticode signatures, or OLE files. After
+ crashing, the Velociraptor service will restart and it will still
+ be possible to collect other artifacts.&lt;br>
+ &lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="problem">
+ &lt;h4 class="vgi-bug">Problem:&lt;/h4>
+ &lt;p>CWE-125 Out-of-bounds Read &lt;a href=
+ "https://cwe.mitre.org/data/definitions/CWE-125" target=
+ "_blank">&lt;small>CWE-125&lt;/small>&lt;/a>&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="impact">
+ &lt;h4 class="vgi-impact">Impact:&lt;/h4>
+ &lt;p>CAPEC-540 Overread Buffers &lt;a href=
+ "https://capec.mitre.org/data/definitions/CAPEC-540" target=
+ "_blank">&lt;small>CAPEC-540&lt;/small>&lt;/a>&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="status">
+ &lt;h4>Affected Product Status:&lt;/h4>
+ &lt;table class="tbl gap">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">&lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product&lt;/th>
+ &lt;th>Affected&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">&lt;b class="vgi-package">Rapid7 Velociraptor&lt;/b>
+ &lt;span>» PE Parser, OLE parser, Authenticode parser&lt;/span> &lt;i>on&lt;/i>
+ &lt;span class="vgi-stack">Windows&lt;/span>&lt;br>
+ &lt;a class="vgi-package" href=
+ "https://github.com/Velocidex/velociraptor/releases">package
+ repo&lt;/a>&lt;a class="vgi-ext" href=
+ "https://github.com/Velocidex/velociraptor/">source repo&lt;/a>&lt;br>
+ &lt;span class="vgi-impact">Default status is unaffected&lt;/span>&lt;/td>
+ &lt;td>before 0.6.8&lt;br>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>
+ &lt;br style="font-size:0;">&lt;/div>
+&lt;div id="solution">
+ &lt;h4 class="vgi-safe">Solution:&lt;/h4>
+ &lt;p>Upgrade the clients to version 0.6.8-2&lt;/p>
+&lt;/div>
+&lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h4 class="vgi-like">Credits:&lt;/h4>
+ &lt;p>Thanks to b1tg https://github.com/b1tg for reporting these
+ issues and providing samples that trigger the crashes&lt;/p>
+&lt;/div>
+
+</description></item><item><title>CVE-2023-0242 Insufficient Permission Check In The VQL Copy() Function</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/</link><pubDate>Wed, 18 Jan 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/</guid><description>
+&lt;p>&lt;span>Published&lt;/span> on 2023-01-18&lt;/p>
+&lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS HIGH">
+ CVSS · HIGH · 8.1&lt;sub>⁄10&lt;/sub> &lt;span style="font-size:0px;opacity:0">·
+ CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:H/I:H/A:N&lt;/span>
+ &lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">
+ &lt;span>Scoring scenario:&lt;/span> GENERAL
+ &lt;div>
+ attackVector: &lt;b>NETWORK&lt;/b>
+ &lt;/div>
+ &lt;div>
+ attackComplexity: &lt;b>LOW&lt;/b>
+ &lt;/div>
+ &lt;div>
+ privilegesRequired: &lt;b>HIGH&lt;/b>
+ &lt;/div>
+ &lt;div>
+ userInteraction: &lt;b>REQUIRED&lt;/b>
+ &lt;/div>
+ &lt;div>
+ scope: &lt;b>CHANGED&lt;/b>
+ &lt;/div>
+ &lt;div>
+ confidentialityImpact: &lt;b>HIGH&lt;/b>
+ &lt;/div>
+ &lt;div>
+ integrityImpact: &lt;b>HIGH&lt;/b>
+ &lt;/div>
+ &lt;div>
+ availabilityImpact: &lt;b>NONE&lt;/b>
+ &lt;/div>
+ &lt;div>
+ &lt;a class="vgi-dial" href=
+ "https://cvss.js.org/#CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:H/I:H/A:N"
+ target="_blank">Open CVSS Calc&lt;/a>
+ &lt;/div>
+ &lt;/div>
+&lt;/details>
+&lt;div id="description">
+ &lt;p>Improper Privilege Management vulnerability in Rapid7
+ Velociraptor in the copy() function.&lt;br>
+ &lt;br>
+ Velociraptor allows users to be created with different
+ privileges on the server. Administrators are generally
+ allowed to run any command on the server including writing
+ arbitrary files. However, lower privilege users are generally
+ forbidden from writing or modifying files on the server.&lt;br>
+ &lt;br>
+ The VQL copy() function applies permission checks for reading
+ files but does not check for permission to write files. This
+ allows a low privilege user (e.g. users with the Velociraptor
+ "investigator" role) to overwrite files on the server,
+ including Velociraptor configuration files.&lt;br>
+ &lt;br>
+ To exploit this vulnerability, the attacker must already have
+ a Velociraptor user account at a low privilege level (at
+ least "analyst"). Be able to log into the GUI and create a
+ notebook where they can run the VQL query invoking the copy()
+ VQL function. Typically most users deploy Velociraptor with
+ limited access to a trusted group (most users will be
+ administrators within the GUI).&lt;br>&lt;/p>
+ &lt;p>This vulnerability is associated with program files
+ &lt;tt>&lt;a target="_blank" rel="nofollow" href=
+ "https://github.Com/Velocidex/velociraptor/blob/master/vql/filesystem/copy.go">
+ https://github.Com/Velocidex/velociraptor/blob/master/vql/filesystem/copy.go&lt;/a>&lt;/tt>
+ and program routines &lt;tt>copy()&lt;/tt>.&lt;/p>
+ &lt;p>This issue affects Velociraptor: before 0.6.7-5.&lt;/p>
+&lt;/div>
+&lt;div id="configs">
+ &lt;h2>Required configuration for exposure:&lt;/h2>
+ &lt;p>Velociraptor deployment with multiple users at lower roles
+ than administrators (e.g. "investigator" and above)&lt;/p>
+&lt;/div>
+&lt;div id="problem">
+ &lt;h2>Problem:&lt;/h2>
+ &lt;p>CWE-269 Improper Privilege Management &lt;a href=
+ "https://cwe.mitre.org/data/definitions/CWE-269" target=
+ "_blank">&lt;small>CWE-269&lt;/small>&lt;/a>&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="impact">
+ &lt;h2>Impact:&lt;/h2>
+ &lt;p>CAPEC-75 Manipulating Writeable Configuration Files
+ &lt;a href="https://capec.mitre.org/data/definitions/CAPEC-75"
+ target="_blank">&lt;small>CAPEC-75&lt;/small>&lt;/a>&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="status">
+ &lt;h2>Product Status:&lt;/h2>
+ &lt;table class="striped">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">
+ &lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product&lt;/th>
+ &lt;th>Affected&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">
+ &lt;b class="vgi-package">Rapid7 Velociraptor&lt;/b>
+ &lt;span>» VQL copy() function&lt;/span> &lt;i>on&lt;/i>
+ &lt;span class="vgi-stack">Linux, Windows, MacOS, 64
+ bit, 32 bit&lt;/span>&lt;br>
+ &lt;a class="vgi-package" href=
+ "https://github.com/Velocidex/velociraptor/releases">package
+ repo&lt;/a>&lt;a class="vgi-ext" href=
+ "https://github.com/Velocidex/velociraptor/">source
+ repo&lt;/a>&lt;span class=
+ "vgi-text">https://github.com/Velocidex/velociraptor/blob/master/vql/filesystem/copy.go&lt;/span>&lt;span class="vgi-edit">copy()&lt;/span>&lt;br>
+
+ &lt;span class="vgi-impact">Default status is
+ unaffected&lt;/span>
+ &lt;/td>
+ &lt;td>before 0.6.7-5 (unaffected from 5)&lt;br>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>&lt;br style="font-size:0;">
+&lt;/div>
+&lt;div id="solution">
+ &lt;h2>Solution:&lt;/h2>
+ &lt;p>Upgrade to 0.6.7-5&lt;/p>
+&lt;/div>
+&lt;div id="workaround">
+ &lt;h2>Workaround:&lt;/h2>
+ &lt;p>A valid workaround is to prevent the copy function in the
+ Velociraptor allow list:&lt;br>
+ &lt;br>
+ 1. In the configuration wizard answer yes to the question "Do
+ you want to restrict VQL functionality on the server?"&lt;br>
+ 2. This will add a default allow list to the configuration
+ file.&lt;br>
+ 3. Copy this allow list to your existing
+ server.config.yaml&lt;br>
+ 4. Ensure the "copy" function is removed from the default
+ allow list.&lt;/p>
+&lt;/div>
+&lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h2>Credits:&lt;/h2>
+ &lt;p>Paul Alkemade from Telstra&lt;/p>
+&lt;/div>
+&lt;div id="timeline">
+ &lt;h2>Timeline:&lt;/h2>
+ &lt;ul>
+ &lt;li>2023-01-12 - Notification of the issue&lt;/li>
+ &lt;li>2023-01-17 - Release 0.6.7-5 made available on
+ GitHub&lt;/li>
+ &lt;/ul>
+&lt;/div>
+
+</description></item><item><title>CVE-2023-0290 Directory Traversal In Client Id Parameter</title><link>https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/</link><pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/</guid><description>
+&lt;p>&lt;span>Published&lt;/span> on 2023-01-17&lt;/p>
+&lt;details class="popup">
+ &lt;summary class="lbl rnd sec CVSS HIGH">
+ CVSS · HIGH · 8.1&lt;sub>⁄10&lt;/sub> &lt;span style=
+ "font-size:0px;opacity:0">·
+ CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:H/I:H/A:N&lt;/span>
+ &lt;/summary>
+ &lt;div class="pop wht rnd shd pad bor">
+ &lt;span>Scoring scenario:&lt;/span> GENERAL
+ &lt;div>
+ attackVector: &lt;b>NETWORK&lt;/b>
+ &lt;/div>
+ &lt;div>
+ attackComplexity: &lt;b>LOW&lt;/b>
+ &lt;/div>
+ &lt;div>
+ privilegesRequired: &lt;b>HIGH&lt;/b>
+ &lt;/div>
+ &lt;div>
+ userInteraction: &lt;b>REQUIRED&lt;/b>
+ &lt;/div>
+ &lt;div>
+ scope: &lt;b>CHANGED&lt;/b>
+ &lt;/div>
+ &lt;div>
+ confidentialityImpact: &lt;b>HIGH&lt;/b>
+ &lt;/div>
+ &lt;div>
+ integrityImpact: &lt;b>HIGH&lt;/b>
+ &lt;/div>
+ &lt;div>
+ availabilityImpact: &lt;b>NONE&lt;/b>
+ &lt;/div>
+ &lt;div>
+ &lt;a class="vgi-dial" href=
+ "https://cvss.js.org/#CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:H/I:H/A:N"
+ target="_blank">Open CVSS Calc&lt;/a>
+ &lt;/div>
+ &lt;/div>
+&lt;/details>
+&lt;div id="description">
+ &lt;p>Velociraptor did not properly sanitize the client id
+ parameter to the CreateCollection API allowing a directory
+ traversal in where the collection task could be written. It
+ was possible to provide a client id of "../clients/server" to
+ schedule the collection for the server (as a server
+ artifact), but only require privileges to schedule
+ collections on the client.&lt;br>
+ &lt;br>
+ Normally to schedule an artifact on the server requires the
+ COLLECT_SERVER permissions (normally only granted to
+ "administrator" role), but due to this issue it is sufficient
+ to have the COLLECT_CLIENT privilege (normally granted to the
+ "investigator" role)&lt;br>&lt;/p>
+ &lt;p>To exploit this vulnerability, the attacker must already
+ have a Velociraptor user account at a low privilege level
+ (not administrator but at least "investigator").&amp;nbsp;Be able
+ to authenticate to the GUI (e.g. via OAuth2) and issue an API
+ call to the backend. Typically most users deploy Velociraptor
+ with limited access to a trusted group (most users will be
+ administrators within the GUI).&lt;br>
+ &lt;br>&lt;/p>
+ &lt;p>This vulnerability is associated with program files
+ &lt;tt>&lt;a target="_blank" rel="nofollow" href=
+ "https://github.Com/Velocidex/velociraptor/blob/master/services/launcher/launcher.go">
+ https://github.Com/Velocidex/velociraptor/blob/master/services/launcher/launcher.go&lt;/a>&lt;/tt>
+ and program routines
+ &lt;tt>ScheduleArtifactCollection()&lt;/tt>.&lt;/p>
+ &lt;p>This issue affects Velociraptor: before 0.6.7-5.&lt;/p>
+&lt;/div>
+&lt;div id="configs">
+ &lt;h2>Required configuration for exposure:&lt;/h2>
+ &lt;p>Velociraptor deployment with multiple users at lower roles
+ than administrators (e.g. "investigators")&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="problem">
+ &lt;h2>Problem:&lt;/h2>
+ &lt;p>CWE-22 Improper Limitation of a Pathname to a Restricted
+ Directory ('Path Traversal') &lt;a href=
+ "https://cwe.mitre.org/data/definitions/CWE-22" target=
+ "_blank">&lt;small>CWE-22&lt;/small>&lt;/a>&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="impact">
+ &lt;h2>Impact:&lt;/h2>
+ &lt;p>CAPEC-233 Privilege Escalation &lt;a href=
+ "https://capec.mitre.org/data/definitions/CAPEC-233" target=
+ "_blank">&lt;small>CAPEC-233&lt;/small>&lt;/a>&lt;br>&lt;/p>
+&lt;/div>
+&lt;div id="status">
+ &lt;h2>Product Status:&lt;/h2>
+ &lt;table class="striped">
+ &lt;colgroup>
+ &lt;col>
+ &lt;col class="affectedCol">
+ &lt;/colgroup>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Product&lt;/th>
+ &lt;th>Affected&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td rowspan="1">
+ &lt;b class="vgi-package">Rapid7 Velociraptor&lt;/b>
+ &lt;span>» CreateCollection API&lt;/span> &lt;i>on&lt;/i>
+ &lt;span class="vgi-stack">Windows, Linux, MacOS, 64
+ bit, 32 bit&lt;/span>&lt;br>
+ &lt;a class="vgi-package" href=
+ "https://github.com/Velocidex/velociraptor/releases">package
+ repo&lt;/a>&lt;a class="vgi-ext" href=
+ "https://github.com/Velocidex/velociraptor/">source
+ repo&lt;/a>&lt;span class=
+ "vgi-text">https://github.com/Velocidex/velociraptor/blob/master/services/launcher/launcher.go&lt;/span>&lt;span class="vgi-edit">ScheduleArtifactCollection()&lt;/span>&lt;br>
+
+ &lt;span class="vgi-impact">Default status is
+ unaffected&lt;/span>
+ &lt;/td>
+ &lt;td>before 0.6.7-5 (unaffected from 5)&lt;br>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+ &lt;/table>&lt;br style="font-size:0;">
+&lt;/div>
+&lt;div id="solution">
+ &lt;h2>Solution:&lt;/h2>
+ &lt;p>Upgrade to 0.6.7-5&lt;br>&lt;/p>
+&lt;/div>
+&lt;div class="rnd pad sec vgap" id="credits">
+ &lt;h2>Credits:&lt;/h2>
+ &lt;p>Paul Alkemade from Telstra&lt;/p>
+&lt;/div>
+&lt;div id="timeline">
+ &lt;h2>Timeline:&lt;/h2>
+ &lt;ul>
+ &lt;li>2023-01-13 - Notification of the issue&lt;/li>
+ &lt;li>2023-01-17 - Release 0.6.7-5 made available on
+ GitHub&lt;/li>
+ &lt;/ul>
+&lt;/div>
+
+</description></item></channel></rss>

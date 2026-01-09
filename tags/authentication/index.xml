@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Authentication on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/authentication/</link><description>Recent content in Authentication on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 16 Aug 2020 01:38:44 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/authentication/index.xml" rel="self" type="application/rss+xml"/><item><title>Velociraptor SSO Authentication</title><link>https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/</link><pubDate>Sun, 16 Aug 2020 01:38:44 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="5ab1a240ed2904a44b23ad273578b93a">
+ &lt;div data-featherlight="#5ab1a240ed2904a44b23ad273578b93a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1LYHMWBm-PIb4rrMurPgAUA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The Velociraptor GUI allows administrators and DFIR team members to rapidly respond and hunt across their entire deployment in seconds. This is a powerful capability, and must be adequately protected.&lt;/p>
+&lt;h3 id="modes-of-authentication">Modes of authentication&lt;/h3>
+&lt;p>Velociraptor supports two modes of authentication:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Basic authentication&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Single Sign On using third party OAuth2 logon flow.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>In the basic authentication mode, GUI users are added by the administrator and given passwords. When a user logs into the GUI, their browser prompts them to enter a username and password, and the password hashes are checked against those hashes stored in the database.&lt;/p>
+&lt;p>This traditional authentication flow is simple to use and implement but has a number of shortfalls — the main one being that the user needs to remember yet another password for Velociraptor and so they are likely to reuse an existing password. Modern secure applications also use 2 factor authentication as an additional security mechanism with potentially complex authentication schemes (e.g. secure token).&lt;/p>
+&lt;h3 id="oauth2-flow">OAuth2 flow&lt;/h3>
+&lt;p>Velociraptor supports delegating the authentication to an identity provider (Currently GitHub, Microsoft or Google and potentially many others in future). This means that Velociraptor never gets to see a user’s password or actually logs them in at all — Velociraptor relies on the OAuth2 provider to assert that the user authenticated correctly (and potentially used the required 2FA method). There are many resources about OAuth2 for example t&lt;a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank" >his&lt;/a>
+ or the &lt;a href="https://tools.ietf.org/html/rfc6749" target="_blank" >RFC6749&lt;/a>
+ also has a lot of details.&lt;/p>
+&lt;p>While the OAuth2 protocol allows an application to request access to different resources owned by the user, Velociraptor only requests basic access to their email address — Velociraptor associates ACL policies with the user’s email address.&lt;/p>
+&lt;p>The following steps are performed to log a user into the Velociraptor GUI:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The User’s browser makes a request to the Velociraptor GUI&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Velociraptor redirects the browser to the OAuth2 provider (e.g. Google)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The user logs on to their provider and receives a consent screen asking them if they wish to authorize Velociraptor to receive their email address.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Once the user authorizes the app, the OAuth2 provider redirects back to the Velociraptor **callback URL **with a token. The callback URL is the path location within the Velociraptor App that will handle the incoming token.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>At this point Velociraptor already knows the user’s email address and can log them in, as long as they have sufficient permissions (The Velociraptor &lt;a href="https://www.velocidex.com/blog/medium/2020-03-29-velociraptors-acl-model-7f497575daee/" target="_blank" >ACL model&lt;/a>
+ still applied).&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The advantage of this scheme is that Velociraptor never handles user passwords, and additional authentication requirements like 2FA can be imposed by the OAuth2 provider.&lt;/p>
+&lt;h3 id="google-oauth2">Google OAuth2&lt;/h3>
+&lt;p>Velociraptor previously &lt;a href="https://www.velocidex.com/blog/html/2018/12/23/deploying_velociraptor_with_oauth_sso.html" target="_blank" >only supported Google &lt;/a>
+as an OAuth2 provider. However this recently changed when new providers were added.&lt;/p>
+&lt;p>This post outlines the process of setting up OAuth2 authentication for both GitHub and Microsoft O365 environments.&lt;/p>
+&lt;h3 id="github-oauth2-flow">GitHub OAuth2 flow&lt;/h3>
+&lt;p>Setting up a GitHub OAuth2 application is detailed in &lt;a href="https://docs.github.com/en/developers/apps/creating-an-oauth-app" target="_blank" >their extensive developer docs&lt;/a>
+, so I will not repeat it here. I will just include a screenshot of the final screen. For this example I will set up one of our training VMs:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="770e58a9815c415c64153663cdb44b6c">
+ &lt;div data-featherlight="#770e58a9815c415c64153663cdb44b6c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1V0SFCRyBB3EgaTnRGEvbvg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most important item in this form is the Authorization callback URL, which must be of the form&lt;/p>
+&lt;pre>&lt;code>https://public DNS name/auth/github/callback
+&lt;/code>&lt;/pre>
+&lt;p>Once I click Register Application, GitHub will provide me with a client id and a client secret — Those are used by Velociraptor to send authorization requests to GitHub for authentication.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b0526c70c4e5a8ebc381e8fd212f8ce7">
+ &lt;div data-featherlight="#b0526c70c4e5a8ebc381e8fd212f8ce7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1ZU-eolQPeo8inmTfq4VkVA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now that we have the client id and secret we can create our configuration file using the interactive config generator&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor.exe config generate -i
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="234e180231246a4cc5074a40ed31f4fe">
+ &lt;div data-featherlight="#234e180231246a4cc5074a40ed31f4fe" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1yJ7sIPl_qnL9UUrJvNZJLA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Be sure to enter the proper external DNS name of your Velociraptor server, select &lt;strong>Authenticate users with SSO&lt;/strong> and choose &lt;strong>GitHub&lt;/strong> as the provider. Velociraptor will show once again, the correct redirect URL that needs to be entered into the GitHub form as we have seen above.&lt;/p>
+&lt;p>Finally enter the GitHub client ID and secret and create the server config files. To deploy on a typical Debian based VM, simply build the debian package ready to deploy to your server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="5a515333ca4f9d393f79ce120ebcd482">
+ &lt;div data-featherlight="#5a515333ca4f9d393f79ce120ebcd482" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/19WneTKLF_985TEXYJKcAbQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I will now push the Debian package to the server and install it using SCP and SSH. When I navigate to the public URL at &lt;a href="https://vm1.training.velocidex.com" target="_blank" >https://vm1.training.velocidex.com&lt;/a>
+ I am redirected to GitHub to authenticate and upon authorizing the app I can log into my Velociraptor server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="04f0fc4e79a77e4139a14ec65b4cdec7">
+ &lt;div data-featherlight="#04f0fc4e79a77e4139a14ec65b4cdec7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1U5rYGAoEkXr1TeQFJ8UDiw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The GitHub OAuth2 flow is excellent! I received an email immediately when my user was authorized and I can see the total number of users authorized to this application.&lt;/p>
+&lt;h3 id="microsoft-azure-oauth2-flow">Microsoft Azure OAuth2 flow&lt;/h3>
+&lt;p>Many Velociraptor users are using Office 365 and Azure to manage their organizations. I can set up the Microsoft OAuth2 flow in a very similar way to the previous flow. The only main difference with O365 is the concept of tenants — Azure provides each organization with a tenancy which is normally their domain name.&lt;/p>
+&lt;p>First I will navigate to the Azure Active Directory application and select &lt;strong>App Registrations&lt;/strong>. Click on &lt;strong>New registration&lt;/strong> to add a new App.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="4e86c000ec554d16dce4c3c7e284720e">
+ &lt;div data-featherlight="#4e86c000ec554d16dce4c3c7e284720e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1enBaYt9G2zve-8l6zIbmjw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now I provide the app with a name. Here I can select if this app should be used by users from different tenants or restricted to my org only.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="641213263d2dba380cf2431a8e590be2">
+ &lt;div data-featherlight="#641213263d2dba380cf2431a8e590be2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1EakNAGcDH2r4BEuEQJ0fXA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Finally enter the callback URL as before. Note that this is a different URL because it is using the Azure authenticator within Velociraptor. When submitting this, Azure AD will only create a client ID for our application. We need to manually create the client secret using an additional step in the UI. I will select &lt;strong>Certificate &amp;amp; Secrets&lt;/strong> from the menu.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="fe497317b0047e0977784a316ccdcd6a">
+ &lt;div data-featherlight="#fe497317b0047e0977784a316ccdcd6a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1eWcpTayDUJsCnzmlYk_9pg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Then create a new secret by giving it a name and an expiry.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a38ddae365f985f05a3101c3e53ed4b9">
+ &lt;div data-featherlight="#a38ddae365f985f05a3101c3e53ed4b9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1gzLxCqvsdJj4hHADofYDLw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now we have both the client id and secret from the previous screen. We simply need to copy those to the configuration wizard. This time we need to provide the tenant ID as well.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="cd22bf13812ffc7cd1791aee60cf017d">
+ &lt;div data-featherlight="#cd22bf13812ffc7cd1791aee60cf017d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1ivNMZZSw74VsMRCbY43FHw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c3731772c3ffc3ed0451dd71b3d98ce3">
+ &lt;div data-featherlight="#c3731772c3ffc3ed0451dd71b3d98ce3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1fCDpwr3e0HiWscr_6O5cPQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>After installing this server and accessing it with a web browser, the authentication will redirect to Microsoft to authenticate the user.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7e1db0e78136a147587a9f9b3b36e38c">
+ &lt;div data-featherlight="#7e1db0e78136a147587a9f9b3b36e38c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1R6OYfqhNwABhfkQJQjNlMA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>We have seen how to secure the GUI with the new OAuth2 providers. Having a choice of providers allows different organizations to deploy Velociraptor safely at scale and integrate Velociraptor directly into their enterprise architecture.&lt;/p>
+&lt;p>Note that OAuth2 is only responsible for authentication — i.e. the user is who they claim to be. It does not automatically grant them any permission within the GUI. If a user does not have a specific ACL record they will be rejected:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bcff31e8303f8ceab3391acd3fb8c959">
+ &lt;div data-featherlight="#bcff31e8303f8ceab3391acd3fb8c959" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/18xUczf1PP7eyM9XaBzTBEw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can assign or delete users using the &lt;strong>velociraptor user add&lt;/strong> command. You can also assign roles to users using the &lt;strong>velociraptor acl grant&lt;/strong> commands. The configuration wizard offers to provision an initial set of administrator users for smoother install, but you can always add users later using the command line.&lt;/p>
+&lt;p>If your favorite authentication provider is not yet supported, please file a feature request on our &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ project, or even send us a pull request!&lt;/p></description></item></channel></rss>

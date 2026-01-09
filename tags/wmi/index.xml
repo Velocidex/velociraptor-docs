@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WMI on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/wmi/</link><description>Recent content in WMI on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 12 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/wmi/index.xml" rel="self" type="application/rss+xml"/><item><title>WMI Event Consumers: what are you missing?</title><link>https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/</link><pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/</guid><description>&lt;p>WMI Eventing is a fairly well known technique in DFIR, however some
+tools may not provide the coverage you expect. This article covers
+WMI eventing visibility and detection including custom namespaces.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="194ba7e653d5c903b91e8a29414b3654">
+ &lt;div data-featherlight="#194ba7e653d5c903b91e8a29414b3654" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/00SelectionBias.png" alt="Selection bias in WWII: missing what is not collected.">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="00SelectionBias.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Selection bias in WWII: missing what is not collected.
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="background">Background&lt;/h2>
+&lt;p>There has been a fair bit of research and observations of WMI eventing
+in field over the last years. In short, a WMI event consumer is a
+method of subscribing to certain system events, then enabling an action
+of some sort. Common adversary use cases may include persistence, privilege
+escalation, or as a collection trigger. Represented as ATT&amp;amp;CK T1546.003
+this technique has been observed in use from APT, through to trash-tic
+worm and coin miner threats.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f09ba24999c91d0e1953062cc7f6987c">
+ &lt;div data-featherlight="#f09ba24999c91d0e1953062cc7f6987c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/01WMIOverview.png" alt="WMI Eventing: 3 system classes">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="01WMIOverview.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ WMI Eventing: 3 system classes
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>There are three system classes in every active event consumer:&lt;/p>
+&lt;ol>
+&lt;li>__EventFilter is a WQL query that outlines the trigger event of
+interest.&lt;/li>
+&lt;li>__EventConsumer is an action to perform upon triggering an event.&lt;/li>
+&lt;li>__FilterToConsumerBinding is the registration mechanism that binds
+a filter to a consumer.&lt;/li>
+&lt;/ol>
+&lt;p>Most detection will focus on collecting the WMI classes in root/subscription
+and, in some tools root/default WMI namespaces.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9ac8c6545958803b1e63004624e6aecb">
+ &lt;div data-featherlight="#9ac8c6545958803b1e63004624e6aecb" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/02Autoruns.png" alt="Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="02Autoruns.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h4 id="custom-namespaces">Custom Namespaces&lt;/h4>
+&lt;p>At Blackhat 2018 Lee Christensen and Matt Graeber presented &amp;ldquo;Subverting
+Sysmon: Application of a Formalized Security Product Evasion Methodology&amp;rdquo;.
+This excellent talk focused on defense evasion methodology and highlighted
+potential collection gaps in telemetry tools around WMI eventing. In this
+case, the focus was on Sysmon behaviour of collection only in
+root/subscription, interestingly, it also highlighted the possibility to
+implement __EventConsumer classes in arbitrary namespaces.&lt;/p>
+&lt;p>It is detection of WMI Event Consumers in arbitrary namespaces that I&amp;rsquo;m going
+to focus. For anyone interested in testing I have written
+&lt;a href="https://github.com/mgreen27/mgreen27.github.io/blob/master/static/other/WMIEventingNoisemaker/WmiEventingNoisemaker.ps1" target="_blank" >a script to generate WMI event consumers&lt;/a>
+.
+This script wraps several powershell functions released during the Black
+Hat talk to test creating working event consumers.&lt;/p>
+&lt;p>First step was to create a custom namespace event consumer. In this
+instance I selected the namespace name &lt;code>totallylegit&lt;/code> and attached an
+ActiveScript event consumer.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="07e245e677959853d6d32897b82bc2e9">
+ &lt;div data-featherlight="#07e245e677959853d6d32897b82bc2e9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/04WMIEventGeneration.png" alt="WMIEventingNoismaker.ps1:Generate active script EventConsumer">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="04WMIEventGeneration.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ WMIEventingNoismaker.ps1:Generate active script EventConsumer
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="collection">Collection&lt;/h2>
+&lt;p>Velociraptor has several valuable artifacts for hunting WMI Event
+Consumers:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Windows.Sysinternals.Autoruns&lt;/code> - leverages a thirdparty deployment of
+Sysinternals Autoruns and typically my go to ASEP collection artifact but
+limited by visibility in root/default and root/subscription only.&lt;/li>
+&lt;li>&lt;code>Windows.Persistence.PermanentWMIEvents&lt;/code> - recently upgraded to query
+all ROOT namespaces.&lt;/li>
+&lt;/ul>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Windows.Persistence.PermanentWMIEvents ">&lt;ul>
+&lt;li>This artifact reports currently deployed permanent WMI Event Consumers.&lt;/li>
+&lt;li>The artifact collects Binding information, then presents associated Filters and Consumers.&lt;/li>
+&lt;li>Target a specific namespace, or tick &lt;code>AllRootNamespaces&lt;/code> to collect all
+root namespace event consumers.&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5cba01649590b332579d1201014dc470">
+ &lt;div data-featherlight="#5cba01649590b332579d1201014dc470" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/05collection.png" alt="Windows.Persistence.PermanentWMIEvents: configuration options">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Persistence.PermanentWMIEvents: configuration options
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="165083d9d77cc59b9d5dfa517f59d753">
+ &lt;div data-featherlight="#165083d9d77cc59b9d5dfa517f59d753" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/05collection_results.png" alt="Windows.Persistence.PermanentWMIEvents: results">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05collection_results.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Persistence.PermanentWMIEvents: results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h4 id="telemetry">Telemetry&lt;/h4>
+&lt;p>Unfortunately prior to Windows 10 WMI logging was fairly limited. Sysmon and
+other telemetry sources often rely on WMI eventing itself to collect WMI
+eventing telemetry events. That means custom classes require namespace and
+class existence prior to telemetry subscription. Sysmon as seen below also
+does not have coverage for root/default namespace.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d2d332d0529139a3510df7d8fb417e68">
+ &lt;div data-featherlight="#d2d332d0529139a3510df7d8fb417e68" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/03SysmonEid20.png" alt="Sysmon collection: Event ID 20 mapping (__EventConsumer)">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="03SysmonEid20.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Sysmon collection: Event ID 20 mapping (__EventConsumer)
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The good news is since Windows 10, WMI logging has improved significantly
+and we can now query the event log: Microsoft-Windows-WMI-Activity or
+subscribe the underlying ETW provider of the same name. In the VQL below
+I filter the ETW event on event consumer creation or delete operations.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT
+ System.TimeStamp AS EventTime,
+ System.ID as EventId,
+ strip(prefix='\\\\\.\\',string=EventData.NamespaceName) as NamespaceName,
+ EventData.Operation as Operation,
+ GetProcessInfo(TargetPid=int(int=EventData.ClientProcessId))[0] as Process
+FROM watch_etw(guid=&amp;quot;{1418ef04-b0b4-4623-bf7e-d74ab47bbdaa}&amp;quot;)
+WHERE EventId = 11
+ AND Operation =~ 'WbemServices::(PutInstance|DeleteInstance|PutClass|DeleteClass)'
+ AND Operation =~ 'EventConsumer|EventFilter|FilterToConsumerBinding'
+&lt;/code>&lt;/pre>
+&lt;p>I have included a completed artifact in the artifact exchange:
+&lt;a href="https://docs.velociraptor.app/exchange/artifacts/pages/wmieventing/" target="_blank" >Windows.ETW.WMIEventing&lt;/a>
+.
+That artifact includes process enrichment, targeting both creation and deletion of EventConsumers.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="e69728742d4be6ee10d00a3389e81c3d">
+ &lt;div data-featherlight="#e69728742d4be6ee10d00a3389e81c3d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/06ETW.png" alt="Custom namespace provider registration and process enrichment">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="06ETW.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Custom namespace provider registration and process enrichment
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c938b279a732954169255d34893c60ce">
+ &lt;div data-featherlight="#c938b279a732954169255d34893c60ce" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/06ETWb.png" alt="Windows.ETW.WMIEventing: all operations event consumer creation and removal">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="06ETWb.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.ETW.WMIEventing: all operations event consumer creation and removal
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h4 id="event-log">Event Log&lt;/h4>
+&lt;p>Similar filters can be used with &lt;code>Windows.EventLogs.EvtxHunter&lt;/code> for
+detection. Its worthy to note, event logs hold less verbose logging for
+the registration than ETW but this use case is helpful when coming late
+to the party during an investigation.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9ca52546aa855bb94c888d8b25aa3432">
+ &lt;div data-featherlight="#9ca52546aa855bb94c888d8b25aa3432" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/07EvtxHunter.png" alt="Windows.EventLogs.EvtxHunter: hunt for event consumer string">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="07EvtxHunter.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.EventLogs.EvtxHunter: hunt for event consumer string
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="6075ca7ded597bcf9b092b4cca62ab88">
+ &lt;div data-featherlight="#6075ca7ded597bcf9b092b4cca62ab88" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/07EvtxHunterb.png" alt="Windows.EventLogs.EvtxHunter: detect event consumer class creation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="07EvtxHunterb.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.EventLogs.EvtxHunter: detect event consumer class creation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h1 id="conclusions">Conclusions&lt;/h1>
+&lt;p>During this post, we have shown three techniques for detecting WMI event consumers
+that are worth considering. We can collect these data-points over an entire
+network in minutes using Velociraptor&amp;rsquo;s &amp;ldquo;hunt&amp;rdquo; capability. Similarly
+Velociraptor notebook workflow assists excluding known good entries quickly as part of analysis.&lt;/p>
+&lt;p>The Velociraptor platform aims to provide visibility and access
+to endpoint data. If you would like to try Velociraptor it is available on GitHub under an open source license.
+As always, please file issues on the bug tracker or ask questions on our
+mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+. You can also chat with
+us directly on discord at &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/about-wmi" target="_blank" >Microsoft documentation, About WMI&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://attack.mitre.org/techniques/T1546/003/" target="_blank" >MITRE ATT&amp;amp;CK T1546.003, Event Triggered Execution: Windows Management Instrumentation Event Subscription&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=R5IEyoFpZq0" target="_blank" >Christensen.L and Graeber.M, Blackhat 2018 - Subverting Sysmon: Application of a Formalized Security Product Evasion Methodology&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/jsecurity101/Windows-API-To-Sysmon-Events/" target="_blank" >JSecurity101, Windows APIs To Sysmon-Events&lt;/a>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

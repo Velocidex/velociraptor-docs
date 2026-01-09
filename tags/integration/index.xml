@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Integration on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/integration/</link><description>Recent content in Integration on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 26 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/integration/index.xml" rel="self" type="application/rss+xml"/><item><title>Slack and Velociraptor</title><link>https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/</link><pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="138a75c2386a459fcc1ca2f2c2ed4214">
+ &lt;div data-featherlight="#138a75c2386a459fcc1ca2f2c2ed4214" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/https://cdn-images-1.medium.com/max/12030/0*bkglpXK2FLycHuia?width=600px" alt="Photo by Joan Gamell on Unsplash" />
+ &lt;/div>
+ &lt;figcaption>
+ Photo by Joan Gamell on Unsplash
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;em>Photo by &lt;a href="https://unsplash.com/@gamell?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" >Joan Gamell&lt;/a>
+ on &lt;a href="https://unsplash.com?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" >Unsplash&lt;/a>
+&lt;/em>&lt;/p>
+&lt;p>You might have heard of &lt;a href="https://slack.com/" target="_blank" >Slack&lt;/a>
+ — a chatting app that has grown in popularity over the past few years. Slack allows for API access to the the workspaces, which opens the door to novel applications and automation.&lt;/p>
+&lt;p>In this blog post I will demonstrate how to connect Slack to Velociraptor, and be notified within a Slack channel of various events that happen on your Velociraptor deployment.&lt;/p>
+&lt;h3 id="creating-a-slack-app">Creating a Slack App&lt;/h3>
+&lt;p>The first thing I will do is create a Slack channel to receives messages from Velociraptor. This keeps Velociraptor messages separate and I can subscribe a small number of users within my Slack workspace to that channel.&lt;/p>
+&lt;p>I will create a new channel called “alerts”&lt;/p>
+&lt;p>Next I will create an App which will communicate with the workspace and be able to post messages to the alerts channel. (This &lt;a href="https://api.slack.com/start/overview#creating" target="_blank" >reference &lt;/a>
+has a lot of details on this step, which I will just skip but you should consult it for your own use). First I visit the slack API page at &lt;a href="../../img/apps" >https://api.slack.com/apps&lt;/a>
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f673d3ae662a8dc688d5e6d32b2c615d">
+ &lt;div data-featherlight="#f673d3ae662a8dc688d5e6d32b2c615d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/14J5S4V0jlkVLvFKI3SaeUA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Next I will create an app called “Velociraptor” that will be able to push messages to my workspace.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8523eb88069f5a874299c11e42055226">
+ &lt;div data-featherlight="#8523eb88069f5a874299c11e42055226" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/19RCHElLgfXOSdioPqfE28g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since I just want Velociraptor to inform me about events, it really only needs to push messages. I will therefore select the “Incoming Webhooks” app type.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="4ba896bc7b237e7fae9a8866c33461a7">
+ &lt;div data-featherlight="#4ba896bc7b237e7fae9a8866c33461a7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1hzeftjwj-ItD5h_H_eE62g.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Enable the webhook by sliding the option to on&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="774141a31dd9b2de4989815d998be8d6">
+ &lt;div data-featherlight="#774141a31dd9b2de4989815d998be8d6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1EVMLGulrWcrmJfhHb9hRUA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Webhooks are simply HTTP REST APIs which can be used by any software to post to the channel providing they have a special secret called a “Token”. I can add a new webhook to my workspace on this page&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c1bf95b00a383fc4b0f22852af081d28">
+ &lt;div data-featherlight="#c1bf95b00a383fc4b0f22852af081d28" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1WWBAXXo9zmQ4WFkeSvuhLQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I now allow the webhook to post to the alerts channel&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0c2e05ecedd9de8ed5a2e113e9e994b0">
+ &lt;div data-featherlight="#0c2e05ecedd9de8ed5a2e113e9e994b0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1uAS5ZvGflIp_-zl2STlYpg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Posting the message is a very simple HTTP request — Slack even shows an example using curl&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e6643f40634ec6fd62388abb258fc995">
+ &lt;div data-featherlight="#e6643f40634ec6fd62388abb258fc995" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1mubZvdsnaLV-fB_tfQpQNw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The curl command line indicates that the request:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Needs to be using the POST method&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Needs to have a content type of &lt;em>application/json&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Needs to POST a JSON encoded object with a key called “text” which contains the message text.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="posting-a-message-from-velociraptor">Posting a message from Velociraptor&lt;/h3>
+&lt;p>Next I will test my new webhook by writing a quick VQL query in a Velociraptor notebook. I like to develop my VQL in a notebook, since that allows me to easily iterate over my query. Going to my Velociraptor console, I add a new notebook and add a VQL cell.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="dd0dc79390c1ef7336d6e8fd98a8de47">
+ &lt;div data-featherlight="#dd0dc79390c1ef7336d6e8fd98a8de47" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1GBkeEP6PTZnNttmw1B_Q1A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Here I am just replicating the curl command line above using VQL’s http_client plugin. Once I save the cell, Velociraptor will make an API request to the slack servers and my message will appear in the alerts channel.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a10992c21c370c5bf09de82b194db7d7">
+ &lt;div data-featherlight="#a10992c21c370c5bf09de82b194db7d7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/12QiKAIh7vZ0A9Xe9y3rtOg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="alerting-on-events">Alerting on events&lt;/h3>
+&lt;p>Sending messages to Slack is pretty cool, but we really want to know when interesting stuff happens in response to events. One interesting use case that people always ask me about is to alert when a particular machine comes back online so it can be interactively investigated.&lt;/p>
+&lt;p>From a usability perspective, I want to tell the server to monitor a number of endpoints, and then when each comes back online, send a Slack message and stop monitoring that system.&lt;/p>
+&lt;p>Whenever I have a set of machines that we want to operate on, I think of client labels. In Velociraptor, we can attach any number of labels to a client, and then search for all machines that have the label efficiently (this effectively creates a group of machines).&lt;/p>
+&lt;p>I will add the label “Slack” to my test machine by simply selecting it in the client search page and clicking the “Add Label” button.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e16e4b88f0303decd161e1e9bdadabdd">
+ &lt;div data-featherlight="#e16e4b88f0303decd161e1e9bdadabdd" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1uKNwvvn723Ygr_STiMwsNg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Going back to my notebook, I am ready to develop this VQL query step by step.&lt;/p>
+&lt;h3 id="step-1-is-the-client-online-now">Step 1: Is the client online now?&lt;/h3>
+&lt;p>The first query I will write will return all the clients in the &lt;strong>“Slack”&lt;/strong> label group, and show how many seconds ago they were online.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="233ab43f5db6be78bc8fd0b81e9b44d6">
+ &lt;div data-featherlight="#233ab43f5db6be78bc8fd0b81e9b44d6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1wCX-kCRmOvkUZcgHYj3_ug.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I am using the now() VQL function to return the number of seconds since the epoch. The client’s &lt;strong>last_seen_at&lt;/strong> time is given as microseconds since the epoch so I quickly convert it to seconds.&lt;/p>
+&lt;p>I can quickly retrieve the clients in the &lt;strong>“Slack”&lt;/strong> label group by using the clients() plugin and applying a search expression “label:Slack”. Note that searching the clients by label in this way is much more efficient since it uses the label index rather than a row scan over all clients.&lt;/p>
+&lt;h3 id="step-2-alert-for-recently-seen-clients">Step 2: Alert for recently seen clients&lt;/h3>
+&lt;p>The next step is to send a Slack message for all clients which have been seen recently (say in the last 5 minutes).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="59917eb381384393733c2c7d9a3a73f3">
+ &lt;div data-featherlight="#59917eb381384393733c2c7d9a3a73f3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/124ZL5EICiE_pZYKfTlPj7w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I add a WHERE Condition to the previous query, then for each client, I re-use my earlier Slack query to post a message informing me which client is online.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="078d39e4a43e2a4b5971c4a15b5e4ea7">
+ &lt;div data-featherlight="#078d39e4a43e2a4b5971c4a15b5e4ea7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1eKxlzgJgqGbbpIBDCYgTLQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="step-3-removing-the-client-from-the-watchlist">Step 3: Removing the client from the watchlist&lt;/h3>
+&lt;p>Once I sent a slack alert for this client, I do not want to check it again. Let’s modify the above query to remove the label as well.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="66aca4b04718deff9bda5b4b9041ad80">
+ &lt;div data-featherlight="#66aca4b04718deff9bda5b4b9041ad80" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/19a5wyFGxAik1oa1I8Qe4Uw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="step-4-creating-a-monitoring-artifact">Step 4: Creating a monitoring artifact&lt;/h3>
+&lt;p>We previously saw how I can check for clients and send slack messages in the notebook. While this is fun and helps to develop VQL, in order to actually run this, we need to have the server monitoring for new clients all the time — in other words we need a Monitoring (Or Events) Artifact.&lt;/p>
+&lt;p>The previous query just ran once and stopped, but I really want to run it continuously every minute say. I do this by running the previous query periodically using the &lt;strong>clock()&lt;/strong> plugin.&lt;/p>
+&lt;p>I go to the “View Artifacts” sidebar and then click the “Add an artifact” button.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="00df77cdf4c1186f08d856892c2c72b1">
+ &lt;div data-featherlight="#00df77cdf4c1186f08d856892c2c72b1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1ZKfuzpZHTGCd3b2mOEcGPg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The two main differences here are that this is a SERVER_EVENT artifact — i.e. it is running on the server continuously. I then use the clock() plugin to trigger the previous query to run every minute and scan for new clients coming online (line 27: &lt;strong>foreach&lt;/strong> &lt;strong>clock&lt;/strong> event, run the &lt;strong>send_message&lt;/strong> query).&lt;/p>
+&lt;h3 id="step-5-install-the-artifact">Step 5: Install the artifact&lt;/h3>
+&lt;p>To install the artifact on the server, I will go to the Server Monitoring screen, and add it in the search view by clicking the “update server monitoring table” toolbar button.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="9bda443790a888640f018a7413471364">
+ &lt;div data-featherlight="#9bda443790a888640f018a7413471364" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1nsoI3t2io_Ww8gbCxptniw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now I can add the label to any client I am interested in and within a minute of it coming back online I will receive an alert in my slack channel&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="39af799a607bfa2bdbaebab628943b40">
+ &lt;div data-featherlight="#39af799a607bfa2bdbaebab628943b40" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/../../img/1_RuYRGYKlwA7VeMkExYcyA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>In this post we saw how to make outbound REST API calls from the Velociraptor server using VQL. The example of Slack integration is a great use case for such an artifact, but there are many systems using HTTP style APIs (RESTfull or not) to be able to receive information from Velociraptor.&lt;/p>
+&lt;p>We saw how VQL can be written to run a continuous monitoring query on the server, checking for a condition that we are interested in. You could probably think of many examples of events that you will want to be notified of in a similar way (e.g. psexec used on any endpoint can be detected in near real time and escalated automatically to a Slack channel, or getting notified when a critical domain account is used anywhere on the network).&lt;/p>
+&lt;p>Escalating to Slack is suitable for fairly low frequency but high value events. If there are too many events, the channel will be too noisy and not useful (people will just mute it), so consider how frequently the alert will be fired, and how you intend to deal with it.&lt;/p>
+&lt;p>To play with this feature yourself, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. If you want to learn more about VQL and Velociraptor consider joining us on one of our &lt;a href="https://www.velocidex.com/training/" target="_blank" >upcoming training sessions&lt;/a>
+.&lt;/p>
+&lt;p>As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>Velociraptor SSO Authentication</title><link>https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/</link><pubDate>Sun, 16 Aug 2020 01:38:44 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="5ab1a240ed2904a44b23ad273578b93a">
+ &lt;div data-featherlight="#5ab1a240ed2904a44b23ad273578b93a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1LYHMWBm-PIb4rrMurPgAUA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The Velociraptor GUI allows administrators and DFIR team members to rapidly respond and hunt across their entire deployment in seconds. This is a powerful capability, and must be adequately protected.&lt;/p>
+&lt;h3 id="modes-of-authentication">Modes of authentication&lt;/h3>
+&lt;p>Velociraptor supports two modes of authentication:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Basic authentication&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Single Sign On using third party OAuth2 logon flow.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>In the basic authentication mode, GUI users are added by the administrator and given passwords. When a user logs into the GUI, their browser prompts them to enter a username and password, and the password hashes are checked against those hashes stored in the database.&lt;/p>
+&lt;p>This traditional authentication flow is simple to use and implement but has a number of shortfalls — the main one being that the user needs to remember yet another password for Velociraptor and so they are likely to reuse an existing password. Modern secure applications also use 2 factor authentication as an additional security mechanism with potentially complex authentication schemes (e.g. secure token).&lt;/p>
+&lt;h3 id="oauth2-flow">OAuth2 flow&lt;/h3>
+&lt;p>Velociraptor supports delegating the authentication to an identity provider (Currently GitHub, Microsoft or Google and potentially many others in future). This means that Velociraptor never gets to see a user’s password or actually logs them in at all — Velociraptor relies on the OAuth2 provider to assert that the user authenticated correctly (and potentially used the required 2FA method). There are many resources about OAuth2 for example t&lt;a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2" target="_blank" >his&lt;/a>
+ or the &lt;a href="https://tools.ietf.org/html/rfc6749" target="_blank" >RFC6749&lt;/a>
+ also has a lot of details.&lt;/p>
+&lt;p>While the OAuth2 protocol allows an application to request access to different resources owned by the user, Velociraptor only requests basic access to their email address — Velociraptor associates ACL policies with the user’s email address.&lt;/p>
+&lt;p>The following steps are performed to log a user into the Velociraptor GUI:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The User’s browser makes a request to the Velociraptor GUI&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Velociraptor redirects the browser to the OAuth2 provider (e.g. Google)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The user logs on to their provider and receives a consent screen asking them if they wish to authorize Velociraptor to receive their email address.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Once the user authorizes the app, the OAuth2 provider redirects back to the Velociraptor **callback URL **with a token. The callback URL is the path location within the Velociraptor App that will handle the incoming token.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>At this point Velociraptor already knows the user’s email address and can log them in, as long as they have sufficient permissions (The Velociraptor &lt;a href="https://www.velocidex.com/blog/medium/2020-03-29-velociraptors-acl-model-7f497575daee/" target="_blank" >ACL model&lt;/a>
+ still applied).&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The advantage of this scheme is that Velociraptor never handles user passwords, and additional authentication requirements like 2FA can be imposed by the OAuth2 provider.&lt;/p>
+&lt;h3 id="google-oauth2">Google OAuth2&lt;/h3>
+&lt;p>Velociraptor previously &lt;a href="https://www.velocidex.com/blog/html/2018/12/23/deploying_velociraptor_with_oauth_sso.html" target="_blank" >only supported Google &lt;/a>
+as an OAuth2 provider. However this recently changed when new providers were added.&lt;/p>
+&lt;p>This post outlines the process of setting up OAuth2 authentication for both GitHub and Microsoft O365 environments.&lt;/p>
+&lt;h3 id="github-oauth2-flow">GitHub OAuth2 flow&lt;/h3>
+&lt;p>Setting up a GitHub OAuth2 application is detailed in &lt;a href="https://docs.github.com/en/developers/apps/creating-an-oauth-app" target="_blank" >their extensive developer docs&lt;/a>
+, so I will not repeat it here. I will just include a screenshot of the final screen. For this example I will set up one of our training VMs:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="770e58a9815c415c64153663cdb44b6c">
+ &lt;div data-featherlight="#770e58a9815c415c64153663cdb44b6c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1V0SFCRyBB3EgaTnRGEvbvg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The most important item in this form is the Authorization callback URL, which must be of the form&lt;/p>
+&lt;pre>&lt;code>https://public DNS name/auth/github/callback
+&lt;/code>&lt;/pre>
+&lt;p>Once I click Register Application, GitHub will provide me with a client id and a client secret — Those are used by Velociraptor to send authorization requests to GitHub for authentication.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b0526c70c4e5a8ebc381e8fd212f8ce7">
+ &lt;div data-featherlight="#b0526c70c4e5a8ebc381e8fd212f8ce7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1ZU-eolQPeo8inmTfq4VkVA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now that we have the client id and secret we can create our configuration file using the interactive config generator&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor.exe config generate -i
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="234e180231246a4cc5074a40ed31f4fe">
+ &lt;div data-featherlight="#234e180231246a4cc5074a40ed31f4fe" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1yJ7sIPl_qnL9UUrJvNZJLA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Be sure to enter the proper external DNS name of your Velociraptor server, select &lt;strong>Authenticate users with SSO&lt;/strong> and choose &lt;strong>GitHub&lt;/strong> as the provider. Velociraptor will show once again, the correct redirect URL that needs to be entered into the GitHub form as we have seen above.&lt;/p>
+&lt;p>Finally enter the GitHub client ID and secret and create the server config files. To deploy on a typical Debian based VM, simply build the debian package ready to deploy to your server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="5a515333ca4f9d393f79ce120ebcd482">
+ &lt;div data-featherlight="#5a515333ca4f9d393f79ce120ebcd482" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/19WneTKLF_985TEXYJKcAbQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I will now push the Debian package to the server and install it using SCP and SSH. When I navigate to the public URL at &lt;a href="https://vm1.training.velocidex.com" target="_blank" >https://vm1.training.velocidex.com&lt;/a>
+ I am redirected to GitHub to authenticate and upon authorizing the app I can log into my Velociraptor server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="04f0fc4e79a77e4139a14ec65b4cdec7">
+ &lt;div data-featherlight="#04f0fc4e79a77e4139a14ec65b4cdec7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1U5rYGAoEkXr1TeQFJ8UDiw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The GitHub OAuth2 flow is excellent! I received an email immediately when my user was authorized and I can see the total number of users authorized to this application.&lt;/p>
+&lt;h3 id="microsoft-azure-oauth2-flow">Microsoft Azure OAuth2 flow&lt;/h3>
+&lt;p>Many Velociraptor users are using Office 365 and Azure to manage their organizations. I can set up the Microsoft OAuth2 flow in a very similar way to the previous flow. The only main difference with O365 is the concept of tenants — Azure provides each organization with a tenancy which is normally their domain name.&lt;/p>
+&lt;p>First I will navigate to the Azure Active Directory application and select &lt;strong>App Registrations&lt;/strong>. Click on &lt;strong>New registration&lt;/strong> to add a new App.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="4e86c000ec554d16dce4c3c7e284720e">
+ &lt;div data-featherlight="#4e86c000ec554d16dce4c3c7e284720e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1enBaYt9G2zve-8l6zIbmjw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now I provide the app with a name. Here I can select if this app should be used by users from different tenants or restricted to my org only.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="641213263d2dba380cf2431a8e590be2">
+ &lt;div data-featherlight="#641213263d2dba380cf2431a8e590be2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1EakNAGcDH2r4BEuEQJ0fXA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Finally enter the callback URL as before. Note that this is a different URL because it is using the Azure authenticator within Velociraptor. When submitting this, Azure AD will only create a client ID for our application. We need to manually create the client secret using an additional step in the UI. I will select &lt;strong>Certificate &amp;amp; Secrets&lt;/strong> from the menu.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="fe497317b0047e0977784a316ccdcd6a">
+ &lt;div data-featherlight="#fe497317b0047e0977784a316ccdcd6a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1eWcpTayDUJsCnzmlYk_9pg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Then create a new secret by giving it a name and an expiry.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="a38ddae365f985f05a3101c3e53ed4b9">
+ &lt;div data-featherlight="#a38ddae365f985f05a3101c3e53ed4b9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1gzLxCqvsdJj4hHADofYDLw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Now we have both the client id and secret from the previous screen. We simply need to copy those to the configuration wizard. This time we need to provide the tenant ID as well.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="cd22bf13812ffc7cd1791aee60cf017d">
+ &lt;div data-featherlight="#cd22bf13812ffc7cd1791aee60cf017d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1ivNMZZSw74VsMRCbY43FHw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c3731772c3ffc3ed0451dd71b3d98ce3">
+ &lt;div data-featherlight="#c3731772c3ffc3ed0451dd71b3d98ce3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1fCDpwr3e0HiWscr_6O5cPQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>After installing this server and accessing it with a web browser, the authentication will redirect to Microsoft to authenticate the user.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7e1db0e78136a147587a9f9b3b36e38c">
+ &lt;div data-featherlight="#7e1db0e78136a147587a9f9b3b36e38c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/1R6OYfqhNwABhfkQJQjNlMA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>We have seen how to secure the GUI with the new OAuth2 providers. Having a choice of providers allows different organizations to deploy Velociraptor safely at scale and integrate Velociraptor directly into their enterprise architecture.&lt;/p>
+&lt;p>Note that OAuth2 is only responsible for authentication — i.e. the user is who they claim to be. It does not automatically grant them any permission within the GUI. If a user does not have a specific ACL record they will be rejected:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="bcff31e8303f8ceab3391acd3fb8c959">
+ &lt;div data-featherlight="#bcff31e8303f8ceab3391acd3fb8c959" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/../../img/18xUczf1PP7eyM9XaBzTBEw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can assign or delete users using the &lt;strong>velociraptor user add&lt;/strong> command. You can also assign roles to users using the &lt;strong>velociraptor acl grant&lt;/strong> commands. The configuration wizard offers to provision an initial set of administrator users for smoother install, but you can always add users later using the command line.&lt;/p>
+&lt;p>If your favorite authentication provider is not yet supported, please file a feature request on our &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ project, or even send us a pull request!&lt;/p></description></item></channel></rss>
