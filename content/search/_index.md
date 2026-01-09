@@ -5,6 +5,7 @@ draft: false
 noDisqus: true
 weight: 400
 pre: "<i class='fas fa-search'></i>"
+no_header: true
 ---
 
 <iframe class="search_frame"
