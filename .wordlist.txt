@@ -309,7 +309,7 @@ geolocation
 getpid
 GetShortPathName
 gif
-github
+GitHub
 gitlab
 GLIBC
 GLOBALROOT
@@ -325,7 +325,6 @@ goroutines
 gpg
 gpupdate
 Graeber
-Graphana
 grep
 grok
 gRPC

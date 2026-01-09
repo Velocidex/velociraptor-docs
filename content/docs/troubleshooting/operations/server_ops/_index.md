@@ -96,7 +96,7 @@ system like [Grafana](https://grafana.com/) or
 curl http://127.0.0.1:8003/metrics | less
 ```
 
-For more information about setting up Prometheus and Graphana, please see the
+For more information about setting up Prometheus and Grafana, please see the
 [Deployment > Server Performance and Monitoring]({{< ref "/docs/deployment/resources/" >}})
 page.
 
