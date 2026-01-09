@@ -1131,3 +1131,8 @@ body.dark img.logo.dark {
 table tr th {
     padding-right: 20px;
 }
+
+.search_frame {
+    width: 100%;
+    height: 100vh;
+}
