@@ -38,7 +38,7 @@ In the following discussion we refer to the
 `Windows.KapeFiles.Targets` artifact. This artifact is not related to
 the commercial `Kape` product. The artifact is generated from the open
 source [KapeFiles](https://github.com/EricZimmerman/KapeFiles) project
-on github - an effort to document the path location of many bulk file
+on GitHub - an effort to document the path location of many bulk file
 evidence sources.
 
 {{% /notice %}}

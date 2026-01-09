@@ -245,7 +245,7 @@ These are the subfields available for defining each tool:
   setting `Client.server_urls` on the server. Currently only the first URL from
   `server_urls` is used, and tools are only served over HTTPS (not WSS).
 - `github_project`: As an alternative to a url we allow scraping of GitHub
-  releases using the github API. When this method is specified, the file will
+  releases using the GitHub API. When this method is specified, the file will
   always be served locally.
 - `github_asset_regex`: A regex to select a specific file from the available
   GitHub releases.

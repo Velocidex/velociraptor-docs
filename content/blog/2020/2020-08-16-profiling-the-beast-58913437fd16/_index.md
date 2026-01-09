@@ -24,7 +24,7 @@ Those who have already seen Velociraptor in action might be very familiar with t
 
 In the example above we see a typical hunt running on this specific endpoint — the CPU load spikes for a few seconds to a few minutes, then when the collection completes, the CPU load returns to normal levels (at less than 1% of one core), and a short time later memory use is also returned to the system. Of course depending on the specific hunt run, the amount of work the client has to do may be larger and take longer.
 
-Similarly, the server also collects telemetry periodically, which you can see on the main dashboard (this data is also available using Prometheus/Graphana which are more appropriate for larger deployments). Again depending on the amount of post processing done on the server the CPU and memory footprint can vary.
+Similarly, the server also collects telemetry periodically, which you can see on the main dashboard (this data is also available using Prometheus/Grafana which are more appropriate for larger deployments). Again depending on the amount of post processing done on the server the CPU and memory footprint can vary.
 
 ![](../../img/1EchDpaQPy19KrQe9ZouF3g.png)
 
