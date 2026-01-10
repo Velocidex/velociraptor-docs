@@ -1,0 +1,42 @@
+name: Windows.Events.HighPrivilegedLogon
+author: Herbert Bärschneider, SEC Consult
+description: |
+ Artifact to detect logons that get special privileges assigned. The artifact monitors for security event id 4672.
+ This is useful to see where accounts with high privileges are being actively used.
+ 
+ Be aware, there is lots of noise from NT_AUTHORITY\SYSTEM and the machine account of a system. These are filtered out for you.
+
+type: CLIENT_EVENT
+
+parameters:
+ - name: eventLog
+   default: C:\Windows\system32\winevt\logs\Security.evtx
+ - name: PrivilegesRegex
+   type: regex
+   description: Regex for the privileges you care about
+
+sources:
+ - precondition:
+     SELECT OS From info() where OS = 'windows'
+   query: |
+     LET files = SELECT * FROM glob(globs=eventLog)
+     
+     SELECT timestamp(epoch=System.TimeCreated.SystemTime) As EventTime,
+             System.EventRecordID as EventRecordID,
+             System.EventID.Value as EventID,
+             System.Computer as SourceComputer,
+             EventData.SubjectUserName as SubjectUserName,
+             EventData.PrivilegeList as PrivilegeList,
+             System,
+             EventData,
+             Message
+       FROM foreach(
+         row=files,
+         async=TRUE,
+         query={
+           SELECT *
+           FROM watch_evtx(filename=OSPath)
+           WHERE System.EventID.Value = 4672
+             AND EventData.PrivilegeList =~ PrivilegesRegex
+             AND NOT ((EventData.SubjectUserName =~ "SYSTEM" AND EventData.SubjectDomainName =~ "NT AUTHORITY") OR EventData.SubjectUserName =~ "\$$")
+       })
