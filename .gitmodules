@@ -1,0 +1,3 @@
+[submodule "velociraptor-site-search"]
+	path = velociraptor-site-search
+	url = https://github.com/Velocidex/velociraptor-site-search.git

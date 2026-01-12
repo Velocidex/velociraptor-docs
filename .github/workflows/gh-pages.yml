@@ -15,6 +15,14 @@ jobs:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
+      - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe
+        with:
+          go-version: '^1.25'
+
+          # Caching seems to really slow down the build due to the time
+          # taken to save the cache.
+          cache: false
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
@@ -27,6 +35,9 @@ jobs:
           python scripts/exchange_verify.py
           python scripts/blog_index.py
           python scripts/knowledge_base.py
+
+      - name: BuildIndex
+        run: make index
 
       - name: Build
         run: hugo --minify
