@@ -30,3 +30,10 @@ clean:
 
 build:
 	hugo
+
+index:
+	rm -rf /tmp/index/
+	cd ./velociraptor-site-search/ && go run ./cmd/ build ../content/ /tmp/index/ && cd -
+	cd /tmp/index && zip -r ../index.zip * && cd -
+	mkdir -p ./static/docs_index/
+	mv /tmp/index.zip ./static/docs_index/docs_index_v1.zip
