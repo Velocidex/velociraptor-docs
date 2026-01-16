@@ -1,5 +1,4 @@
 name: Linux.Events.EBPFEnriched
-name: Custom.Linux.Events.EBPF
 author: Zane Gittins
 description: |
  This artifact forwards EBPF events generated on the endpoint and enriches events with:
