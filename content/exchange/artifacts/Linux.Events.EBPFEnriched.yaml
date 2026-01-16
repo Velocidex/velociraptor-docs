@@ -1,4 +1,5 @@
 name: Linux.Events.EBPFEnriched
+name: Custom.Linux.Events.EBPF
 author: Zane Gittins
 description: |
  This artifact forwards EBPF events generated on the endpoint and enriches events with:
@@ -6,7 +7,7 @@ description: |
     * Process details (CommandLine, CallChain, ParentImage, etc.)
     * Docker container details (ContainerName, ContainerImage, Usernames, etc.)
  
- Requires Linux.Events.TrackProcesses (process tracker)
+ Requires Linux.Events.TrackProcesses (process tracker), and docker v29+ for hashing of executables and username enrichment in docker containers.
 
 type: CLIENT_EVENT
 
@@ -69,7 +70,7 @@ parameters:
   - name: BufferSize
     description: |
       Size of buffer used to delay events for enrichment. Larger buffer size increases enrichment chance, but also memory usage.
-    default: 3000
+    default: 5000
     type: int64
 sources:
   - precondition:
@@ -156,7 +157,8 @@ sources:
       
       // Get detailed process information for all events
       LET GetProcInfo(EventData, Tracker, pTracker) = dict(
-          Image=Tracker.Data.Exe || System.ProcessName,
+          Image=Tracker.Data.Exe || EventData.cmdpath ||
+            System.ProcessName,
           ImageName=System.ProcessName,
           CommandLine=Tracker.Data.CommandLine || join(array=EventData.argv, sep=" "),
           ParentImage=pTracker.Data.Exe,
@@ -166,9 +168,13 @@ sources:
           CallChain=join(
             array=process_tracker_callchain(
               id=System.HostProcessID).Data.Name,
-            sep="->"))
+            sep="->"),
+          TrackerHit=if(
+            condition=Tracker != NULL,
+            then=true,
+            else=false))
       
-      // Primary event loop, we exclude our own pid and process exclusion rules.
+      // Primary event loop, we exclude our own pid and evaluate exclusion rules.
       LET Logs = SELECT timestamp(epoch=now()) AS Timestamp,
                         *,
                         System.HostProcessID != System.ProcessID AS IsContainer
@@ -216,5 +222,5 @@ sources:
           *
           FROM Logs
         },
-        delay=10,
+        delay=5,
         buffer_size=BufferSize)
