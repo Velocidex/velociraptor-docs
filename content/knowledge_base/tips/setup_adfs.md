@@ -36,36 +36,36 @@ Open Server Manager > Tool > AD FS Management
 
 **2. Create a New Application Group**  
 Select Application Groups and create a new one  
-![](adfs2.png)
+![](./setup_adfs/adfs2.png)
 
 **3. Welcome**  
 Enter a name and select Server Application accessing a web API  
-![](adfs3.png)
+![](./setup_adfs/adfs3.png)
 
 **4. Server application** 
 Enter your Redirect URI : https://velociraptor.local:8889/auth/oidc/callback and add it  
 Save your client identifier, we will use it on velociraptor config file  
-![](adfs4.png)
+![](./setup_adfs/adfs4.png)
 
 **5. Configure Application Credentials** 
 Generate a shared secret and save it  
-![](adfs5.png)
+![](./setup_adfs/adfs5.png)
 
 **6. Configure WEB API**  
 Enter your application identifier and add it  
-![](adfs6.png)
+![](./setup_adfs/adfs6.png)
 
 **7. Access Control Policy**  
 On next window, Choose Access Control Policy and filter as needed  
-![](adfs7.png)
+![](./setup_adfs/adfs7.png)
 
 **8. Configure Application Permissions**  
 Select email, openid, profile  
-![](adfs8.png)
+![](./setup_adfs/adfs8.png)
 
 **9. Summary**  
 Validate your summary and click Next, then complete.  
-![](adfs9.png)
+![](./setup_adfs/adfs9.png)
 
 ## 3. Add the authenticator settings to your Velciraptor config  
 In the `GUI` section of your Velociraptor config you should have the following
@@ -150,7 +150,7 @@ Test the authentication process by going to `https://10.2.0.74:8889/`
 You will be presented with the choice to log in with Keycloak (multiple
 authentication providers are supported but we only have one configured).
 
-![](adfs10.png)
+![](./setup_adfs/adfs10.png)
 
 Enter initial credentials using DOMAIN\bob or bob@domain.local
 
