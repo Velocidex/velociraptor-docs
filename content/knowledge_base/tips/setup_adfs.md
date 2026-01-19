@@ -15,7 +15,8 @@ Velociraptor Server is on velociraptor.local
 As mentioned above, the goal of this guide is to demonstrate a working SSO
 configuration for Velociraptor using MS ADFS.
 
-image
+
+![Network overview](network_overview.png)
 
 The high-level steps of this setup process are:
 
@@ -54,32 +55,32 @@ This will display the log messages in the terminal.
 ##2. Create a new Application Group in ADFS
 **1. Open ADFS Management**
 Open Server Manager > Tool > AD FS Management
-image
+![](adfs1.png)
 **2. Create a New Application Group**
 Select Application Groups and create a new one
-image
+![](adfs2.png)
 **3. Welcome** 
 Enter a name and select Server Application accessing a web API
-image
+![](adfs3.png)
 **4. Server application** 
 Enter your Redirect URI : https://velociraptor.local:8889/auth/oidc/callback and add it
 Save your client identifier, we will use it on velociraptor config file
-image
+![](adfs4.png)
 **5. Configure Application Credentials** 
 Generate a shared secret and save it
-image
+![](adfs5.png)
 **6. Configure WEB API**
 Enter your application identifier and add it
-image
+![](adfs6.png)
 **7. Access Control Policy**
 On next window, Choose Access Control Policy and filter as needed
-image
+![](adfs7.png)
 **8. Configure Application Permissions**
 Select email, openid, profile
-image
+![](adfs8.png)
 **9. Summary**
 Validate your summary and click Next, then complete.
-image
+![](adfs9.png)
 
 ##3. Add the authenticator settings to your Velciraptor config**
 
@@ -144,7 +145,7 @@ We will make `bob@domain.local` a server admin and grant `fred@domain.local` the
 role, which provides minimal access to Velociraptor's GUI. Note that you have to use the user
 email field in Active Directory. The following two commands will create these users:
 
-**9. Add users to the datastore**
+**Add users to the datastore**
 
 ```sh
 velociraptor --config server.config.yaml user add --role administrator bob@domain.local
@@ -160,14 +161,14 @@ Because of our OIDC authenticator config, when adding each user we will receive
 an acknowledgement message saying
 `"Authentication will occur via oidc - therefore no password needs to be set."`
 
-## Test authentication process
+## Test authentication process**
 
 Test the authentication process by going to `https://10.2.0.74:8889/`
 
 You will be presented with the choice to log in with Keycloak (multiple
 authentication providers are supported but we only have one configured).
 
-image
+![](adfs10.png)
 
 Enter initial credentials using DOMAIN\bob or bob@domain.local
 
