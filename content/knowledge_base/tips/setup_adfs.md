@@ -9,13 +9,13 @@ Primary Velociraptor has been deployed using self signed certificate
 
 OpenID Configuration can be read with https://auth.domain.local/adfs/.well-known/openid-configuration
 SSL certificate on ADFS is provided by Let's Encrypt.
-Velociraptor Server is on 10.2.0.74
+Velociraptor Server is on velociraptor.local
 {{% /notice %}}
 
 As mentioned above, the goal of this guide is to demonstrate a working SSO
 configuration for Velociraptor using MS ADFS.
 
-![Network overview](network_overview.svg)
+image
 
 The high-level steps of this setup process are:
 
@@ -62,7 +62,7 @@ image
 Enter a name and select Server Application accessing a web API
 image
 **4. Server application** 
-Enter your Redirect URI : https://10.2.0.74:8889/auth/oidc/callback and add it
+Enter your Redirect URI : https://velociraptor.local:8889/auth/oidc/callback and add it
 Save your client identifier, we will use it on velociraptor config file
 image
 **5. Configure Application Credentials** 
@@ -97,10 +97,9 @@ new settings to match our Keycloak configuration:
 ```yaml
     type: oidc
     oidc_issuer: https://domain.local/adfs
-    oidc_name: keycloak
-    avatar: https://www.keycloak.org/resources/images/logo.svg
+    oidc_name: adfs
     oauth_client_id: e49d074b-c157-40cd-a1b4-0a863bac99aa
-    oauth_client_secret: 8PLx9f8b-MkRwLcRohyk5UqxzaqsDJYXaEWKIURb
+    oauth_client_secret: scwp-348TOdnNJ7hzP3pKGXcYS4Ohu2q0JMCyDT0
     # uncommment below if you want a full debug
     # oidc_debug: true
 ```
