@@ -38,37 +38,36 @@ Open Server Manager > Tool > AD FS Management
 Select Application Groups and create a new one  
 ![](adfs2.png)
 
-**3. Welcome**
-Enter a name and select Server Application accessing a web API
+**3. Welcome**  
+Enter a name and select Server Application accessing a web API  
 ![](adfs3.png)
 
 **4. Server application** 
-Enter your Redirect URI : https://velociraptor.local:8889/auth/oidc/callback and add it
-Save your client identifier, we will use it on velociraptor config file
+Enter your Redirect URI : https://velociraptor.local:8889/auth/oidc/callback and add it  
+Save your client identifier, we will use it on velociraptor config file  
 ![](adfs4.png)
 
 **5. Configure Application Credentials** 
-Generate a shared secret and save it
+Generate a shared secret and save it  
 ![](adfs5.png)
 
-**6. Configure WEB API**
-Enter your application identifier and add it
+**6. Configure WEB API**  
+Enter your application identifier and add it  
 ![](adfs6.png)
 
-**7. Access Control Policy**
-On next window, Choose Access Control Policy and filter as needed
+**7. Access Control Policy**  
+On next window, Choose Access Control Policy and filter as needed  
 ![](adfs7.png)
 
-**8. Configure Application Permissions**
-Select email, openid, profile
+**8. Configure Application Permissions**  
+Select email, openid, profile  
 ![](adfs8.png)
 
-**9. Summary**
-Validate your summary and click Next, then complete.
+**9. Summary**  
+Validate your summary and click Next, then complete.  
 ![](adfs9.png)
 
-## 3. Add the authenticator settings to your Velciraptor config**
-
+## 3. Add the authenticator settings to your Velciraptor config**  
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
 
@@ -94,7 +93,7 @@ The `oauth_client_secret` is the value we obtained at the end of step 5. The
 `oauth_client_id` is the name we used for the OIDC Client ID in that same
 section in step 4.
 
-## 4. Start Velociraptor**
+## 4. Start Velociraptor**  
 
 The server should now start cleanly and continue running. In the log messages
 you should see `GUI will use the oidc authenticator`. That means everything is
@@ -118,7 +117,7 @@ This will display the log messages in the terminal.
 {{% /notice %}}
 
 
-## 5. Add Users**
+## 5. Add Users**  
 
 Even if you have added groups/users through Access Control Policy in step 7, you have
 to create users in Velociraptor. Users can be created using VQL in Velociraptor 
@@ -144,7 +143,7 @@ Because of our OIDC authenticator config, when adding each user we will receive
 an acknowledgement message saying
 `"Authentication will occur via oidc - therefore no password needs to be set."`
 
-## 6. Test authentication process**
+## 6. Test authentication process**  
 
 Test the authentication process by going to `https://10.2.0.74:8889/`
 
