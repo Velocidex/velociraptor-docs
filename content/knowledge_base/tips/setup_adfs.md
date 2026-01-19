@@ -145,7 +145,7 @@ an acknowledgement message saying
 
 ## 6. Test authentication process  
 
-Test the authentication process by going to `https://10.2.0.74:8889/`
+Test the authentication process by going to `https://velociraptor.local:8889/`
 
 You will be presented with the choice to log in with Keycloak (multiple
 authentication providers are supported but we only have one configured).
