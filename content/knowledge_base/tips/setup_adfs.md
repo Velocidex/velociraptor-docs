@@ -67,7 +67,7 @@ Select email, openid, profile
 Validate your summary and click Next, then complete.  
 ![](adfs9.png)
 
-## 3. Add the authenticator settings to your Velciraptor config**  
+## 3. Add the authenticator settings to your Velciraptor config  
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
 
@@ -93,7 +93,7 @@ The `oauth_client_secret` is the value we obtained at the end of step 5. The
 `oauth_client_id` is the name we used for the OIDC Client ID in that same
 section in step 4.
 
-## 4. Start Velociraptor**  
+## 4. Start Velociraptor  
 
 The server should now start cleanly and continue running. In the log messages
 you should see `GUI will use the oidc authenticator`. That means everything is
@@ -117,7 +117,7 @@ This will display the log messages in the terminal.
 {{% /notice %}}
 
 
-## 5. Add Users**  
+## 5. Add Users  
 
 Even if you have added groups/users through Access Control Policy in step 7, you have
 to create users in Velociraptor. Users can be created using VQL in Velociraptor 
@@ -143,7 +143,7 @@ Because of our OIDC authenticator config, when adding each user we will receive
 an acknowledgement message saying
 `"Authentication will occur via oidc - therefore no password needs to be set."`
 
-## 6. Test authentication process**  
+## 6. Test authentication process  
 
 Test the authentication process by going to `https://10.2.0.74:8889/`
 
