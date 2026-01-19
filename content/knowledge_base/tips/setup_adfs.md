@@ -12,7 +12,7 @@ SSL certificate on ADFS is provided by Let's Encrypt.
 Velociraptor Server is on velociraptor.local
 {{% /notice %}}
 
-![Network overview](network_overview.png)
+![setup_mfa](network_overview.png)
 
 The high-level steps of this setup process are:
 
