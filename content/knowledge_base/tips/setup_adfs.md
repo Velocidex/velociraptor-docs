@@ -4,7 +4,7 @@ This guide walks you through the configuration of Microsoft ADFS as an OIDC
 authentication provider for Velociraptor.
 
 {{% notice warning "Environment" %}}
-This procedure has been tested with Windows Server 2022 and ADFS 4.0
+This procedure has been tested with Windows Server 2022 and ADFS 4.0  
 Velociraptor has been deployed using self signed certificate
 
 ADFS OpenID Configuration can be read with https://auth.domain.local/adfs/.well-known/openid-configuration
