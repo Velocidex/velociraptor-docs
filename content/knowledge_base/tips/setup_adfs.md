@@ -30,12 +30,12 @@ Velociraptor QuickStart > https://docs.velociraptor.app/docs/deployment/quicksta
 
 
 ## 2. Create a new Application Group in ADFS
-**1. Open ADFS Management**
-Open Server Manager > Tool > AD FS Management
+**1. Open ADFS Management**  
+Open Server Manager > Tool > AD FS Management  
 ![](adfs1.png)
 
-**2. Create a New Application Group**
-Select Application Groups and create a new one
+**2. Create a New Application Group**  
+Select Application Groups and create a new one  
 ![](adfs2.png)
 
 **3. Welcome**
