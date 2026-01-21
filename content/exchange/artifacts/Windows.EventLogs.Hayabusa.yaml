@@ -9,7 +9,7 @@ description: |
    file for further analysis with excel, timeline explorer, elastic
    stack, jq, etc.
 
-author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity, Fukusuke Takahashi - @fukusuket
+author: Eric Capuano - @eric_capuano, Whitney Champion - @shortxstack, Zach Mathis - @yamatosecurity, Fukusuke Takahashi - @fukusuket, Julian Hill - @julianghill
 
 tools:
  - name: Hayabusa-3.7.0
