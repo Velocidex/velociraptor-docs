@@ -18,7 +18,7 @@ The high-level steps of this setup process are:
 
 1. Deploy Velociraptor using Self Signed Certificates.
 2. Create a new Application Group in ADFS.
-3. Add the authenticator settings to your Velciraptor config.
+3. Add the authenticator settings to your Velociraptor config.
 4. Start Velociraptor
 5. Add test users to Velociraptor.
 6. Test the authentication process.
@@ -67,7 +67,7 @@ Select email, openid, profile
 Validate your summary and click Next, then complete.  
 ![](./setup_adfs/adfs9.png)
 
-## 3. Add the authenticator settings to your Velciraptor config  
+## 3. Add the authenticator settings to your Velociraptor config  
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
 
