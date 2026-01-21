@@ -85,6 +85,10 @@ parameters:
    description: "Scan only common Event IDs for quicker scans"
    type: bool
    default: N
+ - name: AddHostnameToFilename
+   description: "If checked, prepends the Hostname to the uploaded file."
+   type: bool
+   default: N
  - name: TimeOffset
    description: "Scan recent events based on an offset (ex: 1y, 3M, 30d, 24h, 30m)"
  - name: TimelineStart
@@ -165,8 +169,19 @@ sources:
         FROM execve(argv=cmdline, cwd=TmpDir, sep="\n", length=9999999)
         WHERE log(message=Stdout)
 
+        -- Determine the Upload Filename
+        LET FinalName <= if(condition=AddHostnameToFilename,
+            then={
+                SELECT format(format="%s-hayabusa_results.%s", args=[Hostname, OutputFormat]) as Name 
+                FROM info()
+            },
+            else={
+                SELECT format(format="hayabusa_results.%s", args=[OutputFormat]) as Name 
+                FROM scope()
+            })
+
         -- Upload the raw file.
-        SELECT upload(file=ResultFile) AS Uploads FROM scope()
+        SELECT upload(file=ResultFile, name=FinalName[0].Name) AS Uploads FROM scope()
 
  - name: Results
    query: |
