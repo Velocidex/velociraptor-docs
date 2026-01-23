@@ -68,7 +68,7 @@ sources:
                         
       -- extract and set artifacts
       LET set_artifacts <= SELECT 
-            artifact_set(Tags=Tag, definition=Definition) AS Definition,
+            artifact_set(Tag=Tag, definition=Definition) AS Definition,
             SHA1,
             ZipTimestamp,ZipSHA1
         FROM foreach(row=get_content, 
