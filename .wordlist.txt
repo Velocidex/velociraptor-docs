@@ -12,6 +12,7 @@ ActiveScript
 ActiveXObject
 adbe
 ADDomain
+adfs
 ADFS
 AddPrinterDriverEx
 admin's
@@ -709,6 +710,7 @@ pydata
 pyvelociraptor
 QoS
 QPS
+quickstart
 QWORD
 RabbitMQ
 ransomware
