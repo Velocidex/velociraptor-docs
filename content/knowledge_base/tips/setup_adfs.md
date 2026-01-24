@@ -12,7 +12,7 @@ SSL certificate on ADFS is provided by Let's Encrypt.
 Velociraptor Server is on velociraptor.local
 {{% /notice %}}
 
-![setup_mfa](./setup_adfs/network_overview.png)
+![setup_adfs](./setup_adfs/network_overview.png)
 
 The high-level steps of this setup process are:
 
@@ -26,7 +26,7 @@ The high-level steps of this setup process are:
 
 ## 1. Deploy Velociraptor using Self Signed Certificates
 
-Velociraptor QuickStart > https://docs.velociraptor.app/docs/deployment/quickstart/
+Velociraptor quickstart > https://docs.velociraptor.app/docs/deployment/quickstart/
 
 
 ## 2. Create a new Application Group in ADFS
