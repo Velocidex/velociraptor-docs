@@ -1,4 +1,4 @@
-name: Custom.Windows.SysmonEvtx.ProcessCreationEnriched
+name: Windows.EventLogs.SysmonProcessEnriched.yaml
 author: Zane Gittins
 description: |
    Collects sysmon process creation events and enriches with authenticode signature, tlsh hash, and call chain. Requires Sysmon and the process tracker.
