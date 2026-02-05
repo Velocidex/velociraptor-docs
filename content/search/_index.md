@@ -19,20 +19,20 @@ search for Velociraptor documentation.
 
 * <a href="https://www.bing.com/search?q=site:velociraptor.app"
    target="_blank">
-    Search With Microsoft Bing
+    Search With `Microsoft Bing`
   </a>
 * <a href="https://duckduckgo.com/?q=site:velociraptor.app" target="_blank">
-    Search with DuckDuckGo
+    Search with `DuckDuckGo`
   </a>
 * <a href="https://www.google.com/search?q=site:velociraptor.app"
    target="_blank">
-    Search With Google (currently not working very well)
+    Search With `Google` (currently not working very well)
   </a>
 
 ## Search Velociraptor documentation within the application
 
 From Velociraptor release 0.76 onwards, the documentation site is
 fully available and searchable within the application itself. This is
-the prefered option for viewing the docs.
+the preferred option for viewing the docs.
 
 ![Searching the documentation site within the Velociraptor Application](search.svg)
