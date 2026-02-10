@@ -4,26 +4,29 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Artifact using auditpol to retrieve the logging settings 
-defined in the Windows Audit Policy.
+Uses auditpol to retrieve the logging settings defined in the Windows Audit
+Policy.
 
-Use this artifact to determine what Windows event logs are audited
-and if there are any discrepancies across the environment.
+Use this artifact to determine which Windows event logs are audited and
+identify audit configuration discrepancies across the environment.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.AuditPolicy
 
 description: |
-   Artifact using auditpol to retrieve the logging settings 
-   defined in the Windows Audit Policy.
-   
-   Use this artifact to determine what Windows event logs are audited
-   and if there are any discrepancies across the environment.
+   Uses auditpol to retrieve the logging settings defined in the Windows Audit
+   Policy.
+
+   Use this artifact to determine which Windows event logs are audited and
+   identify audit configuration discrepancies across the environment.
 
 type: CLIENT
 
 author: Zach Stanford - @svch0st
+
+implied_permissions:
+  - EXECVE
 
 sources:
   - precondition:
@@ -32,7 +35,7 @@ sources:
     query: |
       LET output = SELECT * FROM execve(
         argv=["auditpol.exe","/get","/category:*","/r"])
-      
+
       SELECT * FROM foreach(
         row=output,
         query={

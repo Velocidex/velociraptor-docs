@@ -2,7 +2,7 @@ name: Windows.Detection.RemoteIconForcedAuth
 author: ACEResponder.com
 description: |
    Attackers plant SCF, URL, and LNK files with malicious icon file paths
-   on file shares to escalate privileges or maintain persistence. This attack 
+   on file shares to escalate privileges or maintain persistence. This attack
    only requires the user to browse to the location of the malicious file.
    This artifact enumerates file shares and returns an event for each file with a
    remote icon. It can also scan a target root directory since attackers commonly
@@ -29,7 +29,7 @@ parameters:
      description: Root folder to search for SCF, URL, and LNK files. Uncheck AllShares to run. Backslashes should be escaped.
      default: C:\\
 
-     
+
 imports:
   - Windows.Forensics.Lnk
 
@@ -53,18 +53,18 @@ sources:
         }
         $out | ConvertTo-Json
       '''
-      
+
       LET paths = SELECT * FROM if(
-        condition=AllShares, 
+        condition=AllShares,
         then={SELECT * FROM foreach(row={SELECT Stdout FROM execve(argv=["Powershell", "-ExecutionPolicy","unrestricted", "-c", script], length=1000000)}, query = {SELECT * FROM parse_json_array(data=Stdout)})},
         else={SELECT * FROM parse_json_array(data='[{"Path":"'+TargetFolder+'\**\*"}]')}
 
         )
 
-    
+
       LET hits = SELECT *, {
                     SELECT *
-                    FROM Artifact.Windows.Forensics.Lnk(Glob=FullPath)
+                    FROM Artifact.Windows.Forensics.Lnk(TargetGlob=FullPath)
                     WHERE FullPath =~ "lnk$"
                   } as lnk_file,
                   {
@@ -72,14 +72,14 @@ sources:
                            parse_string_with_regex(
                                string=Data,
                                regex=['IconFile=(?P<IconLocation>.*)']) AS parsed
-                            
+
                     FROM read_file(filenames=[FullPath])
                     WHERE FullPath =~ '(scf|url)'
                   } AS url_file
-                  
+
       FROM glob(globs=array(a={SELECT * FROM paths}))
       WHERE FullPath =~ "(scf|url|lnk)$" AND (lnk_file.Icons=~'^\\\\' OR url_file.parsed.IconLocation=~'^\\\\')
-      
+
       LET final = SELECT *, parse_string_with_regex(string=IconLocation,regex=['^\\\\\\\\(?P<host>\[^\\\\\]+)']).host AS TargetHost FROM foreach(row={SELECT * FROM hits}, query={
         SELECT * FROM if(
             condition=lnk_file,
@@ -87,6 +87,5 @@ sources:
             else={SELECT Name, ModTime, FullPath, OSPath, Mtime, Btime, Ctime, Atime, url_file.parsed.IconLocation AS IconLocation, url_file.Data AS Data FROM hits}
             )
       }) WHERE NOT TargetHost IN AllowList.TargetHost AND IconLocation
-      
-      SELECT * FROM final
 
+      SELECT * FROM final

@@ -54,7 +54,7 @@ sources:
       LET mft_entries = SELECT *,OSPath,FileName,FileNames,EntryNumber,
             LastModified0x10,LastAccess0x10, LastRecordChange0x10,Created0x10, --SI used in test
             LastModified0x30,Created0x30, -- FN used in test
-            IsDir,InUse,SI_Lt_FN,uSecZeros,
+            IsDir,InUse,SI_Lt_FN,USecZeros,
             parse_pe(file=OSPath) as PE,
             magic(path=OSPath) as Magic
         FROM Artifact.Windows.NTFS.MFT(MFTDrive=MFTDrive,PathRegex=PathRegex,FileRegex=FileRegex)
@@ -93,7 +93,7 @@ sources:
             OSPath,
             dict(Created0x10=Created0x10,Created0x30=Created0x30) as CreatedTimestamps,
             InUse,
-            SI_Lt_FN as `SI<FN`,uSecZeros,
+            SI_Lt_FN as `SI<FN`,USecZeros,
             if(condition=PE.FileHeader.TimeDateStamp,
                 then= if(condition= LastModified0x10 < PE.FileHeader.TimeDateStamp OR LastAccess0x10 < PE.FileHeader.TimeDateStamp OR LastRecordChange0x10 < PE.FileHeader.TimeDateStamp OR Created0x10 < PE.FileHeader.TimeDateStamp,
                         then= True,
@@ -121,7 +121,7 @@ sources:
             then={
                 SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     SuspiciousShimcache,
                     SuspiciousI30,
@@ -136,7 +136,7 @@ sources:
                 then={
                 SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     SuspiciousShimcache,
                     SuspiciousI30,
@@ -150,7 +150,7 @@ sources:
                 then={
                     SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     SuspiciousShimcache,
                     NtfsMetadata,
@@ -163,7 +163,7 @@ sources:
                 then={
                     SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     SuspiciousI30,
                     NtfsMetadata,
@@ -176,7 +176,7 @@ sources:
                 then={
                     SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     SuspiciousShimcache,
                     NtfsMetadata,
@@ -188,7 +188,7 @@ sources:
                 then={
                     SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     SuspiciousI30,
                     NtfsMetadata,
@@ -200,7 +200,7 @@ sources:
                 then={
                     SELECT 
                     OSPath,CreatedTimestamps,InUse,
-                    `SI<FN`,uSecZeros,
+                    `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
                     NtfsMetadata,
                     Magic,
@@ -210,7 +210,7 @@ sources:
                 else={
                     SELECT 
                         OSPath,CreatedTimestamps,InUse,
-                        `SI<FN`,uSecZeros,
+                        `SI<FN`,USecZeros,
                         SuspiciousCompileTime,
                         NtfsMetadata,
                         Magic

@@ -30,6 +30,7 @@ skip_verify|Skip TLS Verification|bool
 user_agent|If specified, set a HTTP User-Agent.|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+<span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

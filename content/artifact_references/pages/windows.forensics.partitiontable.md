@@ -6,14 +6,14 @@ tags: [Client Artifact]
 
 Parses the raw disk for partition tables.
 
-This artifact also applies magic() check to indicate the type of
-partition stored. If a partition contains NTFS filesystems, the
-artifact will also list the top level directory. This allows a quick
-overview of what type of partition this is (e.g. System OS or data
+This artifact also applies a magic() check to indicate the type of
+partitions found. If a partition contains an NTFS filesystem, the
+artifact will also list the top level directories. This allows a quick
+overview of what type of partition this is (e.g. System/OS or data
 drive).
 
-Currently handles only GPT (Most common) and Primary Dos partition
-tables
+The artifact currently handles only GPT (Most common) and Primary Dos
+partition tables.
 
 
 <pre><code class="language-yaml">
@@ -21,14 +21,14 @@ name: Windows.Forensics.PartitionTable
 description: |
   Parses the raw disk for partition tables.
 
-  This artifact also applies magic() check to indicate the type of
-  partition stored. If a partition contains NTFS filesystems, the
-  artifact will also list the top level directory. This allows a quick
-  overview of what type of partition this is (e.g. System OS or data
+  This artifact also applies a magic() check to indicate the type of
+  partitions found. If a partition contains an NTFS filesystem, the
+  artifact will also list the top level directories. This allows a quick
+  overview of what type of partition this is (e.g. System/OS or data
   drive).
 
-  Currently handles only GPT (Most common) and Primary Dos partition
-  tables
+  The artifact currently handles only GPT (Most common) and Primary Dos
+  partition tables.
 
 parameters:
   - name: ImagePath
@@ -154,7 +154,8 @@ sources:
         -- Handle the correct partition types
         LET GetAccessor(Magic) =
         if(condition=Magic =~ "NTFS", then="raw_ntfs",
-           else=if(condition=Magic =~ "FAT", then="fat"))
+           else=if(condition=Magic =~ "FAT", then="fat",
+           else=if(condition=Magic =~ "EXT[2-4]", then="ext4")))
 
         LET ListTopDirectory(PartitionPath, Magic) =
         SELECT * FROM if(condition=GetAccessor(Magic=Magic), then={
@@ -173,7 +174,7 @@ sources:
             -- The OSPath to access the partition
             pathspec(
               DelegateAccessor="offset",
-              DelegatePath=pathspec(
+              Delegate=pathspec(
                  DelegateAccessor=Accessor,
                  DelegatePath=ImagePath,
                  Path=format(format="%d", args=StartOffset))) AS _PartitionPath

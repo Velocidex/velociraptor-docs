@@ -5,20 +5,51 @@ tags: [Client Artifact]
 ---
 
 This artifact enables grep of IISLogs.
-Parameters include SearchRegex and WhitelistRegex as regex terms.
+
+Parameters include SearchRegex and WhitelistRegex as regex terms and
+MoreRecentThan as timestamp.
+
+**Hint:** Make sure to get the right location of the log files as
+  they are often stored at different non-default locations.
+
+**Hint 2:** MoreRecentThan filter is only applied to the Last
+  Modified Time of files returned by the IISLogFiles glob. This
+  improves the artefact's performance on systems with many log
+  files. Use the SearchRegex filter for filtering on a per line
+  basis.
+
+  For example, a regex like `2025-07-2[1-5]` will efficiently
+  recover lines with ISO times between the 21st and 25th July 2025.
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.IISLogs
 description: |
   This artifact enables grep of IISLogs.
-  Parameters include SearchRegex and WhitelistRegex as regex terms.
 
-author: "Matt Green - @mgreen27"
+  Parameters include SearchRegex and WhitelistRegex as regex terms and
+  MoreRecentThan as timestamp.
+
+  **Hint:** Make sure to get the right location of the log files as
+    they are often stored at different non-default locations.
+
+  **Hint 2:** MoreRecentThan filter is only applied to the Last
+    Modified Time of files returned by the IISLogFiles glob. This
+    improves the artefact's performance on systems with many log
+    files. Use the SearchRegex filter for filtering on a per line
+    basis.
+
+    For example, a regex like `2025-07-2[1-5]` will efficiently
+    recover lines with ISO times between the 21st and 25th July 2025.
+
+author: "Matt Green - @mgreen27, Updated by Stephan Mikiss"
 
 parameters:
   - name: IISLogFiles
     default: '*:/inetpub/logs/**3/*.log'
+  - name: MoreRecentThan
+    default: ""
+    type: timestamp
   - name: SearchRegex
     description: "Regex of strings to search in line."
     default: ' POST '
@@ -32,9 +63,16 @@ sources:
   - precondition: SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET files = SELECT OSPath FROM glob(globs=IISLogFiles)
+      LET files = SELECT OSPath,Mtime AS MTime FROM glob(globs=IISLogFiles)
 
-      SELECT * FROM foreach(row=files,
+      LET more_recent = SELECT * FROM if(
+        condition=MoreRecentThan,
+        then={
+          SELECT * FROM files
+          WHERE MTime &gt; MoreRecentThan
+        }, else=files)
+
+      SELECT * FROM foreach(row=more_recent,
           query={
               SELECT Line, OSPath FROM parse_lines(filename=OSPath)
               WHERE
@@ -51,8 +89,8 @@ sources:
             /*
             ### IIS grok
 
-            Note:  IIS doesnt have a standard logging format so Ive added some
-            suggestions. Comment in preffered or add your modify your own.
+            Note:  IIS doesn't have a standard logging format so we have added some
+            suggestions. Comment in preferred or add / modify your own.
             */
 
             LET target_grok = "%{TIMESTAMP_ISO8601:LogTimeStamp} %{IPORHOST:Site} %{WORD:Method} %{URIPATH:UriPath} %{NOTSPACE:QueryString} %{NUMBER:Port} %{NOTSPACE:Username} %{IPORHOST:Clienthost} %{NOTSPACE:Useragent} %{NOTSPACE:Referrer} %{NUMBER:Response} %{NUMBER:Subresponse} %{NUMBER:Win32status} %{NUMBER:Timetaken:int}"

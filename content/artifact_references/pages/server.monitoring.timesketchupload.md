@@ -31,7 +31,7 @@ parameters:
   - name: TimesketchCLICommand
     default: "timesketch"
     description: |
-      The path to the timesketch cli binary. If you installed in a
+      The path to the Timesketch CLI binary. If you installed in a
       virtual environment this will be inside that environment.
 
 required_permissions:

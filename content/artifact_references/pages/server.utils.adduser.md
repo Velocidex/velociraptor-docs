@@ -8,7 +8,7 @@ This server artifact is used to add new user to the Velociraptor
 GUI.
 
 A new random password is generated for the user and stored in the
-server metadata object (to ensure it can not be seen in the output
+server metadata object (to ensure it cannot be seen in the output
 of the artifact itself). The Administrator can share this password
 with the user later.
 
@@ -23,7 +23,7 @@ description: |
   GUI.
 
   A new random password is generated for the user and stored in the
-  server metadata object (to ensure it can not be seen in the output
+  server metadata object (to ensure it cannot be seen in the output
   of the artifact itself). The Administrator can share this password
   with the user later.
 

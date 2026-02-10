@@ -4,35 +4,31 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-# Output all filtered MFT records.
-
-This Artifact enables querying the MFT with advanced filters
-such as time, path or other ntfs attributes.
+Enables querying the MFT with advanced filters such as time, path or other
+NTFS attributes.
 
 Output is to Timeline field format to enable simple review across Timeline
-queries. The TimeOutput paramater enables configuring which NTFS attribute
+queries. The TimeOutput parameter enables configuring which NTFS attribute
 timestamps are in focus as event_time. for example:
   STANDARD_INFORMATION (4), FILE_NAME (4) or ALL (8)
 
 This artifact also has the same anomaly logic as AnalyzeMFT added to
-each row to assist analysis.
+each row to aid analysis.
 
 
 <pre><code class="language-yaml">
 name: Windows.Timeline.MFT
 description: |
-  # Output all filtered MFT records.
-
-  This Artifact enables querying the MFT with advanced filters
-  such as time, path or other ntfs attributes.
+  Enables querying the MFT with advanced filters such as time, path or other
+  NTFS attributes.
 
   Output is to Timeline field format to enable simple review across Timeline
-  queries. The TimeOutput paramater enables configuring which NTFS attribute
+  queries. The TimeOutput parameter enables configuring which NTFS attribute
   timestamps are in focus as event_time. for example:
     STANDARD_INFORMATION (4), FILE_NAME (4) or ALL (8)
 
   This artifact also has the same anomaly logic as AnalyzeMFT added to
-  each row to assist analysis.
+  each row to aid analysis.
 
 author: Matt Green - @mgreen27
 

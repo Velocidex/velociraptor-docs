@@ -7,7 +7,7 @@ tags: [Client Artifact]
 Find WDigest registry values on the filesystem. The artifact will also use
 GROUP BY to limit all ControlSet output to a single row.
 
-In order to prevent a clear-text password from being placed in
+To prevent a clear-text password from being placed in
 LSASS, the following registry key needs to be set to “0” (Digest
 Disabled):
 
@@ -34,7 +34,7 @@ description: |
     Find WDigest registry values on the filesystem. The artifact will also use
     GROUP BY to limit all ControlSet output to a single row.
 
-    In order to prevent a clear-text password from being placed in
+    To prevent a clear-text password from being placed in
     LSASS, the following registry key needs to be set to “0” (Digest
     Disabled):
 

@@ -102,6 +102,7 @@ SELECT * FROM query(query={
 ```
 
 You can define the LET statements outside the query block and pass them in:
+
 ```vql
 LET Foo(X) = ....
 
@@ -110,7 +111,9 @@ SELECT * FROM query(query={
 }, env=dict(Foo=Foo))
 ```
 
-Or declare the VQL block as a string;
+Or declare the VQL block as a string:
+
+```vql
 SELECT * FROM query(query='''
   LET Foo(X) = ....
   SELECT * FROM Foo(X=1)

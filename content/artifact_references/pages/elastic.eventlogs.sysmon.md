@@ -4,7 +4,7 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-Ship the the Sysmon event log in ECS schema.
+Ships the the Sysmon event log in ECS schema.
 
 The Elastic Common Schema (ECS) is an open source specification,
 developed with support from the Elastic user community. ECS defines
@@ -13,12 +13,12 @@ Elasticsearch, such as logs and metrics.
 
 NOTE: ECS is poorly documented. There is no clear documentation of
 where each field in the ECS record comes from other than the actual
-source code of the winlogbeats client. This artifact implements the
-winlogbeat transformation as described in
+source code of the Winlogbeat client. This artifact implements the
+Winlogbeat transformation as described in
 https://github.com/elastic/beats/blob/master/x-pack/winlogbeat/module/sysmon/ingest/sysmon.yml
 
 There may be slight variations between the data produced by this
-artifact and the official winlogbeat client. If you find such
+artifact and the official Winlogbeat client. If you find such
 variation, please file an issue on Velociraptor's GitHub issue
 board.
 
@@ -26,7 +26,7 @@ board.
 <pre><code class="language-yaml">
 name: Elastic.EventLogs.Sysmon
 description: |
-  Ship the the Sysmon event log in ECS schema.
+  Ships the the Sysmon event log in ECS schema.
 
   The Elastic Common Schema (ECS) is an open source specification,
   developed with support from the Elastic user community. ECS defines
@@ -35,12 +35,12 @@ description: |
 
   NOTE: ECS is poorly documented. There is no clear documentation of
   where each field in the ECS record comes from other than the actual
-  source code of the winlogbeats client. This artifact implements the
-  winlogbeat transformation as described in
+  source code of the Winlogbeat client. This artifact implements the
+  Winlogbeat transformation as described in
   https://github.com/elastic/beats/blob/master/x-pack/winlogbeat/module/sysmon/ingest/sysmon.yml
 
   There may be slight variations between the data produced by this
-  artifact and the official winlogbeat client. If you find such
+  artifact and the official Winlogbeat client. If you find such
   variation, please file an issue on Velociraptor's GitHub issue
   board.
 

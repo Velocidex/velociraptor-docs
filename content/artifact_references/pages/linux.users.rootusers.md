@@ -17,6 +17,9 @@ author: George-Andrei Iosif (@iosifache)
 
 type: CLIENT
 
+implied_permissions:
+  - EXECVE
+
 sources:
   - precondition: |
       SELECT OS

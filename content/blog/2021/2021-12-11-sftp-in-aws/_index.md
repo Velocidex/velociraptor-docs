@@ -12,7 +12,7 @@ date: 2021-12-20
 ---
 
 Many people use Velociraptor's [offline collector]({{< ref
-"/docs/offline_triage/" >}}) feature to collect any artifacts without
+"/docs/deployment/offline_collections/" >}}) feature to collect any artifacts without
 having the Velociraptor client actually installed on the
 endpoint. While the offline collector feature is great to
 interactively triage a machine, the produced collection zip file is

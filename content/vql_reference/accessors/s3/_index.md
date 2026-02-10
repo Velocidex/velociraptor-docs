@@ -14,6 +14,21 @@ no_edit: true
 <span class='vql_type label label-warning pull-right page-header'>Accessor</span>
 
 
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+secret|The name of a secret to use.|string
+region|The region.|string
+credentials_key||string
+credentials_secret||string
+credentials_token||string
+endpoint||string
+skip_verify||bool
+
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+
 ### Description
 
 Allows access to S3 buckets.

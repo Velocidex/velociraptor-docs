@@ -4,23 +4,24 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact enables running Yara over physical memory.
+This artifact enables running YARA over physical memory.
 
-There are 2 kinds of Yara rules that can be deployed:
- &nbsp;1. Url link to a yara rule.
- &nbsp;2. A Standard Yara rule attached as a parameter.
+There are 2 kinds of YARA rules that can be deployed:
 
-Only one method of Yara will be applied and search order is as above. The
+1. URL link to a YARA rule.
+2. A standard YARA rule attached as a parameter.
+
+Only one method of YARA will be applied and search order is as above. The
 default is Cobalt Strike opcodes.
 
-The artifact will load the winpmem driver, then yara scan the
+The artifact will load the WinPmem driver, then YARA scan the
 physical memory and remove the driver.
 
 NOTE: This artifact is experimental and can crash the system!
 
-### Handling signatures with fixed strings.
+#### Handling signatures with fixed strings.
 
-When the signature specifies fixed strings, the Yara engine will
+When the signature specifies fixed strings, the YARA engine will
 load it into memory, causing the signature to match memory used by
 Velociraptor. To avoid this false positive encode the fixed
 string as an alternative string.
@@ -39,23 +40,24 @@ $sequence_5 = { 250000ff00 33d0 8b4db0 c1e9 ( 08 | 08 ) }
 <pre><code class="language-yaml">
 name: Windows.Detection.Yara.PhysicalMemory
 description: |
-  This artifact enables running Yara over physical memory.
+  This artifact enables running YARA over physical memory.
 
-  There are 2 kinds of Yara rules that can be deployed:
-   &amp;nbsp;1. Url link to a yara rule.
-   &amp;nbsp;2. A Standard Yara rule attached as a parameter.
+  There are 2 kinds of YARA rules that can be deployed:
 
-  Only one method of Yara will be applied and search order is as above. The
+  1. URL link to a YARA rule.
+  2. A standard YARA rule attached as a parameter.
+
+  Only one method of YARA will be applied and search order is as above. The
   default is Cobalt Strike opcodes.
 
-  The artifact will load the winpmem driver, then yara scan the
+  The artifact will load the WinPmem driver, then YARA scan the
   physical memory and remove the driver.
 
   NOTE: This artifact is experimental and can crash the system!
 
-  ### Handling signatures with fixed strings.
+  #### Handling signatures with fixed strings.
 
-  When the signature specifies fixed strings, the Yara engine will
+  When the signature specifies fixed strings, the YARA engine will
   load it into memory, causing the signature to match memory used by
   Velociraptor. To avoid this false positive encode the fixed
   string as an alternative string.
@@ -74,7 +76,9 @@ type: CLIENT
 parameters:
   - name: ServiceName
     description: Override the name of the driver service to install.
-
+  - name: DriverPath
+    description: Where to unpack the driver before loading it.
+    default: C:\Windows\Temp\winpmem.sys
   - name: NumberOfHits
     description: THis artifact will stop by default at one hit. This setting allows additional hits
     default: 100
@@ -128,21 +132,13 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
+      LET YARA_LOG_LEVEL &lt;= 10
+
       -- check which Yara to use
       LET yara_rules &lt;= YaraUrl || YaraRule
 
-      LET SparsePath = pathspec(
-           DelegateAccessor='raw_file',
-           DelegatePath='''\\.\pmem''',
-           Path={
-              SELECT atoi(string=Start) AS Offset,
-                   atoi(string=Length) AS Length
-              FROM Artifact.Windows.Sys.PhysicalMemoryRanges()
-              WHERE Type = 3
-           })
-
-      -- Load the winpmem binary
-      LET _ &lt;= winpmem(service=ServiceName)
+      -- Load the WinPmem binary
+      LET _ &lt;= winpmem(service=ServiceName, driver_path=DriverPath)
 
       SELECT
          Rule,
@@ -150,7 +146,7 @@ sources:
          String.Offset as HitOffset,
          String.Name as HitName,
          String.HexData as HitHexData
-      FROM yara(files=SparsePath, accessor='winpmem',
+      FROM yara(files="pmem", accessor='winpmem',
                 rules=yara_rules, context=ContextBytes, number=NumberOfHits)
 
 </code></pre>

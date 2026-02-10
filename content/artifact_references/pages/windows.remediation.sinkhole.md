@@ -43,6 +43,9 @@ author: Matt Green - @mgreen27
 required_permissions:
   - EXECVE
 
+implied_permissions:
+  - FILESYSTEM_WRITE
+
 type: CLIENT
 
 parameters:
@@ -82,7 +85,7 @@ sources:
 
       -- Check for backup to determine if sinkhole applied
       LET check_backup = SELECT OSPath FROM stat(filename=HostsFileBackup)
-      WHERE log(message="Found backup at " + OSPath)
+      WHERE log(message="Found backup at %v", args=OSPath)
 
       -- Backup old config
       LET backup = copy(filename=HostsFile,dest=HostsFileBackup)

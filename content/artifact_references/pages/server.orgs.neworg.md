@@ -4,34 +4,34 @@ hidden: true
 tags: [Server Artifact]
 ---
 
-This server artifact will create a new org and assign the current
-user as an admin to it.
+This server artifact will create a new org and assign the current user as an
+admin to it.
 
-NOTE: This artifact is only available to users with the ORG_ADMIN
-permission, normally only given to users with the administrator role
-while using the root org (You might need to switch to the root org
+NOTE: This artifact is only available to users with the `ORG_ADMIN`
+permission, which is normally only granted to users with the administrator
+role within the root org (that means you might need to switch to the root org
 in the GUI before collecting this artifact).
 
-This artifact will also start a set of server artifacts in the new
-org. If you need to run any initialization steps in the new org,
-simple package those into a server artifact and include it in the
+This artifact will also run a set of server artifacts in the new org. If you
+need to run any other initialization steps in the new org, you can package
+those into one or more server artifacts and include those in the
 `InitialArtifacts` parameter.
 
 
 <pre><code class="language-yaml">
 name: Server.Orgs.NewOrg
 description: |
-  This server artifact will create a new org and assign the current
-  user as an admin to it.
+  This server artifact will create a new org and assign the current user as an
+  admin to it.
 
-  NOTE: This artifact is only available to users with the ORG_ADMIN
-  permission, normally only given to users with the administrator role
-  while using the root org (You might need to switch to the root org
+  NOTE: This artifact is only available to users with the `ORG_ADMIN`
+  permission, which is normally only granted to users with the administrator
+  role within the root org (that means you might need to switch to the root org
   in the GUI before collecting this artifact).
 
-  This artifact will also start a set of server artifacts in the new
-  org. If you need to run any initialization steps in the new org,
-  simple package those into a server artifact and include it in the
+  This artifact will also run a set of server artifacts in the new org. If you
+  need to run any other initialization steps in the new org, you can package
+  those into one or more server artifacts and include those in the
   `InitialArtifacts` parameter.
 
 type: SERVER
@@ -48,6 +48,7 @@ parameters:
   default: |
     Artifact
     Server.Utils.CreateMSI
+    Server.Utils.CreateLinuxPackages
   description: |
     Start the following server artifacts in the new org.
 
@@ -64,9 +65,9 @@ sources:
     -- Launch this as a separate collection within the Org.
     SELECT * FROM query(
       query={
-        SELECT collect_client(artifacts=InitialArtifacts, client_id="server")
+        SELECT collect_client(artifacts=InitialArtifacts.Artifact, client_id="server")
         FROM scope()
-      }, org_id=Org.id)
+      }, org_id=org_record.id, env=dict(InitialArtifacts=InitialArtifacts))
 
 </code></pre>
 

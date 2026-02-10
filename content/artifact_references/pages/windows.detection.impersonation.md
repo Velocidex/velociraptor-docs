@@ -20,9 +20,9 @@ interact with securable objects using the client's security
 context. A thread that is impersonating a client has both a primary
 token and an impersonation token.
 
-This artfiact enumerates all threads on the system which have an
-impersonation token. I.e. they are operating with a different token
-then the token the entire process has. For example mimikatz has a
+This artifact enumerates all threads on the system which have an
+impersonation token. That is, they are operating with a different token
+then the token the entire process has. For example Mimikatz has a
 command called `token::elevate` to do just such a thing:
 
 ```
@@ -60,9 +60,9 @@ description: |
   context. A thread that is impersonating a client has both a primary
   token and an impersonation token.
 
-  This artfiact enumerates all threads on the system which have an
-  impersonation token. I.e. they are operating with a different token
-  then the token the entire process has. For example mimikatz has a
+  This artifact enumerates all threads on the system which have an
+  impersonation token. That is, they are operating with a different token
+  then the token the entire process has. For example Mimikatz has a
   command called `token::elevate` to do just such a thing:
 
   ```

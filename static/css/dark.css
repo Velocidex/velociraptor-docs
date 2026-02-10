@@ -59,8 +59,14 @@ body.dark pre.chroma {
     background-color: #424242;
 }
 
-body.dark #top-bar {
+body.dark #top-bar,
+body.dark .navbar-default {
     background-color: #212121;
+    border-color: #212121;
+}
+
+body.dark a.nav {
+    color: var(--MAIN-TEXT-color) !important;
 }
 
 body.dark div.btn.darkmode {

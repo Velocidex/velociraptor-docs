@@ -22,6 +22,7 @@ Arg | Description | Type
 name|The Artifact to update|string (required)
 hidden|Set to true make the artifact hidden in the GUI, false to make it visible again.|bool
 basic|Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it.|bool
+tags|Optional tags to attach to the artifact.|list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ARTIFACT_WRITER</span>
 <span class="permission_list linkcolour label label-important">SERVER_ARTIFACT_WRITER</span>

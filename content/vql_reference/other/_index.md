@@ -16,13 +16,18 @@ not yet been categorized.
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
 |[array](array)|<span class='vql_type'>Function</span>|Create an array|
 |[atexit](atexit)|<span class='vql_type'>Function</span>|Install a query to run when the query is unwound|
+|[background](background)|<span class='vql_type'>Function</span>|Run a query in the background|
 |[batch](batch)|<span class='vql_type'>Plugin</span>|Batches query rows into multiple arrays|
 |[cache](cache)|<span class='vql_type'>Function</span>|Creates a cache object|
+|[cache_dns](cache_dns)|<span class='vql_type'>Function</span>|Add a DNS record to the cache|
+|[cat](cat)|<span class='vql_type'>Plugin</span>|Read files in chunks|
 |[cidr_contains](cidr_contains)|<span class='vql_type'>Function</span>|Calculates if an IP address falls within a range of CIDR specified|
 |[collect](collect)|<span class='vql_type'>Plugin</span>|Collect artifacts into a local file|
 |[combine](combine)|<span class='vql_type'>Plugin</span>|Combine the output of several queries into the same result set|
 |[copy](copy)|<span class='vql_type'>Function</span>|Copy a file|
+|[dedup](dedup)|<span class='vql_type'>Plugin</span>|Dedups the query based on a column|
 |[delay](delay)|<span class='vql_type'>Plugin</span>|Executes 'query' and delays relaying the rows by the specified number of seconds|
+|[describe_address](describe_address)|<span class='vql_type'>Function</span>|Describe an address in the PE text section|
 |[dirname](dirname)|<span class='vql_type'>Function</span>|Return the directory path|
 |[efivariables](efivariables)|<span class='vql_type'>Plugin</span>|Enumerate efi variables|
 |[elastic_upload](elastic_upload)|<span class='vql_type'>Plugin</span>|Upload rows to elastic|
@@ -48,6 +53,7 @@ not yet been categorized.
 |[max](max)|<span class='vql_type'>Function</span>|Finds the largest item in the aggregate|
 |[min](min)|<span class='vql_type'>Function</span>|Finds the smallest item in the aggregate|
 |[netcat](netcat)|<span class='vql_type'>Plugin</span>|Make a tcp connection and read data from a socket|
+|[notebooks](notebooks)|<span class='vql_type'>Plugin</span>|List all notebooks|
 |[parse_pst](parse_pst)|<span class='vql_type'>Plugin</span>|Parse a PST file and extract email data|
 |[patch](patch)|<span class='vql_type'>Function</span>|Patch a JSON object with a json patch or merge|
 |[path_join](path_join)|<span class='vql_type'>Function</span>|Build a path by joining all components|
@@ -66,6 +72,7 @@ not yet been categorized.
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
 |[rm](rm)|<span class='vql_type'>Function</span>|Remove a file from the filesystem using the API|
+|[rsyslog](rsyslog)|<span class='vql_type'>Function</span>|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
 |[serialize](serialize)|<span class='vql_type'>Function</span>|Encode an object as a string|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
@@ -77,6 +84,7 @@ not yet been categorized.
 |[stat](stat)|<span class='vql_type'>Plugin</span>|Get file information|
 |[strip](strip)|<span class='vql_type'>Function</span>|Strip prefix and/or suffix from a string|
 |[sum](sum)|<span class='vql_type'>Function</span>|Sums the items|
+|[template](template)|<span class='vql_type'>Function</span>|Expand a Go style template |
 |[timestamp_format](timestamp_format)|<span class='vql_type'>Function</span>|Format a timestamp into a string|
 |[typeof](typeof)|<span class='vql_type'>Function</span>|Print the underlying Go type of the variable|
 |[upcase](upcase)|<span class='vql_type'>Function</span>|Returns an uppercase version of the string|
@@ -85,10 +93,13 @@ not yet been categorized.
 |[upload_s3](upload_s3)|<span class='vql_type'>Function</span>|Upload files to S3|
 |[upload_sftp](upload_sftp)|<span class='vql_type'>Function</span>|Upload files to SFTP|
 |[upload_smb](upload_smb)|<span class='vql_type'>Function</span>|Upload files using the SMB file share protocol|
+|[upload_transactions](upload_transactions)|<span class='vql_type'>Plugin</span>|View the outstanding transactions for uploads|
 |[upload_webdav](upload_webdav)|<span class='vql_type'>Function</span>|Upload files to a WebDAV server|
 |[url](url)|<span class='vql_type'>Function</span>|Construct a URL or parse one|
 |[uuid](uuid)|<span class='vql_type'>Function</span>|Generate a UUID|
+|[verify](verify)|<span class='vql_type'>Function</span>|verify an artifact|
 |[version](version)|<span class='vql_type'>Function</span>|Gets the version of a VQL plugin or function|
 |[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_csv](write_csv)|<span class='vql_type'>Plugin</span>|Write a query into a CSV file|
 |[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
+|[yarax](yarax)|<span class='vql_type'>Plugin</span>|Scan files using yara rules (Using the new yarax engine)|

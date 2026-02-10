@@ -92,7 +92,7 @@ path.
 Velociraptor's offline collector is a pre-configured Velociraptor
 binary which is designed to be a single shot acquisition tool. You can
 build an Offline Collector by following the [documentation]({{% ref
-"/docs/offline_triage/#offline-collections" %}}). The Offline
+"/docs/deployment/offline_collections/" %}}). The Offline
 Collector does not require access to the server, instead simply
 collecting the specified artifacts into a Zip file (which can
 subsequently be uploaded to the cloud, or simply shared with the DFIR

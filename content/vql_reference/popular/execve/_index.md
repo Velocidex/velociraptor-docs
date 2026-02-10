@@ -22,8 +22,9 @@ Arg | Description | Type
 argv|Argv to run the command with.|list of string (required)
 sep|The separator that will be used to split the stdout into rows.|string
 length|Size of buffer to capture output per row.|int64
-env|Environment variables to launch with.|LazyExpr
+env|Environment variables to launch with.|ordereddict.Dict
 cwd|If specified we change to this working directory first.|string
+secret|The name of a secret to use.|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">EXECVE</span>
 
@@ -43,9 +44,9 @@ We do not actually transfer the external program to the system
 automatically. If you need to run programs which are not usually
 installed (e.g. Sysinternal's autoruns.exe) you will need to use
 Velociraptor's external tools feature to deliver and manage the
-tools on the client.
-
-https://docs.velociraptor.app/docs/extending_vql/#using-external-tools
+tools on the client. See
+https://docs.velociraptor.app/docs/vql/extending_vql/
+for more information.
 
 ### Notes
 

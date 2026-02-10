@@ -1,22 +1,27 @@
 name: Windows.Utils.DefenderExclusion
+
+author: |
+    @predictiple - 2024-08-18
+
 description: |
-   Adds a Microsoft Defender real-time scanning process exclusion for Velociraptor.
-   
+   **Adds a Microsoft Defender real-time scanning process exclusion for
+   Velociraptor.**
+
    Generally you should not need to use this unless Defender is interfering
    with your collections.
    This may happen if the collection uses tools or associated files that
    trigger Microsoft Defender detections.
-   
+
    Some initial info is also gathered to aid with troubleshooting.
-   
+
    The exclusion is checked every minute by default and reapplied if necessary.
-   
+
    As a side-effect the exclusion also makes some collection operations faster,
    particularly those that are filesystem-intensive and that use the OS 'file'
    accessor.
-   
-   ### Notes
-   
+
+   #### Notes
+
    - Exclusions *do* apply to some Microsoft Defender for Endpoint capabilities,
    such as attack surface reduction rules.
    - Exclusions *do* apply to potentially unwanted apps (PUA) detections as well.
@@ -27,14 +32,14 @@ description: |
    alerts and other detections. To exclude files broadly, add them to the
    Microsoft Defender for Endpoint custom indicators.
    - See References below to learn more about Defender exclusions in general.
-   
+
    A more compact version of this artifact is listed below which can be included
    in the client configuration, as shown, and run with the
    `Client.additional_event_artifacts` setting. This will run the artifact
    as an event artifact as long as the client is running, starting even before
    enrollment. This may be useful if there are specific clients where Defender
    is causing problems.
-   
+
    ```yaml
    autoexec:
      artifact_definitions:
@@ -91,7 +96,7 @@ sources:
       LET MpPreference <= SELECT *
                           FROM wmi(query='SELECT * FROM MSFT_MpPreference',
                                    namespace='root/microsoft/windows/defender')
-      
+
       SELECT * FROM column_filter(query=MpPreference, include="Exclusion")
 
   - name: ApplyExclusion
@@ -109,7 +114,7 @@ sources:
                 FROM wmi(query='SELECT * FROM MSFT_MpPreference', namespace='root/microsoft/windows/defender')
                 WHERE VelociExe IN ExclusionProcess
                 AND log(message="WMI check: %v is excluded", args=ExclusionProcess, dedup=-1, level="INFO")
-      
+
       LET ExclusionApply(VelociExe) =
                 SELECT *
                 FROM execve(argv=[commandline_split(command=CmdApply) + base64encode(string=utf16_encode(
@@ -119,5 +124,5 @@ sources:
       SELECT if(condition= NOT ExclusionCheck(VelociExe=HostInfo[0].Exe),
              then={ SELECT ExclusionApply(VelociExe=HostInfo[0].Exe) FROM scope() })
       FROM schedule
-      
-     
+
+

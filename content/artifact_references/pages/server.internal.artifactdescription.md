@@ -25,6 +25,15 @@ reports:
       ##### Custom Artifact
       {{ end }}
 
+      {{ if and $artifact.Metadata $artifact.Metadata.Tags }}
+      ##### Tags
+
+      {{ range $i, $t := $artifact.Metadata.Tags }}
+      * {{ $t }}
+      {{ end }}
+
+      {{ end }}
+
       {{ if $artifact.Author }}
       ##### Author: {{ $artifact.Author }}
       {{end}}

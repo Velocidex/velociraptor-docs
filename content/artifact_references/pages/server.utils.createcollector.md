@@ -99,7 +99,7 @@ parameters:
     description: A directory to write tempfiles in
 
   - name: opt_level
-    default: "4"
+    default: "5"
     type: int
     description: Compression level (0=no compression).
 
@@ -117,10 +117,10 @@ parameters:
     description: Where we actually write the collection to. You can specify this as a mapped drive to write over the network.
 
   - name: opt_filename_template
-    default: "Collection-%FQDN%-%TIMESTAMP%"
+    default: "Collection-%Hostname%-%TIMESTAMP%"
     description: |
       The filename to use. You can expand environment variables as
-      well as the following %FQDN% and %TIMESTAMP%.
+      well as the following: %Hostname%, %FQDN% and %TIMESTAMP%.
 
   - name: opt_collector_filename
     type: string
@@ -182,6 +182,7 @@ parameters:
             level=Level,
             concurrency=Concurrency,
             format=Format,
+            remapping=Remapping,
             metadata=ContainerMetadata)
 
   - name: S3Collection
@@ -256,6 +257,10 @@ parameters:
     type: hidden
     default: |
       LET S = scope()
+      LET Remapping &lt;= if(condition=Remapping,
+          then=log(message="Will load remapping rules from %v", args=Remapping) &amp;&amp;
+               read_file(filename=Remapping),
+          else="")
 
       // Add all the tools we are going to use to the inventory.
       LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
@@ -264,7 +269,8 @@ parameters:
              " version " + (S.Version || "Unknown"))
 
       LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
-         scope().CWD AS CWD FROM info()
+         scope().CWD AS CWD, Hostname
+      FROM info()
 
       LET OutputPrefix &lt;= if(condition= OutputPrefix,
         then=pathspec(parse=OutputPrefix),
@@ -276,6 +282,7 @@ parameters:
 
       LET FormatMessage(Message) = regex_transform(
           map=dict(`%FQDN%`=baseline[0].Fqdn,
+                   `%Hostname%`=baseline[0].Hostname,
                    `%Timestamp%`=timestamp(epoch=now()).MarshalText),
           source=Message)
 
@@ -283,19 +290,32 @@ parameters:
       // template. This will be the name uploaded to the bucket.
       LET formatted_zip_name &lt;= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
-          re="[^0-9A-Za-z\\-]", replace="_") + ".zip"
+          re="[^0-9A-Za-z\\-]", replace="_")
 
       // This is where we write the files on the endpoint.
-      LET zip_filename &lt;= OutputPrefix + formatted_zip_name
+      LET zip_filename &lt;= OutputPrefix + ( formatted_zip_name + ".zip" )
+      LET LogFile &lt;= OutputPrefix + ( formatted_zip_name + ".log" )
 
-      // The log is always written to the executable path
-      LET log_filename &lt;= pathspec(parse= baseline[0].Exe + ".log")
+      LET _ &lt;= log(message="Log file is at %v", args=LogFile)
+
+      // Create the log file and start writing into it
+      // Just forward output from the logging() plugin
+      LET LogPipe &lt;= pipe(query={
+        SELECT format(format="[%v] %v %v\n",
+                      args=(level, time, msg)) AS Line
+        FROM logging(prelog=TRUE)
+      })
+
+      LET _ &lt;= background(query={
+          SELECT copy(accessor="pipe", filename="LogPipe", dest=LogFile) AS C
+          FROM scope()
+      })
 
       -- Remove the zip file and log file when done if the user asked for it.
       LET _ &lt;= if(condition=DeleteOnExit, then=atexit(query={
          SELECT rm(filename=zip_filename), rm(filename=log_filename) FROM scope()
          WHERE log(message="Removed Zip file %v", args=zip_filename)
-      }, env=dict(zip_filename=zip_filename, log_filename=log_filename)))
+      }, env=dict(zip_filename=zip_filename, log_filename=LogFile)))
 
       -- Make a random hex string as a random password
       LET RandomPassword &lt;= SELECT format(format="%02x",
@@ -352,7 +372,7 @@ parameters:
           upload_file(filename=Container,
                       name= upload_name + ".zip",
                       accessor="file") AS Upload,
-          upload_file(filename=log_filename,
+          upload_file(filename=LogFile,
                       name= upload_name + ".log",
                       accessor="file") AS LogUpload
 
@@ -366,6 +386,7 @@ parameters:
           password=pass[0].Pass,
           level=Level,
           concurrency=Concurrency,
+          remapping=Remapping,
           metadata=ContainerMetadata)
 
       LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
@@ -403,8 +424,231 @@ parameters:
               Filename AS Name
        FROM matching_tools
 
+export: |
+  // Use this JSON schema to validate an offline collector spec.yaml
+  LET SpecSchema &lt;= '''
+  {
+    "type": "object",
+    "properties": {
+        "OS": {
+           "description": "OS Target to use",
+           "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
+           "default": "Generic"
+        },
+        "Artifacts": {
+           "type": "object",
+           "description": "Keys are artifact names to collect and values are strings",
+           "patternProperties": {
+              "^.+$": {
+                "type": "object",
+                "patternProperties": {
+                   "^.+$": {
+                      "type": "string"
+                   }
+                }
+              }
+           }
+        },
+        "Target": {
+           "description": "The type of collector to use",
+           "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP"]
+        },
+        "EncryptionScheme": {
+           "enum": ["None", "X509", "Password", "PGP"],
+           "default": "None"
+        },
+        "EncryptionArgs": {
+           "type": "object",
+           "description": "Args for encryption",
+           "properties": {
+             "public_key": {
+               "type": "string"
+             },
+             "password": {
+               "type": "string"
+             }
+           },
+           "additionalProperties": false
+        },
+        "OptVerbose": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptBanner": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptPrompt": {
+           "type": "boolean",
+           "default": false
+        },
+        "OptAdmin": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptTempdir": {
+            "type": "string",
+            "default": "$TMP"
+        },
+        "OptLevel": {
+           "type": "integer",
+           "default": 5
+        },
+        "OptConcurrency": {
+           "type": "integer",
+           "default": 2
+        },
+        "OptFilenameTemplate": {
+           "type": "string",
+           "default": "Collection-%FQDN%-%TIMESTAMP%"
+        },
+        "OptCollectorTemplate": {"type": "string"},
+        "OptFormat": {
+          "enum": ["jsonl", "csv"],
+          "default": "jsonl"
+        },
+        "OptOutputDirectory":  {"type": "string"},
+        "OptCpuLimit":  {"type": "integer"},
+        "OptProgressTimeout":  {"type": "integer"},
+        "OptTimeout":  {"type": "integer"},
+        "OptDeleteAtExit":  {"type": "boolean"}
+    },
+    "allOf": [
+      { "description": "Target Args for GCS",
+        "if": {
+           "properties": { "Target": { "const": "GCS" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                    "bucket": {"type": "string"},
+                    "GCSKey": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["bucket", "GCSKey"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for S3",
+        "if": {
+           "properties": { "Target": { "const": "S3" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+               "type": "object",
+               "properties": {
+                 "bucket": {"type": "string"},
+                 "credentialsKey": {"type": "string"},
+                 "credentialsSecret": {"type": "string"},
+                 "credentialsToken": {"type": "string"},
+                 "region": {"type": "string"},
+                 "endpoint": {"type": "string"},
+                 "s3UploadRoot": {"type": "string"},
+                 "serverSideEncryption": {"type": "string"},
+                 "kmsEncryptionKey": {"type": "string"},
+                 "noverifycert": {"type": "boolean"}
+               },
+               "additionalProperties": false,
+               "required": ["bucket"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for AzureSASURL",
+        "if": {
+           "properties": { "Target": { "const": "Azure" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                    "sas_url": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["sas_url"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for SMBShare",
+        "if": {
+           "properties": { "Target": { "const": "SMBShare" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                   "username": {"type": "string"},
+                   "password": {"type": "string"},
+                   "server_address": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["username", "password", "server_address"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for SFTPCollection",
+        "if": {
+           "properties": { "Target": { "const": "SFTP" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                  "properties": {
+                     "path": {"type": "string"},
+                     "privatekey": {"type": "string"},
+                     "user": {"type": "string"},
+                     "endpoint": {"type": "string"},
+                     "hostkey": {"type": "string"}
+                  },
+                  "additionalProperties": false,
+                  "required": ["user", "privatekey", "endpoint"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for ZIP",
+        "if": {
+           "properties": { "Target": { "const": "ZIP" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "default": {},
+                 "additionalProperties": false,
+                 "properties": {}
+             }
+           }
+        }
+      }
+    ]
+  }
+  '''
+
 sources:
   - query: |
+      LET ParameterSpec &lt;= to_dict(item={
+         SELECT _value AS _key, dict() AS _value
+         FROM foreach(row=artifacts)
+      }) + parameters
+
+      -- Check for errors in the Spec
+      LET _ &lt;= SELECT {
+         SELECT name FROM artifact_definitions(names=_key)
+      } AS Def
+      FROM items(item=ParameterSpec)
+      WHERE Def || log(message="Artifact &lt;red&gt;%v&lt;/&gt; not found",
+           args=_key, dedup= -1, level="ERROR")
+
       LET Binaries &lt;= SELECT * FROM foreach(
           row={
              SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
@@ -467,7 +711,7 @@ sources:
          condition=use_server_cert,
          then=dict(public_key=server_frontend_cert(),
                    scheme="x509"),
-         else=encryption_args
+         else=encryption_args || dict()
       )
 
       -- Add custom definition if needed. Built in definitions are not added
@@ -483,7 +727,7 @@ sources:
                          default=serialize(format='json', item=artifacts),
                          type="json_array"),
                     dict(name="Parameters",
-                         default=serialize(format='json', item=parameters),
+                         default=serialize(format='json', item=ParameterSpec),
                          type="json"),
                     dict(name="encryption_scheme", default=encryption_scheme),
                     dict(name="encryption_args",
@@ -491,6 +735,7 @@ sources:
                          type="json"
                          ),
                     dict(name="Level", default=opt_level, type="int"),
+                    dict(name="Remapping", default=""),
                     dict(name="Concurrency", default=opt_concurrency, type="int"),
                     dict(name="Format", default=opt_format),
                     dict(name="OutputPrefix", default=opt_output_directory),
@@ -537,10 +782,33 @@ sources:
       // Build the autoexec config file depending on the user's
       // collection type choices.
       LET autoexec &lt;= dict(autoexec=dict(
-          argv=("artifacts", "collect", "Collector",
-                "--logfile", CollectorName + ".log") + optional_cmdline.Opt,
+          argv=("artifacts", "collect", "Collector") + optional_cmdline.Opt,
           artifact_definitions=definitions)
       )
+
+      LET _ &lt;= upload(accessor="data", file=serialize(format="yaml",
+        item=dict(
+          OS=OS,
+          Artifacts=ParameterSpec,
+          Target=target,
+          EncryptionScheme=encryption_scheme || "None",
+          EncryptionArgs=encryption_args || dict(),
+          OptVerbose=opt_verbose,
+          OptBanner=opt_banner,
+          OptPrompt=opt_prompt,
+          OptAdmin=opt_admin,
+          OptTempdir=opt_tempdir,
+          OptLevel=opt_level,
+          OptConcurrency=opt_concurrency,
+          OptFormat=opt_format,
+          OptOutputDirectory=opt_output_directory,
+          OptFilenameTemplate=opt_filename_template,
+          OptCollectorFilename=opt_collector_filename,
+          OptCpuLimit=opt_cpu_limit,
+          OptProgressTimeout=opt_progress_timeout,
+          OptTimeout=opt_timeout,
+          OptDeleteAtExit=opt_delete_at_exit
+        )), name="spec.yaml")
 
       // Do the actual repacking.
       SELECT repack(

@@ -45,6 +45,10 @@ parameters:
      default: Y
      description: Should the client rekey its client ID.
 
+required_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
 sources:
   - query: |
 

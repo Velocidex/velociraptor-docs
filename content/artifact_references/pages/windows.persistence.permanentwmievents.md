@@ -4,15 +4,15 @@ hidden: true
 tags: [Client Artifact]
 ---
 
-This artifact reports currently deployed permanent WMI Event Consumers. The 
-artifact collects Binding information, then presents associated Filters 
+This artifact reports currently deployed permanent WMI Event Consumers. The
+artifact collects Binding information, then presents associated Filters
 and Consumers.
 
-NOTE: the artifact does not report on individual eventing classes. A seperate 
-wmi query will need to be made for unlinked components that may reside in the 
-WMI datastore.  
+NOTE: the artifact does not report on individual eventing classes. A separate
+wmi query will need to be made for unlinked components that may reside in the
+WMI datastore.
 
-WMI Eventing components:  
+WMI Eventing components:
 
 - __FilterToConsumerBinding - ties together Filter + Consumer
 - __EventFilter - trigger condition
@@ -23,16 +23,16 @@ WMI Eventing components:
 name: Windows.Persistence.PermanentWMIEvents
 author: Matt Green - @mgreen27
 description: |
-    This artifact reports currently deployed permanent WMI Event Consumers. The 
-    artifact collects Binding information, then presents associated Filters 
+    This artifact reports currently deployed permanent WMI Event Consumers. The
+    artifact collects Binding information, then presents associated Filters
     and Consumers.
-    
-    NOTE: the artifact does not report on individual eventing classes. A seperate 
-    wmi query will need to be made for unlinked components that may reside in the 
-    WMI datastore.  
 
-    WMI Eventing components:  
-    
+    NOTE: the artifact does not report on individual eventing classes. A separate
+    wmi query will need to be made for unlinked components that may reside in the
+    WMI datastore.
+
+    WMI Eventing components:
+
     - __FilterToConsumerBinding - ties together Filter + Consumer
     - __EventFilter - trigger condition
     - __EventConsumer - payload
@@ -57,14 +57,14 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET namespaces &lt;= SELECT * FROM if(condition=AllRootNamespaces, 
-            then= { 
-                SELECT 'root/' + Name as namespace 
+      LET namespaces &lt;= SELECT * FROM if(condition=AllRootNamespaces,
+            then= {
+                SELECT 'root/' + Name as namespace
                 FROM wmi(namespace='ROOT',query='SELECT * FROM __namespace' )
                 WHERE namespace
             },
             else= Namespaces )
-    
+
       LET FilterToConsumerBinding &lt;= SELECT * FROM foreach(
             row=namespaces,
             query={
@@ -74,7 +74,7 @@ sources:
                 FROM wmi(
                     query="SELECT * FROM __FilterToConsumerBinding",namespace=namespace)
         },workers=len(list=namespaces))
-        
+
       SELECT * FROM foreach(
             row=namespaces,
             query={

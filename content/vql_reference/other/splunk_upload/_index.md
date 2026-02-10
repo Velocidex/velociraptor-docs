@@ -21,9 +21,9 @@ Arg | Description | Type
 ----|-------------|-----
 query|Source for rows to upload.|StoredQuery (required)
 threads|How many threads to use.|int64
-url|The Splunk Event Collector URL.|string (required)
+url|The Splunk Event Collector URL.|string
 token|Splunk HEC Token.|string
-index|The name of the index to upload to. If not specified, ensure a column is named _splunk_index.|string (required)
+index|The name of the index to upload to. If not specified, ensure a column is named _splunk_index.|string
 source|The source field for splunk. If not specified ensure a column is named _splunk_source or this will be 'velociraptor'.|string
 sourcetype|The sourcetype field for splunk. If not specified ensure a column is named _splunk_source_type or this will 'vql'|string
 chunk_size|The number of rows to send at the time.|int64
@@ -33,9 +33,9 @@ wait_time|Batch splunk upload this long (2 sec).|int64
 hostname|Hostname for Splunk Events. Defaults to server hostname.|string
 timestamp_field|Field to use as event timestamp.|string
 hostname_field|Field to use as event hostname. Overrides hostname parameter.|string
-secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
+secret|Alternatively use a secret from the secrets service. Secret must be of type 'Splunk'|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

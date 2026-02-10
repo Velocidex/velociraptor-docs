@@ -18,7 +18,7 @@ binaries are not reviewed or endorsed by the Velociraptor team or
 Rapid7!
 
 Contributions to the exchange must meet a lower quality bar than
-built in artifacts (for example lacking tests), which means that
+built-in artifacts (for example lacking tests), which means that
 they may break at any time or not work as described!
 
 Collecting any of the artifacts in the exchange is purely at your
@@ -45,7 +45,7 @@ description: |
    Rapid7!
 
    Contributions to the exchange must meet a lower quality bar than
-   built in artifacts (for example lacking tests), which means that
+   built-in artifacts (for example lacking tests), which means that
    they may break at any time or not work as described!
 
    Collecting any of the artifacts in the exchange is purely at your
@@ -62,15 +62,32 @@ required_permissions:
 parameters:
    - name: ExchangeURL
      default: https://github.com/Velocidex/velociraptor-docs/raw/gh-pages/exchange/artifact_exchange_v2.zip
-   - name: Prefix
-     description: Add artifacts with this prefix
-     default: Exchange.
    - name: ArchiveGlob
      default: "/**/*.{yaml,yml}"
+   - name: Tag
+     description: |
+       Tag artifacts with this tag.
+
+       This applied in addition to any tags contained in the artifact
+       description.
+     default: "Exchange"
+
+export: |
+  LET _Tags(Data) = SELECT * FROM foreach(row={
+    SELECT * FROM parse_lines(accessor="data", filename=Data, buffer_size=10000000)
+    WHERE Line =~ '''^\s*tags:'''
+  }, query={
+    SELECT * FROM parse_records_with_regex(
+       accessor="data", file=Line, regex="#(?P&lt;Tag&gt;[^ ]+)")
+  })
+
+  LET Tags(Data) = _Tags(Data=Data).Tag
 
 sources:
   - query: |
-        LET X = SELECT artifact_set(prefix=Prefix, definition=Definition) AS Definition
+        LET X = SELECT artifact_set(
+          definition=Definition,
+          tags=(Tag,) + Tags(Data=Definition) ) AS Definition
         FROM foreach(row={
           SELECT Content FROM http_client(
              remove_last=TRUE,

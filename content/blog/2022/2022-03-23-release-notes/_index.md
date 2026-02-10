@@ -112,7 +112,7 @@ for a discussion of these limits.
 ### The offline collector resource controls
 
 Many people use the [Velociraptor offline collector]({{< ref
-"/docs/offline_triage/#offline-collections" >}}) to collect artifacts
+"/docs/deployment/offline_collections/" >}}) to collect artifacts
 from endpoints which they are unable to install a proper client/server
 architecture on. In previous versions there was no resource control or
 time limits imposed on the offline collector because it was assumed
@@ -155,7 +155,7 @@ and shows the ones with errors, running and completed.
 Velociraptor has always had SSO support to allow strong 2 factor
 authentication for access to the GUI. However, previously Velociraptor
 only supported one OAuth2 provider at a time. Users had to choose
-between Google, Github, Azure or OIDC (e.g. Okta) for the
+between Google, GitHub, Azure or OIDC (e.g. Okta) for the
 authentication provider.
 
 This limitation is problematic for some organizations who need to

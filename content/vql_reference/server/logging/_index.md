@@ -19,9 +19,10 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-component||string
+component||list of string
+prelog||bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

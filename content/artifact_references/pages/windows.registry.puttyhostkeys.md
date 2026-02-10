@@ -6,12 +6,12 @@ tags: [Client Artifact]
 
 This artifact extracts PuTTY SSH host keys.
 
-As a security measure PuTTY and its companion utilities PSCP, PSFTP, and Plink 
+As a security measure PuTTY and its companion utilities PSCP, PSFTP, and Plink
 records the host key for each server connected to, in the Windows Registry.
 
-- Output KeyName: ssh-ed12345@22:27.27.27.27
-- To search for a specific IP: TargetKeyName =~ ':\<IP\>$'
-- To search for a specific PORT: TargetKeyName =~ '@\<PORT\>:.+$'
+- Output KeyName: `ssh-ed12345@22:27.27.27.27`
+- To search for a specific IP: `TargetKeyName =~ ':\<IP\>$'`
+- To search for a specific PORT: `TargetKeyName =~ '@\<PORT\>:.+$'`
 
 
 <pre><code class="language-yaml">
@@ -19,15 +19,15 @@ name: Windows.Registry.PuttyHostKeys
 author: Matt Green - @mgreen27
 description: |
    This artifact extracts PuTTY SSH host keys.
-   
-   As a security measure PuTTY and its companion utilities PSCP, PSFTP, and Plink 
+
+   As a security measure PuTTY and its companion utilities PSCP, PSFTP, and Plink
    records the host key for each server connected to, in the Windows Registry.
-   
-   - Output KeyName: ssh-ed12345@22:27.27.27.27
-   - To search for a specific IP: TargetKeyName =~ ':\&lt;IP\&gt;$'
-   - To search for a specific PORT: TargetKeyName =~ '@\&lt;PORT\&gt;:.+$'
-   
-   
+
+   - Output KeyName: `ssh-ed12345@22:27.27.27.27`
+   - To search for a specific IP: `TargetKeyName =~ ':\&lt;IP\&gt;$'`
+   - To search for a specific PORT: `TargetKeyName =~ '@\&lt;PORT\&gt;:.+$'`
+
+
 type: CLIENT
 
 parameters:
@@ -42,12 +42,12 @@ parameters:
 
 sources:
   - precondition:
-      SELECT OS From info() where OS = 'windows' 
+      SELECT OS From info() where OS = 'windows'
 
     query: |
       LET HKEY_USERS &lt;= pathspec(path_type="registry", Path="HKEY_USERS")
 
-      SELECT 
+      SELECT
         Mtime,
         Username,
         OSPath.Basename AS KeyName,

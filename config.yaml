@@ -37,7 +37,7 @@ markup:
 
 menu:
   shortcuts:
-   -  name: "<i class='fab fa-github'></i>Github"
+   -  name: "<i class='fab fa-github'></i>GitHub"
       identifier: "gh"
       url: "https://github.com/Velocidex/velociraptor"
       weight: 10

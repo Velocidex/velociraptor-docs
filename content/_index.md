@@ -19,15 +19,37 @@ carousel:
    image: hunt.png
    description: Don't wait until an event occurs. Actively search for suspicious activities using our library of forensic artifacts, then customize to your specific threat hunting needs.
 
+navs:
+ - name: Overview
+   description: Velociraptor overview
+   link: /docs/overview/
+ - name: Quickstart
+   description: Quick Start
+   link: /docs/deployment/quickstart/
+ - name: Security
+   description: Lean about Velociraptor Security
+   link: /docs/overview/security/
+ - name: Configure
+   description: Configuration File Reference
+   link: /docs/deployment/references/
+ - name: Troubleshooting
+   description: Troubleshooting deployments
+   link: /docs/troubleshooting/
+
 ---
 
-{{% notice warning "CVE-2025-0914 published on 2025-02-25" %}}
+{{% navs %}}
 
-If you use the `prevent_execve` option, please upgrade your client to
-mitigate `CVE-2025-0914` to at least release `0.73.4`. [More
-details]({{% ref "/announcements/advisories/cve-2025-0914" %}})
+{{% notice warning "CVE-2025-14728 published on 2025-12-29" %}}
+
+Velociraptor versions before 0.75.6 contain a directory traversal
+issue on Linux servers that allows a rogue client to upload a file
+which is written outside the datastore directory.
+
+Read the [Full announcement]({{< ref "/announcements/advisories/cve-2025-14728/" >}}) and upgrade immediately.
 
 {{% /notice %}}
+
 
 ## Velociraptor - Digging Deeper!
 

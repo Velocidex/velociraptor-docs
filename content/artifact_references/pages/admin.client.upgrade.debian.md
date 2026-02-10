@@ -6,8 +6,8 @@ tags: [Client Artifact]
 
 Remotely push new client updates to Debian hosts.
 
-NOTE: This artifact requires that you supply a client Debian package using the
-tools interface or using the "debian client" command. Simply click on the tool
+NOTE: This artifact requires that you supply a client Debian package by using the
+tools interface or by using the "debian client" command. Simply click on the tool
 in the GUI and upload a package.
 
 
@@ -16,8 +16,8 @@ name: Admin.Client.Upgrade.Debian
 description: |
   Remotely push new client updates to Debian hosts.
 
-  NOTE: This artifact requires that you supply a client Debian package using the
-  tools interface or using the "debian client" command. Simply click on the tool
+  NOTE: This artifact requires that you supply a client Debian package by using the
+  tools interface or by using the "debian client" command. Simply click on the tool
   in the GUI and upload a package.
 
 tools:
@@ -37,6 +37,10 @@ parameters:
     type: str
     description: |
       The name of the service to restart after the upgrade.
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
 
 sources:
   - precondition:

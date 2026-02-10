@@ -31,7 +31,7 @@ Converts an ip address encoded in various ways. If the IP address is encoded
 as 32 bit integer we can use netaddr4_le or netaddr4_be to print it in a
 human readable way.
 
-This function wraps the Golang net.IP library (https://pkg.go.dev/net#IP ).
+This function wraps the Golang net.IP library ( https://pkg.go.dev/net#IP ).
 This makes it easy to deal with various IP address notations.
 
 Returns an object of type `net.IP`, not a string. If you need to compare the

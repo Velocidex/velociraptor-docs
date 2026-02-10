@@ -43,20 +43,10 @@ sources:
             AND format(format="%d", args=Pid) =~ PidRegex
             AND NOT Pid in me.Pid
             AND NOT upcase(string=Exe) in whitelist.Path
-            
-      LET kill_targets = SELECT * FROM foreach(
-          row= targets,
-          query={
-             SELECT ProcessName,Exe,CommandLine,Pid,
-                 dict(ReturnCode=ReturnCode,Complete=Complete,Stdout=Stdout,Stderr=Stderr) as Execve,
-                 if(condition= Stdout=~'^SUCCESS',
-                    then= TRUE,
-                    else= FALSE) as Killed
-             FROM execve(
-               argv=["taskkill", "/PID", Pid, "/T", "/F"])
-        })
         
-      SELECT * 
-      FROM if(condition=ReallyDoIt,
-            then= kill_targets,
-            else= { SELECT *, FALSE as Killed FROM targets } )
+      SELECT * , 
+        if( condition = ReallyDoIt,
+            then = pskill(pid=Pid),
+            else = False 
+                ) as Killed
+      FROM targets
