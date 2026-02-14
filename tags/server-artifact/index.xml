@@ -1,0 +1,4894 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Server Artifact on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/server-artifact/</link><description>Recent content in Server Artifact on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://docs.velociraptor.app/tags/server-artifact/index.xml" rel="self" type="application/rss+xml"/><item><title>Admin.Client.Remove</title><link>https://docs.velociraptor.app/artifact_references/pages/admin.client.remove/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/admin.client.remove/</guid><description>&lt;p>This artifact will remove clients that have not checked in for a
+while. All data for these clients will be removed.&lt;/p>
+&lt;p>The artifact enumerates all the files that are removed.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Admin.Client.Remove
+description: |
+ This artifact will remove clients that have not checked in for a
+ while. All data for these clients will be removed.
+
+ The artifact enumerates all the files that are removed.
+
+type: SERVER
+
+parameters:
+ - name: Age
+ description: Remove clients older than this many days
+ default: "7"
+ type: int
+
+ - name: ReallyDoIt
+ type: bool
+
+sources:
+ - query: |
+ LET Threshold &amp;lt;= timestamp(epoch=now() - Age * 3600 * 24 )
+ LET old_clients = SELECT os_info.fqdn AS Fqdn, client_id,
+ timestamp(epoch=last_seen_at) AS LastSeen FROM clients()
+ WHERE LastSeen &amp;lt; Threshold
+
+ SELECT * FROM foreach(row=old_clients,
+ query={
+ SELECT *, Fqdn, LastSeen FROM client_delete(
+ client_id=client_id, really_do_it=ReallyDoIt)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Generic.Utils.DeadDiskRemapping</title><link>https://docs.velociraptor.app/artifact_references/pages/generic.utils.deaddiskremapping/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/generic.utils.deaddiskremapping/</guid><description>&lt;p>Calculate a remapping configuration from a dead disk image.&lt;/p>
+&lt;p>The artifact uses some heuristics to calculate a suitable remapping
+configuration for a dead disk image:&lt;/p>
+&lt;p>The following cases are handled:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>If ImagePath is a directory to a mounted partition then we
+generate directory remapping. This is suitable for handling images
+with filesystems that Velociraptor cannot yet directly handle.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>If the ImagePath points to a file which starts with the NTFS
+signature we assume this is a partition image and not a disk
+image.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>If the ImagePath is a full disk image we assume it has a partition
+table at the front, we then enumerate all the partitions and look
+for an NTFS partition with a &lt;code>Windows&lt;/code> directory at the top
+level. We assume this is the windows drive and remap it to the C:
+drive.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code class="language-yaml">
+name: Generic.Utils.DeadDiskRemapping
+description: |
+ Calculate a remapping configuration from a dead disk image.
+
+ The artifact uses some heuristics to calculate a suitable remapping
+ configuration for a dead disk image:
+
+ The following cases are handled:
+
+ * If ImagePath is a directory to a mounted partition then we
+ generate directory remapping. This is suitable for handling images
+ with filesystems that Velociraptor cannot yet directly handle.
+
+ * If the ImagePath points to a file which starts with the NTFS
+ signature we assume this is a partition image and not a disk
+ image.
+
+ * If the ImagePath is a full disk image we assume it has a partition
+ table at the front, we then enumerate all the partitions and look
+ for an NTFS partition with a `Windows` directory at the top
+ level. We assume this is the windows drive and remap it to the C:
+ drive.
+
+type: SERVER
+
+parameters:
+ - name: ImagePath
+ default: /tmp/image.dd
+ description: Path to the image file to inspect.
+
+ - name: Accessor
+ description: |
+ Accessor to read the image with.
+
+ If not provided guess based on image file extension.
+
+ - name: Hostname
+ default: Virtual Host
+
+ - name: Upload
+ type: bool
+ default: "Y"
+ description: If specified we upload the generated YAML
+
+ - name: CommonRemapping
+ description: Common clauses for all remapping in YAML
+ default: |
+ remappings:
+ - type: permissions
+ permissions:
+ - COLLECT_CLIENT
+ - FILESYSTEM_READ
+ - FILESYSTEM_WRITE
+ - READ_RESULTS
+ - MACHINE_STATE
+ - SERVER_ADMIN
+ - COLLECT_SERVER
+ - EXECVE
+ - type: impersonation
+ os: windows
+ hostname: {{ .Hostname }}
+ env:
+ - key: SystemRoot
+ value: C:\Windows
+ - key: WinDir
+ value: C:\Windows
+ disabled_functions:
+ - amsi
+ - lookupSID
+ - token
+ disabled_plugins:
+ - execve
+ - http_client
+ - users
+ - certificates
+ - handles
+ - pslist
+ - interfaces
+ - modules
+ - netstat
+ - partitions
+ - proc_dump
+ - proc_yara
+ - vad
+ - winobj
+ - wmi
+ - type: shadow
+ from:
+ accessor: zip
+ "on":
+ accessor: zip
+ - type: shadow
+ from:
+ accessor: raw_reg
+ "on":
+ accessor: raw_reg
+ - type: shadow
+ from:
+ accessor: data
+ "on":
+ accessor: data
+
+export: |
+ -- Searches for a partition with a Windows directory, Unless this
+ -- is a partition image.
+ LET _FindWindowsPartition(ImagePath, Accessor) = SELECT *
+ FROM switch(
+ a={
+ SELECT 0 AS StartOffset, Accessor, ImagePath AS PartitionPath
+ FROM stat(filename=ImagePath)
+ WHERE IsDir
+ },
+ b={
+ SELECT 0 AS StartOffset, Accessor, ImagePath AS PartitionPath
+ FROM scope()
+ WHERE read_file(accessor=Accessor, filename=ImagePath, length=4, offset=3) = "NTFS"
+ AND log(message="Detected NTFS signature at offset 0 - " +
+ "assuming this is a Windows partition image")
+ },
+ c={
+ SELECT StartOffset, Accessor, _PartitionPath AS PartitionPath
+ FROM Artifact.Windows.Forensics.PartitionTable(
+ ImagePath=ImagePath,
+ Accessor=GuessAccessor(ImagePath=ImagePath))
+ WHERE log(level="DEBUG", dedup=-1,
+ message="Searching for Windows directory: %#x-%#x (%v) %v - Magic %v",
+ args=[StartOffset, EndOffset, Size, name, Magic])
+ AND TopLevelDirectory =~ "Windows"
+ AND log(message="&amp;lt;green&amp;gt;Found Windows Partition&amp;lt;/&amp;gt; at offset %#x with top level directory %v",
+ args=[StartOffset, TopLevelDirectory])
+ LIMIT 1
+ })
+
+ -- Guess the correct accessor based on the file extension. This
+ -- allows us to handle several image formats.
+ LET GuessAccessor(ImagePath) = Accessor ||
+ if(condition=ImagePath =~ 'vmdk$', then='vmdk') ||
+ if(condition=ImagePath =~ 'vhdx$', then='vhdx') ||
+ if(condition=ImagePath =~ 'e01$', then='ewf')
+
+ LET _MapHiveToKey(Hive, Key, Name, ImagePath) = log(dedup=-1,
+ message="&amp;lt;green&amp;gt;Adding hive %v&amp;lt;/&amp;gt;", args=Hive) &amp;amp;&amp;amp;
+ dict(type="mount",
+ `description`=Name,
+ `from`=dict(accessor="raw_reg",
+ path_type="registry",
+ prefix=pathspec(
+ Path="/",
+ DelegateAccessor="raw_ntfs",
+ Delegate=ImagePath + Hive)),
+ on=dict(accessor="registry", prefix=Key, path_type="registry"))
+
+ LET _MapDirHiveToKey(Hive, Key, Name) = log(dedup=-1,
+ message="&amp;lt;green&amp;gt;Adding hive %v&amp;lt;/&amp;gt;", args=Hive) &amp;amp;&amp;amp;
+ dict(type="mount",
+ `description`=Name,
+ `from`=dict(accessor="raw_reg",
+ path_type="registry",
+ prefix=pathspec(
+ Path="/",
+ DelegateAccessor="file",
+ DelegatePath=Hive)),
+ on=dict(accessor="registry", prefix=Key, path_type="registry"))
+
+ -- Look for user hives and map them in HKEY_USERS
+ LET _FindUserHives(ImagePath) = SELECT _MapHiveToKey(
+ Name="Map User hive for " + OSPath[-2],
+ Hive=OSPath,
+ Key="HKEY_USERS\\" + OSPath[-2],
+ ImagePath=ImagePath
+ ) AS Map
+ FROM glob(globs='/Users/*/NTUser.DAT',
+ accessor="raw_ntfs",
+ root=ImagePath)
+ WHERE log(dedup=-1, message="&amp;lt;green&amp;gt;Found User Hive at %v&amp;lt;/&amp;gt;", args=OSPath.Path)
+
+ LET _FindDirUserHives(ImagePath) = SELECT _MapDirHiveToKey(
+ Name="Map User hive for " + OSPath[-2],
+ Hive=OSPath,
+ Key="HKEY_USERS\\" + OSPath[-2]) AS Map
+ FROM glob(globs='/Users/*/NTUser.DAT',
+ root=ImagePath)
+ WHERE log(dedup=-1, message="&amp;lt;green&amp;gt;Found User Hive at %v&amp;lt;/&amp;gt;", args=OSPath.Path)
+
+ LET CalculateWindowsMappings(ImagePath) = Remappings.remappings + (
+ dict(type="mount",
+ `from`=dict(accessor="raw_ntfs", prefix=ImagePath),
+ on=dict(accessor="ntfs", prefix="\\\\.\\C:", path_type="ntfs")
+ ),
+ dict(type="mount",
+ `from`=dict(accessor="raw_ntfs", prefix=ImagePath),
+ on=dict(accessor="file", prefix="C:", path_type="windows")
+ ),
+ dict(type="mount",
+ `from`=dict(accessor="raw_ntfs", prefix=ImagePath),
+ on=dict(accessor="auto", prefix="C:", path_type="windows")
+ ),
+ _MapHiveToKey(Name="Map Software Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/SOFTWARE",
+ Key="HKEY_LOCAL_MACHINE/Software"),
+ _MapHiveToKey(Name="Map Security Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/Security",
+ Key="HKEY_LOCAL_MACHINE/Security"),
+ _MapHiveToKey(Name="Map System Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/System",
+ Key="HKEY_LOCAL_MACHINE/System"),
+ _MapHiveToKey(Name="Map SAM Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/SAM",
+ Key="SAM"),
+ _MapHiveToKey(Name="Map Amcache Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/appcompat/Programs/Amcache.hve",
+ Key="Amcache")
+ ) + _FindUserHives(ImagePath=WindowsPartition.PartitionPath).Map
+
+ LET CalculateWindowsDirMappings(ImagePath) = Remappings.remappings + (
+ dict(type="mount",
+ description="Mount Directory " + ImagePath + " on C: drive",
+ `from`=dict(accessor="file", prefix=ImagePath),
+ on=dict(accessor="ntfs", prefix="\\\\.\\C:", path_type="ntfs")
+ ),
+ dict(type="mount",
+ `from`=dict(accessor="file", prefix=ImagePath),
+ on=dict(accessor="file", prefix="C:", path_type="windows")
+ ),
+ dict(type="mount",
+ `from`=dict(accessor="file", prefix=ImagePath),
+ on=dict(accessor="auto", prefix="C:", path_type="windows")
+ ),
+ _MapDirHiveToKey(Name="Map Software Hive",
+ Hive="/Windows/System32/Config/SOFTWARE",
+ Key="HKEY_LOCAL_MACHINE/Software"),
+ _MapDirHiveToKey(Name="Map Security Hive",
+ Hive="/Windows/System32/Config/Security",
+ Key="HKEY_LOCAL_MACHINE/Security"),
+ _MapDirHiveToKey(Name="Map System Hive",
+ Hive="/Windows/System32/Config/System",
+ Key="HKEY_LOCAL_MACHINE/System"),
+ _MapDirHiveToKey(Name="Map SAM Hive",
+ Hive="/Windows/System32/Config/SAM",
+ Key="SAM"),
+ _MapDirHiveToKey(Name="Map Amcache Hive",
+ Hive="/Windows/appcompat/Programs/Amcache.hve",
+ Key="Amcache")
+ ) + _FindDirUserHives(ImagePath=ImagePath).Map
+
+sources:
+- query: |
+ LET WindowsPartition &amp;lt;=
+ _FindWindowsPartition(ImagePath=ImagePath, Accessor=Accessor)[0]
+
+ LET Remappings &amp;lt;= parse_yaml(
+ filename=template(template=CommonRemapping,
+ expansion=dict(Hostname=Hostname)),
+ accessor="data")
+
+ -- Select the type of mapping to calculate depending on what ImagePath is.
+ LET CalculateMappings =
+ ( stat(filename=ImagePath).IsDir &amp;amp;&amp;amp;
+ CalculateWindowsDirMappings(ImagePath=ImagePath) ) ||
+ ( WindowsPartition.PartitionPath &amp;amp;&amp;amp;
+ CalculateWindowsMappings(ImagePath=WindowsPartition.PartitionPath) ) ||
+ log(message="&amp;lt;red&amp;gt;No suitable mapping found&amp;lt;/&amp;gt;")
+
+ LET YamlText = serialize(format="yaml",
+ item=dict(remappings=CalculateMappings))
+
+ SELECT if(condition=Upload,
+ then=upload(accessor="data", file=YamlText, name="remapping.yaml"),
+ else=YamlText) AS Remapping
+ FROM scope()
+
+column_types:
+- name: Remapping
+ type: upload_preview
+
+&lt;/code>&lt;/pre></description></item><item><title>Generic.Utils.SendEmail</title><link>https://docs.velociraptor.app/artifact_references/pages/generic.utils.sendemail/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/generic.utils.sendemail/</guid><description>&lt;p>A Utility artifact for sending emails.&lt;/p>
+&lt;p>This artifact handles the challenges of MIME, encodings and other pitfalls
+of sending anything but simple plain-text emails. It will, among other things,&lt;/p>
+&lt;ul>
+&lt;li>Let you provide both HTML and plain-text email bodies, letting the email
+client pick either HTML or plain-text, depending on what it supports (utilising
+&amp;ldquo;multipart/alternative&amp;rdquo;)&lt;/li>
+&lt;li>Text is encoded as Base64 (unless disabled), split into 76-character-wide
+lines in order to conform with RFC standards&lt;/li>
+&lt;li>Attachments are supported and automatically encoded&lt;/li>
+&lt;li>The whole email is sent as a multi-part message&lt;/li>
+&lt;/ul>
+&lt;p>All of the functions used to create the final body of the email are exported
+and are available for further customisation when sending an email.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Generic.Utils.SendEmail
+author: Andreas Misje – @misje
+description: |
+ A Utility artifact for sending emails.
+
+ This artifact handles the challenges of MIME, encodings and other pitfalls
+ of sending anything but simple plain-text emails. It will, among other things,
+
+ - Let you provide both HTML and plain-text email bodies, letting the email
+ client pick either HTML or plain-text, depending on what it supports (utilising
+ "multipart/alternative")
+ - Text is encoded as Base64 (unless disabled), split into 76-character-wide
+ lines in order to conform with RFC standards
+ - Attachments are supported and automatically encoded
+ - The whole email is sent as a multi-part message
+
+ All of the functions used to create the final body of the email are exported
+ and are available for further customisation when sending an email.
+
+type: SERVER
+
+parameters:
+- name: Secret
+ description: The name of the secret to use to send the mail with.
+
+- name: Recipients
+ type: json_array
+ default: '["noone@example.org"]'
+ description: Where to send the mail to.
+
+- name: Sender
+ description: The sender address (from).
+
+- name: FilesToUpload
+ type: csv
+ description: Files to upload, optionally renamed.
+ default: |
+ Path,Filename
+
+- name: PlainTextMessage
+ description: A plain-text message.
+
+- name: HTMLMessage
+ description: An HTML-formatted message.
+
+- name: EncodeText
+ type: bool
+ default: true
+ description: |
+ Base64-encode plain-text and HTML. If disabled, ensure to keep lines within
+ 998 octets, or encode the data manually and include an encoding header.
+
+- name: Subject
+ default: A message from Velociraptor
+
+- name: Period
+ type: int
+ default: 10
+ description: |
+ Refuse to send mails more often than this interval (in seconds). This throttling
+ is applied to the whole server.
+
+export: |
+ LET _RandomString = SELECT format(format="%c", args=20 + rand(range=107)) AS Ch
+ FROM range(end=1000)
+ WHERE Ch =~ "[A-Za-z0-9'()+_,./:=?]"
+ LIMIT 70
+
+ -- Create a random string suitable as a MIME boundary:
+ LET RandomString = join(array=_RandomString.Ch)
+
+ -- Base64-encode data and split the result into 76-character long lines (as per
+ -- RFC 2045 6.8). Note that a "Content-Transfer-Encoding: base64" header is
+ -- needed for this message to interpreted correctly:
+ LET EncodeData(Data) = regex_replace(re="(.{76})",
+ replace="$1\r\n",
+ source=base64encode(string=Data))
+
+ -- Wrap Sections in boundaries. Header may be used to create a sub-boundary,
+ -- useful for multipart/alternative:
+ LET WrapInBoundary(Boundary, Sections, Header) = template(
+ template="{{ if .header }}{{ .header }}; boundary={{ .boundary }}\r\n\r\n{{ end }}{{ range .sections }}--{{ $.boundary }}\r\n{{ . }}{{ end }}--{{ $.boundary }}--\r\n",
+ expansion=dict(
+ boundary=Boundary,
+ sections=Sections,
+ header=Header))
+
+ -- Add content type ("plain" or "html") and newlines to text. If Encode is set,
+ -- encode the text in Base64 and add a suitable transfer header:
+ LET WrapText(Value, Type, Encode) = if(
+ condition=Value,
+ then=format(
+ format='Content-Type: text/%s; charset="utf-8"%s\r\n\r\n%v\r\n',
+ args=[Type, if(condition=get(field='Encode', default=false),
+ then="\r\nContent-Transfer-Encoding: base64",
+ else=""), if(
+ condition=get(field='Encode', default=false),
+ then=EncodeData(Data=Value),
+ else=Value)]))
+
+ -- Wrap text (plain, HTML or both) in multipart/alternative, letting clients
+ -- pick either HTML or plain-text, depending on what they support. If just
+ -- one of Plain/HTML is specified, multipart/alternative is not used:
+ LET WrapAlternative(Plain, HTML) = if(
+ condition=Plain
+ AND HTML,
+ then=WrapInBoundary(Header="Content-Type: multipart/alternative",
+ Boundary=RandomString,
+ Sections=(Plain, HTML)),
+ else=Plain || HTML)
+
+ -- Encodes the file as base64:
+ LET EncodeFile(Filename) = EncodeData(Data=read_file(filename=Filename))
+
+ -- A Helper function to embed a file content from disk.
+ LET AttachFile(Path, Filename) = template(
+ template='Content-Type: application/octet-stream; name="{{ .name }}"\r\nContent-Disposition: attachment; filename="{{ .filename }}"\r\nContent-Transfer-Encoding: base64\r\n\r\n{{ .data }}\r\n\r\n',
+ expansion=dict(
+ name=regex_replace(source=basename(path=Filename),
+ re='''\..+$''',
+ replace=''),
+ filename=basename(path=Filename),
+ data=EncodeFile(Filename=Path)))
+
+ -- Call AttachFile() for each file in Files that exist. Files must be an array
+ -- of dicts with the members "Path" and an optional "Filename", which is used
+ -- to replace the attachment filename. Useful for temporary files:
+ LET AttachFiles(Files) = array(_={
+ SELECT AttachFile(
+ Path=Path,
+ Filename=get(field='Filename', default= Path)) AS Part
+ FROM foreach(row=Files)
+ WHERE (stat(filename=Path).OSPath
+ AND log(message="Attaching %v", args=Path, dedup=-1, level='INFO')) OR NOT
+ log(message="Fail to attach %v", args=Path, dedup=-1, level='WARN')
+ })
+
+sources:
+- query: |
+ LET Texts &amp;lt;= WrapAlternative(Plain=WrapText(
+ Value=PlainTextMessage,
+ Type='plain',
+ Encode=EncodeText),
+ HTML=WrapText(Value=HTMLMessage,
+ Type='html',
+ Encode=EncodeText))
+
+ LET Texts &amp;lt;= if(condition=Texts, then=[Texts], else=[])
+
+ LET Boundary &amp;lt;= RandomString
+
+ LET Headers &amp;lt;= dict(`Content-Type`='multipart/mixed; boundary=' + Boundary)
+
+ -- Build the email parts - first the text message, then the attachments.
+ LET Message &amp;lt;= WrapInBoundary(Header="",
+ Boundary=Boundary,
+ Sections=Texts + AttachFiles(Files=FilesToUpload).Part)
+
+ -- Send the mail
+ SELECT mail(secret=Secret,
+ `to`=Recipients,
+ `from`=Sender,
+ period=Period,
+ subject=Subject,
+ headers=Headers,
+ `body`=Message) AS Mail
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Reporting.Default</title><link>https://docs.velociraptor.app/artifact_references/pages/reporting.default/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/reporting.default/</guid><description>&lt;p>A default template for HTML export. This template will be used to
+host HTML exports such as the notebook and the reporting
+templates. Velociraptor will evaluate this template on the following
+dict:&lt;/p>
+&lt;ul>
+&lt;li>key main: contains a string with all the results of rendering
+the notebook inside.&lt;/li>
+&lt;/ul>
+&lt;h2 id="notes">Notes&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>All HTML elements are allowed in a HTML template.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>It is possible to run arbitrary VQL (and therefore arbitrary
+code) inside HTML templates. Therefore to modify this you will
+need the SERVER_ARTIFACT_WRITER permission.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-yaml">
+name: Reporting.Default
+
+type: SERVER
+
+description: |
+ A default template for HTML export. This template will be used to
+ host HTML exports such as the notebook and the reporting
+ templates. Velociraptor will evaluate this template on the following
+ dict:
+
+ - key main: contains a string with all the results of rendering
+ the notebook inside.
+
+ ## Notes
+
+ 1. All HTML elements are allowed in a HTML template.
+
+ 2. It is possible to run arbitrary VQL (and therefore arbitrary
+ code) inside HTML templates. Therefore to modify this you will
+ need the SERVER_ARTIFACT_WRITER permission.
+
+reports:
+ - name: Templates
+ type: TEMPLATES
+ template: |
+ {{ define "fold_start" }}
+ &amp;lt;div role="button" class="btn btn-primary btn-block row collapsible"&amp;gt;View Details&amp;lt;/div&amp;gt;
+ &amp;lt;div class="collapse row"&amp;gt;&amp;lt;div class="card card-body overflow-auto"&amp;gt;
+ {{end}}
+ {{ define "fold_end" }}
+ &amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;
+ {{ end }}
+
+ {{ define "hidden_paragraph_start" }}
+ {{- if .description -}}
+ &amp;lt;div&amp;gt;&amp;lt;a href="#" class="collapsible"&amp;gt;{{ .description }} ...&amp;lt;/a&amp;gt;
+ {{- else -}}
+ &amp;lt;div&amp;gt;&amp;lt;a href="#" class="collapsible"&amp;gt;More ...&amp;lt;/a&amp;gt;
+ {{- end -}}
+ &amp;lt;div class="collapse"&amp;gt;
+ {{end}}
+
+ {{ define "hidden_paragraph_end" }}
+ &amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;
+ {{ end }}
+
+
+ - type: HTML
+ template: |
+ {{ import "Reporting.Default" "Templates" }}
+
+ &amp;lt;!doctype html&amp;gt;
+ &amp;lt;html lang="en-US"&amp;gt;
+ &amp;lt;head&amp;gt;
+ {{ $hostinfo := Query "SELECT timestamp(epoch=now()).UTC.String AS Time, \
+ OS, Fqdn FROM info()" | Expand }}
+
+ &amp;lt;meta charset="utf-8"&amp;gt;
+ &amp;lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&amp;gt;
+ &amp;lt;meta name="viewport" content="width=device-width, initial-scale=1"&amp;gt;
+
+ &amp;lt;!-- Name of the scan --&amp;gt;
+ &amp;lt;title&amp;gt;{{ Get $hostinfo "0.Fqdn" }} Artifact Collection&amp;lt;/title&amp;gt;
+ &amp;lt;style&amp;gt;
+ @charset "UTF-8";
+ body {
+ padding-top: 57px;
+ }
+ .btn-primary.btn {
+ color: #00aa00;
+ background-color: #fff;
+ border-color: #fff;
+ }
+ .btn-primary.btn:hover {
+ color: #fff;
+ background-color: #00911e;
+ border-color: #00911e;
+ }
+ .btn.btn-primary:not(:disabled):not(.disabled):active, .btn.btn-primary:not(:disabled):not(.disabled).active {
+ color: #fff;
+ background-color: #008773;
+ border-color: #008773;
+ }
+ .btn.btn-primary:focus, .btn.btn-primary.focus {
+ color: #fff;
+ background-color: #00911e;
+ border-color: #00911e;
+ box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+ }
+ .header {
+ background-color: black;
+ border-bottom: 1px solid #00aa00;
+ }
+ .collapse {
+ display: none;
+ }
+ .anchor {
+ display: block;
+ position: relative;
+ top: -57px;
+ visibility: hidden;
+ }
+ .logo {
+ margin-top: -17px;
+ margin-bottom: -10px;
+ margin-left: 20px;
+ height: 40px;
+ }
+
+ .section {
+ color: #FFFFFF;
+ font-size: 24px;
+ background-color: #00aa00;
+ font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+ font-variant: normal;
+ padding-top: 15px;
+ padding-bottom: 15px;
+ text-align: center;
+ }
+ .top-section {
+ border-bottom-left-radius: 40px;
+ border-bottom-right-radius: 40px;
+ }
+
+ /* Error */ .chromaerr { color: #a61717; background-color: #e3d2d2 }
+ /* LineTableTD */ .chromalntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+ /* LineTable */ .chromalntable { border-spacing: 0; padding: 0; margin: 0; border: 0; width: auto; overflow: auto; display: block; }
+ /* LineHighlight */ .chromahl { display: block; width: 100%; }
+ /* LineNumbersTable */ .chromalnt { margin-right: 0.4em; padding: 0 0.4em 0 0.4em; }
+ /* LineNumbers */ .chromaln { display: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em; }
+ /* Keyword */ .chromak { color: #000000; font-weight: bold }
+ /* KeywordConstant */ .chromakc { color: #000000; font-weight: bold }
+ /* KeywordDeclaration */ .chromakd { color: #000000; font-weight: bold }
+ /* KeywordNamespace */ .chromakn { color: #000000; font-weight: bold }
+ /* KeywordPseudo */ .chromakp { color: #000000; font-weight: bold }
+ /* KeywordReserved */ .chromakr { color: #000000; font-weight: bold }
+ /* KeywordType */ .chromakt { color: #445588; font-weight: bold }
+ /* NameAttribute */ .chromana { color: #008080 }
+ /* NameBuiltin */ .chromanb { color: #0086b3 }
+ /* NameBuiltinPseudo */ .chromabp { color: #999999 }
+ /* NameClass */ .chromanc { color: #445588; font-weight: bold }
+ /* NameConstant */ .chromano { color: #008080 }
+ /* NameDecorator */ .chromand { color: #3c5d5d; font-weight: bold }
+ /* NameEntity */ .chromani { color: #800080 }
+ /* NameException */ .chromane { color: #990000; font-weight: bold }
+ /* NameFunction */ .chromanf { color: #990000; font-weight: bold }
+ /* NameLabel */ .chromanl { color: #990000; font-weight: bold }
+ /* NameNamespace */ .chromann { color: #555555 }
+ /* NameTag */ .chromant { color: #000080 }
+ /* NameVariable */ .chromanv { color: #008080 }
+ /* NameVariableClass */ .chromavc { color: #008080 }
+ /* NameVariableGlobal */ .chromavg { color: #008080 }
+ /* NameVariableInstance */ .chromavi { color: #008080 }
+ /* LiteralString */ .chromas { color: #dd1144 }
+ /* LiteralStringAffix */ .chromasa { color: #dd1144 }
+ /* LiteralStringBacktick */ .chromasb { color: #dd1144 }
+ /* LiteralStringChar */ .chromasc { color: #dd1144 }
+ /* LiteralStringDelimiter */ .chromadl { color: #dd1144 }
+ /* LiteralStringDoc */ .chromasd { color: #dd1144 }
+ /* LiteralStringDouble */ .chromas2 { color: #dd1144 }
+ /* LiteralStringEscape */ .chromase { color: #dd1144 }
+ /* LiteralStringHeredoc */ .chromash { color: #dd1144 }
+ /* LiteralStringInterpol */ .chromasi { color: #dd1144 }
+ /* LiteralStringOther */ .chromasx { color: #dd1144 }
+ /* LiteralStringRegex */ .chromasr { color: #009926 }
+ /* LiteralStringSingle */ .chromas1 { color: #dd1144 }
+ /* LiteralStringSymbol */ .chromass { color: #990073 }
+ /* LiteralNumber */ .chromam { color: #009999 }
+ /* LiteralNumberBin */ .chromamb { color: #009999 }
+ /* LiteralNumberFloat */ .chromamf { color: #009999 }
+ /* LiteralNumberHex */ .chromamh { color: #009999 }
+ /* LiteralNumberInteger */ .chromami { color: #009999 }
+ /* LiteralNumberIntegerLong */ .chromail { color: #009999 }
+ /* LiteralNumberOct */ .chromamo { color: #009999 }
+ /* Operator */ .chromao { color: #000000; font-weight: bold }
+ /* OperatorWord */ .chromaow { color: #000000; font-weight: bold }
+ /* Comment */ .chromac { color: #999988; font-style: italic }
+ /* CommentHashbang */ .chromach { color: #999988; font-style: italic }
+ /* CommentMultiline */ .chromacm { color: #999988; font-style: italic }
+ /* CommentSingle */ .chromac1 { color: #999988; font-style: italic }
+ /* CommentSpecial */ .chromacs { color: #999999; font-weight: bold; font-style: italic }
+ /* CommentPreproc */ .chromacp { color: #999999; font-weight: bold; font-style: italic }
+ /* CommentPreprocFile */ .chromacpf { color: #999999; font-weight: bold; font-style: italic }
+ /* GenericDeleted */ .chromagd { color: #000000; background-color: #ffdddd }
+ /* GenericEmph */ .chromage { color: #000000; font-style: italic }
+ /* GenericError */ .chromagr { color: #aa0000 }
+ /* GenericHeading */ .chromagh { color: #999999 }
+ /* GenericInserted */ .chromagi { color: #000000; background-color: #ddffdd }
+ /* GenericOutput */ .chromago { color: #888888 }
+ /* GenericPrompt */ .chromagp { color: #555555 }
+ /* GenericStrong */ .chromags { font-weight: bold }
+ /* GenericSubheading */ .chromagu { color: #aaaaaa }
+ /* GenericTraceback */ .chromagt { color: #aa0000 }
+ /* TextWhitespace */ .chromaw { color: #bbbbbb }
+
+ &amp;lt;/style&amp;gt;
+ &amp;lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&amp;gt;
+
+ &amp;lt;!-- Bootstrap core CSS --&amp;gt;
+ &amp;lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"&amp;gt;
+ &amp;lt;link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" &amp;gt;
+
+ &amp;lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"&amp;gt;&amp;lt;/script&amp;gt;
+ &amp;lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"&amp;gt;&amp;lt;/script&amp;gt;
+ &amp;lt;script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"&amp;gt;&amp;lt;/script&amp;gt;
+ &amp;lt;/head&amp;gt;
+ &amp;lt;body&amp;gt;
+ &amp;lt;nav class="header navbar navbar-expand-lg navbar-dark fixed-top"&amp;gt;
+ &amp;lt;a class="navbar-brand" href="#" aria-label="CyberCX"&amp;gt;
+ &amp;lt;img src="https://docs.velociraptor.app/artifact_references/pages/reporting.default/https://www.velocidex.com/images/logos/velo_word_on_side.svg" class="logo"/&amp;gt;
+ &amp;lt;/a&amp;gt;
+ &amp;lt;button class="navbar-toggler" type="button"
+ data-toggle="collapse"
+ data-target="#navbarSupportedContent"
+ aria-controls="navbarSupportedContent"
+ aria-expanded="false" aria-label="Toggle navigation"&amp;gt;
+ &amp;lt;span class="navbar-toggler-icon"&amp;gt;&amp;lt;/span&amp;gt;
+ &amp;lt;/button&amp;gt;
+ &amp;lt;div class="collapse navbar-collapse" id="navbarSupportedContent"&amp;gt;
+ &amp;lt;ul class="navbar-nav mr-auto"&amp;gt;
+ &amp;lt;li class="nav-item active"&amp;gt;
+ &amp;lt;a class="nav-link" href="#"&amp;gt;Top &amp;lt;span class="sr-only"&amp;gt;(top)&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;
+ &amp;lt;/li&amp;gt;
+ &amp;lt;li class="nav-item"&amp;gt;
+ &amp;lt;a class="nav-link" href="https://github.com/Velocidex/velociraptor"&amp;gt;GitHub&amp;lt;/a&amp;gt;
+ &amp;lt;/li&amp;gt;
+ &amp;lt;li class="nav-item"&amp;gt;
+ &amp;lt;a class="nav-link" href="#" id="print-button"&amp;gt;Print&amp;lt;/a&amp;gt;
+ &amp;lt;/li&amp;gt;
+
+ &amp;lt;li class="nav-item dropdown"&amp;gt;
+ &amp;lt;a class="nav-link dropdown-toggle" href="#"
+ id="navbarDropdown" role="button"
+ data-toggle="dropdown"
+ aria-haspopup="true" aria-expanded="false"&amp;gt;
+ Artifacts Collected
+ &amp;lt;/a&amp;gt;
+ &amp;lt;div class="dropdown-menu" aria-labelledby="navbarDropdown"&amp;gt;
+ {{ range .parts }}
+ &amp;lt;a class="dropdown-item" href="#{{- .Artifact.Name -}}"&amp;gt;
+ {{ .Artifact.Name }}
+ &amp;lt;/a&amp;gt;
+ {{ end }}
+ &amp;lt;/div&amp;gt;
+ &amp;lt;/li&amp;gt;
+ &amp;lt;/ul&amp;gt;
+ &amp;lt;/div&amp;gt;
+ &amp;lt;/nav&amp;gt;
+
+ &amp;lt;main role="main" class="container"&amp;gt;
+ &amp;lt;div class="row section top-section"&amp;gt;
+ &amp;lt;div class="col"&amp;gt;
+ {{ $data := Query "SELECT timestamp(epoch=now()).UTC.String AS Time, OS, Fqdn FROM info()" | Expand }}
+ {{ Get $hostinfo "0.Fqdn" }} Artifact Collection
+ &amp;lt;/div&amp;gt;
+ &amp;lt;div class="col"&amp;gt;{{- Get $data "0" -}}&amp;lt;/div&amp;gt;
+ &amp;lt;/div&amp;gt;
+
+ {{ range .parts }}
+
+ &amp;lt;div class=""&amp;gt;
+ &amp;lt;a class="anchor" name="{{- .Artifact.Name -}}"&amp;gt;&amp;lt;/a&amp;gt;
+ &amp;lt;!-- If the artifact has its own report, just include it as is --&amp;gt;
+ {{ if .HTML }}
+ {{ .HTML }}
+ {{ else }}
+ &amp;lt;!-- Default report in case the artifact does not have one --&amp;gt;
+ &amp;lt;h1&amp;gt;{{ .Artifact.Name }}
+ &amp;lt;div class="btn btn-primary-outline float-right"&amp;gt;{{ .Artifact.Author }}
+ &amp;lt;/div&amp;gt;
+ &amp;lt;/h1&amp;gt;
+
+ {{ $name := .Artifact.Name }}
+
+ {{ template "hidden_paragraph_start" dict "description" "View Artifact Description" }}
+ {{ Markdown .Artifact.Description }}
+
+ {{ if .Artifact.Reference }}
+ &amp;lt;h3&amp;gt;References&amp;lt;/h3&amp;gt;
+ &amp;lt;ul&amp;gt;
+ {{ range .Artifact.Reference }}
+ &amp;lt;li&amp;gt;&amp;lt;a href="{{ . }}"&amp;gt;{{ . }}&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ {{ end }}
+ &amp;lt;/ul&amp;gt;
+ {{ end }}
+ {{ template "hidden_paragraph_end" }}
+
+ {{ range .Artifact.Sources }}
+ {{ $source := print "source(\n source='" .Name "', artifact='" $name "')" }}
+ {{ $query := print "SELECT * FROM " $source " \nLIMIT 100" }}
+
+ &amp;lt;!-- There could be a huge number of rows just to get the count, so we cap at 10000 --&amp;gt;
+ {{ $count := Get ( Query (print "LET X = SELECT * FROM " $source \
+ " LIMIT 10000 SELECT 1 AS ALL, count() AS Count FROM X Group BY ALL") | Expand ) \
+ "0.Count" }}
+
+ {{ if $count }}
+ {{ if .Name }}
+ &amp;lt;h3&amp;gt;Source {{ $name }}/{{ .Name }}&amp;lt;/h3&amp;gt;
+ {{ Markdown .Description }}
+ {{ end }}
+
+ &amp;lt;!-- Show the artifact source if required. --&amp;gt;
+ {{ template "hidden_paragraph_start" dict "description" "Source" }}
+ &amp;lt;div class="row card card-body noprint"&amp;gt;
+ {{ if .Query }}
+ {{ Markdown ( print "```vql\n" .Query "```\n") }}
+ {{ else }}
+ {{ range .Queries }}
+ {{ Markdown ( print "```vql\n" . "```\n") }}
+ {{ end }}
+ {{ end }}
+ &amp;lt;/div&amp;gt;
+ {{ template "hidden_paragraph_end" }}
+
+ &amp;lt;!-- If this is a flow show the parameters. --&amp;gt;
+ {{ $flow := Query "LET X = SELECT Request.Parameters.env AS Env FROM flows(client_id=ClientId, flow_id=FlowId)" \
+ "SELECT * FROM foreach(row=X[0].Env, query={ SELECT Key, Value FROM scope()})" | Expand }}
+ {{ if $flow }}
+ {{ template "hidden_paragraph_start" dict "description" "Parameters" }}
+ &amp;lt;div class="row card card-body noprint"&amp;gt;
+ &amp;lt;h3&amp;gt; Parameters &amp;lt;/h3&amp;gt;
+
+ &amp;lt;table class="table"&amp;gt;&amp;lt;thead&amp;gt;&amp;lt;th&amp;gt;Key&amp;lt;/th&amp;gt;&amp;lt;th&amp;gt;Value&amp;lt;/th&amp;gt;&amp;lt;/thead&amp;gt;
+ &amp;lt;tbody&amp;gt;
+ {{ range $flow }}
+ &amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;{{ Get . "Key" }}&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;{{ Get . "Value" }}&amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;
+ {{ end }}
+ &amp;lt;/tbody&amp;gt;
+ &amp;lt;/table&amp;gt;
+ &amp;lt;/div&amp;gt;
+ {{ template "hidden_paragraph_end" }}
+ {{ end }}
+
+ {{ if gt $count 9999 }}
+ &amp;lt;p&amp;gt;The source produced more than {{ $count }} rows.&amp;lt;/p&amp;gt;
+ {{ else }}
+ &amp;lt;p&amp;gt;The source retrieved a total of {{ $count }} rows.&amp;lt;/p&amp;gt;
+ {{ end }}
+
+ {{ template "fold_start" }}
+ &amp;lt;div class="noprint"&amp;gt;
+ &amp;lt;p&amp;gt; Below you will find a table of the first 100 rows, obtained by the VQL query:
+ &amp;lt;/p&amp;gt;
+ {{ Markdown (print "```vql\n" $query "\n```\n" ) }}
+ &amp;lt;/div&amp;gt;
+ {{ Query $query | Table }}
+ {{ template "fold_end" }}
+
+ {{ else }}
+ &amp;lt;p&amp;gt;No rows returned&amp;lt;/p&amp;gt;
+ {{ end }}
+ {{ end }}
+ {{ end }}
+ &amp;lt;/div&amp;gt;
+
+ {{ end }}
+ &amp;lt;/main&amp;gt;
+ &amp;lt;script&amp;gt;
+ $(".collapsible").click(function() {
+ $(this).next().toggle("slow");
+ try {
+ $("table.table-striped").DataTable().columns.adjust();
+ } catch(e) {
+
+ };
+ });
+
+ $("#print-button").click(function() {
+ $(".collapse").removeClass("collapse");
+ $('table.table-striped').DataTable().destroy();
+ $(".collapsible").hide();
+ $(".noprint").hide();
+ setTimeout(function() {
+ window.print();
+ location.reload();
+ }, 1000);
+ });
+
+ $(document).ready( function () {
+ try {
+ $('table.table-striped').DataTable({
+ "scrollY": 400,
+ "scrollX": true,
+ "autoWidth": false,
+ });
+ } catch(e) {};
+ });
+ &amp;lt;/script&amp;gt;
+ &amp;lt;/body&amp;gt;
+ &amp;lt;/html&amp;gt;
+
+&lt;/code>&lt;/pre></description></item><item><title>Reporting.Hunts.Details</title><link>https://docs.velociraptor.app/artifact_references/pages/reporting.hunts.details/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/reporting.hunts.details/</guid><description>&lt;p>Report details about which client ran each hunt, how long it took
+and if it has completed.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Reporting.Hunts.Details
+description: |
+ Report details about which client ran each hunt, how long it took
+ and if it has completed.
+
+type: SERVER
+
+parameters:
+ - name: ArtifactRegex
+ type: regex
+ default: .
+ description: Filter hunts by this
+
+ - name: DescriptionRegex
+ type: regex
+ default: .
+ description: Filter hunts by this description
+
+sources:
+ - query: |
+ LET hunts = SELECT hunt_id,
+ create_time,
+ hunt_description
+ FROM hunts()
+ WHERE artifacts =~ ArtifactRegex AND hunt_description =~ DescriptionRegex
+ ORDER BY create_time DESC
+
+ LET flows = SELECT hunt_id,
+ hunt_description,
+ client_info(client_id=ClientId).os_info.fqdn AS FQDN,
+ ClientId,
+ client_info(client_id=ClientId).os_info.system AS OS,
+ timestamp(epoch=Flow.create_time) AS create_time,
+ timestamp(epoch=Flow.start_time) AS start_time,
+ timestamp(epoch=Flow.active_time) AS active_time,
+ FlowId AS flow_id,
+ Flow.execution_duration / 1000000000 AS Duration,
+ Flow.state AS State
+ FROM hunt_flows(hunt_id=hunt_id)
+ ORDER BY create_time DESC
+
+ SELECT * FROM foreach(row=hunts, query=flows)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Enrichment.CortexAnalyzer</title><link>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.cortexanalyzer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.cortexanalyzer/</guid><description>&lt;p>Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.&lt;/p>
+&lt;p>This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.&lt;/p>
+&lt;p>Ex.&lt;/p>
+&lt;p>&lt;code>SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Enrichment.CortexAnalyzer
+description: |
+ Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+
+ This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+
+ Ex.
+
+ `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
+
+reference:
+ - https://github.com/TheHive-Project/Cortex
+
+author: Wes Lambert - @therealwlambert
+
+type: SERVER
+
+parameters:
+ - name: Observable
+ description: Data to be analyzed by Cortex
+ default:
+ - name: ObservableType
+ description: Type of observable to be submitted to Cortex. Ex. `hash`, `domain`, `ip`
+ default:
+ - name: TLP
+ description: TLP for the job submitted to Cortex
+ default: 0
+ - name: CortexURL
+ description: URL used for Cortex job submission. We recommend using the &amp;lt;a href="#/host/server"&amp;gt;server metadata store&amp;lt;/a&amp;gt; for this.
+ default: ''
+ - name: CortexKey
+ description: API key used for authentication to Cortex. We recommend using the &amp;lt;a href="#/host/server"&amp;gt;server metadata store&amp;lt;/a&amp;gt; for this.
+ default: ''
+ - name: DisableSSLVerify
+ type: bool
+ description: Disable SSL Verification
+ default: True
+ - name: JobMessage
+ description: Message to be used when running analyzer job
+ default: Job submmitted by Velociraptor
+ - name: JobWaitTime
+ description: Amount of time to wait for a report from Cortex.
+ default: 10minute
+
+sources:
+ - query: |
+ LET OBSERVABLE &amp;lt;= Observable
+ LET OBSERVABLE_DATATYPE &amp;lt;= ObservableType
+ LET URL &amp;lt;= if(
+ condition=CortexURL,
+ then=CortexURL,
+ else=server_metadata().CortexURL)
+ LET cortex_key =
+ if(
+ condition=CortexKey,
+ then=CortexKey,
+ else=server_metadata().CortexKey)
+ LET ENABLED_ANALYZERS = SELECT Content FROM
+ http_client(
+ url=URL + '/analyzer',
+ method='GET',
+ disable_ssl_security=DisableSSLVerify,
+ headers=dict(
+ `Authorization`=format(format="Bearer %v", args=[cortex_key])))
+ LET ANALYZERS_SUPPORTED = SELECT name AS AnalyzerName, id AS ID, dataTypeList AS DList FROM parse_json_array(data=ENABLED_ANALYZERS.Content)
+ LET ANALYZERS_MATCH_TYPE = SELECT ID FROM foreach(row=ANALYZERS_SUPPORTED, query={ SELECT AnalyzerName, ID, _value AS Match FROM
+ if(
+ condition= filter(list=DList, regex=OBSERVABLE_DATATYPE),
+ then="yes",
+ else="no")}) WHERE Match = "yes"
+ LET ANALYZER_RUN = SELECT parse_json(data=Content) AS Resp FROM
+ http_client(
+ url=URL + '/analyzer/'+ ID + '/run' ,
+ method='POST',
+ disable_ssl_security=DisableSSLVerify,
+ headers=dict(
+ `Content-Type`="application/json",
+ `Authorization`=format(format="Bearer %v",
+ args=[cortex_key])),
+ data=serialize(item=dict(
+ data=OBSERVABLE, dataType=OBSERVABLE_DATATYPE, tlp=TLP, message=JobMessage
+ ))
+ )
+ LET JOBID = SELECT Resp.id AS JobID from foreach(row=ANALYZER_RUN)
+ LET GETREPORT = SELECT Content AS Resp FROM
+ http_client(
+ url=format(format="%v/job/%v/waitreport?atMost=%v", args=[URL,JOBID.JobID[0], JobWaitTime]),
+ method='GET',
+ disable_ssl_security=DisableSSLVerify,
+ headers=dict(
+ `Content-Type`="application/json",
+ `Authorization`=format(format="Bearer %v",
+ args=[cortex_key])
+ )
+ )
+ LET REPORT = SELECT parse_json(data=Resp) AS Details FROM GETREPORT
+ SELECT Observable, Details.workerName as AnalyzerName, Details as _Details, Details.report AS Report FROM foreach(row=ANALYZERS_MATCH_TYPE, query={SELECT * FROM REPORT})
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Enrichment.GeoIP</title><link>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.geoip/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.geoip/</guid><description>&lt;p>This artifact can use the MaxMind database to Geo resolve an IP
+address. You will need to provide a valid GeoIP database.&lt;/p>
+&lt;p>You can obtain a free to use (gratis but not libre) database from
+&lt;a href="https://www.maxmind.com/" target="_blank" >https://www.maxmind.com/&lt;/a>
+ or you can pay for a more accurate option.&lt;/p>
+&lt;p>After storing the database somewhere on your server, you should the
+location in the server metadata screen to it under the key &amp;ldquo;GeoIPDB&amp;rdquo;
+(for example &lt;code>/usr/shared/GeoLite2-City_20210803/GeoLite2-City.mmdb&lt;/code>)&lt;/p>
+&lt;p>Alternatively you can import this artifact to gain access to the
+utility functions (or just copy them into your own artifact).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Enrichment.GeoIP
+description: |
+ This artifact can use the MaxMind database to Geo resolve an IP
+ address. You will need to provide a valid GeoIP database.
+
+ You can obtain a free to use (gratis but not libre) database from
+ https://www.maxmind.com/ or you can pay for a more accurate option.
+
+ After storing the database somewhere on your server, you should the
+ location in the server metadata screen to it under the key "GeoIPDB"
+ (for example `/usr/shared/GeoLite2-City_20210803/GeoLite2-City.mmdb`)
+
+ Alternatively you can import this artifact to gain access to the
+ utility functions (or just copy them into your own artifact).
+
+export: |
+ LET DB = server_metadata().GeoIPDB
+ LET Country(IP) = geoip(db=DB, ip=IP).country.names.en
+ LET State(IP) = geoip(db=DB, ip=IP).subdivisions[0].names.en
+ LET City(IP) = geoip(db=DB, ip=IP).city.names.en
+
+parameters:
+ - name: IP
+ description: An IP to lookup
+
+type: SERVER
+
+sources:
+ - query: |
+ SELECT Country(IP=_value) AS Country,
+ State(IP=_value) AS State,
+ City(IP=_value) AS City
+ FROM foreach(row=IP)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Enrichment.GeoIPISP</title><link>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.geoipisp/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.geoipisp/</guid><description>&lt;p>Look up geo-information for an IP address using the MaxMind &amp;ldquo;GeoIP ISP&amp;rdquo;
+database.&lt;/p>
+&lt;p>You can obtain a free-to-use (gratis but not libre) database from
+&lt;a href="https://www.maxmind.com/" target="_blank" >https://www.maxmind.com/&lt;/a>
+ or you can pay for a more accurate option.&lt;/p>
+&lt;p>You will need to provide the path to a valid GeoIP ISP database located on
+your server. The artifact expects you to store the database location in the
+server metadata, under the metadata key &amp;ldquo;GeoIPISPDB&amp;rdquo; (for example
+&lt;code>/usr/shared/GeoIP2-City_20210910/GeoIP2-ISP.mmdb&lt;/code>).&lt;/p>
+&lt;p>Although you can collect this artifact directly, it is more likely that you
+would import this artifact from your own artifact to gain access to the
+utility lookup functions.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Enrichment.GeoIPISP
+description: |
+ Look up geo-information for an IP address using the MaxMind "GeoIP ISP"
+ database.
+
+ You can obtain a free-to-use (gratis but not libre) database from
+ https://www.maxmind.com/ or you can pay for a more accurate option.
+
+ You will need to provide the path to a valid GeoIP ISP database located on
+ your server. The artifact expects you to store the database location in the
+ server metadata, under the metadata key "GeoIPISPDB" (for example
+ `/usr/shared/GeoIP2-City_20210910/GeoIP2-ISP.mmdb`).
+
+ Although you can collect this artifact directly, it is more likely that you
+ would import this artifact from your own artifact to gain access to the
+ utility lookup functions.
+
+export: |
+ LET ISPDB = server_metadata().GeoIPISPDB
+ LET ISP(IP) = geoip(db=ISPDB, ip=IP).isp
+ LET ORG(IP) = geoip(db=ISPDB, ip=IP).organization
+ LET ASN(IP) = geoip(db=ISPDB, ip=IP).autonomous_system_number
+ LET ASO(IP) = geoip(db=ISPDB, ip=IP).autonomous_system_organization
+
+parameters:
+ - name: IP
+ description: An IP to lookup
+
+type: SERVER
+
+sources:
+ - query: |
+ SELECT ISP(IP=_value) AS ISP,
+ ORG(IP=_value) AS Organization,
+ ASN(IP=_value) AS ASN,
+ ASO(IP=_value) AS ASO
+ FROM foreach(row=IP)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Enrichment.GreyNoise</title><link>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.greynoise/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.greynoise/</guid><description>&lt;p>Submit an IP to the GreyNoise API.&lt;/p>
+&lt;p>&lt;a href="https://developer.greynoise.io/reference/community-api" target="_blank" >https://developer.greynoise.io/reference/community-api&lt;/a>
+&lt;/p>
+&lt;p>This is a rather simple artifact that can be called from within another artifact (such as one looking for network connections) to enrich the data made available by that artifact.&lt;/p>
+&lt;p>Ex.&lt;/p>
+&lt;p>&lt;code>SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Enrichment.GreyNoise
+author: Wes Lambert -- @therealwlambert
+description: |
+ Submit an IP to the GreyNoise API.
+
+ https://developer.greynoise.io/reference/community-api
+
+ This is a rather simple artifact that can be called from within another artifact (such as one looking for network connections) to enrich the data made available by that artifact.
+
+ Ex.
+
+ `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
+
+
+type: SERVER
+
+parameters:
+ - name: IP
+ type: string
+ description: The IP to submit to GreyNoise.
+ default:
+ - name: ApiKey
+ type: string
+ description: The API key to submit to GreyNoise.
+ default: ''
+ - name: AccountType
+ type: choices
+ description: The GreyNoise account type - enterprise or community.
+ default: community
+ choices:
+ - community
+ - enterprise
+ - name: CommunityURL
+ type: string
+ description: The GreyNoise community API URL.
+ default: https://api.greynoise.io/v3/community/
+ - name: EnterpriseURL
+ type: string
+ description: The GreyNoise enterprise API URL.
+ default: https://api.greynoise.io/v2/noise/quick/
+
+sources:
+ - query: |
+ LET URL &amp;lt;= if(condition= AccountType='community', then=CommunityURL, else=EnterpriseURL)
+
+ LET Data = if(condition= ApiKey!='', 
+ then={
+ SELECT parse_json(data=Content) AS GreyNoiseLookup
+ FROM http_client(url=URL + IP, headers=dict(`Accept`="application/json",`key`=ApiKey), method='GET')
+ }, else={
+ SELECT parse_json(data=Content) AS GreyNoiseLookup
+ FROM http_client(url=URL + IP, headers=dict(`Accept`="application/json"), method='GET')
+ })
+
+ SELECT
+ GreyNoiseLookup.ip AS IP,
+ GreyNoiseLookup.classification AS Classification,
+ GreyNoiseLookup.name AS Name,
+ GreyNoiseLookup.riot AS Riot,
+ GreyNoiseLookup.noise AS Noise,
+ GreyNoiseLookup.last_seen AS LastSeen,
+ GreyNoiseLookup.link AS Link,
+ GreyNoiseLookup AS _GreyNoiseLookup
+ FROM Data
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Enrichment.HybridAnalysis</title><link>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.hybridanalysis/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.hybridanalysis/</guid><description>&lt;p>Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.&lt;/p>
+&lt;p>This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.&lt;/p>
+&lt;p>Ex.&lt;/p>
+&lt;p>&lt;code>SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)&lt;/code>&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Enrichment.HybridAnalysis
+author: Wes Lambert -- @therealwlambert
+description: |
+ Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.
+
+ This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+
+ Ex.
+
+ `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
+
+type: SERVER
+
+parameters:
+ - name: Hash
+ type: string
+ description: The file hash to submit to Hybrid Analysis (MD5, SHA1, SHA256).
+ default:
+
+ - name: HybridAnalysisKey
+ type: string
+ description: API key for Hybrid Analysis. Leave blank here if using server metadata store.
+ default:
+
+ - name: UserAgent
+ type: string
+ description: Name of the user agent used for submitting hashes.
+ default: Velociraptor
+
+sources:
+ - query: |
+ LET Creds = if(
+ condition=HybridAnalysisKey,
+ then=HybridAnalysisKey,
+ else=server_metadata().HybridAnalysisKey)
+
+ LET URL &amp;lt;= 'https://hybrid-analysis.com/api/v2/search/hash'
+
+ LET Data = SELECT parse_json_array(data=Content) as Content
+ FROM http_client(
+ url=URL,
+ headers=dict(`api-key`=Creds,
+ `user-agent`=UserAgent,
+ `Content-Type`="application/x-www-form-urlencoded"),
+ params=dict(hash=Hash),
+ method='POST')
+
+ SELECT * from foreach (
+ row=Data,
+ query={
+ SELECT Content as _Content,
+ Content.verdict[0] as Verdict
+ FROM scope()
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Enrichment.Virustotal</title><link>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.virustotal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.enrichment.virustotal/</guid><description>&lt;p>Submit a file hash or IP to VirusTotal for details.&lt;/p>
+&lt;p>Note that the default public API rate limit is 4 requests/min.&lt;/p>
+&lt;p>This artifact can be called from within another artifact (such as one looking
+for files) to enrich the data made available by that artifact.&lt;/p>
+&lt;p>Example:&lt;/p>
+&lt;p>&lt;code>SELECT * from Artifact.Server.Enrichment.Virustotal(Hash=$YOURHASH)&lt;/code>
+&lt;code>SELECT * from Artifact.Server.Enrichment.Virustotal(IP=$YOURIP,QueryType='ip')&lt;/code>&lt;/p>
+&lt;p>TODO: Implement a timer to spread out requests&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Enrichment.Virustotal
+author: Wes Lambert -- @therealwlambert, Whitney Champion -- @shortxstack
+description: |
+ Submit a file hash or IP to VirusTotal for details.
+
+ Note that the default public API rate limit is 4 requests/min.
+
+ This artifact can be called from within another artifact (such as one looking
+ for files) to enrich the data made available by that artifact.
+
+ Example:
+
+ `SELECT * from Artifact.Server.Enrichment.Virustotal(Hash=$YOURHASH)`
+ `SELECT * from Artifact.Server.Enrichment.Virustotal(IP=$YOURIP,QueryType='ip')`
+
+ TODO: Implement a timer to spread out requests
+
+type: SERVER
+
+parameters:
+ - name: QueryType
+ type: choices
+ description: The type of query--hash or IP
+ default: hash
+ choices:
+ - hash
+ - ip
+
+ - name: Hash
+ type: string
+ description: The file hash to submit to Hybrid Analysis (MD5, SHA1, SHA256).
+ default:
+
+ - name: IP
+ type: string
+ description: The IP address to submit to Hybrid Analysis.
+ default:
+
+ - name: VirustotalKey
+ type: string
+ description: API key for Virustotal. Leave blank here if using server metadata store.
+ default:
+
+sources:
+ - query: |
+ LET Creds = if(
+ condition=VirustotalKey,
+ then=VirustotalKey,
+ else=server_metadata().VirustotalKey)
+
+ LET URL = if(
+ condition= QueryType='hash',
+ then= 'https://www.virustotal.com/api/v3/files/' + Hash,
+ else= 'https://www.virustotal.com/api/v3/ip_addresses/' + IP)
+
+ LET Data = SELECT parse_json(data=Content) AS VTData
+ FROM http_client(url=URL, headers=dict(`x-apikey`=Creds))
+
+ SELECT format(format='%v/%v',
+ args=[VTData.data.attributes.last_analysis_stats.malicious,
+ VTData.data.attributes.last_analysis_stats.malicious +
+ VTData.data.attributes.last_analysis_stats.undetected]) As VTRating,
+ timestamp(epoch=VTData.data.attributes.first_seen_itw_date) AS FirstSeen,
+ timestamp(epoch=VTData.data.attributes.first_submission_date) AS FirstSubmitted,
+ timestamp(epoch=VTData.data.attributes.last_analysis_date) AS LastAnalysis,
+ VTData.data.attributes.as_owner AS Owner,
+ VTData.data.attributes.whois AS WhoIs,
+ VTData.data.attributes.crowdsourced_yara_results AS YARAResults,
+ VTData AS _Data
+ FROM Data
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Hunts.AddFlow</title><link>https://docs.velociraptor.app/artifact_references/pages/server.hunts.addflow/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.hunts.addflow/</guid><description>&lt;p>This artifact adds an existing flow to a running hunt.&lt;/p>
+&lt;p>This helps in the case where the original flow in the hunt timed
+out. The user then can re-run the hunt manually possibly increasing
+timeout. Then they can simply click the add flow to hunt button in
+the UI to add the flow to an existing time.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Hunts.AddFlow
+description: |
+ This artifact adds an existing flow to a running hunt.
+
+ This helps in the case where the original flow in the hunt timed
+ out. The user then can re-run the hunt manually possibly increasing
+ timeout. Then they can simply click the add flow to hunt button in
+ the UI to add the flow to an existing time.
+
+type: SERVER
+
+parameters:
+ - name: HuntId
+ - name: ClientId
+ - name: FlowId
+
+sources:
+ - query: |
+ SELECT * FROM if(condition=HuntId AND ClientId AND FlowId,
+ then={
+ SELECT hunt_add(hunt_id=HuntId,
+ client_id=ClientId,
+ flow_id=FlowId)
+ FROM scope()
+ }, else={
+ SELECT * FROM scope() WHERE
+ log(message="&amp;lt;red&amp;gt;ERROR&amp;lt;/&amp;gt;: You must set HuntId, ClientId and FlowId.") AND FALSE
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Hunts.CancelAndDelete</title><link>https://docs.velociraptor.app/artifact_references/pages/server.hunts.cancelanddelete/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.hunts.cancelanddelete/</guid><description>&lt;p>Velociraptor Hunts are a way of running the same flow on
+many endpoints at once. Hunts issue very quickly and wait
+until each endpoint returns results.&lt;/p>
+&lt;p>Sometimes, the artifacts collected might take a long time and
+have unacceptable performance impact on the endpoint.
+In some cases the artifacts end up retrieving too much data
+that is not needed.&lt;/p>
+&lt;p>For those cases you might want to run the following server
+artifact. It cancels all currently in-flight collections.&lt;/p>
+&lt;p>Optionally you can also remove any files already collected if you
+do not need them.&lt;/p>
+&lt;p>This artifact is implicitly collected by the GUI when pressing the
+&amp;ldquo;Delete Hunt&amp;rdquo; Button.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Hunts.CancelAndDelete
+description: |
+ Velociraptor Hunts are a way of running the same flow on
+ many endpoints at once. Hunts issue very quickly and wait
+ until each endpoint returns results.
+
+ Sometimes, the artifacts collected might take a long time and
+ have unacceptable performance impact on the endpoint.
+ In some cases the artifacts end up retrieving too much data
+ that is not needed.
+
+ For those cases you might want to run the following server
+ artifact. It cancels all currently in-flight collections.
+
+ Optionally you can also remove any files already collected if you
+ do not need them.
+
+ This artifact is implicitly collected by the GUI when pressing the
+ "Delete Hunt" Button.
+
+type: SERVER
+
+parameters:
+ - name: HuntId
+ description: hunt_id you would like to kill all associated flows.
+
+ - name: Hunts
+ type: json_array
+ description: A list of hunt ids to delete
+ default: '[]'
+
+ - name: DeleteAllFiles
+ description: Also delete all collected files
+ type: bool
+
+sources:
+ - name: CancelFlows
+ query: |
+ SELECT * FROM Artifact.Server.Utils.CancelHunt(Hunts=Hunts)
+
+ - name: HuntFiles
+ query: |
+ LET AllHunts &amp;lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+
+ SELECT * FROM foreach(row={
+ SELECT _value as HuntId FROM items(item=AllHunts)
+ }, query={
+ SELECT *
+ FROM hunt_delete(hunt_id=HuntId, really_do_it=DeleteAllFiles)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Hunts.List</title><link>https://docs.velociraptor.app/artifact_references/pages/server.hunts.list/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.hunts.list/</guid><description>&lt;p>List Hunts currently scheduled on the server.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Hunts.List
+description: |
+ List Hunts currently scheduled on the server.
+
+type: SERVER
+
+sources:
+ - query: |
+ SELECT hunt_id,
+ timestamp(epoch=create_time) as Created,
+ join(array=start_request.artifacts, sep=",") as Artifact,
+ state
+ FROM hunts()
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Hunts.Results</title><link>https://docs.velociraptor.app/artifact_references/pages/server.hunts.results/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.hunts.results/</guid><description>&lt;p>Show the results from each artifact collection hunt.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Hunts.Results
+description: |
+ Show the results from each artifact collection hunt.
+parameters:
+ - name: huntId
+ default: H.d05b2482
+ - name: ArtifactName
+ default: Linux.Mounts
+
+type: SERVER
+
+sources:
+ - query: |
+ SELECT * FROM hunt_results(hunt_id=huntId, artifact=ArtifactName)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Import.ArtifactExchange</title><link>https://docs.velociraptor.app/artifact_references/pages/server.import.artifactexchange/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.import.artifactexchange/</guid><description>&lt;p>This artifact will automatically import the latest artifact
+exchange bundle into the current server.&lt;/p>
+&lt;h2 id="security-note">Security note&lt;/h2>
+&lt;p>The artifact exchange is not officially supported by the
+Velociraptor team and contains contributions from the
+community. The quality, security and stability of artifacts from
+the exchange is not guaranteed. Some artifacts from the exchange
+will fetch external binaries and run them on your endpoints! These
+binaries are not reviewed or endorsed by the Velociraptor team or
+Rapid7!&lt;/p>
+&lt;p>Contributions to the exchange must meet a lower quality bar than
+built-in artifacts (for example lacking tests), which means that
+they may break at any time or not work as described!&lt;/p>
+&lt;p>Collecting any of the artifacts in the exchange is purely at your
+own risk!.&lt;/p>
+&lt;p>We strongly suggest users review exchange artifacts carefully
+before deploying them on their network!&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Import.ArtifactExchange
+description: |
+ This artifact will automatically import the latest artifact
+ exchange bundle into the current server.
+
+ ## Security note
+
+ The artifact exchange is not officially supported by the
+ Velociraptor team and contains contributions from the
+ community. The quality, security and stability of artifacts from
+ the exchange is not guaranteed. Some artifacts from the exchange
+ will fetch external binaries and run them on your endpoints! These
+ binaries are not reviewed or endorsed by the Velociraptor team or
+ Rapid7!
+
+ Contributions to the exchange must meet a lower quality bar than
+ built-in artifacts (for example lacking tests), which means that
+ they may break at any time or not work as described!
+
+ Collecting any of the artifacts in the exchange is purely at your
+ own risk!.
+
+ We strongly suggest users review exchange artifacts carefully
+ before deploying them on their network!
+
+type: SERVER
+
+required_permissions:
+- SERVER_ADMIN
+
+parameters:
+ - name: ExchangeURL
+ default: https://github.com/Velocidex/velociraptor-docs/raw/gh-pages/exchange/artifact_exchange_v2.zip
+ - name: ArchiveGlob
+ default: "/**/*.{yaml,yml}"
+ - name: Tag
+ description: |
+ Tag artifacts with this tag.
+
+ This applied in addition to any tags contained in the artifact
+ description.
+ default: "Exchange"
+
+export: |
+ LET _Tags(Data) = SELECT * FROM foreach(row={
+ SELECT * FROM parse_lines(accessor="data", filename=Data, buffer_size=10000000)
+ WHERE Line =~ '''^\s*tags:'''
+ }, query={
+ SELECT * FROM parse_records_with_regex(
+ accessor="data", file=Line, regex="#(?P&amp;lt;Tag&amp;gt;[^ ]+)")
+ })
+
+ LET Tags(Data) = _Tags(Data=Data).Tag
+
+sources:
+ - query: |
+ LET X = SELECT artifact_set(
+ definition=Definition,
+ tags=(Tag,) + Tags(Data=Definition) ) AS Definition
+ FROM foreach(row={
+ SELECT Content FROM http_client(
+ remove_last=TRUE,
+ tempfile_extension=".zip", url=ExchangeURL)
+ }, query={
+ SELECT read_file(accessor="zip", filename=OSPath) AS Definition
+ FROM glob(
+ globs=ArchiveGlob,
+ root=pathspec(
+ DelegateAccessor="auto",
+ DelegatePath=Content),
+ accessor="zip")
+ })
+
+ SELECT Definition.name AS Name,
+ Definition.description AS Description,
+ Definition.author AS Author
+ FROM X
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Import.Extras</title><link>https://docs.velociraptor.app/artifact_references/pages/server.import.extras/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.import.extras/</guid><description>&lt;p>This artifact imports additional artifacts maintained outside the
+Velociraptor tree.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://sigma.velocidex.com/" target="_blank" >The Velociraptor Sigma Project&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://docs.velociraptor.app/exchange/" target="_blank" >The Artifact Exchange&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/rapid7/Rapid7-Labs" target="_blank" >Rapid7 Labs&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://registry-hunter.velocidex.com/" target="_blank" >The Registry Hunter&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://sqlitehunter.velocidex.com/" target="_blank" >The SQLite Hunter&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://triage.velocidex.com/" target="_blank" >The Triage Artifacts&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Import.Extras
+description: |
+ This artifact imports additional artifacts maintained outside the
+ Velociraptor tree.
+
+ * [The Velociraptor Sigma Project](https://sigma.velocidex.com/)
+ * [The Artifact Exchange](https://docs.velociraptor.app/exchange/)
+ * [Rapid7 Labs](https://github.com/rapid7/Rapid7-Labs)
+ * [The Registry Hunter](https://registry-hunter.velocidex.com/)
+ * [The SQLite Hunter](https://sqlitehunter.velocidex.com/)
+ * [The Triage Artifacts](https://triage.velocidex.com/)
+
+type: SERVER
+
+required_permissions:
+- SERVER_ADMIN
+
+parameters:
+ - name: Details
+ type: csv
+ default: |
+ Name,Tag,URL
+ The Velociraptor Sigma Project,Extras,https://sigma.velocidex.com/Velociraptor.Sigma.Artifacts.zip
+ Artifact Exchange,Exchange,https://github.com/Velocidex/velociraptor-docs/raw/gh-pages/exchange/artifact_exchange_v2.zip
+ Rapid7Labs,Exchange,https://github.com/rapid7/Rapid7-Labs/raw/main/Vql/release/Rapid7LabsVQL.zip
+ The Registry Hunter,Extras,https://registry-hunter.velocidex.com/Windows.Registry.Hunter.zip
+ The SQLiteHunter,Extras,https://sqlitehunter.velocidex.com/SQLiteHunter.zip
+ The Triage Artifacts,Extras,https://triage.velocidex.com/artifacts/Velociraptor_Triage_v0.1.zip
+
+sources:
+ - query: |
+ SELECT * FROM foreach(row=Details,
+ query={
+ SELECT * FROM Artifact.Server.Import.ArtifactExchange(ExchangeURL=URL, Tag=Tag)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Import.PreviousReleases</title><link>https://docs.velociraptor.app/artifact_references/pages/server.import.previousreleases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.import.previousreleases/</guid><description>&lt;p>When upgrading the Velociraptor server, the built-in artifacts may change and
+use newer VQL features that are not present in older clients.&lt;/p>
+&lt;p>If you have some older clients that cannot be upgraded, sometimes collection
+of updated built-in artifacts will fail due to incompatibility. In such
+situations it is necessary to import older VQL artifacts that will work with
+these older clients.&lt;/p>
+&lt;p>This server artifact allows you to automatically import all artifacts that
+came bundled with previous versions. These should be compatible with older
+clients, but may lack newer features and improvements that the latest
+artifacts have.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Import.PreviousReleases
+description: |
+ When upgrading the Velociraptor server, the built-in artifacts may change and
+ use newer VQL features that are not present in older clients.
+
+ If you have some older clients that cannot be upgraded, sometimes collection
+ of updated built-in artifacts will fail due to incompatibility. In such
+ situations it is necessary to import older VQL artifacts that will work with
+ these older clients.
+
+ This server artifact allows you to automatically import all artifacts that
+ came bundled with previous versions. These should be compatible with older
+ clients, but may lack newer features and improvements that the latest
+ artifacts have.
+
+type: SERVER
+
+required_permissions:
+- SERVER_ADMIN
+
+parameters:
+ - name: VelociraptorRelease
+ description: |
+ The Velociraptor Release to import.
+ type: choices
+ default: v0.74
+ choices:
+ - v0.72
+ - v0.73
+ - v0.74
+
+sources:
+ - query: |
+ LET Prefix &amp;lt;= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
+ LET ExchangeURL = "https://docs.velociraptor.app/release_artifacts/release_artifacts_" + VelociraptorRelease + ".zip"
+
+ LET X = SELECT artifact_set(
+ prefix=Prefix, tags=VelociraptorRelease,
+ definition=Definition) AS Definition
+ FROM foreach(row={
+ SELECT Content FROM http_client(
+ remove_last=TRUE,
+ tempfile_extension=".zip", url=ExchangeURL)
+ }, query={
+ -- Replace internal references to use the same version so
+ -- artifacts are still internally consistent.
+ SELECT regex_replace(source=read_file(accessor="zip", filename=OSPath),
+ re='''(?sm) Artifact\.([a-z0-9._]+?[(])''',
+ replace=" Artifact." + Prefix + "$1") AS Definition
+ FROM glob(
+ globs='/**/*.yaml',
+ root=pathspec(
+ DelegateAccessor="auto",
+ DelegatePath=Content),
+ accessor="zip")
+ WHERE NOT Definition =~ "(?ms)type: +INTERNAL"
+ })
+
+ SELECT Definition.name AS Name,
+ Definition.description AS Description,
+ Definition.author AS Author
+ FROM X
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Information.Clients</title><link>https://docs.velociraptor.app/artifact_references/pages/server.information.clients/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.information.clients/</guid><description>&lt;p>This artifact returns the total list of clients, their hostnames and
+the last times they were seen.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Information.Clients
+description: |
+ This artifact returns the total list of clients, their hostnames and
+ the last times they were seen.
+
+type: SERVER
+
+sources:
+ - query: |
+ SELECT client_id,
+ os_info.fqdn as HostName,
+ os_info.system as OS,
+ os_info.release as Release,
+ timestamp(epoch=last_seen_at/ 1000000).String as LastSeenAt,
+ last_ip AS LastIP,
+ last_seen_at AS _LastSeenAt
+ FROM clients()
+ ORDER BY _LastSeenAt DESC
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Information.Users</title><link>https://docs.velociraptor.app/artifact_references/pages/server.information.users/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.information.users/</guid><description>&lt;p>List the user names and SIDs on each machine. We get this
+information from the last time we collected Windows.Sys.Users. If we
+never collected it for this machine, there will be no results.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Information.Users
+description: |
+ List the user names and SIDs on each machine. We get this
+ information from the last time we collected Windows.Sys.Users. If we
+ never collected it for this machine, there will be no results.
+
+type: SERVER
+
+parameters:
+ - name: StandardUserAccounts
+ description: Well known SIDs to hide from the output.
+ default: "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"
+ type: regex
+
+sources:
+ - query: |
+ LET clients = SELECT client_id, os_info.fqdn AS Fqdn FROM clients()
+
+ // Get the most recent collection of our user listing.
+ LET last_user_listing = SELECT
+ session_id AS flow_id,
+ active_time, client_id, Fqdn
+ FROM flows(client_id=client_id)
+ WHERE artifacts_with_results =~'Windows.Sys.Users'
+ ORDER BY active_time
+ DESC LIMIT 1
+
+ /* For each Windows.Sys.Users collection, extract the user
+ names, but hide standard SIDs.
+ */
+ LET users = SELECT * FROM foreach(
+ row=last_user_listing,
+ query={
+ SELECT Name, UUID, client_id, Fqdn from source(
+ flow_id=flow_id,
+ artifact='Windows.Sys.Users',
+ client_id=client_id)
+ WHERE NOT UUID =~ StandardUserAccounts
+ })
+
+ SELECT * FROM foreach(row=clients, query=users)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.Welcome</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.welcome/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.welcome/</guid><description>&lt;p>This is the welcome screen in the Velociraptor GUI. You can
+customize this screen by editing this artifact.&lt;/p>
+&lt;p>When editing the artifact in the main &lt;code>View Artifacts&lt;/code> screen you
+will see some markdown in the reports section of the YAML
+file. Simply edit this markdown and your server will display your
+customized report.&lt;/p>
+&lt;p>You can use this to add important information to your specific
+deployment.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.Welcome
+description: |
+ This is the welcome screen in the Velociraptor GUI. You can
+ customize this screen by editing this artifact.
+
+ When editing the artifact in the main `View Artifacts` screen you
+ will see some markdown in the reports section of the YAML
+ file. Simply edit this markdown and your server will display your
+ customized report.
+
+ You can use this to add important information to your specific
+ deployment.
+
+type: SERVER
+
+sources:
+- query: SELECT * FROM info()
+
+reports:
+ - type: CLIENT
+ template: |
+ &amp;lt;div class="row dashboard "&amp;gt;
+ &amp;lt;div class="card col-10"&amp;gt;
+ &amp;lt;img src="https://docs.velociraptor.app/artifact_references/pages/server.internal.welcome/./velo.svg" height="150"&amp;gt;
+ &amp;lt;div class="card-body"&amp;gt;
+ {{ $X := Query "LET DebugLink &amp;lt;= link_to(type='debug', org='root')" | Expand }}
+
+ # Welcome to Velociraptor!
+
+ &amp;lt;table&amp;gt;&amp;lt;tbody&amp;gt;&amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;
+
+ * &amp;lt;a href="#/dashboard"&amp;gt;View server dashboard&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/collected/server/new/Server.Import.Extras"&amp;gt;Import Extra artifacts&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/collected/server/new/Server.Utils.CreateLinuxPackages"&amp;gt;Build Linux client packages&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/collected/server/new/Server.Utils.CreateMSI"&amp;gt;Build Windows client MSI&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/collected/server/new/Server.Utils.CreateCollector"&amp;gt;Build an Offline Collector&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/collected/server/new/Server.Orgs.NewOrg"&amp;gt;Create a new Org&amp;lt;/a&amp;gt;
+
+ &amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;
+
+ * &amp;lt;a href="#/host/server"&amp;gt;View Server Configuration&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/events/server/Server.Audit.Logs"&amp;gt;Inspect Server Audit Log&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/secrets"&amp;gt;Manage Server Secrets&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/users"&amp;gt;Manage Velociraptor Users&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="#/artifacts/Server.Internal.Welcome/edit"&amp;gt;Customize this welcome screen&amp;lt;/a&amp;gt;
+ * &amp;lt;a href="{{ Scope "DebugLink" }}"&amp;gt;Debug the server&amp;lt;/a&amp;gt;
+
+ &amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;/tbody&amp;gt;&amp;lt;/table&amp;gt;
+
+ Or search for a client in the search bar above.
+
+ You can always get back to this welcome screen by clicking the
+ little green reptile above!
+
+ ## Tips
+
+ 1. Press `Ctrl-/` to view keyboard hotkeys.
+
+ &amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitor.Profile</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitor.profile/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitor.profile/</guid><description>&lt;p>This artifact collects profiling information from the running
+server. This is useful when you notice a high CPU load in the server
+and want to know why.&lt;/p>
+&lt;p>The following options are most useful:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Goroutines: This shows the backtraces of all currently running
+goroutines. It will generally show most of the code working in the
+current running set of queries.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Heap: This shows all allocations currently in use and where they
+are allocated from. This is useful if the server is taking too
+much memory.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Profile: This takes a CPU profile of the running process for the
+number of seconds specified in the Duration parameter. You can
+read profiles by using:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>go tool pprof -callgrind -output=profile.grind profile.bin
+kcachegrind profile.grind
+&lt;/code>&lt;/pre>
+&lt;p>NOTE: As of 0.7.0 release, this artifact will also collect
+goroutines and heap profiles as distinct sources in a more readable
+way.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitor.Profile
+description: |
+ This artifact collects profiling information from the running
+ server. This is useful when you notice a high CPU load in the server
+ and want to know why.
+
+ The following options are most useful:
+
+ 1. Goroutines: This shows the backtraces of all currently running
+ goroutines. It will generally show most of the code working in the
+ current running set of queries.
+
+ 2. Heap: This shows all allocations currently in use and where they
+ are allocated from. This is useful if the server is taking too
+ much memory.
+
+ 3. Profile: This takes a CPU profile of the running process for the
+ number of seconds specified in the Duration parameter. You can
+ read profiles by using:
+
+ ```
+ go tool pprof -callgrind -output=profile.grind profile.bin
+ kcachegrind profile.grind
+ ```
+
+ NOTE: As of 0.7.0 release, this artifact will also collect
+ goroutines and heap profiles as distinct sources in a more readable
+ way.
+
+type: SERVER
+
+parameters:
+ - name: Allocs
+ description: A sampling of all past memory allocations
+ type: bool
+ default: Y
+ - name: Block
+ description: Stack traces that led to blocking on synchronization primitives
+ type: bool
+ - name: Goroutine
+ description: Stack traces of all current goroutines
+ type: bool
+ default: Y
+ - name: Heap
+ description: A sampling of memory allocations of live objects
+ type: bool
+ - name: Mutex
+ description: Stack traces of holders of contended mutexes
+ type: bool
+ - name: Profile
+ description: CPU profile
+ type: bool
+ - name: Trace
+ description: CPU trace
+ type: bool
+ - name: Logs
+ description: Get logs
+ type: bool
+ - name: QueryLogs
+ description: Get recent queries logs
+ type: bool
+ - name: Metrics
+ description: Get server metrics
+ type: bool
+ - name: Verbose
+ description: Print more detail
+ type: bool
+ - name: Duration
+ description: Duration of sampling for Profile and Trace.
+ default: "30"
+
+export: |
+ LET CleanUp(Name) = regex_replace(
+ re="www.velocidex.com/golang/velociraptor/",
+ replace="", source=Name)
+
+sources:
+ - query: |
+ SELECT Type,
+ if(condition=get(field="OSPath"),
+ then=upload(name=Type + ".bin", file=OSPath)) AS File,
+ get(member="Line") AS Line
+ FROM profile(allocs=Allocs, block=Block, goroutine=Goroutine,
+ heap=Heap, mutex=Mutex, profile=Profile, trace=Trace,
+ debug=if(condition=Verbose, then=2, else=1),
+ duration=atoi(string=Duration))
+
+ - name: Goroutines
+ query: |
+ SELECT *, {
+ SELECT format(format="%v (%v:%v)",
+ args=[CleanUp(Name=Name), basename(path=File), Line])
+ FROM CallStack
+ WHERE File =~ 'velociraptor|vfilter|go-ntfs'
+ LIMIT 10
+ } AS CallStack
+ FROM profile_goroutines()
+ WHERE CallStack
+
+ - name: Memory
+ query: |
+ SELECT InUseBytes, InUseObjects, {
+ SELECT format(format="%v (%v:%v)",
+ args=[CleanUp(Name=Name), basename(path=File), Line])
+ FROM CallStack
+ WHERE File =~ 'velociraptor|vfilter|go-ntfs'
+ LIMIT 10
+ } AS CallStack
+ FROM profile_memory()
+ ORDER BY InUseBytes DESC
+
+ - name: Logs
+ query: |
+ SELECT * FROM profile(logs=TRUE)
+
+ - name: RunningQueries
+ query: |
+ SELECT Line.Start AS Timestamp, Line.Query AS Query
+ FROM profile(queries=TRUE)
+ WHERE NOT Line.Duration
+
+ - name: AllQueries
+ query: |
+ SELECT Line.Start AS Timestamp, int(int = Line.Duration / 1000000) AS DurationSec, Line.Query AS Query
+ FROM profile(queries=TRUE)
+
+ - name: Metrics
+ query: |
+ SELECT *
+ FROM profile(metrics=TRUE)
+
+ - name: Everything
+ query: SELECT * FROM profile(type='.+')
+
+column_types:
+ - name: InUseBytes
+ type: mb
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitor.VeloMetrics</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitor.velometrics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitor.velometrics/</guid><description>&lt;p>Get Velociraptor server metrics.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitor.VeloMetrics
+description: |
+ Get Velociraptor server metrics.
+
+type: SERVER
+
+parameters:
+ - name: MetricsURL
+ default: http://localhost:8003/metrics
+
+sources:
+ - query: |
+ LET stats = SELECT parse_string_with_regex(string=Content,
+ regex=[
+ 'client_comms_concurrency (?P&amp;lt;client_comms_concurrency&amp;gt;[^\\s]+)',
+ 'client_comms_current_connections (?P&amp;lt;client_comms_current_connections&amp;gt;[^\\s]+)',
+ 'flow_completion (?P&amp;lt;flow_completion&amp;gt;[^\\s]+)',
+ 'process_open_fds (?P&amp;lt;process_open_fds&amp;gt;[^\\s]+)',
+ 'uploaded_bytes (?P&amp;lt;uploaded_bytes&amp;gt;[^\\s]+)',
+ 'uploaded_files (?P&amp;lt;uploaded_files&amp;gt;[^\\s]+)',
+ 'stats_client_one_day_actives{version="[^"]+"} (?P&amp;lt;one_day_active&amp;gt;[^\\s]+)',
+ 'stats_client_seven_day_actives{version="[^"]+"} (?P&amp;lt;seven_day_active&amp;gt;[^\\s]+)'
+ ]) AS Stat, {
+ // On Windows Prometheus does not provide these so we get our own.
+ SELECT Times.user + Times.system as CPU,
+ MemoryInfo.RSS as RSS
+ FROM pslist(pid=getpid())
+ } AS PslistStats
+ FROM http_client(url=MetricsURL, chunk_size=50000)
+
+ SELECT now() AS Timestamp,
+ PslistStats.RSS AS process_resident_memory_bytes,
+ parse_float(string=Stat.client_comms_concurrency)
+ AS client_comms_concurrency,
+ parse_float(string=Stat.client_comms_current_connections)
+ AS client_comms_current_connections,
+ parse_float(string=Stat.flow_completion) AS flow_completion,
+ parse_float(string=Stat.uploaded_bytes) AS uploaded_bytes,
+ parse_float(string=Stat.uploaded_files) AS uploaded_files,
+ parse_float(string=Stat.process_open_fds)
+ AS process_open_fds,
+ PslistStats.CPU AS process_cpu_seconds_total,
+ parse_float(string=Stat.one_day_active)
+ AS one_day_active,
+ parse_float(string=Stat.seven_day_active)
+ AS seven_day_active
+ FROM stats
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Orgs.ListOrgs</title><link>https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/</guid><description>&lt;p>This server artifact will list all currently configured orgs on the server.&lt;/p>
+&lt;p>NOTE: This artifact is only available to users with the &lt;code>ORG_ADMIN&lt;/code>
+permission, which is normally only granted to users with the administrator
+role within the root org (that means you might need to switch to the root org
+in the GUI before collecting this artifact).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Orgs.ListOrgs
+description: |
+ This server artifact will list all currently configured orgs on the server.
+
+ NOTE: This artifact is only available to users with the `ORG_ADMIN`
+ permission, which is normally only granted to users with the administrator
+ role within the root org (that means you might need to switch to the root org
+ in the GUI before collecting this artifact).
+
+type: SERVER
+
+parameters:
+- name: AlsoDownloadClientConfigs
+ type: bool
+ description: When set also downloads client configs from each org
+
+sources:
+- query: |
+ SELECT * FROM if(condition=AlsoDownloadClientConfigs,
+ then={
+ SELECT *, upload(file=_client_config,
+ accessor="data",
+ name=format(format="client.%s.config.yaml", args=OrgId || "RootOrg")) AS ClientConfig
+ FROM orgs()
+ }, else={
+ SELECT * FROM orgs()
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Orgs.NewOrg</title><link>https://docs.velociraptor.app/artifact_references/pages/server.orgs.neworg/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.orgs.neworg/</guid><description>&lt;p>This server artifact will create a new org and assign the current user as an
+admin to it.&lt;/p>
+&lt;p>NOTE: This artifact is only available to users with the &lt;code>ORG_ADMIN&lt;/code>
+permission, which is normally only granted to users with the administrator
+role within the root org (that means you might need to switch to the root org
+in the GUI before collecting this artifact).&lt;/p>
+&lt;p>This artifact will also run a set of server artifacts in the new org. If you
+need to run any other initialization steps in the new org, you can package
+those into one or more server artifacts and include those in the
+&lt;code>InitialArtifacts&lt;/code> parameter.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Orgs.NewOrg
+description: |
+ This server artifact will create a new org and assign the current user as an
+ admin to it.
+
+ NOTE: This artifact is only available to users with the `ORG_ADMIN`
+ permission, which is normally only granted to users with the administrator
+ role within the root org (that means you might need to switch to the root org
+ in the GUI before collecting this artifact).
+
+ This artifact will also run a set of server artifacts in the new org. If you
+ need to run any other initialization steps in the new org, you can package
+ those into one or more server artifacts and include those in the
+ `InitialArtifacts` parameter.
+
+type: SERVER
+
+parameters:
+- name: OrgName
+ default: "New Org"
+ description: |
+ The name of the new org. A new Org ID will be assigned.
+
+- name: InitialArtifacts
+ type: artifactset
+ artifact_type: SERVER
+ default: |
+ Artifact
+ Server.Utils.CreateMSI
+ Server.Utils.CreateLinuxPackages
+ description: |
+ Start the following server artifacts in the new org.
+
+sources:
+- query: |
+ LET org_record &amp;lt;= org_create(name=OrgName)
+ LET _ &amp;lt;= log(message="Created New Org with ID %v", args=org_record.id)
+
+ -- Give the current user permissions to operate in the org.
+ LET _ &amp;lt;= user_create(orgs=org_record.id,
+ roles=["administrator", "org_admin"],
+ user=whoami())
+
+ -- Launch this as a separate collection within the Org.
+ SELECT * FROM query(
+ query={
+ SELECT collect_client(artifacts=InitialArtifacts.Artifact, client_id="server")
+ FROM scope()
+ }, org_id=org_record.id, env=dict(InitialArtifacts=InitialArtifacts))
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.AddTimeline</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.addtimeline/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.addtimeline/</guid><description>&lt;p>Adds a new timeline to a super timeline.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.AddTimeline
+description: |
+ Adds a new timeline to a super timeline.
+
+type: SERVER
+
+parameters:
+ - name: NotebookId
+ - name: Timeline
+ description: SuperTimeline name
+ - name: ChildName
+ description: Name of child timeline
+ - name: Query
+ description: A query that will be parsed and run.
+ - name: Key
+ description: Sort column for time
+ - name: MessageColumn
+ description: The name of the column to appear as the message
+ - name: RemoveLimit
+ description: If specified, we remove the limit clause before adding to the timeline.
+ type: bool
+ - name: Env
+ type: json
+
+sources:
+ - query: |
+ SELECT timeline_add(
+ notebook_id=NotebookId,
+ timeline=Timeline,
+ name=ChildName,
+ message_column=MessageColumn,
+ query={
+ SELECT * FROM query(query=if(condition=RemoveLimit,
+ then=regex_replace(re="(?i)LIMIT [0-9]+", replace="", source=Query),
+ else=Query), env=Env)
+ },
+ key=Key), RemoveLimit
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.AddUser</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.adduser/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.adduser/</guid><description>&lt;p>This server artifact is used to add new user to the Velociraptor
+GUI.&lt;/p>
+&lt;p>A new random password is generated for the user and stored in the
+server metadata object (to ensure it cannot be seen in the output
+of the artifact itself). The Administrator can share this password
+with the user later.&lt;/p>
+&lt;p>When using SSO (e.g. oauth) this password is not used and can be
+ignored (Becuase the SSO provider will do the authentication).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.AddUser
+description: |
+ This server artifact is used to add new user to the Velociraptor
+ GUI.
+
+ A new random password is generated for the user and stored in the
+ server metadata object (to ensure it cannot be seen in the output
+ of the artifact itself). The Administrator can share this password
+ with the user later.
+
+ When using SSO (e.g. oauth) this password is not used and can be
+ ignored (Becuase the SSO provider will do the authentication).
+
+type: SERVER
+
+parameters:
+ - name: UserName
+ description: The new username to add
+
+ - name: ResetPassword
+ type: bool
+ default: "Y"
+ description: |
+ Reset the user's password. This must be set when
+ creating the user in the first place.
+
+ - name: Role
+ description: The role to grant the new user.
+ type: choices
+ default: reader
+ choices:
+ - reader
+ - analyst
+ - investigator
+ - administrator
+
+sources:
+ - query: |
+ LET Password &amp;lt;= format(format="%02x", args=rand(range=0xffffffffffff))
+ LET ServerMetadataKey &amp;lt;= "User Password " + UserName
+
+ LET DoIt = SELECT * FROM if(condition=ResetPassword,
+ then={
+ SELECT
+ server_set_metadata(metadata=set(
+ item=server_metadata(),
+ field=ServerMetadataKey, value=Password)),
+ user_create(roles=Role, user=UserName, password=Password)
+ FROM scope()
+ WHERE log(message="New password for user is stored in server metadata under key " + ServerMetadataKey)
+ }, else={
+ -- Just grant the user the specified role
+ SELECT user_create(roles=Role, user=UserName)
+ FROM scope()
+ })
+
+ SELECT * FROM if(condition=UserName,
+ then={
+ SELECT * FROM foreach(row=DoIt,
+ query={
+ SELECT * FROM gui_users()
+ WHERE name =~ UserName
+ })
+ }, else={
+ SELECT * FROM scope()
+ WHERE log(message="A Username must be set") AND FALSE
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.CancelHunt</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.cancelhunt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.cancelhunt/</guid><description>&lt;p>Sometimes a hunt is issued which is no longer useful. While stopping
+the hunt from the GUI prevents new clients from receiving the hunt,
+it does not actively cancel collections currently in flight.&lt;/p>
+&lt;p>This artifact enumerates all flows in the hunt and actively cancels
+them.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.CancelHunt
+description: |
+ Sometimes a hunt is issued which is no longer useful. While stopping
+ the hunt from the GUI prevents new clients from receiving the hunt,
+ it does not actively cancel collections currently in flight.
+
+ This artifact enumerates all flows in the hunt and actively cancels
+ them.
+
+type: SERVER
+
+parameters:
+ - name: HuntId
+ - name: Hunts
+ type: json_array
+ description: A list of hunts to cancel
+ default: '[]'
+
+sources:
+ - query: |
+ LET all_flows(HuntId) = SELECT Flow.client_id AS client_id, Flow.session_id AS flow_id
+ FROM hunt_flows(hunt_id=HuntId)
+ WHERE NOT Flow.state =~ "ERROR|FINISHED"
+
+ LET cancellations(HuntId) = SELECT HuntId, client_id, flow_id,
+ cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
+ FROM all_flows(HuntId=HuntId)
+
+ LET AllHunts &amp;lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+
+ SELECT * FROM foreach(row={
+ SELECT _value as HuntId FROM items(item=AllHunts)
+ }, query={
+ SELECT * FROM cancellations(HuntId=HuntId)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.CollectClient</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.collectclient/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.collectclient/</guid><description>&lt;p>This artifact simplifies collecting from a specific client by
+performing all steps automatically:&lt;/p>
+&lt;ol>
+&lt;li>The collection will be scheduled.&lt;/li>
+&lt;li>The artifact will wait for the collection to complete&lt;/li>
+&lt;li>The results from the collection will be displayed.&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.CollectClient
+description: |
+ This artifact simplifies collecting from a specific client by
+ performing all steps automatically:
+
+ 1. The collection will be scheduled.
+ 2. The artifact will wait for the collection to complete
+ 3. The results from the collection will be displayed.
+
+type: SERVER
+
+parameters:
+ - name: ArtifactName
+ default: Generic.Client.Info
+ - name: Client
+ description: A client ID or a Hostname
+ default: C.1234
+ - name: Parameters
+ default: "{}"
+ description: A key/value JSON object specifying parameters for the artifact
+ type: json
+
+sources:
+ - query: |
+ -- Find a client to collect from by applying the search
+ -- critertia and picking the first hit
+ LET clients = SELECT client_id FROM clients(search=Client) LIMIT 1
+ LET client_id &amp;lt;= clients[0].client_id
+
+ -- If we found something then schedule the collection.
+ LET collection &amp;lt;= if(condition=client_id,
+ then=collect_client(client_id=client_id,
+ artifacts=ArtifactName, env=Parameters),
+ else=log(message="No clients found to match search " + Client) AND FALSE)
+
+ -- Wait for the collection to finish - if the client is
+ -- currently connected this wont take long
+ LET flow_results &amp;lt;= SELECT * FROM if(condition=collection,
+ then={
+ SELECT * FROM watch_monitoring(artifact='System.Flow.Completion')
+ WHERE FlowId = collection.flow_id
+ LIMIT 1
+ })
+
+ -- Collect the results
+ SELECT * FROM foreach(row=flow_results[0].Flow.artifacts_with_results,
+ query={
+ SELECT *, _value AS Source, client_id
+ FROM source(client_id=client_id, flow_id=collection.flow_id, artifact=_value)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.CreateCollector</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.createcollector/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.createcollector/</guid><description>&lt;p>A utility artifact to create a stand alone collector.&lt;/p>
+&lt;p>This artifact is actually invoked by the Offline collector GUI and
+that is the recommended way to launch it. You can find the Offline
+collector builder in the &lt;code>Server Artifacts&lt;/code> section of the GUI.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.CreateCollector
+description: |
+ A utility artifact to create a stand alone collector.
+
+ This artifact is actually invoked by the Offline collector GUI and
+ that is the recommended way to launch it. You can find the Offline
+ collector builder in the `Server Artifacts` section of the GUI.
+
+type: SERVER
+
+parameters:
+ - name: OS
+ default: Windows
+ type: choices
+ choices:
+ - Windows
+ - Windows_x86
+ - Linux
+ - MacOS
+ - MacOSArm
+ - Generic
+
+ - name: artifacts
+ description: A list of artifacts to collect
+ type: json_array
+ default: |
+ ["Generic.Client.Info"]
+
+ - name: encryption_scheme
+ description: |
+ Encryption scheme to use. Currently supported are Password, X509 or PGP
+
+ - name: encryption_args
+ description: |
+ Encryption arguments
+ type: json
+ default: |
+ {}
+
+ - name: parameters
+ description: A dict containing the parameters to set.
+ type: json
+ default: |
+ {}
+
+ - name: target
+ description: Output type
+ type: choices
+ default: ZIP
+ choices:
+ - ZIP
+ - GCS
+ - S3
+ - SFTP
+ - Azure
+ - SMBShare
+
+ - name: target_args
+ description: Type Dependent args
+ type: json
+ default: "{}"
+
+ - name: opt_verbose
+ default: Y
+ type: bool
+ description: Show verbose progress.
+
+ - name: opt_banner
+ default: Y
+ type: bool
+ description: Show Velociraptor banner.
+
+ - name: opt_prompt
+ default: N
+ type: bool
+ description: Wait for a prompt before closing.
+
+ - name: opt_admin
+ default: Y
+ type: bool
+ description: Require administrator privilege when running.
+
+ - name: opt_tempdir
+ default:
+ description: A directory to write tempfiles in
+
+ - name: opt_level
+ default: "5"
+ type: int
+ description: Compression level (0=no compression).
+
+ - name: opt_concurrency
+ default: "2"
+ type: int
+ description: Number of concurrency queries
+
+ - name: opt_format
+ default: "jsonl"
+ description: Output format (jsonl or csv)
+
+ - name: opt_output_directory
+ default: ""
+ description: Where we actually write the collection to. You can specify this as a mapped drive to write over the network.
+
+ - name: opt_filename_template
+ default: "Collection-%Hostname%-%TIMESTAMP%"
+ description: |
+ The filename to use. You can expand environment variables as
+ well as the following: %Hostname%, %FQDN% and %TIMESTAMP%.
+
+ - name: opt_collector_filename
+ type: string
+ description: |
+ If used, this option overrides the default filename of the collector being built.
+
+ - name: opt_cpu_limit
+ default: "0"
+ type: int
+ description: |
+ A number between 0 to 100 representing the target maximum CPU
+ utilization during running of this artifact.
+
+ - name: opt_progress_timeout
+ default: "1800"
+ type: int
+ description: |
+ If specified the collector is terminated if it made no progress
+ in this long. Note: Execution time may be a lot longer since
+ each time any result is produced this counter is reset.
+
+ - name: opt_timeout
+ default: "0"
+ type: int
+ description: |
+ If specified the collection must complete in the given time. It
+ will be cancelled if the collection exceeds this time.
+
+ - name: opt_version
+ default: ""
+ type: string
+ description: |
+ If specified the collection will be packed with the specified
+ version of the binary. NOTE: This is rarely what you want
+ because the packed builtin artifacts are only compatible with
+ the current release version.
+
+ - name: opt_delete_at_exit
+ type: bool
+ default: N
+ description: |
+ If specified the collection will be deleted at exit. This only
+ makes sense when uploading to the cloud or a remote
+ location. NOTE: There is no way to check that the upload
+ actually worked so this flag deletes the collection regardless
+ of upload success.
+
+ - name: StandardCollection
+ type: hidden
+ default: |
+ LET _ &amp;lt;= log(message="Will collect package %v", args=zip_filename)
+
+ SELECT * FROM collect(artifacts=Artifacts,
+ args=Parameters, output=zip_filename,
+ cpu_limit=CpuLimit,
+ progress_timeout=ProgressTimeout,
+ timeout=Timeout,
+ password=pass[0].Pass,
+ level=Level,
+ concurrency=Concurrency,
+ format=Format,
+ remapping=Remapping,
+ metadata=ContainerMetadata)
+
+ - name: S3Collection
+ type: hidden
+ default: |
+ // A utility function to upload the file.
+ LET upload_file(filename, name, accessor) = upload_s3(
+ file=filename,
+ accessor=accessor,
+ bucket=TargetArgs.bucket,
+ name=name,
+ credentials_key=TargetArgs.credentialsKey,
+ credentials_secret=TargetArgs.credentialsSecret,
+ credentials_token=TargetArgs.credentialsToken,
+ region=TargetArgs.region,
+ endpoint=TargetArgs.endpoint,
+ serverside_encryption=TargetArgs.serverSideEncryption,
+ kms_encryption_key=TargetArgs.kmsEncryptionKey,
+ s3upload_root=TargetArgs.s3UploadRoot,
+ skip_verify=TargetArgs.noverifycert)
+
+ - name: GCSCollection
+ type: hidden
+ default: |
+ LET GCSBlob &amp;lt;= parse_json(data=target_args.GCSKey)
+
+ // A utility function to upload the file.
+ LET upload_file(filename, name, accessor) = upload_gcs(
+ file=filename,
+ accessor=accessor,
+ bucket=target_args.bucket,
+ project=GCSBlob.project_id,
+ name=name,
+ credentials=target_args.GCSKey)
+
+ - name: AzureSASURL
+ type: hidden
+ default: |
+ // A utility function to upload the file.
+ LET upload_file(filename, name, accessor) = upload_azure(
+ file=filename,
+ accessor=accessor,
+ sas_url=TargetArgs.sas_url,
+ name=name)
+
+ - name: SMBCollection
+ type: hidden
+ default: |
+ // A utility function to upload the file.
+ LET upload_file(filename, name, accessor) = upload_smb(
+ file=filename,
+ accessor=accessor,
+ username=TargetArgs.username,
+ password=TargetArgs.password,
+ server_address=TargetArgs.server_address,
+ name=name)
+
+ - name: SFTPCollection
+ type: hidden
+ default : |
+ LET upload_file(filename, name, accessor) = upload_sftp(
+ file=filename,
+ accessor=accessor,
+ name=name,
+ user=TargetArgs.user,
+ path=TargetArgs.path,
+ privatekey=TargetArgs.privatekey,
+ endpoint=TargetArgs.endpoint,
+ hostkey = TargetArgs.hostkey)
+
+ - name: CommonCollections
+ type: hidden
+ default: |
+ LET S = scope()
+ LET Remapping &amp;lt;= if(condition=Remapping,
+ then=log(message="Will load remapping rules from %v", args=Remapping) &amp;amp;&amp;amp;
+ read_file(filename=Remapping),
+ else="")
+
+ // Add all the tools we are going to use to the inventory.
+ LET _ &amp;lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
+ FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
+ WHERE log(message="Adding tool " + ToolName +
+ " version " + (S.Version || "Unknown"))
+
+ LET baseline &amp;lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
+ scope().CWD AS CWD, Hostname
+ FROM info()
+
+ LET OutputPrefix &amp;lt;= if(condition= OutputPrefix,
+ then=pathspec(parse=OutputPrefix),
+ else= if(condition= baseline[0].CWD,
+ then=pathspec(parse= baseline[0].CWD),
+ else=pathspec(parse= baseline[0].ExePath)))
+
+ LET _ &amp;lt;= log(message="Output Prefix : %v", args= OutputPrefix)
+
+ LET FormatMessage(Message) = regex_transform(
+ map=dict(`%FQDN%`=baseline[0].Fqdn,
+ `%Hostname%`=baseline[0].Hostname,
+ `%Timestamp%`=timestamp(epoch=now()).MarshalText),
+ source=Message)
+
+ // Format the filename safely according to the filename
+ // template. This will be the name uploaded to the bucket.
+ LET formatted_zip_name &amp;lt;= regex_replace(
+ source=expand(path=FormatMessage(Message=FilenameTemplate)),
+ re="[^0-9A-Za-z\\-]", replace="_")
+
+ // This is where we write the files on the endpoint.
+ LET zip_filename &amp;lt;= OutputPrefix + ( formatted_zip_name + ".zip" )
+ LET LogFile &amp;lt;= OutputPrefix + ( formatted_zip_name + ".log" )
+
+ LET _ &amp;lt;= log(message="Log file is at %v", args=LogFile)
+
+ // Create the log file and start writing into it
+ // Just forward output from the logging() plugin
+ LET LogPipe &amp;lt;= pipe(query={
+ SELECT format(format="[%v] %v %v\n",
+ args=(level, time, msg)) AS Line
+ FROM logging(prelog=TRUE)
+ })
+
+ LET _ &amp;lt;= background(query={
+ SELECT copy(accessor="pipe", filename="LogPipe", dest=LogFile) AS C
+ FROM scope()
+ })
+
+ -- Remove the zip file and log file when done if the user asked for it.
+ LET _ &amp;lt;= if(condition=DeleteOnExit, then=atexit(query={
+ SELECT rm(filename=zip_filename), rm(filename=log_filename) FROM scope()
+ WHERE log(message="Removed Zip file %v", args=zip_filename)
+ }, env=dict(zip_filename=zip_filename, log_filename=LogFile)))
+
+ -- Make a random hex string as a random password
+ LET RandomPassword &amp;lt;= SELECT format(format="%02x",
+ args=rand(range=255)) AS A
+ FROM range(end=25)
+
+ LET pass = SELECT * FROM switch(a={
+
+ -- For X509 encryption we use a random session password.
+ SELECT join(array=RandomPassword.A) as Pass From scope()
+ WHERE encryption_scheme =~ "pgp|x509"
+ AND log(message="I will generate a container password using the %v scheme",
+ args=encryption_scheme)
+
+ }, b={
+
+ -- Otherwise the user specified the password.
+ SELECT encryption_args.password as Pass FROM scope()
+ WHERE encryption_scheme =~ "password"
+
+ }, c={
+
+ -- No password specified.
+ SELECT Null as Pass FROM scope()
+ })
+
+ -- For X509 encryption_scheme, store the encrypted
+ -- password in the metadata file for later retrieval.
+ LET ContainerMetadata = if(
+ condition=encryption_args.public_key,
+ then=dict(
+ EncryptedPass=pk_encrypt(data=pass[0].Pass,
+ public_key=encryption_args.public_key,
+ scheme=encryption_scheme),
+ Scheme=encryption_scheme,
+ PublicKey=encryption_args.public_key))
+
+ - name: CloudCollection
+ type: hidden
+ default: |
+ LET TargetArgs &amp;lt;= target_args
+
+ // When uploading to the cloud it is allowed to use directory //
+ // separators and we trust the filename template to be a valid
+ // filename.
+ LET upload_name &amp;lt;= regex_replace(
+ source=expand(path=FormatMessage(Message=FilenameTemplate)),
+ re="[^0-9A-Za-z\\-/]", replace="_")
+
+ LET _ &amp;lt;= log(message="Will collect package %v and upload to cloud bucket %v",
+ args=[zip_filename, TargetArgs.bucket])
+
+ LET Result &amp;lt;= SELECT
+ upload_file(filename=Container,
+ name= upload_name + ".zip",
+ accessor="file") AS Upload,
+ upload_file(filename=LogFile,
+ name= upload_name + ".log",
+ accessor="file") AS LogUpload
+
+ FROM collect(artifacts=Artifacts,
+ args=Parameters,
+ format=Format,
+ output=zip_filename,
+ cpu_limit=CpuLimit,
+ progress_timeout=ProgressTimeout,
+ timeout=Timeout,
+ password=pass[0].Pass,
+ level=Level,
+ concurrency=Concurrency,
+ remapping=Remapping,
+ metadata=ContainerMetadata)
+
+ LET _ &amp;lt;= if(condition=NOT Result[0].Upload.Path,
+ then=log(message="&amp;lt;red&amp;gt;Failed to upload to cloud bucket!&amp;lt;/&amp;gt; Leaving the collection behind for manual upload!"),
+ else=log(message="&amp;lt;green&amp;gt;Collection Complete!&amp;lt;/&amp;gt; Please remove %v when you are sure it was properly transferred", args=zip_filename))
+
+ SELECT * FROM Result
+
+
+ - name: FetchBinaryOverride
+ type: hidden
+ description: |
+ A replacement for Generic.Utils.FetchBinary which
+ grabs files from the local archive.
+
+ default: |
+ LET RequiredTool &amp;lt;= ToolName
+ LET S = scope()
+
+ LET matching_tools &amp;lt;= SELECT ToolName, Filename
+ FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
+ WHERE RequiredTool = ToolName
+
+ LET get_ext(filename) = parse_string_with_regex(
+ regex="(\\.[a-z0-9]+)$", string=filename).g1
+
+ LET FullPath &amp;lt;= if(condition=matching_tools,
+ then=copy(filename=matching_tools[0].Filename,
+ accessor="me", dest=tempfile(
+ extension=get_ext(filename=matching_tools[0].Filename),
+ remove_last=TRUE,
+ permissions=if(condition=IsExecutable, then="x"))))
+
+ SELECT FullPath, FullPath AS OSPath,
+ Filename AS Name
+ FROM matching_tools
+
+export: |
+ // Use this JSON schema to validate an offline collector spec.yaml
+ LET SpecSchema &amp;lt;= '''
+ {
+ "type": "object",
+ "properties": {
+ "OS": {
+ "description": "OS Target to use",
+ "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
+ "default": "Generic"
+ },
+ "Artifacts": {
+ "type": "object",
+ "description": "Keys are artifact names to collect and values are strings",
+ "patternProperties": {
+ "^.+$": {
+ "type": "object",
+ "patternProperties": {
+ "^.+$": {
+ "type": "string"
+ }
+ }
+ }
+ }
+ },
+ "Target": {
+ "description": "The type of collector to use",
+ "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP"]
+ },
+ "EncryptionScheme": {
+ "enum": ["None", "X509", "Password", "PGP"],
+ "default": "None"
+ },
+ "EncryptionArgs": {
+ "type": "object",
+ "description": "Args for encryption",
+ "properties": {
+ "public_key": {
+ "type": "string"
+ },
+ "password": {
+ "type": "string"
+ }
+ },
+ "additionalProperties": false
+ },
+ "OptVerbose": {
+ "type": "boolean",
+ "default": true
+ },
+ "OptBanner": {
+ "type": "boolean",
+ "default": true
+ },
+ "OptPrompt": {
+ "type": "boolean",
+ "default": false
+ },
+ "OptAdmin": {
+ "type": "boolean",
+ "default": true
+ },
+ "OptTempdir": {
+ "type": "string",
+ "default": "$TMP"
+ },
+ "OptLevel": {
+ "type": "integer",
+ "default": 5
+ },
+ "OptConcurrency": {
+ "type": "integer",
+ "default": 2
+ },
+ "OptFilenameTemplate": {
+ "type": "string",
+ "default": "Collection-%FQDN%-%TIMESTAMP%"
+ },
+ "OptCollectorTemplate": {"type": "string"},
+ "OptFormat": {
+ "enum": ["jsonl", "csv"],
+ "default": "jsonl"
+ },
+ "OptOutputDirectory": {"type": "string"},
+ "OptCpuLimit": {"type": "integer"},
+ "OptProgressTimeout": {"type": "integer"},
+ "OptTimeout": {"type": "integer"},
+ "OptDeleteAtExit": {"type": "boolean"}
+ },
+ "allOf": [
+ { "description": "Target Args for GCS",
+ "if": {
+ "properties": { "Target": { "const": "GCS" } }
+ },
+ "then": {
+ "properties": {
+ "TargetArgs": {
+ "type": "object",
+ "properties": {
+ "bucket": {"type": "string"},
+ "GCSKey": {"type": "string"}
+ },
+ "additionalProperties": false,
+ "required": ["bucket", "GCSKey"]
+ }
+ }
+ }
+ },
+ { "description": "Target Args for S3",
+ "if": {
+ "properties": { "Target": { "const": "S3" } }
+ },
+ "then": {
+ "properties": {
+ "TargetArgs": {
+ "type": "object",
+ "properties": {
+ "bucket": {"type": "string"},
+ "credentialsKey": {"type": "string"},
+ "credentialsSecret": {"type": "string"},
+ "credentialsToken": {"type": "string"},
+ "region": {"type": "string"},
+ "endpoint": {"type": "string"},
+ "s3UploadRoot": {"type": "string"},
+ "serverSideEncryption": {"type": "string"},
+ "kmsEncryptionKey": {"type": "string"},
+ "noverifycert": {"type": "boolean"}
+ },
+ "additionalProperties": false,
+ "required": ["bucket"]
+ }
+ }
+ }
+ },
+ { "description": "Target Args for AzureSASURL",
+ "if": {
+ "properties": { "Target": { "const": "Azure" } }
+ },
+ "then": {
+ "properties": {
+ "TargetArgs": {
+ "type": "object",
+ "properties": {
+ "sas_url": {"type": "string"}
+ },
+ "additionalProperties": false,
+ "required": ["sas_url"]
+ }
+ }
+ }
+ },
+ { "description": "Target Args for SMBShare",
+ "if": {
+ "properties": { "Target": { "const": "SMBShare" } }
+ },
+ "then": {
+ "properties": {
+ "TargetArgs": {
+ "type": "object",
+ "properties": {
+ "username": {"type": "string"},
+ "password": {"type": "string"},
+ "server_address": {"type": "string"}
+ },
+ "additionalProperties": false,
+ "required": ["username", "password", "server_address"]
+ }
+ }
+ }
+ },
+ { "description": "Target Args for SFTPCollection",
+ "if": {
+ "properties": { "Target": { "const": "SFTP" } }
+ },
+ "then": {
+ "properties": {
+ "TargetArgs": {
+ "type": "object",
+ "properties": {
+ "path": {"type": "string"},
+ "privatekey": {"type": "string"},
+ "user": {"type": "string"},
+ "endpoint": {"type": "string"},
+ "hostkey": {"type": "string"}
+ },
+ "additionalProperties": false,
+ "required": ["user", "privatekey", "endpoint"]
+ }
+ }
+ }
+ },
+ { "description": "Target Args for ZIP",
+ "if": {
+ "properties": { "Target": { "const": "ZIP" } }
+ },
+ "then": {
+ "properties": {
+ "TargetArgs": {
+ "type": "object",
+ "default": {},
+ "additionalProperties": false,
+ "properties": {}
+ }
+ }
+ }
+ }
+ ]
+ }
+ '''
+
+sources:
+ - query: |
+ LET ParameterSpec &amp;lt;= to_dict(item={
+ SELECT _value AS _key, dict() AS _value
+ FROM foreach(row=artifacts)
+ }) + parameters
+
+ -- Check for errors in the Spec
+ LET _ &amp;lt;= SELECT {
+ SELECT name FROM artifact_definitions(names=_key)
+ } AS Def
+ FROM items(item=ParameterSpec)
+ WHERE Def || log(message="Artifact &amp;lt;red&amp;gt;%v&amp;lt;/&amp;gt; not found",
+ args=_key, dedup= -1, level="ERROR")
+
+ LET Binaries &amp;lt;= SELECT * FROM foreach(
+ row={
+ SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
+ }, query={
+ SELECT * FROM foreach(row=tools,
+ query={
+ SELECT name AS Binary FROM scope()
+ })
+ }) GROUP BY Binary
+
+ // Choose the right target binary depending on the target OS
+ LET tool_name = SELECT * FROM switch(
+ a={ SELECT "VelociraptorWindows" AS Type FROM scope() WHERE OS = "Windows"},
+ b={ SELECT "VelociraptorWindows_x86" AS Type FROM scope() WHERE OS = "Windows_x86"},
+ c={ SELECT "VelociraptorLinux" AS Type FROM scope() WHERE OS = "Linux"},
+ d={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOS"},
+ e={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOSArm"},
+ f={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "Generic"},
+ g={ SELECT "" AS Type FROM scope()
+ WHERE NOT log(message="Unknown target type " + OS) }
+ )
+
+ LET Target &amp;lt;= tool_name[0].Type
+
+ // This is what we will call it.
+ LET CollectorName &amp;lt;= opt_collector_filename ||
+ format(format='Collector_%v', args=inventory_get(tool=Target).Definition.filename)
+
+ LET CollectionArtifact &amp;lt;= SELECT Value FROM switch(
+ a = { SELECT CommonCollections + StandardCollection AS Value
+ FROM scope()
+ WHERE target = "ZIP" },
+ b = { SELECT S3Collection + CommonCollections + CloudCollection AS Value
+ FROM scope()
+ WHERE target = "S3" },
+ c = { SELECT GCSCollection + CommonCollections + CloudCollection AS Value
+ FROM scope()
+ WHERE target = "GCS" },
+ d = { SELECT SFTPCollection + CommonCollections + CloudCollection AS Value
+ FROM scope()
+ WHERE target = "SFTP" },
+ e = { SELECT AzureSASURL + CommonCollections + CloudCollection AS Value
+ FROM scope()
+ WHERE target = "Azure" },
+ f = { SELECT SMBCollection + CommonCollections + CloudCollection AS Value
+ FROM scope()
+ WHERE target = "SMBShare" },
+ z = { SELECT "" AS Value FROM scope()
+ WHERE log(message="Unknown collection type " + target) }
+ )
+
+ LET use_server_cert = encryption_scheme =~ "x509"
+ AND NOT encryption_args.public_key =~ "-----BEGIN CERTIFICATE-----"
+ AND log(message="Pubkey encryption specified, but no cert/key provided. Defaulting to server frontend cert")
+
+ -- For x509, if no public key cert is specified, we use the
+ -- server's own key. This makes it easy for the server to import
+ -- the file again.
+ LET updated_encryption_args &amp;lt;= if(
+ condition=use_server_cert,
+ then=dict(public_key=server_frontend_cert(),
+ scheme="x509"),
+ else=encryption_args || dict()
+ )
+
+ -- Add custom definition if needed. Built in definitions are not added
+ LET definitions &amp;lt;= SELECT * FROM chain(
+ a = { SELECT name, description, tools, export, parameters, sources
+ FROM artifact_definitions(deps=TRUE, names=artifacts)
+ WHERE NOT compiled_in AND
+ log(message="Adding artifact_definition for " + name) },
+
+ // Create the definition of the Collector artifact.
+ b = { SELECT "Collector" AS name, (
+ dict(name="Artifacts",
+ default=serialize(format='json', item=artifacts),
+ type="json_array"),
+ dict(name="Parameters",
+ default=serialize(format='json', item=ParameterSpec),
+ type="json"),
+ dict(name="encryption_scheme", default=encryption_scheme),
+ dict(name="encryption_args",
+ default=serialize(format='json', item=updated_encryption_args),
+ type="json"
+ ),
+ dict(name="Level", default=opt_level, type="int"),
+ dict(name="Remapping", default=""),
+ dict(name="Concurrency", default=opt_concurrency, type="int"),
+ dict(name="Format", default=opt_format),
+ dict(name="OutputPrefix", default=opt_output_directory),
+ dict(name="FilenameTemplate", default=opt_filename_template),
+ dict(name="CpuLimit", type="int",
+ default=opt_cpu_limit),
+ dict(name="ProgressTimeout", type="int",
+ default=opt_progress_timeout),
+ dict(name="Timeout", default=opt_timeout, type="int"),
+ dict(name="DeleteOnExit", default=opt_delete_at_exit, type="bool"),
+ dict(name="target_args",
+ default=serialize(format='json', item=target_args),
+ type="json"),
+ ) AS parameters,
+ (
+ dict(query=CollectionArtifact[0].Value),
+ ) AS sources
+ FROM scope() },
+
+ // Override FetchBinary to get files from the executable.
+ c = { SELECT "Generic.Utils.FetchBinary" AS name,
+ (
+ dict(name="SleepDuration", type="int", default="0"),
+ dict(name="ToolName"),
+ dict(name="ToolInfo"),
+ dict(name="TemporaryOnly", type="bool"),
+ dict(name="Version"),
+ dict(name="IsExecutable", type="bool", default="Y"),
+ ) AS parameters,
+ (
+ dict(query=FetchBinaryOverride),
+ ) AS sources FROM scope() }
+ )
+
+ LET optional_cmdline = SELECT * FROM chain(
+ a={ SELECT "-v" AS Opt FROM scope() WHERE opt_verbose},
+ b={ SELECT "--nobanner" AS Opt FROM scope() WHERE NOT opt_banner},
+ c={ SELECT "--require_admin" AS Opt FROM scope() WHERE opt_admin},
+ d={ SELECT "--prompt" AS Opt FROM scope() WHERE opt_prompt},
+ e={ SELECT "--tempdir" AS Opt FROM scope() WHERE opt_tempdir},
+ f={ SELECT opt_tempdir AS Opt FROM scope() WHERE opt_tempdir}
+ )
+
+ // Build the autoexec config file depending on the user's
+ // collection type choices.
+ LET autoexec &amp;lt;= dict(autoexec=dict(
+ argv=("artifacts", "collect", "Collector") + optional_cmdline.Opt,
+ artifact_definitions=definitions)
+ )
+
+ LET _ &amp;lt;= upload(accessor="data", file=serialize(format="yaml",
+ item=dict(
+ OS=OS,
+ Artifacts=ParameterSpec,
+ Target=target,
+ EncryptionScheme=encryption_scheme || "None",
+ EncryptionArgs=encryption_args || dict(),
+ OptVerbose=opt_verbose,
+ OptBanner=opt_banner,
+ OptPrompt=opt_prompt,
+ OptAdmin=opt_admin,
+ OptTempdir=opt_tempdir,
+ OptLevel=opt_level,
+ OptConcurrency=opt_concurrency,
+ OptFormat=opt_format,
+ OptOutputDirectory=opt_output_directory,
+ OptFilenameTemplate=opt_filename_template,
+ OptCollectorFilename=opt_collector_filename,
+ OptCpuLimit=opt_cpu_limit,
+ OptProgressTimeout=opt_progress_timeout,
+ OptTimeout=opt_timeout,
+ OptDeleteAtExit=opt_delete_at_exit
+ )), name="spec.yaml")
+
+ // Do the actual repacking.
+ SELECT repack(
+ upload_name=CollectorName,
+ target=tool_name[0].Type,
+ binaries=Binaries.Binary,
+ version=opt_version,
+ config=serialize(format='json', item=autoexec)) AS Repacked
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.CreateLinuxPackages</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.createlinuxpackages/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.createlinuxpackages/</guid><description>&lt;p>Build Deb and RPM packages ready for deployment in the current org.&lt;/p>
+&lt;p>This artifact depends on the following tool:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;velo-tool-viewer name="VelociraptorLinux" />
+&lt;/li>
+&lt;/ul>
+&lt;p>You can replace this with suitable Velociraptor Linux build, or the
+current release binary will be used by default.&lt;/p>
+&lt;p>Use the following to inspect the RPM and Deb:&lt;/p>
+&lt;ul>
+&lt;li>rpm -qi velociraptor.rpm&lt;/li>
+&lt;li>rpm -qp &amp;ndash;scripts velociraptor.rpm&lt;/li>
+&lt;li>dpkg-deb -I velociraptor.deb&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.CreateLinuxPackages
+description: |
+ Build Deb and RPM packages ready for deployment in the current org.
+
+ This artifact depends on the following tool:
+
+ * &amp;lt;velo-tool-viewer name="VelociraptorLinux" /&amp;gt;
+
+ You can replace this with suitable Velociraptor Linux build, or the
+ current release binary will be used by default.
+
+ Use the following to inspect the RPM and Deb:
+ - rpm -qi velociraptor.rpm
+ - rpm -qp --scripts velociraptor.rpm
+ - dpkg-deb -I velociraptor.deb
+
+
+type: SERVER
+
+parameters:
+ - name: CustomConfig
+ description: Supply a custom client config instead of using the one from the current org
+ type: yaml
+ - name: ServiceName
+ description: Customize the service name
+ - name: Maintainer
+ description: Customize the maintainer
+ - name: MaintainerEmail
+ description: Customize the maintainer email
+ - name: Homepage
+ description: Customize the homepage URL
+ - name: Vendor
+ description: The vendor
+ default: The Velociraptor Team
+
+sources:
+- query: |
+ LET ValidateConfig(Config) = Config.Client.server_urls
+ AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
+ AND Config.Client.nonce
+
+ LET client_config &amp;lt;= if(condition=ValidateConfig(Config=CustomConfig),
+ then=CustomConfig,
+ else=org()._client_config)
+
+ LET TmpDir &amp;lt;= tempdir()
+
+ // This is an example of how to modify the spec to customize the
+ // creation of the RPM. The default template does not set the
+ // vendor property in the RPM, so we just update the metadata
+ // template while preserving all the other fields.
+ // See https://github.com/google/rpmpack/blob/2467806670a618497006ff8d8623b0430c7605a9/rpm.go#L56
+ LET _RPMSpec &amp;lt;= SELECT Spec FROM rpm_create(show_spec=TRUE)
+ LET RPMSpec &amp;lt;= _RPMSpec[0].Spec + dict(Templates=_RPMSpec[0].Spec.Templates +
+ dict(Metadata=format(format='''
+ {"Name": "{{ .SysvService }}",
+ "Vendor": "%v",
+ "Version": "{{ .Version }}",
+ "Release": "{{ .Release}}",
+ "Arch": "{{.Arch}}",
+ "BuildTime": "%v"
+ }
+ ''', args=[Vendor, timestamp(epoch=now())])))
+
+ LET _DebSpec &amp;lt;= SELECT Spec FROM deb_create(show_spec=TRUE)
+ LET DebSpec &amp;lt;= _DebSpec[0].Spec
+
+ LET UpdateExpansion(Expansion) = Expansion + dict(
+ Name=ServiceName || Expansion.Name,
+ SysvService=ServiceName || Expansion.SysvService,
+ Maintainer=Maintainer || Expansion.Maintainer,
+ MaintainerEmail=MaintainerEmail || Expansion.MaintainerEmail,
+ Homepage=Homepage || Expansion.Homepage
+ )
+
+ SELECT * FROM chain(a={
+ SELECT OSPath.Basename AS Name,
+ upload(file=OSPath, name=OSPath.Basename) AS Upload
+ FROM deb_create(
+ directory_name=TmpDir,
+ package_spec=DebSpec +
+ dict(Expansion=UpdateExpansion(Expansion=DebSpec.Expansion)),
+ config=serialize(item=client_config, format="yaml"))
+ }, b={
+ SELECT OSPath.Basename AS Name,
+ upload(file=OSPath, name=OSPath.Basename) AS Upload
+ FROM rpm_create(
+ directory_name=TmpDir,
+ package_spec=RPMSpec +
+ dict(Expansion=UpdateExpansion(Expansion=RPMSpec.Expansion)),
+ config=serialize(item=client_config, format="yaml"))
+ })
+
+column_types:
+ - name: Upload
+ type: upload_preview
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.CreateMSI</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.createmsi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.createmsi/</guid><description>&lt;p>Build an MSI ready for deployment in the current org.&lt;/p>
+&lt;p>This artifact depends on the following tools:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;velo-tool-viewer name="VelociraptorWindowsMSI" />
+&lt;/li>
+&lt;li>
+&lt;velo-tool-viewer name="VelociraptorWindows_x86MSI" />
+&lt;/li>
+&lt;/ul>
+&lt;p>You can replace those with suitable MSI builds.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.CreateMSI
+description: |
+ Build an MSI ready for deployment in the current org.
+
+ This artifact depends on the following tools:
+
+ * &amp;lt;velo-tool-viewer name="VelociraptorWindowsMSI" /&amp;gt;
+ * &amp;lt;velo-tool-viewer name="VelociraptorWindows_x86MSI" /&amp;gt;
+
+ You can replace those with suitable MSI builds.
+
+type: SERVER
+
+parameters:
+ - name: CustomConfig
+ description: Supply a custom client config instead of using the one from the current org
+ type: yaml
+ - name: AlsoBuild_x86
+ description: Also build 32 bit MSI for deployment.
+ type: bool
+
+sources:
+- query: |
+ LET ValidateConfig(Config) = Config.Client.server_urls
+ AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
+ AND Config.Client.nonce
+
+ LET client_config &amp;lt;= if(condition=ValidateConfig(Config=CustomConfig),
+ then=CustomConfig,
+ else=org()._client_config)
+
+ LET Build(Target) = repack(
+ upload_name=format(
+ format='Org_%v_%v',
+ args=[org().name, inventory_get(tool=Target).Definition.filename]),
+ target=Target,
+ config=serialize(format='yaml', item=client_config))
+
+ SELECT * FROM chain(a={
+ SELECT Build(Target="VelociraptorWindowsMSI") FROM scope()
+ }, b={
+ SELECT Build(Target="VelociraptorWindows_x86MSI") FROM scope()
+ WHERE AlsoBuild_x86
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeadDiskClient</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deaddiskclient/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deaddiskclient/</guid><description>&lt;p>Automates the analysis of dead disk images in Velociraptor&lt;/p>
+&lt;p>Velociraptor can analyze dead disk images by using accessor
+remapping. The process involves detecting a suitable remapping
+configuration to remap various image partitions into the relevant
+accessors and emulate a &amp;ldquo;Virtual Host&amp;rdquo;.&lt;/p>
+&lt;p>Once the remapping configuration is calculated, a new virtual
+client can be launched to appear like it is operating on the dead
+disk image. Using this technique is it possible to interact with
+this virtual client, collect artifacts, join in hunts etc.&lt;/p>
+&lt;p>This artifact automates this process. While the artifact is running,
+the virtual client will be up. To kill the virtual client you can
+cancel this collection. By default the artifact will remain running
+for 1 hour but you can extend the time limit while launching the
+artifact using the resources tab.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeadDiskClient
+description: |
+ Automates the analysis of dead disk images in Velociraptor
+
+ Velociraptor can analyze dead disk images by using accessor
+ remapping. The process involves detecting a suitable remapping
+ configuration to remap various image partitions into the relevant
+ accessors and emulate a "Virtual Host".
+
+ Once the remapping configuration is calculated, a new virtual
+ client can be launched to appear like it is operating on the dead
+ disk image. Using this technique is it possible to interact with
+ this virtual client, collect artifacts, join in hunts etc.
+
+ This artifact automates this process. While the artifact is running,
+ the virtual client will be up. To kill the virtual client you can
+ cancel this collection. By default the artifact will remain running
+ for 1 hour but you can extend the time limit while launching the
+ artifact using the resources tab.
+
+type: SERVER
+
+resources:
+ timeout: 3600
+
+parameters:
+- name: ImagePath
+ default: /path/to/image.vmdk
+ description: |
+ This is the path to the image (.vmdk, .vhdx etc) which must reside on the server.
+
+- name: Hostname
+ default: DeadDiskHost
+ description: The virtual host to provide to the client
+
+- name: WritebackFile
+ default: /tmp/remapping.writeback.yaml
+ description: |
+ Where to store the writeback file. This contains the client ID and
+ should persist between invocations.
+
+sources:
+- query: |
+ LET RemappingFile &amp;lt;= tempfile(extension=".yaml")
+
+ LET ClientConfig &amp;lt;= tempfile(extension=".yaml")
+
+ LET _Exe &amp;lt;= SELECT Exe
+ FROM info()
+
+ // Our own binary we use to run.
+ LET Exe &amp;lt;= _Exe[0].Exe
+
+ LET CalculateDeadDisk = SELECT copy(accessor="data",
+ filename=Remapping,
+ dest=RemappingFile) AS RemappingFile,
+ copy(accessor="data",
+ filename=serialize(
+ format="yaml",
+ item=org()._client_config),
+ dest=ClientConfig) AS ClientConfig
+ FROM Artifact.Generic.Utils.DeadDiskRemapping(
+ Upload=FALSE,
+ Hostname=Hostname,
+ ImagePath=ImagePath)
+
+ SELECT Stdout
+ FROM foreach(row=CalculateDeadDisk,
+ query={
+ SELECT *
+ FROM execve(argv=[Exe, "--remap", RemappingFile, "--config",
+ ClientConfig, "--config.client-writeback-linux",
+ WritebackFile, "--config.client-writeback-windows",
+ WritebackFile, "--config.client-writeback-darwin",
+ WritebackFile, "-v", "client"],
+ sep="\n")
+ })
+
+column_types:
+- name: Stdout
+ type: nobreak
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeleteClient</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deleteclient/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deleteclient/</guid><description>&lt;p>This artifact completely removes a client from the data store.&lt;/p>
+&lt;p>Be careful with this one: there is no way to recover old
+data. However, if the client still exists, it will just
+automatically re-enroll when it next connects. You will still be able
+to talk to it, it is just that old collected data is deleted.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeleteClient
+description: |
+ This artifact completely removes a client from the data store.
+
+ Be careful with this one: there is no way to recover old
+ data. However, if the client still exists, it will just
+ automatically re-enroll when it next connects. You will still be able
+ to talk to it, it is just that old collected data is deleted.
+
+type: SERVER
+
+parameters:
+ - name: ClientIdList
+ description: A list of client ids to delete.
+ default:
+
+ - name: ReallyDoIt
+ description: If you really want to delete the client, check this.
+ type: bool
+
+sources:
+ - query: |
+ let clients_list = SELECT ClientId
+ FROM parse_records_with_regex(
+ accessor="data", file=ClientIdList,
+ regex="(?P&amp;lt;ClientId&amp;gt;C\\.[0-9a-z-]+)")
+ WHERE log(message="Deleting client " + ClientId)
+
+ SELECT * FROM foreach(row=clients_list,
+ query={
+ SELECT * FROM client_delete(client_id=ClientId,
+ really_do_it=ReallyDoIt)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeleteEvents</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deleteevents/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deleteevents/</guid><description>&lt;p>This artifact permanently deletes Event files for client or
+monitoring events.&lt;/p>
+&lt;p>NOTE: This action cannot be undone! The event files are deleted
+permanently. Since this is a sensitive operation, typically only
+users with the administrator role can run it.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeleteEvents
+description: |
+ This artifact permanently deletes Event files for client or
+ monitoring events.
+
+ NOTE: This action cannot be undone! The event files are deleted
+ permanently. Since this is a sensitive operation, typically only
+ users with the administrator role can run it.
+
+type: SERVER
+
+required_permissions:
+ - MACHINE_STATE
+
+parameters:
+ - name: Artifact
+ description: The artifact name to delete
+ default:
+ - name: ClientId
+ description: The client id that the collection was done on
+ default:
+ - name: StartTime
+ type: timestamp
+ description: The begining time range to delete
+ - name: EndTime
+ type: timestamp
+ description: The ending time range to delete
+ - name: ReallyDoIt
+ description: If you really want to delete the collection, check this.
+ type: bool
+
+sources:
+ - query: |
+ SELECT Type, Data.VFSPath AS VFSPath, Error
+ FROM delete_events(
+ artifact=Artifact, client_id=ClientId,
+ start_time=StartTime, end_time=EndTime,
+ really_do_it=ReallyDoIt)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeleteFlow</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deleteflow/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deleteflow/</guid><description>&lt;p>This artifact permanently deletes a flow including it&amp;rsquo;s metadata and
+uploaded files.&lt;/p>
+&lt;p>NOTE: This action cannot be undone! The collection is deleted
+permanently. Since this is a sensitive operation, typically only
+users with the administrator role can run it.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeleteFlow
+description: |
+ This artifact permanently deletes a flow including it's metadata and
+ uploaded files.
+
+ NOTE: This action cannot be undone! The collection is deleted
+ permanently. Since this is a sensitive operation, typically only
+ users with the administrator role can run it.
+
+type: SERVER
+
+required_permissions:
+ - MACHINE_STATE
+
+parameters:
+ - name: FlowId
+ description: The flow ID to delete
+ default:
+ - name: FlowIds
+ description: Delete Multiple Flows
+ type: json_array
+ default: "[]"
+ - name: ClientId
+ description: The client id that the collection was done on
+ default:
+ - name: ReallyDoIt
+ description: If you really want to delete the collection, check this.
+ type: bool
+ - name: Sync
+ description: If specified we ensure delete happens immediately
+ type: bool
+
+sources:
+ - query: |
+ LET FlowIds &amp;lt;= if(condition=FlowId, then=FlowIds + FlowId, else=FlowIds)
+
+ SELECT *
+ FROM foreach(row={
+ SELECT _value AS FlowId FROM foreach(row=FlowIds)
+ WHERE log(message="Deleteing Flow " + FlowId, dedup=-1)
+ },
+ query={
+ SELECT Type, Data.VFSPath AS VFSPath, Error
+ FROM delete_flow(flow_id=FlowId,
+ client_id=ClientId, really_do_it=ReallyDoIt, sync=Sync)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeleteManyFlows</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemanyflows/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemanyflows/</guid><description>&lt;p>Sometimes the Velociraptor server accumulates a lot of data that is
+no longer needed.&lt;/p>
+&lt;p>This artifact will enumerate all flows from all clients and matches
+them against some criteria. Flows that match are then removed.&lt;/p>
+&lt;p>&lt;strong>NOTE&lt;/strong> This artifact will destroy all data irrevocably. Take
+care! You should always do a dry run first to see which flows
+will match before using the &lt;code>ReallyDoIt&lt;/code> option.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeleteManyFlows
+description: |
+ Sometimes the Velociraptor server accumulates a lot of data that is
+ no longer needed.
+
+ This artifact will enumerate all flows from all clients and matches
+ them against some criteria. Flows that match are then removed.
+
+ **NOTE** This artifact will destroy all data irrevocably. Take
+ care! You should always do a dry run first to see which flows
+ will match before using the `ReallyDoIt` option.
+
+type: SERVER
+
+parameters:
+ - name: ArtifactRegex
+ default: Generic.Client.Info
+ type: regex
+ - name: HostnameRegex
+ description: If specified only target these hosts
+ type: regex
+ - name: DateBefore
+ description: Only select flows created before this date. If not set we choose all flows.
+ type: timestamp
+ - name: CreatorRegex
+ default: "."
+ type: regex
+ description: |
+ Match flows created by this user.
+ - name: ReallyDoIt
+ type: bool
+ description: Does not delete until you press the ReallyDoIt button!
+
+sources:
+ - query: |
+ LET DateBefore &amp;lt;= DateBefore || timestamp(epoch=now())
+ LET hits = SELECT * FROM foreach(row={
+ SELECT client_id,
+ os_info.hostname AS hostname
+ FROM clients()
+ WHERE hostname =~ HostnameRegex
+ },
+ query={
+ SELECT client_id, hostname,
+ session_id, request.creator AS creator,
+ request.artifacts as artifacts,
+ timestamp(epoch=create_time) AS created
+ FROM flows(client_id=client_id)
+ WHERE creator =~ CreatorRegex
+ AND artifacts =~ ArtifactRegex
+ AND created &amp;lt; DateBefore
+ }, workers=10)
+
+ SELECT * FROM if(condition=ReallyDoIt,
+ then={
+ SELECT * FROM foreach(row=hits,
+ query={
+ SELECT client_id, hostname, creator,
+ session_id, artifacts, created, Type, Data, Error
+ FROM delete_flow(client_id=client_id,
+ flow_id=session_id, really_do_it=ReallyDoIt)
+ WHERE log(message=format(format="Deleting flow %v from %v",
+ args=[session_id, hostname]))
+ }, workers=10)
+ }, else={
+ SELECT * FROM hits
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeleteMonitoringData</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemonitoringdata/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deletemonitoringdata/</guid><description>&lt;p>Velociraptor collects monitoring data from endpoints all the time.&lt;/p>
+&lt;p>Sometimes this data is no longer needed and we might want to free
+up disk space.&lt;/p>
+&lt;p>This artifact searches the monitoring data for each client and
+optionally removes data older than the specified timestamp.&lt;/p>
+&lt;p>&lt;strong>NOTE&lt;/strong> This artifact will destroy all data irrevocably. Take
+care! You should always do a dry run first to see which flows
+will match before using the &lt;code>ReallyDoIt&lt;/code> option.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeleteMonitoringData
+description: |
+ Velociraptor collects monitoring data from endpoints all the time.
+
+ Sometimes this data is no longer needed and we might want to free
+ up disk space.
+
+ This artifact searches the monitoring data for each client and
+ optionally removes data older than the specified timestamp.
+
+ **NOTE** This artifact will destroy all data irrevocably. Take
+ care! You should always do a dry run first to see which flows
+ will match before using the `ReallyDoIt` option.
+
+type: SERVER
+
+parameters:
+ - name: DateBefore
+ default: 2022-01-01
+ type: timestamp
+ - name: ArtifactRegex
+ type: regex
+ default: Generic.Client.Stats
+ - name: HostnameRegex
+ description: If specified only target these hosts
+ type: regex
+ default: .
+ - name: OnlyRegisteredClients
+ type: bool
+ description: |
+ If enabled only search registered clients. (Might be needed for
+ very large deployments).
+ - name: ReallyDoIt
+ type: bool
+ description: Do not actually delete until this is set!
+
+sources:
+ - query: |
+ LET SearchDeletedClientsQuery = SELECT Name AS ClientId,
+ client_info(client_id=Name).os_info.hostname AS Hostname
+ FROM glob(globs="/clients/*", accessor="fs")
+ WHERE IsDir
+ AND Hostname =~ HostnameRegex
+
+ LET SearchRegisteredClientsQuery = SELECT client_id AS ClientId,
+ os_info.hostname AS hostname
+ FROM clients()
+ WHERE hostname =~ HostnameRegex
+
+ LET SearchClients = SELECT * FROM if(
+ condition=OnlyRegisteredClients,
+ then=SearchRegisteredClientsQuery,
+ else=SearchDeletedClientsQuery)
+
+ SELECT * FROM foreach(row=SearchClients,
+ query={
+ SELECT OSPath,
+ OSPath.Dirname.Basename AS ArtifactName, Size,
+ timestamp(epoch=split(string=OSPath.Basename, sep="\\.")[0]) AS Timestamp,
+ if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
+ FROM glob(
+ globs="/**.json*", accessor="fs",
+ root="/clients/"+ ClientId + "/monitoring")
+ WHERE ArtifactName =~ ArtifactRegex
+ AND Timestamp &amp;lt; DateBefore
+ }, workers=10)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.DeleteNotebook</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.deletenotebook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.deletenotebook/</guid><description>&lt;p>Completely removes a notebook from the server including all its cells, attachments etc.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.DeleteNotebook
+description: |
+ Completely removes a notebook from the server including all its cells, attachments etc.
+
+type: SERVER
+
+parameters:
+ - name: NotebookId
+ description: The ID of the notebook to remove.
+ - name: ReallyDoIt
+ type: bool
+ description: Set to really remove the notebook - otherwise it is a dry run.
+
+sources:
+ - query: |
+ SELECT * FROM notebook_delete(
+ notebook_id=NotebookId, really_do_it=ReallyDoIt)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.ImportCollection</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.importcollection/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.importcollection/</guid><description>&lt;p>The Velociraptor offline collector is an automated, preconfigured
+collection tool. Users can use the collector to automatically
+collect any artifacts on endpoints that do not have the Velociraptor
+client (offline endpoints).&lt;/p>
+&lt;p>The collector creates a ZIP archive with the results of the
+collection in JSON files (and any uploaded files).&lt;/p>
+&lt;p>This artifact allows for these offline collections to be imported
+back into the Velociraptor GUI. The collected data can then treated
+exactly the same as if it was collected by the regular Velociraptor
+client (i.e. post-processed through the notebook interface), except
+it was collected via the Sneakernet.&lt;/p>
+&lt;p>NOTE: This artifact reads the collection ZIP from the server&amp;rsquo;s
+filesystem. It is up to you to arrange for the file to be stored on
+the server (e.g. SCP it over).&lt;/p>
+&lt;p>NOTE: This artifact is still experimental - please provide feedback
+on our issue board.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.ImportCollection
+description: |
+ The Velociraptor offline collector is an automated, preconfigured
+ collection tool. Users can use the collector to automatically
+ collect any artifacts on endpoints that do not have the Velociraptor
+ client (offline endpoints).
+
+ The collector creates a ZIP archive with the results of the
+ collection in JSON files (and any uploaded files).
+
+ This artifact allows for these offline collections to be imported
+ back into the Velociraptor GUI. The collected data can then treated
+ exactly the same as if it was collected by the regular Velociraptor
+ client (i.e. post-processed through the notebook interface), except
+ it was collected via the Sneakernet.
+
+ NOTE: This artifact reads the collection ZIP from the server's
+ filesystem. It is up to you to arrange for the file to be stored on
+ the server (e.g. SCP it over).
+
+ NOTE: This artifact is still experimental - please provide feedback
+ on our issue board.
+
+type: SERVER
+
+parameters:
+ - name: ClientId
+ default: auto
+ description: |
+ The client id to upload this collection into. The
+ default is "auto" which will create a new client id.
+ - name: Hostname
+ description: If creating a new client, this must contain the hostname.
+ - name: Path
+ description: A path on the server containing the zip file to upload.
+
+sources:
+ - query: |
+ LET result &amp;lt;= SELECT import_collection(
+ client_id=ClientId, hostname=Hostname,
+ filename=Path) AS Import
+ FROM scope()
+
+ SELECT * FROM switch(a={
+ SELECT Import.client_id AS ClientId, Import.session_id AS FlowId,
+ Import.total_collected_rows AS TotalRows,
+ Import.total_uploaded_files AS UploadedFiles,
+ Import.total_uploaded_bytes AS UploadedBytes,
+ Import.artifacts_with_results AS Artifacts
+ FROM result
+ WHERE FlowId
+
+ -- Hunt import
+ }, b={
+ SELECT Import.hunt_id AS HuntId,
+ timestamp(epoch=Import.create_time) AS CreateTime,
+ Import.stats.total_clients_scheduled AS TotalClients,
+ Import.artifacts AS Artifacts,
+ Import.creator AS Creator,
+ Import AS _Hunt
+ FROM result
+ WHERE HuntId
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.KillClient</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.killclient/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.killclient/</guid><description>&lt;p>This artifact aggressively kills a client.&lt;/p>
+&lt;p>If the client runs as a service, it will restart by the service manager.&lt;/p>
+&lt;p>NOTE: If the client is not running as a service (i.e. interactively)
+it may not restart and further communication will be lost!&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.KillClient
+description: |
+ This artifact aggressively kills a client.
+
+ If the client runs as a service, it will restart by the service manager.
+
+ NOTE: If the client is not running as a service (i.e. interactively)
+ it may not restart and further communication will be lost!
+
+type: SERVER
+
+
+parameters:
+ - name: ClientIdList
+ description: A list of client ids to kill.
+ default:
+
+sources:
+ - query: |
+ let clients_list = SELECT ClientId
+ FROM parse_records_with_regex(
+ accessor="data", file=ClientIdList,
+ regex="(?P&amp;lt;ClientId&amp;gt;C\\.[0-9a-z-]+)")
+ WHERE log(message="Killing client " + ClientId)
+
+ SELECT * FROM foreach(row=clients_list,
+ query={
+ SELECT killkillkill(client_id=ClientId) FROM scope()
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.ListUsers</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.listusers/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.listusers/</guid><description>&lt;p>This server artifact is used to list all current users and their
+permissions and org access.&lt;/p>
+&lt;p>NOTE: When collected in an org context only users belonging to the
+current org are visible. When collected in the context of the root
+org, all users in all orgs are visible.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.ListUsers
+description: |
+ This server artifact is used to list all current users and their
+ permissions and org access.
+
+ NOTE: When collected in an org context only users belonging to the
+ current org are visible. When collected in the context of the root
+ org, all users in all orgs are visible.
+
+type: SERVER
+
+sources:
+ - query: |
+ SELECT * FROM gui_users(all_orgs=TRUE)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.Policy</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.policy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.policy/</guid><description>&lt;p>This artifact defines a set of security policies.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.Policy
+description: |
+ This artifact defines a set of security policies.
+
+type: SERVER
+
+parameters:
+- name: ServerConfigFile
+ type: string
+ description: The path to the server.config.yaml
+
+- name: OutputFilePath
+ type: string
+ description: Where to write the modified configuration file.
+ default: /tmp/1.yaml
+
+- name: GUIAccessByIP
+ type: csv
+ description: |
+ Only allow access to the GUI from these CIDR networks.
+
+ default: |
+ CIDR,Description
+ 0.0.0.0/0,Allow all (Skip)
+
+- name: LockDown
+ type: bool
+ description: If enabled, switch to lockdown mode.
+
+- name: DisableServerPlugins_Write
+ type: bool
+ default: Y
+ description: |
+ Disable server plugins that allow:
+ 1. Writing to the filesystem.
+ 2. Collecting server machine state.
+
+- name: DisableServerPlugins_Network
+ type: bool
+ description: |
+ Disable server plugins which allow connecting to external
+ resources over the network. These include for exaxmple:
+ 1. http_client()
+ 2. upload_elastic()
+ 3. upload_s3()
+
+ An alternative to this setting is ForceSecrets to allow these
+ plugin to only work with named secrets.
+
+- name: ForceSecrets
+ type: bool
+ description: |
+ Force network plugins to only use named secrets. This allows an
+ admin to permit only well controlled network access without
+ allowing users to connect to arbitrary URLs.
+
+- name: DisableInventoryServiceExternalAccess
+ type: bool
+ description: |
+ Normally the inventory service attempts to download tools in its
+ own but if this is set, we prevent any external access.
+
+
+export: |
+ LET PluginsWithFileWrite &amp;lt;= SELECT name, metadata.permissions as perms
+ FROM help()
+ WHERE type =~ "Plugin" AND perms =~ "FILESYSTEM_WRITE|MACHINE_STATE"
+ ORDER BY name
+
+ LET FunctionsWithFileWrite &amp;lt;= SELECT name, metadata.permissions as perms
+ FROM help()
+ WHERE type =~ "Function" AND perms =~ "FILESYSTEM_WRITE|MACHINE_STATE"
+ ORDER BY name
+
+sources:
+- query: |
+ LET config &amp;lt;= parse_yaml(filename=ServerConfigFile)
+ LET GUIAccessByIP &amp;lt;= SELECT * FROM foreach(row= GUIAccessByIP)
+ WHERE NOT Description =~ "Skip"
+ AND CIDR =~ '''\d+\.\d+\.\d+\.\d+/\d{1,2}''' OR (
+ log(message="GUIAccessByIP: Invalid CIDR %v - rejecting",
+ args=CIDR, dedup= -1) AND FALSE )
+
+ LET _ &amp;lt;= GUIAccessByIP.CIDR &amp;amp;&amp;amp; set(item=config.GUI,
+ field='allowed_cidr',
+ value=GUIAccessByIP.CIDR)
+
+ LET _ &amp;lt;= LockDown &amp;amp;&amp;amp;
+ set(item=config, field="lockdown", value=TRUE)
+
+ -- Make sure the security section exists
+ LET _ &amp;lt;= NOT config.security &amp;amp;&amp;amp; set(item=config,
+ field="security", value=dict())
+
+ LET _ &amp;lt;= DisableServerPlugins_Write &amp;amp;&amp;amp;
+ set(item=config.security,
+ field="denied_plugins",
+ value=PluginsWithFileWrite.name ) AND
+ set(item=config.security,
+ field="denied_functions",
+ value=FunctionsWithFileWrite.name)
+
+ LET _ &amp;lt;= ForceSecrets &amp;amp;&amp;amp;
+ set(item=config.security,
+ field="vql_must_use_secrets",
+ value=TRUE )
+
+ SELECT copy(dest= OutputFilePath, accessor="data",
+ filename=serialize(item=config, format='yaml'))
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.RemoveTimeline</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.removetimeline/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.removetimeline/</guid><description>&lt;p>Remove a child timeline from a super timeline.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.RemoveTimeline
+description: |
+ Remove a child timeline from a super timeline.
+
+type: SERVER
+
+parameters:
+ - name: NotebookId
+ - name: Timeline
+ description: SuperTimeline name
+ - name: ChildName
+ description: Name of child timeline
+
+sources:
+ - query: |
+ SELECT if(condition=ChildName AND Timeline AND NotebookId,
+ then=timeline_delete(
+ timeline=Timeline,
+ notebook_id=NotebookId,
+ name=ChildName)) AS Removed
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.SaveFavoriteFlow</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.savefavoriteflow/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.savefavoriteflow/</guid><description>&lt;p>Users may collect various artifacts from hosts. Sometimes it might
+take a bit of effort to setup and configure just the perfect
+combination of parameters and artifacts to collect.&lt;/p>
+&lt;p>This artifact allows the user to save the collection into a
+Favorites section, which may be used in future.&lt;/p>
+&lt;p>An example of a Spec is&lt;/p>
+&lt;pre>&lt;code class="language-json">[{&amp;quot;artifact&amp;quot;:&amp;quot;Windows.KapeFiles.Targets&amp;quot;, &amp;quot;parameters&amp;quot;:{&amp;quot;env&amp;quot;:[{&amp;quot;key&amp;quot;:&amp;quot;EventLogs&amp;quot;, &amp;quot;value&amp;quot;:&amp;quot;Y&amp;quot;}]}}]
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.SaveFavoriteFlow
+description: |
+ Users may collect various artifacts from hosts. Sometimes it might
+ take a bit of effort to setup and configure just the perfect
+ combination of parameters and artifacts to collect.
+
+ This artifact allows the user to save the collection into a
+ Favorites section, which may be used in future.
+
+ An example of a Spec is
+ ```json
+ [{"artifact":"Windows.KapeFiles.Targets", "parameters":{"env":[{"key":"EventLogs", "value":"Y"}]}}]
+ ```
+
+type: SERVER
+
+parameters:
+ - name: Specs
+ type: json_array
+ description: The collection request that will be recreated.
+ - name: Name
+ description: A name for this collection template
+ - name: Description
+ description: A description for the template.
+ - name: Type
+ description: The type of favorites to save.
+ type: choices
+ default: CLIENT
+ choices:
+ - CLIENT
+ - SERVER
+ - CLIENT_EVENT
+ - SERVER_EVENT
+ - name: AllUsers
+ type: bool
+ description: If set, add the favorite to all users in all orgs.
+
+sources:
+ - query: |
+ LET AddToAllOrgs = SELECT * FROM foreach(
+ row={
+ SELECT name, org_id
+ FROM gui_users(all_orgs=TRUE)
+ }, query={
+ SELECT * FROM query(query={
+ SELECT favorites_save(type=Type,
+ description=Description,
+ name=Name,
+ specs=Specs)
+ FROM scope()
+ },
+ org_id=org_id,
+ runas=name,
+ env=dict(
+ Specs=Specs,
+ Name=Name, Type=Type,
+ Description=Description))
+ })
+
+ LET AddToOneUser = SELECT favorites_save(
+ name=Name,
+ description=Description,
+ specs=Specs,
+ type=Type)
+ FROM scope()
+
+ SELECT * FROM if(condition=AllUsers,
+ then=AddToAllOrgs, else=AddToOneUser)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.StartHuntExample</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.starthuntexample/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.starthuntexample/</guid><description>&lt;p>This example artifact shows how to create a utility artifact to
+provide low privileged users with a controlled ability to perform
+high privileged operations.&lt;/p>
+&lt;p>This server artifact launches a new &lt;code>Generic.Client.Info&lt;/code> hunt, but
+the parameters for the hunt are not determined by the initiating
+user. This makes is safe for unprivileged users to schedule this
+hunt whenever they want.&lt;/p>
+&lt;p>Usually to start a hunt, the user must have the &lt;code>START_HUNT&lt;/code>
+permission - usually granted by the &lt;code>administrator&lt;/code> or
+&lt;code>investigator&lt;/code> roles. Additionally, to collect this
+artifact, a user must have the &lt;code>COLLECT_SERVER&lt;/code> permission - usually
+only granted by the &lt;code>administrator&lt;/code> role.&lt;/p>
+&lt;p>So by default this artifact does not give any additional permissions
+and usually has to be collected by an &lt;code>administrator&lt;/code> (which would
+be able to schedule hunts anyway).&lt;/p>
+&lt;p>However, it is possible to mark the artifact as basic by using the VQL&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT artifact_set_metadata(
+ artifact=&amp;quot;Server.Utils.StartHuntExample&amp;quot;, basic=TRUE)
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>This will allow users with the &lt;code>COLLECT_BASIC&lt;/code> permission to also
+collect it. Once collected the artifact specifies the impersonate
+field to &lt;code>admin&lt;/code> which will cause it to run under the &lt;code>admin&lt;/code> user&amp;rsquo;s
+permissions.&lt;/p>
+&lt;p>This combination allows us to now grant the &lt;code>COLLECT_BASIC&lt;/code>
+permission to any user and they will be able to start the hunt via
+this artifact, but have no additional permissions to start arbitrary
+hunts or collections.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.StartHuntExample
+description: |
+ This example artifact shows how to create a utility artifact to
+ provide low privileged users with a controlled ability to perform
+ high privileged operations.
+
+ This server artifact launches a new `Generic.Client.Info` hunt, but
+ the parameters for the hunt are not determined by the initiating
+ user. This makes is safe for unprivileged users to schedule this
+ hunt whenever they want.
+
+ Usually to start a hunt, the user must have the `START_HUNT`
+ permission - usually granted by the `administrator` or
+ `investigator` roles. Additionally, to collect this
+ artifact, a user must have the `COLLECT_SERVER` permission - usually
+ only granted by the `administrator` role.
+
+ So by default this artifact does not give any additional permissions
+ and usually has to be collected by an `administrator` (which would
+ be able to schedule hunts anyway).
+
+ However, it is possible to mark the artifact as basic by using the VQL
+
+ ```vql
+ SELECT artifact_set_metadata(
+ artifact="Server.Utils.StartHuntExample", basic=TRUE)
+ FROM scope()
+ ```
+
+ This will allow users with the `COLLECT_BASIC` permission to also
+ collect it. Once collected the artifact specifies the impersonate
+ field to `admin` which will cause it to run under the `admin` user's
+ permissions.
+
+ This combination allows us to now grant the `COLLECT_BASIC`
+ permission to any user and they will be able to start the hunt via
+ this artifact, but have no additional permissions to start arbitrary
+ hunts or collections.
+
+type: SERVER
+
+# Collect this artifact under the admin user permissions.
+impersonate: admin
+
+sources:
+ - query: |
+ -- This query will run with admin ACLs.
+ SELECT hunt(
+ description="A general hunt",
+ artifacts='Generic.Client.Info')
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.TimesketchUpload</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.timesketchupload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.timesketchupload/</guid><description>&lt;p>Timesketch is an interactive collaborative timeline analysis tool
+that can be found at &lt;a href="https://timesketch.org/" target="_blank" >https://timesketch.org/&lt;/a>
+&lt;/p>
+&lt;p>This artifact uploads Velociraptor&amp;rsquo;s timelines to Timesketch using
+the Timesketch client library. The artifact assumes the client
+library is installed and configured on the server.&lt;/p>
+&lt;p>To install the Timesketch client library:&lt;/p>
+&lt;pre>&lt;code>pip install timesketch-import-client timesketch-cli-client
+&lt;/code>&lt;/pre>
+&lt;p>To configure the client library to access your Timesketch instance
+see instructions &lt;a href="https://timesketch.org/guides/user/cli-client/" target="_blank" >https://timesketch.org/guides/user/cli-client/&lt;/a>
+ and
+&lt;a href="https://timesketch.org/guides/user/upload-data/" target="_blank" >https://timesketch.org/guides/user/upload-data/&lt;/a>
+&lt;/p>
+&lt;p>This artifact assumes that the Timesketch CLI is preconfigured with
+the correct credentials in the &lt;code>.timesketchrc&lt;/code> file.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.TimesketchUpload
+description: |
+ Timesketch is an interactive collaborative timeline analysis tool
+ that can be found at https://timesketch.org/
+
+ This artifact uploads Velociraptor's timelines to Timesketch using
+ the Timesketch client library. The artifact assumes the client
+ library is installed and configured on the server.
+
+ To install the Timesketch client library:
+ ```
+ pip install timesketch-import-client timesketch-cli-client
+ ```
+
+ To configure the client library to access your Timesketch instance
+ see instructions https://timesketch.org/guides/user/cli-client/ and
+ https://timesketch.org/guides/user/upload-data/
+
+ This artifact assumes that the Timesketch CLI is preconfigured with
+ the correct credentials in the `.timesketchrc` file.
+
+required_permissions:
+ - EXECVE
+
+parameters:
+ - name: NotebookId
+ description: The notebook ID that contains the super timeline
+ - name: SuperTimelineName
+ description: The name of the super timeline
+ - name: TimelineName
+ description: The name of the timeline within the super timeline.
+ - name: SketchName
+ description: The name of the sketch to upload to
+ - name: TimesketchCLICommand
+ default: "timesketch"
+ description: |
+ The path to the Timesketch CLI binary. If you installed in a
+ virtual environment this will be inside that environment.
+
+type: SERVER
+
+export: |
+ LET timesketch_import_command = TimesketchCLICommand + "_importer"
+
+ -- The uploader tool can create a new "Sketch" but if we want to
+ -- just add a timeline to an existing sketch we need to specify the
+ -- ID. This function finds the ID for the specified Sketch if it
+ -- exists. NOTE that you can have multiple Sketches with the same
+ -- name! We pick the first.
+ LET GetIdToSketch(Sketch) = SELECT * FROM foreach(row={
+ SELECT Stdout
+ FROM execve(
+ argv=[TimesketchCLICommand, "--output-format",
+ "json", "sketch", "list"], length=10000)
+ }, query={
+ SELECT * FROM parse_json_array(data=Stdout)
+ })
+ WHERE name = Sketch
+
+ -- Enumerate all the timelines in a super timeline
+ LET _GetAllTimelines(SuperTimelineName, NotebookId) = SELECT *
+ FROM foreach(row={
+ SELECT *
+ FROM timelines(notebook_id=NotebookId)
+ WHERE name = SuperTimelineName
+ }, query={ SELECT * FROM timelines })
+
+ LET _GetTimelineMetdata(SuperTimelineName, NotebookId, TimelineName) =
+ SELECT * FROM _GetAllTimelines(
+ SuperTimelineName=SuperTimelineName, NotebookId=NotebookId)
+ WHERE Id = TimelineName
+
+ -- Gets the metadata of a named timeline
+ LET GetTimelineMetdata(SuperTimelineName, NotebookId, TimelineName) =
+ _GetTimelineMetdata(SuperTimelineName= SuperTimelineName,
+ NotebookId = NotebookId,
+ TimelineName=TimelineName)[0]
+
+ -- Timesketch insists the file have the .csv extension.
+ LET tmp &amp;lt;= tempfile(extension=".csv")
+
+ -- We copy the timeline to a temp csv file then upload that. This
+ -- might seem inefficient but Timesketch is written in python so it
+ -- is already very slow. The extra tempfile does not make much
+ -- difference in practice.
+ LET WriteTmpFile(NotebookId, SuperTimelineName, TimelineName) =
+ SELECT count() AS Count
+ FROM write_csv(filename=tmp, query={
+ SELECT Timestamp as timestamp, Message as message, *
+ FROM timeline(notebook_id=NotebookId, timeline=SuperTimelineName,
+ components=TimelineName)
+ })
+ GROUP BY 1
+
+ LET ImportToTS(SuperTimelineName, NotebookId, TimelineName, SketchName) =
+ SELECT * FROM chain(a={
+ SELECT format(format="Exporting %v rows to %v", args=[WriteTmpFile(
+ NotebookId=NotebookId, SuperTimelineName=SuperTimelineName,
+ TimelineName=TimelineName)[0].Count, tmp]) AS Stdout
+ FROM scope()
+ }, c={
+ SELECT * FROM foreach(row={
+
+ -- This is unfortunately slow and unnecessary but Timesketch
+ -- does not have a flag that just says - add timeline to
+ -- existing sketch. So we have to type to find the sketch ID
+ -- first.
+ SELECT GetIdToSketch(Sketch=SketchName)[0].id || 0 AS SketchID
+ FROM scope()
+
+ }, query={
+
+ -- Launch the import library and display the output.
+ SELECT Stdout, Stderr, SketchID,
+ SketchName, TimelineName
+ FROM execve(argv=[timesketch_import_command, "--sketch_name",
+ SketchName, "--sketch_id", SketchID,
+ "--timeline_name", TimelineName,
+ tmp], sep="\n")
+ })
+ })
+
+sources:
+ - query: |
+ SELECT * FROM ImportToTS(
+ SuperTimelineName=SuperTimelineName,
+ NotebookId=NotebookId,
+ TimelineName=TimelineName,
+ SketchName=SketchName)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.UploadTools</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.uploadtools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.uploadtools/</guid><description>&lt;p>Velociraptor can use external tools to deploy binaries on the
+endpoint for some artifacts that require it. Usually these binaries
+are automatically downloaded by the server when required. However,
+sometimes a server is deployed on an air-gapped network, or has
+egress filtering implemented such that the server is unable to
+download binaries on demand.&lt;/p>
+&lt;p>In these cases it is useful to automatically pre-populate tools into
+a server manually. This artifact simplifies the process.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The artifact produces a curl based script that helps to download
+required binaries on an internet connect system.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>When binaries are placed on a directory in the server&amp;rsquo;s
+filesystem, the artifact can then be used to automatically upload
+the binaries as tools to the server.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>NOTE that in Velociraptor each org is completely separated, so you
+will need to re-upload the binaries when you create each org.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.UploadTools
+description: |
+ Velociraptor can use external tools to deploy binaries on the
+ endpoint for some artifacts that require it. Usually these binaries
+ are automatically downloaded by the server when required. However,
+ sometimes a server is deployed on an air-gapped network, or has
+ egress filtering implemented such that the server is unable to
+ download binaries on demand.
+
+ In these cases it is useful to automatically pre-populate tools into
+ a server manually. This artifact simplifies the process.
+
+ 1. The artifact produces a curl based script that helps to download
+ required binaries on an internet connect system.
+
+ 2. When binaries are placed on a directory in the server's
+ filesystem, the artifact can then be used to automatically upload
+ the binaries as tools to the server.
+
+ NOTE that in Velociraptor each org is completely separated, so you
+ will need to re-upload the binaries when you create each org.
+
+type: SERVER
+
+parameters:
+ - name: BasePath
+ description: |
+ The directory on the server that contains all the binaries that
+ are to be synced.
+
+sources:
+ - name: DownloaderScript
+ query: |
+ LET AllCurlCommands =
+ SELECT format(format="curl -O -L -C - %v", args=url) AS Curl
+ FROM inventory()
+ WHERE url
+ AND NOT admin_override
+
+ LET Script &amp;lt;= join(sep="\r\n", array=AllCurlCommands.Curl)
+
+ SELECT upload(accessor="scope", file="Script", name="Script.bat") AS Script
+ FROM scope()
+
+ - name:
+ query: |
+ LET BasePath &amp;lt;= pathspec(parse=BasePath)
+
+ SELECT name,
+ filename,
+ BasePath + filename AS UploadedFile,
+ inventory_add(file=BasePath + filename, tool=name, serve_locally=TRUE).hash AS UpdatedHash
+ FROM inventory()
+ WHERE url
+ AND NOT admin_override
+ AND stat(filename=BasePath + filename).Size &amp;gt; 100
+
+column_types:
+ - name: Script
+ type: preview_upload
+
+&lt;/code>&lt;/pre></description></item><item><title>System.VFS.Export</title><link>https://docs.velociraptor.app/artifact_references/pages/system.vfs.export/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/system.vfs.export/</guid><description>&lt;p>Exports parts of the VFS in a server side collection.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: System.VFS.Export
+description: |
+ Exports parts of the VFS in a server side collection.
+
+type: SERVER
+
+parameters:
+ - name: Path
+ description: |
+ A vfs path under which to search for file (NOTE: VFS paths start
+ with the accessor name).
+ - name: Components
+ type: json_array
+ default: '[]'
+ description: |
+ The top level to recurse from. NOTE: The first element in the
+ list must be the accessor name.
+ - name: ClientId
+ description: The client id to apply the artifact on
+ - name: FileGlob
+ default: '**'
+ description: |
+ Only match the following files (default all of them) under the
+ Path
+
+sources:
+ - query: |
+ LET components &amp;lt;= Components || pathspec(parse=Path).Components
+ SELECT Name, OSPath, Size, IsDir,
+ Data.DownloadInfo.flow_id AS FlowId,
+ if(condition=Data.DownloadInfo.flow_id,
+ then=upload(accessor="vfs", file=OSPath)) AS Upload
+ FROM glob(globs=FileGlob, root=components, accessor="vfs")
+ WHERE NOT IsDir
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.Collectors.Remapping</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.collectors.remapping/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.collectors.remapping/</guid><description>&lt;p>Calculate a remapping file for a collection zip.&lt;/p>
+&lt;p>You can get the colection zip using the offline collector or by
+exporting the Windows.Triage.Targets collection from the GUI.&lt;/p>
+&lt;p>This artifact calculates a remapping config that allows Velociraptor
+to directly analyze the ZIP file itself, without needing to extract
+it first. This is useful for serverless analysis and to avoid having
+to import the artifact first.&lt;/p>
+&lt;p>In a way, this remapping allows Velociraptor to treat the collection
+zip as a dead disk image in a similar way to
+Generic.Utils.DeadDiskRemapping&lt;/p>
+&lt;h2 id="use-instructions">Use instructions&lt;/h2>
+&lt;ol>
+&lt;li>Collect files using Triage collector - For example
+Windows.Registry.AppCompatCache with the _BasicCollection target
+is a good option.&lt;/li>
+&lt;li>Generate a remapping file:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>velociraptor artifacts collect -v Windows.Collectors.Remapping
+ --args ImagePath=/path/to/triage_collection.zip
+ --args WriteRemappingPath=/tmp/test.remapping.yaml
+&lt;/code>&lt;/pre>
+&lt;ol start="3">
+&lt;li>Apply the remapping file when collecting further artifacts:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code>velociraptor --remap /tmp/test.remapping.yaml
+ artifacts collect -v Windows.Registry.Hunter
+ --args RemappingStrategy=None
+&lt;/code>&lt;/pre>
+&lt;p>Note that for Windows.Registry.Hunter we need to disable its own
+remapping config so that the remapping we provide takes hold.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Collectors.Remapping
+description: |
+ Calculate a remapping file for a collection zip.
+
+ You can get the colection zip using the offline collector or by
+ exporting the Windows.Triage.Targets collection from the GUI.
+
+ This artifact calculates a remapping config that allows Velociraptor
+ to directly analyze the ZIP file itself, without needing to extract
+ it first. This is useful for serverless analysis and to avoid having
+ to import the artifact first.
+
+ In a way, this remapping allows Velociraptor to treat the collection
+ zip as a dead disk image in a similar way to
+ Generic.Utils.DeadDiskRemapping
+
+ ## Use instructions
+
+ 1. Collect files using Triage collector - For example
+ Windows.Registry.AppCompatCache with the _BasicCollection target
+ is a good option.
+ 2. Generate a remapping file:
+
+ ```
+ velociraptor artifacts collect -v Windows.Collectors.Remapping
+ --args ImagePath=/path/to/triage_collection.zip
+ --args WriteRemappingPath=/tmp/test.remapping.yaml
+ ```
+
+ 3. Apply the remapping file when collecting further artifacts:
+
+ ```
+ velociraptor --remap /tmp/test.remapping.yaml
+ artifacts collect -v Windows.Registry.Hunter
+ --args RemappingStrategy=None
+ ```
+
+ Note that for Windows.Registry.Hunter we need to disable its own
+ remapping config so that the remapping we provide takes hold.
+
+type: SERVER
+
+parameters:
+ - name: ImagePath
+ default: /tmp/image.dd
+ description: Path to the image file to inspect.
+
+ - name: Accessor
+ description: |
+ Accessor to read the image with.
+
+ If not provided guess based on image file extension.
+
+ - name: Hostname
+ default: Virtual Host
+
+ - name: Upload
+ type: bool
+ default: "Y"
+ description: If specified we upload the generated YAML
+
+ - name: WriteRemappingPath
+ description: If specified we write the yaml file to this path
+
+ - name: CommonRemapping
+ description: Common clauses for all remapping in YAML
+ default: |
+ remappings:
+ - type: permissions
+ permissions:
+ - COLLECT_CLIENT
+ - FILESYSTEM_READ
+ - FILESYSTEM_WRITE
+ - READ_RESULTS
+ - MACHINE_STATE
+ - SERVER_ADMIN
+ - COLLECT_SERVER
+ - EXECVE
+ - type: impersonation
+ os: windows
+ hostname: {{ .Hostname }}
+ env:
+ - key: SystemRoot
+ value: C:\Windows
+ - key: WinDir
+ value: C:\Windows
+ disabled_functions:
+ - amsi
+ - lookupSID
+ - token
+ disabled_plugins:
+ - execve
+ - http_client
+ - users
+ - certificates
+ - handles
+ - pslist
+ - interfaces
+ - modules
+ - netstat
+ - partitions
+ - proc_dump
+ - proc_yara
+ - vad
+ - winobj
+ - wmi
+ - type: shadow
+ from:
+ accessor: zip
+ "on":
+ accessor: zip
+ - type: shadow
+ from:
+ accessor: raw_reg
+ "on":
+ accessor: raw_reg
+ - type: shadow
+ from:
+ accessor: data
+ "on":
+ accessor: data
+
+export: |
+ LET Unescape(Path) = regex_transform(source=Path, map=dict(
+ `%3A`=":"
+ ), key="A")
+
+ -- Searches for a partition with a Windows directory, Unless this
+ -- is a partition image.
+ LET _GetRootAccessor(ImagePath, Accessor) = SELECT
+ pathspec(
+ DelegatePath=ImagePath,
+ DelegateAccessor=Accessor,
+ Path=Unescape(Path=OSPath.Path)) AS OSPath
+ FROM glob(accessor="collector", globs="*:", root=pathspec(
+ DelegatePath=ImagePath,
+ DelegateAccessor=Accessor,
+ Path="/uploads/auto/"))
+ WHERE log(message="Container Root OSPath at %v", args=OSPath)
+
+ LET _MapHiveToKey(Hive, Key, Name, ImagePath) = log(dedup=-1,
+ message="&amp;lt;green&amp;gt;Adding hive %v&amp;lt;/&amp;gt;", args=Hive) &amp;amp;&amp;amp;
+ dict(type="mount",
+ `description`=Name,
+ `from`=dict(accessor="raw_reg",
+ path_type="registry",
+ prefix=pathspec(
+ Path="/",
+ DelegateAccessor="collector",
+ Delegate=ImagePath + Hive)),
+ on=dict(accessor="registry", prefix=Key, path_type="registry"))
+
+ LET _MapDirHiveToKey(Hive, Key, Name) = log(dedup=-1,
+ message="&amp;lt;green&amp;gt;Adding hive %v&amp;lt;/&amp;gt;", args=Hive) &amp;amp;&amp;amp;
+ dict(type="mount",
+ `description`=Name,
+ `from`=dict(accessor="raw_reg",
+ path_type="registry",
+ prefix=pathspec(
+ Path="/",
+ DelegateAccessor="file",
+ DelegatePath=Hive)),
+ on=dict(accessor="registry", prefix=Key, path_type="registry"))
+
+ -- Look for user hives and map them in HKEY_USERS
+ LET _FindUserHives(ImagePath) = SELECT _MapHiveToKey(
+ Name="Map User hive for " + OSPath[-2],
+ Hive=OSPath,
+ Key="HKEY_USERS\\" + OSPath[-2],
+ ImagePath=ImagePath
+ ) AS Map
+ FROM glob(globs='/Users/*/NTUser.DAT',
+ accessor="collector",
+ root=ImagePath)
+ WHERE log(dedup=-1, message="&amp;lt;green&amp;gt;Found User Hive at %v&amp;lt;/&amp;gt;", args=OSPath.Path)
+
+ LET _FindDirUserHives(ImagePath) = SELECT _MapDirHiveToKey(
+ Name="Map User hive for " + OSPath[-2],
+ Hive=OSPath,
+ Key="HKEY_USERS\\" + OSPath[-2]) AS Map
+ FROM glob(globs='/Users/*/NTUser.DAT',
+ root=ImagePath)
+ WHERE log(dedup=-1, message="&amp;lt;green&amp;gt;Found User Hive at %v&amp;lt;/&amp;gt;", args=OSPath.Path)
+
+ LET CalculateWindowsMappings(ImagePath) = Remappings.remappings + (
+ dict(type="mount",
+ `from`=dict(accessor="collector", prefix=ImagePath),
+ on=dict(accessor="ntfs", prefix="\\\\.\\C:", path_type="ntfs")
+ ),
+ dict(type="mount",
+ `from`=dict(accessor="collector", prefix=ImagePath),
+ on=dict(accessor="file", prefix="C:", path_type="windows")
+ ),
+ dict(type="mount",
+ `from`=dict(accessor="collector", prefix=ImagePath),
+ on=dict(accessor="auto", prefix="C:", path_type="windows")
+ ),
+ _MapHiveToKey(Name="Map Software Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/SOFTWARE",
+ Key="HKEY_LOCAL_MACHINE/Software"),
+ _MapHiveToKey(Name="Map Security Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/Security",
+ Key="HKEY_LOCAL_MACHINE/Security"),
+ _MapHiveToKey(Name="Map System Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/System",
+ Key="HKEY_LOCAL_MACHINE/System"),
+ _MapHiveToKey(Name="Map SAM Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/System32/Config/SAM",
+ Key="SAM"),
+ _MapHiveToKey(Name="Map Amcache Hive",
+ ImagePath=ImagePath,
+ Hive="/Windows/appcompat/Programs/Amcache.hve",
+ Key="Amcache")
+ ) + _FindUserHives(ImagePath=ImagePath).Map
+
+sources:
+- query: |
+ LET Remappings = parse_yaml(
+ filename=template(template=CommonRemapping,
+ expansion=dict(Hostname=Hostname)),
+ accessor="data")
+
+ -- Select the type of mapping to calculate depending on what ImagePath is.
+ LET CalculateMappings &amp;lt;= SELECT * FROM foreach(row={
+ SELECT OSPath
+ FROM _GetRootAccessor(ImagePath=ImagePath, Accessor="auto")
+ },
+ query={
+ SELECT * FROM CalculateWindowsMappings(ImagePath=OSPath)
+ })
+
+ LET YamlText &amp;lt;= serialize(format="yaml",
+ item=dict(remappings=CalculateMappings))
+
+ LET _ &amp;lt;= WriteRemappingPath &amp;amp;&amp;amp;
+ copy(dest=WriteRemappingPath, accessor='data', filename=YamlText)
+
+ SELECT Upload &amp;amp;&amp;amp; upload(accessor="data", file=YamlText, name="remapping.yaml") AS Upload,
+ WriteRemappingPath &amp;amp;&amp;amp;
+ copy(dest=WriteRemappingPath,
+ accessor='data',
+ filename=YamlText) AS RemappingFile
+ FROM scope()
+
+- name: TestRegistry
+ query:
+ LET _ &amp;lt;= remap(config=YamlText)
+ SELECT OSPath
+ FROM glob(globs="HKEY_LOCAL_MACHINE/Software/*", accessor='registry')
+
+- name: TestFile
+ query:
+ SELECT OSPath
+ FROM glob(globs="*/*")
+
+&lt;/code>&lt;/pre></description></item><item><title>Windows.KapeFiles.Extract</title><link>https://docs.velociraptor.app/artifact_references/pages/windows.kapefiles.extract/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/windows.kapefiles.extract/</guid><description>&lt;p>The Windows.KapeFiles.Targets artifact collects files into a Zip
+file. Zip files cannot generally preserve timestamps since they
+only have a single timestamp concept. Velociraptor will only record
+the modified time in the zip file header itself but all the times
+are present in the metadata file:&lt;/p>
+&lt;p>&amp;ldquo;Windows.KapeFiles.Targets/All File Metadata.json&amp;rdquo;&lt;/p>
+&lt;p>Sometimes, users wish to extract the contents of a collection to a
+directory, and run an external tool over the data. Some such
+external tools assume the file timestamps (e.g. prefetch files) are
+meaningful. In this case we need to preserve the timestamps.&lt;/p>
+&lt;p>You can use this artifact to extract the content of a collection
+while preserving the timestamps. The artifact will read the metadata
+file, unpack the contents of the container and set the timestamps on
+the resulting file.&lt;/p>
+&lt;p>NOTE: Windows allows 3 timestamps to be set (MAC time except for
+Btime), while Linux only allows 2 timestamps (Modified and
+Accessed).&lt;/p>
+&lt;h2 id="example---command-line-invocation">Example - command line invocation&lt;/h2>
+&lt;pre>&lt;code>velociraptor-v0.6.7-linux-amd64 artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-DESKTOP-2OR51GL-2021-07-16_06_56_50_-0700_PDT.zip --args OutputDirectory=/tmp/MyOutput/
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.KapeFiles.Extract
+description: |
+ The Windows.KapeFiles.Targets artifact collects files into a Zip
+ file. Zip files cannot generally preserve timestamps since they
+ only have a single timestamp concept. Velociraptor will only record
+ the modified time in the zip file header itself but all the times
+ are present in the metadata file:
+
+ "Windows.KapeFiles.Targets/All File Metadata.json"
+
+ Sometimes, users wish to extract the contents of a collection to a
+ directory, and run an external tool over the data. Some such
+ external tools assume the file timestamps (e.g. prefetch files) are
+ meaningful. In this case we need to preserve the timestamps.
+
+ You can use this artifact to extract the content of a collection
+ while preserving the timestamps. The artifact will read the metadata
+ file, unpack the contents of the container and set the timestamps on
+ the resulting file.
+
+ NOTE: Windows allows 3 timestamps to be set (MAC time except for
+ Btime), while Linux only allows 2 timestamps (Modified and
+ Accessed).
+
+ ## Example - command line invocation
+
+ ```
+ velociraptor-v0.6.7-linux-amd64 artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-DESKTOP-2OR51GL-2021-07-16_06_56_50_-0700_PDT.zip --args OutputDirectory=/tmp/MyOutput/
+ ```
+
+type: SERVER
+
+parameters:
+ - name: OutputDirectory
+ description: Directory to write on (must be set).
+ - name: ContainerPath
+ description: Path to container (zip file) to unpack.
+
+sources:
+ - query: |
+ LET MetadataFile = ("results", "Windows.KapeFiles.Targets/All File Metadata.json")
+ LET UploadsFile = "uploads.json"
+
+ // Path to the root of the container
+ LET RootPathSpec = pathspec(DelegateAccessor="auto",
+ path_type="zip",
+ DelegatePath=ContainerPath)
+
+ // The pathspec for where to store the file
+ LET OutputPathSpec = pathspec()
+
+ // Memoize the metadata stored in the container file so we can
+ // quickly extract the file times.
+ LET AllFileMetadata &amp;lt;= memoize(
+ key="SourceFile",
+ query={
+ SELECT *
+ FROM parse_jsonl(accessor="collector",
+ filename=RootPathSpec + MetadataFile)
+ })
+
+ LET ALLUploads = SELECT *, ( RootPathSpec + _Components ).Path AS FileUpload,
+ OutputPathSpec + _Components[2:] AS Dest,
+ get(item=AllFileMetadata,
+ field=vfs_path) AS Metadata
+ FROM parse_jsonl(accessor="collector",
+ filename=RootPathSpec + UploadsFile)
+ WHERE Type != "idx"
+
+ SELECT *, upload_directory(
+ accessor="collector",
+ output=OutputDirectory,
+ mtime=Metadata.Modified,
+ atime=Metadata.LastAccessed,
+ ctime=Metadata.Created,
+ name=Dest,
+ file=RootPathSpec + _Components) AS UploadedFile
+ FROM ALLUploads
+
+&lt;/code>&lt;/pre></description></item></channel></rss>

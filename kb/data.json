@@ -1,0 +1,602 @@
+[
+    {
+        "title": "How to set up OIDC authentication using ADFS",
+        "link": "/knowledge_base/tips/setup_adfs",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "plop28",
+        "author_avatar": "https://avatars.githubusercontent.com/u/50863879?v=4",
+        "author_link": "https://github.com/plop28",
+        "date": "2026-01-26"
+    },
+    {
+        "title": "How to create an \"online collector\" binary",
+        "link": "/knowledge_base/tips/online_collector",
+        "tags": [
+            "automation",
+            "deployment",
+            "acquisition",
+            "collector"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "How to set up Azure Blob Storage for file uploads",
+        "link": "/knowledge_base/tips/setup_azure_storage",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "How to set up a GCS Bucket for file uploads",
+        "link": "/knowledge_base/tips/setup_gcs_storage",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "How to set up a SMB share for file uploads",
+        "link": "/knowledge_base/tips/setup_smb_share",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-11-14"
+    },
+    {
+        "title": "Backing up and restoring a server.",
+        "link": "/knowledge_base/tips/backing_up",
+        "tags": [
+            "automation",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-11-13"
+    },
+    {
+        "title": "Pre-populating a server with clients, hunts and flows",
+        "link": "/knowledge_base/tips/prepopulate_server",
+        "tags": [
+            "automation",
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-10-14"
+    },
+    {
+        "title": "Manipulating VQL columns and rows",
+        "link": "/knowledge_base/tips/operating_on_columns",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-09-26"
+    },
+    {
+        "title": "Detecting Velociraptor misuse",
+        "link": "/knowledge_base/tips/velocirator_misuse",
+        "tags": [
+            "deployment",
+            "forensics"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-08-28"
+    },
+    {
+        "title": "How to set up a MinIO (S3-compatible) dropbox server for file uploads",
+        "link": "/knowledge_base/tips/dropbox_server",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-07-05"
+    },
+    {
+        "title": "How to automatically post process flows with an external program.",
+        "link": "/knowledge_base/tips/post_process_with_external_program",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-06-29"
+    },
+    {
+        "title": "How do I configure check ip for Cloudflare Dynamic DNS?",
+        "link": "/knowledge_base/tips/cloudflare_checkip",
+        "tags": [
+            "deployment",
+            "cloudflare",
+            "ddns",
+            "checkip"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2025-06-18"
+    },
+    {
+        "title": "How do I setup Velociraptor with a CloudFlare Tunnel?",
+        "link": "/knowledge_base/tips/cloudflare_tunnel",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "gru3zi",
+        "author_avatar": "https://avatars.githubusercontent.com/u/44057919?v=4",
+        "author_link": "https://github.com/gru3zi",
+        "date": "2025-05-19"
+    },
+    {
+        "title": "How to set up authentication using Google OAuth SSO",
+        "link": "/knowledge_base/tips/setup_google_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-04-28"
+    },
+    {
+        "title": "How to set up a SFTP server for file uploads",
+        "link": "/knowledge_base/tips/setting_up_sftp",
+        "tags": [
+            "deployment",
+            "uploads",
+            "triage"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2025-02-25"
+    },
+    {
+        "title": "How can I automatically add & update client metadata?",
+        "link": "/knowledge_base/tips/automating_metadata",
+        "tags": [
+            "configuration",
+            "vql",
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2025-01-30"
+    },
+    {
+        "title": "How to set up OIDC authentication using Keycloak",
+        "link": "/knowledge_base/tips/setup_keycloak",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2024-12-28"
+    },
+    {
+        "title": "Set operations in VQL",
+        "link": "/knowledge_base/tips/set_operations",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-12-16"
+    },
+    {
+        "title": "How do I get a list of hunts across multiple organizations?",
+        "link": "/knowledge_base/tips/multi_org",
+        "tags": [
+            "vql",
+            "orgs",
+            "hunting"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-12-06"
+    },
+    {
+        "title": "Error \"Parameter refers to an unknown artifact\" when collecting a CLIENT artifact",
+        "link": "/knowledge_base/tips/collect_artifact_unknown",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-08-31"
+    },
+    {
+        "title": "How to manage storage space on the server",
+        "link": "/knowledge_base/tips/deleting_old_data",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2024-07-19"
+    },
+    {
+        "title": "How do I enable password protected VFS downloads?",
+        "link": "/knowledge_base/tips/download_password",
+        "tags": [
+            "password",
+            "download",
+            "gui"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2024-03-18"
+    },
+    {
+        "title": "How do you generate random characters?",
+        "link": "/knowledge_base/tips/random",
+        "tags": [
+            "random",
+            "vql"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2023-08-09"
+    },
+    {
+        "title": "How can I clone an organization with all its hunts and artifacts to another instance?",
+        "link": "/knowledge_base/tips/clone_organization_to_other_server",
+        "tags": [
+            "archiving",
+            "orgs",
+            "deployment"
+        ],
+        "author": "Jil",
+        "author_avatar": "https://avatars.githubusercontent.com/u/382017?v=4",
+        "author_link": "https://github.com/Jil",
+        "date": "2023-07-24"
+    },
+    {
+        "title": "What to do about error \"Plugin info not found\"",
+        "link": "/knowledge_base/tips/plugin_not_found",
+        "tags": [
+            "vql",
+            "configuration",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2023-05-05"
+    },
+    {
+        "title": "Custom quarantine exclusions",
+        "link": "/knowledge_base/tips/quarantine",
+        "tags": [
+            "quarantine",
+            "containment"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2023-03-04"
+    },
+    {
+        "title": "How can I convert decimal?",
+        "link": "/knowledge_base/tips/decimaldecode",
+        "tags": [
+            "decode",
+            "decimal",
+            "vql"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2022-11-02"
+    },
+    {
+        "title": "How to control hunting by label groups?",
+        "link": "/knowledge_base/tips/hunt_by_label",
+        "tags": [
+            "hunting",
+            "vql",
+            "labels"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-09-10"
+    },
+    {
+        "title": "How do I re-collect a failed artifact in a hunt?",
+        "link": "/knowledge_base/tips/retry_hunt",
+        "tags": [
+            "hunting",
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-09-10"
+    },
+    {
+        "title": "How do I get the latest release binary?",
+        "link": "/knowledge_base/tips/getting_latest_release",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-09-03"
+    },
+    {
+        "title": "How can I url/percent decode a string?",
+        "link": "/knowledge_base/tips/urldecode",
+        "tags": [
+            "decode",
+            "encode",
+            "url",
+            "vql"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2022-06-06"
+    },
+    {
+        "title": "How can I make a multipart/form-data POST request in VQL",
+        "link": "/knowledge_base/tips/multiparts_uploads",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-05-21"
+    },
+    {
+        "title": "Applying labels to hunt results",
+        "link": "/knowledge_base/tips/huntlabel",
+        "tags": [
+            "labels"
+        ],
+        "author": "mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
+        "date": "2022-05-20"
+    },
+    {
+        "title": "How can I quickly reconfigure an offline collector?",
+        "link": "/knowledge_base/tips/reconfigure_offline_collector",
+        "tags": [
+            "configuration",
+            "forensics",
+            "collector"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-05-06"
+    },
+    {
+        "title": "How can I save my favorite collections for the future?",
+        "link": "/knowledge_base/tips/favorites",
+        "tags": [
+            "configuration",
+            "GUI"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "What do I do about \"version GLIBC_2.xx not found\" errors?",
+        "link": "/knowledge_base/tips/glibc_errors",
+        "tags": [
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "How can I override the configuration file?",
+        "link": "/knowledge_base/tips/merging_config",
+        "tags": [
+            "configuration"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "How to fix \"certificate has expired or not yet valid error\"?",
+        "link": "/knowledge_base/tips/rolling_certificates",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "How to initialize a Velociraptor server with custom artifacts?",
+        "link": "/knowledge_base/tips/startup_artifacts",
+        "tags": [
+            "deployment",
+            "configuration"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-26"
+    },
+    {
+        "title": "How do I search for registry keys",
+        "link": "/knowledge_base/tips/registry_finder",
+        "tags": [
+            "forensics",
+            "searching"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-25"
+    },
+    {
+        "title": "How do I use my own SSL certificates?",
+        "link": "/knowledge_base/tips/ssl",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "ajburnell",
+        "author_avatar": "https://avatars.githubusercontent.com/u/30587915?v=4",
+        "author_link": "https://github.com/ajburnell",
+        "date": "2022-04-18"
+    },
+    {
+        "title": "How do I set a proxy for client communications?",
+        "link": "/knowledge_base/tips/proxy",
+        "tags": [
+            "configuration",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-04-15"
+    },
+    {
+        "title": "How to increase notebook timeout",
+        "link": "/knowledge_base/tips/notebook_timeout",
+        "tags": [
+            "configuration"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-29"
+    },
+    {
+        "title": "In VQL, can I SELECT a column with special characters in its name?",
+        "link": "/knowledge_base/tips/identifier_with_space",
+        "tags": [
+            "vql"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-27"
+    },
+    {
+        "title": "How do I upgrade my server and clients?",
+        "link": "/knowledge_base/tips/upgrading",
+        "tags": [
+            "configuration",
+            "admin"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-27"
+    },
+    {
+        "title": "How can I automatically apply labels to clients?",
+        "link": "/knowledge_base/tips/automating_labels",
+        "tags": [
+            "automation",
+            "labels"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-26"
+    },
+    {
+        "title": "How can I configure Velociraptor for multiple SSO providers",
+        "link": "/knowledge_base/tips/multiple_oauth",
+        "tags": [
+            "configuration",
+            "sso",
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-26"
+    },
+    {
+        "title": "How do I debug the client while it is running?",
+        "link": "/knowledge_base/tips/debugging_clients",
+        "tags": [
+            "deployment",
+            "debugging"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-21"
+    },
+    {
+        "title": "How do I deploy the client as agentless (without install)?",
+        "link": "/knowledge_base/tips/deploying_in_agentless_mode",
+        "tags": [
+            "deployment"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2022-03-21"
+    }
+]

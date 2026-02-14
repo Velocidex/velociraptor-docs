@@ -1,0 +1,1638 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ETW on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/etw/</link><description>Recent content in ETW on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 12 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/etw/index.xml" rel="self" type="application/rss+xml"/><item><title>WMI Event Consumers: what are you missing?</title><link>https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/</link><pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/</guid><description>&lt;p>WMI Eventing is a fairly well known technique in DFIR, however some
+tools may not provide the coverage you expect. This article covers
+WMI eventing visibility and detection including custom namespaces.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="194ba7e653d5c903b91e8a29414b3654">
+ &lt;div data-featherlight="#194ba7e653d5c903b91e8a29414b3654" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/00SelectionBias.png" alt="Selection bias in WWII: missing what is not collected.">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="00SelectionBias.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Selection bias in WWII: missing what is not collected.
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="background">Background&lt;/h2>
+&lt;p>There has been a fair bit of research and observations of WMI eventing
+in field over the last years. In short, a WMI event consumer is a
+method of subscribing to certain system events, then enabling an action
+of some sort. Common adversary use cases may include persistence, privilege
+escalation, or as a collection trigger. Represented as ATT&amp;amp;CK T1546.003
+this technique has been observed in use from APT, through to trash-tic
+worm and coin miner threats.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f09ba24999c91d0e1953062cc7f6987c">
+ &lt;div data-featherlight="#f09ba24999c91d0e1953062cc7f6987c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/01WMIOverview.png" alt="WMI Eventing: 3 system classes">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="01WMIOverview.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ WMI Eventing: 3 system classes
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>There are three system classes in every active event consumer:&lt;/p>
+&lt;ol>
+&lt;li>__EventFilter is a WQL query that outlines the trigger event of
+interest.&lt;/li>
+&lt;li>__EventConsumer is an action to perform upon triggering an event.&lt;/li>
+&lt;li>__FilterToConsumerBinding is the registration mechanism that binds
+a filter to a consumer.&lt;/li>
+&lt;/ol>
+&lt;p>Most detection will focus on collecting the WMI classes in root/subscription
+and, in some tools root/default WMI namespaces.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9ac8c6545958803b1e63004624e6aecb">
+ &lt;div data-featherlight="#9ac8c6545958803b1e63004624e6aecb" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/02Autoruns.png" alt="Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="02Autoruns.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h4 id="custom-namespaces">Custom Namespaces&lt;/h4>
+&lt;p>At Blackhat 2018 Lee Christensen and Matt Graeber presented &amp;ldquo;Subverting
+Sysmon: Application of a Formalized Security Product Evasion Methodology&amp;rdquo;.
+This excellent talk focused on defense evasion methodology and highlighted
+potential collection gaps in telemetry tools around WMI eventing. In this
+case, the focus was on Sysmon behaviour of collection only in
+root/subscription, interestingly, it also highlighted the possibility to
+implement __EventConsumer classes in arbitrary namespaces.&lt;/p>
+&lt;p>It is detection of WMI Event Consumers in arbitrary namespaces that I&amp;rsquo;m going
+to focus. For anyone interested in testing I have written
+&lt;a href="https://github.com/mgreen27/mgreen27.github.io/blob/master/static/other/WMIEventingNoisemaker/WmiEventingNoisemaker.ps1" target="_blank" >a script to generate WMI event consumers&lt;/a>
+.
+This script wraps several powershell functions released during the Black
+Hat talk to test creating working event consumers.&lt;/p>
+&lt;p>First step was to create a custom namespace event consumer. In this
+instance I selected the namespace name &lt;code>totallylegit&lt;/code> and attached an
+ActiveScript event consumer.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="07e245e677959853d6d32897b82bc2e9">
+ &lt;div data-featherlight="#07e245e677959853d6d32897b82bc2e9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/04WMIEventGeneration.png" alt="WMIEventingNoismaker.ps1:Generate active script EventConsumer">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="04WMIEventGeneration.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ WMIEventingNoismaker.ps1:Generate active script EventConsumer
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="collection">Collection&lt;/h2>
+&lt;p>Velociraptor has several valuable artifacts for hunting WMI Event
+Consumers:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Windows.Sysinternals.Autoruns&lt;/code> - leverages a thirdparty deployment of
+Sysinternals Autoruns and typically my go to ASEP collection artifact but
+limited by visibility in root/default and root/subscription only.&lt;/li>
+&lt;li>&lt;code>Windows.Persistence.PermanentWMIEvents&lt;/code> - recently upgraded to query
+all ROOT namespaces.&lt;/li>
+&lt;/ul>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Windows.Persistence.PermanentWMIEvents ">&lt;ul>
+&lt;li>This artifact reports currently deployed permanent WMI Event Consumers.&lt;/li>
+&lt;li>The artifact collects Binding information, then presents associated Filters and Consumers.&lt;/li>
+&lt;li>Target a specific namespace, or tick &lt;code>AllRootNamespaces&lt;/code> to collect all
+root namespace event consumers.&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5cba01649590b332579d1201014dc470">
+ &lt;div data-featherlight="#5cba01649590b332579d1201014dc470" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/05collection.png" alt="Windows.Persistence.PermanentWMIEvents: configuration options">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Persistence.PermanentWMIEvents: configuration options
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="165083d9d77cc59b9d5dfa517f59d753">
+ &lt;div data-featherlight="#165083d9d77cc59b9d5dfa517f59d753" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/05collection_results.png" alt="Windows.Persistence.PermanentWMIEvents: results">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05collection_results.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Persistence.PermanentWMIEvents: results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h4 id="telemetry">Telemetry&lt;/h4>
+&lt;p>Unfortunately prior to Windows 10 WMI logging was fairly limited. Sysmon and
+other telemetry sources often rely on WMI eventing itself to collect WMI
+eventing telemetry events. That means custom classes require namespace and
+class existence prior to telemetry subscription. Sysmon as seen below also
+does not have coverage for root/default namespace.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d2d332d0529139a3510df7d8fb417e68">
+ &lt;div data-featherlight="#d2d332d0529139a3510df7d8fb417e68" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/03SysmonEid20.png" alt="Sysmon collection: Event ID 20 mapping (__EventConsumer)">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="03SysmonEid20.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Sysmon collection: Event ID 20 mapping (__EventConsumer)
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The good news is since Windows 10, WMI logging has improved significantly
+and we can now query the event log: Microsoft-Windows-WMI-Activity or
+subscribe the underlying ETW provider of the same name. In the VQL below
+I filter the ETW event on event consumer creation or delete operations.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT
+ System.TimeStamp AS EventTime,
+ System.ID as EventId,
+ strip(prefix='\\\\\.\\',string=EventData.NamespaceName) as NamespaceName,
+ EventData.Operation as Operation,
+ GetProcessInfo(TargetPid=int(int=EventData.ClientProcessId))[0] as Process
+FROM watch_etw(guid=&amp;quot;{1418ef04-b0b4-4623-bf7e-d74ab47bbdaa}&amp;quot;)
+WHERE EventId = 11
+ AND Operation =~ 'WbemServices::(PutInstance|DeleteInstance|PutClass|DeleteClass)'
+ AND Operation =~ 'EventConsumer|EventFilter|FilterToConsumerBinding'
+&lt;/code>&lt;/pre>
+&lt;p>I have included a completed artifact in the artifact exchange:
+&lt;a href="https://docs.velociraptor.app/exchange/artifacts/pages/wmieventing/" target="_blank" >Windows.ETW.WMIEventing&lt;/a>
+.
+That artifact includes process enrichment, targeting both creation and deletion of EventConsumers.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="e69728742d4be6ee10d00a3389e81c3d">
+ &lt;div data-featherlight="#e69728742d4be6ee10d00a3389e81c3d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/06ETW.png" alt="Custom namespace provider registration and process enrichment">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="06ETW.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Custom namespace provider registration and process enrichment
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c938b279a732954169255d34893c60ce">
+ &lt;div data-featherlight="#c938b279a732954169255d34893c60ce" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/06ETWb.png" alt="Windows.ETW.WMIEventing: all operations event consumer creation and removal">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="06ETWb.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.ETW.WMIEventing: all operations event consumer creation and removal
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h4 id="event-log">Event Log&lt;/h4>
+&lt;p>Similar filters can be used with &lt;code>Windows.EventLogs.EvtxHunter&lt;/code> for
+detection. Its worthy to note, event logs hold less verbose logging for
+the registration than ETW but this use case is helpful when coming late
+to the party during an investigation.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9ca52546aa855bb94c888d8b25aa3432">
+ &lt;div data-featherlight="#9ca52546aa855bb94c888d8b25aa3432" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/07EvtxHunter.png" alt="Windows.EventLogs.EvtxHunter: hunt for event consumer string">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="07EvtxHunter.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.EventLogs.EvtxHunter: hunt for event consumer string
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="6075ca7ded597bcf9b092b4cca62ab88">
+ &lt;div data-featherlight="#6075ca7ded597bcf9b092b4cca62ab88" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/07EvtxHunterb.png" alt="Windows.EventLogs.EvtxHunter: detect event consumer class creation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="07EvtxHunterb.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.EventLogs.EvtxHunter: detect event consumer class creation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h1 id="conclusions">Conclusions&lt;/h1>
+&lt;p>During this post, we have shown three techniques for detecting WMI event consumers
+that are worth considering. We can collect these data-points over an entire
+network in minutes using Velociraptor&amp;rsquo;s &amp;ldquo;hunt&amp;rdquo; capability. Similarly
+Velociraptor notebook workflow assists excluding known good entries quickly as part of analysis.&lt;/p>
+&lt;p>The Velociraptor platform aims to provide visibility and access
+to endpoint data. If you would like to try Velociraptor it is available on GitHub under an open source license.
+As always, please file issues on the bug tracker or ask questions on our
+mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+. You can also chat with
+us directly on discord at &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/about-wmi" target="_blank" >Microsoft documentation, About WMI&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://attack.mitre.org/techniques/T1546/003/" target="_blank" >MITRE ATT&amp;amp;CK T1546.003, Event Triggered Execution: Windows Management Instrumentation Event Subscription&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=R5IEyoFpZq0" target="_blank" >Christensen.L and Graeber.M, Blackhat 2018 - Subverting Sysmon: Application of a Formalized Security Product Evasion Methodology&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/jsecurity101/Windows-API-To-Sysmon-Events/" target="_blank" >JSecurity101, Windows APIs To Sysmon-Events&lt;/a>
+&lt;/li>
+&lt;/ol></description></item><item><title>EQL to VQL - Leverage EQL based detection rules in Velociraptor</title><link>https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/</link><pubDate>Tue, 09 Nov 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/</guid><description>
+&lt;div class="mynotices warning">
+ &lt;div heading=" Outdated content ">&lt;p>This article describes a threat detection approach that has since been
+superseded by Velociraptor&amp;rsquo;s &lt;a href="https://docs.velociraptor.app/blog/2023/2023-11-15-sigma_in_velociraptor/" >built-in Sigma
+functionality&lt;/a>
+,
+however it is retained here for historical and instructive purposes since it
+also demonstrates how the flexibility of VQL makes novel solutions possible.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>If you have been following the development of Velociraptor for a while
+you are probably more than familiar with Velociraptor&amp;rsquo;s flexible query
+language (VQL). Because Velociraptor is an agent running on the
+endpoint, VQL facilitates access to all manners of data sources, from
+event logs, event tracing for Windows (ETW) to live analysis and
+triaging - all orchestrated using VQL as the flexible glue language.&lt;/p>
+&lt;p>While VQL can be used for hunting or detection, many traditional
+threat hunting platforms work by forwarding logs to a central location
+and then running queries over the aggregate data from all
+endpoints. There is a large body of existing work in detection queries
+or threat intelligence feeds designed to work on top of a central data
+mining solution such as Elastic or Splunk. We have been wondering for
+a while how to make use of that existing logic within Velociraptor. By
+reusing existing detection resources in different contexts, we are
+able to enhance their overall effectiveness.&lt;/p>
+&lt;p>In this post we discuss how to leverage detections targeting EQL (an
+Elastic search query) within Velociraptor. I thought it would also be
+interesting to discuss the main differences between more traditional
+logs aggregation solutions (such as Elastic or Splunk) and
+Velociraptor&amp;rsquo;s endpoint centric design.&lt;/p>
+&lt;h2 id="what-is-eql-anyway">What is EQL anyway?&lt;/h2>
+&lt;p>The &lt;a href="https://www.elastic.co/blog/introducing-event-query-language" target="_blank" >Event Query
+Language&lt;/a>
+
+(EQL), is a query language designed to identify specific conditions in
+collected telemetry from endpoints in order to implement detections of
+anomalous behavior.&lt;/p>
+&lt;p>EQL forms a central part of the Elastic detection platform and has a
+large number of &lt;a href="https://github.com/elastic/detection-rules" target="_blank" >existing detection
+rules&lt;/a>
+. It is also a
+target for some other threat detection platforms, for example
+&lt;a href="https://github.com/SigmaHQ/sigma" target="_blank" >Sigma&lt;/a>
+ can generate EQL queries
+from Sigma rules.&lt;/p>
+&lt;p>By implementing EQL support for Velociraptor we can leverage the
+existing resources and use them in a wider context - as we will see
+below.&lt;/p>
+&lt;h2 id="how-do-eql-detections-work">How do EQL detections work?&lt;/h2>
+&lt;p>EQL detections are part of the wider Elastic solution - which is
+pretty typical for traditional centrally processed SIEM based systems:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Events are collected from the endpoint using a collection
+agent. Commonly the agent is
+&lt;a href="https://www.elastic.co/beats/winlogbeat" target="_blank" >winlogbeat&lt;/a>
+ collecting
+&lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon" target="_blank" >Sysmon&lt;/a>
+
+generated events, providing process execution logs, file and
+registry modification events and DNS lookup events.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The data is transformed on the endpoint into a standard data schema
+for transmission into the Elastic server. EQL relies on the data being in
+&lt;a href="https://www.elastic.co/guide/en/ecs/current/index.html" target="_blank" >Elastic Common
+Schema&lt;/a>
+ so
+it can be indexed by the backend.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The transformed data is received on the server and fed into large
+scale data mining warehouse (e.g. The Elastic search server) where
+it is aggregated and indexed.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Detection queries are applied on the data mining engine to detect
+anomalies.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The following diagram illustrates the process&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="aee748bffd27c06a1a5a52a27972a555">
+ &lt;div data-featherlight="#aee748bffd27c06a1a5a52a27972a555" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/eql_lifecycle.png" alt="Life of an EQL event">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="eql_lifecycle.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Life of an EQL event
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Let&amp;rsquo;s work through a specific example of a Sysmon event as it works
+its way through the EQL echo-system, eventually matching the
+&lt;a href="https://github.com/elastic/detection-rules/blob/main/rules/windows/defense_evasion_clearing_windows_event_logs.toml" target="_blank" >following
+detection&lt;/a>
+:&lt;/p>
+&lt;pre>&lt;code class="language-py">process where event.type in (&amp;quot;process_started&amp;quot;, &amp;quot;start&amp;quot;) and
+ (process.name : &amp;quot;wevtutil.exe&amp;quot; or process.pe.original_file_name == &amp;quot;wevtutil.exe&amp;quot;) and
+ process.args : (&amp;quot;/e:false&amp;quot;, &amp;quot;cl&amp;quot;, &amp;quot;clear-log&amp;quot;) or
+ process.name : (&amp;quot;powershell.exe&amp;quot;, &amp;quot;pwsh.exe&amp;quot;, &amp;quot;powershell_ise.exe&amp;quot;) and process.args : &amp;quot;Clear-EventLog&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>The above rule is looking for process executions, where the
+&lt;code>wevtutil.exe&lt;/code> program is run with command line arguments matching
+&amp;ldquo;cl&amp;rdquo; or &amp;ldquo;clear-log&amp;rdquo; (Or the equivalent powershell)&lt;/p>
+&lt;p>What happens when I run the command &lt;code>wevtutil.exe cl system&lt;/code> on my
+test system?&lt;/p>
+&lt;p>Sysmon will detect the process start and write an event into the
+system event log.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="7cd47cf166374324f7fc3d036ad685d0">
+ &lt;div data-featherlight="#7cd47cf166374324f7fc3d036ad685d0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/sysmon_event.png" alt="A typical Sysmon Event">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sysmon_event.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ A typical Sysmon Event
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Eventually the event will be forwarded to the Elastic stack, detection
+queries run over it and potentially an alert will be escalated.&lt;/p>
+&lt;p>Since we know this event will trigger the EQL detection, let&amp;rsquo;s see how
+Sysmon event fields are mapped into the ECS fields that the EQL query
+works on.&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Sysmon Field&lt;/th>
+ &lt;th>ECS Field&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>System.EventID&lt;/td>
+ &lt;td>maps to event.type = &amp;ldquo;start&amp;rdquo;&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>EventData.Image&lt;/td>
+ &lt;td>strip directory part and store in &lt;code>process.name&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>EventData.OriginalFileName&lt;/td>
+ &lt;td>stored in &lt;code>process.pe.original_file_name&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>EventData.CommandLine&lt;/td>
+ &lt;td>is split into array and stored in &lt;code>process.args&lt;/code>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;p>All the details of how the original Sysmon event fields are
+transformed to ECS fields can be found coded in
+&lt;a href="https://github.com/elastic/beats/blob/master/x-pack/winlogbeat/module/sysmon/config/winlogbeat-sysmon.js" target="_blank" >winlogbeat-sysmon.js&lt;/a>
+&lt;/p>
+&lt;h2 id="how-can-we-use-eql-detection-queries">How can we use EQL detection queries?&lt;/h2>
+&lt;p>So now that we understand how EQL detections work, how can we use the
+same detection logic in Velociraptor? Velociraptor&amp;rsquo;s philosophy is
+that detection should be distributed - rather than forwarding all raw
+events to a central place for triaging, we wish to be able to do the
+detection directly on the endpoint.&lt;/p>
+&lt;p>In order to do this, we need to convert the EQL to VQL that works
+directly on the raw source event logs as produced by Sysmon - in other
+words we need to reverse the above transformation from the ECS fields
+mentioned in the EQL query back to the original event log fields found
+on the endpoint.&lt;/p>
+&lt;h3 id="the-eql2vql-project">The &lt;code>eql2vql&lt;/code> project&lt;/h3>
+&lt;p>Let me introduce a new project to automatically convert EQL detection
+rules to VQL artifacts: &lt;a href="https://github.com/Velocidex/eql2vql" target="_blank" >https://github.com/Velocidex/eql2vql&lt;/a>
+&lt;/p>
+&lt;p>The aim of this project is to automatically produce a VQL artifact
+that parses a set of EQL detection rules into a single VQL
+artifact. The produced artifact can be used to hunt for notable event
+log patterns at scale in minutes using Velociraptor&amp;rsquo;s hunting
+capabilities!&lt;/p>
+&lt;p>Let&amp;rsquo;s take a look at an example to illustrate how it works. I will
+keep it simple and just convert the single rule
+&lt;code>defense_evasion_clearing_windows_event_logs.toml&lt;/code> containing the
+sample EQL query above, to create a new VQL artifact&lt;/p>
+&lt;pre>&lt;code class="language-sh">$ python3 parser/eql2vql.py -p SysmonEVTXLogProvider ~/projects/detection-rules/rules/windows/defense_evasion_clearing_windows_event_logs.toml -o /tmp/detection_vql.yaml
+Created artifact 'Windows.Sysmon.Detection' with 1 detections
+&lt;/code>&lt;/pre>
+&lt;p>In this case I selected the &lt;code>SysmonEVTXLogProvider&lt;/code> as I wanted to
+search the EVTX files directly on the endpoint.&lt;/p>
+&lt;p>Let&amp;rsquo;s take a look at the produced VQL&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET SysmonGenerator = generate(name=&amp;quot;Sysmon&amp;quot;,
+query={
+ SELECT * FROM foreach(row={SELECT FullPath FROM glob(globs=EVTXGlob)},
+ query={
+ SELECT *
+ FROM parse_evtx(filename=FullPath)
+ })
+}, delay=500)
+
+LET ProcessInfo = generate(name=&amp;quot;ProcessInfo&amp;quot;, query={
+ SELECT *,
+ basename(path=EventData.ParentImage) AS ParentImageBase,
+ basename(path=EventData.Image) AS ImageBase,
+ commandline_split(command=EventData.CommandLine) AS CommandArgs,
+ get(item=ProcessTypes, field=str(str=System.EventID.Value)) AS event_type
+ FROM SysmonGenerator
+ WHERE System.EventID.Value in (1, 5)
+})
+
+LET ProcessTypes &amp;lt;= dict(`1`=&amp;quot;start&amp;quot;, `5`=&amp;quot;stop&amp;quot;)
+
+LET _ClearingWindowsEventLogs = SELECT 'Clearing Windows Event Logs' AS Detection,
+ EventData.User AS User,
+ EventData.CommandLine AS CommandLine,
+ EventData.ParentImage AS ParentImage,
+ EventData.Image AS Image,
+ EventData.UtcTime AS UtcTime,
+ EventData || UserData AS _EventData,
+ System AS _System
+FROM ProcessInfo
+WHERE ( ( event_type IN ('process_started', 'start' )
+ AND ( ImageBase =~ '^wevtutil\\.exe$' OR EventData.OriginalFileName = 'wevtutil.exe' )
+ AND CommandArgs =~ '^/e:false$|^cl$|^clear-log$' ) OR ( ImageBase =~ '^powershell\\.exe$'
+ AND CommandArgs =~ '^Clear-EventLog$' ) )
+
+SELECT * FROM _ClearingWindowsEventLogs
+&lt;/code>&lt;/pre>
+&lt;p>The query is split into two main parts:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The &lt;code>Provider&lt;/code> is a set of queries that extract Sysmon EVTX events
+ready for further filtering. In this case we just read the events
+from the EVTX files on disk.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The second part of the query implements the detection logic as
+expressed by the EQL query above.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Let&amp;rsquo;s test this artifact on our test system that we used previously to
+run the command &lt;code>wevtutil.exe cl system&lt;/code>, I will first add the new
+artifact to Velociraptor by simply copy/pasting the generated code as
+a new artifact in the GUI&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a0c359aa08736e2e88ef9a501341230c">
+ &lt;div data-featherlight="#a0c359aa08736e2e88ef9a501341230c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/adding_new_artifact.png" alt="Adding the new detection artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adding_new_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adding the new detection artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now I will schedule the artifact for collection on my endpoint&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="650d073d49924e82dfc965743b11f957">
+ &lt;div data-featherlight="#650d073d49924e82dfc965743b11f957" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/collecting_new_artifact.png" alt="Collecting the new detection artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="collecting_new_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collecting the new detection artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>And in literally seconds, I find the system that triggered the rule
+and the command line that triggered it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="333f07ddea8a74160b9031e80440b198">
+ &lt;div data-featherlight="#333f07ddea8a74160b9031e80440b198" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/detecting_new_artifact.png" alt="Detecting with the new artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="detecting_new_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Detecting with the new artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>To search a large number of hosts, I can start a hunt with this
+artifact and in minutes find which of my hosts triggered the rule.&lt;/p>
+&lt;h3 id="adding-more-rules">Adding more rules&lt;/h3>
+&lt;p>We have seen how the EQL translates to a VQL detection query, but what
+if we have many rules? Lets convert the entire set of detection rules
+into a single artifact.&lt;/p>
+&lt;pre>&lt;code class="language-sh">$ python3 parser/eql2vql.py -p SysmonEVTXLogProvider ~/projects/detection-rules/rules/windows/* -o /tmp/detection_vql.yaml
+Created artifact 'Windows.Sysmon.Detection' with 165 detections
+&lt;/code>&lt;/pre>
+&lt;p>The new artifact applies all the detection queries simultaneously on
+all rows from the EVTX files. Collecting it again we have found some
+new detections!&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4136667118bc38b57f7e128dde53283b">
+ &lt;div data-featherlight="#4136667118bc38b57f7e128dde53283b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/collecting_more_detections.png" alt="Detecting with the full set of rules">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="collecting_more_detections.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Detecting with the full set of rules
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="real-time-detections">Real time detections&lt;/h2>
+&lt;p>Velociraptor&amp;rsquo;s hunting capabilities make it a breeze for actively
+searching for signed of past compromise on endpoints. However what
+about real time alerting? It would be nice to receive immediate
+notification when a detection rule is triggered.&lt;/p>
+&lt;p>Velociraptor supports real time &lt;a href="" >client monitoring&lt;/a>
+ via event queries. Event queries run
+constantly on the endpoint receiving rows from events.&lt;/p>
+&lt;p>We have previously explored how Event Queries can be used for real
+time monitoring and in particular how VQL can leverage &lt;a href="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/" >Event Tracing
+for Windows&lt;/a>
+ (ETW).&lt;/p>
+&lt;h3 id="using-eql-detections-with-real-time-monitoring">Using EQL detections with real time monitoring&lt;/h3>
+&lt;p>The &lt;code>eql2vql&lt;/code> project contains a second provider that reads Sysmon
+events directly from ETW sources. This bypasses the windows event log
+system completely, and applies the VQL directly on real time ETW
+events.&lt;/p>
+&lt;pre>&lt;code class="language-sh">$ python3 parser/eql2vql.py -p SysmonETWProvider ~/projects/detection-rules/rules/windows/defense_evasion_clearing_windows_event_logs.toml -o /tmp/detection_vql.yaml
+Created artifact 'Windows.Sysmon.EventDetection' with 1 detections
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Advantage of ETW ">&lt;p>We have previously discussed how event logs can be &lt;a href="https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/" >turned off or
+disabled&lt;/a>
+
+which would interfere with tools that rely on event logs
+directly. However, ETW sources still work, even if the event log itself
+is disabled.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>This time we have used the &lt;code>SysmonETWProvider&lt;/code> to source the Sysmon
+events directly from Sysmon&amp;rsquo;s ETW subsystem:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET SysmonGenerator = generate(name=&amp;quot;Sysmon&amp;quot;,
+query={
+ SELECT dict(EventID=dict(Value=System.ID),
+ Timestamp=System.TimeStamp) AS System,
+ EventData
+ FROM watch_etw(guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
+ WHERE get(field=&amp;quot;EventData&amp;quot;)
+}, delay=500)
+
+--- Rest of query is exactly the same as before
+&lt;/code>&lt;/pre>
+&lt;p>The only difference here is that the artifact produced is a client
+monitoring artifact so it can be installed on all clients permanently,
+continuously monitoring their Sysmon event source for the same EQL
+detections. As soon as an EQL rule matches, Velociraptor will emit a
+single row and send it to the server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="b5bba1c3df739fccc8467edb4e5830c7">
+ &lt;div data-featherlight="#b5bba1c3df739fccc8467edb4e5830c7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/real_time_detections.png" alt="Real time detections">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="real_time_detections.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Real time detections
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>We can escalate such detections, through a number of mechanisms,
+such as &lt;a href="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" >Slack alerts&lt;/a>
+, or escalate to an external case management tool like &lt;a href="https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1" target="_blank" >The Hive
+&lt;/a>
+. See &lt;a href="https://docs.velociraptor.app/docs/server_automation/server_monitoring/" >Server Monitoring&lt;/a>
+ for more information.&lt;/p>
+&lt;p>We can even use the resulting VQL artifact as a base for other queries
+to provide further enrichment and response capabilities.&lt;/p>
+&lt;h2 id="the-velociraptor-difference">The Velociraptor difference&lt;/h2>
+&lt;p>In this blog post we discussed a current effort to port EQL detections
+to Velociraptor. Being able to automatically convert EQL detection
+rules into VQL allows us to apply these rules in a wider context - We
+can hunt a large set of EVTX files for past compromise, or apply the
+same rules in real time to allow the endpoint to autonomously detect
+and response without needing to be online or connected to the SIEM.&lt;/p>
+&lt;p>The main premise of Velociraptor&amp;rsquo;s value proposition is to &lt;code>push the processing to the endpoint&lt;/code>. Instead of feeding all events from
+thousands of endpoints to a central location and then using a high
+performance database to churn though thousands of events per second,
+Velociraptor simply runs the VQL query &lt;strong>on each endpoint
+independently&lt;/strong> and forwards only those high value detections to the
+server. This solution scales very well because each endpoint is doing
+it&amp;rsquo;s own independent detection and does not need to forward &lt;strong>all&lt;/strong>
+events to the server. What does get forwarded is a very high value
+subset of events that typically indicate a successful detection!&lt;/p>
+&lt;h2 id="conclusions-and-further-work">Conclusions and further work&lt;/h2>
+&lt;p>We are still working on the EQL to VQL conversion engine. Currently
+not all EQL syntax is fully converted to VQL yet so some detection
+rules can not be converted. We hope that with time we build enough
+coverage to make the conversion as accurate as possible.&lt;/p>
+&lt;p>Since VQL is a much more capable language with access to a lot more
+data (since it is running on the endpoint), we hope to build more
+accurate and powerful detection rules. For example by correlating
+information from the filesystem, NTFS analysis, Yara scans, memory
+analysis etc. These capabilities can build on the basic EQL detection
+rules to help eliminate false positives. At the same time we can draw
+on the existing body of work in detection rules available with EQL.&lt;/p>
+&lt;p>We decided to focus on EQL because it is fairly similar to VQL in
+spirit (both are query languages) so the conversion is a little
+easier. But there are other sources of threat intelligence such as Sigma
+which also output to EQL! A good coverage of the EQL capabilities will
+get us Sigma support as well.&lt;/p>
+&lt;p>I wanted to write about this effort and have the community help us in
+testing, further suggestions and other contributions, even in this
+very early stage. If you would are interested in improving endpoint
+detection technology, take Velociraptor for a spin! It is available on
+&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ under an open
+source license. As always, please file issues on the bug tracker or
+ask questions on our mailing list
+&lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+. You can also chat with us
+directly on discord at &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item><item><title>ETW Part 2: Process Parent Spoofing</title><link>https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/</link><pubDate>Fri, 03 Sep 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/</guid><description>&lt;h2 id="process-parent-spoofing">Process Parent Spoofing&lt;/h2>
+&lt;p>A lot of the current state of the art detection techniques rely on
+process creation logs, and their implied parent/child
+relationships. For example, many detection rules alert when Powershell
+is launched from &lt;code>WinWord.exe&lt;/code> as it typically indicates a macro has
+started a powershell payload.&lt;/p>
+&lt;p>Many people are sometimes surprised to learn that on Windows
+parent/child process relationship is not particularly reliable. Back
+in 2009, Didier Stevens released a demo tool called
+&lt;a href="https://blog.didierstevens.com/2009/11/22/quickpost-selectmyparent-or-playing-with-the-windows-process-tree/" target="_blank" >SelectMyParent&lt;/a>
+
+demonstrating a quirk of the Windows &lt;code>CreateProcess&lt;/code> API that allows any
+caller to simply spoof the parent process ID. This is particularly
+troublesome, especially when so much of the DFIR industry relies on
+process tracing of parent/child call chain. Further, parent spoofing
+does not require any special privileges and can be performed by
+non-admin users as well.&lt;/p>
+&lt;p>Didier Stevens wrote about it again in 2017&amp;rsquo;s post &lt;a href="https://blog.didierstevens.com/2017/03/20/" target="_blank" >That Is Not My
+Child Process!&lt;/a>
+ where even
+&lt;code>Sysmon&lt;/code> and &lt;code>Volatility memory analysis&lt;/code> are demonstrated to be
+fooled by &lt;code>SelectMyParent&lt;/code>!&lt;/p>
+&lt;p>If you thought this was an unknown technique, rest assured that most
+attack tools integrate parent process spoofing already. For example
+&lt;a href="https://www.youtube.com/watch?v=DOe7WTuJ1Ac" target="_blank" >Cobalt Strike&lt;/a>
+ has been
+able to do this for a number of years now, and the technique is
+actively used frequently to avoid behavioural detection.&lt;/p>
+&lt;p>How can one detect this kind of spoofing? I found it surprising that
+there are no indicators that a process has been spoofed that can be
+gathered from an already running process (If you know of any, please
+let me know!). As Didier Stevens shows in his 2017 post above, even
+memory analysis can not reveal the real parent of a process.&lt;/p>
+&lt;p>The only way to learn that a process parent has been spoofed is using
+ETW, as outlined in the F-Secure post &lt;a href="https://blog.f-secure.com/detecting-parent-pid-spoofing/" target="_blank" >Detecting Parent PID
+Spoofing&lt;/a>
+. Let&amp;rsquo;s
+play with this detection and see how effective it is.&lt;/p>
+&lt;h3 id="spoofing-parent-processes">Spoofing Parent processes&lt;/h3>
+&lt;p>I will use Didier&amp;rsquo;s tool &lt;code>SelectMyParent&lt;/code> to spoof &lt;code>notepad.exe&lt;/code> as
+being a child of &lt;code>OneDrive.exe&lt;/code>. First I use the task manager to find
+the Process ID of OneDrive and then start notepad with this as the
+parent.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;img class="inline" src="spoofing_notepad_parent.png" />
+
+
+
+
+&lt;/p>
+&lt;p>On this system I have Sysmon installed, so I will find the process
+creation event in the event viewer.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d453b6bad9467fc8fa442ca5e65f009a">
+ &lt;div data-featherlight="#d453b6bad9467fc8fa442ca5e65f009a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/sysmon_spoofed.png" alt="Sysmon event log ID 1 of spoofed process">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sysmon_spoofed.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Sysmon event log ID 1 of spoofed process
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>It shows the parent process of notepad is &lt;code>OneDrive.exe&lt;/code>!&lt;/p>
+&lt;p>Let&amp;rsquo;s write a VQL query to detect this spoofing. According to the post
+above, the provider to watch is the &lt;code>Microsoft-Windows-Kernel-Process&lt;/code>
+provider which has a GUID of
+&lt;code>{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}&lt;/code>. Since the provider emits a
+lot of information about all processes in the system, I will initially
+narrow down event to only those that have &lt;code>notepad&lt;/code> somewhere in the
+event data.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT *
+FROM watch_etw(guid=&amp;quot;{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}&amp;quot;)
+WHERE serialize(item=EventData) =~ &amp;quot;notepad&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1f975d275612a570cb2cb1bce50cf70e">
+ &lt;div data-featherlight="#1f975d275612a570cb2cb1bce50cf70e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/spoofed_etw_query.png" alt="VQL query that detects the spoofed process">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="spoofed_etw_query.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ VQL query that detects the spoofed process
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>In the above query we can see the anomaly immediately! The process
+that generated the EWT event is not the same as the process parent
+pid!&lt;/p>
+&lt;p>This anomaly allows us to detect the spoofing behavior, now we just
+need to enrich the event with extra detail of the real parent, the
+spoofed parent etc. You can find the full VQL artifact on the &lt;a href="https://docs.velociraptor.app/exchange/" target="_blank" >Velociraptor Artifact Exchange&lt;/a>
+ &lt;a href="https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.detectprocessspoofing/" target="_blank" >here&lt;/a>
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="631269b45e9f3b9ed472a57ab39841f9">
+ &lt;div data-featherlight="#631269b45e9f3b9ed472a57ab39841f9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/artifact_exchange.png" alt="Searching the Artifact Exchange">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="artifact_exchange.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Searching the Artifact Exchange
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>To add this artifact, I will navigate to the &lt;code>View Artifacts&lt;/code> screen,
+then click &lt;code>Add an Artifact&lt;/code> button, then copy and paste the Artifact
+definition from the exchange into the editor.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="162a73e14d97cbc510e85f3783429d0b">
+ &lt;div data-featherlight="#162a73e14d97cbc510e85f3783429d0b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/adding_artifact.png" alt="Adding the custom artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adding_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adding the custom artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now I will add this artifact to all client&amp;rsquo;s monitoring
+configuration. I click the &lt;code>Event Monitoring&lt;/code> screen in the GUI then
+the &lt;code>Update client monitoring table&lt;/code> button.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8057e749cfbc6df48e97d1d6ca182741">
+ &lt;div data-featherlight="#8057e749cfbc6df48e97d1d6ca182741" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/targetting_monitoring.png" alt="Targeting all clients for monitoring">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="targetting_monitoring.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Targeting all clients for monitoring
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>To add the new artifact to the client&amp;rsquo;s monitoring table I will select
+it in the next step.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="daafcc1ce50cac9005cf4079b6ad30c0">
+ &lt;div data-featherlight="#daafcc1ce50cac9005cf4079b6ad30c0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/add_monitoring_artifact.png" alt="Selecting the artifact to monitor">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="add_monitoring_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Selecting the artifact to monitor
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>As soon as the monitor table is updated, all clients will refresh
+their configuration and start monitoring for spoofing. We can see this
+by viewing the query logs in the event viewer GUI&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9cf96b42e3d74a61d20d53cb5ff08969">
+ &lt;div data-featherlight="#9cf96b42e3d74a61d20d53cb5ff08969" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/monitoring_artifact_logs.png" alt="Viewing query logs for monitoring artifacts">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="monitoring_artifact_logs.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Viewing query logs for monitoring artifacts
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>We can clearly see the client is installing some ETW sessions to
+monitor the provider. We also see a message every few minutes to
+remind us that the client is still monitoring for events. When an
+event is detected, the client immediately forwards the event to the
+server.&lt;/p>
+&lt;p>We can repeat our experiment and see the event generated by selecting
+the &lt;code>Raw Data&lt;/code> view in the GUI.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4aa57800d45aa7066764e6f873c61098">
+ &lt;div data-featherlight="#4aa57800d45aa7066764e6f873c61098" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/monitoring_artifact_event.png" alt="Viewing hits on the server">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="monitoring_artifact_event.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Viewing hits on the server
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Again we see the events in the timeline, but this time the row
+contains all the enriched information, like the real identity of the
+parent process!&lt;/p>
+&lt;h2 id="false-positives">False Positives&lt;/h2>
+&lt;p>After having this rule running for while you might notice some false
+positives - legitimate cases of parent process spoofing include the
+UAC prompt.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f8e9ff259c7aa8fe9dc8a65aae394101">
+ &lt;div data-featherlight="#f8e9ff259c7aa8fe9dc8a65aae394101" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/fp.png" alt="False Positive of parent process spoofing">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="fp.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ False Positive of parent process spoofing
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>When elevating a command to &amp;ldquo;run as admin&amp;rdquo; the UAC prompt shows. Once
+the prompt is approved, the UAC manager launches the target program
+and spoofs the parent process.&lt;/p>
+&lt;p>Other cases of legitimate parent process spoofing include the Windows
+Error Reporting.&lt;/p>
+&lt;p>I thought it would be interesting to see UAC elevations and program
+crashes as well, so I did not filter those out.&lt;/p>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>In this post we implemented a sophisticated ETW based detection rule
+in VQL. We then wrote an artifact to encapsulate it and shared the
+artifact over the &lt;code>Velociraptor Artifact Exchange&lt;/code> for other members
+of the community to use.&lt;/p>
+&lt;p>After adding the artifact to our deployment, we then issued the
+monitoring query to all clients. When any client detected the spoofing
+behavior, an event was sent to server in real time. We could then
+utilize any escalation mechanism such as &lt;a href="https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" target="_blank" >escalation through
+slack&lt;/a>
+
+or a &lt;a href="https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1" target="_blank" >The
+Hive&lt;/a>
+.&lt;/p>
+&lt;p>The interesting thing about this approach is that the detection rule
+is implemented on the endpoint itself. It is the endpoint that is
+watching the ETW events directly and making the decision about the
+anomalous nature of the event. Therefore the number of events actually
+streamed to the server is very small - most events will be high value
+events (such as real parent spoofing, UAC elevation and crashes).&lt;/p>
+&lt;p>Other Log forwarding technologies simply stream &lt;strong>all process creation
+events&lt;/strong> to a large backend server, where detection queries are
+implemented in large data mining engines. This increases the volume of
+irrelevant events forwarded to the server (most process execution
+events are not malicious!), requiring more backend processing
+capacity.&lt;/p>
+&lt;p>Velociraptor&amp;rsquo;s approach is very different! Velociraptor moves the
+initial analysis and triage to the end point, implemented via the
+powerful VQL query language. This means we do not need a lot of
+processing on the backend to scale to many thousands of monitored
+endpoints, as the server only sees high value, low volume events. We
+are essentially using the end point itself to create a de-centralized
+detection engine for a fast and scalable alerting system.&lt;/p>
+&lt;p>Unfortunately an ETW watcher must be running at the time the process
+is created, to be able to identify the spoofed parent. I am not
+currently aware of a way to detect that an existing process&amp;rsquo;s reported
+parent is not correct (Please let me know if you know of a way!). This
+means that simply collecting information at a point in time after the
+process is started (as in a Velociraptor &lt;code>pslist&lt;/code> hunt for example)
+does not reveal this information easily.&lt;/p>
+&lt;p>In the next blog post in this series we will be looking at how ETW can
+be abused by malware and some of the limitations around ETW.&lt;/p>
+&lt;p>If you have a great idea for a new detection query, take
+&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a spin&lt;/a>
+!
+It is a available on GitHub under an open source license. As always
+please file issues on the bug tracker or ask questions on our mailing
+list
+&lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+
+. You can also chat with us directly on discord
+&lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+
+.&lt;/p>
+&lt;p>There is still time to submit it to this year&amp;rsquo;s &lt;a href="https://docs.velociraptor.app/announcements/2021-artifact-contest/" target="_blank" >2021 Velociraptor
+Contributor
+Competition&lt;/a>
+,
+where you can win prizes, honor and support the entire DFIR
+community. Alternatively, you can share your artifacts with the
+community on &lt;a href="https://docs.velociraptor.app/exchange/" target="_blank" >Velociraptor&amp;rsquo;s Artifact
+Exchange&lt;/a>
+.&lt;/p></description></item><item><title>Event Tracing for Windows Part 1</title><link>https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/</link><pubDate>Thu, 02 Sep 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/</guid><description>&lt;h2 id="digging-into-windows-internals">Digging into Windows Internals&lt;/h2>
+&lt;p>One of the most important aspects of modern operating systems is
+instrumentation of the running software on the system. Instrumentation
+provides the visibility to understand what the system is doing at any
+given moment. This is obviously important for system administrators
+and software developers, but visibility into machine state is
+increasingly being used for security monitoring and response.&lt;/p>
+&lt;p>In Windows, system instrumentation is provided by the Event Tracing
+For Windows (ETW), an extensive framework for instrumentation and
+visibility.&lt;/p>
+&lt;p>Much has been written about ETW so I will not cover the details here,
+this blog post is the first of a series of posts that examine how we
+can leverage ETW for security monitoring using Velociraptor
+specifically.&lt;/p>
+&lt;h3 id="event-tracing-for-windows">Event tracing for windows.&lt;/h3>
+&lt;p>The Event Tracing for Windows framework is &lt;a href="https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw" target="_blank" >documented extensively by
+Microsoft&lt;/a>
+. In
+a nutshell, the framework is designed to facilitate interaction
+between event &lt;strong>Consumers&lt;/strong> and event &lt;strong>Providers&lt;/strong>.&lt;/p>
+&lt;p>Velociraptor provides the VQL event plugin &lt;code>watch_etw()&lt;/code> to register
+Velociraptor as a &lt;strong>Consumer&lt;/strong>. If you have not read about
+Velociraptor&amp;rsquo;s event queries, check out the
+&lt;a href="https://docs.velociraptor.app/docs/vql/events/" target="_blank" >documentation&lt;/a>
+. In
+Velociraptor, event queries allow us to write real time monitoring
+rules on the endpoint, then forward events to the server, enrich the
+event with other information or respond to the event autonomously.&lt;/p>
+&lt;p>In this blog post we will go through some examples to illustrate the
+general technique but there are so many possibilities for advanced
+detection rules.&lt;/p>
+&lt;h3 id="exploring-etw---monitoring-dns-lookups">Exploring ETW - Monitoring DNS lookups&lt;/h3>
+&lt;p>In this blog post, we will be building a Velociraptor query to monitor
+for DNS lookups on the endpoint. We mentioned previously that ETW
+connects providers and consumers, so our first task is simply to find
+a provider that will provider relevant data.&lt;/p>
+&lt;p>In this post we explore how you might develop new ETW based queries by
+discovering new providers and experimenting with novel detection
+rules.&lt;/p>
+&lt;p>ETW is designed to be self documented via &lt;code>manifest&lt;/code> files, so each
+provider in the system can describe what it will provide to some
+extent. You can see all the providers on your system using the &lt;code>logman query providers&lt;/code> command. We can immediately see some providers
+identified by the globally unique identifier (GUID).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="62ddf28e84b747dba137bcc34449c34f">
+ &lt;div data-featherlight="#62ddf28e84b747dba137bcc34449c34f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/query_providers.png" alt="Querying providers on the command line">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="query_providers.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Querying providers on the command line
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Although it is possible to query for providers on the command line,
+using APIs it is possible to dump the entire manifest containing much
+more information about each provider.&lt;/p>
+&lt;p>There are some public efforts to better document ETW providers, for
+example &lt;a href="https://github.com/repnz/etw-providers-docs" target="_blank" >https://github.com/repnz/etw-providers-docs&lt;/a>
+ contains a dump of
+various manifest files. I like to search that repository to find
+likely useful providers. In this case I will look for a provider that
+might give DNS information. The &lt;code>Microsoft-Windows-DNS-Client&lt;/code>
+provider looks like a likely candidate.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="7194f0ed7484d9146fe23bd584be6d4c">
+ &lt;div data-featherlight="#7194f0ed7484d9146fe23bd584be6d4c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/image118.png" alt="ETW Providers documentation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="image118.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ ETW Providers documentation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Let&amp;rsquo;s get Velociraptor to watch the provider&amp;rsquo;s GUID for any
+events. VQL provides the &lt;code>watch_etw()&lt;/code> plugin to attach Velociraptor
+to the provider.&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT *
+FROM watch_etw(guid=&amp;quot;{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ab81a572d36580bc0a8aa754e4eca6a3">
+ &lt;div data-featherlight="#ab81a572d36580bc0a8aa754e4eca6a3" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/watching_dns_provider.png" alt="Watching the Windows DNS Client provider">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="watching_dns_provider.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Watching the Windows DNS Client provider
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>After some trial and error we find the event ID we are interested in
+as being ID 3020. We can consult with the manifest file to get more
+information, such as the event data provided. Limiting the VQL query
+to filter for event 3020 and extracting the most relevant columns
+gives a nice DNS monitoring query:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT System.TimeStamp AS Timestamp,
+ EventData.QueryName AS Query,
+ EventData.QueryType AS Type,
+ EventData.QueryResults AS Answer
+FROM watch_etw(guid=&amp;quot;{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}&amp;quot;)
+WHERE System.ID = 3020
+&lt;/code>&lt;/pre>
+&lt;h2 id="deploying-the-query-on-endpoints">Deploying the query on endpoints&lt;/h2>
+&lt;p>Our VQL query is able to monitor the endpoint for DNS lookups but we
+need a way to deploy the query to the endpoint. In Velociraptor,
+client side event queries are encapsulated in &lt;code>Client Event&lt;/code> artifacts
+(Simple YAML files that include the VQL query, as well as human
+readable descriptions and parameters allowing for simple
+customization).&lt;/p>
+&lt;p>Simply select &amp;ldquo;Add new artifact&amp;rdquo; in the &lt;code>View Artifacts&lt;/code> screen. By
+default Velociraptor presents a template for an artifact definition -
+ready for us to fill in the right information. Simply copy the VQL
+query into the new artifact under the &lt;code>Sources.Query&lt;/code> section
+(remember to indent the query to fit within the YAML format). Since
+this artifact will be an event artifact running on the client, we must
+specify its type as &lt;code>CLIENT_EVENT&lt;/code>&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="340634892557f7eb52f53e8ecbf27bf7">
+ &lt;div data-featherlight="#340634892557f7eb52f53e8ecbf27bf7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/event_artifact.png" alt="Adding a custom event artifact">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="event_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Adding a custom event artifact
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" The different types of artifacts ">&lt;p>What is the difference between a &lt;code>CLIENT&lt;/code> and a &lt;code>CLIENT_EVENT&lt;/code> artifact?&lt;/p>
+&lt;p>A &lt;code>CLIENT&lt;/code> artifact is collected from the client, by sending a query,
+having the client execute the query, returning a result set
+(i.e. rows) back to the server. Therefore the &lt;code>CLIENT&lt;/code> artifact
+normally has a limited lifetime (by default 10 minutes) over which to
+complete its work and return a result.&lt;/p>
+&lt;p>&lt;code>CLIENT_EVENT&lt;/code> artifacts are designed to run continuously on the
+client, streaming rows to the server when events occur. Therefore
+these are treated differently by the client: The client simply records
+the event queries it is to run in a &lt;code>Client Event Table&lt;/code>.&lt;/p>
+&lt;p>The client starts running all the event queries when it first
+starts. If the client table changes on the server (perhaps because the
+user added a new event artifact to the client), the client will resync
+its event table and restart all its queries.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>Once Velociraptor contains the new artifact it is time to deploy the
+artifact to endpoints. Velociraptor can target different event
+artifacts to different clients by means of &lt;code>Label Groups&lt;/code>. By simply
+assigning a label to a client, we can control the event artifacts
+running on the client. For example, some of our endpoints are more
+sensitive so we might want to only deploy certain monitoring queries
+on those clients only by labeling them as &amp;ldquo;Sensitive&amp;rdquo;.&lt;/p>
+&lt;p>For our example, we will deploy the query on &lt;code>All&lt;/code> clients.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a156f7646ea934d2ee03a852688486c9">
+ &lt;div data-featherlight="#a156f7646ea934d2ee03a852688486c9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/adding_event_artifacts.png" alt="Targeting event monitoring to label groups">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adding_event_artifacts.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Targeting event monitoring to label groups
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Once the query is deployed we can begin seeing any DNS events
+generated on the endpoint.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="52acb626e95187801a7cb5ef948afd43">
+ &lt;div data-featherlight="#52acb626e95187801a7cb5ef948afd43" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/monitoring_dns.png" alt="Monitoring DNS requests">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="monitoring_dns.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Monitoring DNS requests
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>Hopefully you were inspired by this post to search for your own
+detection queries. ETW is a rich source of endpoint state telemetry!
+There are many other providers to explore and many possibilities of
+combining ETW with other information sources.&lt;/p>
+&lt;p>While many users are familiar with Velociraptor&amp;rsquo;s ability to collect
+endpoint state and hunt for indicators at scale, the event monitoring
+capability is a different approach making certain types of detections
+much more convenient and effective.&lt;/p>
+&lt;p>For example, many users ask &amp;ldquo;how do I schedule a hunt to run
+periodically?&amp;rdquo; While there are some cases when this is a good solution,
+in most cases users are trying to find out what has changed in the
+endpoint&amp;rsquo;s state between two times.&lt;/p>
+&lt;p>An event monitoring artifact can inform of state changes on the
+endpoint and perform the preliminary triage and analysis of these
+events automatically.&lt;/p>
+&lt;p>In the next part of this article series we will be examining more
+examples of utilizing ETW for enhancing end point visibility and
+facilitating advanced response. We will also be discussing limitations
+with this technique.&lt;/p>
+&lt;p>If you have a great idea for a new detection query, take &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor
+for a spin&lt;/a>
+! It is a
+available on GitHub under an open source license. As always please
+file issues on the bug tracker or ask questions on our mailing list
+&lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+
+. You can also chat with us directly on discord
+&lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+
+.&lt;/p>
+&lt;p>There is still time to submit it to this year&amp;rsquo;s &lt;a href="https://docs.velociraptor.app/announcements/2021-artifact-contest/" target="_blank" >2021 Velociraptor
+Contributor
+Competition&lt;/a>
+,
+where you can win prizes, honor and support the entire DFIR
+community. Alternatively, you can share your artifacts with the community on
+&lt;a href="https://docs.velociraptor.app/exchange/" target="_blank" >Velociraptor&amp;rsquo;s Artifact
+Exchange&lt;/a>
+.&lt;/p></description></item></channel></rss>
