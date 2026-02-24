@@ -256,4 +256,4 @@ sources:
                     )
                     
         // Check for potential library validation issues from LibraryInfo
-        SELECT *, if(condition="com.apple.security.cs.allow-dyld-environment-variables" IN keys OR "com.apple.security.cs.disable-library-validation" IN keys, then="Potential dylib injection: 'com.apple.security.cs.allow-dyld-environment-variables' or 'com.apple.security.cs.disable-library-validation' present!", else="No library validation issues found.") AS Result FROM LibraryInfo
+        SELECT *, if(condition="com.apple.security.cs.allow-dyld-environment-variables" IN keys OR "com.apple.security.cs.disable-library-validation" IN keys, then="Potential dylib injection - 'com.apple.security.cs.allow-dyld-environment-variables' or 'com.apple.security.cs.disable-library-validation' present!", else="No library validation issues found.") AS Result FROM LibraryInfo
