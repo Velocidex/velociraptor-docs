@@ -84,8 +84,9 @@ usage: velociraptor [<flags>] <command> [<args> ...]
 Velociraptor has a complete NTFS parser able to access files and
 directories by parsing the raw NTFS filesystem from the raw device. To
 make it easy to utilize this parser with VQL, Velociraptor implements
-the `ntfs` accessor (for a description of accessors, see
-[here]({{< ref "/vql_reference/accessors/" >}}) ).
+the `ntfs` accessor (see
+[here]({{< ref "/docs/forensic/filesystem/#filesystem-accessors" >}})
+for a description of filesystem accessors).
 
 The `ntfs` accessor makes it possible to see and access the normally
 hidden NTFS files such as `$MFT`. It also makes it possible to see
