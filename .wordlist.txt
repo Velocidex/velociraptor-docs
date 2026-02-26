@@ -12,6 +12,8 @@ ActiveScript
 ActiveXObject
 adbe
 ADDomain
+adfs
+ADFS
 AddPrinterDriverEx
 admin's
 admins
@@ -309,7 +311,7 @@ geolocation
 getpid
 GetShortPathName
 gif
-github
+GitHub
 gitlab
 GLIBC
 GLOBALROOT
@@ -325,7 +327,6 @@ goroutines
 gpg
 gpupdate
 Graeber
-Graphana
 grep
 grok
 gRPC
@@ -601,6 +602,7 @@ OleParser
 olevba
 OneDrive
 onlinehashcrack
+openid
 opensource
 openssl
 ordereddict
@@ -708,6 +710,7 @@ pydata
 pyvelociraptor
 QoS
 QPS
+quickstart
 QWORD
 RabbitMQ
 ransomware
@@ -2020,3 +2023,4 @@ AVML
 PathSpec
 UploadResponse
 reconnection
+Bing

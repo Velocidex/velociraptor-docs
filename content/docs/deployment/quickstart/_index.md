@@ -162,7 +162,7 @@ internet access from the server is OK.
 Before we start configuring or running anything you'll need to download the
 latest binary. Binaries for the latest version are listed on our
 [Downloads]({{< ref "/downloads/" >}}) page, with the binaries themselves being
-hosted on Github.
+hosted on GitHub.
 
 At this point you only need to download one binary (the one that matches your
 server's platform and architecture) because after installation we will use the
@@ -207,7 +207,7 @@ shown below. This will download the binary and save it with the name
 `velociraptor`:
 
 ```sh
-wget -O velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.1-linux-amd64
+wget -O velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.6-linux-amd64
 ```
 
 Then make the downloaded file executable so that you can run it in subsequent

@@ -303,7 +303,7 @@ In all cases we need to tell Velociraptor:
   it's the [official release MSI]({{< ref "/downloads/" >}}) - either 64-bit or
   32-bit - but previous releases can also be found on the
   [Releases page](https://github.com/Velocidex/velociraptor/releases)
-  at Github if you need them), and
+  at GitHub if you need them), and
 * what the output file should be named.
 
 {{< tabs >}} {{% tab name="Linux" %}}

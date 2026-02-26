@@ -196,7 +196,7 @@ In the AWS cloud it is possible to resize disk space dynamically. See [Requestin
 ## Setting up monitoring.
 
 To set up monitoring for Velociraptor servers you will need to install
-both Graphana and Prometheus.
+both Grafana and Prometheus.
 
 ### Setting up Prometheus
 
@@ -208,15 +208,15 @@ prometheus.yaml file without change and launch prometheus like this:
 $ prometheus  --config.file velociraptor.yml
 ```
 
-### Setting up Graphana
+### Setting up Grafana
 
-Graphana is a graphing package which helps to visualize the Prometheus
-data. Graphana is very easy to use and can be configured using its web
+Grafana is a graphing package which helps to visualize the Prometheus
+data. Grafana is very easy to use and can be configured using its web
 interface.
 
 First add Prometheus as a data source.
 
-You can import the graphana.json file as a new dashboard. This is a
+You can import the Grafana.json file as a new dashboard. This is a
 good starting point for a useful monitoring dashboard and will show
 the following graphs:
 

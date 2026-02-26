@@ -114,7 +114,7 @@ velociraptor config show --embedded_config Collector_velociraptor-collector > Co
 3. And then repack it back into the Generic Collector format using the `--exe`
 flag. In this case the "exe" can be any generic collector file including the
 default "blank" one available on our
-[Github Releases page](https://github.com/Velocidex/velociraptor/releases)
+[GitHub Releases page](https://github.com/Velocidex/velociraptor/releases)
 (named `velociraptor-collector`).
 
 ```sh

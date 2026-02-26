@@ -117,11 +117,11 @@ LastModifierEmail = ""
 
 ### Add icon to a menu entry
 
-In the page frontmatter, add a `pre` param to insert any HTML code before the menu label. The example below uses the Github icon.
+In the page frontmatter, add a `pre` param to insert any HTML code before the menu label. The example below uses the GitHub icon.
 
 ```toml
 +++
-title = "Github repo"
+title = "GitHub repo"
 pre = "<i class='fab fa-github'></i> "
 +++
 ```
