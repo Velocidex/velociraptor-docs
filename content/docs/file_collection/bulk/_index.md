@@ -126,7 +126,7 @@ updated, you need to add them to your Velociraptor's artifacts repository. You
 can do this by manually downloading and importing the artifacts, but we
 recommend that you use the built-in `Server.Import.Extras` server artifact
 to simplify
-[adding and updating the externally maintained triage artifacts]({{< ref "/docs/deployment/quickstart/#step-6-import-artifacts-from-external-projects" >}}).
+[adding and updating externally maintained artifacts]({{< ref "/docs/deployment/quickstart/#step-6-import-artifacts-from-external-projects" >}}).
 
 
 {{% notice note "Triage vs. Bulk File Collection" %}}
@@ -138,8 +138,8 @@ Usually this is an initial phase of the investigation, and is done for the
 purpose of identifying affected systems and scoping an incident. In other words,
 in Velociraptor terms "triage" is really just
 [hunting]({{< ref "/docs/hunting/" >}}) done with specific constraints and
-objectives in mind. Velociraptor can assess an endpoint without copying any
-files.
+objectives in mind. Velociraptor can be used to assess an endpoint without
+copying any files.
 
 However, due to their prior experience with other DFIR tools many forensic
 practitioners tend to equate the term "triage" with bulk file acquisition
@@ -202,13 +202,13 @@ bulk collection of files based on the targets specified.
 ## Bulk file collection using Offline Collectors
 
 Sometimes your are unable to deploy Velociraptor on a new network in the
-conventional client/server mode. Often you may also have to rely on external
-assistance (such as a local administrator) to actually perform the collection
-on your behalf, and usually these assistants are often not DFIR experts.
+conventional client/server mode. Sometimes you might also have to rely on
+external assistance (such as a local administrator) to actually perform the
+collection on your behalf, and usually these assistants are not DFIR experts.
 
-Without a Velociraptor client on the endpoint you are still able to perform bulk
-file collections using
-[Offline Collectors]({{< ref "/docs/deployment/offline_collections/" >}}).
+Velociraptor [Offline Collectors]({{< ref "/docs/deployment/offline_collections/" >}})
+allow you to perform bulk file collections (and run any other artifacts)
+without installing a Velociraptor client on the endpoint.
 
 An offline collector is a custom preconfigured Velociraptor binary that will
 automatically collect any artifacts that you've specified. Offline Collectors
