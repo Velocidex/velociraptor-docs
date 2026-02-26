@@ -225,7 +225,7 @@ establish a timeline of activity on the system.
 ### Timestomping
 
 Attackers sometimes change the timestamps of files to make them less
-obvious. e.g to make malware look like it was installed many years
+obvious, for example, to make malware look like it was installed many years
 ago. This makes timelines more difficult to establish and might cause
 you to miss important filesystem events.
 
@@ -242,6 +242,7 @@ Get-ChildItem $file | Select *, Fullname, *Time*
 ```
 
 ![Before](image44.png)
+
 ![After](image38.png)
 
 

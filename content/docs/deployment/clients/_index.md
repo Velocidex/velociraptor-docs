@@ -1069,6 +1069,6 @@ will be killed part way through collecting the artifact, so it would appear to
 never complete it (in the GUI the flow looks hung). This is OK and part of the
 upgrade process.
 
-<!-- To verify that clients are upgraded we recommend running the
+To verify that clients are upgraded we recommend running the
 `Generic.Client.Info` hunt periodically. This hunt will refresh the server's
-datastore of client details (including reporting the client's version). -->
+datastore of client details (including reporting the client's version).
