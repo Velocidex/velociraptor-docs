@@ -489,20 +489,18 @@ data transfers do not saturate network links during large-scale collections.
 
 It is often hard to determine in advance how much data will be collected or how
 long it will take. It might happen that a certain endpoint has many more files
-than you anticipated, or that a certain file may be unusually large on some
-endpoint.
+than you anticipated, or that a certain file might be unusually large on some
+particular endpoint.
 
-[Resource limits]({{< ref "/docs/artifacts/resources/" >}}) are a feature
-intended to protect against such unforeseen circumstances.
+[Resource limits]({{< ref "/docs/artifacts/resources/" >}}) is a feature
+intended to protect against such unforeseen circumstances. Velociraptor allows
+limits to be set, after which the collection is cancelled. In particular, the
+`max_upload_bytes` and `timeout` resource limits provide an additional safeguard
+against unexpected/accidental uploads of extremely large files.
 
-Velociraptor allows limits to be set, after which the collection is cancelled.
-In particular, the `max_upload_bytes` and `timeout` resource limits provide an
-additional safeguard against unexpected/accidental uploads of extremely large
-files.
-
-To guard against accidental server from disk exhaustion there is a default
-limit of 1GB per collection. This limit, and the default 10-minute timeout, can
-be increased in the GUI for larger acquisitions. Alternatively they can be
+To guard against accidental server disk exhaustion, there is a default limit of
+1GB per collection. This limit, and the default 10-minute timeout, can be
+increased in the GUI for larger acquisitions. Alternatively they can be
 [defined in the artifact]({{< ref "/docs/artifacts/advanced_fields/#-resources-" >}})
 if the artifact is expected to usually result in large data transfers (such as
 and artifact which uploads memory dumps).
@@ -539,13 +537,12 @@ depleting the disk space on the server.
 
 ### Datastore Disk Usage Protection
 
-Since version 0.7.0, the server includes a disk usage checker that
-automatically disables writes when free space hits a minimum threshold (50 MB by
-default). Under these conditions, the server returns a 503 error to clients,
-causing them to buffer data locally rather than risk file corruption or data
-loss on the server. This mechanism protects critical metadata, such as hunt
-objects and organization settings, which were vulnerable to corruption in
-older releases.
+The server includes a disk usage checker that automatically disables writes when
+free space hits a minimum threshold (50 MB by default). Under these conditions,
+the server returns a `503` error to clients, causing them to buffer data locally
+rather than risk file corruption or data loss on the server. This mechanism
+protects critical metadata, such as hunt objects and organization settings,
+which were vulnerable to corruption in older releases.
 
 The GUI will also display an alert if the minimum threshold is encountered.
 
@@ -557,13 +554,13 @@ The GUI will also display an alert if the minimum threshold is encountered.
 It's also possible to have the client upload files to destinations other than
 the Velociraptor server. This is most often used with
 [offline collections]({{< ref "/docs/deployment/offline_collections/" >}})
-to upload a collection container zip to a remote destination, but the same
+to upload a large collection container zip to a remote destination, but the same
 upload functions can be used in any VQL queries to upload individual files.
 
-An alternative way to avoid the potential impacts of bulk/large file uploads on
-the server is to use a
-[remote upload destination]({{< ref "/docs/file_collection/#remote_uploads/" >}}),
-rather than having the files sent to the Velociraptor server.
+Using remote upload destinations rather than your Velociraptor server is one way
+to avoid the potential impacts of bulk/large file uploads on the server. You
+can, for example, upload files to cloud storage services which have practically
+unlimited storage capacity.
 
 Of course the downside to that approach is that your collected files will then
 be separate from your non-file collection data. But in some cases that may be
