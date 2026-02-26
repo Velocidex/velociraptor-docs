@@ -38,7 +38,7 @@ The process of exporting files in bulk involves two steps.
    depending on the total size of all the files) and then displays a link for
    the download.
 
-   ![Resulting FlowID](export_download.png)
+   ![Resulting `FlowId`](export_download.png)
 
    It's possible to prepare multiple downloads, each with different options. In
    that case they will all be listed in the **Available Downloads** section.

@@ -17,7 +17,7 @@ specialized analysis capabilities for certain file formats.
 In the previous section we looked at the basic mechanisms that Velociraptor
 provides in support of file acquisition. The VQL `upload()` function allows us
 to copy files from endpoints to the server, which is the default method of file
-aquisition, but several other functions are available for copying files to
+acquisition, but several other functions are available for copying files to
 [remote network destinations]({{< ref "/docs/file_collection/#remote-upload-destinations" >}})
 other than the Velociraptor server.
 
@@ -161,7 +161,7 @@ cumbersome approach that isn't aligned with Velociraptor's philosophy and design
 
 With Velociraptor, bulk file collection is usually done in parallel with
 investigating the endpoint itself. We don't collect files and then investigate -
-we investigate and _conditionally_ collect files (usually as a perservation
+we investigate and _conditionally_ collect files (usually as a preservation
 action).
 
 So despite the use of "triage" in the name of these artifacts, you should keep

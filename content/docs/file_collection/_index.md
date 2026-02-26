@@ -317,9 +317,9 @@ already present in the notebook's VQL scope.
 
 Also note that if the artifacts being hunted include file uploads with the
 appropriate `column_types` set, then the notebook will display links to the
-uploaded files when you run a simple `SELECT * FROM
-source(artifact="ArtifactName")` query, which is the default query for a new
-hunt notebook.
+uploaded files when you run a simple
+`SELECT * FROM source(artifact="ArtifactName")`
+query, which is the default query for a new hunt notebook.
 
 
 ## Upload-related Features
@@ -529,7 +529,7 @@ their individual collections.
 
 In older versions compression was only applied during network transport. Since
 version 0.75, the server stores uploaded files in a compressed form by default
-to improve storage utilisation. The compression is performed by the client, and
+to improve storage utilization. The compression is performed by the client, and
 therefore has minimal performance cost to the server. On the server the
 decompression is handled transparently, such as when exporting files from the
 GUI or accessing them via VQL.

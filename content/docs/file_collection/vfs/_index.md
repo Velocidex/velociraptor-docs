@@ -203,7 +203,7 @@ a third step if you want to download all the files at once.
    the targeted files. It then displays a link to the flow. Click on it to view
    the flow.
 
-   ![Resulting FlowID](vfs_prepare_download_flowid.png)
+   ![Resulting `FlowId`](vfs_prepare_download_flowid.png)
 
    Since the export creation process is implemented as a server collection, you
    can also find it by navigating to the collection listings on the **Server
