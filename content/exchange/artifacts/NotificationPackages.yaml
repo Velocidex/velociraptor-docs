@@ -1,0 +1,28 @@
+name: Windows.Detection.NotificationPackages.Ring0
+author: Yaniv Goldman
+description: |
+  Detects registered LSA Notification Packages. Attackers can add malicious 
+  DLLs to intercept passwords and achieve persistence within LSASS process.
+reference:
+    - https://attack.mitre.org/techniques/T1556/002/
+    - https://www.trendmicro.com/en_us/research/24/j/earth-simnavaz-cyberattacks.html
+    
+type: CLIENT
+
+parameters:
+  - name: TargetKey
+    default: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\Notification Packages
+
+sources:
+  - query: |
+
+      LET Packages = SELECT Name, Data, Mtime, FullPath
+        FROM stat(filename=TargetKey, accessor="registry")
+
+ 
+      SELECT 
+        Name AS ValueName,
+        Data AS PackageName,
+        Mtime AS LastModified,
+        FullPath AS KeyPath
+      FROM Packages
